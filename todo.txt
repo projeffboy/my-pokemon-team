@@ -1,0 +1,37 @@
+-change color of meta theme color
+-have a look at manifest
+-change favicon
+-uninstall emotion?
+-find a way to deal with the multiple styles attribute
+-speed up react select
+-use react loadable?
+-control rayquaza sprite size
+-slight hoizontal scroll on the page
+-Moves input: words have to be unsplit
+-Moves input: make them independent
+-Moves input: bugs out for megas and other formes
+-the input delete x button too big
+-auto chosoe ability if there's only one
+-make items and abilities affect the type algorithm
+-import formatting: what to import first
+-format the teamStats cards
+-easier way to add two objects, yknow, their numerical values
+-algorithm interprets charizard with a 2 resistance to ground (should be 3)
+
+-unwieldable items
+-recommended moves
+-no repeated moves
+-moves that are incompatible together
+-pokemon moves
+-stylize react-virtualized-select
+-remove the fake pokemon
+-deal with import crisis
+
+-import/export teams
+-Smogon tier, Battle Spot, VGC
+-type
+-region
+-team checklist
+-sprite next to name when selecting name/item
+-host images yourself?
+-tooltips for teamstats
