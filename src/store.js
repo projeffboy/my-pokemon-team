@@ -211,15 +211,16 @@ class Store {
         // if it is a non-empty move
         if (pokemon[prop] && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
           const move = moves[pokemon[prop]]
-          const dmgDealt = typechart[move.type]
-
-          let updatedTypeCoverage = {}
-
-          Object.keys(typeCoverage).map(type => (
-            updatedTypeCoverage[type] = typeCoverage[type] - dmgDealt[type]
+          
+          const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
+            typechart[typeAgainst][move.type]
           ))
 
-          typeCoverage = updatedTypeCoverage
+          Object.keys(typeCoverage).forEach((type, i) => {
+            if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
+              return typeCoverage[type]++
+            }
+          })
         }
       }
     }
