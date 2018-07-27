@@ -65,8 +65,21 @@ class Store {
     return abilities
   }
 
+  /* NOT USED: Returns the species name of a pokemon
   speciesName(pokemon) {
     return store.pokedex[pokemon].species
+  }
+  */
+
+  // Returns 
+  baseSpecies(pokemon) {
+    return store.pokedex[pokemon].baseSpecies
+  }
+
+  // Returns the forme name of a pokemon
+  // E.g. Charizard Mega-X's forme is Mega-X
+  forme(pokemon) {
+    return store.pokedex[pokemon].forme
   }
 
   /* All Battle Items */

@@ -38,3 +38,5 @@
 -sprite next to name when selecting name/item
 -host images yourself?
 -tooltips for teamstats
+
+-huge credits to pokemon showdown
