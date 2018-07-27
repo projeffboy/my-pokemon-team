@@ -1,11 +1,13 @@
 -change color of meta theme color
 -have a look at manifest
 -change favicon
--uninstall emotion?
--find a way to deal with the multiple styles attribute
--speed up react select
+-
 -use react loadable?
--control rayquaza sprite size
+
+-?
+-find a way to deal with the multiple styles attribute
+
+-fix broken sprites
 -slight hoizontal scroll on the page
 -Moves input: words have to be unsplit
 -Moves input: make them independent
@@ -17,6 +19,7 @@
 -format the teamStats cards
 -easier way to add two objects, yknow, their numerical values
 -algorithm interprets charizard with a 2 resistance to ground (should be 3)
+-when you delete a name, it also needs to delete moves in store
 
 -unwieldable items
 -recommended moves

@@ -24,6 +24,7 @@ class Sprite extends React.Component {
         <img 
           alt={pokemonName}
           src={`https://play.pokemonshowdown.com/sprites/xyani/${pokemonName}.gif`}
+          style={{maxHeight: '100%', maxWidth: '100%'}}
         />
       )
     }
