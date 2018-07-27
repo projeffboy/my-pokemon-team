@@ -1,4 +1,5 @@
 import {observable, computed} from 'mobx'
+// I have to import a bunch of pokemon data first
 import pokedexData from './data/pokedex'
 import battleItemsData from './data/battle-items'
 import miniLearnsets from './data/mini-learnsets.min'
@@ -51,22 +52,18 @@ class Store {
     ability: '', // chosen ability
   })
 
-  // Get the abilities of the team's six pokemon
+  // Get all the possible abilities of the team's six pokemon
   // Using pokedexData (pokedex.js)
   @computed get abilities() {
-    let abilities = [] // will contain the possible abilities of six pokemon
-    
-    for (const pkmn of this.pokemon) {
+    return this.pokemon.map((pkmn, i) => {
       if (pkmn.name) {
-        const pkmnAbilities = this.pokedex[pkmn.name].abilities // the specific pokemon's ability (obj)
-        const pkmnAbilitiesArr = Object.values(pkmnAbilities) // the specific pokemon's ability (arr)
-        abilities.push(pkmnAbilitiesArr)
+        const pkmnAbilities = this.pokedex[pkmn.name].abilities // the specific pokemon's abilities (obj)
+        
+        return Object.values(pkmnAbilities) // the specific pokemon's abilities (arr)
       } else {
-        abilities.push([])
+        return []
       }
-    }
-
-    return abilities
+    })
   }
 
   // Get the learnsets of the team's six pokemon

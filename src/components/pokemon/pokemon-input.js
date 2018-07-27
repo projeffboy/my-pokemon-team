@@ -1,9 +1,9 @@
 import React from 'react'
-import {pokemonGridItemStyles} from '../../styles'
-import store from '../../store'
-import {observer} from 'mobx-react'
-import IntegrationReactSelect from './pokemon-input/integration-react-select'
 import {withStyles} from '@material-ui/core/styles'
+import {observer} from 'mobx-react'
+import store from '../../store'
+import {pokemonGridItemStyles} from '../../styles'
+import IntegrationReactSelect from './pokemon-input/integration-react-select'
 
 @observer
 class PokemonInput extends React.Component {

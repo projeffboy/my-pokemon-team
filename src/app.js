@@ -1,12 +1,12 @@
 import React from 'react'
-// My Component Imports
-import Pokemon from './components/pokemon'
-import TeamStats from './components/team-stats'
-import {appStyles} from './styles'
 // Material UI Imports
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import {withStyles} from '@material-ui/core/styles'
+// My Component Imports
+import Pokemon from './components/pokemon'
+import TeamStats from './components/team-stats'
+import {appStyles} from './styles'
 
 function App(props) {
   const {classes} = props

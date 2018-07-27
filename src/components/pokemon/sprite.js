@@ -1,8 +1,8 @@
 import React from 'react'
-import {pokemonGridItemStyles} from '../../styles'
+import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
 import store from '../../store'
-import {withStyles} from '@material-ui/core/styles'
+import {pokemonGridItemStyles} from '../../styles'
 
 @observer
 class Sprite extends React.Component {

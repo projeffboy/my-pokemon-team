@@ -2,14 +2,17 @@
 -have a look at manifest
 -change favicon
 -
+--the input delete x button too big
+-
+-auto choose ability if there's only one
+-make items and abilities affect the type algorithm
+-
 -use react loadable?
 
 -?
 -find a way to deal with the multiple styles attribute
 
--the input delete x button too big
--auto chosoe ability if there's only one
--make items and abilities affect the type algorithm
+
 -import formatting: what to import first
 -format the teamStats cards
 -easier way to add two objects, yknow, their numerical values

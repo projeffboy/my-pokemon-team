@@ -1,8 +1,8 @@
 import React from 'react'
+import {withStyles} from '@material-ui/core/styles'
 import PokemonInput from './pokemon/pokemon-input'
 import Sprite from './pokemon/sprite'
 import {pokemonStyles} from '../styles'
-import {withStyles} from '@material-ui/core/styles'
 // import Grid from '@material-ui/core/Grid'
 
 function Pokemon(props) {

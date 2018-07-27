@@ -1,8 +1,8 @@
 import React from 'react'
-import store from '../store'
-import {observer} from 'mobx-react'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import {observer} from 'mobx-react'
+import store from '../store'
 
 @observer
 export default class TeamStats extends React.Component {
