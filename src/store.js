@@ -210,17 +210,21 @@ class Store {
       for(const prop in pokemon) {
         // if it is a non-empty move
         if (pokemon[prop] && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
-          const move = moves[pokemon[prop]]
+          const moveDetails = moves[pokemon[prop]] // details about the move
           
-          const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
-            typechart[typeAgainst][move.type]
-          ))
-
-          Object.keys(typeCoverage).forEach((type, i) => {
-            if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
-              return typeCoverage[type]++
-            }
-          })
+          // If it's a status move ignore it
+          // (status moves don't deal damage. so they don't contribute to type coverage)
+          if (moveDetails.category !== 'Status') {
+            const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
+              typechart[typeAgainst][moveDetails.type]
+            ))
+  
+            Object.keys(typeCoverage).forEach((type, i) => {
+              if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
+                return typeCoverage[type]++
+              }
+            })
+          }
         }
       }
     }
