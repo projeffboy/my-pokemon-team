@@ -101,6 +101,7 @@ class Store {
   }
 
     // Get the type(s) of the team's six pokemon
+    // Get the type(s) of the team's six pokemon
     @computed get types() {
       let types = []
   
@@ -162,17 +163,37 @@ class Store {
   @computed get typeDefence() {
     let typeDefence = {...this.cleanSlate}
 
-    if (this.types.some(arr => arr.length)) { // is 2D array empty or not
+    if (this.types.some(arr => arr.length)) { // is this 2D array empty or not
       for (const pkmnTypes of this.types) { // pkmnTypes means a specific pokemon's type(s)
-        for(const pkmnType of pkmnTypes) { // get one of the one/two types (yknow, if the pokemonis multi-typed)
-          const dmgTaken = typechart[pkmnType] // pkmnType refers to one of a specific pokemon's type
-          
-          let updatedTypeDefence = {}
-          
-          Object.keys(typeDefence).map(type => ( // type refers to a generic pokemon type
-            updatedTypeDefence[type] = typeDefence[type] + dmgTaken[type]
-          ))
-          typeDefence = updatedTypeDefence
+        const [type1, type2] = pkmnTypes // the pokemon's two types
+
+        if (type2) {
+          Object.keys(typeDefence).forEach(type => { // type refers to a generic pokemon type
+            /*
+             * How do explain the code below?
+             * Here's an example.
+             * Charizard is Fire/Flying.
+             * Fire is weak to Ground but Flying is immune to Ground.
+             * So Fire being weak to Ground doesn't matter.
+             * But our algorithm takes Fire being weak to Ground into account.
+             * We need to tell the algorithm not to do that.
+             */
+            // type resistance
+            const resistanceOfType1 = typechart[type1][type]
+            const resistanceOfType2 = typechart[type2][type]
+
+            let resistanceOfBothTypesCombined = resistanceOfType1 + resistanceOfType2
+            if (resistanceOfType1 === 2 || resistanceOfType2 === 2) {
+              resistanceOfBothTypesCombined = 2
+            }
+            /* End of troublesome code */
+
+            typeDefence[type] += resistanceOfBothTypesCombined
+          })
+        } else if (type1) {
+          Object.keys(typeDefence).forEach(type => { // type refers to a generic pokemon type
+            typeDefence[type] += typechart[type1][type]
+          })
         }
       }
     }
