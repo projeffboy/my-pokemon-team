@@ -72,17 +72,34 @@ class Store {
   // Get the learnsets of the team's six pokemon
   // Using miniLearnsets (mini-learnsets.min.js)
   @computed get learnsets() {
-    let learnsets = [] // will contain the learnsets of six pokemon
+    // both will contain the learnsets of six pokemon
+    let learnsets = {
+      values: [],
+      labels: [],
+    }
 
     for (const pkmn of this.pokemon) {
       if (pkmn.name) {
-        const learnset = miniLearnsets[pkmn.name] // the specific pokemon's learnset
-        learnsets.push(learnset)
+        /*
+         * As it turns out, mini-learnsets.min.js doesn't include pokemons' alternate formes.
+         * So if the user chooses an alternate forme pokemon,
+         * we gotta tell the code that we mean the base form,
+         * and that's what the next two lines are about.
+         */
+        let baseFormeName = this.baseSpecies(pkmn.name) || pkmn.name
+        baseFormeName = baseFormeName.toLowerCase()
+
+        const learnsetValues = miniLearnsets[baseFormeName] // the specific pokemon's learnset
+        const learnsetLabels = miniLearnsets[baseFormeName].map(move => moves[move].name)
+
+        learnsets.values.push(learnsetValues)
+        learnsets.labels.push(learnsetLabels)
       } else {
-        learnsets.push([])
+        learnsets.values.push([])
+        learnsets.labels.push([])
       }
     }
-    
+
     return learnsets
   }
 

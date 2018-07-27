@@ -7,9 +7,6 @@
 -?
 -find a way to deal with the multiple styles attribute
 
--Moves input: words have to be unsplit
--Moves input: make them independent
--Moves input: bugs out for megas and other formes
 -the input delete x button too big
 -auto chosoe ability if there's only one
 -make items and abilities affect the type algorithm
@@ -21,6 +18,8 @@
 -remove irrelevant pokemon
 -fix type coverage algorithm so it's only positive numbers
 -type defence algorithm to not count status moves
+-make placeholder text different color than selected text
+-change the for..in with map in store.js?
 
 -unwieldable items
 -recommended moves
@@ -39,5 +38,4 @@
 -sprite next to name when selecting name/item
 -host images yourself?
 -tooltips for teamstats
-
--huge credits to pokemon showdown
+-responsiveness

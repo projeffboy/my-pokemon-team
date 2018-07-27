@@ -39,7 +39,8 @@ class PokemonInput extends React.Component {
         optionValues = store.abilities[this.i]
         break
       default: // for the moves
-        optionValues = store.learnsets[this.i]
+        optionValues = store.learnsets.values[this.i]
+        optionLabels = store.learnsets.labels[this.i]
     }
 
     // Apparently if you remove this it breaks, dunno why
