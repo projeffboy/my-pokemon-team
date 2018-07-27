@@ -49,11 +49,11 @@ function App(props) {
 
   return (
     // All 9 Cards
-    <React.Fragment>
-      <Grid container spacing={24}>
-        {cards}
-      </Grid>
-    </React.Fragment>
+    // apparently there's a slight horizontal scroll if I don't set this width for <Grid />
+    // the original width for <Grid /> was calc(100% + 24px)
+    <Grid container spacing={24} style={{width: 'calc(100% + 20px)'}}>
+      {cards}
+    </Grid>
   )
 }
 

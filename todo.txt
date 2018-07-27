@@ -7,8 +7,6 @@
 -?
 -find a way to deal with the multiple styles attribute
 
--fix broken sprites
--slight hoizontal scroll on the page
 -Moves input: words have to be unsplit
 -Moves input: make them independent
 -Moves input: bugs out for megas and other formes
@@ -20,6 +18,7 @@
 -easier way to add two objects, yknow, their numerical values
 -algorithm interprets charizard with a 2 resistance to ground (should be 3)
 -when you delete a name, it also needs to delete moves in store
+-remove irrelevant pokemon
 
 -unwieldable items
 -recommended moves
