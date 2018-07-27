@@ -19,6 +19,8 @@
 -algorithm interprets charizard with a 2 resistance to ground (should be 3)
 -when you delete a name, it also needs to delete moves in store
 -remove irrelevant pokemon
+-fix type coverage algorithm so it's only positive numbers
+-type defence algorithm to not count status moves
 
 -unwieldable items
 -recommended moves

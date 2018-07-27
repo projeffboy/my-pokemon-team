@@ -5,29 +5,42 @@ import miniLearnsets from './data/mini-learnsets.min'
 import typechart from './data/typechart'
 import moves from './data/moves'
 
-const cleanSlate = { // clean slate refers to a team that has no weakneses/resistances (see below)
-  Bug: 0,
-  Dark: 0,
-  Dragon: 0,
-  Electric: 0,
-  Fairy: 0,
-  Fighting: 0,
-  Fire: 0,
-  Flying: 0,
-  Ghost: 0,
-  Grass: 0,
-  Ground: 0,
-  Ice: 0,
-  Normal: 0,
-  Poison: 0,
-  Psychic: 0,
-  Rock: 0,
-  Steel: 0,
-  Water: 0,
-}
-
 class Store {
-  /* Data About the Team's Six Pokemon */
+  constructor() {
+    /*
+     * This property contains all the pokemon types, initially set to 0 (that's why it's called clean slate).
+     * A positive number can either mean:
+     *  the team is strong against thie type (type defence)
+     *  the team has moves supereffective against this type (type coverage)
+     * A negative number means the team is weak against this type (type defence)
+     * Type coverages cannot be negative
+     */
+    this.cleanSlate = {
+      Bug: 0,
+      Dark: 0,
+      Dragon: 0,
+      Electric: 0,
+      Fairy: 0,
+      Fighting: 0,
+      Fire: 0,
+      Flying: 0,
+      Ghost: 0,
+      Grass: 0,
+      Ground: 0,
+      Ice: 0,
+      Normal: 0,
+      Poison: 0,
+      Psychic: 0,
+      Rock: 0,
+      Steel: 0,
+      Water: 0,
+    }
+  }
+
+  /********************************
+  DATA ABOUT THE TEAM'S SIX POKEMON 
+  ********************************/
+  
   @observable pokemon = Array(6).fill({
     name: '', // unhyphenated
     item: '',
@@ -35,22 +48,13 @@ class Store {
     move2: '',
     move3: '',
     move4: '',
-    ability: '',
+    ability: '', // chosen ability
   })
 
-  /* Pokedex Info on All Pokemon */
-  @observable pokedex = {...pokedexData} // copy, not reference, imported pokedex data
-
-  @computed get allPokemon() {
-    return Object.keys(this.pokedex)
-  }
-
-  @computed get allPokemonNames() {
-    return this.allPokemon.map(pokemon => this.pokedex[pokemon].species) // species is name
-  }
-
-  @computed get abilities() { // the possible abilities of the six pokemon
-    let abilities = [] // will contain the abilities of six pokemon
+  // Get the abilities of the team's six pokemon
+  // Using pokedexData (pokedex.js)
+  @computed get abilities() {
+    let abilities = [] // will contain the possible abilities of six pokemon
     
     for (const pkmn of this.pokemon) {
       if (pkmn.name) {
@@ -65,27 +69,8 @@ class Store {
     return abilities
   }
 
-  /* NOT USED: Returns the species name of a pokemon
-  speciesName(pokemon) {
-    return store.pokedex[pokemon].species
-  }
-  */
-
-  // Returns 
-  baseSpecies(pokemon) {
-    return store.pokedex[pokemon].baseSpecies
-  }
-
-  // Returns the forme name of a pokemon
-  // E.g. Charizard Mega-X's forme is Mega-X
-  forme(pokemon) {
-    return store.pokedex[pokemon].forme
-  }
-
-  /* All Battle Items */
-  @observable battleItems = Object.values(battleItemsData).map(item => item.name)
-
-  /* Get the Learnsets of the Team's Six Pokemon */
+  // Get the learnsets of the team's six pokemon
+  // Using miniLearnsets (mini-learnsets.min.js)
   @computed get learnsets() {
     let learnsets = [] // will contain the learnsets of six pokemon
 
@@ -101,25 +86,67 @@ class Store {
     return learnsets
   }
 
-  /* Pokemon Type-Related Stuff */
-  // Get the type of the team's six pokemon
-  @computed get types() {
-    let types = []
-
-    for (const pkmn of this.pokemon) {
-      if (pkmn.name) {
-        const pkmnTypes = this.pokedex[pkmn.name].types // the specific pokemon's type(s)
-        types.push(pkmnTypes)
-      } else {
-        types.push([])
+    // Get the type(s) of the team's six pokemon
+    @computed get types() {
+      let types = []
+  
+      for (const pkmn of this.pokemon) {
+        if (pkmn.name) {
+          const pkmnTypes = this.pokedex[pkmn.name].types // the specific pokemon's type(s)
+          types.push(pkmnTypes)
+        } else {
+          types.push([])
+        }
       }
+  
+      return types
     }
 
-    return types
+  /**************************
+  POKEDEX INFO ON ALL POKEMON
+  **************************/
+
+  @observable pokedex = pokedexData
+
+  @computed get allPokemon() {
+    return Object.keys(this.pokedex)
   }
 
+  @computed get allPokemonNames() {
+    return this.allPokemon.map(pokemon => this.pokedex[pokemon].species) // species is name
+  }
+
+  /* NOT USED: Returns the species name of a pokemon
+  speciesName(pokemon) {
+    return store.pokedex[pokemon].species
+  }
+  */
+
+  // Returns the name of the pokemon's base forme
+  baseSpecies(pokemon) {
+    return store.pokedex[pokemon].baseSpecies
+  }
+
+  // Returns name of the pokemon's alternate forme
+  // E.g. Charizard Mega-X's forme is Mega-X
+  forme(pokemon) {
+    return store.pokedex[pokemon].forme
+  }
+
+  /***************
+  ALL BATTLE ITEMS
+  ***************/
+
+  @observable battleItems = Object.values(battleItemsData).map(item => item.name)
+
+  /************************
+  STUFF ABOUT POKEMON TYPES
+  ************************/
+
+  // Assessment of the team's type defence
+  // (How good your team is against the 18 different types)
   @computed get typeDefence() {
-    let typeDefence = {...cleanSlate}
+    let typeDefence = {...this.cleanSlate}
 
     if (this.types.some(arr => arr.length)) { // is 2D array empty or not
       for (const pkmnTypes of this.types) { // pkmnTypes means a specific pokemon's type(s)
@@ -139,8 +166,10 @@ class Store {
     return typeDefence
   }
 
+  // Assessment of the team's type coverage
+  // (How many types are your team's moves supereffective against)
   @computed get typeCoverage() {
-    let typeCoverage = {...cleanSlate}
+    let typeCoverage = {...this.cleanSlate}
 
     for (const pokemon of this.pokemon) {
       for(const prop in pokemon) {
@@ -162,6 +191,10 @@ class Store {
 
     return typeCoverage
   }
+
+  /***************
+  WORK IN PROGRESS
+  ***************/
 
   @observable settings = {...this.typeDefence} // dummy for now
 }
