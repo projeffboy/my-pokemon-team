@@ -1,6 +1,4 @@
 POKEMON_INPUT
--unwieldable items
--bisharp cannot learn sucker punch?
 -no repeated moves
 -moves that are incompatible together
 -remove the fake/irrelevant pokemon

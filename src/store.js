@@ -89,14 +89,37 @@ class Store {
         /*
          * As it turns out, mini-learnsets.min.js doesn't include pokemons' alternate formes.
          * So if the user chooses an alternate forme pokemon,
-         * we gotta tell the code that we mean the base form,
-         * and that's what the next two lines are about.
+         * we gotta tell the code that we mean the base form.
          */
         let baseFormeName = this.baseSpecies(pkmn.name) || pkmn.name
         baseFormeName = baseFormeName.toLowerCase()
 
-        const learnsetValues = miniLearnsets[baseFormeName] // the specific pokemon's learnset
-        const learnsetLabels = miniLearnsets[baseFormeName].map(move => moves[move].name)
+        // the specific pokemon's learnset
+        let learnsetValues = miniLearnsets[baseFormeName]
+
+        /*
+         * TLDR; This code allows you to choose moves for pokemon that can be learnt by their pre-evolutions.
+         * 
+         * So the thing is I took the learnsets data from Smogon.
+         * However, it says that Bisharp cannot learn sucker punch.
+         * While that is technically true,
+         * since its pre-evolution Pawniard can,
+         * we want to also want to display Pawniard's possible moves for Bisharp.
+         * Therefore, this code will append the moves of the evolutions of a pokemon into one.
+         */
+        while (this.previousEvolution(baseFormeName)) {
+          baseFormeName = this.previousEvolution(baseFormeName)
+          learnsetValues = [...learnsetValues, ...miniLearnsets[baseFormeName]]
+        }
+
+        // remove duplicates
+        learnsetValues = new Set(learnsetValues)
+        // turn Set into array
+        learnsetValues = [...learnsetValues]
+
+        // Say move is "aerialace"
+        // we need to display it as "Aerial Ace", which is the purpose of learnsetLabels
+        const learnsetLabels = learnsetValues.map(move => moves[move].name)
 
         learnsets.values.push(learnsetValues)
         learnsets.labels.push(learnsetLabels)
@@ -155,6 +178,12 @@ class Store {
   // E.g. Charizard Mega-X's forme is Mega-X
   forme(pokemon) {
     return store.pokedex[pokemon].forme
+  }
+
+  // Get previous evolution
+  previousEvolution(pokemon) {
+    const pokemonData = store.pokedex[pokemon]
+    return pokemonData ? pokemonData.prevo : undefined
   }
 
   /***************
