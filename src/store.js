@@ -1,4 +1,4 @@
-import {observable, computed} from 'mobx'
+import { observable, computed } from 'mobx'
 // I have to import a bunch of pokemon data first
 import pokedexData from './data/pokedex'
 import battleItemsData from './data/battle-items'
@@ -199,48 +199,96 @@ class Store {
   // Assessment of the team's type defence
   // (How good your team is against the 18 different types)
   @computed get typeDefence() {
+    // Scoresheet of how good all six pokemon resist a certain type
     let typeDefence = { ...this.cleanSlate }
 
     if (this.types.some(arr => arr.length)) { // is this 2D array empty or not
-      for (const pkmnTypes of this.types) { // pkmnTypes means a specific pokemon's type(s)  
-        const [type1, type2] = pkmnTypes // the pokemon's two types
-        /*
-         * You will get a warning from MobX if the pokmeon just has one type.
-         * It's ok, nothing is wrong.
-         * This is because we are trying to access pkmnTypes[1],
-         * which doesn't exist if the pokemon just has one type.
-         * This causes type2 to be undefined, which is intended.
-         * Then MobX tells us that we are accessing the array out of bounds.
-         */
-        if (type2) {
-          Object.keys(typeDefence).forEach(type => { // type refers to a generic pokemon type
-            /*
-             * How do explain the code below?
-             * Here's an example.
-             * Charizard is Fire/Flying.
-             * Fire is weak to Ground but Flying is immune to Ground.
-             * So Fire being weak to Ground doesn't matter.
-             * But our algorithm takes Fire being weak to Ground into account.
-             * We need to tell the algorithm not to do that.
-             */
-            // type resistance
-            const resistanceOfType1 = typechart[type1][type]
-            const resistanceOfType2 = typechart[type2][type]
+      this.types.forEach((pkmnTypes, i) => { // pkmnTypes means a specific pokemon's type(s)  
+        if (pkmnTypes.length) {
+          /*
+           * You will get a warning from MobX if the pokmeon just has one type.
+           * It's ok, nothing is wrong.
+           * This is because we are trying to access pkmnTypes[1],
+           * which doesn't exist if the pokemon just has one type.
+           * This causes type2 to be undefined, which is intended.
+           * Then MobX tells us that we are accessing the array out of bounds.
+           */
+          const [type1, type2] = pkmnTypes // the pokemon's two types
 
-            let resistanceOfBothTypesCombined = resistanceOfType1 + resistanceOfType2
-            if (resistanceOfType1 === 2 || resistanceOfType2 === 2) {
-              resistanceOfBothTypesCombined = 2
+          // Scoresheet of how good the pokemon resists a certain type
+          let resistanceScores = { ...this.cleanSlate }
+
+          // Calculate the resistances of the pokemon's types
+          Object.keys(resistanceScores).forEach(type => { // type refers to a generic pokemon type
+            const type1Resistance = typechart[type1][type]
+
+            resistanceScores[type] += type1Resistance
+
+            if (type2) { // if the pokmeon has two types
+              const type2Resistance = typechart[type2][type]
+
+              /*
+               * How do explain the code below?
+               * Here's an example.
+               * Charizard is Fire/Flying.
+               * Fire is weak to Ground but Flying is immune to Ground.
+               * So Fire being weak to Ground doesn't matter.
+               * But our algorithm takes Fire being weak to Ground into account.
+               * We need to tell the algorithm not to do that.
+               */
+              if (type1Resistance === 2 || type2Resistance === 2) {
+                resistanceScores[type] = 2
+              } else {
+                resistanceScores[type] += type2Resistance
+              }
             }
-            /* End of troublesome code */
-
-            typeDefence[type] += resistanceOfBothTypesCombined
           })
-        } else if (type1) {
-          Object.keys(typeDefence).forEach(type => { // type refers to a generic pokemon type
-            typeDefence[type] += typechart[type1][type]
+
+          // Take into account ability for pokemon's resistances
+          const ability = this.pokemon[i].ability
+          switch (ability) {
+            // Abilities that make you immune to certain types
+            case 'Volt Absorb':
+            case 'Lightning Rod':
+            case 'Motor Drive':
+              resistanceScores.Electric = 2
+              break
+            case 'Flash Fire':
+              resistanceScores.Fire = 2
+              break
+            case 'Sap Sipper':
+              resistanceScores.Grass = 2
+              break
+            case 'Levitate':
+              resistanceScores.Ground = 2
+              break
+            case 'Water Absorb':
+            case 'Storm Drain':
+              resistanceScores.Water = 2
+              break
+            case 'Wonder Guard':
+              Object.keys(resistanceScores).forEach(type => {
+                if (resistanceScores[type] !== -1) {
+                  resistanceScores[type] = 2
+                }
+              })
+            // Abilities that halve damage from certain types
+            case 'Thick Fat':
+              resistanceScores.Fire += 1
+              resistanceScores.Ice += 1
+              break
+            case 'Heatproof':
+              resistanceScores.Fire += 1
+              break
+            default:
+          }
+
+          // Update type defence with the resistance scores of one pokemon
+          Object.keys(typeDefence).forEach(type => {
+            typeDefence[type] += resistanceScores[type]
           })
         }
-      }
+      })
     }
 
     return typeDefence

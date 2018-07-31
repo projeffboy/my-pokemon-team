@@ -1,5 +1,4 @@
 TYPE_DEFENCE
--abilities like flash fire
 -items like air balloon
 
 TYPE_COVERAGE
