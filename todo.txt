@@ -2,27 +2,18 @@
 -have a look at manifest
 -change favicon
 -
---the input delete x button too big
+-the input delete x button too big
+-format the teamStats cards
+-make placeholder text different color than selected text
 -
 -auto choose ability if there's only one
 -make items and abilities affect the type algorithm
+--remove irrelevant pokemon
 -
 -use react loadable?
 
 -?
 -find a way to deal with the multiple styles attribute
-
-
--import formatting: what to import first
--format the teamStats cards
--easier way to add two objects, yknow, their numerical values
--algorithm interprets charizard with a 2 resistance to ground (should be 3)
--when you delete a name, it also needs to delete moves in store
--remove irrelevant pokemon
--fix type coverage algorithm so it's only positive numbers
--type defence algorithm to not count status moves
--make placeholder text different color than selected text
--change the for..in with map in store.js?
 
 -unwieldable items
 -recommended moves
@@ -42,3 +33,4 @@
 -host images yourself?
 -tooltips for teamstats
 -responsiveness
+-with 6 pokemon cards, it seems like code is launched 6 times for the,

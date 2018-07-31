@@ -1,4 +1,4 @@
-import {observable, computed} from 'mobx'
+import { observable, computed } from 'mobx'
 // I have to import a bunch of pokemon data first
 import pokedexData from './data/pokedex'
 import battleItemsData from './data/battle-items'
@@ -41,7 +41,7 @@ class Store {
   /********************************
   DATA ABOUT THE TEAM'S SIX POKEMON 
   ********************************/
-  
+
   @observable pokemon = Array(6).fill({
     name: '', // unhyphenated
     item: '',
@@ -58,7 +58,7 @@ class Store {
     return this.pokemon.map((pkmn, i) => {
       if (pkmn.name) {
         const pkmnAbilities = this.pokedex[pkmn.name].abilities // the specific pokemon's abilities (obj)
-        
+
         return Object.values(pkmnAbilities) // the specific pokemon's abilities (arr)
       } else {
         return []
@@ -100,22 +100,22 @@ class Store {
     return learnsets
   }
 
-    // Get the type(s) of the team's six pokemon
-    // Get the type(s) of the team's six pokemon
-    @computed get types() {
-      let types = []
-  
-      for (const pkmn of this.pokemon) {
-        if (pkmn.name) {
-          const pkmnTypes = this.pokedex[pkmn.name].types // the specific pokemon's type(s)
-          types.push(pkmnTypes)
-        } else {
-          types.push([])
-        }
+  // Get the type(s) of the team's six pokemon
+  // Get the type(s) of the team's six pokemon
+  @computed get types() {
+    let types = []
+
+    for (const pkmn of this.pokemon) {
+      if (pkmn.name) {
+        const pkmnTypes = this.pokedex[pkmn.name].types // the specific pokemon's type(s)
+        types.push(pkmnTypes)
+      } else {
+        types.push([])
       }
-  
-      return types
     }
+
+    return types
+  }
 
   /**************************
   POKEDEX INFO ON ALL POKEMON
@@ -161,12 +161,19 @@ class Store {
   // Assessment of the team's type defence
   // (How good your team is against the 18 different types)
   @computed get typeDefence() {
-    let typeDefence = {...this.cleanSlate}
+    let typeDefence = { ...this.cleanSlate }
 
     if (this.types.some(arr => arr.length)) { // is this 2D array empty or not
-      for (const pkmnTypes of this.types) { // pkmnTypes means a specific pokemon's type(s)
+      for (const pkmnTypes of this.types) { // pkmnTypes means a specific pokemon's type(s)  
         const [type1, type2] = pkmnTypes // the pokemon's two types
-
+        /*
+         * You will get a warning from MobX if the pokmeon just has one type.
+         * It's ok, nothing is wrong.
+         * This is because we are trying to access pkmnTypes[1],
+         * which doesn't exist if the pokemon just has one type.
+         * This causes type2 to be undefined, which is intended.
+         * Then MobX tells us that we are accessing the array out of bounds.
+         */
         if (type2) {
           Object.keys(typeDefence).forEach(type => { // type refers to a generic pokemon type
             /*
@@ -204,21 +211,21 @@ class Store {
   // Assessment of the team's type coverage
   // (How many types are your team's moves supereffective against)
   @computed get typeCoverage() {
-    let typeCoverage = {...this.cleanSlate}
+    let typeCoverage = { ...this.cleanSlate }
 
     for (const pokemon of this.pokemon) {
-      for(const prop in pokemon) {
+      for (const prop in pokemon) {
         // if it is a non-empty move
         if (pokemon[prop] && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
           const moveDetails = moves[pokemon[prop]] // details about the move
-          
+
           // If it's a status move ignore it
           // (status moves don't deal damage. so they don't contribute to type coverage)
           if (moveDetails.category !== 'Status') {
             const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
               typechart[typeAgainst][moveDetails.type]
             ))
-  
+
             Object.keys(typeCoverage).forEach((type, i) => {
               if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
                 return typeCoverage[type]++
@@ -236,7 +243,7 @@ class Store {
   WORK IN PROGRESS
   ***************/
 
-  @observable settings = {...this.typeDefence} // dummy for now
+  @observable settings = { ...this.typeDefence } // dummy for now
 }
 
 // FOR DEBUGGING
