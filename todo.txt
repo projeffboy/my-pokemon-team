@@ -1,6 +1,6 @@
 TYPE_COVERAGE
--moves like flying press and freeze dry
 -abilities that change move type
+-moves with less than 40 power don't count?
 
 SETTINGS
 -tabs of:
@@ -32,3 +32,4 @@ FUTURE
 -with 6 pokemon cards, it seems like code is launched 6 times for each pokmeon card
 -responsiveness
 -update about pages
+-provide a type chart

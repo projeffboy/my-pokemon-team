@@ -311,19 +311,28 @@ class Store {
         if (pokemon[prop] && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
           const moveDetails = moves[pokemon[prop]] // details about the move
 
+          // If the user picks freeze-dry or flying press multiple times, it can be exploited
+          if (pokemon[prop] === 'freezedry') {
+            typeCoverage.Water++
+          }
+          
+          if (pokemon[prop] === 'flyingpress') {
+            // the types flying press are super effective against
+            ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
+          }
           // If it's a status move ignore it
           // (status moves don't deal damage. so they don't contribute to type coverage)
           // Or if one of the previous attacking moves was the same type, don't count this one
-          if (moveDetails.category !== 'Status' && !~typesUsed.indexOf(moveDetails.type)) {
+          else if (moveDetails.category !== 'Status' && !~typesUsed.indexOf(moveDetails.type)) {
             typesUsed.push(moveDetails.type)
-            
+
             const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
               typechart[typeAgainst][moveDetails.type]
             ))
 
             Object.keys(typeCoverage).forEach((type, i) => {
               if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
-                return typeCoverage[type]++
+                typeCoverage[type]++
               }
             })
           }
