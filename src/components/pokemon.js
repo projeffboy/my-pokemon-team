@@ -1,13 +1,11 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
+// import Grid from '@material-ui/core/Grid'
 import PokemonInput from './pokemon/pokemon-input'
 import Sprite from './pokemon/sprite'
 import {pokemonStyles} from '../styles'
-// import Grid from '@material-ui/core/Grid'
 
 function Pokemon(props) {
-  const {classes} = props
-
   const placeholders = [
     'Name',
     'Move',
@@ -45,7 +43,7 @@ function Pokemon(props) {
   })
 
   return (
-    <div className={classes.gridContainer}>
+    <div className={props.classes.gridContainer}>
       {pokemonInputs}
     </div>
     /* The way to do it with MUI's built-in flex stuff

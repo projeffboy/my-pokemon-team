@@ -1,54 +1,71 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
 import store from '../store'
+import {teamStatsStyles} from '../styles'
 
 @observer
-export default class TeamStats extends React.Component {
+class TeamStats extends React.Component {
   constructor(props) {
     super(props)
 
-    
     let titleArr = this.props.title.split(' ')
     titleArr[0] = titleArr[0].toLowerCase()
     this.teamStatType = titleArr.join('')
   }
 
+  returnTypeValue(type) {
+    let color = 'inherit'
+
+    if (type < 0) {
+      color = 'red'
+    } else if (type > 0) {
+      color = 'green'
+    }
+
+    return <div style={{color}}>{type > 0 ? `+${type}` : type}</div>
+  }
+
   render() {
-    const types = [
-      'Bug',
-      'Dark',
-      'Dragon',
-      'Electric',
-      'Fairy',
-      'Fighting',
-      'Fire',
-      'Flying',
-      'Ghost',
-      'Grass',
-      'Ground',
-      'Ice',
-      'Normal',
-      'Poison',
-      'Psychic',
-      'Rock',
-      'Steel',
-      'Water',
-    ]
-  
-  // Grid Items of Pokemon Types
-    const gridItems = types.map((type, i) => (
+    const types = {
+      Bug: 'a8b820',
+      Dark: '6f5747',
+      Dragon: '7036fc',
+      Electric: 'f9d130',
+      Fairy: 'fd67d7',
+      Fighting: 'c02f27',
+      Fire: 'f17f2e',
+      Flying: 'a990f1',
+      Ghost: '715799',
+      Grass: '78c850',
+      Ground: 'e1c067',
+      Ice: '95d7d8',
+      Normal: 'a9a878',
+      Poison: 'a03fa1',
+      Psychic: 'f95788',
+      Rock: 'b89f38',
+      Steel: 'b8b8d0',
+      Water: '6890f0',
+    }
+
+    // Grid Items of Pokemon Types
+    const gridItems = Object.keys(types).map((type, i) => (
       <Grid key={i} item xs={2}>
-        <div>{type}</div>
-        <div>{store[this.teamStatType][type]}</div>
+        <div style={{padding: 3}}>
+          <div className={this.props.classes.pokemonType} style={{backgroundColor: `#${types[type]}`}}>
+            {type}
+          </div>
+        </div>
+        {this.returnTypeValue(store[this.teamStatType][type])}
       </Grid>
-    ))
+    ), this)
   
     return (
-      <Grid container spacing={0}>
+      <Grid container>
         <Grid item xs={12}>
-          <Typography variant='title'>
+          <Typography variant='title' gutterBottom>
             {this.props.title}
           </Typography>
         </Grid>
@@ -57,3 +74,5 @@ export default class TeamStats extends React.Component {
     )
   }
 }
+
+export default withStyles(teamStatsStyles)(TeamStats)

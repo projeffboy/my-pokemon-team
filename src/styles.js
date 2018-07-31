@@ -6,15 +6,15 @@ export const appStyles = theme => ({
   }
 })
 
-export const pokemonStyles = () => ({
+export const pokemonStyles = {
   gridContainer: {
     display: 'grid',
     gridColumnGap: '10px',
     gridTemplateColumns: '1fr 1fr',
   }
-})
+}
 
-export const pokemonGridItemStyles = () => ({
+export const pokemonInputStyles = { // for sprite.js too
   sprite: {gridRow: '2 / 5'},
   gridItem: {
     minWidth: 0,
@@ -22,4 +22,15 @@ export const pokemonGridItemStyles = () => ({
     justifyContent: 'center',
     alignItems: 'center',
   } // otherwise the grid items will overflow
+}
+
+export const teamStatsStyles = () => ({
+  pokemonType: {
+    color: 'white',
+    borderRadius: 5,
+    display: 'block',
+    width: '75%',
+    margin: 'auto',
+    padding: '1px 0',
+  }
 })

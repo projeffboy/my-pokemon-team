@@ -2,7 +2,7 @@ import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
 import store from '../../store'
-import {pokemonGridItemStyles} from '../../styles'
+import {pokemonInputStyles} from '../../styles'
 import IntegrationReactSelect from './pokemon-input/integration-react-select'
 
 @observer
@@ -66,4 +66,4 @@ class PokemonInput extends React.Component {
   }
 }
 
-export default withStyles(pokemonGridItemStyles)(PokemonInput)
+export default withStyles(pokemonInputStyles)(PokemonInput)

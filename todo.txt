@@ -3,7 +3,6 @@
 -change favicon
 -
 -the input delete x button too big
--format the teamStats cards
 -make placeholder text different color than selected text
 -
 -auto choose ability if there's only one

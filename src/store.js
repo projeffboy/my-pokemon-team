@@ -1,4 +1,4 @@
-import { observable, computed } from 'mobx'
+import {observable, computed} from 'mobx'
 // I have to import a bunch of pokemon data first
 import pokedexData from './data/pokedex'
 import battleItemsData from './data/battle-items'

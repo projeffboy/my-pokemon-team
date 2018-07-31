@@ -2,7 +2,7 @@ import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
 import store from '../../store'
-import {pokemonGridItemStyles} from '../../styles'
+import {pokemonInputStyles as spriteStyles} from '../../styles'
 
 @observer
 class Sprite extends React.Component {
@@ -43,4 +43,4 @@ class Sprite extends React.Component {
   }
 }
 
-export default withStyles(pokemonGridItemStyles)(Sprite)
+export default withStyles(spriteStyles)(Sprite)
