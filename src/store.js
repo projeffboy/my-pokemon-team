@@ -305,6 +305,7 @@ class Store {
     let typeCoverage = { ...this.cleanSlate }
 
     for (const pokemon of this.pokemon) {
+      const typesUsed = []
       for (const prop in pokemon) {
         // if it is a non-empty move
         if (pokemon[prop] && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
@@ -312,7 +313,10 @@ class Store {
 
           // If it's a status move ignore it
           // (status moves don't deal damage. so they don't contribute to type coverage)
-          if (moveDetails.category !== 'Status') {
+          // Or if one of the previous attacking moves was the same type, don't count this one
+          if (moveDetails.category !== 'Status' && !~typesUsed.indexOf(moveDetails.type)) {
+            typesUsed.push(moveDetails.type)
+            
             const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
               typechart[typeAgainst][moveDetails.type]
             ))
