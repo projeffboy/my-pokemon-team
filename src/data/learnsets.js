@@ -61331,6 +61331,7 @@ export default {
 		wildcharge: ["7M", "7L36"],
 		workup: ["7M"],
 	}},
+	/*
 	tomohawk: {learnset: {
 		acrobatics: ["7M", "5M"],
 		aerialace: ["7M", "7L17", "5M", "5L17"],
@@ -64428,4 +64429,5 @@ export default {
 		workup: ["7M"],
 		wrap: ["7L1", "4L1"],
 	}},
+	*/
 }

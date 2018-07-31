@@ -61331,6 +61331,7 @@ export default {
 		'wildcharge',
 		'workup',
 	],
+	/*
 	tomohawk: [
 		'acrobatics',
 		'aerialace',
@@ -64428,4 +64429,5 @@ export default {
 		'workup',
 		'wrap',
 	],
+	*/
 }

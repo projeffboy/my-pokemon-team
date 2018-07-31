@@ -14,8 +14,14 @@ class Sprite extends React.Component {
 
     // If user has chosen a pokemon
     if (pokemon) {
+      // Raticate Alola Totem's URL is the exception
+      if (pokemon === 'raticatealolatotem') {
+        spriteFilename = 'raticate-totem-a'
+      } else if (pokemon === 'mimikyubustedtotem') {
+        spriteFilename = 'mimikyu-totem-busted'
+      }
       // We only need to modify spriteFilename if the pokemon has an alternate forme
-      if (store.forme(pokemon)) {
+      else if (store.forme(pokemon)) {
         /*
          * the sprite filename consists of two parts:
          * base species name and forme name

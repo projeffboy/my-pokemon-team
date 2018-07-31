@@ -3004,6 +3004,7 @@ export default {
 		eggGroups: ["Undiscovered"],
 		otherFormes: ["pichuspikyeared"],
 	},
+	/*
 	pichuspikyeared: {
 		num: 172,
 		species: "Pichu-Spiky-eared",
@@ -3018,6 +3019,7 @@ export default {
 		color: "Yellow",
 		eggGroups: ["Undiscovered"],
 	},
+	*/
 	cleffa: {
 		num: 173,
 		species: "Cleffa",
@@ -12783,6 +12785,7 @@ export default {
 		eggGroups: ["Amorphous"],
 		otherFormes: ["mimikyubusted", "mimikyutotem", "mimikyubustedtotem"],
 	},
+	/*
 	mimikyubusted: {
 		num: 778,
 		species: "Mimikyu-Busted",
@@ -12797,6 +12800,7 @@ export default {
 		color: "Yellow",
 		eggGroups: ["Amorphous"],
 	},
+	*/
 	mimikyutotem: {
 		num: 778,
 		species: "Mimikyu-Totem",
@@ -13262,6 +13266,7 @@ export default {
 		color: "Yellow",
 		eggGroups: ["Undiscovered"],
 	},
+	/*
 	missingno: {
 		num: 0,
 		species: "Missingno.",
@@ -14043,4 +14048,5 @@ export default {
 		color: "White",
 		eggGroups: ["Undiscovered"],
 	},
+	*/
 }
