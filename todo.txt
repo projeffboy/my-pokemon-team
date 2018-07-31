@@ -1,35 +1,41 @@
+POKEMON_INPUT
+-auto choose ability if there's only one
+-unwieldable items
+-bisharp cannot learn sucker punch?
+-no repeated moves
+-moves that are incompatible together
+-remove the fake/irrelevant pokemon
+
+TYPE_DEFENCE
+-abilities like flash fire
+-items like air balloon
+
+TYPE_COVERAGE
+-moves like freeze dry
+
+SETTINGS
+-tabs of:
+  -import/export teams
+  -Smogon tier, Battle Spot, VGC
+  -recommended moves
+  -region
+  -monotype
+  -team checklist
+
+STYLE CHANGES
+-title
+-footer
 -change color of meta theme color
 -have a look at manifest
 -change favicon
--
 -the input delete x button too big
 -make placeholder text different color than selected text
--
--auto choose ability if there's only one
--make items and abilities affect the type algorithm
---remove irrelevant pokemon
--
--use react loadable?
-
--?
--find a way to deal with the multiple styles attribute
-
--unwieldable items
--recommended moves
--no repeated moves
--moves that are incompatible together
--pokemon moves
 -stylize react-virtualized-select
--remove the fake pokemon
--deal with import crisis
 
--import/export teams
--Smogon tier, Battle Spot, VGC
--type
--region
--team checklist
+FUTURE
 -sprite next to name when selecting name/item
 -host images yourself?
 -tooltips for teamstats
+-deal with import crisis: react-loadable?
+-with 6 pokemon cards, it seems like code is launched 6 times for each pokmeon card
 -responsiveness
--with 6 pokemon cards, it seems like code is launched 6 times for the,
