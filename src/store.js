@@ -66,6 +66,15 @@ class Store {
     })
   }
 
+  // Auto select the pokemon's ability if it only has one ability.
+  autoSelectAbility() {
+    this.abilities.forEach((pkmnAbilities, i) => {
+      if (pkmnAbilities.length === 1) {
+        this.pokemon[i].ability = pkmnAbilities[0]
+      }
+    })
+  }
+
   // Get the learnsets of the team's six pokemon
   // Using miniLearnsets (mini-learnsets.min.js)
   @computed get learnsets() {

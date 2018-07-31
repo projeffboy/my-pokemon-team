@@ -18,7 +18,18 @@ class PokemonInput extends React.Component {
    * 3. Since the store is reactive, the prop value passed to <IntegrationReactSelect /> will be updated too.
    */
   handleChange = inputVal => {
-    store.pokemon[this.i][this.props.pokemonProp] = inputVal
+    const {pokemonProp} = this.props
+
+    store.pokemon[this.i][pokemonProp] = inputVal
+
+    /*
+     * If the input is where you put your pokemon name,
+     * and the pokemon has only one type,
+     * then auto select its ability.
+     */
+    if (pokemonProp === 'name') {
+      store.autoSelectAbility()
+    }
   }
 
   render() {
@@ -45,7 +56,7 @@ class PokemonInput extends React.Component {
 
     // Apparently if you remove this it breaks, dunno why
     // Somewhere above, it's changing optionValues from [] to undefined
-    if (optionValues === undefined) { 
+    if (optionValues === undefined) {
       optionValues = []
     }
 

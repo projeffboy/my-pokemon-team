@@ -1,5 +1,4 @@
 POKEMON_INPUT
--auto choose ability if there's only one
 -unwieldable items
 -bisharp cannot learn sucker punch?
 -no repeated moves
@@ -25,6 +24,7 @@ SETTINGS
 STYLE CHANGES
 -title
 -footer
+-color scheme
 -change color of meta theme color
 -have a look at manifest
 -change favicon

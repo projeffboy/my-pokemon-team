@@ -30,7 +30,7 @@ class TeamStats extends React.Component {
 
   render() {
     const types = {
-      Bug: 'a8b820',
+      Bug: 'a8b820', // the type's hex color
       Dark: '6f5747',
       Dragon: '7036fc',
       Electric: 'f9d130',
