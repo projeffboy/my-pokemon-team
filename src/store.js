@@ -283,6 +283,11 @@ class Store {
             default:
           }
 
+          // If pokemon wields an air balloon
+          if (this.pokemon[i].item === 'Air Balloon' && resistanceScores.Ground !== 2) {
+            resistanceScores.Ground += 1
+          }
+
           // Update type defence with the resistance scores of one pokemon
           Object.keys(typeDefence).forEach(type => {
             typeDefence[type] += resistanceScores[type]

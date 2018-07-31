@@ -1,8 +1,6 @@
-TYPE_DEFENCE
--items like air balloon
-
 TYPE_COVERAGE
 -moves like freeze dry
+-abilities that change move type
 
 SETTINGS
 -tabs of:
