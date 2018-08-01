@@ -6,6 +6,7 @@ import {withStyles} from '@material-ui/core/styles'
 // My Component Imports
 import Pokemon from './components/pokemon'
 import TeamStats from './components/team-stats'
+import MoreInfo from './components/more-info'
 import {appStyles} from './styles'
 
 function App(props) {
@@ -21,7 +22,7 @@ function App(props) {
     'Type Coverage',
     5,
     6,
-    'Settings',
+    '', // MoreInfo
   ]
 
   // 9 Total Cards
@@ -35,12 +36,21 @@ function App(props) {
           </Paper>
         </Grid>
       )
-    } else {
+    } else if (cardTitle) {
       return (
-        // 3 Right Cards
+        // 2 of the Right Cards
         <Grid key={i} item xs={6}>
           <Paper className={classes.paper}>
             <TeamStats title={cardTitle} />
+          </Paper>
+        </Grid>
+      )
+    } else {
+      return (
+        // The Bottom Right Card
+        <Grid key={i} item xs={6}>
+          <Paper>
+            <MoreInfo />
           </Paper>
         </Grid>
       )

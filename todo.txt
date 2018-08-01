@@ -1,11 +1,31 @@
-SETTINGS
--tabs of:
-  -import/export teams
-  -Smogon tier, Battle Spot, VGC
+MOREINFO TABS
+-Team Checklist
+  -spinner/defogger
+  -cleric
+  -statuser
+    -poison
+    -burn
+    -paralysis
+  -phazer
+  -entry hazards
+    -stealth rock
+    -spikes
+    -toxic spikes
+  -booster
+  -volt-turn
+    -volt switch
+    -u-turn
+  -choice user
+-Search Filters
+  -Smogon tiers
+  -Battle Spot
+  -VGC
   -recommended moves
   -region
   -monotype
-  -team checklist
+-Pokemon Showdown Team
+  -import team
+  -export team
 
 STYLE CHANGES
 -title

@@ -450,6 +450,7 @@ class Store {
               case 'genesectchill':
                 moveType = 'Ice'
                 break
+              default:
             }
           } else if (value === 'multiattack') { // For Silvally
             const type = pokemonName.replace('silvally', '')
