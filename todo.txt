@@ -1,6 +1,4 @@
 TYPE_COVERAGE
--rks system
--techno drive
 -hidden power
 
 SETTINGS
@@ -37,3 +35,5 @@ FUTURE
 -porygonZ
 
 -helper functions for capitalize and remove a certain word
+-weird stuff with like arceus-normal with draco plate has normal type judgement
+-or silvally-normal with dark memory has normal-type multi-attack

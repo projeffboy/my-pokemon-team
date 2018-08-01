@@ -393,6 +393,7 @@ class Store {
           }
           const ability = this.pokemon[i].ability
           let moveType = moveDetails.type
+          const pokemonName = this.pokemon[i].name
 
           // Change the move type if the pokemon has a certain ability, like aerilate or normalize
           if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability)) {
@@ -402,9 +403,28 @@ class Store {
           } else if (ability === 'Normalize') {
             moveType = 'Normal'
           } else if (value === 'judgment') { // For Arceus
-            const pokemonName = this.pokemon[i].name
             const pokemonDetails = this.pokedex[pokemonName]
             moveType = pokemonDetails.types[0] // Arceus only has one ability
+          } else if (value === 'technoblast') { // For Genesect
+            switch (pokemonName) {
+              case 'genesectdouse':
+                moveType = 'Water'
+                break
+              case 'genesectshock':
+                moveType = 'Electric'
+                break
+              case 'genesectburn':
+                moveType = 'Fire'
+                break
+              case 'genesectchill':
+                moveType = 'Ice'
+                break
+            }
+          } else if (value === 'multiattack') { // For Silvally
+            const type = pokemonName.replace('silvally', '')
+            const capitalizedType = type[0].toUpperCase() + type.slice(1)
+
+            moveType = capitalizedType
           }
 
           // If the user picks freeze-dry or flying press multiple times, it can be exploited
