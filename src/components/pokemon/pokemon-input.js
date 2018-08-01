@@ -32,6 +32,7 @@ class PokemonInput extends React.Component {
      * then auto select its ability.
      */
     if (pokemonProp === 'name') {
+      store.autoSelectItem()
       store.autoSelectAbility()
     }
   }

@@ -73,6 +73,70 @@ class Store {
     })
   }
 
+  // Auto select the item if necessary (e.g. Mega Blastoise needs Blastoisite)
+  autoSelectItem() {
+    for (const pkmn of this.pokemon) {
+      if (pkmn.name) {
+        // Auto select mega stone
+        if (
+          pkmn.name.includes('mega')
+          && pkmn.name !== 'meganium'
+          && pkmn.name !== 'yanmega'
+        ) {
+          const megaStone = this.battleItems.find(item => (
+            // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
+            item.toLowerCase().slice(0, 5) === pkmn.name.slice(0, 5)
+          ))
+          pkmn.item = megaStone
+        }
+        // Auto select plate for Arceus formes
+        else if (pkmn.name.includes('arceus')) {
+          const type = pkmn.name.replace('arceus', '')
+          const typeToPlate = {
+            bug: 'Insect Plate',
+            dark: 'Dread Plate',
+            dragon: 'Draco Plate',
+            electric: 'Zap Plate',
+            fairy: 'Pixie Plate',
+            fighting: 'Fist Plate',
+            fire: 'Flame Plate',
+            flying: 'Sky Plate',
+            ghost: ' Plate',
+            grass: 'Meadow Plate',
+            ground: 'Earth Plate',
+            ice: 'Icicle Plate',
+            normal: '', // no plate for normal type
+            poison: 'Toxic Plate',
+            psychic: 'Mind Plate',
+            rock: 'Stone Plate',
+            steel: 'Iron Plate',
+            water: 'Splash Plate',
+          }
+
+          pkmn.item = typeToPlate[type]
+        }
+        // Auto select drive for Genesect
+        else if (pkmn.name.includes('genesect') && pkmn.name !== 'genesect') {
+          const drive = pkmn.name.replace('genesect', '')
+          const driveName = drive[0].toUpperCase() + drive.slice(1) + ' Drive'
+          
+          pkmn.item = driveName
+        }
+        // Auto select memory for Silvally
+        else if (pkmn.name.includes('silvally') && pkmn.name !== 'silvally') {
+          const type = pkmn.name.replace('silvally', '')
+          const memory = type[0].toUpperCase() + type.slice(1) + ' Memory'
+
+          pkmn.item = memory
+        }
+        // Pick Griseous Orb for Giratina
+        else if (pkmn.name === 'giratinaorigin') {
+          pkmn.item = 'Griseous Orb'
+        }
+      }
+    }
+  }
+
   // Auto select the pokemon's ability if it only has one ability.
   autoSelectAbility() {
     this.abilities.forEach((pkmnAbilities, i) => {
@@ -172,24 +236,24 @@ class Store {
 
   /* NOT USED: Returns the species name of a pokemon
   speciesName(pokemon) {
-    return store.pokedex[pokemon].species
+    return this.pokedex[pokemon].species
   }
   */
 
   // Returns the name of the pokemon's base forme
   baseSpecies(pokemon) {
-    return store.pokedex[pokemon].baseSpecies
+    return this.pokedex[pokemon].baseSpecies
   }
 
   // Returns name of the pokemon's alternate forme
   // E.g. Charizard Mega-X's forme is Mega-X
   forme(pokemon) {
-    return store.pokedex[pokemon].forme
+    return this.pokedex[pokemon].forme
   }
 
   // Get previous evolution
   previousEvolution(pokemon) {
-    const pokemonData = store.pokedex[pokemon]
+    const pokemonData = this.pokedex[pokemon]
     return pokemonData ? pokemonData.prevo : undefined
   }
 
@@ -327,7 +391,7 @@ class Store {
             Refrigerate: 'Ice', 
             Galvanize: 'Electric',
           }
-          const ability = store.pokemon[i].ability
+          const ability = this.pokemon[i].ability
           let moveType = moveDetails.type
 
           // Change the move type if the pokemon has a certain ability, like aerilate or normalize
@@ -338,8 +402,8 @@ class Store {
           } else if (ability === 'Normalize') {
             moveType = 'Normal'
           } else if (value === 'judgment') { // For Arceus
-            const pokemonName = store.pokemon[i].name
-            const pokemonDetails = store.pokedex[pokemonName]
+            const pokemonName = this.pokemon[i].name
+            const pokemonDetails = this.pokedex[pokemonName]
             moveType = pokemonDetails.types[0] // Arceus only has one ability
           }
 

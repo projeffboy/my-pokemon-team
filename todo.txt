@@ -1,9 +1,7 @@
-ITEM
--auto-select item for arceus, mega evolutions, and others
-
 TYPE_COVERAGE
 -rks system
 -techno drive
+-hidden power
 
 SETTINGS
 -tabs of:
@@ -37,3 +35,5 @@ FUTURE
 -update about pages
 -provide a type chart
 -porygonZ
+
+-helper functions for capitalize and remove a certain word
