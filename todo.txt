@@ -1,6 +1,3 @@
-TYPE_COVERAGE
--hidden power
-
 SETTINGS
 -tabs of:
   -import/export teams

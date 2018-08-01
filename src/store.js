@@ -188,6 +188,37 @@ class Store {
         // turn Set into array
         learnsetValues = [...learnsetValues]
 
+        // Add in all the hidden powers
+        if (learnsetValues.includes('hiddenpower')) {
+          // hidden power normal is already included by default
+          const pokemonTypes = [ // no hidden power fairy btw
+            'bug',
+            'dark',
+            'dragon',
+            'electric',
+            'fighting',
+            'fire',
+            'flying',
+            'ghost',
+            'grass',
+            'ground',
+            'ice',
+            'poison',
+            'psychic',
+            'rock',
+            'steel',
+            'water',
+          ]
+          const hiddenpowers = pokemonTypes.map(type => 'hiddenpower' + type)
+
+
+          // re-add hidden power normal
+          learnsetValues.splice(learnsetValues.indexOf('hiddenpower'), 1)
+          learnsetValues.push('hiddenpower')
+
+          learnsetValues.push(...hiddenpowers)
+        }
+
         // Say move is "aerialace"
         // we need to display it as "Aerial Ace", which is the purpose of learnsetLabels
         const learnsetLabels = learnsetValues.map(move => moves[move].name)
