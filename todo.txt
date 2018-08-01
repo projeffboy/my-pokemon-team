@@ -1,5 +1,6 @@
 TYPE_COVERAGE
--Arceus judgement
+-Arceus judgment
+-arceus item
 -moves with less than 40 power don't count?
 
 SETTINGS

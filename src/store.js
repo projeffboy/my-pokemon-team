@@ -337,6 +337,10 @@ class Store {
             }
           } else if (ability === 'Normalize') {
             moveType = 'Normal'
+          } else if (ability === 'Multitype' && value === 'judgment') { // For Arceus
+            const pokemonName = store.pokemon[i].name
+            const pokemonDetails = store.pokedex[pokemonName]
+            moveType = pokemonDetails.types[0] // Arceus only has one ability
           }
 
           // If the user picks freeze-dry or flying press multiple times, it can be exploited
