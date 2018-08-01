@@ -1,7 +1,9 @@
+ITEM
+-auto-select item for arceus, mega evolutions, and others
+
 TYPE_COVERAGE
--Arceus judgment
--arceus item
--moves with less than 40 power don't count?
+-rks system
+-techno drive
 
 SETTINGS
 -tabs of:

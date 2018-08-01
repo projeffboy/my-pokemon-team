@@ -337,7 +337,7 @@ class Store {
             }
           } else if (ability === 'Normalize') {
             moveType = 'Normal'
-          } else if (ability === 'Multitype' && value === 'judgment') { // For Arceus
+          } else if (value === 'judgment') { // For Arceus
             const pokemonName = store.pokemon[i].name
             const pokemonDetails = store.pokedex[pokemonName]
             moveType = pokemonDetails.types[0] // Arceus only has one ability
@@ -353,10 +353,15 @@ class Store {
             ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
           }
 
-          // If it's a status move ignore it
+          // 1. Ignore status moves.
           // (status moves don't deal damage. so they don't contribute to type coverage)
-          // Or if one of the previous attacking moves was the same type, don't count this one
-          else if (moveDetails.category !== 'Status' && !typesUsed.includes(moveType)) {
+          // 2. If one of the previous attacking moves was the same type, don't count this one.
+          // 3. Ignore moves less than 40 base power.
+          else if (
+            moveDetails.category !== 'Status' // 
+            && !typesUsed.includes(moveType)
+            && moveDetails.basePower >= 40
+          ) {
             typesUsed.push(moveType)
 
             const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
