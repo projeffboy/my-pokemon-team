@@ -52,6 +52,13 @@ class Store {
     ability: '', // chosen ability
   })
 
+  // Clear one of the six pokemon's properties
+  clearPokemonProps(i) {
+    for (const prop in this.pokemon[i]) {
+      this.pokemon[i][prop] = ''
+    }
+  }
+
   // Get all the possible abilities of the team's six pokemon
   // Using pokedexData (pokedex.js)
   @computed get abilities() {
@@ -219,7 +226,7 @@ class Store {
           let resistanceScores = { ...this.cleanSlate }
 
           // Calculate the resistances of the pokemon's types
-          Object.keys(resistanceScores).forEach(type => { // type refers to a generic pokemon type
+          for (const type in resistanceScores) { // type refers to a generic pokemon type
             const type1Resistance = typechart[type1][type]
 
             resistanceScores[type] += type1Resistance
@@ -242,7 +249,7 @@ class Store {
                 resistanceScores[type] += type2Resistance
               }
             }
-          })
+          }
 
           // Take into account ability for pokemon's resistances
           const ability = this.pokemon[i].ability
@@ -267,11 +274,12 @@ class Store {
               resistanceScores.Water = 2
               break
             case 'Wonder Guard':
-              Object.keys(resistanceScores).forEach(type => {
+              for (const type in resistanceScores) {
                 if (resistanceScores[type] !== -1) {
                   resistanceScores[type] = 2
                 }
-              })
+              }
+              break
             // Abilities that halve damage from certain types
             case 'Thick Fat':
               resistanceScores.Fire += 1
@@ -289,9 +297,9 @@ class Store {
           }
 
           // Update type defence with the resistance scores of one pokemon
-          Object.keys(typeDefence).forEach(type => {
+          for (const type in typeDefence) {
             typeDefence[type] += resistanceScores[type]
-          })
+          }
         }
       })
     }
@@ -304,30 +312,51 @@ class Store {
   @computed get typeCoverage() {
     let typeCoverage = { ...this.cleanSlate }
 
-    for (const pokemon of this.pokemon) {
+    for (const [i, pokemon] of this.pokemon.entries()) {
       const typesUsed = []
-      for (const prop in pokemon) {
+      for (const [key, value] of Object.entries(pokemon)) {
+        // key is e.g. name, item, move1, etc.
+        // value is e.g. Venusaur, Venusaurite, Giga Drain, etc.
+
         // if it is a non-empty move
-        if (pokemon[prop] && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
-          const moveDetails = moves[pokemon[prop]] // details about the move
+        if (value && key.slice(0, -1) === 'move') { // the slice() removes the last letter
+          const moveDetails = moves[value]
+          const abilitiesThatChangeNormalMoves = {
+            Aerilate: 'Flying', 
+            Pixilate: 'Fairy', 
+            Refrigerate: 'Ice', 
+            Galvanize: 'Electric',
+          }
+          const ability = store.pokemon[i].ability
+          let moveType = moveDetails.type
+
+          // Change the move type if the pokemon has a certain ability, like aerilate or normalize
+          if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability)) {
+            if (moveType === 'Normal') {
+              moveType = abilitiesThatChangeNormalMoves[ability]
+            }
+          } else if (ability === 'Normalize') {
+            moveType = 'Normal'
+          }
 
           // If the user picks freeze-dry or flying press multiple times, it can be exploited
-          if (pokemon[prop] === 'freezedry') {
+          if (value === 'freezedry') {
             typeCoverage.Water++
           }
-          
-          if (pokemon[prop] === 'flyingpress') {
+
+          if (value === 'flyingpress') {
             // the types flying press are super effective against
             ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
           }
+
           // If it's a status move ignore it
           // (status moves don't deal damage. so they don't contribute to type coverage)
           // Or if one of the previous attacking moves was the same type, don't count this one
-          else if (moveDetails.category !== 'Status' && !~typesUsed.indexOf(moveDetails.type)) {
-            typesUsed.push(moveDetails.type)
+          else if (moveDetails.category !== 'Status' && !typesUsed.includes(moveType)) {
+            typesUsed.push(moveType)
 
             const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
-              typechart[typeAgainst][moveDetails.type]
+              typechart[typeAgainst][moveType]
             ))
 
             Object.keys(typeCoverage).forEach((type, i) => {

@@ -1,5 +1,5 @@
 TYPE_COVERAGE
--abilities that change move type
+-Arceus judgement
 -moves with less than 40 power don't count?
 
 SETTINGS
@@ -33,3 +33,4 @@ FUTURE
 -responsiveness
 -update about pages
 -provide a type chart
+-porygonZ

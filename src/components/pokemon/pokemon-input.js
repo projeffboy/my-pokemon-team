@@ -20,6 +20,10 @@ class PokemonInput extends React.Component {
   handleChange = inputVal => {
     const {pokemonProp} = this.props
 
+    if (pokemonProp === 'name') {
+      store.clearPokemonProps(this.i)
+    }
+
     store.pokemon[this.i][pokemonProp] = inputVal
 
     /*
