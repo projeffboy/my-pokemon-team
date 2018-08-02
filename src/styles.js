@@ -34,3 +34,14 @@ export const teamStatsStyles = () => ({
     padding: '1px 0',
   }
 })
+
+export const teamChecklistStyles = () => ({
+  root: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.54)',
+  },
+  miniHeader: {
+    fontWeight: 'bold',
+    paddingBottom: 10,
+  }
+})

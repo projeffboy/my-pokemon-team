@@ -59,6 +59,11 @@ class Store {
     }
   }
 
+  // Get all the items of the team's six pokemon
+  @computed get teamItems() {
+    return this.pokemon.map(pkmn => pkmn.item)
+  }
+
   // Get all the possible abilities of the team's six pokemon
   // Using pokedexData (pokedex.js)
   @computed get abilities() {

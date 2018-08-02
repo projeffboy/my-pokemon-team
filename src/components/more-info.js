@@ -13,7 +13,7 @@ import PokemonShowdownTeam from './more-info/pokemon-showdown-team'
 
 function TabContainer({ children, dir }) {
   return (
-    <Typography component='div' dir={dir} style={{ padding: 8 * 3 }}>
+    <Typography component='div' dir={dir} style={{ padding: 18 }}>
       {children}
     </Typography>
   )
@@ -61,7 +61,7 @@ class FullWidthTabs extends React.Component {
                 'Team Checklist', 
                 'Search Filters', 
                 'Pokemon Showdown Team',
-              ].map(title => <Tab label={title} />)
+              ].map(title => <Tab label={title} key={title} />)
             }
           </Tabs>
         </AppBar>
@@ -75,7 +75,7 @@ class FullWidthTabs extends React.Component {
               <TeamChecklist />, 
               <SearchFilters />, 
               <PokemonShowdownTeam />,
-            ].map(title => <TabContainer dir={theme.direction}>{title}</TabContainer>)
+            ].map((component, i) => <TabContainer dir={theme.direction} key={i}>{component}</TabContainer>)
           }
         </SwipeableViews>
       </div>

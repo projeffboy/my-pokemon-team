@@ -37,8 +37,10 @@ STYLE CHANGES
 -the input delete x button too big
 -make placeholder text different color than selected text
 -stylize react-virtualized-select
+-responsiveness
 
 FUTURE
+-provide type chart
 -no repeated moves
 -moves that are incompatible together
 -sprite next to name when selecting name/item
@@ -46,9 +48,7 @@ FUTURE
 -tooltips for teamstats
 -deal with import crisis: react-loadable?
 -with 6 pokemon cards, it seems like code is launched 6 times for each pokmeon card
--responsiveness
 -update about pages
--provide a type chart
 -porygonZ
 
 -helper functions for capitalize and remove a certain word
