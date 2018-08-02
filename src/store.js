@@ -1,4 +1,4 @@
-import { observable, computed } from 'mobx'
+import { observable, computed, action } from 'mobx'
 // I have to import a bunch of pokemon data first
 import pokedexData from './data/pokedex'
 import battleItemsData from './data/battle-items'
@@ -53,7 +53,7 @@ class Store {
   })
 
   // Clear one of the six pokemon's properties
-  clearPokemonProps(i) {
+  @action clearPokemonProps(i) {
     for (const prop in this.pokemon[i]) {
       this.pokemon[i][prop] = ''
     }
@@ -62,6 +62,30 @@ class Store {
   // Get all the items of the team's six pokemon
   @computed get teamItems() {
     return this.pokemon.map(pkmn => pkmn.item)
+  }
+
+  // Does the team contain these items (in an array)?
+  teamContainsTheseItems(theseItems) {
+    return this.teamItems.some(teamItem => theseItems.includes(teamItem))
+  }
+
+  // Get the picked moves of the team's six pokemon
+  @computed get teamMoves() {
+    const moves = []
+    this.pokemon.forEach(pkmn => {
+      moves.push(
+        pkmn.move1,
+        pkmn.move2,
+        pkmn.move3,
+        pkmn.move4,
+      )
+    })
+    return moves
+  }
+
+  // Does the team contain these moves (in an array)?
+  teamContainsTheseMoves(theseMoves) {
+    return this.teamMoves.some(teamMove => theseMoves.includes(teamMove))
   }
 
   // Get all the possible abilities of the team's six pokemon
@@ -78,8 +102,22 @@ class Store {
     })
   }
 
+  // Does the team contain status moves?
+  @computed get anyStatusMoves() {
+    return this.teamMoves.some(teamMove => moves[teamMove] && moves[teamMove].status)
+  }
+
+  // Does the team contain boosting moves that increase by two stages?
+  @computed get anyBoostingMoves() {
+    return this.teamMoves.some(teamMove => (
+      moves[teamMove]
+      && moves[teamMove].boosts
+      && Object.values(moves[teamMove].boosts).reduce((sum, num) => sum + num) >= 2
+    ))
+  }
+
   // Auto select the item if necessary (e.g. Mega Blastoise needs Blastoisite)
-  autoSelectItem() {
+  @action autoSelectItem() {
     for (const pkmn of this.pokemon) {
       if (pkmn.name) {
         // Auto select mega stone
@@ -143,7 +181,7 @@ class Store {
   }
 
   // Auto select the pokemon's ability if it only has one ability.
-  autoSelectAbility() {
+  @action autoSelectAbility() {
     this.abilities.forEach((pkmnAbilities, i) => {
       if (pkmnAbilities.length === 1) {
         this.pokemon[i].ability = pkmnAbilities[0]

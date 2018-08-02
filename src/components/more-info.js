@@ -58,8 +58,8 @@ class FullWidthTabs extends React.Component {
           >
             {
               [
-                'Team Checklist', 
                 'Search Filters', 
+                'Team Checklist', 
                 'Pokemon Showdown Team',
               ].map(title => <Tab label={title} key={title} />)
             }
@@ -72,8 +72,8 @@ class FullWidthTabs extends React.Component {
         >
           {
             [
-              <TeamChecklist />, 
               <SearchFilters />, 
+              <TeamChecklist />, 
               <PokemonShowdownTeam />,
             ].map((component, i) => <TabContainer dir={theme.direction} key={i}>{component}</TabContainer>)
           }

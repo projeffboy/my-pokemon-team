@@ -1,21 +1,4 @@
 MOREINFO TABS
--Team Checklist
-  -spinner/defogger
-  -cleric
-  -statuser
-    -poison
-    -burn
-    -paralysis
-  -phazer
-  -entry hazards
-    -stealth rock
-    -spikes
-    -toxic spikes
-  -booster
-  -volt-turn
-    -volt switch
-    -u-turn
-  -choice user
 -Search Filters
   -Smogon tiers
   -Battle Spot
@@ -54,3 +37,4 @@ FUTURE
 -helper functions for capitalize and remove a certain word
 -weird stuff with like arceus-normal with draco plate has normal type judgement
 -or silvally-normal with dark memory has normal-type multi-attack
+-for team checklist, make sure user has wish with protect and rest with chesto/lum berry

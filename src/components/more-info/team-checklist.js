@@ -13,23 +13,48 @@ class TeamChecklist extends React.Component {
     const {classes} = this.props
     let checklist = {
       'General': {
-        'Entry Hazards': false, 
-        'Spinner': false, 
-        'Recovery': false,
+        'Entry Hazard': store.teamContainsTheseMoves([
+          'spikes',
+          'stealthrock',
+          'toxicspikes',
+          'stickyweb',
+        ]), 
+        'Spinner/Defogger': store.teamContainsTheseMoves(['rapidspin', 'defog']), 
+        'Reliable Recovery': store.teamContainsTheseMoves([
+          'healorder',
+          'milkdrink',
+          'moonlight',
+          'morningsun',
+          'recover',
+          'roost',
+          'shoreup',
+          'softboiled',
+          'strengthsap',
+          'synthesis',
+          'wish',
+        ]),
       },
       'Defensive': {
-        'Cleric': false, 
-        'Statuser': false, 
-        'Phazer': false,
+        'Cleric': store.teamContainsTheseMoves(['aromatherapy', 'healbell']), 
+        'Status Move': store.anyStatusMoves, 
+        'Phazer': store.teamContainsTheseMoves([
+          'circlethrow',
+          'dragontail',
+          'roar',
+          'whirlwind',
+        ]),
       },
       'Offensive': {
-        'Booster': false, 
-        'Volt-turn': false, 
-        'Choice User': false,
+        'Boosting Move': store.anyBoostingMoves, 
+        'Volt-turn': store.teamContainsTheseMoves(['voltswitch'])
+          && store.teamContainsTheseMoves(['uturn']), 
+        'Choice User': store.teamContainsTheseItems([
+          'Choice Scarf',
+          'Choice Band',
+          'Choice Specs',
+        ]),
       },
     }
-
-    console.log(store.teamItems)
   
     return (
       <Grid container className={classes.root}>
