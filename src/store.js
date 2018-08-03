@@ -1,10 +1,11 @@
 import { observable, computed, action } from 'mobx'
 // I have to import a bunch of pokemon data first
-import pokedexData from './data/pokedex'
+import pokedex from './data/pokedex'
 import battleItemsData from './data/battle-items'
 import miniLearnsets from './data/mini-learnsets.min'
 import typechart from './data/typechart'
 import moves from './data/moves'
+import formatsData from './data/formats-data'
 
 class Store {
   constructor() {
@@ -93,7 +94,7 @@ class Store {
   @computed get abilities() {
     return this.pokemon.map((pkmn, i) => {
       if (pkmn.name) {
-        const pkmnAbilities = this.pokedex[pkmn.name].abilities // the specific pokemon's abilities (obj)
+        const pkmnAbilities = pokedex[pkmn.name].abilities // the specific pokemon's abilities (obj)
 
         return Object.values(pkmnAbilities) // the specific pokemon's abilities (arr)
       } else {
@@ -284,7 +285,7 @@ class Store {
 
     for (const pkmn of this.pokemon) {
       if (pkmn.name) {
-        const pkmnTypes = this.pokedex[pkmn.name].types // the specific pokemon's type(s)
+        const pkmnTypes = pokedex[pkmn.name].types // the specific pokemon's type(s)
         types.push(pkmnTypes)
       } else {
         types.push([])
@@ -298,37 +299,35 @@ class Store {
   POKEDEX INFO ON ALL POKEMON
   **************************/
 
-  @observable pokedex = pokedexData
-
   @computed get allPokemon() {
-    return Object.keys(this.pokedex)
+    return Object.keys(pokedex)
   }
 
   @computed get allPokemonNames() {
-    return this.allPokemon.map(pokemon => this.pokedex[pokemon].species) // species is name
+    return this.allPokemon.map(pokemon => pokedex[pokemon].species) // species is name
   }
 
   /* NOT USED: Returns the species name of a pokemon
   speciesName(pokemon) {
-    return this.pokedex[pokemon].species
+    return pokedex[pokemon].species
   }
   */
 
   // Returns the name of the pokemon's base forme
   baseSpecies(pokemon) {
-    return this.pokedex[pokemon].baseSpecies
+    return pokedex[pokemon].baseSpecies
   }
 
   // Returns name of the pokemon's alternate forme
   // E.g. Charizard Mega-X's forme is Mega-X
   forme(pokemon) {
-    return this.pokedex[pokemon].forme
+    return pokedex[pokemon].forme
   }
 
   // Get previous evolution
   previousEvolution(pokemon) {
-    const pokemonData = this.pokedex[pokemon]
-    return pokemonData ? pokemonData.prevo : undefined
+    const pokedexData = pokedex[pokemon]
+    return pokedexData ? pokedexData.prevo : undefined
   }
 
   /***************
@@ -477,7 +476,7 @@ class Store {
           } else if (ability === 'Normalize') {
             moveType = 'Normal'
           } else if (value === 'judgment') { // For Arceus
-            const pokemonDetails = this.pokedex[pokemonName]
+            const pokemonDetails = pokedex[pokemonName]
             moveType = pokemonDetails.types[0] // Arceus only has one ability
           } else if (value === 'technoblast') { // For Genesect
             switch (pokemonName) {
@@ -540,11 +539,156 @@ class Store {
     return typeCoverage
   }
 
-  /***************
-  WORK IN PROGRESS
-  ***************/
+  /*************
+  SEARCH FILTERS
+  *************/
 
-  @observable settings = { ...this.typeDefence } // dummy for now
+  @observable format = ''
+  @observable region = ''
+  @observable type = ''
+  @observable moves = ''
+
+  @computed get filteredPokemon() {
+    let pokedexData = {...pokedex}
+
+    if (this.format === '') {
+      return Object.keys(pokedexData)
+    }
+
+    const banlist = [
+      'mewtwo', 
+      'lugia', 
+      'hooh', 
+      'kyogre', 
+      'groudon', 
+      'rayquaza', 
+      'dialga', 
+      'palkia', 
+      'giratina', 
+      'reshiram', 
+      'zekrom', 
+      'kyurem', 
+      'xerneas', 
+      'yveltal', 
+      'zygarde', 
+      'cosmog', 
+      'cosmoem', 
+      'solgaleo', 
+      'lunala', 
+      'necrozma',
+      'mew', 
+      'celebi', 
+      'jirachi', 
+      'deoxys', 
+      'phione', 
+      'manaphy', 
+      'darkrai', 
+      'shaymin', 
+      'arceus', 
+      'victini', 
+      'keldeo', 
+      'meloetta', 
+      'genesect', 
+      'diancie', 
+      'hoopa', 
+      'volcanion', 
+      'greninjaash', 
+      'magearna', 
+      'marshadow', 
+      'zeraora',
+    ]
+
+    for (const pokemon of banlist) {
+      const {otherFormes} = pokedexData[pokemon]
+      if (otherFormes) {
+        otherFormes.forEach(otherForme => delete pokedexData[otherForme])
+      }
+      delete pokedexData[pokemon]
+    }
+
+    if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2018'].includes(this.format)) {
+      return Object.keys(pokedexData)
+    }
+
+    pokedexData = {...pokedex}
+
+    delete pokedexData.rayquazamega
+    for (const pokemon in pokedexData) {
+      if (formatsData[pokemon].tier === 'Illegal') {
+        delete pokedexData[pokemon]
+      }
+    }
+
+    if (this.format === 'Uber') {
+      return Object.keys(pokedexData)
+    }
+
+    for(const pokemon in pokedexData) {
+      const formats = {...formatsData}
+      if (formats[pokemon].tier === 'Uber') {
+        delete pokedexData[pokemon]
+      }
+    }
+
+    const tierAbbr = {
+      'OU: Over Used': 'OU', 
+      'UU: Under Used': 'UU', 
+      'RU: Rarely Used': 'RU', 
+      'NU: Never Used': 'NU', 
+      'PU': 'PU', 
+      'Little Cup (LC)': 'LC',
+      'Doubles Uber': 'DUber',
+      'Doubles OU': 'Doubles OU',
+      'Doubles UU': 'Doubles UU',
+    }
+
+    let filteredPkmn = [
+      'OU', 
+      'UUBL', 
+      'UU', 
+      'RUBL',
+      'RU', 
+      'NUBL',
+      'NU', 
+      'PUBL',
+      'PU',
+      'NFE',
+      'LC Uber',
+      'LC', 
+      'DUber', 
+      'DOU', 
+      'DUU',
+    ].find(tier => {
+      if (tierAbbr[this.format] === tier) {
+        return Object.keys(pokedexData)
+      }
+  
+      for(const pokemon in pokedexData) {
+        if (formatsData[pokemon].tier === tier) {
+          delete pokedexData[pokemon]
+        }
+      }
+    })
+    /*
+    pokedexData = {...pokedex}
+
+    filteredPkmn = filteredPkmn || ['DUber', 'DOU', 'DUU'].find(tier => {
+      if (tierAbbr[this.format] = tier) {
+        return Object.keys(pokedexData)
+      }
+  
+      for(const pokemon in pokedexData) {
+        if (formatsData[pokemon].tier === tier) {
+          delete pokedexData[pokemon]
+        }
+      }
+    })
+    */
+  }
+
+  @computed get filteredPokemonNames() {
+    return this.filteredPokemon.map(pokemon => pokedex[pokemon].species) // species is name
+  }
 }
 
 // FOR DEBUGGING

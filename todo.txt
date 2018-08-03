@@ -1,11 +1,12 @@
 MOREINFO TABS
 -Search Filters
-  -Smogon tiers
-  -Battle Spot
-  -VGC
-  -recommended moves
-  -region
-  -monotype
+  -Tiers
+    -Smogon tiers
+    -Battle Spot
+    -VGC
+  -Region
+  -Type
+  -All or Viable Moves
 -Pokemon Showdown Team
   -import team
   -export team
@@ -38,3 +39,4 @@ FUTURE
 -weird stuff with like arceus-normal with draco plate has normal type judgement
 -or silvally-normal with dark memory has normal-type multi-attack
 -for team checklist, make sure user has wish with protect and rest with chesto/lum berry
+-smogon tiers provide restrictions for abilities, etc., not just pokemon
