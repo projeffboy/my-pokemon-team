@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles'
+import {createMuiTheme} from '@material-ui/core/styles'
 import blueGrey from '@material-ui/core/colors/blueGrey'
 import green from '@material-ui/core/colors/green'
 
@@ -24,7 +24,10 @@ export const pokemonStyles = {
 }
 
 export const pokemonInputStyles = { // for sprite.js too
-  sprite: {gridRow: '2 / 5'},
+  sprite: {
+    gridRow: '2 / 5',
+    [theme.breakpoints.up('sm')]: {gridRow: '2 / 7'}
+  },
   gridItem: {
     minWidth: 0,
     display: 'flex',

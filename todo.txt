@@ -39,3 +39,4 @@ FUTURE
 -or silvally-normal with dark memory has normal-type multi-attack
 -for team checklist, make sure user has wish with protect and rest with chesto/lum berry
 -smogon tiers provide restrictions for abilities, etc., not just pokemon
+-dark theme

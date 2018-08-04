@@ -3,68 +3,55 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import Paper from '@material-ui/core/Paper'
 import {withStyles} from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
+import withWidth from '@material-ui/core/withWidth'
+import compose from 'recompose/compose'
 // My Component Imports
 import Pokemon from './pokemon'
 import TeamStats from './team-stats'
 import MoreInfo from './more-info'
 import {appStyles} from '../styles'
+import TeamViewer from './team-viewer.js'
 
 function Cards(props) {
-  const {classes} = props
+  const {classes, width} = props
 
-  // 3 Right Cards
-  const cardTitles = [
-    1,
-    2,
-    'Type Defence',
-    3,
-    4,
-    'Type Coverage',
-    5,
-    6,
-    '', // MoreInfo
-  ]
-
-  // 9 Total Cards
-  const cards = cardTitles.map((cardTitle, i) => {
-    if (typeof cardTitle === 'number') {
-      return (
-        // 6 Pokemon Cards
-        <Grid key={i} item xs={3}>
+  function pokemonCards() {
+    if (width !== 'xs' && width !== 'sm') {
+      return [1, 2, 3, 4, 5, 6].map(num => (
+        <Grid key={num} item xs={6}>
           <Paper className={classes.paper}>
-            <Pokemon teamSlot={cardTitle} />
+            <Pokemon teamSlot={num} />
           </Paper>
         </Grid>
-      )
-    } else if (cardTitle) {
-      return (
-        // 2 of the Right Cards
-        <Grid key={i} item xs={6}>
-          <Paper className={classes.paper}>
-            <TeamStats title={cardTitle} />
-          </Paper>
-        </Grid>
-      )
+      ))
     } else {
-      return (
-        // The Bottom Right Card
-        <Grid key={i} item xs={6}>
+     return <TeamViewer />
+    }
+  }
+
+  return (
+    <React.Fragment>
+      <Grid item container lg={6} md={7} sm={6} xs={12} spacing={16}>
+        {pokemonCards()}
+      </Grid>
+      <Grid item container lg={6} md={5} sm={6} xs={12} spacing={16}>
+        {
+          ['Type Defence', 'Type Coverage'].map(cardTitle => (
+            <Grid key={cardTitle} item xs={12}>
+              <Paper className={classes.paper}>
+                <TeamStats title={cardTitle} />
+              </Paper>
+            </Grid>
+          ))
+        }
+        <Grid item xs={12}>
           <Paper>
             <MoreInfo />
           </Paper>
         </Grid>
-      )
-    }
-  })
-
-  
-
-  return (
-    <React.Fragment>
-      {cards}
+      </Grid>
     </React.Fragment>
   )
 }
 
-export default withStyles(appStyles)(Cards)
+export default compose(withStyles(appStyles), withWidth())(Cards)
