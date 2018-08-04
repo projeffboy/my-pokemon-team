@@ -6,7 +6,7 @@ export const theme = createMuiTheme({ // for index.js
   palette: {primary: blueGrey},
 })
 
-theme.breakpoints.values.md = 1024
+theme.breakpoints.values.lg = 1200
 
 export const appStyles = {
   paper: {

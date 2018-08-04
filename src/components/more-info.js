@@ -27,7 +27,9 @@ TabContainer.propTypes = {
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
+    borderRadius: 4,
   },
+  appBar: {borderRadius: '4px 4px 0 0'}
 })
 
 class MoreInfo extends React.Component {
@@ -48,7 +50,7 @@ class MoreInfo extends React.Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position='static' color='default'>
+        <AppBar position='static' color='default' className={classes.appBar}>
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}
