@@ -1,10 +1,19 @@
-export const appStyles = theme => ({
-  paper: {
-    padding: theme.spacing.unit * 2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary
-  }
+import { createMuiTheme } from '@material-ui/core/styles'
+import blueGrey from '@material-ui/core/colors/blueGrey'
+import green from '@material-ui/core/colors/green'
+
+export const theme = createMuiTheme({ // for index.js
+  palette: {primary: blueGrey},
 })
+
+theme.breakpoints.values.md = 1024
+
+export const appStyles = {
+  paper: {
+    padding: 10,
+    textAlign: 'center',
+  }
+}
 
 export const pokemonStyles = {
   gridContainer: {
@@ -35,13 +44,10 @@ export const teamStatsStyles = () => ({
   }
 })
 
-export const teamChecklistStyles = () => ({
-  root: {
-    fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.54)',
-  },
+export const teamChecklistStyles = {
+  root: {color: 'rgba(0, 0, 0, 0.54)'},
   miniHeader: {
     fontWeight: 'bold',
     paddingBottom: 10,
-  }
-})
+  },
+}

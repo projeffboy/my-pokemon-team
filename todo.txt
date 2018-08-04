@@ -12,8 +12,7 @@ MOREINFO TABS
   -export team
 
 STYLE CHANGES
--title
--footer
+-sticky footer
 -color scheme
 -change color of meta theme color
 -have a look at manifest
