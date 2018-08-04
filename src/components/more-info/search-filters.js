@@ -24,7 +24,7 @@ const styles = theme => ({
 })
 
 @observer
-class SimpleSelect extends React.Component {
+class SearchFilters extends React.Component {
   handleChange = (inputLabel, e) => {
     store[inputLabel.toLowerCase()] = e.target.value
   }
@@ -92,8 +92,8 @@ class SimpleSelect extends React.Component {
   }
 }
 
-SimpleSelect.propTypes = {
+SearchFilters.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(SimpleSelect)
+export default withStyles(styles)(SearchFilters)
