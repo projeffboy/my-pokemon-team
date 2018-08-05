@@ -29,7 +29,8 @@ const styles = theme => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: 4,
   },
-  appBar: {borderRadius: '4px 4px 0 0'}
+  appBar: {borderRadius: '4px 4px 0 0'},
+  tab: {minWidth: 'initial'},
 })
 
 class MoreInfo extends React.Component {
@@ -46,7 +47,21 @@ class MoreInfo extends React.Component {
   }
 
   render() {
-    const {classes, theme} = this.props
+    const {classes, theme, width} = this.props
+
+    let tabTitles = [
+      'Search Filters', 
+      'Team Checklist', 
+      'Pokemon Showdown Team',
+    ]
+
+    if (width !== 'lg' && width !== 'xl') { // If the screen is below 1200px
+      tabTitles = [
+        'Filters',
+        'Checklist',
+        'Showdown',
+      ]
+    }
 
     return (
       <div className={classes.root}>
@@ -58,13 +73,7 @@ class MoreInfo extends React.Component {
             textColor='primary'
             fullWidth
           >
-            {
-              [
-                'Search Filters', 
-                'Team Checklist', 
-                'Pokemon Showdown Team',
-              ].map(title => <Tab label={title} key={title} />)
-            }
+            {tabTitles.map(title => <Tab label={title} key={title} className={classes.tab} />)}
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -75,7 +84,7 @@ class MoreInfo extends React.Component {
           {
             [
               <SearchFilters />, 
-              <TeamChecklist />, 
+              <TeamChecklist width={width} />, 
               <PokemonShowdownTeam />,
             ].map((component, i) => <TabContainer dir={theme.direction} key={i}>{component}</TabContainer>)
           }

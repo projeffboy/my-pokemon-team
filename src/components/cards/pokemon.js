@@ -3,7 +3,7 @@ import {withStyles} from '@material-ui/core/styles'
 // import Grid from '@material-ui/core/Grid'
 import PokemonInput from './pokemon/pokemon-input'
 import Sprite from './pokemon/sprite'
-import {pokemonStyles} from '../styles'
+import {pokemonStyles} from '../../styles'
 
 function Pokemon(props) {
   const placeholders = [

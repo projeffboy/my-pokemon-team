@@ -3,8 +3,8 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
-import store from '../store'
-import {teamStatsStyles} from '../styles'
+import store from '../../store'
+import {teamStatsStyles} from '../../styles'
 
 @observer
 class TeamStats extends React.Component {
@@ -29,6 +29,8 @@ class TeamStats extends React.Component {
   }
 
   render() {
+    const {width} = this.props
+
     const types = {
       Bug: 'a8b820', // the type's hex color
       Dark: '6f5747',
@@ -49,13 +51,37 @@ class TeamStats extends React.Component {
       Steel: 'b8b8d0',
       Water: '6890f0',
     }
+  
+    let typeAbbr = []
+    if (width !== 'lg' && width !== 'xl') { // If the screen is below 1200px
+      typeAbbr = [
+        'BUG',
+        'DRK',
+        'DRG',
+        'ELC',
+        'FRY',
+        'FGT',
+        'FIR',
+        'FLY',
+        'GHT',
+        'GRS',
+        'GRD',
+        'ICE',
+        'NRM',
+        'PSN',
+        'PSY',
+        'RCK',
+        'STL',
+        'WTR',
+      ]
+    }
 
     // Grid Items of Pokemon Types
     const gridItems = Object.keys(types).map((type, i) => (
       <Grid key={i} item xs={2}>
         <div style={{padding: 3}}>
           <div className={this.props.classes.pokemonType} style={{backgroundColor: `#${types[type]}`}}>
-            {type}
+            {typeAbbr[i] || type}
           </div>
         </div>
         {this.returnTypeValue(store[this.teamStatType][type])}

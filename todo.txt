@@ -40,3 +40,4 @@ FUTURE
 -for team checklist, make sure user has wish with protect and rest with chesto/lum berry
 -smogon tiers provide restrictions for abilities, etc., not just pokemon
 -dark theme
+-but then bullet seed is deemed a lower power move

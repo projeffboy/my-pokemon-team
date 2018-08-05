@@ -6,7 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import {observer} from 'mobx-react'
-import store from '../../store'
+import store from '../../../store'
 
 const styles = theme => ({
   root: {
@@ -15,8 +15,9 @@ const styles = theme => ({
     justifyContent: 'space-around',
   },
   formControl: {
-    margin: theme.spacing.unit,
     minWidth: 120,
+    margin: 10,
+    [theme.breakpoints.down('md')]: {margin: '0 10px 10px'},
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,

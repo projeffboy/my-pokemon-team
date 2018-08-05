@@ -26,7 +26,7 @@ export const pokemonStyles = {
 export const pokemonInputStyles = { // for sprite.js too
   sprite: {
     gridRow: '2 / 5',
-    [theme.breakpoints.up('sm')]: {gridRow: '2 / 7'}
+    [theme.breakpoints.down('sm')]: {gridRow: '2 / 7'}
   },
   gridItem: {
     minWidth: 0,

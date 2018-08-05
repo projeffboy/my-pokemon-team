@@ -1,15 +1,14 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
-import store from '../../store'
-import {pokemonInputStyles} from '../../styles'
+import store from '../../../store'
+import {pokemonInputStyles} from '../../../styles'
 import IntegrationReactSelect from './pokemon-input/integration-react-select'
 
 @observer
 class PokemonInput extends React.Component {
   constructor(props) {
     super(props)
-    this.i = this.props.teamSlot - 1
   }
 
   /*
@@ -19,12 +18,13 @@ class PokemonInput extends React.Component {
    */
   handleChange = inputVal => {
     const {pokemonProp} = this.props
+    const slotIndex = this.props.teamSlot - 1
 
     if (pokemonProp === 'name') {
-      store.clearPokemonProps(this.i)
+      store.clearPokemonProps(slotIndex)
     }
 
-    store.pokemon[this.i][pokemonProp] = inputVal
+    store.pokemon[slotIndex][pokemonProp] = inputVal
 
     /*
      * If the input is where you put your pokemon name,
@@ -39,6 +39,7 @@ class PokemonInput extends React.Component {
 
   render() {
     const {pokemonProp} = this.props
+    const slotIndex = this.props.teamSlot - 1
 
     let optionValues = []
     let optionLabels = []
@@ -52,11 +53,11 @@ class PokemonInput extends React.Component {
         optionValues = store.battleItems
         break
       case 'ability':
-        optionValues = store.abilities[this.i]
+        optionValues = store.abilities[slotIndex]
         break
       default: // for the moves
-        optionValues = store.learnsets.values[this.i]
-        optionLabels = store.learnsets.labels[this.i]
+        optionValues = store.learnsets.values[slotIndex]
+        optionLabels = store.learnsets.labels[slotIndex]
     }
 
     // Apparently if you remove this it breaks, dunno why
@@ -76,7 +77,7 @@ class PokemonInput extends React.Component {
         optionValues={optionValues}
         optionLabels={optionLabels}
         onChange={this.handleChange}
-        value={store.pokemon[this.i][pokemonProp]}
+        value={store.pokemon[slotIndex][pokemonProp]}
       />
     )
   }

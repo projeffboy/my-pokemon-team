@@ -1,16 +1,17 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import {withStyles} from '@material-ui/core/styles'
-import {teamChecklistStyles} from '../../styles'
+import {teamChecklistStyles} from '../../../styles'
 import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied'
 import SentimentSatisfied from '@material-ui/icons/SentimentSatisfied'
 import {observer} from 'mobx-react'
-import store from '../../store'
+import store from '../../../store'
 
 @observer
 class TeamChecklist extends React.Component {
   render() {
-    const {classes} = this.props
+    const {classes, width} = this.props
+
     let checklist = {
       'General': {
         'Entry Hazard': store.teamContainsTheseMoves([
@@ -48,25 +49,40 @@ class TeamChecklist extends React.Component {
         'Boosting Move': store.anyBoostingMoves, 
         'Volt-turn': store.teamContainsTheseMoves(['voltswitch'])
           && store.teamContainsTheseMoves(['uturn']), 
-        'Choice User': store.teamContainsTheseItems([
+        'Choice Item': store.teamContainsTheseItems([
           'Choice Scarf',
           'Choice Band',
           'Choice Specs',
         ]),
       },
     }
+
+    let checklistAbbr = []
+    if (width !== 'lg' && width !== 'xl') { // If the screen is below 1200px
+      checklistAbbr = [
+        'Hazard',
+        'Spinner',
+        'Recovery',
+        '',
+        'Status',
+        'Phazer',
+        'Setup',
+        'Volt-turn',
+        'Choice'
+      ]
+    }
   
     return (
       <Grid container className={classes.root}>
-        {Object.keys(checklist).map(miniHeader => (
+        {Object.keys(checklist).map((miniHeader, i) => (
           <Grid item xs={4} key={miniHeader}>
             <div className={classes.miniHeader}>{miniHeader}</div>
-            {Object.keys(checklist[miniHeader]).map(check => (
+            {Object.keys(checklist[miniHeader]).map((check, j) => (
               <div key={check} style={{display: 'flex'}}>
                 <div>
                   {checklist[miniHeader][check] ? <SentimentSatisfied /> : <SentimentDissatisfied />}
                 </div>
-                <div style={{padding: '2px 4px'}}>{check}</div>
+                <div style={{padding: '2px 4px'}}>{checklistAbbr[3 * i + j] || check}</div>
               </div>
             ))}
           </Grid>

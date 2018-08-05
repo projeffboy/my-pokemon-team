@@ -6,11 +6,11 @@ import {withStyles} from '@material-ui/core/styles'
 import withWidth from '@material-ui/core/withWidth'
 import compose from 'recompose/compose'
 // My Component Imports
-import Pokemon from './pokemon'
-import TeamStats from './team-stats'
-import MoreInfo from './more-info'
+import Pokemon from './cards/pokemon'
+import TeamStats from './cards/team-stats'
+import MoreInfo from './cards/more-info'
 import {appStyles} from '../styles'
-import TeamViewer from './team-viewer.js'
+import TeamViewer from './cards/team-viewer.js'
 
 function Cards(props) {
   const {classes, width} = props
@@ -25,7 +25,7 @@ function Cards(props) {
         </Grid>
       ))
     } else {
-     return <TeamViewer />
+     return <TeamViewer width={width} />
     }
   }
 
@@ -39,14 +39,14 @@ function Cards(props) {
           ['Type Defence', 'Type Coverage'].map(cardTitle => (
             <Grid key={cardTitle} item xs={12}>
               <Paper className={classes.paper}>
-                <TeamStats title={cardTitle} />
+                <TeamStats title={cardTitle} width={width} />
               </Paper>
             </Grid>
           ))
         }
         <Grid item xs={12}>
           <Paper>
-            <MoreInfo />
+            <MoreInfo width={width} />
           </Paper>
         </Grid>
       </Grid>

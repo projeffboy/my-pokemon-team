@@ -1,8 +1,8 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
-import store from '../../store'
-import {pokemonInputStyles as spriteStyles} from '../../styles'
+import store from '../../../store'
+import {pokemonInputStyles as spriteStyles} from '../../../styles'
 
 @observer
 class Sprite extends React.Component {
