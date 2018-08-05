@@ -68,8 +68,13 @@ class TeamChecklist extends React.Component {
         'Phazer',
         'Setup',
         'Volt-turn',
-        'Choice'
+        'Choice Item'
       ]
+    }
+    if (width === 'sm') {
+      checklistAbbr[2] = 'Heal'
+      checklistAbbr[7] = 'Volturn'
+      checklistAbbr[8] = 'Choice'
     }
   
     return (

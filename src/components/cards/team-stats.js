@@ -29,7 +29,7 @@ class TeamStats extends React.Component {
   }
 
   render() {
-    const {width} = this.props
+    const {classes, width} = this.props
 
     const types = {
       Bug: 'a8b820', // the type's hex color
@@ -79,8 +79,8 @@ class TeamStats extends React.Component {
     // Grid Items of Pokemon Types
     const gridItems = Object.keys(types).map((type, i) => (
       <Grid key={i} item xs={2}>
-        <div style={{padding: 3}}>
-          <div className={this.props.classes.pokemonType} style={{backgroundColor: `#${types[type]}`}}>
+        <div className={classes.typeContainer}>
+          <div className={classes.pokemonType} style={{backgroundColor: `#${types[type]}`}}>
             {typeAbbr[i] || type}
           </div>
         </div>

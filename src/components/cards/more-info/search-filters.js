@@ -16,6 +16,7 @@ const styles = theme => ({
   },
   formControl: {
     minWidth: 120,
+    [theme.breakpoints.down('sm')]: {minWidth: 90},
     margin: 10,
     [theme.breakpoints.down('md')]: {margin: '0 10px 10px'},
   },

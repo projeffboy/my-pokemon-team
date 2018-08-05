@@ -41,3 +41,4 @@ FUTURE
 -smogon tiers provide restrictions for abilities, etc., not just pokemon
 -dark theme
 -but then bullet seed is deemed a lower power move
+-change teamSlot to teamIndex

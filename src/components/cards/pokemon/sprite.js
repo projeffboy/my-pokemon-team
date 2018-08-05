@@ -7,7 +7,7 @@ import {pokemonInputStyles as spriteStyles} from '../../../styles'
 @observer
 class Sprite extends React.Component {
   render() {
-    const {classes, teamSlot} = this.props
+    const {classes, teamSlot, width} = this.props
     const pokemon = store.pokemon[teamSlot - 1].name // unhyphenated name
     
     let spriteFilename = pokemon // the filename of the pokemon sprite (usually just the pokemon name)
@@ -36,14 +36,26 @@ class Sprite extends React.Component {
       }
     }
 
+    let typeOfSprite = 'xyani'
+    let imgFormat = 'gif'
+    if (width === 'sm') {
+      typeOfSprite = 'xydex'
+      imgFormat = 'png'
+    }
+
     return (
-      <div className={`${classes.gridItem} ${classes.sprite}`}>
-        {spriteFilename ? 
+      <div className={`${classes.gridItem} ${classes.spriteContainer}`}>
+        { 
           <img 
-            alt={spriteFilename}
-            src={`https://play.pokemonshowdown.com/sprites/xyani/${spriteFilename}.gif`} /* URL from Pokemon Showdown */
-            style={{maxHeight: '100%', maxWidth: '100%'}} /* keep the image contained in its div box */
-          /> : []}
+            alt={spriteFilename || 'questionmark'}
+            /* URL from Pokemon Showdown */
+            src={spriteFilename ?
+              `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`:
+              'https://play.pokemonshowdown.com/sprites/bw/0.png'
+            }
+            className={`${classes.sprite} ${width === 'sm' ? classes.miniSprite : ''}`}
+          />
+        }
       </div>
     )
   }
