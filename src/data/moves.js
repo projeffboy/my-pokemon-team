@@ -1164,7 +1164,10 @@ export default {
 		priority: 0,
 		flags: {protect: 1, mirror: 1, mystery: 1},
 		onModifyMove: function (move, pokemon) {
-			move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
+			// UNMODIFIED
+			// move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
+			// MODIFIED
+			move.allies = pokemon.side.pokemon.filter(ally => (ally === pokemon || !ally.fainted) && !ally.status);
 			move.multihit = move.allies.length;
 		},
 		secondary: false,
@@ -18683,6 +18686,8 @@ export default {
 				move.type = 'Ice';
 				move.basePower *= 2;
 				break;
+			// MODIFIED: ADDED THE LINE BELOW
+			default:
 			}
 		},
 		secondary: false,

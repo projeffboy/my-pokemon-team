@@ -1,13 +1,14 @@
 import {createMuiTheme} from '@material-ui/core/styles'
 import blueGrey from '@material-ui/core/colors/blueGrey'
-import green from '@material-ui/core/colors/green'
 
-export const theme = createMuiTheme({ // for index.js
+// index.js (THEME)
+export const theme = createMuiTheme({
   palette: {primary: blueGrey},
 })
 
 theme.breakpoints.values.lg = 1200
 
+// app.js
 export const appStyles = {
   paper: {
     padding: 10,
@@ -15,6 +16,10 @@ export const appStyles = {
   }
 }
 
+// cards.js
+
+
+// pokemon.js
 export const pokemonStyles = {
   gridContainer: {
     display: 'grid',
@@ -23,13 +28,15 @@ export const pokemonStyles = {
   }
 }
 
-export const pokemonInputStyles = { // for sprite.js too
+// pokemon-input.js
+// sprite.js
+export const pokemonInputStyles = {
   spriteContainer: {
     gridRow: '2 / 5',
     [theme.breakpoints.down('sm')]: {gridRow: '2 / 7'}
   },
   sprite: {
-    /* keep the image contained in its div box */
+    // keep the image contained in its div box
     maxHeight: '100%',
     maxWidth: '100%',
   },
@@ -44,6 +51,7 @@ export const pokemonInputStyles = { // for sprite.js too
   }, // otherwise the grid items will overflow
 }
 
+// team-stats.js
 export const teamStatsStyles = {
   typeContainer: {
     padding: 3,
@@ -60,6 +68,35 @@ export const teamStatsStyles = {
   },
 }
 
+// more-info.js
+export const moreInfoStyles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: 4,
+  },
+  appBar: {borderRadius: '4px 4px 0 0'},
+  tab: {minWidth: 'initial'},
+})
+
+// search-filters.js
+export const searchFiltersStyles = theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  formControl: {
+    minWidth: 120,
+    [theme.breakpoints.down('sm')]: {minWidth: 90},
+    margin: 10,
+    [theme.breakpoints.down('md')]: {margin: '0 10px 10px'},
+  },
+  selectEmpty: {
+    marginTop: theme.spacing.unit * 2,
+  },
+})
+
+// team-checklist.js
 export const teamChecklistStyles = {
   root: {color: 'rgba(0, 0, 0, 0.54)'},
   miniHeader: {
@@ -68,6 +105,10 @@ export const teamChecklistStyles = {
   },
 }
 
+// pokemon-showdown-team.js
+
+
+// team-viewer.js
 export const teamViewerStyles = {
   twoSprites: {
     display: 'flex',
@@ -76,3 +117,4 @@ export const teamViewerStyles = {
   oneOfTwoPkmn: {padding: '14px 10px'},
   xsTab: {minWidth: 0},
 }
+

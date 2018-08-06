@@ -25,3 +25,4 @@ Huge credits to Pokemon Showdown
 This app was created and debugged with Visual Studio Code, which is why there's a .vscode folder. The launch.json inside helps with debugging.
 
 Using tilde for indexOf
+responsiveness, lg, xl, etc.

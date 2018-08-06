@@ -81,12 +81,15 @@ class TeamChecklist extends React.Component {
       <Grid container className={classes.root}>
         {Object.keys(checklist).map((miniHeader, i) => (
           <Grid item xs={4} key={miniHeader}>
+            {/* E.g. Offensive */}
             <div className={classes.miniHeader}>{miniHeader}</div>
             {Object.keys(checklist[miniHeader]).map((check, j) => (
               <div key={check} style={{display: 'flex'}}>
+                {/* Either a smile or frown face (might be subject to change) */}
                 <div>
                   {checklist[miniHeader][check] ? <SentimentSatisfied /> : <SentimentDissatisfied />}
                 </div>
+                {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
                 <div style={{padding: '2px 4px'}}>{checklistAbbr[3 * i + j] || check}</div>
               </div>
             ))}

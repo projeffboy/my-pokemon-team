@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import {withStyles} from '@material-ui/core/styles'
 import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -7,23 +6,7 @@ import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 import {observer} from 'mobx-react'
 import store from '../../../store'
-
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-  },
-  formControl: {
-    minWidth: 120,
-    [theme.breakpoints.down('sm')]: {minWidth: 90},
-    margin: 10,
-    [theme.breakpoints.down('md')]: {margin: '0 10px 10px'},
-  },
-  selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-  },
-})
+import {searchFiltersStyles} from '../../../styles'
 
 @observer
 class SearchFilters extends React.Component {
@@ -73,9 +56,10 @@ class SearchFilters extends React.Component {
     }
 
     return (
-      <form className={classes.root} autoComplete='off'>
+      <form className={classes.root}>
         {Object.keys(inputLabels).map((inputLabel, i) => (
           <FormControl className={classes.formControl} key={inputLabel}>
+            {/* E.g. Format */}
             <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
             <Select
               value={store[inputLabel.toLowerCase()]}
@@ -83,6 +67,7 @@ class SearchFilters extends React.Component {
               inputProps={{id: inputLabel}}
             >
               <MenuItem value=''>All</MenuItem>
+              {/* OU: OverUsed */}
               {inputLabels[inputLabel].map(inputValue => (
                 <MenuItem key={inputValue} value={inputValue}>{inputValue}</MenuItem>)
               )}
@@ -94,8 +79,4 @@ class SearchFilters extends React.Component {
   }
 }
 
-SearchFilters.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
-
-export default withStyles(styles)(SearchFilters)
+export default withStyles(searchFiltersStyles)(SearchFilters)

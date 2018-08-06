@@ -50,3 +50,5 @@ Just passes code.
 
 index.html
 Final product.
+
+integration-react-select is the only component withstyles not in styles.js

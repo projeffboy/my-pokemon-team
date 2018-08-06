@@ -7,10 +7,6 @@ import IntegrationReactSelect from './pokemon-input/integration-react-select'
 
 @observer
 class PokemonInput extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   /*
    * 1. If you change the pokemon name, <IntegrationReactSelect /> triggers this function.
    * 2. It updates the change to the store.

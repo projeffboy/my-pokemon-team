@@ -548,7 +548,7 @@ class Store {
   @observable type = ''
   @observable moves = ''
 
-  @computed get filteredPokemon() {
+  @computed get filteredPokemon() { // delete the CAP pokemon
     let pokedexData = {...pokedex}
 
     if (this.format === '') {
@@ -669,6 +669,7 @@ class Store {
         }
       }
     })
+
     /*
     pokedexData = {...pokedex}
 

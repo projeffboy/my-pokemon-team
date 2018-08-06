@@ -36,23 +36,27 @@ class Sprite extends React.Component {
       }
     }
 
+    /* Mini Sprite (for smaller screen sizes) */
     let typeOfSprite = 'xyani'
     let imgFormat = 'gif'
-    if (width === 'sm' || width === 'xs') {
+    if (width === 'sm' || width === 'xs') { // below 960px
       typeOfSprite = 'xydex'
       imgFormat = 'png'
     }
 
+    /* Either Return Sprite or Mini Sprite */
     return (
       <div className={`${classes.gridItem} ${classes.spriteContainer}`}>
         { 
           <img 
             alt={spriteFilename || 'questionmark'}
             /* URL from Pokemon Showdown */
-            src={spriteFilename ?
-              `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`:
-              'https://play.pokemonshowdown.com/sprites/bw/0.png'
+            src={spriteFilename
+              ? `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`
+              // The placeholder (question mark) sprite
+              : 'https://play.pokemonshowdown.com/sprites/bw/0.png'
             }
+            /* Apply miniSprite class if it's a mini sprite */
             className={`${classes.sprite} ${width === 'sm' ? classes.miniSprite : ''}`}
           />
         }

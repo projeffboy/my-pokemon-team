@@ -1,6 +1,5 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
-// import Grid from '@material-ui/core/Grid'
 import PokemonInput from './pokemon/pokemon-input'
 import Sprite from './pokemon/sprite'
 import {pokemonStyles} from '../../styles'
@@ -46,18 +45,6 @@ function Pokemon(props) {
     <div className={props.classes.gridContainer}>
       {pokemonInputs}
     </div>
-    /* The way to do it with MUI's built-in flex stuff
-    <Grid container spacing={0}>
-      <Grid item xs={6}><Name /></Grid>
-      <Grid item xs={6}><Move /></Grid>
-      <Grid item xs={6}><Sprite className={classes.sprite} /></Grid>
-      <Grid item xs={6}><Move /></Grid>
-      <Grid item xs={6}><Move /></Grid>
-      <Grid item xs={6}><Move /></Grid>
-      <Grid item xs={6}><Item /></Grid>
-      <Grid item xs={6}><Ability /></Grid>
-    </Grid>
-    */
   )
 }
 

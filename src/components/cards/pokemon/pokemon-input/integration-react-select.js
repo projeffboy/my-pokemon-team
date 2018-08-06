@@ -51,6 +51,13 @@ class IntegrationReactSelect extends React.Component {
   }
 }
 
+/* 
+ * The code below should be left as is.
+ * And is not worth looking at.
+ * Unless you absolutely need to make some changes.
+ * The most important thing is that it works.
+ */
+
 function SelectWrapped(props) {
   const {classes, ...other} = props
 
@@ -64,16 +71,6 @@ function SelectWrapped(props) {
       clearRenderer={() => <ClearIcon />}
       valueComponent={valueProps => {
         const {children} = valueProps
-        
-        /* React says this is not used
-        const {value, children, onRemove} = valueProps
-
-        const onDelete = event => {
-          event.preventDefault()
-          event.stopPropagation()
-          onRemove(value)
-        }
-        */
 
         return <div className='Select-value'>{children}</div>
       }}
@@ -208,5 +205,7 @@ const styles = theme => ({
     },
   },
 })
+
+/* */
 
 export default withStyles(styles)(IntegrationReactSelect)

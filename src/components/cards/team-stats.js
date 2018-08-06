@@ -11,6 +11,7 @@ class TeamStats extends React.Component {
   constructor(props) {
     super(props)
 
+    // E.g. Turn "Type Coverage" to "typeCoverage"
     let titleArr = this.props.title.split(' ')
     titleArr[0] = titleArr[0].toLowerCase()
     this.teamStatType = titleArr.join('')
@@ -19,9 +20,9 @@ class TeamStats extends React.Component {
   returnTypeValue(type) {
     let color = 'inherit'
 
-    if (type < 0) {
+    if (type < 0) { // weak to type
       color = 'red'
-    } else if (type > 0) {
+    } else if (type > 0) { // resist type
       color = 'green'
     }
 
@@ -80,10 +81,12 @@ class TeamStats extends React.Component {
     const gridItems = Object.keys(types).map((type, i) => (
       <Grid key={i} item xs={2}>
         <div className={classes.typeContainer}>
+          {/* E.g. Psychic (Or PSY on a smaller screen) */}
           <div className={classes.pokemonType} style={{backgroundColor: `#${types[type]}`}}>
             {typeAbbr[i] || type}
           </div>
         </div>
+        {/* E.g. +2 or -1 */}
         {this.returnTypeValue(store[this.teamStatType][type])}
       </Grid>
     ), this)
@@ -91,6 +94,7 @@ class TeamStats extends React.Component {
     return (
       <Grid container>
         <Grid item xs={12}>
+          {/* Either "Type Defence" or "Type Coverage"  */}
           <Typography variant='title' gutterBottom>
             {this.props.title}
           </Typography>
