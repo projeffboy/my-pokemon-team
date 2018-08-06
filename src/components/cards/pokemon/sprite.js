@@ -38,7 +38,7 @@ class Sprite extends React.Component {
 
     let typeOfSprite = 'xyani'
     let imgFormat = 'gif'
-    if (width === 'sm') {
+    if (width === 'sm' || width === 'xs') {
       typeOfSprite = 'xydex'
       imgFormat = 'png'
     }

@@ -73,5 +73,6 @@ export const teamViewerStyles = {
     display: 'flex',
     height: 75,
   },
-  oneOfTwoPkmn: {padding: '18px 10px'}
+  oneOfTwoPkmn: {padding: '14px 10px'},
+  xsTab: {minWidth: 0},
 }

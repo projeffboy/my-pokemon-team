@@ -20,7 +20,6 @@ STYLE CHANGES
 -the input delete x button too big
 -make placeholder text different color than selected text
 -stylize react-virtualized-select
--responsiveness
 
 FUTURE
 -provide type chart

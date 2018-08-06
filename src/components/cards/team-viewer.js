@@ -12,11 +12,18 @@ class TeamViewer extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {value: 0}
+    this.state = {
+      smTabIndex: 0,
+      xsTabIndex: 0,
+    }
   }
 
-  handleChange = (e, value) => { // value is the tab index
-    this.setState({value})
+  handleChange = (e, val) => {
+    if (this.props.width === 'sm') {
+      this.setState({smTabIndex: val})
+    } else {
+      this.setState({xsTabIndex: val})
+    }
   }
 
   getTwoPokemonSprites(teamSlot) {
@@ -32,41 +39,52 @@ class TeamViewer extends React.Component {
 
   render() {
     const {classes, width} = this.props
-    const {value} = this.state
+    const {smTabIndex, xsTabIndex} = this.state
 
     return (
       <React.Fragment>
         <Grid item xs={12}>
           <Paper>
-            <Tabs value={value} onChange={this.handleChange} fullWidth>
-              {
+            <Tabs 
+              value={width === 'sm' ? smTabIndex : xsTabIndex} 
+              onChange={this.handleChange} 
+              fullWidth
+            >
+              {width === 'sm' ?
                 [1, 2, 3].map(teamSlot => (
                   <Tab 
                     key={teamSlot}
                     label={`${2 * teamSlot - 1} - ${2 * teamSlot}`}
-                    icon={this.getTwoPokemonSprites(teamSlot)}/>
+                    icon={this.getTwoPokemonSprites(teamSlot)}
+                  />
+                )) :
+                [1, 2, 3, 4, 5, 6].map(teamSlot => (
+                  <Tab 
+                    key={teamSlot}
+                    label={teamSlot}
+                    className={classes.xsTab}
+                    icon={<Sprite teamSlot={teamSlot} width={width} />}
+                  />
                 ))
               }
-              {width === 'xs' ?
-                [4, 5, 6].map(num => (
-                  <Tab key={num} label={num} />
-                ))
-              : []}
             </Tabs>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
-          <Paper className={`${classes.paper} ${classes.oneOfTwoPkmn}`}>
-            <Pokemon teamSlot={2 * this.state.value + 1} />
-          </Paper>
-        </Grid>
-        {width === 'sm' ? 
+        {
+          width === 'sm' ? 
+          [1, 2].map(num => (
+            <Grid key={num} item xs={12}>
+              <Paper className={`${classes.paper} ${classes.oneOfTwoPkmn}`}>
+                <Pokemon teamSlot={2 * smTabIndex + num} />
+              </Paper>
+            </Grid>
+          )) :
           <Grid item xs={12}>
-            <Paper className={classes.paper}>
-              <Pokemon teamSlot={2 * this.state.value + 2} />
+            <Paper className={`${classes.paper} ${classes.oneOfTwoPkmn}`}>
+              <Pokemon teamSlot={xsTabIndex + 1} />
             </Paper>
           </Grid>
-         : []}
+        }
       </React.Fragment>
     )
   }
