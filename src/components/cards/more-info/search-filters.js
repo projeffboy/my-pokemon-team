@@ -11,7 +11,7 @@ import {searchFiltersStyles} from '../../../styles'
 @observer
 class SearchFilters extends React.Component {
   handleChange = (inputLabel, e) => {
-    store[inputLabel.toLowerCase()] = e.target.value
+    store.searchFilters[inputLabel.toLowerCase()] = e.target.value
   }
 
   render() {
@@ -33,7 +33,6 @@ class SearchFilters extends React.Component {
         'Doubles OU',
         'Doubles UU'
       ], 
-      Region: ['Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola'], 
       Type: [
         'Bug',
         'Dark',
@@ -52,6 +51,7 @@ class SearchFilters extends React.Component {
         'Steel',
         'Water',
       ], 
+      Region: ['Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola'], 
       Moves: ['Viable'],
     }
 
@@ -62,7 +62,7 @@ class SearchFilters extends React.Component {
             {/* E.g. Format */}
             <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
             <Select
-              value={store[inputLabel.toLowerCase()]}
+              value={store.searchFilters[inputLabel.toLowerCase()]}
               onChange={e => this.handleChange(inputLabel, e)}
               inputProps={{id: inputLabel}}
             >

@@ -42,8 +42,8 @@ class PokemonInput extends React.Component {
 
     switch(pokemonProp) {
       case 'name':
-        optionValues = store.allPokemon
-        optionLabels = store.allPokemonNames
+        optionValues = store.filteredPokemon // store.allPokemon
+        optionLabels = store.filteredPokemonNames // store.allPokemonNames
         break
       case 'item':
         optionValues = store.battleItems

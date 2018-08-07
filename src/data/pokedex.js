@@ -12785,7 +12785,6 @@ export default {
 		eggGroups: ["Amorphous"],
 		otherFormes: ["mimikyubusted", "mimikyutotem", "mimikyubustedtotem"],
 	},
-	/*
 	mimikyubusted: {
 		num: 778,
 		species: "Mimikyu-Busted",
@@ -12800,7 +12799,6 @@ export default {
 		color: "Yellow",
 		eggGroups: ["Amorphous"],
 	},
-	*/
 	mimikyutotem: {
 		num: 778,
 		species: "Mimikyu-Totem",

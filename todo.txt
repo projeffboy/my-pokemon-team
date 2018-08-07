@@ -1,12 +1,4 @@
 MOREINFO TABS
--Search Filters
-  -Tiers
-    -Smogon tiers
-    -Battle Spot
-    -VGC
-  -Region
-  -Type
-  -All or Viable Moves
 -Pokemon Showdown Team
   -import team
   -export team
@@ -42,3 +34,6 @@ FUTURE
 -but then bullet seed is deemed a lower power move
 -change teamSlot to teamIndex
 -repsonsiveness for widescreens
+
+-are alola forms kanot or alola?
+-change search filters so that maybe tiers only show pokemon of that tier (or show those first)?

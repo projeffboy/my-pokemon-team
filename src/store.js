@@ -263,6 +263,11 @@ class Store {
           learnsetValues.push(...hiddenpowers)
         }
 
+        if (this.searchFilters.moves) { // search filter: if the user only wants to see viable moves
+          // Remove non-viable moves
+          learnsetValues = learnsetValues.filter(move => moves[move].isViable)
+        }
+
         // Say move is "aerialace"
         // we need to display it as "Aerial Ace", which is the purpose of learnsetLabels
         const learnsetLabels = learnsetValues.map(move => moves[move].name)
@@ -304,14 +309,13 @@ class Store {
   }
 
   @computed get allPokemonNames() {
-    return this.allPokemon.map(pokemon => pokedex[pokemon].species) // species is name
+    return this.allPokemon.map(pokemon => this.speciesName(pokemon)) // species is name
   }
 
-  /* NOT USED: Returns the species name of a pokemon
+  // Returns the species name of a pokemon
   speciesName(pokemon) {
     return pokedex[pokemon].species
   }
-  */
 
   // Returns the name of the pokemon's base forme
   baseSpecies(pokemon) {
@@ -360,7 +364,7 @@ class Store {
           const [type1, type2] = pkmnTypes // the pokemon's two types
 
           // Scoresheet of how good the pokemon resists a certain type
-          let resistanceScores = { ...this.cleanSlate }
+          let resistanceScores = {...this.cleanSlate}
 
           // Calculate the resistances of the pokemon's types
           for (const type in resistanceScores) { // type refers to a generic pokemon type
@@ -543,152 +547,217 @@ class Store {
   SEARCH FILTERS
   *************/
 
-  @observable format = ''
-  @observable region = ''
-  @observable type = ''
-  @observable moves = ''
+  @observable searchFilters = {
+    format: '',
+    region: '',
+    type: '',
+    moves: '',
+  }
 
-  @computed get filteredPokemon() { // delete the CAP pokemon
-    let pokedexData = {...pokedex}
+  @computed get filteredPokemon() {
+    const {format, region, type} = this.searchFilters
 
-    if (this.format === '') {
-      return Object.keys(pokedexData)
-    }
+    // First filter by format, then type, then region
+    return Object.keys(
+      filterByRegion.call(
+        this,
+        filterByType.call(
+          this,
+          filterByFormat.call(
+            this, 
+            {...pokedex}
+          )
+        )
+      )
+    )
 
-    const banlist = [
-      'mewtwo', 
-      'lugia', 
-      'hooh', 
-      'kyogre', 
-      'groudon', 
-      'rayquaza', 
-      'dialga', 
-      'palkia', 
-      'giratina', 
-      'reshiram', 
-      'zekrom', 
-      'kyurem', 
-      'xerneas', 
-      'yveltal', 
-      'zygarde', 
-      'cosmog', 
-      'cosmoem', 
-      'solgaleo', 
-      'lunala', 
-      'necrozma',
-      'mew', 
-      'celebi', 
-      'jirachi', 
-      'deoxys', 
-      'phione', 
-      'manaphy', 
-      'darkrai', 
-      'shaymin', 
-      'arceus', 
-      'victini', 
-      'keldeo', 
-      'meloetta', 
-      'genesect', 
-      'diancie', 
-      'hoopa', 
-      'volcanion', 
-      'greninjaash', 
-      'magearna', 
-      'marshadow', 
-      'zeraora',
-    ]
+    function filterByFormat(pokedexData) {
+      const pokedexDataCopy = {...pokedexData}
 
-    for (const pokemon of banlist) {
-      const {otherFormes} = pokedexData[pokemon]
-      if (otherFormes) {
-        otherFormes.forEach(otherForme => delete pokedexData[otherForme])
+      /* No Filter */
+
+      if (format === '') {
+        return pokedexData
       }
-      delete pokedexData[pokemon]
-    }
 
-    if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2018'].includes(this.format)) {
-      return Object.keys(pokedexData)
-    }
+      /* Official Pokemon Format Filter */
 
-    pokedexData = {...pokedex}
+      const banlist = [
+        'mewtwo', 
+        'lugia', 
+        'hooh', 
+        'kyogre', 
+        'groudon', 
+        'rayquaza', 
+        'dialga', 
+        'palkia', 
+        'giratina', 
+        'reshiram', 
+        'zekrom', 
+        'kyurem', 
+        'xerneas', 
+        'yveltal', 
+        'zygarde', 
+        'cosmog', 
+        'cosmoem', 
+        'solgaleo', 
+        'lunala', 
+        'necrozma',
+        'mew', 
+        'celebi', 
+        'jirachi', 
+        'deoxys', 
+        'phione', 
+        'manaphy', 
+        'darkrai', 
+        'shaymin', 
+        'arceus', 
+        'victini', 
+        'keldeo', 
+        'meloetta', 
+        'genesect', 
+        'diancie', 
+        'hoopa', 
+        'volcanion', 
+        'greninjaash', 
+        'magearna', 
+        'marshadow', 
+        'zeraora',
+      ]
 
-    delete pokedexData.rayquazamega
-    for (const pokemon in pokedexData) {
-      if (formatsData[pokemon].tier === 'Illegal') {
+      for (const pokemon of banlist) {
+        const {otherFormes} = pokedex[pokemon]
+        if (otherFormes) {
+          otherFormes.forEach(otherForme => delete pokedexData[otherForme])
+        }
         delete pokedexData[pokemon]
       }
-    }
 
-    if (this.format === 'Uber') {
-      return Object.keys(pokedexData)
-    }
-
-    for(const pokemon in pokedexData) {
-      const formats = {...formatsData}
-      if (formats[pokemon].tier === 'Uber') {
-        delete pokedexData[pokemon]
+      if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2018'].includes(format)) {
+        return pokedexData
       }
-    }
 
-    const tierAbbr = {
-      'OU: Over Used': 'OU', 
-      'UU: Under Used': 'UU', 
-      'RU: Rarely Used': 'RU', 
-      'NU: Never Used': 'NU', 
-      'PU': 'PU', 
-      'Little Cup (LC)': 'LC',
-      'Doubles Uber': 'DUber',
-      'Doubles OU': 'Doubles OU',
-      'Doubles UU': 'Doubles UU',
-    }
+      /* Smogon Singles Filter */
 
-    let filteredPkmn = [
-      'OU', 
-      'UUBL', 
-      'UU', 
-      'RUBL',
-      'RU', 
-      'NUBL',
-      'NU', 
-      'PUBL',
-      'PU',
-      'NFE',
-      'LC Uber',
-      'LC', 
-      'DUber', 
-      'DOU', 
-      'DUU',
-    ].find(tier => {
-      if (tierAbbr[this.format] === tier) {
-        return Object.keys(pokedexData)
-      }
-  
-      for(const pokemon in pokedexData) {
-        if (formatsData[pokemon].tier === tier) {
+      pokedexData = pokedexDataCopy
+
+      delete pokedexData.rayquazamega // Rayquaza-Mega is banned in all tiers but Anything Goes (AG)
+      for (const pokemon in pokedexData) {
+        if (formatsData[pokemon].tier === 'Illegal') {
+          // Illegal pokemon include spiky eared pichu and certain formes of pikachu
           delete pokedexData[pokemon]
         }
       }
-    })
 
-    /*
-    pokedexData = {...pokedex}
-
-    filteredPkmn = filteredPkmn || ['DUber', 'DOU', 'DUU'].find(tier => {
-      if (tierAbbr[this.format] = tier) {
-        return Object.keys(pokedexData)
+      const tierAbbr = {
+        'Uber': 'Uber',
+        'OU: Over Used': 'OU', 
+        'UU: Under Used': 'UU', 
+        'RU: Rarely Used': 'RU', 
+        'NU: Never Used': 'NU', 
+        'PU': 'PU', 
+        'Little Cup (LC)': 'LC',
+        'Doubles Uber': 'DUber',
+        'Doubles OU': 'DOU',
+        'Doubles UU': 'DUU',
       }
-  
-      for(const pokemon in pokedexData) {
-        if (formatsData[pokemon].tier === tier) {
-          delete pokedexData[pokemon]
+
+      let smogonSinglesTiers = [
+        'Uber',
+        'OU', 
+        'UUBL', 
+        'UU', 
+        'RUBL',
+        'RU', 
+        'NUBL',
+        'NU', 
+        'PUBL',
+        'PU',
+        'NFE',
+        'LC Uber',
+        'LC', 
+      ]
+      
+      const filteredBySmogonSinglesTier = helperFunction(smogonSinglesTiers, 'tier')
+
+      /* Smogon Doubles Filter */
+
+      pokedexData = pokedexDataCopy
+
+      return filteredBySmogonSinglesTier || helperFunction(['DUber', 'DOU', 'DUU'], 'doublesTier')
+
+      /* Helper Function for Smogon Singles/Doubles Filter */
+
+      function helperFunction(array, tierType) {
+        for (const tier of array) {
+          if (tierAbbr[format] === tier) {
+            return pokedexData
+          }
+      
+          for (const pokemon in pokedex) {
+            if (formatsData[pokemon][tierType] === tier) {
+              // Delete the pokemon outside the tier and its other formes
+              const {otherFormes} = pokedex[pokemon]
+              if (otherFormes) {
+                otherFormes.forEach(forme => {
+                  if (!formatsData[forme][tierType]) {
+                    delete pokedexData[forme]
+                  }
+                })
+              }
+              delete pokedexData[pokemon]
+            }
+          }      
         }
       }
-    })
-    */
+    }
+
+    function filterByRegion(pokedexData) {
+       if (region) {
+        const regionNumberRange = {
+          Kanto: [1, 151],
+          Johto: [152, 251],
+          Hoenn: [252, 386],
+          Sinnoh: [387, 493],
+          Unova: [494, 649],
+          Kalos: [650, 721],
+          Alola: [722, 807],
+        }
+        const range = regionNumberRange[region]
+        let newPokedexData = {}
+
+        // Only return pokemon from a certian region based on pokedex number
+        for (const [key, value] of Object.entries(pokedexData)) {
+          if (value.num >= range[0] && value.num <= range[1]) {
+            newPokedexData[key] = value
+          }
+        }
+
+        return newPokedexData
+      } else {
+        return pokedexData
+      }
+    }
+
+    function filterByType(pokedexData) {
+      let newPokedexData = {}
+
+      if (type) {
+        for(const [key, value] of Object.entries(pokedexData)) {
+          if (value.types.includes(this.type)) {
+            newPokedexData[key] = value
+          }
+        }
+
+        return newPokedexData
+      } else {
+        return pokedexData
+      }
+    }
   }
 
   @computed get filteredPokemonNames() {
-    return this.filteredPokemon.map(pokemon => pokedex[pokemon].species) // species is name
+    return this.filteredPokemon.map(pokemon => this.speciesName(pokemon)) // species is name
   }
 }
 
