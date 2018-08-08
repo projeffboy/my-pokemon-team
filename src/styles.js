@@ -10,6 +10,18 @@ theme.breakpoints.values.lg = 1200
 
 // app.js
 export const appStyles = {
+  '@global': {
+    'html, body, #root': {height: '100%'}
+  },
+  root: {
+    height: '100%',
+    width: '100%',
+    margin: 0,
+  }
+}
+
+// When using the Paper component
+export const paperStyles = {
   paper: {
     padding: 10,
     textAlign: 'center',
@@ -91,14 +103,10 @@ export const searchFiltersStyles = theme => ({
     margin: 10,
     [theme.breakpoints.down('md')]: {margin: '0 10px 10px'},
   },
-  selectEmpty: {
-    marginTop: theme.spacing.unit * 2,
-  },
 })
 
 // team-checklist.js
 export const teamChecklistStyles = {
-  root: {color: 'rgba(0, 0, 0, 0.54)'},
   miniHeader: {
     fontWeight: 'bold',
     paddingBottom: 10,

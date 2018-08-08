@@ -9,7 +9,7 @@ import withWidth from '@material-ui/core/withWidth'
 import Pokemon from './cards/pokemon'
 import TeamStats from './cards/team-stats'
 import MoreInfo from './cards/more-info'
-import {appStyles} from '../styles'
+import {paperStyles} from '../styles'
 import TeamViewer from './cards/team-viewer'
 
 function Cards(props) {
@@ -80,4 +80,4 @@ function Cards(props) {
   )
 }
 
-export default compose(withStyles(appStyles), withWidth())(Cards)
+export default compose(withStyles(paperStyles), withWidth())(Cards)

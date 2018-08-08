@@ -4,6 +4,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import Grid from '@material-ui/core/Grid'
 import {observer} from 'mobx-react'
 import store from '../../../store'
 import {searchFiltersStyles} from '../../../styles'
@@ -56,9 +57,9 @@ class SearchFilters extends React.Component {
     }
 
     return (
-      <form className={classes.root}>
-        {Object.keys(inputLabels).map((inputLabel, i) => (
-          <FormControl className={classes.formControl} key={inputLabel}>
+      Object.keys(inputLabels).map((inputLabel, i) => (
+        <Grid key={inputLabel} item container justify='center' xs={6} lg={3}>
+          <FormControl className={classes.formControl}>
             {/* E.g. Format */}
             <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
             <Select
@@ -72,9 +73,9 @@ class SearchFilters extends React.Component {
                 <MenuItem key={inputValue} value={inputValue}>{inputValue}</MenuItem>)
               )}
             </Select>
-          </FormControl>  
-        ))}
-      </form>
+          </FormControl>
+        </Grid>
+      ))
     )
   }
 }

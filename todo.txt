@@ -2,6 +2,7 @@ MOREINFO TABS
 -Pokemon Showdown Team
   -import team
   -export team
+  -get the right icons
 
 STYLE CHANGES
 -sticky footer

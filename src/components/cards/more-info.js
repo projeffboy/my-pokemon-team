@@ -5,7 +5,7 @@ import {withStyles} from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
 // My Component Imports
 import TeamChecklist from './more-info/team-checklist'
 import SearchFilters from './more-info/search-filters'
@@ -69,8 +69,8 @@ class MoreInfo extends React.Component {
             [
               <SearchFilters />, 
               <TeamChecklist width={width} />, 
-              <PokemonShowdownTeam />,
-            ].map((component, i) => <TabContainer dir={theme.direction} key={i}>{component}</TabContainer>)
+              <PokemonShowdownTeam width={width} />,
+            ].map((component, i) => <TabContainer key={i}>{component}</TabContainer>)
           }
         </SwipeableViews>
       </div>
@@ -79,10 +79,10 @@ class MoreInfo extends React.Component {
 }
 
 // The stuff below each tab
-const TabContainer = ({children, dir}) => (
-  <Typography component='div' dir={dir} style={{padding: '12px 18px'}}>
+const TabContainer = ({children}) => (
+  <Grid container justify='center' style={{padding: 14}}>
     {children}
-  </Typography>
+  </Grid>
 )
 
 export default withStyles(moreInfoStyles, {withTheme: true})(MoreInfo)

@@ -2,8 +2,8 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid'
 import {withStyles} from '@material-ui/core/styles'
 import {teamChecklistStyles} from '../../../styles'
-import SentimentDissatisfied from '@material-ui/icons/SentimentDissatisfied'
-import SentimentSatisfied from '@material-ui/icons/SentimentSatisfied'
+import CheckCircle from '@material-ui/icons/CheckCircle'
+import Cancel from '@material-ui/icons/Cancel'
 import {observer} from 'mobx-react'
 import store from '../../../store'
 
@@ -68,34 +68,34 @@ class TeamChecklist extends React.Component {
         'Phazer',
         'Setup',
         'Volt-turn',
-        'Choice Item'
+        'Choice'
       ]
     }
-    if (width === 'sm') {
+    if (width === 'sm' || width === 'xs') {
+      checklistAbbr[1] = 'Spin'
       checklistAbbr[2] = 'Heal'
       checklistAbbr[7] = 'Volturn'
-      checklistAbbr[8] = 'Choice'
     }
   
     return (
-      <Grid container className={classes.root}>
-        {Object.keys(checklist).map((miniHeader, i) => (
-          <Grid item xs={4} key={miniHeader}>
+
+        Object.keys(checklist).map((miniHeader, i) => (
+          <Grid key={miniHeader} item xs={4}>
             {/* E.g. Offensive */}
             <div className={classes.miniHeader}>{miniHeader}</div>
             {Object.keys(checklist[miniHeader]).map((check, j) => (
               <div key={check} style={{display: 'flex'}}>
-                {/* Either a smile or frown face (might be subject to change) */}
+                {/* Either a checkmark or a cross */}
                 <div>
-                  {checklist[miniHeader][check] ? <SentimentSatisfied /> : <SentimentDissatisfied />}
+                  {checklist[miniHeader][check] ? <CheckCircle /> : <Cancel />}
                 </div>
                 {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
                 <div style={{padding: '2px 4px'}}>{checklistAbbr[3 * i + j] || check}</div>
               </div>
             ))}
           </Grid>
-        ))}
-      </Grid>
+        ))
+
     )
   }
 }

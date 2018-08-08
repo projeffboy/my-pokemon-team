@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Paper from '@material-ui/core/Paper'
 // My Component Imports
-import {appStyles, teamViewerStyles} from '../../styles'
+import {paperStyles, teamViewerStyles} from '../../styles'
 import Pokemon from './pokemon'
 import Sprite from './pokemon/sprite'
 
@@ -110,4 +110,4 @@ class TeamViewer extends React.Component {
   }
 }
 
-export default withStyles({...appStyles, ...teamViewerStyles})(TeamViewer)
+export default withStyles({...paperStyles, ...teamViewerStyles})(TeamViewer)
