@@ -14,14 +14,14 @@ class TeamChecklist extends React.Component {
 
     let checklist = {
       'General': {
-        'Entry Hazard': store.teamContainsTheseMoves([
+        'Entry Hazard': store.doesTeamHaveMoves([
           'spikes',
           'stealthrock',
           'toxicspikes',
           'stickyweb',
         ]), 
-        'Spinner/Defogger': store.teamContainsTheseMoves(['rapidspin', 'defog']), 
-        'Reliable Recovery': store.teamContainsTheseMoves([
+        'Spinner/Defogger': store.doesTeamHaveMoves(['rapidspin', 'defog']), 
+        'Reliable Recovery': store.doesTeamHaveMoves([
           'healorder',
           'milkdrink',
           'moonlight',
@@ -32,13 +32,12 @@ class TeamChecklist extends React.Component {
           'softboiled',
           'strengthsap',
           'synthesis',
-          'wish',
-        ]),
+        ]) || this.hasWishAndProtect(),
       },
       'Defensive': {
-        'Cleric': store.teamContainsTheseMoves(['aromatherapy', 'healbell']), 
+        'Cleric': store.doesTeamHaveMoves(['aromatherapy', 'healbell']), 
         'Status Move': store.anyStatusMoves, 
-        'Phazer': store.teamContainsTheseMoves([
+        'Phazer': store.doesTeamHaveMoves([
           'circlethrow',
           'dragontail',
           'roar',
@@ -47,9 +46,9 @@ class TeamChecklist extends React.Component {
       },
       'Offensive': {
         'Boosting Move': store.anyBoostingMoves, 
-        'Volt-turn': store.teamContainsTheseMoves(['voltswitch'])
-          && store.teamContainsTheseMoves(['uturn']), 
-        'Choice Item': store.teamContainsTheseItems([
+        'Volt-turn': store.doesTeamHaveMove('voltswitch')
+          && store.doesTeamHaveMove('uturn'), 
+        'Choice Item': store.doesTeamHaveItems([
           'Choice Scarf',
           'Choice Band',
           'Choice Specs',
@@ -78,7 +77,6 @@ class TeamChecklist extends React.Component {
     }
   
     return (
-
         Object.keys(checklist).map((miniHeader, i) => (
           <Grid key={miniHeader} item xs={4}>
             {/* E.g. Offensive */}
@@ -97,6 +95,17 @@ class TeamChecklist extends React.Component {
         ))
 
     )
+  }
+
+  // wish + protect-like move counts as reliable recovery
+  hasWishAndProtect() {
+    return store.doesPokemonHaveTheseMoves(['wish', [
+      'protect',
+      'detect',
+      'banefulbunker',
+      'spikyshield',
+      'kingsshield',
+    ]])
   }
 }
 

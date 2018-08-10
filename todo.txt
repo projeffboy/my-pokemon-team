@@ -5,7 +5,6 @@ MOREINFO TABS
   -get the right icons
 
 STYLE CHANGES
--sticky footer
 -color scheme
 -change color of meta theme color
 -have a look at manifest
@@ -26,9 +25,6 @@ FUTURE
 -update about pages
 -porygonZ
 
--helper functions for capitalize and remove a certain word
--weird stuff with like arceus-normal with draco plate has normal type judgement
--or silvally-normal with dark memory has normal-type multi-attack
 -for team checklist, make sure user has wish with protect and rest with chesto/lum berry
 -smogon tiers provide restrictions for abilities, etc., not just pokemon
 -dark theme
@@ -36,5 +32,12 @@ FUTURE
 -change teamSlot to teamIndex
 -repsonsiveness for widescreens
 
--are alola forms kanot or alola?
+-are alola forms kanto or alola?
 -change search filters so that maybe tiers only show pokemon of that tier (or show those first)?
+-change default paper
+
+Minor stuff
+-weird stuff with like arceus-normal with draco plate has normal type judgement
+-or silvally-normal with dark memory has normal-type multi-attack
+
+-functinos that call in the beginning even though they shouldn't be

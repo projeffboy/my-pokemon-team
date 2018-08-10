@@ -1,4 +1,5 @@
 import {observable, computed, action} from 'mobx'
+import {capitalizeWord} from './helper-functions'
 // I have to import a bunch of pokemon data first
 import pokedex from './data/pokedex'
 import battleItemsData from './data/battle-items'
@@ -65,11 +66,12 @@ class Store {
     return this.pokemon.map(pkmn => pkmn.item)
   }
 
-  // Does the team contain these items (in an array)?
-  teamContainsTheseItems(theseItems) {
+  
+  // Does the team have these items (in an array)?
+  doesTeamHaveItems(theseItems) {
     return this.teamItems.some(teamItem => theseItems.includes(teamItem))
   }
-
+  
   // Get the picked moves of the team's six pokemon
   @computed get teamMoves() {
     const moves = []
@@ -84,10 +86,57 @@ class Store {
     return moves
   }
 
-  // Does the team contain these moves (in an array)?
-  teamContainsTheseMoves(theseMoves) {
+  // Basically the above, but instead of a 1D array of all the moves,
+  // It's an array of 6 arrays (for each pokemon), each containing 4 elements (for the 4 moves)
+  @computed get listOfFourMoves() {
+    return this.pokemon.map(pkmn => (
+      [pkmn.move1, pkmn.move2, pkmn.move3, pkmn.move4]
+    ))
+  }
+
+  // Does the team have this one particular item (in a string)?
+  doesTeamHaveMove = move => this.teamMoves.includes(move)
+
+  // Does the team Have these moves (in an array)?
+  doesTeamHaveMoves(theseMoves) {
     return this.teamMoves.some(teamMove => theseMoves.includes(teamMove))
   }
+
+  // Does at least one pokemon Have all of these moves?
+  doesPokemonHaveTheseMoves(moves) {
+
+    /*
+     * Check if at least one of your pokemon contains these 2-4 moves.
+     * 
+     * Actually, say if you want to check if you have a pokemon,
+     * That contains wish and either protect or wish.
+     * What you do is pass an array,
+     * Where the first element is 'wish',
+     * And the second is an array, ['protect', 'detect'].
+     */
+
+    // A list of four moves (listOfFourMoves), for each array of four moves (fourMoves)...
+    return this.listOfFourMoves.some(fourMoves => (
+      // Moves one of your six pokemon need to have (moves), for each move (string)...
+      moves.every(move => {
+        if (Array.isArray(move)) { // move could be array or string
+          // That particular pokemon needs to know one of these moves (move (in array form)),
+          // For each one of these moves (altMove)...
+          return move.some(altMove => fourMoves.includes(altMove))
+        } else {
+          return fourMoves.includes(move)
+        }
+      })
+    ))
+  }
+
+  /* Does the pokemon have this particular move and item?
+  pokemonHasThisMoveAndItem(move, item) {
+    return this.listOfFourMoves.map((fourMoves, i) => (
+      fourMoves.includes(move) && this.pokemon[i].item === item
+  ))
+  }
+  */
 
   // Get all the possible abilities of the team's six pokemon
   // Using pokedexData (pokedex.js)
@@ -162,14 +211,14 @@ class Store {
         // Auto select drive for Genesect
         else if (pkmn.name.includes('genesect') && pkmn.name !== 'genesect') {
           const drive = pkmn.name.replace('genesect', '')
-          const driveName = drive[0].toUpperCase() + drive.slice(1) + ' Drive'
+          const driveName = capitalizeWord(drive) + ' Drive'
           
           pkmn.item = driveName
         }
         // Auto select memory for Silvally
         else if (pkmn.name.includes('silvally') && pkmn.name !== 'silvally') {
           const type = pkmn.name.replace('silvally', '')
-          const memory = type[0].toUpperCase() + type.slice(1) + ' Memory'
+          const memory = capitalizeWord(type) + ' Memory'
 
           pkmn.item = memory
         }
@@ -500,7 +549,7 @@ class Store {
             }
           } else if (value === 'multiattack') { // For Silvally
             const type = pokemonName.replace('silvally', '')
-            const capitalizedType = type[0].toUpperCase() + type.slice(1)
+            const capitalizedType = capitalizeWord(type)
 
             moveType = capitalizedType
           }
