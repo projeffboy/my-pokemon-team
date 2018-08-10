@@ -27,10 +27,11 @@ function Cards(props) {
   function pokemonCards() {
     if (width !== 'xs' && width !== 'sm') { // if viewport width >=960px
       // Display 6 pokemon cards
-      return [1, 2, 3, 4, 5, 6].map(num => (
+      return [0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} item xs={6}>
           <Paper className={classes.paper}>
-            <Pokemon teamSlot={num} />
+            {/* teamIndex is the pokemon's team slot number - 1 */}
+            <Pokemon teamIndex={num} />
           </Paper>
         </Grid>
       ))

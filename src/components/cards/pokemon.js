@@ -30,13 +30,13 @@ function Pokemon(props) {
       <PokemonInput 
         key={i} 
         placeholder={placeholder} 
-        teamSlot={props.teamSlot} 
+        teamIndex={props.teamIndex} 
         pokemonProp={pokemonProp}
       />
     )
     } else {
       return (
-        <Sprite key={i} teamSlot={props.teamSlot} />
+        <Sprite key={i} teamIndex={props.teamIndex} />
       )
     }
   })

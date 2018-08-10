@@ -13,14 +13,13 @@ class PokemonInput extends React.Component {
    * 3. Since the store is reactive, the prop value passed to <IntegrationReactSelect /> will be updated too.
    */
   handleChange = inputVal => {
-    const {pokemonProp} = this.props
-    const slotIndex = this.props.teamSlot - 1
+    const {pokemonProp, teamIndex} = this.props
 
     if (pokemonProp === 'name') {
-      store.clearPokemonProps(slotIndex)
+      store.clearPokemonProps(teamIndex)
     }
 
-    store.pokemon[slotIndex][pokemonProp] = inputVal
+    store.pokemon[teamIndex][pokemonProp] = inputVal
 
     /*
      * If the input is where you put your pokemon name,
@@ -34,8 +33,7 @@ class PokemonInput extends React.Component {
   }
 
   render() {
-    const {pokemonProp} = this.props
-    const slotIndex = this.props.teamSlot - 1
+    const {pokemonProp, teamIndex} = this.props
 
     let optionValues = []
     let optionLabels = []
@@ -49,11 +47,11 @@ class PokemonInput extends React.Component {
         optionValues = store.battleItems
         break
       case 'ability':
-        optionValues = store.abilities[slotIndex]
+        optionValues = store.abilities[teamIndex]
         break
       default: // for the moves
-        optionValues = store.learnsets.values[slotIndex]
-        optionLabels = store.learnsets.labels[slotIndex]
+        optionValues = store.learnsets.values[teamIndex]
+        optionLabels = store.learnsets.labels[teamIndex]
     }
 
     // Apparently if you remove this it breaks, dunno why
@@ -73,7 +71,7 @@ class PokemonInput extends React.Component {
         optionValues={optionValues}
         optionLabels={optionLabels}
         onChange={this.handleChange}
-        value={store.pokemon[slotIndex][pokemonProp]}
+        value={store.pokemon[teamIndex][pokemonProp]}
       />
     )
   }

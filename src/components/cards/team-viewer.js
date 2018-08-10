@@ -45,13 +45,13 @@ class TeamViewer extends React.Component {
    * 3 and 4,
    * or 5 and 6.
    */
-  getTwoPokemonSprites(teamSlot) {
+  getTwoPokemonSprites(teamIndex) {
     const {classes, width} = this.props
 
     return (
       <div className={classes.twoSprites}>
-        <Sprite teamSlot={2 * teamSlot - 1} width={width} />
-        <Sprite teamSlot={2 * teamSlot} width={width} />
+        <Sprite teamIndex={teamIndex} width={width} />
+        <Sprite teamIndex={teamIndex + 1} width={width} />
       </div>
     )
   }
@@ -71,19 +71,19 @@ class TeamViewer extends React.Component {
             >
               { // Either displays 3 or 6 tabs
                 width === 'sm'
-                  ? [1, 2, 3].map(teamSlot => (
+                  ? [0, 2, 4].map(teamIndex => (
                     <Tab 
-                      key={teamSlot}
-                      label={`${2 * teamSlot - 1} - ${2 * teamSlot}`}
-                      icon={this.getTwoPokemonSprites(teamSlot)}
+                      key={teamIndex}
+                      label={`${teamIndex} - ${teamIndex + 1}`}
+                      icon={this.getTwoPokemonSprites(teamIndex)}
                     />
                   ))
-                  : [1, 2, 3, 4, 5, 6].map(teamSlot => (
+                  : [0, 1, 2, 3, 4, 5].map(teamIndex => (
                       <Tab 
-                        key={teamSlot}
-                        label={teamSlot}
+                        key={teamIndex}
+                        label={teamIndex}
                         className={classes.xsTab}
-                        icon={<Sprite teamSlot={teamSlot} width={width} />}
+                        icon={<Sprite teamIndex={teamIndex} width={width} />}
                       />
                     ))
               }
@@ -92,16 +92,16 @@ class TeamViewer extends React.Component {
         </Grid>
         { // Either displays 2 or 1 pokemon at a time
           width === 'sm'
-            ? [1, 2].map(num => (
+            ? [0, 1].map(num => (
                 <Grid key={num} item xs={12}>
                   <Paper className={`${classes.paper} ${classes.oneOfTwoPkmn}`}>
-                    <Pokemon teamSlot={2 * smTabIndex + num} />
+                    <Pokemon teamIndex={2 * smTabIndex + num} />
                   </Paper>
                 </Grid>
               ))
             : <Grid item xs={12}>
                 <Paper className={`${classes.paper} ${classes.oneOfTwoPkmn}`}>
-                  <Pokemon teamSlot={xsTabIndex + 1} />
+                  <Pokemon teamIndex={xsTabIndex + 1} />
                 </Paper>
               </Grid>
         }

@@ -7,8 +7,8 @@ import {pokemonInputStyles as spriteStyles} from '../../../styles'
 @observer
 class Sprite extends React.Component {
   render() {
-    const {classes, teamSlot, width} = this.props
-    const pokemon = store.pokemon[teamSlot - 1].name // unhyphenated name
+    const {classes, teamIndex, width} = this.props
+    const pokemon = store.pokemon[teamIndex].name // unhyphenated name
     
     let spriteFilename = pokemon // the filename of the pokemon sprite (usually just the pokemon name)
 
