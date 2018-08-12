@@ -9,6 +9,24 @@ DO THESE THINGS
 2. Make format filters display the most relevant pokemon first (may require like ES6 Map or Set)
 3. Add icons to pokemon and item select.
 4. Add tooltips to type defence, coverage, and checklist.
+  -hover or click on the type or type score
+  -type defence
+    -Poison does...
+      -4x to Shiinotic
+      -2x to Sylveon
+      -0.5x to Alakazam
+      -0.25x to
+      -0x to Registeel
+  -type coverage shows:
+    -Supereffective against poison:
+      -Psychic  Alakazam
+      -Ground   Aggron
+  -type checklist shows:
+    -Do you have stealth rock, spikes, toxic spikes, or sticky web?
+      -Gigalith   Stealth Rock
+    -Do you have choice scarf, choice band, or choice specs?
+      -Buzzwole   Choice Band
+      -Tapu Lele  Choice Scarf
 5. Add type chart.
 6. Stylize the site.
   -color scheme
@@ -23,23 +41,21 @@ DO THESE THINGS
   -with 6 pokemon cards, it seems like code is launched 6 times for each pokmeon card
   -functions that call in the beginning even though they shouldn't be
   -deal with import crisis: react-loadable?
-9. Deploy
+9. Complete documentation
+10. Deploy
 
 STYLE CHANGES
 -the input delete x button too big
 
-FUTURE
--no repeated moves
--moves that are incompatible together
--host images yourself?
--update about pages
--porygonZ
-
--smogon tiers provide restrictions for abilities, etc., not just pokemon
--dark theme
-
--change search filters so that maybe tiers only show pokemon of that tier (or show those first)?
-
-Minor stuff
+BUG CHANGES
 -weird stuff with like arceus-normal with draco plate has normal type judgement
 -or silvally-normal with dark memory has normal-type multi-attack
+-porygonZ Z-conversion?
+
+MAJOR CHANGES
+-no repeated moves
+-moves that are incompatible together
+-validate team
+-host images yourself?
+-dark theme
+-smogon tiers provide restrictions for abilities, etc., not just pokemon
