@@ -17,38 +17,30 @@ import 'react-select/dist/react-select.css'
 import 'react-virtualized-select/styles.css'
 import Select from 'react-virtualized-select'
 
-class IntegrationReactSelect extends React.Component {
-  constructor(props) {
-    super(props)
-    // we use the input's placeholder to determine what pokemon property to update
-    this.pokemonProp = this.props.placeholder.toLowerCase()
-  }
+function IntegrationReactSelect(props) {
+  const {classes, optionValues, optionLabels} = props
+  const optionsWithLabels = optionValues.map((optionValue, i) => ({
+    value: optionValue,
+    label: optionLabels[i],
+  }))
 
-  render() {
-    const {classes, optionValues, optionLabels} = this.props
-    const optionsWithLabels = optionValues.map((optionValue, i) => ({
-      value: optionValue,
-      label: optionLabels[i],
-    }))
-
-    return (
-      <Input
-        fullWidth
-        inputComponent={SelectWrapped}
-        value={this.props.value}
-        onChange={this.props.onChange}
-        placeholder={this.props.placeholder}
-        id='react-select-single'
-        inputProps={{
-          classes,
-          name: 'react-select-single',
-          instanceId: 'react-select-single',
-          simpleValue: true,
-          options: optionsWithLabels,
-        }}
-      />
-    )
-  }
+  return (
+    <Input
+      fullWidth
+      inputComponent={SelectWrapped}
+      value={props.value}
+      onChange={props.onChange}
+      placeholder={props.placeholder}
+      id='react-select-single'
+      inputProps={{
+        classes,
+        name: 'react-select-single',
+        instanceId: 'react-select-single',
+        simpleValue: true,
+        options: optionsWithLabels,
+      }}
+    />
+  )
 }
 
 /* 
@@ -65,42 +57,32 @@ function SelectWrapped(props) {
     <Select
       optionComponent={Option}
       noResultsText={<Typography>{'Nothing found'}</Typography>}
-      arrowRenderer={arrowProps => {
-        return arrowProps.isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />
-      }}
+      arrowRenderer={arrowProps => arrowProps.isOpen ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
       clearRenderer={() => <ClearIcon />}
-      valueComponent={valueProps => {
-        const {children} = valueProps
-
-        return <div className='Select-value'>{children}</div>
-      }}
+      valueComponent={valueProps => <div className='Select-value'>{valueProps.children}</div>}
       {...other}
     />
   )
 }
 
-class Option extends React.Component {
-  handleClick = event => {
-    this.props.onSelect(this.props.option, event)
+function Option(props) {
+  const {children, isFocused, isSelected, onFocus} = props
+
+  function handleClick(event) {
+    props.onSelect(props.option, event)
   }
 
-  render() {
-    const {children, isFocused, isSelected, onFocus} = this.props
-
-    return (
-      <MenuItem
-        onFocus={onFocus}
-        selected={isFocused}
-        onClick={this.handleClick}
-        component='div'
-        style={{
-          fontWeight: isSelected ? 500 : 400,
-        }}
-      >
-        {children}
-      </MenuItem>
-    )
-  }
+  return (
+    <MenuItem
+      onFocus={onFocus}
+      selected={isFocused}
+      onClick={handleClick}
+      component='div'
+      style={{fontWeight: isSelected ? 500 : 400}}
+    >
+      {children}
+    </MenuItem>
+  )
 }
 
 const ITEM_HEIGHT = 48

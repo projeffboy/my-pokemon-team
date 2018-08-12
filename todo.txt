@@ -1,13 +1,12 @@
 DO THESE THINGS
 0. Preliminary easy stuff
   -change default paper
-  -but then bullet seed is deemed a lower power move
 1. Finish the Pokmon Showdown import, download, and copy.
   -Pokemon Showdown Team
     -import team
     -export team
     -get the right icons
-2. Make format filters display the most relevant pokemon first
+2. Make format filters display the most relevant pokemon first (may require like ES6 Map or Set)
 3. Add icons to pokemon and item select.
 4. Add tooltips to type defence, coverage, and checklist.
 5. Add type chart.

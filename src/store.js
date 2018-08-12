@@ -397,7 +397,7 @@ class Store {
   // (How good your team is against the 18 different types)
   @computed get typeDefence() {
     // Scoresheet of how good all six pokemon resist a certain type
-    let typeDefence = { ...this.cleanSlate }
+    let typeDefence = {...this.cleanSlate}
 
     if (this.types.some(arr => arr.length)) { // is this 2D array empty or not
       this.types.forEach((pkmnTypes, i) => { // pkmnTypes means a specific pokemon's type(s)  
@@ -500,7 +500,7 @@ class Store {
   // Assessment of the team's type coverage
   // (How many types are your team's moves supereffective against)
   @computed get typeCoverage() {
-    let typeCoverage = { ...this.cleanSlate }
+    let typeCoverage = {...this.cleanSlate}
 
     for (const [i, pokemon] of this.pokemon.entries()) {
       const typesUsed = []
