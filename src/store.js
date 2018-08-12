@@ -564,14 +564,16 @@ class Store {
             ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
           }
 
-          // 1. Ignore status moves.
-          // (status moves don't deal damage. so they don't contribute to type coverage)
-          // 2. If one of the previous attacking moves was the same type, don't count this one.
-          // 3. Ignore moves less than 40 base power.
+          /*
+           * 1. Ignore status moves.
+           * (status moves don't deal damage. so they don't contribute to type coverage)
+           * 2. If one of the previous attacking moves was the same type, don't count this one.
+           * 3. Ignore moves less than 40 base power (unless it's a multi-hit move).
+           */
           else if (
-            moveDetails.category !== 'Status' // 
+            moveDetails.category !== 'Status'
             && !typesUsed.includes(moveType)
-            && moveDetails.basePower >= 40
+            && (moveDetails.basePower >= 40 || moveDetails.multihit)
           ) {
             typesUsed.push(moveType)
 
@@ -777,8 +779,22 @@ class Store {
 
         // Only return pokemon from a certian region based on pokedex number
         for (const [key, value] of Object.entries(pokedexData)) {
-          if (value.num >= range[0] && value.num <= range[1]) {
+          if (
+            value.num >= range[0]
+            && value.num <= range[1]
+            // If Kanto region, remove alola forms
+            && !(region === 'Kanto' && key.includes('alola'))
+          ) {
             newPokedexData[key] = value
+          }
+        }
+        
+        // If Alola region, add alola forms
+        if (region === 'Alola') {
+          for (const [key, value] of Object.entries(pokedexData)) {
+            if (key.includes('alola')) {
+              newPokedexData[key] = value
+            }
           }
         }
 

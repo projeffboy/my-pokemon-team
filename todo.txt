@@ -2,7 +2,6 @@ DO THESE THINGS
 0. Preliminary easy stuff
   -change default paper
   -but then bullet seed is deemed a lower power move
-  -are alola forms kanto or alola?
 1. Finish the Pokmon Showdown import, download, and copy.
   -Pokemon Showdown Team
     -import team
