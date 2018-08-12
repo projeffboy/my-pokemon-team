@@ -15,4 +15,6 @@ ReactDOM.render(
     document.getElementById('root')
 )
 
+window.theme = theme
+
 registerServiceWorker()

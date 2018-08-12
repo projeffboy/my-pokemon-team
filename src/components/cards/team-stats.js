@@ -92,7 +92,7 @@ class TeamStats extends React.Component {
     ), this)
   
     return (
-      <Grid container>
+      <Grid container style={{textAlign: 'center'}}>
         <Grid item xs={12}>
           {/* Either "Type Defence" or "Type Coverage"  */}
           <Typography variant='title' gutterBottom>

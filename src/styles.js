@@ -22,10 +22,8 @@ export const appStyles = {
 
 // When using the Paper component
 export const paperStyles = {
-  paper: {
-    padding: 10,
-    textAlign: 'center',
-  }
+  // Provides padding to Paper
+  applyPadding: {padding: theme.spacing.unit}
 }
 
 // cards.js
@@ -81,14 +79,14 @@ export const teamStatsStyles = {
 }
 
 // more-info.js
-export const moreInfoStyles = theme => ({
+export const moreInfoStyles = {
   root: {
     backgroundColor: theme.palette.background.paper,
     borderRadius: 4,
   },
   appBar: {borderRadius: '4px 4px 0 0'},
   tab: {minWidth: 'initial'},
-})
+}
 
 // search-filters.js
 export const searchFiltersStyles = theme => ({

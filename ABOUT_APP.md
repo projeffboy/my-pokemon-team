@@ -26,3 +26,5 @@ This app was created and debugged with Visual Studio Code, which is why there's 
 
 Using tilde for indexOf
 responsiveness, lg, xl, etc.
+
+recompose is not used.

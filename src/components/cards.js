@@ -29,7 +29,7 @@ function Cards(props) {
       // Display 6 pokemon cards
       return [0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} item xs={6}>
-          <Paper className={classes.paper}>
+          <Paper className={classes.applyPadding}>
             {/* teamIndex is the pokemon's team slot number - 1 */}
             <Pokemon teamIndex={num} />
           </Paper>
@@ -64,7 +64,7 @@ function Cards(props) {
         {
           ['Type Defence', 'Type Coverage'].map(cardTitle => (
             <Grid key={cardTitle} item xs={12}>
-              <Paper className={classes.paper}>
+              <Paper className={classes.applyPadding}>
                 <TeamStats title={cardTitle} width={width} />
               </Paper>
             </Grid>

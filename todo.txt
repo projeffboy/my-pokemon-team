@@ -1,6 +1,4 @@
 DO THESE THINGS
-0. Preliminary easy stuff
-  -change default paper
 1. Finish the Pokmon Showdown import, download, and copy.
   -Pokemon Showdown Team
     -import team
@@ -43,6 +41,7 @@ DO THESE THINGS
   -deal with import crisis: react-loadable?
 9. Complete documentation
 10. Deploy
+  -remove global store variable
 
 STYLE CHANGES
 -the input delete x button too big
