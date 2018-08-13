@@ -1,9 +1,11 @@
 DO THESE THINGS
 1. Finish the Pokmon Showdown import, download, and copy.
   -Pokemon Showdown Team
-    -import team
-    -export team
     -get the right icons
+    -export/import dialog
+      -textarea to edit team
+      -cancel button
+      -confirm button
 2. Make format filters display the most relevant pokemon first (may require like ES6 Map or Set)
 3. Add icons to pokemon and item select.
 4. Add tooltips to type defence, coverage, and checklist.
@@ -40,8 +42,9 @@ DO THESE THINGS
   -functions that call in the beginning even though they shouldn't be
   -deal with import crisis: react-loadable?
 9. Complete documentation
+  -and add your website and github links underneath
 10. Deploy
-  -remove global store variable
+  -remove global store and theme variable
 
 STYLE CHANGES
 -the input delete x button too big
@@ -58,3 +61,8 @@ MAJOR CHANGES
 -host images yourself?
 -dark theme
 -smogon tiers provide restrictions for abilities, etc., not just pokemon
+-cookies to save team, or through URL
+-import/export file
+-accessibility
+  -tab through everything
+-reorganize store.js

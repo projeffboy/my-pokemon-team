@@ -138,6 +138,11 @@ class Store {
   }
   */
 
+  /* Get the proper name of move */
+  moveName(move) {
+    return moves[move].name
+  }
+
   // Get all the possible abilities of the team's six pokemon
   // Using pokedexData (pokedex.js)
   @computed get abilities() {
@@ -176,11 +181,15 @@ class Store {
           && pkmn.name !== 'meganium'
           && pkmn.name !== 'yanmega'
         ) {
-          const megaStone = this.battleItems.find(item => (
+          pkmn.item = this.battleItems.find(item => (
             // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
             item.toLowerCase().slice(0, 5) === pkmn.name.slice(0, 5)
           ))
-          pkmn.item = megaStone
+
+          // Fuzzy match will give Charizard and Mewtwo Y the X stones, hence this code:
+          if (pkmn.name === 'charizardmegay' || pkmn.name === 'mewtwomegay') {
+            pkmn.item = pkmn.item.replace('X', 'Y')
+          }
         }
         // Auto select plate for Arceus formes
         else if (pkmn.name.includes('arceus')) {

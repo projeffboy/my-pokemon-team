@@ -1,49 +1,123 @@
 import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
-import ArrowUpward from '@material-ui/icons/ArrowUpward'
-//import FileCopy from '@material-ui/icons/FileCopy'
-//import SaveAlt from '@material-ui/icons/SaveAlt'
+import SwapVert from '@material-ui/icons/SwapVert'
+import Save from '@material-ui/icons/Save' // change this to FileCopy you get the chance
+import TextField from '@material-ui/core/TextField'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import {observer} from 'mobx-react'
+import store from '../../../store'
 
 const styles = theme => ({
   root: {display: 'none'},
   button: {
     margin: theme.spacing.unit,
-    [theme.breakpoints.down('sm')]: {padding: '4px 8px'},
-    [theme.breakpoints.only('md')]: {margin: 4},
+
   },
   input: {display: 'none'},
+  textField: {margin: '20px 0'},
 })
 
-function PokemonShowdownTeams(props) {
-  const {classes, width} = props
-  //const Icons = [<ArrowUpward />, <FileCopy />, <SaveAlt />]
-
-  let buttonLabels = ['Import Team', 'Download Team', 'Copy Team']
-  if (width === 'xs' || width === 'sm') {
-    buttonLabels = ['Import', 'Download', 'Copy']
+@observer
+class PokemonShowdownTeams extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {open: false}
   }
 
-  return (
-    buttonLabels.map((buttonLabel, i) => (
-      <Grid key={buttonLabel} item container justify='center' xs={6} lg={4}>
-        <input
-          accept='image/*'
-          className={classes.input}
-          id={'outlined-button-file-' + i}
-          multiple
-          type='file'
-        />
-        <label htmlFor={'outlined-button-file-' + i}>
-          <Button variant='outlined' component='span' className={classes.button}>
-            {buttonLabel}
-            <ArrowUpward />
-          </Button>
-        </label>
-      </Grid>
-    ))
-  )
+  handleClickOpen = () => this.setState({open: true})
+
+  handleClose = () => this.setState({open: false})
+
+  handleChange = () => {
+    
+
+    this.handleClose()
+  }
+
+  render() {
+    const {classes, width} = this.props
+    const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5].map(teamIndex => {
+      const {name, item, ability} = store.pokemon[teamIndex]
+
+      if (name) {
+        return (
+`
+${store.speciesName(name)} @ ${item}
+Ability: ${ability}
+${[1, 2, 3, 4].map(num => {
+  const move = store.pokemon[teamIndex]['move' + num]
+
+  if (move) {
+    return '-' + store.moveName(move)
+  } else {
+    return '-'
+  }
+}).join('\n')}
+
+`
+        )
+      }
+    })
+
+    let buttonLabels = ['Import/Export Team', 'Copy Team']
+    if (width === 'xs' || width === 'sm') {
+      buttonLabels = ['Import/Export', 'Copy']
+    }
+
+    return (
+      <React.Fragment>
+        <Button onClick={this.handleClickOpen}>
+          Import/Export Team <SwapVert />
+        </Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby='form-dialog-title'
+        >
+          <DialogTitle id='form-dialog-title'>
+            Import/Export
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              You can take a look at and change the raw data of your pokemon team.
+              <br />
+              If you use <a href='https://play.pokemonshowdown.com/teambuilder'>Pokemon Showdown</a>, you can paste your team here.
+              <br />
+              Likewise, you can copy your team here and paste it to Pokemon Showdown.
+            </DialogContentText>
+            <TextField
+              autoFocus
+              id='name'
+              placeholder='Your team is empty'
+              label='Pokemon Showdown Team Raw Text'
+              multiline
+              fullWidth
+              className={classes.textField}
+              defaultValue={pokemonShowdownTeamInfo.join('')}
+            />
+            <DialogContentText>
+              Note: The above raw text ignores nicknames, EVs, IVs, and natures.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleClose} color='primary'>
+              Cancel
+            </Button>
+            <Button onClick={this.handleChange} color='primary'>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Button className={classes.button}>Copy Team <Save /></Button>
+      </React.Fragment>
+    )
+
+  }
 }
 
 export default withStyles(styles)(PokemonShowdownTeams)
