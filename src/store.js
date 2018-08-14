@@ -186,7 +186,7 @@ class Store {
             item.toLowerCase().slice(0, 5) === pkmn.name.slice(0, 5)
           ))
 
-          // Fuzzy match will give Charizard and Mewtwo Y the X stones, hence this code:
+          // Fuzzy match will give Charizard
           if (pkmn.name === 'charizardmegay' || pkmn.name === 'mewtwomegay') {
             pkmn.item = pkmn.item.replace('X', 'Y')
           }
@@ -619,11 +619,11 @@ class Store {
 
     // First filter by format, then type, then region
     return Object.keys(
-      filterByRegion.call(
+      filterByFormat.call(
         this,
-        filterByType.call(
+        filterByRegion.call(
           this,
-          filterByFormat.call(
+          filterByType.call(
             this, 
             {...pokedex}
           )
@@ -632,8 +632,6 @@ class Store {
     )
 
     function filterByFormat(pokedexData) {
-      const pokedexDataCopy = {...pokedexData}
-
       /* No Filter */
 
       if (format === '') {
@@ -641,66 +639,64 @@ class Store {
       }
 
       /* Official Pokemon Format Filter */
-
-      const banlist = [
-        'mewtwo', 
-        'lugia', 
-        'hooh', 
-        'kyogre', 
-        'groudon', 
-        'rayquaza', 
-        'dialga', 
-        'palkia', 
-        'giratina', 
-        'reshiram', 
-        'zekrom', 
-        'kyurem', 
-        'xerneas', 
-        'yveltal', 
-        'zygarde', 
-        'cosmog', 
-        'cosmoem', 
-        'solgaleo', 
-        'lunala', 
-        'necrozma',
-        'mew', 
-        'celebi', 
-        'jirachi', 
-        'deoxys', 
-        'phione', 
-        'manaphy', 
-        'darkrai', 
-        'shaymin', 
-        'arceus', 
-        'victini', 
-        'keldeo', 
-        'meloetta', 
-        'genesect', 
-        'diancie', 
-        'hoopa', 
-        'volcanion', 
-        'greninjaash', 
-        'magearna', 
-        'marshadow', 
-        'zeraora',
-      ]
-
-      for (const pokemon of banlist) {
-        const {otherFormes} = pokedex[pokemon]
-        if (otherFormes) {
-          otherFormes.forEach(otherForme => delete pokedexData[otherForme])
-        }
-        delete pokedexData[pokemon]
-      }
-
+      
       if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2018'].includes(format)) {
+        const banlist = [
+          'mewtwo', 
+          'lugia', 
+          'hooh', 
+          'kyogre', 
+          'groudon', 
+          'rayquaza', 
+          'dialga', 
+          'palkia', 
+          'giratina', 
+          'reshiram', 
+          'zekrom', 
+          'kyurem', 
+          'xerneas', 
+          'yveltal', 
+          'zygarde', 
+          'cosmog', 
+          'cosmoem', 
+          'solgaleo', 
+          'lunala', 
+          'necrozma',
+          'mew', 
+          'celebi', 
+          'jirachi', 
+          'deoxys', 
+          'phione', 
+          'manaphy', 
+          'darkrai', 
+          'shaymin', 
+          'arceus', 
+          'victini', 
+          'keldeo', 
+          'meloetta', 
+          'genesect', 
+          'diancie', 
+          'hoopa', 
+          'volcanion', 
+          'greninjaash', 
+          'magearna', 
+          'marshadow', 
+          'zeraora',
+        ]
+  
+        for (const pokemon of banlist) {
+          const {otherFormes} = pokedex[pokemon]
+          if (otherFormes) {
+            otherFormes.forEach(otherForme => delete pokedexData[otherForme])
+          }
+          delete pokedexData[pokemon]
+        }
         return pokedexData
       }
 
-      /* Smogon Singles Filter */
+      /* Smogon Singles/Doubles Filter */
 
-      pokedexData = pokedexDataCopy
-
+      /* Not necessary anymore
       delete pokedexData.rayquazamega // Rayquaza-Mega is banned in all tiers but Anything Goes (AG)
       for (const pokemon in pokedexData) {
         if (formatsData[pokemon].tier === 'Illegal') {
@@ -708,7 +704,9 @@ class Store {
           delete pokedexData[pokemon]
         }
       }
-
+      */
+      
+      
       const tierAbbr = {
         'Uber': 'Uber',
         'OU: Over Used': 'OU', 
@@ -722,6 +720,10 @@ class Store {
         'Doubles UU': 'DUU',
       }
 
+      pokedexData = {} // clear out pokedexData
+
+      /* Smogon Singles Filter */
+      
       let smogonSinglesTiers = [
         'Uber',
         'OU', 
@@ -737,38 +739,39 @@ class Store {
         'LC Uber',
         'LC', 
       ]
-      
-      const filteredBySmogonSinglesTier = helperFunction(smogonSinglesTiers, 'tier')
+
+
+      if (smogonSinglesTiers.includes(tierAbbr[format])) {
+        return helperFunction(smogonSinglesTiers, 'tier')
+      }
 
       /* Smogon Doubles Filter */
 
-      pokedexData = pokedexDataCopy
+      else if (['DUber', 'DOU', 'DUU'].includes(tierAbbr[format])) {
+        return helperFunction(['DUber', 'DOU', 'DUU'], 'doublesTier')
+      }
 
-      return filteredBySmogonSinglesTier || helperFunction(['DUber', 'DOU', 'DUU'], 'doublesTier')
 
       /* Helper Function for Smogon Singles/Doubles Filter */
 
-      function helperFunction(array, tierType) {
-        for (const tier of array) {
-          if (tierAbbr[format] === tier) {
-            return pokedexData
-          }
-      
-          for (const pokemon in pokedex) {
-            if (formatsData[pokemon][tierType] === tier) {
-              // Delete the pokemon outside the tier and its other formes
-              const {otherFormes} = pokedex[pokemon]
-              if (otherFormes) {
-                otherFormes.forEach(forme => {
-                  if (!formatsData[forme][tierType]) {
-                    delete pokedexData[forme]
-                  }
-                })
+      function helperFunction(arrayOfTiers, tierType) {
+        let tierMatched = false
+        
+        for (const tier of arrayOfTiers) {
+          // If the tier matches or it's a lower tier
+          if (tierAbbr[format] === tier || tierMatched) {
+            tierMatched = true
+
+            // Add all the pokemon from that tier to pokedexData
+            for (const pokemon in pokedex) {
+              if (formatsData[pokemon][tierType] === tier) {
+                pokedexData[pokemon] = pokedex[pokemon]
               }
-              delete pokedexData[pokemon]
             }
-          }      
+          }
         }
+        
+        return pokedexData
       }
     }
 

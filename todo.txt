@@ -6,7 +6,6 @@ DO THESE THINGS
       -textarea to edit team
       -cancel button
       -confirm button
-2. Make format filters display the most relevant pokemon first (may require like ES6 Map or Set)
 3. Add icons to pokemon and item select.
 4. Add tooltips to type defence, coverage, and checklist.
   -hover or click on the type or type score
@@ -67,3 +66,4 @@ MAJOR CHANGES
 -accessibility
   -tab through everything
 -reorganize store.js
+-display pokemon by format alphabetically
