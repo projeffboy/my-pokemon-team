@@ -43,13 +43,35 @@ class PokemonShowdownTeams extends React.Component {
   handleChange = () => {
     const textAreaLines = this.state.textArea.split('\n')
 
-    /*
-    textAreaLines.map(line => {
-      if () {
+    let teamIndex = 0
+    let moveNum = 1
+    let attrOrder = 0
 
+    textAreaLines.forEach(line => {
+      if (line.includes('@')) {
+        teamIndex++
+        moveNum = 1
+        attrOrder = 1
+
+        // set name and item
+        const [name, item] = line.split('@').trim()
+      } else if (attrOrder <= 1 && line.includes('Ability: ')) {
+        attrOrder = 2
+
+        // set ability
+        const ability = line.replace('Ability: ', '').trim()
+      } else if (attrOrder <= 2 && line[0] === '-') {
+        // set move
+        const move = line.slice(1).trim()
+        /*
+        if (store.moves[move] && store.pokemon[teamIndex]) {
+
+        }
+        */
+
+        moveNum++
       }
     })
-    */
 
     this.handleClose()
 
@@ -119,7 +141,7 @@ ${[1, 2, 3, 4].map(num => {
               onChange={this.handleTextArea}
             />
             <DialogContentText>
-              Note: The above raw text ignores nicknames, EVs, IVs, and natures.
+              Note: The above raw text ignores nicknames, EVs, IVs, natures, level, gender, happiness, and shiny.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
