@@ -35,6 +35,7 @@ DO THESE THINGS
   -change favicon
   -make placeholder text different color than selected text
   -stylize react-virtualized-select
+  -link style
 7. Check for responsiveness (and test touch on mobile).
   -repsonsiveness for widescreens
 8. Speed up the page somehow.

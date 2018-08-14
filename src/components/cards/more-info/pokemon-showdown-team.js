@@ -26,7 +26,14 @@ const styles = theme => ({
 class PokemonShowdownTeams extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {open: false}
+    this.state = {
+      open: false,
+      textArea: '',
+    }
+  }
+
+  handleTextArea = event => {
+    this.setState({textArea: event.target.value})
   }
 
   handleClickOpen = () => this.setState({open: true})
@@ -34,9 +41,19 @@ class PokemonShowdownTeams extends React.Component {
   handleClose = () => this.setState({open: false})
 
   handleChange = () => {
-    
+    const textAreaLines = this.state.textArea.split('\n')
+
+    /*
+    textAreaLines.map(line => {
+      if () {
+
+      }
+    })
+    */
 
     this.handleClose()
+
+    // display snackbar for success for failure
   }
 
   render() {
@@ -99,6 +116,7 @@ ${[1, 2, 3, 4].map(num => {
               fullWidth
               className={classes.textField}
               defaultValue={pokemonShowdownTeamInfo.join('')}
+              onChange={this.handleTextArea}
             />
             <DialogContentText>
               Note: The above raw text ignores nicknames, EVs, IVs, and natures.
