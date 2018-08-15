@@ -6,6 +6,8 @@ DO THESE THINGS
       -textarea to edit team
       -cancel button
       -confirm button
+    -copy button
+      -produce a snackbar when it does
 3. Add icons to pokemon and item select.
 4. Add tooltips to type defence, coverage, and checklist.
   -hover or click on the type or type score

@@ -11,6 +11,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import {observer} from 'mobx-react'
 import store from '../../../store'
+import Snackbar from '@material-ui/core/Snackbar'
 
 const styles = theme => ({
   root: {display: 'none'},
@@ -23,11 +24,12 @@ const styles = theme => ({
 })
 
 @observer
-class PokemonShowdownTeams extends React.Component {
+class PokemonShowdownTeam extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
-      open: false,
+      isDialogOpen: false,
       textArea: '',
     }
   }
@@ -36,9 +38,9 @@ class PokemonShowdownTeams extends React.Component {
     this.setState({textArea: event.target.value})
   }
 
-  handleClickOpen = () => this.setState({open: true})
+  handleClick = () => this.setState({isDialogOpen: true})
 
-  handleClose = () => this.setState({open: false})
+  handleClose = () => this.setState({isDialogOpen: false})
 
   handleChange = () => {
     const textAreaLines = this.state.textArea.split('\n')
@@ -78,15 +80,25 @@ class PokemonShowdownTeams extends React.Component {
     // display snackbar for success for failure
   }
 
+  handleCopy = text => {
+    let textArea = document.createElement('textarea')
+
+    textArea.value = text
+    document.body.appendChild(textArea)
+    textArea.select()
+    document.execCommand('copy')
+    textArea.remove()
+  }
+
   render() {
     const {classes, width} = this.props
+
     const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5].map(teamIndex => {
       const {name, item, ability} = store.pokemon[teamIndex]
 
       if (name) {
         return (
-`
-${store.speciesName(name)} @ ${item}
+`${store.speciesName(name)} @ ${item}
 Ability: ${ability}
 ${[1, 2, 3, 4].map(num => {
   const move = store.pokemon[teamIndex]['move' + num]
@@ -96,12 +108,10 @@ ${[1, 2, 3, 4].map(num => {
   } else {
     return '-'
   }
-}).join('\n')}
-
-`
+}).join('\n')}`
         )
       }
-    })
+    }).join('')
 
     let buttonLabels = ['Import/Export Team', 'Copy Team']
     if (width === 'xs' || width === 'sm') {
@@ -110,11 +120,11 @@ ${[1, 2, 3, 4].map(num => {
 
     return (
       <React.Fragment>
-        <Button onClick={this.handleClickOpen}>
+        <Button onClick={this.handleClick}>
           Import/Export Team <SwapVert />
         </Button>
         <Dialog
-          open={this.state.open}
+          open={this.state.isDialogOpen}
           onClose={this.handleClose}
           aria-labelledby='form-dialog-title'
         >
@@ -137,7 +147,7 @@ ${[1, 2, 3, 4].map(num => {
               multiline
               fullWidth
               className={classes.textField}
-              defaultValue={pokemonShowdownTeamInfo.join('')}
+              defaultValue={pokemonShowdownTeamInfo}
               onChange={this.handleTextArea}
             />
             <DialogContentText>
@@ -153,11 +163,48 @@ ${[1, 2, 3, 4].map(num => {
             </Button>
           </DialogActions>
         </Dialog>
-        <Button className={classes.button}>Copy Team <Save /></Button>
+        <Button onClick={() => this.handleCopy(pokemonShowdownTeamInfo)} className={classes.button}>
+          Copy Team <Save />
+        </Button>
       </React.Fragment>
     )
-
   }
 }
 
-export default withStyles(styles)(PokemonShowdownTeams)
+class PositionedSnackbar extends React.Component {
+  state = {
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  };
+
+  handleClick = state => () => {
+    this.setState({ open: true, ...state });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  render() {
+    const { vertical, horizontal, open } = this.state;
+    return (
+      <div>
+        <Button onClick={this.handleClick({ vertical: 'bottom', horizontal: 'center' })}>
+          Bottom-Center
+        </Button>
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={open}
+          onClose={this.handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">I love snacks</span>}
+        />
+      </div>
+    );
+  }
+}
+
+export default withStyles(styles)(PokemonShowdownTeam)

@@ -380,6 +380,17 @@ class Store {
     return pokedex[pokemon].baseSpecies
   }
 
+  // The inverse of the baseSpecies function
+  baseSpeciesInverse(baseSpecies) {
+    for(const pokemon in pokedex) {
+      if (baseSpecies === baseSpecies(pokemon)) {
+        return pokemon
+      }
+    }
+
+    return null
+  }
+
   // Returns name of the pokemon's alternate forme
   // E.g. Charizard Mega-X's forme is Mega-X
   forme(pokemon) {
