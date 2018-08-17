@@ -40,28 +40,20 @@ class PokemonInput extends React.Component {
 
     switch(pokemonProp) {
       case 'name':
-        optionValues = store.filteredPokemon // store.allPokemon
-        optionLabels = store.filteredPokemonNames // store.allPokemonNames
+        optionValues = store.filteredPokemon // store.allPokemonNames
+        optionLabels = store.filteredPokemonNames // store.allPokemonSpeciesNames
         break
       case 'item':
-        optionValues = store.battleItems
+        optionValues = store.itemsArr
+        optionLabels = store.itemNamesArr
         break
       case 'ability':
-        optionValues = store.abilities[teamIndex]
+        optionValues = store.teamAbilities[teamIndex]
+        optionLabels = optionValues
         break
       default: // for the moves
-        optionValues = store.learnsets.values[teamIndex]
-        optionLabels = store.learnsets.labels[teamIndex]
-    }
-
-    // Apparently if you remove this it breaks, dunno why
-    // Somewhere above, it's changing optionValues from [] to undefined
-    if (optionValues === undefined) {
-      optionValues = []
-    }
-
-    if (!optionLabels.length) { // if empty
-      optionLabels = optionValues
+        optionValues = store.teamLearnsets.values[teamIndex]
+        optionLabels = store.teamLearnsets.labels[teamIndex]
     }
 
     return (

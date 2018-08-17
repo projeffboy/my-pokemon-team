@@ -1,3 +1,5 @@
+// contains specifically only items for battle
+
 export default {
 	"abomasite": {
 		id: "abomasite",

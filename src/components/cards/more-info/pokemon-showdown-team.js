@@ -38,40 +38,55 @@ class PokemonShowdownTeam extends React.Component {
     this.setState({textArea: event.target.value})
   }
 
-  handleClick = () => this.setState({isDialogOpen: true})
+  handleClick = (e, text) => {
+    this.setState({
+      isDialogOpen: true,
+      textArea: text,
+    })
+  }
 
   handleClose = () => this.setState({isDialogOpen: false})
 
   handleChange = () => {
-    const textAreaLines = this.state.textArea.split('\n')
+    let pokemonRawData = this.state.textArea.split('\n\n')
+    pokemonRawData = pokemonRawData.filter(eachPkmnData => eachPkmnData)
+    pokemonRawData.forEach((eachPkmnData, teamIndex) => {
+      const lines = eachPkmnData.split('\n')
+      
+      const speciesNameAndItem = lines[0].split('@').map(str => str.trim())
+      const [speciesName, itemName] = speciesNameAndItem
+      const name = store.speciesNameInverse(speciesName)
+  
+      if (name) {
+        store.pokemon[teamIndex].name = name
 
-    let teamIndex = 0
-    let moveNum = 1
-    let attrOrder = 0
-
-    textAreaLines.forEach(line => {
-      if (line.includes('@')) {
-        teamIndex++
-        moveNum = 1
-        attrOrder = 1
-
-        // set name and item
-        const [name, item] = line.split('@').trim()
-      } else if (attrOrder <= 1 && line.includes('Ability: ')) {
-        attrOrder = 2
-
-        // set ability
-        const ability = line.replace('Ability: ', '').trim()
-      } else if (attrOrder <= 2 && line[0] === '-') {
-        // set move
-        const move = line.slice(1).trim()
-        /*
-        if (store.moves[move] && store.pokemon[teamIndex]) {
-
+        // check if item is fine
+        const item = store.itemNameInverse(itemName)
+        if (item) {
+          store.pokemon[teamIndex].item = item
         }
-        */
 
-        moveNum++
+        let moveNum = 1
+        lines.slice(1).forEach((line, i) => {
+          // get the ability and moves
+          if (line.includes('Ability:')) {
+            const ability = line.replace('Ability:', '').trim()
+
+            /*
+            if (Object.values(store.abilities(name)).includes(ability)) {
+              store.pokemon[teamIndex].ability = ability
+            }
+            */
+          } else if (line[0] === '-') {
+            /*
+            const moveName = line.slice(1).trim()
+
+            if (store.moveNameInverse(moveName)) {
+              store.pokemon[teamIndex]['move' + moveNum] = moveName
+            }
+            */
+          }
+        })
       }
     })
 
@@ -98,7 +113,7 @@ class PokemonShowdownTeam extends React.Component {
 
       if (name) {
         return (
-`${store.speciesName(name)} @ ${item}
+`${store.speciesName(name)} @ ${store.itemName(item)}
 Ability: ${ability}
 ${[1, 2, 3, 4].map(num => {
   const move = store.pokemon[teamIndex]['move' + num]
@@ -108,7 +123,7 @@ ${[1, 2, 3, 4].map(num => {
   } else {
     return '-'
   }
-}).join('\n')}`
+}).join('\n')}\n\n`
         )
       }
     }).join('')
@@ -120,7 +135,7 @@ ${[1, 2, 3, 4].map(num => {
 
     return (
       <React.Fragment>
-        <Button onClick={this.handleClick}>
+        <Button onClick={e => this.handleClick(e, pokemonShowdownTeamInfo)}>
           Import/Export Team <SwapVert />
         </Button>
         <Dialog

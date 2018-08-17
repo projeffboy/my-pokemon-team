@@ -1,12 +1,20 @@
 import {observable, computed, action} from 'mobx'
 import {capitalizeWord} from './helper-functions'
 // I have to import a bunch of pokemon data first
-import pokedex from './data/pokedex'
-import battleItemsData from './data/battle-items'
-import miniLearnsets from './data/mini-learnsets.min'
-import typechart from './data/typechart'
-import moves from './data/moves'
-import formatsData from './data/formats-data'
+import pokedexData from './data/pokedex'
+import itemsData from './data/items'
+import learnsetsData from './data/learnsets.min'
+import typechartData from './data/typechart'
+import movesData from './data/moves'
+import formatsData from './data/formats'
+
+// Remove tehse during production and modify the varible names above
+const pokedex = window.pokedex = pokedexData
+const items = window.items = itemsData
+const learnsets = window.learnsetsData = learnsetsData
+const typechart = window.typechartData = typechartData
+const moves = window.movesData = movesData
+const formats = window.formatsData = formatsData
 
 class Store {
   constructor() {
@@ -40,6 +48,141 @@ class Store {
     }
   }
 
+  /*
+   * MAKING SENSE OF VARIABLE NAMES
+   * There are two types of pokemon name variables:
+   *  -pokemonName (pokemon name):
+   *    -only one word
+   *    -no hyphens
+   *    -lowercase
+   *    -E.g. charizardmegay
+   *  -speciesName (species name):
+   *    -words are separated by a hyphen, not a space
+   *    -each word is capitalized
+   *    -E.g. Charizard-Mega-Y
+   * The variable `pkmn` (or `pokemon`) itself refers to only one thing:
+   *  -an object containing a pokemon's properties
+   *  -these properties have to be obtained from pokedex.js
+   *  -E.g. const pkmn = pokedex['charizard']
+   */
+
+  /*
+   * STORE HELPER PROPERTIES
+   * pokedex[pkmnName] returns a pokemon's properties through pokedex.js
+   */
+
+  /*******************
+  STORE HELPER METHODS
+  *******************/
+
+  /* POKEDEX METHODS */
+  
+  /* NOT USED
+   * Instead we use filteredPokemonNames and filteredPokemonSpeciesNames
+  allPokemonNames() {
+    return Object.keys(pokedex)
+  }
+
+  allPokemonSpeciesNames() {
+    return this.allPokemonNames.map(pokemon => this.speciesName(pokemon)) // species is name
+  }
+  */
+
+  /*
+   * Input a pokemon name to return its abilities
+   * (input has to be like "venusaurmega", not "Venusaur Mega")
+   * (output is in object form)
+   */
+  abilities(pkmnName) {
+    return pokedex[pkmnName].abilities
+  }
+
+  // Input a pokemon name to return its species name
+  // E.g. 'squirtle' => 'Squirtle'
+  speciesName(pkmnName) {
+    return pokedex[pkmnName].species
+  }
+  
+  // The inverse of the speciesName function
+  // E.g. 'Squirtle' => 'squirtle'
+  speciesNameInverse(speciesName) {
+    for(const pkmnName in pokedex) {
+      if (speciesName === this.speciesName(pkmnName)) {
+        return pkmnName
+      }
+    }
+  }
+  
+  // Input a pokemon name to return the pokemon name of its base forme
+  // E.g. 'giratinaorigin' => 'giratina'
+  // (it will return undefined for pokemon already at the base forme)
+  // E.g. 'wartortle' => undefined
+  baseSpecies(pkmnName) {
+    const baseSpeciesName = pokedex[pkmnName].baseSpecies
+    const name = this.speciesNameInverse(baseSpeciesName)
+
+    return name
+  }
+
+  // Input a pokemon name to return its alternate forme(s)
+  // E.g. 'charizard' => ['charizardmegax', 'charizardmegay']
+  forme(pkmnName) {
+    return pokedex[pkmnName].forme
+  }
+
+  // Get previous evolution
+  previousEvolution(pkmnName) {
+    const pkmn = pokedex[pkmnName]
+    return pkmn ? pkmn.prevo : undefined
+  }
+  
+  /* ITEMS METHODS */
+
+  // START FROM HERE!!!!!!!!!!!
+  get itemsArr() {
+    return Object.keys(items)
+  }
+
+  get itemNamesArr() {
+    return Object.values(items).map(itemDetails => itemDetails.name)
+  }
+
+  itemName(item) {
+    const itemInfo = items[item]
+
+    return itemInfo ? itemInfo.name : ''
+  }
+
+  itemNameInverse(itemName) {
+    return this.itemsArr[this.battleItemNames.indexOf(itemName)]
+  }
+  
+  /* LEARNSETS METHODS */
+
+  // Don't think we need any
+  
+  /* TYPECHART METHODS */
+
+  // Don't think we need any
+  
+  /* MOVE METHODS */
+
+  // Get the proper name of move
+  moveName(move) {
+    return moves[move].name
+  }
+ 
+  // Inverse function of moveName
+  moveNameInverse(moveName) {
+    for (const move in moves) {
+      if (moveName === this.moveName(move)) {
+        return move
+      }
+    }
+  }
+  
+  /* FORMATS METHODS */
+
   /********************************
   DATA ABOUT THE TEAM'S SIX POKEMON 
   ********************************/
@@ -54,22 +197,9 @@ class Store {
     ability: '', // chosen ability
   })
 
-  // Clear one of the six pokemon's properties
-  @action clearPokemonProps(i) {
-    for (const prop in this.pokemon[i]) {
-      this.pokemon[i][prop] = ''
-    }
-  }
-
   // Get all the items of the team's six pokemon
   @computed get teamItems() {
     return this.pokemon.map(pkmn => pkmn.item)
-  }
-
-  
-  // Does the team have these items (in an array)?
-  doesTeamHaveItems(theseItems) {
-    return this.teamItems.some(teamItem => theseItems.includes(teamItem))
   }
   
   // Get the picked moves of the team's six pokemon
@@ -94,59 +224,11 @@ class Store {
     ))
   }
 
-  // Does the team have this one particular item (in a string)?
-  doesTeamHaveMove = move => this.teamMoves.includes(move)
-
-  // Does the team Have these moves (in an array)?
-  doesTeamHaveMoves(theseMoves) {
-    return this.teamMoves.some(teamMove => theseMoves.includes(teamMove))
-  }
-
-  // Does at least one pokemon Have all of these moves?
-  doesPokemonHaveTheseMoves(moves) {
-
-    /*
-     * Check if at least one of your pokemon contains these 2-4 moves.
-     * 
-     * Actually, say if you want to check if you have a pokemon,
-     * That contains wish and either protect or wish.
-     * What you do is pass an array,
-     * Where the first element is 'wish',
-     * And the second is an array, ['protect', 'detect'].
-     */
-
-    // A list of four moves (listOfFourMoves), for each array of four moves (fourMoves)...
-    return this.listOfFourMoves.some(fourMoves => (
-      // Moves one of your six pokemon need to have (moves), for each move (string)...
-      moves.every(move => {
-        if (Array.isArray(move)) { // move could be array or string
-          // That particular pokemon needs to know one of these moves (move (in array form)),
-          // For each one of these moves (altMove)...
-          return move.some(altMove => fourMoves.includes(altMove))
-        } else {
-          return fourMoves.includes(move)
-        }
-      })
-    ))
-  }
-
-  /* Does the pokemon have this particular move and item?
-  pokemonHasThisMoveAndItem(move, item) {
-    return this.listOfFourMoves.map((fourMoves, i) => (
-      fourMoves.includes(move) && this.pokemon[i].item === item
-  ))
-  }
-  */
-
-  /* Get the proper name of move */
-  moveName(move) {
-    return moves[move].name
-  }
-
+  
   // Get all the possible abilities of the team's six pokemon
   // Using pokedexData (pokedex.js)
-  @computed get abilities() {
-    return this.pokemon.map((pkmn, i) => {
+  @computed get teamAbilities() {
+    return this.pokemon.map(pkmn => {
       if (pkmn.name) {
         const pkmnAbilities = pokedex[pkmn.name].abilities // the specific pokemon's abilities (obj)
 
@@ -171,88 +253,10 @@ class Store {
     ))
   }
 
-  // Auto select the item if necessary (e.g. Mega Blastoise needs Blastoisite)
-  @action autoSelectItem() {
-    for (const pkmn of this.pokemon) {
-      if (pkmn.name) {
-        // Auto select mega stone
-        if (
-          pkmn.name.includes('mega')
-          && pkmn.name !== 'meganium'
-          && pkmn.name !== 'yanmega'
-        ) {
-          pkmn.item = this.battleItems.find(item => (
-            // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
-            item.toLowerCase().slice(0, 5) === pkmn.name.slice(0, 5)
-          ))
-
-          // Fuzzy match will give Charizard
-          if (pkmn.name === 'charizardmegay' || pkmn.name === 'mewtwomegay') {
-            pkmn.item = pkmn.item.replace('X', 'Y')
-          }
-        }
-        // Auto select plate for Arceus formes
-        else if (pkmn.name.includes('arceus')) {
-          const type = pkmn.name.replace('arceus', '')
-          const typeToPlate = {
-            bug: 'Insect Plate',
-            dark: 'Dread Plate',
-            dragon: 'Draco Plate',
-            electric: 'Zap Plate',
-            fairy: 'Pixie Plate',
-            fighting: 'Fist Plate',
-            fire: 'Flame Plate',
-            flying: 'Sky Plate',
-            ghost: ' Plate',
-            grass: 'Meadow Plate',
-            ground: 'Earth Plate',
-            ice: 'Icicle Plate',
-            normal: '', // no plate for normal type
-            poison: 'Toxic Plate',
-            psychic: 'Mind Plate',
-            rock: 'Stone Plate',
-            steel: 'Iron Plate',
-            water: 'Splash Plate',
-          }
-
-          pkmn.item = typeToPlate[type]
-        }
-        // Auto select drive for Genesect
-        else if (pkmn.name.includes('genesect') && pkmn.name !== 'genesect') {
-          const drive = pkmn.name.replace('genesect', '')
-          const driveName = capitalizeWord(drive) + ' Drive'
-          
-          pkmn.item = driveName
-        }
-        // Auto select memory for Silvally
-        else if (pkmn.name.includes('silvally') && pkmn.name !== 'silvally') {
-          const type = pkmn.name.replace('silvally', '')
-          const memory = capitalizeWord(type) + ' Memory'
-
-          pkmn.item = memory
-        }
-        // Pick Griseous Orb for Giratina
-        else if (pkmn.name === 'giratinaorigin') {
-          pkmn.item = 'Griseous Orb'
-        }
-      }
-    }
-  }
-
-  // Auto select the pokemon's ability if it only has one ability.
-  @action autoSelectAbility() {
-    this.abilities.forEach((pkmnAbilities, i) => {
-      if (pkmnAbilities.length === 1) {
-        this.pokemon[i].ability = pkmnAbilities[0]
-      }
-    })
-  }
-
-  // Get the learnsets of the team's six pokemon
-  // Using miniLearnsets (mini-learnsets.min.js)
-  @computed get learnsets() {
+  // Get the learnsets of the team's six pokemon using learnsets.min.js
+  @computed get teamLearnsets() {
     // both will contain the learnsets of six pokemon
-    let learnsets = {
+    let teamLearnsets = {
       values: [],
       labels: [],
     }
@@ -260,15 +264,14 @@ class Store {
     for (const pkmn of this.pokemon) {
       if (pkmn.name) {
         /*
-         * As it turns out, mini-learnsets.min.js doesn't include pokemons' alternate formes.
+         * As it turns out, learnsets.min.js doesn't include pokemons' alternate formes.
          * So if the user chooses an alternate forme pokemon,
          * we gotta tell the code that we mean the base form.
          */
         let baseFormeName = this.baseSpecies(pkmn.name) || pkmn.name
-        baseFormeName = baseFormeName.toLowerCase()
 
         // the specific pokemon's learnset
-        let learnsetValues = miniLearnsets[baseFormeName]
+        let learnsetValues = learnsets[baseFormeName]
 
         /*
          * TLDR; This code allows you to choose moves for pokemon that can be learnt by their pre-evolutions.
@@ -282,7 +285,7 @@ class Store {
          */
         while (this.previousEvolution(baseFormeName)) {
           baseFormeName = this.previousEvolution(baseFormeName)
-          learnsetValues = [...learnsetValues, ...miniLearnsets[baseFormeName]]
+          learnsetValues = [...learnsetValues, ...learnsets[baseFormeName]]
         }
 
         // remove duplicates
@@ -330,18 +333,17 @@ class Store {
         // we need to display it as "Aerial Ace", which is the purpose of learnsetLabels
         const learnsetLabels = learnsetValues.map(move => moves[move].name)
 
-        learnsets.values.push(learnsetValues)
-        learnsets.labels.push(learnsetLabels)
+        teamLearnsets.values.push(learnsetValues)
+        teamLearnsets.labels.push(learnsetLabels)
       } else {
-        learnsets.values.push([])
-        learnsets.labels.push([])
+        teamLearnsets.values.push([])
+        teamLearnsets.labels.push([])
       }
     }
 
-    return learnsets
+    return teamLearnsets
   }
 
-  // Get the type(s) of the team's six pokemon
   // Get the type(s) of the team's six pokemon
   @computed get types() {
     let types = []
@@ -358,56 +360,139 @@ class Store {
     return types
   }
 
-  /**************************
-  POKEDEX INFO ON ALL POKEMON
-  **************************/
-
-  @computed get allPokemon() {
-    return Object.keys(pokedex)
+  // Does the team have these items (in an array)?
+  doesTeamHaveItems(theseItems) {
+    return this.teamItems.some(teamItem => theseItems.includes(teamItem))
   }
 
-  @computed get allPokemonNames() {
-    return this.allPokemon.map(pokemon => this.speciesName(pokemon)) // species is name
+  // Does the team have this one particular item (in a string)?
+  doesTeamHaveMove = move => this.teamMoves.includes(move)
+
+  // Does the team Have these moves (in an array)?
+  doesTeamHaveMoves(theseMoves) {
+    return this.teamMoves.some(teamMove => theseMoves.includes(teamMove))
   }
 
-  // Returns the species name of a pokemon
-  speciesName(pokemon) {
-    return pokedex[pokemon].species
+  // Does at least one pokemon Have all of these moves?
+  doesPokemonHaveTheseMoves(moves) {
+
+    /*
+     * Check if at least one of your pokemon contains these 2-4 moves.
+     * 
+     * Actually, say if you want to check if you have a pokemon,
+     * That contains wish and either protect or wish.
+     * What you do is pass an array,
+     * Where the first element is 'wish',
+     * And the second is an array, ['protect', 'detect'].
+     */
+
+    // A list of four moves (listOfFourMoves), for each array of four moves (fourMoves)...
+    return this.listOfFourMoves.some(fourMoves => (
+      // Moves one of your six pokemon need to have (moves), for each move (string)...
+      moves.every(move => {
+        if (Array.isArray(move)) { // move could be array or string
+          // That particular pokemon needs to know one of these moves (move (in array form)),
+          // For each one of these moves (altMove)...
+          return move.some(altMove => fourMoves.includes(altMove))
+        } else {
+          return fourMoves.includes(move)
+        }
+      })
+    ))
   }
 
-  // Returns the name of the pokemon's base forme
-  baseSpecies(pokemon) {
-    return pokedex[pokemon].baseSpecies
+  /* NOT USED
+  Does the pokemon have this particular move and item?
+  pokemonHasThisMoveAndItem(move, item) {
+    return this.listOfFourMoves.map((fourMoves, i) => (
+      fourMoves.includes(move) && this.pokemon[i].item === item
+  ))
+  }
+  */
+
+  // Clear one of the six pokemon's properties
+  @action clearPokemonProps(i) {
+    for (const prop in this.pokemon[i]) {
+      this.pokemon[i][prop] = ''
+    }
   }
 
-  // The inverse of the baseSpecies function
-  baseSpeciesInverse(baseSpecies) {
-    for(const pokemon in pokedex) {
-      if (baseSpecies === baseSpecies(pokemon)) {
-        return pokemon
+  // Auto select the item if necessary (e.g. Mega Blastoise needs Blastoisite)
+  @action autoSelectItem() {
+    for (const pkmn of this.pokemon) {
+      if (pkmn.name) {
+        // Auto select mega stone
+        if (
+          pkmn.name.includes('mega')
+          && pkmn.name !== 'meganium'
+          && pkmn.name !== 'yanmega'
+        ) {
+          pkmn.item = this.itemsArr.find(item => (
+            // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
+            item.slice(0, 5) === pkmn.name.slice(0, 5)
+          ))
+
+          // Fuzzy match will give Charizard
+          if (pkmn.name === 'charizardmegay' || pkmn.name === 'mewtwomegay') {
+            pkmn.item = pkmn.item.replace('x', 'y')
+          }
+        }
+        // Auto select plate for Arceus formes
+        else if (pkmn.name.includes('arceus')) {
+          const type = pkmn.name.replace('arceus', '')
+          const typeToPlate = {
+            bug: 'insectplate',
+            dark: 'dreadplate',
+            dragon: 'dracoplate',
+            electric: 'zapplate',
+            fairy: 'pixieplate',
+            fighting: 'fistplate',
+            fire: 'flameplate',
+            flying: 'skyplate',
+            ghost: 'spookyplate',
+            grass: 'meadowplate',
+            ground: 'earthplate',
+            ice: 'icicleplate',
+            normal: '', // no plate for normal type
+            poison: 'toxicplate',
+            psychic: 'mindplate',
+            rock: 'stoneplate',
+            steel: 'ironplate',
+            water: 'splashplate',
+          }
+
+          pkmn.item = typeToPlate[type]
+        }
+        // Auto select drive for Genesect
+        else if (pkmn.name.includes('genesect') && pkmn.name !== 'genesect') {
+          const drive = pkmn.name.replace('genesect', '')
+          const driveName = drive + 'drive'
+          
+          pkmn.item = driveName
+        }
+        // Auto select memory for Silvally
+        else if (pkmn.name.includes('silvally') && pkmn.name !== 'silvally') {
+          const type = pkmn.name.replace('silvally', '')
+          const memory = type + 'memory'
+
+          pkmn.item = memory
+        }
+        // Pick Griseous Orb for Giratina
+        else if (pkmn.name === 'giratinaorigin') {
+          pkmn.item = 'griseousorb'
+        }
       }
     }
-
-    return null
   }
 
-  // Returns name of the pokemon's alternate forme
-  // E.g. Charizard Mega-X's forme is Mega-X
-  forme(pokemon) {
-    return pokedex[pokemon].forme
+  // Auto select the pokemon's ability if it only has one ability.
+  @action autoSelectAbility() {
+    this.teamAbilities.forEach((pkmnAbilities, i) => {
+      if (pkmnAbilities.length === 1) {
+        this.pokemon[i].ability = pkmnAbilities[0]
+      }
+    })
   }
-
-  // Get previous evolution
-  previousEvolution(pokemon) {
-    const pokedexData = pokedex[pokemon]
-    return pokedexData ? pokedexData.prevo : undefined
-  }
-
-  /***************
-  ALL BATTLE ITEMS
-  ***************/
-
-  @observable battleItems = Object.values(battleItemsData).map(item => item.name)
 
   /************************
   STUFF ABOUT POKEMON TYPES
@@ -502,7 +587,7 @@ class Store {
           }
 
           // If pokemon wields an air balloon
-          if (this.pokemon[i].item === 'Air Balloon' && resistanceScores.Ground !== 2) {
+          if (this.pokemon[i].item === 'airballoon' && resistanceScores.Ground !== 2) {
             resistanceScores.Ground += 1
           }
 
@@ -710,7 +795,7 @@ class Store {
       /* Not necessary anymore
       delete pokedexData.rayquazamega // Rayquaza-Mega is banned in all tiers but Anything Goes (AG)
       for (const pokemon in pokedexData) {
-        if (formatsData[pokemon].tier === 'Illegal') {
+        if (formats[pokemon].tier === 'Illegal') {
           // Illegal pokemon include spiky eared pichu and certain formes of pikachu
           delete pokedexData[pokemon]
         }
@@ -775,7 +860,7 @@ class Store {
 
             // Add all the pokemon from that tier to pokedexData
             for (const pokemon in pokedex) {
-              if (formatsData[pokemon][tierType] === tier) {
+              if (formats[pokemon][tierType] === tier) {
                 pokedexData[pokemon] = pokedex[pokemon]
               }
             }

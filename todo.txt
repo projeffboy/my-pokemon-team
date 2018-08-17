@@ -3,9 +3,8 @@ DO THESE THINGS
   -Pokemon Showdown Team
     -get the right icons
     -export/import dialog
-      -textarea to edit team
-      -cancel button
       -confirm button
+        -produce a snackbar for success and different kinds of errors
     -copy button
       -produce a snackbar when it does
 3. Add icons to pokemon and item select.
@@ -46,7 +45,7 @@ DO THESE THINGS
 9. Complete documentation
   -and add your website and github links underneath
 10. Deploy
-  -remove global store and theme variable
+  In store.js and index.js, remove all global variables
 
 STYLE CHANGES
 -the input delete x button too big
@@ -55,6 +54,9 @@ BUG CHANGES
 -weird stuff with like arceus-normal with draco plate has normal type judgement
 -or silvally-normal with dark memory has normal-type multi-attack
 -porygonZ Z-conversion?
+
+MINOR THINGS
+-either pick e or even
 
 MAJOR CHANGES
 -no repeated moves

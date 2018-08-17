@@ -49,9 +49,9 @@ class TeamChecklist extends React.Component {
         'Volt-turn': store.doesTeamHaveMove('voltswitch')
           && store.doesTeamHaveMove('uturn'), 
         'Choice Item': store.doesTeamHaveItems([
-          'Choice Scarf',
-          'Choice Band',
-          'Choice Specs',
+          'choicescarf',
+          'choiceband',
+          'choicespecs',
         ]),
       },
     }
