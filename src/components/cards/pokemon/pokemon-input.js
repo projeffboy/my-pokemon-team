@@ -19,7 +19,7 @@ class PokemonInput extends React.Component {
       store.clearPokemonProps(teamIndex)
     }
 
-    store.pokemon[teamIndex][pokemonProp] = inputVal
+    store.team[teamIndex][pokemonProp] = inputVal
 
     /*
      * If the input is where you put your pokemon name,
@@ -40,8 +40,8 @@ class PokemonInput extends React.Component {
 
     switch(pokemonProp) {
       case 'name':
-        optionValues = store.filteredPokemon // store.allPokemonNames
-        optionLabels = store.filteredPokemonNames // store.allPokemonSpeciesNames
+        optionValues = store.filteredPokemon // store.allPokemon
+        optionLabels = store.filteredPokemonNames // store.allPokemonNames
         break
       case 'item':
         optionValues = store.itemsArr
@@ -63,7 +63,7 @@ class PokemonInput extends React.Component {
         optionValues={optionValues}
         optionLabels={optionLabels}
         onChange={this.handleChange}
-        value={store.pokemon[teamIndex][pokemonProp]}
+        value={store.team[teamIndex][pokemonProp]}
       />
     )
   }

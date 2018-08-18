@@ -8,7 +8,7 @@ import {pokemonInputStyles as spriteStyles} from '../../../styles'
 class Sprite extends React.Component {
   render() {
     const {classes, teamIndex, width} = this.props
-    const pokemon = store.pokemon[teamIndex].name // unhyphenated name
+    const pokemon = store.team[teamIndex].name // unhyphenated name
     
     let spriteFilename = pokemon // the filename of the pokemon sprite (usually just the pokemon name)
 
@@ -28,7 +28,7 @@ class Sprite extends React.Component {
          * separated by a hyphen
          * all lowercase
          */
-        const spriteFilenamePart1 = store.baseSpecies(pokemon).toLowerCase()
+        const spriteFilenamePart1 = store.baseFormeId(pokemon)
         const spriteFilenamePart2 = store.forme(pokemon)
           .toLowerCase()
           .replace('-', '')

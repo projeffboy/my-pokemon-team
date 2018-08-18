@@ -50,20 +50,34 @@ class Store {
 
   /*
    * MAKING SENSE OF VARIABLE NAMES
-   * There are two types of pokemon name variables:
-   *  -pokemonName (pokemon name):
+   * There are three types of pokemon variables:
+   *  1. pkmn or pokemon (pokemon id):
    *    -only one word
    *    -no hyphens
    *    -lowercase
    *    -E.g. charizardmegay
-   *  -speciesName (species name):
+   *  2. pkmnName (pokemon name):
    *    -words are separated by a hyphen, not a space
    *    -each word is capitalized
    *    -E.g. Charizard-Mega-Y
-   * The variable `pkmn` (or `pokemon`) itself refers to only one thing:
-   *  -an object containing a pokemon's properties
-   *  -these properties have to be obtained from pokedex.js
-   *  -E.g. const pkmn = pokedex['charizard']
+   * 3. pkmnProps or pokemonProps (pokemon properties):
+   *    -an object containing a pokemon's properties
+   *    -these properties have to be obtained from pokedex.js
+   *    -E.g. const pkmnProps = pokedex['charizard']
+   * 
+   * Same variable naming scheme for items:
+   *  1. item
+   *  2. itemName
+   *  3. itemProps
+   * And moves:
+   *  1. move
+   *  2. moveName
+   *  3. moveProps
+   * 
+   * `team` refer's to the user's pokemon team.
+   * There's an @observable variable for it in the store.
+   * Anything related to the user's pokemon team should be prefixed with `team`.
+   * E.g. teamItems, teamPkmn, teamMoves, teamAbilities, teamMove
    */
 
   /*
@@ -78,73 +92,74 @@ class Store {
   /* POKEDEX METHODS */
   
   /* NOT USED
-   * Instead we use filteredPokemonNames and filteredPokemonSpeciesNames
-  allPokemonNames() {
+   * Instead we use filteredPokemon and filteredPokemonNames
+  // returns pokemon id
+  allPokemon() {
     return Object.keys(pokedex)
   }
 
-  allPokemonSpeciesNames() {
-    return this.allPokemonNames.map(pokemon => this.speciesName(pokemon)) // species is name
+  // returns pokemon names
+  allPokemonNames() {
+    return this.allPokemon.map(pkmn => this.pkmnName(pkmn))
   }
   */
 
   /*
-   * Input a pokemon name to return its abilities
-   * (input has to be like "venusaurmega", not "Venusaur Mega")
+   * Input a pokemon ID to return its abilities
+   * (ID as in "venusaurmega", name as in "Venusaur Mega")
    * (output is in object form)
    */
-  abilities(pkmnName) {
-    return pokedex[pkmnName].abilities
+  abilities(pkmn) {
+    return pokedex[pkmn].abilities
   }
 
-  // Input a pokemon name to return its species name
+  // Input a pokemon ID to return its pokemon name
   // E.g. 'squirtle' => 'Squirtle'
-  speciesName(pkmnName) {
-    return pokedex[pkmnName].species
+  pkmnName(pkmn) {
+    return pokedex[pkmn].species
   }
   
-  // The inverse of the speciesName function
+  // The inverse of the pkmnName function
   // E.g. 'Squirtle' => 'squirtle'
-  speciesNameInverse(speciesName) {
-    for(const pkmnName in pokedex) {
-      if (speciesName === this.speciesName(pkmnName)) {
-        return pkmnName
+  pkmnNameInverse(pkmnName) {
+    for(const pkmn in pokedex) {
+      if (this.pkmnName(pkmn) === pkmnName) {
+        return pkmn
       }
     }
   }
   
-  // Input a pokemon name to return the pokemon name of its base forme
+  // Input a pokemon ID to return the pokemon ID of its base forme
   // E.g. 'giratinaorigin' => 'giratina'
   // (it will return undefined for pokemon already at the base forme)
   // E.g. 'wartortle' => undefined
-  baseSpecies(pkmnName) {
-    const baseSpeciesName = pokedex[pkmnName].baseSpecies
-    const name = this.speciesNameInverse(baseSpeciesName)
+  baseFormeId(pkmn) {
+    const baseFormeName = pokedex[pkmn].baseSpecies
+    const baseFormeId = this.pkmnNameInverse(baseFormeName)
 
-    return name
+    return baseFormeId
   }
 
-  // Input a pokemon name to return its alternate forme(s)
+  // Input a pokemon ID to return its alternate forme(s)
   // E.g. 'charizard' => ['charizardmegax', 'charizardmegay']
-  forme(pkmnName) {
-    return pokedex[pkmnName].forme
+  forme(pkmn) {
+    return pokedex[pkmn].forme
   }
 
   // Get previous evolution
-  previousEvolution(pkmnName) {
-    const pkmn = pokedex[pkmnName]
-    return pkmn ? pkmn.prevo : undefined
+  previousEvolution(pkmn) {
+    const pkmnProps = pokedex[pkmn]
+    return pkmnProps ? pkmnProps.prevo : undefined
   }
   
   /* ITEMS METHODS */
 
-  // START FROM HERE!!!!!!!!!!!
   get itemsArr() {
     return Object.keys(items)
   }
 
   get itemNamesArr() {
-    return Object.values(items).map(itemDetails => itemDetails.name)
+    return Object.values(items).map(itemProps => itemProps.name)
   }
 
   itemName(item) {
@@ -154,7 +169,7 @@ class Store {
   }
 
   itemNameInverse(itemName) {
-    return this.itemsArr[this.battleItemNames.indexOf(itemName)]
+    return this.itemsArr[this.itemNamesArr.indexOf(itemName)]
   }
   
   /* LEARNSETS METHODS */
@@ -187,8 +202,8 @@ class Store {
   DATA ABOUT THE TEAM'S SIX POKEMON 
   ********************************/
 
-  @observable pokemon = Array(6).fill({
-    name: '', // unhyphenated
+  @observable team = Array(6).fill({
+    name: '', // pokemon name
     item: '',
     move1: '',
     move2: '',
@@ -197,54 +212,62 @@ class Store {
     ability: '', // chosen ability
   })
 
-  // Get all the items of the team's six pokemon
+  // Get the team's six items (in array form)
   @computed get teamItems() {
-    return this.pokemon.map(pkmn => pkmn.item)
+    return this.team.map(teamPkmn => teamPkmn.item)
   }
   
-  // Get the picked moves of the team's six pokemon
+  // Get the team's moves that the user chose (in 1D array)
   @computed get teamMoves() {
-    const moves = []
-    this.pokemon.forEach(pkmn => {
-      moves.push(
-        pkmn.move1,
-        pkmn.move2,
-        pkmn.move3,
-        pkmn.move4,
+    const teamMoves = []
+
+    this.team.forEach(teamPkmn => {
+      teamMoves.push(
+        teamPkmn.move1,
+        teamPkmn.move2,
+        teamPkmn.move3,
+        teamPkmn.move4,
       )
     })
-    return moves
+
+    return teamMoves
   }
 
-  // Basically the above, but instead of a 1D array of all the moves,
-  // It's an array of 6 arrays (for each pokemon), each containing 4 elements (for the 4 moves)
-  @computed get listOfFourMoves() {
-    return this.pokemon.map(pkmn => (
-      [pkmn.move1, pkmn.move2, pkmn.move3, pkmn.move4]
+  // Basically the above but a 2D array,
+  // It's an array of 6 arrays (for each pokemon),
+  // Each containing 4 elements (for the 4 moves)
+  @computed get teamFourMoveslots() {
+    return this.team.map(teamPkmn => (
+      [
+        teamPkmn.move1, 
+        teamPkmn.move2, 
+        teamPkmn.move3, 
+        teamPkmn.move4,
+      ]
     ))
   }
 
   
-  // Get all the possible abilities of the team's six pokemon
-  // Using pokedexData (pokedex.js)
+  // Get team's possible abilities (in 2D array)
   @computed get teamAbilities() {
-    return this.pokemon.map(pkmn => {
-      if (pkmn.name) {
-        const pkmnAbilities = pokedex[pkmn.name].abilities // the specific pokemon's abilities (obj)
+    return this.team.map(teamPkmn => {
+      if (teamPkmn.name) {
+        const teamPkmnAbilities = pokedex[teamPkmn.name].abilities // the specific pokemon's abilities (obj)
 
-        return Object.values(pkmnAbilities) // the specific pokemon's abilities (arr)
+        return Object.values(teamPkmnAbilities) // the specific pokemon's abilities (arr)
       } else {
         return []
       }
     })
   }
 
-  // Does the team contain status moves?
+  // Does the team contain moves that inflict non-volatile status?
+  // E.g. toxic inflicts poison, thunder wave inflicts paralysis
   @computed get anyStatusMoves() {
     return this.teamMoves.some(teamMove => moves[teamMove] && moves[teamMove].status)
   }
 
-  // Does the team contain boosting moves that increase by two stages?
+  // Does the team contain boosting moves that increase by two or more stages?
   @computed get anyBoostingMoves() {
     return this.teamMoves.some(teamMove => (
       moves[teamMove]
@@ -261,14 +284,14 @@ class Store {
       labels: [],
     }
 
-    for (const pkmn of this.pokemon) {
+    for (const pkmn of this.team) {
       if (pkmn.name) {
         /*
          * As it turns out, learnsets.min.js doesn't include pokemons' alternate formes.
          * So if the user chooses an alternate forme pokemon,
          * we gotta tell the code that we mean the base form.
          */
-        let baseFormeName = this.baseSpecies(pkmn.name) || pkmn.name
+        let baseFormeName = this.baseFormeId(pkmn.name) || pkmn.name
 
         // the specific pokemon's learnset
         let learnsetValues = learnsets[baseFormeName]
@@ -348,7 +371,7 @@ class Store {
   @computed get types() {
     let types = []
 
-    for (const pkmn of this.pokemon) {
+    for (const pkmn of this.team) {
       if (pkmn.name) {
         const pkmnTypes = pokedex[pkmn.name].types // the specific pokemon's type(s)
         types.push(pkmnTypes)
@@ -386,8 +409,8 @@ class Store {
      * And the second is an array, ['protect', 'detect'].
      */
 
-    // A list of four moves (listOfFourMoves), for each array of four moves (fourMoves)...
-    return this.listOfFourMoves.some(fourMoves => (
+    // A list of four moves (teamFourMoveslots), for each array of four moves (fourMoves)...
+    return this.teamFourMoveslots.some(fourMoves => (
       // Moves one of your six pokemon need to have (moves), for each move (string)...
       moves.every(move => {
         if (Array.isArray(move)) { // move could be array or string
@@ -404,22 +427,22 @@ class Store {
   /* NOT USED
   Does the pokemon have this particular move and item?
   pokemonHasThisMoveAndItem(move, item) {
-    return this.listOfFourMoves.map((fourMoves, i) => (
-      fourMoves.includes(move) && this.pokemon[i].item === item
+    return this.teamFourMoveslots.map((fourMoves, i) => (
+      fourMoves.includes(move) && this.team[i].item === item
   ))
   }
   */
 
   // Clear one of the six pokemon's properties
   @action clearPokemonProps(i) {
-    for (const prop in this.pokemon[i]) {
-      this.pokemon[i][prop] = ''
+    for (const prop in this.team[i]) {
+      this.team[i][prop] = ''
     }
   }
 
   // Auto select the item if necessary (e.g. Mega Blastoise needs Blastoisite)
   @action autoSelectItem() {
-    for (const pkmn of this.pokemon) {
+    for (const pkmn of this.team) {
       if (pkmn.name) {
         // Auto select mega stone
         if (
@@ -489,7 +512,7 @@ class Store {
   @action autoSelectAbility() {
     this.teamAbilities.forEach((pkmnAbilities, i) => {
       if (pkmnAbilities.length === 1) {
-        this.pokemon[i].ability = pkmnAbilities[0]
+        this.team[i].ability = pkmnAbilities[0]
       }
     })
   }
@@ -547,7 +570,7 @@ class Store {
           }
 
           // Take into account ability for pokemon's resistances
-          const ability = this.pokemon[i].ability
+          const ability = this.team[i].ability
           switch (ability) {
             // Abilities that make you immune to certain types
             case 'Volt Absorb':
@@ -587,7 +610,7 @@ class Store {
           }
 
           // If pokemon wields an air balloon
-          if (this.pokemon[i].item === 'airballoon' && resistanceScores.Ground !== 2) {
+          if (this.team[i].item === 'airballoon' && resistanceScores.Ground !== 2) {
             resistanceScores.Ground += 1
           }
 
@@ -607,7 +630,7 @@ class Store {
   @computed get typeCoverage() {
     let typeCoverage = {...this.cleanSlate}
 
-    for (const [i, pokemon] of this.pokemon.entries()) {
+    for (const [i, pokemon] of this.team.entries()) {
       const typesUsed = []
       for (const [key, value] of Object.entries(pokemon)) {
         // key is e.g. name, item, move1, etc.
@@ -622,9 +645,9 @@ class Store {
             Refrigerate: 'Ice', 
             Galvanize: 'Electric',
           }
-          const ability = this.pokemon[i].ability
+          const ability = this.team[i].ability
           let moveType = moveDetails.type
-          const pokemonName = this.pokemon[i].name
+          const pokemonName = this.team[i].name
 
           // Change the move type if the pokemon has a certain ability, like aerilate or normalize
           if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability)) {
@@ -930,7 +953,7 @@ class Store {
   }
 
   @computed get filteredPokemonNames() {
-    return this.filteredPokemon.map(pokemon => this.speciesName(pokemon)) // species is name
+    return this.filteredPokemon.map(pokemon => this.pkmnName(pokemon))
   }
 }
 

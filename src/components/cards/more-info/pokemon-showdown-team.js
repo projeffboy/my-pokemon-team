@@ -53,17 +53,17 @@ class PokemonShowdownTeam extends React.Component {
     pokemonRawData.forEach((eachPkmnData, teamIndex) => {
       const lines = eachPkmnData.split('\n')
       
-      const speciesNameAndItem = lines[0].split('@').map(str => str.trim())
-      const [speciesName, itemName] = speciesNameAndItem
-      const name = store.speciesNameInverse(speciesName)
+      const pkmnAndItemNames = lines[0].split('@').map(str => str.trim())
+      const [pkmnName, itemName] = pkmnAndItemNames
+      const name = store.pkmnNameInverse(pkmnName)
   
       if (name) {
-        store.pokemon[teamIndex].name = name
+        store.team[teamIndex].name = name
 
         // check if item is fine
         const item = store.itemNameInverse(itemName)
         if (item) {
-          store.pokemon[teamIndex].item = item
+          store.team[teamIndex].item = item
         }
 
         let moveNum = 1
@@ -74,7 +74,7 @@ class PokemonShowdownTeam extends React.Component {
 
             /*
             if (Object.values(store.abilities(name)).includes(ability)) {
-              store.pokemon[teamIndex].ability = ability
+              store.team[teamIndex].ability = ability
             }
             */
           } else if (line[0] === '-') {
@@ -82,7 +82,7 @@ class PokemonShowdownTeam extends React.Component {
             const moveName = line.slice(1).trim()
 
             if (store.moveNameInverse(moveName)) {
-              store.pokemon[teamIndex]['move' + moveNum] = moveName
+              store.team[teamIndex]['move' + moveNum] = moveName
             }
             */
           }
@@ -109,14 +109,14 @@ class PokemonShowdownTeam extends React.Component {
     const {classes, width} = this.props
 
     const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5].map(teamIndex => {
-      const {name, item, ability} = store.pokemon[teamIndex]
+      const {name, item, ability} = store.team[teamIndex]
 
       if (name) {
         return (
-`${store.speciesName(name)} @ ${store.itemName(item)}
+`${store.pkmnName(name)} @ ${store.itemName(item)}
 Ability: ${ability}
 ${[1, 2, 3, 4].map(num => {
-  const move = store.pokemon[teamIndex]['move' + num]
+  const move = store.team[teamIndex]['move' + num]
 
   if (move) {
     return '-' + store.moveName(move)
