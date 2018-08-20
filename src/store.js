@@ -65,6 +65,7 @@ class Store {
    *    -these properties have to be obtained from pokedex.js
    *    -E.g. const pkmnProps = pokedex['charizard']
    * 
+   * 
    * Same variable naming scheme for items:
    *  1. item
    *  2. itemName
@@ -73,16 +74,48 @@ class Store {
    *  1. move
    *  2. moveName
    *  3. moveProps
+   * And a pokemon's base forme:
+   *  1. baseForme
+   *  2. baseFormeName
+   *  3. baseFormeProps
    * 
    * `team` refer's to the user's pokemon team.
    * There's an @observable variable for it in the store.
    * Anything related to the user's pokemon team should be prefixed with `team`.
-   * E.g. teamItems, teamPkmn, teamMoves, teamAbilities, teamMove
+   * E.g.
+   *  -Functions like:
+   *    -teamFourMoveslots
+   *    -teamLearnsets
+   *  -Each element in @observable team is teamPkmnProps, containing within:
+   *    -teamPkmn (teamPkmnName = this.pkmnName(teamPkmn))
+   *    -teamPkmnProps
+   *    -teamPkmnItem
+   *    -teamPkmnMove1 (etc.)
+   *    -teamPkmnAbility
+   * 
+   * Exception: `team` prefix can be dropped during iterations
+   * E.g.: `this.teamItems.map(item => ..)` instead of `this.teamItems.map(teamItem => ..)`
+   * Exception to exception: You cannot drop the `team` prefix for `teamPkmnProps` no matter what
    */
 
   /*
    * STORE HELPER PROPERTIES
-   * pokedex[pkmnName] returns a pokemon's properties through pokedex.js
+   * pokedex[pkmn]
+   *  Input: pokemon ID
+   *  Output: pokemon's properties from pokedex.js
+   * moves[move]
+   *  Input: move ID
+   *  Output: move's properties from moves.js
+   * learnsets[pkmn]
+   *  Input: pokemon ID
+   *  Output: pokemon's learnset (in array form) from learnsets.min.js
+   * typechart[type1][type2]
+   *  Inputs: two pokemon types
+   *  Output: How effective a type2 move is against a type1 pokemon
+   *    +2 is no effect
+   *    +1 is not very effective
+   *    0 is neutral damage
+   *    -1 is super effective
    */
 
   /*******************
@@ -133,11 +166,11 @@ class Store {
   // E.g. 'giratinaorigin' => 'giratina'
   // (it will return undefined for pokemon already at the base forme)
   // E.g. 'wartortle' => undefined
-  baseFormeId(pkmn) {
+  baseForme(pkmn) {
     const baseFormeName = pokedex[pkmn].baseSpecies
-    const baseFormeId = this.pkmnNameInverse(baseFormeName)
+    const baseForme = this.pkmnNameInverse(baseFormeName)
 
-    return baseFormeId
+    return baseForme
   }
 
   // Input a pokemon ID to return its alternate forme(s)
@@ -203,7 +236,8 @@ class Store {
   ********************************/
 
   @observable team = Array(6).fill({
-    name: '', // pokemon name
+    name: '', // technically, this is the pokemon ID, not pokemon name
+    // but name is much more clearer to those new to the source code
     item: '',
     move1: '',
     move2: '',
@@ -214,19 +248,19 @@ class Store {
 
   // Get the team's six items (in array form)
   @computed get teamItems() {
-    return this.team.map(teamPkmn => teamPkmn.item)
+    return this.team.map(teamPkmnProps => teamPkmnProps.item)
   }
   
   // Get the team's moves that the user chose (in 1D array)
   @computed get teamMoves() {
     const teamMoves = []
 
-    this.team.forEach(teamPkmn => {
+    this.team.forEach(teamPkmnProps => {
       teamMoves.push(
-        teamPkmn.move1,
-        teamPkmn.move2,
-        teamPkmn.move3,
-        teamPkmn.move4,
+        teamPkmnProps.move1,
+        teamPkmnProps.move2,
+        teamPkmnProps.move3,
+        teamPkmnProps.move4,
       )
     })
 
@@ -237,12 +271,12 @@ class Store {
   // It's an array of 6 arrays (for each pokemon),
   // Each containing 4 elements (for the 4 moves)
   @computed get teamFourMoveslots() {
-    return this.team.map(teamPkmn => (
+    return this.team.map(teamPkmnProps => (
       [
-        teamPkmn.move1, 
-        teamPkmn.move2, 
-        teamPkmn.move3, 
-        teamPkmn.move4,
+        teamPkmnProps.move1, 
+        teamPkmnProps.move2, 
+        teamPkmnProps.move3, 
+        teamPkmnProps.move4,
       ]
     ))
   }
@@ -250,9 +284,9 @@ class Store {
   
   // Get team's possible abilities (in 2D array)
   @computed get teamAbilities() {
-    return this.team.map(teamPkmn => {
-      if (teamPkmn.name) {
-        const teamPkmnAbilities = pokedex[teamPkmn.name].abilities // the specific pokemon's abilities (obj)
+    return this.team.map(teamPkmnProps => {
+      if (teamPkmnProps.name) {
+        const teamPkmnAbilities = pokedex[teamPkmnProps.name].abilities // the specific pokemon's abilities (obj)
 
         return Object.values(teamPkmnAbilities) // the specific pokemon's abilities (arr)
       } else {
@@ -264,19 +298,19 @@ class Store {
   // Does the team contain moves that inflict non-volatile status?
   // E.g. toxic inflicts poison, thunder wave inflicts paralysis
   @computed get anyStatusMoves() {
-    return this.teamMoves.some(teamMove => moves[teamMove] && moves[teamMove].status)
+    return this.teamMoves.some(move => moves[move] && moves[move].status)
   }
 
   // Does the team contain boosting moves that increase by two or more stages?
   @computed get anyBoostingMoves() {
-    return this.teamMoves.some(teamMove => (
-      moves[teamMove]
-      && moves[teamMove].boosts
-      && Object.values(moves[teamMove].boosts).reduce((sum, num) => sum + num) >= 2
+    return this.teamMoves.some(move => (
+      moves[move]
+      && moves[move].boosts
+      && Object.values(moves[move].boosts).reduce((sum, num) => sum + num) >= 2
     ))
   }
 
-  // Get the learnsets of the team's six pokemon using learnsets.min.js
+  // Get the team's learnsets using learnsets.min.js
   @computed get teamLearnsets() {
     // both will contain the learnsets of six pokemon
     let teamLearnsets = {
@@ -284,17 +318,19 @@ class Store {
       labels: [],
     }
 
-    for (const pkmn of this.team) {
-      if (pkmn.name) {
+    for (const teamPkmnProps of this.team) {
+      const pkmn = teamPkmnProps.name
+
+      if (pkmn) {
         /*
          * As it turns out, learnsets.min.js doesn't include pokemons' alternate formes.
          * So if the user chooses an alternate forme pokemon,
          * we gotta tell the code that we mean the base form.
          */
-        let baseFormeName = this.baseFormeId(pkmn.name) || pkmn.name
+        let baseForme = this.baseForme(pkmn) || pkmn
 
         // the specific pokemon's learnset
-        let learnsetValues = learnsets[baseFormeName]
+        let learnsetValues = learnsets[baseForme]
 
         /*
          * TLDR; This code allows you to choose moves for pokemon that can be learnt by their pre-evolutions.
@@ -306,14 +342,14 @@ class Store {
          * we want to also want to display Pawniard's possible moves for Bisharp.
          * Therefore, this code will append the moves of the evolutions of a pokemon into one.
          */
-        while (this.previousEvolution(baseFormeName)) {
-          baseFormeName = this.previousEvolution(baseFormeName)
-          learnsetValues = [...learnsetValues, ...learnsets[baseFormeName]]
+        while (this.previousEvolution(baseForme)) {
+          baseForme = this.previousEvolution(baseForme)
+          learnsetValues = [...learnsetValues, ...learnsets[baseForme]]
         }
 
-        // remove duplicates
+        // turning array to set removes duplicates
         learnsetValues = new Set(learnsetValues)
-        // turn Set into array
+        // turn set back into array
         learnsetValues = [...learnsetValues]
 
         // Add in all the hidden powers
@@ -340,10 +376,11 @@ class Store {
           const hiddenpowers = pokemonTypes.map(type => 'hiddenpower' + type)
 
 
-          // re-add hidden power normal
+          // remove hidden power normal
           learnsetValues.splice(learnsetValues.indexOf('hiddenpower'), 1)
+          
+          // add all hidden powers together
           learnsetValues.push('hiddenpower')
-
           learnsetValues.push(...hiddenpowers)
         }
 
@@ -352,9 +389,9 @@ class Store {
           learnsetValues = learnsetValues.filter(move => moves[move].isViable)
         }
 
-        // Say move is "aerialace"
-        // we need to display it as "Aerial Ace", which is the purpose of learnsetLabels
-        const learnsetLabels = learnsetValues.map(move => moves[move].name)
+        // Say move is 'aerialace'
+        // we need to display it as 'Aerial Ace', which is the purpose of learnsetLabels
+        const learnsetLabels = learnsetValues.map(move => this.moveName(move))
 
         teamLearnsets.values.push(learnsetValues)
         teamLearnsets.labels.push(learnsetLabels)
@@ -367,38 +404,40 @@ class Store {
     return teamLearnsets
   }
 
-  // Get the type(s) of the team's six pokemon
-  @computed get types() {
-    let types = []
+  // Get the team's types
+  @computed get teamTypes() {
+    let teamTypes = []
 
-    for (const pkmn of this.team) {
-      if (pkmn.name) {
-        const pkmnTypes = pokedex[pkmn.name].types // the specific pokemon's type(s)
-        types.push(pkmnTypes)
+    for (const teamPkmnProps of this.team) {
+      const pkmn = teamPkmnProps.name
+
+      if (pkmn) {
+        const pkmnTypes = pokedex[pkmn].types // that pokemon's types
+        
+        teamTypes.push(pkmnTypes)
       } else {
-        types.push([])
+        teamTypes.push([])
       }
     }
 
-    return types
+    return teamTypes
   }
 
-  // Does the team have these items (in an array)?
-  doesTeamHaveItems(theseItems) {
-    return this.teamItems.some(teamItem => theseItems.includes(teamItem))
+  // Does the team have these items?
+  doesTeamHaveItems(items) { // array input
+    return this.teamItems.some(teamItem => items.includes(teamItem))
   }
 
-  // Does the team have this one particular item (in a string)?
-  doesTeamHaveMove = move => this.teamMoves.includes(move)
+  // Does the team have this one particular item?
+  doesTeamHaveMove = move => this.teamMoves.includes(move) // String input
 
   // Does the team Have these moves (in an array)?
-  doesTeamHaveMoves(theseMoves) {
-    return this.teamMoves.some(teamMove => theseMoves.includes(teamMove))
+  doesTeamHaveMoves(moves) {
+    return this.teamMoves.some(teamMove => moves.includes(teamMove))
   }
 
-  // Does at least one pokemon Have all of these moves?
-  doesPokemonHaveTheseMoves(moves) {
-
+  // Does any team pokemon have all of these moves?
+  doesTeamPokemonHaveTheseMoves(moves) { // array input
     /*
      * Check if at least one of your pokemon contains these 2-4 moves.
      * 
@@ -409,60 +448,101 @@ class Store {
      * And the second is an array, ['protect', 'detect'].
      */
 
-    // A list of four moves (teamFourMoveslots), for each array of four moves (fourMoves)...
-    return this.teamFourMoveslots.some(fourMoves => (
-      // Moves one of your six pokemon need to have (moves), for each move (string)...
+    /*
+     * Example
+     * 
+     * this.teamFourMoveslots
+     * [
+     *  ['Agility', 'Fire Blast', 'Focus Blast', 'Substitute'],
+     *  [..],
+     *  [..],
+     *  [..],
+     *  [..],
+     *  [..],
+     * ]
+     * 
+     * teamFourMoveslot (1st iteration)
+     * ['Agility', 'Fire Blast', 'Focus Blast', 'Substitute']
+     */
+    return this.teamFourMoveslots.some(teamFourMoveslot => (
+      /*
+       * Example
+       * 
+       * moves
+       * ['wish', ['protect', 'detect']]
+       * 
+       * move (1st iteration)
+       * 'wish'
+       * 
+       * move (2nd iteration)
+       * ['protect', 'detect']
+       */
       moves.every(move => {
-        if (Array.isArray(move)) { // move could be array or string
-          // That particular pokemon needs to know one of these moves (move (in array form)),
-          // For each one of these moves (altMove)...
-          return move.some(altMove => fourMoves.includes(altMove))
+        if (Array.isArray(move)) {
+          /* 
+           * Example
+           * 
+           * move
+           * ['protect', 'detect']
+           * 
+           * altMove (1st iteration)
+           * 'protect'
+           */
+          return move.some(altMove => teamFourMoveslot.includes(altMove))
         } else {
-          return fourMoves.includes(move)
+          return teamFourMoveslot.includes(move)
         }
       })
     ))
   }
 
   /* NOT USED
-  Does the pokemon have this particular move and item?
-  pokemonHasThisMoveAndItem(move, item) {
-    return this.teamFourMoveslots.map((fourMoves, i) => (
-      fourMoves.includes(move) && this.team[i].item === item
+  Does any team pokemon have this particular move and item?
+  teamPokemonHasThisMoveAndItem(move, item) {
+    return this.teamFourMoveslots.map((teamFourMoveslot, i) => (
+      teamFourMoveslot.includes(move) && this.team[i].item === item
   ))
   }
   */
 
-  // Clear one of the six pokemon's properties
-  @action clearPokemonProps(i) {
-    for (const prop in this.team[i]) {
-      this.team[i][prop] = ''
+  // Clear a team pokemon's properties
+  @action clearTeamPkmnProps(teamIndex) {
+    const teamPkmnProps = this.team[teamIndex]
+
+    for (const prop in teamPkmnProps) {
+      teamPkmnProps[prop] = ''
     }
   }
 
-  // Auto select the item if necessary (e.g. Mega Blastoise needs Blastoisite)
+  // Auto-select the item if necessary
+  // E.g. Select Blastoisite when the user chooses Mega Blastoise
   @action autoSelectItem() {
-    for (const pkmn of this.team) {
-      if (pkmn.name) {
+    for (const teamPkmnProps of this.team) {
+      // make sure you brush up on your ES6 destructuring!
+      let {name: pkmn, item: pkmnItem} = teamPkmnProps
+
+      if (pkmn) {
         // Auto select mega stone
         if (
-          pkmn.name.includes('mega')
-          && pkmn.name !== 'meganium'
-          && pkmn.name !== 'yanmega'
+          pkmn.includes('mega')
+          && pkmn !== 'meganium'
+          && pkmn !== 'yanmega'
         ) {
-          pkmn.item = this.itemsArr.find(item => (
+          pkmnItem = this.itemsArr.find(item => (
             // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
-            item.slice(0, 5) === pkmn.name.slice(0, 5)
+            item.slice(0, 5) === pkmn.slice(0, 5)
           ))
 
-          // Fuzzy match will give Charizard
-          if (pkmn.name === 'charizardmegay' || pkmn.name === 'mewtwomegay') {
-            pkmn.item = pkmn.item.replace('x', 'y')
+          // Fuzzy match will give Charizard Y a Charizardite X
+          // Hence this code
+          if (pkmn === 'charizardmegay' || pkmn === 'mewtwomegay') {
+            pkmnItem = pkmnItem.replace('x', 'y')
           }
         }
+
         // Auto select plate for Arceus formes
-        else if (pkmn.name.includes('arceus')) {
-          const type = pkmn.name.replace('arceus', '')
+        else if (pkmn.includes('arceus')) {
+          const type = pkmn.replace('arceus', '')
           const typeToPlate = {
             bug: 'insectplate',
             dark: 'dreadplate',
@@ -484,31 +564,37 @@ class Store {
             water: 'splashplate',
           }
 
-          pkmn.item = typeToPlate[type]
+          pkmnItem = typeToPlate[type]
         }
-        // Auto select drive for Genesect
-        else if (pkmn.name.includes('genesect') && pkmn.name !== 'genesect') {
-          const drive = pkmn.name.replace('genesect', '')
-          const driveName = drive + 'drive'
-          
-          pkmn.item = driveName
-        }
-        // Auto select memory for Silvally
-        else if (pkmn.name.includes('silvally') && pkmn.name !== 'silvally') {
-          const type = pkmn.name.replace('silvally', '')
-          const memory = type + 'memory'
 
-          pkmn.item = memory
+        // Auto select drive for Genesect
+        else if (pkmn.includes('genesect') && pkmn !== 'genesect') {
+          const driveAdj = pkmn.replace('genesect', '')
+          const item = driveAdj + 'drive'
+          
+          pkmnItem = item
         }
+
+        // Auto select memory for Silvally
+        else if (pkmn.includes('silvally') && pkmn !== 'silvally') {
+          const type = pkmn.replace('silvally', '')
+          const item = type + 'memory'
+
+          pkmnItem = item
+        }
+        
         // Pick Griseous Orb for Giratina
-        else if (pkmn.name === 'giratinaorigin') {
-          pkmn.item = 'griseousorb'
+        else if (pkmn === 'giratinaorigin') {
+          pkmnItem = 'griseousorb'
         }
       }
+
+      teamPkmnProps.item = pkmnItem
     }
   }
 
   // Auto select the pokemon's ability if it only has one ability.
+  // E.g. Select Thick Fat when the user chooses Venusaur-Mega
   @action autoSelectAbility() {
     this.teamAbilities.forEach((pkmnAbilities, i) => {
       if (pkmnAbilities.length === 1) {
@@ -517,9 +603,9 @@ class Store {
     })
   }
 
-  /************************
-  STUFF ABOUT POKEMON TYPES
-  ************************/
+  /*******************************
+  TEAM'S TYPE DEFENCE AND COVERAGE
+  *******************************/
 
   // Assessment of the team's type defence
   // (How good your team is against the 18 different types)
@@ -527,8 +613,8 @@ class Store {
     // Scoresheet of how good all six pokemon resist a certain type
     let typeDefence = {...this.cleanSlate}
 
-    if (this.types.some(arr => arr.length)) { // is this 2D array empty or not
-      this.types.forEach((pkmnTypes, i) => { // pkmnTypes means a specific pokemon's type(s)  
+    if (this.teamTypes.some(arr => arr.length)) { // is this 2D array empty or not
+      this.teamTypes.forEach((pkmnTypes, i) => { // pkmnTypes means a specific pokemon's type(s)  
         if (pkmnTypes.length) {
           /*
            * You will get a warning from MobX if the pokmeon just has one type.
@@ -570,8 +656,8 @@ class Store {
           }
 
           // Take into account ability for pokemon's resistances
-          const ability = this.team[i].ability
-          switch (ability) {
+          const pkmnAbility = this.team[i].ability
+          switch (pkmnAbility) {
             // Abilities that make you immune to certain types
             case 'Volt Absorb':
             case 'Lightning Rod':
@@ -628,26 +714,27 @@ class Store {
   // Assessment of the team's type coverage
   // (How many types are your team's moves supereffective against)
   @computed get typeCoverage() {
+    // Scoresheet of how many types your moves are supereffective against
     let typeCoverage = {...this.cleanSlate}
 
-    for (const [i, pokemon] of this.team.entries()) {
-      const typesUsed = []
-      for (const [key, value] of Object.entries(pokemon)) {
-        // key is e.g. name, item, move1, etc.
-        // value is e.g. Venusaur, Venusaurite, Giga Drain, etc.
+    for (const [i, teamPkmnProps] of this.team.entries()) {
+      const typesUsed = [] // records one of the team pokemon's move types
+
+      for (const [prop, propVal] of Object.entries(teamPkmnProps)) {
+        // prop is name, item, move1, etc.
+        // propVal is e.g. Venusaur, Venusaurite, Giga Drain
 
         // if it is a non-empty move
-        if (value && key.slice(0, -1) === 'move') { // the slice() removes the last letter
-          const moveDetails = moves[value]
+        if (propVal && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
+          const moveProps = moves[propVal]
           const abilitiesThatChangeNormalMoves = {
             Aerilate: 'Flying', 
             Pixilate: 'Fairy', 
             Refrigerate: 'Ice', 
             Galvanize: 'Electric',
           }
-          const ability = this.team[i].ability
-          let moveType = moveDetails.type
-          const pokemonName = this.team[i].name
+          const {ability, name: pkmn} = this.team[i]
+          let moveType = moveProps.type
 
           // Change the move type if the pokemon has a certain ability, like aerilate or normalize
           if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability)) {
@@ -656,11 +743,11 @@ class Store {
             }
           } else if (ability === 'Normalize') {
             moveType = 'Normal'
-          } else if (value === 'judgment') { // For Arceus
-            const pokemonDetails = pokedex[pokemonName]
-            moveType = pokemonDetails.types[0] // Arceus only has one ability
-          } else if (value === 'technoblast') { // For Genesect
-            switch (pokemonName) {
+          } else if (propVal === 'judgment') { // For Arceus
+            const pkmnProps = pokedex[pkmn]
+            moveType = pkmnProps.types[0] // Arceus only has one ability
+          } else if (propVal === 'technoblast') { // For Genesect
+            switch (pkmn) {
               case 'genesectdouse':
                 moveType = 'Water'
                 break
@@ -675,19 +762,19 @@ class Store {
                 break
               default:
             }
-          } else if (value === 'multiattack') { // For Silvally
-            const type = pokemonName.replace('silvally', '')
+          } else if (propVal === 'multiattack') { // For Silvally
+            const type = pkmn.replace('silvally', '')
             const capitalizedType = capitalizeWord(type)
 
             moveType = capitalizedType
           }
 
-          // If the user picks freeze-dry or flying press multiple times, it can be exploited
-          if (value === 'freezedry') {
+          // BUG: If the user picks freeze-dry or flying press multiple times, it can be exploited
+          if (propVal === 'freezedry') {
             typeCoverage.Water++
           }
 
-          if (value === 'flyingpress') {
+          if (propVal === 'flyingpress') {
             // the types flying press are super effective against
             ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
           }
@@ -699,9 +786,9 @@ class Store {
            * 3. Ignore moves less than 40 base power (unless it's a multi-hit move).
            */
           else if (
-            moveDetails.category !== 'Status'
+            moveProps.category !== 'Status'
             && !typesUsed.includes(moveType)
-            && (moveDetails.basePower >= 40 || moveDetails.multihit)
+            && (moveProps.basePower >= 40 || moveProps.multihit)
           ) {
             typesUsed.push(moveType)
 
@@ -750,11 +837,11 @@ class Store {
       )
     )
 
-    function filterByFormat(pokedexData) {
+    function filterByFormat(pokedexProps) {
       /* No Filter */
 
       if (format === '') {
-        return pokedexData
+        return pokedexProps
       }
 
       /* Official Pokemon Format Filter */
@@ -803,28 +890,20 @@ class Store {
           'zeraora',
         ]
   
-        for (const pokemon of banlist) {
-          const {otherFormes} = pokedex[pokemon]
+        for (const pkmn of banlist) {
+          const {otherFormes} = pokedex[pkmn]
+
+          // Don't just delete the banned pokemon, delete its other formes
+          // E.g. delete giratina, as well as giratinaorigin
           if (otherFormes) {
-            otherFormes.forEach(otherForme => delete pokedexData[otherForme])
+            otherFormes.forEach(otherForme => delete pokedexProps[otherForme])
           }
-          delete pokedexData[pokemon]
+          delete pokedexProps[pkmn]
         }
-        return pokedexData
+        return pokedexProps
       }
 
       /* Smogon Singles/Doubles Filter */
-
-      /* Not necessary anymore
-      delete pokedexData.rayquazamega // Rayquaza-Mega is banned in all tiers but Anything Goes (AG)
-      for (const pokemon in pokedexData) {
-        if (formats[pokemon].tier === 'Illegal') {
-          // Illegal pokemon include spiky eared pichu and certain formes of pikachu
-          delete pokedexData[pokemon]
-        }
-      }
-      */
-      
       
       const tierAbbr = {
         'Uber': 'Uber',
@@ -839,7 +918,7 @@ class Store {
         'Doubles UU': 'DUU',
       }
 
-      pokedexData = {} // clear out pokedexData
+      pokedexProps = {} // clear out pokedexProps
 
       /* Smogon Singles Filter */
       
@@ -881,20 +960,20 @@ class Store {
           if (tierAbbr[format] === tier || tierMatched) {
             tierMatched = true
 
-            // Add all the pokemon from that tier to pokedexData
-            for (const pokemon in pokedex) {
-              if (formats[pokemon][tierType] === tier) {
-                pokedexData[pokemon] = pokedex[pokemon]
+            // Add all the pokemon from that tier to pokedexProps
+            for (const pkmn in pokedex) {
+              if (formats[pkmn][tierType] === tier) {
+                pokedexProps[pkmn] = pokedex[pkmn]
               }
             }
           }
         }
         
-        return pokedexData
+        return pokedexProps
       }
     }
 
-    function filterByRegion(pokedexData) {
+    function filterByRegion(pokedexProps) {
        if (region) {
         const regionNumberRange = {
           Kanto: [1, 151],
@@ -906,48 +985,48 @@ class Store {
           Alola: [722, 807],
         }
         const range = regionNumberRange[region]
-        let newPokedexData = {}
+        let filteredPokedex = {}
 
         // Only return pokemon from a certian region based on pokedex number
-        for (const [key, value] of Object.entries(pokedexData)) {
+        for (const [pkmn, pkmnProps] of Object.entries(pokedexProps)) {
           if (
-            value.num >= range[0]
-            && value.num <= range[1]
+            pkmnProps.num >= range[0]
+            && pkmnProps.num <= range[1]
             // If Kanto region, remove alola forms
-            && !(region === 'Kanto' && key.includes('alola'))
+            && !(region === 'Kanto' && pkmn.includes('alola'))
           ) {
-            newPokedexData[key] = value
+            filteredPokedex[pkmn] = pkmnProps
           }
         }
         
         // If Alola region, add alola forms
         if (region === 'Alola') {
-          for (const [key, value] of Object.entries(pokedexData)) {
-            if (key.includes('alola')) {
-              newPokedexData[key] = value
+          for (const [pkmn, pkmnProps] of Object.entries(pokedexProps)) {
+            if (pkmn.includes('alola')) {
+              filteredPokedex[pkmn] = pkmnProps
             }
           }
         }
 
-        return newPokedexData
+        return filteredPokedex
       } else {
-        return pokedexData
+        return pokedexProps
       }
     }
 
-    function filterByType(pokedexData) {
-      let newPokedexData = {}
+    function filterByType(pokedexProps) {
+      let filteredPokedex = {}
 
       if (type) {
-        for(const [key, value] of Object.entries(pokedexData)) {
-          if (value.types.includes(this.type)) {
-            newPokedexData[key] = value
+        for(const [pkmn, pkmnProps] of Object.entries(pokedexProps)) {
+          if (pkmnProps.types.includes(this.type)) {
+            filteredPokedex[pkmn] = pkmnProps
           }
         }
 
-        return newPokedexData
+        return filteredPokedex
       } else {
-        return pokedexData
+        return pokedexProps
       }
     }
   }
@@ -962,7 +1041,7 @@ let store = window.store = new Store()
 
 export default store
 
-// autorun(() => console.log(store.types))
+// autorun(() => console.log(store.teamTypes))
 
 /* FOR BUILD
 export default new Store()

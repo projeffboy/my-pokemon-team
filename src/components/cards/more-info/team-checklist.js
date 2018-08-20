@@ -99,7 +99,7 @@ class TeamChecklist extends React.Component {
 
   // wish + protect-like move counts as reliable recovery
   hasWishAndProtect() {
-    return store.doesPokemonHaveTheseMoves(['wish', [
+    return store.doesTeamPokemonHaveTheseMoves(['wish', [
       'protect',
       'detect',
       'banefulbunker',

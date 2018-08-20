@@ -16,7 +16,7 @@ class PokemonInput extends React.Component {
     const {pokemonProp, teamIndex} = this.props
 
     if (pokemonProp === 'name') {
-      store.clearPokemonProps(teamIndex)
+      store.clearTeamPkmnProps(teamIndex)
     }
 
     store.team[teamIndex][pokemonProp] = inputVal

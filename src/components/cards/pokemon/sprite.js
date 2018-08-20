@@ -28,7 +28,7 @@ class Sprite extends React.Component {
          * separated by a hyphen
          * all lowercase
          */
-        const spriteFilenamePart1 = store.baseFormeId(pokemon)
+        const spriteFilenamePart1 = store.baseForme(pokemon)
         const spriteFilenamePart2 = store.forme(pokemon)
           .toLowerCase()
           .replace('-', '')
