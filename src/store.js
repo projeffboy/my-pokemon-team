@@ -51,7 +51,7 @@ class Store {
   /*
    * MAKING SENSE OF VARIABLE NAMES
    * There are three types of pokemon variables:
-   *  1. pkmn or pokemon (pokemon id):
+   *  1. pkmn or pokemon (pokemon ID, not to be confused with pokedex ID):
    *    -only one word
    *    -no hyphens
    *    -lowercase

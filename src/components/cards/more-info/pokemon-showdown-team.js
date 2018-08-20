@@ -47,46 +47,72 @@ class PokemonShowdownTeam extends React.Component {
 
   handleClose = () => this.setState({isDialogOpen: false})
 
-  handleChange = () => {
-    let pokemonRawData = this.state.textArea.split('\n\n')
-    pokemonRawData = pokemonRawData.filter(eachPkmnData => eachPkmnData)
-    pokemonRawData.forEach((eachPkmnData, teamIndex) => {
-      const lines = eachPkmnData.split('\n')
+  handleImport = () => {
+    let teamPkmnRawData = this.state.textArea.split('\n\n') // split team into each pokemon
+
+    teamPkmnRawData = teamPkmnRawData.filter(eachPkmnData => eachPkmnData) // get rid of empty lines
+    teamPkmnRawData.forEach((eachPkmnData, teamIndex) => {
+      const lines = eachPkmnData.split('\n') // split pokemon into its properties
       
+      // Get pokemon and item names
       const pkmnAndItemNames = lines[0].split('@').map(str => str.trim())
       const [pkmnName, itemName] = pkmnAndItemNames
-      const name = store.pkmnNameInverse(pkmnName)
-  
-      if (name) {
-        store.team[teamIndex].name = name
 
-        // check if item is fine
-        const item = store.itemNameInverse(itemName)
-        if (item) {
-          store.team[teamIndex].item = item
+      // Check if the pokemon the user typed is legit
+      const pkmn = store.pkmnNameInverse(pkmnName)
+      if (pkmn) {
+        store.team[teamIndex].name = pkmn // if legit, set pokemon ID/name
+
+        // If team raw data does not mention item, leave it blank
+        if (itemName) {
+          // Check if item is legit
+          const item = store.itemNameInverse(itemName)
+          if (item) {
+            store.team[teamIndex].item = item // if legit, set item ID/name
+          } else {
+            store.autoSelectItem()
+          }
+        } else {
+          store.team[teamIndex].item = ''
         }
 
         let moveNum = 1
+        let abilityChanged = false
+
         lines.slice(1).forEach((line, i) => {
-          // get the ability and moves
-          if (line.includes('Ability:')) {
+          if (line.includes('Ability:')) { // if property has to do with abilities
             const ability = line.replace('Ability:', '').trim()
 
-            /*
-            if (Object.values(store.abilities(name)).includes(ability)) {
+            // If legit, set ability
+            if (Object.values(store.abilities(pkmn)).includes(ability)) {
               store.team[teamIndex].ability = ability
+            } else {
+              store.autoSelectAbility()
             }
-            */
-          } else if (line[0] === '-') {
-            /*
-            const moveName = line.slice(1).trim()
 
+            abilityChanged = true
+          } else if (line[0] === '-' && moveNum <= 4) { // if property has to do with moves
+            const moveName = line
+              .slice(1)
+              .trim()
+              .replace('[', '') // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
+              .replace(']', '')
+
+            // If legit, set move
             if (store.moveNameInverse(moveName)) {
-              store.team[teamIndex]['move' + moveNum] = moveName
+              const move = store.moveNameInverse(moveName)
+
+              store.team[teamIndex]['move' + moveNum] = move
+
+              moveNum++
             }
-            */
           }
         })
+
+        // If team raw data does not mention ability, leave it blank
+        if (!abilityChanged) {
+          store.team[teamIndex].ability = ''
+        }
       }
     })
 
@@ -173,7 +199,7 @@ ${[1, 2, 3, 4].map(num => {
             <Button onClick={this.handleClose} color='primary'>
               Cancel
             </Button>
-            <Button onClick={this.handleChange} color='primary'>
+            <Button onClick={this.handleImport} color='primary'>
               OK
             </Button>
           </DialogActions>
