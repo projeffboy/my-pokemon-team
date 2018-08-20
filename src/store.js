@@ -825,26 +825,23 @@ class Store {
 
     // First filter by format, then type, then region
     return Object.keys(
-      filterByFormat.call(
-        this,
-        filterByRegion.call(
-          this,
-          filterByType.call(
-            this, 
-            {...pokedex}
-          )
+      filterByFormat(
+        filterByRegion(
+          filterByType({...pokedex})
         )
       )
     )
 
-    function filterByFormat(pokedexProps) {
+    function filterByFormat(pokedex) {
       /* No Filter */
 
       if (format === '') {
-        return pokedexProps
+        return pokedex
       }
 
       /* Official Pokemon Format Filter */
+
+      let filteredPokedex
       
       if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2018'].includes(format)) {
         const banlist = [
@@ -889,18 +886,20 @@ class Store {
           'marshadow', 
           'zeraora',
         ]
-  
+
+        filteredPokedex = {...pokedex}
+
         for (const pkmn of banlist) {
           const {otherFormes} = pokedex[pkmn]
 
           // Don't just delete the banned pokemon, delete its other formes
           // E.g. delete giratina, as well as giratinaorigin
           if (otherFormes) {
-            otherFormes.forEach(otherForme => delete pokedexProps[otherForme])
+            otherFormes.forEach(otherForme => delete filteredPokedex[otherForme])
           }
-          delete pokedexProps[pkmn]
+          delete filteredPokedex[pkmn]
         }
-        return pokedexProps
+        return filteredPokedex
       }
 
       /* Smogon Singles/Doubles Filter */
@@ -918,7 +917,7 @@ class Store {
         'Doubles UU': 'DUU',
       }
 
-      pokedexProps = {} // clear out pokedexProps
+      filteredPokedex = {} // clear out filteredPokedex
 
       /* Smogon Singles Filter */
       
@@ -960,20 +959,20 @@ class Store {
           if (tierAbbr[format] === tier || tierMatched) {
             tierMatched = true
 
-            // Add all the pokemon from that tier to pokedexProps
+            // Add all the pokemon from that tier to filteredPokedex
             for (const pkmn in pokedex) {
               if (formats[pkmn][tierType] === tier) {
-                pokedexProps[pkmn] = pokedex[pkmn]
+                filteredPokedex[pkmn] = pokedex[pkmn]
               }
             }
           }
         }
         
-        return pokedexProps
+        return filteredPokedex
       }
     }
 
-    function filterByRegion(pokedexProps) {
+    function filterByRegion(pokedex) {
        if (region) {
         const regionNumberRange = {
           Kanto: [1, 151],
@@ -988,7 +987,7 @@ class Store {
         let filteredPokedex = {}
 
         // Only return pokemon from a certian region based on pokedex number
-        for (const [pkmn, pkmnProps] of Object.entries(pokedexProps)) {
+        for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
           if (
             pkmnProps.num >= range[0]
             && pkmnProps.num <= range[1]
@@ -1001,7 +1000,7 @@ class Store {
         
         // If Alola region, add alola forms
         if (region === 'Alola') {
-          for (const [pkmn, pkmnProps] of Object.entries(pokedexProps)) {
+          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
             if (pkmn.includes('alola')) {
               filteredPokedex[pkmn] = pkmnProps
             }
@@ -1010,23 +1009,23 @@ class Store {
 
         return filteredPokedex
       } else {
-        return pokedexProps
+        return pokedex
       }
     }
 
-    function filterByType(pokedexProps) {
+    function filterByType(pokedex) {
       let filteredPokedex = {}
 
       if (type) {
-        for(const [pkmn, pkmnProps] of Object.entries(pokedexProps)) {
-          if (pkmnProps.types.includes(this.type)) {
+        for(const [pkmn, pkmnProps] of Object.entries(pokedex)) {
+          if (pkmnProps.types.includes(type)) {
             filteredPokedex[pkmn] = pkmnProps
           }
         }
 
         return filteredPokedex
       } else {
-        return pokedexProps
+        return pokedex
       }
     }
   }
