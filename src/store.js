@@ -100,6 +100,7 @@ class Store {
 
   /*
    * STORE HELPER PROPERTIES
+   * 
    * pokedex[pkmn]
    *  Input: pokemon ID
    *  Output: pokemon's properties from pokedex.js
@@ -109,6 +110,7 @@ class Store {
    * learnsets[pkmn]
    *  Input: pokemon ID
    *  Output: pokemon's learnset (in array form) from learnsets.min.js
+   *  Drawback: If the pokemon has previous evolution(s), it doesn't include their learnsets
    * typechart[type1][type2]
    *  Inputs: two pokemon types
    *  Output: How effective a type2 move is against a type1 pokemon
@@ -207,7 +209,64 @@ class Store {
   
   /* LEARNSETS METHODS */
 
-  // Don't think we need any
+  /*
+   * Gives you a pokemon's complete learnset, which includes the learnsets of its previous evolutions.
+   * If you just use learnsets[pkmn], it will not give you previous evolution learnsets.
+   * It also adds all the different hidden powers.
+   */
+  completeLearnset(pkmn) {
+    let baseForme = this.baseForme(pkmn) || pkmn // since learnsets[pkmn] requires pkmn to be at its base forme
+
+    let completeLearnset = learnsets[baseForme]
+
+    while (this.previousEvolution(baseForme)) {
+      baseForme = this.previousEvolution(baseForme)
+      // Append previous evolution learnset to current learnset
+      completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
+    }
+
+    // turning array to set removes duplicates
+    completeLearnset = new Set(completeLearnset)
+    // turn set back into array
+    completeLearnset = [...completeLearnset]
+
+    // Add in all the hidden powers
+    if (completeLearnset.includes('hiddenpower')) {
+      // hidden power normal is already included by default
+      const pokemonTypes = [ // no hidden power fairy btw
+        'bug',
+        'dark',
+        'dragon',
+        'electric',
+        'fighting',
+        'fire',
+        'flying',
+        'ghost',
+        'grass',
+        'ground',
+        'ice',
+        'poison',
+        'psychic',
+        'rock',
+        'steel',
+        'water',
+      ]
+      const hiddenpowers = pokemonTypes.map(type => 'hiddenpower' + type)
+
+
+      // remove hidden power normal
+      completeLearnset.splice(completeLearnset.indexOf('hiddenpower'), 1)
+
+      // add all hidden powers together
+      completeLearnset.push('hiddenpower')
+      completeLearnset.push(...hiddenpowers)
+    }
+
+    return completeLearnset
+  }
+
+  // Can `pkmn` learn `move`?
+  canItLearn = (move, pkmn) => move ? this.completeLearnset(pkmn).includes(move) : false
   
   /* TYPECHART METHODS */
 
@@ -217,7 +276,7 @@ class Store {
 
   // Get the proper name of move
   moveName(move) {
-    return moves[move].name
+    return moves[move] ? moves[move].name : undefined
   }
  
   // Inverse function of moveName
@@ -322,67 +381,8 @@ class Store {
       const pkmn = teamPkmnProps.name
 
       if (pkmn) {
-        /*
-         * As it turns out, learnsets.min.js doesn't include pokemons' alternate formes.
-         * So if the user chooses an alternate forme pokemon,
-         * we gotta tell the code that we mean the base form.
-         */
-        let baseForme = this.baseForme(pkmn) || pkmn
-
-        // the specific pokemon's learnset
-        let learnsetValues = learnsets[baseForme]
-
-        /*
-         * TLDR; This code allows you to choose moves for pokemon that can be learnt by their pre-evolutions.
-         * 
-         * So the thing is I took the learnsets data from Smogon.
-         * However, it says that Bisharp cannot learn sucker punch.
-         * While that is technically true,
-         * since its pre-evolution Pawniard can,
-         * we want to also want to display Pawniard's possible moves for Bisharp.
-         * Therefore, this code will append the moves of the evolutions of a pokemon into one.
-         */
-        while (this.previousEvolution(baseForme)) {
-          baseForme = this.previousEvolution(baseForme)
-          learnsetValues = [...learnsetValues, ...learnsets[baseForme]]
-        }
-
-        // turning array to set removes duplicates
-        learnsetValues = new Set(learnsetValues)
-        // turn set back into array
-        learnsetValues = [...learnsetValues]
-
-        // Add in all the hidden powers
-        if (learnsetValues.includes('hiddenpower')) {
-          // hidden power normal is already included by default
-          const pokemonTypes = [ // no hidden power fairy btw
-            'bug',
-            'dark',
-            'dragon',
-            'electric',
-            'fighting',
-            'fire',
-            'flying',
-            'ghost',
-            'grass',
-            'ground',
-            'ice',
-            'poison',
-            'psychic',
-            'rock',
-            'steel',
-            'water',
-          ]
-          const hiddenpowers = pokemonTypes.map(type => 'hiddenpower' + type)
-
-
-          // remove hidden power normal
-          learnsetValues.splice(learnsetValues.indexOf('hiddenpower'), 1)
-          
-          // add all hidden powers together
-          learnsetValues.push('hiddenpower')
-          learnsetValues.push(...hiddenpowers)
-        }
+        // the specific pokemon's complete learnset
+        let learnsetValues = this.completeLearnset(pkmn)
 
         if (this.searchFilters.moves) { // search filter: if the user only wants to see viable moves
           // Remove non-viable moves
@@ -1032,6 +1032,18 @@ class Store {
 
   @computed get filteredPokemonNames() {
     return this.filteredPokemon.map(pokemon => this.pkmnName(pokemon))
+  }
+
+  /*******
+  SNACKBAR
+  *******/
+
+  @observable isSnackbarOpen = false
+  @observable snackbarMsg = ''
+
+  @action openSnackbar(msg) {
+    this.isSnackbarOpen = true
+    this.snackbarMsg = msg
   }
 }
 

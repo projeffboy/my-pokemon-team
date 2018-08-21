@@ -4,9 +4,7 @@ DO THESE THINGS
     -get the right icons
     -export/import dialog
       -confirm button
-        -produce a snackbar for success and different kinds of errors
-    -copy button
-      -produce a snackbar when it does
+        -produce a snackbar for success and dialog for different kinds of errors
 3. Add icons to pokemon and item select.
 4. Add tooltips to type defence, coverage, and checklist.
   -hover or click on the type or type score

@@ -11,7 +11,6 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import {observer} from 'mobx-react'
 import store from '../../../store'
-import Snackbar from '@material-ui/core/Snackbar'
 
 const styles = theme => ({
   root: {display: 'none'},
@@ -31,6 +30,7 @@ class PokemonShowdownTeam extends React.Component {
     this.state = {
       isDialogOpen: false,
       textArea: '',
+      
     }
   }
 
@@ -38,7 +38,7 @@ class PokemonShowdownTeam extends React.Component {
     this.setState({textArea: event.target.value})
   }
 
-  handleClick = (e, text) => {
+  handleClick = (event, text) => {
     this.setState({
       isDialogOpen: true,
       textArea: text,
@@ -47,92 +47,121 @@ class PokemonShowdownTeam extends React.Component {
 
   handleClose = () => this.setState({isDialogOpen: false})
 
-  handleImport = () => {
-    let teamPkmnRawData = this.state.textArea.split('\n\n') // split team into each pokemon
+  handleImport = initialText => {
+    if (this.state.textArea !== initialText) {
+      let teamPkmnRawData = this.state.textArea.split('\n\n') // split team into each pokemon
+      let numberOfTeamPkmn = 0
 
-    teamPkmnRawData = teamPkmnRawData.filter(eachPkmnData => eachPkmnData) // get rid of empty lines
-    teamPkmnRawData.forEach((eachPkmnData, teamIndex) => {
-      const lines = eachPkmnData.split('\n') // split pokemon into its properties
-      
-      // Get pokemon and item names
-      const pkmnAndItemNames = lines[0].split('@').map(str => str.trim())
-      const [pkmnName, itemName] = pkmnAndItemNames
+      teamPkmnRawData = teamPkmnRawData.filter(eachPkmnData => eachPkmnData) // get rid of empty lines
+      teamPkmnRawData.forEach((eachPkmnData, teamIndex) => {
+        numberOfTeamPkmn++
 
-      // Check if the pokemon the user typed is legit
-      const pkmn = store.pkmnNameInverse(pkmnName)
-      if (pkmn) {
-        store.team[teamIndex].name = pkmn // if legit, set pokemon ID/name
+        const lines = eachPkmnData.split('\n') // split pokemon into its properties
+        
+        // Get pokemon and item names
+        const pkmnAndItemNames = lines[0].split('@').map(str => str.trim())
+        const [pkmnName, itemName] = pkmnAndItemNames
 
-        // If team raw data does not mention item, leave it blank
-        if (itemName) {
-          // Check if item is legit
-          const item = store.itemNameInverse(itemName)
-          if (item) {
-            store.team[teamIndex].item = item // if legit, set item ID/name
-          } else {
-            store.autoSelectItem()
-          }
-        } else {
-          store.team[teamIndex].item = ''
-        }
+        // Check if the pokemon the user typed is legit
+        const pkmn = store.pkmnNameInverse(pkmnName)
+        if (pkmn) {
+          store.team[teamIndex].name = pkmn // if legit, set pokemon ID/name
 
-        let moveNum = 1
-        let abilityChanged = false
-
-        lines.slice(1).forEach((line, i) => {
-          if (line.includes('Ability:')) { // if property has to do with abilities
-            const ability = line.replace('Ability:', '').trim()
-
-            // If legit, set ability
-            if (Object.values(store.abilities(pkmn)).includes(ability)) {
-              store.team[teamIndex].ability = ability
+          // If team raw data does not mention item, leave it blank
+          if (itemName) {
+            // Check if item is legit
+            const item = store.itemNameInverse(itemName)
+            if (item) {
+              store.team[teamIndex].item = item // if legit, set item ID/name
             } else {
-              store.autoSelectAbility()
+              store.autoSelectItem()
             }
+          } else {
+            store.team[teamIndex].item = ''
+          }
 
-            abilityChanged = true
-          } else if (line[0] === '-' && moveNum <= 4) { // if property has to do with moves
-            const moveName = line
-              .slice(1)
-              .trim()
-              .replace('[', '') // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
-              .replace(']', '')
+          let moveNum = 1
+          let abilityChanged = false
 
-            // If legit, set move
-            if (store.moveNameInverse(moveName)) {
+          lines.slice(1).forEach((line, i) => {
+            if (line.includes('Ability:')) { // if property has to do with abilities
+              const ability = line.replace('Ability:', '').trim()
+
+              // If legit, set ability
+              if (Object.values(store.abilities(pkmn)).includes(ability)) {
+                store.team[teamIndex].ability = ability
+                abilityChanged = true
+              }
+
+            } else if (line[0] === '-' && moveNum <= 4) { // if property has to do with moves
+              const moveName = line
+                .slice(1)
+                .trim()
+                .replace('[', '') // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
+                .replace(']', '')
+
+              // If legit, set move
+              // Otherwise, set it blank
               const move = store.moveNameInverse(moveName)
 
-              store.team[teamIndex]['move' + moveNum] = move
+              let validMove = store.canItLearn(move, pkmn) ? move : ''
+
+              store.team[teamIndex]['move' + moveNum] = validMove
 
               moveNum++
             }
-          }
-        })
+          })
 
-        // If team raw data does not mention ability, leave it blank
-        if (!abilityChanged) {
-          store.team[teamIndex].ability = ''
+          // If team raw data does not mention ability, leave it blank
+          if (!abilityChanged) {
+            store.team[teamIndex].ability = ''
+            store.autoSelectAbility()
+          }
         }
+      })
+
+      /*
+       * Clears unwanted duplicate pokemon
+       * Happens when the user for example...
+       *  -adds pikachu to the 3rd team slot (`teamIndex` of 2)
+       *  -presses import/export button
+       *  -modifies that pikachu's raw data
+       *  -presses OK
+       * Without this code, there will be two pikachus, at slot 1 and slot 3
+       */
+      for (let i = numberOfTeamPkmn; i < 6; i++) {
+        store.clearTeamPkmnProps(i)
       }
-    })
+
+    } else {
+      store.openSnackbar('No changes made.')
+    }
 
     this.handleClose()
-
-    // display snackbar for success for failure
   }
 
   handleCopy = text => {
-    let textArea = document.createElement('textarea')
+    if (text !== '') {
+      // Copied this code from https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
 
-    textArea.value = text
-    document.body.appendChild(textArea)
-    textArea.select()
-    document.execCommand('copy')
-    textArea.remove()
+      let textArea = document.createElement('textarea')
+
+      textArea.value = text
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      textArea.remove()
+
+      //
+
+      store.openSnackbar('Team copied.')
+    } else {
+      store.openSnackbar('Empty team, nothing to copy.')
+    }
   }
 
   render() {
-    const {classes, width} = this.props
+    const {classes/*, width*/} = this.props
 
     const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5].map(teamIndex => {
       const {name, item, ability} = store.team[teamIndex]
@@ -154,10 +183,12 @@ ${[1, 2, 3, 4].map(num => {
       }
     }).join('')
 
+    /*
     let buttonLabels = ['Import/Export Team', 'Copy Team']
     if (width === 'xs' || width === 'sm') {
       buttonLabels = ['Import/Export', 'Copy']
     }
+    */
 
     return (
       <React.Fragment>
@@ -199,7 +230,7 @@ ${[1, 2, 3, 4].map(num => {
             <Button onClick={this.handleClose} color='primary'>
               Cancel
             </Button>
-            <Button onClick={this.handleImport} color='primary'>
+            <Button onClick={() => this.handleImport(pokemonShowdownTeamInfo)} color='primary'>
               OK
             </Button>
           </DialogActions>
@@ -209,42 +240,6 @@ ${[1, 2, 3, 4].map(num => {
         </Button>
       </React.Fragment>
     )
-  }
-}
-
-class PositionedSnackbar extends React.Component {
-  state = {
-    open: false,
-    vertical: 'top',
-    horizontal: 'center',
-  };
-
-  handleClick = state => () => {
-    this.setState({ open: true, ...state });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { vertical, horizontal, open } = this.state;
-    return (
-      <div>
-        <Button onClick={this.handleClick({ vertical: 'bottom', horizontal: 'center' })}>
-          Bottom-Center
-        </Button>
-        <Snackbar
-          anchorOrigin={{ vertical, horizontal }}
-          open={open}
-          onClose={this.handleClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">I love snacks</span>}
-        />
-      </div>
-    );
   }
 }
 
