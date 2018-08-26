@@ -1,13 +1,13 @@
 DO THESE THINGS
+0. solid rock, filter, etc.
 4. Add tooltips to type defence, coverage, and checklist.
-  -hover or click on the type or type score
   -type defence
     -Poison does...
-      -4x to Shiinotic
-      -2x to Sylveon
-      -0.5x to Alakazam
+      -   4x to Shiinotic
+      -   2x to Sylveon
+      - 0.5x to Alakazam
       -0.25x to
-      -0x to Registeel
+      -   0x to Registeel
   -type coverage shows:
     -Supereffective against poison:
       -Psychic  Alakazam
@@ -48,7 +48,7 @@ BUG CHANGES
 -porygonZ Z-conversion?
 
 MINOR THINGS
--either pick e or even
+-either pick e or event
 
 MAJOR CHANGES
 -no repeated moves

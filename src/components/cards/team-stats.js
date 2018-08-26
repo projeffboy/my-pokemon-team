@@ -17,8 +17,9 @@ class TeamStats extends React.Component {
     titleArr[0] = titleArr[0].toLowerCase()
     this.teamStatType = titleArr.join('')
 
-    // For popover
-    this.state = {anchorEl: null}
+    // For popover (anchorEl means the element that the popover should be anchored to)
+    // Why 18? There are 18 types
+    this.state = {anchorEl: Array(18).fill(null)}
   }
 
   returnTypeValue(type) {
@@ -33,14 +34,18 @@ class TeamStats extends React.Component {
     return <div style={{color}}>{type > 0 ? `+${type}` : type}</div>
   }
 
-  handlePopoverOpen = event => this.setState({anchorEl: event.currentTarget})
+  handlePopoverOpen = (e, i) => {
+    let anchorEl = this.state.anchorEl.slice()
 
-  handlePopoverClose = () => this.setState({anchorEl: null})
+    anchorEl = Array(18).fill(null)
+    anchorEl[i] = e.currentTarget
+    this.setState({anchorEl})
+  }
+
+  handlePopoverClose = () => this.setState({anchorEl: Array(18).fill(null)})
 
   render() {
     const {classes, width} = this.props
-    const {anchorEl} = this.state
-    const open = Boolean(anchorEl)
 
     const types = {
       Bug: 'a8b820', // the type's hex color
@@ -91,9 +96,34 @@ class TeamStats extends React.Component {
     const gridItems = Object.keys(types).map((type, i) => (
       <Grid key={i} item xs={2}>
         <div className={classes.typeContainer}>
-          <div className={classes.pokemonType} style={{backgroundColor: `#${types[type]}`}}>
+          {/* Activates Popover */}
+          <div
+            className={classes.pokemonType}
+            style={{backgroundColor: `#${types[type]}`}}
+            aria-owns={this.state.anchorEl[i] ? 'mouse-over-popover-' + i : null}
+            aria-haspopup='true'
+            onMouseEnter={e => this.handlePopoverOpen(e, i)}
+            onMouseLeave={this.handlePopoverClose}  
+          >
             {typeAbbr[i] || type}
           </div>
+          {/* The Popover Itself */}
+          <Popover
+            id={'mouse-over-popover-' + i}
+            className={classes.popover}
+            classes={{
+              paper: classes.paper,
+            }}
+            open={!!this.state.anchorEl[i]}
+            anchorEl={this.state.anchorEl[i]}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+          >
+            {/* Popover Message */}
+            <TeamStatsTooltip type={type} typeColor={types[type]} classes={classes} />
+          </Popover>
         </div>
         {/* E.g. +2 or -1 */}
         {this.returnTypeValue(store[this.teamStatType][type])}
@@ -112,6 +142,71 @@ class TeamStats extends React.Component {
       </Grid>
     )
   }
+}
+
+// Popover Message
+function TeamStatsTooltip(props) {
+  const {typeColor, type, classes} = props
+
+  const content = () => (
+    <React.Fragment>
+      <p>
+        <span style={{color: `#${typeColor}`}}>{type}</span> does...
+      </p>
+      <ul className={classes.list}>
+        {store.team.map((teamPkmnProps, i) => {
+          if (teamPkmnProps.name) {
+            const pkmn = store.team[i].name
+            const effectiveness = store.effectiveness()
+
+            let multiplier
+            let color = 'initial'
+            switch (effectiveness) {
+              case -2:
+                multiplier = '   4'
+                color = 'maroon'
+                break
+              case -1:
+                multiplier = '   2'
+                color = 'red'
+                break
+              case 0:
+                multiplier = '   1'
+                color = 'yellow'
+                break
+              case 1:
+                multiplier = ' 0.5'
+                color = 'yellowgreen'
+                break
+              case 2:
+                multiplier = '0.25'
+                color = 'green'
+                break
+              case 3:
+                multiplier = '   0'
+                color = 'darkgreen'
+                break
+              default:
+            }
+
+            return (
+              <li key={teamPkmnProps.name + i}>
+                <span style={{color}}>{multiplier}x</span>
+                 to {store.pkmnName(pkmn)}
+              {/* add icon */}
+              </li>
+            )
+          }
+        })}
+      </ul>
+    </React.Fragment>
+  )
+
+  return (
+    <Typography component={'div'}>
+      {store.isTeamEmpty ? 'First select a pokemon.' : content()}
+    </Typography>
+  )
 }
 
 export default withStyles(teamStatsStyles)(TeamStats)

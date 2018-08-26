@@ -195,6 +195,16 @@ export const teamStatsStyles = {
     margin: 'auto',
     padding: '1px 0',
   },
+  popover: {
+    pointerEvents: 'none',
+  },
+  paper: {
+    padding: theme.spacing.unit,
+  },
+  list: {
+    listStyle: 'none', 
+    padding: 0,
+  }
 }
 
 // more-info.js

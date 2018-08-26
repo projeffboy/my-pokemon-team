@@ -423,6 +423,12 @@ class Store {
     return teamTypes
   }
 
+  // Is the team empty
+  @computed get isTeamEmpty() {
+    return this.team.every(teamPkmnProps => !teamPkmnProps.name)
+  }
+
+
   // Does the team have these items?
   doesTeamHaveItems(items) { // array input
     return this.teamItems.some(teamItem => items.includes(teamItem))
@@ -809,6 +815,15 @@ class Store {
     return typeCoverage
   }
 
+  // Tells you the effectivness of a type against a certain pokemon
+  effectiveness(type, pkmn) {
+    return 2
+  }
+
+  @computed get effectivness2() {
+    return null
+  }
+
   /*************
   SEARCH FILTERS
   *************/
@@ -947,7 +962,6 @@ class Store {
       else if (['DUber', 'DOU', 'DUU'].includes(tierAbbr[format])) {
         return helperFunction(['DUber', 'DOU', 'DUU'], 'doublesTier')
       }
-
 
       /* Helper Function for Smogon Singles/Doubles Filter */
 
