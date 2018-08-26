@@ -1,7 +1,4 @@
 DO THESE THINGS
-1. Finish the Pokmon Showdown import, download, and copy.
-  -Pokemon Showdown Team
-    -get the right icons
 4. Add tooltips to type defence, coverage, and checklist.
   -hover or click on the type or type score
   -type defence

@@ -1,14 +1,17 @@
 import React from 'react'
+// Material UI Core Imports
 import {withStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
-import SwapVert from '@material-ui/icons/SwapVert'
-import Save from '@material-ui/icons/Save' // change this to FileCopy you get the chance
 import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+// Material UI Icons Imports
+import ImportExport from '@material-ui/icons/ImportExport'
+import ContentCopy from '@material-ui/icons/ContentCopy'
+// Custom Imports
 import {observer} from 'mobx-react'
 import store from '../../../store'
 
@@ -193,7 +196,7 @@ ${[1, 2, 3, 4].map(num => {
     return (
       <React.Fragment>
         <Button onClick={e => this.handleClick(e, pokemonShowdownTeamInfo)}>
-          Import/Export Team <SwapVert />
+          Import/Export Team <ImportExport />
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -236,7 +239,7 @@ ${[1, 2, 3, 4].map(num => {
           </DialogActions>
         </Dialog>
         <Button onClick={() => this.handleCopy(pokemonShowdownTeamInfo)} className={classes.button}>
-          Copy Team <Save />
+          Copy Team <ContentCopy />
         </Button>
       </React.Fragment>
     )
