@@ -2,9 +2,6 @@ DO THESE THINGS
 1. Finish the Pokmon Showdown import, download, and copy.
   -Pokemon Showdown Team
     -get the right icons
-    -export/import dialog
-      -confirm button
-        -produce a snackbar for success and dialog for different kinds of errors
 4. Add tooltips to type defence, coverage, and checklist.
   -hover or click on the type or type score
   -type defence
@@ -69,3 +66,4 @@ MAJOR CHANGES
   -tab through everything
 -reorganize store.js
 -display pokemon by format alphabetically
+-produce a snackbar for success and dialog for different kinds of errors
