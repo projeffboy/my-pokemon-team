@@ -2,6 +2,7 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import {withStyles} from '@material-ui/core/styles'
+import Popover from '@material-ui/core/Popover';
 import {observer} from 'mobx-react'
 import store from '../../store'
 import {teamStatsStyles} from '../../styles'
@@ -11,10 +12,13 @@ class TeamStats extends React.Component {
   constructor(props) {
     super(props)
 
-    // E.g. Turn "Type Coverage" to "typeCoverage"
+    // E.g. Turn 'Type Coverage' to 'typeCoverage'
     let titleArr = this.props.title.split(' ')
     titleArr[0] = titleArr[0].toLowerCase()
     this.teamStatType = titleArr.join('')
+
+    // For popover
+    this.state = {anchorEl: null}
   }
 
   returnTypeValue(type) {
@@ -29,8 +33,14 @@ class TeamStats extends React.Component {
     return <div style={{color}}>{type > 0 ? `+${type}` : type}</div>
   }
 
+  handlePopoverOpen = event => this.setState({anchorEl: event.currentTarget})
+
+  handlePopoverClose = () => this.setState({anchorEl: null})
+
   render() {
     const {classes, width} = this.props
+    const {anchorEl} = this.state
+    const open = Boolean(anchorEl)
 
     const types = {
       Bug: 'a8b820', // the type's hex color
@@ -80,14 +90,42 @@ class TeamStats extends React.Component {
     // Grid Items of Pokemon Types
     const gridItems = Object.keys(types).map((type, i) => (
       <Grid key={i} item xs={2}>
-        <div className={classes.typeContainer}>
+                  <div           aria-owns={open ? 'mouse-over-popover' : null}
+          aria-haspopup="true"
+          onMouseEnter={this.handlePopoverOpen}
+          onMouseLeave={this.handlePopoverClose}>
+        <div
+          className={classes.typeContainer}
+        >
           {/* E.g. Psychic (Or PSY on a smaller screen) */}
           <div className={classes.pokemonType} style={{backgroundColor: `#${types[type]}`}}>
             {typeAbbr[i] || type}
           </div>
         </div>
+        <Popover
+          id="mouse-over-popover"
+          style={{pointerEvents: 'none',}}
+          classes={{
+            paper: classes.paper,
+          }}
+          open={open}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          onClose={this.handlePopoverClose}
+          disableRestoreFocus
+        >
+          <Typography>I use Popover.</Typography>
+        </Popover>
         {/* E.g. +2 or -1 */}
         {this.returnTypeValue(store[this.teamStatType][type])}
+        </div>
       </Grid>
     ), this)
   

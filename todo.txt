@@ -5,7 +5,6 @@ DO THESE THINGS
     -export/import dialog
       -confirm button
         -produce a snackbar for success and dialog for different kinds of errors
-3. Add icons to pokemon and item select.
 4. Add tooltips to type defence, coverage, and checklist.
   -hover or click on the type or type score
   -type defence
@@ -34,6 +33,7 @@ DO THESE THINGS
   -make placeholder text different color than selected text
   -stylize react-virtualized-select
   -link style
+  -pokemon-input-select
 7. Check for responsiveness (and test touch on mobile).
   -repsonsiveness for widescreens
 8. Speed up the page somehow.
