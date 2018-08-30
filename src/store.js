@@ -698,6 +698,16 @@ class Store {
             case 'Heatproof':
               resistanceScores.Fire += 1
               break
+            // Abilities that cushion supereffective moves
+            case 'Solid Rock':
+            case 'Filter':
+            case 'Prism Armor':
+              for (const [type, score] of Object.entries(resistanceScores)) {
+                if (score < 0) {
+                  resistanceScores[type] = score * 3 / 4
+                }
+              }
+              break
             default:
           }
 

@@ -1,5 +1,4 @@
 DO THESE THINGS
-0. solid rock, filter, etc.
 4. Add tooltips to type defence, coverage, and checklist.
   -type defence
     -Poison does...
