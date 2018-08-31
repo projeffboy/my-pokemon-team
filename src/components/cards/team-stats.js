@@ -6,6 +6,7 @@ import Popover from '@material-ui/core/Popover'
 import {observer} from 'mobx-react'
 import store from '../../store'
 import {teamStatsStyles} from '../../styles'
+import PokemonIcon from './pokemon/pokemon-input/pokemon-input-select/pokemon-icon'
 
 @observer
 class TeamStats extends React.Component {
@@ -155,45 +156,53 @@ function TeamStatsTooltip(props) {
       </p>
       <ul className={classes.list}>
         {store.team.map((teamPkmnProps, i) => {
-          if (teamPkmnProps.name) {
-            const pkmn = store.team[i].name
-            const effectiveness = store.effectiveness()
+          const {name: pkmn, ability, item} = teamPkmnProps
 
-            let multiplier
+          if (pkmn) {
+            const effectiveness = store.effectiveness(type, pkmn, ability, item)
+
+            let multiplier = 1
             let color = 'initial'
             switch (effectiveness) {
               case -2:
-                multiplier = '   4'
-                color = 'maroon'
-                break
-              case -1:
-                multiplier = '   2'
+                multiplier = 4
                 color = 'red'
                 break
+              case -1.5:
+                multiplier = 3
+                color = 'red'
+                break
+              case -1:
+                multiplier = 2
+                color = '#f9d130'
+                break
+              case -0.5:
+                multiplier = 1.5
+                color = '#f9d130'
+                break
               case 0:
-                multiplier = '   1'
-                color = 'yellow'
+                multiplier = 1
                 break
               case 1:
-                multiplier = ' 0.5'
+                multiplier = 0.5
                 color = 'yellowgreen'
                 break
               case 2:
-                multiplier = '0.25'
+                multiplier = 0.25
                 color = 'green'
                 break
               case 3:
-                multiplier = '   0'
-                color = 'darkgreen'
+                multiplier = 0
+                color = 'grey'
                 break
               default:
             }
 
             return (
-              <li key={teamPkmnProps.name + i}>
-                <span style={{color}}>{multiplier}x</span>
-                 to {store.pkmnName(pkmn)}
-              {/* add icon */}
+              <li key={teamPkmnProps.name + i} className={classes.listItem}>
+                <span style={{color}} className={classes.multiplier}>{multiplier}x</span>
+                <span style={{paddingRight: 2}}>to {store.pkmnName(pkmn)}</span>
+                <PokemonIcon pkmnProp='pkmn' value={pkmn} />
               </li>
             )
           }
@@ -203,7 +212,7 @@ function TeamStatsTooltip(props) {
   )
 
   return (
-    <Typography component={'div'}>
+    <Typography component='div'>
       {store.isTeamEmpty ? 'First select a pokemon.' : content()}
     </Typography>
   )

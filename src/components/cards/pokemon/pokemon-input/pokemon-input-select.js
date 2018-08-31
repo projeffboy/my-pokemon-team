@@ -13,10 +13,8 @@ import 'react-select/dist/react-select.css'
 import 'react-virtualized-select/styles.css'
 import VirtualizedSelect from 'react-virtualized-select'
 // Custom Imports
-import pokedex from '../../../../data/pokedex'
-import items from '../../../../data/items'
-import altSpriteNum from '../../../../data/altSpriteNum'
 import {pokemonInputSelectStyles} from '../../../../styles'
+import PokemonIcon from './pokemon-input-select/pokemon-icon'
 
 // Returns an Input containing the <select>
 // In charge of communicating with the store (store.js)
@@ -66,6 +64,11 @@ function Option(props, parentProps) {
   const {style, option, onSelect} = props
   const {placeholder} = parentProps
 
+  let pkmnProp = placeholder.toLowerCase()
+  if (pkmnProp === 'name') {
+    pkmnProp = 'pkmn'
+  }
+
   // Set the styles for certain options
   let horizontalPadding = 0
   let width = 0
@@ -89,68 +92,12 @@ function Option(props, parentProps) {
       className='VirtualizedSelectOption'
       onClick={handleClick}
     >
-      <PkmnIcon placeholder={placeholder} optionValue={option.value} width={width} />
+      <PokemonIcon pkmnProp={pkmnProp} value={option.value} />
       <span style={{width: `calc(100% - ${width}px)`}}>
         {option.label}
       </span>
     </div>
   )
-}
-
-/*
- * Returns the icon next to the option value
- * "smicons" is short for sun and moon icons for all the pokemon
- * You can find them here: https://play.pokemonshowdown.com/sprites/smicons-sheet.png
- * You can find the "itemicons" here: https://play.pokemonshowdown.com/sprites/itemicons-sheet.png
- */
-function PkmnIcon(props) {
-  const {placeholder, optionValue, width} = props
-
-  if (placeholder === 'Name' || placeholder === 'Item') {
-    let type
-    let left
-    let top
-    let height
-
-    if (placeholder === 'Name') {
-      type = 'sm'
-
-      const pokedexNumber = altSpriteNum[optionValue] || pokedex[optionValue].num
-
-      // Copied from Pokemon Showdown code
-      left = (pokedexNumber % 12) * 40
-      top = Math.floor(pokedexNumber / 12) * 30
-
-      height = 30
-    } else if (placeholder === 'Item') {
-      type = 'item'
-
-      const itemNumber = items[optionValue].spritenum
-
-      // Copied from Pokemon Showdown code
-      left = (itemNumber % 16) * 24
-      top = Math.floor(itemNumber / 16) * 24
-
-      height = 24
-    }
-
-    return (
-      <span style={{
-        background: `
-          transparent 
-          url(https://play.pokemonshowdown.com/sprites/${type}icons-sheet.png) 
-          no-repeat 
-          scroll 
-          -${left}px -${top}px
-        `,
-        overflow: 'visible',
-        width,
-        height,
-      }} />
-    )
-  } else {
-    return null
-  }
 }
 
 export default withStyles(pokemonInputSelectStyles)(PokemonInputSelect)

@@ -204,6 +204,15 @@ export const teamStatsStyles = {
   list: {
     listStyle: 'none', 
     padding: 0,
+  },
+  listItem: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  multiplier: {
+    width: 40,
+    textAlign: 'right', 
+    paddingRight: 4,
   }
 }
 

@@ -305,6 +305,16 @@ class Store {
     ability: '', // chosen ability
   })
 
+  // Get the team's six pokemon id/name (pkmn)
+  @computed get teamPkmn() {
+    return this.team.map(teamPkmnProps => teamPkmnProps.name)
+  }
+
+  // Check if team is empty
+  @computed get isTeamEmpty() {
+    return !this.teamPkmn.some(pkmn => pkmn)
+  }
+
   // Get the team's six items (in array form)
   @computed get teamItems() {
     return this.team.map(teamPkmnProps => teamPkmnProps.item)
@@ -421,11 +431,6 @@ class Store {
     }
 
     return teamTypes
-  }
-
-  // Is the team empty
-  @computed get isTeamEmpty() {
-    return this.team.every(teamPkmnProps => !teamPkmnProps.name)
   }
 
 
@@ -616,115 +621,28 @@ class Store {
   // Assessment of the team's type defence
   // (How good your team is against the 18 different types)
   @computed get typeDefence() {
-    // Scoresheet of how good all six pokemon resist a certain type
-    let typeDefence = {...this.cleanSlate}
+    if (this.isTeamEmpty) {
+      return this.cleanSlate
+    } else {
+      // Scoresheet of how good all six pokemon resist a certain type
+      let typeDefence = {...this.cleanSlate}
 
-    if (this.teamTypes.some(arr => arr.length)) { // is this 2D array empty or not
-      this.teamTypes.forEach((pkmnTypes, i) => { // pkmnTypes means a specific pokemon's type(s)  
-        if (pkmnTypes.length) {
-          /*
-           * You will get a warning from MobX if the pokmeon just has one type.
-           * It's ok, nothing is wrong.
-           * This is because we are trying to access pkmnTypes[1],
-           * which doesn't exist if the pokemon just has one type.
-           * This causes type2 to be undefined, which is intended.
-           * Then MobX tells us that we are accessing the array out of bounds.
-           */
-          const [type1, type2] = pkmnTypes // the pokemon's two types
-
-          // Scoresheet of how good the pokemon resists a certain type
-          let resistanceScores = {...this.cleanSlate}
-
-          // Calculate the resistances of the pokemon's types
-          for (const type in resistanceScores) { // type refers to a generic pokemon type
-            const type1Resistance = typechart[type1][type]
-
-            resistanceScores[type] += type1Resistance
-
-            if (type2) { // if the pokmeon has two types
-              const type2Resistance = typechart[type2][type]
-
-              /*
-               * How do explain the code below?
-               * Here's an example.
-               * Charizard is Fire/Flying.
-               * Fire is weak to Ground but Flying is immune to Ground.
-               * So Fire being weak to Ground doesn't matter.
-               * But our algorithm takes Fire being weak to Ground into account.
-               * We need to tell the algorithm not to do that.
-               */
-              if (type1Resistance === 2 || type2Resistance === 2) {
-                resistanceScores[type] = 2
-              } else {
-                resistanceScores[type] += type2Resistance
-              }
+      for (const type in typeDefence) {
+        for (const teamPkmnProps of this.team) {
+          const {name: pkmn, ability, item} = teamPkmnProps
+          if (pkmn) {
+            let score = this.effectiveness(type, pkmn, ability, item)
+            if (score === 3) {
+              score = 2
             }
-          }
 
-          // Take into account ability for pokemon's resistances
-          const pkmnAbility = this.team[i].ability
-          switch (pkmnAbility) {
-            // Abilities that make you immune to certain types
-            case 'Volt Absorb':
-            case 'Lightning Rod':
-            case 'Motor Drive':
-              resistanceScores.Electric = 2
-              break
-            case 'Flash Fire':
-              resistanceScores.Fire = 2
-              break
-            case 'Sap Sipper':
-              resistanceScores.Grass = 2
-              break
-            case 'Levitate':
-              resistanceScores.Ground = 2
-              break
-            case 'Water Absorb':
-            case 'Storm Drain':
-              resistanceScores.Water = 2
-              break
-            case 'Wonder Guard':
-              for (const type in resistanceScores) {
-                if (resistanceScores[type] !== -1) {
-                  resistanceScores[type] = 2
-                }
-              }
-              break
-            // Abilities that halve damage from certain types
-            case 'Thick Fat':
-              resistanceScores.Fire += 1
-              resistanceScores.Ice += 1
-              break
-            case 'Heatproof':
-              resistanceScores.Fire += 1
-              break
-            // Abilities that cushion supereffective moves
-            case 'Solid Rock':
-            case 'Filter':
-            case 'Prism Armor':
-              for (const [type, score] of Object.entries(resistanceScores)) {
-                if (score < 0) {
-                  resistanceScores[type] = score * 3 / 4
-                }
-              }
-              break
-            default:
-          }
-
-          // If pokemon wields an air balloon
-          if (this.team[i].item === 'airballoon' && resistanceScores.Ground !== 2) {
-            resistanceScores.Ground += 1
-          }
-
-          // Update type defence with the resistance scores of one pokemon
-          for (const type in typeDefence) {
-            typeDefence[type] += resistanceScores[type]
+            typeDefence[type] += score
           }
         }
-      })
-    }
+      }
 
-    return typeDefence
+      return typeDefence
+    }
   }
 
   // Assessment of the team's type coverage
@@ -825,13 +743,108 @@ class Store {
     return typeCoverage
   }
 
-  // Tells you the effectivness of a type against a certain pokemon
-  effectiveness(type, pkmn) {
-    return 2
-  }
+  // Tells you the effectiveness of a type against a certain pokemon
+  effectiveness(type, pkmn, pkmnAbility, item) {
+    const pkmnTypes = pokedex[pkmn].types
+    const [type1, type2] = pkmnTypes
+    const type1Resistance = typechart[type1][type]
+    
+    let effectiveness = type1Resistance
 
-  @computed get effectivness2() {
-    return null
+    if (type2) {
+      const type2Resistance = typechart[type2][type]
+
+      /*
+       * How do explain the code below?
+       * Here's an example.
+       * Charizard is Fire/Flying.
+       * Fire is weak to Ground but Flying is immune to Ground.
+       * So Fire being weak to Ground doesn't matter.
+       * But our algorithm takes Fire being weak to Ground into account.
+       * We need to tell the algorithm not to do that.
+       */
+      if (type1Resistance === 2 || type2Resistance === 2) {
+        effectiveness = 3
+      } else {
+        effectiveness += type2Resistance
+      }
+    } else if (effectiveness === 2) {
+      effectiveness = 3
+    }
+
+    // Take into account ability for pokemon's resistances
+    if (pkmnAbility) {
+      switch (pkmnAbility) {
+        // Abilities that make you immune to certain types
+        case 'Volt Absorb':
+        case 'Lightning Rod':
+        case 'Motor Drive':
+          if (type === 'Electric') {
+            effectiveness = 3
+          }
+          break
+        case 'Flash Fire':
+          if (type === 'Fire') {
+            effectiveness = 3
+          }
+          break
+        case 'Sap Sipper':
+          if (type === 'Grass') {
+            effectiveness = 3
+          }
+          break
+        case 'Levitate':
+          if (type === 'Ground') {
+            effectiveness = 3
+          }
+          break
+        case 'Water Absorb':
+        case 'Storm Drain':
+          if (type === 'Water') {
+            effectiveness = 3
+          }
+          break
+        case 'Wonder Guard':
+          if (effectiveness >= 0) {
+            effectiveness = 3
+          }
+          break
+        // Abilities that halve damage from certain types
+        case 'Thick Fat':
+          if (type === 'Fire' || type === 'Ice') {
+            effectiveness += 1
+          }
+          break
+        case 'Heatproof':
+          if (type === 'Fire') {
+            effectiveness += 1
+          }
+          break
+        // Abilities that cushion supereffective moves
+        case 'Solid Rock':
+        case 'Filter':
+        case 'Prism Armor':
+          if (effectiveness === -1) {
+            effectiveness = -0.5
+          } else if (effectiveness === -2) {
+            effectiveness = -1.5
+          }
+          break
+        default:
+      }
+
+      // If pokemon wields an air balloon
+      if (
+        item
+        && item === 'airballoon'
+        && type === 'Ground'
+        && effectiveness !== 2
+      ) {
+        effectiveness += 1
+      }
+    }
+
+    return effectiveness
   }
 
   /*************
