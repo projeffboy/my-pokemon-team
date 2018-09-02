@@ -618,133 +618,8 @@ class Store {
   TEAM'S TYPE DEFENCE AND COVERAGE
   *******************************/
 
-  // Assessment of the team's type defence
-  // (How good your team is against the 18 different types)
-  @computed get typeDefence() {
-    if (this.isTeamEmpty) {
-      return this.cleanSlate
-    } else {
-      // Scoresheet of how good all six pokemon resist a certain type
-      let typeDefence = {...this.cleanSlate}
-
-      for (const type in typeDefence) {
-        for (const teamPkmnProps of this.team) {
-          const {name: pkmn, ability, item} = teamPkmnProps
-          if (pkmn) {
-            let score = this.effectiveness(type, pkmn, ability, item)
-            if (score === 3) {
-              score = 2
-            }
-
-            typeDefence[type] += score
-          }
-        }
-      }
-
-      return typeDefence
-    }
-  }
-
-  // Assessment of the team's type coverage
-  // (How many types are your team's moves supereffective against)
-  @computed get typeCoverage() {
-    // Scoresheet of how many types your moves are supereffective against
-    let typeCoverage = {...this.cleanSlate}
-
-    for (const [i, teamPkmnProps] of this.team.entries()) {
-      const typesUsed = [] // records one of the team pokemon's move types
-
-      for (const [prop, propVal] of Object.entries(teamPkmnProps)) {
-        // prop is name, item, move1, etc.
-        // propVal is e.g. Venusaur, Venusaurite, Giga Drain
-
-        // if it is a non-empty move
-        if (propVal && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
-          const moveProps = moves[propVal]
-          const abilitiesThatChangeNormalMoves = {
-            Aerilate: 'Flying', 
-            Pixilate: 'Fairy', 
-            Refrigerate: 'Ice', 
-            Galvanize: 'Electric',
-          }
-          const {ability, name: pkmn} = this.team[i]
-          let moveType = moveProps.type
-
-          // Change the move type if the pokemon has a certain ability, like aerilate or normalize
-          if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability)) {
-            if (moveType === 'Normal') {
-              moveType = abilitiesThatChangeNormalMoves[ability]
-            }
-          } else if (ability === 'Normalize') {
-            moveType = 'Normal'
-          } else if (propVal === 'judgment') { // For Arceus
-            const pkmnProps = pokedex[pkmn]
-            moveType = pkmnProps.types[0] // Arceus only has one ability
-          } else if (propVal === 'technoblast') { // For Genesect
-            switch (pkmn) {
-              case 'genesectdouse':
-                moveType = 'Water'
-                break
-              case 'genesectshock':
-                moveType = 'Electric'
-                break
-              case 'genesectburn':
-                moveType = 'Fire'
-                break
-              case 'genesectchill':
-                moveType = 'Ice'
-                break
-              default:
-            }
-          } else if (propVal === 'multiattack') { // For Silvally
-            const type = pkmn.replace('silvally', '')
-            const capitalizedType = capitalizeWord(type)
-
-            moveType = capitalizedType
-          }
-
-          // BUG: If the user picks freeze-dry or flying press multiple times, it can be exploited
-          if (propVal === 'freezedry') {
-            typeCoverage.Water++
-          }
-
-          if (propVal === 'flyingpress') {
-            // the types flying press are super effective against
-            ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
-          }
-
-          /*
-           * 1. Ignore status moves.
-           * (status moves don't deal damage. so they don't contribute to type coverage)
-           * 2. If one of the previous attacking moves was the same type, don't count this one.
-           * 3. Ignore moves less than 40 base power (unless it's a multi-hit move).
-           */
-          else if (
-            moveProps.category !== 'Status'
-            && !typesUsed.includes(moveType)
-            && (moveProps.basePower >= 40 || moveProps.multihit)
-          ) {
-            typesUsed.push(moveType)
-
-            const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
-              typechart[typeAgainst][moveType]
-            ))
-
-            Object.keys(typeCoverage).forEach((type, i) => {
-              if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
-                typeCoverage[type]++
-              }
-            })
-          }
-        }
-      }
-    }
-
-    return typeCoverage
-  }
-
   // Tells you the effectiveness of a type against a certain pokemon
-  effectiveness(type, pkmn, pkmnAbility, item) {
+  typeAgainstPkmn(type, pkmn, pkmnAbility, item) {
     const pkmnTypes = pokedex[pkmn].types
     const [type1, type2] = pkmnTypes
     const type1Resistance = typechart[type1][type]
@@ -846,6 +721,248 @@ class Store {
 
     return effectiveness
   }
+
+  // Tells you the move's type based on the pokemon using it and its ability
+  // E.g. Arceus-Bug using Judgment or Aerilate Mega-Pinsir using Return.
+  moveType(move, pkmn, ability) {
+    let moveType = moves[move].type // If it didn't matter which pokmeon used the move, this function would only be this one line lol
+
+    const abilitiesThatChangeNormalMoves = {
+      Aerilate: 'Flying', 
+      Pixilate: 'Fairy', 
+      Refrigerate: 'Ice', 
+      Galvanize: 'Electric',
+    }
+    
+    if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability) && moveType === 'Normal') {
+      moveType = abilitiesThatChangeNormalMoves[ability]
+    } else if (ability === 'Normalize') {
+      moveType = 'Normal'
+    } else if (move === 'judgment') { // For Arceus
+      const pkmnProps = pokedex[pkmn]
+      moveType = pkmnProps.types[0] // Arceus only has one ability
+    } else if (move === 'technoblast') { // For Genesect
+      switch (pkmn) {
+        case 'genesectdouse':
+          moveType = 'Water'
+          break
+        case 'genesectshock':
+          moveType = 'Electric'
+          break
+        case 'genesectburn':
+          moveType = 'Fire'
+          break
+        case 'genesectchill':
+          moveType = 'Ice'
+          break
+        default:
+      }
+    } else if (move === 'multiattack') { // For Silvally
+      const type = pkmn.replace('silvally', '') || 'normal'
+      const capitalizedType = capitalizeWord(type)
+
+      moveType = capitalizedType
+    }
+
+    return moveType
+  }
+
+  // Tells you the effectiveness of a move against a type
+  // For status and weak moves, this function will return undefined
+  moveAgainstType(move, typeAgainst, pkmn, ability) {
+    const moveProps = moves[move]
+    const moveType = this.moveType(move, pkmn, ability)
+
+    // BUG: If the user picks freeze-dry or flying press multiple times, it can be exploited
+    if (move === 'freezedry' && typeAgainst === 'Water') {
+      return -1
+    } else if (move === 'flyingpress') {
+      // since flying press is part flying and fighting
+      return typechart.Flying[moveType] + typechart.Fighting[moveType]
+    }
+    /*
+     * Ignore status moves.
+     * (status moves don't deal damage. so they don't contribute to type coverage)
+     * Ignore moves less than 40 base power (unless it's a multi-hit move).
+     */
+    else if (moveProps.category !== 'Status' && (moveProps.basePower >= 40 || moveProps.multihit)) {
+      return typechart[typeAgainst][moveType]
+    }
+  }
+
+  // Assessment of the team's type defence
+  // (How good your team is against the 18 different types)
+  @computed get typeDefence() {
+    if (this.isTeamEmpty) {
+      return this.cleanSlate
+    } else {
+      // Scoresheet of how good all six pokemon resist a certain type
+      let typeDefence = {...this.cleanSlate}
+
+      for (const type in typeDefence) {
+        for (const teamPkmnProps of this.team) {
+          const {name: pkmn, ability, item} = teamPkmnProps
+          if (pkmn) {
+            let score = this.typeAgainstPkmn(type, pkmn, ability, item)
+            if (score === 3) {
+              score = 2
+            }
+
+            typeDefence[type] += score
+          }
+        }
+      }
+
+      return typeDefence
+    }
+  }
+
+  // Assessment of the team's type coverage
+  // (How many types are your team's moves supereffective against)
+  @computed get typeCoverage() {
+    if (this.isTeamEmpty) {
+      return this.cleanSlate
+    } else {
+      // Scoresheet of how many types your moves are supereffective against
+      let typeCoverage = {...this.cleanSlate}
+
+      for (const teamPkmnProps of this.team) { // for each pokmeon
+        const {name: pkmn, ability} = teamPkmnProps
+
+        let typesUsed = []
+        let pkmnHasFreezeDry = false
+        let pkmnHasFlyingPress = false
+        
+        for (const i of [1, 2, 3, 4]) { //  for each move
+          const move = teamPkmnProps['move' + i]
+
+          if (move) {
+            const moveType = this.moveType(move, pkmn, ability)
+            
+            Object.keys(typeCoverage).forEach(type => { // for each type
+              if (
+                // If the move is not a repeated freeze dry
+                (!pkmnHasFreezeDry || move !== 'freezedry')
+                // If the move is not a repeated flying press
+                && (!pkmnHasFlyingPress || move !== 'flyingpress')
+                // If the move's type is not repeated or it's freeze dry or flying rpess
+                && (
+                  !typesUsed.includes(moveType)
+                  || move === 'freezedry'
+                  || move === 'flyingpress'
+                )
+                // if it's super effective (cuz supereffective is -1)
+                && this.moveAgainstType(move, type, pkmn, ability) === -1
+              ) {
+                typeCoverage[type]++
+              }
+            })
+
+            if (move === 'freezedry') {
+              pkmnHasFreezeDry = true
+            } else if (move === 'flyingpress') {
+              pkmnHasFlyingPress = true
+            } else {
+              typesUsed.push(moveType)
+            }
+          }
+        }
+      }
+
+      return typeCoverage
+    }
+    /*
+    for (const [i, teamPkmnProps] of this.team.entries()) {
+      const typesUsed = [] // records one of the team pokemon's move types
+
+      for (const [prop, propVal] of Object.entries(teamPkmnProps)) {
+        // prop is name, item, move1, etc.
+        // propVal is e.g. Venusaur, Venusaurite, Giga Drain
+
+        // if it is a non-empty move
+        if (propVal && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
+          const moveProps = moves[propVal]
+          const abilitiesThatChangeNormalMoves = {
+            Aerilate: 'Flying', 
+            Pixilate: 'Fairy', 
+            Refrigerate: 'Ice', 
+            Galvanize: 'Electric',
+          }
+          const {ability, name: pkmn} = this.team[i]
+          let moveType = moveProps.type
+
+          // Change the move type if the pokemon has a certain ability, like aerilate or normalize
+          if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability)) {
+            if (moveType === 'Normal') {
+              moveType = abilitiesThatChangeNormalMoves[ability]
+            }
+          } else if (ability === 'Normalize') {
+            moveType = 'Normal'
+          } else if (propVal === 'judgment') { // For Arceus
+            const pkmnProps = pokedex[pkmn]
+            moveType = pkmnProps.types[0] // Arceus only has one ability
+          } else if (propVal === 'technoblast') { // For Genesect
+            switch (pkmn) {
+              case 'genesectdouse':
+                moveType = 'Water'
+                break
+              case 'genesectshock':
+                moveType = 'Electric'
+                break
+              case 'genesectburn':
+                moveType = 'Fire'
+                break
+              case 'genesectchill':
+                moveType = 'Ice'
+                break
+              default:
+            }
+          } else if (propVal === 'multiattack') { // For Silvally
+            const type = pkmn.replace('silvally', '')
+            const capitalizedType = capitalizeWord(type)
+
+            moveType = capitalizedType
+          }
+
+          // BUG: If the user picks freeze-dry or flying press multiple times, it can be exploited
+          if (propVal === 'freezedry') {
+            typeCoverage.Water++
+          }
+
+          if (propVal === 'flyingpress') {
+            // the types flying press are super effective against
+            ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
+          }*/
+
+          /*
+           * 1. Ignore status moves.
+           * (status moves don't deal damage. so they don't contribute to type coverage)
+           * 2. If one of the previous attacking moves was the same type, don't count this one.
+           * 3. Ignore moves less than 40 base power (unless it's a multi-hit move).
+           *//*
+          else if (
+            moveProps.category !== 'Status'
+            && !typesUsed.includes(moveType)
+            && (moveProps.basePower >= 40 || moveProps.multihit)
+          ) {
+            typesUsed.push(moveType)
+
+            const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
+              typechart[typeAgainst][moveType]
+            ))
+
+            Object.keys(typeCoverage).forEach((type, i) => {
+              if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
+                typeCoverage[type]++
+              }
+            })
+          }
+        }
+      }
+      
+          return typeCoverage
+    }*/
+  }  
 
   /*************
   SEARCH FILTERS

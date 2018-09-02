@@ -159,7 +159,7 @@ function TeamStatsTooltip(props) {
           const {name: pkmn, ability, item} = teamPkmnProps
 
           if (pkmn) {
-            const effectiveness = store.effectiveness(type, pkmn, ability, item)
+            const effectiveness = store.typeAgainstPkmn(type, pkmn, ability, item)
 
             let multiplier = 1
             let color = 'initial'
