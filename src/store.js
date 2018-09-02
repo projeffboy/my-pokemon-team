@@ -785,7 +785,15 @@ class Store {
      * (status moves don't deal damage. so they don't contribute to type coverage)
      * Ignore moves less than 40 base power (unless it's a multi-hit move).
      */
-    else if (moveProps.category !== 'Status' && (moveProps.basePower >= 40 || moveProps.multihit)) {
+    else if (
+      moveProps.category !== 'Status'
+      && (
+        moveProps.basePower >= 40 
+        || moveProps.multihit
+        || moveProps.basePowerCallback
+        || moveProps.onModifyMove
+      )
+    ) {
       return typechart[typeAgainst][moveType]
     }
   }
@@ -871,97 +879,6 @@ class Store {
 
       return typeCoverage
     }
-    /*
-    for (const [i, teamPkmnProps] of this.team.entries()) {
-      const typesUsed = [] // records one of the team pokemon's move types
-
-      for (const [prop, propVal] of Object.entries(teamPkmnProps)) {
-        // prop is name, item, move1, etc.
-        // propVal is e.g. Venusaur, Venusaurite, Giga Drain
-
-        // if it is a non-empty move
-        if (propVal && prop.slice(0, -1) === 'move') { // the slice() removes the last letter
-          const moveProps = moves[propVal]
-          const abilitiesThatChangeNormalMoves = {
-            Aerilate: 'Flying', 
-            Pixilate: 'Fairy', 
-            Refrigerate: 'Ice', 
-            Galvanize: 'Electric',
-          }
-          const {ability, name: pkmn} = this.team[i]
-          let moveType = moveProps.type
-
-          // Change the move type if the pokemon has a certain ability, like aerilate or normalize
-          if (Object.keys(abilitiesThatChangeNormalMoves).includes(ability)) {
-            if (moveType === 'Normal') {
-              moveType = abilitiesThatChangeNormalMoves[ability]
-            }
-          } else if (ability === 'Normalize') {
-            moveType = 'Normal'
-          } else if (propVal === 'judgment') { // For Arceus
-            const pkmnProps = pokedex[pkmn]
-            moveType = pkmnProps.types[0] // Arceus only has one ability
-          } else if (propVal === 'technoblast') { // For Genesect
-            switch (pkmn) {
-              case 'genesectdouse':
-                moveType = 'Water'
-                break
-              case 'genesectshock':
-                moveType = 'Electric'
-                break
-              case 'genesectburn':
-                moveType = 'Fire'
-                break
-              case 'genesectchill':
-                moveType = 'Ice'
-                break
-              default:
-            }
-          } else if (propVal === 'multiattack') { // For Silvally
-            const type = pkmn.replace('silvally', '')
-            const capitalizedType = capitalizeWord(type)
-
-            moveType = capitalizedType
-          }
-
-          // BUG: If the user picks freeze-dry or flying press multiple times, it can be exploited
-          if (propVal === 'freezedry') {
-            typeCoverage.Water++
-          }
-
-          if (propVal === 'flyingpress') {
-            // the types flying press are super effective against
-            ['Dark', 'Fighting', 'Grass', 'Ice', 'Normal'].forEach(type => typeCoverage[type]++)
-          }*/
-
-          /*
-           * 1. Ignore status moves.
-           * (status moves don't deal damage. so they don't contribute to type coverage)
-           * 2. If one of the previous attacking moves was the same type, don't count this one.
-           * 3. Ignore moves less than 40 base power (unless it's a multi-hit move).
-           *//*
-          else if (
-            moveProps.category !== 'Status'
-            && !typesUsed.includes(moveType)
-            && (moveProps.basePower >= 40 || moveProps.multihit)
-          ) {
-            typesUsed.push(moveType)
-
-            const dmgDealt = Object.keys(typechart).map(typeAgainst => ( // the type your move is going against
-              typechart[typeAgainst][moveType]
-            ))
-
-            Object.keys(typeCoverage).forEach((type, i) => {
-              if (dmgDealt[i] === -1) { // if it's super effective (cuz supereffective is -1)
-                typeCoverage[type]++
-              }
-            })
-          }
-        }
-      }
-      
-          return typeCoverage
-    }*/
   }  
 
   /*************
