@@ -46,7 +46,7 @@ class TeamStats extends React.Component {
   handlePopoverClose = () => this.setState({anchorEl: Array(18).fill(null)})
 
   render() {
-    const {classes, width} = this.props
+    const {classes, width, title} = this.props
 
     const types = {
       Bug: 'a8b820', // the type's hex color
@@ -94,122 +94,70 @@ class TeamStats extends React.Component {
     }
 
     // Grid Items of Pokemon Types
-    const gridItems = Object.keys(types).map((type, i) => (
-      <Grid key={i} item xs={2}>
-        <div className={classes.typeContainer}>
-          {/* Activates Popover */}
-          <div
-            className={classes.pokemonType}
-            style={{backgroundColor: `#${types[type]}`}}
-            aria-owns={this.state.anchorEl[i] ? 'mouse-over-popover-' + i : null}
-            aria-haspopup='true'
-            onMouseEnter={e => this.handlePopoverOpen(e, i)}
-            onMouseLeave={this.handlePopoverClose}  
-          >
-            {typeAbbr[i] || type}
+    const gridItems = title => (
+      Object.keys(types).map((type, i) => (
+        <Grid key={i} item xs={2}>
+          <div className={classes.typeContainer}>
+            {/* Activates Popover */}
+            <div
+              className={classes.pokemonType}
+              style={{backgroundColor: `#${types[type]}`}}
+              aria-owns={this.state.anchorEl[i] ? 'mouse-over-popover-' + i : null}
+              aria-haspopup='true'
+              onMouseEnter={e => this.handlePopoverOpen(e, i)}
+              onMouseLeave={this.handlePopoverClose}  
+            >
+              {typeAbbr[i] || type}
+            </div>
+            {/* The Popover Itself */}
+            <Popover
+              id={'mouse-over-popover-' + i}
+              className={classes.popover}
+              classes={{
+                paper: classes.paper,
+              }}
+              open={!!this.state.anchorEl[i]}
+              anchorEl={this.state.anchorEl[i]}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+            >
+              {/* Popover Message */}
+              <TeamStatsTooltip type={type} typeColor={types[type]} classes={classes} teamStatType={title} />
+            </Popover>
           </div>
-          {/* The Popover Itself */}
-          <Popover
-            id={'mouse-over-popover-' + i}
-            className={classes.popover}
-            classes={{
-              paper: classes.paper,
-            }}
-            open={!!this.state.anchorEl[i]}
-            anchorEl={this.state.anchorEl[i]}
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'left',
-            }}
-          >
-            {/* Popover Message */}
-            <TeamStatsTooltip type={type} typeColor={types[type]} classes={classes} />
-          </Popover>
-        </div>
-        {/* E.g. +2 or -1 */}
-        {this.returnTypeValue(store[this.teamStatType][type])}
-      </Grid>
-    ), this)
+          {/* E.g. +2 or -1 */}
+          {this.returnTypeValue(store[this.teamStatType][type])}
+        </Grid>
+      ), this)
+    )
   
     return (
       <Grid container style={{textAlign: 'center'}}>
         <Grid item xs={12}>
           {/* Either "Type Defence" or "Type Coverage"  */}
           <Typography variant='title' gutterBottom>
-            {this.props.title}
+            {title}
           </Typography>
         </Grid>
-        {gridItems}
+        {gridItems(title)}
       </Grid>
     )
   }
 }
 
-// Popover Message
+// Type Defence/Coverage Tooltip
 function TeamStatsTooltip(props) {
-  const {typeColor, type, classes} = props
+  const {teamStatType, ...otherProps} = props
 
-  const content = () => (
-    <React.Fragment>
-      <p>
-        <span style={{color: `#${typeColor}`}}>{type}</span> does...
-      </p>
-      <ul className={classes.list}>
-        {store.team.map((teamPkmnProps, i) => {
-          const {name: pkmn, ability, item} = teamPkmnProps
-
-          if (pkmn) {
-            const effectiveness = store.typeAgainstPkmn(type, pkmn, ability, item)
-
-            let multiplier = 1
-            let color = 'initial'
-            switch (effectiveness) {
-              case -2:
-                multiplier = 4
-                color = 'red'
-                break
-              case -1.5:
-                multiplier = 3
-                color = 'red'
-                break
-              case -1:
-                multiplier = 2
-                color = '#f9d130'
-                break
-              case -0.5:
-                multiplier = 1.5
-                color = '#f9d130'
-                break
-              case 0:
-                multiplier = 1
-                break
-              case 1:
-                multiplier = 0.5
-                color = 'yellowgreen'
-                break
-              case 2:
-                multiplier = 0.25
-                color = 'green'
-                break
-              case 3:
-                multiplier = 0
-                color = 'grey'
-                break
-              default:
-            }
-
-            return (
-              <li key={teamPkmnProps.name + i} className={classes.listItem}>
-                <span style={{color}} className={classes.multiplier}>{multiplier}x</span>
-                <span style={{paddingRight: 2}}>to {store.pkmnName(pkmn)}</span>
-                <PokemonIcon pkmnProp='pkmn' value={pkmn} />
-              </li>
-            )
-          }
-        })}
-      </ul>
-    </React.Fragment>
-  )
+  const content = () => {
+    if (teamStatType === 'Type Defence') {
+      return <TypeDefenceTooltipInfo {...otherProps} />
+    } else if (teamStatType === 'Type Coverage') {
+      return <TypeCoverageTooltipInfo {...otherProps} />
+    }
+  }
 
   return (
     <Typography component='div'>
@@ -217,5 +165,86 @@ function TeamStatsTooltip(props) {
     </Typography>
   )
 }
+
+// Type Defence Tooltip Info
+const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
+  <React.Fragment>
+    <p>
+      <span style={{color: `#${typeColor}`}}>{type}</span> does...
+    </p>
+    <ul className={classes.list}>
+      {store.team.map((teamPkmnProps, i) => {
+        const {name: pkmn, ability, item} = teamPkmnProps
+
+        if (pkmn) {
+          const effectiveness = store.typeAgainstPkmn(type, pkmn, ability, item)
+
+          let multiplier = 1
+          let color = 'initial'
+          switch (effectiveness) {
+            case -2:
+              multiplier = 4
+              color = 'red'
+              break
+            case -1.5:
+              multiplier = 3
+              color = 'red'
+              break
+            case -1:
+              multiplier = 2
+              color = '#f9d130'
+              break
+            case -0.5:
+              multiplier = 1.5
+              color = '#f9d130'
+              break
+            case 0:
+              multiplier = 1
+              break
+            case 1:
+              multiplier = 0.5
+              color = 'yellowgreen'
+              break
+            case 2:
+              multiplier = 0.25
+              color = 'green'
+              break
+            case 3:
+              multiplier = 0
+              color = 'grey'
+              break
+            default:
+          }
+
+          return (
+            <li key={teamPkmnProps.name + i} className={classes.listItem}>
+              <span style={{color}} className={classes.multiplier}>{multiplier}x</span>
+              <span style={{paddingRight: 2}}>to {store.pkmnName(pkmn)}</span>
+              <PokemonIcon pkmnProp='pkmn' value={pkmn} />
+            </li>
+          )
+        }
+      })}
+    </ul>
+  </React.Fragment>
+)
+
+// Type Coverage Tooltip Info
+const TypeCoverageTooltipInfo = ({typeColor, type, classes}) => (
+  <React.Fragment>
+    <p>
+      Super-effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
+    </p>
+    <ul className={classes.list}>
+      {/*store.team.map((teamPkmnProps, i) => {
+        const {name: pkmn, ability, item} = teamPkmnProps
+
+        for (const i of [1, 2, 3, 4]) {
+          
+        }
+      })*/}
+    </ul>
+  </React.Fragment>
+)
 
 export default withStyles(teamStatsStyles)(TeamStats)
