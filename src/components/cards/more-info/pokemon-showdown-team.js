@@ -14,16 +14,7 @@ import ContentCopy from '@material-ui/icons/ContentCopy'
 // Custom Imports
 import {observer} from 'mobx-react'
 import store from '../../../store'
-
-const styles = theme => ({
-  root: {display: 'none'},
-  button: {
-    margin: theme.spacing.unit,
-
-  },
-  input: {display: 'none'},
-  textField: {margin: '20px 0'},
-})
+import {pokemonShowdownTeamStyles} from '../../../styles'
 
 @observer
 class PokemonShowdownTeam extends React.Component {
@@ -246,4 +237,4 @@ ${[1, 2, 3, 4].map(num => {
   }
 }
 
-export default withStyles(styles)(PokemonShowdownTeam)
+export default withStyles(pokemonShowdownTeamStyles)(PokemonShowdownTeam)

@@ -250,7 +250,10 @@ export const teamChecklistStyles = {
 }
 
 // pokemon-showdown-team.js
-
+export const pokemonShowdownTeamStyles = {
+  button: {margin: theme.spacing.unit},
+  textField: {margin: '20px 0'},
+}
 
 // team-viewer.js
 export const teamViewerStyles = {
