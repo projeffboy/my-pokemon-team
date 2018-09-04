@@ -173,12 +173,14 @@ const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
       <span style={{color: `#${typeColor}`}}>{type}</span> does...
     </p>
     <ul className={classes.list}>
-      {store.team.map((teamPkmnProps, i) => {
+      {store.team.map((teamPkmnProps, i) => { // for each pokemon
         const {name: pkmn, ability, item} = teamPkmnProps
 
         if (pkmn) {
           const effectiveness = store.typeAgainstPkmn(type, pkmn, ability, item)
 
+          // convert effectiveness to multiplier
+          // e.g. -1 becomes 2
           let multiplier = 1
           let color = 'initial'
           switch (effectiveness) {
@@ -216,7 +218,7 @@ const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
             default:
           }
 
-          return (
+          return ( // multiplier, pkmn name, then pkmn icon
             <li key={teamPkmnProps.name + i} className={classes.listItem}>
               <span style={{color}} className={classes.multiplier}>{multiplier}x</span>
               <span style={{paddingRight: 2}}>to {store.pkmnName(pkmn)}</span>
@@ -236,16 +238,16 @@ const TypeCoverageTooltipInfo = ({typeColor, type, classes}) => (
       Super-effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
     </p>
     <ul className={classes.list}>
-      {store.team.map((teamPkmnProps, i) => {
+      {store.team.map((teamPkmnProps, i) => { // For each team pokmeon
         const {name: pkmn, ability} = teamPkmnProps
 
         return (
           <React.Fragment key={pkmn + i}>
-            {[1, 2, 3, 4].map(num => {
+            {[1, 2, 3, 4].map(num => { // For each move number
               const move = teamPkmnProps['move' + num]
 
               if (move && store.moveAgainstType(move, type, pkmn, ability) === -1) {
-                return (
+                return ( // move name, pkmn name, then pkmn icon
                   <li key={move + num} className={classes.listItem}>
                     <span style={{width: 120}}>{store.moveName(move)}</span>
                     <span>{store.pkmnName(pkmn)}</span>
