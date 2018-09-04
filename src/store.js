@@ -725,7 +725,7 @@ class Store {
   // Tells you the move's type based on the pokemon using it and its ability
   // E.g. Arceus-Bug using Judgment or Aerilate Mega-Pinsir using Return.
   moveType(move, pkmn, ability) {
-    let moveType = moves[move].type // If it didn't matter which pokmeon used the move, this function would only be this one line lol
+    let moveType = moves[move].type // If it didn't matter which pokemon used the move, this function would only be this one line lol
 
     const abilitiesThatChangeNormalMoves = {
       Aerilate: 'Flying', 

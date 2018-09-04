@@ -1,9 +1,5 @@
 DO THESE THINGS
 4. Add tooltips to type defence, coverage, and checklist.
-  -type coverage shows:
-    -Supereffective against poison:
-      -Psychic  Alakazam
-      -Ground   Aggron
   -type checklist shows:
     -Do you have stealth rock, spikes, toxic spikes, or sticky web?
       -Gigalith   Stealth Rock

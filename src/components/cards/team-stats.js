@@ -236,13 +236,28 @@ const TypeCoverageTooltipInfo = ({typeColor, type, classes}) => (
       Super-effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
     </p>
     <ul className={classes.list}>
-      {/*store.team.map((teamPkmnProps, i) => {
-        const {name: pkmn, ability, item} = teamPkmnProps
+      {store.team.map((teamPkmnProps, i) => {
+        const {name: pkmn, ability} = teamPkmnProps
 
-        for (const i of [1, 2, 3, 4]) {
-          
-        }
-      })*/}
+        return (
+          <React.Fragment key={pkmn + i}>
+            {[1, 2, 3, 4].map(num => {
+              const move = teamPkmnProps['move' + num]
+
+              if (move && store.moveAgainstType(move, type, pkmn, ability) === -1) {
+                return (
+                  <li key={move + num} className={classes.listItem}>
+                    <span style={{width: 120}}>{store.moveName(move)}</span>
+                    <span>{store.pkmnName(pkmn)}</span>
+                    <PokemonIcon pkmnProp='pkmn' value={pkmn} />
+                  </li>
+                )
+              }
+            })}
+          </React.Fragment>
+        )
+
+      })}
     </ul>
   </React.Fragment>
 )
