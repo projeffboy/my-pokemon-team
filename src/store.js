@@ -443,9 +443,18 @@ class Store {
   doesTeamHaveMove = move => this.teamMoves.includes(move) // String input
 
   // Does the team Have these moves (in an array)?
+  ///* Simple version that returns a boolean
   doesTeamHaveMoves(moves) {
     return this.teamMoves.some(teamMove => moves.includes(teamMove))
   }
+  //*/
+  /*
+  doesTeamHaveMoves(moves) {
+    return this.teamMoves.some(teamMove => (
+      {answer: moves.includes(teamMove)}
+    ))
+  }
+  */
 
   // Does any team pokemon have all of these moves?
   doesTeamPokemonHaveTheseMoves(moves) { // array input

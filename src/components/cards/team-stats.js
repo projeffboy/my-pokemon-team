@@ -232,36 +232,43 @@ const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
 )
 
 // Type Coverage Tooltip Info
-const TypeCoverageTooltipInfo = ({typeColor, type, classes}) => (
-  <React.Fragment>
-    <p>
-      Super-effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
-    </p>
-    <ul className={classes.list}>
-      {store.team.map((teamPkmnProps, i) => { // For each team pokmeon
-        const {name: pkmn, ability} = teamPkmnProps
+function TypeCoverageTooltipInfo({typeColor, type, classes}) {
+  let hasSuperEffectiveMove = false
 
-        return (
-          <React.Fragment key={pkmn + i}>
-            {[1, 2, 3, 4].map(num => { // For each move number
-              const move = teamPkmnProps['move' + num]
+  return (
+    <React.Fragment>
+      <p>
+        Super-effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
+      </p>
+      <ul className={classes.list}>
+        {store.team.map((teamPkmnProps, i) => { // For each team pokmeon
+          const {name: pkmn, ability} = teamPkmnProps
 
-              if (move && store.moveAgainstType(move, type, pkmn, ability) === -1) {
-                return ( // move name, pkmn name, then pkmn icon
-                  <li key={move + num} className={classes.listItem}>
-                    <span style={{width: 120}}>{store.moveName(move)}</span>
-                    <span>{store.pkmnName(pkmn)}</span>
-                    <PokemonIcon pkmnProp='pkmn' value={pkmn} />
-                  </li>
-                )
-              }
-            })}
-          </React.Fragment>
-        )
+          return (
+            <React.Fragment key={pkmn + i}>
+              {[1, 2, 3, 4].map(num => { // For each move number
+                const move = teamPkmnProps['move' + num]
 
-      })}
-    </ul>
-  </React.Fragment>
-)
+                if (move && store.moveAgainstType(move, type, pkmn, ability) === -1) {
+                  hasSuperEffectiveMove = true
+
+                  return ( // move name, pkmn name, then pkmn icon
+                    <li key={move + num} className={classes.listItem}>
+                      <span style={{width: 120}}>{store.moveName(move)}</span>
+                      <span>{store.pkmnName(pkmn)}</span>
+                      <PokemonIcon pkmnProp='pkmn' value={pkmn} />
+                    </li>
+                  )
+                } else if (num === 4 && i === 5 && !hasSuperEffectiveMove) {
+                  return <li key={pkmn + i} style={{textAlign: 'center'}}>Nothing</li>
+                }
+              })}
+            </React.Fragment>
+          )
+        })}
+      </ul>
+    </React.Fragment>
+  )
+}
 
 export default withStyles(teamStatsStyles)(TeamStats)
