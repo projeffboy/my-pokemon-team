@@ -27,7 +27,7 @@ export default withStyles(appStyles)(props => (
         {/* Footer */}
         <Grid item xs={12}>
           <Typography variant='body1' align='center'>
-            Created by Jeffery Tang
+            Created by <a href='http://jefferytang.co.nf'>Jeffery Tang</a>
           </Typography>
         </Grid>
       </Grid>
