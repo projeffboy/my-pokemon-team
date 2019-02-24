@@ -1,53 +1,52 @@
 import React from 'react'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
-import {withStyles} from '@material-ui/core/styles'
-import Snackbar from '@material-ui/core/Snackbar'
-import {observer} from 'mobx-react'
-import store from './store'
+// My Component Imports
+import Pokemon from './components/pokemon'
+import TeamStats from './components/team-stats'
 import {appStyles} from './styles'
-import Cards from './components/cards'
+// Material UI Imports
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import {withStyles} from '@material-ui/core/styles'
 
-export default withStyles(appStyles)(props => (
-    /*
-     * All 9 Cards
-     * apparently there's a slight horizontal scroll if I don't set the width and margin for <Grid />
-     * the original width for <Grid /> was calc(100% + 24px)
-     */
+function App(props) {
+  const {classes} = props
+
+  // 3 Right Cards
+  const cardTitles = Array(9).fill('')
+  cardTitles[2] = 'Type Defence'
+  cardTitles[5] = 'Type Coverage'
+  cardTitles[8] = 'Settings'
+
+  // 9 Total Cards
+  const cards = cardTitles.map((v, i) => {
+    if (!v) {
+      return (
+        // 6 Pokemon Cards
+        <Grid key={i} item xs={3}>
+          <Paper className={classes.paper}>
+            <Pokemon />
+          </Paper>
+        </Grid>
+      )
+    } else {
+      return (
+        // 3 Right Cards
+        <Grid key={i} item xs={6}>
+          <Paper className={classes.paper}>
+            <TeamStats title={v} />
+          </Paper>
+        </Grid>
+      )
+    }
+  })
+
+  return (
     <React.Fragment>
-      <Grid container spacing={16} justify='center' alignItems='center' className={props.classes.root}>
-        {/* Header */}
-        <Grid item xs={12}>
-          <Typography variant='display2' align='center'>
-            Poke Builder
-          </Typography>
-        </Grid>
-        {/* Main */}
-        <Cards />
-        {/* Footer */}
-        <Grid item xs={12}>
-          <Typography variant='body1' align='center'>
-            Created by Jeffery Tang
-          </Typography>
-        </Grid>
+      <Grid container spacing={24}>
+        {cards}
       </Grid>
-      <MainSnackbar />
     </React.Fragment>
-))
-
-// Snackbar is managed by MobX
-// Can be opened by importing store.js then running store.openSnackbar(msg)
-@observer
-class MainSnackbar extends React.Component {
-  render() {
-    return (
-      <Snackbar
-        open={store.isSnackbarOpen}
-        autoHideDuration = {2500}
-        onClose={() => store.isSnackbarOpen = false}
-        ContentProps={{'aria-describedby': 'message-id'}}
-        message={<span id='message-id'>{store.snackbarMsg}</span>}
-      />
-    )
-  }
+  )
 }
+
+export default withStyles(appStyles)(App)

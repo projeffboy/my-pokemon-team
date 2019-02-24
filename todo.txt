@@ -1,54 +1,5 @@
-DO THESE THINGS
-4. Add tooltips to type defence, coverage, and checklist.
-  -type checklist shows:
-    -Do you have stealth rock, spikes, toxic spikes, or sticky web?
-      -Gigalith   Stealth Rock
-    -Do you have choice scarf, choice band, or choice specs?
-      -Buzzwole   Choice Band
-      -Tapu Lele  Choice Scarf
-5. Add type chart.
-6. Stylize the site.
-  -color scheme
-  -change color of meta theme color
-  -have a look at manifest
-  -change favicon
-  -make placeholder text different color than selected text
-  -stylize react-virtualized-select
-  -link style
-  -pokemon-input-select
-7. Check for responsiveness (and test touch on mobile).
-  -repsonsiveness for widescreens
-8. Speed up the page somehow.
-  -with 6 pokemon cards, it seems like code is launched 6 times for each pokmeon card
-  -functions that call in the beginning even though they shouldn't be
-  -deal with import crisis: react-loadable?
-9. Complete documentation
-  -and add your website and github links underneath
-10. Deploy
-  In store.js and index.js, remove all global variables
-
-STYLE CHANGES
--the input delete x button too big
-
-BUG CHANGES
--weird stuff with like arceus-normal with draco plate has normal type judgement
--or silvally-normal with dark memory has normal-type multi-attack
--porygonZ Z-conversion?
-
-MINOR THINGS
--either pick e or event
-
-MAJOR CHANGES
--no repeated moves
--moves that are incompatible together
--validate team
--host images yourself?
--dark theme
--smogon tiers provide restrictions for abilities, etc., not just pokemon
--cookies to save team, or through URL
--import/export file
--accessibility
-  -tab through everything
--reorganize store.js
--display pokemon by format alphabetically
--produce a snackbar for success and dialog for different kinds of errors
+-change color of meta theme color
+-have a look at manifest
+-change favicon
+-uninstall emotion?
+-find a way to deal with the multiple styles attribute
