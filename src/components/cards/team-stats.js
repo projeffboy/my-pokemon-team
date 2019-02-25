@@ -254,8 +254,8 @@ function TypeCoverageTooltipInfo({typeColor, type, classes}) {
 
                   return ( // move name, pkmn name, then pkmn icon
                     <li key={move + num} className={classes.listItem}>
-                      <span style={{width: 120}}>{store.moveName(move)}</span>
-                      <span>{store.pkmnName(pkmn)}</span>
+                      <span style={{width: 150}}>{store.moveName(move)}</span>
+                      <span>{store.pkmnName(pkmn) + " "}</span>
                       <PokemonIcon pkmnProp='pkmn' value={pkmn} />
                     </li>
                   )

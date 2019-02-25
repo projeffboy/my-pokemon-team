@@ -101,7 +101,7 @@ class TeamViewer extends React.Component {
               ))
             : <Grid item xs={12}>
                 <Paper className={`${classes.applyPadding} ${classes.oneOfTwoPkmn}`}>
-                  <Pokemon teamIndex={xsTabIndex + 1} />
+                  <Pokemon teamIndex={xsTabIndex} />
                 </Paper>
               </Grid>
         }

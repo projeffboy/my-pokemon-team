@@ -1,8 +1,20 @@
-export const appStyles = theme => ({
-  paper: {
-    padding: theme.spacing.unit * 2,
-    textAlign: 'center',
-    color: theme.palette.text.secondary
+import {createMuiTheme} from '@material-ui/core/styles'
+import grey from '@material-ui/core/colors/grey'
+
+// index.js (THEME)
+export const theme = createMuiTheme({
+  palette: {
+    primary: {main: grey[900]},
+    secondary: {main: grey[900]},
+  },
+})
+
+theme.breakpoints.values.lg = 1200
+
+// app.js
+export const appStyles = {
+  '@global': {
+    'html, body, #root': {height: '100%', backgroundColor: '#eee', color: '#212121'},
   },
 })
 
