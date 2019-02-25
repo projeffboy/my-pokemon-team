@@ -1128,9 +1128,9 @@ class Store {
 }
 
 // FOR DEBUGGING
-let store = window.store = new Store()
+// let store = window.store = new Store()
 
-export default store
+export default new Store()
 
 // autorun(() => console.log(store.teamTypes))
 

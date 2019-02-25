@@ -10,6 +10,6 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000", /* should be your MUI theme's primary color */
-  "background_color": "##fafafa"
+  "theme_color": "#212121",
+  "background_color": "#eee"
 }

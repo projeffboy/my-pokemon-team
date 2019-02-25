@@ -52,3 +52,6 @@ MAJOR CHANGES
 -reorganize store.js
 -display pokemon by format alphabetically
 -produce a snackbar for success and dialog for different kinds of errors
+
+<></>
+SEO

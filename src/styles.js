@@ -1,9 +1,12 @@
 import {createMuiTheme} from '@material-ui/core/styles'
-import blueGrey from '@material-ui/core/colors/blueGrey'
+import grey from '@material-ui/core/colors/grey'
 
 // index.js (THEME)
 export const theme = createMuiTheme({
-  palette: {primary: blueGrey},
+  palette: {
+    primary: {main: grey[900]},
+    secondary: {main: grey[900]},
+  },
 })
 
 theme.breakpoints.values.lg = 1200
@@ -11,7 +14,7 @@ theme.breakpoints.values.lg = 1200
 // app.js
 export const appStyles = {
   '@global': {
-    'html, body, #root': {height: '100%'}
+    'html, body, #root': {height: '100%', backgroundColor: '#eee', color: '#212121'},
   },
   root: {
     height: '100%',
