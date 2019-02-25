@@ -40,7 +40,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
           <Grid item>
             <img src={incineroarFace} alt='Landorus Face' height={faceWidth(props.width)} />
           </Grid>
-          <Grid item xs={12} justify='center'>
+          <Grid item xs={12}>
             <Typography align='center'>
               For Generation 7
             </Typography>
