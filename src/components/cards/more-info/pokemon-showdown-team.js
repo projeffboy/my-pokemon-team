@@ -10,7 +10,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 // Material UI Icons Imports
 import ImportExport from '@material-ui/icons/ImportExport'
-import FileCopy from '@material-ui/icons/FileCopy'
+import ContentCopy from '@material-ui/icons/ContentCopy'
 // Custom Imports
 import {observer} from 'mobx-react'
 import store from '../../../store'
@@ -230,7 +230,7 @@ ${[1, 2, 3, 4].map(num => {
           </DialogActions>
         </Dialog>
         <Button onClick={() => this.handleCopy(pokemonShowdownTeamInfo)} className={classes.button}>
-          Copy Team <FileCopy />
+          Copy Team <ContentCopy />
         </Button>
       </React.Fragment>
     )

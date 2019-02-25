@@ -14,8 +14,25 @@ import Credits from './credits'
 import incineroarFace from './incineroar-face.png'
 import landorusFace from './landorus-face.png'
 
-let faceWidth = breakpoint => breakpoint !== 'xs' ? 48 : 32
-let titleFontSize = breakpoint => breakpoint !== 'xs' ? 2.8125 : 1.6
+function faceWidth(breakpoint) {
+  if (breakpoint !== 'xs') {
+    return 48
+  } else if (window.innerWidth >= 360) {
+    return 32
+  } else {
+    return 28
+  }
+}
+
+function titleFontSize(breakpoint) {
+  if (breakpoint !== 'xs') {
+    return 2.8125
+  } else if (window.innerWidth >= 360) {
+    return 1.6
+  } else {
+    return 1.4
+  }
+}
 
 export default compose(withStyles(appStyles), withWidth())(props => (
     /*
@@ -65,7 +82,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
           </Grid>
           <Grid item>
             <Typography variant='body1' align='center'>
-              Updated Feb 24, 2019
+              Updated Feb 25, 2019
             </Typography>
           </Grid>
         </Grid>
