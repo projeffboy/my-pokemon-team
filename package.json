@@ -20,7 +20,8 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "now-build": "react-scripts build"
   },
   "devDependencies": {
     "react-app-rewired": "^1.5.2"
