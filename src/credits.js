@@ -31,7 +31,7 @@ class Credits extends React.Component {
           </DialogTitle>
           <DialogContent>
             <h3>Pokemon Showdown</h3>
-            <p>All the GIFs, sprites, and pokemon data. Absolutely indispensable!</p>
+            <p>All the GIFs, sprites, and pokemon data. Thank you so much for letting me use them, they're absolutely indispensable!</p>
             <h3>Other</h3>
             <ul>
               <li>

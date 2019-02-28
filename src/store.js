@@ -215,9 +215,10 @@ class Store {
    * It also adds all the different hidden powers.
    */
   completeLearnset(pkmn) {
+    let completeLearnset = learnsets[pkmn] || []
     let baseForme = this.baseForme(pkmn) || pkmn // since learnsets[pkmn] requires pkmn to be at its base forme
 
-    let completeLearnset = learnsets[baseForme]
+    completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
 
     while (this.previousEvolution(baseForme)) {
       baseForme = this.previousEvolution(baseForme)
@@ -788,7 +789,9 @@ class Store {
     } else if (move === 'flyingpress') {
       // since flying press is part flying and fighting
       return typechart.Flying[moveType] + typechart.Fighting[moveType]
-    }
+    } /*else if (move === 'thousandarrows' && typeAgainst === 'Ground') {
+      return -1
+    }*/
     /*
      * Ignore status moves.
      * (status moves don't deal damage. so they don't contribute to type coverage)
