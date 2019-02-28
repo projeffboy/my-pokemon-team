@@ -58,3 +58,4 @@ SEO
 better gitignore
 priority moves
 STAB
+error handling

@@ -11,6 +11,7 @@ import store from './store'
 import {appStyles} from './styles'
 import Cards from './components/cards'
 import Credits from './credits'
+import UpdateLog from './update-log'
 import incineroarFace from './incineroar-face.png'
 import landorusFace from './landorus-face.png'
 
@@ -81,9 +82,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant='body1' align='center'>
-              Updated Feb 25, 2019
-            </Typography>
+            <UpdateLog />
           </Grid>
         </Grid>
       </Grid>

@@ -215,7 +215,7 @@ class Store {
    * It also adds all the different hidden powers.
    */
   completeLearnset(pkmn) {
-    let completeLearnset = learnsets[pkmn]
+    let completeLearnset = learnsets[pkmn] || []
     let baseForme = this.baseForme(pkmn) || pkmn // since learnsets[pkmn] requires pkmn to be at its base forme
 
     completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
