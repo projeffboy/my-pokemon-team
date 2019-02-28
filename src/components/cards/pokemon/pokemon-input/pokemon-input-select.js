@@ -52,7 +52,7 @@ function CustomSelect(props) {
     <VirtualizedSelect
       optionRenderer={virtualizedSelectProps => Option(virtualizedSelectProps, otherProps)}
       clearRenderer={() => <ClearIcon />}
-      noResultsText={<Typography>Nothing found</Typography>}
+      noResultsText={<Typography>Nothing found <br /> (Or select a Pokemon)</Typography>}
       {...otherProps}
     />
   )

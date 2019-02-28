@@ -717,16 +717,16 @@ class Store {
           break
         default:
       }
+    }
 
-      // If pokemon wields an air balloon
-      if (
-        item
-        && item === 'airballoon'
-        && type === 'Ground'
-        && effectiveness !== 2
-      ) {
-        effectiveness += 1
-      }
+    // If pokemon wields an air balloon
+    if (
+      item
+      && item === 'airballoon'
+      && type === 'Ground'
+      && effectiveness < 2
+    ) {
+      effectiveness += 1
     }
 
     return effectiveness
