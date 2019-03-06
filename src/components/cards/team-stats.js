@@ -14,9 +14,17 @@ class TeamStats extends React.Component {
     super(props)
 
     // E.g. Turn 'Type Coverage' to 'typeCoverage'
+    /*
     let titleArr = this.props.title.split(' ')
     titleArr[0] = titleArr[0].toLowerCase()
     this.teamStatType = titleArr.join('')
+    */
+
+    if (this.props.title === 'Team Defence') {
+      this.teamStatType = 'typeDefence'
+    } else if (this.props.title === 'Team Type Coverage') {
+      this.teamStatType = 'typeCoverage'
+    }
 
     // For popover (anchorEl means the element that the popover should be anchored to)
     // Why 18? There are 18 types
@@ -152,9 +160,9 @@ function TeamStatsTooltip(props) {
   const {teamStatType, ...otherProps} = props
 
   const content = () => {
-    if (teamStatType === 'Type Defence') {
+    if (teamStatType === 'Team Defence') {
       return <TypeDefenceTooltipInfo {...otherProps} />
-    } else if (teamStatType === 'Type Coverage') {
+    } else if (teamStatType === 'Team Type Coverage') {
       return <TypeCoverageTooltipInfo {...otherProps} />
     }
   }
