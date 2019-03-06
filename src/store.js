@@ -125,6 +125,10 @@ class Store {
   *******************/
 
   /* POKEDEX METHODS */
+
+  pkmnType(pkmn) {
+    return pokedex[pkmn].types
+  }
   
   /* NOT USED
    * Instead we use filteredPokemon and filteredPokemonNames
@@ -875,6 +879,10 @@ class Store {
                 && this.moveAgainstType(move, type, pkmn, ability) === -1
               ) {
                 typeCoverage[type]++
+
+                if (this.pkmnType(pkmn).includes(moveType)) {
+                  typeCoverage[type]++
+                }
               }
             })
 

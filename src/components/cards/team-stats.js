@@ -253,7 +253,11 @@ function TypeCoverageTooltipInfo({typeColor, type, classes}) {
                   hasSuperEffectiveMove = true
 
                   return ( // move name, pkmn name, then pkmn icon
-                    <li key={move + num} className={classes.listItem}>
+                    <li
+                      key={move + num}
+                      className={classes.listItem}
+                      style={{fontWeight: store.pkmnType(pkmn).includes(store.moveType(move, pkmn, ability)) ? 500 : 400}}
+                    >
                       <span style={{width: 150}}>{store.moveName(move)}</span>
                       <span>{store.pkmnName(pkmn) + " "}</span>
                       <PokemonIcon pkmnProp='pkmn' value={pkmn} />
