@@ -74,14 +74,14 @@ class TeamViewer extends React.Component {
                   ? [0, 2, 4].map(teamIndex => (
                     <Tab 
                       key={teamIndex}
-                      label={`${teamIndex} - ${teamIndex + 1}`}
+                      label={`${teamIndex + 1} - ${teamIndex + 2}`}
                       icon={this.getTwoPokemonSprites(teamIndex)}
                     />
                   ))
                   : [0, 1, 2, 3, 4, 5].map(teamIndex => (
                       <Tab 
                         key={teamIndex}
-                        label={teamIndex}
+                        label={teamIndex + 1}
                         className={classes.xsTab}
                         icon={<Sprite teamIndex={teamIndex} width={width} />}
                       />
