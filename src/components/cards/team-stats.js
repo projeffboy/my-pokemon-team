@@ -53,6 +53,17 @@ class TeamStats extends React.Component {
 
   handlePopoverClose = () => this.setState({anchorEl: Array(18).fill(null)})
 
+  handleClick = (e, i) => {
+    this.handlePopoverOpen(e, i)
+    /*
+    if (Array(18).fill(null).every(x => x === null)) {
+      this.handlePopoverOpen(e, i)
+    } else {
+      this.handlePopoverClose()
+    }
+    */
+  }
+
   render() {
     const {classes, width, title} = this.props
 
@@ -113,7 +124,8 @@ class TeamStats extends React.Component {
               aria-owns={this.state.anchorEl[i] ? 'mouse-over-popover-' + i : null}
               aria-haspopup='true'
               onMouseEnter={e => this.handlePopoverOpen(e, i)}
-              onMouseLeave={this.handlePopoverClose}  
+              onMouseLeave={this.handlePopoverClose}
+              onClick={e => this.handleClick(e, i)}
             >
               {typeAbbr[i] || type}
             </div>
