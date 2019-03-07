@@ -19,7 +19,7 @@ class UpdateLog extends React.Component {
     return (
       <React.Fragment>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Feb 25, 2019
+          Updated Mar 4, 2019
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -31,10 +31,10 @@ class UpdateLog extends React.Component {
           </DialogTitle>
           <DialogContent>
             <h3>Feb 25, 2019</h3>
-            <p>Fixed a bug where alternate formes had the moveset of their base forme. For example, Kyurem White couldn't learn fusion flare (<a href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3'>DMSivally</a>).</p>
+            <p>Fixed a bug where alternate formes had the moveset of their base forme. For example, White Kyurem couldn't learn Fusion Flare (<a href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3'>DMSivally</a>).</p>
             <p>Fixing the above bug caused selecting Megas to break the app. This is fixed too now (<a href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p'>kwiszat</a>).</p>
             <h3>Mar 6, 2019</h3>
-            <p>Super-effective STAB moves now count for +2 instead of +1.</p>
+            <p>Super effective STAB moves now count for +2 instead of +1.</p>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>

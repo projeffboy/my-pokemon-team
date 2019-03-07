@@ -137,6 +137,7 @@ class TeamStats extends React.Component {
                 paper: classes.paper,
               }}
               open={!!this.state.anchorEl[i]}
+              onClose={this.handlePopoverClose}
               anchorEl={this.state.anchorEl[i]}
               anchorOrigin={{
                 vertical: 'bottom',
@@ -258,7 +259,7 @@ function TypeCoverageTooltipInfo({typeColor, type, classes}) {
   return (
     <React.Fragment>
       <p>
-        Super-effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
+        Super effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
       </p>
       <ul className={classes.list}>
         {store.team.map((teamPkmnProps, i) => { // For each team pokmeon
