@@ -50,7 +50,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
           </Grid>
           <Grid item>     
             <Typography 
-              variant='display2'
+              variant='h3'
               style={{padding: '0 20px', color: '#212121', fontSize: titleFontSize(props.width) + 'rem'}}>
               My Pokemon Team
             </Typography>
@@ -59,7 +59,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
             <img src={incineroarFace} alt='Landorus Face' height={faceWidth(props.width)} />
           </Grid>
           <Grid item xs={12}>
-            <Typography align='center'>
+            <Typography variant='subtitle' align='center'>
               For Generation 7
             </Typography>
           </Grid>
@@ -69,17 +69,15 @@ export default compose(withStyles(appStyles), withWidth())(props => (
         {/* Footer */}
         <Grid item container xs={12} justify='center' alignItems='center' spacing={16}>
           <Grid item>
-            <Typography variant='body1' align='center'>
-              <Credits />
-            </Typography>
+            <Credits />
           </Grid>
           <Grid item>
-            <Typography variant='body1' align='center'>
-              <Button
-                href='http://jefferytang.co.nf'
-                style={{fontWeight: 'initial', textTransform: 'initial'}}
-              >Jeffery Tang</Button>
-            </Typography>
+            <Button
+              href='http://jefferytang.com'
+              style={{fontWeight: 'initial', textTransform: 'initial'}}
+            >
+              Jeffery Tang
+            </Button>
           </Grid>
           <Grid item>
             <UpdateLog />

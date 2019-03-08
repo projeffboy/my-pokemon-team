@@ -54,7 +54,7 @@ class MoreInfo extends React.Component {
             onChange={this.handleChange}
             indicatorColor='primary'
             textColor='primary'
-            fullWidth
+            variant='fullWidth'
           >
             {tabTitles.map(title => <Tab label={title} key={title} className={classes.tab} />)}
           </Tabs>
