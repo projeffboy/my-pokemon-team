@@ -35,6 +35,8 @@ class UpdateLog extends React.Component {
             <p>Fixing the above bug caused selecting Megas to break the app. This is fixed too now (<a href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p'>kwiszat</a>).</p>
             <h4>Mar 6, 2019</h4>
             <p>Super effective STAB moves now count for +2 instead of +1.</p>
+            <h4>Mar 8, 2019</h4>
+            <p>Updated the Smogon tiers (for the search filters).</p>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>
