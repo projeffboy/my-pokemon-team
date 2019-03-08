@@ -8,7 +8,8 @@ import {withStyles} from '@material-ui/core/styles'
 import ClearIcon from '@material-ui/icons/Clear'
 // React Select
 // import Select from 'react-select' (We are using react-virtualized-select instead)
-import 'react-select/dist/react-select.css'
+// Might want to retry it some day
+import './react-select.css'
 // React Virtualized
 import 'react-virtualized-select/styles.css'
 import VirtualizedSelect from 'react-virtualized-select'
