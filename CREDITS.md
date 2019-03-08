@@ -1,1 +1,0 @@
-https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors/
