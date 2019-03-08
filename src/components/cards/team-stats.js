@@ -158,7 +158,7 @@ class TeamStats extends React.Component {
       <Grid container style={{textAlign: 'center'}}>
         <Grid item xs={12}>
           {/* Either "Type Defence" or "Type Coverage"  */}
-          <Typography variant='h6' gutterBottom>
+          <Typography variant='h6' gutterBottom style={{marginBottom: '0.15em', marginTop: '-0.2em'}}>
             {title}
           </Typography>
         </Grid>

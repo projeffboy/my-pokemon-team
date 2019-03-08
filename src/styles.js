@@ -7,6 +7,9 @@ export const theme = createMuiTheme({
     primary: {main: grey[900]},
     secondary: {main: grey[900]},
   },
+  typography: {
+    useNextVariants: true,
+  },
 })
 
 theme.breakpoints.values.lg = 1200
