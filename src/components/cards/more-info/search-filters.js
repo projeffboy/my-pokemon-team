@@ -22,7 +22,7 @@ class SearchFilters extends React.Component {
       Format: [
         'Battle Spot Singles',
         'Battle Spot Doubles',
-        'VGC 2018',
+        'VGC 2019',
         'Uber', 
         'OU: Over Used', 
         'UU: Under Used', 

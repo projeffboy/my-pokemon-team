@@ -948,8 +948,8 @@ class Store {
 
       let filteredPokedex
       
-      if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2018'].includes(format)) {
-        const banlist = [
+      if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2019'].includes(format)) {
+        let banlist = [
           'mewtwo', 
           'lugia', 
           'hooh', 
@@ -991,6 +991,31 @@ class Store {
           'marshadow', 
           'zeraora',
         ]
+
+        if (format === 'VGC 2019') {
+          banlist = [ 
+            'mew', 
+            'celebi', 
+            'jirachi', 
+            'deoxys', 
+            'phione', 
+            'manaphy', 
+            'darkrai', 
+            'shaymin', 
+            'arceus', 
+            'victini', 
+            'keldeo', 
+            'meloetta', 
+            'genesect', 
+            'diancie', 
+            'hoopa', 
+            'volcanion', 
+            'greninjaash', 
+            'magearna', 
+            'marshadow', 
+            'zeraora',
+          ]
+        }
 
         filteredPokedex = {...pokedex}
 
