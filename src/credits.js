@@ -70,7 +70,7 @@ class Credits extends React.Component {
             <Link href='https://pokemonshowdown.com'>
               <img src={pokemonShowdownLogo} alt='Pokemon Showdown Logo' style={{width: '50%'}} />
             </Link>
-            <Typography variant='body1' paragraph={true}>The folks at Pokemon Showdown were very generous to let me use their all their GIFs, sprites, and pokemon data. Absolutely indispensable!</Typography>
+            <Typography variant='body1' paragraph>The folks at Pokemon Showdown are very generous to let me use all of their GIFs, sprites, and pokemon data. Absolutely indispensable!</Typography>
             <Typography variant='h6' gutterBottom>Other</Typography>
             <List>
               {listItems()}

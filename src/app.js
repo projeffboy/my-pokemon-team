@@ -10,6 +10,7 @@ import {observer} from 'mobx-react'
 import store from './store'
 import {appStyles} from './styles'
 import Cards from './components/cards'
+import Manual from './manual'
 import Credits from './credits'
 import UpdateLog from './update-log'
 import incineroarFace from './incineroar-face.png'
@@ -69,15 +70,18 @@ export default compose(withStyles(appStyles), withWidth())(props => (
         {/* Footer */}
         <Grid item container xs={12} justify='center' alignItems='center' spacing={16}>
           <Grid item>
-            <Credits />
-          </Grid>
-          <Grid item>
             <Button
               href='http://jefferytang.com'
               style={{fontWeight: 'initial', textTransform: 'initial'}}
             >
               Jeffery Tang
             </Button>
+          </Grid>
+          <Grid item>
+            <Manual />
+          </Grid>
+          <Grid item>
+            <Credits />
           </Grid>
           <Grid item>
             <UpdateLog />
