@@ -224,15 +224,19 @@ class Store {
     
     let baseForme = this.baseForme(pkmn) || pkmn // since learnsets[pkmn] requires pkmn to be at its base forme
 
-    if (pkmn && !pkmn.includes('alola')) {
+    let isAlola = false
+
+    if (!pkmn.includes('alola')) {
       completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
+    } else {
+      isAlola = true
     }
 
     while (this.previousEvolution(baseForme)) {
       baseForme = this.previousEvolution(baseForme)
 
       let alola = ''
-      if (pokedex[baseForme].otherFormes && pokedex[baseForme].otherFormes.some(forme => forme.includes('alola'))) {
+      if (isAlola && pokedex[baseForme].otherFormes && pokedex[baseForme].otherFormes.some(forme => forme.includes('alola'))) {
         alola = 'alola'
       } 
       // Append previous evolution learnset to current learnset
