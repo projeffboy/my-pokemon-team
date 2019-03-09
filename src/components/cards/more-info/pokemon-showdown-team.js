@@ -189,7 +189,7 @@ ${[1, 2, 3, 4].map(num => {
     return (
       <>
         <Button onClick={e => this.handleClick(e, pokemonShowdownTeamInfo)}>
-          Import/Export Team <ImportExport />
+          Import/Export Team <ImportExport style={{marginLeft: 5}} />
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -232,7 +232,7 @@ ${[1, 2, 3, 4].map(num => {
           </DialogActions>
         </Dialog>
         <Button onClick={() => this.handleCopy(pokemonShowdownTeamInfo)} className={classes.button}>
-          Copy Team <FileCopy />
+          Copy Team <FileCopy style={{marginLeft: 5}} />
         </Button>
       </>
     )

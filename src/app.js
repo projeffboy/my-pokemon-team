@@ -69,6 +69,9 @@ export default compose(withStyles(appStyles), withWidth())(props => (
         <Cards />
         {/* Footer */}
         <Grid item container xs={12} justify='center' alignItems='center' spacing={16}>
+        <Grid item>
+            <Manual />
+          </Grid>
           <Grid item>
             <Button
               href='https://jefferytang.com'
@@ -76,9 +79,6 @@ export default compose(withStyles(appStyles), withWidth())(props => (
             >
               Jeffery Tang
             </Button>
-          </Grid>
-          <Grid item>
-            <Manual />
           </Grid>
           <Grid item>
             <Credits />
