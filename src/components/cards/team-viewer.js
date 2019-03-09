@@ -67,7 +67,7 @@ class TeamViewer extends React.Component {
             <Tabs 
               value={width === 'sm' ? smTabIndex : xsTabIndex} 
               onChange={this.handleChange} 
-              fullWidth
+              variant='fullWidth'
             >
               { // Either displays 3 or 6 tabs
                 width === 'sm'

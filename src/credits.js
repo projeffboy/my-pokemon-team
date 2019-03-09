@@ -12,6 +12,8 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import Link from '@material-ui/core/Link'
 import Terrain from '@material-ui/icons/Terrain'
+import TableChart from '@material-ui/icons/TableChart'
+import ListIcon from '@material-ui/icons/List'
 import Whatshot from '@material-ui/icons/Whatshot'
 import ColorLens from '@material-ui/icons/ColorLens'
 import Code from '@material-ui/icons/Code'
@@ -22,6 +24,8 @@ function listItems(element) {
   return [
     [<Terrain />, 'Landorus-T Face', 'https://archive.nyafuu.org/vp/last/50/34683395/'],
     [<Whatshot />, 'Incineroar Face', 'https://thegamehaus.com/wolfe-glick-wins-sixth-regional-title-vgc-2018-charlotte-regional-championships-recap/2018/03/20/'],
+    [<TableChart />, 'Bulbapedia\'s Type Chart', 'https://bulbapedia.bulbagarden.net/wiki/Type'],
+    [<ListIcon />, 'Non-table Type Chart', 'https://www.pinterest.ca/pin/307159637067301004/'],
     [<ColorLens />, 'Assigning each type a color', 'https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors'],
     [<Code />, 'Javascript React framework', 'https://reactjs.org/'],
     [<Layers />, 'Material UI', 'https://material-ui.com/'],
@@ -32,7 +36,7 @@ function listItems(element) {
         </ListItemIcon>
         <ListItemText primary={
           <Link
-            color='secondary'
+            style={{color: '#2196f3'}}
             variant='inherit'
             href={pair[2]}
           >
@@ -68,7 +72,7 @@ class Credits extends React.Component {
           </DialogTitle>
           <DialogContent>
             <Link href='https://pokemonshowdown.com'>
-              <img src={pokemonShowdownLogo} alt='Pokemon Showdown Logo' style={{width: '50%'}} />
+              <img src={pokemonShowdownLogo} alt='Pokemon Showdown Logo' style={{width: '50%', minWidth: 200}} />
             </Link>
             <Typography variant='body1' paragraph>The folks at Pokemon Showdown are very generous to let me use all of their GIFs, sprites, and pokemon data. Absolutely indispensable!</Typography>
             <Typography variant='h6' gutterBottom>Other</Typography>

@@ -15,6 +15,7 @@ import Credits from './credits'
 import UpdateLog from './update-log'
 import incineroarFace from './incineroar-face.png'
 import landorusFace from './landorus-face.png'
+import TypeChart from './type-chart'
 
 function faceWidth(breakpoint) {
   if (breakpoint !== 'xs') {
@@ -89,6 +90,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
         </Grid>
       </Grid>
       <MainSnackbar />
+      <TypeChart width={props.width} />
     </>
 ))
 

@@ -81,16 +81,16 @@ class Manual extends React.Component {
             <Typography paragraph><strong>Note:</strong> Abilities like Aerilate and Pixilate are taken into account. So are moves like Freeze Dry and Flying Press. For example, Freeze Dry also gives you +1 against Water.</Typography>
             <Typography variant='h6'>Formats (aka Tiers)</Typography>
             <Typography variant='subtitle2' gutterBottom>What is Ubers, OU, VGC, etc.?</Typography>
-            <Typography paragraph>Ubers, OU, and VGC are formats (or tiers) that ban some pokemon and enforce certain rules. Battle Spot Singles/Doubles and VGC are the only ones endorsed by <Link color='secondary' variant='inherit' href='https://www.pokemon.com/us/strategy/an-introduction-to-the-video-game-championships/'>The Pokemon Company</Link>, while the other ones are maintained by <Link color='secondary' variant='inherit' href='https://www.smogon.com/'>Smogon</Link>. You can check out <Link color='secondary' variant='inherit' href='https://www.smogon.com/ingame/battle/tiering-faq'>Smogon's FAQ about tiers</Link> or <Link color='secondary' variant='inherit' href='https://en.softonic.com/articles/competitive-pokemon-smogon'>this guide that gives a brief description about each tier</Link>.</Typography>
+            <Typography paragraph>Ubers, OU, and VGC are formats (or tiers) that ban some pokemon and enforce certain rules. Battle Spot Singles/Doubles and VGC are the only ones endorsed by <Link style={{color: '#2196f3'}} variant='inherit' href='https://www.pokemon.com/us/strategy/an-introduction-to-the-video-game-championships/'>The Pokemon Company</Link>, while the other ones are maintained by <Link style={{color: '#2196f3'}} variant='inherit' href='https://www.smogon.com/'>Smogon</Link>. You can check out <Link style={{color: '#2196f3'}} variant='inherit' href='https://www.smogon.com/ingame/battle/tiering-faq'>Smogon's FAQ about tiers</Link> or <Link style={{color: '#2196f3'}} variant='inherit' href='https://en.softonic.com/articles/competitive-pokemon-smogon'>this guide that gives a brief description about each tier</Link>.</Typography>
             <Typography variant='h6'>Team Checklist Terms</Typography>
             <Typography variant='subtitle2' gutterBottom>What do things like entry hazard, phazer, and volt-turn even mean?</Typography>
-            <Typography paragraph>Smogon has a <Link color='secondary' variant='inherit' href='https://www.smogon.com/dp/articles/pokemon_dictionary'>dictionary for that</Link>, but it's a bit outdated. Here are some of the terms it doesn't cover:
+            <Typography paragraph>Smogon has a <Link style={{color: '#2196f3'}} variant='inherit' href='https://www.smogon.com/dp/articles/pokemon_dictionary'>dictionary for pokemon terms</Link>, but it's a bit outdated. Here are some of the terms it doesn't cover:
             </Typography>
-            <Table>
+            <Table padding='dense'>
               <TableHead>
                 <TableRow>
                   <TableCell>Term</TableCell>
-                  <TableCell>Definition</TableCell>
+                  <TableCell style={{paddingLeft: 5, paddingRight: 5}}>Definition</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -99,7 +99,7 @@ class Manual extends React.Component {
                     <TableCell component='th' scope='row'>
                       {row[0]}
                     </TableCell>
-                    <TableCell>{row[1]}</TableCell>
+                    <TableCell style={{paddingLeft: 5, paddingRight: 5}}>{row[1]}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

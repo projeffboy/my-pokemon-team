@@ -6,14 +6,12 @@ import blue from '@material-ui/core/colors/blue'
 export const theme = createMuiTheme({
   palette: {
     primary: {main: grey[900]},
-    secondary: {main: blue[500]},
+    secondary: {main: grey[900]},
   },
   typography: {
     useNextVariants: true,
   },
 })
-
-window.theme = theme
 
 theme.breakpoints.values.lg = 1200
 
@@ -270,7 +268,7 @@ export const teamViewerStyles = {
     display: 'flex',
     height: 75,
   },
-  oneOfTwoPkmn: {padding: '14px 10px'},
+  oneOfTwoPkmn: {padding: '8px'},
   xsTab: {minWidth: 0},
 }
 
