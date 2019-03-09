@@ -43,6 +43,7 @@ class UpdateLog extends React.Component {
             <Typography variant='subtitle2'>Mar 9, 2019</Typography>
             <Typography paragraph>You can now click (as well as hover) over the types for more information. Good for phones.</Typography>
             <Typography paragraph>There's now a typechart button!</Typography>
+            <Typography paragraph>Fixed a bug where alola pokemon had the movesets of their non-alolan forms.</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>

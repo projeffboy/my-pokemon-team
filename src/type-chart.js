@@ -61,9 +61,9 @@ export default class TypeChart extends React.Component {
           maxWidth='md'
         >
           <DialogContent style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <img src={TypeChartPng} style={{maxWidth: '100%'}} />
+            <img alt='Bulbapedia Pokemon Type Chart' src={TypeChartPng} style={{maxWidth: '100%'}} />
             <Typography variant={this.typoVariant()} style={{paddingTop: 20}}>Strong against → Type → Strong against</Typography>
-            <img src='https://i.pinimg.com/originals/7b/c6/58/7bc65872baa79ac690e9e4ae1aa8cb64.png' style={{maxWidth: '100%'}} />
+            <img alt='Non-Table Pokemon Type Chart' src='https://i.pinimg.com/originals/7b/c6/58/7bc65872baa79ac690e9e4ae1aa8cb64.png' style={{maxWidth: '100%'}} />
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>

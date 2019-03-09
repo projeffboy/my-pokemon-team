@@ -219,15 +219,24 @@ class Store {
    * It also adds all the different hidden powers.
    */
   completeLearnset(pkmn) {
+
     let completeLearnset = learnsets[pkmn] || []
+    
     let baseForme = this.baseForme(pkmn) || pkmn // since learnsets[pkmn] requires pkmn to be at its base forme
 
-    completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
+    if (pkmn && !pkmn.includes('alola')) {
+      completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
+    }
 
     while (this.previousEvolution(baseForme)) {
       baseForme = this.previousEvolution(baseForme)
+
+      let alola = ''
+      if (pokedex[baseForme].otherFormes && pokedex[baseForme].otherFormes.some(forme => forme.includes('alola'))) {
+        alola = 'alola'
+      } 
       // Append previous evolution learnset to current learnset
-      completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
+      completeLearnset = [...completeLearnset, ...learnsets[baseForme + alola]]
     }
 
     // turning array to set removes duplicates
