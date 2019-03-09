@@ -1,16 +1,19 @@
 import {createMuiTheme} from '@material-ui/core/styles'
 import grey from '@material-ui/core/colors/grey'
+import blue from '@material-ui/core/colors/blue'
 
 // index.js (THEME)
 export const theme = createMuiTheme({
   palette: {
     primary: {main: grey[900]},
-    secondary: {main: grey[900]},
+    secondary: {main: blue[500]},
   },
   typography: {
     useNextVariants: true,
   },
 })
+
+window.theme = theme
 
 theme.breakpoints.values.lg = 1200
 

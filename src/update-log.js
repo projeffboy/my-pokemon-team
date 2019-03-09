@@ -5,6 +5,8 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Typography from '@material-ui/core/Typography'
+import Link from '@material-ui/core/Link'
 
 class UpdateLog extends React.Component {
   constructor(props) {
@@ -19,7 +21,7 @@ class UpdateLog extends React.Component {
     return (
       <React.Fragment>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Mar 4, 2019
+          Updated Mar 8, 2019
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -30,13 +32,13 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <h4>Feb 25, 2019</h4>
-            <p>Fixed a bug where alternate formes had the moveset of their base forme. For example, White Kyurem couldn't learn Fusion Flare (<a href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3'>DMSivally</a>).</p>
-            <p>Fixing the above bug caused selecting Megas to break the app. This is fixed too now (<a href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p'>kwiszat</a>).</p>
-            <h4>Mar 6, 2019</h4>
-            <p>Super effective STAB moves now count for +2 instead of +1.</p>
-            <h4>Mar 8, 2019</h4>
-            <p>Updated the Smogon tiers (for the search filters).</p>
+            <Typography variant='subtitle2'>Feb 25, 2019</Typography>
+            <Typography paragraph={true}>Fixed a bug where alternate formes had the moveset of their base forme. For example, White Kyurem couldn't learn Fusion Flare (<Link color='secondary' variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3'>DMSivally</Link>).</Typography>
+            <Typography paragraph={true}>Fixing the above bug caused selecting Megas to break the app. This is fixed too now (<Link color='secondary' variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p'>kwiszat</Link>).</Typography>
+            <Typography variant='subtitle2'>Mar 6, 2019</Typography>
+            <Typography paragraph={true}>Super effective STAB moves now count for +2 instead of +1.</Typography>
+            <Typography variant='subtitle2'>Mar 8, 2019</Typography>
+            <Typography paragraph={true}>Updated the Smogon tiers (for the search filters).</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>

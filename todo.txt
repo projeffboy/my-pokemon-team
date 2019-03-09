@@ -59,3 +59,5 @@ better gitignore
 priority moves
 STAB
 error handling
+
+React.cloneElement

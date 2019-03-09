@@ -5,6 +5,43 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import Typography from '@material-ui/core/Typography'
+import Link from '@material-ui/core/Link'
+import Terrain from '@material-ui/icons/Terrain'
+import Whatshot from '@material-ui/icons/Whatshot'
+import ColorLens from '@material-ui/icons/ColorLens'
+import Code from '@material-ui/icons/Code'
+import Layers from '@material-ui/icons/Layers'
+import pokemonShowdownLogo from './pokemon-showdown-logo.png'
+
+function listItems(element) {
+  return [
+    [<Terrain />, 'Landorus-T Face', 'https://archive.nyafuu.org/vp/last/50/34683395/'],
+    [<Whatshot />, 'Incineroar Face', 'https://thegamehaus.com/wolfe-glick-wins-sixth-regional-title-vgc-2018-charlotte-regional-championships-recap/2018/03/20/'],
+    [<ColorLens />, 'Assigning each type a color', 'https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors'],
+    [<Code />, 'Javascript React framework', 'https://reactjs.org/'],
+    [<Layers />, 'Material UI', 'https://material-ui.com/'],
+  ].map((pair, i) => (
+    <ListItem key={i}>
+        <ListItemIcon>
+          {pair[0]}
+        </ListItemIcon>
+        <ListItemText primary={
+          <Link
+            color='secondary'
+            variant='inherit'
+            href={pair[2]}
+          >
+            {pair[1]}
+          </Link>
+        } />
+    </ListItem>
+  ))
+}
 
 class Credits extends React.Component {
   constructor(props) {
@@ -30,36 +67,14 @@ class Credits extends React.Component {
             Credits
           </DialogTitle>
           <DialogContent>
-            <h3>Pokemon Showdown</h3>
-            <p>All the GIFs, sprites, and pokemon data. Thank you so much for letting me use them, they're absolutely indispensable!</p>
-            <h3>Other</h3>
-            <ul>
-              <li>
-                <a href='https://archive.nyafuu.org/vp/last/50/34683395/'>
-                  Landorus-T Face
-                </a>
-              </li>
-              <li>
-                <a href='https://thegamehaus.com/wolfe-glick-wins-sixth-regional-title-vgc-2018-charlotte-regional-championships-recap/2018/03/20/'>
-                  Incineroar Face
-                </a>
-              </li>
-              <li>
-                <a href='https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors/'>
-                  Assigning each type a color
-                </a>
-              </li>
-              <li>
-                <a href='https://reactjs.org/'>
-                  Javascript React framework
-                </a>
-              </li>
-              <li>
-                <a href='https://material-ui.com/'>
-                  Material UI
-                </a>
-              </li>
-            </ul>
+            <Link href='https://pokemonshowdown.com'>
+              <img src={pokemonShowdownLogo} alt='Pokemon Showdown Logo' style={{width: '50%'}} />
+            </Link>
+            <Typography variant='body1' paragraph={true}>The folks at Pokemon Showdown were very generous to let me use their all their GIFs, sprites, and pokemon data. Absolutely indispensable!</Typography>
+            <Typography variant='h6' gutterBottom>Other</Typography>
+            <List>
+              {listItems()}
+            </List>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>
