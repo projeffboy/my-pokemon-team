@@ -94,7 +94,7 @@ function Option(props, parentProps) {
       onClick={handleClick}
     >
       <PokemonIcon pkmnProp={pkmnProp} value={option.value} />
-      <span style={{width: `calc(100% - ${width}px)`}}>
+      <span style={{width: `calc(100% - ${width}px)`, paddingLeft: 5}}>
         {option.label}
       </span>
     </div>
