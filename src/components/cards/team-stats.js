@@ -2,10 +2,12 @@ import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import {withStyles} from '@material-ui/core/styles'
-import Popover from '@material-ui/core/Popover'
+import Popper from '@material-ui/core/Popper'
+import Paper from '@material-ui/core/Paper'
 import {observer} from 'mobx-react'
 import store from '../../store'
 import {teamStatsStyles} from '../../styles'
+import Fade from '@material-ui/core/Fade'
 import PokemonIcon from './pokemon/pokemon-input/pokemon-input-select/pokemon-icon'
 
 @observer
@@ -128,7 +130,7 @@ class TeamStats extends React.Component {
               {typeAbbr[i] || type}
             </div>
             {/* The Popover Itself */}
-            <Popover
+            <Popper
               id={'mouse-over-popover-' + i}
               className={classes.popover}
               classes={{
@@ -137,14 +139,23 @@ class TeamStats extends React.Component {
               open={!!this.state.anchorEl[i]}
               onClose={this.handlePopoverClose}
               anchorEl={this.state.anchorEl[i]}
+              /*
               anchorOrigin={{
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
+              */
+              transition
             >
               {/* Popover Message */}
-              <TeamStatsTooltip type={type} typeColor={types[type]} classes={classes} teamStatType={title} />
-            </Popover>
+              {({TransitionProps}) => (
+                <Fade {...TransitionProps} timeout={150}>
+              <Paper style={{padding: 10}}>
+                <TeamStatsTooltip type={type} typeColor={types[type]} classes={classes} teamStatType={title} />
+              </Paper>
+                </Fade>
+              )}
+            </Popper>
           </div>
           {/* E.g. +2 or -1 */}
           {this.returnTypeValue(store[this.teamStatType][type])}
