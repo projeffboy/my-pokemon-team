@@ -21,7 +21,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Mar 8, 2019
+          Updated Mar 9, 2019
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -40,6 +40,8 @@ class UpdateLog extends React.Component {
             <Typography variant='subtitle2'>Mar 8, 2019</Typography>
             <Typography paragraph>Updated the Smogon formats/tiers (for the search filters).</Typography>
             <Typography paragraph>Included a manual page clarifying how to use this site.</Typography>
+            <Typography variant='subtitle2'>Mar 9, 2019</Typography>
+            <Typography paragraph>You can now click (as well as hover) over the types for more information. Good for phones.</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>
