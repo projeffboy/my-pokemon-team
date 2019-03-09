@@ -71,7 +71,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
         <Grid item container xs={12} justify='center' alignItems='center' spacing={16}>
           <Grid item>
             <Button
-              href='http://jefferytang.com'
+              href='https://jefferytang.com'
               style={{fontWeight: 'initial', textTransform: 'initial'}}
             >
               Jeffery Tang
