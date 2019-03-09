@@ -174,6 +174,8 @@ ${[1, 2, 3, 4].map(num => {
   }
 }).join('\n')}\n\n`
         )
+      } else {
+        return ''
       }
     }).join('')
 
