@@ -54,14 +54,12 @@ class TeamStats extends React.Component {
   handlePopoverClose = () => this.setState({anchorEl: Array(18).fill(null)})
 
   handleClick = (e, i) => {
-    this.handlePopoverOpen(e, i)
-    /*
-    if (Array(18).fill(null).every(x => x === null)) {
+    // this.handlePopoverOpen(e, i)
+    if (this.state.anchorEl.every(x => x === null)) {
       this.handlePopoverOpen(e, i)
     } else {
       this.handlePopoverClose()
     }
-    */
   }
 
   render() {
