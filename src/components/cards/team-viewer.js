@@ -61,7 +61,7 @@ class TeamViewer extends React.Component {
     const {smTabIndex, xsTabIndex} = this.state
 
     return (
-      <React.Fragment>
+      <>
         <Grid item xs={12}>
           <Paper>
             <Tabs 
@@ -105,7 +105,7 @@ class TeamViewer extends React.Component {
                 </Paper>
               </Grid>
         }
-      </React.Fragment>
+      </>
     )
   }
 }

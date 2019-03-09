@@ -54,7 +54,7 @@ class Credits extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
           Credits
         </Button>
@@ -82,7 +82,7 @@ class Credits extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </React.Fragment>
+      </>
     )
   }
 }

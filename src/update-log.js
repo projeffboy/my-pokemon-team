@@ -19,7 +19,7 @@ class UpdateLog extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
           Updated Mar 8, 2019
         </Button>
@@ -46,7 +46,7 @@ class UpdateLog extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </React.Fragment>
+      </>
     )
   }
 }

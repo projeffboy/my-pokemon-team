@@ -185,7 +185,7 @@ ${[1, 2, 3, 4].map(num => {
     */
 
     return (
-      <React.Fragment>
+      <>
         <Button onClick={e => this.handleClick(e, pokemonShowdownTeamInfo)}>
           Import/Export Team <ImportExport />
         </Button>
@@ -232,7 +232,7 @@ ${[1, 2, 3, 4].map(num => {
         <Button onClick={() => this.handleCopy(pokemonShowdownTeamInfo)} className={classes.button}>
           Copy Team <FileCopy />
         </Button>
-      </React.Fragment>
+      </>
     )
   }
 }

@@ -41,7 +41,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
      * apparently there's a slight horizontal scroll if I don't set the width and margin for <Grid />
      * the original width for <Grid /> was calc(100% + 24px)
      */
-    <React.Fragment>
+    <>
       <Grid container spacing={16} justify='center' alignItems='center' className={props.classes.root}>
         {/* Header */}
         <Grid item container xs={12} justify='center'>
@@ -85,7 +85,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
         </Grid>
       </Grid>
       <MainSnackbar />
-    </React.Fragment>
+    </>
 ))
 
 // Snackbar is managed by MobX

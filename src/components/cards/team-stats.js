@@ -189,7 +189,7 @@ function TeamStatsTooltip(props) {
 
 // Type Defence Tooltip Info
 const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
-  <React.Fragment>
+  <>
     <p>
       <span style={{color: `#${typeColor}`}}>{type}</span> does...
     </p>
@@ -249,7 +249,7 @@ const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
         }
       })}
     </ul>
-  </React.Fragment>
+  </>
 )
 
 // Type Coverage Tooltip Info
@@ -257,7 +257,7 @@ function TypeCoverageTooltipInfo({typeColor, type, classes}) {
   let hasSuperEffectiveMove = false
 
   return (
-    <React.Fragment>
+    <>
       <p>
         Super effective against <span style={{color: `#${typeColor}`}}>{type}</span>:
       </p>
@@ -292,7 +292,7 @@ function TypeCoverageTooltipInfo({typeColor, type, classes}) {
           )
         })}
       </ul>
-    </React.Fragment>
+    </>
   )
 }
 

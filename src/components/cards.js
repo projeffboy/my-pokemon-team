@@ -54,7 +54,7 @@ function Cards(props) {
      *  600 or above, it will only use the sm attribute
      *  Below that, it will only use the xs attribute
      */
-    <React.Fragment>
+    <>
       {/* Pokemon cards */}
       <Grid item container lg={6} md={7} sm={6} xs={12} spacing={16}>
         {pokemonCards()}
@@ -77,7 +77,7 @@ function Cards(props) {
           </Paper>
         </Grid>
       </Grid>
-    </React.Fragment>
+    </>
   )
 }
 
