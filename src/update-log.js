@@ -43,7 +43,7 @@ class UpdateLog extends React.Component {
             <Typography variant='subtitle2'>Mar 9, 2019</Typography>
             <Typography paragraph>You can now click (as well as hover) over the types for more information. Good for phones.</Typography>
             <Typography paragraph>There's now a typechart button!</Typography>
-            <Typography paragraph>Fixed a bug where alola pokemon had the movesets of their non-alolan forms (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4t5g6'>DJdeMaster</Link>).</Typography>
+            <Typography paragraph>Fixed a bug where alolan-form pokemon had the movesets of their non-alolan forms (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4t5g6'>DJdeMaster</Link>).</Typography>
             <Typography paragraph>The search filter VGC 2018 is updated to VGC 2019 (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4xcwx'>Elmodipus</Link>).</Typography>
           </DialogContent>
           <DialogActions>
