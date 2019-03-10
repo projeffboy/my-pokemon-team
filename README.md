@@ -16,6 +16,8 @@ I'll be sure to update the site for Pokemon Sword and Shield when it comes out (
 
 You can check out the issues tab to see what other improvements I have in mind. Or you can create a new issue if you have suggestions of your own :)
 
+If you want to help me write code for new features, I would suggest that you save your time, because my code is messy and getting borderline unmaintainable. I'll have to redesign it from the inside first.
+
 ## Major Credits
 - [Pokemon Showdown](https://pokemonshowdown.com/): animated sprites, non-animated sprites, and all the pokemon data (thanks Zarel!)
 - [Javascript React framework](https://reactjs.org/)
