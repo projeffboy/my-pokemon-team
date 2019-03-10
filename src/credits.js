@@ -29,7 +29,7 @@ function listItems(element) {
     [<TableChart />, 'Bulbapedia\'s Type Chart', 'https://bulbapedia.bulbagarden.net/wiki/Type'],
     [<ListIcon />, 'Non-table Type Chart', 'https://pinterest.ca/pin/307159637067301004/'],
     [<ColorLens />, 'Assigning each type a color', 'https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors'],
-    [<People />, 'r/stunfisk', 'https://reddit.com/r/stunfisk', 'I\'m glad to be a part of this community'],
+    [<People />, 'r/stunfisk', 'https://reddit.com/r/stunfisk', 'It\'s a good community'],
     [<Code />, 'Javascript React framework', 'https://reactjs.org/'],
     [<Code />, 'MobX state management', 'https://mobx.js.org/'],
     [<Layers />, 'Material UI', 'https://material-ui.com/'],
