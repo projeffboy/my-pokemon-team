@@ -1,5 +1,5 @@
 # [My Pokemon Team](https://mypokemonteam.com)
-### The Ultimate Pokemon Teambuilder at mypokemonteam.com
+### The Ultimate Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
 
 ![My Pokemon Team Screenshot](src/my-pokemon-team-screenshot-mar-10.png)
 
