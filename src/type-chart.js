@@ -1,46 +1,39 @@
-import Fab from '@material-ui/core/Fab'
-import TableChart from '@material-ui/icons/TableChart'
-
 import React from 'react'
-// Material UI Core Imports
-import Button from '@material-ui/core/Button'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 import Typography from '@material-ui/core/Typography'
 import TypeChartPng from './type-chart.png'
 
-export default class TypeChart extends React.Component {
-  constructor(props) {
-    super(props)
+function TabContainer(props) {
+  return (
+    <Typography component='div' style={{ padding: 8 * 3 }}>
+      {props.children}
+    </Typography>
+  )
+}
 
-    this.state = {isDialogOpen: false}
+TabContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+})
+
+class TypeChart extends React.Component {
+  state = {
+    value: this.props.width === 'xs' ? 1 : 0,
   }
 
-  fab() {
-    if (this.props.width === 'xs') {
-      return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='rounded' size='small' style={{position: 'fixed', bottom: 16, right: 16}}>
-          <TableChart />
-        </Fab>
-      )
-    } else if (this.props.width === 'sm') {
-      return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='rounded' size='large' style={{position: 'fixed', bottom: 16, right: 16}}>
-          <TableChart />
-        </Fab>
-      )
-    } else {
-      return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='extended' size='large' style={{position: 'fixed', bottom: 16, right: 16}}>
-          <TableChart style={{marginRight: 5}} />
-          Type Chart
-        </Fab>
-      )
-    }
+  handleChange = (event, value) => {
+    this.setState({ value })
   }
-
-  toggleDialog = () => this.setState({isDialogOpen: !this.state.isDialogOpen})
 
   typoVariant() {
     if (this.props.width === 'xs') {
@@ -51,27 +44,40 @@ export default class TypeChart extends React.Component {
   }
 
   render() {
+    const { classes } = this.props
+    const { value } = this.state
+
     return (
-      <>
-        {this.fab()}
-        <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.toggleDialog}
-          aria-labelledby='form-dialog-title'
-          maxWidth='md'
-        >
-          <DialogContent style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <img alt='Bulbapedia Pokemon Type Chart' src={TypeChartPng} style={{maxWidth: '100%'}} />
-            <Typography variant={this.typoVariant()} style={{paddingTop: 20}}>Strong against → Type → Strong against</Typography>
-            <img alt='Non-Table Pokemon Type Chart' src='https://i.pinimg.com/originals/7b/c6/58/7bc65872baa79ac690e9e4ae1aa8cb64.png' style={{maxWidth: '100%'}} />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.toggleDialog} color='primary'>
-              Go Back
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
+      <div className={classes.root}>
+        <AppBar position='static'>
+          <Tabs value={value} onChange={this.handleChange} centered>
+            <Tab label='Table' />
+            <Tab label='List' />
+            <Tab label='Infographic' />
+          </Tabs>
+        </AppBar>
+        {value === 0 && <TabContainer>
+          <img alt='Bulbapedia Pokemon Type Chart' src={TypeChartPng} style={{maxWidth: '100%'}} />
+        </TabContainer>}
+        {value === 1 && <TabContainer>
+          <Typography variant={this.typoVariant()} style={{paddingBottom: 20, textAlign: 'center'}}>
+            Strong against → Type → Strong against
+          </Typography>
+          <img alt='List Pokemon Type Chart' src='https://i.pinimg.com/originals/7b/c6/58/7bc65872baa79ac690e9e4ae1aa8cb64.png' style={{maxWidth: '100%'}} />
+        </TabContainer>}
+        {value === 2 && <TabContainer>
+          <Typography variant={this.typoVariant()} style={{paddingBottom: 20, textAlign: 'center'}}>
+            Also applies for Gen 7
+          </Typography>
+          <img alt='Infographic Type Chart' src='http://i.imgur.com/fylyCdC.png' style={{maxWidth: '100%'}} />
+        </TabContainer>}
+      </div>
     )
   }
 }
+
+TypeChart.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(TypeChart)
