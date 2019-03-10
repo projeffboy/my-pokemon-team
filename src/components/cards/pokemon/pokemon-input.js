@@ -42,6 +42,11 @@ class PokemonInput extends React.Component {
       case 'name':
         optionValues = store.filteredPokemon // store.allPokemon
         optionLabels = store.filteredPokemonNames // store.allPokemonNames
+        let pkmnName = store.team[teamIndex][pokemonProp]
+        if (pkmnName && !optionValues.includes(pkmnName)) {
+          optionValues = [...optionValues, pkmnName]
+          optionLabels = [...optionLabels, store.pkmnName(pkmnName)]
+        }
         break
       case 'item':
         optionValues = store.itemsArr
