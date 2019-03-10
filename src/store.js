@@ -706,6 +706,11 @@ class Store {
             effectiveness = 3
           }
           break
+        case 'Water Bubble':
+          if (type === 'Fire') {
+            effectiveness += 1
+          }
+          break
         case 'Wonder Guard':
           if (effectiveness >= 0) {
             effectiveness = 3
@@ -1177,9 +1182,9 @@ class Store {
 }
 
 // FOR DEBUGGING
-// let store = window.store = new Store()
+let store = window.store = new Store()
 
-export default new Store()
+export default store
 
 // autorun(() => console.log(store.teamTypes))
 

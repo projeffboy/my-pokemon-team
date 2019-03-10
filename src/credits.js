@@ -31,7 +31,7 @@ function listItems(element) {
     [<Code />, 'Javascript React framework', 'https://reactjs.org/'],
     [<Code />, 'MobX state management', 'https://mobx.js.org/'],
     [<Layers />, 'Material UI', 'https://material-ui.com/'],
-    [<Layers />, 'Google Analytics', 'https://support.google.com/analytics/answer/1008015?hl=en', 'For checking the viewcount and finding out where everyone is from'],
+    [<TrendingUp />, 'Google Analytics', 'https://support.google.com/analytics/answer/1008015?hl=en', 'For checking the viewcount and finding out where everyone is from'],
   ].map((pair, i) => (
     <ListItem key={i}>
         <ListItemIcon>
