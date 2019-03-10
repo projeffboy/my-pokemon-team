@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Mar 9, 2019
+          Updated Mar 10, 2019
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -63,7 +63,7 @@ class UpdateLog extends React.Component {
             <Typography paragraph>Added the "superior" type chart (<Link style={{color: '#2196f3'}} variant='inherit' href='http://i.imgur.com/fylyCdC.png'>Bardock_RD</Link>).</Typography>
             <Typography paragraph>The code is now open sourced (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4yxo3'>Crescive_Delta</Link>)! </Typography>
             
-            <Typography variant='subtitle2'>Mar 19, 2019</Typography>
+            <Typography variant='subtitle2'>Mar 10, 2019</Typography>
             <Typography paragraph>Fixed a bug where changing search filters caused some of the selected pokemon names to disappear. </Typography>
             <Typography paragraph>Water Bubble gives you +1 for Fire (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei6m1q0'>beyardo</Link>). </Typography>
           </DialogContent>
