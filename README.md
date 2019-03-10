@@ -1,7 +1,7 @@
 # [My Pokemon Team](https://mypokemonteam.com)
 ### The Ultimate Pokemon Teambuilder at mypokemonteam.com
 
-![My Pokemon Team Screenshot](src/my-pokemon-team-screenshot.png)
+![My Pokemon Team Screenshot](src/my-pokemon-team-screenshot-mar-10.png)
 
 ## What makes this teambuilder special?
 1. You can import/export your team to Pokemon Showdown
