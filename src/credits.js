@@ -16,6 +16,7 @@ import TableChart from '@material-ui/icons/TableChart'
 import ListIcon from '@material-ui/icons/List'
 import Whatshot from '@material-ui/icons/Whatshot'
 import ColorLens from '@material-ui/icons/ColorLens'
+import People from '@material-ui/icons/People'
 import Code from '@material-ui/icons/Code'
 import Layers from '@material-ui/icons/Layers'
 import TrendingUp from '@material-ui/icons/TrendingUp'
@@ -26,12 +27,13 @@ function listItems(element) {
     [<Terrain />, 'Landorus-T Face', 'https://archive.nyafuu.org/vp/last/50/34683395/'],
     [<Whatshot />, 'Incineroar Face', 'https://thegamehaus.com/wolfe-glick-wins-sixth-regional-title-vgc-2018-charlotte-regional-championships-recap/2018/03/20/'],
     [<TableChart />, 'Bulbapedia\'s Type Chart', 'https://bulbapedia.bulbagarden.net/wiki/Type'],
-    [<ListIcon />, 'Non-table Type Chart', 'https://www.pinterest.ca/pin/307159637067301004/'],
+    [<ListIcon />, 'Non-table Type Chart', 'https://pinterest.ca/pin/307159637067301004/'],
     [<ColorLens />, 'Assigning each type a color', 'https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors'],
+    [<People />, 'r/stunfisk', 'https://reddit.com/r/stunfisk', 'I\'m glad to be a part of this community'],
     [<Code />, 'Javascript React framework', 'https://reactjs.org/'],
     [<Code />, 'MobX state management', 'https://mobx.js.org/'],
     [<Layers />, 'Material UI', 'https://material-ui.com/'],
-    [<TrendingUp />, 'Google Analytics', 'https://support.google.com/analytics/answer/1008015?hl=en', 'For checking the viewcount and finding out where everyone is from'],
+    [<TrendingUp />, 'Google Analytics', 'https://support.google.com/analytics/answer/1008015?hl=en', 'For checking the viewcount and finding out where everyone is from (I didn\'t enable gender and age)'],
   ].map((pair, i) => (
     <ListItem key={i}>
         <ListItemIcon>
