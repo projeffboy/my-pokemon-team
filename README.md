@@ -1,7 +1,13 @@
 # [My Pokemon Team](https://mypokemonteam.com)
-### The Ultimate Pokemon Teambuilder!
+### The Ultimate Pokemon Teambuilder at mypokemonteam.com
 
 ![My Pokemon Team Screenshot](src/my-pokemon-team-screenshot.png)
+
+## What makes this teambuilder special?
+1. You can import/export your team to Pokemon Showdown
+2. It's very accurate, it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
+3. There's a team checklist.
+4. The sprites are animated, which is nice
 
 ## Hiatus
 I have midterms and finals all the way to April :/
@@ -27,7 +33,8 @@ If you want to help me write code for new features, I would suggest that you sav
 
 ## Minor Credits
 - [Landorus-T Face](https://archive.nyafuu.org/vp/last/50/34683395/)
-- [Incineroar Face]('https://thegamehaus.com/wolfe-glick-wins-sixth-regional-title-vgc-2018-charlotte-regional-championships-recap/2018/03/20/')
+- [Incineroar Face](https://thegamehaus.com/wolfe-glick-wins-sixth-regional-title-vgc-2018-charlotte-regional-championships-recap/2018/03/20/)
 - [Bulbapedia's Type Chart](https://bulbapedia.bulbagarden.net/wiki/Type)
-- [Non-table Type Chart](https://www.pinterest.ca/pin/307159637067301004/)
+- [Non-table Type Chart](https://pinterest.ca/pin/307159637067301004/)
 - [Assigning each type a color](https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors')
+- [r/stunfisk](https://reddit.com/r/stunfisk)
