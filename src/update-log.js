@@ -66,7 +66,8 @@ class UpdateLog extends React.Component {
             <Typography variant='subtitle2'>Mar 10, 2019</Typography>
             <Typography paragraph>Fixed a bug where changing search filters caused some of the selected pokemon names to disappear. </Typography>
             <Typography paragraph>Water Bubble gives you +1 for Fire (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei6m1q0'>beyardo</Link>). </Typography>
-            <Typography paragraph>You can now pick Primal Kyogre and Primal Groudon through the Uber search filter. </Typography>
+            <Typography paragraph>You can now pick Primal Kyogre and Primal Groudon through the Uber search filter.</Typography>
+            <Typography paragraph>Was missing Fairy and Normal in the search filters. They're included now.</Typography>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>
