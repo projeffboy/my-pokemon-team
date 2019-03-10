@@ -28,3 +28,5 @@ Using tilde for indexOf
 responsiveness, lg, xl, etc.
 
 recompose is not used.
+
+primal kyogre and groudon don't tier attributes by default
