@@ -18,6 +18,7 @@ import Whatshot from '@material-ui/icons/Whatshot'
 import ColorLens from '@material-ui/icons/ColorLens'
 import Code from '@material-ui/icons/Code'
 import Layers from '@material-ui/icons/Layers'
+import TrendingUp from '@material-ui/icons/TrendingUp'
 import pokemonShowdownLogo from './pokemon-showdown-logo.png'
 
 function listItems(element) {
@@ -28,7 +29,9 @@ function listItems(element) {
     [<ListIcon />, 'Non-table Type Chart', 'https://www.pinterest.ca/pin/307159637067301004/'],
     [<ColorLens />, 'Assigning each type a color', 'https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors'],
     [<Code />, 'Javascript React framework', 'https://reactjs.org/'],
+    [<Code />, 'MobX state management', 'https://mobx.js.org/'],
     [<Layers />, 'Material UI', 'https://material-ui.com/'],
+    [<Layers />, 'Google Analytics', 'https://support.google.com/analytics/answer/1008015?hl=en', 'For checking the viewcount and finding out where everyone is from'],
   ].map((pair, i) => (
     <ListItem key={i}>
         <ListItemIcon>
@@ -42,7 +45,7 @@ function listItems(element) {
           >
             {pair[1]}
           </Link>
-        } />
+        } secondary={pair[3] ? pair[3] : ''} />
     </ListItem>
   ))
 }
