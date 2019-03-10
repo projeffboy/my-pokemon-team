@@ -24,14 +24,14 @@ export default class extends React.Component {
       )
     } else if (this.props.width === 'sm') {
       return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='rounded' size='large' style={{position: 'fixed', bottom: 16, right: 16}}>
+        <Fab onClick={this.toggleDialog} color='primary' variant='rounded' size='large' style={{position: 'fixed', bottom: 16, right: 24}}>
           <TableChart />
         </Fab>
       )
     } else {
       return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='extended' size='large' style={{position: 'fixed', bottom: 16, right: 16}}>
-          <TableChart style={{marginRight: 5}} />
+        <Fab onClick={this.toggleDialog} color='primary' variant='extended' size='large' style={{position: 'fixed', bottom: 16, right: 24}}>
+          <TableChart style={{marginRight: 8}} />
           Type Chart
         </Fab>
       )
