@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Mar 10, 2019
+          Updated Mar 26, 2019
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -33,27 +33,26 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
+            <Typography paragraph><strong>Announcement:</strong> I will be back to make a bunch of changes in May.</Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
                 color='primary'
                 href='https://github.com/projeffboy/my-pokemon-team'
-                style={{margin: '10px 0 30px'}}
+                style={{margin: '40px 0'}}
               >
                 <Folder style={{marginRight: 5}} />
                 GitHub Repo
               </Button>
             </div>
-            <Typography variant='subtitle2'>Feb 25, 2019</Typography>
-            <Typography paragraph>Fixed a bug where alternate formes had the moveset of their base forme. For example, White Kyurem couldn't learn Fusion Flare (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3'>DMSivally</Link>).</Typography>
-            <Typography paragraph>Fixing the above bug caused selecting Megas to break the app. This is fixed too now (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p'>kwiszat</Link>).</Typography>
-           
-            <Typography variant='subtitle2'>Mar 6, 2019</Typography>
-            <Typography paragraph>Super effective STAB moves now count for +2 instead of +1.</Typography>
-           
-            <Typography variant='subtitle2'>Mar 8, 2019</Typography>
-            <Typography paragraph>Updated the Smogon formats/tiers (for the search filters).</Typography>
-            <Typography paragraph>Included a manual page clarifying how to use this site.</Typography>
+            <Typography variant='subtitle2'>Mar 26, 2019</Typography>
+            <Typography paragraph>Importing Pokemon Showdown teams with gender specified works now (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ejehmud?utm_source=share&utm_medium=web2x'>jkelligan</Link>).</Typography>
+
+            <Typography variant='subtitle2'>Mar 10, 2019</Typography>
+            <Typography paragraph>Fixed a bug where changing search filters caused some of the selected pokemon names to disappear. </Typography>
+            <Typography paragraph>Water Bubble gives you +1 for Fire (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei6m1q0'>beyardo</Link>). </Typography>
+            <Typography paragraph>You can now pick Primal Kyogre and Primal Groudon through the Uber search filter.</Typography>
+            <Typography paragraph>Was missing Fairy and Normal in the search filters. They're included now.</Typography>
             
             <Typography variant='subtitle2'>Mar 9, 2019</Typography>
             <Typography paragraph>You can now click (as well as hover) over the types for more information. Good for phones.</Typography>
@@ -63,12 +62,17 @@ class UpdateLog extends React.Component {
             <Typography paragraph>Added the "superior" type chart (<Link style={{color: '#2196f3'}} variant='inherit' href='http://i.imgur.com/fylyCdC.png'>Bardock_RD</Link>).</Typography>
             <Typography paragraph>The code is now open sourced (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4yxo3'>Crescive_Delta</Link>)! </Typography>
             
-            <Typography variant='subtitle2'>Mar 10, 2019</Typography>
-            <Typography paragraph>Fixed a bug where changing search filters caused some of the selected pokemon names to disappear. </Typography>
-            <Typography paragraph>Water Bubble gives you +1 for Fire (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei6m1q0'>beyardo</Link>). </Typography>
-            <Typography paragraph>You can now pick Primal Kyogre and Primal Groudon through the Uber search filter.</Typography>
-            <Typography paragraph>Was missing Fairy and Normal in the search filters. They're included now.</Typography>
-          </DialogContent>
+            <Typography variant='subtitle2'>Mar 8, 2019</Typography>
+            <Typography paragraph>Updated the Smogon formats/tiers (for the search filters).</Typography>
+            <Typography paragraph>Included a manual page clarifying how to use this site.</Typography>
+            
+            <Typography variant='subtitle2'>Mar 6, 2019</Typography>
+            <Typography paragraph>Super effective STAB moves now count for +2 instead of +1.</Typography>
+           
+            <Typography variant='subtitle2'>Feb 25, 2019</Typography>
+            <Typography paragraph>Fixed a bug where alternate formes had the moveset of their base forme. For example, White Kyurem couldn't learn Fusion Flare (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3'>DMSivally</Link>).</Typography>
+            <Typography paragraph>Fixing the above bug caused selecting Megas to break the app. This is fixed too now (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p'>kwiszat</Link>).</Typography>
+            </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>
               Go Back
