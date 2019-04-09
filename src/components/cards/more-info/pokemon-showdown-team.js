@@ -57,7 +57,7 @@ class PokemonShowdownTeam extends React.Component {
         const [pkmnName, itemName] = pkmnAndItemNames
 
         // Check if the pokemon the user typed is legit
-        const pkmn = store.pkmnNameInverse(pkmnName)
+        const pkmn = store.pkmnNameInverse(pkmnName.replace(/\(.\)/, '').trim())
         if (pkmn) {
           store.team[teamIndex].name = pkmn // if legit, set pokemon ID/name
 
@@ -126,7 +126,6 @@ class PokemonShowdownTeam extends React.Component {
       for (let i = numberOfTeamPkmn; i < 6; i++) {
         store.clearTeamPkmnProps(i)
       }
-
     } else {
       store.openSnackbar('No changes made.')
     }
@@ -227,7 +226,7 @@ ${[1, 2, 3, 4].map(num => {
               Cancel
             </Button>
             <Button onClick={() => this.handleImport(pokemonShowdownTeamInfo)} color='primary'>
-              OK
+              Update
             </Button>
           </DialogActions>
         </Dialog>
