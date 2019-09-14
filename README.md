@@ -1,5 +1,6 @@
 # [My Pokemon Team](https://mypokemonteam.com)
 ### The Ultimate Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
+#### I will update the site for generation 8 when Pokemon Sword and Shield come out.
 
 ![My Pokemon Team Screenshot](src/my-pokemon-team-screenshot-mar-10.png)
 
@@ -9,20 +10,17 @@
 3. There's a team checklist.
 4. The sprites are animated, which is nice
 
-## Hiatus
-I have midterms and finals all the way to April :/
-
 ## Features to Work on
-In the summer, I plan on implementing these 3 things first:
-1. Setting EV, IV, and natures
-2. Using your base speed, EV, and IV to determine your speed tier
-3. Polishing the design of the site
-
-I'll be sure to update the site for Pokemon Sword and Shield when it comes out (as soon as Showdown has the data for it!)
+I plan on implementing these 5 things first when Pokemon Sword and Shield come out:
+1. Updating the site for generation 8.
+2. Rewrite bad code.
+2. Setting EV, IV, and natures
+3. Using your base speed, EV, and IV to determine your speed tier
+4. Polishing the design of the site.
 
 You can check out the issues tab to see what other improvements I have in mind. Or you can create a new issue if you have suggestions of your own :)
 
-If you want to help me write code for new features, I would suggest that you save your time, because my code is messy and getting borderline unmaintainable. I'll have to redesign it from the inside first.
+If you want to help me write code for new features, I would suggest that you save your time, because my code is messy and getting borderline unmaintainable. I'll have to rewrite all the bad code first.
 
 ## Major Credits
 - [Pokemon Showdown](https://pokemonshowdown.com/): animated sprites, non-animated sprites, and all the pokemon data (thanks Zarel!)

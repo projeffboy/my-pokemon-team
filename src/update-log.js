@@ -33,7 +33,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph><strong>Announcement:</strong> I will be back to make a bunch of changes in May.</Typography>
+            <Typography paragraph><strong>I will update the site for generation 8 when Pokemon Sword and Shield come out.</strong></Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
