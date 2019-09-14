@@ -12,7 +12,7 @@
 
 ## Features to Work on
 I plan on implementing these 5 things first when Pokemon Sword and Shield come out:
-1. Updating the site for generation 8.
+1. Update the site for generation 8.
 2. Rewrite bad code.
 2. Setting EV, IV, and natures
 3. Using your base speed, EV, and IV to determine your speed tier
