@@ -815,7 +815,7 @@ class Store {
       return -1
     } else if (move === 'flyingpress') {
       // since flying press is part flying and fighting
-      return typechart.Flying[moveType] + typechart.Fighting[moveType]
+      return typechart[typeAgainst].Flying + typechart[typeAgainst].Fighting
     } /*else if (move === 'thousandarrows' && typeAgainst === 'Ground') {
       return -1
     }*/

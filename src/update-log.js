@@ -45,6 +45,9 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+            <Typography variant='subtitle2'>Jan 11, 2021</Typography>
+            <Typography paragraph>Fixed flying press bug.</Typography>
+
             <Typography variant='subtitle2'>Jan 10, 2021</Typography>
             <Typography paragraph>Updated the site to accomodate generation 8 pokemon! Slight design tweaks.</Typography>
 
