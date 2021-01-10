@@ -2,7 +2,7 @@
 ### The Ultimate Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
 #### The site is finally updated for generation 8... It took me 10 hours. Had I known it would be that quick, I would have updated it 2 years ago...
 
-![My Pokemon Team Screenshot](src/my-pokemon-team-screenshot-mar-10.png)
+![My Pokemon Team Screenshot](src/mypokemonteam-screenshot.png)
 
 ## What makes this teambuilder special?
 1. You can import/export your team to Pokemon Showdown
