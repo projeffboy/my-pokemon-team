@@ -20,15 +20,14 @@ class SearchFilters extends React.Component {
 
     const inputLabels = {
       Format: [
-        'Battle Spot Singles',
-        'Battle Spot Doubles',
-        'VGC 2019',
+        'Battle Stadium Singles',
         'Uber', 
         'OU: Over Used', 
         'UU: Under Used', 
         'RU: Rarely Used', 
         'NU: Never Used', 
-        'PU', 
+        'PU',
+        'ZU',
         'Little Cup (LC)',
         'Doubles Uber',
         'Doubles OU',
@@ -54,7 +53,9 @@ class SearchFilters extends React.Component {
         'Steel',
         'Water',
       ], 
-      Region: ['Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola'], 
+      Region: [
+        'Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar'
+      ], 
       Moves: ['Viable'],
     }
 

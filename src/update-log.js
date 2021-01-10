@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Mar 26, 2019
+          Updated Jan 10, 2021
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -33,7 +33,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph><strong>I will update the site for generation 8 when Pokemon Sword and Shield come out.</strong></Typography>
+            <Typography paragraph><strong><mark>Updating the site for gen 8 took me 10 hours. Had I known it would be that quick, I would have updated it 2 years ago...</mark></strong></Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
@@ -45,6 +45,9 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+            <Typography variant='subtitle2'>Jan 10, 2021</Typography>
+            <Typography paragraph>Updated the site to accomodate generation 8 pokemon! Slight design tweaks.</Typography>
+
             <Typography variant='subtitle2'>Mar 26, 2019</Typography>
             <Typography paragraph>Importing Pokemon Showdown teams with gender specified works now (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ejehmud?utm_source=share&utm_medium=web2x'>jkelligan</Link>).</Typography>
 
@@ -72,7 +75,7 @@ class UpdateLog extends React.Component {
             <Typography variant='subtitle2'>Feb 25, 2019</Typography>
             <Typography paragraph>Fixed a bug where alternate formes had the moveset of their base forme. For example, White Kyurem couldn't learn Fusion Flare (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3'>DMSivally</Link>).</Typography>
             <Typography paragraph>Fixing the above bug caused selecting Megas to break the app. This is fixed too now (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p'>kwiszat</Link>).</Typography>
-            </DialogContent>
+          </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleDialog} color='primary'>
               Go Back

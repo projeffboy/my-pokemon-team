@@ -25,6 +25,7 @@ function PokemonInputSelect(props) {
     value: optionValue,
     label: optionLabels[i],
   }))
+  const id = 'react-select-single-' + props.teamIndex + '-' + props.pokemonProp
 
   return (
     <Input
@@ -33,11 +34,11 @@ function PokemonInputSelect(props) {
       value={props.value}
       onChange={props.onChange}
       placeholder={props.placeholder}
-      id='react-select-single'
+      id={id}
       inputProps={{
         classes,
-        name: 'react-select-single',
-        instanceId: 'react-select-single',
+        name: id,
+        instanceId: id,
         simpleValue: true,
         options: optionsWithLabels,
       }}

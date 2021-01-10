@@ -27,16 +27,21 @@ function Pokemon(props) {
         counter++
       }
       return (
-      <PokemonInput 
-        key={i} 
-        placeholder={placeholder} 
-        teamIndex={props.teamIndex} 
-        pokemonProp={pokemonProp}
-      />
-    )
+        <PokemonInput 
+          key={i} 
+          placeholder={placeholder} 
+          teamIndex={props.teamIndex} 
+          pokemonProp={pokemonProp}
+        />
+      )
     } else {
+      let width = 'md'
+      if (props.width === 'lg' || props.width === 'xl') {
+        width = props.width
+      }
+
       return (
-        <Sprite key={i} teamIndex={props.teamIndex} />
+        <Sprite key={i} teamIndex={props.teamIndex} width={width} />
       )
     }
   })

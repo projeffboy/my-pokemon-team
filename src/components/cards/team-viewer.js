@@ -95,13 +95,13 @@ class TeamViewer extends React.Component {
             ? [0, 1].map(num => (
                 <Grid key={num} item xs={12}>
                   <Paper className={`${classes.applyPadding} ${classes.oneOfTwoPkmn}`}>
-                    <Pokemon teamIndex={2 * smTabIndex + num} />
+                    <Pokemon teamIndex={2 * smTabIndex + num} width={width} />
                   </Paper>
                 </Grid>
               ))
             : <Grid item xs={12}>
                 <Paper className={`${classes.applyPadding} ${classes.oneOfTwoPkmn}`}>
-                  <Pokemon teamIndex={xsTabIndex} />
+                  <Pokemon teamIndex={xsTabIndex} width={width} />
                 </Paper>
               </Grid>
         }

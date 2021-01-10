@@ -2,6 +2,7 @@ import React from 'react'
 import {withStyles} from '@material-ui/core/styles'
 import {observer} from 'mobx-react'
 import store from '../../../store'
+import pokedex from '../../../data/pokedex'
 import {pokemonInputStyles as spriteStyles} from '../../../styles'
 
 @observer
@@ -9,6 +10,7 @@ class Sprite extends React.Component {
   render() {
     const {classes, teamIndex, width} = this.props
     const pokemon = store.team[teamIndex].name // unhyphenated name
+    const pokedexNumber = pokemon && pokedex[pokemon].num
     
     let spriteFilename = pokemon // the filename of the pokemon sprite (usually just the pokemon name)
 
@@ -37,10 +39,14 @@ class Sprite extends React.Component {
     }
 
     /* Mini Sprite (for smaller screen sizes) */
-    let typeOfSprite = 'xyani'
+    let typeOfSprite = 'ani'
     let imgFormat = 'gif'
-    if (width === 'sm' || width === 'xs') { // below 960px
-      typeOfSprite = 'xydex'
+    if (
+      (width === 'sm' || width === 'xs')
+      && (!pokedexNumber || !(810 <= pokedexNumber && pokedexNumber <= 898))
+      && (!pokemon || !pokemon.includes('galar'))
+    ) { // below 960px
+      typeOfSprite = 'dex'
       imgFormat = 'png'
     }
 
@@ -57,7 +63,7 @@ class Sprite extends React.Component {
               : 'https://play.pokemonshowdown.com/sprites/bw/0.png'
             }
             /* Apply miniSprite class if it's a mini sprite */
-            className={`${classes.sprite} ${width === 'sm' ? classes.miniSprite : ''}`}
+            className={`${classes.sprite} ${width === 'sm' ? classes.miniSprite : ''} ${(width === 'lg' || width === 'xl') ? classes.smallerSprite : ''}`}
           />
         }
       </div>

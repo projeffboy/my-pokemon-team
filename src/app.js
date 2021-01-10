@@ -13,7 +13,7 @@ import Cards from './components/cards'
 import Manual from './manual'
 import Credits from './credits'
 import UpdateLog from './update-log'
-import incineroarFace from './incineroar-face.png'
+import dragapultFace from './dragapult-face.png'
 import landorusFace from './landorus-face.png'
 import TypeChartDialog from './type-chart-dialog'
 
@@ -48,7 +48,12 @@ export default compose(withStyles(appStyles), withWidth())(props => (
         {/* Header */}
         <Grid item container xs={12} justify='center'>
           <Grid item>
-            <img src={landorusFace} alt='Landorus Face' height={faceWidth(props.width)} />
+            <img
+              src={landorusFace}
+              alt='Landorus Face'
+              height={faceWidth(props.width)}
+              style={{padding: '0 18px'}}  
+            />
           </Grid>
           <Grid item>     
             <Typography 
@@ -58,11 +63,18 @@ export default compose(withStyles(appStyles), withWidth())(props => (
             </Typography>
           </Grid>
           <Grid item>
-            <img src={incineroarFace} alt='Landorus Face' height={faceWidth(props.width)} />
+            <a href='https://twitter.com/Shagapult'>
+              <img src={dragapultFace} alt='Dragapult Face' height={faceWidth(props.width)} />
+            </a>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='subtitle1' align='center'>
-              For Generation 7
+              For Generation 7 and 8
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant='caption' align='center'>
+              <sub>Report Bugs to jeffery124@gmail.com</sub>
             </Typography>
           </Grid>
         </Grid>

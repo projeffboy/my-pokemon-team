@@ -6,15 +6,17 @@ import itemsData from './data/items'
 import learnsetsData from './data/learnsets.min'
 import typechartData from './data/typechart'
 import movesData from './data/moves'
+import oldMovesData from './data/old-moves'
 import formatsData from './data/formats'
 
-// Remove tehse during production and modify the varible names above
-const pokedex = window.pokedex = pokedexData
-const items = window.items = itemsData
-const learnsets = window.learnsetsData = learnsetsData
-const typechart = window.typechartData = typechartData
-const moves = window.movesData = movesData
-const formats = window.formatsData = formatsData
+// Remove tehse during production and modify the variable names above
+const pokedex = pokedexData
+const items = itemsData
+const learnsets = learnsetsData
+const typechart = typechartData
+const moves = movesData
+const oldMoves = oldMovesData
+const formats = formatsData
 
 class Store {
   constructor() {
@@ -155,7 +157,7 @@ class Store {
   // Input a pokemon ID to return its pokemon name
   // E.g. 'squirtle' => 'Squirtle'
   pkmnName(pkmn) {
-    return pokedex[pkmn].species
+    return pokedex[pkmn].name
   }
   
   // The inverse of the pkmnName function
@@ -188,7 +190,8 @@ class Store {
   // Get previous evolution
   previousEvolution(pkmn) {
     const pkmnProps = pokedex[pkmn]
-    return pkmnProps ? pkmnProps.prevo : undefined
+    const prevo = pkmnProps ? pkmnProps.prevo : undefined
+    return prevo ? prevo.toLowerCase().replace('-', '').replace(':', '').replace(' ', '') : undefined
   }
   
   /* ITEMS METHODS */
@@ -414,7 +417,9 @@ class Store {
 
         if (this.searchFilters.moves) { // search filter: if the user only wants to see viable moves
           // Remove non-viable moves
-          learnsetValues = learnsetValues.filter(move => moves[move].isViable)
+          learnsetValues = learnsetValues.filter(move => (
+            oldMoves[move] && oldMoves[move].isViable)
+          )
         }
 
         // Say move is 'aerialace'
@@ -953,74 +958,46 @@ class Store {
 
       let filteredPokedex
       
-      if (['Battle Spot Singles', 'Battle Spot Doubles', 'VGC 2019'].includes(format)) {
+      if (format === 'Battle Stadium Singles') {
         let banlist = [
-          'mewtwo', 
-          'lugia', 
-          'hooh', 
-          'kyogre', 
-          'groudon', 
-          'rayquaza', 
-          'dialga', 
-          'palkia', 
-          'giratina', 
-          'reshiram', 
-          'zekrom', 
-          'kyurem', 
-          'xerneas', 
-          'yveltal', 
-          'zygarde', 
-          'cosmog', 
-          'cosmoem', 
-          'solgaleo', 
-          'lunala', 
+          'calyrex',
+          'celebi',
+          'cosmoem',
+          'cosmog',
+          'dialga',
+          'diancie',
+          'eternatus',
+          'giratina',
+          'groudon',
+          'hooh',
+          'jirachi',
+          'keldeo',
+          'kyogre',
+          'kyurem',
+          'lugia',
+          'lunala',
+          'magearna',
+          'marshadow',
+          'melmetal',
+          'meltan',
+          'mew',
+          'mewtwo',
           'necrozma',
-          'mew', 
-          'celebi', 
-          'jirachi', 
-          'deoxys', 
-          'phione', 
-          'manaphy', 
-          'darkrai', 
-          'shaymin', 
-          'arceus', 
-          'victini', 
-          'keldeo', 
-          'meloetta', 
-          'genesect', 
-          'diancie', 
-          'hoopa', 
-          'volcanion', 
-          'greninjaash', 
-          'magearna', 
-          'marshadow', 
+          'palkia',
+          'rayquaza',
+          'reshiram',
+          'solgaleo',
+          'victini',
+          'volcanion',
+          'xerneas',
+          'yveltal',
+          'zacian',
+          'zamazenta',
+          'zarude',
+          'zekrom',
           'zeraora',
+          'zygarde',
         ]
-
-        if (format === 'VGC 2019') {
-          banlist = [ 
-            'mew', 
-            'celebi', 
-            'jirachi', 
-            'deoxys', 
-            'phione', 
-            'manaphy', 
-            'darkrai', 
-            'shaymin', 
-            'arceus', 
-            'victini', 
-            'keldeo', 
-            'meloetta', 
-            'genesect', 
-            'diancie', 
-            'hoopa', 
-            'volcanion', 
-            'greninjaash', 
-            'magearna', 
-            'marshadow', 
-            'zeraora',
-          ]
-        }
 
         filteredPokedex = {...pokedex}
 
@@ -1045,7 +1022,8 @@ class Store {
         'UU: Under Used': 'UU', 
         'RU: Rarely Used': 'RU', 
         'NU: Never Used': 'NU', 
-        'PU': 'PU', 
+        'PU': 'PU',
+        'ZU': '(PU)',
         'Little Cup (LC)': 'LC',
         'Doubles Uber': 'DUber',
         'Doubles OU': 'DOU',
@@ -1067,9 +1045,10 @@ class Store {
         'NU', 
         'PUBL',
         'PU',
+        '(PU)',
         'NFE',
         'LC Uber',
-        'LC', 
+        'LC',
       ]
 
 
@@ -1080,7 +1059,7 @@ class Store {
       /* Smogon Doubles Filter */
 
       else if (['DUber', 'DOU', 'DUU'].includes(tierAbbr[format])) {
-        return helperFunction(['DUber', 'DOU', 'DUU'], 'doublesTier')
+        return helperFunction(['DUber', 'DOU', 'DUU', '(DUU)'], 'doublesTier')
       }
 
       /* Helper Function for Smogon Singles/Doubles Filter */
@@ -1095,7 +1074,7 @@ class Store {
 
             // Add all the pokemon from that tier to filteredPokedex
             for (const pkmn in pokedex) {
-              if (formats[pkmn][tierType] === tier) {
+              if (formats[pkmn] && formats[pkmn][tierType] === tier) {
                 filteredPokedex[pkmn] = pokedex[pkmn]
               }
             }
@@ -1115,7 +1094,8 @@ class Store {
           Sinnoh: [387, 493],
           Unova: [494, 649],
           Kalos: [650, 721],
-          Alola: [722, 807],
+          Alola: [722, 809],
+          Galar: [810, 898],
         }
         const range = regionNumberRange[region]
         let filteredPokedex = {}
@@ -1127,6 +1107,7 @@ class Store {
             && pkmnProps.num <= range[1]
             // If Kanto region, remove alola forms
             && !(region === 'Kanto' && pkmn.includes('alola'))
+            && !(region !== 'Galar' && pkmn.includes('galar'))
           ) {
             filteredPokedex[pkmn] = pkmnProps
           }
@@ -1136,6 +1117,14 @@ class Store {
         if (region === 'Alola') {
           for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
             if (pkmn.includes('alola')) {
+              filteredPokedex[pkmn] = pkmnProps
+            }
+          }
+        }
+        // If Galar region, add galar forms
+        if (region === 'Galar') {
+          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
+            if (pkmn.includes('galar')) {
               filteredPokedex[pkmn] = pkmnProps
             }
           }

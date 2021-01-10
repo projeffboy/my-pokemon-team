@@ -67,7 +67,7 @@ class TypeChart extends React.Component {
         </TabContainer>}
         {value === 2 && <TabContainer>
           <Typography variant={this.typoVariant()} style={{paddingBottom: 20, textAlign: 'center'}}>
-            Also applies for Gen 7
+            Also applies for Gen 7 and 8
           </Typography>
           <img alt='Infographic Type Chart' src='http://i.imgur.com/fylyCdC.png' style={{maxWidth: '100%'}} />
         </TabContainer>}

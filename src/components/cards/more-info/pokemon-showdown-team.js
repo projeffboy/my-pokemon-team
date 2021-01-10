@@ -202,7 +202,7 @@ ${[1, 2, 3, 4].map(num => {
             <DialogContentText>
               You can take a look at and change the raw data of your pokemon team.
               <br />
-              If you use <a href='https://play.pokemonshowdown.com/teambuilder'>Pokemon Showdown</a>, you can paste your team here.
+              If you use <a href='https://play.pokemonshowdown.com/teambuilder' target='_blank'>Pokemon Showdown</a>, you can paste your team here.
               <br />
               Likewise, you can copy your team here and paste it to Pokemon Showdown.
             </DialogContentText>

@@ -69,6 +69,8 @@ class PokemonInput extends React.Component {
         optionLabels={optionLabels}
         onChange={this.handleChange}
         value={store.team[teamIndex][pokemonProp]}
+        pokemonProp={pokemonProp}
+        teamIndex={teamIndex}
       />
     )
   }

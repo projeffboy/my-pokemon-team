@@ -56,6 +56,9 @@ export const pokemonInputStyles = {
     maxHeight: '100%',
     maxWidth: '100%',
   },
+  smallerSprite: {
+    maxHeight: '96px',
+  },
   miniSprite: {
     width: '100%',
   },

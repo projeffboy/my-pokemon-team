@@ -20,7 +20,7 @@ export default function PokemonIcon(props) {
     let height
 
     if (pkmnProp === 'pkmn') {
-      type = 'sm'
+      type = 'pokemon'
 
       const pokedexNumber = altSpriteNum[value] || pokedex[value].num
 

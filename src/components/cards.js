@@ -31,7 +31,7 @@ function Cards(props) {
         <Grid key={num} item xs={6}>
           <Paper className={classes.applyPadding}>
             {/* teamIndex is the pokemon's team slot number - 1 */}
-            <Pokemon teamIndex={num} />
+            <Pokemon teamIndex={num} width={width} />
           </Paper>
         </Grid>
       ))

@@ -11,10 +11,10 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import Link from '@material-ui/core/Link'
-import Terrain from '@material-ui/icons/Terrain'
+import BusinessIcon from '@material-ui/icons/Business'
+import GestureIcon from '@material-ui/icons/Gesture'
 import TableChart from '@material-ui/icons/TableChart'
 import ListIcon from '@material-ui/icons/List'
-import Whatshot from '@material-ui/icons/Whatshot'
 import ColorLens from '@material-ui/icons/ColorLens'
 import People from '@material-ui/icons/People'
 import Code from '@material-ui/icons/Code'
@@ -24,8 +24,8 @@ import pokemonShowdownLogo from './pokemon-showdown-logo.png'
 
 function listItems(element) {
   return [
-    [<Terrain />, 'Landorus-T Face', 'https://archive.nyafuu.org/vp/last/50/34683395/'],
-    [<Whatshot />, 'Incineroar Face', 'https://thegamehaus.com/wolfe-glick-wins-sixth-regional-title-vgc-2018-charlotte-regional-championships-recap/2018/03/20/'],
+    [<BusinessIcon />, 'Nintendo, The Pokemon Company, Game Freak'],
+    [<GestureIcon />, 'Dragapult Pokemon Shuffle Fanart (By Shagapult)', 'https://twitter.com/Shagapult'],
     [<TableChart />, 'Bulbapedia\'s Type Chart', 'https://bulbapedia.bulbagarden.net/wiki/Type'],
     [<ListIcon />, 'Non-table Type Chart', 'https://pinterest.ca/pin/307159637067301004/'],
     [<ColorLens />, 'Assigning each type a color', 'https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors'],

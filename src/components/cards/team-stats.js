@@ -256,6 +256,8 @@ const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
             </li>
           )
         }
+
+        return null
       })}
     </ul>
   </>
@@ -296,6 +298,8 @@ function TypeCoverageTooltipInfo({typeColor, type, classes}) {
                 } else if (num === 4 && i === 5 && !hasSuperEffectiveMove) {
                   return <li key={pkmn + i} style={{textAlign: 'center'}}>Nothing</li>
                 }
+
+                return null
               })}
             </React.Fragment>
           )
