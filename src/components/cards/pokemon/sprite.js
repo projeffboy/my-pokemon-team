@@ -41,14 +41,18 @@ class Sprite extends React.Component {
     /* Mini Sprite (for smaller screen sizes) */
     let typeOfSprite = 'ani'
     let imgFormat = 'gif'
-    if (
-      (width === 'sm' || width === 'xs')
-      && (!pokedexNumber || !(810 <= pokedexNumber && pokedexNumber <= 898))
-      && (!pokemon || !pokemon.includes('galar'))
-    ) { // below 960px
+    if (width === 'sm' || width === 'xs') { // below 960px
       typeOfSprite = 'dex'
+      if (
+        (pokedexNumber && 810 <= pokedexNumber && pokedexNumber <= 898)
+        || (pokemon && pokemon.includes('galar'))
+      ) {
+        typeOfSprite = 'bw'
+      }
+
       imgFormat = 'png'
     }
+
 
     /* Either Return Sprite or Mini Sprite */
     return (

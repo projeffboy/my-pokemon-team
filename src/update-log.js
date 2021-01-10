@@ -46,7 +46,7 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
             <Typography variant='subtitle2'>Jan 11, 2021</Typography>
-            <Typography paragraph>Fixed flying press bug.</Typography>
+            <Typography paragraph>Fixed flying press bug. Update to how galar sprites are presentedc.</Typography>
 
             <Typography variant='subtitle2'>Jan 10, 2021</Typography>
             <Typography paragraph>Updated the site to accomodate generation 8 pokemon! Slight design tweaks.</Typography>
