@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Jan 10, 2021
+          Updated Jan 11, 2021
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -46,7 +46,9 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
             <Typography variant='subtitle2'>Jan 11, 2021</Typography>
-            <Typography paragraph>Fixed flying press bug. Update to how galar sprites are presentedc.</Typography>
+            <Typography paragraph>Fixed flying press bug. Updated how galar sprites are presented.</Typography>
+            <Typography paragraph>Movesets for alola formes no longer take the base forme movesets instead (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/NintendoSwitch/comments/kuhc3d/pokemon_sword_and_shield_teambuilder/giv1p6v?utm_source=share&utm_medium=web2x&context=3'>thouartthee</Link>).</Typography>
+            <Typography paragraph>Updated type defence so that what was once -2 or 2 is now -1.5 or 1.5 (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/stunfisk/comments/kuix21/updated_gen_8_teambuilder_mypokemonteamcom/gitspzk?utm_source=share&utm_medium=web2x&context=3'>GoneWithLaw</Link>).</Typography>
 
             <Typography variant='subtitle2'>Jan 10, 2021</Typography>
             <Typography paragraph>Updated the site to accomodate generation 8 pokemon! Slight design tweaks.</Typography>

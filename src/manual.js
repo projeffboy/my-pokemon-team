@@ -18,12 +18,12 @@ class Manual extends React.Component {
     super(props)
 
     this.rowsOfTypeEffectivness = [
-      ['No effect', '+2', 'green'],
-      ['0.25x effective', '+2', 'green'],
+      ['No effect', '+1.5', 'green'],
+      ['0.25x effective', '+1.5', 'green'],
       ['0.5x effective', '+1', 'green'],
       ['1x effective', '0', 'inherit'],
       ['2x super effective', '-1', 'red'],
-      ['4x super effective', '-2', 'red'],
+      ['4x super effective', '-1.5', 'red'],
     ]
 
     this.rowsOfTerms = [

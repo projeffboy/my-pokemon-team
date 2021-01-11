@@ -239,7 +239,7 @@ class Store {
       baseForme = this.previousEvolution(baseForme)
 
       let alola = ''
-      if (isAlola && pokedex[baseForme].otherFormes && pokedex[baseForme].otherFormes.some(forme => forme.includes('alola'))) {
+      if (isAlola && pokedex[baseForme].otherFormes && pokedex[baseForme].otherFormes.some(forme => forme.includes('Alola'))) {
         alola = 'alola'
       } 
       // Append previous evolution learnset to current learnset
@@ -853,6 +853,12 @@ class Store {
             let score = this.typeAgainstPkmn(type, pkmn, ability, item)
             if (score === 3) {
               score = 2
+            }
+
+            if (score > 1.5) {
+              score = 1.5
+            } else if (score < -1.5) {
+              score = -1.5
             }
 
             typeDefence[type] += score
