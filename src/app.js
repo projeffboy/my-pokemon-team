@@ -69,7 +69,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
           </Grid>
           <Grid item xs={12}>
             <Typography variant='subtitle1' align='center'>
-              For Generation 7 and 8
+              For Generation 6-8
             </Typography>
           </Grid>
           <Grid item xs={12}>
