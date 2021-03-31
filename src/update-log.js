@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Jan 11, 2021
+          Updated Mar 31, 2021
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -45,6 +45,11 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+            <Typography variant='subtitle2'>Mar 31, 2021</Typography>
+            <Typography paragraph>Choosing Sirfetch'd used to crash the site (dpplasma1).</Typography>
+            <Typography paragraph>Further digging uncovered that the entire Mr. Mime family crashed the site.</Typography>
+            <Typography paragraph>Galarian formes no longer take the base forme movesets instead.</Typography>
+
             <Typography variant='subtitle2'>Jan 11, 2021</Typography>
             <Typography paragraph>Fixed flying press bug. Updated how galar sprites are presented.</Typography>
             <Typography paragraph>Movesets for alola formes no longer take the base forme movesets instead (<Link style={{color: '#2196f3'}} variant='inherit' href='https://www.reddit.com/r/NintendoSwitch/comments/kuhc3d/pokemon_sword_and_shield_teambuilder/giv1p6v?utm_source=share&utm_medium=web2x&context=3'>thouartthee</Link>).</Typography>

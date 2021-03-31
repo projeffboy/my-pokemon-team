@@ -227,23 +227,33 @@ class Store {
     
     let baseForme = this.baseForme(pkmn) || pkmn // since learnsets[pkmn] requires pkmn to be at its base forme
 
-    let isAlola = false
+    let isRegional = false
 
-    if (!pkmn.includes('alola')) {
-      completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
+    if (pkmn.includes('alola') || pkmn.includes('galar')) {
+      isRegional = true
     } else {
-      isAlola = true
+      completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
     }
 
     while (this.previousEvolution(baseForme)) {
       baseForme = this.previousEvolution(baseForme)
+      baseForme = baseForme.replace('\u2019', '') // sirfetch'd
+      .replace('.', '') // fixes the mr. mime family
 
-      let alola = ''
-      if (isAlola && pokedex[baseForme].otherFormes && pokedex[baseForme].otherFormes.some(forme => forme.includes('Alola'))) {
-        alola = 'alola'
+      let region = ''
+      if (isRegional && pokedex[baseForme].otherFormes) {
+        if (pokedex[baseForme].otherFormes.some(
+          forme => forme.includes('Alola')
+        )) {
+          region = 'alola'
+        } else if (pokedex[baseForme].otherFormes.some(
+          forme => forme.includes('Galar')
+        )) {
+          region = 'galar'
+        }
       } 
       // Append previous evolution learnset to current learnset
-      completeLearnset = [...completeLearnset, ...learnsets[baseForme + alola]]
+      completeLearnset = [...completeLearnset, ...learnsets[baseForme + region]]
     }
 
     // turning array to set removes duplicates
