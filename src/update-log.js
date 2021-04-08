@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Mar 31, 2021
+          Updated Apr 8, 2021
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -33,7 +33,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph><strong><mark>Updating the site for gen 8 took me 10 hours. Had I known it would be that quick, I would have updated it 2 years ago...</mark></strong></Typography>
+            <Typography paragraph>Updating the site for gen 8 took me 10 hours. Had I known it would be that quick, I would have updated it 2 years ago...</Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
@@ -45,6 +45,10 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+
+            <Typography variant='subtitle2'>Apr 8, 2021</Typography>
+            <Typography paragraph>The checklist is green for checked items.</Typography>
+
             <Typography variant='subtitle2'>Mar 31, 2021</Typography>
             <Typography paragraph>Choosing Sirfetch'd used to crash the site (dpplasma1).</Typography>
             <Typography paragraph>Further digging uncovered that the entire Mr. Mime family crashed the site.</Typography>
