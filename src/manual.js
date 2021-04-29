@@ -73,7 +73,7 @@ class Manual extends React.Component {
                 ))}
               </TableBody>
             </Table>
-            <Typography paragraph><strong>Note:</strong> Abilities like Levitate, Thick Fat, Filter, and Sap Sipper are taken into account. For example, if your Bronzong has Levitate, you get +2 for Ground. And if it has Heatproof, you get 0 for Fire instead.</Typography>
+            <Typography paragraph><strong>Note:</strong> Abilities like Levitate, Thick Fat, Filter, and Sap Sipper are taken into account. For example, if your Bronzong has Levitate, you get +1.5 for Ground. And if it has Heatproof, you get 0 for Fire instead.</Typography>
 
             <Typography variant='h6'>Team Type Coverage</Typography>
             <Typography variant='subtitle2' gutterBottom>How is your team's type coverage calculated?</Typography>

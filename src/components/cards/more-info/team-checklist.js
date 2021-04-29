@@ -46,8 +46,9 @@ class TeamChecklist extends React.Component {
       },
       'Offensive': {
         'Boosting Move': store.anyBoostingMoves, 
-        'Volt-turn': store.doesTeamHaveMove('voltswitch')
-          && store.doesTeamHaveMove('uturn'), 
+        'Switch/Turn Move': store.doesTeamHaveMove('voltswitch')
+          || store.doesTeamHaveMove('uturn')
+          || store.doesTeamHaveMove('flipturn'), 
         'Choice Item': store.doesTeamHaveItems([
           'choicescarf',
           'choiceband',
@@ -66,14 +67,14 @@ class TeamChecklist extends React.Component {
         'Status',
         'Phazer',
         'Setup',
-        'Volt-turn',
+        'Pivot Move',
         'Choice'
       ]
     }
     if (width === 'sm' || width === 'xs') {
       checklistAbbr[1] = 'Spin'
       checklistAbbr[2] = 'Heal'
-      checklistAbbr[7] = 'Volturn'
+      checklistAbbr[7] = 'Pivot'
     }
   
     return (
