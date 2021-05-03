@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Apr 29, 2021
+          Updated May 4, 2021
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -46,10 +46,13 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>May 4, 2021</Typography>
+            <Typography paragraph>(Bug description TBD) (Credits TBD).</Typography>
+
             <Typography variant='subtitle2'>Apr 29, 2021</Typography>
             <Typography paragraph>One of the offensive checklist items accepts either U-turn, Volt Switch, or Flip Turn instead of requiring both Volt Switch and U-turn.</Typography>
             <Typography paragraph>Zygarde 10% and Oricorio-Pa'u sprites load properly now.</Typography>
-            <Typography paragraph>Florges and Floette don't crash anymore (credits TBD).</Typography>
+            <Typography paragraph>Florges and Floette don't crash anymore (Vegard Hamborg).</Typography>
 
             <Typography variant='subtitle2'>Apr 8, 2021</Typography>
             <Typography paragraph>The checklist is green for checked items.</Typography>

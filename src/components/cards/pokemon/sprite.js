@@ -36,7 +36,7 @@ class Sprite extends React.Component {
           .replace('-', '')
         spriteFilename = `${spriteFilenamePart1}-${spriteFilenamePart2}`
 
-        spriteFilename = spriteFilename.replaceAll('%', '').replaceAll("'", '')
+        spriteFilename = spriteFilename.replace('%', '').replace("'", '')
       }
     }
 

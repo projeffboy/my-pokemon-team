@@ -237,9 +237,10 @@ class Store {
 
     while (this.previousEvolution(baseForme)) {
       baseForme = this.previousEvolution(baseForme)
-      baseForme = baseForme.replaceAll('\u2019', '') // sirfetch'd
-      .replaceAll('.', '') // fixes the mr. mime family
-      .replaceAll('é', 'e')
+      baseForme = baseForme.replace('\u2019', '') // sirfetch'd
+      .replace('.', '') // fixes the mr. mime family
+      .replace('é', 'e')
+      .replace('é', 'e')
 
       let region = ''
       if (isRegional && pokedex[baseForme].otherFormes) {
