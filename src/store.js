@@ -816,6 +816,16 @@ class Store {
     return moveType
   }
 
+  isMoveStrongEnough(move) {
+    const moveProps = moves[move]
+
+    return moveProps.category !== "Status" &&
+      (moveProps.basePower >= 40 ||
+        moveProps.multihit ||
+        moveProps.basePowerCallback ||
+        moveProps.onModifyMove)
+  }
+  
   // Tells you the effectiveness of a move against a type
   // For status and weak moves, this function will return undefined
   moveAgainstType(move, typeAgainst, pkmn, ability) {
@@ -836,15 +846,7 @@ class Store {
      * (status moves don't deal damage. so they don't contribute to type coverage)
      * Ignore moves less than 40 base power (unless it's a multi-hit move).
      */
-    else if (
-      moveProps.category !== 'Status'
-      && (
-        moveProps.basePower >= 40 
-        || moveProps.multihit
-        || moveProps.basePowerCallback
-        || moveProps.onModifyMove
-      )
-    ) {
+    else if (this.isMoveStrongEnough(move)) {
       return typechart[typeAgainst][moveType]
     }
   }
@@ -901,7 +903,7 @@ class Store {
         for (const i of [1, 2, 3, 4]) { //  for each move
           const move = teamPkmnProps['move' + i]
 
-          if (move) {
+          if (move && this.isMoveStrongEnough(move)) {
             const moveType = this.moveType(move, pkmn, ability)
             
             Object.keys(typeCoverage).forEach(type => { // for each type

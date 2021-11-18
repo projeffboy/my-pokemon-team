@@ -1,6 +1,6 @@
 # [My Pokemon Team](https://mypokemonteam.com)
 ### The Ultimate Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
-#### The site is finally updated for generation 8... It took me 10 hours. Had I known it would be that quick, I would have updated it 2 years ago...
+#### I won't be updating the site for diamond and pearl (BDSP) until late December...
 
 ![My Pokemon Team Screenshot](src/mypokemonteam-screenshot.PNG)
 

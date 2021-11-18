@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated May 4, 2021
+          Updated Nov 17, 2021
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -33,7 +33,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph>Updating the site for gen 8 took me 10 hours. Had I known it would be that quick, I would have updated it 2 years ago...</Typography>
+            <Typography paragraph><mark>I won't be updating the site for diamond and pearl (BDSP) until late December.</mark></Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
@@ -46,8 +46,11 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>Nov 17, 2021</Typography>
+            <Typography paragraph>Up until now, moves would not register for type coverage if you had a status or weak move of the same type on the same pokemon (Credits: TBD).</Typography>
+
             <Typography variant='subtitle2'>May 4, 2021</Typography>
-            <Typography paragraph>(Bug description TBD) (Credits TBD).</Typography>
+            <Typography paragraph>I used the replaceAll() Javascript function which breaks on Samsung browsers (Credits: Anonymous).</Typography>
 
             <Typography variant='subtitle2'>Apr 29, 2021</Typography>
             <Typography paragraph>One of the offensive checklist items accepts either U-turn, Volt Switch, or Flip Turn instead of requiring both Volt Switch and U-turn.</Typography>
