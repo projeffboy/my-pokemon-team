@@ -65,7 +65,7 @@ function Cards(props) {
           ['Team Defence', 'Team Type Coverage'].map(cardTitle => (
             <Grid key={cardTitle} item xs={12}>
               <Paper className={classes.applyPadding}>
-                <TeamStats title={cardTitle} width={width} />
+                <TeamStats title={cardTitle} width={width} darkMode={props.darkMode} />
               </Paper>
             </Grid>
           ))

@@ -39,7 +39,7 @@ class TeamStats extends React.Component {
     if (type < 0) { // weak to type
       color = 'red'
     } else if (type > 0) { // resist type
-      color = 'forestgreen'
+      color = this.props.darkMode ? 'limegreen' : 'green'
     }
 
     return <div style={{color}}>{type > 0 ? `+${type}` : type}</div>

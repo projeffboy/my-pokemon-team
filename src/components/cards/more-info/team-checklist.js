@@ -94,10 +94,26 @@ class TeamChecklist extends React.Component {
               <div key={check} style={{display: 'flex'}}>
                 {/* Either a checkmark or a cross */}
                 <div>
-                  {checklist[miniHeader][check] ? <CheckCircle style={{color: '#16a085'}} /> : <Cancel />}
+                  {
+                    checklist[miniHeader][check]
+                    ? <CheckCircle style={{color: '#16a085'}} />
+                    : <Typography
+                        variant='body1'
+                        component='div'
+                        style={{lineHeight: 'initial'}}
+                      >
+                        <Cancel />
+                      </Typography>
+                  }
                 </div>
                 {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
-                <div style={{padding: '2px 4px'}}>{checklistAbbr[3 * i + j] || check}</div>
+                <Typography
+                  style={{padding: '0px 4px'}}
+                  variant='body1'
+                  component='div'
+                >
+                  {checklistAbbr[3 * i + j] || check}
+                </Typography>
               </div>
             ))}
           </Grid>

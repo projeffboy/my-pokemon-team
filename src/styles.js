@@ -117,7 +117,13 @@ export const pokemonInputSelectStyles = theme => ({
       padding: 0,
     },
     '.Select.has-value.Select--single > .Select-control .Select-value .Select-value-label, .Select.has-value.is-pseudo-focused.Select--single > .Select-control .Select-value .Select-value-label': {
-      color: theme.palette.text.primary
+      color: theme.palette.text.primary,
+    },
+    '.Select-input > input': {
+      color: theme.palette.text.primary,
+    },
+    '.Select.is-focused > .Select-control, .Select.is-focused:not(.is-open) > .Select-control': {
+      background: theme.palette.background.paper,
     },
     '.Select-noresults': {
       padding: theme.spacing.unit * 2,

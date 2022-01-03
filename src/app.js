@@ -44,7 +44,7 @@ function titleFontSize(breakpoint) {
 
 export default compose(withStyles(appStyles), withWidth())(props => {
   const isSystemDark = window && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(isSystemDark)
 
   return (
     /*
@@ -89,11 +89,11 @@ export default compose(withStyles(appStyles), withWidth())(props => {
           </Grid>
         </Grid>
         {/* Main */}
-        <Cards />
+        <Cards darkMode={darkMode} />
         {/* Footer */}
         <Grid item container xs={12} justify='center' alignItems='center' spacing={16}>
         <Grid item>
-            <Manual />
+            <Manual darkMode={darkMode} />
           </Grid>
           <Grid item>
             <Button
@@ -118,7 +118,7 @@ export default compose(withStyles(appStyles), withWidth())(props => {
                   value="darkMode"
                 />
               }
-              label="Dark Mode (beta)"
+              label="Dark Mode"
             />
           </Grid>
         </Grid>

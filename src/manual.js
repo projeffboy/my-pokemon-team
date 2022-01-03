@@ -18,12 +18,12 @@ class Manual extends React.Component {
     super(props)
 
     this.rowsOfTypeEffectivness = [
-      ['No effect', '+1.5', 'green'],
-      ['0.25x effective', '+1.5', 'green'],
-      ['0.5x effective', '+1', 'green'],
-      ['1x effective', '0', 'inherit'],
-      ['2x super effective', '-1', 'red'],
-      ['4x super effective', '-1.5', 'red'],
+      ['No effect', '+1.5', darkMode => darkMode ? 'limegreen' : 'green'],
+      ['0.25x effective', '+1.5', darkMode => darkMode ? 'limegreen' : 'green'],
+      ['0.5x effective', '+1', darkMode => darkMode ? 'limegreen' : 'green'],
+      ['1x effective', '0', darkMode => darkMode ? '#e0e0e0' : '#212121'],
+      ['2x super effective', '-1', darkMode => 'red'],
+      ['4x super effective', '-1.5', darkMode => 'red'],
     ]
 
     this.rowsOfTerms = [
@@ -68,7 +68,7 @@ class Manual extends React.Component {
                     <TableCell component='th' scope='row'>
                       {row[0]}
                     </TableCell>
-                    <TableCell align='right' style={{color: row[2]}}>{row[1]}</TableCell>
+                    <TableCell align='right' style={{color: row[2](this.props.darkMode)}}>{row[1]}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
