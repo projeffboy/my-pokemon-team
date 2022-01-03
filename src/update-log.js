@@ -51,7 +51,7 @@ class UpdateLog extends React.Component {
             <Typography paragraph>Dark mode (beta).</Typography>
 
             <Typography variant='subtitle2'>Jan 2, 2022</Typography>
-            <Typography paragraph>Fluffy and dry skin affects team defence.</Typography>
+            <Typography paragraph>Fluffy and dry skin affects team defence (Anonymous x2).</Typography>
 
             <Typography variant='subtitle2'>Nov 17, 2021</Typography>
             <Typography paragraph>Up until now, moves would not register for type coverage if you had a status or weak move of the same type on the same pokemon (Anonymous).</Typography>

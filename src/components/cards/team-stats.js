@@ -39,7 +39,7 @@ class TeamStats extends React.Component {
     if (type < 0) { // weak to type
       color = 'red'
     } else if (type > 0) { // resist type
-      color = 'green'
+      color = 'forestgreen'
     }
 
     return <div style={{color}}>{type > 0 ? `+${type}` : type}</div>
@@ -245,7 +245,7 @@ const TypeDefenceTooltipInfo = ({typeColor, type, classes}) => (
               break
             case 2:
               multiplier = 0.25
-              color = 'green'
+              color = 'forestgreen'
               break
             case 3:
               multiplier = 0
