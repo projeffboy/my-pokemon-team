@@ -754,6 +754,16 @@ class Store {
             effectiveness = -1.5
           }
           break
+        case 'Fluffy':
+          if (type === 'Fire') {
+            effectiveness -= 1
+          }
+        case 'Dry Skin':
+          if (type === 'Fire') {
+            effectiveness -= 1
+          } else if (type === 'Water') {
+            effectiveness += 1
+          }
         default:
       }
     }

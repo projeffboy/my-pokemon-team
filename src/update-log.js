@@ -22,7 +22,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Nov 17, 2021
+          Updated Jan 2, 2022
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -33,7 +33,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph><mark>I won't be updating the site for diamond and pearl (BDSP) until late December.</mark></Typography>
+            <Typography paragraph><mark>No guarantees on when I'll include the other generations, as well as the new diamond and pearl (BDSP). Hopefully in summer 2022.</mark></Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
@@ -46,8 +46,11 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>Jan 2, 2022</Typography>
+            <Typography paragraph>Fluffy and dry skin affects team defence.</Typography>
+
             <Typography variant='subtitle2'>Nov 17, 2021</Typography>
-            <Typography paragraph>Up until now, moves would not register for type coverage if you had a status or weak move of the same type on the same pokemon (Credits: TBD).</Typography>
+            <Typography paragraph>Up until now, moves would not register for type coverage if you had a status or weak move of the same type on the same pokemon (Anonymous).</Typography>
 
             <Typography variant='subtitle2'>May 4, 2021</Typography>
             <Typography paragraph>I used the replaceAll() Javascript function which breaks on Samsung browsers (Credits: Anonymous).</Typography>

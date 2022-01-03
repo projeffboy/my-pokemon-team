@@ -1,6 +1,6 @@
 # [My Pokemon Team](https://mypokemonteam.com)
 ### The Ultimate Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
-#### I won't be updating the site for diamond and pearl (BDSP) until late December...
+#### No guarantees on when I'll include the other generations, as well as the new diamond and pearl (BDSP). Hopefully in summer 2022....
 
 ![My Pokemon Team Screenshot](src/mypokemonteam-screenshot.PNG)
 
