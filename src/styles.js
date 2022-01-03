@@ -168,7 +168,7 @@ export const pokemonInputSelectStyles = theme => ({
       left: 0,
       top: `calc(100% + ${theme.spacing.unit}px)`,
       width: '100%',
-      zIndex: 2,
+      //zIndex: 2,
       maxHeight: ITEM_HEIGHT * 4.5,
       border: 0,
     },
@@ -187,7 +187,7 @@ export const pokemonInputSelectStyles = theme => ({
       color: theme.palette.action.active,
       cursor: 'pointer',
       width: 21,
-      zIndex: 1,
+      //zIndex: 1,
     },
     // Only for screen readers. We can't use display none.
     '.Select-aria-only': {
