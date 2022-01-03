@@ -47,7 +47,7 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
-            <Typography variant='subtitle2'>Jan 2, 2022</Typography>
+            <Typography variant='subtitle2'>Jan 3, 2022</Typography>
             <Typography paragraph>Dark mode (beta).</Typography>
 
             <Typography variant='subtitle2'>Jan 2, 2022</Typography>
