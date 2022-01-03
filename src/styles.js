@@ -1,11 +1,28 @@
 import {createMuiTheme} from '@material-ui/core/styles'
 import grey from '@material-ui/core/colors/grey'
 
+
+
 // index.js (THEME)
 export const theme = createMuiTheme({
   palette: {
     primary: {main: grey[900]},
     secondary: {main: grey[900]},
+    background: {default: "#eee"},
+  },
+  typography: {
+    useNextVariants: true,
+  },
+})
+
+export const darkTheme = createMuiTheme({
+  palette: {
+    primary: {main: grey[200]},
+    secondary: {main: grey[200]},
+    type: 'dark',
+    text: {
+      primary: grey[300]
+    }
   },
   typography: {
     useNextVariants: true,
@@ -17,7 +34,7 @@ theme.breakpoints.values.lg = 1200
 // app.js
 export const appStyles = {
   '@global': {
-    'html, body, #root': {height: '100%', backgroundColor: '#eee', color: '#212121'},
+    'html, body, #root': {height: '100%'},
   },
   root: {
     height: '100%',
@@ -72,7 +89,7 @@ export const pokemonInputStyles = {
 
 // pokemon-input-select
 const ITEM_HEIGHT = 48
-export const pokemonInputSelectStyles = {
+export const pokemonInputSelectStyles = theme => ({
   // We had to use a lot of global selectors in order to style react-select.
   // We are waiting on https://github.com/JedWatson/react-select/issues/1679
   // to provide a much better implementation.
@@ -80,10 +97,10 @@ export const pokemonInputSelectStyles = {
   '@global': {
     '.Select-control': {
       display: 'flex',
-      // alignItems: 'center',
+      alignItems: 'center',
       border: 0,
       height: 'auto',
-      // background: 'transparent',
+      background: 'transparent',
       '&:hover': {
         boxShadow: 'none',
       },
@@ -91,13 +108,11 @@ export const pokemonInputSelectStyles = {
     '.Select-multi-value-wrapper': {
       flexGrow: 1,
       display: 'flex',
-      // flexWrap: 'wrap',
+      flexWrap: 'wrap',
     },
-    /*
     '.Select--multi .Select-input': {
       margin: 0,
     },
-    */
     '.Select.has-value.is-clearable.Select--single > .Select-control .Select-value': {
       padding: 0,
     },
@@ -112,7 +127,6 @@ export const pokemonInputSelectStyles = {
     },
     '.Select-input input': {
       padding: 0,
-      /*
       background: 'transparent',
       border: 0,
       cursor: 'default',
@@ -121,10 +135,8 @@ export const pokemonInputSelectStyles = {
       fontSize: 'inherit',
       margin: 0,
       outline: 0,
-      */
     },
     '.Select-placeholder, .Select--single .Select-value': {
-      /*
       position: 'absolute',
       top: 0,
       left: 0,
@@ -132,20 +144,19 @@ export const pokemonInputSelectStyles = {
       bottom: 0,
       fontFamily: theme.typography.fontFamily,
       fontSize: theme.typography.pxToRem(16),
-      */
       display: 'flex',
       alignItems: 'center',
       padding: 0,
     },
     '.Select-placeholder': {
-      // opacity: 0.42,
-      // color: theme.palette.common.black,
+      opacity: 0.42,
+      //color: theme.palette.common.black,
     },
     '.Select-menu-outer': {
-      // backgroundColor: theme.palette.background.paper,
+      backgroundColor: theme.palette.background.paper,
       boxShadow: theme.shadows[2],
-      // position: 'absolute',
-      // left: 0,
+      position: 'absolute',
+      left: 0,
       top: `calc(100% + ${theme.spacing.unit}px)`,
       width: '100%',
       zIndex: 2,
@@ -157,22 +168,19 @@ export const pokemonInputSelectStyles = {
     },
     '.Select-menu': {
       maxHeight: ITEM_HEIGHT * 4.5,
-      // overflowY: 'auto',
+      overflowY: 'auto',
     },
     '.Select-menu div': {
-      // boxSizing: 'content-box',
+      boxSizing: 'content-box',
     },
     '.Select-arrow-zone, .Select-clear-zone': {
       height: 21,
-      /*
       color: theme.palette.action.active,
       cursor: 'pointer',
       width: 21,
       zIndex: 1,
-      */
     },
     // Only for screen readers. We can't use display none.
-    /*
     '.Select-aria-only': {
       position: 'absolute',
       overflow: 'hidden',
@@ -181,12 +189,11 @@ export const pokemonInputSelectStyles = {
       width: 1,
       margin: -1,
     },
-    */
     '.VirtualizedSelectOption': {
       padding: 0,
     },
   },
-}
+})
 
 
 // team-stats.js
@@ -228,7 +235,6 @@ export const teamStatsStyles = {
 // more-info.js
 export const moreInfoStyles = {
   root: {
-    backgroundColor: theme.palette.background.paper,
     borderRadius: 4,
   },
   appBar: {borderRadius: '4px 4px 0 0'},

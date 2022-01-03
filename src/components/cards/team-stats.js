@@ -158,7 +158,13 @@ class TeamStats extends React.Component {
             </Popper>
           </div>
           {/* E.g. +2 or -1 */}
-          {this.returnTypeValue(store[this.teamStatType][type])}
+          <Typography
+            variant='body1'
+            component='div'
+            style={{lineHeight: 'initial'}}
+          >
+            {this.returnTypeValue(store[this.teamStatType][type])}
+          </Typography>
         </Grid>
       ), this)
     )

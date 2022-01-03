@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import compose from 'recompose/compose'
 import withWidth from '@material-ui/core/withWidth'
 import Grid from '@material-ui/core/Grid'
@@ -16,6 +16,11 @@ import UpdateLog from './update-log'
 import dragapultFace from './dragapult-face.png'
 import landorusFace from './landorus-face.png'
 import TypeChartDialog from './type-chart-dialog'
+import CssBaseline from '@material-ui/core/CssBaseline' // like CSS Reset
+import {MuiThemeProvider} from '@material-ui/core/styles' // provide your custom theme
+import {theme, darkTheme} from './styles'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 
 function faceWidth(breakpoint) {
   if (breakpoint !== 'xs') {
@@ -37,13 +42,18 @@ function titleFontSize(breakpoint) {
   }
 }
 
-export default compose(withStyles(appStyles), withWidth())(props => (
+export default compose(withStyles(appStyles), withWidth())(props => {
+  const isSystemDark = window && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const [darkMode, setDarkMode] = useState(false)
+
+  return (
     /*
      * All 9 Cards
      * apparently there's a slight horizontal scroll if I don't set the width and margin for <Grid />
      * the original width for <Grid /> was calc(100% + 24px)
      */
-    <>
+    <MuiThemeProvider theme={darkMode ? darkTheme : theme}>
+      <CssBaseline />
       <Grid container spacing={16} justify='center' alignItems='center' className={props.classes.root}>
         {/* Header */}
         <Grid item container xs={12} justify='center'>
@@ -58,7 +68,7 @@ export default compose(withStyles(appStyles), withWidth())(props => (
           <Grid item>     
             <Typography 
               variant='h3'
-              style={{padding: '0 20px', color: '#212121', fontSize: titleFontSize(props.width) + 'rem'}}>
+              style={{padding: '0 20px', fontSize: titleFontSize(props.width) + 'rem'}}>
               My Pokemon Team
             </Typography>
           </Grid>
@@ -99,12 +109,25 @@ export default compose(withStyles(appStyles), withWidth())(props => (
           <Grid item>
             <UpdateLog />
           </Grid>
+          <Grid item>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={darkMode}
+                  onChange={() => setDarkMode(!darkMode)}
+                  value="darkMode"
+                />
+              }
+              label="Dark Mode (beta)"
+            />
+          </Grid>
         </Grid>
       </Grid>
       <MainSnackbar />
       <TypeChartDialog width={props.width} />
-    </>
-))
+    </MuiThemeProvider>
+  )
+})
 
 // Snackbar is managed by MobX
 // Can be opened by importing store.js then running store.openSnackbar(msg)

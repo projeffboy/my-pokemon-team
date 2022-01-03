@@ -18,11 +18,12 @@ class UpdateLog extends React.Component {
 
   toggleDialog = () => this.setState({isDialogOpen: !this.state.isDialogOpen})
 
+
   render() {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Jan 2, 2022
+          Updated Jan 3, 2022
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -33,7 +34,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph><mark>No guarantees on when I'll include the other generations, as well as the new diamond and pearl (BDSP). Hopefully in summer 2022.</mark></Typography>
+            <Typography paragraph><mark>No guarantees on when I'll include the other generations, as well as the new diamond and pearl (BDSP). I also want to make teams saveable by URL. Hopefully in summer 2022...</mark></Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
@@ -45,6 +46,9 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+
+            <Typography variant='subtitle2'>Jan 2, 2022</Typography>
+            <Typography paragraph>Dark mode (beta).</Typography>
 
             <Typography variant='subtitle2'>Jan 2, 2022</Typography>
             <Typography paragraph>Fluffy and dry skin affects team defence.</Typography>

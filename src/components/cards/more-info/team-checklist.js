@@ -6,6 +6,7 @@ import CheckCircle from '@material-ui/icons/CheckCircle'
 import Cancel from '@material-ui/icons/Cancel'
 import {observer} from 'mobx-react'
 import store from '../../../store'
+import Typography from '@material-ui/core/Typography'
 
 @observer
 class TeamChecklist extends React.Component {
@@ -81,7 +82,14 @@ class TeamChecklist extends React.Component {
         Object.keys(checklist).map((miniHeader, i) => (
           <Grid key={miniHeader} item xs={4}>
             {/* E.g. Offensive */}
-            <div className={classes.miniHeader}>{miniHeader}</div>
+            <Typography
+              className={classes.miniHeader}
+              variant='body1'
+              component='div'
+              style={{lineHeight: 'initial'}}
+            >
+              {miniHeader}
+            </Typography>
             {Object.keys(checklist[miniHeader]).map((check, j) => (
               <div key={check} style={{display: 'flex'}}>
                 {/* Either a checkmark or a cross */}
