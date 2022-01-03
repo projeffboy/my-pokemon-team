@@ -8,6 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Link from '@material-ui/core/Link'
 // Material UI Icons Imports
 import ImportExport from '@material-ui/icons/ImportExport'
 import FileCopy from '@material-ui/icons/FileCopy'
@@ -202,7 +203,7 @@ ${[1, 2, 3, 4].map(num => {
             <DialogContentText>
               You can take a look at and change the raw data of your pokemon team.
               <br />
-              If you use <a href='https://play.pokemonshowdown.com/teambuilder' target='_blank'>Pokemon Showdown</a>, you can paste your team here.
+              If you use <Link style={{color: '#2196f3'}} variant='inherit' target='_blank' rel='noopener' href='https://play.pokemonshowdown.com/teambuilder'>Pokemon Showdown</Link>, you can paste your team here.
               <br />
               Likewise, you can copy your team here and paste it to Pokemon Showdown.
             </DialogContentText>
