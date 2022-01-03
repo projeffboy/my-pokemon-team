@@ -149,8 +149,8 @@ export const pokemonInputSelectStyles = theme => ({
       padding: 0,
     },
     '.Select-placeholder': {
-      opacity: 0.42,
-      //color: theme.palette.common.black,
+      opacity: 0.6,
+      color: theme.palette.text.primary,
     },
     '.Select-menu-outer': {
       backgroundColor: theme.palette.background.paper,
