@@ -758,11 +758,12 @@ class Store {
           if (type === 'Fire') {
             effectiveness -= 1
           }
+          break
         case 'Dry Skin':
           if (type === 'Fire') {
             effectiveness -= 1
           } else if (type === 'Water') {
-            effectiveness += 1
+            effectiveness = 3
           }
         default:
       }
