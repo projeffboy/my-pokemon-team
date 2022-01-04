@@ -822,6 +822,12 @@ class Store {
       const capitalizedType = capitalizeWord(type)
 
       moveType = capitalizedType
+    } else if (
+      ability === 'Liquid Voice'
+      && moves[move].flags
+      && moves[move].flags.sound === 1
+    ) {
+        moveType = 'Water'
     }
 
     return moveType

@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Jan 3, 2022
+          Updated Jan 4, 2022
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -47,6 +47,9 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>Jan 4, 2022</Typography>
+            <Typography paragraph>Liquid voice affects team type coverage.</Typography>
+            
             <Typography variant='subtitle2'>Jan 3, 2022</Typography>
             <Typography paragraph>Fluffy and dry skin affects team defence (Anonymous x2).</Typography>
             <Typography paragraph>Dark mode (to be improved).</Typography>
