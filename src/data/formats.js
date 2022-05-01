@@ -64,7 +64,7 @@ export default {
 		randomDoubleBattleMoves: ["icebeam", "muddywater", "protect", "shellsmash"],
 		randomDoubleBattleLevel: 80,
 		tier: "NU",
-		doublesTier: "DOU",
+		doublesTier: "DUU",
 	},
 	blastoisemega: {
 		isNonstandard: "Past",
@@ -270,7 +270,8 @@ export default {
 		tier: "LC",
 	},
 	sandshrewalola: {
-		tier: "LC",
+		tier: "NUBL",
+		doublesTier: "LC",
 	},
 	sandslash: {
 		randomBattleMoves: ["earthquake", "knockoff", "rapidspin", "spikes", "stealthrock", "stoneedge", "swordsdance", "toxic"],
@@ -285,7 +286,7 @@ export default {
 		randomBattleLevel: 86,
 		randomDoubleBattleMoves: ["drillrun", "ironhead", "protect", "swordsdance", "tripleaxel"],
 		randomDoubleBattleLevel: 90,
-		tier: "(PU)",
+		tier: "NUBL",
 		doublesTier: "(DUU)",
 	},
 	nidoranf: {
@@ -478,7 +479,7 @@ export default {
 		randomBattleLevel: 86,
 		randomDoubleBattleMoves: ["closecombat", "fakeout", "ironhead", "lashout", "protect", "uturn"],
 		randomDoubleBattleLevel: 88,
-		tier: "(PU)",
+		tier: "PU",
 		doublesTier: "(DUU)",
 	},
 	psyduck: {
@@ -490,7 +491,7 @@ export default {
 		randomDoubleBattleMoves: ["calmmind", "encore", "icebeam", "muddywater", "protect"],
 		randomDoubleBattleLevel: 88,
 		tier: "(PU)",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	mankey: {
 		isNonstandard: "Past",
@@ -503,6 +504,10 @@ export default {
 	growlithe: {
 		tier: "LC",
 	},
+	growlithehisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	arcanine: {
 		randomBattleMoves: ["closecombat", "extremespeed", "flareblitz", "morningsun", "toxic", "wildcharge", "willowisp"],
 		randomBattleLevel: 82,
@@ -510,6 +515,10 @@ export default {
 		randomDoubleBattleLevel: 84,
 		tier: "NU",
 		doublesTier: "DUU",
+	},
+	arcaninehisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	poliwag: {
 		tier: "LC",
@@ -562,7 +571,7 @@ export default {
 		randomBattleLevel: 82,
 		randomDoubleBattleMoves: ["bulletpunch", "closecombat", "facade", "knockoff", "protect"],
 		randomDoubleBattleLevel: 88,
-		tier: "PUBL",
+		tier: "NU",
 		doublesTier: "(DUU)",
 	},
 	machampgmax: {
@@ -685,12 +694,13 @@ export default {
 		tier: "LC",
 	},
 	magneton: {
-		tier: "NFE",
+		tier: "PU",
+		doublesTier: "NFE",
 	},
 	magnezone: {
 		randomBattleMoves: ["bodypress", "flashcannon", "mirrorcoat", "thunderbolt", "voltswitch"],
 		randomBattleLevel: 84,
-		randomDoubleBattleMoves: ["allyswitch", "bodypress", "electroweb", "flashcannon", "protect", "thunderbolt", "voltswitch"],
+		randomDoubleBattleMoves: ["bodypress", "electroweb", "flashcannon", "protect", "thunderbolt", "voltswitch"],
 		randomDoubleBattleLevel: 88,
 		tier: "OU",
 		doublesTier: "(DUU)",
@@ -830,8 +840,16 @@ export default {
 		isNonstandard: "Past",
 		tier: "Illegal",
 	},
+	voltorbhisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	electrode: {
 		isNonstandard: "Past",
+		tier: "Illegal",
+	},
+	electrodehisui: {
+		isNonstandard: "Future",
 		tier: "Illegal",
 	},
 	exeggcute: {
@@ -900,7 +918,7 @@ export default {
 		randomBattleLevel: 85,
 		randomDoubleBattleMoves: ["closecombat", "coaching", "fakeout", "helpinghand", "rapidspin", "suckerpunch", "tripleaxel"],
 		randomDoubleBattleLevel: 88,
-		tier: "PU",
+		tier: "NU",
 		doublesTier: "DUU",
 	},
 	lickitung: {
@@ -962,7 +980,7 @@ export default {
 		randomBattleMoves: ["seismictoss", "softboiled", "stealthrock", "teleport", "toxic"],
 		randomBattleLevel: 83,
 		randomDoubleBattleMoves: ["allyswitch", "protect", "seismictoss", "softboiled", "thunderwave", "toxic"],
-		randomDoubleBattleLevel: 87,
+		randomDoubleBattleLevel: 88,
 		tier: "OU",
 		doublesTier: "(DUU)",
 	},
@@ -1066,7 +1084,7 @@ export default {
 		randomDoubleBattleMoves: ["bugbite", "bulletpunch", "dualwingbeat", "feint", "protect", "superpower", "swordsdance", "uturn"],
 		randomDoubleBattleLevel: 80,
 		randomBattleNoDynamaxMoves: ["bulletpunch", "knockoff", "roost", "superpower", "swordsdance", "uturn"],
-		tier: "OU",
+		tier: "UU",
 		doublesTier: "DUU",
 	},
 	scizormega: {
@@ -1194,7 +1212,7 @@ export default {
 		randomDoubleBattleMoves: ["faketears", "protect", "shadowball", "thunderbolt", "thunderwave"],
 		randomDoubleBattleLevel: 86,
 		tier: "PU",
-		doublesTier: "(DUU)",
+		doublesTier: "DUU",
 	},
 	flareon: {
 		randomBattleMoves: ["facade", "flamecharge", "flareblitz", "quickattack", "superpower"],
@@ -1209,7 +1227,7 @@ export default {
 		randomBattleLevel: 82,
 		randomDoubleBattleMoves: ["calmmind", "dazzlinggleam", "morningsun", "protect", "psychic", "shadowball"],
 		randomDoubleBattleLevel: 84,
-		tier: "PU",
+		tier: "PUBL",
 		doublesTier: "(DUU)",
 	},
 	umbreon: {
@@ -1242,7 +1260,7 @@ export default {
 		randomDoubleBattleMoves: ["calmmind", "hypervoice", "mysticalfire", "protect", "psyshock"],
 		randomDoubleBattleLevel: 80,
 		tier: "NU",
-		doublesTier: "(DUU)",
+		doublesTier: "DUU",
 	},
 	porygon: {
 		tier: "LC",
@@ -1347,7 +1365,7 @@ export default {
 		randomDoubleBattleMoves: ["bravebird", "bulkup", "closecombat", "throatchop", "thunderouskick", "uturn"],
 		randomDoubleBattleLevel: 76,
 		tier: "OU",
-		doublesTier: "DOU",
+		doublesTier: "DUU",
 	},
 	moltres: {
 		randomBattleMoves: ["airslash", "defog", "fireblast", "roost", "uturn"],
@@ -1429,6 +1447,10 @@ export default {
 	},
 	typhlosion: {
 		isNonstandard: "Past",
+		tier: "Illegal",
+	},
+	typhlosionhisui: {
+		isNonstandard: "Future",
 		tier: "Illegal",
 	},
 	totodile: {
@@ -1543,7 +1565,7 @@ export default {
 		randomDoubleBattleMoves: ["aquajet", "knockoff", "liquidation", "playrough", "protect"],
 		randomDoubleBattleLevel: 87,
 		tier: "UU",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	bonsly: {
 		tier: "LC",
@@ -1679,6 +1701,10 @@ export default {
 		tier: "(PU)",
 		doublesTier: "(DUU)",
 	},
+	qwilfishhisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	shuckle: {
 		randomBattleMoves: ["encore", "knockoff", "stealthrock", "stickyweb", "toxic"],
 		randomBattleLevel: 86,
@@ -1701,6 +1727,10 @@ export default {
 	},
 	sneasel: {
 		tier: "NFE",
+	},
+	sneaselhisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	weavile: {
 		randomBattleMoves: ["iceshard", "knockoff", "lowkick", "swordsdance", "tripleaxel"],
@@ -1986,7 +2016,7 @@ export default {
 		randomBattleLevel: 80,
 		randomDoubleBattleMoves: ["closecombat", "facade", "knockoff", "obstruct", "partingshot", "taunt"],
 		randomDoubleBattleLevel: 86,
-		tier: "RU",
+		tier: "RUBL",
 		doublesTier: "(DUU)",
 	},
 	wurmple: {
@@ -2323,7 +2353,7 @@ export default {
 		randomBattleLevel: 86,
 		randomDoubleBattleMoves: ["bodypress", "earthpower", "fireblast", "heatwave", "protect", "solarbeam", "willowisp"],
 		randomDoubleBattleLevel: 84,
-		tier: "(PU)",
+		tier: "UU",
 		doublesTier: "DOU",
 	},
 	spoink: {
@@ -2464,7 +2494,7 @@ export default {
 		randomDoubleBattleMoves: ["coil", "hypnosis", "muddywater", "recover"],
 		randomDoubleBattleLevel: 80,
 		tier: "RU",
-		doublesTier: "DUU",
+		doublesTier: "DOU",
 	},
 	castform: {
 		isNonstandard: "Past",
@@ -2555,7 +2585,7 @@ export default {
 		randomBattleLevel: 84,
 		randomDoubleBattleMoves: ["destinybond", "icebeam", "icywind", "protect", "shadowball", "willowisp"],
 		randomDoubleBattleLevel: 88,
-		tier: "PU",
+		tier: "(PU)",
 		doublesTier: "(DUU)",
 	},
 	spheal: {
@@ -2606,7 +2636,7 @@ export default {
 		randomBattleMoves: ["dragondance", "dualwingbeat", "earthquake", "outrage", "roost"],
 		randomBattleLevel: 76,
 		randomDoubleBattleMoves: ["dragonclaw", "fireblast", "hurricane", "protect", "tailwind"],
-		randomDoubleBattleLevel: 80,
+		randomDoubleBattleLevel: 79,
 		tier: "UU",
 		doublesTier: "(DUU)",
 	},
@@ -2624,7 +2654,7 @@ export default {
 		randomBattleMoves: ["agility", "bulletpunch", "earthquake", "explosion", "meteormash", "stealthrock", "thunderpunch"],
 		randomBattleLevel: 79,
 		randomDoubleBattleMoves: ["agility", "bulletpunch", "icepunch", "meteormash", "stompingtantrum", "trick", "zenheadbutt"],
-		randomDoubleBattleLevel: 83,
+		randomDoubleBattleLevel: 82,
 		tier: "RU",
 		doublesTier: "DOU",
 	},
@@ -2903,7 +2933,7 @@ export default {
 		randomDoubleBattleMoves: ["clearsmog", "earthpower", "icywind", "protect", "recover", "scald", "yawn"],
 		randomDoubleBattleLevel: 80,
 		tier: "RU",
-		doublesTier: "DUU",
+		doublesTier: "DOU",
 	},
 	drifloon: {
 		tier: "NFE",
@@ -3014,7 +3044,7 @@ export default {
 		randomBattleLevel: 80,
 		randomDoubleBattleMoves: ["highhorsepower", "protect", "rockslide", "slackoff", "stealthrock", "whirlwind", "yawn"],
 		randomDoubleBattleLevel: 88,
-		tier: "OU",
+		tier: "UU",
 		doublesTier: "(DUU)",
 	},
 	skorupi: {
@@ -3069,7 +3099,7 @@ export default {
 	rotom: {
 		randomBattleMoves: ["nastyplot", "shadowball", "thunderbolt", "voltswitch", "willowisp"],
 		randomBattleLevel: 84,
-		randomDoubleBattleMoves: ["allyswitch", "electroweb", "protect", "shadowball", "thunderbolt", "voltswitch", "willowisp"],
+		randomDoubleBattleMoves: ["electroweb", "protect", "shadowball", "thunderbolt", "voltswitch", "willowisp"],
 		randomDoubleBattleLevel: 88,
 		tier: "(PU)",
 		doublesTier: "(DUU)",
@@ -3085,7 +3115,7 @@ export default {
 	rotomwash: {
 		randomBattleMoves: ["hydropump", "thunderbolt", "trick", "voltswitch", "willowisp"],
 		randomBattleLevel: 82,
-		randomDoubleBattleMoves: ["allyswitch", "hydropump", "protect", "thunderbolt", "thunderwave", "voltswitch", "willowisp"],
+		randomDoubleBattleMoves: ["hydropump", "protect", "thunderbolt", "thunderwave", "voltswitch", "willowisp"],
 		randomDoubleBattleLevel: 84,
 		tier: "UU",
 		doublesTier: "(DUU)",
@@ -3146,6 +3176,10 @@ export default {
 		tier: "Uber",
 		doublesTier: "DUber",
 	},
+	dialgaorigin: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	palkia: {
 		randomBattleMoves: ["dracometeor", "fireblast", "hydropump", "spacialrend", "thunderwave"],
 		randomBattleLevel: 74,
@@ -3154,10 +3188,14 @@ export default {
 		tier: "Uber",
 		doublesTier: "DUber",
 	},
+	palkiaorigin: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	heatran: {
 		randomBattleMoves: ["earthpower", "flashcannon", "lavaplume", "protect", "stealthrock", "taunt", "toxic"],
 		randomBattleLevel: 78,
-		randomDoubleBattleMoves: ["earthpower", "eruption", "flashcannon", "magmastorm", "protect"],
+		randomDoubleBattleMoves: ["earthpower", "eruption", "flashcannon", "heatwave", "protect"],
 		randomDoubleBattleLevel: 80,
 		tier: "OU",
 		doublesTier: "DOU",
@@ -3168,7 +3206,7 @@ export default {
 		randomDoubleBattleMoves: ["bodyslam", "knockoff", "protect", "thunderwave"],
 		randomDoubleBattleLevel: 86,
 		tier: "(PU)",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	giratina: {
 		randomBattleMoves: ["hex", "rest", "sleeptalk", "toxic", "willowisp"],
@@ -3314,6 +3352,10 @@ export default {
 		isNonstandard: "Past",
 		tier: "Illegal",
 	},
+	samurotthisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	patrat: {
 		isNonstandard: "Past",
 		tier: "Illegal",
@@ -3442,7 +3484,7 @@ export default {
 	},
 	audino: {
 		randomBattleMoves: ["healbell", "knockoff", "protect", "toxic", "wish"],
-		randomBattleLevel: 90,
+		randomBattleLevel: 91,
 		randomDoubleBattleMoves: ["bodyslam", "healpulse", "helpinghand", "knockoff", "protect", "thunderwave"],
 		randomDoubleBattleLevel: 90,
 		tier: "PU",
@@ -3547,6 +3589,10 @@ export default {
 		tier: "(PU)",
 		doublesTier: "(DUU)",
 	},
+	lilliganthisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	basculin: {
 		randomBattleMoves: ["aquajet", "crunch", "flipturn", "headsmash", "liquidation", "psychicfangs"],
 		randomBattleLevel: 86,
@@ -3562,6 +3608,10 @@ export default {
 		randomDoubleBattleLevel: 86,
 		tier: "(PU)",
 		doublesTier: "(DUU)",
+	},
+	basculinwhitestriped: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	sandile: {
 		tier: "LC",
@@ -3588,7 +3638,7 @@ export default {
 		randomBattleLevel: 80,
 		randomDoubleBattleMoves: ["earthquake", "flareblitz", "rockslide", "superpower", "uturn"],
 		randomDoubleBattleLevel: 82,
-		tier: "RU",
+		tier: "UU",
 		doublesTier: "(DUU)",
 	},
 	darmanitangalar: {
@@ -3658,7 +3708,7 @@ export default {
 	runerigus: {
 		randomBattleMoves: ["earthquake", "haze", "poltergeist", "stealthrock", "toxicspikes", "willowisp"],
 		randomBattleLevel: 84,
-		randomDoubleBattleMoves: ["allyswitch", "earthquake", "poltergeist", "protect", "trickroom", "willowisp"],
+		randomDoubleBattleMoves: ["earthquake", "poltergeist", "protect", "trickroom", "willowisp"],
 		randomDoubleBattleLevel: 88,
 		tier: "(PU)",
 		doublesTier: "(DUU)",
@@ -3689,7 +3739,7 @@ export default {
 		tier: "LC",
 	},
 	garbodor: {
-		tier: "NU",
+		tier: "PU",
 		doublesTier: "(DUU)",
 	},
 	garbodorgmax: {
@@ -3704,11 +3754,19 @@ export default {
 	zorua: {
 		tier: "LC",
 	},
+	zoruahisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	zoroark: {
 		randomBattleMoves: ["darkpulse", "flamethrower", "nastyplot", "sludgebomb", "trick"],
 		randomDoubleBattleMoves: ["darkpulse", "flamethrower", "focusblast", "nastyplot", "protect", "sludgebomb"],
 		tier: "NU",
 		doublesTier: "(DUU)",
+	},
+	zoroarkhisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	minccino: {
 		tier: "LC",
@@ -3718,7 +3776,7 @@ export default {
 		randomBattleLevel: 84,
 		randomDoubleBattleMoves: ["bulletseed", "knockoff", "protect", "rockblast", "tailslap", "tripleaxel", "uturn"],
 		randomDoubleBattleLevel: 86,
-		tier: "(PU)",
+		tier: "PU",
 		doublesTier: "(DUU)",
 	},
 	gothita: {
@@ -3963,7 +4021,7 @@ export default {
 		tier: "LC",
 	},
 	mienshao: {
-		randomBattleMoves: ["closecombat", "fakeout", "knockoff", "poisonjab", "swordsdance", "uturn"],
+		randomBattleMoves: ["closecombat", "fakeout", "knockoff", "poisonjab", "stoneedge", "swordsdance", "uturn"],
 		randomBattleLevel: 82,
 		randomDoubleBattleMoves: ["closecombat", "fakeout", "knockoff", "poisonjab", "protect", "uturn"],
 		randomDoubleBattleLevel: 84,
@@ -4018,6 +4076,10 @@ export default {
 		randomDoubleBattleLevel: 82,
 		tier: "NU",
 		doublesTier: "(DUU)",
+	},
+	braviaryhisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	vullaby: {
 		tier: "NFE",
@@ -4076,7 +4138,7 @@ export default {
 		randomBattleLevel: 78,
 		randomDoubleBattleMoves: ["closecombat", "ironhead", "protect", "stoneedge", "swordsdance", "thunderwave"],
 		randomDoubleBattleLevel: 84,
-		tier: "RU",
+		tier: "UU",
 		doublesTier: "(DUU)",
 	},
 	terrakion: {
@@ -4167,7 +4229,7 @@ export default {
 		randomDoubleBattleMoves: ["dracometeor", "earthpower", "freezedry", "glaciate", "protect", "roost"],
 		randomDoubleBattleLevel: 78,
 		tier: "Uber",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	kyuremblack: {
 		randomBattleMoves: ["dragondance", "fusionbolt", "iciclespear", "outrage"],
@@ -4529,13 +4591,21 @@ export default {
 	sliggoo: {
 		tier: "NFE",
 	},
+	sliggoohisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	goodra: {
 		randomBattleMoves: ["dracometeor", "earthquake", "fireblast", "powerwhip", "sludgebomb", "thunderbolt"],
 		randomBattleLevel: 82,
 		randomDoubleBattleMoves: ["breakingswipe", "dracometeor", "fireblast", "muddywater", "powerwhip", "protect", "sludgebomb", "thunderbolt"],
 		randomDoubleBattleLevel: 85,
-		tier: "NU",
+		tier: "NUBL",
 		doublesTier: "(DUU)",
+	},
+	goodrahisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	klefki: {
 		randomBattleMoves: ["magnetrise", "playrough", "spikes", "thunderwave", "toxic"],
@@ -4543,7 +4613,7 @@ export default {
 		randomDoubleBattleMoves: ["dazzlinggleam", "foulplay", "spikes", "thunderwave"],
 		randomDoubleBattleLevel: 84,
 		tier: "RU",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	phantump: {
 		tier: "LC",
@@ -4611,6 +4681,10 @@ export default {
 		tier: "(PU)",
 		doublesTier: "(DUU)",
 	},
+	avalugghisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
 	noibat: {
 		tier: "LC",
 	},
@@ -4635,7 +4709,7 @@ export default {
 		tier: "Illegal",
 	},
 	yveltal: {
-		randomBattleMoves: ["darkpulse", "defog", "heatwave", "knockoff", "oblivionwing", "roost", "suckerpunch", "taunt"],
+		randomBattleMoves: ["defog", "heatwave", "knockoff", "oblivionwing", "roost", "suckerpunch", "taunt"],
 		randomBattleLevel: 69,
 		randomDoubleBattleMoves: ["darkpulse", "heatwave", "knockoff", "oblivionwing", "roost", "suckerpunch", "tailwind", "uturn"],
 		randomDoubleBattleLevel: 71,
@@ -4687,7 +4761,7 @@ export default {
 		randomBattleLevel: 80,
 		randomDoubleBattleMoves: ["earthpower", "heatwave", "protect", "sludgebomb", "steameruption"],
 		randomDoubleBattleLevel: 80,
-		tier: "RU",
+		tier: "OU",
 		doublesTier: "DOU",
 	},
 	rowlet: {
@@ -4704,6 +4778,10 @@ export default {
 		randomBattleNoDynamaxMoves: ["leafblade", "roost", "shadowsneak", "spiritshackle", "swordsdance", "uturn"],
 		tier: "NU",
 		doublesTier: "(DUU)",
+	},
+	decidueyehisui: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	litten: {
 		tier: "LC",
@@ -4845,7 +4923,7 @@ export default {
 		doublesTier: "(DUU)",
 	},
 	wishiwashi: {
-		tier: "(PU)",
+		tier: "PU",
 		doublesTier: "(DUU)",
 	},
 	wishiwashischool: {
@@ -4885,7 +4963,7 @@ export default {
 		randomDoubleBattleMoves: ["leechlife", "liquidation", "lunge", "protect", "stickyweb", "wideguard"],
 		randomDoubleBattleLevel: 84,
 		tier: "NU",
-		doublesTier: "(DUU)",
+		doublesTier: "DUU",
 	},
 	araquanidtotem: {
 		isNonstandard: "Past",
@@ -4962,7 +5040,7 @@ export default {
 		randomBattleLevel: 86,
 		randomDoubleBattleMoves: ["defog", "drainingkiss", "floralhealing", "gigadrain", "helpinghand", "protect"],
 		randomDoubleBattleLevel: 89,
-		tier: "NU",
+		tier: "PU",
 		doublesTier: "DUU",
 	},
 	oranguru: {
@@ -5266,7 +5344,7 @@ export default {
 		randomBattleMoves: ["closecombat", "hornleech", "megahorn", "stoneedge", "swordsdance", "woodhammer"],
 		randomBattleLevel: 82,
 		randomDoubleBattleMoves: ["closecombat", "highhorsepower", "hornleech", "protect", "stoneedge", "swordsdance", "woodhammer"],
-		randomDoubleBattleLevel: 81,
+		randomDoubleBattleLevel: 83,
 		tier: "UU",
 		doublesTier: "DUU",
 	},
@@ -5302,11 +5380,11 @@ export default {
 	},
 	nihilego: {
 		randomBattleMoves: ["grassknot", "powergem", "sludgewave", "stealthrock", "thunderbolt", "toxicspikes"],
-		randomBattleLevel: 80,
+		randomBattleLevel: 79,
 		randomDoubleBattleMoves: ["grassknot", "meteorbeam", "protect", "sludgebomb", "thunderbolt"],
 		randomDoubleBattleLevel: 81,
 		tier: "UU",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	buzzwole: {
 		randomBattleMoves: ["closecombat", "darkestlariat", "dualwingbeat", "ironhead", "leechlife", "stoneedge"],
@@ -5331,7 +5409,7 @@ export default {
 		randomDoubleBattleMoves: ["dazzlinggleam", "energyball", "thunderbolt", "voltswitch"],
 		randomDoubleBattleLevel: 79,
 		tier: "RU",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	celesteela: {
 		randomBattleMoves: ["airslash", "earthquake", "fireblast", "flashcannon", "leechseed", "protect"],
@@ -5363,7 +5441,7 @@ export default {
 		randomBattleLevel: 80,
 		randomDoubleBattleMoves: ["calmmind", "earthpower", "heatwave", "moonlight", "photongeyser", "protect"],
 		randomDoubleBattleLevel: 80,
-		tier: "RU",
+		tier: "RUBL",
 		doublesTier: "DOU",
 	},
 	necrozmaduskmane: {
@@ -5388,7 +5466,7 @@ export default {
 	},
 	magearna: {
 		randomBattleMoves: ["agility", "calmmind", "flashcannon", "fleurcannon"],
-		randomBattleLevel: 75,
+		randomBattleLevel: 76,
 		randomDoubleBattleMoves: ["agility", "aurasphere", "dazzlinggleam", "flashcannon", "fleurcannon", "protect", "trick"],
 		randomDoubleBattleLevel: 72,
 		tier: "Uber",
@@ -5427,7 +5505,7 @@ export default {
 		randomBattleLevel: 80,
 		randomDoubleBattleMoves: ["bodypress", "gyroball", "highhorsepower", "rockslide", "trickroom"],
 		randomDoubleBattleLevel: 82,
-		tier: "RU",
+		tier: "NU",
 		doublesTier: "DOU",
 	},
 	blacephalon: {
@@ -5584,7 +5662,7 @@ export default {
 		randomBattleMoves: ["darkpulse", "foulplay", "grassknot", "nastyplot", "partingshot", "psychic"],
 		randomBattleLevel: 86,
 		randomDoubleBattleMoves: ["faketears", "foulplay", "partingshot", "snarl", "taunt"],
-		randomDoubleBattleLevel: 88,
+		randomDoubleBattleLevel: 89,
 		tier: "(PU)",
 		doublesTier: "(DUU)",
 	},
@@ -5596,7 +5674,7 @@ export default {
 		randomBattleLevel: 90,
 		randomDoubleBattleMoves: ["charm", "energyball", "helpinghand", "pollenpuff", "protect", "sleeppowder"],
 		randomDoubleBattleLevel: 90,
-		tier: "(PU)",
+		tier: "PU",
 		doublesTier: "(DUU)",
 	},
 	wooloo: {
@@ -5820,7 +5898,7 @@ export default {
 	grimmsnarl: {
 		randomBattleMoves: ["lightscreen", "reflect", "spiritbreak", "taunt", "thunderwave"],
 		randomBattleLevel: 82,
-		tier: "RU",
+		tier: "NU",
 		doublesTier: "DUU",
 	},
 	grimmsnarlgmax: {
@@ -5872,7 +5950,7 @@ export default {
 		randomBattleLevel: 82,
 		randomDoubleBattleMoves: ["bugbuzz", "gigadrain", "hurricane", "icebeam", "protect", "quiverdance", "wideguard"],
 		randomDoubleBattleLevel: 88,
-		tier: "(PU)",
+		tier: "PU",
 		doublesTier: "(DUU)",
 	},
 	stonjourner: {
@@ -5893,7 +5971,7 @@ export default {
 	},
 	indeedee: {
 		randomBattleMoves: ["calmmind", "expandingforce", "hypervoice", "mysticalfire", "trick"],
-		randomBattleLevel: 82,
+		randomBattleLevel: 83,
 		randomDoubleBattleMoves: ["encore", "expandingforce", "hypervoice", "mysticalfire", "protect", "trick"],
 		randomDoubleBattleLevel: 80,
 		tier: "NUBL",
@@ -5901,7 +5979,7 @@ export default {
 	},
 	indeedeef: {
 		randomBattleMoves: ["calmmind", "expandingforce", "healingwish", "hypervoice", "mysticalfire"],
-		randomBattleLevel: 84,
+		randomBattleLevel: 85,
 		randomDoubleBattleMoves: ["expandingforce", "followme", "healpulse", "helpinghand", "protect"],
 		randomDoubleBattleLevel: 80,
 		tier: "NU",
@@ -5948,7 +6026,7 @@ export default {
 		randomDoubleBattleMoves: ["blizzard", "boltbeak", "iciclecrash", "lowkick", "protect"],
 		randomDoubleBattleLevel: 88,
 		tier: "UUBL",
-		doublesTier: "DUU",
+		doublesTier: "(DUU)",
 	},
 	dracovish: {
 		randomBattleMoves: ["crunch", "fishiousrend", "icefang", "lowkick", "psychicfangs"],
@@ -5963,7 +6041,7 @@ export default {
 		randomBattleLevel: 86,
 		randomDoubleBattleMoves: ["blizzard", "fishiousrend", "iciclecrash", "protect", "superfang"],
 		randomDoubleBattleLevel: 88,
-		tier: "NUBL",
+		tier: "(PU)",
 		doublesTier: "(DUU)",
 	},
 	duraludon: {
@@ -6120,7 +6198,7 @@ export default {
 	calyrex: {
 		randomBattleMoves: ["calmmind", "gigadrain", "leechseed", "psyshock", "substitute"],
 		randomBattleLevel: 88,
-		randomDoubleBattleMoves: ["encore", "helpinghand", "leafstorm", "pollenpuff", "protect"],
+		randomDoubleBattleMoves: ["helpinghand", "leafstorm", "pollenpuff", "protect"],
 		randomDoubleBattleLevel: 94,
 		tier: "(PU)",
 		doublesTier: "(DUU)",
@@ -6140,6 +6218,42 @@ export default {
 		randomDoubleBattleLevel: 68,
 		tier: "Uber",
 		doublesTier: "DUber",
+	},
+	wyrdeer: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	kleavor: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	ursaluna: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	basculegion: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	basculegionf: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	sneasler: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	overqwil: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	enamorus: {
+		isNonstandard: "Future",
+		tier: "Illegal",
+	},
+	enamorustherian: {
+		isNonstandard: "Future",
+		tier: "Illegal",
 	},
 	missingno: {
 		isNonstandard: "Custom",
@@ -6493,4 +6607,4 @@ export default {
 		isNonstandard: "Custom",
 		tier: "Illegal",
 	},
-}
+};

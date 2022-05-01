@@ -84,7 +84,7 @@ export default compose(withStyles(appStyles), withWidth())(props => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant='caption' align='center'>
-              <sub>Report Bugs to jeffery124@gmail.com</sub>
+              <sub>Report Bugs to jeffery124@gmail.com, no Hisui yet</sub>
             </Typography>
           </Grid>
         </Grid>

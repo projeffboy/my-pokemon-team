@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Jan 4, 2022
+          Updated May 1, 2022
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -34,7 +34,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph><mark>No guarantees on when I'll include the other generations, as well as the new diamond and pearl (BDSP). I also want to make teams saveable by URL. Hopefully in summer 2022...</mark></Typography>
+            <Typography paragraph><mark>Going to be busy for the forseeable future (might be free fall 2022). I will still fix bugs if you email me though.</mark></Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
@@ -46,6 +46,9 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+
+            <Typography variant='subtitle2'>May 1, 2022</Typography>
+            <Typography paragraph>Added floral healing and court change to team checklist. Renamed "Switch/Turn Move" to "Volt-turn Move".</Typography>
 
             <Typography variant='subtitle2'>Jan 4, 2022</Typography>
             <Typography paragraph>Liquid voice affects team type coverage.</Typography>

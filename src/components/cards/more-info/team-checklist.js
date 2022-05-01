@@ -21,9 +21,14 @@ class TeamChecklist extends React.Component {
           'toxicspikes',
           'stickyweb',
         ]), 
-        'Spinner/Defogger': store.doesTeamHaveMoves(['rapidspin', 'defog']), 
+        'Spinner/Defogger': store.doesTeamHaveMoves([
+          'rapidspin',
+          'defog',
+          'courtchange',
+        ]), 
         'Reliable Recovery': store.doesTeamHaveMoves([
           'healorder',
+          'floralhealing',
           'milkdrink',
           'moonlight',
           'morningsun',
@@ -47,7 +52,7 @@ class TeamChecklist extends React.Component {
       },
       'Offensive': {
         'Boosting Move': store.anyBoostingMoves, 
-        'Switch/Turn Move': store.doesTeamHaveMove('voltswitch')
+        'Volt-turn Move': store.doesTeamHaveMove('voltswitch')
           || store.doesTeamHaveMove('uturn')
           || store.doesTeamHaveMove('flipturn'), 
         'Choice Item': store.doesTeamHaveItems([
@@ -68,14 +73,14 @@ class TeamChecklist extends React.Component {
         'Status',
         'Phazer',
         'Setup',
-        'Pivot Move',
+        'Volt-turn',
         'Choice'
       ]
     }
     if (width === 'sm' || width === 'xs') {
       checklistAbbr[1] = 'Spin'
       checklistAbbr[2] = 'Heal'
-      checklistAbbr[7] = 'Pivot'
+      checklistAbbr[7] = 'Volturn'
     }
   
     return (
