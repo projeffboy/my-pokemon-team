@@ -400,15 +400,26 @@ class Store {
   // Does the team contain moves that inflict non-volatile status?
   // E.g. toxic inflicts poison, thunder wave inflicts paralysis
   @computed get anyStatusMoves() {
-    return this.teamMoves.some(move => moves[move] && moves[move].status)
+    return this.teamMoves.some(move => (
+      moves[move] && (
+        moves[move].status
+        || (moves[move].secondary
+          && moves[move].secondary.chance === 100
+          && moves[move].secondary.status
+        )
+      )
+    ))
   }
 
   // Does the team contain boosting moves that increase by two or more stages?
   @computed get anyBoostingMoves() {
     return this.teamMoves.some(move => (
-      moves[move]
-      && moves[move].boosts
-      && Object.values(moves[move].boosts).reduce((sum, num) => sum + num) >= 2
+      move === 'curse'
+      || (
+        moves[move]
+        && moves[move].boosts
+        && Object.values(moves[move].boosts).reduce((sum, num) => sum + num) >= 2
+      )
     ))
   }
 
@@ -703,6 +714,8 @@ class Store {
           }
           break
         case 'Flash Fire':
+        case 'Thermal Exchange':
+        case 'Well-Baked Body':
           if (type === 'Fire') {
             effectiveness = 3
           }
@@ -713,6 +726,7 @@ class Store {
           }
           break
         case 'Levitate':
+        case 'Earth Eater':
           if (type === 'Ground') {
             effectiveness = 3
           }
@@ -744,7 +758,7 @@ class Store {
             effectiveness += 1
           }
           break
-        // Abilities that cushion supereffective moves
+        // Abilities that cushion moves
         case 'Solid Rock':
         case 'Filter':
         case 'Prism Armor':
@@ -764,6 +778,10 @@ class Store {
             effectiveness -= 1
           } else if (type === 'Water') {
             effectiveness = 3
+          }
+        case 'Purifying Salt':
+          if (type === 'Ghost') {
+            effectiveness += 1
           }
         default:
       }
@@ -1133,11 +1151,13 @@ class Store {
           Kalos: [650, 721],
           Alola: [722, 809],
           Galar: [810, 898],
+          Hisui: [-1, -1],
+          Paldea: [906, 1010],
         }
         const range = regionNumberRange[region]
         let filteredPokedex = {}
 
-        // Only return pokemon from a certian region based on pokedex number
+        // Only return pokemon from a certain region based on pokedex number
         for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
           if (
             pkmnProps.num >= range[0]
@@ -1145,6 +1165,7 @@ class Store {
             // If Kanto region, remove alola forms
             && !(region === 'Kanto' && pkmn.includes('alola'))
             && !(region !== 'Galar' && pkmn.includes('galar'))
+            && !(region !== 'Paldea' && pkmn.includes('paldea'))
           ) {
             filteredPokedex[pkmn] = pkmnProps
           }
@@ -1162,6 +1183,22 @@ class Store {
         if (region === 'Galar') {
           for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
             if (pkmn.includes('galar')) {
+              filteredPokedex[pkmn] = pkmnProps
+            }
+          }
+        }
+        // If Hisui region, add hisui forms
+        if (region === 'Hisui') {
+          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
+            if (pkmn.includes('hisui')) {
+              filteredPokedex[pkmn] = pkmnProps
+            }
+          }
+        }
+        // If Paldea region, add paldea forms
+        if (region === 'Paldea') {
+          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
+            if (pkmn.includes('paldea')) {
               filteredPokedex[pkmn] = pkmnProps
             }
           }

@@ -29,8 +29,8 @@ class Manual extends React.Component {
     this.rowsOfTerms = [
       ['Defogger', 'A pokemon that knows Defog (which blows away entry hazards).'],
       ['Reliable Recovery', 'Moves that are guaranteed to recover 50% or more of your HP every time you use it (under normal weather conditions). E.g. Recover, Softboiled, Milk Drink, Slack Off, Synthesis.'],
-      ['Status Moves', 'Here, they refer to acurrate moves that paralyze, burn, or poison, as well as moves that cause sleep. E.g. Toxic, Will-O-Wisp, Thunder Wave, Sing.'],
-      ['Boosting Move', 'Moves that increase your stats, like Swords Dance and Calm Mind.'],
+      ['Status Moves', 'Here, they refer to accurate moves that paralyze, burn, or poison, as well as moves that cause sleep. E.g. Toxic, Will-O-Wisp, Thunder Wave, Sing.'],
+      ['Boosting Move', 'Moves that increase your stats (preferrably by 2+), like Swords Dance and Calm Mind.'],
       ['Choice Item', 'An item that increases a stat by 50% but locks you into one move. There are three of these items: Choice Band, Choice Specs, and Choice Scarf.'],
     ]
 

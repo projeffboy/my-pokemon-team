@@ -20,11 +20,13 @@ class TeamChecklist extends React.Component {
           'stealthrock',
           'toxicspikes',
           'stickyweb',
+          'stoneaxe',
         ]), 
         'Spinner/Defogger': store.doesTeamHaveMoves([
           'rapidspin',
           'defog',
           'courtchange',
+          'tidyup',
         ]), 
         'Reliable Recovery': store.doesTeamHaveMoves([
           'healorder',

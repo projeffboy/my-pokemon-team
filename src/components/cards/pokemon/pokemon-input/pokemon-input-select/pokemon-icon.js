@@ -2,6 +2,8 @@ import React from 'react'
 import pokedex from '../../../../../data/pokedex'
 import items from '../../../../../data/items'
 import altSpriteNum from '../../../../../data/altSpriteNum'
+import PokemonIconsSheet from '../../../../../pokemonicons-sheet.png'
+import ItemIconsSheet from '../../../../../itemicons-sheet.png'
 
 /*
  * Returns an icon of a pokemon (pkmnProp === 'pkmn') or an item (pkmnProp === 'item)
@@ -20,7 +22,7 @@ export default function PokemonIcon(props) {
     let height
 
     if (pkmnProp === 'pkmn') {
-      type = 'pokemon'
+      type = PokemonIconsSheet
 
       const pokedexNumber = altSpriteNum[value] || pokedex[value].num
 
@@ -31,7 +33,7 @@ export default function PokemonIcon(props) {
       width = 40
       height = 30
     } else if (pkmnProp === 'item') {
-      type = 'item'
+      type = ItemIconsSheet
 
       const itemNumber = items[value].spritenum
 
@@ -47,7 +49,7 @@ export default function PokemonIcon(props) {
       <span style={{
         background: `
           transparent 
-          url(https://play.pokemonshowdown.com/sprites/${type}icons-sheet.png) 
+          url(${type}) 
           no-repeat 
           scroll 
           -${left}px -${top}px

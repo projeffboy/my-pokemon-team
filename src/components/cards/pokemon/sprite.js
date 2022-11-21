@@ -55,6 +55,14 @@ class Sprite extends React.Component {
       imgFormat = 'png'
     }
 
+    if (
+      pokedexNumber >= 899 || pokedexNumber == 0
+      || (pokemon && (pokemon.includes('hisui') || pokemon.includes('paldea')))
+    ) {
+      typeOfSprite = 'gen5'
+      imgFormat = 'png'
+    }
+
 
     /* Either Return Sprite or Mini Sprite */
     return (

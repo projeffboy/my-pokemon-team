@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated May 1, 2022
+          Updated Nov 20, 2022
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -34,7 +34,7 @@ class UpdateLog extends React.Component {
             Update Log
           </DialogTitle>
           <DialogContent>
-            <Typography paragraph><mark>Going to be busy for the forseeable future (might be free fall 2022). I will still fix bugs if you email me though.</mark></Typography>
+            <Typography paragraph><mark>I am looking to update the site for Scarlet/Violet, but I have school until Dec 5. I will try to find free time.</mark></Typography>
             <div style={{display: 'flex', justifyContent: 'center'}}>
               <Button
                 variant='outlined'
@@ -46,6 +46,12 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+
+            <Typography variant='subtitle2'>Nov 20, 2022</Typography>
+            <Typography paragraph>Sprites weren't working for pokemon of alternate formes (e.g. mega abomasnow).</Typography>
+            <Typography paragraph>Updated the the site for Pokemon Scarlet and Violet (generation 9). Expect bugs!</Typography>
+            <Typography paragraph>Moves with a 100% of inflicting a status condition (e.g. nuzzle) are counted towards the checklist.</Typography>
+            <Typography paragraph>Curse is treated as a setup move.</Typography>
 
             <Typography variant='subtitle2'>May 1, 2022</Typography>
             <Typography paragraph>Added floral healing and court change to team checklist. Renamed "Switch/Turn Move" to "Volt-turn Move".</Typography>

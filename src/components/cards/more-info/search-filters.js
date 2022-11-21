@@ -54,7 +54,7 @@ class SearchFilters extends React.Component {
         'Water',
       ], 
       Region: [
-        'Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar'
+        'Kanto', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar', 'Hisui', 'Paldea'
       ], 
       Moves: ['Viable'],
     }

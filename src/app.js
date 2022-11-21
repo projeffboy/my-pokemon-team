@@ -13,7 +13,7 @@ import Cards from './components/cards'
 import Manual from './manual'
 import Credits from './credits'
 import UpdateLog from './update-log'
-import dragapultFace from './dragapult-face.png'
+import newFace from './palafin.png'
 import landorusFace from './landorus-face.png'
 import TypeChartDialog from './type-chart-dialog'
 import CssBaseline from '@material-ui/core/CssBaseline' // like CSS Reset
@@ -73,18 +73,21 @@ export default compose(withStyles(appStyles), withWidth())(props => {
             </Typography>
           </Grid>
           <Grid item>
-            <a href='https://twitter.com/Shagapult'>
-              <img src={dragapultFace} alt='Dragapult Face' height={faceWidth(props.width)} />
-            </a>
+            <img
+              src={newFace}
+              alt='Palafin'
+              height={faceWidth(props.width)}
+              style={{padding: '0 18px'}}
+            />
           </Grid>
           <Grid item xs={12}>
             <Typography variant='subtitle1' align='center'>
-              For Generation 6 to 8 (SwSh)
+              For Generation 6 to 9 (Scarlet/Violet)
             </Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant='caption' align='center'>
-              <sub>Report Bugs to jeffery124@gmail.com, no Hisui yet</sub>
+              <sub>Report Bugs to jeffery124@gmail.com</sub>
             </Typography>
           </Grid>
         </Grid>
