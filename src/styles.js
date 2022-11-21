@@ -39,7 +39,8 @@ export const appStyles = {
   root: {
     height: '100%',
     width: '100%',
-    margin: 0,
+    maxWidth: 1920,
+    margin: "0 auto",
   }
 }
 
