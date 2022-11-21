@@ -714,7 +714,6 @@ class Store {
           }
           break
         case 'Flash Fire':
-        case 'Thermal Exchange':
         case 'Well-Baked Body':
           if (type === 'Fire') {
             effectiveness = 3
