@@ -1151,7 +1151,7 @@ class Store {
           Kalos: [650, 721],
           Alola: [722, 809],
           Galar: [810, 898],
-          Hisui: [-1, -1],
+          Hisui: [899, 905],
           Paldea: [906, 1010],
         }
         const range = regionNumberRange[region]
