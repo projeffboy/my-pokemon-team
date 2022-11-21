@@ -62,7 +62,7 @@ export default compose(withStyles(appStyles), withWidth())(props => {
               src={landorusFace}
               alt='Landorus Face'
               height={faceWidth(props.width)}
-              style={{padding: '0 18px'}}  
+              style={{padding: '0 14px'}}  
             />
           </Grid>
           <Grid item>     
@@ -77,7 +77,7 @@ export default compose(withStyles(appStyles), withWidth())(props => {
               src={newFace}
               alt='Palafin'
               height={faceWidth(props.width)}
-              style={{padding: '0 18px'}}
+              style={{padding: '0 14px'}}
             />
           </Grid>
           <Grid item xs={12}>
