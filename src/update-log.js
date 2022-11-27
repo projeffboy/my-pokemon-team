@@ -47,8 +47,11 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>Nov 26, 2022</Typography>
+            <Typography paragraph>Hisuain form pokemon have proper movesets.</Typography>
+
             <Typography variant='subtitle2'>Nov 20, 2022</Typography>
-            <Typography paragraph>Sprites weren't working for pokemon of alternate formes (e.g. mega abomasnow).</Typography>
+            <Typography paragraph>Sprites weren't working for pokemon of alternate formes, e.g. mega abomasnow (Credits: Cashton Bermingham).</Typography>
             <Typography paragraph>Updated the the site for Pokemon Scarlet and Violet (generation 9). Expect bugs!</Typography>
             <Typography paragraph>Moves with a 100% of inflicting a status condition (e.g. nuzzle) are counted towards the checklist.</Typography>
             <Typography paragraph>Curse is treated as a setup move.</Typography>

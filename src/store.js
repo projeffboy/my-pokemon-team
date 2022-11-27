@@ -229,7 +229,7 @@ class Store {
 
     let isRegional = false
 
-    if (pkmn.includes('alola') || pkmn.includes('galar')) {
+    if (pkmn.includes('alola') || pkmn.includes('galar') || pkmn.includes('hisui') || pkmn.includes('paldea')) {
       isRegional = true
     } else {
       completeLearnset = [...completeLearnset, ...learnsets[baseForme]]
@@ -241,7 +241,7 @@ class Store {
       .replace('.', '') // fixes the mr. mime family
       .replace('é', 'e')
       .replace('é', 'e')
-
+      
       let region = ''
       if (isRegional && pokedex[baseForme].otherFormes) {
         if (pokedex[baseForme].otherFormes.some(
@@ -252,6 +252,14 @@ class Store {
           forme => forme.includes('Galar')
         )) {
           region = 'galar'
+        } else if (pokedex[baseForme].otherFormes.some(
+          forme => forme.includes('Hisui')
+        )) {
+          region = 'hisui'
+        } else if (pokedex[baseForme].otherFormes.some(
+          forme => forme.includes('Paldea')
+        )) {
+          region = 'paldea'
         }
       } 
       // Append previous evolution learnset to current learnset
