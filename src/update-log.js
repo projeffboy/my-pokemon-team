@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Nov 20, 2022
+          Updated Nov 27, 2022
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -47,7 +47,7 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
-            <Typography variant='subtitle2'>Nov 26, 2022</Typography>
+            <Typography variant='subtitle2'>Nov 27, 2022</Typography>
             <Typography paragraph>Hisuain form pokemon have proper movesets.</Typography>
 
             <Typography variant='subtitle2'>Nov 20, 2022</Typography>
