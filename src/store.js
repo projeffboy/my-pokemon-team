@@ -241,6 +241,7 @@ class Store {
       .replace('.', '') // fixes the mr. mime family
       .replace('é', 'e')
       .replace('é', 'e')
+      .replace('-', '')
       
       let region = ''
       if (isRegional && pokedex[baseForme].otherFormes) {
