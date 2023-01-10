@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Dec 15, 2022
+          Updated Jan 10, 2023
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -47,8 +47,12 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>Jan 10, 2023</Typography>
+            <Typography paragraph>The Paldea sprites now match the names in the dropdown list.</Typography>
+
             <Typography variant='subtitle2'>Dec 18, 2022</Typography>
-            <Typography paragraph>Items are updated for gen 9. Fixed a bug where selecting a pokemon whose pre-evolution has a hyphen in their name crashes, like Basculeigon.</Typography>
+            <Typography paragraph>Items are updated for gen 9 (Credits: anonymous).</Typography>
+            <Typography paragraph>Fixed a bug where selecting a pokemon whose pre-evolution has a hyphen in their name crashes, like Basculeigon (Credits: anonymous).</Typography>
 
             <Typography variant='subtitle2'>Nov 27, 2022</Typography>
             <Typography paragraph>Hisuain form pokemon have proper movesets (Credits: anonymous).</Typography>
