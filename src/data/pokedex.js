@@ -1,3 +1,5 @@
+// Please check missingno's type
+
 export default {
 	bulbasaur: {
 		num: 1,
@@ -17504,7 +17506,7 @@ export default {
 	missingno: {
 		num: 0,
 		name: "MissingNo.",
-		types: ["Bird", "Normal"],
+		types: ["Normal"],
 		baseStats: {hp: 33, atk: 136, def: 0, spa: 6, spd: 6, spe: 29},
 		abilities: {0: ""},
 		heightm: 3,

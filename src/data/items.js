@@ -38,6 +38,16 @@ export default {
     gen: 5,
     desc: "Raises holder's Sp. Atk by 1 stage if hit by a Water-type attack. Single use.",
   },
+  adamantcrystal: {
+		name: "Adamant Crystal",
+		spritenum: 4, // TODO
+		onBasePowerPriority: 15,
+		forcedForme: "Dialga-Origin",
+		itemUser: ["Dialga-Origin"],
+		num: 1777,
+		gen: 8,
+		isNonstandard: "Unobtainable",
+	},
   adamantorb: {
     name: "Adamant Orb",
     spritenum: 4,
@@ -2108,6 +2118,16 @@ export default {
     isPokeball: true,
     desc: "A Poke Ball for catching Pokemon hooked by a Rod when fishing.",
   },
+  lustrousglobe: {
+		name: "Lustrous Globe",
+		spritenum: 265, // TODO
+		onBasePowerPriority: 15,
+		forcedForme: "Palkia-Origin",
+		itemUser: ["Palkia-Origin"],
+		num: 1778,
+		gen: 8,
+		isNonstandard: "Unobtainable",
+	},
   lustrousorb: {
     name: "Lustrous Orb",
     spritenum: 265,

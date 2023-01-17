@@ -27,6 +27,7 @@ class TeamChecklist extends React.Component {
           'defog',
           'courtchange',
           'tidyup',
+          'mortalspin',
         ]), 
         'Reliable Recovery': store.doesTeamHaveMoves([
           'healorder',

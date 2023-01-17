@@ -1198,7 +1198,10 @@ class Store {
         // If Hisui region, add hisui forms
         if (region === 'Hisui') {
           for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
-            if (pkmn.includes('hisui')) {
+            if (
+              pkmn.includes('hisui')
+              || ['dialgaorigin', 'palkiaorigin'].includes(pkmn)
+            ) {
               filteredPokedex[pkmn] = pkmnProps
             }
           }

@@ -407,4 +407,8 @@ export default {
   solotl: 1488 + 31,
   miasmite: 1488 + 32,
   dorsoil: 1488 + 33,
+
+  dialgaorigin: 1020 + 237,
+	palkiaorigin: 1020 + 238,
+	basculinwhitestriped: 1020 + 239,
 };

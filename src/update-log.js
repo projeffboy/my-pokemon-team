@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updated Jan 10, 2023
+          Updates (Jan 17, 2023)
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -47,8 +47,12 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>Jan 17, 2023</Typography>
+            <Typography paragraph>Animated sprites for Hisui and Paldea.</Typography>
+            <Typography paragraph>Mortal spin is treated as a spinner move (Credits: anonymous).</Typography>
+
             <Typography variant='subtitle2'>Jan 10, 2023</Typography>
-            <Typography paragraph>The Paldea sprites now match the names in the dropdown list.</Typography>
+            <Typography paragraph>The Paldea sprites now match the names in the dropdown list (Credits: anonymous).</Typography>
 
             <Typography variant='subtitle2'>Dec 18, 2022</Typography>
             <Typography paragraph>Items are updated for gen 9 (Credits: anonymous).</Typography>
