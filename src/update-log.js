@@ -47,7 +47,6 @@ class UpdateLog extends React.Component {
             </div>
 
             <Typography variant='subtitle2'>Jan 17, 2023</Typography>
-            <Typography paragraph>Animated sprites for Hisui and Paldea.</Typography>
             <Typography paragraph>Mortal spin is treated as a spinner move (Credits: anonymous).</Typography>
 
             <Typography variant='subtitle2'>Jan 10, 2023</Typography>

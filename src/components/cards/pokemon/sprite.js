@@ -56,7 +56,8 @@ class Sprite extends React.Component {
     }
 
     if (
-      pokedexNumber == 0
+      pokedexNumber >= 899 || pokedexNumber == 0
+      || (pokemon && (pokemon.includes('hisui') || pokemon.includes('paldea')))
       || ['dialgaorigin', 'palkiaorigin', 'basculinwhitestriped'].includes(pokemon)
     ) {
       typeOfSprite = 'gen5'
