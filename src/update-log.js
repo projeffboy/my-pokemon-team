@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updates (Jan 17, 2023)
+          Updates (Feb 14, 2023)
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -46,6 +46,9 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>Feb 14, 2023</Typography>
+            <Typography paragraph>Fixed it so that moves with variable power, like low kick, are taken into account towards type coverage once again. (Credits: TBA).</Typography>
+
             <Typography variant='subtitle2'>Jan 17, 2023</Typography>
             <Typography paragraph>Mortal spin is treated as a spinner move (Credits: anonymous).</Typography>
 
@@ -53,7 +56,7 @@ class UpdateLog extends React.Component {
             <Typography paragraph>The Paldea sprites now match the names in the dropdown list (Credits: anonymous).</Typography>
 
             <Typography variant='subtitle2'>Dec 18, 2022</Typography>
-            <Typography paragraph>Items are updated for gen 9 (Credits: anonymous).</Typography>
+            <Typography paragraph>Items are updated for gen 9 (Credits: Abner Garcia II).</Typography>
             <Typography paragraph>Fixed a bug where selecting a pokemon whose pre-evolution has a hyphen in their name crashes, like Basculeigon (Credits: anonymous).</Typography>
 
             <Typography variant='subtitle2'>Nov 27, 2022</Typography>
