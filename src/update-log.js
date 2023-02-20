@@ -47,7 +47,7 @@ class UpdateLog extends React.Component {
             </div>
 
             <Typography variant='subtitle2'>Feb 14, 2023</Typography>
-            <Typography paragraph>Fixed it so that moves with variable power, like low kick, are taken into account towards type coverage once again. (Credits: TBA).</Typography>
+            <Typography paragraph>Fixed it so that moves with variable power, like low kick, are taken into account towards type coverage once again. (Credits: Jackalupe).</Typography>
 
             <Typography variant='subtitle2'>Jan 17, 2023</Typography>
             <Typography paragraph>Mortal spin is treated as a spinner move (Credits: anonymous).</Typography>
