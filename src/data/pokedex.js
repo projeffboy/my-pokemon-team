@@ -1,5 +1,3 @@
-// Please check missingno's type
-
 export default {
 	bulbasaur: {
 		num: 1,
@@ -2662,15 +2660,15 @@ export default {
 		heightm: 1.4,
 		weightkg: 88.4,
 		color: "Brown",
-		otherFormes: ["Tauros-Paldea", "Tauros-Paldea-Fire", "Tauros-Paldea-Water"],
-		formeOrder: ["Tauros", "Tauros-Paldea", "Tauros-Paldea-Fire", "Tauros-Paldea-Water"],
+		otherFormes: ["Tauros-Paldea-Combat", "Tauros-Paldea-Blaze", "Tauros-Paldea-Aqua"],
+		formeOrder: ["Tauros", "Tauros-Paldea-Combat", "Tauros-Paldea-Blaze", "Tauros-Paldea-Aqua"],
 		eggGroups: ["Field"],
 	},
-	taurospaldea: {
+	taurospaldeacombat: {
 		num: 128,
-		name: "Tauros-Paldea",
+		name: "Tauros-Paldea-Combat",
 		baseSpecies: "Tauros",
-		forme: "Paldea",
+		forme: "Paldea-Combat",
 		types: ["Fighting"],
 		gender: "M",
 		baseStats: {hp: 75, atk: 110, def: 105, spa: 30, spd: 70, spe: 100},
@@ -2680,11 +2678,11 @@ export default {
 		color: "Black",
 		eggGroups: ["Field"],
 	},
-	taurospaldeafire: {
+	taurospaldeablaze: {
 		num: 128,
-		name: "Tauros-Paldea-Fire",
+		name: "Tauros-Paldea-Blaze",
 		baseSpecies: "Tauros",
-		forme: "Paldea-Fire",
+		forme: "Paldea-Blaze",
 		types: ["Fighting", "Fire"],
 		gender: "M",
 		baseStats: {hp: 75, atk: 110, def: 105, spa: 30, spd: 70, spe: 100},
@@ -2694,11 +2692,11 @@ export default {
 		color: "Black",
 		eggGroups: ["Field"],
 	},
-	taurospaldeawater: {
+	taurospaldeaaqua: {
 		num: 128,
-		name: "Tauros-Paldea-Water",
+		name: "Tauros-Paldea-Aqua",
 		baseSpecies: "Tauros",
-		forme: "Paldea-Water",
+		forme: "Paldea-Aqua",
 		types: ["Fighting", "Water"],
 		gender: "M",
 		baseStats: {hp: 75, atk: 110, def: 105, spa: 30, spd: 70, spe: 100},
@@ -8418,6 +8416,8 @@ export default {
 		weightkg: 850,
 		color: "White",
 		eggGroups: ["Undiscovered"],
+		requiredItem: "Adamant Crystal",
+		changesFrom: "Dialga",
 		gen: 8,
 	},
 	palkia: {
@@ -8448,6 +8448,8 @@ export default {
 		weightkg: 660,
 		color: "Purple",
 		eggGroups: ["Undiscovered"],
+		requiredItem: "Lustrous Globe",
+		changesFrom: "Palkia",
 		gen: 8,
 	},
 	heatran: {
@@ -8504,7 +8506,7 @@ export default {
 		weightkg: 650,
 		color: "Black",
 		eggGroups: ["Undiscovered"],
-		requiredItem: "Griseous Orb",
+		requiredItem: "Griseous Core",
 		changesFrom: "Giratina",
 	},
 	cresselia: {
@@ -10091,7 +10093,7 @@ export default {
 		forme: "Hisui",
 		types: ["Normal", "Ghost"],
 		genderRatio: {M: 0.875, F: 0.125},
-		baseStats: {hp: 60, atk: 105, def: 60, spa: 120, spd: 60, spe: 105},
+		baseStats: {hp: 55, atk: 100, def: 60, spa: 125, spd: 60, spe: 110},
 		abilities: {0: "Illusion"},
 		heightm: 1.6,
 		weightkg: 73,
@@ -12955,8 +12957,8 @@ export default {
 		weightkg: 180,
 		color: "White",
 		prevo: "Crabrawler",
-		evoType: "levelExtra",
-		evoCondition: "at Mount Lanakila",
+		evoType: "useItem",
+		evoItem: "Ice Stone",
 		eggGroups: ["Water 3"],
 	},
 	oricorio: {
@@ -15725,7 +15727,7 @@ export default {
 		types: ["Fighting"],
 		genderRatio: {M: 0.875, F: 0.125},
 		baseStats: {hp: 60, atk: 90, def: 60, spa: 53, spd: 50, spe: 72},
-		abilities: {0: "Inner Focus", H: "No Guard"},
+		abilities: {0: "Inner Focus"},
 		heightm: 0.6,
 		weightkg: 12,
 		color: "Gray",
@@ -15915,7 +15917,7 @@ export default {
 		num: 900,
 		name: "Kleavor",
 		types: ["Bug", "Rock"],
-		baseStats: {hp: 70, atk: 130, def: 95, spa: 45, spd: 75, spe: 85},
+		baseStats: {hp: 70, atk: 135, def: 95, spa: 45, spd: 70, spe: 85},
 		abilities: {0: "Swarm", 1: "Sheer Force", H: "Sharpness"},
 		heightm: 1.8,
 		weightkg: 89,
@@ -15984,7 +15986,7 @@ export default {
 		weightkg: 43,
 		color: "Purple",
 		prevo: "Sneasel-Hisui",
-		evoType: "useItem",
+		evoType: "levelHold",
 		evoItem: "Razor Claw",
 		evoCondition: "during the day",
 		eggGroups: ["Field"],
@@ -16724,7 +16726,6 @@ export default {
 		prevo: "Capsakid",
 		evoType: "useItem",
 		evoItem: "Fire Stone",
-		evoLevel: 30,
 		eggGroups: ["Grass"],
 	},
 	rellor: {
@@ -16757,7 +16758,7 @@ export default {
 		num: 955,
 		name: "Flittle",
 		types: ["Psychic"],
-		baseStats: {hp: 30, atk: 35, def: 30, spa: 55, spd: 40, spe: 75},
+		baseStats: {hp: 30, atk: 35, def: 30, spa: 55, spd: 30, spe: 75},
 		abilities: {0: "Anticipation", 1: "Frisk", H: "Speed Boost"},
 		heightm: 0.2,
 		weightkg: 1.5,
@@ -17168,7 +17169,7 @@ export default {
 		heightm: 2.2,
 		weightkg: 320,
 		color: "Purple",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	screamtail: {
@@ -17181,7 +17182,7 @@ export default {
 		heightm: 1.2,
 		weightkg: 8,
 		color: "Pink",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	brutebonnet: {
@@ -17194,7 +17195,7 @@ export default {
 		heightm: 1.2,
 		weightkg: 21,
 		color: "Gray",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	fluttermane: {
@@ -17207,7 +17208,7 @@ export default {
 		heightm: 1.4,
 		weightkg: 4,
 		color: "Gray",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	slitherwing: {
@@ -17220,7 +17221,7 @@ export default {
 		heightm: 3.2,
 		weightkg: 92,
 		color: "Red",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	sandyshocks: {
@@ -17233,7 +17234,7 @@ export default {
 		heightm: 2.3,
 		weightkg: 60,
 		color: "Gray",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	irontreads: {
@@ -17246,7 +17247,7 @@ export default {
 		heightm: 0.9,
 		weightkg: 240,
 		color: "Gray",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	ironbundle: {
@@ -17259,7 +17260,7 @@ export default {
 		heightm: 0.6,
 		weightkg: 11,
 		color: "Red",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	ironhands: {
@@ -17272,7 +17273,7 @@ export default {
 		heightm: 1.8,
 		weightkg: 380.7,
 		color: "Gray",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	ironjugulis: {
@@ -17285,7 +17286,7 @@ export default {
 		heightm: 1.3,
 		weightkg: 111,
 		color: "Blue",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	ironmoth: {
@@ -17298,7 +17299,7 @@ export default {
 		heightm: 1.2,
 		weightkg: 36,
 		color: "Yellow",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	ironthorns: {
@@ -17311,7 +17312,7 @@ export default {
 		heightm: 1.6,
 		weightkg: 303,
 		color: "Green",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	frigibax: {
@@ -17396,7 +17397,7 @@ export default {
 		color: "Yellow",
 		prevo: "Gimmighoul",
 		evoType: "other",
-		evoCondition: "Give 999 Coins",
+		evoCondition: "Level up with 999 Coins in the bag",
 		eggGroups: ["Undiscovered"],
 	},
 	wochien: {
@@ -17461,7 +17462,7 @@ export default {
 		heightm: 2,
 		weightkg: 380,
 		color: "Green",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	ironvaliant: {
@@ -17474,7 +17475,7 @@ export default {
 		heightm: 1.4,
 		weightkg: 35,
 		color: "White",
-		tags: ["Sub-Legendary", "Paradox"],
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	koraidon: {
@@ -17501,6 +17502,32 @@ export default {
 		weightkg: 240,
 		color: "Blue",
 		tags: ["Restricted Legendary"],
+		eggGroups: ["Undiscovered"],
+	},
+	walkingwake: {
+		num: 1009,
+		name: "Walking Wake",
+		types: ["Water", "Dragon"],
+		gender: "N",
+		baseStats: {hp: 99, atk: 83, def: 91, spa: 125, spd: 83, spe: 109},
+		abilities: {0: "Protosynthesis"},
+		heightm: 3.5,
+		weightkg: 280,
+		color: "Blue",
+		tags: ["Paradox"],
+		eggGroups: ["Undiscovered"],
+	},
+	ironleaves: {
+		num: 1010,
+		name: "Iron Leaves",
+		types: ["Grass", "Psychic"],
+		gender: "N",
+		baseStats: {hp: 90, atk: 130, def: 88, spa: 70, spd: 108, spe: 104},
+		abilities: {0: "Quark Drive"},
+		heightm: 1.5,
+		weightkg: 125,
+		color: "Green",
+		tags: ["Paradox"],
 		eggGroups: ["Undiscovered"],
 	},
 	missingno: {

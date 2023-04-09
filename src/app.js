@@ -13,14 +13,17 @@ import Cards from './components/cards'
 import Manual from './manual'
 import Credits from './credits'
 import UpdateLog from './update-log'
-import newFace from './palafin.png'
-import landorusFace from './landorus-face.png'
+import face1 from './landorus-face.png'
+import face2 from './virizion-face.png'
 import TypeChartDialog from './type-chart-dialog'
 import CssBaseline from '@material-ui/core/CssBaseline' // like CSS Reset
 import {MuiThemeProvider} from '@material-ui/core/styles' // provide your custom theme
 import {theme, darkTheme} from './styles'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+
+const face1Alt = 'Landorus Face'
+const face2Alt = 'Virizion Face'
 
 function faceWidth(breakpoint) {
   if (breakpoint !== 'xs') {
@@ -59,8 +62,8 @@ export default compose(withStyles(appStyles), withWidth())(props => {
         <Grid item container xs={12} justify='center'>
           <Grid item>
             <img
-              src={landorusFace}
-              alt='Landorus Face'
+              src={face1}
+              alt={face1Alt}
               height={faceWidth(props.width)}
               style={{padding: '0 6px'}}  
             />
@@ -74,8 +77,8 @@ export default compose(withStyles(appStyles), withWidth())(props => {
           </Grid>
           <Grid item>
             <img
-              src={newFace}
-              alt='Palafin'
+              src={face2}
+              alt={face1Alt}
               height={faceWidth(props.width)}
               style={{padding: '0 6px'}}
             />

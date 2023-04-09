@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updates (Feb 14, 2023)
+          Updates (April 8, 2023)
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -45,6 +45,9 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+
+            <Typography variant='subtitle2'>April 8, 2023</Typography>
+            <Typography paragraph>Added Iron Leaves and Walking Wake.</Typography>
 
             <Typography variant='subtitle2'>Feb 14, 2023</Typography>
             <Typography paragraph>Fixed it so that moves with variable power, like low kick, are taken into account towards type coverage once again. (Credits: Jackalupe).</Typography>
