@@ -9,7 +9,7 @@ import movesData from './data/moves'
 import oldMovesData from './data/old-moves'
 import formatsData from './data/formats'
 
-// Remove tehse during production and modify the variable names above
+// Remove these during production and modify the variable names above
 const pokedex = pokedexData
 const items = itemsData
 const learnsets = learnsetsData
@@ -612,6 +612,10 @@ class Store {
           // Hence this code
           if (pkmn === 'charizardmegay' || pkmn === 'mewtwomegay') {
             pkmnItem = pkmnItem.replace('x', 'y')
+          }
+          // Same with Sharpedo and Sharp Beak
+          else if (pkmn === 'sharpedomega') {
+            pkmnItem = 'sharpedonite'
           }
         }
 

@@ -37,6 +37,7 @@ BUG CHANGES
 
 MINOR THINGS
 -either pick e or event
+-what counts as boosting, e.g. mystical power
 
 MAJOR CHANGES
 -no repeated moves

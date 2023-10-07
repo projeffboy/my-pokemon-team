@@ -34,14 +34,14 @@ class MoreInfo extends React.Component {
     let tabTitles = [
       'Search Filters', 
       'Team Checklist', 
-      'Pokemon Showdown Team',
+      'Save/Load Team',
     ]
 
     if (width !== 'lg' && width !== 'xl') { // If the screen is below 1200px
       tabTitles = [
         'Filters',
         'Checklist',
-        'Showdown',
+        'Save/Load',
       ]
     }
 

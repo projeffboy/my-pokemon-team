@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updates (April 8, 2023)
+          Updates (October 7, 2023)
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -46,8 +46,12 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>October 7, 2023</Typography>
+            <Typography paragraph>Added new items, DLC pokemon, and moves like raging fury (Credits: TBD).</Typography>            
+            <Typography paragraph>Selecting Mega Sharpedo doesn't give it Sharp Beak now (Credits: TBD).</Typography>
+
             <Typography variant='subtitle2'>April 8, 2023</Typography>
-            <Typography paragraph>Added Iron Leaves and Walking Wake.</Typography>
+            <Typography paragraph>Added Iron Leaves and Walking Wake (Credits: Meta Maxis).</Typography>
 
             <Typography variant='subtitle2'>Feb 14, 2023</Typography>
             <Typography paragraph>Fixed it so that moves with variable power, like low kick, are taken into account towards type coverage once again. (Credits: Jackalupe).</Typography>
