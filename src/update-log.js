@@ -47,7 +47,7 @@ class UpdateLog extends React.Component {
             </div>
 
             <Typography variant='subtitle2'>October 7, 2023</Typography>
-            <Typography paragraph>Added new items, DLC pokemon, and moves like raging fury (Credits: TBD).</Typography>            
+            <Typography paragraph>Teal Mask DLC update (Credits: TBD).</Typography>            
             <Typography paragraph>Selecting Mega Sharpedo doesn't give it Sharp Beak now (Credits: TBD).</Typography>
 
             <Typography variant='subtitle2'>April 8, 2023</Typography>
