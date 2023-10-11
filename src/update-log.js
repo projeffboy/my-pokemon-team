@@ -47,8 +47,8 @@ class UpdateLog extends React.Component {
             </div>
 
             <Typography variant='subtitle2'>October 7, 2023</Typography>
-            <Typography paragraph>Teal Mask DLC update (Credits: TBD).</Typography>            
-            <Typography paragraph>Selecting Mega Sharpedo doesn't give it Sharp Beak now (Credits: TBD).</Typography>
+            <Typography paragraph>Teal Mask DLC update (Credits: Agame4free).</Typography>            
+            <Typography paragraph>Selecting Mega Sharpedo doesn't give it Sharp Beak now (Credits: Owen W.).</Typography>
 
             <Typography variant='subtitle2'>April 8, 2023</Typography>
             <Typography paragraph>Added Iron Leaves and Walking Wake (Credits: Meta Maxis).</Typography>
