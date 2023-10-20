@@ -14,7 +14,7 @@ import Manual from './manual'
 import Credits from './credits'
 import UpdateLog from './update-log'
 import face1 from './landorus-face.png'
-import face2 from './virizion-face.png'
+import face2 from './ogerpon-teal-mask-by-jormxdos.png'
 import TypeChartDialog from './type-chart-dialog'
 import CssBaseline from '@material-ui/core/CssBaseline' // like CSS Reset
 import {MuiThemeProvider} from '@material-ui/core/styles' // provide your custom theme

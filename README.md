@@ -20,7 +20,7 @@ If you want to help me write code for new features, I would suggest that you sav
 
 ## Major Credits
 - Nintendo, The Pokemon Company, Game Freak
-- [Dragapult Pokemon Shuffle Fanart (By Shagapult)](https://twitter.com/Shagapult)
+- [Ogerpon Teal Mask (by jormxdos)](https://www.deviantart.com/jormxdos)
 - [Pokemon Showdown](https://pokemonshowdown.com/): animated sprites, non-animated sprites, and all the pokemon data (thanks Zarel!)
 - [Javascript React framework](https://reactjs.org/)
 - [Material UI](https://material-ui.com/)
