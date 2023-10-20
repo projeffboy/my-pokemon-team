@@ -586,7 +586,7 @@ export default {
 		flags: {protect: 1, reflectable: 1, mirror: 1, bypasssub: 1},
 		volatileStatus: 'attract',
 		condition: {
-			noCopy: true, 
+			noCopy: true, // doesn't get copied by Baton Pass
 			onBeforeMovePriority: 2,
 		},
 		secondary: null,
@@ -614,7 +614,6 @@ export default {
 		accuracy: 100,
 		basePower: 110,
 		category: "Physical",
-		isNonstandard: "Past",
 		name: "Aura Wheel",
 		pp: 10,
 		priority: 0,
@@ -859,7 +858,6 @@ export default {
 		condition: {
 			duration: 1,
 		},
-		
 		secondary: null,
 		target: "normal",
 		type: "Flying",
@@ -1155,6 +1153,19 @@ export default {
 		type: "Normal",
 		zMove: {boost: {def: 1}},
 		contestType: "Cute",
+	},
+	bloodmoon: {
+		num: 901,
+		accuracy: 100,
+		basePower: 140,
+		category: "Special",
+		name: "Blood Moon",
+		pp: 5,
+		priority: 0,
+		flags: {protect: 1, mirror: 1, cantusetwice: 1},
+		secondary: null,
+		target: "normal",
+		type: "Normal",
 	},
 	bloomdoom: {
 		num: 644,
@@ -1731,7 +1742,7 @@ export default {
 		pp: 15,
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1, slicing: 1},
-		secondary: {}, 
+		secondary: {}, // Sheer Force-boosted
 		target: "normal",
 		type: "Dark",
 	},
@@ -1861,8 +1872,8 @@ export default {
 		pp: 10,
 		priority: 0,
 		flags: {},
-		
-		
+		// TODO show prepare message before the "POKEMON used MOVE!" message
+		// This happens even before sleep shows its "POKEMON is fast asleep." message
 		weather: 'snow',
 		selfSwitch: true,
 		secondary: null,
@@ -1895,7 +1906,7 @@ export default {
 		pp: 5,
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
-		
+		// Recoil implemented in battle-actions.ts
 		secondary: null,
 		target: "normal",
 		type: "Grass",
@@ -1935,7 +1946,6 @@ export default {
 		accuracy: 100,
 		basePower: 110,
 		category: "Special",
-		isNonstandard: "Past",
 		name: "Clanging Scales",
 		pp: 5,
 		priority: 0,
@@ -1955,7 +1965,6 @@ export default {
 		accuracy: 100,
 		basePower: 0,
 		category: "Status",
-		isNonstandard: "Past",
 		name: "Clangorous Soul",
 		pp: 5,
 		priority: 0,
@@ -1992,7 +2001,7 @@ export default {
 		},
 		isZ: "kommoniumz",
 		secondary: {
-			
+			// Sheer Force negates the selfBoost even though it is not secondary
 		},
 		target: "allAdjacentFoes",
 		type: "Dragon",
@@ -2610,7 +2619,6 @@ export default {
 		accuracy: 50,
 		basePower: 0,
 		category: "Status",
-		isNonstandard: "Past",
 		name: "Dark Void",
 		pp: 10,
 		priority: 0,
@@ -2779,7 +2787,7 @@ export default {
 			},
 		},
 		secondary: {
-			
+			// Sheer Force negates the self even though it is not secondary
 		},
 		target: "allAdjacentFoes",
 		type: "Rock",
@@ -2814,7 +2822,7 @@ export default {
 		volatileStatus: 'disable',
 		condition: {
 			duration: 5,
-			noCopy: true, 
+			noCopy: true, // doesn't get copied by Baton Pass
 			onResidualOrder: 17,
 			onBeforeMovePriority: 7,
 		},
@@ -2925,7 +2933,6 @@ export default {
 		accuracy: 100,
 		basePower: 140,
 		category: "Special",
-		isNonstandard: "Past",
 		name: "Doom Desire",
 		pp: 5,
 		priority: 0,
@@ -3604,7 +3611,7 @@ export default {
 		volatileStatus: 'embargo',
 		condition: {
 			duration: 5,
-			
+			// Item suppression implemented in Pokemon.ignoringItem() within sim/pokemon.js
 			onResidualOrder: 21,
 		},
 		secondary: null,
@@ -3642,7 +3649,7 @@ export default {
 		volatileStatus: 'encore',
 		condition: {
 			duration: 3,
-			noCopy: true, 
+			noCopy: true, // doesn't get copied by Z-Baton Pass
 			onResidualOrder: 16,
 		},
 		secondary: null,
@@ -3994,7 +4001,7 @@ export default {
 		priority: 2,
 		flags: {mirror: 1, noassist: 1, failcopycat: 1},
 		breaksProtect: true,
-		
+		// Breaking protection implemented in scripts.js
 		secondary: null,
 		target: "normal",
 		type: "Normal",
@@ -4088,6 +4095,7 @@ export default {
 		num: 515,
 		accuracy: 100,
 		basePower: 0,
+		selfdestruct: "ifHit",
 		category: "Special",
 		name: "Final Gambit",
 		pp: 5,
@@ -4679,7 +4687,6 @@ export default {
 		accuracy: 100,
 		basePower: 0,
 		category: "Status",
-		isNonstandard: "Past",
 		name: "Forest's Curse",
 		pp: 20,
 		priority: 0,
@@ -4924,7 +4931,7 @@ export default {
 		flags: {protect: 1, reflectable: 1, mirror: 1, allyanim: 1},
 		volatileStatus: 'gastroacid',
 		condition: {
-			
+			// Ability suppression implemented in Pokemon.ignoringAbility() within sim/pokemon.ts
 		},
 		secondary: null,
 		target: "normal",
@@ -5047,8 +5054,7 @@ export default {
 		name: "Gigaton Hammer",
 		pp: 5,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
-		condition: {},
+		flags: {protect: 1, mirror: 1, cantusetwice: 1},
 		secondary: null,
 		target: "normal",
 		type: "Steel",
@@ -5828,7 +5834,7 @@ export default {
 	grassyglide: {
 		num: 803,
 		accuracy: 100,
-		basePower: 60,
+		basePower: 55,
 		category: "Physical",
 		name: "Grassy Glide",
 		pp: 20,
@@ -5893,7 +5899,7 @@ export default {
 		pseudoWeather: 'gravity',
 		condition: {
 			duration: 5,
-			
+			// groundedness implemented in battle.engine.js:BattlePokemon#isGrounded
 			onBeforeMovePriority: 6,
 			onFieldResidualOrder: 27,
 			onFieldResidualSubOrder: 2,
@@ -6895,7 +6901,7 @@ export default {
 		pp: 15,
 		priority: 0,
 		flags: {protect: 1, mirror: 1, defrost: 1},
-		
+		// Damage boost in Sun applied in conditions.ts
 		thawsTarget: true,
 		secondary: null,
 		target: "normal",
@@ -7334,7 +7340,7 @@ export default {
 		volatileStatus: 'ingrain',
 		condition: {
 			onResidualOrder: 7,
-			
+			// groundedness implemented in battle.engine.js:BattlePokemon#isGrounded
 		},
 		secondary: null,
 		target: "self",
@@ -7432,6 +7438,20 @@ export default {
 		type: "Steel",
 		contestType: "Cool",
 	},
+	ivycudgel: {
+		num: 904,
+		accuracy: 100,
+		basePower: 100,
+		category: "Physical",
+		name: "Ivy Cudgel",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, mirror: 1},
+		critRatio: 2,
+		secondary: null,
+		target: "normal",
+		type: "Grass",
+	},
 	jawlock: {
 		num: 746,
 		accuracy: 100,
@@ -7455,7 +7475,6 @@ export default {
 		priority: 1,
 		flags: {contact: 1, protect: 1, mirror: 1, punch: 1},
 		secondary: null,
-		hasSheerForce: true,
 		target: "normal",
 		type: "Water",
 		contestType: "Cool",
@@ -7930,7 +7949,7 @@ export default {
 		priority: 0,
 		flags: {protect: 1, mirror: 1},
 		condition: {
-			noCopy: true, 
+			noCopy: true, // doesn't get copied by Baton Pass
 			duration: 2,
 			onSourceInvulnerabilityPriority: 1,
 		},
@@ -8195,7 +8214,7 @@ export default {
 		pseudoWeather: 'magicroom',
 		condition: {
 			duration: 5,
-			
+			// Item suppression implemented in Pokemon.ignoringItem() within sim/pokemon.js
 			onFieldResidualOrder: 27,
 			onFieldResidualSubOrder: 6,
 		},
@@ -8343,6 +8362,24 @@ export default {
 		type: "Fighting",
 		zMove: {boost: {def: 1}},
 		contestType: "Cool",
+	},
+	matchagotcha: {
+		num: 902,
+		accuracy: 90,
+		basePower: 80,
+		category: "Special",
+		name: "Matcha Gotcha",
+		pp: 15,
+		priority: 0,
+		flags: {protect: 1, mirror: 1, defrost: 1},
+		drain: [1, 2],
+		thawsTarget: true,
+		secondary: {
+			chance: 20,
+			status: 'brn',
+		},
+		target: "allAdjacentFoes",
+		type: "Grass",
 	},
 	maxairstream: {
 		num: 766,
@@ -11340,13 +11377,13 @@ export default {
 		priority: 0,
 		flags: {},
 		slotCondition: 'revivalblessing',
-		
-		
-		
+		// No this not a real switchout move
+		// This is needed to trigger a switch protocol to choose a fainted party member
+		// Feel free to refactor
 		selfSwitch: true,
 		condition: {
 			duration: 1,
-			
+			// reviving implemented in side.ts, kind of
 		},
 		secondary: null,
 		target: "self",
@@ -11999,7 +12036,7 @@ export default {
 		name: "Secret Sword",
 		pp: 10,
 		priority: 0,
-		flags: {protect: 1, mirror: 1},
+		flags: {protect: 1, mirror: 1, slicing: 1},
 		secondary: null,
 		target: "normal",
 		type: "Fighting",
@@ -12024,7 +12061,6 @@ export default {
 		accuracy: 85,
 		basePower: 120,
 		category: "Special",
-		isNonstandard: "Past",
 		name: "Seed Flare",
 		pp: 5,
 		priority: 0,
@@ -12772,7 +12808,7 @@ export default {
 		volatileStatus: 'smackdown',
 		condition: {
 			noCopy: true,
-			
+			// groundedness implemented in battle.engine.js:BattlePokemon#isGrounded
 		},
 		secondary: null,
 		target: "normal",
@@ -13115,7 +13151,7 @@ export default {
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1, bypasssub: 1},
 		stealsBoosts: true,
-		
+		// Boost stealing implemented in scripts.js
 		secondary: null,
 		target: "normal",
 		type: "Ghost",
@@ -13197,7 +13233,7 @@ export default {
 		flags: {reflectable: 1, nonsky: 1, mustpressure: 1},
 		sideCondition: 'spikes',
 		condition: {
-			
+			// this is a side condition
 		},
 		secondary: null,
 		target: "foeSide",
@@ -13422,7 +13458,7 @@ export default {
 		flags: {reflectable: 1, mustpressure: 1},
 		sideCondition: 'stealthrock',
 		condition: {
-			
+			// this is a side condition
 		},
 		secondary: null,
 		target: "foeSide",
@@ -13610,7 +13646,7 @@ export default {
 		pp: 15,
 		priority: 0,
 		flags: {contact: 1, protect: 1, mirror: 1, slicing: 1},
-		secondary: {}, 
+		secondary: {}, // Sheer Force-boosted
 		target: "normal",
 		type: "Rock",
 	},
@@ -13666,7 +13702,6 @@ export default {
 		accuracy: 95,
 		basePower: 90,
 		category: "Special",
-		isNonstandard: "Past",
 		name: "Strange Steam",
 		pp: 10,
 		priority: 0,
@@ -14132,6 +14167,27 @@ export default {
 		zMove: {effect: 'clearnegativeboost'},
 		contestType: "Clever",
 	},
+	syrupbomb: {
+		num: 903,
+		accuracy: 85,
+		basePower: 60,
+		category: "Special",
+		name: "Syrup Bomb",
+		pp: 10,
+		priority: 0,
+		flags: {protect: 1, mirror: 1, bullet: 1},
+		condition: {
+			noCopy: true,
+			duration: 4,
+			onResidualOrder: 14,
+		},
+		secondary: {
+			chance: 100,
+			volatileStatus: 'syrupbomb',
+		},
+		target: "normal",
+		type: "Grass",
+	},
 	tackle: {
 		num: 33,
 		accuracy: 100,
@@ -14151,7 +14207,6 @@ export default {
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
-		isNonstandard: "Past",
 		name: "Tail Glow",
 		pp: 20,
 		priority: 0,
@@ -14241,7 +14296,6 @@ export default {
 		accuracy: true,
 		basePower: 0,
 		category: "Status",
-		isNonstandard: "Past",
 		name: "Take Heart",
 		pp: 15,
 		priority: 0,
@@ -14757,7 +14811,7 @@ export default {
 		pp: 10,
 		priority: 0,
 		flags: {protect: 1, reflectable: 1, mirror: 1},
-		
+		// No Guard-like effect for Poison-type users implemented in Scripts#tryMoveHit
 		status: 'tox',
 		secondary: null,
 		target: "normal",
@@ -14776,7 +14830,7 @@ export default {
 		flags: {reflectable: 1, nonsky: 1, mustpressure: 1},
 		sideCondition: 'toxicspikes',
 		condition: {
-			
+			// this is a side condition
 		},
 		secondary: null,
 		target: "foeSide",
@@ -14789,7 +14843,6 @@ export default {
 		accuracy: 100,
 		basePower: 0,
 		category: "Status",
-		isNonstandard: "Past",
 		name: "Toxic Thread",
 		pp: 20,
 		priority: 0,
@@ -14899,7 +14952,7 @@ export default {
 		pseudoWeather: 'trickroom',
 		condition: {
 			duration: 5,
-			
+			// Speed modification is changed in Pokemon.getActionSpeed() in sim/pokemon.js
 			onFieldResidualOrder: 27,
 			onFieldResidualSubOrder: 1,
 		},
@@ -15660,7 +15713,7 @@ export default {
 		pseudoWeather: 'wonderroom',
 		condition: {
 			duration: 5,
-			
+			// Swapping defenses partially implemented in sim/pokemon.js:Pokemon#calculateStat and Pokemon#getStat
 			onFieldResidualOrder: 27,
 			onFieldResidualSubOrder: 5,
 		},
@@ -15776,7 +15829,7 @@ export default {
 		flags: {protect: 1, reflectable: 1, mirror: 1},
 		volatileStatus: 'yawn',
 		condition: {
-			noCopy: true, 
+			noCopy: true, // doesn't get copied by Baton Pass
 			duration: 2,
 			onResidualOrder: 23,
 		},
