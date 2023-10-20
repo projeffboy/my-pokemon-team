@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updates (October 7, 2023)
+          Updates (October 20, 2023)
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -45,6 +45,9 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+
+            <Typography variant='subtitle2'>October 20, 2023</Typography>
+            <Typography paragraph>Teal Mask DLC update moves (Credits: TBD).</Typography>   
 
             <Typography variant='subtitle2'>October 7, 2023</Typography>
             <Typography paragraph>Teal Mask DLC update (Credits: Agame4free).</Typography>            
