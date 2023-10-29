@@ -23,7 +23,7 @@ class UpdateLog extends React.Component {
     return (
       <>
         <Button onClick={this.toggleDialog} style={{fontWeight: 'initial', textTransform: 'initial'}}>
-          Updates (October 20, 2023)
+          Updates (October 28, 2023)
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -46,8 +46,11 @@ class UpdateLog extends React.Component {
               </Button>
             </div>
 
+            <Typography variant='subtitle2'>October 28, 2023</Typography>
+            <Typography paragraph>Moves with variable base power like low kick and grass knot now count towards type coverage (this used to work before gen 9) (Credits: TBD).</Typography>  
+
             <Typography variant='subtitle2'>October 20, 2023</Typography>
-            <Typography paragraph>Teal Mask DLC update moves (Credits: TBD).</Typography>   
+            <Typography paragraph>Teal Mask DLC update moves (Credits: Anonymous).</Typography>   
 
             <Typography variant='subtitle2'>October 7, 2023</Typography>
             <Typography paragraph>Teal Mask DLC update (Credits: Agame4free).</Typography>            
