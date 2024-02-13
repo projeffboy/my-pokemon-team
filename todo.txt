@@ -31,7 +31,7 @@ STYLE CHANGES
 -the input delete x button too big
 
 BUG CHANGES
--weird stuff with like arceus-normal with draco plate has normal type judgement
+-weird stuff with like arceus-normal with draco plate has normal type judgment
 -or silvally-normal with dark memory has normal-type multi-attack
 -porygonZ Z-conversion?
 

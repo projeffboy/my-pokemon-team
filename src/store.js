@@ -831,6 +831,9 @@ class Store {
     } else if (move === 'judgment') { // For Arceus
       const pkmnProps = pokedex[pkmn]
       moveType = pkmnProps.types[0] // Arceus only has one ability
+    } else if (move === 'ivycudgel') {
+      const pkmnProps = pokedex[pkmn]
+      moveType = pkmnProps.types[pkmnProps.types.length > 1 ? 1 : 0]
     } else if (move === 'technoblast') { // For Genesect
       switch (pkmn) {
         case 'genesectdouse':
