@@ -55,7 +55,14 @@ class PokemonShowdownTeam extends React.Component {
         
         // Get pokemon and item names
         const pkmnAndItemNames = lines[0].split('@').map(str => str.trim())
-        const [pkmnName, itemName] = pkmnAndItemNames
+        const [pkmnNameAndNickname, itemName] = pkmnAndItemNames
+        
+        // Check for nickname
+        let pkmnName = pkmnNameAndNickname
+        if (pkmnName.includes("(")) {
+          pkmnName = pkmnName.split('(')[1].replace(')', '')
+          console.log(pkmnName)
+        }
 
         // Check if the pokemon the user typed is legit
         const pkmn = store.pkmnNameInverse(pkmnName.replace(/\(.\)/, '').trim())
