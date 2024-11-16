@@ -4,6 +4,7 @@ import {observer} from 'mobx-react'
 import store from '../../../store'
 import pokedex from '../../../data/pokedex'
 import {pokemonInputStyles as spriteStyles} from '../../../styles'
+import questionMark from '../../../question-mark.png'
 
 @observer
 class Sprite extends React.Component {
@@ -70,12 +71,12 @@ class Sprite extends React.Component {
       <div className={`${classes.gridItem} ${classes.spriteContainer}`}>
         { 
           <img 
-            alt={spriteFilename || 'questionmark'}
+            alt={spriteFilename || 'question-mark'}
             /* URL from Pokemon Showdown */
             src={spriteFilename
               ? `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`
               // The placeholder (question mark) sprite
-              : 'https://play.pokemonshowdown.com/sprites/bw/0.png'
+              : questionMark
             }
             /* Apply miniSprite class if it's a mini sprite */
             className={`${classes.sprite} ${width === 'sm' ? classes.miniSprite : ''} ${(width === 'lg' || width === 'xl') ? classes.smallerSprite : ''}`}
