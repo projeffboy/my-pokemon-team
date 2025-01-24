@@ -12,6 +12,7 @@ import {appStyles} from './styles'
 import Cards from './components/cards'
 import Manual from './manual'
 import Credits from './credits'
+import PrivacyPolicy from './privacy-policy'
 import UpdateLog from './update-log'
 import face1 from './landorus-face.png'
 import face2 from './ogerpon-teal-mask-by-jormxdos.png'
@@ -114,6 +115,9 @@ export default compose(withStyles(appStyles), withWidth())(props => {
           </Grid>
           <Grid item>
             <UpdateLog />
+          </Grid>
+          <Grid item>
+            <PrivacyPolicy />
           </Grid>
           <Grid item>
             <FormControlLabel
