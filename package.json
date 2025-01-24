@@ -18,8 +18,8 @@
     "typescript": "^3.3.3333"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "BROWSER='microsoft edge' react-app-rewired --openssl-legacy-provider start",
+    "build": "react-app-rewired build --openssl-legacy-provider start",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-app-rewired eject"
   },
