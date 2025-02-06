@@ -45,7 +45,13 @@ class TeamChecklist extends React.Component {
         ]) || this.hasWishAndProtect(),
       },
       'Defensive': {
-        'Cleric': store.doesTeamHaveMoves(['aromatherapy', 'healbell']), 
+        'Cleric/Healer': store.doesTeamHaveMoves([
+	  'aromatherapy',
+	  'healbell',
+	  'wish',
+	  'healingwish',
+	  'lunardance',
+	]), 
         'Status Move': store.anyStatusMoves, 
         'Phazer': store.doesTeamHaveMoves([
           'circlethrow',
