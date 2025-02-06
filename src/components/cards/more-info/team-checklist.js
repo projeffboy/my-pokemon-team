@@ -37,6 +37,7 @@ class TeamChecklist extends React.Component {
           'morningsun',
           'recover',
           'roost',
+          'slackoff',
           'shoreup',
           'softboiled',
           'strengthsap',
