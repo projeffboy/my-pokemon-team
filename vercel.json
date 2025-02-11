@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/ads.txt",
+      "destination": "https://config.playwire.com/dyn_ads/1022828/70684/ads.txt",
+      "statusCode": 301
+    }
+  ]
+}
