@@ -11,6 +11,7 @@
     "react-app-rewire-mobx": "^1.0.9",
     "react-app-rewired": "^2.1.0",
     "react-dom": "^16.8.4",
+    "react-router-dom": "^5.3.4",
     "react-scripts": "2.1.8",
     "react-swipeable-views": "^0.13.1",
     "react-virtualized-select": "^3.1.3",

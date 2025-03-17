@@ -18,19 +18,19 @@ export default class extends React.Component {
   fab() {
     if (this.props.width === 'xs') {
       return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='round' size='small' style={{position: 'fixed', bottom: 16, right: 16}}>
+        <Fab onClick={this.toggleDialog} color='primary' variant='round' size='small' style={{position: 'fixed', bottom: 116, right: 16}}>
           <TableChart />
         </Fab>
       )
     } else if (this.props.width === 'sm') {
       return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='round' size='large' style={{position: 'fixed', bottom: 16, right: 24}}>
+        <Fab onClick={this.toggleDialog} color='primary' variant='round' size='large' style={{position: 'fixed', bottom: 116, right: 24}}>
           <TableChart />
         </Fab>
       )
     } else {
       return (
-        <Fab onClick={this.toggleDialog} color='primary' variant='extended' size='large' style={{position: 'fixed', bottom: 16, right: 24}}>
+        <Fab onClick={this.toggleDialog} color='primary' variant='extended' size='large' style={{position: 'fixed', bottom: 116, right: 24}}>
           <TableChart style={{marginRight: 8}} />
           Type Chart
         </Fab>

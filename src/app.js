@@ -22,6 +22,11 @@ import {MuiThemeProvider} from '@material-ui/core/styles' // provide your custom
 import {theme, darkTheme} from './styles'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
+import { BrowserRouter as Router } from 'react-router-dom'
+import Ramp from './components/RAMP'
+
+const PUB_ID = 1025446
+const WEBSITE_ID = 75399
 
 const face1Alt = 'Landorus Face'
 const face2Alt = 'Virizion Face'
@@ -56,86 +61,91 @@ export default compose(withStyles(appStyles), withWidth())(props => {
      * apparently there's a slight horizontal scroll if I don't set the width and margin for <Grid />
      * the original width for <Grid /> was calc(100% + 24px)
      */
-    <MuiThemeProvider theme={darkMode ? darkTheme : theme}>
-      <CssBaseline />
-      <Grid container spacing={16} justify='center' alignItems='center' className={props.classes.root}>
-        {/* Header */}
-        <Grid item container xs={12} justify='center'>
-          <Grid item>
-            <img
-              src={face1}
-              alt={face1Alt}
-              height={faceWidth(props.width)}
-              style={{padding: '0 6px'}}  
-            />
-          </Grid>
-          <Grid item>     
-            <Typography 
-              variant='h3'
-              style={{padding: '0 20px', fontSize: titleFontSize(props.width) + 'rem'}}>
-              My Pokemon Team
-            </Typography>
-          </Grid>
-          <Grid item>
-            <img
-              src={face2}
-              alt={face1Alt}
-              height={faceWidth(props.width)}
-              style={{padding: '0 6px'}}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant='subtitle1' align='center'>
-              For Generation 6 to 9 (Scarlet/Violet)
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant='caption' align='center'>
-              <sub>Report Bugs to jeffery124@gmail.com</sub>
-            </Typography>
-          </Grid>
-        </Grid>
-        {/* Main */}
-        <Cards darkMode={darkMode} />
-        {/* Footer */}
-        <Grid item container xs={12} justify='center' alignItems='center' spacing={16}>
-        <Grid item>
-            <Manual darkMode={darkMode} />
-          </Grid>
-          <Grid item>
-            <Button
-              href='https://jefferytang.com'
-              style={{fontWeight: 'initial', textTransform: 'initial'}}
-            >
-              Jeffery Tang
-            </Button>
-          </Grid>
-          <Grid item>
-            <Credits />
-          </Grid>
-          <Grid item>
-            <UpdateLog />
-          </Grid>
-          <Grid item>
-            <PrivacyPolicy />
-          </Grid>
-          <Grid item>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={darkMode}
-                  onChange={() => setDarkMode(!darkMode)}
-                  value="darkMode"
+    <Router>
+      <>
+        <Ramp PUB_ID={PUB_ID} WEBSITE_ID={WEBSITE_ID} />
+        <MuiThemeProvider theme={darkMode ? darkTheme : theme}>
+          <CssBaseline />
+          <Grid container spacing={16} justify='center' alignItems='center' className={props.classes.root}>
+            {/* Header */}
+            <Grid item container xs={12} justify='center'>
+              <Grid item>
+                <img
+                  src={face1}
+                  alt={face1Alt}
+                  height={faceWidth(props.width)}
+                  style={{padding: '0 6px'}}
                 />
-              }
-              label="Dark Mode"
-            />
+              </Grid>
+              <Grid item>
+                <Typography
+                  variant='h3'
+                  style={{padding: '0 20px', fontSize: titleFontSize(props.width) + 'rem'}}>
+                  My Pokemon Team
+                </Typography>
+              </Grid>
+              <Grid item>
+                <img
+                  src={face2}
+                  alt={face1Alt}
+                  height={faceWidth(props.width)}
+                  style={{padding: '0 6px'}}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='subtitle1' align='center'>
+                  For Generation 6 to 9 (Scarlet/Violet)
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant='caption' align='center'>
+                  <sub>Report Bugs to jeffery124@gmail.com</sub>
+                </Typography>
+              </Grid>
+            </Grid>
+            {/* Main */}
+            <Cards darkMode={darkMode} />
+            {/* Footer */}
+            <Grid item container xs={12} justify='center' alignItems='center' spacing={16} style={{paddingBottom: 106}}>
+              <Grid item>
+                <Manual darkMode={darkMode} />
+              </Grid>
+              <Grid item>
+                <Button
+                  href='https://jefferytang.com'
+                  style={{fontWeight: 'initial', textTransform: 'initial'}}
+                >
+                  Jeffery Tang
+                </Button>
+              </Grid>
+              <Grid item>
+                <Credits />
+              </Grid>
+              <Grid item>
+                <UpdateLog />
+              </Grid>
+              <Grid item>
+                <PrivacyPolicy />
+              </Grid>
+              <Grid item>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={darkMode}
+                      onChange={() => setDarkMode(!darkMode)}
+                      value="darkMode"
+                    />
+                  }
+                  label="Dark Mode"
+                />
+              </Grid>
+            </Grid>
           </Grid>
-        </Grid>
-      </Grid>
-      <MainSnackbar />
-      <TypeChartDialog width={props.width} />
-    </MuiThemeProvider>
+          <MainSnackbar />
+          <TypeChartDialog width={props.width} />
+        </MuiThemeProvider>
+      </>
+    </Router>
   )
 })
 
