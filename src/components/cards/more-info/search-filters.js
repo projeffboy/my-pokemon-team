@@ -69,6 +69,14 @@ class SearchFilters extends React.Component {
               value={store.searchFilters[inputLabel.toLowerCase()]}
               onChange={e => this.handleChange(inputLabel, e)}
               inputProps={{id: inputLabel}}
+              MenuProps={{
+                PaperProps: {
+                  style: {
+                    maxHeight: 420, // Limit the menu height
+                    overflowY: 'auto', // Enable scrolling for overflow
+                  },
+                },
+              }}
             >
               <MenuItem value=''>All</MenuItem>
               {/* OU: OverUsed */}

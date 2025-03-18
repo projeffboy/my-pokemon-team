@@ -202,6 +202,7 @@ ${[1, 2, 3, 4].map(num => {
           open={this.state.isDialogOpen}
           onClose={this.handleClose}
           aria-labelledby='form-dialog-title'
+          style={{height: 'calc(100% - 60px)'}}
         >
           <DialogTitle id='form-dialog-title'>
             Import/Export

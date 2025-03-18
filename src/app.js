@@ -106,7 +106,7 @@ export default compose(withStyles(appStyles), withWidth())(props => {
             {/* Main */}
             <Cards darkMode={darkMode} />
             {/* Footer */}
-            <Grid item container xs={12} justify='center' alignItems='center' spacing={16} style={{paddingBottom: 106}}>
+            <Grid item container xs={12} justify='center' alignItems='center' spacing={16} style={{paddingBottom: 230}}>
               <Grid item>
                 <Manual darkMode={darkMode} />
               </Grid>

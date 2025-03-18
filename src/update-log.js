@@ -29,6 +29,7 @@ class UpdateLog extends React.Component {
           open={this.state.isDialogOpen}
           onClose={this.toggleDialog}
           aria-labelledby='form-dialog-title'
+          style={{height: 'calc(100% - 60px)'}}
         >
           <DialogTitle id='form-dialog-title'>
             Update Log
