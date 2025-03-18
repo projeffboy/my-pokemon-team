@@ -70,9 +70,17 @@ class SearchFilters extends React.Component {
               onChange={e => this.handleChange(inputLabel, e)}
               inputProps={{id: inputLabel}}
               MenuProps={{
+                anchorOrigin: {
+                  vertical: 'top', // Anchor the menu higher
+                  horizontal: 'left',
+                },
+                transformOrigin: {
+                  vertical: 'bottom', // Transform it upwards
+                  horizontal: 'left',
+                },
                 PaperProps: {
                   style: {
-                    maxHeight: 330, // Limit the menu height
+                    maxHeight: 450, // Limit the menu height
                     overflowY: 'auto', // Enable scrolling for overflow
                   },
                 },
