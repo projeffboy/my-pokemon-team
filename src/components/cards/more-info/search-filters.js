@@ -72,7 +72,7 @@ class SearchFilters extends React.Component {
               MenuProps={{
                 PaperProps: {
                   style: {
-                    maxHeight: 420, // Limit the menu height
+                    maxHeight: 330, // Limit the menu height
                     overflowY: 'auto', // Enable scrolling for overflow
                   },
                 },
