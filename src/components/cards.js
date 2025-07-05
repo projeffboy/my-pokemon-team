@@ -1,19 +1,19 @@
-import React from 'react'
-import compose from 'recompose/compose'
+import React from "react";
+import compose from "recompose/compose";
 // Material UI Imports
-import Grid from '@material-ui/core/Grid'
-import Paper from '@material-ui/core/Paper'
-import {withStyles} from '@material-ui/core/styles'
-import withWidth from '@material-ui/core/withWidth'
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
+import withWidth from "@material-ui/core/withWidth";
 // My Component Imports
-import Pokemon from './cards/pokemon'
-import TeamStats from './cards/team-stats'
-import MoreInfo from './cards/more-info'
-import {paperStyles} from '../styles'
-import TeamViewer from './cards/team-viewer'
+import Pokemon from "./cards/pokemon";
+import TeamStats from "./cards/team-stats";
+import MoreInfo from "./cards/more-info";
+import { paperStyles } from "../styles";
+import TeamViewer from "./cards/team-viewer";
 
 function Cards(props) {
-  const {classes, width} = props
+  const { classes, width } = props;
   /*
    * What is width?
    * If the viewport width is...
@@ -25,7 +25,8 @@ function Cards(props) {
    */
 
   function pokemonCards() {
-    if (width !== 'xs' && width !== 'sm') { // if viewport width >=960px
+    if (width !== "xs" && width !== "sm") {
+      // if viewport width >=960px
       // Display 6 pokemon cards
       return [0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} item xs={6}>
@@ -34,20 +35,21 @@ function Cards(props) {
             <Pokemon teamIndex={num} width={width} />
           </Paper>
         </Grid>
-      ))
-    } else { // if viewport width less than 960px
+      ));
+    } else {
+      // if viewport width less than 960px
       // Display 1 or 2 pokemon cards
-      return <TeamViewer width={width} />
+      return <TeamViewer width={width} />;
     }
   }
 
   return (
     /*
      * What do the lg, md, sm, and xs attributes mean?
-     * 
+     *
      * They all accept a number from 1 to 12,
      * describing the width of a grid in a 12-grid system.
-     * 
+     *
      * When the viewport width is...
      *  1200px or above, it will only use the lg attribute (I manually changed it from 1280px to 1200px)
      *  960px or above, it will only use the md attribute
@@ -61,15 +63,17 @@ function Cards(props) {
       </Grid>
       {/* Pokemon team stats cards */}
       <Grid item container lg={6} md={5} sm={6} xs={12} spacing={16}>
-        {
-          ['Team Defence', 'Team Type Coverage'].map(cardTitle => (
-            <Grid key={cardTitle} item xs={12}>
-              <Paper className={classes.applyPadding}>
-                <TeamStats title={cardTitle} width={width} darkMode={props.darkMode} />
-              </Paper>
-            </Grid>
-          ))
-        }
+        {["Team Defence", "Team Type Coverage"].map(cardTitle => (
+          <Grid key={cardTitle} item xs={12}>
+            <Paper className={classes.applyPadding}>
+              <TeamStats
+                title={cardTitle}
+                width={width}
+                darkMode={props.darkMode}
+              />
+            </Paper>
+          </Grid>
+        ))}
         {/* Pokemon more info card */}
         <Grid item xs={12}>
           <Paper>
@@ -78,7 +82,7 @@ function Cards(props) {
         </Grid>
       </Grid>
     </>
-  )
+  );
 }
 
-export default compose(withStyles(paperStyles), withWidth())(Cards)
+export default compose(withStyles(paperStyles), withWidth())(Cards);

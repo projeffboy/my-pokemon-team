@@ -1,7 +1,6 @@
-const {override, addDecoratorsLegacy} = require("customize-cra");
+const { override, addDecoratorsLegacy } = require("customize-cra");
 
-
-module.exports = override(addDecoratorsLegacy())
+module.exports = override(addDecoratorsLegacy());
 
 /*
 const rewireMobX = require('react-app-rewire-mobx');

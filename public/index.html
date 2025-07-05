@@ -1,24 +1,38 @@
 <!DOCTYPE html>
-<html lang='en'>
+<html lang="en">
   <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src='https://www.googletagmanager.com/gtag/js?id=UA-135146347-1'></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-135146347-1"
+    ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-      gtag('config', 'UA-135146347-1');
+      gtag("config", "UA-135146347-1");
     </script>
 
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
     <!-- color of Chrome address bar -->
-    <meta name='theme-color' content='#212121'>
+    <meta name="theme-color" content="#212121" />
     <!-- Meta description-->
-    <meta name='description' content='The best Pokemon teambuilder, from X&Y to Scarlet and Violet (with Hisui). Has Pokemon Showdown import/export support, team checklists, search filters, and more.'>
-    <meta name='keywords' content='mypokemnteam, pokemon, pokemon scarlet and violet, scarlet, violet, generation 9, hisui, paldea, legends of arceus, teambuilder, smogon, showdown, vgc, ou, pokemon team, my pokemon team, pokemon teambuilder, pokemon showdown, team builder, pokemon team builder, team planner, pokemon team planner, making a pokemon team, how to make a pokemon team, type defence, type coverage, move coverage, competitive pokemon, pokemon metagame'>
-    <meta name='author' content='Jeffery Tang'>
+    <meta
+      name="description"
+      content="The best Pokemon teambuilder, from X&Y to Scarlet and Violet (with Hisui). Has Pokemon Showdown import/export support, team checklists, search filters, and more."
+    />
+    <meta
+      name="keywords"
+      content="mypokemnteam, pokemon, pokemon scarlet and violet, scarlet, violet, generation 9, hisui, paldea, legends of arceus, teambuilder, smogon, showdown, vgc, ou, pokemon team, my pokemon team, pokemon teambuilder, pokemon showdown, team builder, pokemon team builder, team planner, pokemon team planner, making a pokemon team, how to make a pokemon team, type defence, type coverage, move coverage, competitive pokemon, pokemon metagame"
+    />
+    <meta name="author" content="Jeffery Tang" />
     <!--
       Metadata for chrome, see more: https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
@@ -26,10 +40,13 @@
       %PUBLIC_URL% will be replaced with the URL of the `public` folder.
       Only files inside the `public` folder can be referenced from the HTML.
     -->
-    <link rel='manifest' href='%PUBLIC_URL%/manifest.json'>
-    <link rel='shortcut icon' href='%PUBLIC_URL%/favicon.ico'>
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <!-- For Material UI -->
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500'>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+    />
     <style>
       html {
         font-family: Roboto, Helvetica, Arial, sans-serif;
@@ -39,10 +56,8 @@
     <title>My Pokemon Team</title>
   </head>
   <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id='root'></div>
+    <noscript> You need to enable JavaScript to run this app. </noscript>
+    <div id="root"></div>
     <!--
       To begin development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
