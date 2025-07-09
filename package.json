@@ -21,7 +21,8 @@
     "start": "BROWSER='microsoft edge' react-app-rewired --openssl-legacy-provider start",
     "build": "react-app-rewired --openssl-legacy-provider build",
     "test": "react-app-rewired test --env=jsdom",
-    "eject": "react-app-rewired eject"
+    "eject": "react-app-rewired eject",
+    "e2e": "npx playwright test --config=playwright.config.js"
   },
   "devDependencies": {
     "@playwright/test": "^1.53.2",

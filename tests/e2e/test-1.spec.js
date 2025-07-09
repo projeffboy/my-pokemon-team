@@ -1,5 +1,16 @@
 import { test, expect } from "@playwright/test";
 
+/*
+ * Things tested:
+ * - selecting both a basic pokemon and a pokemon of another forme
+ * - selecting moves, some of which can affect the team checklist
+ * - selecting items
+ * - selecting abilities
+ * - setting filters
+ * - team defence's accuracy
+ * - team type coverage's accuracy
+ * - team checklist's accuracy
+ */
 test("Sanity E2E Test", async ({ page }) => {
   await page.goto("http://localhost:3000/");
   await page
@@ -27,6 +38,7 @@ test("Sanity E2E Test", async ({ page }) => {
     .locator("#react-select-react-select-single-2-name--value")
     .getByText("Name")
     .click();
+  await page.locator("#react-select-single-2-name").fill("charizard");
   await page.getByText("Charizard-Mega-Y").click();
   await page
     .locator(
