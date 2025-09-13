@@ -101,7 +101,7 @@ export default compose(
               <Grid item>
                 <img
                   src={face2}
-                  alt={face1Alt}
+                  alt={face2Alt}
                   height={faceWidth(props.width)}
                   style={{ padding: "0 6px" }}
                 />
