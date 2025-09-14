@@ -138,6 +138,36 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: link-check-results
+          name: link-check-results-${{ github.run_number }}
           path: /tmp/link-checker/
           retention-days: 30
+          
+      - name: Comment on PR with results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            try {
+              const results = fs.readFileSync('/tmp/link-checker/results.txt', 'utf8');
+              const lines = results.split('\n').filter(line => line.trim());
+              const failed = lines.filter(line => line.includes('FAILED')).length;
+              const passed = lines.filter(line => line.includes('OK')).length;
+              const skipped = lines.filter(line => line.includes('SKIPPED')).length;
+              
+              const status = failed > 0 ? '❌' : '✅';
+              const summary = `${status} **Link Check Results**\n\n` +
+                            `- ✅ ${passed} links working\n` +
+                            `- ❌ ${failed} links broken\n` +
+                            `- ⚠️ ${skipped} links skipped\n\n` +
+                            (failed > 0 ? '**Broken links found - please check the workflow logs for details.**' : '**All links are working correctly!**');
+              
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: summary
+              });
+            } catch (error) {
+              console.log('Could not read results file or post comment:', error.message);
+            }
