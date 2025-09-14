@@ -29,6 +29,9 @@
     "customize-cra": "^0.2.12",
     "typescript": "^5.8.3"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "browserslist": [
     ">0.2%",
     "not dead",
