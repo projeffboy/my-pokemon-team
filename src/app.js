@@ -67,7 +67,9 @@ export default compose(
      */
     <Router>
       <>
-        <Ramp PUB_ID={PUB_ID} WEBSITE_ID={WEBSITE_ID} />
+        {process.env.NODE_ENV === "production" && (
+          <Ramp PUB_ID={PUB_ID} WEBSITE_ID={WEBSITE_ID} />
+        )}
         <MuiThemeProvider theme={darkMode ? darkTheme : theme}>
           <CssBaseline />
           <Grid
