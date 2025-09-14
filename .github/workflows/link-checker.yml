@@ -1,0 +1,143 @@
+name: Link Checker
+
+on:
+  # Run on push to main branch
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+  
+  # Run on pull requests targeting main
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+  
+  # Run weekly to catch links that break over time
+  schedule:
+    - cron: '0 0 * * 1'  # Every Monday at midnight UTC
+  
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Extract URLs from src files
+        run: |
+          echo "Extracting HTTP/HTTPS URLs from src folder..."
+          
+          # Create a temporary file to store unique URLs
+          mkdir -p /tmp/link-checker
+          touch /tmp/link-checker/urls.txt
+          
+          # Find all JS/JSX/TS/TSX files and extract HTTP/HTTPS URLs
+          find src -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" | while read file; do
+            echo "Processing: $file"
+            
+            # Extract URLs using multiple patterns to catch all cases
+            # Pattern 1: href="http..." or src="http..."
+            grep -hoE '(href|src)=['"'"'"]https?://[^'"'"'"> ]*['"'"'"]' "$file" 2>/dev/null | \
+              sed -E 's/(href|src)=['"'"'"]//' | \
+              sed -E 's/['"'"'"]$//' >> /tmp/link-checker/urls.txt || true
+            
+            # Pattern 2: Plain HTTP URLs in comments and strings  
+            grep -hoE 'https?://[a-zA-Z0-9./?#_&=%-]+' "$file" 2>/dev/null >> /tmp/link-checker/urls.txt || true
+          done
+          
+          # Remove duplicates and sort
+          sort /tmp/link-checker/urls.txt | uniq > /tmp/link-checker/unique_urls.txt
+          
+          # Filter out problematic or partial URLs
+          grep -v "https://cdn.intergient.com/" /tmp/link-checker/unique_urls.txt > /tmp/link-checker/filtered_urls.txt || cp /tmp/link-checker/unique_urls.txt /tmp/link-checker/filtered_urls.txt
+          grep -v "https://play.pokemonshowdown.com/sprites/$" /tmp/link-checker/filtered_urls.txt > /tmp/link-checker/final_urls.txt || cp /tmp/link-checker/filtered_urls.txt /tmp/link-checker/final_urls.txt
+          
+          echo "Found $(wc -l < /tmp/link-checker/final_urls.txt) URLs to check:"
+          cat /tmp/link-checker/final_urls.txt
+          
+      - name: Install link checker tool
+        run: |
+          # Install muffet - a fast website link checker
+          npm install -g muffet || echo "muffet not available, trying alternative"
+          
+          # Alternative: Install broken-link-checker
+          npm install -g broken-link-checker
+          
+      - name: Check links with retry logic
+        run: |
+          echo "Checking links for availability..."
+          
+          # Create results file
+          touch /tmp/link-checker/results.txt
+          failed_links=0
+          total_links=0
+          skipped_links=0
+          
+          while IFS= read -r url; do
+            if [[ -n "$url" ]]; then
+              total_links=$((total_links + 1))
+              echo "Checking: $url"
+              
+              # Skip partial or template URLs that can't be checked
+              if [[ "$url" =~ \$\{.+\} ]] || [[ "$url" == *"category" ]] && [[ ! "$url" == *"category=vgc" ]]; then
+                echo "⚠ $url - SKIPPED (template/partial URL)" | tee -a /tmp/link-checker/results.txt
+                skipped_links=$((skipped_links + 1))
+                continue
+              fi
+              
+              # Use curl with retries and reasonable timeouts
+              # Allow redirects and check for successful response codes (2xx or 3xx)
+              http_code=$(curl -L --max-time 30 --retry 3 --retry-delay 2 -s -o /dev/null -w "%{http_code}" "$url" 2>/dev/null || echo "000")
+              
+              if [[ "$http_code" =~ ^[23] ]]; then
+                echo "✓ $url - OK ($http_code)" | tee -a /tmp/link-checker/results.txt
+              elif [[ "$http_code" == "000" ]]; then
+                echo "✗ $url - FAILED (connection error)" | tee -a /tmp/link-checker/results.txt
+                failed_links=$((failed_links + 1))
+              else
+                echo "✗ $url - FAILED ($http_code)" | tee -a /tmp/link-checker/results.txt
+                failed_links=$((failed_links + 1))
+              fi
+              
+              # Small delay to be respectful to servers
+              sleep 2
+            fi
+          done < /tmp/link-checker/final_urls.txt
+          
+          echo "Summary: $failed_links failed, $skipped_links skipped out of $total_links total links"
+          
+          # Output results
+          echo "=== LINK CHECK RESULTS ===" 
+          cat /tmp/link-checker/results.txt
+          
+          # Set job result - only fail if there are actual broken links (not skipped ones)
+          if [[ $failed_links -gt 0 ]]; then
+            echo "::error::Found $failed_links broken links"
+            exit 1
+          else
+            checked_links=$((total_links - skipped_links))
+            echo "::notice::All $checked_links checked links are working correctly! ($skipped_links skipped)"
+            exit 0
+          fi
+          
+      - name: Upload results as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: link-check-results
+          path: /tmp/link-checker/
+          retention-days: 30
