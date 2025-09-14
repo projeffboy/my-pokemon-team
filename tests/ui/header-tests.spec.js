@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { goToSite, expectImageToBeLoaded } from "./helper.js";
 
-// Test configuration based on e2e-tests.md requirements
+// Test configuration based on ui-tests.md requirements
 
 test.describe("Header Tests", () => {
   // Navigate to the site before each test
