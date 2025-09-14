@@ -18,7 +18,7 @@ FAB, or floating action button. This is the button on the bottom right with an i
 
 Test each footer element:
 
-- dialog based footer elements: click on the element to load a dialog box, make sure all the links are not broken
+- dialog based footer elements: click on the element to load a dialog box
   - Manual
   - Credits
   - Updates

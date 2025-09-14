@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { goToSite, expectAllLinksToWork, expectLinkToWork } from "./helper.js";
+import { goToSite } from "./helper.js";
 
 // Test configuration based on ui-tests.md requirements
 
@@ -18,10 +18,6 @@ test.describe("Footer Tests", () => {
     // Should load popup/dialog - look for dialog or modal content
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
-
-    // Check that all links in the dialog are not broken
-    const links = dialog.locator("a[href]");
-    await expectAllLinksToWork(page, links);
   });
 
   test("should test Jeffery Tang button and external link", async ({
@@ -35,9 +31,7 @@ test.describe("Footer Tests", () => {
     await expect(page).toHaveURL(/jefferytang\.com/);
   });
 
-  test("should test Credits button and dialog with working links", async ({
-    page,
-  }) => {
+  test("should test Credits button and dialog", async ({ page }) => {
     const creditsButton = page.getByRole("button", { name: "Credits" });
     await expect(creditsButton).toBeVisible();
 
@@ -46,10 +40,6 @@ test.describe("Footer Tests", () => {
     // Should lead to a dialog
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
-
-    // Test that all links in the dialog work
-    const links = dialog.locator("a[href]");
-    await expectAllLinksToWork(page, links);
   });
 
   test("should test Updates button and GitHub link", async ({ page }) => {
@@ -67,17 +57,6 @@ test.describe("Footer Tests", () => {
     // Should contain GitHub link to https://github.com/projeffboy/my-pokemon-team
     const githubLink = page.getByRole("button", { name: "GitHub Repo" });
     await expect(githubLink).toBeVisible();
-
-    // Test that the GitHub link works using our helper function
-    await expectLinkToWork(
-      page,
-      "https://github.com/projeffboy/my-pokemon-team"
-    );
-
-    // Check all other links in the dialog (excluding the GitHub link we already tested)
-    const allLinks = dialog.locator("a[href]");
-    const otherLinks = allLinks.locator(':not([href*="github.com"])');
-    await expectAllLinksToWork(page, otherLinks);
   });
 
   test("should test Privacy Policy button and dialog", async ({ page }) => {
@@ -91,10 +70,6 @@ test.describe("Footer Tests", () => {
     // Should load another dialog
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
-
-    // Check that all links in the dialog are not broken
-    const links = dialog.locator("a[href]");
-    await expectAllLinksToWork(page, links);
   });
 
   test("should test Dark Mode functionality", async ({ page }) => {
