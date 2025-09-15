@@ -137,17 +137,18 @@ class Manual extends React.Component {
               What is Ubers, OU, VGC, etc.?
             </Typography>
             <Typography paragraph>
-              Ubers, OU, and VGC are formats (or tiers) that ban some pokemon
-              and enforce certain rules. Battle Spot Singles/Doubles and VGC are
-              the only ones endorsed by{" "}
+              Ubers, OU, and{" "}
               <Link
                 style={{ color: "#2196f3" }}
                 variant="inherit"
-                href="https://www.pokemon.com/us/strategy/an-introduction-to-the-video-game-championships/"
+                href="https://play.pokemon.com/en-us/resources/rules/?category=vgc"
               >
-                The Pokemon Company
-              </Link>
-              , while the other ones are maintained by{" "}
+                VGC
+              </Link>{" "}
+              are formats (or tiers) that ban some pokemon and enforce certain
+              rules. Battle Stadium Singles/Doubles and VGC are the only ones
+              endorsed by The Pokemon Company, while the other ones are
+              maintained by{" "}
               <Link
                 style={{ color: "#2196f3" }}
                 variant="inherit"

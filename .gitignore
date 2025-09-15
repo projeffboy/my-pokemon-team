@@ -29,4 +29,4 @@ yarn-error.log*
 /playwright-report/
 /blob-report/
 /playwright/.cache/
-/tests/e2e/examples/
+/tests/ui/examples/

@@ -20,7 +20,7 @@
   "scripts": {
     "start": "BROWSER='microsoft edge' react-app-rewired --openssl-legacy-provider start",
     "build": "react-app-rewired --openssl-legacy-provider build",
-    "test": "react-app-rewired test --env=jsdom",
+    "test": "npx playwright test",
     "eject": "react-app-rewired eject"
   },
   "devDependencies": {
@@ -28,6 +28,9 @@
     "@types/node": "^24.0.10",
     "customize-cra": "^0.2.12",
     "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "browserslist": [
     ">0.2%",
