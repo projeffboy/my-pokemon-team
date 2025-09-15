@@ -21,6 +21,7 @@
     "start": "BROWSER='microsoft edge' react-app-rewired --openssl-legacy-provider start",
     "build": "react-app-rewired --openssl-legacy-provider build",
     "test": "npx playwright test",
+    "check-links": "./scripts/check-links.sh",
     "eject": "react-app-rewired eject"
   },
   "devDependencies": {
