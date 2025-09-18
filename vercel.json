@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "redirects": [
     {
       "source": "/ads.txt",
@@ -35,7 +36,7 @@
       ]
     },
     {
-      "source": "/:path*.(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)",
+      "source": "/:path*.:ext(ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|webp|ICO|PNG|JPG|JPEG|GIF|SVG|WOFF|WOFF2|TTF|EOT|WEBP)",
       "headers": [
         {
           "key": "Cache-Control",
