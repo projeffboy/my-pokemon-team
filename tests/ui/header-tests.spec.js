@@ -16,8 +16,8 @@ test.describe("Header Tests", () => {
     ).toBeVisible();
 
     // Test that the two images to its left and right are as well (and that the images are loading properly)
-    const leftImage = page.locator('img[alt="Landorus Face"]').first();
-    const rightImage = page.locator('img[alt="Virizion Face"]').first();
+    const leftImage = page.locator('img[alt="Landorus Face"]');
+    const rightImage = page.locator('img[alt="Virizion Face"]');
 
     // Verify images are loaded successfully (not broken/404)
     await expectImageToBeLoaded(leftImage);
