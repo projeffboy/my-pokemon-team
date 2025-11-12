@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { goToSite, expectImageToBeLoaded } from "./helper.js";
+import { goToSite, expectImageToBeLoaded } from "../helper.js";
 
 // Test configuration based on ui-tests.md requirements
 

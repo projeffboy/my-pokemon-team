@@ -1,5 +1,11 @@
 // @ts-check
 import { defineConfig, devices } from "@playwright/test";
+import {
+  LARGER_VIEWPORT_WIDTH,
+  LARGE_VIEWPORT_WIDTH,
+  MEDIUM_VIEWPORT_WIDTH,
+  createViewport,
+} from "./tests/helper.js";
 
 /**
  * Read environment variables from file.
@@ -12,10 +18,6 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
-
-const LARGER_VIEWPORT_WIDTH = 1920;
-const LARGE_VIEWPORT_WIDTH = 1366;
-const MEDIUM_VIEWPORT_WIDTH = 820;
 
 export default defineConfig({
   testDir: "./tests/ui",
@@ -45,10 +47,7 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        viewport: {
-          width: LARGER_VIEWPORT_WIDTH,
-          height: LARGER_VIEWPORT_WIDTH / (16 / 9),
-        },
+        viewport: createViewport(LARGER_VIEWPORT_WIDTH),
       },
     },
 
@@ -56,10 +55,7 @@ export default defineConfig({
       name: "firefox",
       use: {
         ...devices["Desktop Firefox"],
-        viewport: {
-          width: LARGE_VIEWPORT_WIDTH,
-          height: LARGE_VIEWPORT_WIDTH / (16 / 9),
-        },
+        viewport: createViewport(LARGE_VIEWPORT_WIDTH),
       },
     },
 
@@ -67,10 +63,7 @@ export default defineConfig({
       name: "webkit",
       use: {
         ...devices["Desktop Safari"],
-        viewport: {
-          width: MEDIUM_VIEWPORT_WIDTH,
-          height: MEDIUM_VIEWPORT_WIDTH / (16 / 9),
-        },
+        viewport: createViewport(MEDIUM_VIEWPORT_WIDTH),
       },
     },
 
