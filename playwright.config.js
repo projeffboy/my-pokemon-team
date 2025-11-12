@@ -12,6 +12,11 @@ import { defineConfig, devices } from "@playwright/test";
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+
+const LARGER_VIEWPORT_WIDTH = 1920;
+const LARGE_VIEWPORT_WIDTH = 1366;
+const MEDIUM_VIEWPORT_WIDTH = 820;
+
 export default defineConfig({
   testDir: "./tests/ui",
   /* Run tests in files in parallel */
@@ -34,20 +39,39 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
+  // the viewports below are subject to change depending on if the test resizes the browser
   projects: [
     {
       name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: {
+          width: LARGER_VIEWPORT_WIDTH,
+          height: LARGER_VIEWPORT_WIDTH / (16 / 9),
+        },
+      },
     },
 
     {
       name: "firefox",
-      use: { ...devices["Desktop Firefox"] },
+      use: {
+        ...devices["Desktop Firefox"],
+        viewport: {
+          width: LARGE_VIEWPORT_WIDTH,
+          height: LARGE_VIEWPORT_WIDTH / (16 / 9),
+        },
+      },
     },
 
     {
       name: "webkit",
-      use: { ...devices["Desktop Safari"] },
+      use: {
+        ...devices["Desktop Safari"],
+        viewport: {
+          width: MEDIUM_VIEWPORT_WIDTH,
+          height: MEDIUM_VIEWPORT_WIDTH / (16 / 9),
+        },
+      },
     },
 
     /* Test against mobile viewports. */
