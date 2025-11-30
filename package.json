@@ -18,7 +18,7 @@
     "recompose": "^0.30.0"
   },
   "scripts": {
-    "start": "BROWSER='microsoft edge' react-app-rewired --openssl-legacy-provider start",
+    "start": "BROWSER=none react-app-rewired --openssl-legacy-provider start",
     "build": "react-app-rewired --openssl-legacy-provider build",
     "test": "npx playwright test",
     "test:chrome": "npx playwright test --project=chromium",

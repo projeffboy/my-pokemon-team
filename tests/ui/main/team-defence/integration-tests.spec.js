@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
-import { goToSite, POKEMON_TYPES } from "../../../helper.js";
+import {
+  goToSite,
+  POKEMON_TYPES,
+  MEDIUM_VIEWPORT_MIN_WIDTH,
+} from "../../../helper.js";
 
 // Test configuration based on ui-main-tests.md requirements for Team Defence Integration Tests
 
@@ -130,6 +134,11 @@ test.describe("Team Defence - Integration Tests", () => {
     await nameCombobox1.press("Enter");
 
     // Step 2: Select pokemon Roselia in slot 2
+    // On mobile, we need to switch to the second tab first
+    if (page.viewportSize().width < MEDIUM_VIEWPORT_MIN_WIDTH) {
+      await page.getByRole("tab", { name: "question-mark 2" }).click();
+    }
+
     const nameCombobox2 = page.locator("#react-select-single-1-name");
     await nameCombobox2.fill("Roselia");
     await page.waitForTimeout(500);

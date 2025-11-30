@@ -1,10 +1,11 @@
-import { expect } from "@playwright/test";
+import { test, expect } from "@playwright/test";
 
 const ASPECT_RATIO = 16 / 9;
 
 // Viewport width constants
 export const SMALL_VIEWPORT_WIDTH = 390;
 export const MEDIUM_VIEWPORT_WIDTH = 820;
+export const MEDIUM_VIEWPORT_MIN_WIDTH = 600;
 export const LARGE_VIEWPORT_WIDTH = 1366;
 export const LARGER_VIEWPORT_WIDTH = 1920;
 
@@ -46,4 +47,55 @@ export const expectImageToBeLoaded = async locator => {
   await expect(locator).toBeVisible();
   await expect(locator).toHaveJSProperty("complete", true);
   await expect(locator).not.toHaveJSProperty("naturalWidth", 0);
+};
+
+// Shared unit tests for Team Defence and Team Type Coverage
+export const teamScoreUnitTests = headingName => {
+  test.describe(`${headingName} - Unit Tests`, () => {
+    test.beforeEach(async ({ page }) => {
+      await goToSite(page);
+    });
+
+    test("should display all 18 types with score of 0", async ({ page }) => {
+      // Find the heading
+      const heading = page.getByRole("heading", { name: headingName });
+      await expect(heading).toBeVisible();
+
+      // The section is the container of this heading.
+      const section = heading.locator("xpath=../..");
+      await expect(section).toBeVisible();
+
+      // Verify all scores are 0 in this section
+      const zeros = section
+        .locator('div[class*="MuiTypography-root"]')
+        .filter({ hasText: /^0$/ });
+      const count = await zeros.count();
+
+      expect(count).toBe(18);
+    });
+
+    test("should show 'First Select a Pokemon' popover when hovering over Dark type", async ({
+      page,
+    }) => {
+      const heading = page.getByRole("heading", { name: headingName });
+      await expect(heading).toBeVisible();
+      const section = heading.locator("xpath=../..");
+
+      // Find the Dark type element within the section
+      const darkTypeElement = section
+        .locator("div")
+        .filter({ hasText: /^(Dark|DRK)$/ })
+        .first();
+
+      // Hover over it
+      await darkTypeElement.hover();
+
+      // Wait for popover
+      await page.waitForTimeout(500);
+
+      // Verify popover content
+      const popover = page.getByText("First Select a Pokemon");
+      await expect(popover).toBeVisible();
+    });
+  });
 };
