@@ -109,50 +109,46 @@ Integration tests for the pokemon cards component is not necessary, because pret
 
 - Score of a dual-type pokemon:
 
-  1. Select pokemon Whiscash. Expect that:
+  1. Select pokemon Roselia. Expect that:
      - the team defence coverage is:
-       - +1.5 for Electric
-       - -1.5 for Grass
-       - +1 for Fire, Poison, Rock, Steel
-       - -1 for Ice
+       - +1.5 for Grass
+       - +1 for Electric, Fairy, Fighting, Water
+       - -1 for Fire, Flying, Ice, Psychic
        - 0 for all other types
      - hovering over each type shows that:
-       - Electric does 0x
-       - Grass does 4x
-       - Fire, Poison, Rock, Steel do 0.5x
-       - Ice does 2x
+       - Grass does 0.25x
+       - Electric, Fairy, Fighting, Water do 0.5x
+       - Fire, Flying, Ice, Psychic do 2x
        - all other types do 1x
 
 - Score of the two previous pokemon combined:
 
   1. Select both pokemon from the previous two tests. Expect that:
      - the team defence coverage is:
-       - +1.5 for Electric, Ghost
-       - -1 for Fighting
-       - +1 for Fire, Poison, Rock, Steel
-       - -1.5 for Grass
+       - +1.5 for Ghost, Grass
+       - +1 for Electric, Fairy, Water
+       - -1 for Fire, Flying, Ice, Psychic
        - 0 for all other types
      - hovering over each type shows that:
-       - Electric does 0x to Whiscash and 1x to Porygon2
-       - Fighting does 2x to Porygon2 and 1x to Whiscash
-       - Fire does 0.5x to Whiscash and 1x to Porygon2
-       - Ghost does 0x to Porygon2 and 1x to Whiscash
-       - Grass does 1x to Porygon2 and 4x to Whiscash
-       - Poison, Rock, Steel do 1x to Porygon2 and 0.5x to Whiscash
+       - Electric, Fairy, Water do 0.5x to Roselia and 1x to Porygon2
+       - Fighting does 0.5x to Roselia and 2x to Porygon2
+       - Fire, Flying, Ice, Psychic do 2x to Roselia and 1x to Porygon2
+       - Ghost does 1x to Roselia and 0x to Porygon2
+       - Grass does 0.25x to Roselia and 1x to Porygon2
        - all other types do 1x to both pokemon
 
 - Score of a Pokemon with an ability that helps it resist a type:
 
   1. Select Snorlax with ability Thick Fat. Expect that:
      - the team defence coverage is:
-       - -1 for Fighting
-       - +1 for Fire, Ice
        - +1.5 for Ghost
+       - +1 for Fire, Ice
+       - -1 for Fighting
        - 0 for all other types
      - hovering over each type shows that:
-       - Fighting does 2x
-       - Fire, Ice do 0.5x
        - Ghost does 0x
+       - Fire, Ice do 0.5x
+       - Fighting does 2x
        - all other types do 1x
 
 - Score of a Pokemon with an ability that makes it immune to a type:
@@ -165,12 +161,12 @@ Integration tests for the pokemon cards component is not necessary, because pret
        - -1.5 for Ground
        - 0 for Dark, Electric, Ghost, Rock
      - hovering over each type shows that:
-       - Bug, Fairy, Grass, Ice, Poison, Steel do 0.5x
-       - Fire does 0x
-       - Dragon, Flying, Normal, Psychic do 1x
+       - Fire, Poison does 0x
+       - Bug, Fairy, Grass, Ice, Steel do 0.25x
+       - Dragon, Flying, Normal, Psychic do 0.5x
        - Fighting, Water do 2x
        - Ground does 4x
-       - Dark, Electric, Ghost, Rock do 1x
+       - all other types do 1x
 
 ## Team Type Coverage
 
