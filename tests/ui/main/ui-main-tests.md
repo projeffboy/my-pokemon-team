@@ -1,247 +1,49 @@
-This test md file outlines the UI tests for the main section of the website.
+# UI Tests for Main Section
 
-Unit tests that interact with certain external UI elements like snackbars are stil considered unit tests.
+## Guidelines
 
-Each table below is ordered, where each subsequent row is a subsequent set of action(s) and expectation(s).
+- This test md file outlines the UI tests for the main section of the website.
+- Test scenarios that are implicitly covered by E2E testing are not covered here
+- Tests that only interact with snackbars, which is an external UI element, are still considered unit tests.
+- Each section below has its own folder with two test files: `tests/ui/<section>/(unit|integration)-tests.spec.js`
 
-Integration tests for the pokemon cards component is not necessary, because pretty much all the other integration tests involve pokmeon cards in some way.
+## Components in the Main Section to Be Tested
 
-# Components in the Main Section to Be Tested
+### Team Viewer
 
-## Team Viewer
-
-### Unit Tests
+#### Unit Tests
 
 - [Small/medium viewport] Expect each team viewer slot to have a question mark sprite.
 - [Small/medium viewport] Expect the first team viewer slot to be selected.
 - [Large viewport] team viewer does not exist
 
-### Integration Tests
+### Pokemon Card
 
-- [Small viewport]:
-
-  | Actions                  | Expectations                                                                                                                                                  |
-  | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Select pokemon Totodile. | Team viewer slot 1 should have that pokemon's sprite.                                                                                                         |
-  | Select slot 3.           | <ul><li>Slot 1: not selected, Totodile sprite</li><li>Slot 3: selected, question mark sprite</li><li>Pokemon card: question mark sprite, empty name</li></ul> |
-  | Select slot 2.           | slot 2 is selected.                                                                                                                                           |
-  | Select slot 1.           | slot 1 is selected with Totodile sprite, and pokemon card has Totodile question mark sprite and name.                                                         |
-
-- [Medium viewport]:
-
-  | Actions                                                                    | Expectations                                                                                                                                                                                                   |
-  | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Select team viewer slot 3-4.                                               | Slot 3-4 is selected.                                                                                                                                                                                          |
-  | For pokemon card 1, select pokemon Elekid and choose move "Thunder Shock". | <ul><li>Slot 1-2: not selected, question mark sprite</li><li>Slot 3-4: selected, first sprite is elekid, second sprite is question mark</li></ul>                                                              |
-  | Select slot 5-6.                                                           | <ul><li>Slot 3-4: not selected, Elekid and question mark sprite</li><li>Slot 5-6: not selected, two question mark sprites</li><li>Pokemon cards: both empty name, empty moves, question mark sprites</li></ul> |
-  | Select slot 3-4.                                                           | <ul><li>Slot 3-4: selected, Elekid and question mark sprite</li><li>Pokemon card 1: Elekid name and sprite, has "Thunder Shock" move</li></ul>                                                                 |
-  | For pokemon card 2, select Kangaskhan.                                     | Slot 3-4 has Elekid and Kangaskhan sprites.                                                                                                                                                                    |
-
-## Pokemon Card
-
-### Unit Tests
-
-- Depending on the viewport width size, expect the right number of pokemon cards:
-
-  - small: 1
-  - medium: 2
-  - large: 6
+#### Unit Tests
 
 - For every pokemon card, expect:
 
   - all the fields are empty
-  - these pokemon are in the "Name" dropdown list:
-    - Pikachu
-    - Crobat
-    - Blaziken-Mega
-    - Garchomp
-    - Serperior
-    - Talonflame
-    - Mimikyu
-    - Corviknight
-    - Sprigatito
   - the sprite is a question mark
   - there are no moves or abilities to select (since no pokemon selected)
-  - these items are in the "Item" dropdown list:
-    - Focus Sash
-    - Choice Scarf
-    - Life Orb
-    - Leftovers
-    - Assault Vest
-    - Lum Berry
-    - Clear Amulet
-    - Sitrus Berry
-    - Choice Band
-    - Choice Specs
-    - Heavy-Duty Boots
-    - Covert Cloak
-    - Iron Crown
-    - Pecharunt
 
-- Filling in the details of a normal pokemon:
+### Team Defence
 
-  1. Select pokemon Chespin. Give it Aerial Ace for all four moves. Give it an item of "Apricot Berry". Choose ability "Bulletproof". Expect all the details that you filled in to be present, as well as Chespin's sprite.
-  2. Remove the pokemon. Expect all of its details in step 1 to be gone.
-
-- Selecting a pokemon that has a required item and only one ability:
-  1. Select pokemon Pinsir-Mega. Expect it to have item "Pinsirite" and ability "Aerilate".
-
-## Team Defence
-
-### Unit Tests
+#### Unit Tests
 
 - All 18 types are there and that they are all set to a score of 0.
 - Hovering over Dark type shows a popover with "First Select a Pokemon"
 
-### Integration Tests
+### Team Type Coverage
 
-- Score of a single-type pokemon:
-
-  1. Select pokemon Porygon2. Expect that:
-     - the team defence coverage is:
-       - -1 for Fighting
-       - +1.5 for Ghost
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Fighting does 2x
-       - Ghost does 0x
-       - all other types do 1x
-
-- Score of a dual-type pokemon:
-
-  1. Select pokemon Roselia. Expect that:
-     - the team defence coverage is:
-       - +1.5 for Grass
-       - +1 for Electric, Fairy, Fighting, Water
-       - -1 for Fire, Flying, Ice, Psychic
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Grass does 0.25x
-       - Electric, Fairy, Fighting, Water do 0.5x
-       - Fire, Flying, Ice, Psychic do 2x
-       - all other types do 1x
-
-- Score of the two previous pokemon combined:
-
-  1. Select both pokemon from the previous two tests. Expect that:
-     - the team defence coverage is:
-       - +1.5 for Ghost, Grass
-       - +1 for Electric, Fairy, Water
-       - -1 for Fire, Flying, Ice, Psychic
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Electric, Fairy, Water do 0.5x to Roselia and 1x to Porygon2
-       - Fighting does 0.5x to Roselia and 2x to Porygon2
-       - Fire, Flying, Ice, Psychic do 2x to Roselia and 1x to Porygon2
-       - Ghost does 1x to Roselia and 0x to Porygon2
-       - Grass does 0.25x to Roselia and 1x to Porygon2
-       - all other types do 1x to both pokemon
-
-- Score of a Pokemon with an ability that helps it resist a type:
-
-  1. Select Snorlax with ability Thick Fat. Expect that:
-     - the team defence coverage is:
-       - +1.5 for Ghost
-       - +1 for Fire, Ice
-       - -1 for Fighting
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Ghost does 0x
-       - Fire, Ice do 0.5x
-       - Fighting does 2x
-       - all other types do 1x
-
-- Score of a Pokemon with an ability that makes it immune to a type:
-
-  1. Select Heatran with ability Flash Fire. Expect that:
-     - the team defence coverage is:
-       - +1.5 for Bug, Fairy, Fire, Grass, Ice, Poison, Steel
-       - +1 for Dragon, Flying, Normal, Psychic
-       - -1 for Fighting, Water
-       - -1.5 for Ground
-       - 0 for Dark, Electric, Ghost, Rock
-     - hovering over each type shows that:
-       - Fire, Poison does 0x
-       - Bug, Fairy, Grass, Ice, Steel do 0.25x
-       - Dragon, Flying, Normal, Psychic do 0.5x
-       - Fighting, Water do 2x
-       - Ground does 4x
-       - all other types do 1x
-
-## Team Type Coverage
-
-### Unit Tests
+#### Unit Tests
 
 - All 18 types are there and that they are all set to a score of 0.
 - Hovering over Dark type shows a popover with "First Select a Pokemon"
 
-### Integration Tests
+### Filters
 
-- One normal move:
-  1. Select Meowth with move Scratch. Expect that:
-     - the team type coverage is 0 for all types
-     - hovering of each type shows that nothing is super effective against that type
-- One non-normal non-STAB move:
-  1. Select Absol with move Fire Blast. Expect that:
-     - the team type coverage is:
-       - +1 for Bug, Grass, Ice, Steel
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Fire Blast from Absol is super effective against Bug, Grass, Ice, and Steel
-- One non-normal STAB move:
-  1. Select Kingler with move Crabhammer. Expect that:
-     - the team type coverage is:
-       - +2 for Fire, Ground, Rock
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Crabhammer from Kingler is super effective against Fire, Ground, and Rock
-- Four moves (including status move):
-  1. Select Psyduck with Aerial Ace, Attract, Blizzard, Bubble Beam. Expect that:
-     - the team type coverage is:
-       - +3 for Ground
-       - +2 for Fire, Grass, Rock
-       - +1 for Bug, Dragon, Fighting, Flying
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Aerial Ace from Psyduck is super effective against Bug, Fighting, and Grass
-       - Blizzard from Psyduck is super effective against Dragon, Flying, Grass, and Ground
-       - Bubble Beam from Psyduck is super effective against Fire, Ground, and Rock
-- Two special moves
-  1. Select Hawlucha with move Flying Press and Glalie with Freeze Dry. Expect that:
-     - the team type coverage is:
-       - +4 for Grass
-       - +2 for Dark, Dragon, Fighting, Flying, Ground, Ice, Normal, Water
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Flying Press from Hawlucha is super effective against Dark, Fighting, Grass, Ice, and Normal
-       - Freeze-Dry from Glalie is super effective against Dragon, Flying, Grass, Ground, and Water
-- Special ability
-  1. Select Gardevoir-Mega with ability Pixilate and move Hyper Voice. Expect that:
-     - the team type coverage is:
-       - +2 for Dark, Dragon, Fighting
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Hyper Voice from Gardevoir-Mega is super effective against Dark, Dragon, and Fighting
-- Special Pokemon, Item, and Move:
-  1. Select Arceus-Dark with item Dread Plate, ability Multitype, and move Judgment. Expect that:
-     - the team type coverage is:
-       - +2 for Ghost, Psychic
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Judgment from Arceus-Dark is super effective against Ghost and Psychic
-- Two STAB moves, one weak move, one non-normal status move:
-  1. Select Dedenne with moves Nuzzle, Play Rough, Dazzling Gleam, Rain Dance. Expect that:
-     - the team type coverage is:
-       - +2 for Dark, Dragon, Fighting
-       - 0 for all other types
-     - hovering over each type shows that:
-       - Play Rough and Dazzling Gleam from Dedenne are super effective against Dark, Dragon, and Fighting
-       - Nuzzle from Dedenne is not super effective against any type
-       - Rain Dance from Dedenne is not super effective against any type
-
-## Filters
-
-### Integration Tests
+#### Integration Tests
 
 - Format
 
@@ -318,15 +120,15 @@ Integration tests for the pokemon cards component is not necessary, because pret
        - Celebrate
        - Confide
 
-## Team Checklist
+### Team Checklist
 
-### Unit Tests
+#### Unit Tests
 
 Expect no checkmarks.
 
-### Integration Tests
+#### Integration Tests
 
-#### Single Checkmark
+Each (non-header) row is its own test:
 
 | Pokemon     | Move         | Item         | Team Checklist Item |
 | ----------- | ------------ | ------------ | ------------------- |
@@ -334,25 +136,17 @@ Expect no checkmarks.
 | Corviknight | Defog        | N/A          | Spinner/Defogger    |
 | Toxapex     | Recover      | N/A          | Reliable Recovery   |
 | Blissey     | Heal Bell    | N/A          | Cleric              |
-| Garchomp    | Stealth Rock | N/A          | Status Move         |
+| Toxapex     | Toxic        | N/A          | Status Move         |
 | Corviknight | Whirlwind    | N/A          | Phazer              |
 | Dragonite   | Dragon Dance | N/A          | Boosting Move       |
 | Tapu Koko   | Volt Switch  | N/A          | Volt-turn Move      |
 | Garchomp    | N/A          | Choice Scarf | Choice Item         |
 
-#### All Checkmarks
+#### Save/Load Team: Import/Export Team
 
-Select all 6 pokemon, along with their corresponding moves and items, mentioned in the "Single Checkmark" section. Expect all the team checklist items to have a checkmark.
+##### Integration Tests
 
-### Save/Load Team: Import/Export Team
-
-#### Unit Tests
-
-- Pressing the "Import/Export Team" button opens up a dialog box with an empty text area with the placeholder "Pokemon Showdown Team Raw Text"
-
-#### Integration Tests
-
-##### Import Team
+###### Import Team
 
 Each test case begins with: 1. Go to the "Save/Load Team" tab and press the "Import/Export Team" button.
 
@@ -366,7 +160,7 @@ Each test case begins with: 1. Go to the "Save/Load Team" tab and press the "Imp
   2. In the "Pokemon Showdown Team Raw Text", paste this in:
 
   ```
-  Weepinbell @
+  Weepingbell @
   Ability: Chlorophyll
   -Acid Spray
   -Bug Bite
@@ -376,116 +170,13 @@ Each test case begins with: 1. Go to the "Save/Load Team" tab and press the "Imp
 
   3. Press "Update". Expect that the pokemon shows up in the first card with the details mentioned in step 1.
 
-##### Export Team
+#### Save/Load Team: Copy Team
 
-- Export two pokemon
-
-  1. Select Hypno.
-  2. Select Uxie with item Leftovers and move Psychic.
-  3. Go to the "Save/Load Team" tab and press the "Import/Export Team" button.
-  4. In the Pokemon Showdown Team Raw Text, this should be present:
-
-  ```
-  Hypno @
-  Ability:
-  -
-  -
-  -
-  -
-
-  Uxie @ Leftovers
-  Ability: Levitate
-  -Psychic
-  -
-  -
-  -
-
-
-  ```
-
-##### Import/Export Team
-
-Press "Import/Export Team" in the "Save/Load Team" tab.
-
-- Paste in an entire team and make edits to it
-
-  1. Go to the "Save/Load Team" tab and press the "Import/Export Team" button.
-  2. In the "Pokemon Showdown Team Raw Text", paste this in:
-
-  ```
-  Tyranitar @ Smooth Rock
-  Ability: Sand Stream
-  Tera Type: Flying
-  EVs: 252 HP / 16 Def / 240 SpD
-  Sassy Nature
-  - Knock Off
-  - Ice Beam
-  - Stealth Rock
-  - Thunder Wave
-
-  Excadrill @ Life Orb
-  Ability: Sand Rush
-  Tera Type: Ground
-  EVs: 252 Atk / 4 Def / 252 Spe
-  Adamant Nature
-  - Earthquake
-  - Rock Slide
-  - Rapid Spin
-  - Swords Dance
-
-  Kingambit @ Black Glasses
-  Ability: Supreme Overlord
-  Tera Type: Dark
-  EVs: 92 HP / 252 Atk / 164 Spe
-  Adamant Nature
-  - Kowtow Cleave
-  - Sucker Punch
-  - Iron Head
-  - Swords Dance
-
-  Garchomp @ Loaded Dice
-  Ability: Rough Skin
-  Tera Type: Fire
-  EVs: 252 Atk / 4 SpD / 252 Spe
-  Jolly Nature
-  - Scale Shot
-  - Earthquake
-  - Fire Fang
-  - Swords Dance
-
-  Pecharunt @ Air Balloon
-  Ability: Poison Puppeteer
-  Tera Type: Grass
-  EVs: 252 HP / 252 Def / 4 SpD
-  Bold Nature
-  IVs: 0 Atk
-  - Malignant Chain
-  - Shadow Ball
-  - Parting Shot
-  - Recover
-
-  Rotom-Wash @ Leftovers
-  Ability: Levitate
-  Tera Type: Steel
-  EVs: 252 HP / 212 Def / 44 Spe
-  Bold Nature
-  IVs: 0 Atk
-  - Hydro Pump
-  - Volt Switch
-  - Pain Split
-  - Will-O-Wisp
-  ```
-
-  2. Replace Hydro Pump for Rotom-W with Surf.
-  3. Press "Update". Expect that all pokemon and their details mentioned in step 1 show up in the cards.
-
-### Save/Load Team: Copy Team
-
-#### Unit Tests
+##### Unit Tests
 
 - Pressing the "Copy Team" button copies empty text to your clipboard, while a snackbar pops out and says "Empty team, nothing to copy".
 
-#### Integration Tests
+##### Integration Tests
 
 1. Select pokemon Pikachu and the move "Thunderbolt".
 2. Pressing the "Copy Team" button copies this to your clipboard:
@@ -493,7 +184,7 @@ Press "Import/Export Team" in the "Save/Load Team" tab.
 ```
 Pikachu @
 Ability:
--Thunderbolt
+- Thunderbolt
 -
 -
 -

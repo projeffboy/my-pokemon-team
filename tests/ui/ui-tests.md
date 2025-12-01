@@ -1,20 +1,26 @@
-This test md file outlines the UI tests for this website. There are 4 major UI sections of this site.
+# UI Tests
 
-# Website Sections to Be Tested
+## Guidelines
 
-## Header
+- This test md file outlines the UI tests for this website.
+- There are 4 major UI sections of this site.
+- Each section below has its own test file: `tests/ui/<section>-tests.spec.js`
+
+## Website Sections to Be Tested
+
+### Header
 
 Test that the title is still there and that the two images to its left and right are as well (and that the images are loading properly).
 
-## Main
+### Main
 
 Look at `./main/` for more info.
 
-## FAB
+### FAB
 
 FAB, or floating action button. This is the button on the bottom right with a TableChart icon, expect it to be there. Clicking on it loads three tabs, Table, List, and Infographic. Going to each tab loads an image successfully. And you can exit from the popup dialog.
 
-## Footer
+### Footer
 
 Test each footer element:
 
@@ -28,7 +34,3 @@ Test each footer element:
 - Dark Mode
   - check to see that the system theme/mode matches this theme
   - toggle the switch to expect it changes theme, then toggle it back to expect it changes back to the initial theme
-
-# Test Files You Can Modify
-
-Based on the requirements above, you can either modify tests/ui/\*.spec.js or playwright.config.js. Each website section should have its own test file, e.g. for "Header", it would be header-tests.spec.js.

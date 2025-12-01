@@ -10,12 +10,12 @@ import {
 // Test configuration based on ui-main-tests.md requirements for Team Viewer Unit Tests
 
 test.describe("Team Viewer - Unit Tests", () => {
+  test.beforeEach(async ({ page }) => {
+    await goToSite(page);
+  });
+
   test.describe("Small viewport", () => {
     test.use({ viewport: createViewport(SMALL_VIEWPORT_WIDTH) });
-
-    test.beforeEach(async ({ page }) => {
-      await goToSite(page);
-    });
 
     test("should display 6 team viewer slots with question mark sprites", async ({
       page,
@@ -47,10 +47,6 @@ test.describe("Team Viewer - Unit Tests", () => {
 
   test.describe("Medium viewport", () => {
     test.use({ viewport: createViewport(MEDIUM_VIEWPORT_WIDTH) });
-
-    test.beforeEach(async ({ page }) => {
-      await goToSite(page);
-    });
 
     test("should display 3 team viewer slots with question mark sprites (pairs)", async ({
       page,
@@ -100,10 +96,6 @@ test.describe("Team Viewer - Unit Tests", () => {
 
   test.describe("Large viewport", () => {
     test.use({ viewport: createViewport(LARGE_VIEWPORT_WIDTH) });
-
-    test.beforeEach(async ({ page }) => {
-      await goToSite(page);
-    });
 
     test("should not display team viewer", async ({ page }) => {
       // In large viewport, there should be no team viewer tabs
