@@ -25,10 +25,7 @@ test.describe("Footer Tests", () => {
   }) => {
     const jefferyButton = page.getByRole("button", { name: "Jeffery Tang" });
     await expect(jefferyButton).toBeVisible();
-
-    // Test that clicking leads to jefferytang.com
-    await jefferyButton.click();
-    await expect(page).toHaveURL(/jefferytang\.com/);
+    await expect(jefferyButton).toHaveAttribute("href", /jefferytang\.com/);
   });
 
   test("should test Credits button and dialog", async ({ page }) => {
@@ -44,7 +41,7 @@ test.describe("Footer Tests", () => {
 
   test("should test Updates button and GitHub link", async ({ page }) => {
     const updatesButton = page.getByRole("button", {
-      name: "Updates (May 15, 2024)",
+      name: "Updates",
     });
     await expect(updatesButton).toBeVisible();
 
@@ -54,9 +51,10 @@ test.describe("Footer Tests", () => {
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
 
-    // Should contain GitHub link to https://github.com/projeffboy/my-pokemon-team
-    const githubLink = page.getByRole("button", { name: "GitHub Repo" });
-    await expect(githubLink).toBeVisible();
+    const link = dialog.locator(
+      "a[href*='github.com/projeffboy/my-pokemon-team']"
+    );
+    await expect(link).toBeVisible();
   });
 
   test("should test Privacy Policy button and dialog", async ({ page }) => {

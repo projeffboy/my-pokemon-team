@@ -18,37 +18,34 @@ test.describe("FAB (Floating Action Button) Tests", () => {
     // Click on Type Chart button - should load dialog with three tabs
     await fabButton.click();
 
-    // Should see the dialog with tabs
-    await expect(page.getByRole("tab", { name: "Table" })).toBeVisible();
-    await expect(page.getByRole("tab", { name: "List" })).toBeVisible();
-    await expect(page.getByRole("tab", { name: "Infographic" })).toBeVisible();
-
-    // Test each tab sequentially without checking which one is selected first
-    // Start with Table tab
-    const tableTab = page.getByRole("tab", { name: "Table" });
-    const listTab = page.getByRole("tab", { name: "List" });
-    const infographicTab = page.getByRole("tab", { name: "Infographic" });
+    // Collect tab locators and assert they're visible
+    const [tableTab, listTab, infographicTab] = [
+      "Table",
+      "List",
+      "Infographic",
+    ].map(name => page.getByRole("tab", { name }));
+    await Promise.all(
+      [tableTab, listTab, infographicTab].map(tab => expect(tab).toBeVisible())
+    );
 
     // Click Table tab and verify image loads
     await tableTab.click();
     await expect(tableTab).toHaveAttribute("aria-selected", "true");
     const tableImage = page.locator(
-      'img[alt*="Type Chart"], img[alt*="Bulbapedia"]'
+      'img[alt*="Bulbapedia Pokemon Type Chart"]'
     );
     await expectImageToBeLoaded(tableImage);
 
     // Click List tab and verify image loads
     await listTab.click();
     await expect(listTab).toHaveAttribute("aria-selected", "true");
-    const listImage = page.locator('img[alt*="List"], img[alt*="Type Chart"]');
+    const listImage = page.locator('img[alt*="List Pokemon Type Chart"]');
     await expectImageToBeLoaded(listImage);
 
     // Click Infographic tab and verify image loads
     await infographicTab.click();
     await expect(infographicTab).toHaveAttribute("aria-selected", "true");
-    const infographicImage = page.locator(
-      'img[alt*="Infographic"], img[alt*="Type Chart"]'
-    );
+    const infographicImage = page.locator('img[alt*="Infographic Type Chart"]');
     await expectImageToBeLoaded(infographicImage);
 
     // Test exit from popup dialog
@@ -57,6 +54,6 @@ test.describe("FAB (Floating Action Button) Tests", () => {
     await goBackButton.click();
 
     // Dialog should be closed - tabs should not be visible
-    await expect(page.getByRole("tab", { name: "Table" })).not.toBeVisible();
+    await expect(tableTab).not.toBeVisible();
   });
 });
