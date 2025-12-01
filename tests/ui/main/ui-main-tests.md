@@ -138,7 +138,7 @@ Each (non-header) row is its own test:
 | Toxapex     | Recover      | N/A          | Reliable Recovery   |
 | Blissey     | Heal Bell    | N/A          | Cleric              |
 | Toxapex     | Toxic        | N/A          | Status Move         |
-| Corviknight | Whirlwind    | N/A          | Phazer              |
+| Skarmory    | Whirlwind    | N/A          | Phazer              |
 | Dragonite   | Dragon Dance | N/A          | Boosting Move       |
 | Tapu Koko   | Volt Switch  | N/A          | Volt-turn Move      |
 | Garchomp    | N/A          | Choice Scarf | Choice Item         |
