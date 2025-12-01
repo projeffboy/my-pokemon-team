@@ -47,7 +47,7 @@ export default defineConfig({
       name: "chromium",
       use: {
         ...devices["Desktop Chrome"],
-        viewport: createViewport(LARGER_VIEWPORT_WIDTH),
+        viewport: createViewport(LARGE_VIEWPORT_WIDTH),
       },
     },
 
@@ -55,7 +55,7 @@ export default defineConfig({
       name: "firefox",
       use: {
         ...devices["Desktop Firefox"],
-        viewport: createViewport(LARGE_VIEWPORT_WIDTH),
+        viewport: createViewport(LARGER_VIEWPORT_WIDTH),
       },
     },
 

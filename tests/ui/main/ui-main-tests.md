@@ -87,7 +87,8 @@
 
 - Moves
 
-  1. Select pokemon Muk-Alola:
+  1. Select only viable moves.
+  2. Select pokemon Muk-Alola:
      - Moves that can be selected:
        - Crunch
        - Toxic
