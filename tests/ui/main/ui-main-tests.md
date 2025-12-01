@@ -147,8 +147,6 @@ Each (non-header) row is its own test:
 
 ##### Integration Tests
 
-###### Import Team
-
 Each test case begins with: 1. Go to the "Save/Load Team" tab and press the "Import/Export Team" button.
 
 - Manually fill in a pokemon
