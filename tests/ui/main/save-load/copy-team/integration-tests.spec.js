@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { goToSite } from "../../../../helper.js";
+import { goToSite } from "helper.js";
 
 test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
   test.beforeEach(async ({ page, context, browserName }) => {

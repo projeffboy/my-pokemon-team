@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { goToSite } from "../../../../helper.js";
+import { goToSite } from "helper.js";
 
 test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
   test.beforeEach(async ({ page }) => {
@@ -8,7 +8,8 @@ test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
     // 1. Go to the "Save/Load Team" tab
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
 
-    await page.waitForTimeout(500);
+    // wait is necessary in short due to the tab transition animation
+    await page.waitForTimeout(500); // TODO: turn wait time into a constant
 
     // Press the "Import/Export Team" button
     await page.getByRole("button", { name: "Import/Export Team" }).click();

@@ -1,9 +1,5 @@
 import { test, expect } from "@playwright/test";
-import {
-  goToSite,
-  createViewport,
-  LARGE_VIEWPORT_WIDTH,
-} from "../../../helper.js";
+import { goToSite, createViewport, LARGE_VIEWPORT_WIDTH } from "helper.js";
 
 // Test configuration based on ui-main-tests.md requirements for Pokemon Card Unit Tests
 

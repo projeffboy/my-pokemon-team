@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { goToSite } from "../helper.js";
+import { goToSite } from "helper.js";
 
 // Test configuration based on ui-tests.md requirements
 
