@@ -1,0 +1,62 @@
+Carly Rae (Iron Moth) @ Booster Energy  
+Ability: Quark Drive  
+Tera Type: Fairy  
+EVs: 120 Def / 132 SpA / 4 SpD / 252 Spe  
+Timid Nature  
+IVs: 0 Atk  
+- Dazzling Gleam  
+- Fiery Dance  
+- Morning Sun  
+- Discharge  
+
+Alvvays (Umbreon) @ Leftovers  
+Ability: Inner Focus  
+Tera Type: Water  
+EVs: 248 HP / 8 Def / 252 SpD  
+Calm Nature  
+IVs: 0 Atk  
+- Protect  
+- Wish  
+- Thunder Wave  
+- Foul Play  
+
+Rat Tally (Garchomp) @ Leftovers  
+Ability: Rough Skin  
+Tera Type: Electric  
+EVs: 4 HP / 252 Atk / 252 Spe  
+Jolly Nature  
+- Swords Dance  
+- Scale Shot  
+- Earthquake  
+- Tera Blast  
+
+Julia Jacklin (Glimmora) @ Focus Sash  
+Ability: Toxic Debris  
+Tera Type: Ghost  
+EVs: 4 HP / 252 SpA / 252 Spe  
+Timid Nature  
+- Stealth Rock  
+- Mortal Spin  
+- Sludge Wave  
+- Earth Power  
+
+Smino (Gholdengo) @ Choice Scarf  
+Ability: Good as Gold  
+Tera Type: Flying  
+EVs: 68 Def / 252 SpA / 188 Spe  
+Timid Nature  
+IVs: 0 Atk  
+- Trick  
+- Make It Rain  
+- Psyshock  
+- Shadow Ball  
+
+Elucid (Dragonite) @ Heavy-Duty Boots  
+Ability: Multiscale  
+Tera Type: Normal  
+EVs: 252 Atk / 4 SpD / 252 Spe  
+Adamant Nature  
+- Dragon Dance  
+- Extreme Speed  
+- Earthquake  
+- Ice Spinner  

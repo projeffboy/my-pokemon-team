@@ -1,14 +1,8 @@
-import { test, expect } from "@playwright/test";
-import { goToSite } from "helper.js";
+import { test, expect } from "fixtures";
 
 // Test configuration based on ui-tests.md requirements
 
 test.describe("Footer Tests", () => {
-  // Navigate to the site before each test
-  test.beforeEach(async ({ page }) => {
-    await goToSite(page);
-  });
-
   test("should test Manual button and dialog", async ({ page }) => {
     const manualButton = page.getByRole("button", { name: "Manual" });
     await expect(manualButton).toBeVisible();

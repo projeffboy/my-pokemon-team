@@ -1,12 +1,10 @@
-import { test, expect } from "@playwright/test";
-import { goToSite } from "helper.js";
+import { test, expect } from "fixtures";
 
 test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
   test.beforeEach(async ({ page, context, browserName }) => {
     if (browserName === "chromium" || browserName === "Mobile Chrome") {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     }
-    await goToSite(page);
   });
 
   test("should copy team details to clipboard", async ({

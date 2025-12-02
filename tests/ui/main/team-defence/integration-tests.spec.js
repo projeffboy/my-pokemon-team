@@ -1,16 +1,7 @@
-import { test, expect } from "@playwright/test";
-import {
-  goToSite,
-  selectPokemon,
-  selectAbility,
-  POKEMON_TYPES,
-} from "helper.js";
+import { test, expect } from "fixtures";
+import { selectPokemon, selectAbility, POKEMON_TYPES } from "helper.js";
 
 test.describe("Team Defence - Integration Tests", () => {
-  test.beforeEach(async ({ page }) => {
-    await goToSite(page);
-  });
-
   const checkTypeScoreAndPopover = async (
     page,
     typeName,

@@ -1,6 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "fixtures";
 import {
-  goToSite,
   selectPokemon,
   selectAbility,
   selectMove,
@@ -9,10 +8,6 @@ import {
 } from "helper.js";
 
 test.describe("Team Type Coverage - Integration Tests", () => {
-  test.beforeEach(async ({ page }) => {
-    await goToSite(page);
-  });
-
   const checkTypeScoreAndPopover = async (
     page,
     typeName,

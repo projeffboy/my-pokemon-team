@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "fixtures";
 
 const ASPECT_RATIO = 16 / 9;
 
@@ -92,10 +92,6 @@ export const selectMove = async (page, move, slotIndex = 0, moveIndex = 1) => {
 // Shared unit tests for Team Defence and Team Type Coverage
 export const teamScoreUnitTests = headingName => {
   test.describe(`${headingName} - Unit Tests`, () => {
-    test.beforeEach(async ({ page }) => {
-      await goToSite(page);
-    });
-
     test("should display all 18 types with score of 0", async ({ page }) => {
       // Find the heading
       const heading = page.getByRole("heading", { name: headingName });

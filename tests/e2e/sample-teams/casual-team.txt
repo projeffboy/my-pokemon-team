@@ -1,0 +1,41 @@
+Nidoking @ Shell Bell
+Ability: Rivalry
+- Protect
+- Ice Punch
+- Dragon Pulse
+- Earthquake
+
+Nidoqueen @ Shell Bell
+Ability: Rivalry
+- Protect
+- Thunder Punch
+- Brick Break
+- Flamethrower
+
+Umbreon @ Shell Bell
+Ability: Inner Focus
+- Dark Pulse
+- Protect
+- Crunch
+- Moonlight
+
+Espeon @ Shell Bell
+Ability: Magic Bounce
+- Psychic
+- Protect
+- Sunny Day
+- Morning Sun
+
+Mimikyu @ Shell Bell
+Ability: Disguise
+- Protect
+- Shadow Ball
+- Dark Pulse
+- After You
+
+Pikachu @ Shell Bell
+Ability: Static
+- Protect
+- Thunderbolt
+- Extreme Speed
+- Attract

@@ -1,13 +1,8 @@
-import { test, expect } from "@playwright/test";
-import { goToSite } from "helper.js";
+import { test, expect } from "fixtures";
 
 // Test configuration based on ui-main-tests.md requirements for Pokemon Card Unit Tests
 
 test.describe("Pokemon Card - Unit Tests", () => {
-  test.beforeEach(async ({ page }) => {
-    await goToSite(page);
-  });
-
   // Helper to ensure card is visible (handles responsive tabs)
   const ensureCardVisible = async (page, index) => {
     // If card is already visible, do nothing

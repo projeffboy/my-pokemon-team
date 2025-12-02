@@ -1,6 +1,5 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "fixtures";
 import {
-  goToSite,
   createViewport,
   SMALL_VIEWPORT_WIDTH,
   MEDIUM_VIEWPORT_WIDTH,
@@ -10,10 +9,6 @@ import {
 // Test configuration based on ui-main-tests.md requirements for Team Viewer Unit Tests
 
 test.describe("Team Viewer - Unit Tests", () => {
-  test.beforeEach(async ({ page }) => {
-    await goToSite(page);
-  });
-
   test.describe("Small viewport", () => {
     test.use({ viewport: createViewport(SMALL_VIEWPORT_WIDTH) });
 

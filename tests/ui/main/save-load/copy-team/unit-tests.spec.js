@@ -1,9 +1,7 @@
-import { test, expect } from "@playwright/test";
-import { goToSite } from "helper.js";
+import { test, expect } from "fixtures";
 
 test.describe("Save/Load Team: Copy Team - Unit Tests", () => {
   test.beforeEach(async ({ page }) => {
-    await goToSite(page);
     // Go to Save/Load tab
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
     await page.waitForTimeout(500);

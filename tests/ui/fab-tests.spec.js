@@ -1,14 +1,9 @@
-import { test, expect } from "@playwright/test";
-import { goToSite, expectImageToBeLoaded } from "helper.js";
+import { test, expect } from "fixtures";
+import { expectImageToBeLoaded } from "helper.js";
 
 // Test configuration based on ui-tests.md requirements
 
 test.describe("FAB (Floating Action Button) Tests", () => {
-  // Navigate to the site before each test
-  test.beforeEach(async ({ page }) => {
-    await goToSite(page);
-  });
-
   test("should display and interact with Type Chart FAB", async ({ page }) => {
     // FAB should be there - button on bottom right with MuiFab class
     // Find FAB button by looking for Material-UI FAB classes

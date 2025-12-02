@@ -1,9 +1,7 @@
-import { test, expect } from "@playwright/test";
-import { goToSite } from "helper.js";
+import { test, expect } from "fixtures";
 
 test.describe("Team Checklist - Integration Tests", () => {
   test.beforeEach(async ({ page }) => {
-    await goToSite(page);
     // Click on the "Team Checklist" tab
     await page.getByRole("tab", { name: /Checklist/ }).click();
   });

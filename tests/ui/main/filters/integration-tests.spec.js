@@ -1,4 +1,4 @@
-const { test, expect } = require("@playwright/test");
+import { test, expect } from "fixtures";
 
 // Pokemon Selectibility Check Helpers
 
@@ -62,10 +62,6 @@ const selectFilterOption = async (page, filterName, optionName) => {
 };
 
 test.describe("Filters Integration Tests", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:3000");
-  });
-
   test("Format Filter", async ({ page }) => {
     // 1. Select format OU
     await selectFilterOption(page, "Format", "OU: Over Used");
