@@ -49,6 +49,46 @@ export const expectImageToBeLoaded = async locator => {
   await expect(locator).not.toHaveJSProperty("naturalWidth", 0);
 };
 
+export const selectPokemon = async (page, name, slotIndex = 0) => {
+  const id = `#react-select-single-${slotIndex}-name`;
+  const nameControl = page
+    .locator(".Select-control")
+    .filter({ has: page.locator(id) });
+  await nameControl.click();
+  await page.locator(id).fill(name);
+  await page.getByRole("listbox").getByText(name, { exact: true }).click();
+};
+
+export const selectAbility = async (page, ability, slotIndex = 0) => {
+  const id = `#react-select-single-${slotIndex}-ability`;
+  const abilityControl = page
+    .locator(".Select-control")
+    .filter({ has: page.locator(id) });
+  await abilityControl.click();
+  await page.locator(id).fill(ability);
+  await page.getByRole("listbox").getByText(ability, { exact: true }).click();
+};
+
+export const selectItem = async (page, item, slotIndex = 0) => {
+  const id = `#react-select-single-${slotIndex}-item`;
+  const itemControl = page
+    .locator(".Select-control")
+    .filter({ has: page.locator(id) });
+  await itemControl.click();
+  await page.locator(id).fill(item);
+  await page.getByRole("listbox").getByText(item, { exact: true }).click();
+};
+
+export const selectMove = async (page, move, slotIndex = 0, moveIndex = 1) => {
+  const id = `#react-select-single-${slotIndex}-move${moveIndex}`;
+  const moveControl = page
+    .locator(".Select-control")
+    .filter({ has: page.locator(id) });
+  await moveControl.click();
+  await page.locator(id).fill(move);
+  await page.getByRole("listbox").getByText(move, { exact: true }).click();
+};
+
 // Shared unit tests for Team Defence and Team Type Coverage
 export const teamScoreUnitTests = headingName => {
   test.describe(`${headingName} - Unit Tests`, () => {

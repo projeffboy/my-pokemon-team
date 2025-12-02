@@ -34,12 +34,45 @@
 - All 18 types are there and that they are all set to a score of 0.
 - Hovering over Dark type shows a popover with "First Select a Pokemon"
 
+### Integration Tests
+
+- Score of a Pokemon with an ability that helps it resist a type:
+
+  1. Select Snorlax with ability Thick Fat. Expect that:
+     - the Fire, Ice score is +1
+     - hovering over Fire, Ice show that they do 0.5x
+
+- Score of a Pokemon with an ability that makes it immune to a type:
+
+  1. Select Rotom-Wash with ability Levitate. Expect that:
+     - the Ground score is +1.5
+     - hovering over Ground shows that it does 0x
+
 ### Team Type Coverage
 
 #### Unit Tests
 
 - All 18 types are there and that they are all set to a score of 0.
 - Hovering over Dark type shows a popover with "First Select a Pokemon"
+
+### Integration Tests
+
+- Special Move:
+  1. Select Glalie with Freeze Dry. Expect that:
+     - the Water score is +2
+     - hovering over Water shows that Freeze-Dry from Glalie is super effective
+- Special ability
+  1. Select Gardevoir-Mega with ability Pixilate and move Hyper Voice. Expect that:
+     - the Dark, Dragon, Fighting score is +2
+     - hovering over Dark, Dragon, Fighting shows that Hyper Voice from Gardevoir-Mega is super effective
+- Special Pokemon, Item, and Move:
+  1. Select Arceus-Dark with item Dread Plate, ability Multitype, and move Judgment. Expect that:
+     - the Ghost, Psychic score is +2
+     - hovering over Ghost, Psychic shows that Judgment from Arceus-Dark is super effective
+- One weak move, one non-normal status move:
+  1. Select Dedenne with moves Nuzzle and Rain Dance. Expect that:
+     - the score is 0 for Flying, Water
+     - hovering over Flying, Water shows that nothing is super effective
 
 ### Filters
 
