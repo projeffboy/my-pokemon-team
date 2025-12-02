@@ -60,7 +60,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
 
   test("should have question mark sprite by default", async ({ page }) => {
     await expect
-      .poll(async () => page.locator('img[alt="question-mark"]').count())
+      .poll(async () => page.getByAltText("question-mark").count())
       .toBeGreaterThanOrEqual(6);
   });
 

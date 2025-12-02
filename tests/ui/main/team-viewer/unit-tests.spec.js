@@ -19,7 +19,7 @@ test.describe("Team Viewer - Unit Tests", () => {
       const questionMarkSprites = page
         .getByRole("tablist")
         .first()
-        .locator('img[alt="question-mark"]');
+        .getByAltText("question-mark");
       await expect(questionMarkSprites).toHaveCount(6);
     });
 
@@ -62,7 +62,7 @@ test.describe("Team Viewer - Unit Tests", () => {
         await expect(slot).toBeVisible();
 
         // Each slot pair should have 2 question mark images
-        const questionMarkImgs = slot.locator('img[alt="question-mark"]');
+        const questionMarkImgs = slot.getByAltText("question-mark");
         await expect(questionMarkImgs).toHaveCount(2);
       }
     });
