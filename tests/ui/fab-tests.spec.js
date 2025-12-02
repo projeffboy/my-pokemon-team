@@ -1,16 +1,13 @@
 import { test, expect } from "fixtures";
-import { expectImageToBeLoaded } from "helper.js";
+import { expectImageToBeLoaded } from "helper";
 
 // Test configuration based on ui-tests.md requirements
 
 test.describe("FAB (Floating Action Button) Tests", () => {
   test("should display and interact with Type Chart FAB", async ({ page }) => {
-    // FAB should be there - button on bottom right with MuiFab class
-    // Find FAB button by looking for Material-UI FAB classes
-    const fabButton = page.locator('button[class*="MuiFab"]');
+    // Click FAB to open Type Chart dialog
+    const fabButton = page.getByRole("button", { name: "Type Chart" });
     await expect(fabButton).toBeVisible();
-
-    // Click on Type Chart button - should load dialog with three tabs
     await fabButton.click();
 
     // Collect tab locators and assert they're visible
@@ -20,28 +17,22 @@ test.describe("FAB (Floating Action Button) Tests", () => {
       "Infographic",
     ].map(name => page.getByRole("tab", { name }));
     await Promise.all(
-      [tableTab, listTab, infographicTab].map(tab => expect(tab).toBeVisible())
+      [(tableTab, listTab, infographicTab)].map(tab =>
+        expect(tab).toBeVisible()
+      )
     );
 
-    // Click Table tab and verify image loads
-    await tableTab.click();
-    await expect(tableTab).toHaveAttribute("aria-selected", "true");
-    const tableImage = page.locator(
-      'img[alt*="Bulbapedia Pokemon Type Chart"]'
-    );
-    await expectImageToBeLoaded(tableImage);
+    const verifyTabAndImage = async (page, tab, altText) => {
+      await tab.click();
+      await expect(tab).toHaveAttribute("aria-selected", "true");
+      const image = page.getByAltText(altText);
+      await expectImageToBeLoaded(image);
+    };
 
-    // Click List tab and verify image loads
-    await listTab.click();
-    await expect(listTab).toHaveAttribute("aria-selected", "true");
-    const listImage = page.locator('img[alt*="List Pokemon Type Chart"]');
-    await expectImageToBeLoaded(listImage);
-
-    // Click Infographic tab and verify image loads
-    await infographicTab.click();
-    await expect(infographicTab).toHaveAttribute("aria-selected", "true");
-    const infographicImage = page.locator('img[alt*="Infographic Type Chart"]');
-    await expectImageToBeLoaded(infographicImage);
+    // Verify all three tabs
+    await verifyTabAndImage(page, tableTab, "Bulbapedia Pokemon Type Chart");
+    await verifyTabAndImage(page, listTab, "List Pokemon Type Chart");
+    await verifyTabAndImage(page, infographicTab, "Infographic Type Chart");
 
     // Test exit from popup dialog
     const goBackButton = page.getByRole("button", { name: "Go Back" });

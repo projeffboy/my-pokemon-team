@@ -24,6 +24,7 @@ export default class extends React.Component {
           variant="round"
           size="small"
           style={{ position: "fixed", bottom: 116, right: 16 }}
+          aria-label="Type Chart"
         >
           <TableChart />
         </Fab>
@@ -36,6 +37,7 @@ export default class extends React.Component {
           variant="round"
           size="large"
           style={{ position: "fixed", bottom: 116, right: 24 }}
+          aria-label="Type Chart"
         >
           <TableChart />
         </Fab>
