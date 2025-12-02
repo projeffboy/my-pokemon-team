@@ -43,6 +43,8 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     // 2. Go to Save/Load tab
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
 
+    await page.waitForTimeout(100);
+
     // 3. Press "Copy Team" button
     await page.getByRole("button", { name: "Copy Team" }).click();
 
