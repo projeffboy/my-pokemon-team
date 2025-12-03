@@ -16,6 +16,7 @@ test.describe("Team Viewer - Unit Tests", () => {
       page,
     }) => {
       // Verify there are exactly 6 question mark sprites in the team viewer
+      // TODO: be more specific with locating the tablists in this file, use an aria-label
       const questionMarkSprites = page
         .getByRole("tablist")
         .first()
@@ -33,7 +34,7 @@ test.describe("Team Viewer - Unit Tests", () => {
       // Verify other slots are not selected
       for (let i = 2; i <= 6; i++) {
         const slot = page.getByRole("tab", {
-          name: new RegExp(`question-mark ${i}`),
+          name: `question-mark ${i}`,
         });
         await expect(slot).toHaveAttribute("aria-selected", "false");
       }
@@ -95,10 +96,9 @@ test.describe("Team Viewer - Unit Tests", () => {
     test("should not display team viewer", async ({ page }) => {
       // In large viewport, there should be no team viewer tabs
       // Check that no team viewer slots exist (tabs with question mark sprites)
-      const hasTeamViewerSlots = await page
-        .getByRole("tab", { name: /question-mark/ })
-        .count();
-      expect(hasTeamViewerSlots).toBe(0);
+      await expect(
+        page.getByRole("tab", { name: /question-mark/ })
+      ).toHaveCount(0);
     });
   });
 });

@@ -23,7 +23,7 @@
 
 - For every pokemon card, expect:
 
-  - all the fields are empty
+  - the fields are empty
   - the sprite is a question mark
   - there are no moves or abilities to select (since no pokemon selected)
 
