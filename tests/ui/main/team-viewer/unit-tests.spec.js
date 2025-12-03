@@ -4,7 +4,7 @@ import {
   SMALL_VIEWPORT_WIDTH,
   MEDIUM_VIEWPORT_WIDTH,
   LARGE_VIEWPORT_WIDTH,
-} from "helper.js";
+} from "helper";
 
 // Test configuration based on ui-main-tests.md requirements for Team Viewer Unit Tests
 

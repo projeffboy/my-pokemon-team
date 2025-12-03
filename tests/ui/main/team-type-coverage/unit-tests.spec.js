@@ -1,4 +1,4 @@
-import { teamScoreUnitTests } from "helper.js";
+import { teamScoreUnitTests } from "helper";
 
 // Test configuration based on ui-main-tests.md requirements for Team Type Coverage Unit Tests
 

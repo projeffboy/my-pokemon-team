@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { selectPokemon, selectAbility, POKEMON_TYPES } from "helper.js";
+import { selectPokemon, selectAbility, POKEMON_TYPES } from "helper";
 
 test.describe("Team Defence - Integration Tests", () => {
   const checkTypeScoreAndPopover = async (

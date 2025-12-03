@@ -5,7 +5,7 @@ import {
   LARGE_VIEWPORT_WIDTH,
   MEDIUM_VIEWPORT_WIDTH,
   createViewport,
-} from "./tests/helper.js";
+} from "./tests/helper";
 
 /**
  * Read environment variables from file.

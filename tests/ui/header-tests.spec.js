@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { expectImageToBeLoaded } from "helper.js";
+import { expectImageToBeLoaded } from "helper";
 
 // Test configuration based on ui-tests.md requirements
 

@@ -5,7 +5,7 @@ import {
   selectMove,
   selectItem,
   POKEMON_TYPES,
-} from "helper.js";
+} from "helper";
 
 test.describe("Team Type Coverage - Integration Tests", () => {
   const checkTypeScoreAndPopover = async (
