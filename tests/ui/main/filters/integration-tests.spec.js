@@ -56,7 +56,6 @@ const selectFilterOption = async (page, filterName, optionName) => {
   const dropdown = label.locator("..").getByRole("button");
   await dropdown.click();
   const option = page.getByRole("option", { name: optionName });
-  await expect(option).toBeVisible();
   await option.click();
   await expect(page.getByRole("listbox")).toBeHidden();
 };

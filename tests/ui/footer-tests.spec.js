@@ -5,8 +5,6 @@ import { test, expect } from "fixtures";
 test.describe("Footer Tests", () => {
   test("should test Manual button and dialog", async ({ page }) => {
     const manualButton = page.getByRole("button", { name: "Manual" });
-    await expect(manualButton).toBeVisible();
-
     await manualButton.click();
 
     // Should load popup/dialog - look for dialog or modal content
@@ -24,8 +22,6 @@ test.describe("Footer Tests", () => {
 
   test("should test Credits button and dialog", async ({ page }) => {
     const creditsButton = page.getByRole("button", { name: "Credits" });
-    await expect(creditsButton).toBeVisible();
-
     await creditsButton.click();
 
     // Should lead to a dialog
@@ -37,8 +33,6 @@ test.describe("Footer Tests", () => {
     const updatesButton = page.getByRole("button", {
       name: "Updates",
     });
-    await expect(updatesButton).toBeVisible();
-
     await updatesButton.click();
 
     // Should open a dialog
@@ -55,8 +49,6 @@ test.describe("Footer Tests", () => {
     const privacyButton = page.getByRole("button", {
       name: "Privacy Policy",
     });
-    await expect(privacyButton).toBeVisible();
-
     await privacyButton.click();
 
     // Should load another dialog
