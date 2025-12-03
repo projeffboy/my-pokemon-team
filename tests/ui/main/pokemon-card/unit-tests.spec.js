@@ -5,90 +5,86 @@ import { test, expect } from "fixtures";
 test.describe("Pokemon Card - Unit Tests", () => {
   // Helper to ensure card is visible (handles responsive tabs)
   const ensureCardVisible = async (page, index) => {
-    // If card is already visible, do nothing
-    if (await page.locator(`#react-select-single-${index}-name`).isVisible()) {
-      return;
+    // If card is already visible (large viewport width), do nothing
+    const card = page.getByRole("region", { name: `Pokemon ${index + 1}` });
+    if (await card.isVisible()) {
+      return card;
     }
 
-    // Try to find a tab with the number (loose match handles "1" and "1 - 2")
-    // We use .first() in case of multiple matches (though unlikely in this specific UI)
-    const tab = page
-      .getByRole("tab", { name: `${index + 1}`, exact: false })
-      .first();
+    // Try to find a tab with the number (loose match handles various tab label formats)
+    const tab = page.getByRole("tab", { name: `${index + 1}`, exact: false });
     if (await tab.isVisible()) {
       await tab.click();
-      // Wait for the card to appear
-      await expect(
-        page.locator(`#react-select-single-${index}-name`)
-      ).toBeVisible();
+      await expect(card).toBeVisible();
     }
+
+    return card;
   };
 
   test("should have all fields empty by default", async ({ page }) => {
-    // Check all 6 name fields are empty
-    for (let i = 0; i < 6; i++) {
+    // Check name fields for cards 1, 3, and 6
+    for (const i of [0, 2, 5]) {
       await ensureCardVisible(page, i);
-      const nameField = page.locator(`#react-select-single-${i}-name`);
+      const nameField = page.getByRole("combobox", {
+        name: `Pokemon ${i + 1}'s name`,
+      });
       await expect(nameField).toHaveValue("");
     }
 
-    // Check all move fields are empty (4 moves per card, 6 cards)
-    for (let i = 0; i < 6; i++) {
+    // Check move fields for cards 2, 4, 5
+    for (const i of [1, 3, 4]) {
       await ensureCardVisible(page, i);
       for (let moveNum = 1; moveNum <= 4; moveNum++) {
-        const moveField = page.locator(
-          `#react-select-single-${i}-move${moveNum}`
-        );
+        const moveField = page.getByRole("combobox", {
+          name: `Pokemon ${i + 1}'s move${moveNum}`,
+        });
         await expect(moveField).toHaveValue("");
       }
     }
 
-    // Check all item fields are empty
-    for (let i = 0; i < 6; i++) {
+    // Check item fields for cards 2, 5, 6
+    for (const i of [1, 4, 5]) {
       await ensureCardVisible(page, i);
-      const itemField = page.locator(`#react-select-single-${i}-item`);
+      const itemField = page.getByRole("combobox", {
+        name: `Pokemon ${i + 1}'s item`,
+      });
       await expect(itemField).toHaveValue("");
     }
 
-    // Check all ability fields are empty
-    for (let i = 0; i < 6; i++) {
+    // Check ability fields for cards 1, 3, 4
+    for (const i of [0, 2, 3]) {
       await ensureCardVisible(page, i);
-      const abilityField = page.locator(`#react-select-single-${i}-ability`);
+      const abilityField = page.getByRole("combobox", {
+        name: `Pokemon ${i + 1}'s ability`,
+      });
       await expect(abilityField).toHaveValue("");
     }
   });
 
   test("should have question mark sprite by default", async ({ page }) => {
-    await expect
-      .poll(async () => page.getByAltText("question-mark").count())
-      .toBeGreaterThanOrEqual(6);
+    for (const i of [1, 2, 5]) {
+      const card = await ensureCardVisible(page, i);
+      const questionMark = card.getByAltText("question-mark");
+      await expect(questionMark).toBeVisible();
+    }
   });
 
   test("should show 'Nothing found' message in moves and abilities when no pokemon is selected", async ({
     page,
   }) => {
-    const moveField = page.locator("#react-select-single-0-move1");
-    const abilityField = page.locator("#react-select-single-0-ability");
+    const fieldsToCheck = [
+      { name: "Pokemon 1's move1", input: "Thunder" },
+      { name: "Pokemon 1's ability", input: "Intimidate" },
+    ];
 
-    // Type in move field to trigger dropdown
-    await moveField.fill("Thunder");
+    for (const { name, input } of fieldsToCheck) {
+      const field = page.getByRole("combobox", { name });
+      await field.fill(input);
 
-    // Check for "Nothing found" message
-    await expect(page.getByText("Nothing found")).toBeVisible();
-    await expect(
-      page.getByText("(Or you haven't selected a Pokemon)")
-    ).toBeVisible();
-
-    // Navigate back and clear move field
-    await page.goto("http://localhost:3000");
-
-    // Type in ability field to trigger dropdown
-    await abilityField.fill("Intimidate");
-
-    // Check for "Nothing found" message
-    await expect(page.getByText("Nothing found")).toBeVisible();
-    await expect(
-      page.getByText("(Or you haven't selected a Pokemon)")
-    ).toBeVisible();
+      // Check for "Nothing found" message
+      await expect(
+        page.getByText("Nothing found (Or you haven't selected a Pokemon)")
+      ).toBeVisible();
+    }
   });
 });

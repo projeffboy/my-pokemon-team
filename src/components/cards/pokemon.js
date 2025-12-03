@@ -44,7 +44,15 @@ function Pokemon(props) {
     }
   });
 
-  return <div className={props.classes.gridContainer}>{pokemonInputs}</div>;
+  return (
+    <div
+      className={props.classes.gridContainer}
+      role="region"
+      aria-label={`Pokemon ${props.teamIndex + 1}`}
+    >
+      {pokemonInputs}
+    </div>
+  );
 }
 
 export default withStyles(pokemonStyles)(Pokemon);

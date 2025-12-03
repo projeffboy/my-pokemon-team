@@ -41,6 +41,7 @@ function PokemonInputSelect(props) {
         instanceId: id,
         simpleValue: true,
         options: optionsWithLabels,
+        "aria-label": `Pokemon ${props.teamIndex + 1}'s ${props.pokemonProp}`,
       }}
     />
   );
