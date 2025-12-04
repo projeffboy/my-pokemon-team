@@ -33,6 +33,10 @@ class TeamStats extends React.Component {
     this.state = { anchorEl: Array(18).fill(null) };
   }
 
+  formatPositiveScore(value) {
+    return value > 0 ? `+${value}` : value;
+  }
+
   returnTypeValue(type) {
     let color = "inherit";
 
@@ -44,7 +48,7 @@ class TeamStats extends React.Component {
       color = this.props.darkMode ? "limegreen" : "green";
     }
 
-    return <div style={{ color }}>{type > 0 ? `+${type}` : type}</div>;
+    return <div style={{ color }}>{this.formatPositiveScore(type)}</div>;
   }
 
   handlePopoverOpen = (e, i) => {
@@ -129,6 +133,7 @@ class TeamStats extends React.Component {
                   this.state.anchorEl[i] ? "mouse-over-popover-" + i : null
                 }
                 aria-haspopup="true"
+                aria-label={type}
                 onMouseEnter={e => this.handlePopoverOpen(e, i)}
                 onMouseLeave={this.handlePopoverClose}
                 onClick={e => this.handleClick(e, i)}
@@ -173,6 +178,9 @@ class TeamStats extends React.Component {
               variant="body1"
               component="div"
               style={{ lineHeight: "initial" }}
+              aria-label={`${type} score: ${this.formatPositiveScore(
+                store[this.teamStatType][type]
+              )}`}
             >
               {this.returnTypeValue(store[this.teamStatType][type])}
             </Typography>

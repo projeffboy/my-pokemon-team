@@ -4,68 +4,10 @@ import {
   selectAbility,
   selectMove,
   selectItem,
-  POKEMON_TYPES,
+  checkTypeCoverageScoreAndPopover,
 } from "helper";
 
 test.describe("Team Type Coverage - Integration Tests", () => {
-  const checkTypeScoreAndPopover = async (
-    page,
-    typeName,
-    expectedScore,
-    expectedContent
-  ) => {
-    const heading = page.getByRole("heading", { name: "Team Type Coverage" });
-    const section = heading.locator("xpath=../..");
-
-    // Find the type abbreviation from helper.js
-    const typeObj = POKEMON_TYPES.find(t => t.full === typeName);
-    const typeAbbr = typeObj
-      ? typeObj.abbr
-      : typeName.substring(0, 3).toUpperCase();
-
-    // Find the type element (e.g. "Fire" or "FIR")
-    const typeElement = section
-      .locator("div")
-      .filter({
-        hasText: new RegExp(`^(${typeName}|${typeAbbr})$`),
-      })
-      .first();
-
-    // Find the score element in the same grid item
-    const gridItem = typeElement.locator("xpath=..");
-    const scoreElement = gridItem.locator('div[class*="MuiTypography-root"]');
-
-    await expect(scoreElement).toHaveText(expectedScore);
-
-    // Hover to check popover
-    await typeElement.hover();
-    await page.waitForTimeout(300); // Wait for transition
-
-    // Check for header "Super effective against [Type]:"
-    // Note: The text is split across nodes: "Super effective against " <span>Type</span> ":"
-    // So we check for the prefix.
-    await expect(
-      page
-        .getByText("Super effective against")
-        .filter({ visible: true })
-        .first()
-    ).toBeVisible();
-    await expect(
-      page.getByText(typeName).filter({ visible: true }).first()
-    ).toBeVisible();
-
-    // Check for expected content
-    for (const text of expectedContent) {
-      await expect(
-        page.getByText(text, { exact: false }).filter({ visible: true }).first()
-      ).toBeVisible();
-    }
-
-    // Move mouse away to close popover to avoid interference with next hover
-    await page.mouse.move(0, 0);
-    await page.waitForTimeout(100); // Wait for close transition
-  };
-
   test("Special Move", async ({ page }) => {
     // 1. Select Glalie with Freeze Dry
     await selectPokemon(page, "Glalie");
@@ -74,7 +16,7 @@ test.describe("Team Type Coverage - Integration Tests", () => {
     // Expect that:
     // - the Water score is +2
     // - hovering over Water shows that Freeze-Dry from Glalie is super effective
-    await checkTypeScoreAndPopover(page, "Water", "+2", [
+    await checkTypeCoverageScoreAndPopover(page, "Water", "+2", [
       "Freeze-Dry",
       "Glalie",
     ]);
@@ -91,7 +33,7 @@ test.describe("Team Type Coverage - Integration Tests", () => {
     // - hovering over Dark, Dragon, Fighting shows that Hyper Voice from Gardevoir-Mega is super effective
     const types = ["Dark", "Dragon", "Fighting"];
     for (const type of types) {
-      await checkTypeScoreAndPopover(page, type, "+2", [
+      await checkTypeCoverageScoreAndPopover(page, type, "+2", [
         "Hyper Voice",
         "Gardevoir-Mega",
       ]);
@@ -110,7 +52,7 @@ test.describe("Team Type Coverage - Integration Tests", () => {
     // - hovering over Ghost, Psychic shows that Judgment from Arceus-Dark is super effective
     const types = ["Ghost", "Psychic"];
     for (const type of types) {
-      await checkTypeScoreAndPopover(page, type, "+2", [
+      await checkTypeCoverageScoreAndPopover(page, type, "+2", [
         "Judgment",
         "Arceus-Dark",
       ]);
@@ -128,7 +70,7 @@ test.describe("Team Type Coverage - Integration Tests", () => {
     // - hovering over Flying, Water shows that nothing is super effective
     const types = ["Flying", "Water"];
     for (const type of types) {
-      await checkTypeScoreAndPopover(page, type, "0", ["Nothing"]);
+      await checkTypeCoverageScoreAndPopover(page, type, "0", ["Nothing"]);
     }
   });
 });

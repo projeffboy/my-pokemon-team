@@ -65,7 +65,11 @@ function Cards(props) {
       <Grid item container lg={6} md={5} sm={6} xs={12} spacing={16}>
         {["Team Defence", "Team Type Coverage"].map(cardTitle => (
           <Grid key={cardTitle} item xs={12}>
-            <Paper className={classes.applyPadding}>
+            <Paper
+              className={classes.applyPadding}
+              aria-label={`${cardTitle} Card`}
+              role="region"
+            >
               <TeamStats
                 title={cardTitle}
                 width={width}
