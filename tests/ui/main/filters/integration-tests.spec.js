@@ -1,66 +1,65 @@
 import { test, expect } from "fixtures";
-
-// Pokemon Selectibility Check Helpers
-
-const checkPokemonVisibility = async (
-  page,
-  name,
-  shouldBeSelectable = true,
-  expectedNameInList = null
-) => {
-  const pokemonInput = page.getByRole("combobox").first();
-  await pokemonInput.fill(name);
-
-  const option = page
-    .getByRole("listbox")
-    .getByText(expectedNameInList || name, { exact: true });
-
-  if (shouldBeSelectable) {
-    await expect(option).toBeVisible();
-  } else {
-    await expect(option).not.toBeVisible();
-  }
-};
-
-const checkPokemonSelectable = async (page, name, expectedNameInList) => {
-  await checkPokemonVisibility(page, name, true, expectedNameInList);
-};
-
-const checkPokemonNotSelectable = async (page, name) => {
-  await checkPokemonVisibility(page, name, false);
-};
-
-// Move Selectibility Check Helpers
-
-const checkMoveVisilibility = async (page, moveName, shouldBeSelectable) => {
-  const moveInput = page.getByRole("combobox").nth(1);
-  await moveInput.fill(moveName);
-  const option = page.getByRole("listbox").getByText(moveName, { exact: true });
-  if (shouldBeSelectable) {
-    await expect(option).toBeVisible();
-  } else {
-    await expect(option).not.toBeVisible();
-  }
-};
-
-const checkMoveSelectable = async (page, moveName) => {
-  await checkMoveVisilibility(page, moveName, true);
-};
-
-const checkMoveNotSelectable = async (page, moveName) => {
-  await checkMoveVisilibility(page, moveName, false);
-};
-
-const selectFilterOption = async (page, filterName, optionName) => {
-  const label = page.getByText(filterName, { exact: true });
-  const dropdown = label.locator("..").getByRole("button");
-  await dropdown.click();
-  const option = page.getByRole("option", { name: optionName });
-  await option.click();
-  await expect(page.getByRole("listbox")).toBeHidden();
-};
+import { selectPokemon } from "helper";
 
 test.describe("Filters Integration Tests", () => {
+  // Pokemon Selectibility Check Helpers
+
+  const checkPokemonVisibility = async (
+    page,
+    name,
+    shouldBeSelectable,
+    expectedNameInList = null
+  ) => {
+    const pokemonInput = page.getByRole("combobox", {
+      name: "Pokemon 1's name",
+    });
+    await pokemonInput.fill(name);
+    const option = page
+      .getByRole("listbox")
+      .getByText(expectedNameInList || name, { exact: true });
+    await expect(option)[shouldBeSelectable ? "toBeVisible" : "toBeHidden"]();
+  };
+
+  const checkPokemonSelectable = async (page, name, expectedNameInList) => {
+    await checkPokemonVisibility(page, name, true, expectedNameInList);
+  };
+
+  const checkPokemonNotSelectable = async (page, name) => {
+    await checkPokemonVisibility(page, name, false);
+  };
+
+  // Move Selectibility Check Helpers
+
+  const checkMoveVisilibility = async (page, moveName, shouldBeSelectable) => {
+    const moveInput = page.getByRole("combobox", {
+      name: "Pokemon 1's move1",
+    });
+    await moveInput.fill(moveName);
+    const option = page
+      .getByRole("listbox")
+      .getByText(moveName, { exact: true });
+    await expect(option)[shouldBeSelectable ? "toBeVisible" : "toBeHidden"]();
+  };
+
+  const checkMoveSelectable = async (page, moveName) => {
+    await checkMoveVisilibility(page, moveName, true);
+  };
+
+  const checkMoveNotSelectable = async (page, moveName) => {
+    await checkMoveVisilibility(page, moveName, false);
+  };
+
+  // Select Filter Option Helper
+
+  const selectFilterOption = async (page, filterName, optionName) => {
+    const label = page.getByText(filterName, { exact: true });
+    const dropdown = label.locator("..").getByRole("button");
+    await dropdown.click();
+    const option = page.getByRole("option", { name: optionName });
+    await option.click();
+    await expect(page.locator('[class*="MuiModal-root"]')).not.toBeAttached();
+  };
+
   test("Format Filter", async ({ page }) => {
     // 1. Select format OU
     await selectFilterOption(page, "Format", "OU: Over Used");
@@ -128,13 +127,7 @@ test.describe("Filters Integration Tests", () => {
     await selectFilterOption(page, "Moves", "Viable");
 
     // 2. Select pokemon Muk-Alola
-    const pokemonInput = page.getByRole("combobox").first();
-    await pokemonInput.fill("Muk-Alola");
-    await page
-      .getByRole("listbox")
-      .getByText("Muk-Alola", { exact: true })
-      .click();
-    await expect(page.getByRole("listbox")).toBeHidden();
+    await selectPokemon(page, "Muk-Alola");
 
     const selectableMoves = ["Crunch", "Toxic", "Stone Edge", "Flamethrower"];
     for (const move of selectableMoves) {
@@ -151,24 +144,12 @@ test.describe("Filters Integration Tests", () => {
   test("All Filters", async ({ page }) => {
     // 1. Set all filters
     await selectFilterOption(page, "Format", "UU: Under Used");
-    await page.waitForTimeout(500); // Wait for overlay to disappear completely
-
     await selectFilterOption(page, "Type", "Grass");
-    await page.waitForTimeout(500);
-
     await selectFilterOption(page, "Region", "Sinnoh");
-    await page.waitForTimeout(500);
-
     await selectFilterOption(page, "Moves", "Viable");
-    await page.waitForTimeout(500);
-
-    const pokemonInput = page.getByRole("combobox").first();
 
     // Pokemon that can be selected: Torterra
-    await pokemonInput.fill("Torterra");
-    await expect(
-      page.getByRole("listbox").getByText("Torterra", { exact: true })
-    ).toBeVisible();
+    await checkPokemonVisibility(page, "Torterra", true);
 
     // Pokemon that can't be selected: Chespin, Pikachu, Clefable
     const notSelectablePokemon = ["Chespin", "Pikachu", "Clefable"];
@@ -177,12 +158,7 @@ test.describe("Filters Integration Tests", () => {
     }
 
     // 2. Select pokemon Torterra
-    await pokemonInput.fill("Torterra");
-    await page
-      .getByRole("listbox")
-      .getByText("Torterra", { exact: true })
-      .click();
-    await expect(page.getByRole("listbox")).toBeHidden();
+    await selectPokemon(page, "Torterra");
 
     const selectableMoves = [
       "Earthquake",
