@@ -12,31 +12,42 @@ test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
     await page.getByRole("button", { name: "Import/Export Team" }).click();
   });
 
-  test("Manually fill in a pokemon", async ({ page }) => {
-    // 2. In the "Pokemon Showdown Team Raw Text", type Gigalith.
-    const textArea = page.getByLabel("Pokemon Showdown Team Raw Text");
+  const importTeam = async (page, text) => {
+    // 2. In the "Pokemon Showdown Team Raw Text", type the text.
+    const textArea = page.getByRole("textbox", {
+      name: "Pokemon Showdown Team Raw Text",
+    });
     await expect(textArea).toBeVisible();
-    await textArea.fill("Gigalith");
+    await textArea.fill(text);
 
     // 3. Press "Update".
     await page.getByRole("button", { name: "Update" }).click();
 
     // Wait for the dialog to close
     await expect(page.getByRole("dialog")).toBeHidden();
+  };
 
-    // Expect that Gigalith shows up in the first card as a selected pokemon.
-    // The input value itself might be empty as it's a custom select, so we check the text content of the select control.
-    const firstCardNameSelect = page
-      .locator(".Select-control")
-      .filter({ has: page.locator("#react-select-single-0-name") });
-    await expect(firstCardNameSelect).toContainText("Gigalith");
+  const verifyPokemonProperty = async (page, value, optionalParams) => {
+    const { isNameProperty = false, teamIndex = 0 } = optionalParams || {};
 
-    // Also verify the sprite is updated (it shouldn't be a question mark)
-    // The sprite alt text usually matches the pokemon name
-    // On mobile, there might be two sprites (one in the tab, one in the card), so we check the first one.
-    await expect(
-      page.getByRole("img", { name: "Gigalith" }).first()
-    ).toBeVisible();
+    const pokemonCard = page.getByRole("region", {
+      name: `Pokemon ${teamIndex + 1}`,
+    });
+    const option = pokemonCard.getByRole("option", { name: value });
+    await expect(option).toBeVisible();
+
+    if (isNameProperty) {
+      // Verify the sprite is updated (it shouldn't be a question mark)
+      // The sprite alt text usually matches the pokemon name
+      const pokemonSprite = pokemonCard.getByRole("img", { name: value });
+      await expect(pokemonSprite).toBeVisible();
+    }
+  };
+
+  test("Manually fill in a pokemon", async ({ page }) => {
+    await importTeam(page, "Gigalith");
+
+    await verifyPokemonProperty(page, "Gigalith");
   });
 
   test("Paste in a pokemon's details", async ({ page }) => {
@@ -46,40 +57,20 @@ Ability: Chlorophyll
 - Sludge Bomb
 - Sleep Powder
 - Sunny Day`;
+    await importTeam(page, pokemonText);
 
-    // 2. In the "Pokemon Showdown Team Raw Text", type the text.
-    const textArea = page.getByLabel("Pokemon Showdown Team Raw Text");
-    await expect(textArea).toBeVisible();
-    await textArea.fill(pokemonText);
-    await expect(textArea).toHaveValue(pokemonText);
+    const expectedValues = [
+      "Life Orb",
+      "Chlorophyll",
+      "Solar Beam",
+      "Sludge Bomb",
+      "Sleep Powder",
+      "Sunny Day",
+    ];
 
-    // 3. Press "Update".
-    await page.getByRole("button", { name: "Update" }).click();
-
-    // Wait for the dialog to close
-    await expect(page.getByRole("dialog")).toBeHidden();
-
-    // Helper to check value in custom select
-    const checkValue = async (id, value) => {
-      const control = page
-        .locator(".Select-control")
-        .filter({ has: page.locator(`#${id}`) });
-      await expect(control).toContainText(value);
-    };
-
-    // Verify Name
-    await checkValue("react-select-single-0-name", "Weepinbell");
-
-    // Verify Item
-    await checkValue("react-select-single-0-item", "Life Orb");
-
-    // Verify Ability
-    await checkValue("react-select-single-0-ability", "Chlorophyll");
-
-    // Verify Moves
-    await checkValue("react-select-single-0-move1", "Solar Beam");
-    await checkValue("react-select-single-0-move2", "Sludge Bomb");
-    await checkValue("react-select-single-0-move3", "Sleep Powder");
-    await checkValue("react-select-single-0-move4", "Sunny Day");
+    verifyPokemonProperty(page, "Weepinbell", { isNameProperty: true });
+    for (const value of expectedValues) {
+      await verifyPokemonProperty(page, value);
+    }
   });
 });
