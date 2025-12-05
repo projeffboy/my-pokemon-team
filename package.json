@@ -8,7 +8,6 @@
     "mobx": "^5.9.0",
     "mobx-react": "^5.4.3",
     "react": "^16.8.4",
-    "react-app-rewire-mobx": "^1.0.9",
     "react-app-rewired": "^2.1.0",
     "react-dom": "^16.8.4",
     "react-router-dom": "^5.3.4",
