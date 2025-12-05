@@ -1,4 +1,5 @@
 import { test, expect } from "fixtures";
+import { selectPokemon, selectMove, selectItem } from "helper";
 
 test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
   test.beforeEach(async ({ page, context, browserName }) => {
@@ -13,30 +14,10 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
   }) => {
     // 1. Select pokemon Pikachu
     // Click the name input of the first card
-    const nameControl = page
-      .locator(".Select-control")
-      .filter({ has: page.locator("#react-select-single-0-name") });
-    await nameControl.click();
-
-    const nameInput = page.locator("#react-select-single-0-name");
-    await nameInput.fill("Pikachu");
-    await page
-      .getByRole("listbox")
-      .getByText("Pikachu", { exact: true })
-      .click();
+    await selectPokemon(page, "Pikachu");
 
     // Select move Thunderbolt
-    const moveControl = page
-      .locator(".Select-control")
-      .filter({ has: page.locator("#react-select-single-0-move1") });
-    await moveControl.click();
-
-    const moveInput = page.locator("#react-select-single-0-move1");
-    await moveInput.fill("Thunderbolt");
-    await page
-      .getByRole("listbox")
-      .getByText("Thunderbolt", { exact: true })
-      .click();
+    await selectMove(page, "Thunderbolt", 0, 1);
 
     // 2. Go to Save/Load tab
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
@@ -47,7 +28,8 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     await page.getByRole("button", { name: "Copy Team" }).click();
 
     // Verify snackbar
-    await expect(page.getByText("Team copied.")).toBeVisible();
+    const snackbar = page.getByRole("alertdialog").getByText("Team copied.");
+    await expect(snackbar).toBeVisible();
 
     // Verify clipboard content
     let clipboardText;
@@ -74,8 +56,9 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     }
 
     // We check for the expected format
-    expect(clipboardText).toContain("Pikachu @");
-    expect(clipboardText).toContain("Ability:"); // Should be empty
-    expect(clipboardText).toContain("-Thunderbolt");
+    const expectedSubstrings = ["Pikachu @", "Ability:", "-Thunderbolt"];
+    for (const substring of expectedSubstrings) {
+      expect(clipboardText).toContain(substring);
+    }
   });
 });
