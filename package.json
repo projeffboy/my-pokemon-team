@@ -8,26 +8,28 @@
     "mobx": "^5.9.0",
     "mobx-react": "^5.4.3",
     "react": "^16.8.4",
-    "react-app-rewired": "^2.1.0",
     "react-dom": "^16.8.4",
     "react-router-dom": "^5.3.4",
-    "react-scripts": "2.1.8",
     "react-swipeable-views": "^0.13.1",
     "react-virtualized-select": "^3.1.3",
     "recompose": "^0.30.0"
   },
   "scripts": {
-    "start": "BROWSER=none react-app-rewired --openssl-legacy-provider start",
-    "build": "react-app-rewired --openssl-legacy-provider build",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "npx playwright test",
-    "test:chrome": "npx playwright test --project=chromium",
-    "eject": "react-app-rewired eject"
+    "test:chrome": "npx playwright test --project=chromium"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/plugin-proposal-decorators": "^7.28.0",
     "@playwright/test": "^1.53.2",
     "@types/node": "^24.0.10",
-    "customize-cra": "^0.2.12",
-    "typescript": "^5.8.3"
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.8.3",
+    "vite": "^6.4.1"
   },
   "engines": {
     "node": "22.x"
