@@ -1,8 +1,8 @@
 import { test, expect } from "fixtures";
-import { selectPokemon, selectMove, selectItem } from "helper";
+import { selectPokemon, selectMove } from "helper";
 
 test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
-  test.beforeEach(async ({ page, context, browserName }) => {
+  test.beforeEach(async ({ context, browserName }) => {
     if (browserName === "chromium" || browserName === "Mobile Chrome") {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     }
@@ -22,7 +22,7 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     // 2. Go to Save/Load tab
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
 
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(500);
 
     // 3. Press "Copy Team" button
     await page.getByRole("button", { name: "Copy Team" }).click();
