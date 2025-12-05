@@ -20,7 +20,7 @@ test.describe("FAB (Floating Action Button) Tests", () => {
     const verifyTabAndImage = async (page, tab, altText) => {
       await tab.click();
       await expect(tab).toHaveAttribute("aria-selected", "true");
-      const image = page.getByAltText(altText);
+      const image = page.getByRole("img", { name: altText });
       await expectImageToBeLoaded(image);
     };
     await verifyTabAndImage(page, tableTab, "Bulbapedia Pokemon Type Chart");

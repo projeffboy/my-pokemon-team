@@ -64,7 +64,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
   test("should have question mark sprite by default", async ({ page }) => {
     for (const i of [1, 2, 5]) {
       const card = await ensureCardVisible(page, i);
-      const questionMark = card.getByAltText("question-mark");
+      const questionMark = card.getByRole("img", { name: "question-mark" });
       await expect(questionMark).toBeVisible();
     }
   });
