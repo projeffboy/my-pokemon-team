@@ -1,4 +1,10 @@
 import { test } from "fixtures";
+import {
+  selectAbility,
+  selectItem,
+  selectMove,
+  selectPokemon,
+} from "../helper";
 
 const team = [
   {
@@ -43,20 +49,12 @@ const addPokemon = async (page, index, pokemon) => {
   // Click tab
   await page.getByRole("tab", { name: new RegExp(`${index + 1}`) }).click();
 
-  const fillSelect = async (field, value) => {
-    const id = `react-select-single-${index}-${field}`;
-    const locator = page.locator(`#${id}`);
-    await locator.click({ force: true });
-    await locator.fill(value);
-    await page.keyboard.press("Enter");
-  };
-
-  await fillSelect("name", pokemon.name);
-  await fillSelect("item", pokemon.item);
-  await fillSelect("ability", pokemon.ability);
+  await selectPokemon(page, pokemon.name, index);
+  await selectItem(page, pokemon.item, index);
+  await selectAbility(page, pokemon.ability, index);
 
   for (let i = 0; i < pokemon.moves.length; i++) {
-    await fillSelect(`move${i + 1}`, pokemon.moves[i]);
+    await selectMove(page, pokemon.moves[i], i + 1, index);
   }
 };
 
