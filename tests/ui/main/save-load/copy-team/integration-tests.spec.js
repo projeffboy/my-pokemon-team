@@ -17,7 +17,7 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     await selectPokemon(page, "Pikachu");
 
     // Select move Thunderbolt
-    await selectMove(page, "Thunderbolt", 0, 1);
+    await selectMove(page, "Thunderbolt", 1, 0);
 
     // 2. Go to Save/Load tab
     await page.getByRole("tab", { name: /Save\/Load/ }).click();

@@ -48,7 +48,7 @@ export const selectItem = async (page, item, slotIndex = 0) => {
   await page.getByRole("listbox").getByText(item, { exact: true }).click();
 };
 
-export const selectMove = async (page, move, slotIndex = 0, moveIndex = 1) => {
+export const selectMove = async (page, move, moveIndex = 1, slotIndex = 0) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s move${moveIndex}`);
   await input.click({ force: true });
   await input.fill(move);

@@ -62,8 +62,8 @@ test.describe("Team Type Coverage - Integration Tests", () => {
   test("One weak move, one non-normal status move", async ({ page }) => {
     // 1. Select Dedenne with moves Nuzzle and Rain Dance
     await selectPokemon(page, "Dedenne");
-    await selectMove(page, "Nuzzle", 0, 1);
-    await selectMove(page, "Rain Dance", 0, 2);
+    await selectMove(page, "Nuzzle", 1, 0);
+    await selectMove(page, "Rain Dance", 2, 0);
 
     // Expect that:
     // - the score is 0 for Flying, Water
