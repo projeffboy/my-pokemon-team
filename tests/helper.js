@@ -79,6 +79,7 @@ export const teamScoreUnitTests = headingName => {
         .first();
 
       // Hover over it
+      // TODO: change this to click for mobile
       await darkTypeElement.hover();
 
       // Wait for popover

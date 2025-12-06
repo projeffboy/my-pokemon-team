@@ -5,8 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
-    "mobx": "^5.9.0",
-    "mobx-react": "^5.4.3",
+    "mobx": "^6.15.0",
+    "mobx-react": "^9.2.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-router-dom": "^5.3.4",

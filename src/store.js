@@ -1,4 +1,4 @@
-import { observable, computed, action } from "mobx";
+import { makeAutoObservable } from "mobx";
 import { capitalizeWord } from "./helper-functions";
 // I have to import a bunch of pokemon data first
 import pokedexData from "./data/pokedex";
@@ -20,6 +20,7 @@ const formats = formatsData;
 
 class Store {
   constructor() {
+    makeAutoObservable(this);
     /*
      * This property contains all the pokemon types, initially set to 0 (that's why it's called clean slate).
      * A positive number can either mean:
@@ -82,13 +83,13 @@ class Store {
    *  3. baseFormeProps
    *
    * `team` refer's to the user's pokemon team.
-   * There's an @observable variable for it in the store.
+   * There's an variable for it in the store.
    * Anything related to the user's pokemon team should be prefixed with `team`.
    * E.g.
    *  -Functions like:
    *    -teamFourMoveslots
    *    -teamLearnsets
-   *  -Each element in @observable team is teamPkmnProps, containing within:
+   *  -Each element in team is teamPkmnProps, containing within:
    *    -teamPkmn (teamPkmnName = this.pkmnName(teamPkmn))
    *    -teamPkmnProps
    *    -teamPkmnItem
@@ -347,7 +348,7 @@ class Store {
   DATA ABOUT THE TEAM'S SIX POKEMON 
   ********************************/
 
-  @observable team = Array(6).fill({
+  team = Array(6).fill({
     name: "", // technically, this is the pokemon ID, not pokemon name
     // but name is much more clearer to those new to the source code
     item: "",
@@ -359,22 +360,22 @@ class Store {
   });
 
   // Get the team's six pokemon id/name (pkmn)
-  @computed get teamPkmn() {
+  get teamPkmn() {
     return this.team.map(teamPkmnProps => teamPkmnProps.name);
   }
 
   // Check if team is empty
-  @computed get isTeamEmpty() {
+  get isTeamEmpty() {
     return !this.teamPkmn.some(pkmn => pkmn);
   }
 
   // Get the team's six items (in array form)
-  @computed get teamItems() {
+  get teamItems() {
     return this.team.map(teamPkmnProps => teamPkmnProps.item);
   }
 
   // Get the team's moves that the user chose (in 1D array)
-  @computed get teamMoves() {
+  get teamMoves() {
     const teamMoves = [];
 
     this.team.forEach(teamPkmnProps => {
@@ -392,7 +393,7 @@ class Store {
   // Basically the above but a 2D array,
   // It's an array of 6 arrays (for each pokemon),
   // Each containing 4 elements (for the 4 moves)
-  @computed get teamFourMoveslots() {
+  get teamFourMoveslots() {
     return this.team.map(teamPkmnProps => [
       teamPkmnProps.move1,
       teamPkmnProps.move2,
@@ -402,7 +403,7 @@ class Store {
   }
 
   // Get team's possible abilities (in 2D array)
-  @computed get teamAbilities() {
+  get teamAbilities() {
     return this.team.map(teamPkmnProps => {
       if (teamPkmnProps.name) {
         const teamPkmnAbilities = pokedex[teamPkmnProps.name].abilities; // the specific pokemon's abilities (obj)
@@ -416,7 +417,7 @@ class Store {
 
   // Does the team contain moves that inflict non-volatile status?
   // E.g. toxic inflicts poison, thunder wave inflicts paralysis
-  @computed get anyStatusMoves() {
+  get anyStatusMoves() {
     return this.teamMoves.some(
       move =>
         moves[move] &&
@@ -428,7 +429,7 @@ class Store {
   }
 
   // Does the team contain boosting moves that increase by two or more stages?
-  @computed get anyBoostingMoves() {
+  get anyBoostingMoves() {
     return this.teamMoves.some(
       move =>
         move === "curse" ||
@@ -440,7 +441,7 @@ class Store {
   }
 
   // Get the team's learnsets using learnsets.min.js
-  @computed get teamLearnsets() {
+  get teamLearnsets() {
     // both will contain the learnsets of six pokemon
     let teamLearnsets = {
       values: [],
@@ -478,7 +479,7 @@ class Store {
   }
 
   // Get the team's types
-  @computed get teamTypes() {
+  get teamTypes() {
     let teamTypes = [];
 
     for (const teamPkmnProps of this.team) {
@@ -590,7 +591,7 @@ class Store {
   */
 
   // Clear a team pokemon's properties
-  @action clearTeamPkmnProps(teamIndex) {
+  clearTeamPkmnProps(teamIndex) {
     const teamPkmnProps = this.team[teamIndex];
 
     for (const prop in teamPkmnProps) {
@@ -600,7 +601,7 @@ class Store {
 
   // Auto-select the item if necessary
   // E.g. Select Blastoisite when the user chooses Mega Blastoise
-  @action autoSelectItem() {
+  autoSelectItem() {
     for (const teamPkmnProps of this.team) {
       // make sure you brush up on your ES6 destructuring!
       let { name: pkmn, item: pkmnItem } = teamPkmnProps;
@@ -684,7 +685,7 @@ class Store {
 
   // Auto select the pokemon's ability if it only has one ability.
   // E.g. Select Thick Fat when the user chooses Venusaur-Mega
-  @action autoSelectAbility() {
+  autoSelectAbility() {
     this.teamAbilities.forEach((pkmnAbilities, i) => {
       if (pkmnAbilities.length === 1) {
         this.team[i].ability = pkmnAbilities[0];
@@ -920,7 +921,7 @@ class Store {
 
   // Assessment of the team's type defence
   // (How good your team is against the 18 different types)
-  @computed get typeDefence() {
+  get typeDefence() {
     if (this.isTeamEmpty) {
       return this.cleanSlate;
     } else {
@@ -953,7 +954,7 @@ class Store {
 
   // Assessment of the team's type coverage
   // (How many types are your team's moves supereffective against)
-  @computed get typeCoverage() {
+  get typeCoverage() {
     if (this.isTeamEmpty) {
       return this.cleanSlate;
     } else {
@@ -1016,14 +1017,14 @@ class Store {
   SEARCH FILTERS
   *************/
 
-  @observable searchFilters = {
+  searchFilters = {
     format: "",
     region: "",
     type: "",
     moves: "",
   };
 
-  @computed get filteredPokemon() {
+  get filteredPokemon() {
     const { format, region, type } = this.searchFilters;
 
     // First filter by format, then type, then region
@@ -1257,7 +1258,7 @@ class Store {
     }
   }
 
-  @computed get filteredPokemonNames() {
+  get filteredPokemonNames() {
     return this.filteredPokemon.map(pokemon => this.pkmnName(pokemon));
   }
 
@@ -1265,10 +1266,10 @@ class Store {
   SNACKBAR
   *******/
 
-  @observable isSnackbarOpen = false;
-  @observable snackbarMsg = "";
+  isSnackbarOpen = false;
+  snackbarMsg = "";
 
-  @action openSnackbar(msg) {
+  openSnackbar(msg) {
     this.isSnackbarOpen = true;
     this.snackbarMsg = msg;
   }
