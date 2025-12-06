@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Material UI Core Imports
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -75,59 +75,51 @@ function listItems(element) {
   ));
 }
 
-class Credits extends React.Component {
-  constructor(props) {
-    super(props);
+const Credits = () => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    this.state = { isDialogOpen: false };
-  }
+  const toggleDialog = () => setIsDialogOpen(!isDialogOpen);
 
-  toggleDialog = () =>
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
-
-  render() {
-    return (
-      <>
-        <Button
-          onClick={this.toggleDialog}
-          style={{ fontWeight: "initial", textTransform: "initial" }}
-        >
-          Credits
-        </Button>
-        <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.toggleDialog}
-          aria-labelledby="form-dialog-title"
-          style={{ height: "calc(100% - 60px)" }}
-        >
-          <DialogTitle id="form-dialog-title">Credits</DialogTitle>
-          <DialogContent>
-            <Link href="https://pokemonshowdown.com">
-              <img
-                src={pokemonShowdownLogo}
-                alt="Pokemon Showdown Logo"
-                style={{ width: "50%", minWidth: 200 }}
-              />
-            </Link>
-            <Typography variant="body1" paragraph>
-              The folks at Pokemon Showdown are very generous to let me use all
-              of their GIFs, sprites, and pokemon data. Absolutely
-              indispensable!
-            </Typography>
-            <Typography variant="h6" gutterBottom>
-              Other
-            </Typography>
-            <List>{listItems()}</List>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.toggleDialog} color="primary">
-              Go Back
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <Button
+        onClick={toggleDialog}
+        style={{ fontWeight: "initial", textTransform: "initial" }}
+      >
+        Credits
+      </Button>
+      <Dialog
+        open={isDialogOpen}
+        onClose={toggleDialog}
+        aria-labelledby="form-dialog-title"
+        style={{ height: "calc(100% - 60px)" }}
+      >
+        <DialogTitle id="form-dialog-title">Credits</DialogTitle>
+        <DialogContent>
+          <Link href="https://pokemonshowdown.com">
+            <img
+              src={pokemonShowdownLogo}
+              alt="Pokemon Showdown Logo"
+              style={{ width: "50%", minWidth: 200 }}
+            />
+          </Link>
+          <Typography variant="body1" paragraph>
+            The folks at Pokemon Showdown are very generous to let me use all of
+            their GIFs, sprites, and pokemon data. Absolutely indispensable!
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Other
+          </Typography>
+          <List>{listItems()}</List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={toggleDialog} color="primary">
+            Go Back
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+};
 
 export default Credits;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Material UI Core Imports
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -13,105 +13,103 @@ import Link from "@material-ui/core/Link";
 import ImportExport from "@material-ui/icons/ImportExport";
 import FileCopy from "@material-ui/icons/FileCopy";
 // Custom Imports
-import { observer } from "mobx-react";
+import { Observer } from "mobx-react";
 import store from "../../../store";
 import { pokemonShowdownTeamStyles } from "../../../styles";
 
-@observer
-class PokemonShowdownTeam extends React.Component {
-  constructor(props) {
-    super(props);
+const PokemonShowdownTeam = ({ classes }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [textArea, setTextArea] = useState("");
 
-    this.state = {
-      isDialogOpen: false,
-      textArea: "",
-    };
-  }
-
-  handleTextArea = event => {
-    this.setState({ textArea: event.target.value });
+  const handleClick = (e, pokemonShowdownTeamInfo) => {
+    setIsDialogOpen(true);
+    setTextArea(pokemonShowdownTeamInfo);
   };
 
-  handleClick = (event, text) => {
-    this.setState({
-      isDialogOpen: true,
-      textArea: text,
-    });
+  const handleClose = () => {
+    setIsDialogOpen(false);
   };
 
-  handleClose = () => this.setState({ isDialogOpen: false });
+  const handleTextArea = e => {
+    setTextArea(e.target.value);
+  };
 
-  handleImport = initialText => {
-    if (this.state.textArea !== initialText) {
-      let teamPkmnRawData = this.state.textArea.split("\n\n"); // split team into each pokemon
-      let numberOfTeamPkmn = 0;
+  const handleImport = pokemonShowdownTeamInfo => {
+    let text = textArea;
+    if (text === "") {
+      text = pokemonShowdownTeamInfo;
+    }
 
-      teamPkmnRawData = teamPkmnRawData.filter(eachPkmnData => eachPkmnData); // get rid of empty lines
-      teamPkmnRawData.forEach((eachPkmnData, teamIndex) => {
-        numberOfTeamPkmn++;
+    // If the text is different from the original team info
+    if (text !== pokemonShowdownTeamInfo) {
+      // Split by double newline to separate pokemons
+      const importedTeam = text.split("\n\n");
 
-        const lines = eachPkmnData.split("\n"); // split pokemon into its properties
+      // We only want the first 6 pokemons
+      const numberOfTeamPkmn = Math.min(importedTeam.length, 6);
 
-        // Get pokemon and item names
-        const pkmnAndItemNames = lines[0].split("@").map(str => str.trim());
-        const [pkmnNameAndNickname, itemName] = pkmnAndItemNames;
+      // Loop through each pokemon
+      importedTeam.slice(0, 6).forEach((pkmnRawData, teamIndex) => {
+        // Split by newline to separate lines
+        const lines = pkmnRawData.split("\n");
 
-        // Check for nickname
-        let pkmnName = pkmnNameAndNickname;
-        if (pkmnName.includes("(")) {
-          pkmnName = pkmnName.split("(")[1].replace(")", "");
-          console.log(pkmnName);
-        }
+        // First line contains Name, Item, Gender
+        const firstLine = lines[0];
 
-        // Check if the pokemon the user typed is legit
-        const pkmn = store.pkmnNameInverse(
-          pkmnName.replace(/\(.\)/, "").trim()
-        );
-        if (pkmn) {
-          store.team[teamIndex].name = pkmn; // if legit, set pokemon ID/name
+        // If first line exists
+        if (firstLine) {
+          // Parse Name
+          let name = firstLine.split("@")[0].trim();
+          // Handle Gender (M) or (F)
+          if (name.includes("(M)")) {
+            name = name.replace("(M)", "").trim();
+          }
+          if (name.includes("(F)")) {
+            name = name.replace("(F)", "").trim();
+          }
 
-          // If team raw data does not mention item, leave it blank
-          if (itemName) {
-            // Check if item is legit
+          // Handle Nicknames e.g. Carly Rae (Iron Moth)
+          if (name.includes("(") && name.includes(")")) {
+            name = name.split("(")[1].split(")")[0];
+          }
+
+          const species = store.pkmnNameInverse(name);
+          if (species) {
+            store.team[teamIndex].name = species;
+          }
+
+          // Parse Item
+          if (firstLine.includes("@")) {
+            const itemName = firstLine.split("@")[1].trim();
             const item = store.itemNameInverse(itemName);
             if (item) {
-              store.team[teamIndex].item = item; // if legit, set item ID/name
-            } else {
-              store.autoSelectItem();
+              store.team[teamIndex].item = item;
             }
           } else {
             store.team[teamIndex].item = "";
           }
 
+          // Parse Ability and Moves
           let moveNum = 1;
           let abilityChanged = false;
 
-          lines.slice(1).forEach((line, i) => {
-            if (line.includes("Ability:")) {
-              // if property has to do with abilities
-              const ability = line.replace("Ability:", "").trim();
-
-              // If legit, set ability
-              if (Object.values(store.abilities(pkmn)).includes(ability)) {
-                store.team[teamIndex].ability = ability;
-                abilityChanged = true;
-              }
-            } else if (line[0] === "-" && moveNum <= 4) {
-              // if property has to do with moves
+          lines.slice(1).forEach(line => {
+            if (line.startsWith("Ability:")) {
+              const ability = line.split(":")[1].trim();
+              store.team[teamIndex].ability = ability;
+              abilityChanged = true;
+            } else if (line.startsWith("-")) {
               const moveName = line
                 .slice(1)
                 .trim()
-                .replace("[", "") // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
+                .replace("[", "")
                 .replace("]", "");
 
-              // If legit, set move
-              // Otherwise, set it blank
               const move = store.moveNameInverse(moveName);
-
+              const pkmn = store.team[teamIndex].name;
               let validMove = store.canItLearn(move, pkmn) ? move : "";
 
               store.team[teamIndex]["move" + moveNum] = validMove;
-
               moveNum++;
             }
           });
@@ -124,15 +122,7 @@ class PokemonShowdownTeam extends React.Component {
         }
       });
 
-      /*
-       * Clears unwanted duplicate pokemon
-       * Happens when the user for example...
-       *  -adds pikachu to the 3rd team slot (`teamIndex` of 2)
-       *  -presses import/export button
-       *  -modifies that pikachu's raw data
-       *  -presses OK
-       * Without this code, there will be two pikachus, at slot 1 and slot 3
-       */
+      // Clear unwanted duplicate pokemon
       for (let i = numberOfTeamPkmn; i < 6; i++) {
         store.clearTeamPkmnProps(i);
       }
@@ -140,38 +130,32 @@ class PokemonShowdownTeam extends React.Component {
       store.openSnackbar("No changes made.");
     }
 
-    this.handleClose();
+    handleClose();
   };
 
-  handleCopy = text => {
+  const handleCopy = text => {
     if (text !== "") {
-      // Copied this code from https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
-
       let textArea = document.createElement("textarea");
-
       textArea.value = text;
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand("copy");
       textArea.remove();
-
-      //
-
       store.openSnackbar("Team copied.");
     } else {
       store.openSnackbar("Empty team, nothing to copy.");
     }
   };
 
-  render() {
-    const { classes /*, width*/ } = this.props;
+  return (
+    <Observer>
+      {() => {
+        const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5]
+          .map(teamIndex => {
+            const { name, item, ability } = store.team[teamIndex];
 
-    const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5]
-      .map(teamIndex => {
-        const { name, item, ability } = store.team[teamIndex];
-
-        if (name) {
-          return `${store.pkmnName(name)} @ ${store.itemName(item)}
+            if (name) {
+              return `${store.pkmnName(name)} @ ${store.itemName(item)}
 Ability: ${ability}
 ${[1, 2, 3, 4]
   .map(num => {
@@ -184,88 +168,83 @@ ${[1, 2, 3, 4]
     }
   })
   .join("\n")}\n\n`;
-        } else {
-          return "";
-        }
-      })
-      .join("");
+            } else {
+              return "";
+            }
+          })
+          .join("");
 
-    /*
-    let buttonLabels = ['Import/Export Team', 'Copy Team']
-    if (width === 'xs' || width === 'sm') {
-      buttonLabels = ['Import/Export', 'Copy']
-    }
-    */
-
-    return (
-      <>
-        <Button onClick={e => this.handleClick(e, pokemonShowdownTeamInfo)}>
-          Import/Export Team <ImportExport style={{ marginLeft: 5 }} />
-        </Button>
-        <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-          style={{ height: "calc(100% - 60px)" }}
-        >
-          <DialogTitle id="form-dialog-title">Import/Export</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              You can take a look at and change the raw data of your pokemon
-              team.
-              <br />
-              If you use{" "}
-              <Link
-                style={{ color: "#2196f3" }}
-                variant="inherit"
-                target="_blank"
-                rel="noopener"
-                href="https://play.pokemonshowdown.com/teambuilder"
-              >
-                Pokemon Showdown
-              </Link>
-              , you can paste your team here.
-              <br />
-              Likewise, you can copy your team here and paste it to Pokemon
-              Showdown.
-            </DialogContentText>
-            <TextField
-              autoFocus
-              id="name"
-              placeholder="Your team is empty"
-              label="Pokemon Showdown Team Raw Text"
-              multiline
-              fullWidth
-              className={classes.textField}
-              defaultValue={pokemonShowdownTeamInfo}
-              onChange={this.handleTextArea}
-            />
-            <DialogContentText>
-              Note: The above raw text ignores nicknames, EVs, IVs, natures,
-              level, gender, happiness, and shiny.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
+        return (
+          <>
+            <Button onClick={e => handleClick(e, pokemonShowdownTeamInfo)}>
+              Import/Export Team <ImportExport style={{ marginLeft: 5 }} />
             </Button>
-            <Button
-              onClick={() => this.handleImport(pokemonShowdownTeamInfo)}
-              color="primary"
+            <Dialog
+              open={isDialogOpen}
+              onClose={handleClose}
+              aria-labelledby="form-dialog-title"
+              style={{ height: "calc(100% - 60px)" }}
             >
-              Update
+              <DialogTitle id="form-dialog-title">Import/Export</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  You can take a look at and change the raw data of your pokemon
+                  team.
+                  <br />
+                  If you use{" "}
+                  <Link
+                    style={{ color: "#2196f3" }}
+                    variant="inherit"
+                    target="_blank"
+                    rel="noopener"
+                    href="https://play.pokemonshowdown.com/teambuilder"
+                  >
+                    Pokemon Showdown
+                  </Link>
+                  , you can paste your team here.
+                  <br />
+                  Likewise, you can copy your team here and paste it to Pokemon
+                  Showdown.
+                </DialogContentText>
+                <TextField
+                  autoFocus
+                  id="name"
+                  placeholder="Your team is empty"
+                  label="Pokemon Showdown Team Raw Text"
+                  multiline
+                  fullWidth
+                  className={classes.textField}
+                  defaultValue={pokemonShowdownTeamInfo}
+                  onChange={handleTextArea}
+                />
+                <DialogContentText>
+                  Note: The above raw text ignores nicknames, EVs, IVs, natures,
+                  level, gender, happiness, and shiny.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                  Cancel
+                </Button>
+                <Button
+                  onClick={() => handleImport(pokemonShowdownTeamInfo)}
+                  color="primary"
+                >
+                  Update
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Button
+              onClick={() => handleCopy(pokemonShowdownTeamInfo)}
+              className={classes.button}
+            >
+              Copy Team <FileCopy style={{ marginLeft: 5 }} />
             </Button>
-          </DialogActions>
-        </Dialog>
-        <Button
-          onClick={() => this.handleCopy(pokemonShowdownTeamInfo)}
-          className={classes.button}
-        >
-          Copy Team <FileCopy style={{ marginLeft: 5 }} />
-        </Button>
-      </>
-    );
-  }
-}
+          </>
+        );
+      }}
+    </Observer>
+  );
+};
 
 export default withStyles(pokemonShowdownTeamStyles)(PokemonShowdownTeam);

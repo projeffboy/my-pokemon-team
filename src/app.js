@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import compose from "recompose/compose";
 import withWidth from "@material-ui/core/withWidth";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import Button from "@material-ui/core/Button";
-import { observer } from "mobx-react";
+import { Observer } from "mobx-react";
 import store from "./store";
 import { appStyles } from "./styles";
 import Cards from "./components/cards";
@@ -51,13 +50,25 @@ function titleFontSize(breakpoint) {
   }
 }
 
-export default compose(
-  withStyles(appStyles),
-  withWidth()
-)(props => {
+const MainSnackbar = () => (
+  <Observer>
+    {() => (
+      <Snackbar
+        open={store.isSnackbarOpen}
+        autoHideDuration={2500}
+        onClose={() => (store.isSnackbarOpen = false)}
+        ContentProps={{ "aria-describedby": "message-id" }}
+        message={<span id="message-id">{store.snackbarMsg}</span>}
+      />
+    )}
+  </Observer>
+);
+
+const App = props => {
   const isSystemDark =
     window && window.matchMedia("(prefers-color-scheme: dark)").matches;
   const [darkMode, setDarkMode] = useState(isSystemDark);
+  const { classes, width } = props;
 
   return (
     /*
@@ -77,7 +88,7 @@ export default compose(
             spacing={16}
             justify="center"
             alignItems="center"
-            className={props.classes.root}
+            className={classes.root}
           >
             {/* Header */}
             <Grid item container xs={12} justify="center">
@@ -85,7 +96,7 @@ export default compose(
                 <img
                   src={face1}
                   alt={face1Alt}
-                  height={faceWidth(props.width)}
+                  height={faceWidth(width)}
                   style={{ padding: "0 6px" }}
                 />
               </Grid>
@@ -94,7 +105,7 @@ export default compose(
                   variant="h3"
                   style={{
                     padding: "0 20px",
-                    fontSize: titleFontSize(props.width) + "rem",
+                    fontSize: titleFontSize(width) + "rem",
                   }}
                 >
                   My Pokemon Team
@@ -104,7 +115,7 @@ export default compose(
                 <img
                   src={face2}
                   alt={face2Alt}
-                  height={faceWidth(props.width)}
+                  height={faceWidth(width)}
                   style={{ padding: "0 6px" }}
                 />
               </Grid>
@@ -166,26 +177,11 @@ export default compose(
             </Grid>
           </Grid>
           <MainSnackbar />
-          <TypeChartDialog width={props.width} />
+          <TypeChartDialog width={width} />
         </MuiThemeProvider>
       </>
     </Router>
   );
-});
+};
 
-// Snackbar is managed by MobX
-// Can be opened by importing store.js then running store.openSnackbar(msg)
-@observer
-class MainSnackbar extends React.Component {
-  render() {
-    return (
-      <Snackbar
-        open={store.isSnackbarOpen}
-        autoHideDuration={2500}
-        onClose={() => (store.isSnackbarOpen = false)}
-        ContentProps={{ "aria-describedby": "message-id" }}
-        message={<span id="message-id">{store.snackbarMsg}</span>}
-      />
-    );
-  }
-}
+export default withWidth()(withStyles(appStyles)(App));

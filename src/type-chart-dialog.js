@@ -1,25 +1,23 @@
 import Fab from "@material-ui/core/Fab";
 import TableChart from "@material-ui/icons/TableChart";
 
-import React from "react";
+import React, { useState } from "react";
 // Material UI Core Imports
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import TypeChart from "./type-chart";
 
-export default class extends React.Component {
-  constructor(props) {
-    super(props);
+const TypeChartDialog = ({ width }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    this.state = { isDialogOpen: false };
-  }
+  const toggleDialog = () => setIsDialogOpen(!isDialogOpen);
 
-  fab() {
-    if (this.props.width === "xs") {
+  const renderFab = () => {
+    if (width === "xs") {
       return (
         <Fab
-          onClick={this.toggleDialog}
+          onClick={toggleDialog}
           color="primary"
           variant="round"
           size="small"
@@ -29,10 +27,10 @@ export default class extends React.Component {
           <TableChart />
         </Fab>
       );
-    } else if (this.props.width === "sm") {
+    } else if (width === "sm") {
       return (
         <Fab
-          onClick={this.toggleDialog}
+          onClick={toggleDialog}
           color="primary"
           variant="round"
           size="large"
@@ -45,7 +43,7 @@ export default class extends React.Component {
     } else {
       return (
         <Fab
-          onClick={this.toggleDialog}
+          onClick={toggleDialog}
           color="primary"
           variant="extended"
           size="large"
@@ -56,30 +54,27 @@ export default class extends React.Component {
         </Fab>
       );
     }
-  }
+  };
 
-  toggleDialog = () =>
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
+  return (
+    <>
+      {renderFab()}
+      <Dialog
+        open={isDialogOpen}
+        onClose={toggleDialog}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth
+      >
+        <TypeChart width={width} />
+        <DialogActions>
+          <Button onClick={toggleDialog} color="primary">
+            Go Back
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+};
 
-  render() {
-    return (
-      <>
-        {this.fab()}
-        <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.toggleDialog}
-          aria-labelledby="form-dialog-title"
-          maxWidth="md"
-          fullWidth
-        >
-          <TypeChart width={this.props.width} />
-          <DialogActions>
-            <Button onClick={this.toggleDialog} color="primary">
-              Go Back
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  }
-}
+export default TypeChartDialog;
