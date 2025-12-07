@@ -1,5 +1,4 @@
 import React from "react";
-import compose from "recompose/compose";
 // Material UI Imports
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -89,4 +88,4 @@ function Cards(props) {
   );
 }
 
-export default compose(withStyles(paperStyles), withWidth())(Cards);
+export default withStyles(paperStyles)(withWidth()(Cards));
