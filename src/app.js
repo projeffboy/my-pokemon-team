@@ -85,7 +85,7 @@ const App = props => {
           <CssBaseline />
           <Grid
             container
-            spacing={16}
+            spacing={2}
             justify="center"
             alignItems="center"
             className={classes.root}
@@ -139,7 +139,7 @@ const App = props => {
               xs={12}
               justify="center"
               alignItems="center"
-              spacing={16}
+              spacing={2}
               style={{ paddingBottom: 230 }}
             >
               <Grid item>
@@ -148,6 +148,7 @@ const App = props => {
               <Grid item>
                 <Button
                   href="https://jefferytang.com"
+                  role="button"
                   style={{ fontWeight: "initial", textTransform: "initial" }}
                 >
                   Jeffery Tang

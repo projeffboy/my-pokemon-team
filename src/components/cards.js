@@ -58,11 +58,11 @@ function Cards(props) {
      */
     <>
       {/* Pokemon cards */}
-      <Grid item container lg={6} md={7} sm={6} xs={12} spacing={16}>
+      <Grid item container lg={6} md={7} sm={6} xs={12} spacing={2}>
         {pokemonCards()}
       </Grid>
       {/* Pokemon team stats cards */}
-      <Grid item container lg={6} md={5} sm={6} xs={12} spacing={16}>
+      <Grid item container lg={6} md={5} sm={6} xs={12} spacing={2}>
         {["Team Defence", "Team Type Coverage"].map(cardTitle => (
           <Grid key={cardTitle} item xs={12}>
             <Paper

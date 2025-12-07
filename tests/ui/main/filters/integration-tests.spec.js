@@ -58,6 +58,8 @@ test.describe("Filters Integration Tests", () => {
     const option = page.getByRole("option", { name: optionName });
     await option.click();
     await expect(page.locator('[class*="MuiModal-root"]')).not.toBeAttached();
+    // Wait for any animations to finish
+    await page.waitForTimeout(500);
   };
 
   test("Format Filter", async ({ page }) => {

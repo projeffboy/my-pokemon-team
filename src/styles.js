@@ -8,9 +8,6 @@ export const theme = createMuiTheme({
     secondary: { main: grey[900] },
     background: { default: "#eee" },
   },
-  typography: {
-    useNextVariants: true,
-  },
 });
 
 export const darkTheme = createMuiTheme({
@@ -21,9 +18,6 @@ export const darkTheme = createMuiTheme({
     text: {
       primary: grey[300],
     },
-  },
-  typography: {
-    useNextVariants: true,
   },
 });
 
@@ -45,7 +39,7 @@ export const appStyles = {
 // When using the Paper component
 export const paperStyles = {
   // Provides padding to Paper
-  applyPadding: { padding: theme.spacing.unit },
+  applyPadding: { padding: theme.spacing(1) },
 };
 
 // cards.js
@@ -127,7 +121,7 @@ export const pokemonInputSelectStyles = theme => ({
         background: theme.palette.background.paper,
       },
     ".Select-noresults": {
-      padding: theme.spacing.unit * 2,
+      padding: theme.spacing(2),
       textAlign: "center",
     },
     ".Select-input": {
@@ -167,7 +161,7 @@ export const pokemonInputSelectStyles = theme => ({
       boxShadow: theme.shadows[2],
       position: "absolute",
       left: 0,
-      top: `calc(100% + ${theme.spacing.unit}px)`,
+      top: `calc(100% + ${theme.spacing(1)})`,
       width: "100%",
       //zIndex: 2,
       maxHeight: ITEM_HEIGHT * 4.5,
@@ -224,7 +218,7 @@ export const teamStatsStyles = {
     pointerEvents: "none",
   },
   paper: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   },
   list: {
     listStyle: "none",
@@ -256,12 +250,15 @@ export const searchFiltersStyles = theme => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "space-around",
+    paddingBottom: 80, // Add space for FAB
   },
   formControl: {
     minWidth: 120,
     [theme.breakpoints.down("sm")]: { minWidth: 90 },
     margin: 10,
     [theme.breakpoints.down("md")]: { margin: "0 10px 10px" },
+    position: "relative",
+    zIndex: 1,
   },
 });
 
@@ -275,7 +272,7 @@ export const teamChecklistStyles = {
 
 // pokemon-showdown-team.js
 export const pokemonShowdownTeamStyles = {
-  button: { margin: theme.spacing.unit },
+  button: { margin: theme.spacing(1) },
   textField: { margin: "20px 0" },
 };
 
