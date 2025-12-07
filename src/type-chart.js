@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import TypeChartPng from "./type-chart.png";
 
 function TabContainer(props) {
@@ -19,14 +19,7 @@ TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const styles = (theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-  },
-});
-
-const TypeChart = ({ classes, width }) => {
+const TypeChart = ({ width }) => {
   const [value, setValue] = useState(width === "xs" ? 1 : 0);
 
   const handleChange = (event, newValue) => {
@@ -42,7 +35,7 @@ const TypeChart = ({ classes, width }) => {
   };
 
   return (
-    <div className={classes.root}>
+    <Box sx={{ flexGrow: 1, bgcolor: "background.paper" }}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} centered>
           <Tab label="Table" />
@@ -89,13 +82,12 @@ const TypeChart = ({ classes, width }) => {
           />
         </TabContainer>
       )}
-    </div>
+    </Box>
   );
 };
 
 TypeChart.propTypes = {
-  classes: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(TypeChart);
+export default TypeChart;

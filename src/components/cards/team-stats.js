@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core/styles";
-import Popper from "@material-ui/core/Popper";
-import Paper from "@material-ui/core/Paper";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Popper from "@mui/material/Popper";
+import Paper from "@mui/material/Paper";
 import { Observer, observer } from "mobx-react";
 import store from "../../store";
-import { teamStatsStyles } from "../../styles";
-import Fade from "@material-ui/core/Fade";
+import Fade from "@mui/material/Fade";
 import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/pokemon-icon";
+import Box from "@mui/material/Box";
 
-const TeamStats = ({ classes, width, title, darkMode }) => {
+const TeamStats = ({ width, title, darkMode }) => {
   // E.g. Turn 'Type Coverage' to 'typeCoverage'
   /*
     let titleArr = title.split(' ')
@@ -119,12 +118,19 @@ const TeamStats = ({ classes, width, title, darkMode }) => {
               : store.typeDefence;
 
           return Object.keys(types).map((type, i) => (
-            <Grid key={i} item xs={2}>
-              <div className={classes.typeContainer}>
+            <Grid key={i} size={{ xs: 2 }}>
+              <Box sx={{ p: { xs: "3px 1px", md: 3 } }}>
                 {/* Activates Popover */}
-                <div
-                  className={classes.pokemonType}
-                  style={{ backgroundColor: `#${types[type]}` }}
+                <Box
+                  sx={{
+                    backgroundColor: `#${types[type]}`,
+                    color: "white",
+                    borderRadius: "5px",
+                    display: "block",
+                    width: { xs: "100%", md: "75%" },
+                    m: "auto",
+                    p: "1px 0",
+                  }}
                   aria-owns={anchorEl[i] ? "mouse-over-popover-" + i : null}
                   aria-haspopup="true"
                   aria-label={type}
@@ -133,14 +139,11 @@ const TeamStats = ({ classes, width, title, darkMode }) => {
                   onClick={e => handleClick(e, i)}
                 >
                   {typeAbbr[i] || type}
-                </div>
+                </Box>
                 {/* The Popover Itself */}
                 <Popper
                   id={"mouse-over-popover-" + i}
-                  className={classes.popover}
-                  classes={{
-                    paper: classes.paper,
-                  }}
+                  sx={{ pointerEvents: "none" }}
                   open={!!anchorEl[i]}
                   onClose={handlePopoverClose}
                   anchorEl={anchorEl[i]}
@@ -159,14 +162,13 @@ const TeamStats = ({ classes, width, title, darkMode }) => {
                         <TeamStatsTooltip
                           type={type}
                           typeColor={types[type]}
-                          classes={classes}
                           teamStatType={title}
                         />
                       </Paper>
                     </Fade>
                   )}
                 </Popper>
-              </div>
+              </Box>
               {/* E.g. +2 or -1 */}
               <Typography
                 variant="body1"
@@ -184,7 +186,7 @@ const TeamStats = ({ classes, width, title, darkMode }) => {
 
         return (
           <Grid container style={{ textAlign: "center" }}>
-            <Grid item xs={12}>
+            <Grid size={{ xs: 12 }}>
               {/* Either "Type Defence" or "Type Coverage"  */}
               <Typography
                 variant="h6"
@@ -226,14 +228,14 @@ const TeamStatsTooltip = props => {
 };
 
 // Type Defence Tooltip Info
-const TypeDefenceTooltipInfo = ({ typeColor, type, classes }) => (
+const TypeDefenceTooltipInfo = ({ typeColor, type }) => (
   <Observer>
     {() => (
       <>
         <p>
           <span style={{ color: `#${typeColor}` }}>{type}</span> does...
         </p>
-        <ul className={classes.list}>
+        <Box component="ul" sx={{ listStyle: "none", p: 0 }}>
           {store.team.map((teamPkmnProps, i) => {
             // for each pokemon
             const { name: pkmn, ability, item } = teamPkmnProps;
@@ -287,28 +289,36 @@ const TypeDefenceTooltipInfo = ({ typeColor, type, classes }) => (
 
               return (
                 // multiplier, pkmn name, then pkmn icon
-                <li key={teamPkmnProps.name + i} className={classes.listItem}>
-                  <span style={{ color }} className={classes.multiplier}>
+                <Box
+                  component="li"
+                  key={teamPkmnProps.name + i}
+                  sx={{ display: "flex", alignItems: "center" }}
+                >
+                  <Box
+                    component="span"
+                    style={{ color }}
+                    sx={{ width: 40, textAlign: "right", pr: "4px" }}
+                  >
                     {multiplier}x
-                  </span>
+                  </Box>
                   <span style={{ paddingRight: 2 }}>
                     to {store.pkmnName(pkmn)}
                   </span>
                   <PokemonIcon pkmnProp="pkmn" value={pkmn} />
-                </li>
+                </Box>
               );
             }
 
             return null;
           })}
-        </ul>
+        </Box>
       </>
     )}
   </Observer>
 );
 
 // Type Coverage Tooltip Info
-const TypeCoverageTooltipInfo = ({ typeColor, type, classes }) => {
+const TypeCoverageTooltipInfo = ({ typeColor, type }) => {
   return (
     <Observer>
       {() => {
@@ -319,7 +329,7 @@ const TypeCoverageTooltipInfo = ({ typeColor, type, classes }) => {
               Super effective against{" "}
               <span style={{ color: `#${typeColor}` }}>{type}</span>:
             </p>
-            <ul className={classes.list}>
+            <Box component="ul" sx={{ listStyle: "none", p: 0 }}>
               {store.team.map((teamPkmnProps, i) => {
                 // For each team pokmeon
                 const { name: pkmn, ability } = teamPkmnProps;
@@ -338,9 +348,10 @@ const TypeCoverageTooltipInfo = ({ typeColor, type, classes }) => {
 
                         return (
                           // move name, pkmn name, then pkmn icon
-                          <li
+                          <Box
+                            component="li"
                             key={move + num}
-                            className={classes.listItem}
+                            sx={{ display: "flex", alignItems: "center" }}
                             style={{
                               fontWeight: store
                                 .pkmnType(pkmn)
@@ -354,7 +365,7 @@ const TypeCoverageTooltipInfo = ({ typeColor, type, classes }) => {
                             </span>
                             <span>{store.pkmnName(pkmn) + " "}</span>
                             <PokemonIcon pkmnProp="pkmn" value={pkmn} />
-                          </li>
+                          </Box>
                         );
                       } else if (
                         num === 4 &&
@@ -373,7 +384,7 @@ const TypeCoverageTooltipInfo = ({ typeColor, type, classes }) => {
                   </React.Fragment>
                 );
               })}
-            </ul>
+            </Box>
           </>
         );
       }}
@@ -381,4 +392,4 @@ const TypeCoverageTooltipInfo = ({ typeColor, type, classes }) => {
   );
 };
 
-export default withStyles(teamStatsStyles)(TeamStats);
+export default TeamStats;

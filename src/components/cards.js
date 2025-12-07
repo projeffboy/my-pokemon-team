@@ -1,18 +1,17 @@
 import React from "react";
 // Material UI Imports
-import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import { withStyles } from "@material-ui/core/styles";
-import withWidth from "@material-ui/core/withWidth";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 // My Component Imports
 import Pokemon from "./cards/pokemon";
 import TeamStats from "./cards/team-stats";
 import MoreInfo from "./cards/more-info";
-import { paperStyles } from "../styles";
 import TeamViewer from "./cards/team-viewer";
+import useWidth from "../useWidth";
 
 function Cards(props) {
-  const { classes, width } = props;
+  const width = useWidth();
+  console.log("Cards rendering, width:", width);
   /*
    * What is width?
    * If the viewport width is...
@@ -28,8 +27,8 @@ function Cards(props) {
       // if viewport width >=960px
       // Display 6 pokemon cards
       return [0, 1, 2, 3, 4, 5].map(num => (
-        <Grid key={num} item xs={6}>
-          <Paper className={classes.applyPadding}>
+        <Grid key={num} size={{ xs: 6 }}>
+          <Paper sx={{ p: 1 }}>
             {/* teamIndex is the pokemon's team slot number - 1 */}
             <Pokemon teamIndex={num} width={width} />
           </Paper>
@@ -57,18 +56,14 @@ function Cards(props) {
      */
     <>
       {/* Pokemon cards */}
-      <Grid item container lg={6} md={7} sm={6} xs={12} spacing={2}>
+      <Grid container size={{ xs: 12, sm: 6, md: 7, lg: 6 }} spacing={2}>
         {pokemonCards()}
       </Grid>
       {/* Pokemon team stats cards */}
-      <Grid item container lg={6} md={5} sm={6} xs={12} spacing={2}>
+      <Grid container size={{ xs: 12, sm: 6, md: 5, lg: 6 }} spacing={2}>
         {["Team Defence", "Team Type Coverage"].map(cardTitle => (
-          <Grid key={cardTitle} item xs={12}>
-            <Paper
-              className={classes.applyPadding}
-              aria-label={`${cardTitle} Card`}
-              role="region"
-            >
+          <Grid key={cardTitle} size={{ xs: 12 }}>
+            <Paper sx={{ p: 1 }} aria-label={`${cardTitle} Card`} role="region">
               <TeamStats
                 title={cardTitle}
                 width={width}
@@ -78,7 +73,7 @@ function Cards(props) {
           </Grid>
         ))}
         {/* Pokemon more info card */}
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Paper>
             <MoreInfo width={width} />
           </Paper>
@@ -88,4 +83,4 @@ function Cards(props) {
   );
 }
 
-export default withStyles(paperStyles)(withWidth()(Cards));
+export default Cards;

@@ -1,15 +1,13 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Grid from "@material-ui/core/Grid";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Grid from "@mui/material/Grid";
 import { Observer } from "mobx-react";
 import store from "../../../store";
-import { searchFiltersStyles } from "../../../styles";
 
-const SearchFilters = ({ classes }) => {
+const SearchFilters = () => {
   const handleChange = (inputLabel, e) => {
     store.searchFilters[inputLabel.toLowerCase()] = e.target.value;
   };
@@ -71,13 +69,18 @@ const SearchFilters = ({ classes }) => {
           {Object.keys(inputLabels).map((inputLabel, i) => (
             <Grid
               key={inputLabel}
-              item
               container
-              justify="center"
-              xs={6}
-              lg={3}
+              justifyContent="center"
+              size={{ xs: 6, lg: 3 }}
             >
-              <FormControl className={classes.formControl}>
+              <FormControl
+                sx={{
+                  minWidth: { xs: 90, md: 120 },
+                  m: { xs: "0 10px 10px", lg: "10px" },
+                  position: "relative",
+                  zIndex: 1,
+                }}
+              >
                 {/* E.g. Format */}
                 <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
                 <Select
@@ -118,4 +121,4 @@ const SearchFilters = ({ classes }) => {
   );
 };
 
-export default withStyles(searchFiltersStyles)(SearchFilters);
+export default SearchFilters;

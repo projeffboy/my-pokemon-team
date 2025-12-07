@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 // Material UI Core Imports
-import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Link from "@material-ui/core/Link";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Link from "@mui/material/Link";
 // Material UI Icons Imports
-import ImportExport from "@material-ui/icons/ImportExport";
-import FileCopy from "@material-ui/icons/FileCopy";
+import ImportExport from "@mui/icons-material/ImportExport";
+import FileCopy from "@mui/icons-material/FileCopy";
 // Custom Imports
 import { Observer } from "mobx-react";
 import store from "../../../store";
-import { pokemonShowdownTeamStyles } from "../../../styles";
 
-const PokemonShowdownTeam = ({ classes }) => {
+const PokemonShowdownTeam = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [textArea, setTextArea] = useState("");
 
@@ -213,7 +211,7 @@ ${[1, 2, 3, 4]
                   label="Pokemon Showdown Team Raw Text"
                   multiline
                   fullWidth
-                  className={classes.textField}
+                  sx={{ m: "20px 0" }}
                   defaultValue={pokemonShowdownTeamInfo}
                   onChange={handleTextArea}
                 />
@@ -236,7 +234,7 @@ ${[1, 2, 3, 4]
             </Dialog>
             <Button
               onClick={() => handleCopy(pokemonShowdownTeamInfo)}
-              className={classes.button}
+              sx={{ m: 1 }}
             >
               Copy Team <FileCopy style={{ marginLeft: 5 }} />
             </Button>
@@ -247,4 +245,4 @@ ${[1, 2, 3, 4]
   );
 };
 
-export default withStyles(pokemonShowdownTeamStyles)(PokemonShowdownTeam);
+export default PokemonShowdownTeam;

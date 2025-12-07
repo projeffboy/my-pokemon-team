@@ -1,12 +1,10 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import { withStyles } from "@material-ui/core/styles";
-import { teamChecklistStyles } from "../../../styles";
-import CheckCircle from "@material-ui/icons/CheckCircle";
-import Cancel from "@material-ui/icons/Cancel";
+import Grid from "@mui/material/Grid";
+import CheckCircle from "@mui/icons-material/CheckCircle";
+import Cancel from "@mui/icons-material/Cancel";
 import { Observer } from "mobx-react";
 import store from "../../../store";
-import Typography from "@material-ui/core/Typography";
+import Typography from "@mui/material/Typography";
 
 // wish + protect-like move counts as reliable recovery
 const hasWishAndProtect = () => {
@@ -16,7 +14,7 @@ const hasWishAndProtect = () => {
   ]);
 };
 
-const TeamChecklist = ({ classes, width }) => {
+const TeamChecklist = ({ width }) => {
   return (
     <Observer>
       {() => {
@@ -98,10 +96,10 @@ const TeamChecklist = ({ classes, width }) => {
         }
 
         return Object.keys(checklist).map((miniHeader, i) => (
-          <Grid key={miniHeader} item xs={4}>
+          <Grid key={miniHeader} size={{ xs: 4 }}>
             {/* E.g. Offensive */}
             <Typography
-              className={classes.miniHeader}
+              sx={{ fontWeight: "bold", pb: "10px" }}
               variant="body1"
               component="div"
               style={{ lineHeight: "initial" }}
@@ -141,4 +139,4 @@ const TeamChecklist = ({ classes, width }) => {
   );
 };
 
-export default withStyles(teamChecklistStyles)(TeamChecklist);
+export default TeamChecklist;

@@ -79,9 +79,9 @@ test.describe("Importing an OU team", () => {
     // 5. Set filter to OU
     await page.getByText("Filters", { exact: true }).click();
     await page
-      .getByText("Format", { exact: true })
-      .locator("..")
-      .getByRole("button")
+      .locator(".MuiFormControl-root")
+      .filter({ hasText: "Format" })
+      .getByRole("combobox")
       .click();
     await page.getByRole("option", { name: "OU: Over Used" }).click();
 

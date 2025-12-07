@@ -1,8 +1,7 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
 import PokemonInput from "./pokemon/pokemon-input";
 import Sprite from "./pokemon/sprite";
-import { pokemonStyles } from "../../styles";
 
 function Pokemon(props) {
   const placeholders = [
@@ -45,14 +44,18 @@ function Pokemon(props) {
   });
 
   return (
-    <div
-      className={props.classes.gridContainer}
+    <Box
+      sx={{
+        display: "grid",
+        gridColumnGap: "10px",
+        gridTemplateColumns: "1fr 1fr",
+      }}
       role="region"
       aria-label={`Pokemon ${props.teamIndex + 1}`}
     >
       {pokemonInputs}
-    </div>
+    </Box>
   );
 }
 
-export default withStyles(pokemonStyles)(Pokemon);
+export default Pokemon;

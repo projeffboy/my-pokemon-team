@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import withWidth from "@material-ui/core/withWidth";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
-import Snackbar from "@material-ui/core/Snackbar";
-import Button from "@material-ui/core/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Snackbar from "@mui/material/Snackbar";
+import Button from "@mui/material/Button";
 import { Observer } from "mobx-react";
 import store from "./store";
-import { appStyles } from "./styles";
 import Cards from "./components/cards";
 import Manual from "./manual";
 import Credits from "./credits";
@@ -16,19 +13,34 @@ import UpdateLog from "./update-log";
 import face1 from "./landorus-face.png";
 import face2 from "./ogerpon-teal-mask-by-jormxdos.png";
 import TypeChartDialog from "./type-chart-dialog";
-import CssBaseline from "@material-ui/core/CssBaseline"; // like CSS Reset
-import { MuiThemeProvider } from "@material-ui/core/styles"; // provide your custom theme
+import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
+import { ThemeProvider } from "@mui/material/styles"; // provide your custom theme
 import { theme, darkTheme } from "./styles";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./components/RAMP";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import GlobalStyles from "@mui/material/GlobalStyles";
 
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;
 
 const face1Alt = "Landorus Face";
 const face2Alt = "Virizion Face";
+
+function useWidth() {
+  const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+  const isLg = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
+
+  if (isXl) return "xl";
+  if (isLg) return "lg";
+  if (isMd) return "md";
+  if (isSm) return "sm";
+  return "xs";
+}
 
 function faceWidth(breakpoint) {
   if (breakpoint !== "xs") {
@@ -65,10 +77,11 @@ const MainSnackbar = () => (
 );
 
 const App = props => {
+  console.error("App rendering");
   const isSystemDark =
     window && window.matchMedia("(prefers-color-scheme: dark)").matches;
   const [darkMode, setDarkMode] = useState(isSystemDark);
-  const { classes, width } = props;
+  const width = useWidth();
 
   return (
     /*
@@ -81,18 +94,28 @@ const App = props => {
         {process.env.NODE_ENV === "production" && (
           <Ramp PUB_ID={PUB_ID} WEBSITE_ID={WEBSITE_ID} />
         )}
-        <MuiThemeProvider theme={darkMode ? darkTheme : theme}>
+        <ThemeProvider theme={darkMode ? darkTheme : theme}>
           <CssBaseline />
+          <GlobalStyles
+            styles={{
+              "html, body, #root": { height: "100%" },
+            }}
+          />
           <Grid
             container
             spacing={2}
-            justify="center"
+            justifyContent="center"
             alignItems="center"
-            className={classes.root}
+            sx={{
+              height: "100%",
+              width: "100%",
+              maxWidth: 1920,
+              margin: "0 auto",
+            }}
           >
             {/* Header */}
-            <Grid item container xs={12} justify="center">
-              <Grid item>
+            <Grid container size={{ xs: 12 }} justifyContent="center">
+              <Grid size="auto">
                 <img
                   src={face1}
                   alt={face1Alt}
@@ -100,7 +123,7 @@ const App = props => {
                   style={{ padding: "0 6px" }}
                 />
               </Grid>
-              <Grid item>
+              <Grid size="auto">
                 <Typography
                   variant="h3"
                   style={{
@@ -111,7 +134,7 @@ const App = props => {
                   My Pokemon Team
                 </Typography>
               </Grid>
-              <Grid item>
+              <Grid size="auto">
                 <img
                   src={face2}
                   alt={face2Alt}
@@ -119,12 +142,12 @@ const App = props => {
                   style={{ padding: "0 6px" }}
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="subtitle1" align="center">
                   For Generation 6 to 9 (Scarlet/Violet)
                 </Typography>
               </Grid>
-              <Grid item xs={12}>
+              <Grid size={{ xs: 12 }}>
                 <Typography variant="caption" align="center">
                   <sub>Report Bugs to jeffery124@gmail.com</sub>
                 </Typography>
@@ -134,18 +157,17 @@ const App = props => {
             <Cards darkMode={darkMode} />
             {/* Footer */}
             <Grid
-              item
               container
-              xs={12}
-              justify="center"
+              size={{ xs: 12 }}
+              justifyContent="center"
               alignItems="center"
               spacing={2}
               style={{ paddingBottom: 230 }}
             >
-              <Grid item>
+              <Grid size="auto">
                 <Manual darkMode={darkMode} />
               </Grid>
-              <Grid item>
+              <Grid size="auto">
                 <Button
                   href="https://jefferytang.com"
                   role="button"
@@ -154,16 +176,16 @@ const App = props => {
                   Jeffery Tang
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid size="auto">
                 <Credits />
               </Grid>
-              <Grid item>
+              <Grid size="auto">
                 <UpdateLog />
               </Grid>
-              <Grid item>
+              <Grid size="auto">
                 <PrivacyPolicy />
               </Grid>
-              <Grid item>
+              <Grid size="auto">
                 <FormControlLabel
                   control={
                     <Switch
@@ -179,10 +201,10 @@ const App = props => {
           </Grid>
           <MainSnackbar />
           <TypeChartDialog width={width} />
-        </MuiThemeProvider>
+        </ThemeProvider>
       </>
     </Router>
   );
 };
 
-export default withWidth()(withStyles(appStyles)(App));
+export default App;

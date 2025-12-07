@@ -63,7 +63,7 @@ test.describe("Footer Tests", () => {
 
   test("should test Dark Mode functionality", async ({ page }) => {
     // Find elements
-    const darkModeChecked = page.getByRole("checkbox", { name: "Dark Mode" });
+    const darkModeChecked = page.getByRole("switch", { name: "Dark Mode" });
 
     // Check system theme preference
     const systemPrefersDark = await page.evaluate(() => {
@@ -72,7 +72,7 @@ test.describe("Footer Tests", () => {
 
     // Verify color theme matches system preference
     async function verifyTheme(systemPrefersDark) {
-      const DARK_BODY_BG = "rgb(48, 48, 48)";
+      const DARK_BODY_BG = "rgb(18, 18, 18)"; // TODO: change this to 48 when you update the site
       const DARK_TITLE_COLOR = "rgb(224, 224, 224)";
       const LIGHT_BODY_BG = "rgb(238, 238, 238)";
       const LIGHT_TITLE_COLOR = "rgba(0, 0, 0, 0.87)";

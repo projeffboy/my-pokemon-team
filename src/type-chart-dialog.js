@@ -1,11 +1,11 @@
-import Fab from "@material-ui/core/Fab";
-import TableChart from "@material-ui/icons/TableChart";
+import Fab from "@mui/material/Fab";
+import TableChart from "@mui/icons-material/TableChart";
 
 import React, { useState } from "react";
 // Material UI Core Imports
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
 import TypeChart from "./type-chart";
 
 const TypeChartDialog = ({ width }) => {

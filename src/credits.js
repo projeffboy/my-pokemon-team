@@ -1,25 +1,25 @@
 import React, { useState } from "react";
 // Material UI Core Imports
-import Button from "@material-ui/core/Button";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import BusinessIcon from "@material-ui/icons/Business";
-import GestureIcon from "@material-ui/icons/Gesture";
-import TableChart from "@material-ui/icons/TableChart";
-import ListIcon from "@material-ui/icons/List";
-import ColorLens from "@material-ui/icons/ColorLens";
-import People from "@material-ui/icons/People";
-import Code from "@material-ui/icons/Code";
-import Layers from "@material-ui/icons/Layers";
-import TrendingUp from "@material-ui/icons/TrendingUp";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import BusinessIcon from "@mui/icons-material/Business";
+import GestureIcon from "@mui/icons-material/Gesture";
+import TableChart from "@mui/icons-material/TableChart";
+import ListIcon from "@mui/icons-material/List";
+import ColorLens from "@mui/icons-material/ColorLens";
+import People from "@mui/icons-material/People";
+import Code from "@mui/icons-material/Code";
+import Layers from "@mui/icons-material/Layers";
+import TrendingUp from "@mui/icons-material/TrendingUp";
 import pokemonShowdownLogo from "./pokemon-showdown-logo.png";
 
 function listItems(element) {

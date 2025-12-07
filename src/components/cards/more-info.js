@@ -1,25 +1,26 @@
 import React, { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 // Material UI Imports
-import { withStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Grid from "@material-ui/core/Grid";
+import { useTheme } from "@mui/material/styles";
+import AppBar from "@mui/material/AppBar";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 // My Component Imports
 import TeamChecklist from "./more-info/team-checklist";
 import SearchFilters from "./more-info/search-filters";
 import PokemonShowdownTeam from "./more-info/pokemon-showdown-team";
-import { moreInfoStyles } from "../../styles";
 
 // The stuff below each tab
 const TabContainer = ({ children }) => (
-  <Grid container justify="center" style={{ padding: 14 }}>
+  <Grid container justifyContent="center" style={{ padding: 14 }}>
     {children}
   </Grid>
 );
 
-const MoreInfo = ({ classes, theme, width }) => {
+const MoreInfo = ({ width }) => {
+  const theme = useTheme();
   const [tabIndex, setTabIndex] = useState(0);
 
   // Click to change tab
@@ -28,7 +29,7 @@ const MoreInfo = ({ classes, theme, width }) => {
   };
 
   // Swipe to change tab
-  const handleChangeIndex = (index) => {
+  const handleChangeIndex = index => {
     setTabIndex(index);
   };
 
@@ -40,8 +41,12 @@ const MoreInfo = ({ classes, theme, width }) => {
   }
 
   return (
-    <div className={classes.root}>
-      <AppBar position="static" color="default" className={classes.appBar}>
+    <Box sx={{ borderRadius: 1 }}>
+      <AppBar
+        position="static"
+        color="default"
+        sx={{ borderRadius: "4px 4px 0 0" }}
+      >
         {/* E.g.  | Search Filters | Team Checklist | Pokemon Showdown Team | */}
         <Tabs
           value={tabIndex}
@@ -50,8 +55,8 @@ const MoreInfo = ({ classes, theme, width }) => {
           textColor="primary"
           variant="fullWidth"
         >
-          {tabTitles.map((title) => (
-            <Tab label={title} key={title} className={classes.tab} />
+          {tabTitles.map(title => (
+            <Tab label={title} key={title} sx={{ minWidth: "initial" }} />
           ))}
         </Tabs>
       </AppBar>
@@ -69,8 +74,8 @@ const MoreInfo = ({ classes, theme, width }) => {
           <TabContainer key={i}>{component}</TabContainer>
         ))}
       </SwipeableViews>
-    </div>
+    </Box>
   );
 };
 
-export default withStyles(moreInfoStyles, { withTheme: true })(MoreInfo);
+export default MoreInfo;

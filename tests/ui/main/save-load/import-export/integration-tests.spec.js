@@ -27,16 +27,14 @@ test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
     await expect(page.getByRole("dialog")).toBeHidden();
   };
 
-  const verifyPokemonProperty = async (page, value, optionalParams) => {
-    const { isNameProperty = false, teamIndex = 0 } = optionalParams || {};
-
-    const pokemonCard = page.getByRole("region", {
-      name: `Pokemon ${teamIndex + 1}`,
+  const verifyPokemonProperty = async (page, property, value) => {
+    const pokemonCard = page.getByRole("region", { name: "Pokemon 1" });
+    const input = pokemonCard.getByRole("combobox", {
+      name: `Pokemon 1's ${property}`,
     });
-    const option = pokemonCard.getByRole("option", { name: value });
-    await expect(option).toBeVisible();
+    await expect(input).toHaveValue(value);
 
-    if (isNameProperty) {
+    if (property === "name") {
       // Verify the sprite is updated (it shouldn't be a question mark)
       // The sprite alt text usually matches the pokemon name
       const pokemonSprite = pokemonCard.getByRole("img", { name: value });
@@ -47,7 +45,7 @@ test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
   test("Manually fill in a pokemon", async ({ page }) => {
     await importTeam(page, "Gigalith");
 
-    await verifyPokemonProperty(page, "Gigalith");
+    await verifyPokemonProperty(page, "name", "Gigalith");
   });
 
   test("Paste in a pokemon's details", async ({ page }) => {
@@ -60,17 +58,18 @@ Ability: Chlorophyll
     await importTeam(page, pokemonText);
 
     const expectedValues = [
-      "Life Orb",
-      "Chlorophyll",
-      "Solar Beam",
-      "Sludge Bomb",
-      "Sleep Powder",
-      "Sunny Day",
+      { name: "Weepinbell" },
+      { item: "Life Orb" },
+      { ability: "Chlorophyll" },
+      { move1: "Solar Beam" },
+      { move2: "Sludge Bomb" },
+      { move3: "Sleep Powder" },
+      { move4: "Sunny Day" },
     ];
 
-    verifyPokemonProperty(page, "Weepinbell", { isNameProperty: true });
-    for (const value of expectedValues) {
-      await verifyPokemonProperty(page, value);
+    for (const expectedValue of expectedValues) {
+      const [[key, value]] = Object.entries(expectedValue);
+      await verifyPokemonProperty(page, key, value);
     }
   });
 });

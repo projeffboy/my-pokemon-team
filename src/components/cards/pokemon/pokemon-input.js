@@ -1,12 +1,11 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import Box from "@mui/material/Box";
 import { Observer } from "mobx-react";
 import store from "../../../store";
-import { pokemonInputStyles } from "../../../styles";
 import PokemonInputSelect from "./pokemon-input/pokemon-input-select";
 
-const PokemonInput = ({ classes, placeholder, pokemonProp, teamIndex }) => {
-  const handleChange = (inputVal) => {
+const PokemonInput = ({ placeholder, pokemonProp, teamIndex }) => {
+  const handleChange = inputVal => {
     if (pokemonProp === "name") {
       store.clearTeamPkmnProps(teamIndex);
     }
@@ -54,20 +53,28 @@ const PokemonInput = ({ classes, placeholder, pokemonProp, teamIndex }) => {
         }
 
         return (
-          <PokemonInputSelect
-            placeholder={placeholder}
-            className={classes.gridItem}
-            optionValues={optionValues}
-            optionLabels={optionLabels}
-            onChange={handleChange}
-            value={store.team[teamIndex][pokemonProp]}
-            pokemonProp={pokemonProp}
-            teamIndex={teamIndex}
-          />
+          <Box
+            sx={{
+              minWidth: 0,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <PokemonInputSelect
+              placeholder={placeholder}
+              optionValues={optionValues}
+              optionLabels={optionLabels}
+              onChange={handleChange}
+              value={store.team[teamIndex][pokemonProp]}
+              pokemonProp={pokemonProp}
+              teamIndex={teamIndex}
+            />
+          </Box>
         );
       }}
     </Observer>
   );
 };
 
-export default withStyles(pokemonInputStyles)(PokemonInput);
+export default PokemonInput;

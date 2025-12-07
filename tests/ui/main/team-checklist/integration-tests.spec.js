@@ -46,13 +46,9 @@ test.describe("Team Checklist - Integration Tests", () => {
   };
 
   const selectPokemon = async (page, pokemonName) => {
-    const control = page
-      .locator(".Select-control")
-      .filter({ has: page.locator("#react-select-single-0-name") });
-    await control.click();
-
-    const input = page.locator("#react-select-single-0-name");
-    await input.fill(pokemonName);
+    const combobox = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    await combobox.click();
+    await combobox.fill(pokemonName);
 
     // Use listbox role to find the option
     await page
@@ -62,13 +58,9 @@ test.describe("Team Checklist - Integration Tests", () => {
   };
 
   const selectMove = async (page, moveName) => {
-    const control = page
-      .locator(".Select-control")
-      .filter({ has: page.locator("#react-select-single-0-move1") });
-    await control.click();
-
-    const input = page.locator("#react-select-single-0-move1");
-    await input.fill(moveName);
+    const combobox = page.getByRole("combobox", { name: "Pokemon 1's move1" });
+    await combobox.click();
+    await combobox.fill(moveName);
 
     await page
       .getByRole("listbox")
@@ -77,13 +69,9 @@ test.describe("Team Checklist - Integration Tests", () => {
   };
 
   const selectItem = async (page, itemName) => {
-    const control = page
-      .locator(".Select-control")
-      .filter({ has: page.locator("#react-select-single-0-item") });
-    await control.click();
-
-    const input = page.locator("#react-select-single-0-item");
-    await input.fill(itemName);
+    const combobox = page.getByRole("combobox", { name: "Pokemon 1's item" });
+    await combobox.click();
+    await combobox.fill(itemName);
 
     await page
       .getByRole("listbox")

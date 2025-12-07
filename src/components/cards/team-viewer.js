@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 // Material UI Imports
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Paper from "@material-ui/core/Paper";
+import Grid from "@mui/material/Grid";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 // My Component Imports
-import { paperStyles, teamViewerStyles } from "../../styles";
 import Pokemon from "./pokemon";
 import Sprite from "./pokemon/sprite";
 
@@ -14,7 +13,8 @@ import Sprite from "./pokemon/sprite";
  * NOTE!!!
  * This component can only be viewed below a viewport width of 960px
  */
-const TeamViewer = ({ classes, width }) => {
+const TeamViewer = ({ width }) => {
+  console.log("TeamViewer rendering, width:", width);
   const [smTabIndex, setSmTabIndex] = useState(0);
   const [xsTabIndex, setXsTabIndex] = useState(0);
 
@@ -34,18 +34,18 @@ const TeamViewer = ({ classes, width }) => {
    * 3 and 4,
    * or 5 and 6.
    */
-  const getTwoPokemonSprites = (teamIndex) => {
+  const getTwoPokemonSprites = teamIndex => {
     return (
-      <div className={classes.twoSprites}>
+      <Box sx={{ display: "flex", height: 75 }}>
         <Sprite teamIndex={teamIndex} width={width} />
         <Sprite teamIndex={teamIndex + 1} width={width} />
-      </div>
+      </Box>
     );
   };
 
   return (
     <>
-      <Grid item xs={12}>
+      <Grid size={{ xs: 12 }}>
         <Paper>
           <Tabs
             value={width === "sm" ? smTabIndex : xsTabIndex}
@@ -56,18 +56,18 @@ const TeamViewer = ({ classes, width }) => {
             {
               // Either displays 3 or 6 tabs
               width === "sm"
-                ? [0, 2, 4].map((teamIndex) => (
+                ? [0, 2, 4].map(teamIndex => (
                     <Tab
                       key={teamIndex}
                       label={`${teamIndex + 1} - ${teamIndex + 2}`}
                       icon={getTwoPokemonSprites(teamIndex)}
                     />
                   ))
-                : [0, 1, 2, 3, 4, 5].map((teamIndex) => (
+                : [0, 1, 2, 3, 4, 5].map(teamIndex => (
                     <Tab
                       key={teamIndex}
                       label={teamIndex + 1}
-                      className={classes.xsTab}
+                      sx={{ minWidth: 0 }}
                       icon={<Sprite teamIndex={teamIndex} width={width} />}
                     />
                   ))
@@ -78,20 +78,16 @@ const TeamViewer = ({ classes, width }) => {
       {
         // Either displays 2 or 1 pokemon at a time
         width === "sm" ? (
-          [0, 1].map((num) => (
-            <Grid key={num} item xs={12}>
-              <Paper
-                className={`${classes.applyPadding} ${classes.oneOfTwoPkmn}`}
-              >
+          [0, 1].map(num => (
+            <Grid key={num} size={{ xs: 12 }}>
+              <Paper sx={{ p: 1 }}>
                 <Pokemon teamIndex={2 * smTabIndex + num} width={width} />
               </Paper>
             </Grid>
           ))
         ) : (
-          <Grid item xs={12}>
-            <Paper
-              className={`${classes.applyPadding} ${classes.oneOfTwoPkmn}`}
-            >
+          <Grid size={{ xs: 12 }}>
+            <Paper sx={{ p: 1 }}>
               <Pokemon teamIndex={xsTabIndex} width={width} />
             </Paper>
           </Grid>
@@ -101,4 +97,4 @@ const TeamViewer = ({ classes, width }) => {
   );
 };
 
-export default withStyles({ ...paperStyles, ...teamViewerStyles })(TeamViewer);
+export default TeamViewer;

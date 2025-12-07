@@ -1,12 +1,11 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
 import { observer } from "mobx-react";
 import store from "../../../store";
 import pokedex from "../../../data/pokedex";
-import { pokemonInputStyles as spriteStyles } from "../../../styles";
 import questionMark from "../../../question-mark.png";
+import Box from "@mui/material/Box";
 
-const Sprite = observer(({ classes, teamIndex, width }) => {
+const Sprite = observer(({ teamIndex, width }) => {
   const pokemon = store.team[teamIndex].name; // unhyphenated name
   const pokedexNumber = pokemon && pokedex[pokemon].num;
 
@@ -67,9 +66,18 @@ const Sprite = observer(({ classes, teamIndex, width }) => {
 
   /* Either Return Sprite or Mini Sprite */
   return (
-    <div className={`${classes.gridItem} ${classes.spriteContainer}`}>
+    <Box
+      sx={{
+        minWidth: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gridRow: { xs: "2 / 7", md: "2 / 5" },
+      }}
+    >
       {
-        <img
+        <Box
+          component="img"
           alt={spriteFilename || "question-mark"}
           /* URL from Pokemon Showdown */
           src={
@@ -79,13 +87,16 @@ const Sprite = observer(({ classes, teamIndex, width }) => {
                 questionMark
           }
           /* Apply miniSprite class if it's a mini sprite */
-          className={`${classes.sprite} ${
-            width === "sm" ? classes.miniSprite : ""
-          } ${width === "lg" || width === "xl" ? classes.smallerSprite : ""}`}
+          sx={{
+            maxHeight: "100%",
+            maxWidth: "100%",
+            ...(width === "sm" && { width: "100%" }),
+            ...((width === "lg" || width === "xl") && { maxHeight: "96px" }),
+          }}
         />
       }
-    </div>
+    </Box>
   );
 });
 
-export default withStyles(spriteStyles)(Sprite);
+export default Sprite;
