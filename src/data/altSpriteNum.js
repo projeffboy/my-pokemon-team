@@ -473,6 +473,7 @@ export default {
   scattervein: 1512 + 72,
   cresceidon: 1512 + 73,
 
+  /*
   pikachubelle: 1404 + 0,
   pikachupopstar: 1404 + 1,
   clefairy: 1404 + 2,
@@ -580,4 +581,5 @@ export default {
   necrozmaultra: 1404 + 103,
   stakataka: 1404 + 104,
   blacephalon: 1404 + 105,
+  */
 };

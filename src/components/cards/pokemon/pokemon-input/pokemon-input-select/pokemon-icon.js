@@ -1,4 +1,3 @@
-import React from "react";
 import pokedex from "../../../../../data/pokedex";
 import items from "../../../../../data/items";
 import altSpriteNum from "../../../../../data/altSpriteNum";

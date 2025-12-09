@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [
     react({
-      jsxRuntime: "classic",
+      jsxRuntime: "automatic",
       babel: {
         plugins: [
           ["@babel/plugin-proposal-decorators", { legacy: true }],

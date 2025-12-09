@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // Material UI Imports
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";

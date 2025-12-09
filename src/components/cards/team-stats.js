@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, Fragment } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Popper from "@mui/material/Popper";
@@ -335,7 +335,7 @@ const TypeCoverageTooltipInfo = ({ typeColor, type }) => {
                 const { name: pkmn, ability } = teamPkmnProps;
 
                 return (
-                  <React.Fragment key={pkmn + i}>
+                  <Fragment key={pkmn + i}>
                     {[1, 2, 3, 4].map(num => {
                       // For each move number
                       const move = teamPkmnProps["move" + num];
@@ -381,7 +381,7 @@ const TypeCoverageTooltipInfo = ({ typeColor, type }) => {
 
                       return null;
                     })}
-                  </React.Fragment>
+                  </Fragment>
                 );
               })}
             </Box>
