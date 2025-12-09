@@ -1,6 +1,5 @@
 {
   "name": "pokemon-teambuilder",
-  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -31,11 +30,5 @@
   },
   "engines": {
     "node": "24.x"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  }
 }
