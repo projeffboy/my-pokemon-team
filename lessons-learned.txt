@@ -1,2 +1,0 @@
-utilize debugging tools
-if you are stuck, stop working
