@@ -63,7 +63,9 @@ test.describe("Footer Tests", () => {
 
   test("should test Dark Mode functionality", async ({ page }) => {
     // Find elements
-    const darkModeChecked = page.getByRole("switch", { name: "Dark Mode" });
+    const systemButton = page.getByRole("button", { name: "system" });
+    const lightButton = page.getByRole("button", { name: "light" });
+    const darkButton = page.getByRole("button", { name: "dark" });
 
     // Check system theme preference
     const systemPrefersDark = await page.evaluate(
@@ -71,7 +73,7 @@ test.describe("Footer Tests", () => {
     );
 
     // Verify color theme matches system preference
-    async function verifyTheme(systemPrefersDark) {
+    async function verifyTheme(isDark) {
       const DARK_BODY_BG = "rgb(18, 18, 18)"; // TODO: change this to 48 when you update the site
       const DARK_TITLE_COLOR = "rgb(224, 224, 224)";
       const LIGHT_BODY_BG = "rgb(238, 238, 238)";
@@ -82,7 +84,7 @@ test.describe("Footer Tests", () => {
       });
       const body = page.locator("body");
 
-      if (systemPrefersDark) {
+      if (isDark) {
         await expect(body).toHaveCSS("background-color", DARK_BODY_BG);
         await expect(titleElement).toHaveCSS("color", DARK_TITLE_COLOR);
       } else {
@@ -91,22 +93,23 @@ test.describe("Footer Tests", () => {
       }
     }
 
-    // Verify website color theme matches system preference
-    await expect(darkModeChecked).toBeChecked({ checked: systemPrefersDark });
+    // Verify default state (System)
+    await expect(systemButton).toHaveAttribute("aria-pressed", "true");
     await verifyTheme(systemPrefersDark);
 
-    // Toggle to opposite state
-    await darkModeChecked.click();
+    // Switch to Light
+    await lightButton.click();
+    await expect(lightButton).toHaveAttribute("aria-pressed", "true");
+    await verifyTheme(false);
 
-    // Verify color theme changed
-    await expect(darkModeChecked).toBeChecked({ checked: !systemPrefersDark });
-    await verifyTheme(!systemPrefersDark);
+    // Switch to Dark
+    await darkButton.click();
+    await expect(darkButton).toHaveAttribute("aria-pressed", "true");
+    await verifyTheme(true);
 
-    // Toggle back to original state
-    await darkModeChecked.click();
-
-    // Verify color theme reverted
-    await expect(darkModeChecked).toBeChecked({ checked: systemPrefersDark });
+    // Switch back to System
+    await systemButton.click();
+    await expect(systemButton).toHaveAttribute("aria-pressed", "true");
     await verifyTheme(systemPrefersDark);
   });
 });

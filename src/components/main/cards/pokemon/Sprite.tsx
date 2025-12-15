@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
-import store from "../../../store";
-import pokedex from "../../../data/pokedex";
-import questionMark from "../../../assets/question-mark.png";
+import store from "../../../../store";
+import pokedex from "../../../../data/pokedex";
+import questionMark from "../../../../assets/question-mark.png";
 import Box from "@mui/material/Box";
 
 interface SpriteProps {

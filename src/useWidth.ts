@@ -1,14 +1,15 @@
-import { useTheme, type Breakpoint } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { theme } from "./styles";
 
 export default function useWidth() {
-  const theme = useTheme();
-  const keys = [...theme.breakpoints.keys].reverse();
-  return (
-    keys.reduce<Breakpoint | null>((output, key) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const matches = useMediaQuery(theme.breakpoints.up(key));
-      return !output && matches ? key : output;
-    }, null) || 'xs'
-  );
+  const isXl = useMediaQuery(theme.breakpoints.up("xl"));
+  const isLg = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMd = useMediaQuery(theme.breakpoints.up("md"));
+  const isSm = useMediaQuery(theme.breakpoints.up("sm"));
+
+  if (isXl) return "xl";
+  if (isLg) return "lg";
+  if (isMd) return "md";
+  if (isSm) return "sm";
+  return "xs";
 }

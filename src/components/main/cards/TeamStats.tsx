@@ -4,18 +4,20 @@ import Grid from "@mui/material/Grid";
 import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
 import { Observer } from "mobx-react";
-import store, { type TeamMember } from "../../store";
+import store, { type TeamMember } from "../../../store";
 import Fade from "@mui/material/Fade";
 import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/PokemonIcon";
 import Box from "@mui/material/Box";
+import { useTheme } from "@mui/material/styles";
 
 interface TeamStatsProps {
   width: string;
   title: string;
-  darkMode: boolean;
 }
 
-const TeamStats = ({ width, title, darkMode }: TeamStatsProps) => {
+const TeamStats = ({ width, title }: TeamStatsProps) => {
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
   // E.g. Turn 'Type Coverage' to 'typeCoverage'
   /*
     let titleArr = title.split(' ')

@@ -3,18 +3,22 @@ import { useLocation } from "react-router-dom";
 
 declare global {
   interface Window {
-    ramp: any;
+    ramp: {
+      que: (() => void)[];
+      passiveMode: boolean;
+      spaNewPage: (path: string) => void;
+    };
   }
 }
 
 interface RampProps {
-  PUB_ID: string;
-  WEBSITE_ID: string;
+  PUB_ID: number;
+  WEBSITE_ID: number;
 }
 
-const Ramp = ({ PUB_ID, WEBSITE_ID }: RampProps) => {
-  const [rampInitialized, setRampInitialized] = useState(false);
-  const location = useLocation();
+const Ramp: React.FC<RampProps> = ({ PUB_ID, WEBSITE_ID }) => {
+  const [rampComponentLoaded, setRampComponentLoaded] = useState(false);
+  const location = useLocation(); // React Router hook to get the current location
 
   useEffect(() => {
     if (!PUB_ID || !WEBSITE_ID) {
@@ -22,26 +26,31 @@ const Ramp = ({ PUB_ID, WEBSITE_ID }: RampProps) => {
       return;
     }
 
-    if (rampInitialized) {
-      return; // Prevent re-initialization
+    if (!rampComponentLoaded) {
+      setRampComponentLoaded(true);
+      window.ramp = window.ramp || {};
+      window.ramp.que = window.ramp.que || [];
+      window.ramp.passiveMode = true;
+
+      // Load the Ramp configuration script
+      const configScript = document.createElement("script");
+      configScript.src = `https://cdn.intergient.com/${PUB_ID}/${WEBSITE_ID}/ramp.js`;
+      document.body.appendChild(configScript);
+
+      configScript.onload = () => {
+        window.ramp.que.push(() => {
+          window.ramp.spaNewPage(location.pathname);
+        });
+      };
     }
 
-    setRampInitialized(true);
-
-    window.ramp = window.ramp || {};
-    window.ramp.que = window.ramp.que || [];
-    window.ramp.passiveMode = true;
-
-    const configScript = document.createElement("script");
-    configScript.src = `https://cdn.intergient.com/${PUB_ID}/${WEBSITE_ID}/ramp.js`;
-    document.body.appendChild(configScript);
-
-    configScript.onload = () => {
+    // Cleanup function to handle component unmount
+    return () => {
       window.ramp.que.push(() => {
         window.ramp.spaNewPage(location.pathname);
       });
     };
-  }, [PUB_ID, WEBSITE_ID, location.pathname]); // Only depend on PUB_ID, WEBSITE_ID, and location.pathname
+  }, [location.pathname, PUB_ID, WEBSITE_ID]);
 
   return null;
 };

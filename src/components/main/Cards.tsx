@@ -6,15 +6,10 @@ import Pokemon from "./cards/Pokemon";
 import TeamStats from "./cards/TeamStats";
 import MoreInfo from "./cards/MoreInfo";
 import TeamViewer from "./cards/TeamViewer";
-import useWidth from "../useWidth";
+import useWidth from "../../useWidth";
 
-interface CardsProps {
-  darkMode: boolean;
-}
-
-function Cards({ darkMode }: CardsProps) {
+function Cards() {
   const width = useWidth();
-  console.log("Cards rendering, width:", width);
   /*
    * What is width?
    * If the viewport width is...
@@ -67,11 +62,7 @@ function Cards({ darkMode }: CardsProps) {
         {["Team Defence", "Team Type Coverage"].map(cardTitle => (
           <Grid key={cardTitle} size={{ xs: 12 }}>
             <Paper sx={{ p: 1 }} aria-label={`${cardTitle} Card`} role="region">
-              <TeamStats
-                title={cardTitle}
-                width={width}
-                darkMode={darkMode}
-              />
+              <TeamStats title={cardTitle} width={width} />
             </Paper>
           </Grid>
         ))}

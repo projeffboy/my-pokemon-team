@@ -3,25 +3,28 @@ import { grey } from "@mui/material/colors";
 
 // index.js (THEME)
 export const theme = createTheme({
-  palette: {
-    primary: { main: grey[900] },
-    secondary: { main: grey[900] },
-    background: { default: "#eee" },
+  cssVariables: {
+    colorSchemeSelector: "class",
   },
-});
-
-export const darkTheme = createTheme({
-  palette: {
-    primary: { main: grey[200] },
-    secondary: { main: grey[200] },
-    mode: "dark",
-    text: {
-      primary: grey[300],
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: { main: grey[900] },
+        secondary: { main: grey[900] },
+        background: { default: grey[200] },
+      },
+    },
+    dark: {
+      palette: {
+        primary: { main: grey[200] },
+        secondary: { main: grey[200] },
+        text: {
+          primary: grey[300],
+        },
+      },
     },
   },
 });
-
-theme.breakpoints.values.lg = 1200;
 
 // app.js
 export const appStyles = {

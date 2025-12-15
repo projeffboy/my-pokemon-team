@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTheme } from "@mui/material/styles";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -12,8 +13,9 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
-const Manual = ({ darkMode }: { darkMode: boolean }) => {
+const Manual = () => {
+  const theme = useTheme();
+  const darkMode = theme.palette.mode === 'dark';
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   type EffectivenessRow = [string, string, (darkMode: boolean) => string];

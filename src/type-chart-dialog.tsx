@@ -7,8 +7,10 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import TypeChart from "./type-chart";
+import useWidth from "./useWidth";
 
-const TypeChartDialog = ({ width }: { width: string }) => {
+const TypeChartDialog = () => {
+  const width = useWidth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const toggleDialog = () => setIsDialogOpen(!isDialogOpen);
