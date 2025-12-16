@@ -15,7 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 const Manual = () => {
   const theme = useTheme();
-  const darkMode = theme.palette.mode === 'dark';
+  const darkMode = theme.palette.mode === "dark";
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   type EffectivenessRow = [string, string, (darkMode: boolean) => string];

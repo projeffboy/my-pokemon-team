@@ -9,7 +9,11 @@ interface PokemonInputProps {
   teamIndex: number;
 }
 
-const PokemonInput = ({ placeholder, pokemonProp, teamIndex }: PokemonInputProps) => {
+const PokemonInput = ({
+  placeholder,
+  pokemonProp,
+  teamIndex,
+}: PokemonInputProps) => {
   const handleChange = (inputVal: string | null) => {
     const val = inputVal || "";
     if (pokemonProp === "name") {
@@ -39,7 +43,8 @@ const PokemonInput = ({ placeholder, pokemonProp, teamIndex }: PokemonInputProps
           case "name":
             optionValues = store.filteredPokemon; // store.allPokemon
             optionLabels = store.filteredPokemonNames; // store.allPokemonNames
-            let pkmnName = store.team[teamIndex][pokemonProp as keyof TeamMember];
+            let pkmnName =
+              store.team[teamIndex][pokemonProp as keyof TeamMember];
             if (pkmnName && !optionValues.includes(pkmnName)) {
               optionValues = [...optionValues, pkmnName];
               optionLabels = [...optionLabels, store.pkmnName(pkmnName)];

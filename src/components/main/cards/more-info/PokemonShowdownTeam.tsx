@@ -105,9 +105,10 @@ const PokemonShowdownTeam = () => {
 
               const move = store.moveNameInverse(moveName);
               const pkmn = store.team[teamIndex].name;
-              let validMove = (move && store.canItLearn(move, pkmn)) ? move : "";
+              let validMove = move && store.canItLearn(move, pkmn) ? move : "";
 
-              store.team[teamIndex][("move" + moveNum) as keyof TeamMember] = validMove;
+              store.team[teamIndex][("move" + moveNum) as keyof TeamMember] =
+                validMove;
               moveNum++;
             }
           });

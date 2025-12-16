@@ -266,19 +266,27 @@ class Store {
       let region = "";
       if (isRegional && pokedex[baseForme].otherFormes) {
         if (
-          pokedex[baseForme].otherFormes.some((forme: string) => forme.includes("Alola"))
+          pokedex[baseForme].otherFormes.some((forme: string) =>
+            forme.includes("Alola")
+          )
         ) {
           region = "alola";
         } else if (
-          pokedex[baseForme].otherFormes.some((forme: string) => forme.includes("Galar"))
+          pokedex[baseForme].otherFormes.some((forme: string) =>
+            forme.includes("Galar")
+          )
         ) {
           region = "galar";
         } else if (
-          pokedex[baseForme].otherFormes.some((forme: string) => forme.includes("Hisui"))
+          pokedex[baseForme].otherFormes.some((forme: string) =>
+            forme.includes("Hisui")
+          )
         ) {
           region = "hisui";
         } else if (
-          pokedex[baseForme].otherFormes.some((forme: string) => forme.includes("Paldea"))
+          pokedex[baseForme].otherFormes.some((forme: string) =>
+            forme.includes("Paldea")
+          )
         ) {
           region = "paldea";
         }
@@ -447,15 +455,17 @@ class Store {
         move === "curse" ||
         (moves[move] &&
           moves[move].boosts &&
-          (Object.values(moves[move].boosts).reduce((sum: number, num: any) => sum + num, 0) as number) >=
-            2)
+          (Object.values(moves[move].boosts).reduce(
+            (sum: number, num: any) => sum + num,
+            0
+          ) as number) >= 2)
     );
   }
 
   // Get the team's learnsets using learnsets.min.js
   get teamLearnsets() {
     // both will contain the learnsets of six pokemon
-    let teamLearnsets: { values: string[][], labels: string[][] } = {
+    let teamLearnsets: { values: string[][]; labels: string[][] } = {
       values: [],
       labels: [],
     };
@@ -477,7 +487,9 @@ class Store {
 
         // Say move is 'aerialace'
         // we need to display it as 'Aerial Ace', which is the purpose of learnsetLabels
-        const learnsetLabels = learnsetValues.map((move: string) => this.moveName(move));
+        const learnsetLabels = learnsetValues.map((move: string) =>
+          this.moveName(move)
+        );
 
         teamLearnsets.values.push(learnsetValues);
         teamLearnsets.labels.push(learnsetLabels);
@@ -519,13 +531,13 @@ class Store {
   doesTeamHaveMove = (move: string) => this.teamMoves.includes(move); // String input
 
   doesTeamHaveAbilities(abilities: string[]) {
-    return this.teamAbilities.some((pkmnAbilities) =>
-      pkmnAbilities.some((ability) => abilities.includes(ability as string))
+    return this.teamAbilities.some(pkmnAbilities =>
+      pkmnAbilities.some(ability => abilities.includes(ability as string))
     );
   }
 
   doesTeamHaveStats(stat: string, value: number) {
-    return this.team.some((member) => {
+    return this.team.some(member => {
       if (!member.name) return false;
       const pkmn = (pokedex as any)[member.name];
       if (!pkmn) return false;
@@ -717,7 +729,12 @@ class Store {
   *******************************/
 
   // Tells you the effectiveness of a type against a certain pokemon
-  typeAgainstPkmn(type: string, pkmn: string, pkmnAbility: string, item: string) {
+  typeAgainstPkmn(
+    type: string,
+    pkmn: string,
+    pkmnAbility: string,
+    item: string
+  ) {
     const pkmnTypes = pokedex[pkmn].types;
     const [type1, type2] = pkmnTypes;
     const type1Resistance = typechart[type1][type];
@@ -918,7 +935,12 @@ class Store {
 
   // Tells you the effectiveness of a move against a type
   // For status and weak moves, this function will return undefined
-  moveAgainstType(move: string, typeAgainst: string, pkmn: string, ability: string) {
+  moveAgainstType(
+    move: string,
+    typeAgainst: string,
+    pkmn: string,
+    ability: string
+  ) {
     const moveType = this.moveType(move, pkmn, ability);
 
     // BUG: If the user picks freeze-dry or flying press multiple times, it can be exploited
@@ -1206,7 +1228,10 @@ class Store {
         let filteredPokedex: any = {};
 
         // Only return pokemon from a certain region based on pokedex number
-        for (const [pkmn, pkmnProps] of Object.entries(pokedex) as [string, any][]) {
+        for (const [pkmn, pkmnProps] of Object.entries(pokedex) as [
+          string,
+          any
+        ][]) {
           if (
             pkmnProps.num >= range[0] &&
             pkmnProps.num <= range[1] &&
@@ -1265,7 +1290,10 @@ class Store {
       let filteredPokedex: any = {};
 
       if (type) {
-        for (const [pkmn, pkmnProps] of Object.entries(pokedex) as [string, any][]) {
+        for (const [pkmn, pkmnProps] of Object.entries(pokedex) as [
+          string,
+          any
+        ][]) {
           if (pkmnProps.types.includes(type)) {
             filteredPokedex[pkmn] = pkmnProps;
           }

@@ -20276,14 +20276,18 @@ export default {
       onEnd(target) {
         if ((this.effectState as any).def || (this.effectState as any).spd) {
           const boosts: any = {};
-          if ((this.effectState as any).def) boosts.def = (this.effectState as any).def;
-          if ((this.effectState as any).spd) boosts.spd = (this.effectState as any).spd;
+          if ((this.effectState as any).def)
+            boosts.def = (this.effectState as any).def;
+          if ((this.effectState as any).spd)
+            boosts.spd = (this.effectState as any).spd;
           this.boost(boosts, target, target);
         }
         this.add("-end", target, "Stockpile");
         if (
-          (this.effectState as any).def !== (this.effectState as any).layers * -1 ||
-          (this.effectState as any).spd !== (this.effectState as any).layers * -1
+          (this.effectState as any).def !==
+            (this.effectState as any).layers * -1 ||
+          (this.effectState as any).spd !==
+            (this.effectState as any).layers * -1
         ) {
           this.hint(
             "In Gen 7, Stockpile keeps track of how many times it successfully altered each stat individually."

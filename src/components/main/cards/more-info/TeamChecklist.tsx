@@ -16,7 +16,7 @@ const hasWishAndProtect = () => {
 
 const TeamChecklist = ({ width }: { width: string }) => {
   return (
-        <Observer>
+    <Observer>
       {() => {
         let checklist = {
           General: {
@@ -27,33 +27,34 @@ const TeamChecklist = ({ width }: { width: string }) => {
               "stickyweb",
               "stoneaxe",
             ]),
-            "Reliable Recovery": store.doesTeamHaveMoves([
-              "recover",
-              "roost",
-              "softboiled",
-              "slackoff",
-              "milkdrink",
-              "shoreup",
-              "moonlight",
-              "morningsun",
-              "synthesis",
-              "strengthsap",
-              "lifedew",
-              "wish",
-            ]) || hasWishAndProtect(),
+            "Reliable Recovery":
+              store.doesTeamHaveMoves([
+                "recover",
+                "roost",
+                "softboiled",
+                "slackoff",
+                "milkdrink",
+                "shoreup",
+                "moonlight",
+                "morningsun",
+                "synthesis",
+                "strengthsap",
+                "lifedew",
+                "wish",
+              ]) || hasWishAndProtect(),
             "Spinner/Defogger": store.doesTeamHaveMoves([
               "rapidspin",
               "defog",
               "mortalspin",
               "tidyup",
             ]),
-            "Phazer": store.doesTeamHaveMoves([
+            Phazer: store.doesTeamHaveMoves([
               "roar",
               "whirlwind",
               "dragontail",
               "circlethrow",
             ]),
-            "Cleric": store.doesTeamHaveMoves([
+            Cleric: store.doesTeamHaveMoves([
               "healbell",
               "aromatherapy",
               "junglehealing",
@@ -112,9 +113,9 @@ const TeamChecklist = ({ width }: { width: string }) => {
           "Entry Hazard": { medium: "Hazard", small: "Hazard" },
           "Spinner/Defogger": { medium: "Spinner", small: "Spin" },
           "Reliable Recovery": { medium: "Recovery", small: "Heal" },
-          "Cleric": { medium: "Cleric", small: "Cleric" },
+          Cleric: { medium: "Cleric", small: "Cleric" },
           "Status Move": { medium: "Status", small: "Status" },
-          "Phazer": { medium: "Phazer", small: "Phazer" },
+          Phazer: { medium: "Phazer", small: "Phazer" },
           "Boosting Move": { medium: "Setup", small: "Setup" },
           "Volt-turn Move": { medium: "Volt-turn", small: "Volturn" },
           "Choice Item": { medium: "Choice", small: "Choice" },
@@ -134,47 +135,49 @@ const TeamChecklist = ({ width }: { width: string }) => {
                 style={{ padding: "10px" }}
               >
                 <Typography variant="h6">{category}</Typography>
-                {Object.keys(checklist[category as keyof typeof checklist]).map((check, j) => (
-                  <div
-                    key={j}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div style={{ display: "flex" }}>
-                      {(checklist as any)[category][check] ? (
-                        <CheckCircle style={{ color: "#16a085" }} />
-                      ) : (
-                        <Typography
-                          variant="body1"
-                          component="div"
-                          style={{ lineHeight: "initial" }}
-                        >
-                          <Cancel />
-                        </Typography>
-                      )}
-                    </div>
-                    {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
-                    <Typography
-                      style={{ padding: "0px 4px" }}
-                      variant="body1"
-                      component="div"
+                {Object.keys(checklist[category as keyof typeof checklist]).map(
+                  (check, j) => (
+                    <div
+                      key={j}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                      }}
                     >
-                      {(() => {
-                        const abbr = (abbreviations as any)[check];
-                        if (abbr) {
-                          if (width === "xs" || width === "sm") {
-                            return abbr.small;
-                          } else if (width !== "lg" && width !== "xl") {
-                            return abbr.medium;
+                      <div style={{ display: "flex" }}>
+                        {(checklist as any)[category][check] ? (
+                          <CheckCircle style={{ color: "#16a085" }} />
+                        ) : (
+                          <Typography
+                            variant="body1"
+                            component="div"
+                            style={{ lineHeight: "initial" }}
+                          >
+                            <Cancel />
+                          </Typography>
+                        )}
+                      </div>
+                      {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
+                      <Typography
+                        style={{ padding: "0px 4px" }}
+                        variant="body1"
+                        component="div"
+                      >
+                        {(() => {
+                          const abbr = (abbreviations as any)[check];
+                          if (abbr) {
+                            if (width === "xs" || width === "sm") {
+                              return abbr.small;
+                            } else if (width !== "lg" && width !== "xl") {
+                              return abbr.medium;
+                            }
                           }
-                        }
-                        return check;
-                      })()}
-                    </Typography>
-                  </div>
-                ))}
+                          return check;
+                        })()}
+                      </Typography>
+                    </div>
+                  )
+                )}
               </GridAny>
             ))}
           </>

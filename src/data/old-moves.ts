@@ -7816,7 +7816,7 @@ export default {
       },
       onSwitchInPriority: 1,
       onSwitchIn: function (target) {
-        const positions = /**@type {boolean[]} */ (this.effectData.positions);
+        const positions = /**@type {boolean[]} */ this.effectData.positions;
         if (!positions[target.position]) {
           return;
         }
@@ -10161,7 +10161,7 @@ export default {
       },
       onSwitchInPriority: 1,
       onSwitchIn: function (target) {
-        const positions = /**@type {boolean[]} */ (this.effectData.positions);
+        const positions = /**@type {boolean[]} */ this.effectData.positions;
         if (target.position !== this.effectData.sourcePosition) {
           return;
         }

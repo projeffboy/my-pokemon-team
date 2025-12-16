@@ -17,7 +17,7 @@ interface TeamStatsProps {
 
 const TeamStats = ({ width, title }: TeamStatsProps) => {
   const theme = useTheme();
-  const darkMode = theme.palette.mode === 'dark';
+  const darkMode = theme.palette.mode === "dark";
   // E.g. Turn 'Type Coverage' to 'typeCoverage'
   /*
     let titleArr = title.split(' ')
@@ -140,7 +140,9 @@ const TeamStats = ({ width, title }: TeamStatsProps) => {
                     m: "auto",
                     p: "1px 0",
                   }}
-                  aria-owns={anchorEl[i] ? "mouse-over-popover-" + i : undefined}
+                  aria-owns={
+                    anchorEl[i] ? "mouse-over-popover-" + i : undefined
+                  }
                   aria-haspopup="true"
                   aria-label={type}
                   onMouseEnter={e => handlePopoverOpen(e, i)}
@@ -357,7 +359,8 @@ const TypeCoverageTooltipInfo = ({ typeColor, type }: TooltipInfoProps) => {
                   <Fragment key={pkmn + i}>
                     {[1, 2, 3, 4].map(num => {
                       // For each move number
-                      const move = teamPkmnProps[("move" + num) as keyof TeamMember];
+                      const move =
+                        teamPkmnProps[("move" + num) as keyof TeamMember];
 
                       if (
                         move &&
