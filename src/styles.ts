@@ -3,6 +3,18 @@ import { grey } from "@mui/material/colors";
 
 // index.js (THEME)
 export const theme = createTheme({
+  typography: {
+    htmlFontSize: 10, // this has to be configured with html: {font-size: ..}
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: {
+          fontSize: "62.5%", // this has to be configured with typography.htmlFontSize
+        },
+      },
+    },
+  },
   breakpoints: {
     values: {
       xs: 0,
