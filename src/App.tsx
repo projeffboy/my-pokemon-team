@@ -20,7 +20,6 @@ const App = () => (
     )}
     <ThemeProvider theme={theme} noSsr>
       <CssBaseline enableColorScheme />
-
       <Container maxWidth="xl">
         <Stack>
           <Header />
@@ -28,10 +27,7 @@ const App = () => (
           <Footer />
         </Stack>
       </Container>
-
-      {/* Floating Action Button (FAB) */}
-      <TypeChartDialog />
-
+      <TypeChartDialog /> {/* Floating Action Button (FAB) */}
       <MainSnackbar />
     </ThemeProvider>
   </Router>
