@@ -1,4 +1,4 @@
-import TypeChartDialog from "./type-chart-dialog";
+import TypeChartDialog from "./TypeChartDialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles"; // provide your custom theme
 import { theme } from "./styles";
