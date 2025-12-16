@@ -12,7 +12,7 @@ test.describe("Team Checklist - Unit Tests", () => {
 
     if (
       viewportSize &&
-      viewportSize.width >= 1280 /* TODO: replace with constant */
+      viewportSize.width >= 960 /* TODO: replace with constant */
     ) {
       checklistItems = [
         "Entry Hazard",
@@ -27,7 +27,7 @@ test.describe("Team Checklist - Unit Tests", () => {
       ];
     } else if (
       viewportSize &&
-      viewportSize.width >= 960 /* TODO: replace with constant */
+      viewportSize.width >= 600 /* TODO: replace with constant */
     ) {
       checklistItems = [
         "Hazard",

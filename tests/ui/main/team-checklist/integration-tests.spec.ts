@@ -84,9 +84,9 @@ test.describe("Team Checklist - Integration Tests", () => {
     let targetName = itemName;
 
     if (viewportSize) {
-      if (viewportSize.width < 960 /* TODO: replace with constant */) {
+      if (viewportSize.width < 600 /* TODO: replace with constant */) {
         targetName = CHECKLIST_MAPPINGS[itemName].small;
-      } else if (viewportSize.width < 1280 /* TODO: replace with constant */) {
+      } else if (viewportSize.width < 960 /* TODO: replace with constant */) {
         targetName = CHECKLIST_MAPPINGS[itemName].medium;
       }
     }

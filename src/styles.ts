@@ -3,6 +3,15 @@ import { grey } from "@mui/material/colors";
 
 // index.js (THEME)
 export const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 320,
+      md: 600,
+      lg: 960,
+      xl: 1920,
+    },
+  },
   cssVariables: {
     colorSchemeSelector: "class",
   },

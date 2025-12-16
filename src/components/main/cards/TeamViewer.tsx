@@ -21,7 +21,7 @@ const TeamViewer = ({ width }: { width: string }) => {
   // Changge smTabIndex betwen 600px and 959px
   // Change xsTabIndex below 600px
   const handleChange = (_e: React.SyntheticEvent, val: number) => {
-    if (width === "sm") {
+    if (width === "md") {
       setSmTabIndex(val);
     } else {
       setXsTabIndex(val);
@@ -48,14 +48,14 @@ const TeamViewer = ({ width }: { width: string }) => {
       <Grid size={{ xs: 12 }}>
         <Paper>
           <Tabs
-            value={width === "sm" ? smTabIndex : xsTabIndex}
+            value={width === "md" ? smTabIndex : xsTabIndex}
             onChange={handleChange}
             variant="fullWidth"
             textColor="secondary"
           >
             {
               // Either displays 3 or 6 tabs
-              width === "sm"
+              width === "md"
                 ? [0, 2, 4].map(teamIndex => (
                     <Tab
                       key={teamIndex}
@@ -77,7 +77,7 @@ const TeamViewer = ({ width }: { width: string }) => {
       </Grid>
       {
         // Either displays 2 or 1 pokemon at a time
-        width === "sm" ? (
+        width === "md" ? (
           [0, 1].map(num => (
             <Grid key={num} size={{ xs: 12 }}>
               <Paper sx={{ p: 1 }}>

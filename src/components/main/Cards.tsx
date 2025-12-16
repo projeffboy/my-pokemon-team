@@ -21,7 +21,7 @@ function Cards() {
    */
 
   function pokemonCards() {
-    if (width !== "xs" && width !== "sm") {
+    if (width !== "xs" && width !== "sm" && width !== "md") {
       // if viewport width >=960px
       // Display 6 pokemon cards
       return [0, 1, 2, 3, 4, 5].map(num => (

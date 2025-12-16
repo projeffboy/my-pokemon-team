@@ -8,7 +8,9 @@ import store from "../../../../store";
 
 const SearchFilters = () => {
   const handleChange = (inputLabel: string, e: SelectChangeEvent) => {
-    store.searchFilters[inputLabel.toLowerCase() as keyof typeof store.searchFilters] = e.target.value;
+    store.searchFilters[
+      inputLabel.toLowerCase() as keyof typeof store.searchFilters
+    ] = e.target.value;
   };
 
   const inputLabels: Record<string, string[]> = {
@@ -65,10 +67,10 @@ const SearchFilters = () => {
     <Observer>
       {() => (
         <>
-          {Object.keys(inputLabels).map((inputLabel) => (
+          {Object.keys(inputLabels).map(inputLabel => (
             <Grid
               key={inputLabel}
-              container
+              display="flex"
               justifyContent="center"
               size={{ xs: 6, lg: 3 }}
             >
@@ -83,7 +85,11 @@ const SearchFilters = () => {
                 {/* E.g. Format */}
                 <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
                 <Select
-                  value={store.searchFilters[inputLabel.toLowerCase() as keyof typeof store.searchFilters]}
+                  value={
+                    store.searchFilters[
+                      inputLabel.toLowerCase() as keyof typeof store.searchFilters
+                    ]
+                  }
                   onChange={e => handleChange(inputLabel, e)}
                   inputProps={{ id: inputLabel }}
                   MenuProps={{
