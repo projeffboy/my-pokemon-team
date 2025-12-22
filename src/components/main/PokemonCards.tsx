@@ -2,12 +2,11 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Pokemon from "./Pokemon";
 import TeamViewer from "./TeamViewer";
+import useWidth from "../../useWidth";
 
-interface PokemonCardsProps {
-  width: string;
-}
+function PokemonCards() {
+  const width = useWidth();
 
-function PokemonCards({ width }: PokemonCardsProps) {
   if (width !== "xs" && width !== "sm" && width !== "md") {
     // if viewport width >=960px
     // Display 6 pokemon cards
@@ -17,7 +16,7 @@ function PokemonCards({ width }: PokemonCardsProps) {
           <Grid key={num} size={{ xs: 6 }}>
             <Paper sx={{ p: 1 }}>
               {/* teamIndex is the pokemon's team slot number - 1 */}
-              <Pokemon teamIndex={num} width={width} />
+              <Pokemon teamIndex={num} />
             </Paper>
           </Grid>
         ))}
@@ -26,7 +25,7 @@ function PokemonCards({ width }: PokemonCardsProps) {
   } else {
     // if viewport width less than 960px
     // Display 1 or 2 pokemon cards
-    return <TeamViewer width={width} />;
+    return <TeamViewer />;
   }
 }
 

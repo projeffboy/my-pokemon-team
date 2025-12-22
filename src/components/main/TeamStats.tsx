@@ -9,13 +9,14 @@ import Fade from "@mui/material/Fade";
 import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/PokemonIcon";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
+import useWidth from "../../useWidth";
 
 interface TeamStatsProps {
-  width: string;
   title: string;
 }
 
-const TeamStats = ({ width, title }: TeamStatsProps) => {
+const TeamStats = ({ title }: TeamStatsProps) => {
+  const width = useWidth();
   const theme = useTheme();
   const darkMode = theme.palette.mode === "dark";
   // E.g. Turn 'Type Coverage' to 'typeCoverage'

@@ -3,13 +3,14 @@ import store from "../../../store";
 import pokedex from "../../../data/pokedex";
 import questionMark from "../../../assets/question-mark.png";
 import Box from "@mui/material/Box";
+import useWidth from "../../../useWidth";
 
 interface SpriteProps {
   teamIndex: number;
-  width: string;
 }
 
-const Sprite = observer(({ teamIndex, width }: SpriteProps) => {
+const Sprite = observer(({ teamIndex }: SpriteProps) => {
+  const width = useWidth();
   const pokemon = store.team[teamIndex].name; // unhyphenated name
   const pokedexNumber = pokemon && (pokedex as any)[pokemon].num;
 

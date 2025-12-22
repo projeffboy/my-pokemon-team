@@ -4,7 +4,6 @@ import Sprite from "./pokemon/Sprite";
 
 interface PokemonProps {
   teamIndex: number;
-  width: string;
 }
 
 function Pokemon(props: PokemonProps) {
@@ -38,12 +37,7 @@ function Pokemon(props: PokemonProps) {
         />
       );
     } else {
-      let width = "md";
-      if (props.width === "lg" || props.width === "xl") {
-        width = props.width;
-      }
-
-      return <Sprite key={i} teamIndex={props.teamIndex} width={width} />;
+      return <Sprite key={i} teamIndex={props.teamIndex} />;
     }
   });
 

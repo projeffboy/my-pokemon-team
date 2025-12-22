@@ -5,30 +5,27 @@ import Paper from "@mui/material/Paper";
 import PokemonCards from "./main/PokemonCards";
 import TeamStats from "./main/TeamStats";
 import MoreInfo from "./main/MoreInfo";
-import useWidth from "../useWidth";
 
 function Main() {
-  const width = useWidth();
-
   return (
     <main>
       {/* Pokemon cards */}
       <Grid container size={{ xs: 12, sm: 6, md: 7, lg: 6 }} spacing={2}>
-        <PokemonCards width={width} />
+        <PokemonCards />
       </Grid>
       {/* Pokemon team stats cards */}
       <Grid container size={{ xs: 12, sm: 6, md: 5, lg: 6 }} spacing={2}>
         {["Team Defence", "Team Type Coverage"].map(cardTitle => (
           <Grid key={cardTitle} size={{ xs: 12 }}>
             <Paper sx={{ p: 1 }} aria-label={`${cardTitle} Card`} role="region">
-              <TeamStats title={cardTitle} width={width} />
+              <TeamStats title={cardTitle} />
             </Paper>
           </Grid>
         ))}
         {/* Pokemon more info card */}
         <Grid size={{ xs: 12 }}>
           <Paper>
-            <MoreInfo width={width} />
+            <MoreInfo />
           </Paper>
         </Grid>
       </Grid>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 // Material UI Imports
-import { useTheme, type Breakpoint } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import TeamChecklist from "./more-info/TeamChecklist";
 import SearchFilters from "./more-info/SearchFilters";
 import PokemonShowdownTeam from "./more-info/PokemonShowdownTeam";
+import useWidth from "../../useWidth";
 
 // The stuff below each tab
 const TabContainer = ({ children }: { children: React.ReactNode }) => (
@@ -19,7 +20,8 @@ const TabContainer = ({ children }: { children: React.ReactNode }) => (
   </Grid>
 );
 
-const MoreInfo = ({ width }: { width: Breakpoint }) => {
+const MoreInfo = () => {
+  const width = useWidth();
   const theme = useTheme();
   const [tabIndex, setTabIndex] = useState(0);
 

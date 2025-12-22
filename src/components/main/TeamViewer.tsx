@@ -8,12 +8,14 @@ import Box from "@mui/material/Box";
 // My Component Imports
 import Pokemon from "./Pokemon";
 import Sprite from "./pokemon/Sprite";
+import useWidth from "../../useWidth";
 
 /*
  * NOTE!!!
  * This component can only be viewed below a viewport width of 960px
  */
-const TeamViewer = ({ width }: { width: string }) => {
+const TeamViewer = () => {
+  const width = useWidth();
   console.log("TeamViewer rendering, width:", width);
   const [smTabIndex, setSmTabIndex] = useState(0);
   const [xsTabIndex, setXsTabIndex] = useState(0);
@@ -37,8 +39,8 @@ const TeamViewer = ({ width }: { width: string }) => {
   const getTwoPokemonSprites = (teamIndex: number) => {
     return (
       <Box sx={{ display: "flex", height: 75 }}>
-        <Sprite teamIndex={teamIndex} width={width} />
-        <Sprite teamIndex={teamIndex + 1} width={width} />
+        <Sprite teamIndex={teamIndex} />
+        <Sprite teamIndex={teamIndex + 1} />
       </Box>
     );
   };
@@ -68,7 +70,7 @@ const TeamViewer = ({ width }: { width: string }) => {
                       key={teamIndex}
                       label={teamIndex + 1}
                       sx={{ minWidth: 0 }}
-                      icon={<Sprite teamIndex={teamIndex} width={width} />}
+                      icon={<Sprite teamIndex={teamIndex} />}
                     />
                   ))
             }
@@ -81,14 +83,14 @@ const TeamViewer = ({ width }: { width: string }) => {
           [0, 1].map(num => (
             <Grid key={num} size={{ xs: 12 }}>
               <Paper sx={{ p: 1 }}>
-                <Pokemon teamIndex={2 * smTabIndex + num} width={width} />
+                <Pokemon teamIndex={2 * smTabIndex + num} />
               </Paper>
             </Grid>
           ))
         ) : (
           <Grid size={{ xs: 12 }}>
             <Paper sx={{ p: 1 }}>
-              <Pokemon teamIndex={xsTabIndex} width={width} />
+              <Pokemon teamIndex={xsTabIndex} />
             </Paper>
           </Grid>
         )
