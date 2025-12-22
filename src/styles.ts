@@ -2,10 +2,20 @@ import { createTheme, type Theme } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 
 // index.js (THEME)
-export const theme = createTheme({
-  typography: {
-    htmlFontSize: 10, // this has to be configured with html: {font-size: ..}
+const breakpoints = {
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 300,
+      md: 600,
+      lg: 960,
+      xl: 1920,
+    },
   },
+};
+
+export const theme = createTheme({
+  ...breakpoints,
   components: {
     MuiCssBaseline: {
       styleOverrides: {
@@ -14,18 +24,6 @@ export const theme = createTheme({
         },
       },
     },
-  },
-  breakpoints: {
-    values: {
-      xs: 0,
-      sm: 320,
-      md: 600,
-      lg: 960,
-      xl: 1920,
-    },
-  },
-  cssVariables: {
-    colorSchemeSelector: "class",
   },
   colorSchemes: {
     light: {
@@ -44,6 +42,12 @@ export const theme = createTheme({
         },
       },
     },
+  },
+  cssVariables: {
+    colorSchemeSelector: "class", // allows toggling dark mode manually
+  },
+  typography: {
+    htmlFontSize: 10, // this has to be configured with html: {font-size: ..}
   },
 });
 

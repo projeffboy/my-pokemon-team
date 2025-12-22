@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { capitalizeWord } from "./helper-functions";
+import { capitalizeWord } from "./helper";
 // I have to import a bunch of pokemon data first
 import pokedexData from "./data/pokedex";
 import itemsData from "./data/items";

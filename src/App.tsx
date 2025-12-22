@@ -20,8 +20,8 @@ const App = () => (
     )}
     <ThemeProvider theme={theme} noSsr>
       <CssBaseline enableColorScheme />
-      <Container maxWidth="xl">
-        <Stack>
+      <Container maxWidth="xl" sx={{ py: 2 }}>
+        <Stack spacing={2}>
           <Header />
           <Main />
           <Footer />
