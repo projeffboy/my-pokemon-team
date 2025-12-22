@@ -4,7 +4,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
 import { Observer } from "mobx-react";
-import store from "../../../../store";
+import store from "../../../store";
 
 const SearchFilters = () => {
   const handleChange = (inputLabel: string, e: SelectChangeEvent) => {

@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
 import { Observer } from "mobx-react";
-import store, { type TeamMember } from "../../../store";
+import store, { type TeamMember } from "../../store";
 import Fade from "@mui/material/Fade";
 import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/PokemonIcon";
 import Box from "@mui/material/Box";

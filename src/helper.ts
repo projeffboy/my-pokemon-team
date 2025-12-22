@@ -1,5 +1,3 @@
-import { type CSSObject, type Theme } from "@mui/material";
-
 // Give it a word, it capitalizes it
 export const capitalizeWord = (word: string) =>
   word[0].toUpperCase() + word.slice(1);
