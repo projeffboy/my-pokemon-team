@@ -52,7 +52,7 @@ function Main() {
      *  600 or above, it will only use the sm attribute
      *  Below that, it will only use the xs attribute
      */
-    <>
+    <main>
       {/* Pokemon cards */}
       <Grid container size={{ xs: 12, sm: 6, md: 7, lg: 6 }} spacing={2}>
         {pokemonCards()}
@@ -73,7 +73,7 @@ function Main() {
           </Paper>
         </Grid>
       </Grid>
-    </>
+    </main>
   );
 }
 

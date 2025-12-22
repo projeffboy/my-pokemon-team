@@ -36,7 +36,7 @@ const StyledImage = styled("img")(({ theme }) =>
 );
 
 const Header = () => (
-  <Stack>
+  <Stack component="header">
     <Stack
       direction="row"
       alignItems="center"

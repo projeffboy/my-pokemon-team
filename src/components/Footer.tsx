@@ -31,6 +31,7 @@ const Footer = () => {
       alignItems="center"
       spacing={2}
       style={{ paddingBottom: 230 }}
+      component="footer"
     >
       <Grid size="auto">
         <Manual />
