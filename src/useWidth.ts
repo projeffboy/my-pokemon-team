@@ -1,7 +1,8 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { theme } from "./styles";
+import { useTheme } from "@mui/material/styles";
 
 export default function useWidth() {
+  const theme = useTheme();
   const isXl = useMediaQuery(theme.breakpoints.up("xl"));
   const isLg = useMediaQuery(theme.breakpoints.up("lg"));
   const isMd = useMediaQuery(theme.breakpoints.up("md"));

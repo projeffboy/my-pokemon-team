@@ -304,8 +304,8 @@ export const pokemonShowdownTeamStyles = {
   textField: { margin: "20px 0" },
 };
 
-// team-viewer.js
-export const teamViewerStyles = {
+// tabbed-team.js
+export const tabbedTeamStyles = {
   twoSprites: {
     display: "flex",
     height: 75,

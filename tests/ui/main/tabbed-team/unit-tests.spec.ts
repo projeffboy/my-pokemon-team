@@ -6,16 +6,16 @@ import {
   LARGE_VIEWPORT_WIDTH,
 } from "helper";
 
-// Test configuration based on ui-main-tests.md requirements for Team Viewer Unit Tests
+// Test configuration based on ui-main-tests.md requirements for Tabbed Team Unit Tests
 
-test.describe("Team Viewer - Unit Tests", () => {
+test.describe("Tabbed Team - Unit Tests", () => {
   test.describe("Small viewport", () => {
     test.use({ viewport: createViewport(SMALL_VIEWPORT_WIDTH) });
 
-    test("should display 6 team viewer slots with question mark sprites", async ({
+    test("should display 6 tabbed team slots with question mark sprites", async ({
       page,
     }) => {
-      // Verify there are exactly 6 question mark sprites in the team viewer
+      // Verify there are exactly 6 question mark sprites in the tabbed team
       // TODO: be more specific with locating the tablists in this file, use an aria-label
       const questionMarkSprites = page
         .getByRole("tablist")
@@ -24,7 +24,7 @@ test.describe("Team Viewer - Unit Tests", () => {
       await expect(questionMarkSprites).toHaveCount(6);
     });
 
-    test("should have the first team viewer slot selected by default", async ({
+    test("should have the first tabbed team slot selected by default", async ({
       page,
     }) => {
       // The first slot should have the selected attribute
@@ -44,12 +44,12 @@ test.describe("Team Viewer - Unit Tests", () => {
   test.describe("Medium viewport", () => {
     test.use({ viewport: createViewport(MEDIUM_VIEWPORT_WIDTH) });
 
-    test("should display 3 team viewer slots with question mark sprites (pairs)", async ({
+    test("should display 3 tabbed team slots with question mark sprites (pairs)", async ({
       page,
     }) => {
-      // Get the team viewer tabs container
-      const teamViewerTabs = page.getByRole("tablist").first();
-      await expect(teamViewerTabs).toBeVisible();
+      // Get the tabbed team tabs container
+      const tabbedTeamTabs = page.getByRole("tablist").first();
+      await expect(tabbedTeamTabs).toBeVisible();
 
       // Verify all 3 slot pairs exist with question mark sprites
       const slotPairs = [
@@ -70,7 +70,7 @@ test.describe("Team Viewer - Unit Tests", () => {
       }
     });
 
-    test("should have the first team viewer slot pair selected by default", async ({
+    test("should have the first tabbed team slot pair selected by default", async ({
       page,
     }) => {
       // The first slot pair (1-2) should have the selected attribute
@@ -95,9 +95,9 @@ test.describe("Team Viewer - Unit Tests", () => {
   test.describe("Large viewport", () => {
     test.use({ viewport: createViewport(LARGE_VIEWPORT_WIDTH) });
 
-    test("should not display team viewer", async ({ page }) => {
-      // In large viewport, there should be no team viewer tabs
-      // Check that no team viewer slots exist (tabs with question mark sprites)
+    test("should not display tabbed team", async ({ page }) => {
+      // In large viewport, there should be no tabbed team tabs
+      // Check that no tabbed team slots exist (tabs with question mark sprites)
       await expect(
         page.getByRole("tab", { name: /question-mark/ })
       ).toHaveCount(0);

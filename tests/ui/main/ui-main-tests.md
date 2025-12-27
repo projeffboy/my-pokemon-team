@@ -9,13 +9,13 @@
 
 ## Components in the Main Section to Be Tested
 
-### Team Viewer
+### Team Tabs
 
 #### Unit Tests
 
-- [Small/medium viewport] Expect each team viewer slot to have a question mark sprite.
-- [Small/medium viewport] Expect the first team viewer slot to be selected.
-- [Large viewport] team viewer does not exist
+- [Small/medium viewport] Expect each team slot tab to have a question mark sprite.
+- [Small/medium viewport] Expect the first team slot tab to be selected.
+- [Large viewport] team tabs do not exist
 
 ### Pokemon Card
 

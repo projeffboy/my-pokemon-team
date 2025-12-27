@@ -1,26 +1,19 @@
 import { useState } from "react";
-// Material UI Imports
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-// My Component Imports
 import Pokemon from "./Pokemon";
 import Sprite from "./pokemon/Sprite";
 import useWidth from "../../useWidth";
 
-/*
- * NOTE!!!
- * This component can only be viewed below a viewport width of 960px
- */
-const TeamViewer = () => {
+const TabbedTeam = () => {
   const width = useWidth();
-  console.log("TeamViewer rendering, width:", width);
   const [smTabIndex, setSmTabIndex] = useState(0);
   const [xsTabIndex, setXsTabIndex] = useState(0);
 
-  // Changge smTabIndex betwen 600px and 959px
+  // Change smTabIndex betwen 600px and 959px
   // Change xsTabIndex below 600px
   const handleChange = (_e: React.SyntheticEvent, val: number) => {
     if (width === "md") {
@@ -99,4 +92,4 @@ const TeamViewer = () => {
   );
 };
 
-export default TeamViewer;
+export default TabbedTeam;
