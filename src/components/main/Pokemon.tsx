@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import PokemonInput from "./pokemon/PokemonInput";
 import Sprite from "./pokemon/Sprite";
+import Paper from "@mui/material/Paper";
 
 interface PokemonProps {
   teamIndex: number;
@@ -42,17 +43,18 @@ function Pokemon(props: PokemonProps) {
   });
 
   return (
-    <Box
+    <Paper
       sx={{
         display: "grid",
         gridColumnGap: "10px",
         gridTemplateColumns: "1fr 1fr",
+        py: 2,
       }}
       role="region"
       aria-label={`Pokemon ${props.teamIndex + 1}`}
     >
       {pokemonInputs}
-    </Box>
+    </Paper>
   );
 }
 

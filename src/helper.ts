@@ -9,6 +9,9 @@ export const capitalizeEveryWord = (words: string) =>
     .map((word: string) => capitalizeWord(word))
     .join(" ");
 
+export const range = (size: number, startAt = 0) =>
+  [...Array(size).keys()].map(i => i + startAt);
+
 // export const matchHeightToFontSizeOf =
 //   (variant: keyof Theme["typography"]) =>
 //   ({ theme }: { theme: Theme }): CSSObject => {

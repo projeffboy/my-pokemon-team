@@ -14,6 +14,7 @@ import FileCopy from "@mui/icons-material/FileCopy";
 // Custom Imports
 import { Observer } from "mobx-react";
 import store, { type TeamMember } from "../../../store";
+import { range } from "../../../helper";
 
 const PokemonShowdownTeam = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -149,14 +150,14 @@ const PokemonShowdownTeam = () => {
   return (
     <Observer>
       {() => {
-        const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5]
+        const pokemonShowdownTeamInfo = range(6)
           .map(teamIndex => {
             const { name, item, ability } = store.team[teamIndex];
 
             if (name) {
               return `${store.pkmnName(name)} @ ${store.itemName(item)}
 Ability: ${ability}
-${[1, 2, 3, 4]
+${range(4, 1)
   .map(num => {
     const move = store.team[teamIndex][("move" + num) as keyof TeamMember];
 

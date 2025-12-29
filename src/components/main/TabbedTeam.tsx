@@ -1,95 +1,96 @@
 import { useState } from "react";
 import Grid from "@mui/material/Grid";
-import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import Pokemon from "./Pokemon";
 import Sprite from "./pokemon/Sprite";
-import useWidth from "../../useWidth";
+import { range } from "../../helper";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Stack from "@mui/material/Stack";
 
-const TabbedTeam = () => {
-  const width = useWidth();
-  const [smTabIndex, setSmTabIndex] = useState(0);
-  const [xsTabIndex, setXsTabIndex] = useState(0);
+export default function TabbedTeam() {
+  const BelowMediumBreakpoint = useMediaQuery(theme =>
+    theme.breakpoints.down("md")
+  );
 
-  // Change smTabIndex betwen 600px and 959px
-  // Change xsTabIndex below 600px
-  const handleChange = (_e: React.SyntheticEvent, val: number) => {
-    if (width === "md") {
-      setSmTabIndex(val);
+  const [onePokemonTabIndex, setOnePokemonTabIndex] = useState(0);
+  const twoPokemonTabIndex = Math.floor(onePokemonTabIndex / 2);
+  function setTwoPokemonTabIndex(val: number) {
+    setOnePokemonTabIndex(val * 2);
+  }
+
+  function handleChange(_event: React.SyntheticEvent, val: number) {
+    if (BelowMediumBreakpoint) {
+      setOnePokemonTabIndex(val);
     } else {
-      setXsTabIndex(val);
+      setTwoPokemonTabIndex(val);
     }
-  };
-
-  /*
-   * Returns two mini sprites
-   * Of either the pokemon in team slot 1 and 2,
-   * 3 and 4,
-   * or 5 and 6.
-   */
-  const getTwoPokemonSprites = (teamIndex: number) => {
-    return (
-      <Box sx={{ display: "flex", height: 75 }}>
-        <Sprite teamIndex={teamIndex} />
-        <Sprite teamIndex={teamIndex + 1} />
-      </Box>
-    );
-  };
-
+  }
   return (
-    <>
-      <Grid size={{ xs: 12 }}>
-        <Paper>
-          <Tabs
-            value={width === "md" ? smTabIndex : xsTabIndex}
-            onChange={handleChange}
-            variant="fullWidth"
-            textColor="secondary"
-          >
+    <TabContext
+      value={BelowMediumBreakpoint ? onePokemonTabIndex : twoPokemonTabIndex}
+    >
+      <Grid size={12} component="section">
+        <Paper component="section">
+          <TabList onChange={handleChange} variant="fullWidth">
             {
-              // Either displays 3 or 6 tabs
-              width === "md"
-                ? [0, 2, 4].map(teamIndex => (
+              // Either display 6 or 3 tabs
+              BelowMediumBreakpoint
+                ? range(6).map(tabIndex => (
                     <Tab
-                      key={teamIndex}
-                      label={`${teamIndex + 1} - ${teamIndex + 2}`}
-                      icon={getTwoPokemonSprites(teamIndex)}
+                      key={tabIndex}
+                      value={tabIndex}
+                      label={tabIndex + 1}
+                      sx={{ minWidth: 0 }} // a css hack to make all the tabs fit in the tab list without scrolling
+                      icon={<Sprite teamIndex={tabIndex} />}
                     />
                   ))
-                : [0, 1, 2, 3, 4, 5].map(teamIndex => (
+                : range(3).map(tabIndex => (
                     <Tab
-                      key={teamIndex}
-                      label={teamIndex + 1}
-                      sx={{ minWidth: 0 }}
-                      icon={<Sprite teamIndex={teamIndex} />}
+                      key={tabIndex}
+                      value={tabIndex}
+                      label={`${2 * tabIndex + 1} - ${2 * tabIndex + 2}`}
+                      icon={
+                        <Stack direction="row">
+                          <Sprite teamIndex={2 * tabIndex} />
+                          <Sprite teamIndex={2 * tabIndex + 1} />
+                        </Stack>
+                      }
                     />
                   ))
             }
-          </Tabs>
+          </TabList>
         </Paper>
       </Grid>
       {
-        // Either displays 2 or 1 pokemon at a time
-        width === "md" ? (
-          [0, 1].map(num => (
-            <Grid key={num} size={{ xs: 12 }}>
-              <Paper sx={{ p: 1 }}>
-                <Pokemon teamIndex={2 * smTabIndex + num} />
-              </Paper>
-            </Grid>
-          ))
-        ) : (
-          <Grid size={{ xs: 12 }}>
-            <Paper sx={{ p: 1 }}>
-              <Pokemon teamIndex={xsTabIndex} />
-            </Paper>
-          </Grid>
-        )
+        // Either display 1 or 2 pokemon inputs
+        BelowMediumBreakpoint
+          ? range(6).map(tabIndex => (
+              <TabPanel
+                key={tabIndex}
+                value={tabIndex}
+                sx={{ p: 0, width: "100%" }}
+              >
+                <Grid size={12} component="section">
+                  <Pokemon teamIndex={tabIndex} />
+                </Grid>
+              </TabPanel>
+            ))
+          : range(3).map(tabIndex => (
+              <TabPanel key={tabIndex} value={tabIndex} sx={{ p: 0 }}>
+                <Grid container spacing={2}>
+                  {range(2).map(i => (
+                    <Grid key={i} size={12} component="section">
+                      <Pokemon teamIndex={2 * tabIndex + i} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </TabPanel>
+            ))
       }
-    </>
+    </TabContext>
   );
-};
-
-export default TabbedTeam;
+}
