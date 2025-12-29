@@ -13,8 +13,8 @@ import ImportExport from "@mui/icons-material/ImportExport";
 import FileCopy from "@mui/icons-material/FileCopy";
 // Custom Imports
 import { Observer } from "mobx-react";
-import store, { type TeamMember } from "../../../store";
-import { range } from "../../../helper";
+import store, { type TeamMember } from "store";
+import { range } from "helper";
 
 const PokemonShowdownTeam = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

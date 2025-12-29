@@ -3,7 +3,7 @@ const GridAny = Grid as any;
 import CheckCircle from "@mui/icons-material/CheckCircle";
 import Cancel from "@mui/icons-material/Cancel";
 import { Observer } from "mobx-react";
-import store from "../../../store";
+import store from "store";
 import Typography from "@mui/material/Typography";
 
 // wish + protect-like move counts as reliable recovery

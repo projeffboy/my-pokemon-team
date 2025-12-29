@@ -11,7 +11,7 @@ import Box from "@mui/material/Box";
 import TeamChecklist from "./more-info/TeamChecklist";
 import SearchFilters from "./more-info/SearchFilters";
 import PokemonShowdownTeam from "./more-info/PokemonShowdownTeam";
-import useWidth from "../../useWidth";
+import useWidth from "useWidth";
 
 // The stuff below each tab
 const TabContainer = ({ children }: { children: React.ReactNode }) => (

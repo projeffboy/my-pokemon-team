@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import { Observer } from "mobx-react";
-import store, { type TeamMember } from "../../../store";
+import store, { type TeamMember } from "store";
 import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
 
 interface PokemonInputProps {

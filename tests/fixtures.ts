@@ -1,5 +1,9 @@
-import { test as base } from "@playwright/test";
-import { goToSite } from "helper";
+import { test as base, type Page } from "@playwright/test";
+
+// Helper function for navigation
+export const goToSite = async (page: Page) => {
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+};
 
 type MyFixtures = {
   autoGoToSite: void;

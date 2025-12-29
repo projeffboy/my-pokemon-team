@@ -1,4 +1,3 @@
-import Box from "@mui/material/Box";
 import PokemonInput from "./pokemon/PokemonInput";
 import Sprite from "./pokemon/Sprite";
 import Paper from "@mui/material/Paper";

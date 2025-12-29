@@ -16,11 +16,6 @@ export const createViewport = (width: number) => ({
   height: Math.round(width / ASPECT_RATIO),
 });
 
-// Helper function for navigation
-export const goToSite = async (page: Page) => {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-};
-
 // Helper function to verify that an image has loaded successfully (not broken/404)
 export const expectImageToBeLoaded = async (locator: Locator) => {
   await expect(locator).toBeVisible();

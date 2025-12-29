@@ -1,6 +1,6 @@
 import Snackbar from "@mui/material/Snackbar";
 import { Observer } from "mobx-react";
-import store from "../store";
+import store from "store";
 
 const MainSnackbar = () => (
   <Observer>

@@ -20,7 +20,7 @@ import People from "@mui/icons-material/People";
 import Code from "@mui/icons-material/Code";
 import Layers from "@mui/icons-material/Layers";
 import TrendingUp from "@mui/icons-material/TrendingUp";
-import pokemonShowdownLogo from "../../assets/pokemon-showdown-logo.png";
+import pokemonShowdownLogo from "assets/pokemon-showdown-logo.png";
 
 function listItems() {
   type CreditItem = [React.ReactNode, string, string?, string?];

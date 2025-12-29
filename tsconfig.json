@@ -1,8 +1,9 @@
 {
   "files": [],
   "references": [
+    // playwright uses the baseUrl of the first tsconfig listed here:
+    { "path": "./tests/tsconfig.tests.json" },
     { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tests/tsconfig.tests.json" }
+    { "path": "./tsconfig.node.json" }
   ]
 }

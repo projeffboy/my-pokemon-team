@@ -1,8 +1,8 @@
-import pokedex from "../../../../../data/pokedex";
-import items from "../../../../../data/items";
-import altSpriteNum from "../../../../../data/altSpriteNum";
-import PokemonIconsSheet from "../../../../../assets/pokemonicons-sheet.png";
-import ItemIconsSheet from "../../../../../assets/itemicons-sheet.png";
+import pokedex from "data/pokedex";
+import items from "data/items";
+import altSpriteNum from "data/altSpriteNum";
+import PokemonIconsSheet from "assets/pokemonicons-sheet.png";
+import ItemIconsSheet from "assets/itemicons-sheet.png";
 
 /*
  * Returns an icon of a pokemon (pkmnProp === 'pkmn') or an item (pkmnProp === 'item)
