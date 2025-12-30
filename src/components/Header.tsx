@@ -1,7 +1,8 @@
 import Typography from "@mui/material/Typography";
 import face1 from "assets/landorus-face.png";
 import face2 from "assets/ogerpon-teal-mask-by-jormxdos.png";
-import { Stack, styled, type Theme } from "@mui/material";
+import Stack from "@mui/material/Stack";
+import { styled, type Theme } from "@mui/material/styles";
 
 const face1Alt = "Landorus Face";
 const face2Alt = "Virizion Face";

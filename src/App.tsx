@@ -8,7 +8,8 @@ import Footer from "./components/Footer";
 import MainSnackbar from "./components/MainSnackbar";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./components/RAMP";
-import { Container, Stack } from "@mui/material";
+import Container from "@mui/material/Container";
+import Stack from "@mui/material/Stack";
 
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;
