@@ -2,7 +2,7 @@ import PokemonInput from "./pokemon/PokemonInput";
 import Sprite from "./pokemon/Sprite";
 import Paper from "@mui/material/Paper";
 
-function Pokemon(props: { teamIndex: number }) {
+function Pokemon(props: { teamSlot: number }) {
   const placeholders = [
     "Name",
     "Move",
@@ -28,12 +28,12 @@ function Pokemon(props: { teamIndex: number }) {
         <PokemonInput
           key={i}
           placeholder={placeholder}
-          teamIndex={props.teamIndex}
+          teamSlot={props.teamSlot}
           pokemonProp={pokemonProp}
         />
       );
     } else {
-      return <Sprite key={i} teamIndex={props.teamIndex} />;
+      return <Sprite key={i} teamSlot={props.teamSlot} />;
     }
   });
 
@@ -46,7 +46,7 @@ function Pokemon(props: { teamIndex: number }) {
         py: 2,
       }}
       role="region"
-      aria-label={`Pokemon ${props.teamIndex + 1}`}
+      aria-label={`Pokemon ${props.teamSlot + 1}`}
     >
       {pokemonInputs}
     </Paper>

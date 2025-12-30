@@ -5,9 +5,9 @@ import questionMark from "assets/question-mark.png";
 import Box from "@mui/material/Box";
 import useWidth from "useWidth";
 
-const Sprite = observer(({ teamIndex }: { teamIndex: number }) => {
+const Sprite = observer(({ teamSlot }: { teamSlot: number }) => {
   const width = useWidth();
-  const pokemon = store.team[teamIndex].name; // unhyphenated name
+  const pokemon = store.team[teamSlot].name; // unhyphenated name
   const pokedexNumber = pokemon && (pokedex as any)[pokemon].num;
 
   let spriteFilename = pokemon; // the filename of the pokemon sprite (usually just the pokemon name)

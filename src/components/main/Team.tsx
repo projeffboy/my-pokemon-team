@@ -11,7 +11,7 @@ const Team = () =>
     <>
       {range(6).map(i => (
         <Grid key={i} size={6} component="section">
-          <Pokemon teamIndex={i} />
+          <Pokemon teamSlot={i} />
         </Grid>
       ))}
     </>

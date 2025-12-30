@@ -7,7 +7,7 @@ function PokemonInputSelect(props: {
   optionValues: string[];
   optionLabels: string[];
   placeholder: string;
-  teamIndex: number;
+  teamSlot: number;
   pokemonProp: string;
   value: string;
   onChange: (val: string | null) => void;
@@ -16,7 +16,7 @@ function PokemonInputSelect(props: {
     optionValues,
     optionLabels,
     placeholder,
-    teamIndex,
+    teamSlot,
     pokemonProp,
     value,
     onChange,
@@ -27,7 +27,7 @@ function PokemonInputSelect(props: {
     label: optionLabels[i],
   }));
 
-  const id = "react-select-single-" + teamIndex + "-" + pokemonProp;
+  const id = "react-select-single-" + teamSlot + "-" + pokemonProp;
 
   let pkmnProp = placeholder ? placeholder.toLowerCase() : "";
   if (pkmnProp === "name") {
@@ -56,7 +56,7 @@ function PokemonInputSelect(props: {
           fullWidth
           inputProps={{
             ...params.inputProps,
-            "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProp}`,
+            "aria-label": `Pokemon ${teamSlot + 1}'s ${pokemonProp}`,
           }}
         />
       )}

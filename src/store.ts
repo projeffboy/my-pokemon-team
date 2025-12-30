@@ -621,8 +621,8 @@ class Store {
   */
 
   // Clear a team pokemon's properties
-  clearTeamPkmnProps(teamIndex: number) {
-    const teamPkmnProps = this.team[teamIndex];
+  clearTeamPkmnProps(teamSlot: number) {
+    const teamPkmnProps = this.team[teamSlot];
 
     for (const prop in teamPkmnProps) {
       teamPkmnProps[prop as keyof TeamMember] = "";

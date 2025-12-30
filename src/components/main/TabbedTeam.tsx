@@ -45,7 +45,7 @@ export default function TabbedTeam() {
                       value={tabIndex}
                       label={tabIndex + 1}
                       sx={{ minWidth: 0 }} // a css hack to make all the tabs fit in the tab list without scrolling
-                      icon={<Sprite teamIndex={tabIndex} />}
+                      icon={<Sprite teamSlot={tabIndex} />}
                     />
                   ))
                 : range(3).map(tabIndex => (
@@ -55,8 +55,8 @@ export default function TabbedTeam() {
                       label={`${2 * tabIndex + 1} - ${2 * tabIndex + 2}`}
                       icon={
                         <Stack direction="row">
-                          <Sprite teamIndex={2 * tabIndex} />
-                          <Sprite teamIndex={2 * tabIndex + 1} />
+                          <Sprite teamSlot={2 * tabIndex} />
+                          <Sprite teamSlot={2 * tabIndex + 1} />
                         </Stack>
                       }
                     />
@@ -75,7 +75,7 @@ export default function TabbedTeam() {
                 sx={{ p: 0, width: "100%" }}
               >
                 <Grid size={12} component="section">
-                  <Pokemon teamIndex={tabIndex} />
+                  <Pokemon teamSlot={tabIndex} />
                 </Grid>
               </TabPanel>
             ))
@@ -84,7 +84,7 @@ export default function TabbedTeam() {
                 <Grid container spacing={2}>
                   {range(2).map(i => (
                     <Grid key={i} size={12} component="section">
-                      <Pokemon teamIndex={2 * tabIndex + i} />
+                      <Pokemon teamSlot={2 * tabIndex + i} />
                     </Grid>
                   ))}
                 </Grid>

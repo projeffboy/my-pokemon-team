@@ -48,7 +48,7 @@ const PokemonShowdownTeam = () => {
       const numberOfTeamPkmn = Math.min(importedTeam.length, 6);
 
       // Loop through each pokemon
-      importedTeam.slice(0, 6).forEach((pkmnRawData, teamIndex) => {
+      importedTeam.slice(0, 6).forEach((pkmnRawData, teamSlot) => {
         // Split by newline to separate lines
         const lines = pkmnRawData.split("\n");
 
@@ -74,7 +74,7 @@ const PokemonShowdownTeam = () => {
 
           const species = store.pkmnNameInverse(name);
           if (species) {
-            store.team[teamIndex].name = species;
+            store.team[teamSlot].name = species;
           }
 
           // Parse Item
@@ -82,10 +82,10 @@ const PokemonShowdownTeam = () => {
             const itemName = firstLine.split("@")[1].trim();
             const item = store.itemNameInverse(itemName);
             if (item) {
-              store.team[teamIndex].item = item;
+              store.team[teamSlot].item = item;
             }
           } else {
-            store.team[teamIndex].item = "";
+            store.team[teamSlot].item = "";
           }
 
           // Parse Ability and Moves
@@ -95,7 +95,7 @@ const PokemonShowdownTeam = () => {
           lines.slice(1).forEach(line => {
             if (line.startsWith("Ability:")) {
               const ability = line.split(":")[1].trim();
-              store.team[teamIndex].ability = ability;
+              store.team[teamSlot].ability = ability;
               abilityChanged = true;
             } else if (line.startsWith("-")) {
               const moveName = line
@@ -105,10 +105,10 @@ const PokemonShowdownTeam = () => {
                 .replace("]", "");
 
               const move = store.moveNameInverse(moveName);
-              const pkmn = store.team[teamIndex].name;
+              const pkmn = store.team[teamSlot].name;
               let validMove = move && store.canItLearn(move, pkmn) ? move : "";
 
-              store.team[teamIndex][("move" + moveNum) as keyof TeamMember] =
+              store.team[teamSlot][("move" + moveNum) as keyof TeamMember] =
                 validMove;
               moveNum++;
             }
@@ -116,7 +116,7 @@ const PokemonShowdownTeam = () => {
 
           // If team raw data does not mention ability, leave it blank
           if (!abilityChanged) {
-            store.team[teamIndex].ability = "";
+            store.team[teamSlot].ability = "";
             store.autoSelectAbility();
           }
         }
@@ -151,15 +151,15 @@ const PokemonShowdownTeam = () => {
     <Observer>
       {() => {
         const pokemonShowdownTeamInfo = range(6)
-          .map(teamIndex => {
-            const { name, item, ability } = store.team[teamIndex];
+          .map(teamSlot => {
+            const { name, item, ability } = store.team[teamSlot];
 
             if (name) {
               return `${store.pkmnName(name)} @ ${store.itemName(item)}
 Ability: ${ability}
 ${range(4, 1)
   .map(num => {
-    const move = store.team[teamIndex][("move" + num) as keyof TeamMember];
+    const move = store.team[teamSlot][("move" + num) as keyof TeamMember];
 
     if (move) {
       return "-" + store.moveName(move);

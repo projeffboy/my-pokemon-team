@@ -6,19 +6,19 @@ import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
 const PokemonInput = ({
   placeholder,
   pokemonProp,
-  teamIndex,
+  teamSlot,
 }: {
   placeholder: string;
   pokemonProp: string;
-  teamIndex: number;
+  teamSlot: number;
 }) => {
   const handleChange = (inputVal: string | null) => {
     const val = inputVal || "";
     if (pokemonProp === "name") {
-      store.clearTeamPkmnProps(teamIndex);
+      store.clearTeamPkmnProps(teamSlot);
     }
 
-    store.team[teamIndex][pokemonProp as keyof TeamMember] = val;
+    store.team[teamSlot][pokemonProp as keyof TeamMember] = val;
 
     /*
      * If the input is where you put your pokemon name,
@@ -42,7 +42,7 @@ const PokemonInput = ({
             optionValues = store.filteredPokemon; // store.allPokemon
             optionLabels = store.filteredPokemonNames; // store.allPokemonNames
             let pkmnName =
-              store.team[teamIndex][pokemonProp as keyof TeamMember];
+              store.team[teamSlot][pokemonProp as keyof TeamMember];
             if (pkmnName && !optionValues.includes(pkmnName)) {
               optionValues = [...optionValues, pkmnName];
               optionLabels = [...optionLabels, store.pkmnName(pkmnName)];
@@ -53,12 +53,12 @@ const PokemonInput = ({
             optionLabels = store.itemNamesArr;
             break;
           case "ability":
-            optionValues = store.teamAbilities[teamIndex];
+            optionValues = store.teamAbilities[teamSlot];
             optionLabels = optionValues;
             break;
           default: // for the moves
-            optionValues = store.teamLearnsets.values[teamIndex];
-            optionLabels = store.teamLearnsets.labels[teamIndex];
+            optionValues = store.teamLearnsets.values[teamSlot];
+            optionLabels = store.teamLearnsets.labels[teamSlot];
         }
 
         return (
@@ -75,9 +75,9 @@ const PokemonInput = ({
               optionValues={optionValues}
               optionLabels={optionLabels}
               onChange={handleChange}
-              value={store.team[teamIndex][pokemonProp as keyof TeamMember]}
+              value={store.team[teamSlot][pokemonProp as keyof TeamMember]}
               pokemonProp={pokemonProp}
-              teamIndex={teamIndex}
+              teamSlot={teamSlot}
             />
           </Box>
         );
