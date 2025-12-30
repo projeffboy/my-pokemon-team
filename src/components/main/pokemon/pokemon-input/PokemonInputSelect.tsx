@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import PokemonIcon from "./pokemon-input-select/PokemonIcon";
 
-interface PokemonInputSelectProps {
+function PokemonInputSelect(props: {
   optionValues: string[];
   optionLabels: string[];
   placeholder: string;
@@ -11,9 +11,7 @@ interface PokemonInputSelectProps {
   pokemonProp: string;
   value: string;
   onChange: (val: string | null) => void;
-}
-
-function PokemonInputSelect(props: PokemonInputSelectProps) {
+}) {
   const {
     optionValues,
     optionLabels,

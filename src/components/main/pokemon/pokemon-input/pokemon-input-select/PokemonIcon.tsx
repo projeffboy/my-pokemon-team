@@ -10,12 +10,7 @@ import ItemIconsSheet from "assets/itemicons-sheet.png";
  * You can find them here: https://play.pokemonshowdown.com/sprites/smicons-sheet.png
  * You can find the "itemicons" here: https://play.pokemonshowdown.com/sprites/itemicons-sheet.png
  */
-interface PokemonIconProps {
-  pkmnProp: string;
-  value: string;
-}
-
-export default function PokemonIcon(props: PokemonIconProps) {
+export default function PokemonIcon(props: { pkmnProp: string; value: string }) {
   const { pkmnProp, value } = props;
 
   if (pkmnProp === "pkmn" || pkmnProp === "item") {

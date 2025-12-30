@@ -2,11 +2,7 @@ import PokemonInput from "./pokemon/PokemonInput";
 import Sprite from "./pokemon/Sprite";
 import Paper from "@mui/material/Paper";
 
-interface PokemonProps {
-  teamIndex: number;
-}
-
-function Pokemon(props: PokemonProps) {
+function Pokemon(props: { teamIndex: number }) {
   const placeholders = [
     "Name",
     "Move",

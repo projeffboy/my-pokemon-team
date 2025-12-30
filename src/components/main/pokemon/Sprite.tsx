@@ -5,11 +5,7 @@ import questionMark from "assets/question-mark.png";
 import Box from "@mui/material/Box";
 import useWidth from "useWidth";
 
-interface SpriteProps {
-  teamIndex: number;
-}
-
-const Sprite = observer(({ teamIndex }: SpriteProps) => {
+const Sprite = observer(({ teamIndex }: { teamIndex: number }) => {
   const width = useWidth();
   const pokemon = store.team[teamIndex].name; // unhyphenated name
   const pokedexNumber = pokemon && (pokedex as any)[pokemon].num;

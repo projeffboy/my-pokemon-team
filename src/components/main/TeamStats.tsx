@@ -11,11 +11,7 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import useWidth from "useWidth";
 
-interface TeamStatsProps {
-  title: string;
-}
-
-const TeamStats = ({ title }: TeamStatsProps) => {
+const TeamStats = ({ title }: { title: string }) => {
   const width = useWidth();
   const theme = useTheme();
   const darkMode = theme.palette.mode === "dark";
@@ -215,14 +211,12 @@ const TeamStats = ({ title }: TeamStatsProps) => {
   );
 };
 
-interface TeamStatsTooltipProps {
+// Type Defence/Coverage Tooltip
+const TeamStatsTooltip = (props: {
   teamStatType: string;
   typeColor: string;
   type: string;
-}
-
-// Type Defence/Coverage Tooltip
-const TeamStatsTooltip = (props: TeamStatsTooltipProps) => {
+}) => {
   const { teamStatType, ...otherProps } = props;
 
   const content = () => {
@@ -244,13 +238,14 @@ const TeamStatsTooltip = (props: TeamStatsTooltipProps) => {
   );
 };
 
-interface TooltipInfoProps {
+// Type Defence Tooltip Info
+const TypeDefenceTooltipInfo = ({
+  typeColor,
+  type,
+}: {
   typeColor: string;
   type: string;
-}
-
-// Type Defence Tooltip Info
-const TypeDefenceTooltipInfo = ({ typeColor, type }: TooltipInfoProps) => (
+}) => (
   <Observer>
     {() => (
       <>
@@ -340,7 +335,13 @@ const TypeDefenceTooltipInfo = ({ typeColor, type }: TooltipInfoProps) => (
 );
 
 // Type Coverage Tooltip Info
-const TypeCoverageTooltipInfo = ({ typeColor, type }: TooltipInfoProps) => {
+const TypeCoverageTooltipInfo = ({
+  typeColor,
+  type,
+}: {
+  typeColor: string;
+  type: string;
+}) => {
   return (
     <Observer>
       {() => {

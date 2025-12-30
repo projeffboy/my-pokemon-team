@@ -3,17 +3,15 @@ import { Observer } from "mobx-react";
 import store, { type TeamMember } from "store";
 import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
 
-interface PokemonInputProps {
-  placeholder: string;
-  pokemonProp: string;
-  teamIndex: number;
-}
-
 const PokemonInput = ({
   placeholder,
   pokemonProp,
   teamIndex,
-}: PokemonInputProps) => {
+}: {
+  placeholder: string;
+  pokemonProp: string;
+  teamIndex: number;
+}) => {
   const handleChange = (inputVal: string | null) => {
     const val = inputVal || "";
     if (pokemonProp === "name") {

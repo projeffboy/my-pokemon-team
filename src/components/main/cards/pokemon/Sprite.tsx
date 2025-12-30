@@ -4,12 +4,7 @@ import pokedex from "data/pokedex";
 import questionMark from "assets/question-mark.png";
 import Box from "@mui/material/Box";
 
-interface SpriteProps {
-  teamIndex: number;
-  width: string;
-}
-
-const Sprite = observer(({ teamIndex, width }: SpriteProps) => {
+const Sprite = observer(({ teamIndex, width }: { teamIndex: number; width: string }) => {
   const pokemon = store.team[teamIndex].name; // unhyphenated name
   const pokedexNumber = pokemon && (pokedex as any)[pokemon].num;
 
