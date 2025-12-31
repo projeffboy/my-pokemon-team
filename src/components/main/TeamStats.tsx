@@ -6,7 +6,7 @@ import Paper from "@mui/material/Paper";
 import { Observer } from "mobx-react";
 import store, { type TeamMember } from "store";
 import Fade from "@mui/material/Fade";
-import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/PokemonIcon";
+import PokemonIcon from "./team/pokemon/pokemon-input/pokemon-input-select/PokemonIcon";
 import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import useWidth from "useWidth";

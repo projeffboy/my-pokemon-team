@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
-import Pokemon from "./Pokemon";
-import TabbedTeam from "./TabbedTeam";
+import Pokemon from "./team/Pokemon";
+import TabbedTeam from "./team/TabbedTeam";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { range } from "helper";
 

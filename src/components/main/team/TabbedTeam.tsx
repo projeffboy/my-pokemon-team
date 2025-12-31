@@ -6,7 +6,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Pokemon from "./Pokemon";
-import Sprite from "./pokemon/Sprite";
+import Sprite from "./common/Sprite";
 import { range } from "helper";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Stack from "@mui/material/Stack";

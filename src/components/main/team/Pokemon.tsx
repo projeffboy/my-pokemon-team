@@ -1,5 +1,5 @@
 import PokemonInput from "./pokemon/PokemonInput";
-import Sprite from "./pokemon/Sprite";
+import Sprite from "./common/Sprite";
 import Paper from "@mui/material/Paper";
 
 function Pokemon(props: { teamSlot: number }) {
@@ -45,7 +45,7 @@ function Pokemon(props: { teamSlot: number }) {
         gridTemplateColumns: "1fr 1fr",
         py: 2,
       }}
-      role="region"
+      component="section"
       aria-label={`Pokemon ${props.teamSlot + 1}`}
     >
       {pokemonInputs}
