@@ -1,6 +1,7 @@
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
+// Assumption: theme breakpoints keys are the default MUI ones
 export default function useWidth() {
   const theme = useTheme();
   const isXl = useMediaQuery(theme.breakpoints.up("xl"));

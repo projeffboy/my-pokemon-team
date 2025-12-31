@@ -45,7 +45,7 @@ export default function TabbedTeam() {
                       value={tabIndex}
                       label={tabIndex + 1}
                       sx={{ minWidth: 0 }} // a css hack to make all the tabs fit in the tab list without scrolling
-                      icon={<Sprite teamSlot={tabIndex} />}
+                      icon={<Sprite teamSlot={tabIndex} dex />}
                     />
                   ))
                 : range(3).map(tabIndex => (
@@ -55,8 +55,8 @@ export default function TabbedTeam() {
                       label={`${2 * tabIndex + 1} - ${2 * tabIndex + 2}`}
                       icon={
                         <Stack direction="row">
-                          <Sprite teamSlot={2 * tabIndex} />
-                          <Sprite teamSlot={2 * tabIndex + 1} />
+                          <Sprite teamSlot={2 * tabIndex} dex />
+                          <Sprite teamSlot={2 * tabIndex + 1} dex />
                         </Stack>
                       }
                     />

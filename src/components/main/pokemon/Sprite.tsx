@@ -5,85 +5,70 @@ import questionMark from "assets/question-mark.png";
 import Box from "@mui/material/Box";
 import useWidth from "useWidth";
 
-const Sprite = observer(({ teamSlot }: { teamSlot: number }) => {
-  const width = useWidth();
-  const pokemon = store.team[teamSlot].name; // unhyphenated name
-  const pokedexNumber = pokemon && (pokedex as any)[pokemon].num;
+const Sprite = observer(
+  ({ teamSlot, dex }: { teamSlot: number; dex?: boolean }) => {
+    const width = useWidth();
 
-  let spriteFilename = pokemon; // the filename of the pokemon sprite (usually just the pokemon name)
+    const pokemon = store.team[teamSlot].name;
+    const pokedexNumber = pokemon ? (pokedex as any)[pokemon].num : -1;
 
-  // If user has chosen a pokemon
-  if (pokemon) {
-    // Raticate Alola Totem's URL is the exception
-    if (pokemon === "raticatealolatotem") {
-      spriteFilename = "raticate-totem-a";
-    } else if (pokemon === "mimikyubustedtotem") {
-      spriteFilename = "mimikyu-totem-busted";
+    // TODO: make it more inline with pokemon showdown logic
+
+    let spriteFilename = pokemon;
+    // If user has chosen a pokemon
+    if (pokemon) {
+      if (pokemon === "raticatealolatotem") {
+        spriteFilename = "raticate-totem-a";
+      } else if (pokemon === "mimikyubustedtotem") {
+        spriteFilename = "mimikyu-totem-busted";
+      }
+      // We only need to modify spriteFilename if the pokemon has an alternate forme
+      else if (store.forme(pokemon)) {
+        // the sprite filename consists of the base species name and forme name, separated by a hyphen, all lowercase
+        const spriteFilenamePart1 = store.baseForme(pokemon);
+        const spriteFilenamePart2 = store
+          .forme(pokemon)
+          .toLowerCase()
+          .replace("-", "");
+        spriteFilename = `${spriteFilenamePart1}-${spriteFilenamePart2}`;
+
+        spriteFilename = spriteFilename.replace("%", "").replace("'", "");
+      }
     }
-    // We only need to modify spriteFilename if the pokemon has an alternate forme
-    else if (store.forme(pokemon)) {
-      /*
-       * the sprite filename consists of two parts:
-       * base species name and forme name
-       * separated by a hyphen
-       * all lowercase
-       */
-      const spriteFilenamePart1 = store.baseForme(pokemon);
-      const spriteFilenamePart2 = store
-        .forme(pokemon)
-        .toLowerCase()
-        .replace("-", "");
-      spriteFilename = `${spriteFilenamePart1}-${spriteFilenamePart2}`;
 
-      spriteFilename = spriteFilename.replace("%", "").replace("'", "");
-    }
-  }
-
-  /* Mini Sprite (for smaller screen sizes) */
-  let typeOfSprite = "ani";
-  let imgFormat = "gif";
-  if (width === "sm" || width === "xs") {
-    // below 960px
-    typeOfSprite = "dex";
+    /* Mini Sprite (for smaller screen sizes) */
+    let spriteType = "ani";
+    let imageFormat = "gif";
     if (
-      (pokedexNumber && 810 <= pokedexNumber && pokedexNumber <= 898) ||
-      (pokemon && pokemon.includes("galar"))
+      (pokedexNumber && pokedexNumber >= 810) ||
+      (pokemon && ["galar", "paldea"].includes(pokemon)) ||
+      ["dialgaorigin", "palkiaorigin", "basculinwhitestriped"].includes(pokemon)
     ) {
-      typeOfSprite = "bw";
+      spriteType = "bw";
+      imageFormat = "png";
+    } else if (dex) {
+      spriteType = "dex";
+      imageFormat = "png";
     }
 
-    imgFormat = "png";
-  }
-
-  if (
-    pokedexNumber >= 899 ||
-    pokedexNumber == 0 ||
-    (pokemon && pokemon.includes("paldea")) ||
-    ["dialgaorigin", "palkiaorigin", "basculinwhitestriped"].includes(pokemon)
-  ) {
-    typeOfSprite = "gen5";
-    imgFormat = "png";
-  }
-
-  /* Either Return Sprite or Mini Sprite */
-  return (
-    <Box
-      sx={{
-        minWidth: 0,
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        gridRow: { xs: "2 / 7", md: "2 / 5" },
-      }}
-    >
-      {
+    /* Either Return Sprite or Mini Sprite */
+    return (
+      <Box
+        sx={{
+          minWidth: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gridRow: { xs: "2 / 7", md: "2 / 5" },
+        }}
+      >
         <Box
           component="img"
           alt={spriteFilename || "question-mark"}
           /* URL from Pokemon Showdown */
           src={
             spriteFilename
-              ? `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`
+              ? `https://play.pokemonshowdown.com/sprites/${spriteType}/${spriteFilename}.${imageFormat}`
               : // The placeholder (question mark) sprite
                 questionMark
           }
@@ -95,9 +80,9 @@ const Sprite = observer(({ teamSlot }: { teamSlot: number }) => {
             ...((width === "lg" || width === "xl") && { maxHeight: "96px" }),
           }}
         />
-      }
-    </Box>
-  );
-});
+      </Box>
+    );
+  }
+);
 
 export default Sprite;
