@@ -60,8 +60,9 @@ class Sprite extends React.Component {
     }
 
     if (
+      pokedexNumber > 1013 ||
       pokedexNumber == 0 ||
-      (pokedexNumber && altSpriteNum[pokedexNumber] >= 1320 + 84) ||
+      (pokemon && altSpriteNum[pokemon] >= 1320 + 84) ||
       ["dialgaorigin", "palkiaorigin", "basculinwhitestriped"].includes(pokemon)
     ) {
       typeOfSprite = "gen5";

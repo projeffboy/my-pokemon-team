@@ -1179,7 +1179,7 @@ class Store {
           Alola: [722, 809],
           Galar: [810, 898],
           Hisui: [899, 905],
-          Paldea: [906, 1010],
+          Paldea: [906, 1025],
         };
         const range = regionNumberRange[region];
         let filteredPokedex = {};
