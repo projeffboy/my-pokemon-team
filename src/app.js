@@ -110,7 +110,7 @@ export default compose(
               </Grid>
               <Grid item xs={12}>
                 <Typography variant="subtitle1" align="center">
-                  For Generation 6 to 9 (Scarlet/Violet)
+                  For Generation 6 to 9 (Scarlet/Violet and Legends Z-A)
                 </Typography>
               </Grid>
               <Grid item xs={12}>

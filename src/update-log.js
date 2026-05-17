@@ -26,7 +26,7 @@ class UpdateLog extends React.Component {
           onClick={this.toggleDialog}
           style={{ fontWeight: "initial", textTransform: "initial" }}
         >
-          Updates (May 15, 2024)
+          Updates (May 16, 2026)
         </Button>
         <Dialog
           open={this.state.isDialogOpen}
@@ -47,6 +47,11 @@ class UpdateLog extends React.Component {
                 GitHub Repo
               </Button>
             </div>
+
+            <Typography variant="subtitle2">May 16, 2026</Typography>
+            <Typography paragraph>
+              Pokemon Legends Z-A update.
+            </Typography>
 
             <Typography variant="subtitle2">May 15, 2024</Typography>
             <Typography paragraph>
