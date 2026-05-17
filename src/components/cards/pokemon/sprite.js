@@ -5,6 +5,7 @@ import store from "../../../store";
 import pokedex from "../../../data/pokedex";
 import { pokemonInputStyles as spriteStyles } from "../../../styles";
 import questionMark from "../../../question-mark.png";
+import altSpriteNum from "../../../data/altSpriteNum";
 
 @observer
 class Sprite extends React.Component {
@@ -59,9 +60,8 @@ class Sprite extends React.Component {
     }
 
     if (
-      pokedexNumber >= 899 ||
       pokedexNumber == 0 ||
-      (pokemon && pokemon.includes("paldea")) ||
+      (pokedexNumber && altSpriteNum[pokedexNumber] >= 1320 + 84) ||
       ["dialgaorigin", "palkiaorigin", "basculinwhitestriped"].includes(pokemon)
     ) {
       typeOfSprite = "gen5";
