@@ -3,7 +3,7 @@ import { capitalizeWord } from "./helper-functions";
 // I have to import a bunch of pokemon data first
 import pokedexData from "./data/pokedex";
 import itemsData from "./data/items";
-import learnsetsData from "./data/learnsets.min";
+import learnsetsData from "./data/learnsets";
 import typechartData from "./data/typechart";
 import movesData from "./data/moves";
 import oldMovesData from "./data/old-moves";
