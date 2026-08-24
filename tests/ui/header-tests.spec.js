@@ -21,7 +21,7 @@ test.describe("Header Tests", () => {
     // Check subtitle
     await expect(
       page.getByRole("heading", {
-        name: "For Generation 6 to 9 (Scarlet/Violet)",
+        name: "For Generation 6 to 9",
       })
     ).toBeVisible();
 
