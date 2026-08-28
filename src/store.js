@@ -627,6 +627,13 @@ class Store {
           else if (pkmn === "sharpedomega") {
             pkmnItem = "sharpedonite";
           }
+          // Same with Dragonite and Dragon Fang
+          else if (pkmn === "dragonitemega") {
+            pkmnItem = "dragoninite";
+          }
+          else if (pkmn === "steelixmega") {
+            pkmnItem = "steelixite";
+          }
         }
 
         // Auto select plate for Arceus formes
@@ -1246,7 +1253,8 @@ class Store {
 
       if (type) {
         for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
-          if (pkmnProps.types.includes(type)) {
+          // minor bug: cosmetic formes should not be ommitted
+          if (pkmnProps.types && pkmnProps.types.includes(type)) {
             filteredPokedex[pkmn] = pkmnProps;
           }
         }

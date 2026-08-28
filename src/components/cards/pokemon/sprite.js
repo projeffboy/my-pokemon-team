@@ -6,6 +6,7 @@ import pokedex from "../../../data/pokedex";
 import { pokemonInputStyles as spriteStyles } from "../../../styles";
 import questionMark from "../../../question-mark.png";
 import altSpriteNum from "../../../data/altSpriteNum";
+import localSprites from "../../../img/local-sprites";
 
 @observer
 class Sprite extends React.Component {
@@ -60,14 +61,16 @@ class Sprite extends React.Component {
     }
 
     if (
-      pokedexNumber > 1013 ||
+      (984 <= pokedexNumber && pokedexNumber <= 995) ||
       pokedexNumber == 0 ||
       (pokemon && altSpriteNum[pokemon] >= 1320 + 93) ||
-      ["dialgaorigin", "palkiaorigin", "basculinwhitestriped"].includes(pokemon)
+      ["dialgaorigin", "palkiaorigin", "basculinwhitestriped", "ursaluna", "pichuspikyeared", "miraidon"].includes(pokemon)
     ) {
       typeOfSprite = "gen5";
       imgFormat = "png";
     }
+
+    const localSprite = localSprites[pokemon];
 
     /* Either Return Sprite or Mini Sprite */
     return (
@@ -77,14 +80,20 @@ class Sprite extends React.Component {
             alt={spriteFilename || "question-mark"}
             /* URL from Pokemon Showdown */
             src={
-              spriteFilename
+              localSprite ||
+              (spriteFilename
                 ? `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`
                 : // The placeholder (question mark) sprite
-                  questionMark
+                  questionMark)
             }
+            onError={(e) => {
+              // Prevent infinite loops if the fallback image also fails
+                e.currentTarget.onerror = null; 
+                e.currentTarget.src = `https://play.pokemonshowdown.com/sprites/gen5/${spriteFilename}.png`;
+            }}
             /* Apply miniSprite class if it's a mini sprite */
             className={`${classes.sprite} ${
-              width === "sm" ? classes.miniSprite : ""
+              width === "sm" || width === "xs" ? classes.miniSprite : ""
             } ${width === "lg" || width === "xl" ? classes.smallerSprite : ""}`}
           />
         }
