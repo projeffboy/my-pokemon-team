@@ -20,8 +20,8 @@
   "scripts": {
     "start": "BROWSER=none react-app-rewired --openssl-legacy-provider start",
     "build": "react-app-rewired --openssl-legacy-provider build",
-    "test": "npx playwright test",
-    "test:chrome": "npx playwright test --project=chromium",
+    "test": "npx playwright test --project=chromium",
+    "test:before-push": "npx playwright test",
     "eject": "react-app-rewired eject"
   },
   "devDependencies": {
