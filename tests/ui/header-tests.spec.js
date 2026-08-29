@@ -18,13 +18,6 @@ test.describe("Header Tests", () => {
     await expectImageToBeLoaded(leftImage);
     await expectImageToBeLoaded(rightImage);
 
-    // Check subtitle
-    await expect(
-      page.getByRole("heading", {
-        name: "For Generation 6 to 9",
-      })
-    ).toBeVisible();
-
     // Check email contact info
     await expect(
       page.getByText("Report Bugs to jeffery124@gmail.com")

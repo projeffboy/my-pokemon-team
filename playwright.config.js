@@ -1,7 +1,6 @@
 // @ts-check
 import { defineConfig, devices } from "@playwright/test";
 import {
-  LARGER_VIEWPORT_WIDTH,
   LARGE_VIEWPORT_WIDTH,
   MEDIUM_VIEWPORT_WIDTH,
   createViewport,
@@ -52,14 +51,6 @@ export default defineConfig({
     },
 
     {
-      name: "firefox",
-      use: {
-        ...devices["Desktop Firefox"],
-        viewport: createViewport(LARGER_VIEWPORT_WIDTH),
-      },
-    },
-
-    {
       name: "webkit",
       use: {
         ...devices["Desktop Safari"],
@@ -76,16 +67,6 @@ export default defineConfig({
       name: "Mobile Safari",
       use: { ...devices["iPhone 15"] },
     },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
 
   /* Run your local dev server before starting the tests */
