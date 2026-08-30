@@ -4,7 +4,7 @@
 
 - This test md file outlines the UI tests for this website.
 - There are 4 major UI sections of this site.
-- Each section below (except main) has its own test file: `<section>-tests.spec.js`
+- Each section below (except main) has its own test file: `<section>-tests.spec.ts`
 
 ## Website Sections to Be Tested
 

@@ -1,8 +1,7 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
     "allowJs": true,
-    "target": "es5",
+    "target": "es2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -10,11 +9,12 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "react-jsx"
   },
-  "include": ["src", "tests", "playwright.config.js"]
+  "include": ["src", "vite.config.ts", "playwright.config.ts"],
+  "exclude": ["tests"]
 }

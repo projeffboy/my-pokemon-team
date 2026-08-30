@@ -1,6 +1,11 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "."
-  }
+    "paths": {
+      "fixtures": ["./fixtures.ts"],
+      "helper": ["./helper.ts"]
+    }
+  },
+  "include": ["**/*.ts"],
+  "exclude": []
 }

@@ -3,7 +3,7 @@
 ## Guidelines
 
 - This test md file outlines the E2E tests for this site.
-- Get the viewport sizes from tests/helper.js
+- Get the viewport sizes from tests/helper.ts
 - each test gets its own file under tests/e2e
 
 ## Tests

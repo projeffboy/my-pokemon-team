@@ -5,7 +5,7 @@
 - This test md file outlines the UI tests for the main section of the website.
 - Test scenarios that are implicitly covered by E2E testing are not covered here
 - Tests that only interact with snackbars, which is an external UI element, are still considered unit tests.
-- Each section below has its own folder with two test files: `<section>/(unit|integration)-tests.spec.js`
+- Each section below has its own folder with two test files: `<section>/(unit|integration)-tests.spec.ts`
 
 ## Components in the Main Section to Be Tested
 
