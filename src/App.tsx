@@ -6,7 +6,7 @@ import MainSnackbar from "./components/MainSnackbar";
 import TypeChartDialog from "./TypeChartDialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./styles";
+import { theme } from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./components/RAMP";
 import { cookieStorageManager } from "./color-scheme-storage";
