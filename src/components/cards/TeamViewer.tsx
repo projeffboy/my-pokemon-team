@@ -1,10 +1,8 @@
 import { useState, type SyntheticEvent } from "react";
-// Material UI Imports
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Paper from "@mui/material/Paper";
-// My Component Imports
 import Pokemon from "./Pokemon";
 import Sprite from "./pokemon/Sprite";
 import { useBreakpoint } from "../../WidthContext";

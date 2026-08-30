@@ -1,7 +1,5 @@
-// Material UI Imports
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-// Custom Imports
 import PokemonIcon from "./pokemon-input-select/PokemonIcon";
 
 interface SelectOption {

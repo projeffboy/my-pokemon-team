@@ -1,11 +1,9 @@
 import { useState, type ReactNode, type SyntheticEvent } from "react";
-// Material UI Imports
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// My Component Imports
 import TeamChecklist from "./more-info/TeamChecklist";
 import SearchFilters from "./more-info/SearchFilters";
 import PokemonShowdownTeam from "./more-info/PokemonShowdownTeam";

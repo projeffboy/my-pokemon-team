@@ -1,5 +1,4 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
-// Material UI Core Imports
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -8,10 +7,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Link from "@mui/material/Link";
-// Material UI Icons Imports
 import ImportExport from "@mui/icons-material/ImportExport";
 import FileCopy from "@mui/icons-material/FileCopy";
-// Custom Imports
 import { observer } from "mobx-react";
 import store from "../../../store";
 
