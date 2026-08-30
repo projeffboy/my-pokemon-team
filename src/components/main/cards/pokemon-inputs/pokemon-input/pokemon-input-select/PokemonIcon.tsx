@@ -1,8 +1,8 @@
-import pokedex from "../../../../../data/pokedex";
-import items from "../../../../../data/items";
-import altSpriteNum from "../../../../../data/altSpriteNum";
-import PokemonIconsSheet from "../../../../../images/pokemonicons-sheet.png";
-import ItemIconsSheet from "../../../../../images/itemicons-sheet.png";
+import pokedex from "../../../../../../data/pokedex";
+import items from "../../../../../../data/items";
+import altSpriteNum from "../../../../../../data/altSpriteNum";
+import PokemonIconsSheet from "../../../../../../images/pokemonicons-sheet.png";
+import ItemIconsSheet from "../../../../../../images/itemicons-sheet.png";
 
 interface PokemonIconProps {
   pkmnProp: string;

@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid";
-import Cards from "./Cards";
+import Cards from "./main/Cards";
 
 export default function Main() {
   return (

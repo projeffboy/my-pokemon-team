@@ -1,11 +1,11 @@
 import type { ReactNode } from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Pokemon from "./cards/Pokemon";
+import PokemonInputs from "./cards/PokemonInputs";
 import TeamStats from "./cards/TeamStats";
 import MoreInfo from "./cards/MoreInfo";
 import TeamViewer from "./cards/TeamViewer";
-import { useBreakpoint } from "../WidthContext";
+import { useBreakpoint } from "../../WidthContext";
 
 export default function Cards() {
   const width = useBreakpoint();
@@ -18,7 +18,7 @@ export default function Cards() {
         <Grid key={num} size={6}>
           <Paper sx={{ p: 1 }}>
             {/* teamIndex is the pokemon's team slot number - 1 */}
-            <Pokemon teamIndex={num} />
+            <PokemonInputs teamIndex={num} />
           </Paper>
         </Grid>
       ));

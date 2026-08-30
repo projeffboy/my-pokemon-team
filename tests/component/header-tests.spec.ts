@@ -26,3 +26,4 @@ test.describe("Header Tests", () => {
     });
     await expect(email).toHaveAttribute("href", "mailto:jeffery124@gmail.com");
   });
+});

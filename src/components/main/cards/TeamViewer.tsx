@@ -3,9 +3,9 @@ import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Paper from "@mui/material/Paper";
-import Pokemon from "./Pokemon";
-import Sprite from "./pokemon/Sprite";
-import { useBreakpoint } from "../../WidthContext";
+import PokemonInputs from "./PokemonInputs";
+import PokemonSprite from "./pokemon-inputs/PokemonSprite";
+import { useBreakpoint } from "../../../WidthContext";
 
 /*
  * NOTE!!!
@@ -36,8 +36,8 @@ export default function TeamViewer() {
   const getTwoPokemonSprites = (teamIndex: number) => {
     return (
       <div style={{ display: "flex", height: 75 }}>
-        <Sprite teamIndex={teamIndex} />
-        <Sprite teamIndex={teamIndex + 1} />
+        <PokemonSprite teamIndex={teamIndex} />
+        <PokemonSprite teamIndex={teamIndex + 1} />
       </div>
     );
   };
@@ -67,7 +67,7 @@ export default function TeamViewer() {
                     key={teamIndex}
                     label={teamIndex + 1}
                     sx={{ minWidth: 0 }}
-                    icon={<Sprite teamIndex={teamIndex} />}
+                    icon={<PokemonSprite teamIndex={teamIndex} />}
                   />
                 ))
 
@@ -81,13 +81,13 @@ export default function TeamViewer() {
           [0, 1].map(num => (
             <Grid key={num} size={12}>
               <Paper sx={{ p: 1 }}>
-                <Pokemon teamIndex={2 * smTabIndex + num} />
+                <PokemonInputs teamIndex={2 * smTabIndex + num} />
               </Paper>
             </Grid>
           ))
         : <Grid size={12}>
             <Paper sx={{ p: 1 }}>
-              <Pokemon teamIndex={xsTabIndex} />
+              <PokemonInputs teamIndex={xsTabIndex} />
             </Paper>
           </Grid>
 

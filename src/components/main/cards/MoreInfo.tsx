@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import TeamChecklist from "./more-info/TeamChecklist";
 import SearchFilters from "./more-info/SearchFilters";
 import PokemonShowdownTeam from "./more-info/PokemonShowdownTeam";
-import { useBreakpoint } from "../../WidthContext";
+import { useBreakpoint } from "../../../WidthContext";
 
 export default function MoreInfo() {
   const width = useBreakpoint();

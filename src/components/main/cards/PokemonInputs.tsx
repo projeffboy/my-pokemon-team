@@ -1,12 +1,12 @@
-import PokemonInput from "./pokemon/PokemonInput";
-import Sprite from "./pokemon/Sprite";
-import { PokemonProp } from "../../types";
+import PokemonInput from "./pokemon-inputs/PokemonInput";
+import PokemonSprite from "./pokemon-inputs/PokemonSprite";
+import { PokemonProp } from "../../../types";
 
-interface PokemonProps {
+interface PokemonInputsProps {
   teamIndex: number;
 }
 
-export default function Pokemon(props: PokemonProps) {
+export default function PokemonInputs(props: PokemonInputsProps) {
   const inputs: Array<
     { placeholder: string; pokemonProp: PokemonProp } | { placeholder: "" }
   > = [
@@ -32,7 +32,9 @@ export default function Pokemon(props: PokemonProps) {
         />
       );
     } else {
-      return <Sprite key={i} teamIndex={props.teamIndex} forceFullSize />;
+      return (
+        <PokemonSprite key={i} teamIndex={props.teamIndex} forceFullSize />
+      );
     }
   });
 
