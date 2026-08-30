@@ -2,9 +2,9 @@ import Grid from "@mui/material/Grid";
 import CheckCircle from "@mui/icons-material/CheckCircle";
 import Cancel from "@mui/icons-material/Cancel";
 import { observer } from "mobx-react";
-import store from "../../../../store";
+import store from "@/store";
 import Typography from "@mui/material/Typography";
-import { useIsMdDown, useIsLgDown } from "../../../../WidthContext";
+import { useIsMdDown, useIsLgDown } from "@/WidthContext";
 
 const TeamChecklist = observer(function TeamChecklist() {
   const isMdDown = useIsMdDown();

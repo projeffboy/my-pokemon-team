@@ -1,6 +1,6 @@
 import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "./pokemon-inputs/PokemonSprite";
-import { PokemonProp } from "../../../types";
+import { PokemonProp } from "@/types";
 
 interface PokemonInputsProps {
   teamIndex: number;

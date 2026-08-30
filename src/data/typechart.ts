@@ -1,4 +1,4 @@
-import type { TypeChart } from "../types";
+import type { TypeChart } from "@/types";
 
 const data: TypeChart = {
   Bug: {

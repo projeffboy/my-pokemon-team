@@ -1,4 +1,4 @@
-import { test, expect } from "../fixtures";
+import { test, expect } from "fixtures";
 import {
   createViewport,
   MEDIUM_VIEWPORT_WIDTH,
@@ -6,7 +6,7 @@ import {
   selectAbility,
   selectItem,
   selectMove,
-} from "../helper";
+} from "helper";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";

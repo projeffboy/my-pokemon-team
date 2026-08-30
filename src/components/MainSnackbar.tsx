@@ -1,6 +1,6 @@
 import Snackbar from "@mui/material/Snackbar";
 import { observer } from "mobx-react";
-import store from "../store";
+import store from "@/store";
 
 // Snackbar is managed by MobX
 // Can be opened by importing store.js then running store.openSnackbar(msg)

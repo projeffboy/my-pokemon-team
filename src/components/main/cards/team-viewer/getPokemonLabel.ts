@@ -1,4 +1,4 @@
-import store from "../../../../store";
+import store from "@/store";
 
 export default function getPokemonLabel(teamIndex: number) {
   const pokemon = store.team[teamIndex].name;

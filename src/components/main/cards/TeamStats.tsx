@@ -6,10 +6,10 @@ import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import { observer } from "mobx-react";
-import store from "../../../store";
+import store from "@/store";
 import PokemonIcon from "./pokemon-inputs/pokemon-input/pokemon-input-select/PokemonIcon";
-import { PokemonType } from "../../../types";
-import { useIsLgDown } from "../../../WidthContext";
+import { PokemonType } from "@/types";
+import { useIsLgDown } from "@/WidthContext";
 
 type TeamStatTitle = "Team Defence" | "Team Type Coverage";
 type TeamStatType = "typeDefence" | "typeCoverage";

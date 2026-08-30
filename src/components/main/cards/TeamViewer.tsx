@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import { useBreakpoint } from "../../../WidthContext";
+import { useBreakpoint } from "@/WidthContext";
 import SmTeamViewer from "./team-viewer/SmTeamViewer";
 import XsTeamViewer from "./team-viewer/XsTeamViewer";
 

@@ -4,7 +4,7 @@ import PokemonInputs from "./cards/PokemonInputs";
 import TeamStats from "./cards/TeamStats";
 import MoreInfo from "./cards/MoreInfo";
 import TeamViewer from "./cards/TeamViewer";
-import { useIsMdDown } from "../../WidthContext";
+import { useIsMdDown } from "@/WidthContext";
 
 export default function Cards() {
   const isMdDown = useIsMdDown();

@@ -1,11 +1,11 @@
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react";
-import store from "../../../../store";
-import pokedex from "../../../../data/pokedex";
-import questionMark from "../../../../images/question-mark.png";
-import altSpriteNum from "../../../../data/altSpriteNum";
-import localSprites from "../../../../images/local-sprites";
-import { useBreakpoint } from "../../../../WidthContext";
+import store from "@/store";
+import pokedex from "@/data/pokedex";
+import questionMark from "@/images/question-mark.png";
+import altSpriteNum from "@/data/altSpriteNum";
+import localSprites from "@/images/local-sprites";
+import { useBreakpoint } from "@/WidthContext";
 
 interface PokemonSpriteProps {
   teamIndex: number;

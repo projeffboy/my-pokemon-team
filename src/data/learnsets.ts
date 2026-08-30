@@ -1,4 +1,4 @@
-import type { Learnsets } from "../types";
+import type { Learnsets } from "@/types";
 
 const data: Learnsets = {
   missingno: [

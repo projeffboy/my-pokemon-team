@@ -5,8 +5,8 @@ import Select from "@mui/material/Select";
 import type { SelectChangeEvent } from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
 import { observer } from "mobx-react";
-import store from "../../../../store";
-import { SearchFilterKey } from "../../../../types";
+import store from "@/store";
+import { SearchFilterKey } from "@/types";
 
 type InputLabelKey = "Format" | "Type" | "Region" | "Moves";
 

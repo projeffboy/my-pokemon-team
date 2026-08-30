@@ -1,13 +1,10 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import face1 from "../images/garchomp-shuffle-face.png";
-import face2 from "../images/floette-eternal-shuffle-face.png";
-import { fluidClamp } from "../helper";
-import {
-  breakpointValues,
-  MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
-} from "../theme";
+import face1 from "@/images/garchomp-shuffle-face.png";
+import face2 from "@/images/floette-eternal-shuffle-face.png";
+import { fluidClamp } from "@/helper";
+import { breakpointValues, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH } from "@/theme";
 
 const { sm } = breakpointValues;
 const faceHeight = fluidClamp(28, 48, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH, sm);

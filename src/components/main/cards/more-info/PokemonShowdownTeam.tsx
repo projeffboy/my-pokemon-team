@@ -10,7 +10,7 @@ import Link from "@mui/material/Link";
 import ImportExport from "@mui/icons-material/ImportExport";
 import FileCopy from "@mui/icons-material/FileCopy";
 import { observer } from "mobx-react";
-import store from "../../../../store";
+import store from "@/store";
 
 const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

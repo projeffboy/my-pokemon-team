@@ -1,10 +1,5 @@
 import { test } from "fixtures";
-import {
-  selectAbility,
-  selectItem,
-  selectMove,
-  selectPokemon,
-} from "../helper";
+import { selectAbility, selectItem, selectMove, selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 
 const team = [

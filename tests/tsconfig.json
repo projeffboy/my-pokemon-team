@@ -2,6 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "paths": {
+      "@/*": ["../src/*"],
       "fixtures": ["./fixtures.ts"],
       "helper": ["./helper.ts"]
     }
