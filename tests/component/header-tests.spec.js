@@ -1,7 +1,7 @@
 import { test, expect } from "fixtures";
 import { expectImageToBeLoaded } from "helper";
 
-// Test configuration based on ui-tests.md requirements
+// Test configuration based on component-tests.md requirements
 
 test.describe("Header Tests", () => {
   test("should display header elements correctly", async ({ page }) => {

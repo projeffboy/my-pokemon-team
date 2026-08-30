@@ -21,7 +21,8 @@
     "start": "BROWSER=none react-app-rewired --openssl-legacy-provider start",
     "build": "react-app-rewired --openssl-legacy-provider build",
     "test": "npx playwright test",
-    "test:quick": "npx playwright test --project='Mobile Safari'",
+    "test:quick": "npx playwright test --project='iPhone'",
+    "test:update-snapshots": "npx playwright test tests/snapshot/snapshot-tests.spec.js --update-snapshots",
     "eject": "react-app-rewired eject"
   },
   "devDependencies": {

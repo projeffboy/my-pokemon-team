@@ -59,14 +59,13 @@ const addPokemon = async (page, index, pokemon) => {
 };
 
 test.describe("Casual Team", () => {
-  test.beforeEach(async ({}, testInfo) => {
+
+  test("Creating a casual team", async ({ page }, testInfo) => {
     test.skip(
-      !["Mobile Chrome", "Mobile Safari"].includes(testInfo.project.name),
+      !["Android", "iPhone"].includes(testInfo.project.name),
       "This test only runs on mobile"
     );
-  });
 
-  test("Creating a casual team", async ({ page }) => {
     for (let i = 0; i < team.length; i++) {
       await addPokemon(page, i, team[i]);
     }

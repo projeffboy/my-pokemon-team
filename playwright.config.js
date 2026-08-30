@@ -43,7 +43,7 @@ export default defineConfig({
   // the viewports below are subject to change depending on if the test resizes the browser
   projects: [
     {
-      name: "chromium",
+      name: "Desktop Chrome",
       use: {
         ...devices["Desktop Chrome"],
         viewport: createViewport(LARGE_VIEWPORT_WIDTH),
@@ -51,7 +51,7 @@ export default defineConfig({
     },
 
     {
-      name: "webkit",
+      name: "Desktop Safari",
       use: {
         ...devices["Desktop Safari"],
         viewport: createViewport(MEDIUM_VIEWPORT_WIDTH),
@@ -60,11 +60,11 @@ export default defineConfig({
 
     /* Test against mobile viewports. */
     {
-      name: "Mobile Chrome",
+      name: "Android",
       use: { ...devices["Galaxy S24"] },
     },
     {
-      name: "Mobile Safari",
+      name: "iPhone",
       use: { ...devices["iPhone 15"] },
     },
   ],

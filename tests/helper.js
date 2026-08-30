@@ -5,7 +5,6 @@ const ASPECT_RATIO = 16 / 9;
 // Viewport width constants
 export const SMALL_VIEWPORT_WIDTH = 390;
 export const MEDIUM_VIEWPORT_WIDTH = 820;
-export const MEDIUM_VIEWPORT_MIN_WIDTH = 600;
 export const LARGE_VIEWPORT_WIDTH = 1366;
 
 // Helper function to create viewport object with 16:9 aspect ratio

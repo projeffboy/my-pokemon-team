@@ -2,8 +2,11 @@ import { test, expect } from "fixtures";
 import { selectPokemon, selectMove } from "helper";
 
 test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
-  test.beforeEach(async ({ context, browserName }) => {
-    if (browserName === "chromium" || browserName === "Mobile Chrome") {
+  test.beforeEach(async ({ context, browserName }, testInfo) => {
+    if (
+      browserName === "chromium" ||
+      testInfo.project.name === "Android"
+    ) {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     }
   });
@@ -11,7 +14,7 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
   test("should copy team details to clipboard", async ({
     page,
     browserName,
-  }) => {
+  }, testInfo) => {
     // 1. Select pokemon Pikachu
     // Click the name input of the first card
     await selectPokemon(page, "Pikachu");
@@ -34,7 +37,7 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     // Verify clipboard content
     let clipboardText;
 
-    if (browserName === "webkit" || browserName === "Mobile Safari") {
+    if (browserName === "webkit" || testInfo.project.name === "iPhone") {
       // WebKit workaround: Paste into a textarea
       await page.evaluate(() => {
         const textarea = document.createElement("textarea");

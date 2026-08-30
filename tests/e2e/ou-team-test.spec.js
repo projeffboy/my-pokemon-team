@@ -39,18 +39,16 @@ const doBasicCheck = async page => {
 };
 
 test.describe("Importing an OU team", () => {
-  test.beforeEach(async ({}, testInfo) => {
-    test.skip(
-      !["Desktop Safari"].includes(testInfo.project.name),
-      "This test only runs on medium viewport (desktop Safari)"
-    );
-  });
-
   test("should import and modify OU team correctly", async ({
     page,
     browserName,
     context,
-  }) => {
+  }, testInfo) => {
+    test.skip(
+      !["Desktop Safari"].includes(testInfo.project.name),
+      "This test only runs on medium viewport (desktop Safari)"
+    );
+
     test.setTimeout(60000);
 
     if (browserName === "chromium") {

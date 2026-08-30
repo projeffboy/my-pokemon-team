@@ -1,6 +1,6 @@
 import { test, expect } from "fixtures";
 
-// Test configuration based on ui-tests.md requirements
+// Test configuration based on component-tests.md requirements
 
 test.describe("Footer Tests", () => {
   test("should test Manual button and dialog", async ({ page }) => {
