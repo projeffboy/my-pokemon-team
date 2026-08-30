@@ -4,6 +4,7 @@ import {
   SMALL_VIEWPORT_WIDTH,
   MEDIUM_VIEWPORT_WIDTH,
   LARGE_VIEWPORT_WIDTH,
+  selectPokemon,
 } from "helper";
 
 // Test configuration based on ui-main-tests.md requirements for Team Viewer Unit Tests
@@ -16,11 +17,9 @@ test.describe("Team Viewer - Unit Tests", () => {
       page,
     }) => {
       // Verify there are exactly 6 question mark sprites in the team viewer
-      // TODO: be more specific with locating the tablists in this file, use an aria-label
       const questionMarkSprites = page
-        .getByRole("tablist")
-        .first()
-        .getByRole("img", { name: "question-mark" });
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .locator('img[alt="question-mark"]');
       await expect(questionMarkSprites).toHaveCount(6);
     });
 
@@ -28,16 +27,42 @@ test.describe("Team Viewer - Unit Tests", () => {
       page,
     }) => {
       // The first slot should have the selected attribute
-      const firstSlot = page.getByRole("tab", { name: /question-mark 1/ });
+      const firstSlot = page.getByRole("tab", { name: "Pokemon 1 (empty)" });
       await expect(firstSlot).toHaveAttribute("aria-selected", "true");
 
       // Verify other slots are not selected
       for (let i = 2; i <= 6; i++) {
         const slot = page.getByRole("tab", {
-          name: `question-mark ${i}`,
+          name: `Pokemon ${i} (empty)`,
         });
         await expect(slot).toHaveAttribute("aria-selected", "false");
       }
+    });
+
+    test("should include the selected Pokemon name in the slot label", async ({
+      page,
+    }) => {
+      await selectPokemon(page, "Mr. Mime-Galar");
+
+      await expect(
+        page.getByRole("tab", { name: "Pokemon 1 (Mr. Mime-Galar)" }),
+      ).toBeVisible();
+    });
+
+    test("should display the selected Pokemon slot", async ({ page }) => {
+      const fourthSlot = page.getByRole("tab", {
+        name: "Pokemon 4 (empty)",
+      });
+
+      await fourthSlot.click();
+
+      await expect(fourthSlot).toHaveAttribute("aria-selected", "true");
+      const panel = page.getByRole("tabpanel", {
+        name: "Pokemon 4 (empty)",
+      });
+      await expect(
+        panel.getByRole("region", { name: "Pokemon 4" }),
+      ).toBeVisible();
     });
   });
 
@@ -48,24 +73,24 @@ test.describe("Team Viewer - Unit Tests", () => {
       page,
     }) => {
       // Get the team viewer tabs container
-      const teamViewerTabs = page.getByRole("tablist").first();
+      const teamViewerTabs = page.getByRole("tablist", {
+        name: "Pokemon team slots",
+      });
       await expect(teamViewerTabs).toBeVisible();
 
       // Verify all 3 slot pairs exist with question mark sprites
       const slotPairs = [
-        { name: /question-mark question-mark 1 - 2/, label: "1 - 2" },
-        { name: /question-mark question-mark 3 - 4/, label: "3 - 4" },
-        { name: /question-mark question-mark 5 - 6/, label: "5 - 6" },
+        "Pokemon 1 (empty) and Pokemon 2 (empty)",
+        "Pokemon 3 (empty) and Pokemon 4 (empty)",
+        "Pokemon 5 (empty) and Pokemon 6 (empty)",
       ];
 
-      for (const slotPair of slotPairs) {
-        const slot = page.getByRole("tab", { name: slotPair.name });
+      for (const name of slotPairs) {
+        const slot = page.getByRole("tab", { name });
         await expect(slot).toBeVisible();
 
         // Each slot pair should have 2 question mark images
-        const questionMarkImgs = slot.getByRole("img", {
-          name: "question-mark",
-        });
+        const questionMarkImgs = slot.locator('img[alt="question-mark"]');
         await expect(questionMarkImgs).toHaveCount(2);
       }
     });
@@ -75,20 +100,41 @@ test.describe("Team Viewer - Unit Tests", () => {
     }) => {
       // The first slot pair (1-2) should have the selected attribute
       const firstSlotPair = page.getByRole("tab", {
-        name: /question-mark question-mark 1 - 2/,
+        name: "Pokemon 1 (empty) and Pokemon 2 (empty)",
       });
       await expect(firstSlotPair).toHaveAttribute("aria-selected", "true");
 
       // Verify other slot pairs are not selected
       const otherSlotPairs = [
-        /question-mark question-mark 3 - 4/,
-        /question-mark question-mark 5 - 6/,
+        "Pokemon 3 (empty) and Pokemon 4 (empty)",
+        "Pokemon 5 (empty) and Pokemon 6 (empty)",
       ];
 
       for (const pattern of otherSlotPairs) {
         const slot = page.getByRole("tab", { name: pattern });
         await expect(slot).toHaveAttribute("aria-selected", "false");
       }
+    });
+
+    test("should display both Pokemon in the selected slot pair", async ({
+      page,
+    }) => {
+      const finalSlotPair = page.getByRole("tab", {
+        name: "Pokemon 5 (empty) and Pokemon 6 (empty)",
+      });
+
+      await finalSlotPair.click();
+
+      await expect(finalSlotPair).toHaveAttribute("aria-selected", "true");
+      const panel = page.getByRole("tabpanel", {
+        name: "Pokemon 5 (empty) and Pokemon 6 (empty)",
+      });
+      await expect(
+        panel.getByRole("region", { name: "Pokemon 5" }),
+      ).toBeVisible();
+      await expect(
+        panel.getByRole("region", { name: "Pokemon 6" }),
+      ).toBeVisible();
     });
   });
 
@@ -99,7 +145,7 @@ test.describe("Team Viewer - Unit Tests", () => {
       // In large viewport, there should be no team viewer tabs
       // Check that no team viewer slots exist (tabs with question mark sprites)
       await expect(
-        page.getByRole("tab", { name: /question-mark/ }),
+        page.getByRole("tablist", { name: "Pokemon team slots" }),
       ).toHaveCount(0);
     });
   });
