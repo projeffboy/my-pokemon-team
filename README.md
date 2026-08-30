@@ -30,7 +30,6 @@ If you want to help me write code for new features, I would suggest that you sav
 - [Javascript React framework](https://reactjs.org/)
 - [Material UI](https://material-ui.com/)
 - [MobX state management](https://mobx.js.org/)
-- [Google Analytics](https://support.google.com/analytics/answer/1008015?hl=en)
 
 ## Minor Credits
 
