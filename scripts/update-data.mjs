@@ -34,9 +34,10 @@ function convertExport(source, exportName, checkTypes = true) {
     throw new Error(`Could not find the ${exportName} export`);
   }
 
-  const header = checkTypes
-    ? ""
-    : "// @ts-nocheck -- callbacks depend on Pokemon Showdown simulator types.\n";
+  const header =
+    checkTypes ? "" : (
+      "// @ts-nocheck -- callbacks depend on Pokemon Showdown simulator types.\n"
+    );
   return `${header}${converted.trimEnd()}\n\nexport default data;\n`;
 }
 
@@ -57,7 +58,9 @@ async function updateDirectDataset(
   targetName,
   checkTypes = true,
 ) {
-  const source = await read(path.join(showdownRoot, "data", `${sourceName}.ts`));
+  const source = await read(
+    path.join(showdownRoot, "data", `${sourceName}.ts`),
+  );
   await fs.writeFile(
     path.join(dataRoot, `${targetName}.ts`),
     convertExport(source, exportName, checkTypes),

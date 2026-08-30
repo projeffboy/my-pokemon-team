@@ -8,44 +8,45 @@ test.describe("Team Checklist - Integration Tests", () => {
     await page.getByRole("tab", { name: /Checklist/ }).click();
   });
 
-  const CHECKLIST_MAPPINGS: Record<string, { medium: string; small: string }> = {
-    "Entry Hazard": {
-      medium: "Hazard",
-      small: "Hazard",
-    },
-    "Spinner/Defogger": {
-      medium: "Spinner",
-      small: "Spin",
-    },
-    "Reliable Recovery": {
-      medium: "Recovery",
-      small: "Heal",
-    },
-    Cleric: {
-      medium: "Cleric",
-      small: "Cleric",
-    },
-    "Status Move": {
-      medium: "Status",
-      small: "Status",
-    },
-    Phazer: {
-      medium: "Phazer",
-      small: "Phazer",
-    },
-    "Boosting Move": {
-      medium: "Setup",
-      small: "Setup",
-    },
-    "Volt-turn Move": {
-      medium: "Volt-turn",
-      small: "Volturn",
-    },
-    "Choice Item": {
-      medium: "Choice",
-      small: "Choice",
-    },
-  };
+  const CHECKLIST_MAPPINGS: Record<string, { medium: string; small: string }> =
+    {
+      "Entry Hazard": {
+        medium: "Hazard",
+        small: "Hazard",
+      },
+      "Spinner/Defogger": {
+        medium: "Spinner",
+        small: "Spin",
+      },
+      "Reliable Recovery": {
+        medium: "Recovery",
+        small: "Heal",
+      },
+      Cleric: {
+        medium: "Cleric",
+        small: "Cleric",
+      },
+      "Status Move": {
+        medium: "Status",
+        small: "Status",
+      },
+      Phazer: {
+        medium: "Phazer",
+        small: "Phazer",
+      },
+      "Boosting Move": {
+        medium: "Setup",
+        small: "Setup",
+      },
+      "Volt-turn Move": {
+        medium: "Volt-turn",
+        small: "Volturn",
+      },
+      "Choice Item": {
+        medium: "Choice",
+        small: "Choice",
+      },
+    };
 
   const expectChecklistItemChecked = async (page: Page, itemName: string) => {
     const viewportSize = page.viewportSize();
@@ -69,7 +70,7 @@ test.describe("Team Checklist - Integration Tests", () => {
     // We expect it to have this style
     await expect(iconSvg).toHaveAttribute(
       "style",
-      /color: #16a085|color: rgb\(22, 160, 133\)/
+      /color: #16a085|color: rgb\(22, 160, 133\)/,
     );
   };
 

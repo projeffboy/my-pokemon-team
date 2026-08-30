@@ -22,7 +22,6 @@
 #### Unit Tests
 
 - For every pokemon card, expect:
-
   - the fields are empty
   - the sprite is a question mark
   - there are no moves or abilities to select (since no pokemon selected)
@@ -37,13 +36,11 @@
 ### Integration Tests
 
 - Score of a Pokemon with an ability that helps it resist a type:
-
   1. Select Snorlax with ability Thick Fat. Expect that:
      - the Fire, Ice score is +1
      - hovering over Fire, Ice show that they do 0.5x
 
 - Score of a Pokemon with an ability that makes it immune to a type:
-
   1. Select Rotom-Wash with ability Levitate. Expect that:
      - the Ground score is +1.5
      - hovering over Ground shows that it does 0x
@@ -79,7 +76,6 @@
 #### Integration Tests
 
 - Format
-
   1. Select format OU
      - Pokemon that can be selected:
        - Meowth
@@ -91,7 +87,6 @@
        - Dracovish
 
 - Type
-
   1. Select type electric
      - Pokemon that can be selected:
        - Pichu
@@ -106,7 +101,6 @@
        - Reshiram
 
 - Region
-
   1. Select region Kalos
      - Pokemon that can be selected:
        - Chespin
@@ -119,7 +113,6 @@
        - Rowlet
 
 - Moves
-
   1. Select only viable moves.
   2. Select pokemon Muk-Alola:
      - Moves that can be selected:
@@ -134,7 +127,6 @@
        - Poison Fang
 
 - All filters
-
   1. Select format UU, type Grass, region Sinnoh, moves "Viable".
      - Pokemon that can be selected:
        - Torterra
@@ -182,14 +174,9 @@ Each (non-header) row is its own test:
 
 Each test case begins with: 1. Go to the "Save/Load Team" tab and press the "Import/Export Team" button.
 
-- Manually fill in a pokemon
+- Manually fill in a pokemon 2. In the "Pokemon Showdown Team Raw Text", type Gigalith. 3. Press "Update". Expect that Gigalith shows up in the first card as a selected pokemon.
 
-  2. In the "Pokemon Showdown Team Raw Text", type Gigalith.
-  3. Press "Update". Expect that Gigalith shows up in the first card as a selected pokemon.
-
-- Paste in a pokemon's details
-
-  2. In the "Pokemon Showdown Team Raw Text", paste this in:
+- Paste in a pokemon's details 2. In the "Pokemon Showdown Team Raw Text", paste this in:
 
   ```
   Weepingbell @

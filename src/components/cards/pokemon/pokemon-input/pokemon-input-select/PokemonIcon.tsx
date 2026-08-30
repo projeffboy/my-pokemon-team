@@ -33,7 +33,8 @@ export default function PokemonIcon(props: PokemonIconProps) {
     if (pkmnProp === "pkmn") {
       type = PokemonIconsSheet;
 
-      const pokedexNumber = altSpriteNumMap[value] ?? pokedexMap[value]?.num ?? 0;
+      const pokedexNumber =
+        altSpriteNumMap[value] ?? pokedexMap[value]?.num ?? 0;
 
       // Copied from Pokemon Showdown code
       left = (pokedexNumber % 12) * 40;

@@ -16,15 +16,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const ouTeamText = fs.readFileSync(
   path.join(__dirname, "sample-teams/ou-team.txt"),
-  "utf8"
+  "utf8",
 );
 
 const doBasicCheck = async (page: Page) => {
   await expect(
-    page.getByRole("region", { name: "Team Defence Card" })
+    page.getByRole("region", { name: "Team Defence Card" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("region", { name: "Team Type Coverage Card" })
+    page.getByRole("region", { name: "Team Type Coverage Card" }),
   ).toBeVisible();
 
   const typeMap = { Fire: "FIR", Water: "WTR", Grass: "GRS" };
@@ -50,7 +50,7 @@ test.describe("Importing an OU team", () => {
   }, testInfo) => {
     test.skip(
       !["Desktop Safari"].includes(testInfo.project.name),
-      "This test only runs on medium viewport (desktop Safari)"
+      "This test only runs on medium viewport (desktop Safari)",
     );
 
     test.setTimeout(60000);
@@ -61,7 +61,7 @@ test.describe("Importing an OU team", () => {
 
     // Ensure page is loaded
     await expect(
-      page.getByRole("heading", { name: "My Pokemon Team" })
+      page.getByRole("heading", { name: "My Pokemon Team" }),
     ).toBeVisible();
 
     // 1. Import team
@@ -114,7 +114,7 @@ test.describe("Importing an OU team", () => {
     if (browserName === "chromium") {
       await page.waitForTimeout(500);
       const clipboardText = await page.evaluate(() =>
-        navigator.clipboard.readText()
+        navigator.clipboard.readText(),
       );
       expect(clipboardText).toContain("Iron Moth");
       expect(clipboardText).toContain("Discharge");

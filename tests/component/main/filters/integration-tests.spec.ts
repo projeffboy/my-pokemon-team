@@ -9,7 +9,7 @@ test.describe("Filters Integration Tests", () => {
     page: Page,
     name: string,
     shouldBeSelectable: boolean,
-    expectedNameInList: string | null = null
+    expectedNameInList: string | null = null,
   ) => {
     const pokemonInput = page.getByRole("combobox", {
       name: "Pokemon 1's name",
@@ -24,7 +24,7 @@ test.describe("Filters Integration Tests", () => {
   const checkPokemonSelectable = async (
     page: Page,
     name: string,
-    expectedNameInList?: string
+    expectedNameInList?: string,
   ) => {
     await checkPokemonVisibility(page, name, true, expectedNameInList);
   };
@@ -38,7 +38,7 @@ test.describe("Filters Integration Tests", () => {
   const checkMoveVisilibility = async (
     page: Page,
     moveName: string,
-    shouldBeSelectable: boolean
+    shouldBeSelectable: boolean,
   ) => {
     const moveInput = page.getByRole("combobox", {
       name: "Pokemon 1's move1",
@@ -63,7 +63,7 @@ test.describe("Filters Integration Tests", () => {
   const selectFilterOption = async (
     page: Page,
     filterName: string,
-    optionName: string
+    optionName: string,
   ) => {
     const label = page.getByText(filterName, { exact: true });
     // MUI's Select trigger has role="combobox"

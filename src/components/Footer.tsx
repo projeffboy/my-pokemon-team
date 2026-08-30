@@ -20,7 +20,7 @@ export default function Footer() {
 
   const handleModeChange = (
     _event: React.MouseEvent<HTMLElement>,
-    newMode: ColorMode | null
+    newMode: ColorMode | null,
   ) => {
     if (newMode) setMode(newMode);
   };

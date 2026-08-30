@@ -32,54 +32,54 @@ function TypeChart() {
   };
 
   return (
-      <Box sx={{ flexGrow: 1, backgroundColor: "background.paper" }}>
-        <AppBar position="static">
-          <Tabs value={value} onChange={handleChange} centered>
-            <Tab label="Table" />
-            <Tab label="List" />
-            <Tab label="Infographic" />
-          </Tabs>
-        </AppBar>
-        {value === 0 && (
-          <TabContainer>
-            <img
-              alt="Bulbapedia Pokemon Type Chart"
-              src={TypeChartPng}
-              style={{ maxWidth: "100%" }}
-            />
-          </TabContainer>
-        )}
-        {value === 1 && (
-          <TabContainer>
-            <Typography
-              variant={typoVariant()}
-              style={{ paddingBottom: 20, textAlign: "center" }}
-            >
-              Strong against → Type → Strong against
-            </Typography>
-            <img
-              alt="List Pokemon Type Chart"
-              src="https://i.pinimg.com/originals/7b/c6/58/7bc65872baa79ac690e9e4ae1aa8cb64.png"
-              style={{ maxWidth: "100%" }}
-            />
-          </TabContainer>
-        )}
-        {value === 2 && (
-          <TabContainer>
-            <Typography
-              variant={typoVariant()}
-              style={{ paddingBottom: 20, textAlign: "center" }}
-            >
-              Also applies for Gen 7-9
-            </Typography>
-            <img
-              alt="Infographic Type Chart"
-              src="https://i.imgur.com/fylyCdC.png"
-              style={{ maxWidth: "100%" }}
-            />
-          </TabContainer>
-        )}
-      </Box>
+    <Box sx={{ flexGrow: 1, backgroundColor: "background.paper" }}>
+      <AppBar position="static">
+        <Tabs value={value} onChange={handleChange} centered>
+          <Tab label="Table" />
+          <Tab label="List" />
+          <Tab label="Infographic" />
+        </Tabs>
+      </AppBar>
+      {value === 0 && (
+        <TabContainer>
+          <img
+            alt="Bulbapedia Pokemon Type Chart"
+            src={TypeChartPng}
+            style={{ maxWidth: "100%" }}
+          />
+        </TabContainer>
+      )}
+      {value === 1 && (
+        <TabContainer>
+          <Typography
+            variant={typoVariant()}
+            style={{ paddingBottom: 20, textAlign: "center" }}
+          >
+            Strong against → Type → Strong against
+          </Typography>
+          <img
+            alt="List Pokemon Type Chart"
+            src="https://i.pinimg.com/originals/7b/c6/58/7bc65872baa79ac690e9e4ae1aa8cb64.png"
+            style={{ maxWidth: "100%" }}
+          />
+        </TabContainer>
+      )}
+      {value === 2 && (
+        <TabContainer>
+          <Typography
+            variant={typoVariant()}
+            style={{ paddingBottom: 20, textAlign: "center" }}
+          >
+            Also applies for Gen 7-9
+          </Typography>
+          <img
+            alt="Infographic Type Chart"
+            src="https://i.imgur.com/fylyCdC.png"
+            style={{ maxWidth: "100%" }}
+          />
+        </TabContainer>
+      )}
+    </Box>
   );
 }
 

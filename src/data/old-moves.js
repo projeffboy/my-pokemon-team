@@ -827,7 +827,7 @@ export default {
             pokemon,
             "Attract",
             "[from] ability: Cute Charm",
-            "[of] " + source
+            "[of] " + source,
           );
         } else if (effect.id === "destinyknot") {
           this.add(
@@ -835,7 +835,7 @@ export default {
             pokemon,
             "Attract",
             "[from] item: Destiny Knot",
-            "[of] " + source
+            "[of] " + source,
           );
         } else {
           this.add("-start", pokemon, "Attract");
@@ -857,7 +857,7 @@ export default {
           "-activate",
           pokemon,
           "move: Attract",
-          "[of] " + this.effectData.source
+          "[of] " + this.effectData.source,
         );
         if (this.randomChance(1, 2)) {
           this.add("cant", pokemon, "Attract");
@@ -1262,7 +1262,7 @@ export default {
       // move.allies = pokemon.side.pokemon.filter(ally => ally === pokemon || !ally.fainted && !ally.status);
       // MODIFIED
       move.allies = pokemon.side.pokemon.filter(
-        ally => (ally === pokemon || !ally.fainted) && !ally.status
+        ally => (ally === pokemon || !ally.fainted) && !ally.status,
       );
       move.multihit = move.allies.length;
     },
@@ -1347,7 +1347,7 @@ export default {
           target,
           source,
           move,
-          myItem
+          myItem,
         ) ||
         !target.setItem(myItem)
       ) {
@@ -1359,7 +1359,7 @@ export default {
         target,
         myItem.name,
         "[from] move: Bestow",
-        "[of] " + source
+        "[of] " + source,
       );
     },
     secondary: false,
@@ -2000,7 +2000,7 @@ export default {
           item.name,
           "[from] stealeat",
           "[move] Bug Bite",
-          "[of] " + source
+          "[of] " + source,
         );
         if (this.singleEvent("Eat", item, null, source, null, null)) {
           this.runEvent("EatItem", source, null, null, item);
@@ -2143,14 +2143,14 @@ export default {
     self: {
       onHit: function (pokemon) {
         pokemon.setType(
-          pokemon.getTypes(true).map(type => (type === "Fire" ? "???" : type))
+          pokemon.getTypes(true).map(type => (type === "Fire" ? "???" : type)),
         );
         this.add(
           "-start",
           pokemon,
           "typechange",
           pokemon.types.join("/"),
-          "[from] move: Burn Up"
+          "[from] move: Burn Up",
         );
       },
     },
@@ -3042,7 +3042,7 @@ export default {
           source,
           target,
           move,
-          yourItem
+          yourItem,
         ) ||
         !source.setItem(yourItem)
       ) {
@@ -3054,7 +3054,7 @@ export default {
         source,
         yourItem,
         "[from] move: Covet",
-        "[of] " + target
+        "[of] " + target,
       );
     },
     secondary: false,
@@ -3219,8 +3219,8 @@ export default {
             (120 * (100 * Math.floor((target.hp * 4096) / target.maxhp)) +
               2048 -
               1) /
-              4096
-          ) / 100
+              4096,
+          ) / 100,
         ) || 1
       );
     },
@@ -3346,7 +3346,7 @@ export default {
       this.add("-fail", pokemon, "move: Dark Void");
       this.add(
         "-hint",
-        "Only a Pokemon whose form is Darkrai can use this move."
+        "Only a Pokemon whose form is Darkrai can use this move.",
       );
       return null;
     },
@@ -3482,7 +3482,7 @@ export default {
             target.side,
             this.getEffect(targetCondition).name,
             "[from] move: Defog",
-            "[of] " + target
+            "[of] " + target,
           );
           success = true;
         }
@@ -3494,7 +3494,7 @@ export default {
             source.side,
             this.getEffect(sideCondition).name,
             "[from] move: Defog",
-            "[of] " + source
+            "[of] " + source,
           );
           success = true;
         }
@@ -3727,7 +3727,7 @@ export default {
                   "Disable",
                   moveSlot.move,
                   "[from] ability: Cursed Body",
-                  "[of] " + source
+                  "[of] " + source,
                 );
               } else {
                 this.add("-start", pokemon, "Disable", moveSlot.move);
@@ -4557,7 +4557,7 @@ export default {
             "-fieldstart",
             "move: Electric Terrain",
             "[from] ability: " + effect,
-            "[of] " + source
+            "[of] " + source,
           );
         } else {
           this.add("-fieldstart", "move: Electric Terrain");
@@ -4616,7 +4616,7 @@ export default {
       let ratio = pokemon.getStat("spe") / target.getStat("spe");
       this.debug(
         [40, 60, 80, 120, 150][Math.floor(ratio) > 4 ? 4 : Math.floor(ratio)] +
-          " bp"
+          " bp",
       );
       if (ratio >= 4) {
         return 150;
@@ -4752,9 +4752,8 @@ export default {
           "struggle",
           "transform",
         ];
-        let moveIndex = target.lastMove
-          ? target.moves.indexOf(target.lastMove.id)
-          : -1;
+        let moveIndex =
+          target.lastMove ? target.moves.indexOf(target.lastMove.id) : -1;
         if (
           !target.lastMove ||
           target.lastMove.isZ ||
@@ -4957,7 +4956,7 @@ export default {
           "-ability",
           target,
           this.getAbility(target.ability).name,
-          "[from] move: Entrainment"
+          "[from] move: Entrainment",
         );
         return;
       }
@@ -5566,7 +5565,7 @@ export default {
         this.add("-fail", pokemon);
         this.add(
           "-hint",
-          "First Impression only works on your first turn out."
+          "First Impression only works on your first turn out.",
         );
         return null;
       }
@@ -5877,7 +5876,7 @@ export default {
           source,
           source,
           move,
-          item
+          item,
         )
       )
         return false;
@@ -5966,7 +5965,7 @@ export default {
             { def: 1 },
             target,
             source,
-            this.getMove("Flower Shield")
+            this.getMove("Flower Shield"),
           ) || success;
       }
       return success;
@@ -6297,7 +6296,7 @@ export default {
         target,
         "typeadd",
         "Grass",
-        "[from] move: Forest's Curse"
+        "[from] move: Forest's Curse",
       );
     },
     secondary: false,
@@ -6476,7 +6475,7 @@ export default {
       return this.clampIntRange(
         move.basePower * pokemon.volatiles.furycutter.multiplier,
         1,
-        160
+        160,
       );
     },
     category: "Physical",
@@ -6668,7 +6667,7 @@ export default {
           pokemon.abilityData,
           pokemon,
           pokemon,
-          "gastroacid"
+          "gastroacid",
         );
       },
     },
@@ -7070,7 +7069,7 @@ export default {
             "-fieldstart",
             "move: Grassy Terrain",
             "[from] ability: " + effect,
-            "[of] " + source
+            "[of] " + source,
           );
         } else {
           this.add("-fieldstart", "move: Grassy Terrain");
@@ -7123,7 +7122,7 @@ export default {
       onStart: function () {
         this.add("-fieldstart", "move: Gravity");
         for (const pokemon of this.sides[0].active.concat(
-          this.sides[1].active
+          this.sides[1].active,
         )) {
           let applies = false;
           if (
@@ -7143,7 +7142,7 @@ export default {
                 "-end",
                 pokemon.volatiles["twoturnmove"].source,
                 "Sky Drop",
-                "[interrupt]"
+                "[interrupt]",
               );
             }
             pokemon.removeVolatile("skydrop");
@@ -7268,7 +7267,7 @@ export default {
                 "-activate",
                 source,
                 "move: Grudge",
-                this.getMove(source.lastMove.id).name
+                this.getMove(source.lastMove.id).name,
               );
             }
           }
@@ -7342,7 +7341,7 @@ export default {
         source,
         target,
         "def, spd",
-        "[from] move: Guard Swap"
+        "[from] move: Guard Swap",
       );
     },
     secondary: false,
@@ -7366,7 +7365,7 @@ export default {
         this.add("-zbroken", target);
         return this.clampIntRange(
           Math.ceil(Math.floor((target.hp * 3) / 4) / 4 - 0.5),
-          1
+          1,
         );
       }
       return this.clampIntRange(Math.floor((target.hp * 3) / 4), 1);
@@ -7826,7 +7825,7 @@ export default {
             "-heal",
             target,
             target.getHealth,
-            "[from] move: Healing Wish"
+            "[from] move: Healing Wish",
           );
           positions[target.position] = false;
         }
@@ -8674,7 +8673,7 @@ export default {
       }
       this.add(
         "-hint",
-        "Only a Pokemon whose form is Hoopa Unbound can use this move."
+        "Only a Pokemon whose form is Hoopa Unbound can use this move.",
       );
       if (pokemon.template.species === "Hoopa") {
         this.add("-fail", pokemon, "move: Hyperspace Fury", "[forme]");
@@ -9466,7 +9465,7 @@ export default {
             { atk: -2 },
             source,
             target,
-            this.getMove("King's Shield")
+            this.getMove("King's Shield"),
           );
         }
         return null;
@@ -9477,7 +9476,7 @@ export default {
             { atk: -2 },
             source,
             target,
-            this.getMove("King's Shield")
+            this.getMove("King's Shield"),
           );
         }
       },
@@ -9512,7 +9511,7 @@ export default {
           target,
           source,
           move,
-          item
+          item,
         )
       )
         return;
@@ -9529,7 +9528,7 @@ export default {
             target,
             item.name,
             "[from] move: Knock Off",
-            "[of] " + source
+            "[of] " + source,
           );
         }
       }
@@ -10174,7 +10173,7 @@ export default {
             "-heal",
             target,
             target.getHealth,
-            "[from] move: Lunar Dance"
+            "[from] move: Lunar Dance",
           );
           positions[target.position] = false;
         }
@@ -10346,7 +10345,7 @@ export default {
         this.add(
           "-fieldend",
           "move: Magic Room",
-          "[of] " + this.effectData.source
+          "[of] " + this.effectData.source,
         );
       },
     },
@@ -11128,7 +11127,7 @@ export default {
           pokemon,
           pokemon,
           this.getEffect("Mind Blown"),
-          true
+          true,
         );
       }
     },
@@ -11491,7 +11490,7 @@ export default {
             "-fieldstart",
             "move: Misty Terrain",
             "[from] ability: " + effect,
-            "[of] " + source
+            "[of] " + source,
           );
         } else {
           this.add("-fieldstart", "move: Misty Terrain");
@@ -11760,7 +11759,7 @@ export default {
         pokemon,
         null,
         "multiattack",
-        "Normal"
+        "Normal",
       );
     },
     secondary: false,
@@ -12282,7 +12281,7 @@ export default {
         target.getHealth,
         pokemon,
         pokemon.getHealth,
-        "[from] move: Pain Split"
+        "[from] move: Pain Split",
       );
     },
     secondary: false,
@@ -12683,7 +12682,7 @@ export default {
           item.name,
           "[from] stealeat",
           "[move] Pluck",
-          "[of] " + source
+          "[of] " + source,
         );
         if (this.singleEvent("Eat", item, null, source, null, null)) {
           this.runEvent("EatItem", source, null, null, item);
@@ -12992,7 +12991,7 @@ export default {
         source,
         target,
         "atk, spa",
-        "[from] move: Power Swap"
+        "[from] move: Power Swap",
       );
     },
     secondary: false,
@@ -13377,7 +13376,7 @@ export default {
             "-fieldstart",
             "move: Psychic Terrain",
             "[from] ability: " + effect,
-            "[of] " + source
+            "[of] " + source,
           );
         } else {
           this.add("-fieldstart", "move: Psychic Terrain");
@@ -13903,7 +13902,7 @@ export default {
             pokemon,
             "Leech Seed",
             "[from] move: Rapid Spin",
-            "[of] " + pokemon
+            "[of] " + pokemon,
           );
         }
         let sideConditions = [
@@ -13919,7 +13918,7 @@ export default {
               pokemon.side,
               this.getEffect(condition).name,
               "[from] move: Rapid Spin",
-              "[of] " + pokemon
+              "[of] " + pokemon,
             );
           }
         }
@@ -14131,7 +14130,7 @@ export default {
         source,
         "typechange",
         "[from] move: Reflect Type",
-        "[of] " + target
+        "[of] " + target,
       );
       let newBaseTypes = target.getTypes(true).filter(type => type !== "???");
       if (!newBaseTypes.length) {
@@ -14202,12 +14201,12 @@ export default {
     onAfterMoveSecondarySelf: function (pokemon, target, move) {
       if (move.willChangeForme) {
         pokemon.formeChange(
-          pokemon.template.speciesid === "meloettapirouette"
-            ? "Meloetta"
-            : "Meloetta-Pirouette",
+          pokemon.template.speciesid === "meloettapirouette" ?
+            "Meloetta"
+          : "Meloetta-Pirouette",
           this.effect,
           false,
-          "[msg]"
+          "[msg]",
         );
       }
     },
@@ -14661,7 +14660,7 @@ export default {
           source,
           this.getAbility(source.ability).name,
           "[from] move: Role Play",
-          "[of] " + target
+          "[of] " + target,
         );
         return;
       }
@@ -15887,7 +15886,7 @@ export default {
           "move: Skill Swap",
           "",
           "",
-          "[of] " + target
+          "[of] " + target,
         );
       } else {
         this.add(
@@ -15896,7 +15895,7 @@ export default {
           "move: Skill Swap",
           targetAbility,
           sourceAbility,
-          "[of] " + target
+          "[of] " + target,
         );
       }
       this.singleEvent("End", sourceAbility, source.abilityData, source);
@@ -16138,7 +16137,7 @@ export default {
             "-end",
             target.volatiles["twoturnmove"].source,
             "Sky Drop",
-            "[interrupt]"
+            "[interrupt]",
           );
         }
       },
@@ -17024,7 +17023,7 @@ export default {
         if (!pokemon.isGrounded()) return;
         let damageAmounts = [0, 3, 4, 6]; // 1/8, 1/6, 1/4
         this.damage(
-          (damageAmounts[this.effectData.layers] * pokemon.maxhp) / 24
+          (damageAmounts[this.effectData.layers] * pokemon.maxhp) / 24,
         );
       },
     },
@@ -17089,7 +17088,7 @@ export default {
             target,
             "move: Spite",
             this.getMove(target.lastMove.id).name,
-            ppDeducted
+            ppDeducted,
           );
           return;
         }
@@ -17222,7 +17221,7 @@ export default {
         let typeMod = this.clampIntRange(
           pokemon.runEffectiveness("Rock"),
           -6,
-          6
+          6,
         );
         this.damage((pokemon.maxhp * Math.pow(2, typeMod)) / 8);
       },
@@ -17306,7 +17305,7 @@ export default {
           { spe: -1 },
           pokemon,
           pokemon.side.foe.active[0],
-          this.getMove("stickyweb")
+          this.getMove("stickyweb"),
         );
       },
     },
@@ -17345,7 +17344,7 @@ export default {
           { def: 1, spd: 1 },
           target,
           target,
-          this.getMove("stockpile")
+          this.getMove("stockpile"),
         );
       },
       onRestart: function (target) {
@@ -17356,7 +17355,7 @@ export default {
           { def: 1, spd: 1 },
           target,
           target,
-          this.getMove("stockpile")
+          this.getMove("stockpile"),
         );
       },
       onEnd: function (target) {
@@ -17366,7 +17365,7 @@ export default {
           { def: layers, spd: layers },
           target,
           target,
-          this.getMove("stockpile")
+          this.getMove("stockpile"),
         );
         this.add("-end", target, "Stockpile");
       },
@@ -17736,7 +17735,7 @@ export default {
             this.calcRecoilDamage(damage, move),
             source,
             target,
-            "recoil"
+            "recoil",
           );
         }
         if (move.drain) {
@@ -17744,7 +17743,7 @@ export default {
             Math.ceil((damage * move.drain[0]) / move.drain[1]),
             source,
             target,
-            "drain"
+            "drain",
           );
         }
         this.singleEvent("AfterSubDamage", move, null, target, source, move);
@@ -17999,8 +17998,8 @@ export default {
       let healedBy = this.heal(
         this.modify(
           pokemon.maxhp,
-          healAmount[pokemon.volatiles["stockpile"].layers - 1]
-        )
+          healAmount[pokemon.volatiles["stockpile"].layers - 1],
+        ),
       );
       pokemon.removeVolatile("stockpile");
       return healedBy;
@@ -18105,7 +18104,7 @@ export default {
             target,
             source,
             move,
-            myItem
+            myItem,
           )) ||
         (yourItem &&
           !this.singleEvent(
@@ -18115,7 +18114,7 @@ export default {
             source,
             target,
             move,
-            yourItem
+            yourItem,
           ))
       ) {
         if (yourItem) target.item = yourItem.id;
@@ -18132,7 +18131,7 @@ export default {
           target,
           yourItem,
           "[silent]",
-          "[from] move: Switcheroo"
+          "[from] move: Switcheroo",
         );
       }
       if (yourItem) {
@@ -18144,7 +18143,7 @@ export default {
           source,
           myItem,
           "[silent]",
-          "[from] move: Switcheroo"
+          "[from] move: Switcheroo",
         );
       }
     },
@@ -18459,7 +18458,7 @@ export default {
         pokemon,
         null,
         "technoblast",
-        "Normal"
+        "Normal",
       );
     },
     secondary: false,
@@ -18523,7 +18522,7 @@ export default {
       onStart: function (target) {
         if (
           ["Diglett", "Dugtrio", "Palossand", "Sandygast"].includes(
-            target.baseTemplate.baseSpecies
+            target.baseTemplate.baseSpecies,
           ) ||
           target.baseTemplate.species === "Gengar-Mega"
         ) {
@@ -18605,7 +18604,7 @@ export default {
           source,
           target,
           move,
-          yourItem
+          yourItem,
         ) ||
         !source.setItem(yourItem)
       ) {
@@ -18617,7 +18616,7 @@ export default {
         source,
         yourItem,
         "[from] move: Thief",
-        "[of] " + target
+        "[of] " + target,
       );
     },
     secondary: false,
@@ -19033,7 +19032,7 @@ export default {
             "-sideend",
             pokemon.side,
             "move: Toxic Spikes",
-            "[of] " + pokemon
+            "[of] " + pokemon,
           );
           pokemon.side.removeSideCondition("toxicspikes");
         } else if (this.effectData.layers >= 2) {
@@ -19162,7 +19161,7 @@ export default {
             target,
             source,
             move,
-            myItem
+            myItem,
           )) ||
         (yourItem &&
           !this.singleEvent(
@@ -19172,7 +19171,7 @@ export default {
             source,
             target,
             move,
-            yourItem
+            yourItem,
           ))
       ) {
         if (yourItem) target.item = yourItem.id;
@@ -19189,7 +19188,7 @@ export default {
           target,
           yourItem,
           "[silent]",
-          "[from] move: Trick"
+          "[from] move: Trick",
         );
       }
       if (yourItem) {
@@ -19225,7 +19224,7 @@ export default {
         target,
         "typeadd",
         "Ghost",
-        "[from] move: Trick-or-Treat"
+        "[from] move: Trick-or-Treat",
       );
 
       if (target.side.active.length === 2 && target.position === 1) {
@@ -20178,7 +20177,7 @@ export default {
               target,
               target.getHealth,
               "[from] move: Wish",
-              "[wisher] " + source.name
+              "[wisher] " + source.name,
             );
         }
       },
@@ -20369,8 +20368,8 @@ export default {
             (120 * (100 * Math.floor((target.hp * 4096) / target.maxhp)) +
               2048 -
               1) /
-              4096
-          ) / 100
+              4096,
+          ) / 100,
         ) || 1
       );
     },

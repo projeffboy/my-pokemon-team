@@ -21,7 +21,7 @@ test.describe("Footer Tests", () => {
     await expect(jefferyButton).toBeVisible();
     await expect(jefferyButton).toHaveAttribute(
       "href",
-      "https://jefferytang.com"
+      "https://jefferytang.com",
     );
   });
 
@@ -45,7 +45,7 @@ test.describe("Footer Tests", () => {
     await expect(dialog).toContainText("Update Log");
 
     const link = dialog.locator(
-      "a[href='https://github.com/projeffboy/my-pokemon-team']"
+      "a[href='https://github.com/projeffboy/my-pokemon-team']",
     );
     await expect(link).toBeVisible();
   });
@@ -100,8 +100,12 @@ test.describe("Footer Tests", () => {
     const [modeCookie] = await page.context().cookies();
     expect(modeCookie.name).toBe("mui-mode");
     expect(modeCookie.value).toBe("dark");
-    expect(modeCookie.expires).toBeGreaterThan(Date.now() / 1000 + 6.9 * 24 * 60 * 60);
-    expect(modeCookie.expires).toBeLessThan(Date.now() / 1000 + 7.1 * 24 * 60 * 60);
+    expect(modeCookie.expires).toBeGreaterThan(
+      Date.now() / 1000 + 6.9 * 24 * 60 * 60,
+    );
+    expect(modeCookie.expires).toBeLessThan(
+      Date.now() / 1000 + 7.1 * 24 * 60 * 60,
+    );
 
     await page.reload();
     await expect(darkButton).toHaveAttribute("aria-pressed", "true");
@@ -120,8 +124,8 @@ test.describe("Footer Tests", () => {
   test("should follow system theme changes", async ({ page }) => {
     const systemButton = page.getByRole("button", { name: "Use system theme" });
     const body = page.locator("body");
-    const initiallyDark = await page.evaluate(() =>
-      window.matchMedia("(prefers-color-scheme: dark)").matches
+    const initiallyDark = await page.evaluate(
+      () => window.matchMedia("(prefers-color-scheme: dark)").matches,
     );
 
     await page.emulateMedia({ colorScheme: initiallyDark ? "light" : "dark" });
@@ -129,14 +133,14 @@ test.describe("Footer Tests", () => {
     await expect(systemButton).toHaveAttribute("aria-pressed", "true");
     await expect(body).toHaveCSS(
       "background-color",
-      initiallyDark ? "rgb(238, 238, 238)" : "rgb(48, 48, 48)"
+      initiallyDark ? "rgb(238, 238, 238)" : "rgb(48, 48, 48)",
     );
   });
 
   test("should not reserve ad space in development", async ({ page }) => {
     await expect(page.getByRole("contentinfo")).toHaveCSS(
       "padding-bottom",
-      "0px"
+      "0px",
     );
   });
 });

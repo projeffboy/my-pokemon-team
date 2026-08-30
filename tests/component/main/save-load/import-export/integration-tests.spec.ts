@@ -36,7 +36,7 @@ test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
   const verifyPokemonProperty = async (
     page: Page,
     value: string,
-    optionalParams: VerifyPokemonPropertyOptions = {}
+    optionalParams: VerifyPokemonPropertyOptions = {},
   ) => {
     const { property = "name", teamIndex = 0 } = optionalParams;
 

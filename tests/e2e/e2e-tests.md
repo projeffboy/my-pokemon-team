@@ -8,14 +8,10 @@
 
 ## Tests
 
-1. Creating a casual team
-
-   0. Viewport: small
+1. Creating a casual team 0. Viewport: small
    1. Create team manually from sample-teams/casual-team.txt
 
-2. Importing an OU team
-
-   0. Viewport: medium/large
+2. Importing an OU team 0. Viewport: medium/large
    1. import team from sample-teams/ou-team.txt
    2. do the basic check
    3. delete garchomp

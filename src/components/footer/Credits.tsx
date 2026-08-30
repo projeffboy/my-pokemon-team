@@ -32,44 +32,46 @@ type CreditItem = {
 type RawCreditItem = [React.ReactElement, string, string?, string?];
 
 function listItems() {
-  const items: CreditItem[] = ([
-    [<BusinessIcon />, "Nintendo, The Pokemon Company, Game Freak"],
+  const items: CreditItem[] = (
     [
-      <GestureIcon />,
-      "Dragapult Pokemon Shuffle Fanart (By Shagapult)",
-      "https://twitter.com/Shagapult",
-    ],
-    [
-      <TableChart />,
-      "Bulbapedia's Type Chart",
-      "https://bulbapedia.bulbagarden.net/wiki/Type",
-    ],
-    [
-      <ListIcon />,
-      "Non-table Type Chart",
-      "https://pinterest.ca/pin/307159637067301004/",
-    ],
-    [
-      <ColorLens />,
-      "Assigning each type a color",
-      "https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors",
-    ],
-    [
-      <People />,
-      "r/stunfisk",
-      "https://reddit.com/r/stunfisk",
-      "It's a good community",
-    ],
-    [<Code />, "Javascript React framework", "https://reactjs.org/"],
-    [<Code />, "MobX state management", "https://mobx.js.org/"],
-    [<Layers />, "Material UI", "https://material-ui.com/"],
-    [
-      <TrendingUp />,
-      "Google Analytics",
-      "https://support.google.com/analytics/answer/1008015?hl=en",
-      "For checking the viewcount and finding out where everyone is from (I didn't enable gender and age)",
-    ],
-  ] as RawCreditItem[]).map(([icon, label, href, secondary]) => ({
+      [<BusinessIcon />, "Nintendo, The Pokemon Company, Game Freak"],
+      [
+        <GestureIcon />,
+        "Dragapult Pokemon Shuffle Fanart (By Shagapult)",
+        "https://twitter.com/Shagapult",
+      ],
+      [
+        <TableChart />,
+        "Bulbapedia's Type Chart",
+        "https://bulbapedia.bulbagarden.net/wiki/Type",
+      ],
+      [
+        <ListIcon />,
+        "Non-table Type Chart",
+        "https://pinterest.ca/pin/307159637067301004/",
+      ],
+      [
+        <ColorLens />,
+        "Assigning each type a color",
+        "https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors",
+      ],
+      [
+        <People />,
+        "r/stunfisk",
+        "https://reddit.com/r/stunfisk",
+        "It's a good community",
+      ],
+      [<Code />, "Javascript React framework", "https://reactjs.org/"],
+      [<Code />, "MobX state management", "https://mobx.js.org/"],
+      [<Layers />, "Material UI", "https://material-ui.com/"],
+      [
+        <TrendingUp />,
+        "Google Analytics",
+        "https://support.google.com/analytics/answer/1008015?hl=en",
+        "For checking the viewcount and finding out where everyone is from (I didn't enable gender and age)",
+      ],
+    ] as RawCreditItem[]
+  ).map(([icon, label, href, secondary]) => ({
     icon,
     label,
     href,
@@ -81,13 +83,15 @@ function listItems() {
       <ListItemIcon>{item.icon}</ListItemIcon>
       <ListItemText
         primary={
-          item.href ? (
-            <Link style={{ color: "#2196f3" }} variant="inherit" href={item.href}>
+          item.href ?
+            <Link
+              style={{ color: "#2196f3" }}
+              variant="inherit"
+              href={item.href}
+            >
               {item.label}
             </Link>
-          ) : (
-            item.label
-          )
+          : item.label
         }
         secondary={item.secondary ? item.secondary : ""}
       />
@@ -100,45 +104,44 @@ function Credits() {
   const toggleDialog = () => setIsDialogOpen(open => !open);
 
   return (
-      <>
-        <Button
-          onClick={toggleDialog}
-          style={{ fontWeight: "initial", textTransform: "initial" }}
-        >
-          Credits
-        </Button>
-        <Dialog
-          open={isDialogOpen}
-          onClose={toggleDialog}
-          aria-labelledby="form-dialog-title"
-          style={{ height: "calc(100% - 60px)" }}
-        >
-          <DialogTitle id="form-dialog-title">Credits</DialogTitle>
-          <DialogContent>
-            <Link href="https://pokemonshowdown.com">
-              <img
-                src={pokemonShowdownLogo}
-                alt="Pokemon Showdown Logo"
-                style={{ width: "50%", minWidth: 200 }}
-              />
-            </Link>
-            <Typography variant="body1" paragraph>
-              The folks at Pokemon Showdown are very generous to let me use all
-              of their GIFs, sprites, and pokemon data. Absolutely
-              indispensable!
-            </Typography>
-            <Typography variant="h6" gutterBottom>
-              Other
-            </Typography>
-            <List>{listItems()}</List>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={toggleDialog} color="primary">
-              Go Back
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
+    <>
+      <Button
+        onClick={toggleDialog}
+        style={{ fontWeight: "initial", textTransform: "initial" }}
+      >
+        Credits
+      </Button>
+      <Dialog
+        open={isDialogOpen}
+        onClose={toggleDialog}
+        aria-labelledby="form-dialog-title"
+        style={{ height: "calc(100% - 60px)" }}
+      >
+        <DialogTitle id="form-dialog-title">Credits</DialogTitle>
+        <DialogContent>
+          <Link href="https://pokemonshowdown.com">
+            <img
+              src={pokemonShowdownLogo}
+              alt="Pokemon Showdown Logo"
+              style={{ width: "50%", minWidth: 200 }}
+            />
+          </Link>
+          <Typography variant="body1" paragraph>
+            The folks at Pokemon Showdown are very generous to let me use all of
+            their GIFs, sprites, and pokemon data. Absolutely indispensable!
+          </Typography>
+          <Typography variant="h6" gutterBottom>
+            Other
+          </Typography>
+          <List>{listItems()}</List>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={toggleDialog} color="primary">
+            Go Back
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }
 

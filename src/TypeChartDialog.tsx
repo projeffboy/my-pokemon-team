@@ -58,22 +58,22 @@ export default function TypeChartDialog() {
   };
 
   return (
-      <>
-        {fab()}
-        <Dialog
-          open={isDialogOpen}
-          onClose={toggleDialog}
-          aria-labelledby="form-dialog-title"
-          maxWidth="md"
-          fullWidth
-        >
-          <TypeChart />
-          <DialogActions>
-            <Button onClick={toggleDialog} color="primary">
-              Go Back
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </>
+    <>
+      {fab()}
+      <Dialog
+        open={isDialogOpen}
+        onClose={toggleDialog}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth
+      >
+        <TypeChart />
+        <DialogActions>
+          <Button onClick={toggleDialog} color="primary">
+            Go Back
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </>
   );
 }

@@ -49,7 +49,7 @@ const team = [
 const addPokemon = async (
   page: Page,
   index: number,
-  pokemon: (typeof team)[number]
+  pokemon: (typeof team)[number],
 ) => {
   // Click tab
   await page.getByRole("tab", { name: new RegExp(`${index + 1}`) }).click();
@@ -64,11 +64,10 @@ const addPokemon = async (
 };
 
 test.describe("Casual Team", () => {
-
   test("Creating a casual team", async ({ page }, testInfo) => {
     test.skip(
       !["Android", "iPhone"].includes(testInfo.project.name),
-      "This test only runs on mobile"
+      "This test only runs on mobile",
     );
 
     for (let i = 0; i < team.length; i++) {

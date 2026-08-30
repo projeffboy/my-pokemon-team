@@ -10,8 +10,8 @@ test.describe("Snapshot Tests", () => {
     page,
   }, testInfo) => {
     const projectName = testInfo.project.name;
-    const requestedTheme = LIGHT_PROJECTS.includes(projectName)
-      ? "light" : "dark";
+    const requestedTheme =
+      LIGHT_PROJECTS.includes(projectName) ? "light" : "dark";
 
     await page.emulateMedia({ colorScheme: requestedTheme });
     await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -20,7 +20,7 @@ test.describe("Snapshot Tests", () => {
       screenshotName(projectName, requestedTheme),
       {
         fullPage: true,
-      }
+      },
     );
   });
 });

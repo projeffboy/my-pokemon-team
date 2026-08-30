@@ -195,9 +195,8 @@ class Store {
   // E.g. 'wartortle' => undefined
   baseForme(pkmn: string) {
     const baseFormeName = pokedex[pkmn]?.baseSpecies;
-    const baseForme = baseFormeName
-      ? this.pkmnNameInverse(baseFormeName)
-      : undefined;
+    const baseForme =
+      baseFormeName ? this.pkmnNameInverse(baseFormeName) : undefined;
 
     return baseForme;
   }
@@ -212,8 +211,8 @@ class Store {
   previousEvolution(pkmn: string) {
     const pkmnProps = pokedex[pkmn];
     const prevo = pkmnProps ? pkmnProps.prevo : undefined;
-    return prevo
-      ? prevo.toLowerCase().replace("-", "").replace(":", "").replace(" ", "")
+    return prevo ?
+        prevo.toLowerCase().replace("-", "").replace(":", "").replace(" ", "")
       : undefined;
   }
 
@@ -360,16 +359,19 @@ class Store {
   DATA ABOUT THE TEAM'S SIX POKEMON 
   ********************************/
 
-  team: Team = Array.from({ length: 6 }, (): TeamPkmnProps => ({
-    name: "", // technically, this is the pokemon ID, not pokemon name
-    // but name is much more clearer to those new to the source code
-    item: "",
-    move1: "",
-    move2: "",
-    move3: "",
-    move4: "",
-    ability: "", // chosen ability
-  }));
+  team: Team = Array.from(
+    { length: 6 },
+    (): TeamPkmnProps => ({
+      name: "", // technically, this is the pokemon ID, not pokemon name
+      // but name is much more clearer to those new to the source code
+      item: "",
+      move1: "",
+      move2: "",
+      move3: "",
+      move4: "",
+      ability: "", // chosen ability
+    }),
+  );
 
   // Get the team's six pokemon id/name (pkmn)
   get teamPkmn() {
@@ -395,7 +397,7 @@ class Store {
         teamPkmnProps.move1,
         teamPkmnProps.move2,
         teamPkmnProps.move3,
-        teamPkmnProps.move4
+        teamPkmnProps.move4,
       );
     });
 
@@ -436,7 +438,7 @@ class Store {
         (moves[move].status ||
           (moves[move].secondary &&
             moves[move].secondary.chance === 100 &&
-            moves[move].secondary.status))
+            moves[move].secondary.status)),
     );
   }
 
@@ -449,15 +451,18 @@ class Store {
           moves[move].boosts &&
           Object.values(moves[move].boosts).reduce(
             (sum, num) => sum + num,
-            0
-          ) >= 2)
+            0,
+          ) >= 2),
     );
   }
 
   // Get the team's learnsets using learnsets.min.js
   get teamLearnsets() {
     // both will contain the learnsets of six pokemon
-    let teamLearnsets: { values: string[][], labels: (string | undefined)[][] } = {
+    let teamLearnsets: {
+      values: string[][];
+      labels: (string | undefined)[][];
+    } = {
       values: [],
       labels: [],
     };
@@ -473,7 +478,7 @@ class Store {
           // search filter: if the user only wants to see viable moves
           // Remove non-viable moves
           learnsetValues = learnsetValues.filter(
-            move => oldMoves[move] && oldMoves[move].isViable
+            move => oldMoves[move] && oldMoves[move].isViable,
           );
         }
 
@@ -591,7 +596,7 @@ class Store {
         } else {
           return teamFourMoveslot.includes(move);
         }
-      })
+      }),
     );
   }
 
@@ -627,11 +632,12 @@ class Store {
           pkmn !== "meganium" &&
           pkmn !== "yanmega"
         ) {
-          pkmnItem = this.itemsArr.find(
-            item =>
-              // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
-              item.slice(0, 5) === pkmn.slice(0, 5)
-          ) || "";
+          pkmnItem =
+            this.itemsArr.find(
+              item =>
+                // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
+                item.slice(0, 5) === pkmn.slice(0, 5),
+            ) || "";
 
           // Fuzzy match will give Charizard Y a Charizardite X
           // Hence this code
@@ -645,8 +651,7 @@ class Store {
           // Same with Dragonite and Dragon Fang
           else if (pkmn === "dragonitemega") {
             pkmnItem = "dragoninite";
-          }
-          else if (pkmn === "steelixmega") {
+          } else if (pkmn === "steelixmega") {
             pkmnItem = "steelixite";
           }
         }
@@ -719,7 +724,12 @@ class Store {
   *******************************/
 
   // Tells you the effectiveness of a type against a certain pokemon
-  typeAgainstPkmn(type: string, pkmn: string, pkmnAbility?: string, item?: string) {
+  typeAgainstPkmn(
+    type: string,
+    pkmn: string,
+    pkmnAbility?: string,
+    item?: string,
+  ) {
     const pkmnTypes = pokedex[pkmn]?.types || [];
     const [type1, type2] = pkmnTypes;
     const type1Resistance = type1 ? (typechart[type1]?.[type] ?? 0) : 0;
@@ -858,7 +868,11 @@ class Store {
       Galvanize: "Electric",
     };
 
-    if (ability && abilitiesThatChangeNormalMoves[ability] && moveType === "Normal") {
+    if (
+      ability &&
+      abilitiesThatChangeNormalMoves[ability] &&
+      moveType === "Normal"
+    ) {
       moveType = abilitiesThatChangeNormalMoves[ability] || moveType;
     } else if (ability === "Normalize") {
       moveType = "Normal";
@@ -867,8 +881,9 @@ class Store {
       moveType = pkmnProps?.types ? pkmnProps.types[0] : moveType; // Arceus only has one ability
     } else if (move === "ivycudgel") {
       const pkmnProps = pokedex[pkmn];
-      moveType = pkmnProps?.types
-        ? pkmnProps.types[pkmnProps.types.length > 1 ? 1 : 0]
+      moveType =
+        pkmnProps?.types ?
+          pkmnProps.types[pkmnProps.types.length > 1 ? 1 : 0]
         : moveType;
     } else if (move === "technoblast") {
       // For Genesect
@@ -893,7 +908,11 @@ class Store {
       const capitalizedType = capitalizeWord(type);
 
       moveType = capitalizedType;
-    } else if (ability === "Liquid Voice" && moves[move]?.flags && moves[move]!.flags!.sound === 1) {
+    } else if (
+      ability === "Liquid Voice" &&
+      moves[move]?.flags &&
+      moves[move]!.flags!.sound === 1
+    ) {
       moveType = "Water";
     }
 
@@ -919,7 +938,7 @@ class Store {
     move: string,
     typeAgainst: string,
     pkmn: string,
-    ability?: string
+    ability?: string,
   ) {
     const moveType = this.moveType(move, pkmn, ability);
 
@@ -937,7 +956,9 @@ class Store {
        * (status moves don't deal damage. so they don't contribute to type coverage)
        * Ignore moves less than 40 base power (unless it's a multi-hit move).
        */
-      return moveType ? (typechart[typeAgainst]?.[moveType] ?? undefined) : undefined;
+      return moveType ?
+          (typechart[typeAgainst]?.[moveType] ?? undefined)
+        : undefined;
     }
   }
 
@@ -1051,7 +1072,7 @@ class Store {
 
     // First filter by format, then type, then region
     return Object.keys(
-      filterByFormat(filterByRegion(filterByType({ ...pokedex })))
+      filterByFormat(filterByRegion(filterByType({ ...pokedex }))),
     );
 
     function filterByFormat(pokedex: Pokedex) {
@@ -1115,7 +1136,7 @@ class Store {
           // E.g. delete giratina, as well as giratinaorigin
           if (otherFormes) {
             otherFormes.forEach(
-              otherForme => delete filteredPokedex[otherForme]
+              otherForme => delete filteredPokedex[otherForme],
             );
           }
           delete filteredPokedex[pkmn];
@@ -1214,7 +1235,8 @@ class Store {
         for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
           const num = pkmnProps.num;
           if (
-            num !== undefined && num >= range[0] &&
+            num !== undefined &&
+            num >= range[0] &&
             num <= range[1] &&
             // If Kanto region, remove alola forms
             !(region === "Kanto" && pkmn.includes("alola")) &&

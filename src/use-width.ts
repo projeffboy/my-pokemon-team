@@ -8,12 +8,15 @@ import { Breakpoint } from "./types";
  */
 export default function useWidth() {
   const theme = useTheme();
-  const keys = ([...theme.breakpoints.keys].reverse() as Breakpoint[]);
+  const keys = [...theme.breakpoints.keys].reverse() as Breakpoint[];
   return (
-    keys.reduce((output: Breakpoint | null, key: Breakpoint) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      const matches = useMediaQuery(theme.breakpoints.up(key));
-      return !output && matches ? key : output;
-    }, null as Breakpoint | null) || "xs"
+    keys.reduce(
+      (output: Breakpoint | null, key: Breakpoint) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const matches = useMediaQuery(theme.breakpoints.up(key));
+        return !output && matches ? key : output;
+      },
+      null as Breakpoint | null,
+    ) || "xs"
   );
 }

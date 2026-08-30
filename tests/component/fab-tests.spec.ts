@@ -21,7 +21,7 @@ test.describe("FAB (Floating Action Button) Tests", () => {
     const verifyTabAndImage = async (
       page: Page,
       tab: Locator,
-      altText: string
+      altText: string,
     ) => {
       await tab.click();
       await expect(tab).toHaveAttribute("aria-selected", "true");

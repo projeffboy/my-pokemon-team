@@ -3,10 +3,7 @@ import { selectPokemon, selectMove } from "helper";
 
 test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
   test.beforeEach(async ({ context, browserName }, testInfo) => {
-    if (
-      browserName === "chromium" ||
-      testInfo.project.name === "Android"
-    ) {
+    if (browserName === "chromium" || testInfo.project.name === "Android") {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     }
   });

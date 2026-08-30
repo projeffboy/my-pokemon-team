@@ -29,7 +29,7 @@ export const expectImageToBeLoaded = async (locator: Locator) => {
 export const selectPokemon = async (
   page: Page,
   name: string,
-  slotIndex = 0
+  slotIndex = 0,
 ) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s name`);
   await input.click({ force: true });
@@ -40,7 +40,7 @@ export const selectPokemon = async (
 export const selectAbility = async (
   page: Page,
   ability: string,
-  slotIndex = 0
+  slotIndex = 0,
 ) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s ability`);
   await input.click({ force: true });
@@ -59,7 +59,7 @@ export const selectMove = async (
   page: Page,
   move: string,
   moveIndex = 1,
-  slotIndex = 0
+  slotIndex = 0,
 ) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s move${moveIndex}`);
   await input.click({ force: true });
@@ -108,7 +108,7 @@ const checkScoreAndPopover = async (
   typeName: string,
   expectedScore: string,
   textToIdentifyPopover: string,
-  expectedPopoverText: string[]
+  expectedPopoverText: string[],
 ) => {
   const section = page.getByRole("region", { name: cardName });
   await expect(section).toBeVisible();
@@ -147,7 +147,7 @@ export const checkTypeDefenceScoreAndPopover = async (
   page: Page,
   typeName: string,
   expectedScore: string,
-  expectedPopoverText: string[]
+  expectedPopoverText: string[],
 ) => {
   await checkScoreAndPopover(
     page,
@@ -155,7 +155,7 @@ export const checkTypeDefenceScoreAndPopover = async (
     typeName,
     expectedScore,
     `${typeName} does...`,
-    expectedPopoverText
+    expectedPopoverText,
   );
 };
 
@@ -163,7 +163,7 @@ export const checkTypeCoverageScoreAndPopover = async (
   page: Page,
   typeName: string,
   expectedScore: string,
-  expectedPopoverText: string[]
+  expectedPopoverText: string[],
 ) => {
   await checkScoreAndPopover(
     page,
@@ -171,6 +171,6 @@ export const checkTypeCoverageScoreAndPopover = async (
     typeName,
     expectedScore,
     `Super effective against ${typeName}:`,
-    expectedPopoverText
+    expectedPopoverText,
   );
 };

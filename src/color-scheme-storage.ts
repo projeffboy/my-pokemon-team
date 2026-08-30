@@ -10,12 +10,13 @@ export const cookieStorageManager: StorageManager = ({ key }) => ({
     const cookie = document.cookie
       .split("; ")
       .find(value => value.startsWith(cookieName));
-    const storedValue = cookie
-      ? decodeURIComponent(cookie.slice(cookieName.length))
+    const storedValue =
+      cookie ?
+        decodeURIComponent(cookie.slice(cookieName.length))
       : defaultValue;
 
-    return storedValue === "light" || storedValue === "dark"
-      ? storedValue
+    return storedValue === "light" || storedValue === "dark" ?
+        storedValue
       : defaultValue;
   },
   set(value) {

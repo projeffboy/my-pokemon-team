@@ -84,7 +84,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
 
       // Check for "Nothing found" message
       await expect(
-        page.getByText("Nothing found (Or you haven't selected a Pokemon)")
+        page.getByText("Nothing found (Or you haven't selected a Pokemon)"),
       ).toBeVisible();
     }
   });

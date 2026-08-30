@@ -44,21 +44,18 @@ const PokemonInput = observer(function PokemonInput(props: PokemonInputProps) {
       optionValues = store.filteredPokemon; // store.allPokemon
       // Fall back to the ID so labels stay aligned with optionValues
       optionLabels = store.filteredPokemonNames.map(
-        (name, i) => name ?? optionValues[i]
+        (name, i) => name ?? optionValues[i],
       ); // store.allPokemonNames
       let pkmnName = store.team[teamIndex][pokemonProp];
       if (pkmnName && !optionValues.includes(pkmnName)) {
         optionValues = [...optionValues, pkmnName];
-        optionLabels = [
-          ...optionLabels,
-          store.pkmnName(pkmnName) ?? pkmnName,
-        ];
+        optionLabels = [...optionLabels, store.pkmnName(pkmnName) ?? pkmnName];
       }
       break;
     case "item":
       optionValues = store.itemsArr;
       optionLabels = store.itemNamesArr.map(
-        (name, i) => name ?? store.itemsArr[i]
+        (name, i) => name ?? store.itemsArr[i],
       );
       break;
     case "ability":
@@ -68,7 +65,7 @@ const PokemonInput = observer(function PokemonInput(props: PokemonInputProps) {
     default: // for the moves
       optionValues = store.teamLearnsets.values[teamIndex];
       optionLabels = store.teamLearnsets.labels[teamIndex].map(
-        (name, i) => name ?? optionValues[i]
+        (name, i) => name ?? optionValues[i],
       );
   }
 

@@ -99,7 +99,7 @@ test.describe("Team Viewer - Unit Tests", () => {
       // In large viewport, there should be no team viewer tabs
       // Check that no team viewer slots exist (tabs with question mark sprites)
       await expect(
-        page.getByRole("tab", { name: /question-mark/ })
+        page.getByRole("tab", { name: /question-mark/ }),
       ).toHaveCount(0);
     });
   });
