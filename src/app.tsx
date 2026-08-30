@@ -1,11 +1,9 @@
 import Grid from "@mui/material/Grid";
-import Snackbar from "@mui/material/Snackbar";
-import { observer } from "mobx-react";
-import store from "./store";
 import { appStyles } from "./styles";
 import Header from "./components/header";
 import Main from "./components/main";
 import Footer from "./components/footer";
+import MainSnackbar from "./components/main-snackbar";
 import TypeChartDialog from "./type-chart-dialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
@@ -53,22 +51,3 @@ export default function App() {
     </Router>
   );
 }
-
-// Snackbar is managed by MobX
-// Can be opened by importing store.js then running store.openSnackbar(msg)
-const MainSnackbar = observer(function MainSnackbar() {
-  return (
-    <Snackbar
-      open={store.isSnackbarOpen}
-      autoHideDuration={2500}
-      onClose={() => (store.isSnackbarOpen = false)}
-      slotProps={{
-        content: {
-          role: "alert",
-          "aria-describedby": "message-id",
-        },
-      }}
-      message={<span id="message-id">{store.snackbarMsg}</span>}
-    />
-  );
-});
