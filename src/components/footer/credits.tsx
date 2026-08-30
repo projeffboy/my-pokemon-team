@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -95,32 +95,21 @@ function listItems() {
   ));
 }
 
-interface CreditsState {
-  isDialogOpen: boolean;
-}
+function Credits() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const toggleDialog = () => setIsDialogOpen(open => !open);
 
-class Credits extends React.Component<Record<string, never>, CreditsState> {
-  constructor(props: Record<string, never>) {
-    super(props);
-
-    this.state = { isDialogOpen: false };
-  }
-
-  toggleDialog = () =>
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
-
-  render() {
-    return (
+  return (
       <>
         <Button
-          onClick={this.toggleDialog}
+          onClick={toggleDialog}
           style={{ fontWeight: "initial", textTransform: "initial" }}
         >
           Credits
         </Button>
         <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.toggleDialog}
+          open={isDialogOpen}
+          onClose={toggleDialog}
           aria-labelledby="form-dialog-title"
           style={{ height: "calc(100% - 60px)" }}
         >
@@ -144,14 +133,13 @@ class Credits extends React.Component<Record<string, never>, CreditsState> {
             <List>{listItems()}</List>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.toggleDialog} color="primary">
+            <Button onClick={toggleDialog} color="primary">
               Go Back
             </Button>
           </DialogActions>
         </Dialog>
       </>
-    );
-  }
+  );
 }
 
 export default Credits;

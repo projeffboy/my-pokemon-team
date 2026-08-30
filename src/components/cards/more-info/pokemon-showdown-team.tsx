@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -21,43 +21,28 @@ interface PokemonShowdownTeamProps {
   width: Breakpoint;
 }
 
-interface PokemonShowdownTeamState {
-  isDialogOpen: boolean;
-  textArea: string;
-}
+const PokemonShowdownTeam = observer(function PokemonShowdownTeam(
+  _props: PokemonShowdownTeamProps
+) {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [textArea, setTextArea] = useState("");
 
-const PokemonShowdownTeam = observer(
-  class PokemonShowdownTeam extends React.Component<
-    PokemonShowdownTeamProps,
-    PokemonShowdownTeamState
-  > {
-    constructor(props: PokemonShowdownTeamProps) {
-      super(props);
-
-      this.state = {
-        isDialogOpen: false,
-        textArea: "",
-      };
-    }
-
-    handleTextArea = (
+    const handleTextArea = (
       event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-      this.setState({ textArea: event.target.value });
+      setTextArea(event.target.value);
     };
 
-    handleClick = (_event: React.MouseEvent<HTMLElement>, text: string) => {
-      this.setState({
-        isDialogOpen: true,
-        textArea: text,
-      });
+    const handleClick = (_event: React.MouseEvent<HTMLElement>, text: string) => {
+      setIsDialogOpen(true);
+      setTextArea(text);
     };
 
-    handleClose = () => this.setState({ isDialogOpen: false });
+    const handleClose = () => setIsDialogOpen(false);
 
-    handleImport = (initialText: string) => {
-      if (this.state.textArea !== initialText) {
-        let teamPkmnRawData = this.state.textArea.split("\n\n"); // split team into each pokemon
+    const handleImport = (initialText: string) => {
+      if (textArea !== initialText) {
+        let teamPkmnRawData = textArea.split("\n\n"); // split team into each pokemon
         let numberOfTeamPkmn = 0;
 
         teamPkmnRawData = teamPkmnRawData
@@ -155,10 +140,10 @@ const PokemonShowdownTeam = observer(
         store.openSnackbar("No changes made.");
       }
 
-      this.handleClose();
+      handleClose();
     };
 
-    handleCopy = (text: string) => {
+    const handleCopy = (text: string) => {
       if (text !== "") {
         // Copied this code from https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
 
@@ -178,7 +163,6 @@ const PokemonShowdownTeam = observer(
       }
     };
 
-    render() {
       const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5]
         .map(teamIndex => {
           const { name, item, ability } = store.team[teamIndex];
@@ -206,13 +190,13 @@ ${[1, 2, 3, 4]
       return (
         <>
           <Button
-            onClick={e => this.handleClick(e, pokemonShowdownTeamInfo)}
+            onClick={e => handleClick(e, pokemonShowdownTeamInfo)}
           >
             Import/Export Team <ImportExport style={{ marginLeft: 5 }} />
           </Button>
           <Dialog
-            open={this.state.isDialogOpen}
-            onClose={this.handleClose}
+            open={isDialogOpen}
+            onClose={handleClose}
             aria-labelledby="form-dialog-title"
             style={{ height: "calc(100% - 60px)" }}
           >
@@ -247,7 +231,7 @@ ${[1, 2, 3, 4]
                 fullWidth
                 sx={pokemonShowdownTeamStyles.textField}
                 defaultValue={pokemonShowdownTeamInfo}
-                onChange={this.handleTextArea}
+                onChange={handleTextArea}
               />
               <DialogContentText>
                 Note: The above raw text ignores nicknames, EVs, IVs, natures,
@@ -255,11 +239,11 @@ ${[1, 2, 3, 4]
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary">
+              <Button onClick={handleClose} color="primary">
                 Cancel
               </Button>
               <Button
-                onClick={() => this.handleImport(pokemonShowdownTeamInfo)}
+                onClick={() => handleImport(pokemonShowdownTeamInfo)}
                 color="primary"
               >
                 Update
@@ -267,15 +251,13 @@ ${[1, 2, 3, 4]
             </DialogActions>
           </Dialog>
           <Button
-            onClick={() => this.handleCopy(pokemonShowdownTeamInfo)}
+            onClick={() => handleCopy(pokemonShowdownTeamInfo)}
             sx={pokemonShowdownTeamStyles.button}
           >
             Copy Team <FileCopy style={{ marginLeft: 5 }} />
           </Button>
         </>
       );
-    }
-  }
-);
+});
 
 export default PokemonShowdownTeam;

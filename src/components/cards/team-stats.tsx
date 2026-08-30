@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -19,36 +19,21 @@ interface TeamStatsProps {
   width: Breakpoint;
 }
 
-interface TeamStatsState {
-  anchorEl: Array<HTMLElement | null>;
-}
+const TeamStats = observer(function TeamStats({ title, width }: TeamStatsProps) {
+    const teamStatType: TeamStatType =
+      title === "Team Defence" ? "typeDefence" : "typeCoverage";
 
-const TeamStats = observer(
-  class TeamStats extends React.Component<TeamStatsProps, TeamStatsState> {
-    teamStatType: TeamStatType;
+    // For popover (anchorEl means the element that the popover should be anchored to)
+    // Why 18? There are 18 types
+    const [anchorEl, setAnchorEl] = useState<Array<HTMLElement | null>>(() =>
+      Array(18).fill(null)
+    );
 
-    constructor(props: TeamStatsProps) {
-      super(props);
+    const formatPositiveScore = (value: number) =>
+      value > 0 ? `+${value}` : value;
 
-      this.teamStatType = "typeDefence";
-
-      if (this.props.title === "Team Defence") {
-        this.teamStatType = "typeDefence";
-      } else if (this.props.title === "Team Type Coverage") {
-        this.teamStatType = "typeCoverage";
-      }
-
-      // For popover (anchorEl means the element that the popover should be anchored to)
-      // Why 18? There are 18 types
-      this.state = { anchorEl: Array(18).fill(null) };
-    }
-
-    formatPositiveScore(value: number) {
-      return value > 0 ? `+${value}` : value;
-    }
-
-    returnTypeValue(value: number) {
-      const formattedValue = this.formatPositiveScore(value);
+    const returnTypeValue = (value: number) => {
+      const formattedValue = formatPositiveScore(value);
 
       if (value < 0) {
         return <Box sx={{ color: "red" }}>{formattedValue}</Box>;
@@ -68,30 +53,26 @@ const TeamStats = observer(
       }
 
       return <Box>{formattedValue}</Box>;
-    }
-
-    handlePopoverOpen = (e: React.MouseEvent<HTMLElement>, i: number) => {
-      let anchorEl = Array(18).fill(null);
-      anchorEl[i] = e.currentTarget;
-      this.setState({ anchorEl });
     };
 
-    handlePopoverClose = () =>
-      this.setState({ anchorEl: Array(18).fill(null) });
+    const handlePopoverOpen = (e: React.MouseEvent<HTMLElement>, i: number) => {
+      const nextAnchorEl = Array<HTMLElement | null>(18).fill(null);
+      nextAnchorEl[i] = e.currentTarget;
+      setAnchorEl(nextAnchorEl);
+    };
 
-    handleClick = (e: React.MouseEvent<HTMLElement>, i: number) => {
-      if (this.state.anchorEl.every(x => x === null)) {
-        this.handlePopoverOpen(e, i);
+    const handlePopoverClose = () => setAnchorEl(Array(18).fill(null));
+
+    const handleClick = (e: React.MouseEvent<HTMLElement>, i: number) => {
+      if (anchorEl.every(x => x === null)) {
+        handlePopoverOpen(e, i);
       } else {
-        this.handlePopoverClose();
+        handlePopoverClose();
       }
     };
 
-    render() {
-      const { width, title } = this.props;
-
       const teamStatValues =
-        this.teamStatType === "typeDefence" ? store.typeDefence : store.typeCoverage;
+        teamStatType === "typeDefence" ? store.typeDefence : store.typeCoverage;
 
       const types: Record<PokemonType, string> = {
         Bug: "a8b820", // the type's hex color
@@ -149,13 +130,13 @@ const TeamStats = observer(
                 sx={teamStatsStyles.pokemonType}
                 style={{ backgroundColor: `#${types[type]}` }}
                 aria-owns={
-                  this.state.anchorEl[i] ? "mouse-over-popover-" + i : undefined
+                  anchorEl[i] ? "mouse-over-popover-" + i : undefined
                 }
                 aria-haspopup="true"
                 aria-label={type}
-                onMouseEnter={e => this.handlePopoverOpen(e, i)}
-                onMouseLeave={this.handlePopoverClose}
-                onClick={e => this.handleClick(e, i)}
+                onMouseEnter={e => handlePopoverOpen(e, i)}
+                onMouseLeave={handlePopoverClose}
+                onClick={e => handleClick(e, i)}
               >
                 {typeAbbr[i] || type}
               </Box>
@@ -164,8 +145,8 @@ const TeamStats = observer(
                 id={"mouse-over-popover-" + i}
                 role="tooltip"
                 sx={teamStatsStyles.popover}
-                open={!!this.state.anchorEl[i]}
-                anchorEl={this.state.anchorEl[i]}
+                open={!!anchorEl[i]}
+                anchorEl={anchorEl[i]}
                 transition
               >
                 {/* Popover Message */}
@@ -187,11 +168,11 @@ const TeamStats = observer(
               variant="body1"
               component="div"
               style={{ lineHeight: "initial" }}
-              aria-label={`${type} score: ${this.formatPositiveScore(
+              aria-label={`${type} score: ${formatPositiveScore(
                 teamStatValues[type]
               )}`}
             >
-              {this.returnTypeValue(teamStatValues[type])}
+              {returnTypeValue(teamStatValues[type])}
             </Typography>
           </Grid>
         ));
@@ -211,9 +192,7 @@ const TeamStats = observer(
           {gridItems(title)}
         </Grid>
       );
-    }
-  }
-);
+});
 
 // Type Defence/Coverage Tooltip
 const TeamStatsTooltip = observer(function TeamStatsTooltip(

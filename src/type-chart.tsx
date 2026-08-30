@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
@@ -19,34 +19,25 @@ interface Props {
   width: Breakpoint;
 }
 
-interface State {
-  value: number;
-}
+function TypeChart({ width }: Props) {
+  const [value, setValue] = useState(() => (width === "xs" ? 1 : 0));
 
-class TypeChart extends React.Component<Props, State> {
-  state: State = {
-    value: this.props.width === "xs" ? 1 : 0,
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
   };
 
-  handleChange = (_event: React.SyntheticEvent, value: number) => {
-    this.setState({ value });
-  };
-
-  typoVariant() {
-    if (this.props.width === "xs") {
+  const typoVariant = () => {
+    if (width === "xs") {
       return "caption";
     } else {
       return "h5";
     }
-  }
+  };
 
-  render() {
-    const { value } = this.state;
-
-    return (
+  return (
       <Box sx={{ flexGrow: 1, backgroundColor: "background.paper" }}>
         <AppBar position="static">
-          <Tabs value={value} onChange={this.handleChange} centered>
+          <Tabs value={value} onChange={handleChange} centered>
             <Tab label="Table" />
             <Tab label="List" />
             <Tab label="Infographic" />
@@ -64,7 +55,7 @@ class TypeChart extends React.Component<Props, State> {
         {value === 1 && (
           <TabContainer>
             <Typography
-              variant={this.typoVariant()}
+              variant={typoVariant()}
               style={{ paddingBottom: 20, textAlign: "center" }}
             >
               Strong against → Type → Strong against
@@ -79,7 +70,7 @@ class TypeChart extends React.Component<Props, State> {
         {value === 2 && (
           <TabContainer>
             <Typography
-              variant={this.typoVariant()}
+              variant={typoVariant()}
               style={{ paddingBottom: 20, textAlign: "center" }}
             >
               Also applies for Gen 7-9
@@ -92,8 +83,7 @@ class TypeChart extends React.Component<Props, State> {
           </TabContainer>
         )}
       </Box>
-    );
-  }
+  );
 }
 
 export default TypeChart;

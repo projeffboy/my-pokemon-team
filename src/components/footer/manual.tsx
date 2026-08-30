@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -13,30 +13,19 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-interface ManualState {
-  isDialogOpen: boolean;
-}
-
 type TypeRow = [string, string, string, string];
 type TermRow = [string, string];
 
-class Manual extends React.Component<object, ManualState> {
-  rowsOfTypeEffectivness: TypeRow[];
-  rowsOfTerms: TermRow[];
-
-  constructor(props: object) {
-    super(props);
-
-    this.rowsOfTypeEffectivness = [
+const rowsOfTypeEffectivness: TypeRow[] = [
       ["No effect", "+1.5", "green", "limegreen"],
       ["0.25x effective", "+1.5", "green", "limegreen"],
       ["0.5x effective", "+1", "green", "limegreen"],
       ["1x effective", "0", "#212121", "#e0e0e0"],
       ["2x super effective", "-1", "red", "red"],
       ["4x super effective", "-1.5", "red", "red"],
-    ];
+];
 
-    this.rowsOfTerms = [
+const rowsOfTerms: TermRow[] = [
       [
         "Defogger",
         "A pokemon that knows Defog (which blows away entry hazards).",
@@ -57,26 +46,23 @@ class Manual extends React.Component<object, ManualState> {
         "Choice Item",
         "An item that increases a stat by 50% but locks you into one move. There are three of these items: Choice Band, Choice Specs, and Choice Scarf.",
       ],
-    ];
+];
 
-    this.state = { isDialogOpen: false };
-  }
+function Manual() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const toggleDialog = () => setIsDialogOpen(open => !open);
 
-  toggleDialog = () =>
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
-
-  render() {
-    return (
+  return (
       <>
         <Button
-          onClick={this.toggleDialog}
+          onClick={toggleDialog}
           style={{ fontWeight: "initial", textTransform: "initial" }}
         >
           Manual
         </Button>
         <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.toggleDialog}
+          open={isDialogOpen}
+          onClose={toggleDialog}
           aria-labelledby="form-dialog-title"
           style={{ height: "calc(100% - 60px)" }}
         >
@@ -100,7 +86,7 @@ class Manual extends React.Component<object, ManualState> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.rowsOfTypeEffectivness.map(row => (
+                {rowsOfTypeEffectivness.map(row => (
                   <TableRow key={row[0]}>
                     <TableCell component="th" scope="row">
                       {row[0]}
@@ -209,7 +195,7 @@ class Manual extends React.Component<object, ManualState> {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {this.rowsOfTerms.map(row => (
+                {rowsOfTerms.map(row => (
                   <TableRow key={row[0]}>
                     <TableCell component="th" scope="row">
                       {row[0]}
@@ -223,14 +209,13 @@ class Manual extends React.Component<object, ManualState> {
             </Table>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.toggleDialog} color="primary">
+            <Button onClick={toggleDialog} color="primary">
               Go Back
             </Button>
           </DialogActions>
         </Dialog>
       </>
-    );
-  }
+  );
 }
 
 export default Manual;

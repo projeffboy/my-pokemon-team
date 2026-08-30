@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -9,32 +9,21 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Folder from "@mui/icons-material/Folder";
 
-interface State {
-  isDialogOpen: boolean;
-}
+function UpdateLog() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const toggleDialog = () => setIsDialogOpen(open => !open);
 
-class UpdateLog extends React.Component<{}, State> {
-  constructor(props: {}) {
-    super(props);
-
-    this.state = { isDialogOpen: false };
-  }
-
-  toggleDialog = () =>
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
-
-  render() {
-    return (
+  return (
       <>
         <Button
-          onClick={this.toggleDialog}
+          onClick={toggleDialog}
           style={{ fontWeight: "initial", textTransform: "initial" }}
         >
           Updates (Aug 28, 2026)
         </Button>
         <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.toggleDialog}
+          open={isDialogOpen}
+          onClose={toggleDialog}
           aria-labelledby="form-dialog-title"
           style={{ height: "calc(100% - 60px)" }}
         >
@@ -375,14 +364,13 @@ class UpdateLog extends React.Component<{}, State> {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.toggleDialog} color="primary">
+            <Button onClick={toggleDialog} color="primary">
               Go Back
             </Button>
           </DialogActions>
         </Dialog>
       </>
-    );
-  }
+  );
 }
 
 export default UpdateLog;

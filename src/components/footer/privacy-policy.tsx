@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -7,32 +7,21 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 
-interface PrivacyPolicyState {
-  isDialogOpen: boolean;
-}
+function PrivacyPolicy() {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const toggleDialog = () => setIsDialogOpen(open => !open);
 
-class PrivacyPolicy extends React.Component<{}, PrivacyPolicyState> {
-  constructor(props: {}) {
-    super(props);
-
-    this.state = { isDialogOpen: false };
-  }
-
-  toggleDialog = () =>
-    this.setState({ isDialogOpen: !this.state.isDialogOpen });
-
-  render() {
-    return (
+  return (
       <>
         <Button
-          onClick={this.toggleDialog}
+          onClick={toggleDialog}
           style={{ fontWeight: "initial", textTransform: "initial" }}
         >
           Privacy Policy
         </Button>
         <Dialog
-          open={this.state.isDialogOpen}
-          onClose={this.toggleDialog}
+          open={isDialogOpen}
+          onClose={toggleDialog}
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Privacy Policy</DialogTitle>
@@ -75,14 +64,13 @@ class PrivacyPolicy extends React.Component<{}, PrivacyPolicyState> {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={this.toggleDialog} color="primary">
+            <Button onClick={toggleDialog} color="primary">
               Go Back
             </Button>
           </DialogActions>
         </Dialog>
       </>
-    );
-  }
+  );
 }
 
 export default PrivacyPolicy;

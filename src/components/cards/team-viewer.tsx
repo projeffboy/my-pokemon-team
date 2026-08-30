@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Material UI Imports
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
@@ -14,40 +14,22 @@ interface TeamViewerProps {
   width: Breakpoint;
 }
 
-interface TeamViewerState {
-  smTabIndex: number;
-  xsTabIndex: number;
-}
-
 /*
  * NOTE!!!
  * This component can only be viewed below a viewport width of 960px
  */
-export default class TeamViewer extends React.Component<
-  TeamViewerProps,
-  TeamViewerState
-> {
-  constructor(props: TeamViewerProps) {
-    super(props);
-
-    /*
-     * Depending on your viewport, either 3 or 6 tabs are shown.
-     * smTabIndex stores which of the 3 tabs are clicked/focused on.
-     * xsTabIndex stores which of the 6 tabs are clicked/focused on.
-     */
-    this.state = {
-      smTabIndex: 0,
-      xsTabIndex: 0,
-    };
-  }
+export default function TeamViewer({ width }: TeamViewerProps) {
+  // Store separate selections for the 3-tab and 6-tab layouts.
+  const [smTabIndex, setSmTabIndex] = useState(0);
+  const [xsTabIndex, setXsTabIndex] = useState(0);
 
   // Changge smTabIndex betwen 600px and 959px
   // Change xsTabIndex below 600px
-  handleChange = (_e: React.SyntheticEvent, val: number) => {
-    if (this.props.width === "sm") {
-      this.setState({ smTabIndex: val });
+  const handleChange = (_e: React.SyntheticEvent, val: number) => {
+    if (width === "sm") {
+      setSmTabIndex(val);
     } else {
-      this.setState({ xsTabIndex: val });
+      setXsTabIndex(val);
     }
   };
 
@@ -57,33 +39,27 @@ export default class TeamViewer extends React.Component<
    * 3 and 4,
    * or 5 and 6.
    */
-  getTwoPokemonSprites(teamIndex: number) {
-    const { width } = this.props;
-
+  const getTwoPokemonSprites = (teamIndex: number) => {
     return (
       <div style={teamViewerStyles.twoSprites}>
         <Sprite teamIndex={teamIndex} width={width} />
         <Sprite teamIndex={teamIndex + 1} width={width} />
       </div>
     );
-  }
+  };
 
-  render() {
-    const { width } = this.props;
-    const { smTabIndex, xsTabIndex } = this.state;
+  const pokemonPaperSx = {
+    ...paperStyles.applyPadding,
+    ...teamViewerStyles.oneOfTwoPkmn,
+  };
 
-    const pokemonPaperSx = {
-      ...paperStyles.applyPadding,
-      ...teamViewerStyles.oneOfTwoPkmn,
-    };
-
-    return (
+  return (
       <>
         <Grid size={12}>
           <Paper>
             <Tabs
               value={width === "sm" ? smTabIndex : xsTabIndex}
-              onChange={this.handleChange}
+              onChange={handleChange}
               variant="fullWidth"
               textColor="secondary"
             >
@@ -94,7 +70,7 @@ export default class TeamViewer extends React.Component<
                       <Tab
                         key={teamIndex}
                         label={`${teamIndex + 1} - ${teamIndex + 2}`}
-                        icon={this.getTwoPokemonSprites(teamIndex)}
+                        icon={getTwoPokemonSprites(teamIndex)}
                       />
                     ))
                   : [0, 1, 2, 3, 4, 5].map(teamIndex => (
@@ -128,6 +104,5 @@ export default class TeamViewer extends React.Component<
           )
         }
       </>
-    );
-  }
+  );
 }
