@@ -7,10 +7,10 @@ import Typography from "@mui/material/Typography";
 import TypeChartPng from "./images/type-chart.png";
 import { useBreakpoint } from "./WidthContext";
 
-function TabContainer(props: { children?: ReactNode }) {
+function TabContainer({ children }: { children?: ReactNode }) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
-      {props.children}
+      {children}
     </Typography>
   );
 }

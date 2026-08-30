@@ -4,11 +4,6 @@ import altSpriteNum from "@/data/altSpriteNum";
 import PokemonIconsSheet from "@/images/pokemonicons-sheet.png";
 import ItemIconsSheet from "@/images/itemicons-sheet.png";
 
-interface PokemonIconProps {
-  pkmnProp: string;
-  value: string;
-}
-
 const pokedexMap = pokedex as Record<string, { num?: number }>;
 const itemsMap = items as Record<string, { spritenum?: number }>;
 const altSpriteNumMap = altSpriteNum as Record<string, number>;
@@ -19,9 +14,13 @@ const altSpriteNumMap = altSpriteNum as Record<string, number>;
  * You can find them here: https://play.pokemonshowdown.com/sprites/smicons-sheet.png
  * You can find the "itemicons" here: https://play.pokemonshowdown.com/sprites/itemicons-sheet.png
  */
-export default function PokemonIcon(props: PokemonIconProps) {
-  const { pkmnProp, value } = props;
-
+export default function PokemonIcon({
+  pkmnProp,
+  value,
+}: {
+  pkmnProp: string;
+  value: string;
+}) {
   if (pkmnProp === "pkmn" || pkmnProp === "item") {
     let type;
     let left;

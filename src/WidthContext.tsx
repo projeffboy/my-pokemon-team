@@ -1,9 +1,9 @@
-import { createContext, useContext, type PropsWithChildren } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 import useWidth, { type WidthInfo } from "./use-width";
 
 const WidthContext = createContext<WidthInfo | undefined>(undefined);
 
-export function WidthProvider({ children }: PropsWithChildren) {
+export function WidthProvider({ children }: { children?: ReactNode }) {
   const width = useWidth();
 
   return (

@@ -7,7 +7,17 @@ interface SelectOption {
   label: string;
 }
 
-interface PokemonInputSelectProps {
+// Returns an autocomplete input (replaces the old react-virtualized-select)
+// In charge of communicating with the store (store.js)
+export default function PokemonInputSelect({
+  optionValues,
+  optionLabels,
+  placeholder,
+  pokemonProp,
+  teamIndex,
+  value,
+  onChange,
+}: {
   optionValues: string[];
   optionLabels: string[];
   placeholder: string;
@@ -15,20 +25,12 @@ interface PokemonInputSelectProps {
   teamIndex: number;
   value: string;
   onChange: (value: string) => void;
-}
-
-// Returns an autocomplete input (replaces the old react-virtualized-select)
-// In charge of communicating with the store (store.js)
-export default function PokemonInputSelect(props: PokemonInputSelectProps) {
-  const { optionValues, optionLabels, placeholder, pokemonProp, teamIndex } =
-    props;
-
+}) {
   const options: SelectOption[] = optionValues.map((optionValue, i) => ({
     value: optionValue,
     label: optionLabels[i] || "",
   }));
-  const selectedOption =
-    options.find(option => option.value === props.value) || null;
+  const selectedOption = options.find(option => option.value === value) || null;
   const id = "react-select-single-" + teamIndex + "-" + pokemonProp;
 
   // Which kind of icon to show in the options
@@ -43,14 +45,12 @@ export default function PokemonInputSelect(props: PokemonInputSelectProps) {
       sx={{ minWidth: 0 }}
       options={options}
       value={selectedOption}
-      onChange={(event, newValue) =>
-        props.onChange(newValue ? newValue.value : "")
-      }
+      onChange={(event, newValue) => onChange(newValue ? newValue.value : "")}
       onInputChange={(event, newInputValue, reason) => {
         // Clearing out the text also clears the selection
         // (matches the old react-select behavior)
-        if (reason === "input" && newInputValue === "" && props.value) {
-          props.onChange("");
+        if (reason === "input" && newInputValue === "" && value) {
+          onChange("");
         }
       }}
       getOptionLabel={(option: SelectOption) => option.label}

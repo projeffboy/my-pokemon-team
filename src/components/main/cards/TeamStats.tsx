@@ -14,15 +14,13 @@ import { useIsLgDown } from "@/WidthContext";
 type TeamStatTitle = "Team Defence" | "Team Type Coverage";
 type TeamStatType = "typeDefence" | "typeCoverage";
 
-interface TeamStatsProps {
-  title: TeamStatTitle;
-  titleId: string;
-}
-
 const TeamStats = observer(function TeamStats({
   title,
   titleId,
-}: TeamStatsProps) {
+}: {
+  title: TeamStatTitle;
+  titleId: string;
+}) {
   const isLgDown = useIsLgDown();
   const teamStatType: TeamStatType =
     title === "Team Defence" ? "typeDefence" : "typeCoverage";
@@ -203,11 +201,14 @@ const TeamStats = observer(function TeamStats({
 });
 
 // Type Defence/Coverage Tooltip
-const TeamStatsTooltip = observer(function TeamStatsTooltip(
-  props: TeamStatsTooltipProps,
-) {
-  const { teamStatType, ...otherProps } = props;
-
+const TeamStatsTooltip = observer(function TeamStatsTooltip({
+  teamStatType,
+  ...otherProps
+}: {
+  teamStatType: TeamStatTitle;
+  typeColor: string;
+  type: PokemonType;
+}) {
   const content = () => {
     if (teamStatType === "Team Defence") {
       return <TypeDefenceTooltipInfo {...otherProps} />;
@@ -225,22 +226,14 @@ const TeamStatsTooltip = observer(function TeamStatsTooltip(
   );
 });
 
-interface TeamStatsTooltipProps {
-  teamStatType: TeamStatTitle;
-  typeColor: string;
-  type: PokemonType;
-}
-
-interface TeamStatsTypeTooltipProps {
-  typeColor: string;
-  type: PokemonType;
-}
-
 // Type Defence Tooltip Info
 const TypeDefenceTooltipInfo = ({
   typeColor,
   type,
-}: TeamStatsTypeTooltipProps) => (
+}: {
+  typeColor: string;
+  type: PokemonType;
+}) => (
   <>
     <p>
       <span style={{ color: `#${typeColor}` }}>{type}</span> does...
@@ -329,7 +322,10 @@ const TypeDefenceTooltipInfo = ({
 function TypeCoverageTooltipInfo({
   typeColor,
   type,
-}: TeamStatsTypeTooltipProps) {
+}: {
+  typeColor: string;
+  type: PokemonType;
+}) {
   let hasSuperEffectiveMove = false;
 
   return (

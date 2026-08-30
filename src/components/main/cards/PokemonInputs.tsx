@@ -2,17 +2,13 @@ import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "./pokemon-inputs/PokemonSprite";
 import { PokemonProp } from "@/types";
 
-interface PokemonInputsProps {
-  teamIndex: number;
-}
-
-export default function PokemonInputs(props: PokemonInputsProps) {
+export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
   const inputs: Array<
     { placeholder: string; pokemonProp: PokemonProp } | { placeholder: "" }
   > = [
     { placeholder: "Name", pokemonProp: "name" },
     { placeholder: "Move", pokemonProp: "move1" },
-    { placeholder: "" },
+    { placeholder: "" }, // pokemon sprite
     { placeholder: "Move", pokemonProp: "move2" },
     { placeholder: "Move", pokemonProp: "move3" },
     { placeholder: "Move", pokemonProp: "move4" },
@@ -27,14 +23,12 @@ export default function PokemonInputs(props: PokemonInputsProps) {
         <PokemonInput
           key={i}
           placeholder={input.placeholder}
-          teamIndex={props.teamIndex}
+          teamIndex={teamIndex}
           pokemonProp={input.pokemonProp}
         />
       );
     } else {
-      return (
-        <PokemonSprite key={i} teamIndex={props.teamIndex} forceFullSize />
-      );
+      return <PokemonSprite key={i} teamIndex={teamIndex} forceFullSize />;
     }
   });
 
@@ -46,7 +40,7 @@ export default function PokemonInputs(props: PokemonInputsProps) {
         gridTemplateColumns: "1fr 1fr",
       }}
       role="region"
-      aria-label={`Pokemon ${props.teamIndex + 1}`}
+      aria-label={`Pokemon ${teamIndex + 1}`}
     >
       {pokemonInputs}
     </div>

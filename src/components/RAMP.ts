@@ -1,11 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
-interface RampProps {
-  PUB_ID: number;
-  WEBSITE_ID: number;
-}
-
 interface RampWindow {
   que: Array<() => void>;
   passiveMode?: boolean;
@@ -18,7 +13,13 @@ declare global {
   }
 }
 
-const Ramp = ({ PUB_ID, WEBSITE_ID }: RampProps) => {
+const Ramp = ({
+  PUB_ID,
+  WEBSITE_ID,
+}: {
+  PUB_ID: number;
+  WEBSITE_ID: number;
+}) => {
   const rampInitialized = useRef(false);
   const location = useLocation();
 

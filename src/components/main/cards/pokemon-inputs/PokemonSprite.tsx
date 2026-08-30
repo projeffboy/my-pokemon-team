@@ -7,19 +7,17 @@ import altSpriteNum from "@/data/altSpriteNum";
 import localSprites from "@/images/local-sprites";
 import { useBreakpoint } from "@/WidthContext";
 
-interface PokemonSpriteProps {
-  teamIndex: number;
-  forceFullSize?: boolean;
-}
-
 const pokedexMap = pokedex as Record<string, { num?: number }>;
 const altSpriteNumMap = altSpriteNum as Record<string, number>;
 const localSpritesMap = localSprites as Record<string, string>;
 
-const PokemonSprite = observer(function PokemonSprite(
-  props: PokemonSpriteProps,
-) {
-  const { teamIndex, forceFullSize = false } = props;
+const PokemonSprite = observer(function PokemonSprite({
+  teamIndex,
+  forceFullSize = false,
+}: {
+  teamIndex: number;
+  forceFullSize?: boolean;
+}) {
   const breakpoint = useBreakpoint();
   const width =
     forceFullSize && (breakpoint === "xs" || breakpoint === "sm") ?

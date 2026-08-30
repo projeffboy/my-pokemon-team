@@ -3,20 +3,20 @@ import store from "@/store";
 import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
 import { PokemonProp } from "@/types";
 
-interface PokemonInputProps {
-  placeholder: string;
-  pokemonProp: PokemonProp;
-  teamIndex: number;
-}
-
 /*
  * 1. If you change the pokemon name, <PokemonInputSelect /> triggers handleChange.
  * 2. It updates the change to the store.
  * 3. Since the store is reactive, the prop value passed to <PokemonInputSelect /> will be updated too.
  */
-const PokemonInput = observer(function PokemonInput(props: PokemonInputProps) {
-  const { pokemonProp, teamIndex } = props;
-
+const PokemonInput = observer(function PokemonInput({
+  placeholder,
+  pokemonProp,
+  teamIndex,
+}: {
+  placeholder: string;
+  pokemonProp: PokemonProp;
+  teamIndex: number;
+}) {
   const handleChange = (inputVal: string) => {
     if (pokemonProp === "name") {
       store.clearTeamPkmnProps(teamIndex);
@@ -70,7 +70,7 @@ const PokemonInput = observer(function PokemonInput(props: PokemonInputProps) {
 
   return (
     <PokemonInputSelect
-      placeholder={props.placeholder}
+      placeholder={placeholder}
       optionValues={optionValues}
       optionLabels={optionLabels}
       onChange={handleChange}
