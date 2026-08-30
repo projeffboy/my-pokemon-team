@@ -5,7 +5,7 @@ import Cancel from "@mui/icons-material/Cancel";
 import { observer } from "mobx-react";
 import store from "../../../store";
 import Typography from "@mui/material/Typography";
-import { useBreakpoint } from "../../../width-context";
+import { useBreakpoint } from "../../../WidthContext";
 
 const TeamChecklist = observer(function TeamChecklist() {
   const width = useBreakpoint();

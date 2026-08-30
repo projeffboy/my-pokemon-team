@@ -1,16 +1,16 @@
 import Grid from "@mui/material/Grid";
-import Header from "./components/header";
-import Main from "./components/main";
-import Footer from "./components/footer";
-import MainSnackbar from "./components/main-snackbar";
-import TypeChartDialog from "./type-chart-dialog";
+import Header from "./components/Header";
+import Main from "./components/Main";
+import Footer from "./components/Footer";
+import MainSnackbar from "./components/MainSnackbar";
+import TypeChartDialog from "./TypeChartDialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./styles";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./components/RAMP";
 import { cookieStorageManager } from "./color-scheme-storage";
-import { WidthProvider } from "./width-context";
+import { WidthProvider } from "./WidthContext";
 
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;

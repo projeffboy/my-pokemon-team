@@ -7,10 +7,10 @@ import ComputerIcon from "@mui/icons-material/Computer";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useColorScheme } from "@mui/material/styles";
-import Manual from "./footer/manual";
-import Credits from "./footer/credits";
-import PrivacyPolicy from "./footer/privacy-policy";
-import UpdateLog from "./footer/update-log";
+import Manual from "./footer/Manual";
+import Credits from "./footer/Credits";
+import PrivacyPolicy from "./footer/PrivacyPolicy";
+import UpdateLog from "./footer/UpdateLog";
 
 type ColorMode = "system" | "light" | "dark";
 

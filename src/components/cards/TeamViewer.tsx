@@ -5,9 +5,9 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Paper from "@mui/material/Paper";
 // My Component Imports
-import Pokemon from "./pokemon";
-import Sprite from "./pokemon/sprite";
-import { useBreakpoint } from "../../width-context";
+import Pokemon from "./Pokemon";
+import Sprite from "./pokemon/Sprite";
+import { useBreakpoint } from "../../WidthContext";
 
 /*
  * NOTE!!!

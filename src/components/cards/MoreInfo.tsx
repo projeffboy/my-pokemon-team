@@ -6,10 +6,10 @@ import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 // My Component Imports
-import TeamChecklist from "./more-info/team-checklist";
-import SearchFilters from "./more-info/search-filters";
-import PokemonShowdownTeam from "./more-info/pokemon-showdown-team";
-import { useBreakpoint } from "../../width-context";
+import TeamChecklist from "./more-info/TeamChecklist";
+import SearchFilters from "./more-info/SearchFilters";
+import PokemonShowdownTeam from "./more-info/PokemonShowdownTeam";
+import { useBreakpoint } from "../../WidthContext";
 
 export default function MoreInfo() {
   const width = useBreakpoint();

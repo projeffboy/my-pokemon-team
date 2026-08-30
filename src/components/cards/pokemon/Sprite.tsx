@@ -6,7 +6,7 @@ import pokedex from "../../../data/pokedex";
 import questionMark from "../../../images/question-mark.png";
 import altSpriteNum from "../../../data/altSpriteNum";
 import localSprites from "../../../images/local-sprites";
-import { useBreakpoint } from "../../../width-context";
+import { useBreakpoint } from "../../../WidthContext";
 
 interface SpriteProps {
   teamIndex: number;

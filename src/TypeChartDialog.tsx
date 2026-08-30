@@ -6,8 +6,8 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import TypeChart from "./type-chart";
-import { useBreakpoint } from "./width-context";
+import TypeChart from "./TypeChart";
+import { useBreakpoint } from "./WidthContext";
 
 export default function TypeChartDialog() {
   const width = useBreakpoint();

@@ -7,9 +7,9 @@ import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import { observer } from "mobx-react";
 import store from "../../store";
-import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/pokemon-icon";
+import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/PokemonIcon";
 import { PokemonType } from "../../types";
-import { useBreakpoint } from "../../width-context";
+import { useBreakpoint } from "../../WidthContext";
 
 type TeamStatTitle = "Team Defence" | "Team Type Coverage";
 type TeamStatType = "typeDefence" | "typeCoverage";

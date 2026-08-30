@@ -3,11 +3,11 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 // My Component Imports
-import Pokemon from "./cards/pokemon";
-import TeamStats from "./cards/team-stats";
-import MoreInfo from "./cards/more-info";
-import TeamViewer from "./cards/team-viewer";
-import { useBreakpoint } from "../width-context";
+import Pokemon from "./cards/Pokemon";
+import TeamStats from "./cards/TeamStats";
+import MoreInfo from "./cards/MoreInfo";
+import TeamViewer from "./cards/TeamViewer";
+import { useBreakpoint } from "../WidthContext";
 
 export default function Cards() {
   const width = useBreakpoint();
