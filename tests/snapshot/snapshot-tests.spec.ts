@@ -1,4 +1,4 @@
-import { test, expect } from "fixtures";
+import { test, expect } from "@playwright/test";
 
 const LIGHT_PROJECTS = ["Desktop Chrome", "iPhone"];
 

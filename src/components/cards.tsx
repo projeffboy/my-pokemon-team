@@ -12,7 +12,6 @@ import { Breakpoint } from "../types";
 
 interface CardsProps {
   width: Breakpoint;
-  darkMode: boolean;
 }
 
 export default function Cards(props: CardsProps) {
@@ -73,11 +72,7 @@ export default function Cards(props: CardsProps) {
               aria-label={`${cardTitle} Card`}
               role="region"
             >
-              <TeamStats
-                title={cardTitle}
-                width={width}
-                darkMode={props.darkMode}
-              />
+              <TeamStats title={cardTitle} width={width} />
             </Paper>
           </Grid>
         ))}

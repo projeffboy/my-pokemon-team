@@ -17,7 +17,6 @@ type TeamStatType = "typeDefence" | "typeCoverage";
 interface TeamStatsProps {
   title: TeamStatTitle;
   width: Breakpoint;
-  darkMode: boolean;
 }
 
 interface TeamStatsState {
@@ -49,17 +48,26 @@ const TeamStats = observer(
     }
 
     returnTypeValue(value: number) {
-      let color = "inherit";
+      const formattedValue = this.formatPositiveScore(value);
 
       if (value < 0) {
-        // weak to type
-        color = "red";
-      } else if (value > 0) {
-        // resist type
-        color = this.props.darkMode ? "limegreen" : "green";
+        return <Box sx={{ color: "red" }}>{formattedValue}</Box>;
       }
 
-      return <div style={{ color }}>{this.formatPositiveScore(value)}</div>;
+      if (value > 0) {
+        return (
+          <Box
+            sx={[
+              { color: "green" },
+              theme => theme.applyStyles("dark", { color: "limegreen" }),
+            ]}
+          >
+            {formattedValue}
+          </Box>
+        );
+      }
+
+      return <Box>{formattedValue}</Box>;
     }
 
     handlePopoverOpen = (e: React.MouseEvent<HTMLElement>, i: number) => {

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -13,11 +12,12 @@ import face2 from "./images/floette-eternal-shuffle-face.png";
 import TypeChartDialog from "./type-chart-dialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import GlobalStyles from "@mui/material/GlobalStyles";
-import { ThemeProvider } from "@mui/material/styles"; // provide your custom theme
-import { theme, darkTheme } from "./styles";
+import { ThemeProvider } from "@mui/material/styles";
+import { theme } from "./styles";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./components/RAMP";
 import useWidth from "./use-width";
+import { cookieStorageManager } from "./color-scheme-storage";
 
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;
@@ -25,50 +25,31 @@ const WEBSITE_ID = 75399;
 const face1Alt = "Garchomp Face";
 const face2Alt = "Eternal Flower Floette Face";
 
-function getSystemDarkMode() {
-  return (
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
-}
-
 export default function App() {
-  const [darkMode, setDarkMode] = useState(getSystemDarkMode);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const systemDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
-    const updateDarkMode = (event: MediaQueryListEvent) =>
-      setDarkMode(event.matches);
-
-    systemDarkMode.addEventListener("change", updateDarkMode);
-    return () => systemDarkMode.removeEventListener("change", updateDarkMode);
-  }, []);
-
   return (
     <Router>
       <>
         {process.env.NODE_ENV === "production" && (
           <Ramp PUB_ID={PUB_ID} WEBSITE_ID={WEBSITE_ID} />
         )}
-        <ThemeProvider theme={darkMode ? darkTheme : theme}>
+        <ThemeProvider
+          theme={theme}
+          defaultMode="system"
+          storageManager={cookieStorageManager}
+          disableTransitionOnChange
+          noSsr
+        >
           <CssBaseline />
           <GlobalStyles styles={{ "html, body, #root": { height: "100%" } }} />
-          <AppContent darkMode={darkMode} setDarkMode={setDarkMode} />
+          <AppContent />
         </ThemeProvider>
       </>
     </Router>
   );
 }
 
-// Needs to be inside <ThemeProvider /> so useWidth() sees the custom breakpoints
-interface AppContentProps {
-  darkMode: boolean;
-  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-function AppContent({ darkMode, setDarkMode }: AppContentProps) {
+// Needs to be inside <ThemeProvider /> so the hooks see the custom theme
+function AppContent() {
   const width = useWidth();
 
   return (
@@ -132,10 +113,10 @@ function AppContent({ darkMode, setDarkMode }: AppContentProps) {
         </Grid>
         {/* Main */}
         <Grid component="main" container size={12} spacing={2}>
-          <Cards width={width} darkMode={darkMode} />
+          <Cards width={width} />
         </Grid>
         {/* Footer */}
-        <Footer darkMode={darkMode} setDarkMode={setDarkMode} />
+        <Footer />
       </Grid>
       <MainSnackbar />
       <TypeChartDialog width={width} />

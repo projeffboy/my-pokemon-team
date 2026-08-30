@@ -10,23 +10,24 @@ const breakpoints = {
 // main.tsx (THEME)
 export const theme = createTheme({
   breakpoints,
-  palette: {
-    primary: { main: grey[900] },
-    secondary: { main: grey[900] },
-    background: { default: "#eee" },
-  },
-});
-
-export const darkTheme = createTheme({
-  breakpoints,
-  palette: {
-    mode: "dark",
-    primary: { main: grey[200] },
-    secondary: { main: grey[200] },
-    // Material UI v3's default dark background colors
-    background: { default: "#303030", paper: "#424242" },
-    text: {
-      primary: grey[300],
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: { main: grey[900] },
+        secondary: { main: grey[900] },
+        background: { default: "#eee" },
+      },
+    },
+    dark: {
+      palette: {
+        primary: { main: grey[200] },
+        secondary: { main: grey[200] },
+        // Material UI v3's default dark background colors
+        background: { default: "#303030", paper: "#424242" },
+        text: {
+          primary: grey[300],
+        },
+      },
     },
   },
 });

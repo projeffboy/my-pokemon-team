@@ -13,35 +13,27 @@ import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-interface ManualProps {
-  darkMode: boolean;
-}
-
 interface ManualState {
   isDialogOpen: boolean;
 }
 
-type TypeRow = [string, string, (darkMode: boolean) => string];
+type TypeRow = [string, string, string, string];
 type TermRow = [string, string];
 
-class Manual extends React.Component<ManualProps, ManualState> {
+class Manual extends React.Component<object, ManualState> {
   rowsOfTypeEffectivness: TypeRow[];
   rowsOfTerms: TermRow[];
 
-  constructor(props: ManualProps) {
+  constructor(props: object) {
     super(props);
 
     this.rowsOfTypeEffectivness = [
-      ["No effect", "+1.5", darkMode => (darkMode ? "limegreen" : "green")],
-      [
-        "0.25x effective",
-        "+1.5",
-        darkMode => (darkMode ? "limegreen" : "green"),
-      ],
-      ["0.5x effective", "+1", darkMode => (darkMode ? "limegreen" : "green")],
-      ["1x effective", "0", darkMode => (darkMode ? "#e0e0e0" : "#212121")],
-      ["2x super effective", "-1", darkMode => "red"],
-      ["4x super effective", "-1.5", darkMode => "red"],
+      ["No effect", "+1.5", "green", "limegreen"],
+      ["0.25x effective", "+1.5", "green", "limegreen"],
+      ["0.5x effective", "+1", "green", "limegreen"],
+      ["1x effective", "0", "#212121", "#e0e0e0"],
+      ["2x super effective", "-1", "red", "red"],
+      ["4x super effective", "-1.5", "red", "red"],
     ];
 
     this.rowsOfTerms = [
@@ -115,7 +107,10 @@ class Manual extends React.Component<ManualProps, ManualState> {
                     </TableCell>
                     <TableCell
                       align="right"
-                      style={{ color: row[2](this.props.darkMode) }}
+                      sx={[
+                        { color: row[2] },
+                        theme => theme.applyStyles("dark", { color: row[3] }),
+                      ]}
                     >
                       {row[1]}
                     </TableCell>
