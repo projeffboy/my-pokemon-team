@@ -71,7 +71,7 @@ export const selectMove = async (
 export const teamScoreUnitTests = (headingName: string) => {
   test.describe(`${headingName} - Unit Tests`, () => {
     test("should display all 18 types with score of 0", async ({ page }) => {
-      const section = page.getByRole("region", { name: `${headingName} Card` });
+      const section = page.getByRole("region", { name: headingName });
       await expect(section).toBeVisible();
 
       // Verify all scores are 0 in this section
@@ -81,7 +81,7 @@ export const teamScoreUnitTests = (headingName: string) => {
     test("should show 'First Select a Pokemon' popover when hovering over Dark type", async ({
       page,
     }) => {
-      const section = page.getByLabel(`${headingName} Card`);
+      const section = page.getByRole("region", { name: headingName });
       await expect(section).toBeVisible();
 
       // Find the Dark type element within the section
@@ -151,7 +151,7 @@ export const checkTypeDefenceScoreAndPopover = async (
 ) => {
   await checkScoreAndPopover(
     page,
-    "Team Defence Card",
+    "Team Defence",
     typeName,
     expectedScore,
     `${typeName} does...`,
@@ -167,7 +167,7 @@ export const checkTypeCoverageScoreAndPopover = async (
 ) => {
   await checkScoreAndPopover(
     page,
-    "Team Type Coverage Card",
+    "Team Type Coverage",
     typeName,
     expectedScore,
     `Super effective against ${typeName}:`,

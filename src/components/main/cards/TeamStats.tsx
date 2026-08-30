@@ -16,9 +16,13 @@ type TeamStatType = "typeDefence" | "typeCoverage";
 
 interface TeamStatsProps {
   title: TeamStatTitle;
+  titleId: string;
 }
 
-const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
+const TeamStats = observer(function TeamStats({
+  title,
+  titleId,
+}: TeamStatsProps) {
   const isLgDown = useIsLgDown();
   const teamStatType: TeamStatType =
     title === "Team Defence" ? "typeDefence" : "typeCoverage";
@@ -185,6 +189,7 @@ const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
       <Grid size={12}>
         {/* Either "Type Defence" or "Type Coverage"  */}
         <Typography
+          id={titleId}
           variant="h6"
           gutterBottom
           style={{ marginBottom: "0.15em", marginTop: "-0.2em" }}

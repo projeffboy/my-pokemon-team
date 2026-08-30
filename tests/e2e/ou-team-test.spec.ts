@@ -21,10 +21,10 @@ const ouTeamText = fs.readFileSync(
 
 const doBasicCheck = async (page: Page) => {
   await expect(
-    page.getByRole("region", { name: "Team Defence Card" }),
+    page.getByRole("region", { name: "Team Defence" }),
   ).toBeVisible();
   await expect(
-    page.getByRole("region", { name: "Team Type Coverage Card" }),
+    page.getByRole("region", { name: "Team Type Coverage" }),
   ).toBeVisible();
 
   const typeMap = { Fire: "FIR", Water: "WTR", Grass: "GRS" };
@@ -32,7 +32,7 @@ const doBasicCheck = async (page: Page) => {
   for (const type of types) {
     const abbr = typeMap[type];
     const typeElement = page
-      .getByRole("region", { name: "Team Defence Card" })
+      .getByRole("region", { name: "Team Defence" })
       .getByText(abbr, { exact: false });
     await typeElement.first().hover();
     await page.waitForTimeout(500);

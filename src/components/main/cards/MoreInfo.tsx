@@ -18,12 +18,23 @@ export default function MoreInfo() {
     setTabIndex(value);
   };
 
-  let tabTitles = ["Search Filters", "Team Checklist", "Save/Load Team"];
-
-  if (isLgDown) {
-    // If the screen is below 1200px
-    tabTitles = ["Filters", "Checklist", "Save/Load"];
-  }
+  const tabs = [
+    {
+      title: "Search Filters",
+      shortTitle: "Filters",
+      content: <SearchFilters />,
+    },
+    {
+      title: "Team Checklist",
+      shortTitle: "Checklist",
+      content: <TeamChecklist />,
+    },
+    {
+      title: "Save/Load Team",
+      shortTitle: "Save/Load",
+      content: <PokemonShowdownTeam />,
+    },
+  ];
 
   return (
     <Box>
@@ -34,24 +45,53 @@ export default function MoreInfo() {
         enableColorOnDark
       >
         {/* E.g.  | Search Filters | Team Checklist | Pokemon Showdown Team | */}
-        <Tabs value={tabIndex} onChange={handleChange} variant="fullWidth">
-          {tabTitles.map(title => (
-            <Tab label={title} key={title} sx={{ minWidth: "initial" }} />
+        <Tabs
+          value={tabIndex}
+          onChange={handleChange}
+          variant="fullWidth"
+          aria-label="Team tools"
+        >
+          {tabs.map(({ title, shortTitle }, index) => (
+            <Tab
+              id={`team-tool-tab-${index}`}
+              aria-controls={`team-tool-panel-${index}`}
+              aria-label={title}
+              label={isLgDown ? shortTitle : title}
+              key={title}
+              sx={{ minWidth: "initial" }}
+            />
           ))}
         </Tabs>
       </AppBar>
       {/* The stuff below the tabs */}
-      {[<SearchFilters />, <TeamChecklist />, <PokemonShowdownTeam />].map(
-        (component, i) =>
-          tabIndex === i && <TabContainer key={i}>{component}</TabContainer>,
-      )}
+      {tabs.map(({ title, content }, index) => (
+        <TabContainer key={title} index={index} value={tabIndex}>
+          {content}
+        </TabContainer>
+      ))}
     </Box>
   );
 }
 
 // The stuff below each tab
-const TabContainer = ({ children }: { children: ReactNode }) => (
-  <Grid container justifyContent="center" style={{ padding: 14 }}>
-    {children}
+const TabContainer = ({
+  children,
+  index,
+  value,
+}: {
+  children: ReactNode;
+  index: number;
+  value: number;
+}) => (
+  <Grid
+    id={`team-tool-panel-${index}`}
+    aria-labelledby={`team-tool-tab-${index}`}
+    role="tabpanel"
+    hidden={value !== index}
+    container
+    justifyContent="center"
+    style={{ padding: 14 }}
+  >
+    {value === index && children}
   </Grid>
 );
