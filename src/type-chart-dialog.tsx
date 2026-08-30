@@ -7,13 +7,10 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import TypeChart from "./type-chart";
-import { Breakpoint } from "./types";
+import { useBreakpoint } from "./width-context";
 
-interface Props {
-  width: Breakpoint;
-}
-
-export default function TypeChartDialog({ width }: Props) {
+export default function TypeChartDialog() {
+  const width = useBreakpoint();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const toggleDialog = () => setIsDialogOpen(open => !open);
 
@@ -70,7 +67,7 @@ export default function TypeChartDialog({ width }: Props) {
           maxWidth="md"
           fullWidth
         >
-          <TypeChart width={width} />
+          <TypeChart />
           <DialogActions>
             <Button onClick={toggleDialog} color="primary">
               Go Back

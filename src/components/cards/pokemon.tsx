@@ -2,11 +2,10 @@ import React from "react";
 import PokemonInput from "./pokemon/pokemon-input";
 import Sprite from "./pokemon/sprite";
 import { pokemonStyles } from "../../styles";
-import { Breakpoint, PokemonProp } from "../../types";
+import { PokemonProp } from "../../types";
 
 interface PokemonProps {
   teamIndex: number;
-  width: Breakpoint;
 }
 
 export default function Pokemon(props: PokemonProps) {
@@ -36,12 +35,7 @@ export default function Pokemon(props: PokemonProps) {
         />
       );
     } else {
-      let width: Breakpoint = "md";
-      if (props.width === "lg" || props.width === "xl") {
-        width = props.width;
-      }
-
-      return <Sprite key={i} teamIndex={props.teamIndex} width={width} />;
+      return <Sprite key={i} teamIndex={props.teamIndex} forceFullSize />;
     }
   });
 

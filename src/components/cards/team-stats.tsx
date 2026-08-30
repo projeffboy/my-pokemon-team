@@ -9,17 +9,18 @@ import { observer } from "mobx-react";
 import store from "../../store";
 import { teamStatsStyles } from "../../styles";
 import PokemonIcon from "./pokemon/pokemon-input/pokemon-input-select/pokemon-icon";
-import { Breakpoint, PokemonType } from "../../types";
+import { PokemonType } from "../../types";
+import { useBreakpoint } from "../../width-context";
 
 type TeamStatTitle = "Team Defence" | "Team Type Coverage";
 type TeamStatType = "typeDefence" | "typeCoverage";
 
 interface TeamStatsProps {
   title: TeamStatTitle;
-  width: Breakpoint;
 }
 
-const TeamStats = observer(function TeamStats({ title, width }: TeamStatsProps) {
+const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
+    const width = useBreakpoint();
     const teamStatType: TeamStatType =
       title === "Team Defence" ? "typeDefence" : "typeCoverage";
 

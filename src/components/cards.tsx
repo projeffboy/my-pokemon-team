@@ -8,14 +8,10 @@ import TeamStats from "./cards/team-stats";
 import MoreInfo from "./cards/more-info";
 import { paperStyles } from "../styles";
 import TeamViewer from "./cards/team-viewer";
-import { Breakpoint } from "../types";
+import { useBreakpoint } from "../width-context";
 
-interface CardsProps {
-  width: Breakpoint;
-}
-
-export default function Cards(props: CardsProps) {
-  const { width } = props;
+export default function Cards() {
+  const width = useBreakpoint();
   /*
    * What is width?
    * If the viewport width is...
@@ -34,14 +30,14 @@ export default function Cards(props: CardsProps) {
         <Grid key={num} size={6}>
           <Paper sx={paperStyles.applyPadding}>
             {/* teamIndex is the pokemon's team slot number - 1 */}
-            <Pokemon teamIndex={num} width={width} />
+            <Pokemon teamIndex={num} />
           </Paper>
         </Grid>
       ));
     } else {
       // if viewport width less than 960px
       // Display 1 or 2 pokemon cards
-      return <TeamViewer width={width} />;
+      return <TeamViewer />;
     }
   }
 
@@ -72,14 +68,14 @@ export default function Cards(props: CardsProps) {
               aria-label={`${cardTitle} Card`}
               role="region"
             >
-              <TeamStats title={cardTitle} width={width} />
+              <TeamStats title={cardTitle} />
             </Paper>
           </Grid>
         ))}
         {/* Pokemon more info card */}
         <Grid size={12}>
           <Paper>
-            <MoreInfo width={width} />
+            <MoreInfo />
           </Paper>
         </Grid>
       </Grid>

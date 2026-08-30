@@ -7,11 +7,11 @@ import { pokemonInputStyles as spriteStyles } from "../../../styles";
 import questionMark from "../../../images/question-mark.png";
 import altSpriteNum from "../../../data/altSpriteNum";
 import localSprites from "../../../images/local-sprites";
-import { Breakpoint } from "../../../types";
+import { useBreakpoint } from "../../../width-context";
 
 interface SpriteProps {
   teamIndex: number;
-  width: Breakpoint;
+  forceFullSize?: boolean;
 }
 
 const pokedexMap = pokedex as Record<string, { num?: number }>;
@@ -19,7 +19,12 @@ const altSpriteNumMap = altSpriteNum as Record<string, number>;
 const localSpritesMap = localSprites as Record<string, string>;
 
 const Sprite = observer(function Sprite(props: SpriteProps) {
-  const { teamIndex, width } = props;
+  const { teamIndex, forceFullSize = false } = props;
+  const breakpoint = useBreakpoint();
+  const width =
+    forceFullSize && (breakpoint === "xs" || breakpoint === "sm")
+      ? "md"
+      : breakpoint;
   const pokemon = store.team[teamIndex].name; // unhyphenated name
   const pokedexNumber = pokemon ? pokedexMap[pokemon]?.num : undefined;
 

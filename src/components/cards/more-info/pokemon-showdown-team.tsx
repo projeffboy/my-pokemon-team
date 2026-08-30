@@ -15,15 +15,8 @@ import FileCopy from "@mui/icons-material/FileCopy";
 import { observer } from "mobx-react";
 import store from "../../../store";
 import { pokemonShowdownTeamStyles } from "../../../styles";
-import { Breakpoint } from "../../../types";
 
-interface PokemonShowdownTeamProps {
-  width: Breakpoint;
-}
-
-const PokemonShowdownTeam = observer(function PokemonShowdownTeam(
-  _props: PokemonShowdownTeamProps
-) {
+const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [textArea, setTextArea] = useState("");
 

@@ -41,7 +41,7 @@ export const theme = createTheme({
 // app.jsx
 export const appStyles = {
   root: {
-    height: "100%",
+    minHeight: "100dvh",
     width: "100%",
     maxWidth: 1920,
     margin: "0 auto",

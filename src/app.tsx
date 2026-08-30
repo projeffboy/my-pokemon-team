@@ -8,13 +8,12 @@ import Main from "./components/main";
 import Footer from "./components/footer";
 import TypeChartDialog from "./type-chart-dialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
-import GlobalStyles from "@mui/material/GlobalStyles";
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./styles";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./components/RAMP";
-import useWidth from "./use-width";
 import { cookieStorageManager } from "./color-scheme-storage";
+import { WidthProvider } from "./width-context";
 
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;
@@ -34,39 +33,24 @@ export default function App() {
           noSsr
         >
           <CssBaseline />
-          <GlobalStyles styles={{ "html, body, #root": { height: "100%" } }} />
-          <AppContent />
+          <WidthProvider>
+            <Grid
+              container
+              spacing={2}
+              justifyContent="center"
+              alignItems="center"
+              sx={appStyles.root}
+            >
+              <Header />
+              <Main />
+              <Footer />
+            </Grid>
+            <MainSnackbar />
+            <TypeChartDialog />
+          </WidthProvider>
         </ThemeProvider>
       </>
     </Router>
-  );
-}
-
-// Needs to be inside <ThemeProvider /> so the hooks see the custom theme
-function AppContent() {
-  const width = useWidth();
-
-  return (
-    /*
-     * All 9 Cards
-     * apparently there's a slight horizontal scroll if I don't set the width and margin for <Grid />
-     * the original width for <Grid /> was calc(100% + 24px)
-     */
-    <>
-      <Grid
-        container
-        spacing={2}
-        justifyContent="center"
-        alignItems="center"
-        sx={appStyles.root}
-      >
-        <Header />
-        <Main width={width} />
-        <Footer />
-      </Grid>
-      <MainSnackbar />
-      <TypeChartDialog width={width} />
-    </>
   );
 }
 

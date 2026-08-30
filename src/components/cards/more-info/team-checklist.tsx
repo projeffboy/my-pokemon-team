@@ -6,14 +6,10 @@ import Cancel from "@mui/icons-material/Cancel";
 import { observer } from "mobx-react";
 import store from "../../../store";
 import Typography from "@mui/material/Typography";
-import { Breakpoint } from "../../../types";
+import { useBreakpoint } from "../../../width-context";
 
-interface TeamChecklistProps {
-  width: Breakpoint;
-}
-
-const TeamChecklist = observer(function TeamChecklist(props: TeamChecklistProps) {
-  const { width } = props;
+const TeamChecklist = observer(function TeamChecklist() {
+  const width = useBreakpoint();
 
   // wish + protect-like move counts as reliable recovery
   const hasWishAndProtect = () =>

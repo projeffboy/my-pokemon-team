@@ -5,7 +5,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import TypeChartPng from "./images/type-chart.png";
-import { Breakpoint } from "./types";
+import { useBreakpoint } from "./width-context";
 
 function TabContainer(props: { children?: React.ReactNode }) {
   return (
@@ -15,11 +15,8 @@ function TabContainer(props: { children?: React.ReactNode }) {
   );
 }
 
-interface Props {
-  width: Breakpoint;
-}
-
-function TypeChart({ width }: Props) {
+function TypeChart() {
+  const width = useBreakpoint();
   const [value, setValue] = useState(() => (width === "xs" ? 1 : 0));
 
   const handleChange = (_event: React.SyntheticEvent, newValue: number) => {

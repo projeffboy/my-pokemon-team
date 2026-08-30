@@ -10,13 +10,10 @@ import TeamChecklist from "./more-info/team-checklist";
 import SearchFilters from "./more-info/search-filters";
 import PokemonShowdownTeam from "./more-info/pokemon-showdown-team";
 import { moreInfoStyles } from "../../styles";
-import { Breakpoint } from "../../types";
+import { useBreakpoint } from "../../width-context";
 
-interface MoreInfoProps {
-  width: Breakpoint;
-}
-
-export default function MoreInfo({ width }: MoreInfoProps) {
+export default function MoreInfo() {
+  const width = useBreakpoint();
   const [tabIndex, setTabIndex] = useState(0);
 
   // Click to change tab
@@ -55,8 +52,8 @@ export default function MoreInfo({ width }: MoreInfoProps) {
       {/* The stuff below the tabs */}
       {[
         <SearchFilters />,
-        <TeamChecklist width={width} />,
-        <PokemonShowdownTeam width={width} />,
+        <TeamChecklist />,
+        <PokemonShowdownTeam />,
       ].map(
         (component, i) =>
           tabIndex === i && <TabContainer key={i}>{component}</TabContainer>

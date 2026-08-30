@@ -8,17 +8,14 @@ import Paper from "@mui/material/Paper";
 import { paperStyles, teamViewerStyles } from "../../styles";
 import Pokemon from "./pokemon";
 import Sprite from "./pokemon/sprite";
-import { Breakpoint } from "../../types";
-
-interface TeamViewerProps {
-  width: Breakpoint;
-}
+import { useBreakpoint } from "../../width-context";
 
 /*
  * NOTE!!!
  * This component can only be viewed below a viewport width of 960px
  */
-export default function TeamViewer({ width }: TeamViewerProps) {
+export default function TeamViewer() {
+  const width = useBreakpoint();
   // Store separate selections for the 3-tab and 6-tab layouts.
   const [smTabIndex, setSmTabIndex] = useState(0);
   const [xsTabIndex, setXsTabIndex] = useState(0);
@@ -42,8 +39,8 @@ export default function TeamViewer({ width }: TeamViewerProps) {
   const getTwoPokemonSprites = (teamIndex: number) => {
     return (
       <div style={teamViewerStyles.twoSprites}>
-        <Sprite teamIndex={teamIndex} width={width} />
-        <Sprite teamIndex={teamIndex + 1} width={width} />
+        <Sprite teamIndex={teamIndex} />
+        <Sprite teamIndex={teamIndex + 1} />
       </div>
     );
   };
@@ -78,7 +75,7 @@ export default function TeamViewer({ width }: TeamViewerProps) {
                         key={teamIndex}
                         label={teamIndex + 1}
                         sx={teamViewerStyles.xsTab}
-                        icon={<Sprite teamIndex={teamIndex} width={width} />}
+                        icon={<Sprite teamIndex={teamIndex} />}
                       />
                     ))
               }
@@ -91,14 +88,14 @@ export default function TeamViewer({ width }: TeamViewerProps) {
             [0, 1].map(num => (
               <Grid key={num} size={12}>
                 <Paper sx={pokemonPaperSx}>
-                  <Pokemon teamIndex={2 * smTabIndex + num} width={width} />
+                  <Pokemon teamIndex={2 * smTabIndex + num} />
                 </Paper>
               </Grid>
             ))
           ) : (
             <Grid size={12}>
               <Paper sx={pokemonPaperSx}>
-                <Pokemon teamIndex={xsTabIndex} width={width} />
+                <Pokemon teamIndex={xsTabIndex} />
               </Paper>
             </Grid>
           )
