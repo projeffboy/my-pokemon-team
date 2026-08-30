@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type SyntheticEvent } from "react";
 // Material UI Imports
 import Grid from "@mui/material/Grid";
 import Tabs from "@mui/material/Tabs";
@@ -21,7 +21,7 @@ export default function TeamViewer() {
 
   // Changge smTabIndex betwen 600px and 959px
   // Change xsTabIndex below 600px
-  const handleChange = (_e: React.SyntheticEvent, val: number) => {
+  const handleChange = (_e: SyntheticEvent, val: number) => {
     if (width === "sm") {
       setSmTabIndex(val);
     } else {
@@ -82,13 +82,13 @@ export default function TeamViewer() {
         width === "sm" ?
           [0, 1].map(num => (
             <Grid key={num} size={12}>
-              <Paper sx={{ padding: "8px" }}>
+              <Paper sx={{ p: 1 }}>
                 <Pokemon teamIndex={2 * smTabIndex + num} />
               </Paper>
             </Grid>
           ))
         : <Grid size={12}>
-            <Paper sx={{ padding: "8px" }}>
+            <Paper sx={{ p: 1 }}>
               <Pokemon teamIndex={xsTabIndex} />
             </Paper>
           </Grid>

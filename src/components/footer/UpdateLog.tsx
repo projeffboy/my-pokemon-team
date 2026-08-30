@@ -32,9 +32,8 @@ function UpdateLog() {
           <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               variant="outlined"
-              color="primary"
               href="https://github.com/projeffboy/my-pokemon-team"
-              style={{ margin: "40px 0" }}
+              sx={{ my: 5 }}
             >
               <Folder style={{ marginRight: 5 }} />
               GitHub Repo
@@ -204,7 +203,6 @@ function UpdateLog() {
             instead (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/NintendoSwitch/comments/kuhc3d/pokemon_sword_and_shield_teambuilder/giv1p6v?utm_source=share&utm_medium=web2x&context=3"
             >
               thouartthee
@@ -216,7 +214,6 @@ function UpdateLog() {
             1.5 (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/stunfisk/comments/kuix21/updated_gen_8_teambuilder_mypokemonteamcom/gitspzk?utm_source=share&utm_medium=web2x&context=3"
             >
               GoneWithLaw
@@ -235,7 +232,6 @@ function UpdateLog() {
             Importing Pokemon Showdown teams with gender specified works now (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ejehmud?utm_source=share&utm_medium=web2x"
             >
               jkelligan
@@ -252,7 +248,6 @@ function UpdateLog() {
             Water Bubble gives you +1 for Fire (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei6m1q0"
             >
               beyardo
@@ -279,7 +274,6 @@ function UpdateLog() {
             non-alolan forms (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4t5g6"
             >
               DJdeMaster
@@ -290,7 +284,6 @@ function UpdateLog() {
             The search filter VGC 2018 is updated to VGC 2019 (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4xcwx"
             >
               Elmodipus
@@ -301,7 +294,6 @@ function UpdateLog() {
             Added the "superior" type chart (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="http://i.imgur.com/fylyCdC.png"
             >
               Bardock_RD
@@ -312,7 +304,6 @@ function UpdateLog() {
             The code is now open sourced (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4yxo3"
             >
               Crescive_Delta
@@ -339,7 +330,6 @@ function UpdateLog() {
             forme. For example, White Kyurem couldn't learn Fusion Flare (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3"
             >
               DMSivally
@@ -351,7 +341,6 @@ function UpdateLog() {
             is fixed too now (
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p"
             >
               kwiszat
@@ -360,9 +349,7 @@ function UpdateLog() {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleDialog} color="primary">
-            Go Back
-          </Button>
+          <Button onClick={toggleDialog}>Go Back</Button>
         </DialogActions>
       </Dialog>
     </>

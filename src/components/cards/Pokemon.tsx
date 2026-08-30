@@ -1,4 +1,3 @@
-import React from "react";
 import PokemonInput from "./pokemon/PokemonInput";
 import Sprite from "./pokemon/Sprite";
 import { PokemonProp } from "../../types";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type ReactElement } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -23,13 +23,13 @@ import TrendingUp from "@mui/icons-material/TrendingUp";
 import pokemonShowdownLogo from "../../images/pokemon-showdown-logo.png";
 
 type CreditItem = {
-  icon: React.ReactElement;
+  icon: ReactElement;
   label: string;
   href?: string;
   secondary?: string;
 };
 
-type RawCreditItem = [React.ReactElement, string, string?, string?];
+type RawCreditItem = [ReactElement, string, string?, string?];
 
 function listItems() {
   const items: CreditItem[] = (
@@ -84,11 +84,7 @@ function listItems() {
       <ListItemText
         primary={
           item.href ?
-            <Link
-              style={{ color: "#2196f3" }}
-              variant="inherit"
-              href={item.href}
-            >
+            <Link style={{ color: "#2196f3" }} href={item.href}>
               {item.label}
             </Link>
           : item.label
@@ -126,7 +122,7 @@ function Credits() {
               style={{ width: "50%", minWidth: 200 }}
             />
           </Link>
-          <Typography variant="body1" paragraph>
+          <Typography paragraph>
             The folks at Pokemon Showdown are very generous to let me use all of
             their GIFs, sprites, and pokemon data. Absolutely indispensable!
           </Typography>
@@ -136,9 +132,7 @@ function Credits() {
           <List>{listItems()}</List>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleDialog} color="primary">
-            Go Back
-          </Button>
+          <Button onClick={toggleDialog}>Go Back</Button>
         </DialogActions>
       </Dialog>
     </>

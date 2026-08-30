@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type ReactNode, type SyntheticEvent } from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import TypeChartPng from "./images/type-chart.png";
 import { useBreakpoint } from "./WidthContext";
 
-function TabContainer(props: { children?: React.ReactNode }) {
+function TabContainer(props: { children?: ReactNode }) {
   return (
     <Typography component="div" style={{ padding: 8 * 3 }}>
       {props.children}
@@ -19,7 +19,7 @@ function TypeChart() {
   const width = useBreakpoint();
   const [value, setValue] = useState(() => (width === "xs" ? 1 : 0));
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

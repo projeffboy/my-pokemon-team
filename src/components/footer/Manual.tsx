@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -131,7 +131,6 @@ function Manual() {
             Ubers, OU, and{" "}
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://play.pokemon.com/en-us/resources/rules/?category=vgc"
             >
               VGC
@@ -140,17 +139,12 @@ function Manual() {
             rules. Battle Stadium Singles/Doubles and VGC are the only ones
             endorsed by The Pokemon Company, while the other ones are maintained
             by{" "}
-            <Link
-              style={{ color: "#2196f3" }}
-              variant="inherit"
-              href="https://www.smogon.com/"
-            >
+            <Link style={{ color: "#2196f3" }} href="https://www.smogon.com/">
               Smogon
             </Link>
             . You can check out{" "}
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.smogon.com/ingame/battle/tiering-faq"
             >
               Smogon's FAQ about tiers
@@ -158,7 +152,6 @@ function Manual() {
             or{" "}
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://en.softonic.com/articles/competitive-pokemon-smogon"
             >
               this guide that gives a brief description about each tier
@@ -173,7 +166,6 @@ function Manual() {
             Smogon has a{" "}
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               href="https://www.smogon.com/dp/articles/pokemon_dictionary"
             >
               dictionary for pokemon terms
@@ -205,9 +197,7 @@ function Manual() {
           </Table>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleDialog} color="primary">
-            Go Back
-          </Button>
+          <Button onClick={toggleDialog}>Go Back</Button>
         </DialogActions>
       </Dialog>
     </>

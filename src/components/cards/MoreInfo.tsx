@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type ReactNode, type SyntheticEvent } from "react";
 // Material UI Imports
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
@@ -16,7 +16,7 @@ export default function MoreInfo() {
   const [tabIndex, setTabIndex] = useState(0);
 
   // Click to change tab
-  const handleChange = (_event: React.SyntheticEvent, value: number) => {
+  const handleChange = (_event: SyntheticEvent, value: number) => {
     setTabIndex(value);
   };
 
@@ -28,7 +28,7 @@ export default function MoreInfo() {
   }
 
   return (
-    <Box sx={{ borderRadius: 4 }}>
+    <Box>
       <AppBar
         position="static"
         color="default"
@@ -36,13 +36,7 @@ export default function MoreInfo() {
         enableColorOnDark
       >
         {/* E.g.  | Search Filters | Team Checklist | Pokemon Showdown Team | */}
-        <Tabs
-          value={tabIndex}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-        >
+        <Tabs value={tabIndex} onChange={handleChange} variant="fullWidth">
           {tabTitles.map(title => (
             <Tab label={title} key={title} sx={{ minWidth: "initial" }} />
           ))}
@@ -58,7 +52,7 @@ export default function MoreInfo() {
 }
 
 // The stuff below each tab
-const TabContainer = ({ children }: { children: React.ReactNode }) => (
+const TabContainer = ({ children }: { children: ReactNode }) => (
   <Grid container justifyContent="center" style={{ padding: 14 }}>
     {children}
   </Grid>

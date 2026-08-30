@@ -11,6 +11,7 @@ import Manual from "./footer/Manual";
 import Credits from "./footer/Credits";
 import PrivacyPolicy from "./footer/PrivacyPolicy";
 import UpdateLog from "./footer/UpdateLog";
+import type { MouseEvent } from "react";
 
 type ColorMode = "system" | "light" | "dark";
 
@@ -19,7 +20,7 @@ export default function Footer() {
   const selectedMode = mode ?? "system";
 
   const handleModeChange = (
-    _event: React.MouseEvent<HTMLElement>,
+    _event: MouseEvent<HTMLElement>,
     newMode: ColorMode | null,
   ) => {
     if (newMode) setMode(newMode);

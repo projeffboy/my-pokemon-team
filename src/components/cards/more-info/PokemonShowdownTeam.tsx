@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, type ChangeEvent, type MouseEvent } from "react";
 // Material UI Core Imports
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -20,12 +20,12 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
   const [textArea, setTextArea] = useState("");
 
   const handleTextArea = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setTextArea(event.target.value);
   };
 
-  const handleClick = (_event: React.MouseEvent<HTMLElement>, text: string) => {
+  const handleClick = (_event: MouseEvent<HTMLElement>, text: string) => {
     setIsDialogOpen(true);
     setTextArea(text);
   };
@@ -199,7 +199,6 @@ ${[1, 2, 3, 4]
             If you use{" "}
             <Link
               style={{ color: "#2196f3" }}
-              variant="inherit"
               target="_blank"
               rel="noopener"
               href="https://play.pokemonshowdown.com/teambuilder"
@@ -219,7 +218,7 @@ ${[1, 2, 3, 4]
             label="Pokemon Showdown Team Raw Text"
             multiline
             fullWidth
-            sx={{ margin: "20px 0" }}
+            sx={{ my: 2.5 }}
             defaultValue={pokemonShowdownTeamInfo}
             onChange={handleTextArea}
           />
@@ -229,21 +228,13 @@ ${[1, 2, 3, 4]
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button
-            onClick={() => handleImport(pokemonShowdownTeamInfo)}
-            color="primary"
-          >
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={() => handleImport(pokemonShowdownTeamInfo)}>
             Update
           </Button>
         </DialogActions>
       </Dialog>
-      <Button
-        onClick={() => handleCopy(pokemonShowdownTeamInfo)}
-        sx={{ margin: 1 }}
-      >
+      <Button onClick={() => handleCopy(pokemonShowdownTeamInfo)} sx={{ m: 1 }}>
         Copy Team <FileCopy style={{ marginLeft: 5 }} />
       </Button>
     </>

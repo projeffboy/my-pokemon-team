@@ -26,7 +26,7 @@ function PrivacyPolicy() {
       >
         <DialogTitle id="form-dialog-title">Privacy Policy</DialogTitle>
         <DialogContent>
-          <Typography variant="body1" paragraph>
+          <Typography paragraph>
             All or partial advertising on this Website or App is managed by
             Playwire LLC. If Playwire publisher advertising services are used,
             Playwire LLC may collect and use certain aggregated and anonymized
@@ -37,7 +37,7 @@ function PrivacyPolicy() {
             </a>
             .
           </Typography>
-          <Typography variant="body1" paragraph>
+          <Typography paragraph>
             <a href="http://www.playwire.com" rel="noopener" target="_blank">
               <img
                 src="https://www.playwire.com/hubfs/Powered-by-Playwire-Badges/Ads-Powered-by-playwire-2021-standalone-large-300px.png"
@@ -45,7 +45,6 @@ function PrivacyPolicy() {
                 width="200"
                 loading="lazy"
                 style={{
-                  width: 200,
                   marginLeft: "auto",
                   marginRight: "auto",
                   display: "block",
@@ -53,7 +52,7 @@ function PrivacyPolicy() {
               />
             </a>
           </Typography>
-          <Typography variant="body1" paragraph align="center">
+          <Typography paragraph align="center">
             <a
               href="https://www.playwire.com/contact-direct-sales"
               rel="noopener"
@@ -63,9 +62,7 @@ function PrivacyPolicy() {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={toggleDialog} color="primary">
-            Go Back
-          </Button>
+          <Button onClick={toggleDialog}>Go Back</Button>
         </DialogActions>
       </Dialog>
     </>

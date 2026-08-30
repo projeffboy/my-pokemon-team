@@ -24,3 +24,4 @@ test.describe("Header Tests", () => {
       page.getByText("Report Bugs to jeffery124@gmail.com"),
     ).toBeVisible();
   });
+});

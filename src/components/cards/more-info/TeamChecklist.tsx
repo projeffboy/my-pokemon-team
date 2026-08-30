@@ -1,4 +1,3 @@
-import React from "react";
 import Grid from "@mui/material/Grid";
 import CheckCircle from "@mui/icons-material/CheckCircle";
 import Cancel from "@mui/icons-material/Cancel";
@@ -98,8 +97,7 @@ const TeamChecklist = observer(function TeamChecklist() {
     <Grid key={miniHeader} size={4}>
       {/* E.g. Offensive */}
       <Typography
-        sx={{ fontWeight: "bold", paddingBottom: 10 }}
-        variant="body1"
+        sx={{ fontWeight: "bold", pb: 10 }}
         component="div"
         style={{ lineHeight: "initial" }}
       >
@@ -111,21 +109,13 @@ const TeamChecklist = observer(function TeamChecklist() {
           <div>
             {checklist[miniHeader][check] ?
               <CheckCircle style={{ color: "#16a085" }} />
-            : <Typography
-                variant="body1"
-                component="div"
-                style={{ lineHeight: "initial" }}
-              >
+            : <Typography component="div" style={{ lineHeight: "initial" }}>
                 <Cancel />
               </Typography>
             }
           </div>
           {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
-          <Typography
-            style={{ padding: "0px 4px" }}
-            variant="body1"
-            component="div"
-          >
+          <Typography sx={{ px: 0.5 }} component="div">
             {checklistAbbr[3 * i + j] || check}
           </Typography>
         </div>

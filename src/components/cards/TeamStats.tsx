@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { Fragment, useState, type MouseEvent } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -55,7 +55,7 @@ const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
     return <Box>{formattedValue}</Box>;
   };
 
-  const handlePopoverOpen = (e: React.MouseEvent<HTMLElement>, i: number) => {
+  const handlePopoverOpen = (e: MouseEvent<HTMLElement>, i: number) => {
     const nextAnchorEl = Array<HTMLElement | null>(18).fill(null);
     nextAnchorEl[i] = e.currentTarget;
     setAnchorEl(nextAnchorEl);
@@ -63,7 +63,7 @@ const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
 
   const handlePopoverClose = () => setAnchorEl(Array(18).fill(null));
 
-  const handleClick = (e: React.MouseEvent<HTMLElement>, i: number) => {
+  const handleClick = (e: MouseEvent<HTMLElement>, i: number) => {
     if (anchorEl.every(x => x === null)) {
       handlePopoverOpen(e, i);
     } else {
@@ -124,16 +124,15 @@ const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
   const gridItems = (currentTitle: TeamStatTitle) =>
     (Object.keys(types) as PokemonType[]).map((type, i) => (
       <Grid key={i} size={2}>
-        <Box sx={{ padding: { xs: "3px 1px", md: "3px" } }}>
+        <Box sx={{ px: { xs: 0.125, md: 0.375 }, py: 0.375 }}>
           {/* Activates Popover */}
           <Box
             sx={{
               color: "white",
               borderRadius: "5px",
-              display: "block",
               width: { xs: "100%", md: "75%" },
-              margin: "auto",
-              padding: "1px 0",
+              m: "auto",
+              py: 0.125,
             }}
             style={{ backgroundColor: `#${types[type]}` }}
             aria-owns={anchorEl[i] ? "mouse-over-popover-" + i : undefined}
@@ -170,7 +169,6 @@ const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
         </Box>
         {/* E.g. +2 or -1 */}
         <Typography
-          variant="body1"
           component="div"
           style={{ lineHeight: "initial" }}
           aria-label={`${type} score: ${formatPositiveScore(
@@ -341,7 +339,7 @@ function TypeCoverageTooltipInfo({
           const { name: pkmn, ability } = teamPkmnProps;
 
           return (
-            <React.Fragment key={pkmn + i}>
+            <Fragment key={pkmn + i}>
               {[1, 2, 3, 4].map(num => {
                 // For each move number
                 const move = teamPkmnProps["move" + num];
@@ -381,7 +379,7 @@ function TypeCoverageTooltipInfo({
 
                 return null;
               })}
-            </React.Fragment>
+            </Fragment>
           );
         })}
       </ul>

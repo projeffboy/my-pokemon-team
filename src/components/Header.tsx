@@ -13,10 +13,8 @@ export default function Header() {
       component="header"
       container
       size={12}
-      // Don't inherit the outer spacing: 16px gaps overflow 360px-wide phones
       spacing={0}
       justifyContent="center"
-      alignItems="center"
     >
       <Grid>
         <Box
@@ -26,7 +24,7 @@ export default function Header() {
           sx={{
             display: "block",
             height: 28,
-            padding: "0 6px",
+            px: 1,
             "@media (min-width: 360px)": { height: 32 },
             "@media (min-width: 600px)": { height: 48 },
           }}
@@ -36,7 +34,7 @@ export default function Header() {
         <Typography
           variant="h3"
           sx={{
-            padding: "0 20px",
+            px: 2.5,
             fontSize: "1.4rem",
             "@media (min-width: 360px)": { fontSize: "1.6rem" },
             "@media (min-width: 600px)": { fontSize: "2.8125rem" },
@@ -53,7 +51,7 @@ export default function Header() {
           sx={{
             display: "block",
             height: 28,
-            padding: "0 6px",
+            px: 1,
             "@media (min-width: 360px)": { height: 32 },
             "@media (min-width: 600px)": { height: 48 },
           }}

@@ -1,4 +1,3 @@
-import React from "react";
 import { observer } from "mobx-react";
 import store from "../../../store";
 import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";

@@ -1,4 +1,3 @@
-import React from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -87,13 +86,13 @@ const SearchFilters = observer(function SearchFilters() {
         variant="standard"
         sx={{
           minWidth: { xs: 90, md: 120 },
-          margin: { xs: "0 10px 10px", lg: "10px" },
+          m: 1.25,
+          mt: { xs: 0, lg: 1.25 },
         }}
       >
         {/* E.g. Format */}
         <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
         <Select
-          variant="standard"
           value={store.searchFilters[inputToFilterKey[inputLabel]]}
           onChange={e => handleChange(inputLabel, e)}
           inputProps={{ id: inputLabel }}

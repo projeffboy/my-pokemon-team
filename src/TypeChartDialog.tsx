@@ -20,7 +20,6 @@ export default function TypeChartDialog() {
         <Fab
           onClick={toggleDialog}
           color="primary"
-          variant="circular"
           size="small"
           style={{ position: "fixed", bottom: 116, right: 16 }}
           aria-label="Type Chart"
@@ -33,8 +32,6 @@ export default function TypeChartDialog() {
         <Fab
           onClick={toggleDialog}
           color="primary"
-          variant="circular"
-          size="large"
           style={{ position: "fixed", bottom: 116, right: 24 }}
           aria-label="Type Chart"
         >
@@ -47,7 +44,6 @@ export default function TypeChartDialog() {
           onClick={toggleDialog}
           color="primary"
           variant="extended"
-          size="large"
           style={{ position: "fixed", bottom: 116, right: 24 }}
         >
           <TableChart style={{ marginRight: 8 }} />
@@ -69,9 +65,7 @@ export default function TypeChartDialog() {
       >
         <TypeChart />
         <DialogActions>
-          <Button onClick={toggleDialog} color="primary">
-            Go Back
-          </Button>
+          <Button onClick={toggleDialog}>Go Back</Button>
         </DialogActions>
       </Dialog>
     </>
