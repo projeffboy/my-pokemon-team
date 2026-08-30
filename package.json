@@ -1,6 +1,5 @@
 {
   "name": "pokemon-teambuilder",
-  "version": "1.0.0",
   "private": true,
   "type": "module",
   "dependencies": {
@@ -19,9 +18,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "npx playwright test",
-    "test:quick": "npx playwright test --project='iPhone'",
-    "test:update-snapshots": "npx playwright test tests/snapshot/snapshot-tests.spec.ts --update-snapshots",
+    "test": "playwright test",
+    "test:quick": "playwright test --project='iPhone'",
+    "test:update-snapshots": "playwright test tests/snapshot/snapshot-tests.spec.ts --update-snapshots",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
   },
   "devDependencies": {
@@ -32,14 +31,5 @@
     "@vitejs/plugin-react": "^5.0.0",
     "typescript": "^5.8.3",
     "vite": "^7.0.0"
-  },
-  "engines": {
-    "node": ">=22.12.0"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  }
 }
