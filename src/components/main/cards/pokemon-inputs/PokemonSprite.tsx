@@ -120,7 +120,7 @@ const PokemonSprite = observer(function PokemonSprite(
         }}
         /* Apply miniSprite style if it's a mini sprite */
         style={{
-          maxHeight: width === "lg" || width === "xl" ? "96px" : "100%",
+          maxHeight: width !== "lg" && width !== "xl" ? "100%" : "96px",
           maxWidth: "100%",
           ...(width === "sm" || width === "xs" ? { width: "100%" } : {}),
         }}

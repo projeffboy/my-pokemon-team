@@ -1,8 +1,7 @@
 import { createContext, useContext, type PropsWithChildren } from "react";
-import { Breakpoint } from "./types";
-import useWidth from "./use-width";
+import useWidth, { type WidthInfo } from "./use-width";
 
-const WidthContext = createContext<Breakpoint | undefined>(undefined);
+const WidthContext = createContext<WidthInfo | undefined>(undefined);
 
 export function WidthProvider({ children }: PropsWithChildren) {
   const width = useWidth();
@@ -12,12 +11,31 @@ export function WidthProvider({ children }: PropsWithChildren) {
   );
 }
 
-export function useBreakpoint() {
-  const width = useContext(WidthContext);
+function useWidthContext() {
+  const context = useContext(WidthContext);
 
-  if (width === undefined) {
+  if (context === undefined) {
     throw new Error("useBreakpoint must be used within a WidthProvider");
   }
 
-  return width;
+  return context;
+}
+
+export function useBreakpoint() {
+  return useWidthContext().breakpoint;
+}
+
+// True below the 'md' breakpoint (equivalent to theme.breakpoints.down('md'))
+export function useIsMdDown() {
+  return useWidthContext().isMdDown;
+}
+
+// True below the 'lg' breakpoint (equivalent to theme.breakpoints.down('lg'))
+export function useIsLgDown() {
+  return useWidthContext().isLgDown;
+}
+
+// True below the 'xl' breakpoint (equivalent to theme.breakpoints.down('xl'))
+export function useIsXlDown() {
+  return useWidthContext().isXlDown;
 }

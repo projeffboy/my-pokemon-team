@@ -5,14 +5,16 @@ import PokemonInputs from "./cards/PokemonInputs";
 import TeamStats from "./cards/TeamStats";
 import MoreInfo from "./cards/MoreInfo";
 import TeamViewer from "./cards/TeamViewer";
-import { useBreakpoint } from "../../WidthContext";
+import { useIsMdDown } from "../../WidthContext";
 
 export default function Cards() {
-  const width = useBreakpoint();
+  const isMdDown = useIsMdDown();
 
-  function pokemonCards(): ReactNode {
-    if (width !== "xs" && width !== "sm") {
-      // if viewport width >=960px
+  function PokemonInputCards() {
+    if (isMdDown) {
+      // Display 1 or 2 pokemon cards
+      return <TeamViewer />;
+    } else {
       // Display 6 pokemon cards
       return [0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} size={6}>
@@ -22,10 +24,6 @@ export default function Cards() {
           </Paper>
         </Grid>
       ));
-    } else {
-      // if viewport width less than 960px
-      // Display 1 or 2 pokemon cards
-      return <TeamViewer />;
     }
   }
 
@@ -33,7 +31,7 @@ export default function Cards() {
     <>
       {/* Pokemon cards */}
       <Grid container size={{ xs: 12, sm: 6, md: 7, lg: 6 }} spacing={2}>
-        {pokemonCards()}
+        <PokemonInputCards />
       </Grid>
       {/* Pokemon team stats cards */}
       <Grid container size={{ xs: 12, sm: 6, md: 5, lg: 6 }} spacing={2}>

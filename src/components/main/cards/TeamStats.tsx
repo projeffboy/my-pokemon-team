@@ -9,7 +9,7 @@ import { observer } from "mobx-react";
 import store from "../../../store";
 import PokemonIcon from "./pokemon-inputs/pokemon-input/pokemon-input-select/PokemonIcon";
 import { PokemonType } from "../../../types";
-import { useBreakpoint } from "../../../WidthContext";
+import { useIsLgDown } from "../../../WidthContext";
 
 type TeamStatTitle = "Team Defence" | "Team Type Coverage";
 type TeamStatType = "typeDefence" | "typeCoverage";
@@ -19,7 +19,7 @@ interface TeamStatsProps {
 }
 
 const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
-  const width = useBreakpoint();
+  const isLgDown = useIsLgDown();
   const teamStatType: TeamStatType =
     title === "Team Defence" ? "typeDefence" : "typeCoverage";
 
@@ -96,7 +96,7 @@ const TeamStats = observer(function TeamStats({ title }: TeamStatsProps) {
   };
 
   let typeAbbr: string[] = [];
-  if (width !== "lg" && width !== "xl") {
+  if (isLgDown) {
     // If the screen is below 1200px
     typeAbbr = [
       "BUG",

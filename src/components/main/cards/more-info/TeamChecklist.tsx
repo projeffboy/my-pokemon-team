@@ -4,10 +4,11 @@ import Cancel from "@mui/icons-material/Cancel";
 import { observer } from "mobx-react";
 import store from "../../../../store";
 import Typography from "@mui/material/Typography";
-import { useBreakpoint } from "../../../../WidthContext";
+import { useIsMdDown, useIsLgDown } from "../../../../WidthContext";
 
 const TeamChecklist = observer(function TeamChecklist() {
-  const width = useBreakpoint();
+  const isMdDown = useIsMdDown();
+  const isLgDown = useIsLgDown();
 
   // wish + protect-like move counts as reliable recovery
   const hasWishAndProtect = () =>
@@ -73,7 +74,7 @@ const TeamChecklist = observer(function TeamChecklist() {
   };
 
   let checklistAbbr: string[] = [];
-  if (width !== "lg" && width !== "xl") {
+  if (isLgDown) {
     // If the screen is below 1200px
     checklistAbbr = [
       "Hazard",
@@ -87,7 +88,7 @@ const TeamChecklist = observer(function TeamChecklist() {
       "Choice",
     ];
   }
-  if (width === "sm" || width === "xs") {
+  if (isMdDown) {
     checklistAbbr[1] = "Spin";
     checklistAbbr[2] = "Heal";
     checklistAbbr[7] = "Volturn";

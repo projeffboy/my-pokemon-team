@@ -7,10 +7,10 @@ import Box from "@mui/material/Box";
 import TeamChecklist from "./more-info/TeamChecklist";
 import SearchFilters from "./more-info/SearchFilters";
 import PokemonShowdownTeam from "./more-info/PokemonShowdownTeam";
-import { useBreakpoint } from "../../../WidthContext";
+import { useIsLgDown } from "../../../WidthContext";
 
 export default function MoreInfo() {
-  const width = useBreakpoint();
+  const isLgDown = useIsLgDown();
   const [tabIndex, setTabIndex] = useState(0);
 
   // Click to change tab
@@ -20,7 +20,7 @@ export default function MoreInfo() {
 
   let tabTitles = ["Search Filters", "Team Checklist", "Save/Load Team"];
 
-  if (width !== "lg" && width !== "xl") {
+  if (isLgDown) {
     // If the screen is below 1200px
     tabTitles = ["Filters", "Checklist", "Save/Load"];
   }

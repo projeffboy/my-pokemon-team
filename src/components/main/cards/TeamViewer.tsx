@@ -7,10 +7,7 @@ import PokemonInputs from "./PokemonInputs";
 import PokemonSprite from "./pokemon-inputs/PokemonSprite";
 import { useBreakpoint } from "../../../WidthContext";
 
-/*
- * NOTE!!!
- * This component can only be viewed below a viewport width of 960px
- */
+// This component can only be viewed below md breakpoint
 export default function TeamViewer() {
   const width = useBreakpoint();
   // Store separate selections for the 3-tab and 6-tab layouts.
@@ -20,10 +17,10 @@ export default function TeamViewer() {
   // Changge smTabIndex betwen 600px and 959px
   // Change xsTabIndex below 600px
   const handleChange = (_e: SyntheticEvent, val: number) => {
-    if (width === "sm") {
-      setSmTabIndex(val);
-    } else {
+    if (width === "xs") {
       setXsTabIndex(val);
+    } else {
+      setSmTabIndex(val);
     }
   };
 
@@ -47,27 +44,27 @@ export default function TeamViewer() {
       <Grid size={12}>
         <Paper>
           <Tabs
-            value={width === "sm" ? smTabIndex : xsTabIndex}
+            value={width === "xs" ? xsTabIndex : smTabIndex}
             onChange={handleChange}
             variant="fullWidth"
             textColor="secondary"
           >
             {
-              // Either displays 3 or 6 tabs
-              width === "sm" ?
-                [0, 2, 4].map(teamIndex => (
-                  <Tab
-                    key={teamIndex}
-                    label={`${teamIndex + 1} - ${teamIndex + 2}`}
-                    icon={getTwoPokemonSprites(teamIndex)}
-                  />
-                ))
-              : [0, 1, 2, 3, 4, 5].map(teamIndex => (
+              // Either displays 6 or 3 tabs
+              width === "xs" ?
+                [0, 1, 2, 3, 4, 5].map(teamIndex => (
                   <Tab
                     key={teamIndex}
                     label={teamIndex + 1}
                     sx={{ minWidth: 0 }}
                     icon={<PokemonSprite teamIndex={teamIndex} />}
+                  />
+                ))
+              : [0, 2, 4].map(teamIndex => (
+                  <Tab
+                    key={teamIndex}
+                    label={`${teamIndex + 1} - ${teamIndex + 2}`}
+                    icon={getTwoPokemonSprites(teamIndex)}
                   />
                 ))
 
@@ -76,20 +73,20 @@ export default function TeamViewer() {
         </Paper>
       </Grid>
       {
-        // Either displays 2 or 1 pokemon at a time
-        width === "sm" ?
-          [0, 1].map(num => (
+        // Either displays 1 or 2 pokemon at a time
+        width === "xs" ?
+          <Grid size={12}>
+            <Paper sx={{ p: 1 }}>
+              <PokemonInputs teamIndex={xsTabIndex} />
+            </Paper>
+          </Grid>
+        : [0, 1].map(num => (
             <Grid key={num} size={12}>
               <Paper sx={{ p: 1 }}>
                 <PokemonInputs teamIndex={2 * smTabIndex + num} />
               </Paper>
             </Grid>
           ))
-        : <Grid size={12}>
-            <Paper sx={{ p: 1 }}>
-              <PokemonInputs teamIndex={xsTabIndex} />
-            </Paper>
-          </Grid>
 
       }
     </>
