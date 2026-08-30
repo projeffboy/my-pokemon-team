@@ -42,3 +42,15 @@ If you want to help me write code for new features, I would suggest that you sav
 # Coding Guidelines
 
 1. Prettier is used to format all file types
+
+## Updating Pokemon Data
+
+Clone `pokemon-showdown` and `pokemon-showdown-client` beside this repository,
+update both checkouts, then run:
+
+```sh
+npm run update:data
+```
+
+This updates the TypeScript datasets in `src/data`. `old-moves.js` is maintained
+separately and is not changed by this command.

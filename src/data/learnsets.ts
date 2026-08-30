@@ -1,5 +1,7 @@
-export default {
-  missingno: [
+import type { Learnsets } from "../types";
+
+const data: Learnsets = {
+  "missingno": [
     "blizzard",
     "bubblebeam",
     "cut",
@@ -25,9 +27,9 @@ export default {
     "thunderwave",
     "toxic",
     "triattack",
-    "watergun",
+    "watergun"
   ],
-  bulbasaur: [
+  "bulbasaur": [
     "acidspray",
     "amnesia",
     "attract",
@@ -116,9 +118,9 @@ export default {
     "vinewhip",
     "weatherball",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  ivysaur: [
+  "ivysaur": [
     "acidspray",
     "amnesia",
     "attract",
@@ -199,9 +201,9 @@ export default {
     "vinewhip",
     "weatherball",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  venusaur: [
+  "venusaur": [
     "acidspray",
     "amnesia",
     "attract",
@@ -242,7 +244,6 @@ export default {
     "helpinghand",
     "hiddenpower",
     "hyperbeam",
-    "ingrain",
     "knockoff",
     "leafstorm",
     "leechseed",
@@ -276,7 +277,6 @@ export default {
     "sleeppowder",
     "sleeptalk",
     "sludgebomb",
-    "sludgewave",
     "snore",
     "solarbeam",
     "stompingtantrum",
@@ -298,9 +298,9 @@ export default {
     "vinewhip",
     "weatherball",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  charmander: [
+  "charmander": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -410,9 +410,9 @@ export default {
     "weatherball",
     "willowisp",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  charmeleon: [
+  "charmeleon": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -511,19 +511,17 @@ export default {
     "toxic",
     "weatherball",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  charizard: [
+  "charizard": [
     "acrobatics",
     "aerialace",
     "aircutter",
     "airslash",
-    "ancientpower",
     "attract",
     "beatup",
     "bellydrum",
     "bide",
-    "bite",
     "blastburn",
     "blazekick",
     "bodyslam",
@@ -548,7 +546,6 @@ export default {
     "dragondance",
     "dragonpulse",
     "dragonrage",
-    "dragonrush",
     "dragontail",
     "dualwingbeat",
     "dynamicpunch",
@@ -645,9 +642,9 @@ export default {
     "weatherball",
     "willowisp",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  squirtle: [
+  "squirtle": [
     "aquajet",
     "aquaring",
     "aquatail",
@@ -756,9 +753,9 @@ export default {
     "withdraw",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wartortle: [
+  "wartortle": [
     "aquatail",
     "attract",
     "aurasphere",
@@ -850,11 +847,10 @@ export default {
     "whirlpool",
     "withdraw",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  blastoise: [
+  "blastoise": [
     "aquajet",
-    "aquaring",
     "aquatail",
     "attract",
     "aurasphere",
@@ -890,7 +886,6 @@ export default {
     "fakeout",
     "falseswipe",
     "fissure",
-    "flail",
     "flashcannon",
     "fling",
     "flipturn",
@@ -912,14 +907,11 @@ export default {
     "icespinner",
     "icywind",
     "irondefense",
-    "ironhead",
     "irontail",
-    "lifedew",
     "liquidation",
     "megakick",
     "megapunch",
     "mimic",
-    "mirrorcoat",
     "muddywater",
     "mudshot",
     "mudslap",
@@ -965,18 +957,28 @@ export default {
     "watergun",
     "waterpledge",
     "waterpulse",
-    "waterspout",
     "wavecrash",
     "weatherball",
     "whirlpool",
     "withdraw",
     "workup",
-    "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  caterpie: ["bugbite", "electroweb", "snore", "stringshot", "tackle"],
-  metapod: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  butterfree: [
+  "caterpie": [
+    "bugbite",
+    "electroweb",
+    "snore",
+    "stringshot",
+    "tackle"
+  ],
+  "metapod": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "butterfree": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -1063,11 +1065,22 @@ export default {
     "twister",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  weedle: ["bugbite", "electroweb", "poisonsting", "stringshot"],
-  kakuna: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  beedrill: [
+  "weedle": [
+    "bugbite",
+    "electroweb",
+    "poisonsting",
+    "stringshot"
+  ],
+  "kakuna": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "beedrill": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -1079,18 +1092,14 @@ export default {
     "brickbreak",
     "brutalswing",
     "bugbite",
-    "bugbuzz",
     "captivate",
     "confide",
-    "crosspoison",
     "curse",
     "cut",
     "defog",
     "doubleedge",
-    "doublehit",
     "doubleteam",
     "drillrun",
-    "dualwingbeat",
     "electroweb",
     "endeavor",
     "endure",
@@ -1108,10 +1117,8 @@ export default {
     "hiddenpower",
     "hyperbeam",
     "infestation",
-    "irondefense",
     "knockoff",
     "laserfocus",
-    "lunge",
     "megadrain",
     "mimic",
     "naturalgift",
@@ -1121,8 +1128,6 @@ export default {
     "peck",
     "pinmissile",
     "poisonjab",
-    "pollenpuff",
-    "pounce",
     "protect",
     "pursuit",
     "rage",
@@ -1132,10 +1137,8 @@ export default {
     "rocksmash",
     "roost",
     "round",
-    "screech",
     "secretpower",
     "silverwind",
-    "skittersmack",
     "skullbash",
     "sleeptalk",
     "sludgebomb",
@@ -1158,9 +1161,9 @@ export default {
     "twineedle",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  pidgey: [
+  "pidgey": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1224,9 +1227,9 @@ export default {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  pidgeotto: [
+  "pidgeotto": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1287,16 +1290,15 @@ export default {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  pidgeot: [
+  "pidgeot": [
     "aerialace",
     "agility",
     "aircutter",
     "airslash",
     "attract",
     "bide",
-    "bravebird",
     "captivate",
     "confide",
     "curse",
@@ -1304,7 +1306,6 @@ export default {
     "detect",
     "doubleedge",
     "doubleteam",
-    "dualwingbeat",
     "endure",
     "facade",
     "featherdance",
@@ -1354,9 +1355,9 @@ export default {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  rattata: [
+  "rattata": [
     "assurance",
     "attract",
     "bide",
@@ -1436,9 +1437,9 @@ export default {
     "watergun",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rattataalola: [
+  "rattataalola": [
     "assurance",
     "attract",
     "bite",
@@ -1501,9 +1502,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raticate: [
+  "raticate": [
     "assurance",
     "attract",
     "bide",
@@ -1586,9 +1587,9 @@ export default {
     "watergun",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raticatealola: [
+  "raticatealola": [
     "assurance",
     "attract",
     "bite",
@@ -1655,9 +1656,9 @@ export default {
     "uproar",
     "uturn",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raticatealolatotem: [
+  "raticatealolatotem": [
     "assurance",
     "attract",
     "bite",
@@ -1720,9 +1721,9 @@ export default {
     "uproar",
     "uturn",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spearow: [
+  "spearow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1791,9 +1792,9 @@ export default {
     "uproar",
     "uturn",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  fearow: [
+  "fearow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1861,9 +1862,9 @@ export default {
     "uproar",
     "uturn",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  ekans: [
+  "ekans": [
     "acid",
     "acidspray",
     "aquatail",
@@ -1958,14 +1959,13 @@ export default {
     "toxicspikes",
     "trailblaze",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  arbok: [
+  "arbok": [
     "acid",
     "acidspray",
     "aquatail",
     "attract",
-    "beatup",
     "belch",
     "bide",
     "bind",
@@ -2014,7 +2014,6 @@ export default {
     "naturalgift",
     "painsplit",
     "payback",
-    "poisonfang",
     "poisonjab",
     "poisonsting",
     "poisontail",
@@ -2052,7 +2051,6 @@ export default {
     "sunnyday",
     "swagger",
     "swallow",
-    "switcheroo",
     "takedown",
     "terablast",
     "thief",
@@ -2063,9 +2061,9 @@ export default {
     "toxicspikes",
     "trailblaze",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  pichu: [
+  "pichu": [
     "attract",
     "bestow",
     "bide",
@@ -2152,9 +2150,9 @@ export default {
     "volttackle",
     "wildcharge",
     "wish",
-    "zapcannon",
+    "zapcannon"
   ],
-  pichuspikyeared: [
+  "pichuspikyeared": [
     "attract",
     "captivate",
     "chargebeam",
@@ -2197,9 +2195,9 @@ export default {
     "thunderwave",
     "toxic",
     "uproar",
-    "volttackle",
+    "volttackle"
   ],
-  pikachu: [
+  "pikachu": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2240,7 +2238,6 @@ export default {
     "fakeout",
     "faketears",
     "feint",
-    "flail",
     "flash",
     "fling",
     "fly",
@@ -2312,7 +2309,6 @@ export default {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "tickle",
     "toxic",
     "trailblaze",
     "upperhand",
@@ -2322,9 +2318,9 @@ export default {
     "wildcharge",
     "wish",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  pikachucosplay: [
+  "pikachucosplay": [
     "agility",
     "attract",
     "brickbreak",
@@ -2378,14 +2374,24 @@ export default {
     "thunderwave",
     "toxic",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  pikachurockstar: ["meteormash"],
-  pikachubelle: ["iciclecrash"],
-  pikachupopstar: ["drainingkiss"],
-  pikachuphd: ["electricterrain"],
-  pikachulibre: ["flyingpress"],
-  pikachuoriginal: [
+  "pikachurockstar": [
+    "meteormash"
+  ],
+  "pikachubelle": [
+    "iciclecrash"
+  ],
+  "pikachupopstar": [
+    "drainingkiss"
+  ],
+  "pikachuphd": [
+    "electricterrain"
+  ],
+  "pikachulibre": [
+    "flyingpress"
+  ],
+  "pikachuoriginal": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2471,9 +2477,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachuhoenn: [
+  "pikachuhoenn": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2559,9 +2565,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachusinnoh: [
+  "pikachusinnoh": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2647,9 +2653,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachuunova: [
+  "pikachuunova": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2735,9 +2741,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachukalos: [
+  "pikachukalos": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2823,9 +2829,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachualola: [
+  "pikachualola": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2911,9 +2917,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachupartner: [
+  "pikachupartner": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2999,9 +3005,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachustarter: [
+  "pikachustarter": [
     "agility",
     "bodyslam",
     "brickbreak",
@@ -3044,8 +3050,8 @@ export default {
     "seismictoss",
     "slam",
     "sleeptalk",
-    "spark",
     "splishysplash",
+    "spark",
     "substitute",
     "surf",
     "sweetkiss",
@@ -3063,9 +3069,9 @@ export default {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zippyzap",
+    "zippyzap"
   ],
-  pikachuworld: [
+  "pikachuworld": [
     "agility",
     "attract",
     "bodyslam",
@@ -3134,9 +3140,9 @@ export default {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  raichu: [
+  "raichu": [
     "agility",
     "alluringvoice",
     "attract",
@@ -3153,7 +3159,6 @@ export default {
     "counter",
     "covet",
     "curse",
-    "dazzlinggleam",
     "defensecurl",
     "detect",
     "dig",
@@ -3162,7 +3167,6 @@ export default {
     "doubleedge",
     "doubleteam",
     "drainingkiss",
-    "drainpunch",
     "dynamicpunch",
     "echoedvoice",
     "eerieimpulse",
@@ -3176,7 +3180,6 @@ export default {
     "fakeout",
     "faketears",
     "feint",
-    "flail",
     "flash",
     "fling",
     "focusblast",
@@ -3243,18 +3246,15 @@ export default {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "tickle",
     "toxic",
     "trailblaze",
     "upperhand",
     "uproar",
     "voltswitch",
-    "volttackle",
     "wildcharge",
-    "wish",
-    "zapcannon",
+    "zapcannon"
   ],
-  raichualola: [
+  "raichualola": [
     "agility",
     "alluringvoice",
     "allyswitch",
@@ -3267,7 +3267,6 @@ export default {
     "charm",
     "confide",
     "covet",
-    "dazzlinggleam",
     "dig",
     "discharge",
     "doubleteam",
@@ -3285,7 +3284,6 @@ export default {
     "fakeout",
     "faketears",
     "feint",
-    "flail",
     "fling",
     "focusblast",
     "focuspunch",
@@ -3353,18 +3351,14 @@ export default {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "tickle",
     "toxic",
     "trailblaze",
     "upperhand",
     "uproar",
     "voltswitch",
-    "volttackle",
-    "wildcharge",
-    "wish",
-    "zapcannon",
+    "wildcharge"
   ],
-  sandshrew: [
+  "sandshrew": [
     "aerialace",
     "agility",
     "amnesia",
@@ -3463,9 +3457,9 @@ export default {
     "throatchop",
     "toxic",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  sandshrewalola: [
+  "sandshrewalola": [
     "aerialace",
     "amnesia",
     "aquatail",
@@ -3556,9 +3550,9 @@ export default {
     "toxic",
     "tripleaxel",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  sandslash: [
+  "sandslash": [
     "aerialace",
     "agility",
     "amnesia",
@@ -3659,9 +3653,9 @@ export default {
     "throatchop",
     "toxic",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  sandslashalola: [
+  "sandslashalola": [
     "aerialace",
     "agility",
     "amnesia",
@@ -3755,9 +3749,9 @@ export default {
     "toxic",
     "tripleaxel",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  nidoranf: [
+  "nidoranf": [
     "aerialace",
     "attract",
     "beatup",
@@ -3836,9 +3830,9 @@ export default {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidorina: [
+  "nidorina": [
     "aerialace",
     "attract",
     "beatup",
@@ -3915,9 +3909,9 @@ export default {
     "venomdrench",
     "venoshock",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidoqueen: [
+  "nidoqueen": [
     "aerialace",
     "aquatail",
     "attract",
@@ -4050,9 +4044,9 @@ export default {
     "venoshock",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  nidoranm: [
+  "nidoranm": [
     "amnesia",
     "attract",
     "beatup",
@@ -4132,9 +4126,9 @@ export default {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidorino: [
+  "nidorino": [
     "amnesia",
     "attract",
     "beatup",
@@ -4210,9 +4204,9 @@ export default {
     "venomdrench",
     "venoshock",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidoking: [
+  "nidoking": [
     "amnesia",
     "aquatail",
     "attract",
@@ -4346,9 +4340,9 @@ export default {
     "venoshock",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  cleffa: [
+  "cleffa": [
     "afteryou",
     "alluringvoice",
     "amnesia",
@@ -4453,9 +4447,9 @@ export default {
     "wonderroom",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  clefairy: [
+  "clefairy": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -4609,11 +4603,10 @@ export default {
     "wonderroom",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  clefable: [
+  "clefable": [
     "afteryou",
-    "airslash",
     "alluringvoice",
     "allyswitch",
     "amnesia",
@@ -4672,7 +4665,6 @@ export default {
     "headbutt",
     "healbell",
     "healingwish",
-    "healpulse",
     "helpinghand",
     "hiddenpower",
     "hyperbeam",
@@ -4760,20 +4752,18 @@ export default {
     "thunderbolt",
     "thunderpunch",
     "thunderwave",
-    "tickle",
     "toxic",
     "triattack",
     "trick",
     "uproar",
     "watergun",
     "waterpulse",
-    "wish",
     "wonderroom",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vulpix: [
+  "vulpix": [
     "agility",
     "attract",
     "babydolleyes",
@@ -4860,9 +4850,9 @@ export default {
     "toxic",
     "weatherball",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vulpixalola: [
+  "vulpixalola": [
     "agility",
     "aquatail",
     "attract",
@@ -4949,12 +4939,11 @@ export default {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ninetales: [
+  "ninetales": [
     "agility",
     "attract",
-    "babydolleyes",
     "batonpass",
     "bide",
     "bodyslam",
@@ -4981,7 +4970,6 @@ export default {
     "faketears",
     "fireblast",
     "firespin",
-    "flail",
     "flamecharge",
     "flamethrower",
     "flareblitz",
@@ -4990,12 +4978,10 @@ export default {
     "gigaimpact",
     "grudge",
     "headbutt",
-    "healingwish",
     "heatwave",
     "helpinghand",
     "hex",
     "hiddenpower",
-    "howl",
     "hyperbeam",
     "hypnosis",
     "imprison",
@@ -5003,7 +4989,6 @@ export default {
     "inferno",
     "irontail",
     "laserfocus",
-    "memento",
     "mimic",
     "mysticalfire",
     "nastyplot",
@@ -5048,16 +5033,15 @@ export default {
     "toxic",
     "weatherball",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ninetalesalola: [
+  "ninetalesalola": [
     "agility",
     "aquatail",
     "attract",
     "aurorabeam",
     "auroraveil",
     "avalanche",
-    "babydolleyes",
     "batonpass",
     "blizzard",
     "bodyslam",
@@ -5081,7 +5065,6 @@ export default {
     "extrasensory",
     "facade",
     "faketears",
-    "flail",
     "foulplay",
     "freezedry",
     "frostbreath",
@@ -5094,7 +5077,6 @@ export default {
     "helpinghand",
     "hex",
     "hiddenpower",
-    "howl",
     "hyperbeam",
     "hypnosis",
     "icebeam",
@@ -5106,7 +5088,6 @@ export default {
     "laserfocus",
     "mist",
     "mistyterrain",
-    "moonblast",
     "nastyplot",
     "painsplit",
     "payback",
@@ -5143,9 +5124,9 @@ export default {
     "tripleaxel",
     "weatherball",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  igglybuff: [
+  "igglybuff": [
     "alluringvoice",
     "attract",
     "bodyslam",
@@ -5242,9 +5223,9 @@ export default {
     "wildcharge",
     "wish",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  jigglypuff: [
+  "jigglypuff": [
     "alluringvoice",
     "allyswitch",
     "amnesia",
@@ -5392,9 +5373,9 @@ export default {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wigglytuff: [
+  "wigglytuff": [
     "alluringvoice",
     "allyswitch",
     "amnesia",
@@ -5547,9 +5528,9 @@ export default {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zubat: [
+  "zubat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -5631,9 +5612,9 @@ export default {
     "venoshock",
     "whirlwind",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  golbat: [
+  "golbat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -5714,9 +5695,9 @@ export default {
     "venoshock",
     "whirlwind",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  crobat: [
+  "crobat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -5795,9 +5776,9 @@ export default {
     "venoshock",
     "wingattack",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oddish: [
+  "oddish": [
     "absorb",
     "acid",
     "acidspray",
@@ -5871,9 +5852,9 @@ export default {
     "toxic",
     "trailblaze",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  gloom: [
+  "gloom": [
     "absorb",
     "acid",
     "acidspray",
@@ -5945,9 +5926,9 @@ export default {
     "toxic",
     "trailblaze",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  vileplume: [
+  "vileplume": [
     "absorb",
     "acid",
     "acidspray",
@@ -6026,9 +6007,9 @@ export default {
     "trailblaze",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  bellossom: [
+  "bellossom": [
     "absorb",
     "acid",
     "acidspray",
@@ -6107,9 +6088,9 @@ export default {
     "uproar",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  paras: [
+  "paras": [
     "absorb",
     "aerialace",
     "afteryou",
@@ -6196,9 +6177,9 @@ export default {
     "venoshock",
     "wideguard",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  parasect: [
+  "parasect": [
     "absorb",
     "aerialace",
     "afteryou",
@@ -6278,9 +6259,9 @@ export default {
     "toxic",
     "venoshock",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  venonat: [
+  "venonat": [
     "acidspray",
     "agility",
     "attract",
@@ -6354,9 +6335,9 @@ export default {
     "toxic",
     "toxicspikes",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  venomoth: [
+  "venomoth": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -6449,9 +6430,9 @@ export default {
     "uturn",
     "venoshock",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  diglett: [
+  "diglett": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6533,9 +6514,9 @@ export default {
     "throatchop",
     "toxic",
     "uproar",
-    "workup",
+    "workup"
   ],
-  diglettalola: [
+  "diglettalola": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6613,9 +6594,9 @@ export default {
     "thrash",
     "toxic",
     "uproar",
-    "workup",
+    "workup"
   ],
-  dugtrio: [
+  "dugtrio": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6700,9 +6681,9 @@ export default {
     "toxic",
     "triattack",
     "uproar",
-    "workup",
+    "workup"
   ],
-  dugtrioalola: [
+  "dugtrioalola": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6784,9 +6765,9 @@ export default {
     "toxic",
     "triattack",
     "uproar",
-    "workup",
+    "workup"
   ],
-  meowth: [
+  "meowth": [
     "aerialace",
     "agility",
     "amnesia",
@@ -6898,9 +6879,9 @@ export default {
     "watergun",
     "waterpulse",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  meowthalola: [
+  "meowthalola": [
     "aerialace",
     "agility",
     "amnesia",
@@ -6994,9 +6975,9 @@ export default {
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  meowthgalar: [
+  "meowthgalar": [
     "aerialace",
     "amnesia",
     "assurance",
@@ -7072,9 +7053,9 @@ export default {
     "uproar",
     "uturn",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  persian: [
+  "persian": [
     "aerialace",
     "agility",
     "amnesia",
@@ -7184,9 +7165,9 @@ export default {
     "watergun",
     "waterpulse",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  persianalola: [
+  "persianalola": [
     "aerialace",
     "agility",
     "amnesia",
@@ -7283,9 +7264,9 @@ export default {
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  perrserker: [
+  "perrserker": [
     "aerialace",
     "amnesia",
     "assurance",
@@ -7365,9 +7346,9 @@ export default {
     "uproar",
     "uturn",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  psyduck: [
+  "psyduck": [
     "aerialace",
     "amnesia",
     "aquatail",
@@ -7487,9 +7468,9 @@ export default {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  golduck: [
+  "golduck": [
     "aerialace",
     "amnesia",
     "aquajet",
@@ -7611,9 +7592,9 @@ export default {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mankey: [
+  "mankey": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -7731,9 +7712,9 @@ export default {
     "uproar",
     "uturn",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  primeape: [
+  "primeape": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -7848,9 +7829,9 @@ export default {
     "uproar",
     "uturn",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  annihilape: [
+  "annihilape": [
     "acrobatics",
     "assurance",
     "bodyslam",
@@ -7928,9 +7909,9 @@ export default {
     "thunderpunch",
     "uproar",
     "uturn",
-    "vacuumwave",
+    "vacuumwave"
   ],
-  growlithe: [
+  "growlithe": [
     "aerialace",
     "agility",
     "attract",
@@ -8011,9 +7992,9 @@ export default {
     "thunderfang",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  growlithehisui: [
+  "growlithehisui": [
     "agility",
     "bite",
     "bodyslam",
@@ -8067,9 +8048,9 @@ export default {
     "thrash",
     "thunderfang",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  arcanine: [
+  "arcanine": [
     "aerialace",
     "agility",
     "attract",
@@ -8118,7 +8099,6 @@ export default {
     "laserfocus",
     "leer",
     "mimic",
-    "morningsun",
     "mudslap",
     "naturalgift",
     "odorsleuth",
@@ -8128,7 +8108,6 @@ export default {
     "protect",
     "psychicfangs",
     "rage",
-    "ragingfury",
     "reflect",
     "rest",
     "retaliate",
@@ -8158,21 +8137,18 @@ export default {
     "temperflare",
     "terablast",
     "thief",
-    "thrash",
     "thunderfang",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  arcaninehisui: [
+  "arcaninehisui": [
     "aerialace",
     "agility",
     "bite",
     "bodyslam",
     "bulldoze",
-    "burnup",
     "closecombat",
-    "covet",
     "crunch",
     "dig",
     "doubleedge",
@@ -8189,7 +8165,6 @@ export default {
     "flamewheel",
     "flareblitz",
     "gigaimpact",
-    "headsmash",
     "heatcrash",
     "heatwave",
     "helpinghand",
@@ -8197,9 +8172,7 @@ export default {
     "hyperbeam",
     "hypervoice",
     "ironhead",
-    "irontail",
     "leer",
-    "morningsun",
     "outrage",
     "overheat",
     "powergem",
@@ -8214,7 +8187,6 @@ export default {
     "rockslide",
     "rockthrow",
     "rocktomb",
-    "round",
     "sandstorm",
     "scaryface",
     "scorchingsands",
@@ -8222,7 +8194,6 @@ export default {
     "smackdown",
     "smartstrike",
     "snarl",
-    "snore",
     "solarbeam",
     "stealthrock",
     "stoneedge",
@@ -8232,12 +8203,11 @@ export default {
     "temperflare",
     "terablast",
     "thief",
-    "thrash",
     "thunderfang",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  poliwag: [
+  "poliwag": [
     "amnesia",
     "attract",
     "bellydrum",
@@ -8315,9 +8285,9 @@ export default {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  poliwhirl: [
+  "poliwhirl": [
     "amnesia",
     "attract",
     "bellydrum",
@@ -8406,9 +8376,9 @@ export default {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  poliwrath: [
+  "poliwrath": [
     "amnesia",
     "attract",
     "batonpass",
@@ -8523,9 +8493,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  politoed: [
+  "politoed": [
     "amnesia",
     "attract",
     "bellydrum",
@@ -8615,9 +8585,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  abra: [
+  "abra": [
     "allyswitch",
     "attract",
     "barrier",
@@ -8713,9 +8683,9 @@ export default {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kadabra: [
+  "kadabra": [
     "allyswitch",
     "attract",
     "bide",
@@ -8817,9 +8787,9 @@ export default {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  alakazam: [
+  "alakazam": [
     "allyswitch",
     "attract",
     "barrier",
@@ -8857,7 +8827,6 @@ export default {
     "gigaimpact",
     "grassknot",
     "gravity",
-    "guardsplit",
     "guardswap",
     "headbutt",
     "hiddenpower",
@@ -8930,9 +8899,9 @@ export default {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  machop: [
+  "machop": [
     "attract",
     "bide",
     "bodyslam",
@@ -9028,9 +8997,9 @@ export default {
     "vacuumwave",
     "vitalthrow",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  machoke: [
+  "machoke": [
     "attract",
     "bide",
     "bodyslam",
@@ -9120,18 +9089,16 @@ export default {
     "vacuumwave",
     "vitalthrow",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  machamp: [
+  "machamp": [
     "assurance",
     "attract",
     "bide",
     "bodyslam",
     "brickbreak",
-    "brutalswing",
     "bulkup",
     "bulldoze",
-    "bulletpunch",
     "captivate",
     "closecombat",
     "coaching",
@@ -9145,7 +9112,6 @@ export default {
     "dig",
     "doubleedge",
     "doubleteam",
-    "drainpunch",
     "dualchop",
     "dynamicpunch",
     "earthquake",
@@ -9211,7 +9177,6 @@ export default {
     "snore",
     "stompingtantrum",
     "stoneedge",
-    "stormthrow",
     "strength",
     "submission",
     "substitute",
@@ -9222,15 +9187,14 @@ export default {
     "thief",
     "throatchop",
     "thunderpunch",
-    "tickle",
     "toxic",
     "vacuumwave",
     "vitalthrow",
     "wakeupslap",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  bellsprout: [
+  "bellsprout": [
     "acid",
     "acidspray",
     "attract",
@@ -9311,9 +9275,9 @@ export default {
     "weatherball",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  weepinbell: [
+  "weepinbell": [
     "acid",
     "acidspray",
     "attract",
@@ -9392,9 +9356,9 @@ export default {
     "weatherball",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  victreebel: [
+  "victreebel": [
     "acid",
     "acidspray",
     "attract",
@@ -9427,7 +9391,6 @@ export default {
     "hiddenpower",
     "hyperbeam",
     "infestation",
-    "ingrain",
     "knockoff",
     "leafblade",
     "leafstorm",
@@ -9461,7 +9424,6 @@ export default {
     "solarbeam",
     "spitup",
     "stockpile",
-    "strengthsap",
     "stunspore",
     "substitute",
     "suckerpunch",
@@ -9475,17 +9437,15 @@ export default {
     "takedown",
     "terablast",
     "thief",
-    "tickle",
     "toxic",
-    "toxicspikes",
     "trailblaze",
     "venoshock",
     "vinewhip",
     "weatherball",
     "worryseed",
-    "wrap",
+    "wrap"
   ],
-  tentacool: [
+  "tentacool": [
     "acid",
     "acidarmor",
     "acidspray",
@@ -9577,9 +9537,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  tentacruel: [
+  "tentacruel": [
     "acid",
     "acidarmor",
     "acidspray",
@@ -9673,9 +9633,9 @@ export default {
     "weatherball",
     "whirlpool",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  geodude: [
+  "geodude": [
     "ancientpower",
     "attract",
     "autotomize",
@@ -9761,9 +9721,9 @@ export default {
     "terablast",
     "thunderpunch",
     "toxic",
-    "wideguard",
+    "wideguard"
   ],
-  geodudealola: [
+  "geodudealola": [
     "attract",
     "autotomize",
     "bide",
@@ -9842,9 +9802,9 @@ export default {
     "voltswitch",
     "wideguard",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  graveler: [
+  "graveler": [
     "ancientpower",
     "attract",
     "bide",
@@ -9931,9 +9891,9 @@ export default {
     "takedown",
     "terablast",
     "thunderpunch",
-    "toxic",
+    "toxic"
   ],
-  graveleralola: [
+  "graveleralola": [
     "allyswitch",
     "attract",
     "bide",
@@ -10013,9 +9973,9 @@ export default {
     "thunderwave",
     "toxic",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  golem: [
+  "golem": [
     "ancientpower",
     "attract",
     "bide",
@@ -10108,9 +10068,9 @@ export default {
     "takedown",
     "terablast",
     "thunderpunch",
-    "toxic",
+    "toxic"
   ],
-  golemalola: [
+  "golemalola": [
     "allyswitch",
     "attract",
     "bide",
@@ -10198,9 +10158,9 @@ export default {
     "thunderwave",
     "toxic",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  ponyta: [
+  "ponyta": [
     "agility",
     "allyswitch",
     "attract",
@@ -10267,9 +10227,9 @@ export default {
     "thrash",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  ponytagalar: [
+  "ponytagalar": [
     "agility",
     "allyswitch",
     "attract",
@@ -10314,9 +10274,9 @@ export default {
     "takedown",
     "thrash",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rapidash: [
+  "rapidash": [
     "agility",
     "allyswitch",
     "attract",
@@ -10393,9 +10353,9 @@ export default {
     "throatchop",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  rapidashgalar: [
+  "rapidashgalar": [
     "agility",
     "allyswitch",
     "attract",
@@ -10450,9 +10410,9 @@ export default {
     "trickroom",
     "wildcharge",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowpoke: [
+  "slowpoke": [
     "afteryou",
     "amnesia",
     "aquatail",
@@ -10566,9 +10526,9 @@ export default {
     "wonderroom",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowpokegalar: [
+  "slowpokegalar": [
     "acid",
     "amnesia",
     "attract",
@@ -10646,17 +10606,15 @@ export default {
     "whirlpool",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowbro: [
+  "slowbro": [
     "aerialace",
     "afteryou",
     "amnesia",
     "aquatail",
     "attract",
     "avalanche",
-    "belch",
-    "bellydrum",
     "bide",
     "blizzard",
     "block",
@@ -10785,18 +10743,15 @@ export default {
     "wonderroom",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowbrogalar: [
+  "slowbrogalar": [
     "acid",
     "acidspray",
     "amnesia",
     "attract",
     "avalanche",
-    "belch",
-    "bellydrum",
     "blizzard",
-    "block",
     "bodypress",
     "bodyslam",
     "brickbreak",
@@ -10886,7 +10841,6 @@ export default {
     "terablast",
     "thunderwave",
     "toxic",
-    "toxicspikes",
     "triattack",
     "trick",
     "trickroom",
@@ -10899,17 +10853,15 @@ export default {
     "withdraw",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowking: [
+  "slowking": [
     "afteryou",
     "allyswitch",
     "amnesia",
     "aquatail",
     "attract",
     "avalanche",
-    "belch",
-    "bellydrum",
     "blizzard",
     "block",
     "bodyslam",
@@ -11038,18 +10990,15 @@ export default {
     "wonderroom",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowkinggalar: [
+  "slowkinggalar": [
     "acid",
     "acidspray",
     "amnesia",
     "attract",
     "avalanche",
-    "belch",
-    "bellydrum",
     "blizzard",
-    "block",
     "bodyslam",
     "brickbreak",
     "brine",
@@ -11153,9 +11102,9 @@ export default {
     "whirlpool",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  magnemite: [
+  "magnemite": [
     "bide",
     "charge",
     "chargebeam",
@@ -11229,9 +11178,9 @@ export default {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  magneton: [
+  "magneton": [
     "bide",
     "charge",
     "chargebeam",
@@ -11309,9 +11258,9 @@ export default {
     "triattack",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  magnezone: [
+  "magnezone": [
     "allyswitch",
     "barrier",
     "bodypress",
@@ -11392,9 +11341,9 @@ export default {
     "triattack",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  farfetchd: [
+  "farfetchd": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -11491,9 +11440,9 @@ export default {
     "whirlwind",
     "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  farfetchdgalar: [
+  "farfetchdgalar": [
     "assurance",
     "attract",
     "bodyslam",
@@ -11543,9 +11492,9 @@ export default {
     "superpower",
     "swordsdance",
     "throatchop",
-    "workup",
+    "workup"
   ],
-  sirfetchd: [
+  "sirfetchd": [
     "assurance",
     "attract",
     "bodyslam",
@@ -11589,9 +11538,9 @@ export default {
     "superpower",
     "swordsdance",
     "throatchop",
-    "workup",
+    "workup"
   ],
-  doduo: [
+  "doduo": [
     "acrobatics",
     "acupressure",
     "aerialace",
@@ -11667,9 +11616,9 @@ export default {
     "triattack",
     "uproar",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  dodrio: [
+  "dodrio": [
     "acrobatics",
     "acupressure",
     "aerialace",
@@ -11751,9 +11700,9 @@ export default {
     "triattack",
     "uproar",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  seel: [
+  "seel": [
     "aquajet",
     "aquaring",
     "aquatail",
@@ -11840,9 +11789,9 @@ export default {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  dewgong: [
+  "dewgong": [
     "alluringvoice",
     "aquajet",
     "aquaring",
@@ -11927,9 +11876,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  grimer: [
+  "grimer": [
     "acidarmor",
     "acidspray",
     "attract",
@@ -12022,9 +11971,9 @@ export default {
     "toxic",
     "venoshock",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grimeralola: [
+  "grimeralola": [
     "acidarmor",
     "acidspray",
     "assurance",
@@ -12122,9 +12071,9 @@ export default {
     "torment",
     "toxic",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  muk: [
+  "muk": [
     "acidarmor",
     "acidspray",
     "attract",
@@ -12226,9 +12175,9 @@ export default {
     "venomdrench",
     "venoshock",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mukalola: [
+  "mukalola": [
     "acidarmor",
     "acidspray",
     "attract",
@@ -12325,9 +12274,9 @@ export default {
     "toxic",
     "venomdrench",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shellder: [
+  "shellder": [
     "aquaring",
     "attract",
     "aurorabeam",
@@ -12403,9 +12352,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "withdraw",
+    "withdraw"
   ],
-  cloyster: [
+  "cloyster": [
     "attract",
     "aurorabeam",
     "avalanche",
@@ -12493,9 +12442,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "withdraw",
+    "withdraw"
   ],
-  gastly: [
+  "gastly": [
     "acidspray",
     "allyswitch",
     "astonish",
@@ -12591,9 +12540,9 @@ export default {
     "venoshock",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  haunter: [
+  "haunter": [
     "acidspray",
     "allyswitch",
     "attract",
@@ -12691,9 +12640,9 @@ export default {
     "venoshock",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  gengar: [
+  "gengar": [
     "acidspray",
     "allyswitch",
     "astonish",
@@ -12702,7 +12651,6 @@ export default {
     "bodyslam",
     "brickbreak",
     "captivate",
-    "clearsmog",
     "confide",
     "confuseray",
     "corrosivegas",
@@ -12818,9 +12766,9 @@ export default {
     "venoshock",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  onix: [
+  "onix": [
     "ancientpower",
     "attract",
     "bide",
@@ -12909,9 +12857,9 @@ export default {
     "torment",
     "toxic",
     "twister",
-    "wideguard",
+    "wideguard"
   ],
-  steelix: [
+  "steelix": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -12944,15 +12892,12 @@ export default {
     "explosion",
     "facade",
     "firefang",
-    "fissure",
-    "flail",
     "flashcannon",
     "frustration",
     "gigaimpact",
     "gyroball",
     "harden",
     "headbutt",
-    "headsmash",
     "heavyslam",
     "hiddenpower",
     "highhorsepower",
@@ -13010,10 +12955,9 @@ export default {
     "thunderfang",
     "torment",
     "toxic",
-    "twister",
-    "wideguard",
+    "twister"
   ],
-  drowzee: [
+  "drowzee": [
     "allyswitch",
     "assist",
     "attract",
@@ -13129,9 +13073,9 @@ export default {
     "wakeupslap",
     "wish",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hypno: [
+  "hypno": [
     "allyswitch",
     "attract",
     "barrier",
@@ -13248,9 +13192,9 @@ export default {
     "trickroom",
     "wakeupslap",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  krabby: [
+  "krabby": [
     "agility",
     "allyswitch",
     "amnesia",
@@ -13332,9 +13276,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  kingler: [
+  "kingler": [
     "agility",
     "allyswitch",
     "amnesia",
@@ -13419,9 +13363,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wideguard",
-    "xscissor",
+    "xscissor"
   ],
-  voltorb: [
+  "voltorb": [
     "agility",
     "bide",
     "charge",
@@ -13489,9 +13433,9 @@ export default {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  voltorbhisui: [
+  "voltorbhisui": [
     "agility",
     "bulletseed",
     "charge",
@@ -13538,9 +13482,9 @@ export default {
     "thunderwave",
     "voltswitch",
     "wildcharge",
-    "worryseed",
+    "worryseed"
   ],
-  electrode: [
+  "electrode": [
     "agility",
     "bide",
     "charge",
@@ -13613,9 +13557,9 @@ export default {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  electrodehisui: [
+  "electrodehisui": [
     "agility",
     "bulletseed",
     "charge",
@@ -13665,9 +13609,9 @@ export default {
     "thundershock",
     "thunderwave",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  exeggcute: [
+  "exeggcute": [
     "absorb",
     "ancientpower",
     "attract",
@@ -13757,9 +13701,9 @@ export default {
     "uproar",
     "wish",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  exeggutor: [
+  "exeggutor": [
     "absorb",
     "ancientpower",
     "attract",
@@ -13860,9 +13804,9 @@ export default {
     "uproar",
     "woodhammer",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  exeggutoralola: [
+  "exeggutoralola": [
     "absorb",
     "attract",
     "barrage",
@@ -13962,9 +13906,9 @@ export default {
     "uproar",
     "woodhammer",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cubone: [
+  "cubone": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -14060,9 +14004,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "watergun",
+    "watergun"
   ],
-  marowak: [
+  "marowak": [
     "aerialace",
     "attract",
     "bide",
@@ -14161,9 +14105,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "watergun",
+    "watergun"
   ],
-  marowakalola: [
+  "marowakalola": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -14260,9 +14204,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  marowakalolatotem: [
+  "marowakalolatotem": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -14341,9 +14285,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  tyrogue: [
+  "tyrogue": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -14408,9 +14352,9 @@ export default {
     "upperhand",
     "uproar",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  hitmonlee: [
+  "hitmonlee": [
     "attract",
     "aurasphere",
     "axekick",
@@ -14511,9 +14455,9 @@ export default {
     "uproar",
     "vacuumwave",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  hitmonchan: [
+  "hitmonchan": [
     "agility",
     "attract",
     "aurasphere",
@@ -14614,9 +14558,9 @@ export default {
     "upperhand",
     "uproar",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  hitmontop: [
+  "hitmontop": [
     "aerialace",
     "agility",
     "attract",
@@ -14702,9 +14646,9 @@ export default {
     "uproar",
     "vacuumwave",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  lickitung: [
+  "lickitung": [
     "acid",
     "amnesia",
     "aquatail",
@@ -14822,9 +14766,9 @@ export default {
     "workup",
     "wrap",
     "wringout",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lickilicky: [
+  "lickilicky": [
     "amnesia",
     "aquatail",
     "attract",
@@ -14924,9 +14868,9 @@ export default {
     "workup",
     "wrap",
     "wringout",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  koffing: [
+  "koffing": [
     "acidspray",
     "assurance",
     "attract",
@@ -15005,9 +14949,9 @@ export default {
     "venomdrench",
     "venoshock",
     "willowisp",
-    "zapcannon",
+    "zapcannon"
   ],
-  weezing: [
+  "weezing": [
     "acidspray",
     "assurance",
     "attract",
@@ -15085,9 +15029,9 @@ export default {
     "venomdrench",
     "venoshock",
     "willowisp",
-    "zapcannon",
+    "zapcannon"
   ],
-  weezinggalar: [
+  "weezinggalar": [
     "acidspray",
     "aromatherapy",
     "aromaticmist",
@@ -15158,9 +15102,9 @@ export default {
     "venomdrench",
     "venoshock",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  rhyhorn: [
+  "rhyhorn": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -15267,9 +15211,9 @@ export default {
     "thunderfang",
     "toxic",
     "uproar",
-    "zapcannon",
+    "zapcannon"
   ],
-  rhydon: [
+  "rhydon": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -15403,9 +15347,9 @@ export default {
     "uproar",
     "watergun",
     "whirlpool",
-    "zapcannon",
+    "zapcannon"
   ],
-  rhyperior: [
+  "rhyperior": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -15421,7 +15365,6 @@ export default {
     "captivate",
     "chipaway",
     "confide",
-    "counter",
     "crunch",
     "curse",
     "cut",
@@ -15429,7 +15372,6 @@ export default {
     "doubleedge",
     "doubleteam",
     "dragonpulse",
-    "dragonrush",
     "dragontail",
     "drillrun",
     "earthpower",
@@ -15449,7 +15391,6 @@ export default {
     "furyattack",
     "furycutter",
     "gigaimpact",
-    "guardsplit",
     "hammerarm",
     "headbutt",
     "heatcrash",
@@ -15472,7 +15413,6 @@ export default {
     "megahorn",
     "megakick",
     "megapunch",
-    "metalburst",
     "metalclaw",
     "meteorbeam",
     "mudshot",
@@ -15533,9 +15473,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "whirlpool",
+    "whirlpool"
   ],
-  happiny: [
+  "happiny": [
     "aromatherapy",
     "attract",
     "captivate",
@@ -15608,9 +15548,9 @@ export default {
     "uproar",
     "waterpulse",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chansey: [
+  "chansey": [
     "allyswitch",
     "aromatherapy",
     "attract",
@@ -15753,9 +15693,9 @@ export default {
     "wish",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  blissey: [
+  "blissey": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -15887,9 +15827,9 @@ export default {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tangela: [
+  "tangela": [
     "absorb",
     "amnesia",
     "ancientpower",
@@ -15969,9 +15909,9 @@ export default {
     "vinewhip",
     "wakeupslap",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  tangrowth: [
+  "tangrowth": [
     "absorb",
     "aerialace",
     "amnesia",
@@ -16054,9 +15994,9 @@ export default {
     "toxic",
     "vinewhip",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  kangaskhan: [
+  "kangaskhan": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -16180,9 +16120,9 @@ export default {
     "wish",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  horsea: [
+  "horsea": [
     "agility",
     "attract",
     "aurorabeam",
@@ -16254,9 +16194,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  seadra: [
+  "seadra": [
     "agility",
     "attract",
     "bide",
@@ -16326,9 +16266,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  kingdra: [
+  "kingdra": [
     "agility",
     "attract",
     "blizzard",
@@ -16401,9 +16341,9 @@ export default {
     "wavecrash",
     "weatherball",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  goldeen: [
+  "goldeen": [
     "acupressure",
     "agility",
     "aquaring",
@@ -16478,9 +16418,9 @@ export default {
     "watergun",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  seaking: [
+  "seaking": [
     "agility",
     "aquaring",
     "aquatail",
@@ -16554,9 +16494,9 @@ export default {
     "watergun",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  staryu: [
+  "staryu": [
     "attract",
     "bide",
     "blizzard",
@@ -16632,22 +16572,17 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "zapcannon",
+    "zapcannon"
   ],
-  starmie: [
+  "starmie": [
     "agility",
     "allyswitch",
-    "ancientpower",
-    "aquajet",
     "attract",
     "avalanche",
     "bide",
     "blizzard",
     "brine",
     "bubblebeam",
-    "bulkup",
-    "chargebeam",
-    "chillingwater",
     "confide",
     "confuseray",
     "cosmicpower",
@@ -16675,10 +16610,8 @@ export default {
     "hydropump",
     "hyperbeam",
     "icebeam",
-    "icespinner",
     "icywind",
     "lightscreen",
-    "liquidation",
     "magiccoat",
     "meteorbeam",
     "mimic",
@@ -16705,10 +16638,8 @@ export default {
     "return",
     "rollout",
     "round",
-    "safeguard",
     "scald",
     "secretpower",
-    "selfdestruct",
     "signalbeam",
     "skillswap",
     "skullbash",
@@ -16736,10 +16667,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wonderroom",
-    "zapcannon",
-    "zenheadbutt",
+    "zapcannon"
   ],
-  mimejr: [
+  "mimejr": [
     "allyswitch",
     "attract",
     "barrier",
@@ -16829,9 +16759,9 @@ export default {
     "trickroom",
     "uproar",
     "wakeupslap",
-    "wonderroom",
+    "wonderroom"
   ],
-  mrmime: [
+  "mrmime": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -16959,9 +16889,9 @@ export default {
     "wideguard",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mrmimegalar: [
+  "mrmimegalar": [
     "allyswitch",
     "attract",
     "avalanche",
@@ -17050,9 +16980,9 @@ export default {
     "tripleaxel",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mrrime: [
+  "mrrime": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -17064,8 +16994,6 @@ export default {
     "brickbreak",
     "calmmind",
     "charm",
-    "chillingwater",
-    "confuseray",
     "confusion",
     "copycat",
     "dazzlinggleam",
@@ -17076,26 +17004,22 @@ export default {
     "energyball",
     "expandingforce",
     "facade",
-    "fakeout",
     "faketears",
     "fling",
     "focusblast",
     "foulplay",
     "freezedry",
-    "frostbreath",
     "futuresight",
     "gigaimpact",
     "grassknot",
     "guardswap",
     "hail",
-    "haze",
     "helpinghand",
     "hyperbeam",
     "hypnosis",
     "icebeam",
     "icepunch",
     "iceshard",
-    "icespinner",
     "iciclespear",
     "icywind",
     "irondefense",
@@ -17110,7 +17034,6 @@ export default {
     "nastyplot",
     "payback",
     "pound",
-    "powersplit",
     "powerswap",
     "protect",
     "psybeam",
@@ -17127,35 +17050,30 @@ export default {
     "safeguard",
     "screech",
     "shadowball",
-    "sheercold",
     "skillswap",
     "slackoff",
     "sleeptalk",
     "snore",
-    "snowscape",
     "solarbeam",
     "stompingtantrum",
     "storedpower",
     "substitute",
     "suckerpunch",
     "sunnyday",
-    "swagger",
     "taunt",
     "teeterdance",
     "thief",
     "thunder",
     "thunderbolt",
     "thunderwave",
-    "tickle",
-    "torment",
     "trick",
     "trickroom",
     "tripleaxel",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  scyther: [
+  "scyther": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -17244,9 +17162,9 @@ export default {
     "uturn",
     "vacuumwave",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  scizor: [
+  "scizor": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -17305,7 +17223,6 @@ export default {
     "psychocut",
     "pursuit",
     "quickattack",
-    "quickguard",
     "raindance",
     "razorwind",
     "rest",
@@ -17344,23 +17261,19 @@ export default {
     "vacuumwave",
     "venoshock",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  kleavor: [
+  "kleavor": [
     "acrobatics",
     "aerialace",
     "agility",
     "aircutter",
     "airslash",
-    "ancientpower",
     "batonpass",
     "brickbreak",
-    "brutalswing",
     "bugbite",
     "bugbuzz",
     "closecombat",
-    "counter",
-    "defog",
     "doubleedge",
     "doublehit",
     "doubleteam",
@@ -17368,7 +17281,6 @@ export default {
     "endure",
     "facade",
     "falseswipe",
-    "feint",
     "focusenergy",
     "furycutter",
     "gigaimpact",
@@ -17377,11 +17289,9 @@ export default {
     "leer",
     "lightscreen",
     "lunge",
-    "nightslash",
     "pounce",
     "protect",
     "quickattack",
-    "quickguard",
     "raindance",
     "rest",
     "reversal",
@@ -17409,9 +17319,9 @@ export default {
     "trailblaze",
     "uturn",
     "vacuumwave",
-    "xscissor",
+    "xscissor"
   ],
-  smoochum: [
+  "smoochum": [
     "attract",
     "auroraveil",
     "avalanche",
@@ -17503,9 +17413,9 @@ export default {
     "waterpulse",
     "wish",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  jynx: [
+  "jynx": [
     "allyswitch",
     "attract",
     "auroraveil",
@@ -17626,9 +17536,9 @@ export default {
     "waterpulse",
     "wonderroom",
     "wringout",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  elekid: [
+  "elekid": [
     "attract",
     "barrier",
     "bodyslam",
@@ -17714,9 +17624,9 @@ export default {
     "uproar",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  electabuzz: [
+  "electabuzz": [
     "attract",
     "bide",
     "bodyslam",
@@ -17812,9 +17722,9 @@ export default {
     "uproar",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  electivire: [
+  "electivire": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -17907,9 +17817,9 @@ export default {
     "uproar",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  magby: [
+  "magby": [
     "acidspray",
     "attract",
     "barrier",
@@ -17992,9 +17902,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  magmar: [
+  "magmar": [
     "acidspray",
     "attract",
     "bide",
@@ -18090,9 +18000,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  magmortar: [
+  "magmortar": [
     "acidspray",
     "attract",
     "bodyslam",
@@ -18186,10 +18096,9 @@ export default {
     "toxic",
     "uproar",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  pinsir: [
-    "aerialace",
+  "pinsir": [
     "attract",
     "bide",
     "bind",
@@ -18200,12 +18109,10 @@ export default {
     "bulkup",
     "bulldoze",
     "captivate",
-    "circlethrow",
     "closecombat",
     "confide",
     "curse",
     "cut",
-    "detect",
     "dig",
     "doubleedge",
     "doublehit",
@@ -18227,7 +18134,6 @@ export default {
     "gigaimpact",
     "guillotine",
     "harden",
-    "hardpress",
     "headbutt",
     "helpinghand",
     "hiddenpower",
@@ -18235,12 +18141,10 @@ export default {
     "hyperbeam",
     "irondefense",
     "knockoff",
-    "lunge",
     "mefirst",
     "mimic",
     "naturalgift",
     "outrage",
-    "pounce",
     "protect",
     "quickattack",
     "rage",
@@ -18279,9 +18183,9 @@ export default {
     "toxic",
     "visegrip",
     "vitalthrow",
-    "xscissor",
+    "xscissor"
   ],
-  tauros: [
+  "tauros": [
     "assurance",
     "attract",
     "bide",
@@ -18377,9 +18281,9 @@ export default {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  taurospaldeacombat: [
+  "taurospaldeacombat": [
     "assurance",
     "bodypress",
     "bodyslam",
@@ -18400,9 +18304,7 @@ export default {
     "highhorsepower",
     "hyperbeam",
     "ironhead",
-    "irontail",
     "lashout",
-    "megahorn",
     "outrage",
     "protect",
     "ragingbull",
@@ -18411,12 +18313,10 @@ export default {
     "reversal",
     "rockslide",
     "rocktomb",
-    "round",
     "sandstorm",
     "scaryface",
     "sleeptalk",
     "smartstrike",
-    "snore",
     "stompingtantrum",
     "stoneedge",
     "substitute",
@@ -18431,12 +18331,11 @@ export default {
     "thrash",
     "throatchop",
     "trailblaze",
-    "uproar",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  taurospaldeablaze: [
+  "taurospaldeablaze": [
     "bodypress",
     "bodyslam",
     "bulkup",
@@ -18461,9 +18360,7 @@ export default {
     "highhorsepower",
     "hyperbeam",
     "ironhead",
-    "irontail",
     "lashout",
-    "megahorn",
     "outrage",
     "overheat",
     "protect",
@@ -18473,12 +18370,10 @@ export default {
     "reversal",
     "rockslide",
     "rocktomb",
-    "round",
     "sandstorm",
     "scaryface",
     "sleeptalk",
     "smartstrike",
-    "snore",
     "stompingtantrum",
     "stoneedge",
     "substitute",
@@ -18492,13 +18387,12 @@ export default {
     "thief",
     "thrash",
     "trailblaze",
-    "uproar",
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  taurospaldeaaqua: [
+  "taurospaldeaaqua": [
     "aquajet",
     "bodypress",
     "bodyslam",
@@ -18521,10 +18415,8 @@ export default {
     "hydropump",
     "hyperbeam",
     "ironhead",
-    "irontail",
     "lashout",
     "liquidation",
-    "megahorn",
     "outrage",
     "protect",
     "ragingbull",
@@ -18533,12 +18425,10 @@ export default {
     "reversal",
     "rockslide",
     "rocktomb",
-    "round",
     "sandstorm",
     "scaryface",
     "sleeptalk",
     "smartstrike",
-    "snore",
     "stompingtantrum",
     "stoneedge",
     "substitute",
@@ -18551,24 +18441,23 @@ export default {
     "thief",
     "thrash",
     "trailblaze",
-    "uproar",
     "waterpulse",
     "wavecrash",
     "whirlpool",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  magikarp: [
+  "magikarp": [
     "bounce",
     "celebrate",
     "flail",
     "happyhour",
     "hydropump",
     "splash",
-    "tackle",
+    "tackle"
   ],
-  gyarados: [
+  "gyarados": [
     "aquatail",
     "attract",
     "avalanche",
@@ -18596,7 +18485,6 @@ export default {
     "dragondance",
     "dragonpulse",
     "dragonrage",
-    "dragonrush",
     "dragontail",
     "earthquake",
     "endeavor",
@@ -18670,9 +18558,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "zapcannon",
+    "zapcannon"
   ],
-  lapras: [
+  "lapras": [
     "alluringvoice",
     "ancientpower",
     "aquatail",
@@ -18784,10 +18672,12 @@ export default {
     "weatherball",
     "whirlpool",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ditto: ["transform"],
-  eevee: [
+  "ditto": [
+    "transform"
+  ],
+  "eevee": [
     "alluringvoice",
     "attract",
     "babydolleyes",
@@ -18863,9 +18753,9 @@ export default {
     "weatherball",
     "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  eeveestarter: [
+  "eeveestarter": [
     "alluringvoice",
     "babydolleyes",
     "baddybad",
@@ -18920,9 +18810,9 @@ export default {
     "veeveevolley",
     "weatherball",
     "wish",
-    "yawn",
+    "yawn"
   ],
-  vaporeon: [
+  "vaporeon": [
     "acidarmor",
     "alluringvoice",
     "aquaring",
@@ -18956,7 +18846,6 @@ export default {
     "endure",
     "facade",
     "faketears",
-    "flail",
     "flipturn",
     "focusenergy",
     "frustration",
@@ -19013,7 +18902,6 @@ export default {
     "tailwhip",
     "takedown",
     "terablast",
-    "tickle",
     "toxic",
     "trailblaze",
     "waterfall",
@@ -19021,11 +18909,10 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  jolteon: [
+  "jolteon": [
     "agility",
     "alluringvoice",
     "attract",
@@ -19059,7 +18946,6 @@ export default {
     "facade",
     "faketears",
     "falseswipe",
-    "flail",
     "flash",
     "focusenergy",
     "frustration",
@@ -19117,18 +19003,16 @@ export default {
     "thunderfang",
     "thundershock",
     "thunderwave",
-    "tickle",
     "toxic",
     "trailblaze",
     "voltswitch",
     "weatherball",
     "wildcharge",
-    "wish",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  flareon: [
+  "flareon": [
     "alluringvoice",
     "attract",
     "babydolleyes",
@@ -19159,7 +19043,6 @@ export default {
     "fireblast",
     "firefang",
     "firespin",
-    "flail",
     "flamecharge",
     "flamethrower",
     "flareblitz",
@@ -19218,17 +19101,15 @@ export default {
     "takedown",
     "temperflare",
     "terablast",
-    "tickle",
     "toxic",
     "trailblaze",
     "weatherball",
     "willowisp",
-    "wish",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  espeon: [
+  "espeon": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -19259,7 +19140,6 @@ export default {
     "expandingforce",
     "facade",
     "faketears",
-    "flail",
     "flash",
     "focusenergy",
     "frustration",
@@ -19306,7 +19186,6 @@ export default {
     "return",
     "roar",
     "round",
-    "safeguard",
     "sandattack",
     "secretpower",
     "shadowball",
@@ -19325,19 +19204,16 @@ export default {
     "telekinesis",
     "terablast",
     "thunderwave",
-    "tickle",
     "toxic",
     "trailblaze",
     "trick",
     "trickroom",
     "weatherball",
-    "wish",
     "workup",
-    "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  umbreon: [
+  "umbreon": [
     "alluringvoice",
     "assurance",
     "attract",
@@ -19367,7 +19243,6 @@ export default {
     "facade",
     "faketears",
     "feintattack",
-    "flail",
     "flash",
     "focusenergy",
     "foulplay",
@@ -19431,18 +19306,15 @@ export default {
     "thief",
     "throatchop",
     "thunderwave",
-    "tickle",
     "torment",
     "toxic",
     "trailblaze",
     "weatherball",
-    "wish",
     "wonderroom",
     "workup",
-    "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  leafeon: [
+  "leafeon": [
     "aerialace",
     "alluringvoice",
     "attract",
@@ -19459,7 +19331,6 @@ export default {
     "copycat",
     "covet",
     "curse",
-    "detect",
     "dig",
     "doubleedge",
     "doubleteam",
@@ -19468,7 +19339,6 @@ export default {
     "energyball",
     "facade",
     "faketears",
-    "flail",
     "flash",
     "focusenergy",
     "frustration",
@@ -19528,17 +19398,14 @@ export default {
     "tailwhip",
     "takedown",
     "terablast",
-    "tickle",
     "toxic",
     "trailblaze",
     "weatherball",
-    "wish",
     "workup",
     "worryseed",
-    "xscissor",
-    "yawn",
+    "xscissor"
   ],
-  glaceon: [
+  "glaceon": [
     "alluringvoice",
     "aquatail",
     "attract",
@@ -19559,7 +19426,6 @@ export default {
     "copycat",
     "covet",
     "curse",
-    "detect",
     "dig",
     "doubleedge",
     "doubleteam",
@@ -19567,7 +19433,6 @@ export default {
     "endure",
     "facade",
     "faketears",
-    "flail",
     "focusenergy",
     "freezedry",
     "frostbreath",
@@ -19622,17 +19487,14 @@ export default {
     "tailwhip",
     "takedown",
     "terablast",
-    "tickle",
     "toxic",
     "trailblaze",
     "tripleaxel",
     "waterpulse",
     "weatherball",
-    "wish",
-    "workup",
-    "yawn",
+    "workup"
   ],
-  porygon: [
+  "porygon": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -19719,9 +19581,9 @@ export default {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  porygon2: [
+  "porygon2": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -19799,9 +19661,9 @@ export default {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  porygonz: [
+  "porygonz": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -19880,9 +19742,9 @@ export default {
     "uproar",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  omanyte: [
+  "omanyte": [
     "ancientpower",
     "attract",
     "aurorabeam",
@@ -19962,9 +19824,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "withdraw",
-    "wringout",
+    "wringout"
   ],
-  omastar: [
+  "omastar": [
     "ancientpower",
     "attract",
     "bide",
@@ -20050,9 +19912,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "withdraw",
+    "withdraw"
   ],
-  kabuto: [
+  "kabuto": [
     "absorb",
     "aerialace",
     "ancientpower",
@@ -20135,9 +19997,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "wringout",
+    "wringout"
   ],
-  kabutops: [
+  "kabutops": [
     "absorb",
     "aerialace",
     "ancientpower",
@@ -20240,9 +20102,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wringout",
-    "xscissor",
+    "xscissor"
   ],
-  aerodactyl: [
+  "aerodactyl": [
     "aerialace",
     "agility",
     "aircutter",
@@ -20341,9 +20203,9 @@ export default {
     "twister",
     "whirlwind",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  munchlax: [
+  "munchlax": [
     "afteryou",
     "amnesia",
     "attract",
@@ -20449,9 +20311,9 @@ export default {
     "whirlpool",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  snorlax: [
+  "snorlax": [
     "afteryou",
     "amnesia",
     "attract",
@@ -20589,9 +20451,9 @@ export default {
     "workup",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  articuno: [
+  "articuno": [
     "aerialace",
     "agility",
     "aircutter",
@@ -20681,9 +20543,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlwind",
+    "whirlwind"
   ],
-  articunogalar: [
+  "articunogalar": [
     "agility",
     "aircutter",
     "airslash",
@@ -20741,9 +20603,9 @@ export default {
     "terablast",
     "trick",
     "trickroom",
-    "uturn",
+    "uturn"
   ],
-  zapdos: [
+  "zapdos": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -20831,9 +20693,9 @@ export default {
     "weatherball",
     "whirlwind",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  zapdosgalar: [
+  "zapdosgalar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -20895,9 +20757,9 @@ export default {
     "throatchop",
     "thunderouskick",
     "trailblaze",
-    "uturn",
+    "uturn"
   ],
-  moltres: [
+  "moltres": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -20981,9 +20843,9 @@ export default {
     "weatherball",
     "whirlwind",
     "willowisp",
-    "wingattack",
+    "wingattack"
   ],
-  moltresgalar: [
+  "moltresgalar": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -21037,9 +20899,9 @@ export default {
     "terablast",
     "thief",
     "uturn",
-    "wingattack",
+    "wingattack"
   ],
-  dratini: [
+  "dratini": [
     "agility",
     "aquajet",
     "aquatail",
@@ -21125,9 +20987,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  dragonair: [
+  "dragonair": [
     "agility",
     "aquatail",
     "attract",
@@ -21211,9 +21073,9 @@ export default {
     "weatherball",
     "whirlpool",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  dragonite: [
+  "dragonite": [
     "aerialace",
     "agility",
     "aircutter",
@@ -21350,12 +21212,11 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "whirlwind",
     "wingattack",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  mewtwo: [
+  "mewtwo": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -21523,9 +21384,9 @@ export default {
     "willowisp",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mew: [
+  "mew": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -21900,9 +21761,9 @@ export default {
     "worryseed",
     "xscissor",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chikorita: [
+  "chikorita": [
     "ancientpower",
     "aromatherapy",
     "attract",
@@ -21979,9 +21840,9 @@ export default {
     "vinewhip",
     "workup",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  bayleef: [
+  "bayleef": [
     "ancientpower",
     "aromatherapy",
     "attract",
@@ -22055,9 +21916,9 @@ export default {
     "toxic",
     "trailblaze",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  meganium: [
+  "meganium": [
     "ancientpower",
     "aromatherapy",
     "attract",
@@ -22071,12 +21932,10 @@ export default {
     "counter",
     "curse",
     "cut",
-    "dazzlinggleam",
     "detect",
     "doubleedge",
     "doubleteam",
     "dragontail",
-    "earthpower",
     "earthquake",
     "echoedvoice",
     "encore",
@@ -22085,7 +21944,6 @@ export default {
     "energyball",
     "facade",
     "faketears",
-    "flail",
     "flash",
     "frenzyplant",
     "frustration",
@@ -22098,15 +21956,12 @@ export default {
     "grassyterrain",
     "growl",
     "headbutt",
-    "healpulse",
     "helpinghand",
     "hiddenpower",
     "hyperbeam",
-    "ingrain",
     "irontail",
     "knockoff",
     "laserfocus",
-    "leafblade",
     "leafstorm",
     "leechseed",
     "lightscreen",
@@ -22120,7 +21975,6 @@ export default {
     "petalblizzard",
     "petaldance",
     "poisonpowder",
-    "pollenpuff",
     "protect",
     "razorleaf",
     "reflect",
@@ -22152,9 +22006,9 @@ export default {
     "weatherball",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cyndaquil: [
+  "cyndaquil": [
     "aerialace",
     "attract",
     "blastburn",
@@ -22232,9 +22086,9 @@ export default {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  quilava: [
+  "quilava": [
     "aerialace",
     "attract",
     "bodyslam",
@@ -22308,9 +22162,9 @@ export default {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  typhlosion: [
+  "typhlosion": [
     "aerialace",
     "attract",
     "blastburn",
@@ -22336,7 +22190,6 @@ export default {
     "endeavor",
     "endure",
     "eruption",
-    "extrasensory",
     "facade",
     "fireblast",
     "firefang",
@@ -22358,7 +22211,6 @@ export default {
     "heatwave",
     "helpinghand",
     "hiddenpower",
-    "howl",
     "hyperbeam",
     "incinerate",
     "inferno",
@@ -22414,19 +22266,17 @@ export default {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  typhlosionhisui: [
+  "typhlosionhisui": [
     "aerialace",
     "blastburn",
     "bodyslam",
     "brickbreak",
     "bulldoze",
     "burningjealousy",
-    "burnup",
     "calmmind",
     "confuseray",
-    "covet",
     "curse",
     "defensecurl",
     "dig",
@@ -22436,7 +22286,6 @@ export default {
     "endeavor",
     "endure",
     "eruption",
-    "extrasensory",
     "facade",
     "fireblast",
     "firefang",
@@ -22453,7 +22302,6 @@ export default {
     "gyroball",
     "heatwave",
     "hex",
-    "howl",
     "hyperbeam",
     "infernalparade",
     "inferno",
@@ -22461,8 +22309,6 @@ export default {
     "lavaplume",
     "leer",
     "lowkick",
-    "megakick",
-    "mysticalfire",
     "nightshade",
     "overheat",
     "playrough",
@@ -22474,12 +22320,10 @@ export default {
     "roar",
     "rockslide",
     "rollout",
-    "round",
     "shadowball",
     "shadowclaw",
     "sleeptalk",
     "smokescreen",
-    "snore",
     "solarbeam",
     "spite",
     "stompingtantrum",
@@ -22493,9 +22337,9 @@ export default {
     "thunderpunch",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  totodile: [
+  "totodile": [
     "aerialace",
     "ancientpower",
     "aquajet",
@@ -22594,9 +22438,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  croconaw: [
+  "croconaw": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -22694,13 +22538,12 @@ export default {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  feraligatr: [
+  "feraligatr": [
     "aerialace",
     "agility",
     "ancientpower",
-    "aquajet",
     "aquatail",
     "attract",
     "avalanche",
@@ -22710,7 +22553,6 @@ export default {
     "bodyslam",
     "breakingswipe",
     "brickbreak",
-    "brutalswing",
     "bulldoze",
     "captivate",
     "chillingwater",
@@ -22736,7 +22578,6 @@ export default {
     "facade",
     "faketears",
     "flail",
-    "flatter",
     "fling",
     "flipturn",
     "focusblast",
@@ -22766,7 +22607,6 @@ export default {
     "metalclaw",
     "mimic",
     "muddywater",
-    "mudshot",
     "mudslap",
     "naturalgift",
     "outrage",
@@ -22815,9 +22655,9 @@ export default {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  sentret: [
+  "sentret": [
     "amnesia",
     "aquatail",
     "assist",
@@ -22916,9 +22756,9 @@ export default {
     "uturn",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  furret: [
+  "furret": [
     "agility",
     "amnesia",
     "aquatail",
@@ -23018,9 +22858,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hoothoot: [
+  "hoothoot": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -23112,9 +22952,9 @@ export default {
     "whirlwind",
     "wingattack",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  noctowl: [
+  "noctowl": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -23207,9 +23047,9 @@ export default {
     "twister",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ledyba: [
+  "ledyba": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -23283,9 +23123,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  ledian: [
+  "ledian": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -23358,9 +23198,9 @@ export default {
     "thunderpunch",
     "toxic",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  spinarak: [
+  "spinarak": [
     "absorb",
     "acidspray",
     "agility",
@@ -23441,13 +23281,12 @@ export default {
     "trailblaze",
     "twineedle",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  ariados: [
+  "ariados": [
     "absorb",
     "acidspray",
     "agility",
-    "assurance",
     "attract",
     "batonpass",
     "bodyslam",
@@ -23460,14 +23299,12 @@ export default {
     "crosspoison",
     "curse",
     "dig",
-    "disable",
     "doubleedge",
     "doubleteam",
     "electroweb",
     "endure",
     "facade",
     "fellstinger",
-    "firstimpression",
     "flash",
     "focusenergy",
     "foulplay",
@@ -23483,18 +23320,15 @@ export default {
     "knockoff",
     "leechlife",
     "lunge",
-    "megahorn",
     "mimic",
     "naturalgift",
     "nightshade",
-    "nightslash",
     "pinmissile",
     "poisonjab",
     "poisonsting",
     "pounce",
     "protect",
     "psychic",
-    "ragepowder",
     "rest",
     "return",
     "round",
@@ -23530,9 +23364,9 @@ export default {
     "trailblaze",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  chinchou: [
+  "chinchou": [
     "agility",
     "amnesia",
     "aquaring",
@@ -23609,9 +23443,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  lanturn: [
+  "lanturn": [
     "agility",
     "amnesia",
     "aquaring",
@@ -23693,9 +23527,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  togepi: [
+  "togepi": [
     "aerialace",
     "afteryou",
     "ancientpower",
@@ -23796,9 +23630,9 @@ export default {
     "workup",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  togetic: [
+  "togetic": [
     "aerialace",
     "afteryou",
     "aircutter",
@@ -23913,9 +23747,9 @@ export default {
     "workup",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  togekiss: [
+  "togekiss": [
     "aerialace",
     "afteryou",
     "aircutter",
@@ -24029,9 +23863,9 @@ export default {
     "wish",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  natu: [
+  "natu": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -24124,9 +23958,9 @@ export default {
     "twister",
     "uturn",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  xatu: [
+  "xatu": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -24217,9 +24051,9 @@ export default {
     "twister",
     "uturn",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mareep: [
+  "mareep": [
     "afteryou",
     "agility",
     "attract",
@@ -24291,9 +24125,9 @@ export default {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  flaaffy: [
+  "flaaffy": [
     "afteryou",
     "agility",
     "attract",
@@ -24376,9 +24210,9 @@ export default {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  ampharos: [
+  "ampharos": [
     "afteryou",
     "agility",
     "attract",
@@ -24416,7 +24250,6 @@ export default {
     "facade",
     "firepunch",
     "flash",
-    "flatter",
     "fling",
     "focusblast",
     "focuspunch",
@@ -24442,7 +24275,6 @@ export default {
     "mimic",
     "naturalgift",
     "outrage",
-    "paraboliccharge",
     "powergem",
     "poweruppunch",
     "protect",
@@ -24450,13 +24282,11 @@ export default {
     "reflect",
     "rest",
     "return",
-    "risingvoltage",
     "roar",
     "rockclimb",
     "rocksmash",
     "round",
     "safeguard",
-    "screech",
     "secretpower",
     "seismictoss",
     "shockwave",
@@ -24482,9 +24312,9 @@ export default {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  azurill: [
+  "azurill": [
     "alluringvoice",
     "aquajet",
     "attract",
@@ -24558,9 +24388,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  marill: [
+  "marill": [
     "alluringvoice",
     "amnesia",
     "aquajet",
@@ -24668,16 +24498,14 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  azumarill: [
+  "azumarill": [
     "alluringvoice",
     "amnesia",
-    "aquajet",
     "aquaring",
     "aquatail",
     "attract",
-    "bellydrum",
     "blizzard",
     "bodyslam",
     "bounce",
@@ -24690,7 +24518,6 @@ export default {
     "charm",
     "chillingwater",
     "confide",
-    "copycat",
     "covet",
     "curse",
     "defensecurl",
@@ -24737,7 +24564,6 @@ export default {
     "mudshot",
     "mudslap",
     "naturalgift",
-    "perishsong",
     "playrough",
     "poweruppunch",
     "protect",
@@ -24750,12 +24576,10 @@ export default {
     "scald",
     "secretpower",
     "seismictoss",
-    "sing",
     "slam",
     "sleeptalk",
     "snore",
     "snowscape",
-    "soak",
     "steelroller",
     "strength",
     "substitute",
@@ -24767,7 +24591,6 @@ export default {
     "tailwhip",
     "takedown",
     "terablast",
-    "tickle",
     "toxic",
     "trailblaze",
     "uproar",
@@ -24776,9 +24599,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  bonsly: [
+  "bonsly": [
     "afteryou",
     "attract",
     "block",
@@ -24852,9 +24675,9 @@ export default {
     "thief",
     "toxic",
     "trailblaze",
-    "uproar",
+    "uproar"
   ],
-  sudowoodo: [
+  "sudowoodo": [
     "afteryou",
     "attract",
     "block",
@@ -24954,9 +24777,9 @@ export default {
     "toxic",
     "trailblaze",
     "uproar",
-    "woodhammer",
+    "woodhammer"
   ],
-  hoppip: [
+  "hoppip": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -25039,9 +24862,9 @@ export default {
     "toxic",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  skiploom: [
+  "skiploom": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -25117,9 +24940,9 @@ export default {
     "toxic",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  jumpluff: [
+  "jumpluff": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -25198,9 +25021,9 @@ export default {
     "toxic",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  aipom: [
+  "aipom": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -25313,9 +25136,9 @@ export default {
     "uturn",
     "waterpulse",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  ambipom: [
+  "ambipom": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -25412,9 +25235,9 @@ export default {
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  sunkern: [
+  "sunkern": [
     "absorb",
     "afteryou",
     "attract",
@@ -25477,9 +25300,9 @@ export default {
     "trailblaze",
     "uproar",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  sunflora: [
+  "sunflora": [
     "absorb",
     "afteryou",
     "attract",
@@ -25548,9 +25371,9 @@ export default {
     "trailblaze",
     "uproar",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  yanma: [
+  "yanma": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -25622,9 +25445,9 @@ export default {
     "uproar",
     "uturn",
     "whirlwind",
-    "wingattack",
+    "wingattack"
   ],
-  yanmega: [
+  "yanmega": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -25700,9 +25523,9 @@ export default {
     "thief",
     "toxic",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  wooper: [
+  "wooper": [
     "acidspray",
     "afteryou",
     "amnesia",
@@ -25794,9 +25617,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  wooperpaldea: [
+  "wooperpaldea": [
     "acidspray",
     "afteryou",
     "amnesia",
@@ -25855,9 +25678,9 @@ export default {
     "venoshock",
     "waterfall",
     "waterpulse",
-    "yawn",
+    "yawn"
   ],
-  quagsire: [
+  "quagsire": [
     "acidspray",
     "afteryou",
     "amnesia",
@@ -25959,9 +25782,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  clodsire: [
+  "clodsire": [
     "acidspray",
     "amnesia",
     "bodypress",
@@ -26019,9 +25842,9 @@ export default {
     "waterfall",
     "waterpulse",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  murkrow: [
+  "murkrow": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -26117,9 +25940,9 @@ export default {
     "uproar",
     "uturn",
     "whirlwind",
-    "wingattack",
+    "wingattack"
   ],
-  honchkrow: [
+  "honchkrow": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -26205,9 +26028,9 @@ export default {
     "twister",
     "uproar",
     "uturn",
-    "wingattack",
+    "wingattack"
   ],
-  misdreavus: [
+  "misdreavus": [
     "aerialace",
     "allyswitch",
     "astonish",
@@ -26314,9 +26137,9 @@ export default {
     "uproar",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  mismagius: [
+  "mismagius": [
     "aerialace",
     "allyswitch",
     "astonish",
@@ -26412,10 +26235,12 @@ export default {
     "trickroom",
     "uproar",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  unown: ["hiddenpower"],
-  wynaut: [
+  "unown": [
+    "hiddenpower"
+  ],
+  "wynaut": [
     "amnesia",
     "charm",
     "counter",
@@ -26424,9 +26249,9 @@ export default {
     "mirrorcoat",
     "safeguard",
     "splash",
-    "tickle",
+    "tickle"
   ],
-  wobbuffet: [
+  "wobbuffet": [
     "amnesia",
     "charm",
     "counter",
@@ -26434,9 +26259,9 @@ export default {
     "encore",
     "mirrorcoat",
     "safeguard",
-    "splash",
+    "splash"
   ],
-  girafarig: [
+  "girafarig": [
     "agility",
     "allyswitch",
     "amnesia",
@@ -26548,9 +26373,9 @@ export default {
     "wish",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pineco: [
+  "pineco": [
     "attract",
     "bide",
     "bodyslam",
@@ -26628,9 +26453,9 @@ export default {
     "terablast",
     "toxic",
     "toxicspikes",
-    "venoshock",
+    "venoshock"
   ],
-  forretress: [
+  "forretress": [
     "allyswitch",
     "attract",
     "autotomize",
@@ -26655,7 +26480,6 @@ export default {
     "endure",
     "explosion",
     "facade",
-    "flail",
     "flashcannon",
     "frustration",
     "gigadrain",
@@ -26681,10 +26505,8 @@ export default {
     "naturalgift",
     "painsplit",
     "payback",
-    "pinmissile",
     "poisonjab",
     "pounce",
-    "powertrick",
     "protect",
     "raindance",
     "rapidspin",
@@ -26712,7 +26534,6 @@ export default {
     "spikes",
     "stealthrock",
     "steelbeam",
-    "steelroller",
     "stoneedge",
     "strength",
     "stringshot",
@@ -26731,9 +26552,9 @@ export default {
     "toxicspikes",
     "venoshock",
     "voltswitch",
-    "zapcannon",
+    "zapcannon"
   ],
-  dunsparce: [
+  "dunsparce": [
     "agility",
     "airslash",
     "amnesia",
@@ -26849,9 +26670,9 @@ export default {
     "wildcharge",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dudunsparce: [
+  "dudunsparce": [
     "agility",
     "airslash",
     "amnesia",
@@ -26937,9 +26758,9 @@ export default {
     "uproar",
     "wildcharge",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gligar: [
+  "gligar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -27050,14 +26871,13 @@ export default {
     "uturn",
     "venoshock",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  gliscor: [
+  "gliscor": [
     "acrobatics",
     "aerialace",
     "agility",
     "aquatail",
-    "assurance",
     "attract",
     "batonpass",
     "breakingswipe",
@@ -27067,9 +26887,7 @@ export default {
     "bulldoze",
     "captivate",
     "confide",
-    "counter",
     "crabhammer",
-    "crosspoison",
     "crunch",
     "cut",
     "darkpulse",
@@ -27083,7 +26901,6 @@ export default {
     "endure",
     "facade",
     "falseswipe",
-    "feint",
     "feintattack",
     "firefang",
     "fling",
@@ -27108,10 +26925,8 @@ export default {
     "naturalgift",
     "nightslash",
     "payback",
-    "pinmissile",
     "poisonjab",
     "poisontail",
-    "powerwhip",
     "protect",
     "psychicfangs",
     "quickattack",
@@ -27160,9 +26975,9 @@ export default {
     "toxicspikes",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  snubbull: [
+  "snubbull": [
     "attract",
     "bite",
     "bodyslam",
@@ -27273,9 +27088,9 @@ export default {
     "waterpulse",
     "wildcharge",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  granbull: [
+  "granbull": [
     "attract",
     "bite",
     "bodyslam",
@@ -27392,9 +27207,9 @@ export default {
     "waterpulse",
     "wildcharge",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  qwilfish: [
+  "qwilfish": [
     "acidspray",
     "acupressure",
     "agility",
@@ -27493,9 +27308,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  qwilfishhisui: [
+  "qwilfishhisui": [
     "acidspray",
     "acupressure",
     "agility",
@@ -27563,9 +27378,9 @@ export default {
     "toxicspikes",
     "venoshock",
     "waterfall",
-    "waterpulse",
+    "waterpulse"
   ],
-  overqwil: [
+  "overqwil": [
     "acidspray",
     "acupressure",
     "agility",
@@ -27629,9 +27444,9 @@ export default {
     "toxicspikes",
     "venoshock",
     "waterfall",
-    "waterpulse",
+    "waterpulse"
   ],
-  shuckle: [
+  "shuckle": [
     "acid",
     "acupressure",
     "afteryou",
@@ -27712,9 +27527,9 @@ export default {
     "toxic",
     "venoshock",
     "withdraw",
-    "wrap",
+    "wrap"
   ],
-  heracross: [
+  "heracross": [
     "aerialace",
     "armthrust",
     "assurance",
@@ -27730,7 +27545,6 @@ export default {
     "bulletseed",
     "captivate",
     "chipaway",
-    "circlethrow",
     "closecombat",
     "coaching",
     "confide",
@@ -27813,9 +27627,9 @@ export default {
     "upperhand",
     "vacuumwave",
     "venoshock",
-    "workup",
+    "workup"
   ],
-  sneasel: [
+  "sneasel": [
     "aerialace",
     "agility",
     "assist",
@@ -27932,9 +27746,9 @@ export default {
     "upperhand",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  sneaselhisui: [
+  "sneaselhisui": [
     "acidspray",
     "aerialace",
     "agility",
@@ -27998,9 +27812,9 @@ export default {
     "trailblaze",
     "vacuumwave",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  weavile: [
+  "weavile": [
     "aerialace",
     "agility",
     "assurance",
@@ -28008,18 +27822,15 @@ export default {
     "avalanche",
     "batonpass",
     "beatup",
-    "bite",
     "blizzard",
     "brickbreak",
     "calmmind",
     "captivate",
     "chillingwater",
     "confide",
-    "counter",
     "cut",
     "darkpulse",
     "dig",
-    "doublehit",
     "doubleteam",
     "dreameater",
     "embargo",
@@ -28028,7 +27839,6 @@ export default {
     "fakeout",
     "faketears",
     "falseswipe",
-    "feint",
     "feintattack",
     "fling",
     "focusblast",
@@ -28048,7 +27858,6 @@ export default {
     "icepunch",
     "iceshard",
     "icespinner",
-    "iciclecrash",
     "iciclespear",
     "icywind",
     "irontail",
@@ -28115,9 +27924,9 @@ export default {
     "upperhand",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  sneasler: [
+  "sneasler": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -28127,15 +27936,11 @@ export default {
     "calmmind",
     "closecombat",
     "coaching",
-    "counter",
     "dig",
     "direclaw",
-    "doublehit",
     "endure",
     "facade",
-    "fakeout",
     "falseswipe",
-    "feint",
     "firepunch",
     "fling",
     "focusblast",
@@ -28151,12 +27956,10 @@ export default {
     "lowsweep",
     "metalclaw",
     "nastyplot",
-    "nightslash",
     "poisonjab",
     "poisontail",
     "protect",
     "quickattack",
-    "quickguard",
     "raindance",
     "rest",
     "reversal",
@@ -28175,7 +27978,6 @@ export default {
     "substitute",
     "sunnyday",
     "swift",
-    "switcheroo",
     "swordsdance",
     "takedown",
     "taunt",
@@ -28189,9 +27991,9 @@ export default {
     "uturn",
     "vacuumwave",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  teddiursa: [
+  "teddiursa": [
     "aerialace",
     "attract",
     "avalanche",
@@ -28293,9 +28095,9 @@ export default {
     "uproar",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  ursaring: [
+  "ursaring": [
     "aerialace",
     "attract",
     "avalanche",
@@ -28400,9 +28202,9 @@ export default {
     "trailblaze",
     "uproar",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  ursaluna: [
+  "ursaluna": [
     "aerialace",
     "avalanche",
     "bodypress",
@@ -28476,9 +28278,9 @@ export default {
     "throatchop",
     "thunderpunch",
     "trailblaze",
-    "uproar",
+    "uproar"
   ],
-  ursalunabloodmoon: [
+  "ursalunabloodmoon": [
     "avalanche",
     "bloodmoon",
     "bodypress",
@@ -28547,9 +28349,9 @@ export default {
     "thunderpunch",
     "trailblaze",
     "uproar",
-    "vacuumwave",
+    "vacuumwave"
   ],
-  slugma: [
+  "slugma": [
     "acidarmor",
     "afteryou",
     "amnesia",
@@ -28629,9 +28431,9 @@ export default {
     "terablast",
     "toxic",
     "willowisp",
-    "yawn",
+    "yawn"
   ],
-  magcargo: [
+  "magcargo": [
     "afteryou",
     "amnesia",
     "ancientpower",
@@ -28716,9 +28518,9 @@ export default {
     "terablast",
     "toxic",
     "willowisp",
-    "yawn",
+    "yawn"
   ],
-  swinub: [
+  "swinub": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -28796,9 +28598,9 @@ export default {
     "takedown",
     "terablast",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  piloswine: [
+  "piloswine": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -28879,14 +28681,13 @@ export default {
     "thrash",
     "throatchop",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  mamoswine: [
+  "mamoswine": [
     "amnesia",
     "ancientpower",
     "attract",
     "avalanche",
-    "bite",
     "blizzard",
     "block",
     "bodypress",
@@ -28905,9 +28706,7 @@ export default {
     "endeavor",
     "endure",
     "facade",
-    "fissure",
     "flail",
-    "freezedry",
     "frustration",
     "furyattack",
     "furycutter",
@@ -28972,9 +28771,9 @@ export default {
     "thrash",
     "throatchop",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  corsola: [
+  "corsola": [
     "amnesia",
     "ancientpower",
     "aquaring",
@@ -29069,9 +28868,9 @@ export default {
     "toxic",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  corsolagalar: [
+  "corsolagalar": [
     "amnesia",
     "ancientpower",
     "astonish",
@@ -29138,9 +28937,9 @@ export default {
     "throatchop",
     "waterpulse",
     "whirlpool",
-    "willowisp",
+    "willowisp"
   ],
-  cursola: [
+  "cursola": [
     "amnesia",
     "ancientpower",
     "astonish",
@@ -29209,9 +29008,9 @@ export default {
     "tackle",
     "throatchop",
     "whirlpool",
-    "willowisp",
+    "willowisp"
   ],
-  remoraid: [
+  "remoraid": [
     "acidspray",
     "assurance",
     "attract",
@@ -29283,9 +29082,9 @@ export default {
     "watergun",
     "waterpulse",
     "waterspout",
-    "whirlpool",
+    "whirlpool"
   ],
-  octillery: [
+  "octillery": [
     "assurance",
     "attract",
     "aurorabeam",
@@ -29364,9 +29163,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  delibird: [
+  "delibird": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -29468,9 +29267,9 @@ export default {
     "trailblaze",
     "tripleaxel",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  mantyke: [
+  "mantyke": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -29534,9 +29333,9 @@ export default {
     "watersport",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  mantine: [
+  "mantine": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -29623,9 +29422,9 @@ export default {
     "watersport",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  skarmory: [
+  "skarmory": [
     "aerialace",
     "agility",
     "aircutter",
@@ -29715,9 +29514,9 @@ export default {
     "twister",
     "whirlwind",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  houndour: [
+  "houndour": [
     "attract",
     "beatup",
     "bite",
@@ -29812,9 +29611,9 @@ export default {
     "toxic",
     "trailblaze",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  houndoom: [
+  "houndoom": [
     "attract",
     "beatup",
     "bite",
@@ -29827,7 +29626,6 @@ export default {
     "crunch",
     "curse",
     "darkpulse",
-    "destinybond",
     "detect",
     "doubleedge",
     "doubleteam",
@@ -29837,7 +29635,6 @@ export default {
     "endeavor",
     "endure",
     "facade",
-    "feint",
     "feintattack",
     "fireblast",
     "firefang",
@@ -29883,7 +29680,6 @@ export default {
     "roleplay",
     "round",
     "scaryface",
-    "scorchingsands",
     "secretpower",
     "shadowball",
     "sleeptalk",
@@ -29912,9 +29708,9 @@ export default {
     "toxic",
     "trailblaze",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  phanpy: [
+  "phanpy": [
     "ancientpower",
     "attract",
     "bodyslam",
@@ -29991,9 +29787,9 @@ export default {
     "thief",
     "toxic",
     "trailblaze",
-    "watergun",
+    "watergun"
   ],
-  donphan: [
+  "donphan": [
     "ancientpower",
     "assurance",
     "attract",
@@ -30086,9 +29882,9 @@ export default {
     "throatchop",
     "thunderfang",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  stantler: [
+  "stantler": [
     "agility",
     "astonish",
     "attract",
@@ -30189,12 +29985,11 @@ export default {
     "uproar",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wyrdeer: [
+  "wyrdeer": [
     "agility",
     "astonish",
-    "bite",
     "bodyslam",
     "bulldoze",
     "calmmind",
@@ -30202,14 +29997,12 @@ export default {
     "confuseray",
     "curse",
     "dig",
-    "disable",
     "doubleedge",
     "earthpower",
     "earthquake",
     "endure",
     "energyball",
     "expandingforce",
-    "extrasensory",
     "facade",
     "futuresight",
     "gigaimpact",
@@ -30251,7 +30044,6 @@ export default {
     "takedown",
     "terablast",
     "thief",
-    "thrash",
     "throatchop",
     "thunder",
     "thunderbolt",
@@ -30261,9 +30053,9 @@ export default {
     "trickroom",
     "uproar",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  smeargle: [
+  "smeargle": [
     "captivate",
     "doubleslap",
     "falseswipe",
@@ -30276,9 +30068,9 @@ export default {
     "sketch",
     "sleeptalk",
     "spore",
-    "tailwhip",
+    "tailwhip"
   ],
-  miltank: [
+  "miltank": [
     "afteryou",
     "attract",
     "belch",
@@ -30377,9 +30169,9 @@ export default {
     "whirlpool",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raikou: [
+  "raikou": [
     "agility",
     "aurasphere",
     "bite",
@@ -30465,9 +30257,9 @@ export default {
     "voltswitch",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  entei: [
+  "entei": [
     "agility",
     "bite",
     "bodyslam",
@@ -30550,9 +30342,9 @@ export default {
     "toxic",
     "trailblaze",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  suicune: [
+  "suicune": [
     "agility",
     "airslash",
     "aquaring",
@@ -30637,9 +30429,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  larvitar: [
+  "larvitar": [
     "ancientpower",
     "assurance",
     "attract",
@@ -30719,9 +30511,9 @@ export default {
     "thrash",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  pupitar: [
+  "pupitar": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -30802,9 +30594,9 @@ export default {
     "thrash",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  tyranitar: [
+  "tyranitar": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -30938,9 +30730,9 @@ export default {
     "toxic",
     "uproar",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  lugia: [
+  "lugia": [
     "acrobatics",
     "aerialace",
     "aeroblast",
@@ -31059,9 +30851,9 @@ export default {
     "whirlwind",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hooh: [
+  "hooh": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -31164,9 +30956,9 @@ export default {
     "whirlwind",
     "willowisp",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  celebi: [
+  "celebi": [
     "aerialace",
     "allyswitch",
     "ancientpower",
@@ -31271,9 +31063,9 @@ export default {
     "weatherball",
     "wonderroom",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  treecko: [
+  "treecko": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -31371,9 +31163,9 @@ export default {
     "trailblaze",
     "upperhand",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  grovyle: [
+  "grovyle": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -31468,9 +31260,9 @@ export default {
     "vacuumwave",
     "workup",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  sceptile: [
+  "sceptile": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -31587,9 +31379,9 @@ export default {
     "vacuumwave",
     "workup",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  torchic: [
+  "torchic": [
     "aerialace",
     "agility",
     "assurance",
@@ -31671,9 +31463,9 @@ export default {
     "toxic",
     "uproar",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  combusken: [
+  "combusken": [
     "aerialace",
     "agility",
     "assurance",
@@ -31771,9 +31563,9 @@ export default {
     "uproar",
     "vacuumwave",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  blaziken: [
+  "blaziken": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -31892,9 +31684,9 @@ export default {
     "uturn",
     "vacuumwave",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  mudkip: [
+  "mudkip": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -31979,9 +31771,9 @@ export default {
     "whirlpool",
     "wideguard",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  marshtomp: [
+  "marshtomp": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -32071,9 +31863,9 @@ export default {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  swampert: [
+  "swampert": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -32183,9 +31975,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  poochyena: [
+  "poochyena": [
     "assurance",
     "astonish",
     "attract",
@@ -32262,9 +32054,9 @@ export default {
     "toxic",
     "trailblaze",
     "uproar",
-    "yawn",
+    "yawn"
   ],
-  mightyena: [
+  "mightyena": [
     "assurance",
     "attract",
     "bite",
@@ -32342,9 +32134,9 @@ export default {
     "toxic",
     "trailblaze",
     "uproar",
-    "yawn",
+    "yawn"
   ],
-  zigzagoon: [
+  "zigzagoon": [
     "attract",
     "babydolleyes",
     "bellydrum",
@@ -32425,9 +32217,9 @@ export default {
     "trick",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  zigzagoongalar: [
+  "zigzagoongalar": [
     "assurance",
     "attract",
     "babydolleyes",
@@ -32483,9 +32275,9 @@ export default {
     "thunderwave",
     "trick",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  linoone: [
+  "linoone": [
     "attract",
     "babydolleyes",
     "bellydrum",
@@ -32574,9 +32366,9 @@ export default {
     "trick",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  linoonegalar: [
+  "linoonegalar": [
     "assurance",
     "attract",
     "babydolleyes",
@@ -32639,9 +32431,9 @@ export default {
     "thunderwave",
     "trick",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  obstagoon: [
+  "obstagoon": [
     "assurance",
     "attract",
     "babydolleyes",
@@ -32722,18 +32514,24 @@ export default {
     "trick",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  wurmple: [
+  "wurmple": [
     "bugbite",
     "electroweb",
     "poisonsting",
     "snore",
     "stringshot",
-    "tackle",
+    "tackle"
   ],
-  silcoon: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  beautifly: [
+  "silcoon": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "beautifly": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -32793,10 +32591,16 @@ export default {
     "twister",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  cascoon: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  dustox: [
+  "cascoon": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "dustox": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -32856,9 +32660,9 @@ export default {
     "twister",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  lotad: [
+  "lotad": [
     "absorb",
     "astonish",
     "attract",
@@ -32930,9 +32734,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lombre: [
+  "lombre": [
     "absorb",
     "astonish",
     "attract",
@@ -33025,9 +32829,9 @@ export default {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ludicolo: [
+  "ludicolo": [
     "absorb",
     "amnesia",
     "astonish",
@@ -33128,9 +32932,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  seedot: [
+  "seedot": [
     "absorb",
     "amnesia",
     "astonish",
@@ -33205,9 +33009,9 @@ export default {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  nuzleaf: [
+  "nuzleaf": [
     "absorb",
     "aircutter",
     "amnesia",
@@ -33312,9 +33116,9 @@ export default {
     "trailblaze",
     "uproar",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  shiftry: [
+  "shiftry": [
     "absorb",
     "aerialace",
     "aircutter",
@@ -33447,9 +33251,9 @@ export default {
     "whirlwind",
     "willowisp",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  taillow: [
+  "taillow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -33511,9 +33315,9 @@ export default {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  swellow: [
+  "swellow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -33570,9 +33374,9 @@ export default {
     "twister",
     "uturn",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  wingull: [
+  "wingull": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -33650,15 +33454,14 @@ export default {
     "watersport",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  pelipper: [
+  "pelipper": [
     "acrobatics",
     "aerialace",
     "agility",
     "aircutter",
     "airslash",
-    "aquaring",
     "attract",
     "blizzard",
     "bodyslam",
@@ -33740,9 +33543,9 @@ export default {
     "weatherball",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  ralts: [
+  "ralts": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -33848,9 +33651,9 @@ export default {
     "willowisp",
     "wish",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kirlia: [
+  "kirlia": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -33948,9 +33751,9 @@ export default {
     "tripleaxel",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gardevoir: [
+  "gardevoir": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -33965,8 +33768,6 @@ export default {
     "confusion",
     "dazzlinggleam",
     "defensecurl",
-    "destinybond",
-    "disable",
     "disarmingvoice",
     "doubleedge",
     "doubleteam",
@@ -34008,10 +33809,8 @@ export default {
     "magicalleaf",
     "magiccoat",
     "magicroom",
-    "meanlook",
     "megakick",
     "megapunch",
-    "memento",
     "metronome",
     "mimic",
     "mistyexplosion",
@@ -34040,7 +33839,6 @@ export default {
     "safeguard",
     "secretpower",
     "shadowball",
-    "shadowsneak",
     "shockwave",
     "signalbeam",
     "skillswap",
@@ -34069,9 +33867,9 @@ export default {
     "willowisp",
     "wish",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gallade: [
+  "gallade": [
     "aerialace",
     "agility",
     "airslash",
@@ -34095,8 +33893,6 @@ export default {
     "confusion",
     "cut",
     "dazzlinggleam",
-    "destinybond",
-    "disable",
     "disarmingvoice",
     "doubleteam",
     "drainingkiss",
@@ -34145,14 +33941,11 @@ export default {
     "magicalleaf",
     "magiccoat",
     "magicroom",
-    "meanlook",
     "megakick",
     "megapunch",
-    "memento",
     "metronome",
     "mistyterrain",
     "mudslap",
-    "mysticalfire",
     "naturalgift",
     "nightshade",
     "nightslash",
@@ -34184,7 +33977,6 @@ export default {
     "secretpower",
     "shadowball",
     "shadowclaw",
-    "shadowsneak",
     "shockwave",
     "signalbeam",
     "skillswap",
@@ -34223,9 +34015,9 @@ export default {
     "wonderroom",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  surskit: [
+  "surskit": [
     "acrobatics",
     "agility",
     "aquajet",
@@ -34300,9 +34092,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "watersport",
+    "watersport"
   ],
-  masquerain: [
+  "masquerain": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -34391,9 +34183,9 @@ export default {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlwind",
+    "whirlwind"
   ],
-  shroomish: [
+  "shroomish": [
     "absorb",
     "attract",
     "bodyslam",
@@ -34456,9 +34248,9 @@ export default {
     "venoshock",
     "wakeupslap",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  breloom: [
+  "breloom": [
     "absorb",
     "aerialace",
     "attract",
@@ -34561,9 +34353,9 @@ export default {
     "venoshock",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slakoth: [
+  "slakoth": [
     "aerialace",
     "afteryou",
     "amnesia",
@@ -34659,9 +34451,9 @@ export default {
     "workup",
     "xscissor",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vigoroth: [
+  "vigoroth": [
     "aerialace",
     "afteryou",
     "amnesia",
@@ -34771,9 +34563,9 @@ export default {
     "waterpulse",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slaking: [
+  "slaking": [
     "aerialace",
     "afteryou",
     "amnesia",
@@ -34897,9 +34689,9 @@ export default {
     "workup",
     "xscissor",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  nincada: [
+  "nincada": [
     "absorb",
     "aerialace",
     "bide",
@@ -34953,9 +34745,9 @@ export default {
     "sunnyday",
     "swagger",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  ninjask: [
+  "ninjask": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -35024,9 +34816,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  shedinja: [
+  "shedinja": [
     "absorb",
     "aerialace",
     "agility",
@@ -35096,9 +34888,9 @@ export default {
     "toxic",
     "trick",
     "willowisp",
-    "xscissor",
+    "xscissor"
   ],
-  whismur: [
+  "whismur": [
     "astonish",
     "attract",
     "blizzard",
@@ -35171,9 +34963,9 @@ export default {
     "waterpulse",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  loudred: [
+  "loudred": [
     "astonish",
     "attract",
     "bite",
@@ -35252,9 +35044,9 @@ export default {
     "uproar",
     "waterpulse",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  exploud: [
+  "exploud": [
     "astonish",
     "attract",
     "avalanche",
@@ -35348,9 +35140,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  makuhita: [
+  "makuhita": [
     "armthrust",
     "attract",
     "bellydrum",
@@ -35450,9 +35242,9 @@ export default {
     "whirlwind",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hariyama: [
+  "hariyama": [
     "armthrust",
     "attract",
     "bellydrum",
@@ -35553,9 +35345,9 @@ export default {
     "whirlpool",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  nosepass: [
+  "nosepass": [
     "ancientpower",
     "attract",
     "block",
@@ -35639,9 +35431,9 @@ export default {
     "toxic",
     "voltswitch",
     "wideguard",
-    "zapcannon",
+    "zapcannon"
   ],
-  probopass: [
+  "probopass": [
     "allyswitch",
     "ancientpower",
     "attract",
@@ -35728,9 +35520,9 @@ export default {
     "triattack",
     "voltswitch",
     "wideguard",
-    "zapcannon",
+    "zapcannon"
   ],
-  skitty: [
+  "skitty": [
     "assist",
     "attract",
     "batonpass",
@@ -35813,9 +35605,9 @@ export default {
     "wildcharge",
     "wish",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  delcatty: [
+  "delcatty": [
     "attract",
     "blizzard",
     "bodyslam",
@@ -35887,9 +35679,9 @@ export default {
     "waterpulse",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sableye: [
+  "sableye": [
     "aerialace",
     "allyswitch",
     "astonish",
@@ -35966,7 +35758,6 @@ export default {
     "naturalgift",
     "nightmare",
     "nightshade",
-    "nightslash",
     "octazooka",
     "ominouswind",
     "painsplit",
@@ -35992,13 +35783,11 @@ export default {
     "rocktomb",
     "roleplay",
     "round",
-    "safeguard",
     "scratch",
     "secretpower",
     "seismictoss",
     "shadowball",
     "shadowclaw",
-    "shadowpunch",
     "shadowsneak",
     "shockwave",
     "signalbeam",
@@ -36029,9 +35818,9 @@ export default {
     "willowisp",
     "wonderroom",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mawile: [
+  "mawile": [
     "ancientpower",
     "assurance",
     "astonish",
@@ -36140,9 +35929,9 @@ export default {
     "tickle",
     "torment",
     "toxic",
-    "visegrip",
+    "visegrip"
   ],
-  aron: [
+  "aron": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -36216,9 +36005,9 @@ export default {
     "takedown",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  lairon: [
+  "lairon": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -36291,9 +36080,9 @@ export default {
     "takedown",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  aggron: [
+  "aggron": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -36311,7 +36100,6 @@ export default {
     "confide",
     "counter",
     "crunch",
-    "curse",
     "cut",
     "darkpulse",
     "defensecurl",
@@ -36320,7 +36108,6 @@ export default {
     "doubleteam",
     "dragonclaw",
     "dragonpulse",
-    "dragonrush",
     "dragontail",
     "dynamicpunch",
     "earthpower",
@@ -36417,9 +36204,9 @@ export default {
     "toxic",
     "uproar",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  meditite: [
+  "meditite": [
     "acupressure",
     "aerialace",
     "attract",
@@ -36528,26 +36315,22 @@ export default {
     "upperhand",
     "vacuumwave",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  medicham: [
+  "medicham": [
     "acupressure",
     "aerialace",
-    "agility",
     "attract",
     "aurasphere",
     "axekick",
     "batonpass",
     "bide",
-    "blazekick",
     "bodyslam",
     "brickbreak",
     "bulkup",
-    "bulletpunch",
     "calmmind",
     "captivate",
     "closecombat",
-    "coaching",
     "confide",
     "confusion",
     "counter",
@@ -36561,7 +36344,6 @@ export default {
     "energyball",
     "expandingforce",
     "facade",
-    "fakeout",
     "feint",
     "firepunch",
     "flash",
@@ -36573,7 +36355,6 @@ export default {
     "gigaimpact",
     "grassknot",
     "gravity",
-    "guardswap",
     "headbutt",
     "helpinghand",
     "hiddenpower",
@@ -36597,17 +36378,14 @@ export default {
     "nightshade",
     "painsplit",
     "poisonjab",
-    "powerswap",
     "powertrick",
     "poweruppunch",
     "protect",
     "psybeam",
     "psychic",
     "psychicterrain",
-    "psychocut",
     "psychup",
     "psyshock",
-    "quickguard",
     "raindance",
     "recover",
     "recycle",
@@ -36647,9 +36425,9 @@ export default {
     "upperhand",
     "vacuumwave",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  electrike: [
+  "electrike": [
     "agility",
     "attract",
     "bite",
@@ -36714,9 +36492,9 @@ export default {
     "toxic",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  manectric: [
+  "manectric": [
     "agility",
     "attract",
     "bite",
@@ -36726,7 +36504,6 @@ export default {
     "chargebeam",
     "confide",
     "crunch",
-    "curse",
     "discharge",
     "doubleedge",
     "doubleteam",
@@ -36756,7 +36533,6 @@ export default {
     "naturalgift",
     "odorsleuth",
     "overheat",
-    "pounce",
     "protect",
     "psychicfangs",
     "quickattack",
@@ -36777,10 +36553,8 @@ export default {
     "spark",
     "strength",
     "substitute",
-    "supercellslam",
     "swagger",
     "swift",
-    "switcheroo",
     "tackle",
     "thief",
     "thunder",
@@ -36788,12 +36562,11 @@ export default {
     "thunderfang",
     "thunderwave",
     "toxic",
-    "trailblaze",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  plusle: [
+  "plusle": [
     "agility",
     "alluringvoice",
     "attract",
@@ -36881,9 +36654,9 @@ export default {
     "voltswitch",
     "watersport",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  minun: [
+  "minun": [
     "agility",
     "alluringvoice",
     "attract",
@@ -36969,9 +36742,9 @@ export default {
     "uproar",
     "voltswitch",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  volbeat: [
+  "volbeat": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -37060,9 +36833,9 @@ export default {
     "trick",
     "uturn",
     "waterpulse",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  illumise: [
+  "illumise": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -37156,9 +36929,9 @@ export default {
     "uturn",
     "waterpulse",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  budew: [
+  "budew": [
     "absorb",
     "attract",
     "bulletseed",
@@ -37217,9 +36990,9 @@ export default {
     "venoshock",
     "watersport",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  roselia: [
+  "roselia": [
     "absorb",
     "aromatherapy",
     "attract",
@@ -37294,25 +37067,22 @@ export default {
     "uproar",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  roserade: [
+  "roserade": [
     "absorb",
     "aromatherapy",
     "attract",
     "bodyslam",
     "bulletseed",
     "captivate",
-    "charm",
     "confide",
-    "cottonspore",
     "covet",
     "cut",
     "dazzlinggleam",
     "doubleteam",
     "endure",
     "energyball",
-    "extrasensory",
     "facade",
     "flash",
     "frustration",
@@ -37329,7 +37099,6 @@ export default {
     "laserfocus",
     "leafstorm",
     "leechseed",
-    "lifedew",
     "magicalleaf",
     "megadrain",
     "mudslap",
@@ -37350,7 +37119,6 @@ export default {
     "secretpower",
     "seedbomb",
     "shadowball",
-    "sleeppowder",
     "sleeptalk",
     "sludgebomb",
     "snore",
@@ -37366,14 +37134,13 @@ export default {
     "synthesis",
     "toxic",
     "toxicspikes",
-    "trailblaze",
     "uproar",
     "venomdrench",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  gulpin: [
+  "gulpin": [
     "acidarmor",
     "acidspray",
     "amnesia",
@@ -37459,9 +37226,9 @@ export default {
     "venoshock",
     "waterpulse",
     "wringout",
-    "yawn",
+    "yawn"
   ],
-  swalot: [
+  "swalot": [
     "acidspray",
     "amnesia",
     "attract",
@@ -37551,9 +37318,9 @@ export default {
     "waterpulse",
     "wringout",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  carvanha: [
+  "carvanha": [
     "agility",
     "ancientpower",
     "aquajet",
@@ -37623,9 +37390,9 @@ export default {
     "waterfall",
     "waterpulse",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sharpedo: [
+  "sharpedo": [
     "agility",
     "ancientpower",
     "aquajet",
@@ -37638,7 +37405,6 @@ export default {
     "brine",
     "bulldoze",
     "captivate",
-    "chillingwater",
     "closecombat",
     "confide",
     "crunch",
@@ -37703,16 +37469,15 @@ export default {
     "takedown",
     "taunt",
     "thief",
-    "thrash",
     "torment",
     "toxic",
     "uproar",
     "waterfall",
     "waterpulse",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wailmer: [
+  "wailmer": [
     "amnesia",
     "aquaring",
     "astonish",
@@ -37780,9 +37545,9 @@ export default {
     "waterspout",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wailord: [
+  "wailord": [
     "amnesia",
     "astonish",
     "attract",
@@ -37850,9 +37615,9 @@ export default {
     "waterspout",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  numel: [
+  "numel": [
     "afteryou",
     "amnesia",
     "ancientpower",
@@ -37941,17 +37706,15 @@ export default {
     "trailblaze",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  camerupt: [
+  "camerupt": [
     "afteryou",
     "amnesia",
-    "ancientpower",
     "attract",
     "bodypress",
     "bodyslam",
     "bulldoze",
-    "burningjealousy",
     "captivate",
     "charm",
     "confide",
@@ -37981,7 +37744,6 @@ export default {
     "frustration",
     "gigaimpact",
     "growl",
-    "growth",
     "headbutt",
     "heatcrash",
     "heatwave",
@@ -37989,7 +37751,6 @@ export default {
     "helpinghand",
     "hiddenpower",
     "highhorsepower",
-    "howl",
     "hyperbeam",
     "incinerate",
     "ironhead",
@@ -38022,16 +37783,13 @@ export default {
     "smackdown",
     "snore",
     "solarbeam",
-    "spitup",
     "stealthrock",
-    "stockpile",
     "stompingtantrum",
     "stoneedge",
     "strength",
     "substitute",
     "sunnyday",
     "swagger",
-    "swallow",
     "tackle",
     "takedown",
     "temperflare",
@@ -38040,9 +37798,9 @@ export default {
     "trailblaze",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  torkoal: [
+  "torkoal": [
     "afteryou",
     "amnesia",
     "ancientpower",
@@ -38130,9 +37888,9 @@ export default {
     "willowisp",
     "withdraw",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spoink: [
+  "spoink": [
     "allyswitch",
     "amnesia",
     "attract",
@@ -38224,9 +37982,9 @@ export default {
     "trickroom",
     "uproar",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grumpig: [
+  "grumpig": [
     "allyswitch",
     "amnesia",
     "attract",
@@ -38346,9 +38104,9 @@ export default {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spinda: [
+  "spinda": [
     "assist",
     "attract",
     "batonpass",
@@ -38450,9 +38208,9 @@ export default {
     "wildcharge",
     "wish",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  trapinch: [
+  "trapinch": [
     "astonish",
     "attract",
     "bide",
@@ -38515,9 +38273,9 @@ export default {
     "swagger",
     "takedown",
     "terablast",
-    "toxic",
+    "toxic"
   ],
-  vibrava: [
+  "vibrava": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -38605,9 +38363,9 @@ export default {
     "toxic",
     "twister",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  flygon: [
+  "flygon": [
     "aerialace",
     "agility",
     "aircutter",
@@ -38717,9 +38475,9 @@ export default {
     "twister",
     "uproar",
     "uturn",
-    "vacuumwave",
+    "vacuumwave"
   ],
-  cacnea: [
+  "cacnea": [
     "absorb",
     "acid",
     "attract",
@@ -38822,9 +38580,9 @@ export default {
     "toxicspikes",
     "trailblaze",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  cacturne: [
+  "cacturne": [
     "absorb",
     "attract",
     "block",
@@ -38935,9 +38693,9 @@ export default {
     "trailblaze",
     "venoshock",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  swablu: [
+  "swablu": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -39020,9 +38778,9 @@ export default {
     "toxic",
     "trailblaze",
     "twister",
-    "uproar",
+    "uproar"
   ],
-  altaria: [
+  "altaria": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -39048,7 +38806,6 @@ export default {
     "dragonclaw",
     "dragondance",
     "dragonpulse",
-    "dragonrush",
     "dreameater",
     "dualwingbeat",
     "earthquake",
@@ -39123,9 +38880,9 @@ export default {
     "uproar",
     "weatherball",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  zangoose: [
+  "zangoose": [
     "aerialace",
     "agility",
     "attract",
@@ -39249,9 +39006,9 @@ export default {
     "waterpulse",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  seviper: [
+  "seviper": [
     "acidspray",
     "aquatail",
     "assurance",
@@ -39355,9 +39112,9 @@ export default {
     "wrap",
     "wringout",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lunatone: [
+  "lunatone": [
     "acrobatics",
     "allyswitch",
     "ancientpower",
@@ -39451,9 +39208,9 @@ export default {
     "toxic",
     "trickroom",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  solrock: [
+  "solrock": [
     "acrobatics",
     "allyswitch",
     "ancientpower",
@@ -39551,9 +39308,9 @@ export default {
     "weatherball",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  barboach: [
+  "barboach": [
     "amnesia",
     "aquatail",
     "attract",
@@ -39623,9 +39380,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  whiscash: [
+  "whiscash": [
     "amnesia",
     "aquatail",
     "attract",
@@ -39706,9 +39463,9 @@ export default {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  corphish: [
+  "corphish": [
     "aerialace",
     "ancientpower",
     "aquajet",
@@ -39794,9 +39551,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  crawdaunt: [
+  "crawdaunt": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -39891,9 +39648,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  baltoy: [
+  "baltoy": [
     "allyswitch",
     "ancientpower",
     "bulldoze",
@@ -39977,9 +39734,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  claydol: [
+  "claydol": [
     "allyswitch",
     "ancientpower",
     "bodypress",
@@ -40073,9 +39830,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lileep: [
+  "lileep": [
     "acid",
     "amnesia",
     "ancientpower",
@@ -40145,9 +39902,9 @@ export default {
     "toxic",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  cradily: [
+  "cradily": [
     "acid",
     "amnesia",
     "ancientpower",
@@ -40226,9 +39983,9 @@ export default {
     "toxic",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  anorith: [
+  "anorith": [
     "aerialace",
     "ancientpower",
     "aquajet",
@@ -40294,9 +40051,9 @@ export default {
     "toxic",
     "watergun",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  armaldo: [
+  "armaldo": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -40375,9 +40132,9 @@ export default {
     "toxic",
     "watergun",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  feebas: [
+  "feebas": [
     "attract",
     "blizzard",
     "brine",
@@ -40430,9 +40187,9 @@ export default {
     "toxic",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  milotic: [
+  "milotic": [
     "alluringvoice",
     "aquaring",
     "aquatail",
@@ -40471,7 +40228,6 @@ export default {
     "hiddenpower",
     "hydropump",
     "hyperbeam",
-    "hypnosis",
     "icebeam",
     "icywind",
     "imprison",
@@ -40510,7 +40266,6 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "tickle",
     "toxic",
     "tripleaxel",
     "twister",
@@ -40520,16 +40275,15 @@ export default {
     "watersport",
     "weatherball",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  castform: [
+  "castform": [
     "amnesia",
     "attract",
     "avalanche",
     "blizzard",
     "bodyslam",
     "captivate",
-    "chillingwater",
     "clearsmog",
     "confide",
     "cosmicpower",
@@ -40578,7 +40332,6 @@ export default {
     "shockwave",
     "sleeptalk",
     "snore",
-    "snowscape",
     "solarbeam",
     "substitute",
     "sunnyday",
@@ -40594,9 +40347,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  kecleon: [
+  "kecleon": [
     "aerialace",
     "afteryou",
     "ancientpower",
@@ -40707,9 +40460,9 @@ export default {
     "trickroom",
     "waterpulse",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  shuppet: [
+  "shuppet": [
     "allyswitch",
     "astonish",
     "attract",
@@ -40797,9 +40550,9 @@ export default {
     "toxic",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  banette: [
+  "banette": [
     "allyswitch",
     "attract",
     "bodyslam",
@@ -40813,8 +40566,6 @@ export default {
     "curse",
     "darkpulse",
     "dazzlinggleam",
-    "destinybond",
-    "disable",
     "doubleedge",
     "doubleteam",
     "dreameater",
@@ -40869,7 +40620,6 @@ export default {
     "secretpower",
     "shadowball",
     "shadowclaw",
-    "shadowpunch",
     "shadowsneak",
     "shockwave",
     "skillswap",
@@ -40896,10 +40646,9 @@ export default {
     "trailblaze",
     "trick",
     "trickroom",
-    "willowisp",
-    "zenheadbutt",
+    "willowisp"
   ],
-  duskull: [
+  "duskull": [
     "allyswitch",
     "astonish",
     "attract",
@@ -40981,9 +40730,9 @@ export default {
     "trick",
     "trickroom",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  dusclops: [
+  "dusclops": [
     "allyswitch",
     "astonish",
     "attract",
@@ -41084,9 +40833,9 @@ export default {
     "trick",
     "trickroom",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  dusknoir: [
+  "dusknoir": [
     "allyswitch",
     "astonish",
     "attract",
@@ -41187,9 +40936,9 @@ export default {
     "trick",
     "trickroom",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  tropius: [
+  "tropius": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -41285,9 +41034,9 @@ export default {
     "whirlwind",
     "wideguard",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chingling: [
+  "chingling": [
     "allyswitch",
     "astonish",
     "attract",
@@ -41366,15 +41115,14 @@ export default {
     "wish",
     "wrap",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chimecho: [
+  "chimecho": [
     "allyswitch",
     "astonish",
     "attract",
     "batonpass",
     "bind",
-    "boomburst",
     "calmmind",
     "captivate",
     "chargebeam",
@@ -41402,7 +41150,6 @@ export default {
     "facade",
     "faketears",
     "flash",
-    "flashcannon",
     "frustration",
     "futuresight",
     "grassknot",
@@ -41422,7 +41169,6 @@ export default {
     "lastresort",
     "lightscreen",
     "magiccoat",
-    "metalsound",
     "mimic",
     "naturalgift",
     "nightmare",
@@ -41443,9 +41189,7 @@ export default {
     "rollout",
     "round",
     "safeguard",
-    "screech",
     "secretpower",
-    "selfdestruct",
     "shadowball",
     "shockwave",
     "signalbeam",
@@ -41473,9 +41217,9 @@ export default {
     "wish",
     "wrap",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  absol: [
+  "absol": [
     "aerialace",
     "airslash",
     "assurance",
@@ -41491,7 +41235,6 @@ export default {
     "chargebeam",
     "closecombat",
     "confide",
-    "confuseray",
     "counter",
     "curse",
     "cut",
@@ -41539,7 +41282,6 @@ export default {
     "nightslash",
     "payback",
     "perishsong",
-    "phantomforce",
     "playrough",
     "protect",
     "psychocut",
@@ -41562,7 +41304,6 @@ export default {
     "secretpower",
     "shadowball",
     "shadowclaw",
-    "shadowsneak",
     "shockwave",
     "slash",
     "sleeptalk",
@@ -41587,14 +41328,13 @@ export default {
     "thunderwave",
     "torment",
     "toxic",
-    "trailblaze",
     "waterpulse",
     "willowisp",
     "wish",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  snorunt: [
+  "snorunt": [
     "astonish",
     "attract",
     "avalanche",
@@ -41656,9 +41396,9 @@ export default {
     "toxic",
     "trailblaze",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  glalie: [
+  "glalie": [
     "astonish",
     "attract",
     "avalanche",
@@ -41673,7 +41413,6 @@ export default {
     "crunch",
     "darkpulse",
     "defensecurl",
-    "disable",
     "doubleedge",
     "doubleteam",
     "earthquake",
@@ -41698,7 +41437,6 @@ export default {
     "icefang",
     "iceshard",
     "icespinner",
-    "iciclecrash",
     "iciclespear",
     "icywind",
     "ironhead",
@@ -41731,7 +41469,6 @@ export default {
     "substitute",
     "superfang",
     "swagger",
-    "switcheroo",
     "takedown",
     "taunt",
     "terablast",
@@ -41739,9 +41476,9 @@ export default {
     "toxic",
     "trailblaze",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  froslass: [
+  "froslass": [
     "allyswitch",
     "astonish",
     "attract",
@@ -41759,7 +41496,6 @@ export default {
     "crunch",
     "curse",
     "destinybond",
-    "disable",
     "doubleteam",
     "drainingkiss",
     "dreameater",
@@ -41784,7 +41520,6 @@ export default {
     "icepunch",
     "iceshard",
     "icespinner",
-    "iciclecrash",
     "iciclespear",
     "icywind",
     "imprison",
@@ -41792,13 +41527,11 @@ export default {
     "leer",
     "lightscreen",
     "mudslap",
-    "nastyplot",
     "naturalgift",
     "nightshade",
     "ominouswind",
     "painsplit",
     "payback",
-    "phantomforce",
     "poltergeist",
     "powdersnow",
     "protect",
@@ -41825,7 +41558,6 @@ export default {
     "substitute",
     "suckerpunch",
     "swagger",
-    "switcheroo",
     "takedown",
     "taunt",
     "telekinesis",
@@ -41841,9 +41573,9 @@ export default {
     "wakeupslap",
     "waterpulse",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  spheal: [
+  "spheal": [
     "aquaring",
     "aquatail",
     "attract",
@@ -41910,9 +41642,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  sealeo: [
+  "sealeo": [
     "aquatail",
     "attract",
     "aurorabeam",
@@ -41971,9 +41703,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  walrein: [
+  "walrein": [
     "aquatail",
     "attract",
     "aurorabeam",
@@ -42046,9 +41778,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  clamperl: [
+  "clamperl": [
     "aquaring",
     "attract",
     "barrier",
@@ -42093,9 +41825,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  huntail: [
+  "huntail": [
     "aquatail",
     "attract",
     "batonpass",
@@ -42150,9 +41882,9 @@ export default {
     "toxic",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  gorebyss: [
+  "gorebyss": [
     "agility",
     "amnesia",
     "aquaring",
@@ -42208,9 +41940,9 @@ export default {
     "waterfall",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  relicanth: [
+  "relicanth": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -42288,9 +42020,9 @@ export default {
     "watersport",
     "whirlpool",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  luvdisc: [
+  "luvdisc": [
     "agility",
     "aquajet",
     "aquaring",
@@ -42355,9 +42087,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "wish",
+    "wish"
   ],
-  bagon: [
+  "bagon": [
     "aerialace",
     "attract",
     "bite",
@@ -42429,9 +42161,9 @@ export default {
     "toxic",
     "twister",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shelgon: [
+  "shelgon": [
     "aerialace",
     "attract",
     "bite",
@@ -42501,9 +42233,9 @@ export default {
     "thunderfang",
     "toxic",
     "twister",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  salamence: [
+  "salamence": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -42597,9 +42329,9 @@ export default {
     "thunderfang",
     "toxic",
     "twister",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  beldum: [
+  "beldum": [
     "headbutt",
     "holdback",
     "irondefense",
@@ -42608,9 +42340,9 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  metang: [
+  "metang": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -42704,9 +42436,9 @@ export default {
     "toxic",
     "trailblaze",
     "trick",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  metagross: [
+  "metagross": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -42809,9 +42541,9 @@ export default {
     "toxic",
     "trailblaze",
     "trick",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  regirock: [
+  "regirock": [
     "ancientpower",
     "block",
     "bodypress",
@@ -42898,9 +42630,9 @@ export default {
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "zapcannon",
+    "zapcannon"
   ],
-  regice: [
+  "regice": [
     "amnesia",
     "ancientpower",
     "auroraveil",
@@ -42983,9 +42715,9 @@ export default {
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "zapcannon",
+    "zapcannon"
   ],
-  registeel: [
+  "registeel": [
     "aerialace",
     "amnesia",
     "ancientpower",
@@ -43074,9 +42806,9 @@ export default {
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "zapcannon",
+    "zapcannon"
   ],
-  latias: [
+  "latias": [
     "aerialace",
     "agility",
     "aircutter",
@@ -43199,9 +42931,9 @@ export default {
     "weatherball",
     "whirlpool",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  latios: [
+  "latios": [
     "aerialace",
     "agility",
     "aircutter",
@@ -43317,9 +43049,9 @@ export default {
     "weatherball",
     "whirlpool",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kyogre: [
+  "kyogre": [
     "ancientpower",
     "aquaring",
     "aquatail",
@@ -43392,9 +43124,9 @@ export default {
     "waterfall",
     "waterpulse",
     "waterspout",
-    "whirlpool",
+    "whirlpool"
   ],
-  groudon: [
+  "groudon": [
     "aerialace",
     "ancientpower",
     "block",
@@ -43502,9 +43234,9 @@ export default {
     "toxic",
     "uproar",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rayquaza: [
+  "rayquaza": [
     "aerialace",
     "airslash",
     "ancientpower",
@@ -43611,9 +43343,9 @@ export default {
     "waterfall",
     "waterpulse",
     "whirlpool",
-    "wildcharge",
+    "wildcharge"
   ],
-  jirachi: [
+  "jirachi": [
     "aerialace",
     "allyswitch",
     "amnesia",
@@ -43726,9 +43458,9 @@ export default {
     "uturn",
     "waterpulse",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  deoxys: [
+  "deoxys": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -43857,12 +43589,12 @@ export default {
     "wonderroom",
     "wrap",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  deoxysattack: [],
-  deoxysdefense: [],
-  deoxysspeed: [],
-  turtwig: [
+  "deoxysattack": [],
+  "deoxysdefense": [],
+  "deoxysspeed": [],
+  "turtwig": [
     "absorb",
     "amnesia",
     "attract",
@@ -43943,9 +43675,9 @@ export default {
     "withdraw",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grotle: [
+  "grotle": [
     "absorb",
     "amnesia",
     "attract",
@@ -44018,9 +43750,9 @@ export default {
     "withdraw",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  torterra: [
+  "torterra": [
     "absorb",
     "amnesia",
     "attract",
@@ -44051,7 +43783,6 @@ export default {
     "grasspledge",
     "grassyglide",
     "grassyterrain",
-    "growth",
     "hardpress",
     "headbutt",
     "headlongrush",
@@ -44093,14 +43824,11 @@ export default {
     "scorchingsands",
     "secretpower",
     "seedbomb",
-    "shellsmash",
     "sleeptalk",
     "smackdown",
     "snore",
     "solarbeam",
-    "spitup",
     "stealthrock",
-    "stockpile",
     "stompingtantrum",
     "stoneedge",
     "strength",
@@ -44108,24 +43836,20 @@ export default {
     "sunnyday",
     "superpower",
     "swagger",
-    "swallow",
     "swordsdance",
     "synthesis",
     "tackle",
     "takedown",
     "terablast",
-    "thrash",
-    "tickle",
     "toxic",
     "trailblaze",
-    "wideguard",
     "withdraw",
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chimchar: [
+  "chimchar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44224,9 +43948,9 @@ export default {
     "vacuumwave",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  monferno: [
+  "monferno": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44327,16 +44051,15 @@ export default {
     "vacuumwave",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  infernape: [
+  "infernape": [
     "acrobatics",
     "aerialace",
     "agility",
     "attract",
     "aurasphere",
     "blastburn",
-    "blazekick",
     "bodyslam",
     "brickbreak",
     "bulkup",
@@ -44347,7 +44070,6 @@ export default {
     "closecombat",
     "coaching",
     "confide",
-    "counter",
     "covet",
     "cut",
     "dig",
@@ -44361,7 +44083,6 @@ export default {
     "endeavor",
     "endure",
     "facade",
-    "fakeout",
     "faketears",
     "feint",
     "fireblast",
@@ -44374,7 +44095,6 @@ export default {
     "flareblitz",
     "fling",
     "focusblast",
-    "focusenergy",
     "focuspunch",
     "frustration",
     "furyswipes",
@@ -44436,7 +44156,6 @@ export default {
     "sunnyday",
     "swagger",
     "swift",
-    "switcheroo",
     "swordsdance",
     "takedown",
     "taunt",
@@ -44453,9 +44172,9 @@ export default {
     "vacuumwave",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  piplup: [
+  "piplup": [
     "aerialace",
     "agility",
     "aquaring",
@@ -44541,9 +44260,9 @@ export default {
     "weatherball",
     "whirlpool",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  prinplup: [
+  "prinplup": [
     "aerialace",
     "agility",
     "attract",
@@ -44627,15 +44346,14 @@ export default {
     "watersport",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  empoleon: [
+  "empoleon": [
     "aerialace",
     "agility",
     "aircutter",
     "airslash",
     "aquajet",
-    "aquaring",
     "attract",
     "avalanche",
     "blizzard",
@@ -44698,7 +44416,6 @@ export default {
     "naturalgift",
     "peck",
     "pluck",
-    "powertrip",
     "protect",
     "psychup",
     "quash",
@@ -44710,7 +44427,6 @@ export default {
     "rockslide",
     "rocksmash",
     "rocktomb",
-    "roost",
     "round",
     "scald",
     "scaryface",
@@ -44744,10 +44460,9 @@ export default {
     "wavecrash",
     "weatherball",
     "whirlpool",
-    "workup",
-    "yawn",
+    "workup"
   ],
-  starly: [
+  "starly": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44812,9 +44527,9 @@ export default {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  staravia: [
+  "staravia": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44872,9 +44587,9 @@ export default {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  staraptor: [
+  "staraptor": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44938,9 +44653,9 @@ export default {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  bidoof: [
+  "bidoof": [
     "amnesia",
     "aquatail",
     "attract",
@@ -45010,9 +44725,9 @@ export default {
     "toxic",
     "watersport",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  bibarel: [
+  "bibarel": [
     "amnesia",
     "aquajet",
     "aquatail",
@@ -45092,9 +44807,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  kricketot: [
+  "kricketot": [
     "bide",
     "bugbite",
     "endeavor",
@@ -45107,9 +44822,9 @@ export default {
     "strugglebug",
     "tackle",
     "terablast",
-    "uproar",
+    "uproar"
   ],
-  kricketune: [
+  "kricketune": [
     "absorb",
     "aerialace",
     "attract",
@@ -45182,9 +44897,9 @@ export default {
     "toxic",
     "trailblaze",
     "uproar",
-    "xscissor",
+    "xscissor"
   ],
-  shinx: [
+  "shinx": [
     "attract",
     "babydolleyes",
     "bite",
@@ -45256,9 +44971,9 @@ export default {
     "toxic",
     "trailblaze",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  luxio: [
+  "luxio": [
     "attract",
     "bite",
     "captivate",
@@ -45325,12 +45040,11 @@ export default {
     "toxic",
     "trailblaze",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  luxray: [
+  "luxray": [
     "agility",
     "attract",
-    "babydolleyes",
     "bite",
     "bodyslam",
     "captivate",
@@ -45357,7 +45071,6 @@ export default {
     "headbutt",
     "helpinghand",
     "hiddenpower",
-    "howl",
     "hyperbeam",
     "icefang",
     "irontail",
@@ -45367,11 +45080,9 @@ export default {
     "magnetrise",
     "mudslap",
     "naturalgift",
-    "nightslash",
     "playrough",
     "protect",
     "psychicfangs",
-    "quickattack",
     "raindance",
     "rest",
     "return",
@@ -45406,9 +45117,9 @@ export default {
     "toxic",
     "trailblaze",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  cranidos: [
+  "cranidos": [
     "ancientpower",
     "assurance",
     "attract",
@@ -45493,9 +45204,9 @@ export default {
     "trailblaze",
     "uproar",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rampardos: [
+  "rampardos": [
     "ancientpower",
     "assurance",
     "attract",
@@ -45533,7 +45244,6 @@ export default {
     "focuspunch",
     "frustration",
     "gigaimpact",
-    "hammerarm",
     "headbutt",
     "headsmash",
     "heavyslam",
@@ -45545,7 +45255,6 @@ export default {
     "irontail",
     "laserfocus",
     "leer",
-    "meteorbeam",
     "mudslap",
     "naturalgift",
     "outrage",
@@ -45589,7 +45298,6 @@ export default {
     "takedown",
     "terablast",
     "thief",
-    "thrash",
     "thunder",
     "thunderbolt",
     "thunderpunch",
@@ -45597,10 +45305,9 @@ export default {
     "trailblaze",
     "uproar",
     "whirlpool",
-    "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shieldon: [
+  "shieldon": [
     "ancientpower",
     "attract",
     "blizzard",
@@ -45677,9 +45384,9 @@ export default {
     "torment",
     "toxic",
     "trailblaze",
-    "wideguard",
+    "wideguard"
   ],
-  bastiodon: [
+  "bastiodon": [
     "ancientpower",
     "attract",
     "avalanche",
@@ -45690,7 +45397,6 @@ export default {
     "bulldoze",
     "captivate",
     "confide",
-    "counter",
     "curse",
     "dig",
     "doubleedge",
@@ -45700,14 +45406,11 @@ export default {
     "endure",
     "facade",
     "fireblast",
-    "fissure",
     "flamethrower",
     "flashcannon",
-    "focusenergy",
     "foulplay",
     "frustration",
     "gigaimpact",
-    "guardsplit",
     "hardpress",
     "headbutt",
     "heavyslam",
@@ -45744,7 +45447,6 @@ export default {
     "sandtomb",
     "scaryface",
     "scorchingsands",
-    "screech",
     "secretpower",
     "shockwave",
     "sleeptalk",
@@ -45752,7 +45454,6 @@ export default {
     "snore",
     "stealthrock",
     "steelbeam",
-    "steelroller",
     "stompingtantrum",
     "stoneedge",
     "strength",
@@ -45768,18 +45469,18 @@ export default {
     "torment",
     "toxic",
     "trailblaze",
-    "wideguard",
+    "wideguard"
   ],
-  burmy: [
+  "burmy": [
     "bugbite",
     "electroweb",
     "hiddenpower",
     "protect",
     "snore",
     "stringshot",
-    "tackle",
+    "tackle"
   ],
-  wormadam: [
+  "wormadam": [
     "allyswitch",
     "attract",
     "bugbite",
@@ -45839,9 +45540,9 @@ export default {
     "toxic",
     "uproar",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  wormadamsandy: [
+  "wormadamsandy": [
     "allyswitch",
     "attract",
     "bugbite",
@@ -45902,9 +45603,9 @@ export default {
     "thief",
     "toxic",
     "uproar",
-    "venoshock",
+    "venoshock"
   ],
-  wormadamtrash: [
+  "wormadamtrash": [
     "allyswitch",
     "attract",
     "bugbite",
@@ -45963,9 +45664,9 @@ export default {
     "thief",
     "toxic",
     "uproar",
-    "venoshock",
+    "venoshock"
   ],
-  mothim: [
+  "mothim": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -46028,9 +45729,9 @@ export default {
     "toxic",
     "twister",
     "uturn",
-    "venoshock",
+    "venoshock"
   ],
-  combee: [
+  "combee": [
     "aircutter",
     "bugbite",
     "bugbuzz",
@@ -46048,9 +45749,9 @@ export default {
     "sweetscent",
     "swift",
     "tailwind",
-    "terablast",
+    "terablast"
   ],
-  vespiquen: [
+  "vespiquen": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -46143,9 +45844,9 @@ export default {
     "uproar",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  pachirisu: [
+  "pachirisu": [
     "aerialace",
     "agility",
     "alluringvoice",
@@ -46235,9 +45936,9 @@ export default {
     "uproar",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  buizel: [
+  "buizel": [
     "agility",
     "aquajet",
     "aquaring",
@@ -46323,9 +46024,9 @@ export default {
     "waterpulse",
     "watersport",
     "wavecrash",
-    "whirlpool",
+    "whirlpool"
   ],
-  floatzel: [
+  "floatzel": [
     "agility",
     "aquajet",
     "aquatail",
@@ -46412,9 +46113,9 @@ export default {
     "waterpulse",
     "watersport",
     "wavecrash",
-    "whirlpool",
+    "whirlpool"
   ],
-  cherubi: [
+  "cherubi": [
     "aromatherapy",
     "attract",
     "bulletseed",
@@ -46472,9 +46173,9 @@ export default {
     "tickle",
     "toxic",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  cherrim: [
+  "cherrim": [
     "attract",
     "bulletseed",
     "captivate",
@@ -46530,9 +46231,9 @@ export default {
     "takedown",
     "toxic",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  shellos: [
+  "shellos": [
     "acidarmor",
     "amnesia",
     "ancientpower",
@@ -46607,9 +46308,89 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  gastrodon: [
+  "gastrodon": [
+    "amnesia",
+    "ancientpower",
+    "attract",
+    "blizzard",
+    "block",
+    "bodyslam",
+    "brine",
+    "bulldoze",
+    "captivate",
+    "chillingwater",
+    "confide",
+    "curse",
+    "dig",
+    "dive",
+    "doubleteam",
+    "earthpower",
+    "earthquake",
+    "endure",
+    "facade",
+    "flash",
+    "frustration",
+    "gigaimpact",
+    "hail",
+    "harden",
+    "headbutt",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icywind",
+    "infestation",
+    "liquidation",
+    "memento",
+    "mudbomb",
+    "muddywater",
+    "mudshot",
+    "mudslap",
+    "mudsport",
+    "naturalgift",
+    "painsplit",
+    "protect",
+    "raindance",
+    "recover",
+    "rest",
+    "return",
+    "rockblast",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "round",
+    "sandstorm",
+    "sandtomb",
+    "scald",
+    "secretpower",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snore",
+    "snowscape",
+    "spikes",
+    "stealthrock",
+    "stompingtantrum",
+    "stoneedge",
+    "strength",
+    "stringshot",
+    "substitute",
+    "surf",
+    "swagger",
+    "takedown",
+    "terablast",
+    "toxic",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "weatherball",
+    "whirlpool"
+  ],
+  "gastrodoneast": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -46688,89 +46469,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
+    "yawn"
   ],
-  gastrodoneast: [
-    "amnesia",
-    "ancientpower",
-    "attract",
-    "blizzard",
-    "block",
-    "bodyslam",
-    "brine",
-    "bulldoze",
-    "captivate",
-    "chillingwater",
-    "confide",
-    "curse",
-    "dig",
-    "dive",
-    "doubleteam",
-    "earthpower",
-    "earthquake",
-    "endure",
-    "facade",
-    "flash",
-    "frustration",
-    "gigaimpact",
-    "hail",
-    "harden",
-    "headbutt",
-    "helpinghand",
-    "hiddenpower",
-    "hydropump",
-    "hyperbeam",
-    "icebeam",
-    "icywind",
-    "infestation",
-    "liquidation",
-    "memento",
-    "mudbomb",
-    "muddywater",
-    "mudshot",
-    "mudslap",
-    "mudsport",
-    "naturalgift",
-    "painsplit",
-    "protect",
-    "raindance",
-    "recover",
-    "rest",
-    "return",
-    "rockblast",
-    "rockslide",
-    "rocksmash",
-    "rocktomb",
-    "round",
-    "sandstorm",
-    "sandtomb",
-    "scald",
-    "secretpower",
-    "skittersmack",
-    "sleeptalk",
-    "sludgebomb",
-    "sludgewave",
-    "snore",
-    "snowscape",
-    "spikes",
-    "stealthrock",
-    "stompingtantrum",
-    "stoneedge",
-    "strength",
-    "stringshot",
-    "substitute",
-    "surf",
-    "swagger",
-    "takedown",
-    "terablast",
-    "toxic",
-    "waterfall",
-    "watergun",
-    "waterpulse",
-    "weatherball",
-    "whirlpool",
-    "yawn",
-  ],
-  drifloon: [
+  "drifloon": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -46863,9 +46564,9 @@ export default {
     "trick",
     "trickroom",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  drifblim: [
+  "drifblim": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -46959,9 +46660,9 @@ export default {
     "trick",
     "trickroom",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  buneary: [
+  "buneary": [
     "afteryou",
     "agility",
     "assurance",
@@ -47053,9 +46754,9 @@ export default {
     "tripleaxel",
     "uproar",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  lopunny: [
+  "lopunny": [
     "acrobatics",
     "afteryou",
     "agility",
@@ -47070,32 +46771,24 @@ export default {
     "captivate",
     "chargebeam",
     "charm",
-    "circlethrow",
     "closecombat",
     "confide",
-    "copycat",
     "cosmicpower",
-    "cottonguard",
     "covet",
     "cut",
     "defensecurl",
     "dig",
     "dizzypunch",
-    "doublehit",
     "doublekick",
     "doubleteam",
-    "drainingkiss",
     "drainpunch",
-    "dynamicpunch",
     "encore",
     "endeavor",
     "endure",
     "entrainment",
     "facade",
-    "fakeout",
     "faketears",
     "firepunch",
-    "flail",
     "flatter",
     "fling",
     "focusblast",
@@ -47121,7 +46814,6 @@ export default {
     "lastresort",
     "lowkick",
     "lowsweep",
-    "machpunch",
     "magiccoat",
     "megakick",
     "megapunch",
@@ -47130,7 +46822,6 @@ export default {
     "naturalgift",
     "payback",
     "playrough",
-    "pounce",
     "pound",
     "poweruppunch",
     "protect",
@@ -47154,24 +46845,19 @@ export default {
     "substitute",
     "sunnyday",
     "swagger",
-    "sweetkiss",
     "swift",
-    "switcheroo",
-    "swordsdance",
-    "teeterdance",
     "thunder",
     "thunderbolt",
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "trailblaze",
     "tripleaxel",
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  glameow: [
+  "glameow": [
     "aerialace",
     "assist",
     "assurance",
@@ -47244,9 +46930,9 @@ export default {
     "uturn",
     "wakeupslap",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  purugly: [
+  "purugly": [
     "aerialace",
     "assist",
     "attract",
@@ -47318,9 +47004,9 @@ export default {
     "toxic",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  stunky: [
+  "stunky": [
     "acidspray",
     "assurance",
     "astonish",
@@ -47413,9 +47099,9 @@ export default {
     "toxicspikes",
     "trailblaze",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  skuntank: [
+  "skuntank": [
     "acidspray",
     "assurance",
     "attract",
@@ -47509,9 +47195,9 @@ export default {
     "toxicspikes",
     "trailblaze",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  bronzor: [
+  "bronzor": [
     "allyswitch",
     "ancientpower",
     "bodyslam",
@@ -47596,9 +47282,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bronzong: [
+  "bronzong": [
     "allyswitch",
     "ancientpower",
     "block",
@@ -47696,9 +47382,9 @@ export default {
     "trickroom",
     "weatherball",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chatot: [
+  "chatot": [
     "aerialace",
     "agility",
     "aircutter",
@@ -47757,9 +47443,9 @@ export default {
     "twister",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  spiritomb: [
+  "spiritomb": [
     "allyswitch",
     "attract",
     "bodyslam",
@@ -47844,9 +47530,9 @@ export default {
     "uproar",
     "waterpulse",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  gible: [
+  "gible": [
     "aerialace",
     "attract",
     "bite",
@@ -47923,9 +47609,9 @@ export default {
     "thrash",
     "thunderfang",
     "toxic",
-    "twister",
+    "twister"
   ],
-  gabite: [
+  "gabite": [
     "aerialace",
     "attract",
     "bite",
@@ -48006,9 +47692,9 @@ export default {
     "terablast",
     "thunderfang",
     "toxic",
-    "twister",
+    "twister"
   ],
-  garchomp: [
+  "garchomp": [
     "aerialace",
     "aquatail",
     "attract",
@@ -48098,13 +47784,12 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "thrash",
     "thunderfang",
     "toxic",
     "twister",
-    "whirlpool",
+    "whirlpool"
   ],
-  riolu: [
+  "riolu": [
     "aerialace",
     "agility",
     "attract",
@@ -48201,14 +47886,13 @@ export default {
     "upperhand",
     "vacuumwave",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lucario: [
+  "lucario": [
     "aerialace",
     "agility",
     "attract",
     "aurasphere",
-    "bite",
     "blazekick",
     "bodyslam",
     "bonerush",
@@ -48218,13 +47902,11 @@ export default {
     "bulletpunch",
     "calmmind",
     "captivate",
-    "circlethrow",
     "closecombat",
     "coaching",
     "confide",
     "copycat",
     "counter",
-    "crosschop",
     "crunch",
     "darkpulse",
     "detect",
@@ -48255,7 +47937,6 @@ export default {
     "hiddenpower",
     "highjumpkick",
     "honeclaws",
-    "howl",
     "hyperbeam",
     "icepunch",
     "irondefense",
@@ -48321,9 +48002,9 @@ export default {
     "vacuumwave",
     "waterpulse",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hippopotas: [
+  "hippopotas": [
     "amnesia",
     "attract",
     "bite",
@@ -48390,9 +48071,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlwind",
-    "yawn",
+    "yawn"
   ],
-  hippowdon: [
+  "hippowdon": [
     "amnesia",
     "attract",
     "bite",
@@ -48446,9 +48127,7 @@ export default {
     "slackoff",
     "sleeptalk",
     "snore",
-    "spitup",
     "stealthrock",
-    "stockpile",
     "stompingtantrum",
     "stoneedge",
     "strength",
@@ -48456,7 +48135,6 @@ export default {
     "sunnyday",
     "superpower",
     "swagger",
-    "swallow",
     "tackle",
     "takedown",
     "terablast",
@@ -48464,10 +48142,9 @@ export default {
     "toxic",
     "waterpulse",
     "weatherball",
-    "whirlwind",
-    "yawn",
+    "yawn"
   ],
-  skorupi: [
+  "skorupi": [
     "acupressure",
     "aerialace",
     "agility",
@@ -48544,9 +48221,9 @@ export default {
     "twineedle",
     "venoshock",
     "whirlwind",
-    "xscissor",
+    "xscissor"
   ],
-  drapion: [
+  "drapion": [
     "acupressure",
     "aerialace",
     "agility",
@@ -48636,9 +48313,9 @@ export default {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  croagunk: [
+  "croagunk": [
     "acidspray",
     "acupressure",
     "aerialace",
@@ -48748,9 +48425,9 @@ export default {
     "venoshock",
     "wakeupslap",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  toxicroak: [
+  "toxicroak": [
     "acidspray",
     "aerialace",
     "assurance",
@@ -48762,15 +48439,12 @@ export default {
     "brickbreak",
     "bulkup",
     "bulldoze",
-    "bulletpunch",
     "captivate",
     "chillingwater",
     "closecombat",
     "coaching",
     "confide",
     "corrosivegas",
-    "counter",
-    "crosschop",
     "crosspoison",
     "cut",
     "darkpulse",
@@ -48778,14 +48452,11 @@ export default {
     "doubleteam",
     "drainpunch",
     "dualchop",
-    "dynamicpunch",
     "earthquake",
     "embargo",
     "encore",
     "endure",
     "facade",
-    "fakeout",
-    "feint",
     "feintattack",
     "flatter",
     "fling",
@@ -48819,7 +48490,6 @@ export default {
     "poweruppunch",
     "protect",
     "pursuit",
-    "quickguard",
     "raindance",
     "rest",
     "retaliate",
@@ -48864,9 +48534,9 @@ export default {
     "venomdrench",
     "venoshock",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  carnivine: [
+  "carnivine": [
     "acidspray",
     "attract",
     "bind",
@@ -48935,9 +48605,9 @@ export default {
     "toxic",
     "vinewhip",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  finneon: [
+  "finneon": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -49008,9 +48678,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  lumineon: [
+  "lumineon": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -49079,9 +48749,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  snover: [
+  "snover": [
     "attract",
     "avalanche",
     "blizzard",
@@ -49156,9 +48826,9 @@ export default {
     "waterpulse",
     "weatherball",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  abomasnow: [
+  "abomasnow": [
     "attract",
     "auroraveil",
     "avalanche",
@@ -49191,7 +48861,6 @@ export default {
     "grassknot",
     "grasswhistle",
     "grassyglide",
-    "growth",
     "hail",
     "hardpress",
     "headbutt",
@@ -49199,7 +48868,6 @@ export default {
     "hiddenpower",
     "hyperbeam",
     "icebeam",
-    "icehammer",
     "icepunch",
     "iceshard",
     "icespinner",
@@ -49209,7 +48877,6 @@ export default {
     "irontail",
     "leafage",
     "leafstorm",
-    "leechseed",
     "leer",
     "lightscreen",
     "lowkick",
@@ -49255,9 +48922,9 @@ export default {
     "waterpulse",
     "weatherball",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  rotom: [
+  "rotom": [
     "allyswitch",
     "astonish",
     "charge",
@@ -49324,14 +48991,24 @@ export default {
     "trick",
     "uproar",
     "voltswitch",
-    "willowisp",
+    "willowisp"
   ],
-  rotomheat: ["overheat"],
-  rotomwash: ["hydropump"],
-  rotomfrost: ["blizzard"],
-  rotomfan: ["airslash"],
-  rotommow: ["leafstorm"],
-  uxie: [
+  "rotomheat": [
+    "overheat"
+  ],
+  "rotomwash": [
+    "hydropump"
+  ],
+  "rotomfrost": [
+    "blizzard"
+  ],
+  "rotomfan": [
+    "airslash"
+  ],
+  "rotommow": [
+    "leafstorm"
+  ],
+  "uxie": [
     "acrobatics",
     "allyswitch",
     "amnesia",
@@ -49428,9 +49105,9 @@ export default {
     "waterpulse",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mesprit: [
+  "mesprit": [
     "acrobatics",
     "allyswitch",
     "batonpass",
@@ -49527,9 +49204,9 @@ export default {
     "uturn",
     "waterpulse",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  azelf: [
+  "azelf": [
     "acrobatics",
     "allyswitch",
     "assurance",
@@ -49629,9 +49306,9 @@ export default {
     "uturn",
     "waterpulse",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dialga: [
+  "dialga": [
     "aerialace",
     "ancientpower",
     "aurasphere",
@@ -49723,10 +49400,10 @@ export default {
     "toxic",
     "trick",
     "trickroom",
-    "twister",
+    "twister"
   ],
-  dialgaorigin: [],
-  palkia: [
+  "dialgaorigin": [],
+  "palkia": [
     "aerialace",
     "ancientpower",
     "aquaring",
@@ -49824,10 +49501,10 @@ export default {
     "twister",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  palkiaorigin: [],
-  heatran: [
+  "palkiaorigin": [],
+  "heatran": [
     "ancientpower",
     "attract",
     "bodypress",
@@ -49913,9 +49590,9 @@ export default {
     "torment",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  regigigas: [
+  "regigigas": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -49999,9 +49676,9 @@ export default {
     "thunderwave",
     "toxic",
     "wideguard",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  giratina: [
+  "giratina": [
     "aerialace",
     "aircutter",
     "ancientpower",
@@ -50098,10 +49775,10 @@ export default {
     "thunderwave",
     "toxic",
     "twister",
-    "willowisp",
+    "willowisp"
   ],
-  giratinaorigin: [],
-  cresselia: [
+  "giratinaorigin": [],
+  "cresselia": [
     "allyswitch",
     "attract",
     "aurorabeam",
@@ -50181,9 +49858,9 @@ export default {
     "toxic",
     "trick",
     "trickroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  phione: [
+  "phione": [
     "acidarmor",
     "alluringvoice",
     "ancientpower",
@@ -50249,9 +49926,9 @@ export default {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  manaphy: [
+  "manaphy": [
     "acidarmor",
     "alluringvoice",
     "ancientpower",
@@ -50332,9 +50009,9 @@ export default {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darkrai: [
+  "darkrai": [
     "aerialace",
     "blizzard",
     "brickbreak",
@@ -50430,9 +50107,9 @@ export default {
     "trick",
     "willowisp",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  shaymin: [
+  "shaymin": [
     "aircutter",
     "airslash",
     "aromatherapy",
@@ -50504,10 +50181,10 @@ export default {
     "toxic",
     "trailblaze",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shayminsky: [],
-  arceus: [
+  "shayminsky": [],
+  "arceus": [
     "acidspray",
     "aerialace",
     "agility",
@@ -50682,26 +50359,26 @@ export default {
     "willowisp",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  arceusbug: [],
-  arceusdark: [],
-  arceusdragon: [],
-  arceuselectric: [],
-  arceusfairy: [],
-  arceusfighting: [],
-  arceusfire: [],
-  arceusflying: [],
-  arceusghost: [],
-  arceusgrass: [],
-  arceusground: [],
-  arceusice: [],
-  arceuspoison: [],
-  arceuspsychic: [],
-  arceusrock: [],
-  arceussteel: [],
-  arceuswater: [],
-  victini: [
+  "arceusbug": [],
+  "arceusdark": [],
+  "arceusdragon": [],
+  "arceuselectric": [],
+  "arceusfairy": [],
+  "arceusfighting": [],
+  "arceusfire": [],
+  "arceusflying": [],
+  "arceusghost": [],
+  "arceusgrass": [],
+  "arceusground": [],
+  "arceusice": [],
+  "arceuspoison": [],
+  "arceuspsychic": [],
+  "arceusrock": [],
+  "arceussteel": [],
+  "arceuswater": [],
+  "victini": [
     "batonpass",
     "blazekick",
     "blueflare",
@@ -50801,9 +50478,9 @@ export default {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  snivy: [
+  "snivy": [
     "aerialace",
     "aquatail",
     "aromatherapy",
@@ -50881,9 +50558,9 @@ export default {
     "workup",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  servine: [
+  "servine": [
     "aerialace",
     "aquatail",
     "attract",
@@ -50952,9 +50629,9 @@ export default {
     "workup",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  serperior: [
+  "serperior": [
     "aerialace",
     "aquatail",
     "attract",
@@ -50981,7 +50658,6 @@ export default {
     "gastroacid",
     "gigadrain",
     "gigaimpact",
-    "glare",
     "grassknot",
     "grasspledge",
     "grassyglide",
@@ -51000,9 +50676,7 @@ export default {
     "leer",
     "lightscreen",
     "magicalleaf",
-    "meanlook",
     "megadrain",
-    "mirrorcoat",
     "naturepower",
     "outrage",
     "petalblizzard",
@@ -51026,7 +50700,6 @@ export default {
     "substitute",
     "sunnyday",
     "swagger",
-    "sweetscent",
     "swift",
     "swordsdance",
     "synthesis",
@@ -51041,9 +50714,9 @@ export default {
     "workup",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  tepig: [
+  "tepig": [
     "assurance",
     "attract",
     "bodyslam",
@@ -51115,9 +50788,9 @@ export default {
     "willowisp",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pignite: [
+  "pignite": [
     "armthrust",
     "assurance",
     "attract",
@@ -51205,9 +50878,9 @@ export default {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  emboar: [
+  "emboar": [
     "armthrust",
     "assurance",
     "attract",
@@ -51218,7 +50891,6 @@ export default {
     "brickbreak",
     "bulkup",
     "bulldoze",
-    "burnup",
     "closecombat",
     "coaching",
     "confide",
@@ -51244,7 +50916,6 @@ export default {
     "flareblitz",
     "fling",
     "focusblast",
-    "focusenergy",
     "focuspunch",
     "frustration",
     "gigaimpact",
@@ -51284,20 +50955,16 @@ export default {
     "round",
     "scald",
     "scaryface",
-    "scorchingsands",
     "secretpower",
     "sleeptalk",
     "smackdown",
     "smog",
     "snore",
     "solarbeam",
-    "solarblade",
     "stompingtantrum",
     "stoneedge",
-    "stormthrow",
     "strength",
     "substitute",
-    "suckerpunch",
     "sunnyday",
     "superpower",
     "swagger",
@@ -51307,17 +50974,15 @@ export default {
     "taunt",
     "temperflare",
     "terablast",
-    "thrash",
     "thunderpunch",
     "toxic",
     "trailblaze",
     "wildcharge",
     "willowisp",
     "workup",
-    "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oshawott: [
+  "oshawott": [
     "aerialace",
     "airslash",
     "aquacutter",
@@ -51394,9 +51059,9 @@ export default {
     "watersport",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  dewott: [
+  "dewott": [
     "aerialace",
     "airslash",
     "aquajet",
@@ -51466,15 +51131,13 @@ export default {
     "watersport",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  samurott: [
+  "samurott": [
     "aerialace",
     "airslash",
-    "aquacutter",
     "aquajet",
     "aquatail",
-    "assurance",
     "attract",
     "avalanche",
     "blizzard",
@@ -51484,10 +51147,8 @@ export default {
     "bulldoze",
     "chillingwater",
     "confide",
-    "copycat",
     "covet",
     "cut",
-    "detect",
     "dig",
     "dive",
     "doubleteam",
@@ -51517,7 +51178,6 @@ export default {
     "knockoff",
     "liquidation",
     "megahorn",
-    "nightslash",
     "protect",
     "raindance",
     "razorshell",
@@ -51527,10 +51187,8 @@ export default {
     "revenge",
     "rocksmash",
     "round",
-    "sacredsword",
     "scald",
     "scaryface",
-    "screech",
     "secretpower",
     "slash",
     "sleeptalk",
@@ -51561,15 +51219,13 @@ export default {
     "watersport",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  samurotthisui: [
+  "samurotthisui": [
     "aerialace",
     "airslash",
-    "aquacutter",
     "aquajet",
     "aquatail",
-    "assurance",
     "avalanche",
     "blizzard",
     "bodyslam",
@@ -51577,11 +51233,8 @@ export default {
     "bulldoze",
     "ceaselessedge",
     "chillingwater",
-    "copycat",
     "darkpulse",
-    "detect",
     "dig",
-    "dive",
     "drillrun",
     "encore",
     "endure",
@@ -51599,31 +51252,23 @@ export default {
     "hyperbeam",
     "icebeam",
     "icywind",
-    "irontail",
     "knockoff",
     "lashout",
     "liquidation",
     "megahorn",
-    "nightslash",
     "protect",
     "raindance",
     "razorshell",
     "rest",
     "retaliate",
-    "round",
-    "sacredsword",
     "scaryface",
-    "screech",
     "slash",
     "sleeptalk",
     "smartstrike",
     "snarl",
-    "snore",
     "snowscape",
-    "soak",
     "substitute",
     "suckerpunch",
-    "superpower",
     "surf",
     "swift",
     "swordsdance",
@@ -51641,9 +51286,9 @@ export default {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  patrat: [
+  "patrat": [
     "afteryou",
     "aquatail",
     "assurance",
@@ -51706,17 +51351,15 @@ export default {
     "thunderbolt",
     "toxic",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  watchog: [
+  "watchog": [
     "afteryou",
     "aquatail",
-    "assurance",
     "attract",
     "batonpass",
     "bide",
     "bite",
-    "bulletseed",
     "confide",
     "confuseray",
     "covet",
@@ -51724,11 +51367,9 @@ export default {
     "cut",
     "detect",
     "dig",
-    "doubleedge",
     "doubleteam",
     "dreameater",
     "endeavor",
-    "endure",
     "facade",
     "firepunch",
     "flamethrower",
@@ -51755,7 +51396,6 @@ export default {
     "lightscreen",
     "lowkick",
     "meanlook",
-    "mudshot",
     "nastyplot",
     "poweruppunch",
     "protect",
@@ -51768,7 +51408,6 @@ export default {
     "rototiller",
     "round",
     "sandattack",
-    "screech",
     "secretpower",
     "seedbomb",
     "shadowball",
@@ -51790,11 +51429,10 @@ export default {
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "trailblaze",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lillipup: [
+  "lillipup": [
     "aerialace",
     "afteryou",
     "attract",
@@ -51854,9 +51492,9 @@ export default {
     "uproar",
     "wildcharge",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  herdier: [
+  "herdier": [
     "aerialace",
     "afteryou",
     "attract",
@@ -51912,9 +51550,9 @@ export default {
     "toxic",
     "uproar",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  stoutland: [
+  "stoutland": [
     "aerialace",
     "afteryou",
     "attract",
@@ -51975,9 +51613,9 @@ export default {
     "toxic",
     "uproar",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  purrloin: [
+  "purrloin": [
     "aerialace",
     "assist",
     "assurance",
@@ -52051,21 +51689,18 @@ export default {
     "toxic",
     "trick",
     "uturn",
-    "yawn",
+    "yawn"
   ],
-  liepard: [
+  "liepard": [
     "aerialace",
     "assist",
     "assurance",
     "attract",
     "batonpass",
-    "bite",
     "burningjealousy",
     "charm",
     "confide",
-    "copycat",
     "covet",
-    "crunch",
     "cut",
     "darkpulse",
     "doubleteam",
@@ -52077,7 +51712,6 @@ export default {
     "facade",
     "fakeout",
     "faketears",
-    "firefang",
     "foulplay",
     "frustration",
     "furyswipes",
@@ -52089,7 +51723,6 @@ export default {
     "honeclaws",
     "hyperbeam",
     "hypervoice",
-    "icefang",
     "irontail",
     "knockoff",
     "laserfocus",
@@ -52100,11 +51733,9 @@ export default {
     "payday",
     "playrough",
     "protect",
-    "psychicfangs",
     "psychocut",
     "psychup",
     "pursuit",
-    "quickattack",
     "raindance",
     "rest",
     "return",
@@ -52133,16 +51764,13 @@ export default {
     "taunt",
     "thief",
     "throatchop",
-    "thunderfang",
     "thunderwave",
     "torment",
     "toxic",
-    "trailblaze",
     "trick",
-    "uturn",
-    "yawn",
+    "uturn"
   ],
-  pansage: [
+  "pansage": [
     "acrobatics",
     "astonish",
     "attract",
@@ -52214,26 +51842,20 @@ export default {
     "uproar",
     "vinewhip",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  simisage: [
+  "simisage": [
     "acrobatics",
     "attract",
-    "belch",
-    "bite",
     "brickbreak",
-    "bulletseed",
     "confide",
     "covet",
-    "crunch",
     "cut",
     "dig",
     "doubleteam",
     "endeavor",
-    "endure",
     "energyball",
     "facade",
-    "fakeout",
     "flash",
     "fling",
     "focusblast",
@@ -52245,7 +51867,6 @@ export default {
     "gigaimpact",
     "grassknot",
     "grasspledge",
-    "grassyglide",
     "gunkshot",
     "helpinghand",
     "hiddenpower",
@@ -52253,13 +51874,10 @@ export default {
     "hyperbeam",
     "irontail",
     "knockoff",
-    "leafstorm",
-    "leechseed",
     "leer",
     "lick",
     "lowkick",
     "lowsweep",
-    "nastyplot",
     "naturepower",
     "payback",
     "poweruppunch",
@@ -52278,8 +51896,6 @@ export default {
     "sleeptalk",
     "snore",
     "solarbeam",
-    "solarblade",
-    "stuffcheeks",
     "substitute",
     "sunnyday",
     "superpower",
@@ -52290,12 +51906,11 @@ export default {
     "throatchop",
     "torment",
     "toxic",
-    "trailblaze",
     "uproar",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  pansear: [
+  "pansear": [
     "acrobatics",
     "amnesia",
     "astonish",
@@ -52367,35 +51982,25 @@ export default {
     "uproar",
     "willowisp",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  simisear: [
+  "simisear": [
     "acrobatics",
-    "amnesia",
     "attract",
-    "belch",
-    "bite",
-    "blazekick",
     "brickbreak",
-    "burningjealousy",
     "confide",
     "covet",
-    "crunch",
     "cut",
     "dig",
     "doubleteam",
     "endeavor",
-    "endure",
     "facade",
-    "fakeout",
     "fireblast",
     "firepledge",
     "firepunch",
-    "firespin",
     "flameburst",
     "flamecharge",
     "flamethrower",
-    "flareblitz",
     "fling",
     "focusblast",
     "focuspunch",
@@ -52417,7 +52022,6 @@ export default {
     "lick",
     "lowkick",
     "lowsweep",
-    "nastyplot",
     "overheat",
     "payback",
     "poweruppunch",
@@ -52430,29 +52034,25 @@ export default {
     "rocktomb",
     "roleplay",
     "round",
-    "scorchingsands",
     "secretpower",
     "shadowclaw",
     "sleeptalk",
     "snore",
     "solarbeam",
-    "stuffcheeks",
     "substitute",
     "sunnyday",
     "superpower",
     "swagger",
     "taunt",
-    "temperflare",
     "thief",
     "throatchop",
     "torment",
     "toxic",
     "uproar",
     "willowisp",
-    "workup",
-    "yawn",
+    "workup"
   ],
-  panpour: [
+  "panpour": [
     "acrobatics",
     "aquaring",
     "aquatail",
@@ -52526,31 +52126,23 @@ export default {
     "waterpledge",
     "waterpulse",
     "watersport",
-    "workup",
+    "workup"
   ],
-  simipour: [
+  "simipour": [
     "acrobatics",
-    "aquaring",
     "aquatail",
     "attract",
-    "belch",
-    "bite",
     "blizzard",
     "brickbreak",
-    "chillingwater",
     "confide",
     "covet",
-    "crunch",
     "cut",
     "dig",
     "dive",
     "doubleteam",
     "endeavor",
-    "endure",
     "facade",
-    "fakeout",
     "fling",
-    "flipturn",
     "focusblast",
     "focuspunch",
     "frustration",
@@ -52563,7 +52155,6 @@ export default {
     "helpinghand",
     "hiddenpower",
     "honeclaws",
-    "hydropump",
     "hyperbeam",
     "icebeam",
     "icepunch",
@@ -52572,10 +52163,8 @@ export default {
     "knockoff",
     "leer",
     "lick",
-    "liquidation",
     "lowkick",
     "lowsweep",
-    "nastyplot",
     "payback",
     "poweruppunch",
     "protect",
@@ -52593,7 +52182,6 @@ export default {
     "shadowclaw",
     "sleeptalk",
     "snore",
-    "stuffcheeks",
     "substitute",
     "superpower",
     "surf",
@@ -52607,9 +52195,9 @@ export default {
     "waterfall",
     "waterpledge",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  munna: [
+  "munna": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -52684,9 +52272,9 @@ export default {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  musharna: [
+  "musharna": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -52757,9 +52345,9 @@ export default {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pidove: [
+  "pidove": [
     "aerialace",
     "agility",
     "aircutter",
@@ -52811,9 +52399,9 @@ export default {
     "uproar",
     "uturn",
     "wish",
-    "workup",
+    "workup"
   ],
-  tranquill: [
+  "tranquill": [
     "aerialace",
     "agility",
     "aircutter",
@@ -52859,9 +52447,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  unfezant: [
+  "unfezant": [
     "aerialace",
     "agility",
     "aircutter",
@@ -52912,9 +52500,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  blitzle: [
+  "blitzle": [
     "agility",
     "attract",
     "batonpass",
@@ -52979,9 +52567,9 @@ export default {
     "trailblaze",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  zebstrika: [
+  "zebstrika": [
     "agility",
     "allyswitch",
     "attract",
@@ -53051,9 +52639,9 @@ export default {
     "trailblaze",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  roggenrola: [
+  "roggenrola": [
     "attract",
     "autotomize",
     "block",
@@ -53104,9 +52692,9 @@ export default {
     "tackle",
     "takedown",
     "toxic",
-    "wideguard",
+    "wideguard"
   ],
-  boldore: [
+  "boldore": [
     "attract",
     "block",
     "bodypress",
@@ -53154,9 +52742,9 @@ export default {
     "substitute",
     "swagger",
     "tackle",
-    "toxic",
+    "toxic"
   ],
-  gigalith: [
+  "gigalith": [
     "attract",
     "block",
     "bodypress",
@@ -53212,9 +52800,9 @@ export default {
     "tackle",
     "throatchop",
     "toxic",
-    "weatherball",
+    "weatherball"
   ],
-  woobat: [
+  "woobat": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -53303,9 +52891,9 @@ export default {
     "uproar",
     "uturn",
     "venomdrench",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  swoobat: [
+  "swoobat": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -53394,9 +52982,9 @@ export default {
     "uproar",
     "uturn",
     "venomdrench",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  drilbur: [
+  "drilbur": [
     "aerialace",
     "attract",
     "brickbreak",
@@ -53459,9 +53047,9 @@ export default {
     "takedown",
     "terablast",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  excadrill: [
+  "excadrill": [
     "aerialace",
     "attract",
     "bodyslam",
@@ -53495,7 +53083,6 @@ export default {
     "irondefense",
     "ironhead",
     "magnetrise",
-    "megahorn",
     "metalclaw",
     "metalsound",
     "mudshot",
@@ -53536,9 +53123,9 @@ export default {
     "terablast",
     "throatchop",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  audino: [
+  "audino": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -53549,7 +53136,6 @@ export default {
     "bodyslam",
     "calmmind",
     "chargebeam",
-    "chillingwater",
     "confide",
     "covet",
     "dazzlinggleam",
@@ -53647,9 +53233,9 @@ export default {
     "wish",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  timburr: [
+  "timburr": [
     "attract",
     "bide",
     "block",
@@ -53729,9 +53315,9 @@ export default {
     "toxic",
     "wakeupslap",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  gurdurr: [
+  "gurdurr": [
     "attract",
     "bide",
     "block",
@@ -53804,9 +53390,9 @@ export default {
     "thunderpunch",
     "toxic",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  conkeldurr: [
+  "conkeldurr": [
     "attract",
     "bide",
     "block",
@@ -53819,10 +53405,7 @@ export default {
     "closecombat",
     "coaching",
     "confide",
-    "counter",
     "curse",
-    "defog",
-    "detect",
     "dig",
     "doubleedge",
     "doubleteam",
@@ -53850,7 +53433,6 @@ export default {
     "leer",
     "lowkick",
     "lowsweep",
-    "machpunch",
     "megakick",
     "megapunch",
     "payback",
@@ -53891,10 +53473,9 @@ export default {
     "toxic",
     "upperhand",
     "wakeupslap",
-    "wideguard",
-    "workup",
+    "workup"
   ],
-  tympole: [
+  "tympole": [
     "acid",
     "afteryou",
     "aquaring",
@@ -53945,9 +53526,9 @@ export default {
     "uproar",
     "venomdrench",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  palpitoad: [
+  "palpitoad": [
     "acid",
     "afteryou",
     "aquaring",
@@ -53999,9 +53580,9 @@ export default {
     "uproar",
     "venomdrench",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  seismitoad: [
+  "seismitoad": [
     "acid",
     "afteryou",
     "aquaring",
@@ -54077,9 +53658,9 @@ export default {
     "venomdrench",
     "venoshock",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  throh: [
+  "throh": [
     "attract",
     "bide",
     "bind",
@@ -54149,9 +53730,9 @@ export default {
     "vitalthrow",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sawk: [
+  "sawk": [
     "attract",
     "bide",
     "block",
@@ -54219,9 +53800,9 @@ export default {
     "thunderpunch",
     "toxic",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sewaddle: [
+  "sewaddle": [
     "agility",
     "airslash",
     "attract",
@@ -54287,9 +53868,9 @@ export default {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  swadloon: [
+  "swadloon": [
     "attract",
     "batonpass",
     "bugbite",
@@ -54347,9 +53928,9 @@ export default {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  leavanny: [
+  "leavanny": [
     "aerialace",
     "agility",
     "airslash",
@@ -54432,9 +54013,9 @@ export default {
     "trailblaze",
     "tripleaxel",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  venipede: [
+  "venipede": [
     "agility",
     "attract",
     "bite",
@@ -54486,9 +54067,9 @@ export default {
     "toxicspikes",
     "twineedle",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  whirlipede: [
+  "whirlipede": [
     "agility",
     "attract",
     "bugbite",
@@ -54537,9 +54118,9 @@ export default {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  scolipede: [
+  "scolipede": [
     "agility",
     "aquatail",
     "assurance",
@@ -54610,9 +54191,9 @@ export default {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  cottonee: [
+  "cottonee": [
     "absorb",
     "attract",
     "beatup",
@@ -54673,9 +54254,9 @@ export default {
     "terablast",
     "tickle",
     "toxic",
-    "worryseed",
+    "worryseed"
   ],
-  whimsicott: [
+  "whimsicott": [
     "absorb",
     "attract",
     "beatup",
@@ -54737,18 +54318,16 @@ export default {
     "sunnyday",
     "swagger",
     "swift",
-    "switcheroo",
     "tailwind",
     "taunt",
     "terablast",
     "thief",
-    "tickle",
     "toxic",
     "trickroom",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  petilil: [
+  "petilil": [
     "absorb",
     "afteryou",
     "aromatherapy",
@@ -54806,9 +54385,9 @@ export default {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  lilligant: [
+  "lilligant": [
     "absorb",
     "afteryou",
     "alluringvoice",
@@ -54875,9 +54454,9 @@ export default {
     "toxic",
     "trailblaze",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  lilliganthisui: [
+  "lilliganthisui": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -54939,9 +54518,9 @@ export default {
     "upperhand",
     "vacuumwave",
     "victorydance",
-    "weatherball",
+    "weatherball"
   ],
-  basculin: [
+  "basculin": [
     "agility",
     "aquajet",
     "aquatail",
@@ -55015,9 +54594,9 @@ export default {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  basculinwhitestriped: [
+  "basculinwhitestriped": [
     "agility",
     "aquajet",
     "bite",
@@ -55063,67 +54642,9 @@ export default {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  basculegion: [
-    "agility",
-    "aquajet",
-    "bite",
-    "blizzard",
-    "chillingwater",
-    "confuseray",
-    "crunch",
-    "doubleedge",
-    "endeavor",
-    "endure",
-    "facade",
-    "flail",
-    "flipturn",
-    "gigaimpact",
-    "headbutt",
-    "headsmash",
-    "hex",
-    "hydropump",
-    "hyperbeam",
-    "icebeam",
-    "icefang",
-    "icywind",
-    "lastrespects",
-    "liquidation",
-    "muddywater",
-    "mudshot",
-    "nightshade",
-    "outrage",
-    "painsplit",
-    "phantomforce",
-    "protect",
-    "psychicfangs",
-    "raindance",
-    "rest",
-    "scaleshot",
-    "scaryface",
-    "shadowball",
-    "sleeptalk",
-    "snowscape",
-    "soak",
-    "spite",
-    "substitute",
-    "surf",
-    "swift",
-    "tackle",
-    "tailwhip",
-    "takedown",
-    "terablast",
-    "thrash",
-    "uproar",
-    "waterfall",
-    "watergun",
-    "waterpulse",
-    "wavecrash",
-    "whirlpool",
-    "zenheadbutt",
-  ],
-  basculegionf: [
+  "basculegion": [
     "agility",
     "aquajet",
     "bite",
@@ -55179,9 +54700,67 @@ export default {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sandile: [
+  "basculegionf": [
+    "agility",
+    "aquajet",
+    "bite",
+    "blizzard",
+    "chillingwater",
+    "confuseray",
+    "crunch",
+    "doubleedge",
+    "endeavor",
+    "endure",
+    "facade",
+    "flail",
+    "flipturn",
+    "gigaimpact",
+    "headbutt",
+    "headsmash",
+    "hex",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icefang",
+    "icywind",
+    "lastrespects",
+    "liquidation",
+    "muddywater",
+    "mudshot",
+    "nightshade",
+    "outrage",
+    "painsplit",
+    "phantomforce",
+    "protect",
+    "psychicfangs",
+    "raindance",
+    "rest",
+    "scaleshot",
+    "scaryface",
+    "shadowball",
+    "sleeptalk",
+    "snowscape",
+    "soak",
+    "spite",
+    "substitute",
+    "surf",
+    "swift",
+    "tackle",
+    "tailwhip",
+    "takedown",
+    "terablast",
+    "thrash",
+    "uproar",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "wavecrash",
+    "whirlpool",
+    "zenheadbutt"
+  ],
+  "sandile": [
     "aquatail",
     "assurance",
     "attract",
@@ -55261,9 +54840,9 @@ export default {
     "thunderfang",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  krokorok: [
+  "krokorok": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -55355,9 +54934,9 @@ export default {
     "thunderfang",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  krookodile: [
+  "krookodile": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -55392,7 +54971,6 @@ export default {
     "endure",
     "facade",
     "firefang",
-    "fissure",
     "fling",
     "focusblast",
     "focusenergy",
@@ -55408,7 +54986,6 @@ export default {
     "honeclaws",
     "hyperbeam",
     "incinerate",
-    "ironhead",
     "irontail",
     "knockoff",
     "lashout",
@@ -55467,9 +55044,9 @@ export default {
     "thunderfang",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  darumaka: [
+  "darumaka": [
     "attract",
     "bellydrum",
     "bite",
@@ -55537,9 +55114,9 @@ export default {
     "willowisp",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darumakagalar: [
+  "darumakagalar": [
     "attract",
     "avalanche",
     "bellydrum",
@@ -55596,9 +55173,9 @@ export default {
     "willowisp",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darmanitan: [
+  "darmanitan": [
     "attract",
     "bellydrum",
     "bite",
@@ -55687,9 +55264,9 @@ export default {
     "uturn",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darmanitangalar: [
+  "darmanitangalar": [
     "attract",
     "avalanche",
     "bellydrum",
@@ -55755,9 +55332,9 @@ export default {
     "uturn",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  maractus: [
+  "maractus": [
     "absorb",
     "acupressure",
     "aerialace",
@@ -55822,9 +55399,9 @@ export default {
     "uproar",
     "weatherball",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  dwebble: [
+  "dwebble": [
     "aerialace",
     "attract",
     "block",
@@ -55884,9 +55461,9 @@ export default {
     "toxic",
     "wideguard",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  crustle: [
+  "crustle": [
     "aerialace",
     "attract",
     "block",
@@ -55950,9 +55527,9 @@ export default {
     "swordsdance",
     "toxic",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  scraggy: [
+  "scraggy": [
     "acidspray",
     "amnesia",
     "assurance",
@@ -56053,9 +55630,9 @@ export default {
     "upperhand",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  scrafty: [
+  "scrafty": [
     "acidspray",
     "amnesia",
     "assurance",
@@ -56159,9 +55736,9 @@ export default {
     "upperhand",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sigilyph: [
+  "sigilyph": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -56244,9 +55821,9 @@ export default {
     "trick",
     "trickroom",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  yamask: [
+  "yamask": [
     "afteryou",
     "allyswitch",
     "astonish",
@@ -56316,9 +55893,9 @@ export default {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  yamaskgalar: [
+  "yamaskgalar": [
     "allyswitch",
     "astonish",
     "attract",
@@ -56368,9 +55945,9 @@ export default {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cofagrigus: [
+  "cofagrigus": [
     "afteryou",
     "allyswitch",
     "astonish",
@@ -56379,7 +55956,6 @@ export default {
     "bodypress",
     "calmmind",
     "confide",
-    "confuseray",
     "craftyshield",
     "curse",
     "darkpulse",
@@ -56394,7 +55970,6 @@ export default {
     "faketears",
     "flash",
     "frustration",
-    "gigadrain",
     "gigaimpact",
     "grassknot",
     "grudge",
@@ -56410,7 +55985,6 @@ export default {
     "knockoff",
     "magiccoat",
     "meanlook",
-    "memento",
     "nastyplot",
     "nightshade",
     "ominouswind",
@@ -56432,10 +56006,8 @@ export default {
     "safeguard",
     "scaryface",
     "secretpower",
-    "selfdestruct",
     "shadowball",
     "shadowclaw",
-    "shadowpunch",
     "shockwave",
     "skillswap",
     "sleeptalk",
@@ -56452,9 +56024,9 @@ export default {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  runerigus: [
+  "runerigus": [
     "allyswitch",
     "amnesia",
     "astonish",
@@ -56463,7 +56035,6 @@ export default {
     "brutalswing",
     "bulldoze",
     "calmmind",
-    "confuseray",
     "craftyshield",
     "curse",
     "darkpulse",
@@ -56476,7 +56047,6 @@ export default {
     "energyball",
     "facade",
     "faketears",
-    "gigadrain",
     "gigaimpact",
     "grassknot",
     "guardsplit",
@@ -56487,7 +56057,6 @@ export default {
     "imprison",
     "irondefense",
     "meanlook",
-    "memento",
     "nastyplot",
     "nightshade",
     "payback",
@@ -56497,7 +56066,6 @@ export default {
     "powerswap",
     "protect",
     "psychic",
-    "psyshock",
     "raindance",
     "rest",
     "revenge",
@@ -56509,10 +56077,8 @@ export default {
     "sandstorm",
     "sandtomb",
     "scaryface",
-    "selfdestruct",
     "shadowball",
     "shadowclaw",
-    "shadowpunch",
     "skillswap",
     "slam",
     "sleeptalk",
@@ -56527,9 +56093,9 @@ export default {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tirtouga: [
+  "tirtouga": [
     "ancientpower",
     "aquajet",
     "aquatail",
@@ -56598,9 +56164,9 @@ export default {
     "whirlpool",
     "wideguard",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  carracosta: [
+  "carracosta": [
     "ancientpower",
     "aquajet",
     "aquatail",
@@ -56673,9 +56239,9 @@ export default {
     "whirlpool",
     "wideguard",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  archen: [
+  "archen": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -56750,9 +56316,9 @@ export default {
     "uproar",
     "uturn",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  archeops: [
+  "archeops": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -56832,9 +56398,9 @@ export default {
     "uproar",
     "uturn",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  trubbish: [
+  "trubbish": [
     "acidspray",
     "amnesia",
     "attract",
@@ -56891,12 +56457,11 @@ export default {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  garbodor: [
+  "garbodor": [
     "acidspray",
     "amnesia",
-    "ancientpower",
     "attract",
     "belch",
     "bodypress",
@@ -56905,7 +56470,6 @@ export default {
     "confide",
     "corrosivegas",
     "crosspoison",
-    "curse",
     "darkpulse",
     "doubleslap",
     "doubleteam",
@@ -56919,16 +56483,13 @@ export default {
     "gigadrain",
     "gigaimpact",
     "gunkshot",
-    "haze",
     "hiddenpower",
     "hyperbeam",
     "infestation",
     "metalclaw",
-    "mudshot",
     "painsplit",
     "payback",
     "poisongas",
-    "poisonjab",
     "pound",
     "protect",
     "psychic",
@@ -56964,9 +56525,9 @@ export default {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  zorua: [
+  "zorua": [
     "aerialace",
     "agility",
     "assurance",
@@ -57050,9 +56611,9 @@ export default {
     "toxic",
     "trick",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  zoruahisui: [
+  "zoruahisui": [
     "agility",
     "bittermalice",
     "burningjealousy",
@@ -57108,9 +56669,9 @@ export default {
     "torment",
     "trick",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  zoroark: [
+  "zoroark": [
     "aerialace",
     "agility",
     "assurance",
@@ -57122,18 +56683,15 @@ export default {
     "calmmind",
     "confide",
     "confuseray",
-    "counter",
     "covet",
     "crunch",
     "cut",
     "darkpulse",
-    "detect",
     "dig",
     "doubleteam",
     "embargo",
     "encore",
     "endure",
-    "extrasensory",
     "facade",
     "faketears",
     "feintattack",
@@ -57161,7 +56719,6 @@ export default {
     "lowsweep",
     "megakick",
     "megapunch",
-    "memento",
     "nastyplot",
     "nightdaze",
     "nightshade",
@@ -57208,27 +56765,22 @@ export default {
     "toxic",
     "trick",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  zoroarkhisui: [
+  "zoroarkhisui": [
     "aerialace",
     "agility",
-    "assurance",
     "bittermalice",
     "bodyslam",
-    "bounce",
     "brickbreak",
     "burningjealousy",
     "calmmind",
-    "comeuppance",
     "confuseray",
     "crunch",
     "curse",
     "darkpulse",
-    "detect",
     "dig",
     "endure",
-    "extrasensory",
     "facade",
     "faketears",
     "flamethrower",
@@ -57251,12 +56803,9 @@ export default {
     "leer",
     "lowkick",
     "lowsweep",
-    "megakick",
-    "memento",
     "nastyplot",
     "nightshade",
     "painsplit",
-    "payback",
     "phantomforce",
     "poltergeist",
     "protect",
@@ -57265,7 +56814,6 @@ export default {
     "raindance",
     "rest",
     "roar",
-    "round",
     "scaryface",
     "scratch",
     "shadowball",
@@ -57275,7 +56823,6 @@ export default {
     "sleeptalk",
     "sludgebomb",
     "snarl",
-    "snore",
     "snowscape",
     "spite",
     "substitute",
@@ -57288,11 +56835,10 @@ export default {
     "throatchop",
     "torment",
     "trick",
-    "uproar",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  minccino: [
+  "minccino": [
     "afteryou",
     "alluringvoice",
     "aquatail",
@@ -57365,9 +56911,9 @@ export default {
     "uproar",
     "uturn",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  cinccino: [
+  "cinccino": [
     "afteryou",
     "alluringvoice",
     "aquatail",
@@ -57442,9 +56988,9 @@ export default {
     "tripleaxel",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  gothita: [
+  "gothita": [
     "allyswitch",
     "attract",
     "calmmind",
@@ -57533,9 +57079,9 @@ export default {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gothorita: [
+  "gothorita": [
     "allyswitch",
     "attract",
     "calmmind",
@@ -57620,9 +57166,9 @@ export default {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gothitelle: [
+  "gothitelle": [
     "allyswitch",
     "attract",
     "bodyslam",
@@ -57715,9 +57261,9 @@ export default {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  solosis: [
+  "solosis": [
     "acidarmor",
     "afteryou",
     "allyswitch",
@@ -57796,9 +57342,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  duosion: [
+  "duosion": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -57875,10 +57421,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  reuniclus: [
-    "acidarmor",
+  "reuniclus": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -57976,9 +57521,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ducklett: [
+  "ducklett": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -58038,9 +57583,9 @@ export default {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "wingattack",
+    "wingattack"
   ],
-  swanna: [
+  "swanna": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -58102,9 +57647,9 @@ export default {
     "watersport",
     "weatherball",
     "whirlpool",
-    "wingattack",
+    "wingattack"
   ],
-  vanillite: [
+  "vanillite": [
     "acidarmor",
     "allyswitch",
     "astonish",
@@ -58156,9 +57701,9 @@ export default {
     "taunt",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  vanillish: [
+  "vanillish": [
     "acidarmor",
     "allyswitch",
     "astonish",
@@ -58205,18 +57750,16 @@ export default {
     "taunt",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  vanilluxe: [
+  "vanilluxe": [
     "acidarmor",
     "allyswitch",
     "astonish",
     "attract",
-    "auroraveil",
     "avalanche",
     "beatup",
     "blizzard",
-    "chillingwater",
     "confide",
     "doubleteam",
     "endure",
@@ -58233,8 +57776,6 @@ export default {
     "hyperbeam",
     "hypervoice",
     "icebeam",
-    "iceshard",
-    "icespinner",
     "iciclecrash",
     "iciclespear",
     "icywind",
@@ -58257,16 +57798,15 @@ export default {
     "signalbeam",
     "sleeptalk",
     "snore",
-    "snowscape",
     "substitute",
     "swagger",
     "taunt",
     "toxic",
     "uproar",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  deerling: [
+  "deerling": [
     "agility",
     "aromatherapy",
     "attract",
@@ -58337,9 +57877,9 @@ export default {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sawsbuck: [
+  "sawsbuck": [
     "agility",
     "aromatherapy",
     "attract",
@@ -58419,9 +57959,9 @@ export default {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  emolga: [
+  "emolga": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -58457,7 +57997,6 @@ export default {
     "lastresort",
     "lightscreen",
     "nuzzle",
-    "pounce",
     "protect",
     "pursuit",
     "quickattack",
@@ -58489,9 +58028,9 @@ export default {
     "toxic",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  karrablast: [
+  "karrablast": [
     "acidspray",
     "aerialace",
     "attract",
@@ -58544,9 +58083,9 @@ export default {
     "swordsdance",
     "takedown",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  escavalier: [
+  "escavalier": [
     "acidspray",
     "aerialace",
     "agility",
@@ -58613,9 +58152,9 @@ export default {
     "taunt",
     "toxic",
     "twineedle",
-    "xscissor",
+    "xscissor"
   ],
-  foongus: [
+  "foongus": [
     "absorb",
     "afteryou",
     "astonish",
@@ -58671,9 +58210,9 @@ export default {
     "terablast",
     "toxic",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  amoonguss: [
+  "amoonguss": [
     "absorb",
     "afteryou",
     "astonish",
@@ -58731,9 +58270,9 @@ export default {
     "terablast",
     "toxic",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  frillish: [
+  "frillish": [
     "absorb",
     "acidarmor",
     "attract",
@@ -58804,9 +58343,9 @@ export default {
     "waterspout",
     "whirlpool",
     "willowisp",
-    "wringout",
+    "wringout"
   ],
-  jellicent: [
+  "jellicent": [
     "absorb",
     "acidarmor",
     "attract",
@@ -58876,9 +58415,9 @@ export default {
     "waterspout",
     "whirlpool",
     "willowisp",
-    "wringout",
+    "wringout"
   ],
-  alomomola: [
+  "alomomola": [
     "acrobatics",
     "alluringvoice",
     "aquajet",
@@ -58952,9 +58491,9 @@ export default {
     "whirlpool",
     "wideguard",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  joltik: [
+  "joltik": [
     "absorb",
     "agility",
     "attract",
@@ -59023,9 +58562,9 @@ export default {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  galvantula: [
+  "galvantula": [
     "absorb",
     "agility",
     "attract",
@@ -59095,9 +58634,9 @@ export default {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  ferroseed: [
+  "ferroseed": [
     "acidspray",
     "assurance",
     "attract",
@@ -59157,9 +58696,9 @@ export default {
     "thunderbolt",
     "thunderwave",
     "toxic",
-    "worryseed",
+    "worryseed"
   ],
-  ferrothorn: [
+  "ferrothorn": [
     "aerialace",
     "assurance",
     "attract",
@@ -59233,9 +58772,9 @@ export default {
     "thunderbolt",
     "thunderwave",
     "toxic",
-    "worryseed",
+    "worryseed"
   ],
-  klink: [
+  "klink": [
     "assurance",
     "autotomize",
     "bind",
@@ -59288,9 +58827,9 @@ export default {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  klang: [
+  "klang": [
     "allyswitch",
     "assurance",
     "autotomize",
@@ -59344,9 +58883,9 @@ export default {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  klinklang: [
+  "klinklang": [
     "allyswitch",
     "assurance",
     "autotomize",
@@ -59406,9 +58945,9 @@ export default {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  tynamo: [
+  "tynamo": [
     "charge",
     "chargebeam",
     "knockoff",
@@ -59416,9 +58955,9 @@ export default {
     "spark",
     "tackle",
     "terablast",
-    "thunderwave",
+    "thunderwave"
   ],
-  eelektrik: [
+  "eelektrik": [
     "acid",
     "acidspray",
     "acrobatics",
@@ -59479,9 +59018,9 @@ export default {
     "uturn",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  eelektross: [
+  "eelektross": [
     "acid",
     "acidspray",
     "acrobatics",
@@ -59578,9 +59117,9 @@ export default {
     "voltswitch",
     "wildcharge",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  elgyem: [
+  "elgyem": [
     "afteryou",
     "agility",
     "allyswitch",
@@ -59662,9 +59201,9 @@ export default {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  beheeyem: [
+  "beheeyem": [
     "afteryou",
     "agility",
     "allyswitch",
@@ -59748,9 +59287,9 @@ export default {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  litwick: [
+  "litwick": [
     "acid",
     "acidarmor",
     "allyswitch",
@@ -59822,9 +59361,9 @@ export default {
     "toxic",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  lampent: [
+  "lampent": [
     "allyswitch",
     "astonish",
     "attract",
@@ -59892,16 +59431,14 @@ export default {
     "toxic",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  chandelure: [
-    "acidarmor",
+  "chandelure": [
     "allyswitch",
     "astonish",
     "attract",
     "burningjealousy",
     "calmmind",
-    "clearsmog",
     "confide",
     "confuseray",
     "curse",
@@ -59940,7 +59477,6 @@ export default {
     "painsplit",
     "payback",
     "poltergeist",
-    "powersplit",
     "protect",
     "psychic",
     "psychup",
@@ -59969,9 +59505,9 @@ export default {
     "trailblaze",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  axew: [
+  "axew": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -60051,9 +59587,9 @@ export default {
     "terablast",
     "toxic",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  fraxure: [
+  "fraxure": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -60129,9 +59665,9 @@ export default {
     "terablast",
     "toxic",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  haxorus: [
+  "haxorus": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -60217,9 +59753,9 @@ export default {
     "terablast",
     "toxic",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  cubchoo: [
+  "cubchoo": [
     "aerialace",
     "assurance",
     "attract",
@@ -60302,9 +59838,9 @@ export default {
     "trailblaze",
     "waterpulse",
     "xscissor",
-    "yawn",
+    "yawn"
   ],
-  beartic: [
+  "beartic": [
     "aerialace",
     "aquajet",
     "assurance",
@@ -60365,7 +59901,6 @@ export default {
     "metalclaw",
     "mudshot",
     "mudslap",
-    "nightslash",
     "playnice",
     "playrough",
     "powdersnow",
@@ -60405,10 +59940,9 @@ export default {
     "toxic",
     "trailblaze",
     "waterpulse",
-    "xscissor",
-    "yawn",
+    "xscissor"
   ],
-  cryogonal: [
+  "cryogonal": [
     "acidarmor",
     "acrobatics",
     "ancientpower",
@@ -60474,9 +60008,9 @@ export default {
     "terablast",
     "toxic",
     "tripleaxel",
-    "waterpulse",
+    "waterpulse"
   ],
-  shelmet: [
+  "shelmet": [
     "absorb",
     "acid",
     "acidarmor",
@@ -60528,9 +60062,9 @@ export default {
     "toxic",
     "toxicspikes",
     "venoshock",
-    "yawn",
+    "yawn"
   ],
-  accelgor: [
+  "accelgor": [
     "absorb",
     "acid",
     "acidarmor",
@@ -60592,9 +60126,9 @@ export default {
     "venomdrench",
     "venoshock",
     "watershuriken",
-    "yawn",
+    "yawn"
   ],
-  stunfisk: [
+  "stunfisk": [
     "aquatail",
     "astonish",
     "attract",
@@ -60668,9 +60202,9 @@ export default {
     "uproar",
     "watergun",
     "waterpulse",
-    "yawn",
+    "yawn"
   ],
-  stunfiskgalar: [
+  "stunfiskgalar": [
     "astonish",
     "attract",
     "bind",
@@ -60727,9 +60261,9 @@ export default {
     "thunderwave",
     "uproar",
     "watergun",
-    "yawn",
+    "yawn"
   ],
-  mienfoo: [
+  "mienfoo": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -60812,9 +60346,9 @@ export default {
     "upperhand",
     "uturn",
     "vitalthrow",
-    "workup",
+    "workup"
   ],
-  mienshao: [
+  "mienshao": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -60904,9 +60438,9 @@ export default {
     "uturn",
     "vacuumwave",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  druddigon: [
+  "druddigon": [
     "aerialace",
     "aquatail",
     "attract",
@@ -60997,9 +60531,9 @@ export default {
     "thunderfang",
     "thunderpunch",
     "torment",
-    "toxic",
+    "toxic"
   ],
-  golett: [
+  "golett": [
     "allyswitch",
     "astonish",
     "block",
@@ -61088,9 +60622,9 @@ export default {
     "terablast",
     "thief",
     "thunderpunch",
-    "toxic",
+    "toxic"
   ],
-  golurk: [
+  "golurk": [
     "allyswitch",
     "astonish",
     "block",
@@ -61128,7 +60662,6 @@ export default {
     "gyroball",
     "hammerarm",
     "hardpress",
-    "headlongrush",
     "heatcrash",
     "heavyslam",
     "helpinghand",
@@ -61141,7 +60674,6 @@ export default {
     "icywind",
     "imprison",
     "irondefense",
-    "ironhead",
     "knockoff",
     "lowkick",
     "lowsweep",
@@ -61197,9 +60729,9 @@ export default {
     "thunderpunch",
     "toxic",
     "trick",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pawniard: [
+  "pawniard": [
     "aerialace",
     "airslash",
     "assurance",
@@ -61283,9 +60815,9 @@ export default {
     "thunderwave",
     "torment",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  bisharp: [
+  "bisharp": [
     "aerialace",
     "airslash",
     "assurance",
@@ -61370,9 +60902,9 @@ export default {
     "thunderwave",
     "torment",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  kingambit: [
+  "kingambit": [
     "aerialace",
     "airslash",
     "assurance",
@@ -61398,14 +60930,12 @@ export default {
     "leer",
     "lowkick",
     "lowsweep",
-    "meanlook",
     "metalburst",
     "metalclaw",
     "metalsound",
     "nightslash",
     "poisonjab",
     "protect",
-    "quickguard",
     "raindance",
     "rest",
     "retaliate",
@@ -61423,7 +60953,6 @@ export default {
     "steelbeam",
     "stoneedge",
     "substitute",
-    "suckerpunch",
     "swordsdance",
     "takedown",
     "taunt",
@@ -61433,9 +60962,9 @@ export default {
     "thunderwave",
     "torment",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bouffalant: [
+  "bouffalant": [
     "aerialace",
     "amnesia",
     "assurance",
@@ -61508,9 +61037,9 @@ export default {
     "uproar",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rufflet: [
+  "rufflet": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -61576,9 +61105,9 @@ export default {
     "whirlwind",
     "wingattack",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  braviary: [
+  "braviary": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -61651,9 +61180,9 @@ export default {
     "whirlwind",
     "wingattack",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  braviaryhisui: [
+  "braviaryhisui": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -61721,9 +61250,9 @@ export default {
     "vacuumwave",
     "whirlwind",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vullaby: [
+  "vullaby": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -61796,9 +61325,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "whirlwind",
+    "whirlwind"
   ],
-  mandibuzz: [
+  "mandibuzz": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -61877,9 +61406,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "whirlwind",
+    "whirlwind"
   ],
-  heatmor: [
+  "heatmor": [
     "aerialace",
     "amnesia",
     "attract",
@@ -61959,9 +61488,9 @@ export default {
     "tickle",
     "toxic",
     "willowisp",
-    "wrap",
+    "wrap"
   ],
-  durant: [
+  "durant": [
     "aerialace",
     "agility",
     "attract",
@@ -62026,9 +61555,9 @@ export default {
     "thunderwave",
     "toxic",
     "visegrip",
-    "xscissor",
+    "xscissor"
   ],
-  deino: [
+  "deino": [
     "aquatail",
     "assurance",
     "astonish",
@@ -62095,9 +61624,9 @@ export default {
     "toxic",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zweilous: [
+  "zweilous": [
     "aquatail",
     "assurance",
     "attract",
@@ -62165,15 +61694,14 @@ export default {
     "toxic",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hydreigon: [
+  "hydreigon": [
     "acrobatics",
     "aquatail",
     "assurance",
     "attract",
     "beatup",
-    "belch",
     "bite",
     "bodyslam",
     "breakingswipe",
@@ -62211,7 +61739,6 @@ export default {
     "frustration",
     "gigaimpact",
     "headbutt",
-    "headsmash",
     "heatwave",
     "helpinghand",
     "hiddenpower",
@@ -62273,9 +61800,9 @@ export default {
     "uproar",
     "uturn",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  larvesta: [
+  "larvesta": [
     "absorb",
     "acrobatics",
     "amnesia",
@@ -62336,9 +61863,9 @@ export default {
     "uturn",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  volcarona: [
+  "volcarona": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -62379,7 +61906,6 @@ export default {
     "lightscreen",
     "lunge",
     "magnetrise",
-    "morningsun",
     "mysticalfire",
     "overheat",
     "poisonjab",
@@ -62417,9 +61943,9 @@ export default {
     "whirlwind",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cobalion: [
+  "cobalion": [
     "aerialace",
     "airslash",
     "aurasphere",
@@ -62501,9 +62027,9 @@ export default {
     "voltswitch",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  terrakion: [
+  "terrakion": [
     "aerialace",
     "airslash",
     "aurasphere",
@@ -62578,9 +62104,9 @@ export default {
     "upperhand",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  virizion: [
+  "virizion": [
     "aerialace",
     "airslash",
     "aurasphere",
@@ -62661,9 +62187,9 @@ export default {
     "workup",
     "worryseed",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tornadus: [
+  "tornadus": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -62745,10 +62271,10 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "weatherball",
+    "weatherball"
   ],
-  tornadustherian: [],
-  thundurus: [
+  "tornadustherian": [],
+  "thundurus": [
     "acrobatics",
     "agility",
     "assurance",
@@ -62838,10 +62364,10 @@ export default {
     "weatherball",
     "wildboltstorm",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  thundurustherian: [],
-  reshiram: [
+  "thundurustherian": [],
+  "reshiram": [
     "ancientpower",
     "blueflare",
     "bodypress",
@@ -62933,9 +62459,9 @@ export default {
     "toxic",
     "weatherball",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zekrom: [
+  "zekrom": [
     "ancientpower",
     "bodypress",
     "bodyslam",
@@ -63033,9 +62559,9 @@ export default {
     "voltswitch",
     "weatherball",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  landorus: [
+  "landorus": [
     "attract",
     "block",
     "bodyslam",
@@ -63114,10 +62640,10 @@ export default {
     "terablast",
     "toxic",
     "uturn",
-    "weatherball",
+    "weatherball"
   ],
-  landorustherian: [],
-  kyurem: [
+  "landorustherian": [],
+  "kyurem": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -63203,9 +62729,9 @@ export default {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kyuremblack: [
+  "kyuremblack": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -63292,9 +62818,9 @@ export default {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kyuremwhite: [
+  "kyuremwhite": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -63381,9 +62907,9 @@ export default {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  keldeo: [
+  "keldeo": [
     "aerialace",
     "airslash",
     "aquajet",
@@ -63464,10 +62990,10 @@ export default {
     "vacuumwave",
     "waterpulse",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  keldeoresolute: [],
-  meloetta: [
+  "keldeoresolute": [],
+  "meloetta": [
     "acrobatics",
     "alluringvoice",
     "allyswitch",
@@ -63573,9 +63099,9 @@ export default {
     "wakeupslap",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  genesect: [
+  "genesect": [
     "aerialace",
     "allyswitch",
     "assurance",
@@ -63657,13 +63183,13 @@ export default {
     "uturn",
     "xscissor",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  genesectburn: [],
-  genesectchill: [],
-  genesectdouse: [],
-  genesectshock: [],
-  chespin: [
+  "genesectburn": [],
+  "genesectchill": [],
+  "genesectdouse": [],
+  "genesectshock": [],
+  "chespin": [
     "aerialace",
     "attract",
     "bellydrum",
@@ -63759,9 +63285,9 @@ export default {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  quilladin: [
+  "quilladin": [
     "aerialace",
     "attract",
     "bite",
@@ -63855,9 +63381,9 @@ export default {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chesnaught: [
+  "chesnaught": [
     "aerialace",
     "attract",
     "bellydrum",
@@ -63900,7 +63426,6 @@ export default {
     "grassyglide",
     "grassyterrain",
     "growl",
-    "growth",
     "gyroball",
     "hammerarm",
     "helpinghand",
@@ -63928,7 +63453,6 @@ export default {
     "poisonjab",
     "poweruppunch",
     "protect",
-    "quickguard",
     "raindance",
     "reflect",
     "rest",
@@ -63952,7 +63476,6 @@ export default {
     "solarbeam",
     "spikes",
     "spikyshield",
-    "steelroller",
     "stompingtantrum",
     "stoneedge",
     "strength",
@@ -63972,13 +63495,12 @@ export default {
     "toxic",
     "trailblaze",
     "vinewhip",
-    "wideguard",
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  fennekin: [
+  "fennekin": [
     "agility",
     "attract",
     "burningjealousy",
@@ -64052,9 +63574,9 @@ export default {
     "trickroom",
     "willowisp",
     "wish",
-    "workup",
+    "workup"
   ],
-  braixen: [
+  "braixen": [
     "agility",
     "allyswitch",
     "attract",
@@ -64136,9 +63658,9 @@ export default {
     "willowisp",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  delphox: [
+  "delphox": [
     "agility",
     "allyswitch",
     "attract",
@@ -64148,7 +63670,6 @@ export default {
     "charm",
     "confide",
     "confuseray",
-    "copycat",
     "covet",
     "cut",
     "dazzlinggleam",
@@ -64181,7 +63702,6 @@ export default {
     "howl",
     "hyperbeam",
     "hypervoice",
-    "hypnosis",
     "imprison",
     "incinerate",
     "irontail",
@@ -64241,12 +63761,11 @@ export default {
     "trick",
     "trickroom",
     "willowisp",
-    "wish",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  froakie: [
+  "froakie": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -64323,9 +63842,9 @@ export default {
     "waterpledge",
     "waterpulse",
     "watersport",
-    "workup",
+    "workup"
   ],
-  frogadier: [
+  "frogadier": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -64399,9 +63918,9 @@ export default {
     "watergun",
     "waterpledge",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  greninja: [
+  "greninja": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -64412,7 +63931,6 @@ export default {
     "bubble",
     "chillingwater",
     "confide",
-    "counter",
     "cut",
     "darkpulse",
     "dig",
@@ -64425,7 +63943,6 @@ export default {
     "falseswipe",
     "feintattack",
     "fling",
-    "flipturn",
     "frustration",
     "gigaimpact",
     "grassknot",
@@ -64464,7 +63981,6 @@ export default {
     "scald",
     "secretpower",
     "shadowsneak",
-    "skittersmack",
     "sleeptalk",
     "sludgewave",
     "smackdown",
@@ -64479,7 +63995,6 @@ export default {
     "surf",
     "swagger",
     "swift",
-    "switcheroo",
     "swordsdance",
     "takedown",
     "taunt",
@@ -64496,9 +64011,9 @@ export default {
     "waterpulse",
     "watershuriken",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  greninjabond: [
+  "greninjabond": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -64583,9 +64098,9 @@ export default {
     "waterpulse",
     "watershuriken",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  bunnelby: [
+  "bunnelby": [
     "agility",
     "attract",
     "bounce",
@@ -64650,9 +64165,9 @@ export default {
     "toxic",
     "uturn",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  diggersby: [
+  "diggersby": [
     "agility",
     "attract",
     "bodyslam",
@@ -64673,7 +64188,6 @@ export default {
     "endure",
     "facade",
     "firepunch",
-    "fissure",
     "flail",
     "fling",
     "focuspunch",
@@ -64738,13 +64252,12 @@ export default {
     "thunderpunch",
     "torment",
     "toxic",
-    "trailblaze",
     "uproar",
     "uturn",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  fletchling: [
+  "fletchling": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -64802,9 +64315,9 @@ export default {
     "toxic",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  fletchinder: [
+  "fletchinder": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -64867,16 +64380,15 @@ export default {
     "toxic",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  talonflame: [
+  "talonflame": [
     "acrobatics",
     "aerialace",
     "agility",
     "aircutter",
     "airslash",
     "attract",
-    "blazekick",
     "bravebird",
     "bulkup",
     "confide",
@@ -64919,7 +64431,6 @@ export default {
     "roost",
     "round",
     "secretpower",
-    "skyattack",
     "sleeptalk",
     "snatch",
     "snore",
@@ -64940,11 +64451,10 @@ export default {
     "toxic",
     "upperhand",
     "uturn",
-    "whirlwind",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  scatterbug: [
+  "scatterbug": [
     "bugbite",
     "poisonpowder",
     "pounce",
@@ -64953,9 +64463,9 @@ export default {
     "strugglebug",
     "stunspore",
     "tackle",
-    "terablast",
+    "terablast"
   ],
-  spewpa: [
+  "spewpa": [
     "bugbite",
     "electroweb",
     "harden",
@@ -64963,9 +64473,9 @@ export default {
     "pounce",
     "protect",
     "strugglebug",
-    "terablast",
+    "terablast"
   ],
-  vivillon: [
+  "vivillon": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -65007,7 +64517,6 @@ export default {
     "psychic",
     "psychup",
     "quiverdance",
-    "ragepowder",
     "raindance",
     "rest",
     "return",
@@ -65021,7 +64530,6 @@ export default {
     "sleeptalk",
     "snore",
     "solarbeam",
-    "stringshot",
     "strugglebug",
     "stunspore",
     "substitute",
@@ -65034,10 +64542,9 @@ export default {
     "thief",
     "toxic",
     "uturn",
-    "weatherball",
-    "whirlwind",
+    "weatherball"
   ],
-  vivillonfancy: [
+  "vivillonfancy": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -65103,9 +64610,9 @@ export default {
     "terablast",
     "thief",
     "toxic",
-    "uturn",
+    "uturn"
   ],
-  vivillonpokeball: [
+  "vivillonpokeball": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -65170,9 +64677,9 @@ export default {
     "terablast",
     "thief",
     "toxic",
-    "uturn",
+    "uturn"
   ],
-  litleo: [
+  "litleo": [
     "acrobatics",
     "attract",
     "bodyslam",
@@ -65239,9 +64746,9 @@ export default {
     "wildcharge",
     "willowisp",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  pyroar: [
+  "pyroar": [
     "acrobatics",
     "attract",
     "bodyslam",
@@ -65311,9 +64818,9 @@ export default {
     "trailblaze",
     "wildcharge",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  flabebe: [
+  "flabebe": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -65383,9 +64890,9 @@ export default {
     "trailblaze",
     "vinewhip",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  floette: [
+  "floette": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -65453,24 +64960,18 @@ export default {
     "trick",
     "vinewhip",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  floetteeternal: [
+  "floetteeternal": [
     "afteryou",
-    "alluringvoice",
     "allyswitch",
     "aromatherapy",
     "attract",
-    "batonpass",
     "calmmind",
-    "charm",
-    "chillingwater",
     "confide",
-    "copycat",
     "covet",
     "dazzlinggleam",
     "doubleteam",
-    "drainingkiss",
     "echoedvoice",
     "endeavor",
     "endure",
@@ -65485,9 +64986,7 @@ export default {
     "healbell",
     "helpinghand",
     "hiddenpower",
-    "hyperbeam",
     "lightofruin",
-    "lightscreen",
     "luckychant",
     "magicalleaf",
     "magiccoat",
@@ -65496,7 +64995,6 @@ export default {
     "naturepower",
     "petalblizzard",
     "petaldance",
-    "pollenpuff",
     "protect",
     "psychic",
     "raindance",
@@ -65507,25 +65005,20 @@ export default {
     "safeguard",
     "secretpower",
     "seedbomb",
-    "skillswap",
     "sleeptalk",
     "snore",
     "solarbeam",
-    "storedpower",
     "substitute",
     "sunnyday",
     "swagger",
     "synthesis",
     "tackle",
-    "tearfullook",
     "toxic",
-    "trailblaze",
-    "trick",
     "vinewhip",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  florges: [
+  "florges": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -65536,7 +65029,6 @@ export default {
     "charm",
     "chillingwater",
     "confide",
-    "copycat",
     "covet",
     "dazzlinggleam",
     "defog",
@@ -65554,7 +65046,6 @@ export default {
     "gigadrain",
     "gigaimpact",
     "grassknot",
-    "grassyglide",
     "grassyterrain",
     "healbell",
     "helpinghand",
@@ -65592,15 +65083,14 @@ export default {
     "swagger",
     "swift",
     "synthesis",
-    "tearfullook",
     "terablast",
     "toxic",
     "trailblaze",
     "trick",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  skiddo: [
+  "skiddo": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -65669,9 +65159,9 @@ export default {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gogoat: [
+  "gogoat": [
     "aerialace",
     "attract",
     "bodyslam",
@@ -65746,9 +65236,9 @@ export default {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pancham: [
+  "pancham": [
     "aerialace",
     "armthrust",
     "attract",
@@ -65839,9 +65329,9 @@ export default {
     "uproar",
     "vitalthrow",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pangoro: [
+  "pangoro": [
     "aerialace",
     "armthrust",
     "attract",
@@ -65849,7 +65339,6 @@ export default {
     "block",
     "bodyslam",
     "brickbreak",
-    "brutalswing",
     "bulkup",
     "bulldoze",
     "bulletpunch",
@@ -65857,14 +65346,12 @@ export default {
     "closecombat",
     "coaching",
     "cometpunch",
-    "comeuppance",
     "confide",
     "covet",
     "crunch",
     "cut",
     "darkestlariat",
     "darkpulse",
-    "detect",
     "dig",
     "doubleteam",
     "dragonclaw",
@@ -65889,7 +65376,6 @@ export default {
     "grassknot",
     "gunkshot",
     "hammerarm",
-    "headlongrush",
     "helpinghand",
     "hiddenpower",
     "honeclaws",
@@ -65912,11 +65398,9 @@ export default {
     "partingshot",
     "payback",
     "poisonjab",
-    "powertrip",
     "poweruppunch",
     "protect",
     "quash",
-    "quickguard",
     "raindance",
     "rest",
     "retaliate",
@@ -65930,7 +65414,6 @@ export default {
     "round",
     "scaryface",
     "secretpower",
-    "seismictoss",
     "shadowclaw",
     "skyuppercut",
     "slash",
@@ -65942,7 +65425,6 @@ export default {
     "spite",
     "stompingtantrum",
     "stoneedge",
-    "stormthrow",
     "strength",
     "substitute",
     "sunnyday",
@@ -65961,9 +65443,9 @@ export default {
     "vitalthrow",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  furfrou: [
+  "furfrou": [
     "attract",
     "babydolleyes",
     "bite",
@@ -65972,16 +65454,12 @@ export default {
     "charm",
     "confide",
     "cottonguard",
-    "crunch",
     "darkpulse",
     "dig",
-    "doubleedge",
     "doubleteam",
     "echoedvoice",
     "endeavor",
-    "endure",
     "facade",
-    "firefang",
     "flash",
     "frustration",
     "gigaimpact",
@@ -65991,13 +65469,11 @@ export default {
     "helpinghand",
     "hiddenpower",
     "hypervoice",
-    "icefang",
     "irontail",
     "lastresort",
     "mimic",
     "odorsleuth",
     "protect",
-    "psychicfangs",
     "raindance",
     "refresh",
     "rest",
@@ -66020,17 +65496,15 @@ export default {
     "tackle",
     "tailwhip",
     "takedown",
-    "thunderfang",
     "thunderwave",
     "toxic",
-    "trailblaze",
     "uproar",
     "uturn",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  espurr: [
+  "espurr": [
     "allyswitch",
     "assist",
     "attract",
@@ -66107,9 +65581,9 @@ export default {
     "wonderroom",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  meowstic: [
+  "meowstic": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -66191,19 +65665,16 @@ export default {
     "terablast",
     "thunderbolt",
     "thunderwave",
-    "tickle",
     "torment",
     "toxic",
     "trailblaze",
     "trick",
     "trickroom",
-    "wish",
     "wonderroom",
     "workup",
-    "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  meowsticf: [
+  "meowsticf": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -66284,7 +65755,6 @@ export default {
     "terablast",
     "thunderbolt",
     "thunderwave",
-    "tickle",
     "torment",
     "toxic",
     "trailblaze",
@@ -66292,10 +65762,9 @@ export default {
     "trickroom",
     "wonderroom",
     "workup",
-    "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  honedge: [
+  "honedge": [
     "aerialace",
     "afteryou",
     "attract",
@@ -66352,9 +65821,9 @@ export default {
     "swordsdance",
     "tackle",
     "toxic",
-    "wideguard",
+    "wideguard"
   ],
-  doublade: [
+  "doublade": [
     "aerialace",
     "afteryou",
     "attract",
@@ -66408,9 +65877,9 @@ export default {
     "swagger",
     "swordsdance",
     "tackle",
-    "toxic",
+    "toxic"
   ],
-  aegislash: [
+  "aegislash": [
     "aerialace",
     "afteryou",
     "airslash",
@@ -66422,8 +65891,6 @@ export default {
     "closecombat",
     "confide",
     "cut",
-    "destinybond",
-    "doublehit",
     "doubleteam",
     "endure",
     "facade",
@@ -66443,7 +65910,6 @@ export default {
     "magnetrise",
     "metalsound",
     "nightslash",
-    "poltergeist",
     "powertrick",
     "protect",
     "psychocut",
@@ -66476,10 +65942,9 @@ export default {
     "swordsdance",
     "tackle",
     "toxic",
-    "wideguard",
-    "zenheadbutt",
+    "wideguard"
   ],
-  spritzee: [
+  "spritzee": [
     "afteryou",
     "allyswitch",
     "aromatherapy",
@@ -66542,11 +66007,10 @@ export default {
     "torment",
     "toxic",
     "trickroom",
-    "wish",
+    "wish"
   ],
-  aromatisse: [
+  "aromatisse": [
     "afteryou",
-    "alluringvoice",
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -66582,7 +66046,6 @@ export default {
     "helpinghand",
     "hiddenpower",
     "hyperbeam",
-    "hypnosis",
     "lightscreen",
     "magiccoat",
     "metronome",
@@ -66614,10 +66077,9 @@ export default {
     "thunderbolt",
     "torment",
     "toxic",
-    "trickroom",
-    "wish",
+    "trickroom"
   ],
-  swirlix: [
+  "swirlix": [
     "afteryou",
     "amnesia",
     "aromatherapy",
@@ -66675,9 +66137,9 @@ export default {
     "thunderbolt",
     "toxic",
     "wish",
-    "yawn",
+    "yawn"
   ],
-  slurpuff: [
+  "slurpuff": [
     "afteryou",
     "amnesia",
     "aromatherapy",
@@ -66685,7 +66147,6 @@ export default {
     "calmmind",
     "charm",
     "confide",
-    "copycat",
     "cottonguard",
     "cottonspore",
     "covet",
@@ -66738,10 +66199,9 @@ export default {
     "thunder",
     "thunderbolt",
     "toxic",
-    "wish",
-    "yawn",
+    "wish"
   ],
-  inkay: [
+  "inkay": [
     "acupressure",
     "aerialace",
     "allyswitch",
@@ -66827,9 +66287,9 @@ export default {
     "toxic",
     "trick",
     "trickroom",
-    "wrap",
+    "wrap"
   ],
-  malamar: [
+  "malamar": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -66917,9 +66377,9 @@ export default {
     "trailblaze",
     "trick",
     "trickroom",
-    "wrap",
+    "wrap"
   ],
-  binacle: [
+  "binacle": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -67005,9 +66465,9 @@ export default {
     "waterpulse",
     "watersport",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  barbaracle: [
+  "barbaracle": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -67105,9 +66565,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  skrelp: [
+  "skrelp": [
     "acid",
     "acidarmor",
     "acidspray",
@@ -67176,9 +66636,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  dragalge: [
+  "dragalge": [
     "acid",
     "acidspray",
     "aquatail",
@@ -67251,9 +66711,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  clauncher: [
+  "clauncher": [
     "aquajet",
     "aquatail",
     "attract",
@@ -67319,9 +66779,9 @@ export default {
     "watergun",
     "waterpulse",
     "watersport",
-    "weatherball",
+    "weatherball"
   ],
-  clawitzer: [
+  "clawitzer": [
     "aquajet",
     "aquatail",
     "attract",
@@ -67340,7 +66800,6 @@ export default {
     "doubleteam",
     "dragonpulse",
     "endure",
-    "entrainment",
     "facade",
     "flail",
     "flashcannon",
@@ -67395,9 +66854,9 @@ export default {
     "watergun",
     "waterpulse",
     "watersport",
-    "weatherball",
+    "weatherball"
   ],
-  helioptile: [
+  "helioptile": [
     "agility",
     "allyswitch",
     "attract",
@@ -67460,9 +66919,9 @@ export default {
     "toxic",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  heliolisk: [
+  "heliolisk": [
     "agility",
     "allyswitch",
     "attract",
@@ -67478,7 +66937,6 @@ export default {
     "discharge",
     "doubleteam",
     "dragonpulse",
-    "dragonrush",
     "dragontail",
     "eerieimpulse",
     "electricterrain",
@@ -67492,7 +66950,6 @@ export default {
     "focusblast",
     "frustration",
     "gigaimpact",
-    "glare",
     "grassknot",
     "hiddenpower",
     "hyperbeam",
@@ -67504,10 +66961,8 @@ export default {
     "magnetrise",
     "megakick",
     "megapunch",
-    "morningsun",
     "mudslap",
     "paraboliccharge",
-    "pounce",
     "pound",
     "protect",
     "psychup",
@@ -67523,7 +66978,6 @@ export default {
     "sandstorm",
     "scaleshot",
     "secretpower",
-    "shedtail",
     "shockwave",
     "signalbeam",
     "sleeptalk",
@@ -67541,13 +66995,12 @@ export default {
     "thundershock",
     "thunderwave",
     "toxic",
-    "trailblaze",
     "uturn",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  tyrunt: [
+  "tyrunt": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -67622,9 +67075,9 @@ export default {
     "thrash",
     "thunderfang",
     "toxic",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tyrantrum: [
+  "tyrantrum": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -67641,12 +67094,10 @@ export default {
     "closecombat",
     "confide",
     "crunch",
-    "curse",
     "darkpulse",
     "dig",
     "doubleteam",
     "dracometeor",
-    "dragoncheer",
     "dragonclaw",
     "dragondance",
     "dragonpulse",
@@ -67673,7 +67124,6 @@ export default {
     "meteorbeam",
     "outrage",
     "playrough",
-    "poisonfang",
     "protect",
     "psychicfangs",
     "rest",
@@ -67705,9 +67155,9 @@ export default {
     "thrash",
     "thunderfang",
     "toxic",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  amaura: [
+  "amaura": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -67785,24 +67235,21 @@ export default {
     "toxic",
     "waterpulse",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  aurorus: [
+  "aurorus": [
     "ancientpower",
     "aquatail",
     "attract",
     "aurorabeam",
-    "auroraveil",
     "avalanche",
     "blizzard",
     "bodyslam",
     "bulldoze",
     "calmmind",
     "chargebeam",
-    "chillingwater",
     "confide",
     "darkpulse",
-    "discharge",
     "doubleteam",
     "dragontail",
     "dreameater",
@@ -67820,12 +67267,10 @@ export default {
     "gigaimpact",
     "growl",
     "hail",
-    "haze",
     "hiddenpower",
     "hyperbeam",
     "hypervoice",
     "icebeam",
-    "icespinner",
     "iciclespear",
     "icywind",
     "irondefense",
@@ -67834,7 +67279,6 @@ export default {
     "lightscreen",
     "magnetrise",
     "meteorbeam",
-    "mirrorcoat",
     "mist",
     "mudshot",
     "naturepower",
@@ -67860,7 +67304,6 @@ export default {
     "secretpower",
     "sleeptalk",
     "snore",
-    "snowscape",
     "stealthrock",
     "stoneedge",
     "substitute",
@@ -67872,9 +67315,9 @@ export default {
     "toxic",
     "waterpulse",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sylveon: [
+  "sylveon": [
     "alluringvoice",
     "attract",
     "babydolleyes",
@@ -67890,7 +67333,6 @@ export default {
     "curse",
     "cut",
     "dazzlinggleam",
-    "detect",
     "dig",
     "disarmingvoice",
     "doubleedge",
@@ -67901,7 +67343,6 @@ export default {
     "facade",
     "fairywind",
     "faketears",
-    "flail",
     "flash",
     "focusenergy",
     "frustration",
@@ -67954,19 +67395,15 @@ export default {
     "takedown",
     "telekinesis",
     "terablast",
-    "tickle",
     "toxic",
     "trailblaze",
     "weatherball",
-    "wish",
-    "workup",
-    "yawn",
+    "workup"
   ],
-  hawlucha: [
+  "hawlucha": [
     "acrobatics",
     "aerialace",
     "agility",
-    "airslash",
     "allyswitch",
     "assurance",
     "attract",
@@ -68071,9 +67508,9 @@ export default {
     "wingattack",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dedenne: [
+  "dedenne": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -68148,9 +67585,9 @@ export default {
     "trailblaze",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  carbink: [
+  "carbink": [
     "afteryou",
     "allyswitch",
     "ancientpower",
@@ -68229,9 +67666,9 @@ export default {
     "terrainpulse",
     "toxic",
     "trickroom",
-    "wonderroom",
+    "wonderroom"
   ],
-  goomy: [
+  "goomy": [
     "absorb",
     "acidarmor",
     "attract",
@@ -68281,9 +67718,9 @@ export default {
     "thunderbolt",
     "toxic",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  sliggoo: [
+  "sliggoo": [
     "absorb",
     "acidarmor",
     "acidspray",
@@ -68334,9 +67771,9 @@ export default {
     "thunderbolt",
     "toxic",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  sliggoohisui: [
+  "sliggoohisui": [
     "absorb",
     "acidarmor",
     "acidspray",
@@ -68380,11 +67817,10 @@ export default {
     "thunder",
     "thunderbolt",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  goodra: [
+  "goodra": [
     "absorb",
-    "acidarmor",
     "acidspray",
     "aquatail",
     "assurance",
@@ -68400,7 +67836,6 @@ export default {
     "charm",
     "chillingwater",
     "confide",
-    "counter",
     "curse",
     "doubleteam",
     "dracometeor",
@@ -68420,7 +67855,6 @@ export default {
     "focusblast",
     "focuspunch",
     "frustration",
-    "gigadrain",
     "gigaimpact",
     "hail",
     "hiddenpower",
@@ -68432,7 +67866,6 @@ export default {
     "irontail",
     "knockoff",
     "laserfocus",
-    "lifedew",
     "megakick",
     "megapunch",
     "muddywater",
@@ -68472,12 +67905,11 @@ export default {
     "toxic",
     "watergun",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  goodrahisui: [
+  "goodrahisui": [
     "absorb",
     "acidspray",
-    "ancientpower",
     "blizzard",
     "bodypress",
     "bodyslam",
@@ -68485,7 +67917,6 @@ export default {
     "bulldoze",
     "charm",
     "chillingwater",
-    "counter",
     "curse",
     "dracometeor",
     "dragonbreath",
@@ -68513,7 +67944,6 @@ export default {
     "irontail",
     "knockoff",
     "lashout",
-    "lifedew",
     "muddywater",
     "mudshot",
     "outrage",
@@ -68543,9 +67973,9 @@ export default {
     "thunderpunch",
     "watergun",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  klefki: [
+  "klefki": [
     "astonish",
     "attract",
     "calmmind",
@@ -68564,7 +67994,6 @@ export default {
     "flashcannon",
     "foulplay",
     "frustration",
-    "futuresight",
     "gigaimpact",
     "healblock",
     "hiddenpower",
@@ -68611,9 +68040,9 @@ export default {
     "thunderwave",
     "torment",
     "toxic",
-    "trickroom",
+    "trickroom"
   ],
-  phantump: [
+  "phantump": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68697,9 +68126,9 @@ export default {
     "venomdrench",
     "willowisp",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  trevenant: [
+  "trevenant": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68716,7 +68145,6 @@ export default {
     "darkpulse",
     "destinybond",
     "dig",
-    "disable",
     "doubleteam",
     "drainpunch",
     "dreameater",
@@ -68774,7 +68202,6 @@ export default {
     "seedbomb",
     "shadowball",
     "shadowclaw",
-    "shadowpunch",
     "skillswap",
     "skittersmack",
     "sleeptalk",
@@ -68783,7 +68210,6 @@ export default {
     "spite",
     "strength",
     "substitute",
-    "suckerpunch",
     "sunnyday",
     "swagger",
     "tackle",
@@ -68799,9 +68225,9 @@ export default {
     "willowisp",
     "woodhammer",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  pumpkaboo: [
+  "pumpkaboo": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68874,9 +68300,9 @@ export default {
     "trickortreat",
     "trickroom",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  pumpkaboosuper: [
+  "pumpkaboosuper": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68949,93 +68375,9 @@ export default {
     "trickortreat",
     "trickroom",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  gourgeist: [
-    "allyswitch",
-    "astonish",
-    "attract",
-    "brutalswing",
-    "bulletseed",
-    "chargebeam",
-    "confide",
-    "confuseray",
-    "curse",
-    "darkpulse",
-    "destinybond",
-    "disable",
-    "doubleteam",
-    "dreameater",
-    "endure",
-    "energyball",
-    "explosion",
-    "facade",
-    "fireblast",
-    "flamecharge",
-    "flamethrower",
-    "flash",
-    "focusblast",
-    "foulplay",
-    "frustration",
-    "gigadrain",
-    "gigaimpact",
-    "grassknot",
-    "grassyglide",
-    "gyroball",
-    "hex",
-    "hiddenpower",
-    "hyperbeam",
-    "hypnosis",
-    "imprison",
-    "incinerate",
-    "leechseed",
-    "lightscreen",
-    "magiccoat",
-    "moonblast",
-    "mysticalfire",
-    "nastyplot",
-    "naturepower",
-    "painsplit",
-    "phantomforce",
-    "poltergeist",
-    "powerwhip",
-    "protect",
-    "psychic",
-    "razorleaf",
-    "rest",
-    "return",
-    "rockslide",
-    "rocksmash",
-    "roleplay",
-    "round",
-    "safeguard",
-    "scaryface",
-    "secretpower",
-    "seedbomb",
-    "selfdestruct",
-    "shadowball",
-    "shadowsneak",
-    "skillswap",
-    "skittersmack",
-    "sleeptalk",
-    "sludgebomb",
-    "snore",
-    "solarbeam",
-    "spite",
-    "substitute",
-    "sunnyday",
-    "swagger",
-    "synthesis",
-    "telekinesis",
-    "thief",
-    "toxic",
-    "trick",
-    "trickortreat",
-    "trickroom",
-    "willowisp",
-    "worryseed",
-  ],
-  gourgeistsuper: [
+  "gourgeist": [
     "allyswitch",
     "astonish",
     "attract",
@@ -69112,9 +68454,88 @@ export default {
     "trickortreat",
     "trickroom",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  bergmite: [
+  "gourgeistsuper": [
+    "allyswitch",
+    "astonish",
+    "attract",
+    "brutalswing",
+    "bulletseed",
+    "chargebeam",
+    "confide",
+    "confuseray",
+    "darkpulse",
+    "doubleteam",
+    "dreameater",
+    "endure",
+    "energyball",
+    "explosion",
+    "facade",
+    "fireblast",
+    "flamecharge",
+    "flamethrower",
+    "flash",
+    "focusblast",
+    "foulplay",
+    "frustration",
+    "gigadrain",
+    "gigaimpact",
+    "grassknot",
+    "grassyglide",
+    "gyroball",
+    "hex",
+    "hiddenpower",
+    "hyperbeam",
+    "imprison",
+    "incinerate",
+    "leechseed",
+    "lightscreen",
+    "magiccoat",
+    "moonblast",
+    "mysticalfire",
+    "nastyplot",
+    "naturepower",
+    "painsplit",
+    "phantomforce",
+    "poltergeist",
+    "powerwhip",
+    "protect",
+    "psychic",
+    "razorleaf",
+    "rest",
+    "return",
+    "rockslide",
+    "rocksmash",
+    "roleplay",
+    "round",
+    "safeguard",
+    "scaryface",
+    "secretpower",
+    "seedbomb",
+    "shadowball",
+    "shadowsneak",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "snore",
+    "solarbeam",
+    "spite",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "synthesis",
+    "telekinesis",
+    "thief",
+    "toxic",
+    "trick",
+    "trickortreat",
+    "trickroom",
+    "willowisp",
+    "worryseed"
+  ],
+  "bergmite": [
     "afteryou",
     "attract",
     "auroraveil",
@@ -69176,12 +68597,11 @@ export default {
     "takedown",
     "terablast",
     "toxic",
-    "waterpulse",
+    "waterpulse"
   ],
-  avalugg: [
+  "avalugg": [
     "afteryou",
     "attract",
-    "auroraveil",
     "avalanche",
     "bite",
     "blizzard",
@@ -69220,7 +68640,6 @@ export default {
     "icywind",
     "irondefense",
     "ironhead",
-    "mirrorcoat",
     "powdersnow",
     "protect",
     "raindance",
@@ -69254,11 +68673,9 @@ export default {
     "terablast",
     "toxic",
     "waterpulse",
-    "wideguard",
+    "wideguard"
   ],
-  avalugghisui: [
-    "ancientpower",
-    "auroraveil",
+  "avalugghisui": [
     "avalanche",
     "bite",
     "blizzard",
@@ -69288,7 +68705,6 @@ export default {
     "irondefense",
     "ironhead",
     "meteorbeam",
-    "mirrorcoat",
     "mountaingale",
     "powdersnow",
     "protect",
@@ -69310,9 +68726,9 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "wideguard",
+    "wideguard"
   ],
-  noibat: [
+  "noibat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -69384,9 +68800,9 @@ export default {
     "whirlwind",
     "wildcharge",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  noivern: [
+  "noivern": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -69410,7 +68826,6 @@ export default {
     "dragonclaw",
     "dragondance",
     "dragonpulse",
-    "dragonrush",
     "dragontail",
     "dreameater",
     "dualwingbeat",
@@ -69459,7 +68874,6 @@ export default {
     "supersonic",
     "swagger",
     "swift",
-    "switcheroo",
     "tackle",
     "tailwind",
     "takedown",
@@ -69474,9 +68888,9 @@ export default {
     "whirlwind",
     "wildcharge",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  xerneas: [
+  "xerneas": [
     "aromatherapy",
     "aurorabeam",
     "block",
@@ -69545,9 +68959,9 @@ export default {
     "thunderwave",
     "toxic",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  yveltal: [
+  "yveltal": [
     "acrobatics",
     "aerialace",
     "airslash",
@@ -69613,9 +69027,9 @@ export default {
     "torment",
     "toxic",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zygarde: [
+  "zygarde": [
     "bind",
     "bite",
     "block",
@@ -69685,9 +69099,9 @@ export default {
     "thousandarrows",
     "thousandwaves",
     "toxic",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zygarde10: [
+  "zygarde10": [
     "bind",
     "dig",
     "dragonbreath",
@@ -69700,9 +69114,9 @@ export default {
     "outrage",
     "safeguard",
     "sandstorm",
-    "thousandarrows",
+    "thousandarrows"
   ],
-  diancie: [
+  "diancie": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -69792,9 +69206,9 @@ export default {
     "terrainpulse",
     "toxic",
     "trickroom",
-    "wonderroom",
+    "wonderroom"
   ],
-  hoopa: [
+  "hoopa": [
     "allyswitch",
     "astonish",
     "block",
@@ -69891,10 +69305,10 @@ export default {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hoopaunbound: [],
-  volcanion: [
+  "hoopaunbound": [],
+  "volcanion": [
     "bodypress",
     "bodyslam",
     "brickbreak",
@@ -69976,9 +69390,9 @@ export default {
     "waterpulse",
     "weatherball",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  rowlet: [
+  "rowlet": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -70053,9 +69467,9 @@ export default {
     "toxic",
     "trailblaze",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  dartrix: [
+  "dartrix": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -70130,9 +69544,9 @@ export default {
     "toxic",
     "trailblaze",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  decidueye: [
+  "decidueye": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -70228,9 +69642,9 @@ export default {
     "trailblaze",
     "uturn",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  decidueyehisui: [
+  "decidueyehisui": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -70243,8 +69657,6 @@ export default {
     "closecombat",
     "coaching",
     "confuseray",
-    "defog",
-    "doubleteam",
     "dualwingbeat",
     "endure",
     "energyball",
@@ -70282,17 +69694,13 @@ export default {
     "rest",
     "reversal",
     "rocktomb",
-    "roost",
-    "round",
     "scaryface",
     "seedbomb",
     "shadowclaw",
     "shadowsneak",
     "sleeptalk",
     "smackdown",
-    "snore",
     "solarbeam",
-    "steelwing",
     "substitute",
     "suckerpunch",
     "sunnyday",
@@ -70307,9 +69715,9 @@ export default {
     "trailblaze",
     "triplearrows",
     "upperhand",
-    "uturn",
+    "uturn"
   ],
-  litten: [
+  "litten": [
     "acrobatics",
     "attract",
     "bite",
@@ -70373,9 +69781,9 @@ export default {
     "trailblaze",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  torracat: [
+  "torracat": [
     "acrobatics",
     "attract",
     "bite",
@@ -70437,9 +69845,9 @@ export default {
     "trailblaze",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  incineroar: [
+  "incineroar": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -70507,9 +69915,7 @@ export default {
     "nastyplot",
     "outrage",
     "overheat",
-    "partingshot",
     "payday",
-    "powertrip",
     "protect",
     "quash",
     "rest",
@@ -70545,9 +69951,9 @@ export default {
     "trailblaze",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  popplio: [
+  "popplio": [
     "acrobatics",
     "amnesia",
     "aquajet",
@@ -70614,9 +70020,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  brionne: [
+  "brionne": [
     "acrobatics",
     "amnesia",
     "aquajet",
@@ -70680,14 +70086,13 @@ export default {
     "waterpulse",
     "whirlpool",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  primarina: [
+  "primarina": [
     "acrobatics",
     "alluringvoice",
     "amnesia",
     "aquajet",
-    "aquaring",
     "aquatail",
     "attract",
     "babydolleyes",
@@ -70728,7 +70133,6 @@ export default {
     "icespinner",
     "icywind",
     "irontail",
-    "lifedew",
     "lightscreen",
     "liquidation",
     "magiccoat",
@@ -70770,9 +70174,9 @@ export default {
     "weatherball",
     "whirlpool",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  pikipek: [
+  "pikipek": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -70830,9 +70234,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  trumbeak: [
+  "trumbeak": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -70890,16 +70294,15 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  toucannon: [
+  "toucannon": [
     "acrobatics",
     "aerialace",
     "aircutter",
     "airslash",
     "attract",
     "beakblast",
-    "boomburst",
     "bravebird",
     "brickbreak",
     "bulletseed",
@@ -70963,9 +70366,9 @@ export default {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  yungoos: [
+  "yungoos": [
     "attract",
     "bide",
     "bite",
@@ -71031,9 +70434,9 @@ export default {
     "wildcharge",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gumshoos: [
+  "gumshoos": [
     "attract",
     "bide",
     "bite",
@@ -71113,9 +70516,9 @@ export default {
     "wildcharge",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gumshoostotem: [
+  "gumshoostotem": [
     "attract",
     "bide",
     "bite",
@@ -71171,9 +70574,9 @@ export default {
     "uturn",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grubbin: [
+  "grubbin": [
     "acrobatics",
     "attract",
     "batonpass",
@@ -71225,9 +70628,9 @@ export default {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  charjabug: [
+  "charjabug": [
     "acrobatics",
     "attract",
     "batonpass",
@@ -71282,9 +70685,9 @@ export default {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  vikavolt: [
+  "vikavolt": [
     "acrobatics",
     "agility",
     "airslash",
@@ -71358,9 +70761,9 @@ export default {
     "voltswitch",
     "wildcharge",
     "xscissor",
-    "zapcannon",
+    "zapcannon"
   ],
-  vikavolttotem: [
+  "vikavolttotem": [
     "acrobatics",
     "agility",
     "airslash",
@@ -71412,9 +70815,9 @@ export default {
     "voltswitch",
     "wildcharge",
     "xscissor",
-    "zapcannon",
+    "zapcannon"
   ],
-  crabrawler: [
+  "crabrawler": [
     "amnesia",
     "attract",
     "bodyslam",
@@ -71487,9 +70890,9 @@ export default {
     "visegrip",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  crabominable: [
+  "crabominable": [
     "amnesia",
     "attract",
     "avalanche",
@@ -71507,7 +70910,6 @@ export default {
     "closecombat",
     "coaching",
     "confide",
-    "crabhammer",
     "dig",
     "dizzypunch",
     "doubleteam",
@@ -71534,14 +70936,12 @@ export default {
     "icehammer",
     "icepunch",
     "icespinner",
-    "iciclespear",
     "icywind",
     "irondefense",
     "ironhead",
     "knockoff",
     "leer",
     "liquidation",
-    "machpunch",
     "mudshot",
     "mudslap",
     "payback",
@@ -71575,11 +70975,10 @@ export default {
     "thunderpunch",
     "toxic",
     "upperhand",
-    "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oricorio: [
+  "oricorio": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -71644,9 +71043,9 @@ export default {
     "toxic",
     "trailblaze",
     "uturn",
-    "workup",
+    "workup"
   ],
-  cutiefly: [
+  "cutiefly": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -71724,9 +71123,9 @@ export default {
     "trailblaze",
     "trick",
     "uturn",
-    "wonderroom",
+    "wonderroom"
   ],
-  ribombee: [
+  "ribombee": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -71809,9 +71208,9 @@ export default {
     "trailblaze",
     "trick",
     "uturn",
-    "wonderroom",
+    "wonderroom"
   ],
-  ribombeetotem: [
+  "ribombeetotem": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -71870,9 +71269,9 @@ export default {
     "toxic",
     "trick",
     "uturn",
-    "wonderroom",
+    "wonderroom"
   ],
-  rockruff: [
+  "rockruff": [
     "attract",
     "bite",
     "bodyslam",
@@ -71936,9 +71335,9 @@ export default {
     "thunderfang",
     "toxic",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rockruffdusk: [
+  "rockruffdusk": [
     "attract",
     "bite",
     "bodyslam",
@@ -72003,9 +71402,9 @@ export default {
     "thunderfang",
     "toxic",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lycanroc: [
+  "lycanroc": [
     "accelerock",
     "agility",
     "assurance",
@@ -72078,13 +71477,12 @@ export default {
     "takedown",
     "taunt",
     "terablast",
-    "thrash",
     "thunderfang",
     "toxic",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lycanrocmidnight: [
+  "lycanrocmidnight": [
     "attract",
     "bite",
     "bodyslam",
@@ -72166,7 +71564,6 @@ export default {
     "takedown",
     "taunt",
     "terablast",
-    "thrash",
     "throatchop",
     "thunderfang",
     "thunderpunch",
@@ -72174,9 +71571,9 @@ export default {
     "trailblaze",
     "upperhand",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lycanrocdusk: [
+  "lycanrocdusk": [
     "accelerock",
     "attract",
     "bite",
@@ -72256,9 +71653,9 @@ export default {
     "toxic",
     "trailblaze",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wishiwashi: [
+  "wishiwashi": [
     "aquaring",
     "aquatail",
     "attract",
@@ -72310,9 +71707,9 @@ export default {
     "watergun",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  mareanie: [
+  "mareanie": [
     "acidspray",
     "afteryou",
     "attract",
@@ -72378,9 +71775,9 @@ export default {
     "venomdrench",
     "venoshock",
     "waterpulse",
-    "wideguard",
+    "wideguard"
   ],
-  toxapex: [
+  "toxapex": [
     "acidspray",
     "afteryou",
     "attract",
@@ -72444,21 +71841,18 @@ export default {
     "snore",
     "spikecannon",
     "spite",
-    "spitup",
-    "stockpile",
     "substitute",
     "surf",
     "swagger",
-    "swallow",
     "terablast",
     "toxic",
     "toxicspikes",
     "venomdrench",
     "venoshock",
     "waterpulse",
-    "wideguard",
+    "wideguard"
   ],
-  mudbray: [
+  "mudbray": [
     "attract",
     "bide",
     "bodyslam",
@@ -72515,9 +71909,9 @@ export default {
     "swagger",
     "takedown",
     "terablast",
-    "toxic",
+    "toxic"
   ],
-  mudsdale: [
+  "mudsdale": [
     "attract",
     "bide",
     "bodypress",
@@ -72535,7 +71929,6 @@ export default {
     "endeavor",
     "endure",
     "facade",
-    "fissure",
     "focusblast",
     "frustration",
     "gigaimpact",
@@ -72580,9 +71973,9 @@ export default {
     "swagger",
     "takedown",
     "terablast",
-    "toxic",
+    "toxic"
   ],
-  dewpider: [
+  "dewpider": [
     "aquaring",
     "attract",
     "aurorabeam",
@@ -72645,9 +72038,9 @@ export default {
     "waterpulse",
     "watersport",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  araquanid: [
+  "araquanid": [
     "aquaring",
     "attract",
     "bite",
@@ -72687,7 +72080,6 @@ export default {
     "mirrorcoat",
     "poisonjab",
     "pounce",
-    "powersplit",
     "protect",
     "raindance",
     "reflect",
@@ -72703,9 +72095,6 @@ export default {
     "snore",
     "soak",
     "spiderweb",
-    "spitup",
-    "stickyweb",
-    "stockpile",
     "substitute",
     "surf",
     "swagger",
@@ -72717,9 +72106,9 @@ export default {
     "waterpulse",
     "wideguard",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  araquanidtotem: [
+  "araquanidtotem": [
     "aquaring",
     "attract",
     "bite",
@@ -72769,9 +72158,9 @@ export default {
     "waterpulse",
     "wideguard",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  fomantis: [
+  "fomantis": [
     "aromatherapy",
     "attract",
     "bugbite",
@@ -72829,9 +72218,9 @@ export default {
     "trailblaze",
     "weatherball",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  lurantis: [
+  "lurantis": [
     "aerialace",
     "attract",
     "brickbreak",
@@ -72902,9 +72291,9 @@ export default {
     "trailblaze",
     "weatherball",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  lurantistotem: [
+  "lurantistotem": [
     "aerialace",
     "attract",
     "brickbreak",
@@ -72959,9 +72348,9 @@ export default {
     "synthesis",
     "toxic",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  morelull: [
+  "morelull": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -73017,9 +72406,9 @@ export default {
     "thunderwave",
     "toxic",
     "wonderroom",
-    "worryseed",
+    "worryseed"
   ],
-  shiinotic: [
+  "shiinotic": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -73077,9 +72466,9 @@ export default {
     "toxic",
     "weatherball",
     "wonderroom",
-    "worryseed",
+    "worryseed"
   ],
-  salandit: [
+  "salandit": [
     "acidspray",
     "agility",
     "attract",
@@ -73156,15 +72545,14 @@ export default {
     "trailblaze",
     "venomdrench",
     "venoshock",
-    "willowisp",
+    "willowisp"
   ],
-  salazzle: [
+  "salazzle": [
     "acidspray",
     "acrobatics",
     "agility",
     "attract",
     "beatup",
-    "belch",
     "bodyslam",
     "breakingswipe",
     "burningjealousy",
@@ -73252,9 +72640,9 @@ export default {
     "trailblaze",
     "venomdrench",
     "venoshock",
-    "willowisp",
+    "willowisp"
   ],
-  salazzletotem: [
+  "salazzletotem": [
     "acrobatics",
     "attract",
     "captivate",
@@ -73311,9 +72699,9 @@ export default {
     "toxic",
     "venomdrench",
     "venoshock",
-    "willowisp",
+    "willowisp"
   ],
-  stufful: [
+  "stufful": [
     "aerialace",
     "attract",
     "babydolleyes",
@@ -73375,9 +72763,9 @@ export default {
     "toxic",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bewear: [
+  "bewear": [
     "aerialace",
     "attract",
     "babydolleyes",
@@ -73447,9 +72835,9 @@ export default {
     "thunderpunch",
     "toxic",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bounsweet: [
+  "bounsweet": [
     "acupressure",
     "aromatherapy",
     "aromaticmist",
@@ -73507,9 +72895,9 @@ export default {
     "toxic",
     "trailblaze",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  steenee: [
+  "steenee": [
     "aromatherapy",
     "aromaticmist",
     "attract",
@@ -73574,11 +72962,10 @@ export default {
     "trailblaze",
     "tripleaxel",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tsareena: [
+  "tsareena": [
     "acrobatics",
-    "acupressure",
     "aromatherapy",
     "aromaticmist",
     "attract",
@@ -73654,9 +73041,9 @@ export default {
     "tropkick",
     "uturn",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  comfey: [
+  "comfey": [
     "acrobatics",
     "afteryou",
     "alluringvoice",
@@ -73739,9 +73126,9 @@ export default {
     "uturn",
     "vinewhip",
     "worryseed",
-    "wrap",
+    "wrap"
   ],
-  oranguru: [
+  "oranguru": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -73832,9 +73219,9 @@ export default {
     "wonderroom",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  passimian: [
+  "passimian": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -73925,9 +73312,9 @@ export default {
     "uturn",
     "vacuumwave",
     "vitalthrow",
-    "workup",
+    "workup"
   ],
-  wimpod: [
+  "wimpod": [
     "aquajet",
     "assurance",
     "attract",
@@ -73965,9 +73352,9 @@ export default {
     "taunt",
     "toxic",
     "waterfall",
-    "wideguard",
+    "wideguard"
   ],
-  golisopod: [
+  "golisopod": [
     "aerialace",
     "assurance",
     "attract",
@@ -74048,9 +73435,9 @@ export default {
     "venoshock",
     "waterfall",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  sandygast: [
+  "sandygast": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -74122,9 +73509,9 @@ export default {
     "swallow",
     "terablast",
     "toxic",
-    "trick",
+    "trick"
   ],
-  palossand: [
+  "palossand": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -74197,9 +73584,9 @@ export default {
     "terablast",
     "terrainpulse",
     "toxic",
-    "trick",
+    "trick"
   ],
-  pyukumuku: [
+  "pyukumuku": [
     "attract",
     "batonpass",
     "bestow",
@@ -74239,9 +73626,9 @@ export default {
     "tickle",
     "toxic",
     "venomdrench",
-    "watersport",
+    "watersport"
   ],
-  typenull: [
+  "typenull": [
     "aerialace",
     "airslash",
     "confide",
@@ -74297,9 +73684,9 @@ export default {
     "triattack",
     "uturn",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  silvally: [
+  "silvally": [
     "aerialace",
     "airslash",
     "bite",
@@ -74385,9 +73772,9 @@ export default {
     "uturn",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  minior: [
+  "minior": [
     "acrobatics",
     "ancientpower",
     "attract",
@@ -74451,9 +73838,9 @@ export default {
     "terablast",
     "toxic",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  komala: [
+  "komala": [
     "acrobatics",
     "attract",
     "bodyslam",
@@ -74526,9 +73913,9 @@ export default {
     "woodhammer",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  turtonator: [
+  "turtonator": [
     "attract",
     "block",
     "bodypress",
@@ -74608,9 +73995,9 @@ export default {
     "venoshock",
     "wideguard",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  togedemaru: [
+  "togedemaru": [
     "afteryou",
     "agility",
     "assurance",
@@ -74688,9 +74075,9 @@ export default {
     "wish",
     "workup",
     "zenheadbutt",
-    "zingzap",
+    "zingzap"
   ],
-  togedemarutotem: [
+  "togedemarutotem": [
     "afteryou",
     "attract",
     "bounce",
@@ -74749,9 +74136,9 @@ export default {
     "wildcharge",
     "workup",
     "zenheadbutt",
-    "zingzap",
+    "zingzap"
   ],
-  mimikyu: [
+  "mimikyu": [
     "afteryou",
     "astonish",
     "attract",
@@ -74795,7 +74182,6 @@ export default {
     "mistyterrain",
     "nightmare",
     "nightshade",
-    "nightslash",
     "painsplit",
     "payback",
     "phantomforce",
@@ -74839,9 +74225,9 @@ export default {
     "willowisp",
     "woodhammer",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  mimikyutotem: [
+  "mimikyutotem": [
     "afteryou",
     "astonish",
     "attract",
@@ -74907,9 +74293,9 @@ export default {
     "willowisp",
     "woodhammer",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  bruxish: [
+  "bruxish": [
     "aerialace",
     "afteryou",
     "agility",
@@ -74993,14 +74379,13 @@ export default {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "wonderroom",
+    "wonderroom"
   ],
-  drampa: [
+  "drampa": [
     "amnesia",
     "attract",
     "blizzard",
     "block",
-    "bodyslam",
     "breakingswipe",
     "bulldoze",
     "calmmind",
@@ -75009,14 +74394,12 @@ export default {
     "doubleteam",
     "dracometeor",
     "dragonbreath",
-    "dragoncheer",
     "dragonclaw",
     "dragondance",
     "dragonpulse",
     "dragonrage",
     "dragonrush",
     "dragontail",
-    "earthpower",
     "earthquake",
     "echoedvoice",
     "endeavor",
@@ -75083,14 +74466,12 @@ export default {
     "thunderwave",
     "tickle",
     "toxic",
-    "triattack",
     "twister",
     "uproar",
     "waterpulse",
-    "whirlwind",
-    "workup",
+    "workup"
   ],
-  dhelmise: [
+  "dhelmise": [
     "absorb",
     "aerialace",
     "allyswitch",
@@ -75166,9 +74547,9 @@ export default {
     "thief",
     "toxic",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  jangmoo: [
+  "jangmoo": [
     "aerialace",
     "aquatail",
     "attract",
@@ -75234,9 +74615,9 @@ export default {
     "toxic",
     "uproar",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  hakamoo: [
+  "hakamoo": [
     "aerialace",
     "aquatail",
     "attract",
@@ -75314,9 +74695,9 @@ export default {
     "uproar",
     "vacuumwave",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  kommoo: [
+  "kommoo": [
     "aerialace",
     "aquatail",
     "attract",
@@ -75337,7 +74718,6 @@ export default {
     "closecombat",
     "coaching",
     "confide",
-    "counter",
     "doubleedge",
     "doubleteam",
     "dracometeor",
@@ -75422,9 +74802,9 @@ export default {
     "vacuumwave",
     "waterpulse",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  kommoototem: [
+  "kommoototem": [
     "aerialace",
     "aquatail",
     "attract",
@@ -75504,9 +74884,9 @@ export default {
     "uproar",
     "waterpulse",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  tapukoko: [
+  "tapukoko": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -75580,9 +74960,9 @@ export default {
     "voltswitch",
     "wildcharge",
     "withdraw",
-    "workup",
+    "workup"
   ],
-  tapulele: [
+  "tapulele": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -75653,9 +75033,9 @@ export default {
     "torment",
     "toxic",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  tapubulu: [
+  "tapubulu": [
     "brickbreak",
     "brutalswing",
     "bulkup",
@@ -75736,9 +75116,9 @@ export default {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tapufini: [
+  "tapufini": [
     "aquaring",
     "blizzard",
     "brine",
@@ -75809,11 +75189,17 @@ export default {
     "waterpulse",
     "whirlpool",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  cosmog: ["splash", "teleport"],
-  cosmoem: ["cosmicpower", "teleport"],
-  solgaleo: [
+  "cosmog": [
+    "splash",
+    "teleport"
+  ],
+  "cosmoem": [
+    "cosmicpower",
+    "teleport"
+  ],
+  "solgaleo": [
     "agility",
     "bodyslam",
     "bulldoze",
@@ -75900,9 +75286,9 @@ export default {
     "wideguard",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lunala: [
+  "lunala": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -75987,9 +75373,9 @@ export default {
     "wideguard",
     "willowisp",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  nihilego: [
+  "nihilego": [
     "acid",
     "acidspray",
     "allyswitch",
@@ -76061,9 +75447,9 @@ export default {
     "wonderroom",
     "worryseed",
     "wrap",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  buzzwole: [
+  "buzzwole": [
     "bodyslam",
     "bounce",
     "brickbreak",
@@ -76128,9 +75514,9 @@ export default {
     "thunderpunch",
     "toxic",
     "vitalthrow",
-    "workup",
+    "workup"
   ],
-  pheromosa: [
+  "pheromosa": [
     "agility",
     "assurance",
     "blizzard",
@@ -76196,9 +75582,9 @@ export default {
     "toxic",
     "tripleaxel",
     "triplekick",
-    "uturn",
+    "uturn"
   ],
-  xurkitree: [
+  "xurkitree": [
     "bind",
     "brutalswing",
     "calmmind",
@@ -76256,9 +75642,9 @@ export default {
     "voltswitch",
     "wildcharge",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  celesteela: [
+  "celesteela": [
     "absorb",
     "acrobatics",
     "airslash",
@@ -76323,9 +75709,9 @@ export default {
     "tackle",
     "toxic",
     "wideguard",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kartana: [
+  "kartana": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -76370,9 +75756,9 @@ export default {
     "tailwind",
     "toxic",
     "vacuumwave",
-    "xscissor",
+    "xscissor"
   ],
-  guzzlord: [
+  "guzzlord": [
     "amnesia",
     "belch",
     "bite",
@@ -76448,9 +75834,9 @@ export default {
     "thrash",
     "toxic",
     "wideguard",
-    "wringout",
+    "wringout"
   ],
-  necrozma: [
+  "necrozma": [
     "aerialace",
     "allyswitch",
     "autotomize",
@@ -76540,12 +75926,19 @@ export default {
     "toxic",
     "trickroom",
     "wringout",
-    "xscissor",
+    "xscissor"
   ],
-  necrozmaduskmane: ["sunsteelstrike"],
-  necrozmadawnwings: ["moongeistbeam"],
-  necrozmaultra: ["moongeistbeam", "sunsteelstrike"],
-  magearna: [
+  "necrozmaduskmane": [
+    "sunsteelstrike"
+  ],
+  "necrozmadawnwings": [
+    "moongeistbeam"
+  ],
+  "necrozmaultra": [
+    "moongeistbeam",
+    "sunsteelstrike"
+  ],
+  "magearna": [
     "afteryou",
     "agility",
     "aurasphere",
@@ -76649,9 +76042,9 @@ export default {
     "trumpcard",
     "voltswitch",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  magearnaoriginal: [
+  "magearnaoriginal": [
     "agility",
     "aurasphere",
     "aurorabeam",
@@ -76734,9 +76127,9 @@ export default {
     "trickroom",
     "voltswitch",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  marshadow: [
+  "marshadow": [
     "acrobatics",
     "agility",
     "assurance",
@@ -76820,9 +76213,9 @@ export default {
     "toxic",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  poipole: [
+  "poipole": [
     "acid",
     "charm",
     "confide",
@@ -76859,9 +76252,9 @@ export default {
     "toxicspikes",
     "uproar",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  naganadel: [
+  "naganadel": [
     "acid",
     "acrobatics",
     "aerialace",
@@ -76938,9 +76331,9 @@ export default {
     "uturn",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  stakataka: [
+  "stakataka": [
     "allyswitch",
     "autotomize",
     "bide",
@@ -77006,9 +76399,9 @@ export default {
     "trickroom",
     "wideguard",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  blacephalon: [
+  "blacephalon": [
     "afteryou",
     "astonish",
     "calmmind",
@@ -77074,9 +76467,9 @@ export default {
     "trick",
     "uproar",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zeraora: [
+  "zeraora": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -77159,9 +76552,9 @@ export default {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  meltan: [
+  "meltan": [
     "acidarmor",
     "endure",
     "facade",
@@ -77181,9 +76574,9 @@ export default {
     "thunderbolt",
     "thundershock",
     "thunderwave",
-    "toxic",
+    "toxic"
   ],
-  melmetal: [
+  "melmetal": [
     "acidarmor",
     "bodypress",
     "bodyslam",
@@ -77230,9 +76623,9 @@ export default {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "toxic",
+    "toxic"
   ],
-  grookey: [
+  "grookey": [
     "acrobatics",
     "assurance",
     "attract",
@@ -77290,9 +76683,9 @@ export default {
     "uturn",
     "woodhammer",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  thwackey: [
+  "thwackey": [
     "acrobatics",
     "assurance",
     "attract",
@@ -77346,9 +76739,9 @@ export default {
     "uproar",
     "uturn",
     "woodhammer",
-    "workup",
+    "workup"
   ],
-  rillaboom: [
+  "rillaboom": [
     "acrobatics",
     "assurance",
     "attract",
@@ -77425,9 +76818,9 @@ export default {
     "uproar",
     "uturn",
     "woodhammer",
-    "workup",
+    "workup"
   ],
-  scorbunny: [
+  "scorbunny": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -77483,9 +76876,9 @@ export default {
     "terablast",
     "trailblaze",
     "uturn",
-    "workup",
+    "workup"
   ],
-  raboot: [
+  "raboot": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -77541,9 +76934,9 @@ export default {
     "trailblaze",
     "uturn",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  cinderace: [
+  "cinderace": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -77618,9 +77011,9 @@ export default {
     "weatherball",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sobble: [
+  "sobble": [
     "aquajet",
     "aquaring",
     "attract",
@@ -77666,9 +77059,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  drizzile: [
+  "drizzile": [
     "attract",
     "batonpass",
     "bind",
@@ -77709,9 +77102,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  inteleon: [
+  "inteleon": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -77779,9 +77172,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  skwovet: [
+  "skwovet": [
     "amnesia",
     "assurance",
     "attract",
@@ -77828,9 +77221,9 @@ export default {
     "terablast",
     "thief",
     "trailblaze",
-    "uproar",
+    "uproar"
   ],
-  greedent: [
+  "greedent": [
     "amnesia",
     "assurance",
     "attract",
@@ -77891,9 +77284,9 @@ export default {
     "thunderfang",
     "trailblaze",
     "uproar",
-    "wildcharge",
+    "wildcharge"
   ],
-  rookidee: [
+  "rookidee": [
     "aerialace",
     "agility",
     "aircutter",
@@ -77940,9 +77333,9 @@ export default {
     "terablast",
     "thief",
     "uturn",
-    "workup",
+    "workup"
   ],
-  corvisquire: [
+  "corvisquire": [
     "aerialace",
     "agility",
     "aircutter",
@@ -77986,9 +77379,9 @@ export default {
     "terablast",
     "thief",
     "uturn",
-    "workup",
+    "workup"
   ],
-  corviknight: [
+  "corviknight": [
     "aerialace",
     "agility",
     "aircutter",
@@ -78000,14 +77393,12 @@ export default {
     "bravebird",
     "bulkup",
     "curse",
-    "defog",
     "doubleedge",
     "drillpeck",
     "dualwingbeat",
     "endure",
     "facade",
     "faketears",
-    "featherdance",
     "flashcannon",
     "fly",
     "focusenergy",
@@ -78035,11 +77426,9 @@ export default {
     "retaliate",
     "revenge",
     "reversal",
-    "roost",
     "round",
     "scaryface",
     "screech",
-    "skyattack",
     "sleeptalk",
     "snore",
     "spite",
@@ -78055,10 +77444,16 @@ export default {
     "terablast",
     "thief",
     "uturn",
-    "workup",
+    "workup"
   ],
-  blipbug: ["infestation", "recover", "stickyweb", "strugglebug", "supersonic"],
-  dottler: [
+  "blipbug": [
+    "infestation",
+    "recover",
+    "stickyweb",
+    "strugglebug",
+    "supersonic"
+  ],
+  "dottler": [
     "allyswitch",
     "attract",
     "bodypress",
@@ -78098,9 +77493,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  orbeetle: [
+  "orbeetle": [
     "afteryou",
     "agility",
     "allyswitch",
@@ -78153,9 +77548,9 @@ export default {
     "trickroom",
     "uturn",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  nickit: [
+  "nickit": [
     "agility",
     "assurance",
     "attract",
@@ -78190,9 +77585,9 @@ export default {
     "tailwhip",
     "taunt",
     "thief",
-    "torment",
+    "torment"
   ],
-  thievul: [
+  "thievul": [
     "acrobatics",
     "agility",
     "assurance",
@@ -78238,9 +77633,9 @@ export default {
     "taunt",
     "thief",
     "thunderfang",
-    "uturn",
+    "uturn"
   ],
-  gossifleur: [
+  "gossifleur": [
     "aromatherapy",
     "attract",
     "bulletseed",
@@ -78278,9 +77673,9 @@ export default {
     "sunnyday",
     "sweetscent",
     "synthesis",
-    "worryseed",
+    "worryseed"
   ],
-  eldegoss: [
+  "eldegoss": [
     "aromatherapy",
     "attract",
     "bulletseed",
@@ -78318,9 +77713,9 @@ export default {
     "sunnyday",
     "sweetscent",
     "synthesis",
-    "weatherball",
+    "weatherball"
   ],
-  wooloo: [
+  "wooloo": [
     "agility",
     "attract",
     "copycat",
@@ -78350,9 +77745,9 @@ export default {
     "tackle",
     "takedown",
     "thunderwave",
-    "wildcharge",
+    "wildcharge"
   ],
-  dubwool: [
+  "dubwool": [
     "agility",
     "attract",
     "batonpass",
@@ -78390,9 +77785,9 @@ export default {
     "takedown",
     "thunderwave",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chewtle: [
+  "chewtle": [
     "assurance",
     "attract",
     "bite",
@@ -78435,9 +77830,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  drednaw: [
+  "drednaw": [
     "assurance",
     "attract",
     "bite",
@@ -78510,9 +77905,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  yamper: [
+  "yamper": [
     "attract",
     "bite",
     "charge",
@@ -78550,9 +77945,9 @@ export default {
     "thunderwave",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  boltund: [
+  "boltund": [
     "agility",
     "attract",
     "bite",
@@ -78595,9 +77990,9 @@ export default {
     "thunderwave",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  rolycoly: [
+  "rolycoly": [
     "ancientpower",
     "attract",
     "block",
@@ -78640,9 +78035,9 @@ export default {
     "takedown",
     "temperflare",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  carkol: [
+  "carkol": [
     "ancientpower",
     "attract",
     "bodypress",
@@ -78697,9 +78092,9 @@ export default {
     "takedown",
     "temperflare",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  coalossal: [
+  "coalossal": [
     "ancientpower",
     "attract",
     "bodypress",
@@ -78763,9 +78158,9 @@ export default {
     "tarshot",
     "temperflare",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  applin: [
+  "applin": [
     "astonish",
     "attract",
     "defensecurl",
@@ -78776,9 +78171,9 @@ export default {
     "rollout",
     "suckerpunch",
     "terablast",
-    "withdraw",
+    "withdraw"
   ],
-  flapple: [
+  "flapple": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -78823,7 +78218,6 @@ export default {
     "snore",
     "solarbeam",
     "substitute",
-    "suckerpunch",
     "sunnyday",
     "takedown",
     "terablast",
@@ -78831,9 +78225,9 @@ export default {
     "twister",
     "uturn",
     "wingattack",
-    "withdraw",
+    "withdraw"
   ],
-  appletun: [
+  "appletun": [
     "amnesia",
     "appleacid",
     "astonish",
@@ -78886,7 +78280,6 @@ export default {
     "stomp",
     "stompingtantrum",
     "substitute",
-    "suckerpunch",
     "sunnyday",
     "superpower",
     "sweetscent",
@@ -78894,9 +78287,9 @@ export default {
     "terablast",
     "trailblaze",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  silicobra: [
+  "silicobra": [
     "attract",
     "belch",
     "bodyslam",
@@ -78939,18 +78332,16 @@ export default {
     "substitute",
     "takedown",
     "terablast",
-    "wrap",
+    "wrap"
   ],
-  sandaconda: [
+  "sandaconda": [
     "attract",
-    "belch",
     "bodypress",
     "bodyslam",
     "brutalswing",
     "bulldoze",
     "coil",
     "dig",
-    "dragonrush",
     "drillrun",
     "earthpower",
     "earthquake",
@@ -78966,7 +78357,6 @@ export default {
     "hyperbeam",
     "irondefense",
     "ironhead",
-    "lastresort",
     "minimize",
     "mudshot",
     "mudslap",
@@ -78997,9 +78387,9 @@ export default {
     "terablast",
     "thunderfang",
     "wrap",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cramorant: [
+  "cramorant": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -79060,9 +78450,9 @@ export default {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  arrokuda: [
+  "arrokuda": [
     "acupressure",
     "agility",
     "aquajet",
@@ -79108,9 +78498,9 @@ export default {
     "throatchop",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  barraskewda: [
+  "barraskewda": [
     "agility",
     "aquajet",
     "assurance",
@@ -79157,9 +78547,9 @@ export default {
     "throatchop",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  toxel: [
+  "toxel": [
     "acid",
     "attract",
     "belch",
@@ -79180,9 +78570,9 @@ export default {
     "snore",
     "substitute",
     "tearfullook",
-    "terablast",
+    "terablast"
   ],
-  toxtricity: [
+  "toxtricity": [
     "acid",
     "acidspray",
     "attract",
@@ -79262,9 +78652,9 @@ export default {
     "uproar",
     "venoshock",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  toxtricitylowkey: [
+  "toxtricitylowkey": [
     "acid",
     "acidspray",
     "attract",
@@ -79345,9 +78735,9 @@ export default {
     "venomdrench",
     "venoshock",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  sizzlipede: [
+  "sizzlipede": [
     "attract",
     "bite",
     "brutalswing",
@@ -79384,9 +78774,9 @@ export default {
     "substitute",
     "sunnyday",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  centiskorch: [
+  "centiskorch": [
     "attract",
     "bite",
     "brutalswing",
@@ -79432,9 +78822,9 @@ export default {
     "venoshock",
     "willowisp",
     "wrap",
-    "xscissor",
+    "xscissor"
   ],
-  clobbopus: [
+  "clobbopus": [
     "attract",
     "bind",
     "bodyslam",
@@ -79476,9 +78866,9 @@ export default {
     "superpower",
     "taunt",
     "waterfall",
-    "workup",
+    "workup"
   ],
-  grapploct: [
+  "grapploct": [
     "attract",
     "bind",
     "bodyslam",
@@ -79528,9 +78918,9 @@ export default {
     "topsyturvy",
     "waterfall",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  sinistea: [
+  "sinistea": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -79576,9 +78966,9 @@ export default {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  sinisteaantique: [
+  "sinisteaantique": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -79625,9 +79015,9 @@ export default {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  polteageist: [
+  "polteageist": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -79681,9 +79071,9 @@ export default {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  polteageistantique: [
+  "polteageistantique": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -79737,9 +79127,9 @@ export default {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  hatenna: [
+  "hatenna": [
     "afteryou",
     "aromatherapy",
     "aromaticmist",
@@ -79790,9 +79180,9 @@ export default {
     "terablast",
     "thunderwave",
     "trick",
-    "trickroom",
+    "trickroom"
   ],
-  hattrem: [
+  "hattrem": [
     "aromatherapy",
     "aromaticmist",
     "attract",
@@ -79841,10 +79231,9 @@ export default {
     "terablast",
     "thunderwave",
     "trick",
-    "trickroom",
+    "trickroom"
   ],
-  hatterene: [
-    "afteryou",
+  "hatterene": [
     "agility",
     "aromatherapy",
     "aromaticmist",
@@ -79880,7 +79269,6 @@ export default {
     "mistyexplosion",
     "mistyterrain",
     "mysticalfire",
-    "nuzzle",
     "painsplit",
     "playnice",
     "playrough",
@@ -79894,7 +79282,6 @@ export default {
     "psychocut",
     "psychup",
     "psyshock",
-    "quash",
     "reflect",
     "rest",
     "round",
@@ -79912,9 +79299,9 @@ export default {
     "thunderwave",
     "trick",
     "trickroom",
-    "wonderroom",
+    "wonderroom"
   ],
-  impidimp: [
+  "impidimp": [
     "assurance",
     "attract",
     "bite",
@@ -79964,9 +79351,9 @@ export default {
     "torment",
     "trailblaze",
     "trick",
-    "uproar",
+    "uproar"
   ],
-  morgrem: [
+  "morgrem": [
     "assurance",
     "attract",
     "bite",
@@ -80018,9 +79405,9 @@ export default {
     "torment",
     "trailblaze",
     "trick",
-    "uproar",
+    "uproar"
   ],
-  grimmsnarl: [
+  "grimmsnarl": [
     "assurance",
     "attract",
     "bite",
@@ -80095,9 +79482,9 @@ export default {
     "trailblaze",
     "trick",
     "uproar",
-    "wonderroom",
+    "wonderroom"
   ],
-  milcery: [
+  "milcery": [
     "acidarmor",
     "aromatherapy",
     "aromaticmist",
@@ -80125,15 +79512,14 @@ export default {
     "sweetkiss",
     "sweetscent",
     "tackle",
-    "terablast",
+    "terablast"
   ],
-  alcremie: [
+  "alcremie": [
     "acidarmor",
     "alluringvoice",
     "aromatherapy",
     "aromaticmist",
     "attract",
-    "babydolleyes",
     "calmmind",
     "charm",
     "dazzlinggleam",
@@ -80154,7 +79540,6 @@ export default {
     "helpinghand",
     "hyperbeam",
     "imprison",
-    "lastresort",
     "lightscreen",
     "magicalleaf",
     "magicroom",
@@ -80182,9 +79567,9 @@ export default {
     "tackle",
     "terablast",
     "triattack",
-    "wonderroom",
+    "wonderroom"
   ],
-  falinks: [
+  "falinks": [
     "agility",
     "assurance",
     "beatup",
@@ -80241,9 +79626,9 @@ export default {
     "trailblaze",
     "upperhand",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pincurchin: [
+  "pincurchin": [
     "acupressure",
     "assurance",
     "attract",
@@ -80303,9 +79688,9 @@ export default {
     "venoshock",
     "watergun",
     "wildcharge",
-    "zingzap",
+    "zingzap"
   ],
-  snom: [
+  "snom": [
     "attract",
     "bugbite",
     "bugbuzz",
@@ -80326,9 +79711,9 @@ export default {
     "snore",
     "strugglebug",
     "substitute",
-    "terablast",
+    "terablast"
   ],
-  frosmoth: [
+  "frosmoth": [
     "acrobatics",
     "airslash",
     "attract",
@@ -80384,9 +79769,9 @@ export default {
     "tripleaxel",
     "uturn",
     "weatherball",
-    "wideguard",
+    "wideguard"
   ],
-  stonjourner: [
+  "stonjourner": [
     "ancientpower",
     "assurance",
     "attract",
@@ -80441,9 +79826,9 @@ export default {
     "takedown",
     "terablast",
     "wideguard",
-    "wonderroom",
+    "wonderroom"
   ],
-  eiscue: [
+  "eiscue": [
     "agility",
     "amnesia",
     "aquaring",
@@ -80498,9 +79883,9 @@ export default {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  indeedee: [
+  "indeedee": [
     "afteryou",
     "allyswitch",
     "aromatherapy",
@@ -80557,9 +79942,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  indeedeef: [
+  "indeedeef": [
     "alluringvoice",
     "allyswitch",
     "aromatherapy",
@@ -80616,9 +80001,9 @@ export default {
     "terrainpulse",
     "trick",
     "trickroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  morpeko: [
+  "morpeko": [
     "agility",
     "assurance",
     "attract",
@@ -80692,9 +80077,9 @@ export default {
     "torment",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  cufant: [
+  "cufant": [
     "attract",
     "belch",
     "bodypress",
@@ -80751,9 +80136,9 @@ export default {
     "terablast",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  copperajah: [
+  "copperajah": [
     "attract",
     "bodypress",
     "bodyslam",
@@ -80817,9 +80202,9 @@ export default {
     "taunt",
     "terablast",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dracozolt: [
+  "dracozolt": [
     "aerialace",
     "ancientpower",
     "bodyslam",
@@ -80877,9 +80262,9 @@ export default {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "wildcharge",
+    "wildcharge"
   ],
-  arctozolt: [
+  "arctozolt": [
     "ancientpower",
     "avalanche",
     "blizzard",
@@ -80933,9 +80318,9 @@ export default {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "wildcharge",
+    "wildcharge"
   ],
-  dracovish: [
+  "dracovish": [
     "ancientpower",
     "bite",
     "bodyslam",
@@ -80985,9 +80370,9 @@ export default {
     "waterfall",
     "watergun",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  arctovish: [
+  "arctovish": [
     "ancientpower",
     "auroraveil",
     "avalanche",
@@ -81032,9 +80417,9 @@ export default {
     "waterfall",
     "watergun",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  duraludon: [
+  "duraludon": [
     "attract",
     "bodypress",
     "bodyslam",
@@ -81094,9 +80479,9 @@ export default {
     "terablast",
     "thunder",
     "thunderbolt",
-    "thunderwave",
+    "thunderwave"
   ],
-  dreepy: [
+  "dreepy": [
     "astonish",
     "attract",
     "batonpass",
@@ -81122,9 +80507,9 @@ export default {
     "suckerpunch",
     "swift",
     "terablast",
-    "thunderwave",
+    "thunderwave"
   ],
-  drakloak: [
+  "drakloak": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -81184,9 +80569,9 @@ export default {
     "thunderbolt",
     "thunderwave",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  dragapult: [
+  "dragapult": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -81201,11 +80586,9 @@ export default {
     "brine",
     "confuseray",
     "curse",
-    "disable",
     "dive",
     "doubleedge",
     "doublehit",
-    "doubleteam",
     "dracometeor",
     "dragonbreath",
     "dragoncheer",
@@ -81258,9 +80641,9 @@ export default {
     "thunderwave",
     "triattack",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  zacian: [
+  "zacian": [
     "agility",
     "airslash",
     "assurance",
@@ -81323,10 +80706,12 @@ export default {
     "thunderfang",
     "trailblaze",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  zaciancrowned: ["behemothblade"],
-  zamazenta: [
+  "zaciancrowned": [
+    "behemothblade"
+  ],
+  "zamazenta": [
     "agility",
     "bite",
     "bodypress",
@@ -81394,10 +80779,12 @@ export default {
     "trailblaze",
     "wideguard",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  zamazentacrowned: ["behemothbash"],
-  eternatus: [
+  "zamazentacrowned": [
+    "behemothbash"
+  ],
+  "eternatus": [
     "agility",
     "assurance",
     "bodyslam",
@@ -81450,9 +80837,9 @@ export default {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  kubfu: [
+  "kubfu": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -81500,9 +80887,9 @@ export default {
     "thunderpunch",
     "uturn",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  urshifu: [
+  "urshifu": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -81577,9 +80964,9 @@ export default {
     "uturn",
     "wickedblow",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  urshifurapidstrike: [
+  "urshifurapidstrike": [
     "acrobatics",
     "aerialace",
     "aquajet",
@@ -81651,9 +81038,9 @@ export default {
     "waterfall",
     "whirlpool",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zarude: [
+  "zarude": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -81735,9 +81122,9 @@ export default {
     "throatchop",
     "trailblaze",
     "uturn",
-    "vinewhip",
+    "vinewhip"
   ],
-  zarudedada: [
+  "zarudedada": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -81819,9 +81206,9 @@ export default {
     "throatchop",
     "trailblaze",
     "uturn",
-    "vinewhip",
+    "vinewhip"
   ],
-  regieleki: [
+  "regieleki": [
     "acrobatics",
     "agility",
     "ancientpower",
@@ -81868,9 +81255,9 @@ export default {
     "thunderwave",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  regidrago: [
+  "regidrago": [
     "ancientpower",
     "bite",
     "bodyslam",
@@ -81913,9 +81300,9 @@ export default {
     "thrash",
     "thunderfang",
     "twister",
-    "visegrip",
+    "visegrip"
   ],
-  glastrier: [
+  "glastrier": [
     "assurance",
     "avalanche",
     "blizzard",
@@ -81970,9 +81357,9 @@ export default {
     "torment",
     "trailblaze",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spectrier: [
+  "spectrier": [
     "agility",
     "assurance",
     "bodyslam",
@@ -82022,9 +81409,9 @@ export default {
     "terablast",
     "thrash",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  calyrex: [
+  "calyrex": [
     "agility",
     "allyswitch",
     "aromatherapy",
@@ -82093,9 +81480,9 @@ export default {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  calyrexice: [
+  "calyrexice": [
     "agility",
     "allyswitch",
     "aromatherapy",
@@ -82203,9 +81590,9 @@ export default {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  calyrexshadow: [
+  "calyrexshadow": [
     "agility",
     "allyswitch",
     "aromatherapy",
@@ -82303,9 +81690,9 @@ export default {
     "uproar",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  enamorus: [
+  "enamorus": [
     "agility",
     "alluringvoice",
     "astonish",
@@ -82356,10 +81743,10 @@ export default {
     "twister",
     "uproar",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  enamorustherian: [],
-  sprigatito: [
+  "enamorustherian": [],
+  "sprigatito": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -82405,9 +81792,9 @@ export default {
     "terablast",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  floragato: [
+  "floragato": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -82454,20 +81841,18 @@ export default {
     "thunderpunch",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  meowscarada: [
+  "meowscarada": [
     "acrobatics",
     "aerialace",
     "agility",
-    "allyswitch",
     "aurasphere",
     "bite",
     "brickbreak",
     "bulletseed",
     "charm",
     "chillingwater",
-    "copycat",
     "darkpulse",
     "disarmingvoice",
     "doubleteam",
@@ -82492,7 +81877,6 @@ export default {
     "lashout",
     "leafage",
     "leafstorm",
-    "leechseed",
     "lowkick",
     "lowsweep",
     "magicalleaf",
@@ -82517,7 +81901,6 @@ export default {
     "solarbeam",
     "spikes",
     "substitute",
-    "suckerpunch",
     "swift",
     "tailwhip",
     "takedown",
@@ -82532,9 +81915,9 @@ export default {
     "trickroom",
     "tripleaxel",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  fuecoco: [
+  "fuecoco": [
     "belch",
     "bite",
     "bodyslam",
@@ -82579,9 +81962,9 @@ export default {
     "thunderfang",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  crocalor: [
+  "crocalor": [
     "bite",
     "bodyslam",
     "crunch",
@@ -82625,15 +82008,13 @@ export default {
     "thunderfang",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  skeledirge: [
+  "skeledirge": [
     "alluringvoice",
-    "belch",
     "bite",
     "blastburn",
     "bodyslam",
-    "burnup",
     "crunch",
     "curse",
     "dig",
@@ -82677,7 +82058,6 @@ export default {
     "shadowball",
     "shadowclaw",
     "sing",
-    "slackoff",
     "sleeptalk",
     "snarl",
     "solarbeam",
@@ -82692,9 +82072,9 @@ export default {
     "torchsong",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  quaxly: [
+  "quaxly": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -82735,9 +82115,9 @@ export default {
     "waterpledge",
     "whirlpool",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  quaxwell: [
+  "quaxwell": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -82779,9 +82159,9 @@ export default {
     "waterpulse",
     "whirlpool",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  quaquaval: [
+  "quaquaval": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -82798,7 +82178,6 @@ export default {
     "closecombat",
     "coaching",
     "counter",
-    "detect",
     "disarmingvoice",
     "doublehit",
     "encore",
@@ -82819,7 +82198,6 @@ export default {
     "icespinner",
     "icywind",
     "knockoff",
-    "lastresort",
     "liquidation",
     "lowkick",
     "lowsweep",
@@ -82829,10 +82207,8 @@ export default {
     "protect",
     "psychup",
     "raindance",
-    "rapidspin",
     "rest",
     "reversal",
-    "roost",
     "sleeptalk",
     "substitute",
     "surf",
@@ -82850,9 +82226,9 @@ export default {
     "wavecrash",
     "whirlpool",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  lechonk: [
+  "lechonk": [
     "bodyslam",
     "bulldoze",
     "bulletseed",
@@ -82894,9 +82270,9 @@ export default {
     "uproar",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oinkologne: [
+  "oinkologne": [
     "belch",
     "bodypress",
     "bodyslam",
@@ -82943,9 +82319,9 @@ export default {
     "uproar",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oinkolognef: [
+  "oinkolognef": [
     "belch",
     "bodypress",
     "bodyslam",
@@ -82992,9 +82368,9 @@ export default {
     "uproar",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tarountula: [
+  "tarountula": [
     "assurance",
     "block",
     "bodyslam",
@@ -83038,9 +82414,9 @@ export default {
     "throatchop",
     "toxicspikes",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  spidops: [
+  "spidops": [
     "aerialace",
     "assurance",
     "block",
@@ -83095,9 +82471,9 @@ export default {
     "trailblaze",
     "upperhand",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  nymble: [
+  "nymble": [
     "agility",
     "assurance",
     "astonish",
@@ -83128,9 +82504,9 @@ export default {
     "thief",
     "trailblaze",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  lokix: [
+  "lokix": [
     "aerialace",
     "agility",
     "assurance",
@@ -83180,9 +82556,9 @@ export default {
     "throatchop",
     "trailblaze",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  rellor: [
+  "rellor": [
     "bugbite",
     "bugbuzz",
     "cosmicpower",
@@ -83215,9 +82591,9 @@ export default {
     "terablast",
     "thief",
     "weatherball",
-    "xscissor",
+    "xscissor"
   ],
-  rabsca: [
+  "rabsca": [
     "bugbite",
     "bugbuzz",
     "calmmind",
@@ -83285,9 +82661,9 @@ export default {
     "trickroom",
     "weatherball",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  greavard: [
+  "greavard": [
     "allyswitch",
     "bite",
     "bulldoze",
@@ -83339,9 +82715,9 @@ export default {
     "thunderfang",
     "trick",
     "uproar",
-    "yawn",
+    "yawn"
   ],
-  houndstone: [
+  "houndstone": [
     "bite",
     "bodypress",
     "bulldoze",
@@ -83391,9 +82767,9 @@ export default {
     "thunderfang",
     "trick",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  flittle: [
+  "flittle": [
     "agility",
     "allyswitch",
     "babydolleyes",
@@ -83438,12 +82814,11 @@ export default {
     "trickroom",
     "uproar",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  espathra: [
+  "espathra": [
     "aerialace",
     "agility",
-    "allyswitch",
     "babydolleyes",
     "batonpass",
     "bodyslam",
@@ -83468,7 +82843,6 @@ export default {
     "hex",
     "hyperbeam",
     "hypervoice",
-    "hypnosis",
     "lastresort",
     "lightscreen",
     "lowkick",
@@ -83488,7 +82862,6 @@ export default {
     "raindance",
     "reflect",
     "rest",
-    "roost",
     "sandstorm",
     "seedbomb",
     "shadowball",
@@ -83505,16 +82878,14 @@ export default {
     "trickroom",
     "uproar",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  farigiraf: [
+  "farigiraf": [
     "agility",
-    "allyswitch",
     "amnesia",
     "assurance",
     "astonish",
     "batonpass",
-    "beatup",
     "bodyslam",
     "bulldoze",
     "calmmind",
@@ -83547,8 +82918,6 @@ export default {
     "ironhead",
     "lightscreen",
     "lowkick",
-    "meanlook",
-    "mirrorcoat",
     "nastyplot",
     "nightshade",
     "powerswap",
@@ -83585,10 +82954,9 @@ export default {
     "trickroom",
     "twinbeam",
     "uproar",
-    "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wiglett: [
+  "wiglett": [
     "agility",
     "aquajet",
     "blizzard",
@@ -83627,9 +82995,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  wugtrio: [
+  "wugtrio": [
     "agility",
     "aquajet",
     "blizzard",
@@ -83670,9 +83038,9 @@ export default {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  dondozo: [
+  "dondozo": [
     "aquatail",
     "avalanche",
     "bodypress",
@@ -83718,9 +83086,9 @@ export default {
     "waterpulse",
     "wavecrash",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  veluza: [
+  "veluza": [
     "agility",
     "aquacutter",
     "aquajet",
@@ -83768,9 +83136,9 @@ export default {
     "thrash",
     "waterfall",
     "waterpulse",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  finizen: [
+  "finizen": [
     "acrobatics",
     "agility",
     "aquajet",
@@ -83814,9 +83182,9 @@ export default {
     "waterfall",
     "watergun",
     "waterpulse",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  palafin: [
+  "palafin": [
     "acrobatics",
     "agility",
     "aquajet",
@@ -83825,13 +83193,10 @@ export default {
     "aurasphere",
     "blizzard",
     "bodyslam",
-    "boomburst",
-    "bounce",
     "bulkup",
     "charm",
     "chillingwater",
     "closecombat",
-    "counter",
     "disarmingvoice",
     "dive",
     "doublehit",
@@ -83876,15 +83241,14 @@ export default {
     "taunt",
     "terablast",
     "throatchop",
-    "tickle",
     "waterfall",
     "watergun",
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  smoliv: [
+  "smoliv": [
     "absorb",
     "bulletseed",
     "charm",
@@ -83920,9 +83284,9 @@ export default {
     "terablast",
     "terrainpulse",
     "trailblaze",
-    "weatherball",
+    "weatherball"
   ],
-  dolliv: [
+  "dolliv": [
     "absorb",
     "bulletseed",
     "charm",
@@ -83955,9 +83319,9 @@ export default {
     "terablast",
     "terrainpulse",
     "trailblaze",
-    "weatherball",
+    "weatherball"
   ],
-  arboliva: [
+  "arboliva": [
     "absorb",
     "alluringvoice",
     "bulletseed",
@@ -84006,9 +83370,9 @@ export default {
     "terablast",
     "terrainpulse",
     "trailblaze",
-    "weatherball",
+    "weatherball"
   ],
-  capsakid: [
+  "capsakid": [
     "bite",
     "bulletseed",
     "crunch",
@@ -84047,23 +83411,20 @@ export default {
     "thief",
     "trailblaze",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  scovillain: [
+  "scovillain": [
     "bite",
     "bulletseed",
     "burningjealousy",
     "crunch",
-    "doublehit",
     "endeavor",
     "endure",
     "energyball",
     "facade",
     "fireblast",
     "firefang",
-    "firespin",
     "flamethrower",
-    "flareblitz",
     "gigadrain",
     "gigaimpact",
     "grassknot",
@@ -84073,16 +83434,13 @@ export default {
     "headbutt",
     "helpinghand",
     "hyperbeam",
-    "ingrain",
     "lashout",
     "leafage",
     "leafstorm",
-    "leechseed",
     "leer",
     "magicalleaf",
     "overheat",
     "protect",
-    "ragepowder",
     "razorleaf",
     "rest",
     "sandstorm",
@@ -84095,18 +83453,16 @@ export default {
     "substitute",
     "sunnyday",
     "superfang",
-    "swagger",
     "takedown",
     "temperflare",
     "terablast",
     "thief",
-    "thunderfang",
     "trailblaze",
     "willowisp",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tadbulb: [
+  "tadbulb": [
     "acidspray",
     "charge",
     "chargebeam",
@@ -84146,9 +83502,9 @@ export default {
     "waterpulse",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  bellibolt: [
+  "bellibolt": [
     "acidspray",
     "charge",
     "chargebeam",
@@ -84168,14 +83524,12 @@ export default {
     "muddywater",
     "mudshot",
     "mudslap",
-    "paraboliccharge",
     "protect",
     "raindance",
     "reflect",
     "rest",
     "slackoff",
     "sleeptalk",
-    "soak",
     "spark",
     "substitute",
     "suckerpunch",
@@ -84193,9 +83547,9 @@ export default {
     "waterpulse",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  varoom: [
+  "varoom": [
     "acidspray",
     "assurance",
     "bodyslam",
@@ -84242,9 +83596,9 @@ export default {
     "toxicspikes",
     "uproar",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  revavroom: [
+  "revavroom": [
     "acidspray",
     "assurance",
     "bodyslam",
@@ -84299,9 +83653,9 @@ export default {
     "toxicspikes",
     "uproar",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  orthworm: [
+  "orthworm": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -84346,9 +83700,9 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "wrap",
+    "wrap"
   ],
-  tandemaus: [
+  "tandemaus": [
     "aerialace",
     "afteryou",
     "agility",
@@ -84398,16 +83752,14 @@ export default {
     "thunderwave",
     "tickle",
     "uturn",
-    "waterpulse",
+    "waterpulse"
   ],
-  maushold: [
+  "maushold": [
     "aerialace",
-    "afteryou",
     "agility",
     "babydolleyes",
     "batonpass",
     "beatup",
-    "bite",
     "bulletseed",
     "charm",
     "chillingwater",
@@ -84421,7 +83773,6 @@ export default {
     "endure",
     "facade",
     "faketears",
-    "feint",
     "followme",
     "gigaimpact",
     "grassknot",
@@ -84445,19 +83796,17 @@ export default {
     "sunnyday",
     "superfang",
     "swift",
-    "switcheroo",
     "takedown",
     "taunt",
     "terablast",
     "thief",
     "thunderwave",
-    "tickle",
     "tidyup",
     "trailblaze",
     "uturn",
-    "waterpulse",
+    "waterpulse"
   ],
-  cetoddle: [
+  "cetoddle": [
     "amnesia",
     "avalanche",
     "bellydrum",
@@ -84505,9 +83854,9 @@ export default {
     "takedown",
     "terablast",
     "waterpulse",
-    "yawn",
+    "yawn"
   ],
-  cetitan: [
+  "cetitan": [
     "amnesia",
     "avalanche",
     "blizzard",
@@ -84553,9 +83902,9 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "waterpulse",
+    "waterpulse"
   ],
-  frigibax: [
+  "frigibax": [
     "aquatail",
     "avalanche",
     "bite",
@@ -84590,9 +83939,9 @@ export default {
     "swordsdance",
     "tackle",
     "takedown",
-    "terablast",
+    "terablast"
   ],
-  arctibax: [
+  "arctibax": [
     "aerialace",
     "avalanche",
     "bite",
@@ -84628,9 +83977,9 @@ export default {
     "swordsdance",
     "tackle",
     "takedown",
-    "terablast",
+    "terablast"
   ],
-  baxcalibur: [
+  "baxcalibur": [
     "aerialace",
     "avalanche",
     "bite",
@@ -84683,9 +84032,9 @@ export default {
     "takedown",
     "terablast",
     "thunderfang",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tatsugiri: [
+  "tatsugiri": [
     "batonpass",
     "chillingwater",
     "counter",
@@ -84721,9 +84070,9 @@ export default {
     "terablast",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  tatsugiristretchy: [
+  "tatsugiristretchy": [
     "batonpass",
     "celebrate",
     "chillingwater",
@@ -84760,9 +84109,9 @@ export default {
     "terablast",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  cyclizar: [
+  "cyclizar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -84818,9 +84167,9 @@ export default {
     "trailblaze",
     "uproar",
     "uturn",
-    "wildcharge",
+    "wildcharge"
   ],
-  pawmi: [
+  "pawmi": [
     "agility",
     "batonpass",
     "bite",
@@ -84870,9 +84219,9 @@ export default {
     "thunderwave",
     "voltswitch",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pawmo: [
+  "pawmo": [
     "agility",
     "armthrust",
     "batonpass",
@@ -84925,9 +84274,9 @@ export default {
     "thunderwave",
     "upperhand",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  pawmot: [
+  "pawmot": [
     "agility",
     "armthrust",
     "batonpass",
@@ -84998,9 +84347,9 @@ export default {
     "thunderwave",
     "upperhand",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  wattrel: [
+  "wattrel": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -85046,9 +84395,9 @@ export default {
     "uturn",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  kilowattrel: [
+  "kilowattrel": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -85095,9 +84444,9 @@ export default {
     "uturn",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  bombirdier: [
+  "bombirdier": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -85158,9 +84507,9 @@ export default {
     "torment",
     "uturn",
     "whirlwind",
-    "wingattack",
+    "wingattack"
   ],
-  squawkabilly: [
+  "squawkabilly": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -85207,9 +84556,9 @@ export default {
     "thief",
     "torment",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  flamigo: [
+  "flamigo": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -85263,9 +84612,9 @@ export default {
     "uturn",
     "waterpulse",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  klawf: [
+  "klawf": [
     "ancientpower",
     "block",
     "bodyslam",
@@ -85320,9 +84669,9 @@ export default {
     "throatchop",
     "trailblaze",
     "visegrip",
-    "xscissor",
+    "xscissor"
   ],
-  nacli: [
+  "nacli": [
     "ancientpower",
     "bodyslam",
     "bulldoze",
@@ -85361,9 +84710,9 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  naclstack: [
+  "naclstack": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -85405,10 +84754,9 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  garganacl: [
-    "ancientpower",
+  "garganacl": [
     "avalanche",
     "block",
     "bodypress",
@@ -85418,14 +84766,12 @@ export default {
     "curse",
     "dig",
     "doubleedge",
-    "dynamicpunch",
     "earthpower",
     "earthquake",
     "endure",
     "explosion",
     "facade",
     "firepunch",
-    "fissure",
     "flashcannon",
     "fling",
     "focuspunch",
@@ -85467,9 +84813,9 @@ export default {
     "terablast",
     "thunderpunch",
     "wideguard",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  glimmet: [
+  "glimmet": [
     "acidarmor",
     "acidspray",
     "ancientpower",
@@ -85510,9 +84856,9 @@ export default {
     "terablast",
     "toxic",
     "toxicspikes",
-    "venoshock",
+    "venoshock"
   ],
-  glimmora: [
+  "glimmora": [
     "acidarmor",
     "acidspray",
     "ancientpower",
@@ -85521,7 +84867,6 @@ export default {
     "earthpower",
     "endure",
     "energyball",
-    "explosion",
     "facade",
     "flashcannon",
     "gigaimpact",
@@ -85530,7 +84875,6 @@ export default {
     "hyperbeam",
     "irondefense",
     "lightscreen",
-    "memento",
     "meteorbeam",
     "mortalspin",
     "mudshot",
@@ -85561,9 +84905,9 @@ export default {
     "terablast",
     "toxic",
     "toxicspikes",
-    "venoshock",
+    "venoshock"
   ],
-  shroodle: [
+  "shroodle": [
     "acidspray",
     "acrobatics",
     "batonpass",
@@ -85616,9 +84960,9 @@ export default {
     "toxic",
     "trailblaze",
     "uturn",
-    "venoshock",
+    "venoshock"
   ],
-  grafaiai: [
+  "grafaiai": [
     "acidspray",
     "acrobatics",
     "batonpass",
@@ -85674,9 +85018,9 @@ export default {
     "trailblaze",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  fidough: [
+  "fidough": [
     "agility",
     "alluringvoice",
     "babydolleyes",
@@ -85724,9 +85068,9 @@ export default {
     "trailblaze",
     "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  dachsbun: [
+  "dachsbun": [
     "agility",
     "alluringvoice",
     "babydolleyes",
@@ -85774,9 +85118,9 @@ export default {
     "terablast",
     "thunderfang",
     "trailblaze",
-    "workup",
+    "workup"
   ],
-  maschiff: [
+  "maschiff": [
     "bite",
     "bodyslam",
     "charm",
@@ -85819,9 +85163,9 @@ export default {
     "terablast",
     "thief",
     "thunderfang",
-    "trailblaze",
+    "trailblaze"
   ],
-  mabosstiff: [
+  "mabosstiff": [
     "bite",
     "bodyslam",
     "charm",
@@ -85871,9 +85215,9 @@ export default {
     "thief",
     "thunderfang",
     "trailblaze",
-    "wildcharge",
+    "wildcharge"
   ],
-  bramblin: [
+  "bramblin": [
     "absorb",
     "astonish",
     "beatup",
@@ -85917,9 +85261,9 @@ export default {
     "substitute",
     "terablast",
     "thief",
-    "trailblaze",
+    "trailblaze"
   ],
-  brambleghast: [
+  "brambleghast": [
     "absorb",
     "astonish",
     "bulletseed",
@@ -85961,9 +85305,9 @@ export default {
     "substitute",
     "terablast",
     "thief",
-    "trailblaze",
+    "trailblaze"
   ],
-  gimmighoul: [
+  "gimmighoul": [
     "astonish",
     "confuseray",
     "endure",
@@ -85981,9 +85325,9 @@ export default {
     "tackle",
     "takedown",
     "terablast",
-    "thief",
+    "thief"
   ],
-  gholdengo: [
+  "gholdengo": [
     "astonish",
     "chargebeam",
     "confuseray",
@@ -86028,9 +85372,9 @@ export default {
     "thunderbolt",
     "thunderpunch",
     "thunderwave",
-    "trick",
+    "trick"
   ],
-  greattusk: [
+  "greattusk": [
     "bodypress",
     "bodyslam",
     "brickbreak",
@@ -86088,9 +85432,9 @@ export default {
     "terablast",
     "throatchop",
     "thunderfang",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  brutebonnet: [
+  "brutebonnet": [
     "absorb",
     "astonish",
     "bodypress",
@@ -86141,9 +85485,9 @@ export default {
     "thrash",
     "trailblaze",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sandyshocks: [
+  "sandyshocks": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -86197,9 +85541,9 @@ export default {
     "triattack",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  screamtail: [
+  "screamtail": [
     "amnesia",
     "batonpass",
     "bite",
@@ -86279,9 +85623,9 @@ export default {
     "uproar",
     "waterpulse",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  fluttermane: [
+  "fluttermane": [
     "astonish",
     "calmmind",
     "chargebeam",
@@ -86330,9 +85674,9 @@ export default {
     "thunderbolt",
     "thunderwave",
     "trickroom",
-    "wish",
+    "wish"
   ],
-  slitherwing: [
+  "slitherwing": [
     "acrobatics",
     "aerialace",
     "bodypress",
@@ -86389,9 +85733,9 @@ export default {
     "whirlwind",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  roaringmoon: [
+  "roaringmoon": [
     "acrobatics",
     "aerialace",
     "airslash",
@@ -86459,9 +85803,9 @@ export default {
     "thunderfang",
     "uturn",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  irontreads: [
+  "irontreads": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -86513,9 +85857,9 @@ export default {
     "thunderfang",
     "voltswitch",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ironmoth: [
+  "ironmoth": [
     "acidspray",
     "acrobatics",
     "agility",
@@ -86567,9 +85911,9 @@ export default {
     "toxicspikes",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  ironhands: [
+  "ironhands": [
     "armthrust",
     "bellydrum",
     "bodypress",
@@ -86625,9 +85969,9 @@ export default {
     "thunderpunch",
     "voltswitch",
     "whirlwind",
-    "wildcharge",
+    "wildcharge"
   ],
-  ironjugulis: [
+  "ironjugulis": [
     "acrobatics",
     "aircutter",
     "airslash",
@@ -86683,9 +86027,9 @@ export default {
     "triattack",
     "uturn",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ironthorns: [
+  "ironthorns": [
     "bite",
     "blizzard",
     "bodypress",
@@ -86761,9 +86105,9 @@ export default {
     "thunderpunch",
     "thunderwave",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  ironbundle: [
+  "ironbundle": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -86804,9 +86148,9 @@ export default {
     "thief",
     "uturn",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  ironvaliant: [
+  "ironvaliant": [
     "aerialace",
     "agility",
     "aurasphere",
@@ -86886,9 +86230,9 @@ export default {
     "vacuumwave",
     "wideguard",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tinglu: [
+  "tinglu": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -86934,9 +86278,9 @@ export default {
     "thrash",
     "throatchop",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chienpao: [
+  "chienpao": [
     "acrobatics",
     "aerialace",
     "avalanche",
@@ -86981,9 +86325,9 @@ export default {
     "takedown",
     "taunt",
     "terablast",
-    "throatchop",
+    "throatchop"
   ],
-  wochien: [
+  "wochien": [
     "absorb",
     "bodypress",
     "bodyslam",
@@ -87035,9 +86379,9 @@ export default {
     "terablast",
     "tickle",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chiyu: [
+  "chiyu": [
     "bounce",
     "burningjealousy",
     "confuseray",
@@ -87083,9 +86427,9 @@ export default {
     "temperflare",
     "terablast",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  koraidon: [
+  "koraidon": [
     "acrobatics",
     "agility",
     "ancientpower",
@@ -87157,9 +86501,9 @@ export default {
     "uproar",
     "uturn",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  miraidon: [
+  "miraidon": [
     "acrobatics",
     "agility",
     "bodyslam",
@@ -87215,9 +86559,9 @@ export default {
     "uturn",
     "voltswitch",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tinkatink: [
+  "tinkatink": [
     "astonish",
     "babydolleyes",
     "brutalswing",
@@ -87263,9 +86607,9 @@ export default {
     "swordsdance",
     "terablast",
     "thief",
-    "thunderwave",
+    "thunderwave"
   ],
-  tinkatuff: [
+  "tinkatuff": [
     "astonish",
     "babydolleyes",
     "brickbreak",
@@ -87309,9 +86653,9 @@ export default {
     "swordsdance",
     "terablast",
     "thief",
-    "thunderwave",
+    "thunderwave"
   ],
-  tinkaton: [
+  "tinkaton": [
     "astonish",
     "babydolleyes",
     "brickbreak",
@@ -87326,7 +86670,6 @@ export default {
     "fairywind",
     "fakeout",
     "faketears",
-    "feint",
     "flashcannon",
     "flatter",
     "fling",
@@ -87335,7 +86678,6 @@ export default {
     "hardpress",
     "heavyslam",
     "helpinghand",
-    "icehammer",
     "knockoff",
     "lightscreen",
     "metalclaw",
@@ -87344,13 +86686,11 @@ export default {
     "playrough",
     "pounce",
     "protect",
-    "quash",
     "reflect",
     "rest",
     "rockslide",
     "rocksmash",
     "rocktomb",
-    "screech",
     "skillswap",
     "skittersmack",
     "slam",
@@ -87364,10 +86704,9 @@ export default {
     "swordsdance",
     "terablast",
     "thief",
-    "thunderwave",
-    "woodhammer",
+    "thunderwave"
   ],
-  charcadet: [
+  "charcadet": [
     "astonish",
     "celebrate",
     "clearsmog",
@@ -87397,21 +86736,18 @@ export default {
     "sunnyday",
     "takedown",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  armarouge: [
+  "armarouge": [
     "acidspray",
     "allyswitch",
     "armorcannon",
     "astonish",
     "aurasphere",
-    "burnup",
     "calmmind",
     "clearsmog",
     "confuseray",
     "darkpulse",
-    "destinybond",
-    "disable",
     "dragonpulse",
     "ember",
     "endure",
@@ -87428,7 +86764,6 @@ export default {
     "focusblast",
     "heatwave",
     "helpinghand",
-    "hyperbeam",
     "incinerate",
     "irondefense",
     "lavaplume",
@@ -87461,21 +86796,18 @@ export default {
     "trickroom",
     "weatherball",
     "wideguard",
-    "willowisp",
+    "willowisp"
   ],
-  ceruledge: [
+  "ceruledge": [
     "allyswitch",
     "astonish",
     "bitterblade",
     "brickbreak",
     "bulkup",
-    "burnup",
     "clearsmog",
     "closecombat",
     "confuseray",
     "curse",
-    "destinybond",
-    "disable",
     "dragonclaw",
     "ember",
     "endure",
@@ -87487,7 +86819,6 @@ export default {
     "flamethrower",
     "flareblitz",
     "fling",
-    "gigaimpact",
     "heatwave",
     "helpinghand",
     "hex",
@@ -87525,9 +86856,9 @@ export default {
     "throatchop",
     "vacuumwave",
     "willowisp",
-    "xscissor",
+    "xscissor"
   ],
-  toedscool: [
+  "toedscool": [
     "absorb",
     "acidspray",
     "acupressure",
@@ -87586,9 +86917,9 @@ export default {
     "trailblaze",
     "trickroom",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  toedscruel: [
+  "toedscruel": [
     "absorb",
     "acidspray",
     "bulletseed",
@@ -87644,9 +86975,9 @@ export default {
     "trailblaze",
     "trickroom",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  walkingwake: [
+  "walkingwake": [
     "agility",
     "aquajet",
     "bite",
@@ -87699,9 +87030,9 @@ export default {
     "waterfall",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  ironleaves: [
+  "ironleaves": [
     "aerialace",
     "agility",
     "airslash",
@@ -87758,9 +87089,9 @@ export default {
     "trailblaze",
     "wildcharge",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  dipplin: [
+  "dipplin": [
     "astonish",
     "bodyslam",
     "bugbite",
@@ -87801,9 +87132,9 @@ export default {
     "syrupbomb",
     "takedown",
     "terablast",
-    "withdraw",
+    "withdraw"
   ],
-  poltchageist: [
+  "poltchageist": [
     "absorb",
     "astonish",
     "calmmind",
@@ -87841,9 +87172,9 @@ export default {
     "terablast",
     "trickroom",
     "uproar",
-    "withdraw",
+    "withdraw"
   ],
-  poltchageistartisan: [
+  "poltchageistartisan": [
     "absorb",
     "astonish",
     "calmmind",
@@ -87881,52 +87212,9 @@ export default {
     "terablast",
     "trickroom",
     "uproar",
-    "withdraw",
+    "withdraw"
   ],
-  sinistcha: [
-    "absorb",
-    "astonish",
-    "calmmind",
-    "curse",
-    "endure",
-    "energyball",
-    "foulplay",
-    "gigadrain",
-    "grassyterrain",
-    "hex",
-    "hyperbeam",
-    "imprison",
-    "irondefense",
-    "leafstorm",
-    "lifedew",
-    "magicalleaf",
-    "matchagotcha",
-    "megadrain",
-    "memento",
-    "nastyplot",
-    "nightshade",
-    "painsplit",
-    "phantomforce",
-    "poltergeist",
-    "protect",
-    "psychup",
-    "ragepowder",
-    "reflect",
-    "rest",
-    "scald",
-    "shadowball",
-    "sleeptalk",
-    "solarbeam",
-    "spite",
-    "strengthsap",
-    "stunspore",
-    "substitute",
-    "terablast",
-    "trickroom",
-    "uproar",
-    "withdraw",
-  ],
-  sinistchamasterpiece: [
+  "sinistcha": [
     "absorb",
     "astonish",
     "calmmind",
@@ -87967,9 +87255,52 @@ export default {
     "terablast",
     "trickroom",
     "uproar",
-    "withdraw",
+    "withdraw"
   ],
-  okidogi: [
+  "sinistchamasterpiece": [
+    "absorb",
+    "astonish",
+    "calmmind",
+    "curse",
+    "endure",
+    "energyball",
+    "foulplay",
+    "gigadrain",
+    "grassyterrain",
+    "hex",
+    "hyperbeam",
+    "imprison",
+    "irondefense",
+    "leafstorm",
+    "lifedew",
+    "magicalleaf",
+    "matchagotcha",
+    "megadrain",
+    "memento",
+    "nastyplot",
+    "nightshade",
+    "painsplit",
+    "phantomforce",
+    "poltergeist",
+    "protect",
+    "psychup",
+    "ragepowder",
+    "reflect",
+    "rest",
+    "scald",
+    "shadowball",
+    "sleeptalk",
+    "solarbeam",
+    "spite",
+    "strengthsap",
+    "stunspore",
+    "substitute",
+    "terablast",
+    "trickroom",
+    "uproar",
+    "withdraw"
+  ],
+  "okidogi": [
     "bite",
     "bodypress",
     "bodyslam",
@@ -88034,9 +87365,9 @@ export default {
     "thunderpunch",
     "toxic",
     "upperhand",
-    "uproar",
+    "uproar"
   ],
-  munkidori: [
+  "munkidori": [
     "acidspray",
     "batonpass",
     "calmmind",
@@ -88092,9 +87423,9 @@ export default {
     "trick",
     "uproar",
     "uturn",
-    "venoshock",
+    "venoshock"
   ],
-  fezandipiti: [
+  "fezandipiti": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -88157,9 +87488,9 @@ export default {
     "uproar",
     "uturn",
     "venoshock",
-    "wingattack",
+    "wingattack"
   ],
-  ogerpon: [
+  "ogerpon": [
     "brickbreak",
     "bulletseed",
     "charm",
@@ -88221,12 +87552,12 @@ export default {
     "uturn",
     "vinewhip",
     "woodhammer",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ogerponhearthflame: [],
-  ogerponwellspring: [],
-  ogerponcornerstone: [],
-  archaludon: [
+  "ogerponhearthflame": [],
+  "ogerponwellspring": [],
+  "ogerponcornerstone": [],
+  "archaludon": [
     "aurasphere",
     "bodypress",
     "bodyslam",
@@ -88260,8 +87591,6 @@ export default {
     "metalclaw",
     "metalsound",
     "meteorbeam",
-    "mirrorcoat",
-    "nightslash",
     "outrage",
     "protect",
     "reflect",
@@ -88284,9 +87613,9 @@ export default {
     "terablast",
     "thunder",
     "thunderbolt",
-    "thunderwave",
+    "thunderwave"
   ],
-  hydrapple: [
+  "hydrapple": [
     "astonish",
     "bodypress",
     "bodyslam",
@@ -88335,7 +87664,6 @@ export default {
     "sleeptalk",
     "solarbeam",
     "substitute",
-    "suckerpunch",
     "sunnyday",
     "sweetscent",
     "syrupbomb",
@@ -88343,9 +87671,9 @@ export default {
     "terablast",
     "uproar",
     "withdraw",
-    "yawn",
+    "yawn"
   ],
-  gougingfire: [
+  "gougingfire": [
     "ancientpower",
     "bite",
     "bodyslam",
@@ -88406,9 +87734,9 @@ export default {
     "temperflare",
     "terablast",
     "thunderfang",
-    "weatherball",
+    "weatherball"
   ],
-  ragingbolt: [
+  "ragingbolt": [
     "ancientpower",
     "bodypress",
     "bodyslam",
@@ -88463,9 +87791,9 @@ export default {
     "voltswitch",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  ironboulder: [
+  "ironboulder": [
     "aerialace",
     "agility",
     "airslash",
@@ -88514,9 +87842,9 @@ export default {
     "throatchop",
     "wildcharge",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ironcrown: [
+  "ironcrown": [
     "agility",
     "airslash",
     "bodyslam",
@@ -88565,9 +87893,9 @@ export default {
     "terablast",
     "voltswitch",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  terapagos: [
+  "terapagos": [
     "ancientpower",
     "aurasphere",
     "bodypress",
@@ -88626,9 +87954,9 @@ export default {
     "weatherball",
     "wildcharge",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pecharunt: [
+  "pecharunt": [
     "acidspray",
     "astonish",
     "curse",
@@ -88663,6 +87991,6207 @@ export default {
     "terablast",
     "toxic",
     "venoshock",
-    "withdraw",
+    "withdraw"
   ],
+  "syclar": [
+    "absorb",
+    "attract",
+    "avalanche",
+    "blizzard",
+    "bugbite",
+    "bugbuzz",
+    "captivate",
+    "confide",
+    "counter",
+    "cut",
+    "doubleedge",
+    "doubleteam",
+    "earthpower",
+    "endure",
+    "facade",
+    "falseswipe",
+    "fellstinger",
+    "fling",
+    "focusenergy",
+    "focuspunch",
+    "frostbreath",
+    "frustration",
+    "furyattack",
+    "furycutter",
+    "hail",
+    "hiddenpower",
+    "honeclaws",
+    "icebeam",
+    "icefang",
+    "icepunch",
+    "iceshard",
+    "icespinner",
+    "iciclecrash",
+    "icywind",
+    "leechlife",
+    "leer",
+    "naturalgift",
+    "pinmissile",
+    "pounce",
+    "protect",
+    "raindance",
+    "rest",
+    "return",
+    "rocksmash",
+    "round",
+    "screech",
+    "secretpower",
+    "sheercold",
+    "signalbeam",
+    "silverwind",
+    "skittersmack",
+    "slash",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "spikes",
+    "strength",
+    "stringshot",
+    "strugglebug",
+    "substitute",
+    "superpower",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "tailglow",
+    "taunt",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "uturn",
+    "waterpulse",
+    "xscissor"
+  ],
+  "syclant": [
+    "absorb",
+    "attract",
+    "avalanche",
+    "blizzard",
+    "brickbreak",
+    "brutalswing",
+    "bugbite",
+    "bugbuzz",
+    "bulldoze",
+    "captivate",
+    "closecombat",
+    "confide",
+    "counter",
+    "cut",
+    "doubleedge",
+    "doubleteam",
+    "dualwingbeat",
+    "earthpower",
+    "earthquake",
+    "endure",
+    "facade",
+    "falseswipe",
+    "fling",
+    "focusblast",
+    "focusenergy",
+    "focuspunch",
+    "frostbreath",
+    "frustration",
+    "furyattack",
+    "furycutter",
+    "gigaimpact",
+    "hail",
+    "hiddenpower",
+    "honeclaws",
+    "hyperbeam",
+    "icebeam",
+    "icefang",
+    "icepunch",
+    "iceshard",
+    "icespinner",
+    "iciclecrash",
+    "iciclespear",
+    "icywind",
+    "leechlife",
+    "leer",
+    "megapunch",
+    "metronome",
+    "nastyplot",
+    "naturalgift",
+    "pinmissile",
+    "pounce",
+    "protect",
+    "raindance",
+    "rest",
+    "return",
+    "rockslide",
+    "rocksmash",
+    "round",
+    "screech",
+    "secretpower",
+    "sheercold",
+    "signalbeam",
+    "silverwind",
+    "skittersmack",
+    "slash",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "spikes",
+    "stoneedge",
+    "strength",
+    "stringshot",
+    "strugglebug",
+    "substitute",
+    "superpower",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "taunt",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "tripleaxel",
+    "uturn",
+    "waterpulse",
+    "xscissor"
+  ],
+  "revenankh": [
+    "ancientpower",
+    "armthrust",
+    "attract",
+    "bind",
+    "bodyslam",
+    "brickbreak",
+    "bulkup",
+    "captivate",
+    "closecombat",
+    "coaching",
+    "confide",
+    "confuseray",
+    "counter",
+    "curse",
+    "darkestlariat",
+    "darkpulse",
+    "destinybond",
+    "detect",
+    "dig",
+    "doubleteam",
+    "drainpunch",
+    "dreameater",
+    "dualchop",
+    "earthquake",
+    "embargo",
+    "endure",
+    "facade",
+    "fling",
+    "focusblast",
+    "focuspunch",
+    "forcepalm",
+    "foulplay",
+    "frustration",
+    "gigaimpact",
+    "glare",
+    "grudge",
+    "hammerarm",
+    "helpinghand",
+    "hex",
+    "hiddenpower",
+    "hyperbeam",
+    "icepunch",
+    "knockoff",
+    "laserfocus",
+    "lashout",
+    "leer",
+    "machpunch",
+    "meanlook",
+    "megapunch",
+    "memento",
+    "metronome",
+    "moonlight",
+    "mudslap",
+    "nastyplot",
+    "naturalgift",
+    "nightshade",
+    "ominouswind",
+    "painsplit",
+    "payback",
+    "phantomforce",
+    "poisonjab",
+    "poltergeist",
+    "poweruppunch",
+    "powerwhip",
+    "protect",
+    "psychup",
+    "punishment",
+    "quickguard",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "reversal",
+    "rockclimb",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "roleplay",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "sandtomb",
+    "scaryface",
+    "secretpower",
+    "shadowball",
+    "shadowclaw",
+    "shadowpunch",
+    "shadowsneak",
+    "sleeptalk",
+    "smackdown",
+    "snatch",
+    "snore",
+    "spite",
+    "strength",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "takedown",
+    "taunt",
+    "telekinesis",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunderpunch",
+    "torment",
+    "toxic",
+    "trick",
+    "trickroom",
+    "upperhand",
+    "vacuumwave",
+    "willowisp",
+    "wonderroom",
+    "workup",
+    "wrap"
+  ],
+  "embirch": [
+    "amnesia",
+    "aromatherapy",
+    "attract",
+    "block",
+    "bulldoze",
+    "bulletseed",
+    "confide",
+    "counter",
+    "doubleedge",
+    "doubleteam",
+    "dragonbreath",
+    "dragondance",
+    "earthpower",
+    "ember",
+    "endure",
+    "energyball",
+    "facade",
+    "fireblast",
+    "firespin",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "flash",
+    "frustration",
+    "gigadrain",
+    "grassknot",
+    "grasswhistle",
+    "grassyglide",
+    "grassyterrain",
+    "growth",
+    "headbutt",
+    "heatcrash",
+    "heatwave",
+    "hiddenpower",
+    "incinerate",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "lavaplume",
+    "leechseed",
+    "lightscreen",
+    "magicalleaf",
+    "mudslap",
+    "naturalgift",
+    "naturepower",
+    "overheat",
+    "petaldance",
+    "protect",
+    "rest",
+    "return",
+    "revenge",
+    "roar",
+    "rockclimb",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "round",
+    "safeguard",
+    "sandtomb",
+    "secretpower",
+    "seedbomb",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "stealthrock",
+    "strength",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "sweetscent",
+    "swift",
+    "swordsdance",
+    "synthesis",
+    "takedown",
+    "terablast",
+    "terrainpulse",
+    "toxic",
+    "trailblaze",
+    "watersport",
+    "wildcharge",
+    "willowisp",
+    "worryseed",
+    "zenheadbutt"
+  ],
+  "flarelm": [
+    "amnesia",
+    "ancientpower",
+    "attract",
+    "block",
+    "bulldoze",
+    "bulletseed",
+    "burningjealousy",
+    "confide",
+    "counter",
+    "doubleedge",
+    "doubleteam",
+    "dragondance",
+    "dragonpulse",
+    "dragontail",
+    "earthpower",
+    "earthquake",
+    "ember",
+    "endure",
+    "energyball",
+    "facade",
+    "fireblast",
+    "firespin",
+    "flameburst",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "flash",
+    "flashcannon",
+    "frustration",
+    "gigadrain",
+    "grassknot",
+    "grassyglide",
+    "grassyterrain",
+    "growth",
+    "headbutt",
+    "heatcrash",
+    "heatwave",
+    "hiddenpower",
+    "incinerate",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "lavaplume",
+    "leechseed",
+    "lightscreen",
+    "lowkick",
+    "magicalleaf",
+    "mudslap",
+    "naturalgift",
+    "naturepower",
+    "overheat",
+    "petaldance",
+    "protect",
+    "rest",
+    "return",
+    "revenge",
+    "roar",
+    "rockclimb",
+    "rockpolish",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "round",
+    "safeguard",
+    "sandtomb",
+    "secretpower",
+    "seedbomb",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "stealthrock",
+    "strength",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "sweetscent",
+    "swift",
+    "swordsdance",
+    "synthesis",
+    "takedown",
+    "terablast",
+    "terrainpulse",
+    "toxic",
+    "trailblaze",
+    "wildcharge",
+    "willowisp",
+    "worryseed",
+    "zenheadbutt"
+  ],
+  "pyroak": [
+    "amnesia",
+    "ancientpower",
+    "aromaticmist",
+    "attract",
+    "block",
+    "bulldoze",
+    "bulletseed",
+    "burningjealousy",
+    "burnup",
+    "confide",
+    "counter",
+    "doubleedge",
+    "doubleteam",
+    "dragoncheer",
+    "dragondance",
+    "dragonpulse",
+    "dragontail",
+    "earthpower",
+    "earthquake",
+    "ember",
+    "endure",
+    "energyball",
+    "facade",
+    "fireblast",
+    "firespin",
+    "flameburst",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "flash",
+    "flashcannon",
+    "frustration",
+    "gigadrain",
+    "gigaimpact",
+    "grassknot",
+    "grassyglide",
+    "grassyterrain",
+    "growth",
+    "headbutt",
+    "heatcrash",
+    "heatwave",
+    "heavyslam",
+    "hiddenpower",
+    "highhorsepower",
+    "hyperbeam",
+    "incinerate",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "lavaplume",
+    "leechseed",
+    "lightscreen",
+    "lowkick",
+    "magicalleaf",
+    "mudslap",
+    "naturalgift",
+    "naturepower",
+    "overheat",
+    "petalblizzard",
+    "petaldance",
+    "protect",
+    "rest",
+    "return",
+    "revenge",
+    "roar",
+    "rockclimb",
+    "rockpolish",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "round",
+    "safeguard",
+    "sandtomb",
+    "scorchingsands",
+    "secretpower",
+    "seedbomb",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "solarblade",
+    "stealthrock",
+    "strength",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "sweetscent",
+    "swift",
+    "swordsdance",
+    "synthesis",
+    "takedown",
+    "temperflare",
+    "terablast",
+    "terrainpulse",
+    "toxic",
+    "trailblaze",
+    "wildcharge",
+    "willowisp",
+    "woodhammer",
+    "worryseed",
+    "zapcannon",
+    "zenheadbutt"
+  ],
+  "breezi": [
+    "acrobatics",
+    "aerialace",
+    "afteryou",
+    "attract",
+    "block",
+    "bodyslam",
+    "bounce",
+    "captivate",
+    "confide",
+    "copycat",
+    "disable",
+    "doubleedge",
+    "doubleteam",
+    "encore",
+    "endure",
+    "entrainment",
+    "facade",
+    "fling",
+    "followme",
+    "frustration",
+    "gastroacid",
+    "gunkshot",
+    "gust",
+    "healblock",
+    "healingwish",
+    "helpinghand",
+    "hiddenpower",
+    "icespinner",
+    "icywind",
+    "knockoff",
+    "lightscreen",
+    "luckychant",
+    "magicroom",
+    "mefirst",
+    "metronome",
+    "mimic",
+    "mudslap",
+    "naturalgift",
+    "ominouswind",
+    "poisonjab",
+    "pounce",
+    "protect",
+    "psychup",
+    "raindance",
+    "reflect",
+    "rest",
+    "return",
+    "roleplay",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "sandtomb",
+    "secretpower",
+    "selfdestruct",
+    "shadowball",
+    "skillswap",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snatch",
+    "snore",
+    "speedswap",
+    "spikes",
+    "stealthrock",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "tailwind",
+    "taunt",
+    "terablast",
+    "thief",
+    "toxic",
+    "toxicspikes",
+    "trickroom",
+    "twister",
+    "uturn",
+    "venoshock",
+    "whirlwind",
+    "wish",
+    "wonderroom"
+  ],
+  "fidgit": [
+    "acrobatics",
+    "aerialace",
+    "afteryou",
+    "attract",
+    "block",
+    "bodyslam",
+    "bounce",
+    "brutalswing",
+    "bulldoze",
+    "captivate",
+    "cometpunch",
+    "confide",
+    "copycat",
+    "dig",
+    "doubleedge",
+    "doubleteam",
+    "drillrun",
+    "earthpower",
+    "earthquake",
+    "encore",
+    "endure",
+    "facade",
+    "fling",
+    "followme",
+    "frustration",
+    "gastroacid",
+    "gigaimpact",
+    "gravity",
+    "gunkshot",
+    "gust",
+    "healblock",
+    "helpinghand",
+    "hiddenpower",
+    "hyperbeam",
+    "icespinner",
+    "icywind",
+    "knockoff",
+    "lightscreen",
+    "luckychant",
+    "magicroom",
+    "megapunch",
+    "metronome",
+    "mudshot",
+    "mudslap",
+    "naturalgift",
+    "ominouswind",
+    "poisonjab",
+    "pounce",
+    "protect",
+    "psychup",
+    "raindance",
+    "rapidspin",
+    "reflect",
+    "rest",
+    "return",
+    "rockclimb",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "roleplay",
+    "rototiller",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "sandtomb",
+    "scorchingsands",
+    "secretpower",
+    "selfdestruct",
+    "shadowball",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "smartstrike",
+    "snatch",
+    "snore",
+    "speedswap",
+    "spikes",
+    "stealthrock",
+    "stompingtantrum",
+    "stoneedge",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "tailwind",
+    "taunt",
+    "terablast",
+    "thief",
+    "torment",
+    "toxic",
+    "toxicspikes",
+    "trickroom",
+    "twister",
+    "upperhand",
+    "uturn",
+    "venoshock",
+    "whirlwind",
+    "wideguard",
+    "wonderroom"
+  ],
+  "rebble": [
+    "accelerock",
+    "acupressure",
+    "aerialace",
+    "ancientpower",
+    "bulldoze",
+    "calmmind",
+    "confide",
+    "cut",
+    "dazzlinggleam",
+    "defensecurl",
+    "disable",
+    "doubleedge",
+    "doubleteam",
+    "earthpower",
+    "earthquake",
+    "embargo",
+    "endure",
+    "energyball",
+    "explosion",
+    "facade",
+    "falseswipe",
+    "fireblast",
+    "flamethrower",
+    "flash",
+    "frustration",
+    "gigadrain",
+    "headbutt",
+    "headsmash",
+    "heatwave",
+    "hiddenpower",
+    "hyperbeam",
+    "incinerate",
+    "lockon",
+    "metalsound",
+    "meteorbeam",
+    "mudshot",
+    "mudslap",
+    "naturalgift",
+    "ominouswind",
+    "powergem",
+    "protect",
+    "raindance",
+    "rest",
+    "rockblast",
+    "rockpolish",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "rollout",
+    "round",
+    "sandstorm",
+    "secretpower",
+    "shadowball",
+    "sleeptalk",
+    "smackdown",
+    "snore",
+    "speedswap",
+    "stealthrock",
+    "stoneedge",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "tackle",
+    "terablast",
+    "toxic",
+    "trick",
+    "vacuumwave",
+    "zenheadbutt"
+  ],
+  "tactite": [
+    "accelerock",
+    "acupressure",
+    "aerialace",
+    "ancientpower",
+    "bulldoze",
+    "calmmind",
+    "confide",
+    "cut",
+    "dazzlinggleam",
+    "defensecurl",
+    "disable",
+    "doubleedge",
+    "doubleteam",
+    "earthpower",
+    "earthquake",
+    "embargo",
+    "endure",
+    "energyball",
+    "explosion",
+    "facade",
+    "falseswipe",
+    "fireblast",
+    "flamethrower",
+    "flash",
+    "frustration",
+    "gigadrain",
+    "headbutt",
+    "headsmash",
+    "heatwave",
+    "hiddenpower",
+    "hyperbeam",
+    "incinerate",
+    "lockon",
+    "metalsound",
+    "meteorbeam",
+    "mudshot",
+    "mudslap",
+    "naturalgift",
+    "ominouswind",
+    "powergem",
+    "protect",
+    "raindance",
+    "rest",
+    "rockblast",
+    "rockpolish",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "rollout",
+    "round",
+    "sandstorm",
+    "secretpower",
+    "shadowball",
+    "sleeptalk",
+    "smackdown",
+    "smartstrike",
+    "snore",
+    "speedswap",
+    "stealthrock",
+    "stoneedge",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "tackle",
+    "terablast",
+    "toxic",
+    "trick",
+    "vacuumwave",
+    "zenheadbutt"
+  ],
+  "stratagem": [
+    "accelerock",
+    "acupressure",
+    "aerialace",
+    "ancientpower",
+    "bulldoze",
+    "calmmind",
+    "confide",
+    "cut",
+    "dazzlinggleam",
+    "defensecurl",
+    "disable",
+    "doubleedge",
+    "doubleteam",
+    "earthpower",
+    "earthquake",
+    "embargo",
+    "endure",
+    "energyball",
+    "explosion",
+    "facade",
+    "falseswipe",
+    "fireblast",
+    "flamethrower",
+    "flash",
+    "frustration",
+    "gigadrain",
+    "gigaimpact",
+    "headbutt",
+    "headsmash",
+    "heatwave",
+    "hiddenpower",
+    "hyperbeam",
+    "incinerate",
+    "laserfocus",
+    "lockon",
+    "metalsound",
+    "meteorbeam",
+    "mudshot",
+    "mudslap",
+    "naturalgift",
+    "ominouswind",
+    "paleowave",
+    "powergem",
+    "protect",
+    "quickguard",
+    "raindance",
+    "rest",
+    "return",
+    "rockblast",
+    "rockclimb",
+    "rockpolish",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "rollout",
+    "round",
+    "sandstorm",
+    "secretpower",
+    "shadowball",
+    "sleeptalk",
+    "smackdown",
+    "smartstrike",
+    "snore",
+    "speedswap",
+    "stealthrock",
+    "stoneedge",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "tackle",
+    "terablast",
+    "toxic",
+    "trick",
+    "vacuumwave",
+    "weatherball",
+    "zenheadbutt"
+  ],
+  "privatyke": [
+    "aquacutter",
+    "aquajet",
+    "armthrust",
+    "attract",
+    "blizzard",
+    "bodyslam",
+    "brickbreak",
+    "brine",
+    "bubble",
+    "bulkup",
+    "bulldoze",
+    "captivate",
+    "chillingwater",
+    "chipaway",
+    "closecombat",
+    "coaching",
+    "confide",
+    "crosschop",
+    "cut",
+    "dive",
+    "doubleteam",
+    "drainpunch",
+    "earthquake",
+    "embargo",
+    "endure",
+    "facade",
+    "falseswipe",
+    "fling",
+    "focuspunch",
+    "foulplay",
+    "frustration",
+    "hail",
+    "headbutt",
+    "hiddenpower",
+    "icebeam",
+    "icepunch",
+    "icywind",
+    "knockoff",
+    "lashout",
+    "liquidation",
+    "lowkick",
+    "lowsweep",
+    "machpunch",
+    "megapunch",
+    "muddywater",
+    "mudslap",
+    "naturalgift",
+    "octazooka",
+    "poisonjab",
+    "poweruppunch",
+    "protect",
+    "psychup",
+    "punishment",
+    "raindance",
+    "recover",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "roar",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "round",
+    "safeguard",
+    "scald",
+    "scaryface",
+    "secretpower",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "smokescreen",
+    "snatch",
+    "snore",
+    "snowscape",
+    "spikes",
+    "strength",
+    "submission",
+    "substitute",
+    "superpower",
+    "surf",
+    "swagger",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunderpunch",
+    "torment",
+    "toxic",
+    "vacuumwave",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "whirlpool",
+    "wideguard",
+    "workup",
+    "wrap",
+    "yawn"
+  ],
+  "arghonaut": [
+    "aquacutter",
+    "aquajet",
+    "armthrust",
+    "attract",
+    "blizzard",
+    "bodypress",
+    "bodyslam",
+    "brickbreak",
+    "brine",
+    "bubble",
+    "bulkup",
+    "bulldoze",
+    "captivate",
+    "chillingwater",
+    "chipaway",
+    "circlethrow",
+    "closecombat",
+    "coaching",
+    "confide",
+    "crosschop",
+    "crosspoison",
+    "cut",
+    "dive",
+    "doubleteam",
+    "drainpunch",
+    "earthquake",
+    "embargo",
+    "endure",
+    "facade",
+    "falseswipe",
+    "fling",
+    "focusblast",
+    "focuspunch",
+    "foulplay",
+    "frustration",
+    "gigaimpact",
+    "gunkshot",
+    "hail",
+    "hardpress",
+    "headbutt",
+    "hiddenpower",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icepunch",
+    "icywind",
+    "knockoff",
+    "lashout",
+    "liquidation",
+    "lowkick",
+    "lowsweep",
+    "machpunch",
+    "megapunch",
+    "muddywater",
+    "mudslap",
+    "naturalgift",
+    "poisonjab",
+    "poweruppunch",
+    "protect",
+    "psychup",
+    "punishment",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "roar",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "round",
+    "safeguard",
+    "scald",
+    "scaryface",
+    "secretpower",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "smokescreen",
+    "snatch",
+    "snore",
+    "snowscape",
+    "spikes",
+    "stoneedge",
+    "strength",
+    "submission",
+    "substitute",
+    "superpower",
+    "surf",
+    "swagger",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunderpunch",
+    "torment",
+    "toxic",
+    "vacuumwave",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "whirlpool",
+    "wideguard",
+    "workup",
+    "wrap",
+    "yawn"
+  ],
+  "nohface": [
+    "assurance",
+    "attract",
+    "captivate",
+    "closecombat",
+    "confide",
+    "confuseray",
+    "copycat",
+    "curse",
+    "cut",
+    "darkpulse",
+    "defog",
+    "dig",
+    "doubleteam",
+    "dreameater",
+    "embargo",
+    "endeavor",
+    "facade",
+    "fakeout",
+    "falseswipe",
+    "featherdance",
+    "feintattack",
+    "flail",
+    "flash",
+    "fling",
+    "foulplay",
+    "frustration",
+    "furycutter",
+    "headbutt",
+    "hex",
+    "hiddenpower",
+    "honeclaws",
+    "icepunch",
+    "icywind",
+    "irontail",
+    "knockoff",
+    "lastresort",
+    "lick",
+    "magiccoat",
+    "memento",
+    "metalsound",
+    "meteormash",
+    "metronome",
+    "naturalgift",
+    "nightshade",
+    "odorsleuth",
+    "ominouswind",
+    "painsplit",
+    "payback",
+    "perishsong",
+    "playrough",
+    "poltergeist",
+    "protect",
+    "psychoshift",
+    "psychup",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "roar",
+    "round",
+    "safeguard",
+    "scratch",
+    "secretpower",
+    "shadowball",
+    "shadowclaw",
+    "shadowsneak",
+    "skittersmack",
+    "sleeptalk",
+    "snatch",
+    "snore",
+    "spite",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "swagger",
+    "tailwhip",
+    "taunt",
+    "telekinesis",
+    "terablast",
+    "thief",
+    "thunderpunch",
+    "torment",
+    "toxic",
+    "trick",
+    "trickroom",
+    "uturn",
+    "willowisp",
+    "wish",
+    "yawn"
+  ],
+  "kitsunoh": [
+    "assurance",
+    "attract",
+    "bulldoze",
+    "bulletpunch",
+    "captivate",
+    "closecombat",
+    "confide",
+    "confuseray",
+    "copycat",
+    "cut",
+    "darkpulse",
+    "defog",
+    "dig",
+    "doubleteam",
+    "dreameater",
+    "earthquake",
+    "embargo",
+    "endeavor",
+    "facade",
+    "fakeout",
+    "falseswipe",
+    "feintattack",
+    "flash",
+    "flashcannon",
+    "fling",
+    "foulplay",
+    "frustration",
+    "furycutter",
+    "gigaimpact",
+    "headbutt",
+    "hex",
+    "hiddenpower",
+    "honeclaws",
+    "hyperbeam",
+    "icepunch",
+    "icywind",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "knockoff",
+    "lastresort",
+    "lick",
+    "lowkick",
+    "magiccoat",
+    "memento",
+    "metalclaw",
+    "metronome",
+    "naturalgift",
+    "nightshade",
+    "odorsleuth",
+    "ominouswind",
+    "painsplit",
+    "payback",
+    "perishsong",
+    "playrough",
+    "poltergeist",
+    "protect",
+    "psychup",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "roar",
+    "round",
+    "safeguard",
+    "scratch",
+    "secretpower",
+    "shadowball",
+    "shadowclaw",
+    "shadowsneak",
+    "shadowstrike",
+    "skittersmack",
+    "sleeptalk",
+    "snatch",
+    "snore",
+    "spite",
+    "steelbeam",
+    "strengthsap",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "superfang",
+    "superpower",
+    "swagger",
+    "tailwhip",
+    "taunt",
+    "telekinesis",
+    "terablast",
+    "thief",
+    "thunderpunch",
+    "torment",
+    "toxic",
+    "trick",
+    "trickroom",
+    "upperhand",
+    "uturn",
+    "willowisp"
+  ],
+  "monohm": [
+    "aerialace",
+    "aquatail",
+    "attract",
+    "bide",
+    "blizzard",
+    "captivate",
+    "charge",
+    "chargebeam",
+    "chillingwater",
+    "confide",
+    "defog",
+    "discharge",
+    "doubleteam",
+    "dragonbreath",
+    "dragonpulse",
+    "dragonrage",
+    "dragontail",
+    "eerieimpulse",
+    "electricterrain",
+    "electroball",
+    "electroweb",
+    "endure",
+    "facade",
+    "flash",
+    "focusenergy",
+    "frustration",
+    "growl",
+    "hail",
+    "headbutt",
+    "healbell",
+    "hiddenpower",
+    "hydropump",
+    "icebeam",
+    "icywind",
+    "irontail",
+    "lightscreen",
+    "lockon",
+    "muddywater",
+    "mudslap",
+    "naturalgift",
+    "naturepower",
+    "outrage",
+    "powdersnow",
+    "powergem",
+    "protect",
+    "raindance",
+    "rest",
+    "return",
+    "risingvoltage",
+    "roar",
+    "round",
+    "sandstorm",
+    "secretpower",
+    "shockwave",
+    "signalbeam",
+    "slackoff",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "sonicboom",
+    "substitute",
+    "sunnyday",
+    "surf",
+    "swagger",
+    "swift",
+    "tackle",
+    "takedown",
+    "terablast",
+    "thrash",
+    "thunder",
+    "thunderbolt",
+    "thunderfang",
+    "thundershock",
+    "thunderwave",
+    "torment",
+    "toxic",
+    "trickroom",
+    "twister",
+    "voltswitch",
+    "waterfall",
+    "waterpulse",
+    "weatherball",
+    "whirlwind",
+    "wildcharge",
+    "zapcannon"
+  ],
+  "duohm": [
+    "aerialace",
+    "aquatail",
+    "attract",
+    "bide",
+    "blizzard",
+    "captivate",
+    "charge",
+    "chargebeam",
+    "chillingwater",
+    "confide",
+    "discharge",
+    "doublehit",
+    "doubleteam",
+    "dracometeor",
+    "dragonbreath",
+    "dragonclaw",
+    "dragonpulse",
+    "dragonrage",
+    "dragontail",
+    "eerieimpulse",
+    "electricterrain",
+    "electroball",
+    "electroweb",
+    "endure",
+    "facade",
+    "fireblast",
+    "firefang",
+    "flamethrower",
+    "flash",
+    "focusenergy",
+    "frustration",
+    "growl",
+    "hail",
+    "headbutt",
+    "healbell",
+    "hiddenpower",
+    "honeclaws",
+    "hydropump",
+    "icebeam",
+    "icefang",
+    "icywind",
+    "incinerate",
+    "irontail",
+    "lightscreen",
+    "lockon",
+    "muddywater",
+    "mudslap",
+    "naturalgift",
+    "naturepower",
+    "outrage",
+    "powergem",
+    "protect",
+    "raindance",
+    "rest",
+    "return",
+    "risingvoltage",
+    "roar",
+    "round",
+    "sandstorm",
+    "secretpower",
+    "shockwave",
+    "signalbeam",
+    "slackoff",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "sonicboom",
+    "strength",
+    "substitute",
+    "sunnyday",
+    "surf",
+    "swagger",
+    "swift",
+    "tackle",
+    "takedown",
+    "terablast",
+    "thrash",
+    "thunder",
+    "thunderbolt",
+    "thunderfang",
+    "thundershock",
+    "thunderwave",
+    "torment",
+    "toxic",
+    "trickroom",
+    "twister",
+    "voltswitch",
+    "waterfall",
+    "waterpulse",
+    "weatherball",
+    "whirlwind",
+    "wildcharge",
+    "zapcannon"
+  ],
+  "cyclohm": [
+    "aerialace",
+    "aquatail",
+    "attract",
+    "bide",
+    "blizzard",
+    "breakingswipe",
+    "bulldoze",
+    "captivate",
+    "charge",
+    "chargebeam",
+    "chillingwater",
+    "confide",
+    "discharge",
+    "doublehit",
+    "doubleteam",
+    "dracometeor",
+    "dragonbreath",
+    "dragoncheer",
+    "dragonclaw",
+    "dragonpulse",
+    "dragonrage",
+    "dragontail",
+    "earthquake",
+    "eerieimpulse",
+    "electricterrain",
+    "electroball",
+    "electroweb",
+    "endure",
+    "facade",
+    "fireblast",
+    "firefang",
+    "flamethrower",
+    "flash",
+    "focusenergy",
+    "frustration",
+    "gigaimpact",
+    "growl",
+    "hail",
+    "headbutt",
+    "healbell",
+    "hiddenpower",
+    "honeclaws",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icefang",
+    "icywind",
+    "incinerate",
+    "irontail",
+    "lightscreen",
+    "lockon",
+    "muddywater",
+    "mudslap",
+    "naturalgift",
+    "naturepower",
+    "outrage",
+    "powergem",
+    "protect",
+    "raindance",
+    "rest",
+    "return",
+    "risingvoltage",
+    "roar",
+    "round",
+    "sandstorm",
+    "secretpower",
+    "shockwave",
+    "signalbeam",
+    "slackoff",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "sonicboom",
+    "strength",
+    "substitute",
+    "sunnyday",
+    "supercellslam",
+    "surf",
+    "swagger",
+    "swift",
+    "tackle",
+    "takedown",
+    "terablast",
+    "thrash",
+    "thunder",
+    "thunderbolt",
+    "thunderfang",
+    "thundershock",
+    "thunderwave",
+    "torment",
+    "toxic",
+    "triattack",
+    "trickroom",
+    "twister",
+    "voltswitch",
+    "waterfall",
+    "waterpulse",
+    "weatherball",
+    "whirlwind",
+    "wildcharge",
+    "zapcannon"
+  ],
+  "dorsoil": [
+    "ancientpower",
+    "aquatail",
+    "attract",
+    "bite",
+    "block",
+    "bodypress",
+    "bodyslam",
+    "bounce",
+    "brickbreak",
+    "brutalswing",
+    "bulldoze",
+    "captivate",
+    "chipaway",
+    "confide",
+    "crunch",
+    "darkpulse",
+    "dig",
+    "dive",
+    "doubleedge",
+    "doubleteam",
+    "drillrun",
+    "earthpower",
+    "earthquake",
+    "embargo",
+    "encore",
+    "endure",
+    "facade",
+    "fakeout",
+    "firefang",
+    "fissure",
+    "flail",
+    "foulplay",
+    "frustration",
+    "hiddenpower",
+    "highhorsepower",
+    "icespinner",
+    "irontail",
+    "knockoff",
+    "leer",
+    "magnitude",
+    "mudshot",
+    "mudslap",
+    "naturalgift",
+    "payback",
+    "peck",
+    "protect",
+    "pursuit",
+    "raindance",
+    "rapidspin",
+    "rest",
+    "retaliate",
+    "return",
+    "roar",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "rollout",
+    "round",
+    "sandstorm",
+    "sandtomb",
+    "scorchingsands",
+    "screech",
+    "secretpower",
+    "sleeptalk",
+    "snarl",
+    "snatch",
+    "snore",
+    "spitup",
+    "stealthrock",
+    "stockpile",
+    "strength",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "swallow",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thunderfang",
+    "torment",
+    "toxic",
+    "uturn",
+    "wideguard"
+  ],
+  "colossoil": [
+    "ancientpower",
+    "aquatail",
+    "attract",
+    "bite",
+    "block",
+    "bodypress",
+    "bodyslam",
+    "bounce",
+    "brickbreak",
+    "brutalswing",
+    "bulldoze",
+    "captivate",
+    "confide",
+    "crunch",
+    "darkpulse",
+    "dig",
+    "dive",
+    "doubleedge",
+    "doubleteam",
+    "drillrun",
+    "earthpower",
+    "earthquake",
+    "embargo",
+    "encore",
+    "endure",
+    "facade",
+    "firefang",
+    "foulplay",
+    "frustration",
+    "furyattack",
+    "gigaimpact",
+    "headlongrush",
+    "hiddenpower",
+    "highhorsepower",
+    "hornattack",
+    "horndrill",
+    "hyperbeam",
+    "icespinner",
+    "irontail",
+    "knockoff",
+    "lashout",
+    "leer",
+    "magnitude",
+    "megahorn",
+    "mudshot",
+    "mudslap",
+    "naturalgift",
+    "payback",
+    "peck",
+    "protect",
+    "pursuit",
+    "raindance",
+    "rapidspin",
+    "rest",
+    "retaliate",
+    "return",
+    "roar",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "rollout",
+    "round",
+    "sandstorm",
+    "sandtomb",
+    "scorchingsands",
+    "screech",
+    "secretpower",
+    "sleeptalk",
+    "smartstrike",
+    "snarl",
+    "snatch",
+    "snore",
+    "spitup",
+    "stealthrock",
+    "stockpile",
+    "stoneedge",
+    "strength",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "supercellslam",
+    "superpower",
+    "swagger",
+    "swallow",
+    "takedown",
+    "taunt",
+    "temperflare",
+    "terablast",
+    "thunderfang",
+    "torment",
+    "toxic",
+    "uturn"
+  ],
+  "protowatt": [
+    "bubble",
+    "charge",
+    "confuseray",
+    "counter",
+    "entrainment",
+    "followme",
+    "mefirst",
+    "metronome",
+    "mindreader",
+    "mirrorcoat",
+    "sheercold",
+    "speedswap",
+    "terablast",
+    "thundershock",
+    "watergun"
+  ],
+  "krilowatt": [
+    "aquatail",
+    "attract",
+    "blizzard",
+    "bubble",
+    "bubblebeam",
+    "bulldoze",
+    "captivate",
+    "charge",
+    "chillingwater",
+    "confide",
+    "confuseray",
+    "copycat",
+    "counter",
+    "cut",
+    "discharge",
+    "dive",
+    "doubleteam",
+    "earthpower",
+    "earthquake",
+    "eerieimpulse",
+    "electricterrain",
+    "electroball",
+    "electroweb",
+    "endure",
+    "facade",
+    "flash",
+    "fling",
+    "flipturn",
+    "frustration",
+    "furycutter",
+    "gigaimpact",
+    "guillotine",
+    "hail",
+    "heartswap",
+    "helpinghand",
+    "hiddenpower",
+    "hyperbeam",
+    "icebeam",
+    "icepunch",
+    "iceshard",
+    "icywind",
+    "imprison",
+    "irontail",
+    "liquidation",
+    "lowkick",
+    "lowsweep",
+    "magneticflux",
+    "metronome",
+    "mindreader",
+    "mirrorcoat",
+    "muddywater",
+    "naturalgift",
+    "payback",
+    "pounce",
+    "protect",
+    "raindance",
+    "recycle",
+    "rest",
+    "return",
+    "risingvoltage",
+    "round",
+    "scald",
+    "secretpower",
+    "shockwave",
+    "signalbeam",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "speedswap",
+    "substitute",
+    "surf",
+    "swagger",
+    "swift",
+    "terablast",
+    "thunder",
+    "thunderbolt",
+    "thunderpunch",
+    "thundershock",
+    "thunderwave",
+    "torment",
+    "toxic",
+    "voltswitch",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "whirlpool",
+    "wildcharge"
+  ],
+  "voodoll": [
+    "acupressure",
+    "afteryou",
+    "assurance",
+    "astonish",
+    "attract",
+    "aurasphere",
+    "batonpass",
+    "burningjealousy",
+    "captivate",
+    "charge",
+    "confide",
+    "copycat",
+    "counter",
+    "darkpulse",
+    "doubleteam",
+    "dreameater",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "feintattack",
+    "fling",
+    "followme",
+    "foulplay",
+    "frustration",
+    "grudge",
+    "hex",
+    "hiddenpower",
+    "hypervoice",
+    "imprison",
+    "knockoff",
+    "lashout",
+    "machpunch",
+    "magiccoat",
+    "magicroom",
+    "memento",
+    "metronome",
+    "mimic",
+    "mudslap",
+    "nastyplot",
+    "naturalgift",
+    "nightmare",
+    "painsplit",
+    "payback",
+    "perishsong",
+    "pinmissile",
+    "powertrip",
+    "poweruppunch",
+    "protect",
+    "psychic",
+    "pursuit",
+    "rest",
+    "retaliate",
+    "return",
+    "risingvoltage",
+    "rocksmash",
+    "round",
+    "screech",
+    "secretpower",
+    "shockwave",
+    "sleeptalk",
+    "smellingsalts",
+    "snarl",
+    "snatch",
+    "snore",
+    "spite",
+    "strength",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "swagger",
+    "takedown",
+    "taunt",
+    "tearfullook",
+    "terablast",
+    "thief",
+    "thunderbolt",
+    "thunderwave",
+    "torment",
+    "toxic",
+    "uproar",
+    "vacuumwave",
+    "voltswitch",
+    "workup",
+    "wrap"
+  ],
+  "voodoom": [
+    "acupressure",
+    "afteryou",
+    "assurance",
+    "astonish",
+    "attract",
+    "aurasphere",
+    "batonpass",
+    "beatup",
+    "brickbreak",
+    "brutalswing",
+    "bulkup",
+    "bulldoze",
+    "burningjealousy",
+    "captivate",
+    "charge",
+    "closecombat",
+    "coaching",
+    "confide",
+    "copycat",
+    "counter",
+    "darkestlariat",
+    "darkpulse",
+    "doubleteam",
+    "drainpunch",
+    "dreameater",
+    "earthquake",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "feintattack",
+    "flashcannon",
+    "fling",
+    "focusblast",
+    "focuspunch",
+    "followme",
+    "foulplay",
+    "frustration",
+    "gigaimpact",
+    "grudge",
+    "hex",
+    "hiddenpower",
+    "hyperbeam",
+    "hypervoice",
+    "icepunch",
+    "imprison",
+    "knockoff",
+    "lashout",
+    "lowkick",
+    "lowsweep",
+    "magiccoat",
+    "magicroom",
+    "metronome",
+    "mudslap",
+    "nastyplot",
+    "naturalgift",
+    "nightmare",
+    "nightslash",
+    "painsplit",
+    "payback",
+    "pinmissile",
+    "poweruppunch",
+    "protect",
+    "psychic",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "risingvoltage",
+    "rockslide",
+    "rocksmash",
+    "round",
+    "screech",
+    "secretpower",
+    "shockwave",
+    "sleeptalk",
+    "smartstrike",
+    "snarl",
+    "snatch",
+    "snore",
+    "spite",
+    "stoneedge",
+    "strength",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "taunt",
+    "tearfullook",
+    "temperflare",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunderbolt",
+    "thunderpunch",
+    "thunderwave",
+    "torment",
+    "toxic",
+    "uproar",
+    "vacuumwave",
+    "voltswitch",
+    "workup",
+    "wrap"
+  ],
+  "scratchet": [
+    "aerialace",
+    "attract",
+    "batonpass",
+    "bodypress",
+    "bodyslam",
+    "brickbreak",
+    "bulkup",
+    "bulldoze",
+    "closecombat",
+    "coaching",
+    "confide",
+    "confuseray",
+    "doubleteam",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "falseswipe",
+    "flash",
+    "fling",
+    "focusblast",
+    "focusenergy",
+    "frustration",
+    "furyswipes",
+    "grassknot",
+    "harden",
+    "haze",
+    "helpinghand",
+    "hiddenpower",
+    "hypervoice",
+    "irontail",
+    "megakick",
+    "megapunch",
+    "memento",
+    "mudslap",
+    "naturepower",
+    "poweruppunch",
+    "protect",
+    "quash",
+    "raindance",
+    "rapidspin",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "reversal",
+    "roar",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "roost",
+    "round",
+    "safeguard",
+    "scratch",
+    "secretpower",
+    "sleeptalk",
+    "snore",
+    "stealthrock",
+    "strength",
+    "submission",
+    "substitute",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thief",
+    "throatchop",
+    "toxic",
+    "trailblaze",
+    "workup",
+    "yawn"
+  ],
+  "tomohawk": [
+    "acrobatics",
+    "aerialace",
+    "aircutter",
+    "airslash",
+    "aquatail",
+    "attract",
+    "aurasphere",
+    "batonpass",
+    "bodypress",
+    "bodyslam",
+    "bravebird",
+    "brickbreak",
+    "bulkup",
+    "bulldoze",
+    "closecombat",
+    "coaching",
+    "confide",
+    "confuseray",
+    "doubleteam",
+    "dualwingbeat",
+    "earthquake",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "falseswipe",
+    "flash",
+    "fling",
+    "fly",
+    "focusblast",
+    "focusenergy",
+    "frustration",
+    "furyswipes",
+    "gigaimpact",
+    "grassknot",
+    "harden",
+    "haze",
+    "healingwish",
+    "heatwave",
+    "helpinghand",
+    "hiddenpower",
+    "hurricane",
+    "hyperbeam",
+    "hypervoice",
+    "incinerate",
+    "irontail",
+    "megakick",
+    "megapunch",
+    "morningsun",
+    "poweruppunch",
+    "protect",
+    "quash",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "reversal",
+    "roar",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "roost",
+    "round",
+    "safeguard",
+    "scratch",
+    "secretpower",
+    "skyattack",
+    "skydrop",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "stealthrock",
+    "steelwing",
+    "stoneedge",
+    "strength",
+    "submission",
+    "substitute",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thief",
+    "throatchop",
+    "toxic",
+    "trailblaze",
+    "whirlwind",
+    "workup"
+  ],
+  "necturine": [
+    "attract",
+    "calmmind",
+    "confide",
+    "confuseray",
+    "curse",
+    "cut",
+    "darkpulse",
+    "doubleteam",
+    "dreameater",
+    "endure",
+    "energyball",
+    "facade",
+    "flash",
+    "frustration",
+    "futuresight",
+    "gigadrain",
+    "grassknot",
+    "grassyglide",
+    "grassyterrain",
+    "gravity",
+    "hex",
+    "hiddenpower",
+    "ingrain",
+    "leafblade",
+    "leafstorm",
+    "leechlife",
+    "leechseed",
+    "leer",
+    "magicalleaf",
+    "naturalgift",
+    "naturepower",
+    "nightmare",
+    "nightshade",
+    "ominouswind",
+    "painsplit",
+    "payback",
+    "powerwhip",
+    "protect",
+    "psychic",
+    "psychup",
+    "rest",
+    "return",
+    "round",
+    "secretpower",
+    "seedbomb",
+    "shadowball",
+    "shadowsneak",
+    "sketch",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "spite",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "telekinesis",
+    "terablast",
+    "thief",
+    "torment",
+    "toxic",
+    "toxicspikes",
+    "trailblaze",
+    "vinewhip",
+    "willowisp",
+    "worryseed"
+  ],
+  "necturna": [
+    "attract",
+    "calmmind",
+    "confide",
+    "confuseray",
+    "crunch",
+    "cut",
+    "darkpulse",
+    "doubleteam",
+    "dreameater",
+    "endure",
+    "energyball",
+    "facade",
+    "flash",
+    "frustration",
+    "futuresight",
+    "gigadrain",
+    "gigaimpact",
+    "grassknot",
+    "grassyglide",
+    "grassyterrain",
+    "gravity",
+    "hex",
+    "hiddenpower",
+    "hornleech",
+    "hyperbeam",
+    "leafblade",
+    "leafstorm",
+    "leechlife",
+    "leechseed",
+    "leer",
+    "magicalleaf",
+    "naturepower",
+    "nightshade",
+    "ominouswind",
+    "painsplit",
+    "payback",
+    "poisonfang",
+    "powerwhip",
+    "protect",
+    "psychic",
+    "psychicnoise",
+    "psychup",
+    "rest",
+    "return",
+    "round",
+    "secretpower",
+    "seedbomb",
+    "shadowball",
+    "shadowclaw",
+    "shadowsneak",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "solarblade",
+    "spite",
+    "stoneedge",
+    "substitute",
+    "sunnyday",
+    "superfang",
+    "swagger",
+    "telekinesis",
+    "terablast",
+    "thief",
+    "thunderfang",
+    "torment",
+    "toxic",
+    "toxicspikes",
+    "trailblaze",
+    "vinewhip",
+    "willowisp",
+    "worryseed"
+  ],
+  "mollux": [
+    "acid",
+    "acidarmor",
+    "acidspray",
+    "aquaring",
+    "attract",
+    "bide",
+    "bind",
+    "calmmind",
+    "charm",
+    "clearsmog",
+    "confide",
+    "confuseray",
+    "corrosivegas",
+    "doubleteam",
+    "drainingkiss",
+    "ember",
+    "endure",
+    "eruption",
+    "explosion",
+    "facade",
+    "finalgambit",
+    "fireblast",
+    "firespin",
+    "flamecharge",
+    "flamethrower",
+    "flash",
+    "frustration",
+    "gastroacid",
+    "gigaimpact",
+    "gunkshot",
+    "healbell",
+    "healpulse",
+    "heatwave",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "hyperbeam",
+    "inferno",
+    "lavaplume",
+    "leechlife",
+    "lifedew",
+    "lightscreen",
+    "moonlight",
+    "overheat",
+    "protect",
+    "raindance",
+    "rapidspin",
+    "recover",
+    "rest",
+    "return",
+    "round",
+    "secretpower",
+    "selfdestruct",
+    "shockwave",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snore",
+    "solarbeam",
+    "spotlight",
+    "stealthrock",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "terablast",
+    "thief",
+    "thunder",
+    "thunderbolt",
+    "thunderwave",
+    "toxic",
+    "toxicspikes",
+    "trick",
+    "venomdrench",
+    "venoshock",
+    "willowisp",
+    "withdraw"
+  ],
+  "cupra": [
+    "allyswitch",
+    "ancientpower",
+    "attract",
+    "bugbite",
+    "bugbuzz",
+    "calmmind",
+    "closecombat",
+    "confide",
+    "counter",
+    "cut",
+    "disable",
+    "doubleteam",
+    "dreameater",
+    "echoedvoice",
+    "electroweb",
+    "expandingforce",
+    "facade",
+    "feint",
+    "finalgambit",
+    "flash",
+    "fling",
+    "frustration",
+    "hail",
+    "healpulse",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "icywind",
+    "imprison",
+    "infestation",
+    "lightscreen",
+    "magiccoat",
+    "magicroom",
+    "megahorn",
+    "nastyplot",
+    "pounce",
+    "protect",
+    "psychic",
+    "psychicterrain",
+    "psychup",
+    "psyshock",
+    "raindance",
+    "recycle",
+    "reflect",
+    "rest",
+    "retaliate",
+    "return",
+    "roleplay",
+    "round",
+    "safeguard",
+    "secretpower",
+    "shadowball",
+    "shockwave",
+    "signalbeam",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "steelwing",
+    "stringshot",
+    "strugglebug",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "tackle",
+    "tailglow",
+    "telekinesis",
+    "terablast",
+    "toxic",
+    "trick",
+    "waterpulse",
+    "willowisp",
+    "wingattack",
+    "wish",
+    "wonderroom",
+    "xscissor",
+    "zenheadbutt"
+  ],
+  "argalis": [
+    "allyswitch",
+    "ancientpower",
+    "attract",
+    "bugbite",
+    "bugbuzz",
+    "calmmind",
+    "closecombat",
+    "confide",
+    "cut",
+    "doubleteam",
+    "dreameater",
+    "echoedvoice",
+    "electroweb",
+    "expandingforce",
+    "facade",
+    "finalgambit",
+    "flash",
+    "fling",
+    "frustration",
+    "hail",
+    "healpulse",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "icywind",
+    "imprison",
+    "infestation",
+    "lightscreen",
+    "magiccoat",
+    "magicroom",
+    "megahorn",
+    "nastyplot",
+    "ominouswind",
+    "pounce",
+    "protect",
+    "psychic",
+    "psychicterrain",
+    "psychup",
+    "psyshock",
+    "raindance",
+    "recycle",
+    "reflect",
+    "rest",
+    "retaliate",
+    "return",
+    "roleplay",
+    "round",
+    "safeguard",
+    "secretpower",
+    "shadowball",
+    "shockwave",
+    "signalbeam",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "spotlight",
+    "steelwing",
+    "stringshot",
+    "strugglebug",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "tackle",
+    "tailglow",
+    "telekinesis",
+    "terablast",
+    "toxic",
+    "trick",
+    "waterpulse",
+    "willowisp",
+    "wish",
+    "wonderroom",
+    "xscissor",
+    "zenheadbutt"
+  ],
+  "aurumoth": [
+    "allyswitch",
+    "ancientpower",
+    "attract",
+    "blizzard",
+    "bugbite",
+    "bugbuzz",
+    "calmmind",
+    "closecombat",
+    "confide",
+    "cut",
+    "doubleteam",
+    "dragoncheer",
+    "dragondance",
+    "dreameater",
+    "dualwingbeat",
+    "echoedvoice",
+    "electroweb",
+    "expandingforce",
+    "facade",
+    "finalgambit",
+    "flash",
+    "fling",
+    "focusblast",
+    "frustration",
+    "gigaimpact",
+    "hail",
+    "healingwish",
+    "healpulse",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icywind",
+    "imprison",
+    "infestation",
+    "lightscreen",
+    "magiccoat",
+    "magicroom",
+    "megahorn",
+    "nastyplot",
+    "ominouswind",
+    "overheat",
+    "pounce",
+    "protect",
+    "psychic",
+    "psychicnoise",
+    "psychicterrain",
+    "psychup",
+    "psyshock",
+    "raindance",
+    "recycle",
+    "reflect",
+    "rest",
+    "retaliate",
+    "return",
+    "roleplay",
+    "round",
+    "safeguard",
+    "secretpower",
+    "shadowball",
+    "shockwave",
+    "signalbeam",
+    "silverwind",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "solarbeam",
+    "spotlight",
+    "steelwing",
+    "stringshot",
+    "strugglebug",
+    "substitute",
+    "sunnyday",
+    "surf",
+    "swagger",
+    "tackle",
+    "tailglow",
+    "telekinesis",
+    "terablast",
+    "terrainpulse",
+    "thunder",
+    "thunderbolt",
+    "toxic",
+    "trick",
+    "waterpulse",
+    "willowisp",
+    "wish",
+    "wonderroom",
+    "xscissor",
+    "zenheadbutt"
+  ],
+  "brattler": [
+    "aromatherapy",
+    "attract",
+    "beatup",
+    "belch",
+    "bind",
+    "brutalswing",
+    "confide",
+    "crunch",
+    "cut",
+    "darkpulse",
+    "doubleteam",
+    "dragontail",
+    "endure",
+    "energyball",
+    "facade",
+    "feint",
+    "foulplay",
+    "frustration",
+    "gigadrain",
+    "glare",
+    "grassknot",
+    "grassyglide",
+    "haze",
+    "healbell",
+    "hiddenpower",
+    "icefang",
+    "irontail",
+    "knockoff",
+    "lashout",
+    "leafblade",
+    "leer",
+    "nastyplot",
+    "naturepower",
+    "nightslash",
+    "partingshot",
+    "payback",
+    "poisonpowder",
+    "poisontail",
+    "powerwhip",
+    "protect",
+    "punishment",
+    "pursuit",
+    "recycle",
+    "rest",
+    "retaliate",
+    "return",
+    "roar",
+    "round",
+    "scaleshot",
+    "scaryface",
+    "screech",
+    "secretpower",
+    "seedbomb",
+    "skittersmack",
+    "slam",
+    "sleeptalk",
+    "snarl",
+    "snore",
+    "solarbeam",
+    "spikyshield",
+    "spite",
+    "strength",
+    "stunspore",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "swagger",
+    "sweetscent",
+    "synthesis",
+    "taunt",
+    "terablast",
+    "thief",
+    "thunderfang",
+    "toxic",
+    "trailblaze",
+    "uturn",
+    "vinewhip",
+    "weatherball",
+    "wildcharge",
+    "worryseed",
+    "wrap",
+    "wringout"
+  ],
+  "malaconda": [
+    "attract",
+    "beatup",
+    "bind",
+    "breakingswipe",
+    "brutalswing",
+    "confide",
+    "crunch",
+    "cut",
+    "darkpulse",
+    "doubleteam",
+    "dragoncheer",
+    "dragontail",
+    "endure",
+    "energyball",
+    "facade",
+    "followme",
+    "foulplay",
+    "frustration",
+    "gigadrain",
+    "gigaimpact",
+    "glare",
+    "grassknot",
+    "grassyglide",
+    "gravapple",
+    "haze",
+    "healbell",
+    "hiddenpower",
+    "hyperbeam",
+    "icefang",
+    "irontail",
+    "knockoff",
+    "lashout",
+    "leafblade",
+    "leer",
+    "nastyplot",
+    "naturepower",
+    "partingshot",
+    "payback",
+    "poisontail",
+    "powerwhip",
+    "protect",
+    "punishment",
+    "pursuit",
+    "rapidspin",
+    "recycle",
+    "rest",
+    "retaliate",
+    "return",
+    "roar",
+    "round",
+    "scaleshot",
+    "scaryface",
+    "screech",
+    "secretpower",
+    "seedbomb",
+    "skittersmack",
+    "slam",
+    "sleeptalk",
+    "snarl",
+    "snore",
+    "solarbeam",
+    "solarblade",
+    "spikyshield",
+    "spite",
+    "strength",
+    "substitute",
+    "suckerpunch",
+    "sunnyday",
+    "swagger",
+    "synthesis",
+    "taunt",
+    "temperflare",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunderfang",
+    "toxic",
+    "trailblaze",
+    "uturn",
+    "vinewhip",
+    "weatherball",
+    "wildcharge",
+    "worryseed",
+    "wrap",
+    "wringout"
+  ],
+  "cawdet": [
+    "acrobatics",
+    "aerialace",
+    "aircutter",
+    "airslash",
+    "assurance",
+    "attract",
+    "beatup",
+    "block",
+    "brickbreak",
+    "brine",
+    "bulletpunch",
+    "chillingwater",
+    "confide",
+    "detect",
+    "doubleteam",
+    "drainpunch",
+    "drillpeck",
+    "endeavor",
+    "endure",
+    "facade",
+    "flashcannon",
+    "fly",
+    "frustration",
+    "growl",
+    "hiddenpower",
+    "hurricane",
+    "irondefense",
+    "ironhead",
+    "knockoff",
+    "leer",
+    "metalclaw",
+    "metalsound",
+    "metronome",
+    "mirrormove",
+    "peck",
+    "pluck",
+    "protect",
+    "psychup",
+    "pursuit",
+    "quickattack",
+    "quickguard",
+    "raindance",
+    "razorwind",
+    "rest",
+    "retaliate",
+    "return",
+    "rocksmash",
+    "round",
+    "screech",
+    "shockwave",
+    "skyattack",
+    "skydrop",
+    "sleeptalk",
+    "smackdown",
+    "snatch",
+    "snore",
+    "steelbeam",
+    "steelwing",
+    "strength",
+    "substitute",
+    "surf",
+    "swagger",
+    "swift",
+    "tailwind",
+    "takedown",
+    "terablast",
+    "toxic",
+    "waterpulse",
+    "watersport",
+    "whirlpool",
+    "wingattack"
+  ],
+  "cawmodore": [
+    "acrobatics",
+    "aerialace",
+    "agility",
+    "aircutter",
+    "airslash",
+    "assurance",
+    "attract",
+    "beatup",
+    "belch",
+    "bellydrum",
+    "block",
+    "brickbreak",
+    "brine",
+    "bulletpunch",
+    "chillingwater",
+    "confide",
+    "detect",
+    "doubleteam",
+    "drainpunch",
+    "dualwingbeat",
+    "endeavor",
+    "endure",
+    "facade",
+    "flashcannon",
+    "fly",
+    "frustration",
+    "gigaimpact",
+    "growl",
+    "hardpress",
+    "hiddenpower",
+    "hurricane",
+    "hyperbeam",
+    "irondefense",
+    "ironhead",
+    "knockoff",
+    "leer",
+    "megapunch",
+    "metalclaw",
+    "metronome",
+    "peck",
+    "pluck",
+    "protect",
+    "psychup",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "rocksmash",
+    "round",
+    "screech",
+    "secretpower",
+    "shockwave",
+    "skyattack",
+    "skydrop",
+    "sleeptalk",
+    "smackdown",
+    "snatch",
+    "snore",
+    "steelbeam",
+    "steelwing",
+    "strength",
+    "substitute",
+    "surf",
+    "swagger",
+    "swift",
+    "tailwind",
+    "takedown",
+    "terablast",
+    "throatchop",
+    "toxic",
+    "upperhand",
+    "waterpulse",
+    "whirlpool",
+    "wingattack"
+  ],
+  "volkritter": [
+    "absorb",
+    "aquajet",
+    "aquaring",
+    "assurance",
+    "attract",
+    "bind",
+    "bite",
+    "bounce",
+    "captivate",
+    "confide",
+    "constrict",
+    "covet",
+    "destinybond",
+    "dive",
+    "doubleteam",
+    "extrasensory",
+    "facade",
+    "falseswipe",
+    "fireblast",
+    "firespin",
+    "flameburst",
+    "flamethrower",
+    "flareblitz",
+    "flash",
+    "flashcannon",
+    "fling",
+    "flipturn",
+    "frustration",
+    "heatwave",
+    "hiddenpower",
+    "hydropump",
+    "incinerate",
+    "infestation",
+    "leechlife",
+    "memento",
+    "muddywater",
+    "overheat",
+    "payback",
+    "pounce",
+    "powergem",
+    "protect",
+    "quash",
+    "raindance",
+    "reflect",
+    "reflecttype",
+    "rest",
+    "return",
+    "round",
+    "scald",
+    "scaryface",
+    "scorchingsands",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "substitute",
+    "sunnyday",
+    "surf",
+    "swagger",
+    "terablast",
+    "thief",
+    "tickle",
+    "torment",
+    "toxic",
+    "uturn",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "whirlpool",
+    "willowisp"
+  ],
+  "volkraken": [
+    "absorb",
+    "aquaring",
+    "assurance",
+    "attract",
+    "bind",
+    "bite",
+    "bounce",
+    "burningjealousy",
+    "confide",
+    "constrict",
+    "covet",
+    "destinybond",
+    "dive",
+    "doubleteam",
+    "extrasensory",
+    "facade",
+    "falseswipe",
+    "fireblast",
+    "firelash",
+    "firespin",
+    "flameburst",
+    "flamethrower",
+    "flareblitz",
+    "flash",
+    "flashcannon",
+    "fling",
+    "flipturn",
+    "frustration",
+    "gigaimpact",
+    "heatwave",
+    "hiddenpower",
+    "hydropump",
+    "hyperbeam",
+    "incinerate",
+    "infestation",
+    "leechlife",
+    "liquidation",
+    "memento",
+    "muddywater",
+    "overheat",
+    "payback",
+    "pounce",
+    "powergem",
+    "protect",
+    "quash",
+    "raindance",
+    "reflect",
+    "rest",
+    "return",
+    "round",
+    "scald",
+    "scaryface",
+    "scorchingsands",
+    "secretpower",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "substitute",
+    "sunnyday",
+    "surf",
+    "swagger",
+    "terablast",
+    "thief",
+    "torment",
+    "toxic",
+    "uturn",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "whirlpool",
+    "willowisp",
+    "wringout"
+  ],
+  "snugglow": [
+    "acid",
+    "acidspray",
+    "aquatail",
+    "attract",
+    "aurasphere",
+    "block",
+    "chargebeam",
+    "chillingwater",
+    "clearsmog",
+    "confide",
+    "crosspoison",
+    "cut",
+    "dazzlinggleam",
+    "discharge",
+    "doubleteam",
+    "eerieimpulse",
+    "electrify",
+    "electroball",
+    "electroweb",
+    "encore",
+    "endure",
+    "facade",
+    "flashcannon",
+    "frustration",
+    "haze",
+    "hiddenpower",
+    "iondeluge",
+    "irontail",
+    "paraboliccharge",
+    "poisonjab",
+    "poisonsting",
+    "poisontail",
+    "protect",
+    "psybeam",
+    "psychic",
+    "psyshock",
+    "psywave",
+    "raindance",
+    "rest",
+    "return",
+    "risingvoltage",
+    "round",
+    "shockwave",
+    "signalbeam",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snore",
+    "splash",
+    "substitute",
+    "supersonic",
+    "surf",
+    "swagger",
+    "taunt",
+    "terablast",
+    "thunder",
+    "thunderbolt",
+    "thundershock",
+    "thunderwave",
+    "toxic",
+    "venomdrench",
+    "venoshock",
+    "waterpulse",
+    "wideguard",
+    "wildcharge",
+    "zenheadbutt"
+  ],
+  "plasmanta": [
+    "acid",
+    "acidspray",
+    "aquatail",
+    "attract",
+    "aurasphere",
+    "block",
+    "bodypress",
+    "bodyslam",
+    "chargebeam",
+    "chillingwater",
+    "clearsmog",
+    "confide",
+    "corrosivegas",
+    "crosspoison",
+    "cut",
+    "dazzlinggleam",
+    "discharge",
+    "doubleteam",
+    "eerieimpulse",
+    "electricterrain",
+    "electrify",
+    "electroball",
+    "electroweb",
+    "encore",
+    "endure",
+    "facade",
+    "flashcannon",
+    "frustration",
+    "gigaimpact",
+    "haze",
+    "hiddenpower",
+    "hyperbeam",
+    "iondeluge",
+    "irontail",
+    "liquidation",
+    "magnetrise",
+    "paraboliccharge",
+    "poisonjab",
+    "poisonsting",
+    "poisontail",
+    "protect",
+    "psybeam",
+    "psychic",
+    "psyshock",
+    "psywave",
+    "raindance",
+    "rest",
+    "return",
+    "risingvoltage",
+    "round",
+    "signalbeam",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snore",
+    "substitute",
+    "supercellslam",
+    "supersonic",
+    "surf",
+    "swagger",
+    "taunt",
+    "terablast",
+    "thunder",
+    "thunderbolt",
+    "thundershock",
+    "thunderwave",
+    "toxic",
+    "venomdrench",
+    "venoshock",
+    "waterpulse",
+    "wildcharge",
+    "zenheadbutt"
+  ],
+  "floatoy": [
+    "attract",
+    "bite",
+    "blizzard",
+    "bodyslam",
+    "brine",
+    "brutalswing",
+    "bubblebeam",
+    "calmmind",
+    "chillingwater",
+    "confide",
+    "crunch",
+    "dive",
+    "doubleteam",
+    "dragonbreath",
+    "dragonclaw",
+    "dragondance",
+    "dragonpulse",
+    "drillpeck",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "featherdance",
+    "feint",
+    "focusenergy",
+    "frustration",
+    "gust",
+    "hail",
+    "haze",
+    "hiddenpower",
+    "hurricane",
+    "hydropump",
+    "icebeam",
+    "icefang",
+    "icepunch",
+    "iciclecrash",
+    "iciclespear",
+    "icywind",
+    "ironhead",
+    "irontail",
+    "metalclaw",
+    "metronome",
+    "muddywater",
+    "peck",
+    "protect",
+    "psychicfangs",
+    "raindance",
+    "refresh",
+    "rest",
+    "return",
+    "rocksmash",
+    "round",
+    "scald",
+    "scaryface",
+    "screech",
+    "secretpower",
+    "slackoff",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "splash",
+    "substitute",
+    "surf",
+    "swagger",
+    "taunt",
+    "terablast",
+    "thunderfang",
+    "toxic",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "whirlpool"
+  ],
+  "caimanoe": [
+    "attract",
+    "blizzard",
+    "bodypress",
+    "bodyslam",
+    "brine",
+    "brutalswing",
+    "bubblebeam",
+    "calmmind",
+    "chillingwater",
+    "confide",
+    "crunch",
+    "dive",
+    "doubleteam",
+    "dragonbreath",
+    "dragonclaw",
+    "dragondance",
+    "dragonpulse",
+    "drillpeck",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "flashcannon",
+    "focusenergy",
+    "frustration",
+    "gust",
+    "hail",
+    "haze",
+    "heavyslam",
+    "hiddenpower",
+    "hurricane",
+    "hydropump",
+    "icebeam",
+    "icefang",
+    "icepunch",
+    "iciclecrash",
+    "iciclespear",
+    "icywind",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "metalclaw",
+    "metalsound",
+    "metronome",
+    "muddywater",
+    "peck",
+    "protect",
+    "psychicfangs",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "rocksmash",
+    "round",
+    "scald",
+    "scaleshot",
+    "scaryface",
+    "screech",
+    "secretpower",
+    "selfdestruct",
+    "slackoff",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "splash",
+    "steelbeam",
+    "steelroller",
+    "strength",
+    "substitute",
+    "surf",
+    "swagger",
+    "taunt",
+    "terablast",
+    "thunderfang",
+    "thunderpunch",
+    "toxic",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "whirlpool"
+  ],
+  "naviathan": [
+    "attract",
+    "blizzard",
+    "bodypress",
+    "bodyslam",
+    "breakingswipe",
+    "brine",
+    "brutalswing",
+    "bubblebeam",
+    "calmmind",
+    "chillingwater",
+    "confide",
+    "crunch",
+    "dive",
+    "doubleteam",
+    "dragonbreath",
+    "dragonclaw",
+    "dragondance",
+    "dragonpulse",
+    "drillpeck",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "flashcannon",
+    "focusenergy",
+    "frustration",
+    "gigaimpact",
+    "gust",
+    "hail",
+    "hardpress",
+    "haze",
+    "heavyslam",
+    "hiddenpower",
+    "hurricane",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icefang",
+    "icepunch",
+    "iciclecrash",
+    "iciclespear",
+    "icywind",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "metalclaw",
+    "metalsound",
+    "metronome",
+    "muddywater",
+    "peck",
+    "protect",
+    "psychicfangs",
+    "raindance",
+    "rest",
+    "retaliate",
+    "return",
+    "rocksmash",
+    "round",
+    "scald",
+    "scaleshot",
+    "scaryface",
+    "screech",
+    "secretpower",
+    "selfdestruct",
+    "slackoff",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "splash",
+    "steelbeam",
+    "steelroller",
+    "strength",
+    "substitute",
+    "surf",
+    "swagger",
+    "taunt",
+    "terablast",
+    "thunderfang",
+    "thunderpunch",
+    "toxic",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "wavecrash",
+    "whirlpool",
+    "wideguard",
+    "wildcharge"
+  ],
+  "crucibelle": [
+    "acidarmor",
+    "acidspray",
+    "assurance",
+    "astonish",
+    "attract",
+    "block",
+    "coil",
+    "confide",
+    "confuseray",
+    "confusion",
+    "crosspoison",
+    "defensecurl",
+    "doubleteam",
+    "drainingkiss",
+    "embargo",
+    "endure",
+    "explosion",
+    "facade",
+    "faketears",
+    "frustration",
+    "gigaimpact",
+    "grassknot",
+    "gravity",
+    "gunkshot",
+    "helpinghand",
+    "hex",
+    "hiddenpower",
+    "hyperbeam",
+    "infestation",
+    "irondefense",
+    "ironhead",
+    "knockoff",
+    "lightscreen",
+    "magicroom",
+    "meteorbeam",
+    "metronome",
+    "payback",
+    "pinmissile",
+    "poisonjab",
+    "powergem",
+    "protect",
+    "psybeam",
+    "psychic",
+    "reflect",
+    "rest",
+    "return",
+    "rockblast",
+    "rockpolish",
+    "rockslide",
+    "rocksmash",
+    "rockthrow",
+    "rocktomb",
+    "rollout",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "secretpower",
+    "selfdestruct",
+    "shadowball",
+    "skillswap",
+    "sleeptalk",
+    "sludge",
+    "sludgebomb",
+    "sludgewave",
+    "smackdown",
+    "snatch",
+    "snore",
+    "stealthrock",
+    "steelroller",
+    "stoneedge",
+    "substitute",
+    "swagger",
+    "terablast",
+    "torment",
+    "toxic",
+    "toxicspikes",
+    "trick",
+    "uturn",
+    "venomdrench",
+    "venoshock",
+    "withdraw",
+    "wonderroom",
+    "woodhammer",
+    "zenheadbutt"
+  ],
+  "pluffle": [
+    "allyswitch",
+    "attract",
+    "beatup",
+    "bodyslam",
+    "charm",
+    "confide",
+    "dazzlinggleam",
+    "doubleteam",
+    "drainingkiss",
+    "dreameater",
+    "encore",
+    "endure",
+    "energyball",
+    "facade",
+    "fairywind",
+    "featherdance",
+    "flashcannon",
+    "frustration",
+    "gigadrain",
+    "grassknot",
+    "helpinghand",
+    "hiddenpower",
+    "magicroom",
+    "metronome",
+    "mistyexplosion",
+    "mistyterrain",
+    "moonblast",
+    "nightmare",
+    "partingshot",
+    "playrough",
+    "protect",
+    "psychic",
+    "psychup",
+    "quickguard",
+    "rest",
+    "retaliate",
+    "return",
+    "round",
+    "scaryface",
+    "scratch",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snarl",
+    "snore",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "takedown",
+    "taunt",
+    "terablast",
+    "torment",
+    "toxic",
+    "uproar",
+    "vacuumwave",
+    "wakeupslap",
+    "wideguard",
+    "wish",
+    "workup",
+    "yawn"
+  ],
+  "kerfluffle": [
+    "allyswitch",
+    "attract",
+    "aurasphere",
+    "beatup",
+    "bodypress",
+    "bodyslam",
+    "brickbreak",
+    "bulkup",
+    "celebrate",
+    "charm",
+    "closecombat",
+    "coaching",
+    "confide",
+    "crushclaw",
+    "dazzlinggleam",
+    "doubleteam",
+    "drainingkiss",
+    "drainpunch",
+    "dreameater",
+    "encore",
+    "endure",
+    "energyball",
+    "facade",
+    "fairywind",
+    "featherdance",
+    "flashcannon",
+    "fly",
+    "focusblast",
+    "focusenergy",
+    "frustration",
+    "gigadrain",
+    "gigaimpact",
+    "grassknot",
+    "helpinghand",
+    "hiddenpower",
+    "holdhands",
+    "hyperbeam",
+    "lowkick",
+    "lowsweep",
+    "magicroom",
+    "megakick",
+    "megapunch",
+    "metronome",
+    "mistyexplosion",
+    "mistyterrain",
+    "moonblast",
+    "nightmare",
+    "partingshot",
+    "playrough",
+    "poweruppunch",
+    "protect",
+    "psychic",
+    "psychicnoise",
+    "psychup",
+    "rest",
+    "retaliate",
+    "return",
+    "revenge",
+    "reversal",
+    "round",
+    "scaryface",
+    "scratch",
+    "secretpower",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snarl",
+    "snore",
+    "speedswap",
+    "strength",
+    "substitute",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "swift",
+    "takedown",
+    "taunt",
+    "terablast",
+    "torment",
+    "toxic",
+    "upperhand",
+    "uproar",
+    "vacuumwave",
+    "wakeupslap",
+    "workup",
+    "yawn"
+  ],
+  "pajantom": [
+    "aerialace",
+    "astonish",
+    "attract",
+    "bind",
+    "block",
+    "bravebird",
+    "breakingswipe",
+    "brutalswing",
+    "bulldoze",
+    "confide",
+    "confuseray",
+    "crunch",
+    "doubleteam",
+    "dracometeor",
+    "dragonbreath",
+    "dragoncheer",
+    "dragonclaw",
+    "dragonpulse",
+    "dragonrage",
+    "dragonrush",
+    "dreameater",
+    "drillrun",
+    "dualchop",
+    "earthquake",
+    "endure",
+    "facade",
+    "fairylock",
+    "fly",
+    "focusenergy",
+    "frustration",
+    "gastroacid",
+    "gigaimpact",
+    "gravity",
+    "growl",
+    "haze",
+    "healblock",
+    "helpinghand",
+    "hex",
+    "hiddenpower",
+    "hyperbeam",
+    "icefang",
+    "icepunch",
+    "icywind",
+    "imprison",
+    "infestation",
+    "irontail",
+    "laserfocus",
+    "leechlife",
+    "nastyplot",
+    "outrage",
+    "phantomforce",
+    "poisonfang",
+    "poisongas",
+    "protect",
+    "psychic",
+    "psychicfangs",
+    "psychicnoise",
+    "psychup",
+    "raindance",
+    "rest",
+    "return",
+    "rockslide",
+    "rocktomb",
+    "round",
+    "sandtomb",
+    "shadowball",
+    "shadowclaw",
+    "sleeptalk",
+    "smartstrike",
+    "snore",
+    "spiritshackle",
+    "spite",
+    "stoneedge",
+    "substitute",
+    "surf",
+    "swagger",
+    "takedown",
+    "taunt",
+    "telekinesis",
+    "temperflare",
+    "terablast",
+    "throatchop",
+    "toxic",
+    "toxicspikes",
+    "trickroom",
+    "venoshock",
+    "whirlpool",
+    "wrap",
+    "zenheadbutt"
+  ],
+  "mumbao": [
+    "attract",
+    "bodyslam",
+    "bulletseed",
+    "confide",
+    "dazzlinggleam",
+    "doubleteam",
+    "drainingkiss",
+    "endure",
+    "energyball",
+    "explosion",
+    "facade",
+    "flowershield",
+    "focusblast",
+    "focusenergy",
+    "frustration",
+    "gigadrain",
+    "grassknot",
+    "grassyglide",
+    "grassyterrain",
+    "gravity",
+    "gyroball",
+    "harden",
+    "healingwish",
+    "heavyslam",
+    "helpinghand",
+    "hiddenpower",
+    "ingrain",
+    "leafage",
+    "leafstorm",
+    "lightscreen",
+    "luckychant",
+    "magicalleaf",
+    "magiccoat",
+    "mistyexplosion",
+    "mistyterrain",
+    "moonblast",
+    "naturalgift",
+    "playrough",
+    "protect",
+    "psychup",
+    "rest",
+    "return",
+    "rototiller",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "seedbomb",
+    "selfdestruct",
+    "shadowball",
+    "sleeptalk",
+    "smellingsalts",
+    "snore",
+    "solarbeam",
+    "substitute",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "synthesis",
+    "tackle",
+    "takedown",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "wish",
+    "woodhammer",
+    "worryseed"
+  ],
+  "jumbao": [
+    "armthrust",
+    "attract",
+    "block",
+    "bodyslam",
+    "brickbreak",
+    "bulkup",
+    "bulldoze",
+    "bulletseed",
+    "confide",
+    "dazzlinggleam",
+    "detect",
+    "doubleteam",
+    "drainingkiss",
+    "endure",
+    "energyball",
+    "explosion",
+    "facade",
+    "fakeout",
+    "flameburst",
+    "flowershield",
+    "focusblast",
+    "focusenergy",
+    "frustration",
+    "gigadrain",
+    "gigaimpact",
+    "grassknot",
+    "grassyglide",
+    "grassyterrain",
+    "gravity",
+    "gyroball",
+    "harden",
+    "heavyslam",
+    "helpinghand",
+    "hiddenpower",
+    "hyperbeam",
+    "ingrain",
+    "leafage",
+    "leafstorm",
+    "lifedew",
+    "lightscreen",
+    "luckychant",
+    "magicalleaf",
+    "magiccoat",
+    "magicroom",
+    "metronome",
+    "mistyexplosion",
+    "mistyterrain",
+    "moonblast",
+    "naturalgift",
+    "playrough",
+    "protect",
+    "psychup",
+    "rest",
+    "return",
+    "rototiller",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "seedbomb",
+    "selfdestruct",
+    "shadowball",
+    "shoreup",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "solarblade",
+    "substitute",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "synthesis",
+    "tackle",
+    "takedown",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "wish",
+    "wonderroom",
+    "worryseed"
+  ],
+  "fawnifer": [
+    "attract",
+    "bodyslam",
+    "brickbreak",
+    "bulkup",
+    "bulletseed",
+    "chargebeam",
+    "charm",
+    "confide",
+    "confuseray",
+    "doubleedge",
+    "doublekick",
+    "doubleteam",
+    "echoedvoice",
+    "endeavor",
+    "endure",
+    "energyball",
+    "facade",
+    "flash",
+    "frustration",
+    "gigadrain",
+    "grassknot",
+    "grasspledge",
+    "grassyglide",
+    "grassyterrain",
+    "helpinghand",
+    "hiddenpower",
+    "hypervoice",
+    "knockoff",
+    "leafage",
+    "leafstorm",
+    "leechseed",
+    "leer",
+    "naturalgift",
+    "naturepower",
+    "powerwhip",
+    "present",
+    "protect",
+    "quickattack",
+    "rapidspin",
+    "razorleaf",
+    "rest",
+    "return",
+    "round",
+    "seedbomb",
+    "signalbeam",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "spark",
+    "spotlight",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "synthesis",
+    "tackle",
+    "takedown",
+    "terablast",
+    "thundershock",
+    "toxic",
+    "trailblaze",
+    "uproar",
+    "voltswitch",
+    "wildcharge",
+    "workup",
+    "worryseed"
+  ],
+  "electrelk": [
+    "attract",
+    "bodyslam",
+    "brickbreak",
+    "bulkup",
+    "bulletseed",
+    "chargebeam",
+    "charm",
+    "confide",
+    "confuseray",
+    "doubleteam",
+    "echoedvoice",
+    "eerieimpulse",
+    "electroweb",
+    "endeavor",
+    "endure",
+    "energyball",
+    "facade",
+    "flash",
+    "flashcannon",
+    "frustration",
+    "gigadrain",
+    "grassknot",
+    "grasspledge",
+    "grassyglide",
+    "grassyterrain",
+    "helpinghand",
+    "hiddenpower",
+    "hypervoice",
+    "knockoff",
+    "leafage",
+    "leafstorm",
+    "leechseed",
+    "leer",
+    "magnetrise",
+    "naturepower",
+    "powerwhip",
+    "protect",
+    "quickattack",
+    "razorleaf",
+    "rest",
+    "return",
+    "risingvoltage",
+    "round",
+    "seedbomb",
+    "shockwave",
+    "signalbeam",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "solarblade",
+    "spark",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "synthesis",
+    "tackle",
+    "takedown",
+    "terablast",
+    "throatchop",
+    "thunder",
+    "thunderbolt",
+    "thundershock",
+    "thunderwave",
+    "toxic",
+    "trailblaze",
+    "uproar",
+    "voltswitch",
+    "wildcharge",
+    "workup",
+    "worryseed",
+    "zapcannon"
+  ],
+  "caribolt": [
+    "attract",
+    "bodyslam",
+    "boomburst",
+    "brickbreak",
+    "bulkup",
+    "bulletseed",
+    "celebrate",
+    "chargebeam",
+    "charm",
+    "confide",
+    "confuseray",
+    "doubleteam",
+    "echoedvoice",
+    "eerieimpulse",
+    "electricterrain",
+    "electroweb",
+    "endeavor",
+    "endure",
+    "energyball",
+    "facade",
+    "flash",
+    "flashcannon",
+    "frenzyplant",
+    "frustration",
+    "gigadrain",
+    "gigaimpact",
+    "grassknot",
+    "grasspledge",
+    "grassyglide",
+    "grassyterrain",
+    "helpinghand",
+    "hiddenpower",
+    "hornleech",
+    "hyperbeam",
+    "hyperdrill",
+    "hypervoice",
+    "knockoff",
+    "leafage",
+    "leafstorm",
+    "leechseed",
+    "leer",
+    "magnetrise",
+    "metronome",
+    "naturepower",
+    "powerwhip",
+    "protect",
+    "quickattack",
+    "razorleaf",
+    "rest",
+    "return",
+    "risingvoltage",
+    "round",
+    "seedbomb",
+    "shockwave",
+    "signalbeam",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "solarblade",
+    "spark",
+    "substitute",
+    "sunnyday",
+    "supercellslam",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "synthesis",
+    "tackle",
+    "takedown",
+    "terablast",
+    "terrainpulse",
+    "throatchop",
+    "thunder",
+    "thunderbolt",
+    "thundershock",
+    "thunderwave",
+    "toxic",
+    "trailblaze",
+    "uproar",
+    "voltswitch",
+    "wildcharge",
+    "workup",
+    "worryseed",
+    "zapcannon"
+  ],
+  "smogecko": [
+    "acidspray",
+    "aerialace",
+    "attract",
+    "bonerush",
+    "brickbreak",
+    "bulkup",
+    "bulldoze",
+    "bulletpunch",
+    "camouflage",
+    "confide",
+    "defog",
+    "dig",
+    "doubleteam",
+    "earthpower",
+    "ember",
+    "endeavor",
+    "facade",
+    "fireblast",
+    "firefang",
+    "firepledge",
+    "firepunch",
+    "firespin",
+    "flameburst",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "forcepalm",
+    "frustration",
+    "gunkshot",
+    "heatwave",
+    "hiddenpower",
+    "incinerate",
+    "irontail",
+    "lavaplume",
+    "lick",
+    "lowkick",
+    "mudshot",
+    "overheat",
+    "poisonfang",
+    "poisonjab",
+    "protect",
+    "rest",
+    "return",
+    "roar",
+    "round",
+    "sandtomb",
+    "scaleshot",
+    "scorchingsands",
+    "scratch",
+    "screech",
+    "sleeptalk",
+    "sludgebomb",
+    "smog",
+    "smokescreen",
+    "snore",
+    "solarbeam",
+    "stealthrock",
+    "stompingtantrum",
+    "substitute",
+    "sunnyday",
+    "swagger",
+    "tailwhip",
+    "taunt",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "venomdrench",
+    "willowisp",
+    "workup"
+  ],
+  "smoguana": [
+    "acidspray",
+    "aerialace",
+    "attract",
+    "brickbreak",
+    "bulkup",
+    "bulldoze",
+    "burningjealousy",
+    "camouflage",
+    "clearsmog",
+    "confide",
+    "corrosivegas",
+    "crosspoison",
+    "defog",
+    "dig",
+    "doubleteam",
+    "earthpower",
+    "earthquake",
+    "ember",
+    "endeavor",
+    "facade",
+    "fireblast",
+    "firefang",
+    "firepledge",
+    "firepunch",
+    "flameburst",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "frustration",
+    "gunkshot",
+    "heatwave",
+    "hiddenpower",
+    "incinerate",
+    "irontail",
+    "lavaplume",
+    "lick",
+    "lowkick",
+    "mudshot",
+    "overheat",
+    "poisonjab",
+    "protect",
+    "rest",
+    "return",
+    "roar",
+    "round",
+    "sandtomb",
+    "scaleshot",
+    "scorchingsands",
+    "scratch",
+    "screech",
+    "sleeptalk",
+    "sludgebomb",
+    "smog",
+    "smokescreen",
+    "snore",
+    "solarbeam",
+    "stealthrock",
+    "stompingtantrum",
+    "substitute",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "tailwhip",
+    "taunt",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "venomdrench",
+    "willowisp",
+    "workup"
+  ],
+  "smokomodo": [
+    "acidspray",
+    "aerialace",
+    "attract",
+    "blastburn",
+    "brickbreak",
+    "bulkup",
+    "bulldoze",
+    "burningjealousy",
+    "camouflage",
+    "celebrate",
+    "circlethrow",
+    "clearsmog",
+    "confide",
+    "corrosivegas",
+    "crosspoison",
+    "defog",
+    "dig",
+    "doubleteam",
+    "dragoncheer",
+    "earthpower",
+    "earthquake",
+    "ember",
+    "endeavor",
+    "eruption",
+    "facade",
+    "fireblast",
+    "firefang",
+    "firepledge",
+    "firepunch",
+    "firespin",
+    "fissure",
+    "flameburst",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "focusblast",
+    "frustration",
+    "gigaimpact",
+    "gunkshot",
+    "heatcrash",
+    "heatwave",
+    "hiddenpower",
+    "highhorsepower",
+    "hyperbeam",
+    "incinerate",
+    "irontail",
+    "lavaplume",
+    "lick",
+    "lowkick",
+    "machpunch",
+    "magnitude",
+    "metalclaw",
+    "morningsun",
+    "mudshot",
+    "mysticalfire",
+    "overheat",
+    "poisonjab",
+    "protect",
+    "rest",
+    "return",
+    "roar",
+    "round",
+    "sandtomb",
+    "scaleshot",
+    "scorchingsands",
+    "scratch",
+    "screech",
+    "sleeptalk",
+    "sludgebomb",
+    "smog",
+    "smokescreen",
+    "snore",
+    "solarbeam",
+    "stealthrock",
+    "stompingtantrum",
+    "stormthrow",
+    "substitute",
+    "sunnyday",
+    "superpower",
+    "swagger",
+    "tailwhip",
+    "taunt",
+    "temperflare",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "venomdrench",
+    "willowisp",
+    "workup"
+  ],
+  "swirlpool": [
+    "acidarmor",
+    "allyswitch",
+    "aquajet",
+    "attract",
+    "blizzard",
+    "bodyslam",
+    "brine",
+    "bugbite",
+    "bugbuzz",
+    "captivate",
+    "charm",
+    "chillingwater",
+    "confide",
+    "confusion",
+    "dazzlinggleam",
+    "dive",
+    "doubleteam",
+    "drainingkiss",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "frustration",
+    "futuresight",
+    "growl",
+    "guardswap",
+    "hail",
+    "healpulse",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "hypervoice",
+    "icebeam",
+    "icywind",
+    "infestation",
+    "leechlife",
+    "lifedew",
+    "magiccoat",
+    "metronome",
+    "muddywater",
+    "pinmissile",
+    "pounce",
+    "pound",
+    "powder",
+    "protect",
+    "psychic",
+    "psychoshift",
+    "raindance",
+    "recover",
+    "rest",
+    "return",
+    "round",
+    "safeguard",
+    "scald",
+    "signalbeam",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "spikyshield",
+    "spotlight",
+    "stealthrock",
+    "stickyweb",
+    "strugglebug",
+    "substitute",
+    "surf",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "terablast",
+    "toxic",
+    "trick",
+    "uproar",
+    "uturn",
+    "venomdrench",
+    "venoshock",
+    "waterfall",
+    "watergun",
+    "waterpledge",
+    "waterpulse",
+    "whirlpool",
+    "workup"
+  ],
+  "coribalis": [
+    "allyswitch",
+    "aquajet",
+    "attract",
+    "blizzard",
+    "block",
+    "bodyslam",
+    "brine",
+    "bugbite",
+    "bugbuzz",
+    "captivate",
+    "charm",
+    "chillingwater",
+    "confide",
+    "confusion",
+    "dazzlinggleam",
+    "dive",
+    "doubleteam",
+    "drainingkiss",
+    "dualwingbeat",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "frustration",
+    "futuresight",
+    "growl",
+    "guardswap",
+    "hail",
+    "healpulse",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "hypervoice",
+    "icebeam",
+    "icywind",
+    "infestation",
+    "leechlife",
+    "magiccoat",
+    "magicroom",
+    "metronome",
+    "muddywater",
+    "pinmissile",
+    "pounce",
+    "pound",
+    "protect",
+    "psychic",
+    "raindance",
+    "razorshell",
+    "rest",
+    "return",
+    "round",
+    "safeguard",
+    "scald",
+    "signalbeam",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "stealthrock",
+    "strugglebug",
+    "substitute",
+    "surf",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "terablast",
+    "toxic",
+    "trick",
+    "trickroom",
+    "uproar",
+    "uturn",
+    "venomdrench",
+    "venoshock",
+    "waterfall",
+    "watergun",
+    "waterpledge",
+    "waterpulse",
+    "whirlpool",
+    "wonderroom",
+    "workup",
+    "xscissor"
+  ],
+  "snaelstrom": [
+    "alluringvoice",
+    "allyswitch",
+    "aquajet",
+    "aquaring",
+    "attract",
+    "blizzard",
+    "block",
+    "bodyslam",
+    "brine",
+    "bugbite",
+    "bugbuzz",
+    "captivate",
+    "celebrate",
+    "charm",
+    "chillingwater",
+    "confide",
+    "confusion",
+    "dazzlinggleam",
+    "dive",
+    "doubleteam",
+    "drainingkiss",
+    "dualwingbeat",
+    "echoedvoice",
+    "endure",
+    "facade",
+    "frustration",
+    "futuresight",
+    "gigaimpact",
+    "growl",
+    "guardswap",
+    "hail",
+    "healpulse",
+    "helpinghand",
+    "hiddenpower",
+    "hydrocannon",
+    "hydropump",
+    "hyperbeam",
+    "hypervoice",
+    "icebeam",
+    "iciclespear",
+    "icywind",
+    "infestation",
+    "leechlife",
+    "liquidation",
+    "magiccoat",
+    "magicroom",
+    "metronome",
+    "muddywater",
+    "pinmissile",
+    "pounce",
+    "pound",
+    "protect",
+    "psychic",
+    "raindance",
+    "rapidspin",
+    "razorshell",
+    "rest",
+    "return",
+    "round",
+    "safeguard",
+    "scald",
+    "signalbeam",
+    "skillswap",
+    "skittersmack",
+    "sleeptalk",
+    "snore",
+    "snowscape",
+    "stealthrock",
+    "strugglebug",
+    "substitute",
+    "surf",
+    "swagger",
+    "swift",
+    "swordsdance",
+    "terablast",
+    "toxic",
+    "trick",
+    "trickroom",
+    "uproar",
+    "uturn",
+    "venomdrench",
+    "venoshock",
+    "waterfall",
+    "watergun",
+    "waterpledge",
+    "waterpulse",
+    "whirlpool",
+    "wonderroom",
+    "workup",
+    "xscissor"
+  ],
+  "justyke": [
+    "allyswitch",
+    "aurasphere",
+    "bodyslam",
+    "bulldoze",
+    "confide",
+    "destinybond",
+    "doubleteam",
+    "drillrun",
+    "earthpower",
+    "earthquake",
+    "embargo",
+    "endure",
+    "facade",
+    "flashcannon",
+    "frustration",
+    "gravity",
+    "guardsplit",
+    "gyroball",
+    "healingwish",
+    "heavyslam",
+    "helpinghand",
+    "hiddenpower",
+    "icespinner",
+    "imprison",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "magicroom",
+    "magnetrise",
+    "memento",
+    "mindreader",
+    "mirrorshot",
+    "mudshot",
+    "mudslap",
+    "mudsport",
+    "painsplit",
+    "pound",
+    "powersplit",
+    "protect",
+    "psychup",
+    "quash",
+    "recycle",
+    "rest",
+    "return",
+    "rockpolish",
+    "rockslide",
+    "rocktomb",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "sleeptalk",
+    "smartstrike",
+    "snore",
+    "steelbeam",
+    "steelroller",
+    "substitute",
+    "swagger",
+    "terablast",
+    "trickroom",
+    "wonderroom",
+    "workup"
+  ],
+  "equilibra": [
+    "allyswitch",
+    "aurasphere",
+    "bodyslam",
+    "bulldoze",
+    "confide",
+    "destinybond",
+    "doomdesire",
+    "doubleteam",
+    "drillrun",
+    "earthpower",
+    "earthquake",
+    "embargo",
+    "endure",
+    "explosion",
+    "facade",
+    "flashcannon",
+    "frustration",
+    "gigaimpact",
+    "gravity",
+    "guardsplit",
+    "gyroball",
+    "hardpress",
+    "healingwish",
+    "heavyslam",
+    "helpinghand",
+    "hiddenpower",
+    "hyperbeam",
+    "imprison",
+    "irondefense",
+    "ironhead",
+    "irontail",
+    "magicroom",
+    "magnetrise",
+    "memento",
+    "mindreader",
+    "mirrorshot",
+    "mudshot",
+    "mudslap",
+    "mudsport",
+    "painsplit",
+    "perishsong",
+    "pound",
+    "powersplit",
+    "protect",
+    "psychup",
+    "quash",
+    "rapidspin",
+    "recycle",
+    "rest",
+    "return",
+    "rockpolish",
+    "rockslide",
+    "rocktomb",
+    "round",
+    "safeguard",
+    "sandstorm",
+    "sleeptalk",
+    "smartstrike",
+    "snore",
+    "steelbeam",
+    "steelroller",
+    "substitute",
+    "swagger",
+    "terablast",
+    "trickroom",
+    "wonderroom",
+    "workup"
+  ],
+  "solotl": [
+    "acrobatics",
+    "agility",
+    "allyswitch",
+    "attract",
+    "batonpass",
+    "breakingswipe",
+    "charm",
+    "cosmicpower",
+    "dazzlinggleam",
+    "defog",
+    "dracometeor",
+    "dragonbreath",
+    "dragonpulse",
+    "dragonrush",
+    "dragontail",
+    "ember",
+    "encore",
+    "endure",
+    "facade",
+    "fireblast",
+    "firelash",
+    "firespin",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "healbell",
+    "healingwish",
+    "heatwave",
+    "helpinghand",
+    "imprison",
+    "lifedew",
+    "lightscreen",
+    "magicalleaf",
+    "meteorbeam",
+    "metronome",
+    "mysticalfire",
+    "outrage",
+    "overheat",
+    "pound",
+    "protect",
+    "reflect",
+    "rest",
+    "round",
+    "safeguard",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "spikes",
+    "storedpower",
+    "substitute",
+    "sunnyday",
+    "swift",
+    "tailwhip",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thunderwave",
+    "twister",
+    "willowisp",
+    "workup",
+    "yawn"
+  ],
+  "astrolotl": [
+    "acrobatics",
+    "agility",
+    "alluringvoice",
+    "allyswitch",
+    "attract",
+    "batonpass",
+    "breakingswipe",
+    "bulldoze",
+    "charm",
+    "cosmicpower",
+    "dazzlinggleam",
+    "dracometeor",
+    "dragonbreath",
+    "dragoncheer",
+    "dragonclaw",
+    "dragonpulse",
+    "dragonrush",
+    "dragontail",
+    "ember",
+    "encore",
+    "endure",
+    "facade",
+    "fireblast",
+    "firefang",
+    "firelash",
+    "firepunch",
+    "firespin",
+    "flamecharge",
+    "flamethrower",
+    "flamewheel",
+    "flareblitz",
+    "healbell",
+    "healingwish",
+    "heatwave",
+    "helpinghand",
+    "hyperbeam",
+    "imprison",
+    "lightscreen",
+    "magicalleaf",
+    "magiccoat",
+    "meteorbeam",
+    "metronome",
+    "mysticalfire",
+    "outrage",
+    "overheat",
+    "pound",
+    "protect",
+    "reflect",
+    "rest",
+    "round",
+    "safeguard",
+    "scorchingsands",
+    "sleeptalk",
+    "snore",
+    "solarbeam",
+    "spikes",
+    "stompingtantrum",
+    "storedpower",
+    "substitute",
+    "sunnyday",
+    "swift",
+    "tailwhip",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thunderwave",
+    "willowisp",
+    "workup"
+  ],
+  "miasmite": [
+    "agility",
+    "aromatherapy",
+    "attract",
+    "bite",
+    "bodyslam",
+    "breakingswipe",
+    "bugbite",
+    "bugbuzz",
+    "corrosivegas",
+    "crunch",
+    "darkpulse",
+    "dracometeor",
+    "dragonbreath",
+    "dragonclaw",
+    "dragonpulse",
+    "dragonrush",
+    "dragontail",
+    "earthpower",
+    "endure",
+    "facade",
+    "firefang",
+    "firstimpression",
+    "flashcannon",
+    "haze",
+    "icefang",
+    "ironhead",
+    "irontail",
+    "leechlife",
+    "lunge",
+    "megahorn",
+    "outrage",
+    "pinmissile",
+    "poisonfang",
+    "poisongas",
+    "poisonjab",
+    "pounce",
+    "protect",
+    "raindance",
+    "recover",
+    "rest",
+    "round",
+    "scaryface",
+    "screech",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "smog",
+    "smokescreen",
+    "snore",
+    "strugglebug",
+    "substitute",
+    "sunnyday",
+    "superfang",
+    "superpower",
+    "swordsdance",
+    "taunt",
+    "terablast",
+    "thunderfang",
+    "uproar",
+    "workup",
+    "xscissor"
+  ],
+  "miasmaw": [
+    "agility",
+    "attract",
+    "bite",
+    "bodyslam",
+    "breakingswipe",
+    "brutalswing",
+    "bugbite",
+    "bugbuzz",
+    "bulldoze",
+    "closecombat",
+    "corrosivegas",
+    "crunch",
+    "darkpulse",
+    "dracometeor",
+    "dragonbreath",
+    "dragoncheer",
+    "dragonclaw",
+    "dragonhammer",
+    "dragonpulse",
+    "dragontail",
+    "dualwingbeat",
+    "earthpower",
+    "earthquake",
+    "endure",
+    "facade",
+    "firefang",
+    "flashcannon",
+    "focusblast",
+    "gigaimpact",
+    "gunkshot",
+    "haze",
+    "highhorsepower",
+    "hyperbeam",
+    "icefang",
+    "ironhead",
+    "irontail",
+    "leechlife",
+    "lunge",
+    "megahorn",
+    "nastyplot",
+    "outrage",
+    "pinmissile",
+    "poisongas",
+    "poisonjab",
+    "pounce",
+    "protect",
+    "raindance",
+    "rest",
+    "round",
+    "scaleshot",
+    "scaryface",
+    "screech",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "smog",
+    "smokescreen",
+    "snore",
+    "strugglebug",
+    "substitute",
+    "sunnyday",
+    "superfang",
+    "superpower",
+    "swordsdance",
+    "taunt",
+    "terablast",
+    "thunder",
+    "thunderbolt",
+    "thunderfang",
+    "uproar",
+    "uturn",
+    "wildcharge",
+    "workup",
+    "xscissor"
+  ],
+  "chromera": [
+    "acidspray",
+    "aerialace",
+    "alluringvoice",
+    "aromatherapy",
+    "assurance",
+    "attract",
+    "beatup",
+    "belch",
+    "blizzard",
+    "bodyslam",
+    "boomburst",
+    "calmmind",
+    "charm",
+    "chillingwater",
+    "crunch",
+    "darkpulse",
+    "decorate",
+    "endure",
+    "facade",
+    "faketears",
+    "finalgambit",
+    "firefang",
+    "firstimpression",
+    "foulplay",
+    "gigaimpact",
+    "grassknot",
+    "gunkshot",
+    "hex",
+    "hyperbeam",
+    "hypervoice",
+    "icefang",
+    "imprison",
+    "knockoff",
+    "lashout",
+    "lifedew",
+    "lightscreen",
+    "metalclaw",
+    "mudslap",
+    "nobleroar",
+    "outrage",
+    "payback",
+    "payday",
+    "playrough",
+    "protect",
+    "psychicnoise",
+    "recover",
+    "reflect",
+    "rest",
+    "revenge",
+    "round",
+    "safeguard",
+    "scald",
+    "scaryface",
+    "shadowball",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snarl",
+    "snore",
+    "spite",
+    "stompingtantrum",
+    "substitute",
+    "sunnyday",
+    "switcheroo",
+    "taunt",
+    "terablast",
+    "thief",
+    "thunder",
+    "thunderbolt",
+    "thunderfang",
+    "toxic",
+    "toxicspikes",
+    "trailblaze",
+    "uproar",
+    "venomdrench",
+    "wideguard"
+  ],
+  "venomicon": [
+    "acidspray",
+    "aircutter",
+    "airslash",
+    "assurance",
+    "attract",
+    "bodypress",
+    "bodyslam",
+    "bravebird",
+    "clearsmog",
+    "coil",
+    "confuseray",
+    "darkpulse",
+    "drillpeck",
+    "dualwingbeat",
+    "endure",
+    "facade",
+    "fly",
+    "focusenergy",
+    "foulplay",
+    "gigaimpact",
+    "guardswap",
+    "gunkshot",
+    "hex",
+    "hurricane",
+    "hyperbeam",
+    "imprison",
+    "irondefense",
+    "knockoff",
+    "lashout",
+    "magicalleaf",
+    "magicroom",
+    "meanlook",
+    "memento",
+    "nastyplot",
+    "payback",
+    "peck",
+    "phantomforce",
+    "poisonjab",
+    "poisonsting",
+    "powerswap",
+    "protect",
+    "psychic",
+    "psyshock",
+    "rest",
+    "retaliate",
+    "roost",
+    "round",
+    "safeguard",
+    "scaryface",
+    "shadowball",
+    "skillswap",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snore",
+    "stealthrock",
+    "steelwing",
+    "substitute",
+    "swift",
+    "tailwind",
+    "takedown",
+    "temperflare",
+    "terablast",
+    "thunderwave",
+    "toxic",
+    "toxicspikes",
+    "trick",
+    "uturn",
+    "venomdrench",
+    "venoshock",
+    "withdraw"
+  ],
+  "saharascal": [
+    "ancientpower",
+    "attract",
+    "bodypress",
+    "bodyslam",
+    "bulldoze",
+    "doubleedge",
+    "earthpower",
+    "earthquake",
+    "endure",
+    "facade",
+    "fissure",
+    "heavyslam",
+    "highhorsepower",
+    "megakick",
+    "mudshot",
+    "painsplit",
+    "payback",
+    "payday",
+    "protect",
+    "rapidspin",
+    "rest",
+    "rocktomb",
+    "round",
+    "sandattack",
+    "sandstorm",
+    "sandtomb",
+    "scorchingsands",
+    "sleeptalk",
+    "snore",
+    "spitup",
+    "stealthrock",
+    "stockpile",
+    "stomp",
+    "stompingtantrum",
+    "substitute",
+    "swallow",
+    "swordsdance",
+    "tackle",
+    "taunt",
+    "terablast",
+    "thief",
+    "watergun",
+    "waterpulse"
+  ],
+  "saharaja": [
+    "attract",
+    "bodypress",
+    "bodyslam",
+    "bulldoze",
+    "dazzlinggleam",
+    "diamondstorm",
+    "doubleedge",
+    "earthpower",
+    "earthquake",
+    "endure",
+    "facade",
+    "fissure",
+    "flashcannon",
+    "gigaimpact",
+    "healbell",
+    "heavyslam",
+    "highhorsepower",
+    "hornleech",
+    "hyperbeam",
+    "lashout",
+    "megakick",
+    "mudshot",
+    "outrage",
+    "payback",
+    "payday",
+    "powergem",
+    "protect",
+    "rest",
+    "rocktomb",
+    "round",
+    "sandattack",
+    "sandstorm",
+    "sandtomb",
+    "scorchingsands",
+    "sleeptalk",
+    "snore",
+    "spitup",
+    "stealthrock",
+    "stockpile",
+    "stomp",
+    "stompingtantrum",
+    "stoneedge",
+    "substitute",
+    "swallow",
+    "swordsdance",
+    "tackle",
+    "taunt",
+    "temperflare",
+    "terablast",
+    "thief",
+    "watergun",
+    "waterpulse"
+  ],
+  "ababo": [
+    "bodyslam",
+    "bulkup",
+    "charm",
+    "copycat",
+    "dazzlinggleam",
+    "defensecurl",
+    "disable",
+    "disarmingvoice",
+    "drainingkiss",
+    "endure",
+    "explosion",
+    "extremespeed",
+    "facade",
+    "flamethrower",
+    "fling",
+    "grassknot",
+    "helpinghand",
+    "hypervoice",
+    "lashout",
+    "lightscreen",
+    "metronome",
+    "mistyexplosion",
+    "mistyterrain",
+    "playrough",
+    "pound",
+    "protect",
+    "psychic",
+    "raindance",
+    "rest",
+    "seismictoss",
+    "shadowball",
+    "sleeptalk",
+    "solarbeam",
+    "substitute",
+    "sunnyday",
+    "sweetkiss",
+    "takedown",
+    "terablast",
+    "trailblaze",
+    "trick",
+    "wildcharge",
+    "wish"
+  ],
+  "scattervein": [
+    "batonpass",
+    "bodyslam",
+    "brutalswing",
+    "bulkup",
+    "charm",
+    "copycat",
+    "dazzlinggleam",
+    "defensecurl",
+    "disable",
+    "disarmingvoice",
+    "doubleedge",
+    "drainingkiss",
+    "echoedvoice",
+    "endure",
+    "energyball",
+    "explosion",
+    "extremespeed",
+    "facade",
+    "fireblast",
+    "flamethrower",
+    "fling",
+    "gigaimpact",
+    "grassknot",
+    "heatwave",
+    "helpinghand",
+    "hyperbeam",
+    "hypervoice",
+    "imprison",
+    "lashout",
+    "lifedew",
+    "lightscreen",
+    "magicalleaf",
+    "metronome",
+    "mistyexplosion",
+    "mistyterrain",
+    "moonblast",
+    "moonlight",
+    "playrough",
+    "pound",
+    "protect",
+    "psychic",
+    "psyshock",
+    "raindance",
+    "rest",
+    "safeguard",
+    "screech",
+    "seismictoss",
+    "shadowball",
+    "slam",
+    "sleeptalk",
+    "solarbeam",
+    "spikes",
+    "substitute",
+    "sunnyday",
+    "sweetkiss",
+    "tailwhip",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thunder",
+    "thunderbolt",
+    "tickle",
+    "trailblaze",
+    "trick",
+    "wildcharge",
+    "willowisp",
+    "wish",
+    "wrap",
+    "zenheadbutt"
+  ],
+  "hemogoblin": [
+    "batonpass",
+    "bodyslam",
+    "brutalswing",
+    "bulkup",
+    "burningjealousy",
+    "charm",
+    "copycat",
+    "dazzlinggleam",
+    "defensecurl",
+    "disable",
+    "disarmingvoice",
+    "doubleedge",
+    "drainingkiss",
+    "echoedvoice",
+    "endure",
+    "energyball",
+    "facade",
+    "fireblast",
+    "flamethrower",
+    "flareblitz",
+    "fling",
+    "gigaimpact",
+    "grassknot",
+    "heatwave",
+    "helpinghand",
+    "hyperbeam",
+    "hypervoice",
+    "imprison",
+    "lashout",
+    "lifedew",
+    "lightscreen",
+    "magicalleaf",
+    "metronome",
+    "mistyexplosion",
+    "mistyterrain",
+    "moonblast",
+    "moonlight",
+    "overheat",
+    "playrough",
+    "pound",
+    "protect",
+    "psychic",
+    "psyshock",
+    "raindance",
+    "rest",
+    "safeguard",
+    "screech",
+    "shadowball",
+    "slam",
+    "sleeptalk",
+    "solarbeam",
+    "spikes",
+    "substitute",
+    "sunnyday",
+    "sweetkiss",
+    "tailwhip",
+    "takedown",
+    "taunt",
+    "temperflare",
+    "terablast",
+    "thunder",
+    "thunderbolt",
+    "tickle",
+    "trailblaze",
+    "trick",
+    "wildcharge",
+    "willowisp",
+    "wrap",
+    "zenheadbutt"
+  ],
+  "cresceidon": [
+    "amnesia",
+    "aquaring",
+    "blizzard",
+    "bodypress",
+    "bodyslam",
+    "bulldoze",
+    "chillingwater",
+    "confuseray",
+    "dazzlinggleam",
+    "doubleedge",
+    "earthquake",
+    "endure",
+    "facade",
+    "gigaimpact",
+    "haze",
+    "healingwish",
+    "heavyslam",
+    "helpinghand",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icywind",
+    "liquidation",
+    "mist",
+    "mistyexplosion",
+    "mistyterrain",
+    "moonblast",
+    "muddywater",
+    "playrough",
+    "pound",
+    "protect",
+    "psychic",
+    "raindance",
+    "recover",
+    "rest",
+    "scald",
+    "scaryface",
+    "shadowball",
+    "sleeptalk",
+    "soak",
+    "spitup",
+    "splash",
+    "stockpile",
+    "substitute",
+    "surf",
+    "swallow",
+    "swift",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thunderwave",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "wavecrash",
+    "weatherball",
+    "whirlpool",
+    "wideguard",
+    "wish",
+    "zenheadbutt"
+  ],
+  "chuggon": [
+    "acidspray",
+    "bite",
+    "bodyslam",
+    "bulldoze",
+    "clangingscales",
+    "crunch",
+    "destinybond",
+    "dracometeor",
+    "dragonbreath",
+    "dragoncheer",
+    "dragonclaw",
+    "dragonpulse",
+    "dragonrush",
+    "encore",
+    "endure",
+    "entrainment",
+    "facade",
+    "gunkshot",
+    "healbell",
+    "helpinghand",
+    "irondefense",
+    "lastresort",
+    "metalsound",
+    "nobleroar",
+    "outrage",
+    "poisongas",
+    "poisonjab",
+    "poisontail",
+    "protect",
+    "raindance",
+    "rest",
+    "roar",
+    "rockslide",
+    "rocktomb",
+    "scaleshot",
+    "scaryface",
+    "sleeptalk",
+    "sludge",
+    "sludgebomb",
+    "sludgewave",
+    "smog",
+    "snarl",
+    "storedpower",
+    "substitute",
+    "sunnyday",
+    "tackle",
+    "takedown",
+    "taunt",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "uproar",
+    "venoshock"
+  ],
+  "draggalong": [
+    "acidspray",
+    "bite",
+    "bodyslam",
+    "bulldoze",
+    "clangingscales",
+    "crunch",
+    "destinybond",
+    "dracometeor",
+    "dragonbreath",
+    "dragoncheer",
+    "dragonclaw",
+    "dragonpulse",
+    "dragonrush",
+    "dragontail",
+    "encore",
+    "endure",
+    "entrainment",
+    "facade",
+    "gunkshot",
+    "healbell",
+    "helpinghand",
+    "irondefense",
+    "ironhead",
+    "lastresort",
+    "metalsound",
+    "nobleroar",
+    "outrage",
+    "poisongas",
+    "poisonjab",
+    "poisontail",
+    "protect",
+    "raindance",
+    "rest",
+    "roar",
+    "rockslide",
+    "rocktomb",
+    "scaleshot",
+    "scaryface",
+    "sleeptalk",
+    "sludge",
+    "sludgebomb",
+    "sludgewave",
+    "smog",
+    "snarl",
+    "stompingtantrum",
+    "storedpower",
+    "substitute",
+    "sunnyday",
+    "tackle",
+    "takedown",
+    "taunt",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "uproar",
+    "venoshock"
+  ],
+  "chuggalong": [
+    "acidspray",
+    "bite",
+    "bodyslam",
+    "bulldoze",
+    "celebrate",
+    "clangingscales",
+    "clangoroussoul",
+    "crunch",
+    "destinybond",
+    "dracometeor",
+    "dragonbreath",
+    "dragoncheer",
+    "dragonclaw",
+    "dragondance",
+    "dragonpulse",
+    "dragonrush",
+    "dragontail",
+    "earthquake",
+    "encore",
+    "endure",
+    "entrainment",
+    "facade",
+    "flashcannon",
+    "gigaimpact",
+    "gunkshot",
+    "healbell",
+    "heavyslam",
+    "helpinghand",
+    "hyperbeam",
+    "irondefense",
+    "ironhead",
+    "lastresort",
+    "metalsound",
+    "nobleroar",
+    "outrage",
+    "poisongas",
+    "poisonjab",
+    "poisontail",
+    "protect",
+    "raindance",
+    "rest",
+    "roar",
+    "rockslide",
+    "rocktomb",
+    "scaleshot",
+    "scaryface",
+    "sleeptalk",
+    "sludge",
+    "sludgebomb",
+    "sludgewave",
+    "smog",
+    "snarl",
+    "stompingtantrum",
+    "storedpower",
+    "substitute",
+    "sunnyday",
+    "surf",
+    "tackle",
+    "takedown",
+    "taunt",
+    "terablast",
+    "toxic",
+    "trailblaze",
+    "uproar",
+    "venoshock"
+  ],
+  "flox": [
+    "blizzard",
+    "bodyslam",
+    "bulldoze",
+    "charge",
+    "chargebeam",
+    "charm",
+    "dig",
+    "disarmingvoice",
+    "discharge",
+    "doubleedge",
+    "eerieimpulse",
+    "electricterrain",
+    "electroball",
+    "electroweb",
+    "endeavor",
+    "endure",
+    "facade",
+    "glare",
+    "growl",
+    "headbutt",
+    "helpinghand",
+    "hypervoice",
+    "icebeam",
+    "icywind",
+    "ironhead",
+    "milkdrink",
+    "mudshot",
+    "mudslap",
+    "nuzzle",
+    "playrough",
+    "protect",
+    "raindance",
+    "rest",
+    "seedbomb",
+    "sleeptalk",
+    "spark",
+    "spitup",
+    "stockpile",
+    "stompingtantrum",
+    "substitute",
+    "sunnyday",
+    "superfang",
+    "swallow",
+    "tackle",
+    "takedown",
+    "terablast",
+    "thief",
+    "thunder",
+    "thundershock",
+    "thunderwave",
+    "thunderbolt",
+    "trailblaze",
+    "uproar",
+    "voltswitch",
+    "wildcharge",
+    "zapcannon",
+    "zenheadbutt"
+  ],
+  "shox": [
+    "blizzard",
+    "bodyslam",
+    "bulldoze",
+    "charge",
+    "chargebeam",
+    "charm",
+    "dig",
+    "disarmingvoice",
+    "discharge",
+    "doubleedge",
+    "earthpower",
+    "earthquake",
+    "eerieimpulse",
+    "electricterrain",
+    "electroball",
+    "electroweb",
+    "endeavor",
+    "endure",
+    "facade",
+    "gigaimpact",
+    "glare",
+    "growl",
+    "headbutt",
+    "helpinghand",
+    "highhorsepower",
+    "hornattack",
+    "hyperbeam",
+    "hypervoice",
+    "icebeam",
+    "icywind",
+    "ironhead",
+    "knockoff",
+    "milkdrink",
+    "mudshot",
+    "mudslap",
+    "nuzzle",
+    "playrough",
+    "protect",
+    "raindance",
+    "rest",
+    "rockslide",
+    "rocktomb",
+    "scaryface",
+    "seedbomb",
+    "sleeptalk",
+    "smartstrike",
+    "spark",
+    "spitup",
+    "stockpile",
+    "stompingtantrum",
+    "substitute",
+    "sunnyday",
+    "superfang",
+    "supercellslam",
+    "swallow",
+    "tackle",
+    "takedown",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunder",
+    "thundershock",
+    "thunderwave",
+    "thunderbolt",
+    "trailblaze",
+    "uproar",
+    "voltswitch",
+    "wildcharge",
+    "zapcannon",
+    "zenheadbutt"
+  ],
+  "ramnarok": [
+    "ancientpower",
+    "aurorabeam",
+    "auroraveil",
+    "avalanche",
+    "blizzard",
+    "bodypress",
+    "bodyslam",
+    "brickbreak",
+    "chargebeam",
+    "curse",
+    "dazzlinggleam",
+    "detect",
+    "endeavor",
+    "endure",
+    "facade",
+    "falseswipe",
+    "fireblast",
+    "flamecharge",
+    "flamethrower",
+    "flareblitz",
+    "flashcannon",
+    "freezedry",
+    "gigaimpact",
+    "grassknot",
+    "hardpress",
+    "haze",
+    "heatcrash",
+    "heatwave",
+    "heavyslam",
+    "helpinghand",
+    "hyperbeam",
+    "icebeam",
+    "iceshard",
+    "icespinner",
+    "iciclespear",
+    "icywind",
+    "imprison",
+    "inferno",
+    "irondefense",
+    "ironhead",
+    "lavaplume",
+    "lowkick",
+    "metalburst",
+    "outrage",
+    "overheat",
+    "painsplit",
+    "phantomforce",
+    "polarflare",
+    "protect",
+    "rest",
+    "roar",
+    "sandstorm",
+    "scaryface",
+    "sleeptalk",
+    "snowscape",
+    "solarbeam",
+    "solarblade",
+    "steelbeam",
+    "substitute",
+    "sunnyday",
+    "swift",
+    "takedown",
+    "terablast",
+    "temperflare",
+    "throatchop",
+    "thunder",
+    "thunderbolt",
+    "wildcharge",
+    "willowisp"
+  ],
+  "obliteryx": [
+    "acrobatics",
+    "aerialace",
+    "aircutter",
+    "airslash",
+    "beakblast",
+    "bite",
+    "bodypress",
+    "bodyslam",
+    "crunch",
+    "darkpulse",
+    "darkestlariat",
+    "doubleedge",
+    "dragoncheer",
+    "dragonpulse",
+    "dragonrush",
+    "drillpeck",
+    "dualwingbeat",
+    "encore",
+    "endure",
+    "facade",
+    "faketears",
+    "firefang",
+    "flamethrower",
+    "fly",
+    "foulplay",
+    "gigaimpact",
+    "gust",
+    "heatwave",
+    "helpinghand",
+    "hurricane",
+    "hyperbeam",
+    "knockoff",
+    "lashout",
+    "leer",
+    "lockon",
+    "memento",
+    "meteorbeam",
+    "mudslap",
+    "nastyplot",
+    "outrage",
+    "overheat",
+    "powertrip",
+    "protect",
+    "quickattack",
+    "quickguard",
+    "rest",
+    "roar",
+    "rocktomb",
+    "roost",
+    "scaryface",
+    "shadowball",
+    "sleeptalk",
+    "smartstrike",
+    "snarl",
+    "stealthrock",
+    "steelwing",
+    "substitute",
+    "suckerpunch",
+    "swift",
+    "tailwind",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunderfang",
+    "whirlwind",
+    "wingattack"
+  ],
+  "pokestarsmeargle": [],
+  "pokestarufo": [],
+  "pokestarufo2": [],
+  "pokestarbrycenman": [],
+  "pokestarmt": [],
+  "pokestarmt2": [],
+  "pokestartransport": [],
+  "pokestargiant": [],
+  "pokestargiant2": [],
+  "pokestarhumanoid": [],
+  "pokestarmonster": [],
+  "pokestarf00": [],
+  "pokestarf002": [],
+  "pokestarspirit": [],
+  "pokestarblackdoor": [],
+  "pokestarwhitedoor": [],
+  "pokestarblackbelt": [],
+  "pokestargiantpropo2": [],
+  "pokestarufopropu2": []
 };
+
+export default data;
