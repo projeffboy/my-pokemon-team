@@ -9,7 +9,6 @@ import Box from "@mui/material/Box";
 import TeamChecklist from "./more-info/team-checklist";
 import SearchFilters from "./more-info/search-filters";
 import PokemonShowdownTeam from "./more-info/pokemon-showdown-team";
-import { moreInfoStyles } from "../../styles";
 import { useBreakpoint } from "../../width-context";
 
 export default function MoreInfo() {
@@ -29,11 +28,11 @@ export default function MoreInfo() {
   }
 
   return (
-    <Box sx={moreInfoStyles.root}>
+    <Box sx={{ borderRadius: 4 }}>
       <AppBar
         position="static"
         color="default"
-        sx={moreInfoStyles.appBar}
+        sx={{ borderRadius: "4px 4px 0 0" }}
         enableColorOnDark
       >
         {/* E.g.  | Search Filters | Team Checklist | Pokemon Showdown Team | */}
@@ -45,18 +44,14 @@ export default function MoreInfo() {
           variant="fullWidth"
         >
           {tabTitles.map(title => (
-            <Tab label={title} key={title} sx={moreInfoStyles.tab} />
+            <Tab label={title} key={title} sx={{ minWidth: "initial" }} />
           ))}
         </Tabs>
       </AppBar>
       {/* The stuff below the tabs */}
-      {[
-        <SearchFilters />,
-        <TeamChecklist />,
-        <PokemonShowdownTeam />,
-      ].map(
+      {[<SearchFilters />, <TeamChecklist />, <PokemonShowdownTeam />].map(
         (component, i) =>
-          tabIndex === i && <TabContainer key={i}>{component}</TabContainer>
+          tabIndex === i && <TabContainer key={i}>{component}</TabContainer>,
       )}
     </Box>
   );

@@ -6,7 +6,6 @@ import Paper from "@mui/material/Paper";
 import Pokemon from "./cards/pokemon";
 import TeamStats from "./cards/team-stats";
 import MoreInfo from "./cards/more-info";
-import { paperStyles } from "../styles";
 import TeamViewer from "./cards/team-viewer";
 import { useBreakpoint } from "../width-context";
 
@@ -28,7 +27,7 @@ export default function Cards() {
       // Display 6 pokemon cards
       return [0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} size={6}>
-          <Paper sx={paperStyles.applyPadding}>
+          <Paper sx={{ padding: 1 }}>
             {/* teamIndex is the pokemon's team slot number - 1 */}
             <Pokemon teamIndex={num} />
           </Paper>
@@ -64,7 +63,7 @@ export default function Cards() {
         {(["Team Defence", "Team Type Coverage"] as const).map(cardTitle => (
           <Grid key={cardTitle} size={12}>
             <Paper
-              sx={paperStyles.applyPadding}
+              sx={{ padding: 1 }}
               aria-label={`${cardTitle} Card`}
               role="region"
             >

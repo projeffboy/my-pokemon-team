@@ -7,7 +7,6 @@ import type { SelectChangeEvent } from "@mui/material/Select";
 import Grid from "@mui/material/Grid";
 import { observer } from "mobx-react";
 import store from "../../../store";
-import { searchFiltersStyles } from "../../../styles";
 import { SearchFilterKey } from "../../../types";
 
 type InputLabelKey = "Format" | "Type" | "Region" | "Moves";
@@ -20,7 +19,10 @@ const SearchFilters = observer(function SearchFilters() {
     Moves: "moves",
   };
 
-  const handleChange = (inputLabel: InputLabelKey, e: SelectChangeEvent<string>) => {
+  const handleChange = (
+    inputLabel: InputLabelKey,
+    e: SelectChangeEvent<string>,
+  ) => {
     store.searchFilters[inputToFilterKey[inputLabel]] = e.target.value;
   };
 
@@ -81,7 +83,13 @@ const SearchFilters = observer(function SearchFilters() {
       justifyContent="center"
       size={{ xs: 6, lg: 3 }}
     >
-      <FormControl variant="standard" sx={searchFiltersStyles.formControl}>
+      <FormControl
+        variant="standard"
+        sx={{
+          minWidth: { xs: 90, md: 120 },
+          margin: { xs: "0 10px 10px", lg: "10px" },
+        }}
+      >
         {/* E.g. Format */}
         <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
         <Select

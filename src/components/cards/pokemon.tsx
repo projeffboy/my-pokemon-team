@@ -1,7 +1,6 @@
 import React from "react";
 import PokemonInput from "./pokemon/pokemon-input";
 import Sprite from "./pokemon/sprite";
-import { pokemonStyles } from "../../styles";
 import { PokemonProp } from "../../types";
 
 interface PokemonProps {
@@ -10,8 +9,7 @@ interface PokemonProps {
 
 export default function Pokemon(props: PokemonProps) {
   const inputs: Array<
-    | { placeholder: string; pokemonProp: PokemonProp }
-    | { placeholder: "" }
+    { placeholder: string; pokemonProp: PokemonProp } | { placeholder: "" }
   > = [
     { placeholder: "Name", pokemonProp: "name" },
     { placeholder: "Move", pokemonProp: "move1" },
@@ -41,7 +39,11 @@ export default function Pokemon(props: PokemonProps) {
 
   return (
     <div
-      style={pokemonStyles.gridContainer}
+      style={{
+        display: "grid",
+        gridColumnGap: "10px",
+        gridTemplateColumns: "1fr 1fr",
+      }}
       role="region"
       aria-label={`Pokemon ${props.teamIndex + 1}`}
     >

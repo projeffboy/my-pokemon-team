@@ -5,7 +5,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Paper from "@mui/material/Paper";
 // My Component Imports
-import { paperStyles, teamViewerStyles } from "../../styles";
 import Pokemon from "./pokemon";
 import Sprite from "./pokemon/sprite";
 import { useBreakpoint } from "../../width-context";
@@ -38,68 +37,63 @@ export default function TeamViewer() {
    */
   const getTwoPokemonSprites = (teamIndex: number) => {
     return (
-      <div style={teamViewerStyles.twoSprites}>
+      <div style={{ display: "flex", height: 75 }}>
         <Sprite teamIndex={teamIndex} />
         <Sprite teamIndex={teamIndex + 1} />
       </div>
     );
   };
 
-  const pokemonPaperSx = {
-    ...paperStyles.applyPadding,
-    ...teamViewerStyles.oneOfTwoPkmn,
-  };
-
   return (
-      <>
-        <Grid size={12}>
-          <Paper>
-            <Tabs
-              value={width === "sm" ? smTabIndex : xsTabIndex}
-              onChange={handleChange}
-              variant="fullWidth"
-              textColor="secondary"
-            >
-              {
-                // Either displays 3 or 6 tabs
-                width === "sm"
-                  ? [0, 2, 4].map(teamIndex => (
-                      <Tab
-                        key={teamIndex}
-                        label={`${teamIndex + 1} - ${teamIndex + 2}`}
-                        icon={getTwoPokemonSprites(teamIndex)}
-                      />
-                    ))
-                  : [0, 1, 2, 3, 4, 5].map(teamIndex => (
-                      <Tab
-                        key={teamIndex}
-                        label={teamIndex + 1}
-                        sx={teamViewerStyles.xsTab}
-                        icon={<Sprite teamIndex={teamIndex} />}
-                      />
-                    ))
-              }
-            </Tabs>
-          </Paper>
-        </Grid>
-        {
-          // Either displays 2 or 1 pokemon at a time
-          width === "sm" ? (
-            [0, 1].map(num => (
-              <Grid key={num} size={12}>
-                <Paper sx={pokemonPaperSx}>
-                  <Pokemon teamIndex={2 * smTabIndex + num} />
-                </Paper>
-              </Grid>
-            ))
-          ) : (
-            <Grid size={12}>
-              <Paper sx={pokemonPaperSx}>
-                <Pokemon teamIndex={xsTabIndex} />
+    <>
+      <Grid size={12}>
+        <Paper>
+          <Tabs
+            value={width === "sm" ? smTabIndex : xsTabIndex}
+            onChange={handleChange}
+            variant="fullWidth"
+            textColor="secondary"
+          >
+            {
+              // Either displays 3 or 6 tabs
+              width === "sm" ?
+                [0, 2, 4].map(teamIndex => (
+                  <Tab
+                    key={teamIndex}
+                    label={`${teamIndex + 1} - ${teamIndex + 2}`}
+                    icon={getTwoPokemonSprites(teamIndex)}
+                  />
+                ))
+              : [0, 1, 2, 3, 4, 5].map(teamIndex => (
+                  <Tab
+                    key={teamIndex}
+                    label={teamIndex + 1}
+                    sx={{ minWidth: 0 }}
+                    icon={<Sprite teamIndex={teamIndex} />}
+                  />
+                ))
+
+            }
+          </Tabs>
+        </Paper>
+      </Grid>
+      {
+        // Either displays 2 or 1 pokemon at a time
+        width === "sm" ?
+          [0, 1].map(num => (
+            <Grid key={num} size={12}>
+              <Paper sx={{ padding: "8px" }}>
+                <Pokemon teamIndex={2 * smTabIndex + num} />
               </Paper>
             </Grid>
-          )
-        }
-      </>
+          ))
+        : <Grid size={12}>
+            <Paper sx={{ padding: "8px" }}>
+              <Pokemon teamIndex={xsTabIndex} />
+            </Paper>
+          </Grid>
+
+      }
+    </>
   );
 }

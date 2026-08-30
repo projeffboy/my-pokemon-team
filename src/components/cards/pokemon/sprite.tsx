@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import { observer } from "mobx-react";
 import store from "../../../store";
 import pokedex from "../../../data/pokedex";
-import { pokemonInputStyles as spriteStyles } from "../../../styles";
 import questionMark from "../../../images/question-mark.png";
 import altSpriteNum from "../../../data/altSpriteNum";
 import localSprites from "../../../images/local-sprites";
@@ -22,9 +21,9 @@ const Sprite = observer(function Sprite(props: SpriteProps) {
   const { teamIndex, forceFullSize = false } = props;
   const breakpoint = useBreakpoint();
   const width =
-    forceFullSize && (breakpoint === "xs" || breakpoint === "sm")
-      ? "md"
-      : breakpoint;
+    forceFullSize && (breakpoint === "xs" || breakpoint === "sm") ?
+      "md"
+    : breakpoint;
   const pokemon = store.team[teamIndex].name; // unhyphenated name
   const pokedexNumber = pokemon ? pokedexMap[pokemon]?.num : undefined;
 
@@ -48,9 +47,7 @@ const Sprite = observer(function Sprite(props: SpriteProps) {
        */
       const spriteFilenamePart1 = store.baseForme(pokemon);
       const forme = store.forme(pokemon);
-      const spriteFilenamePart2 = (forme || "")
-        .toLowerCase()
-        .replace("-", "");
+      const spriteFilenamePart2 = (forme || "").toLowerCase().replace("-", "");
       spriteFilename = `${spriteFilenamePart1}-${spriteFilenamePart2}`;
 
       spriteFilename = spriteFilename.replace("%", "").replace("'", "");
@@ -96,16 +93,24 @@ const Sprite = observer(function Sprite(props: SpriteProps) {
 
   /* Either Return Sprite or Mini Sprite */
   return (
-    <Box sx={{ ...spriteStyles.gridItem, ...spriteStyles.spriteContainer }}>
+    <Box
+      sx={{
+        minWidth: 0,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        gridRow: { xs: "2 / 7", md: "2 / 5" },
+      }}
+    >
       <img
         alt={spriteFilename || "question-mark"}
         /* URL from Pokemon Showdown */
         src={
           localSprite ||
-          (spriteFilename
-            ? `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`
-            : // The placeholder (question mark) sprite
-              questionMark)
+          (spriteFilename ?
+            `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`
+            // The placeholder (question mark) sprite
+          : questionMark)
         }
         onError={e => {
           // Prevent infinite loops if the fallback image also fails
@@ -114,11 +119,9 @@ const Sprite = observer(function Sprite(props: SpriteProps) {
         }}
         /* Apply miniSprite style if it's a mini sprite */
         style={{
-          ...spriteStyles.sprite,
-          ...(width === "sm" || width === "xs" ? spriteStyles.miniSprite : {}),
-          ...(width === "lg" || width === "xl"
-            ? spriteStyles.smallerSprite
-            : {}),
+          maxHeight: width === "lg" || width === "xl" ? "96px" : "100%",
+          maxWidth: "100%",
+          ...(width === "sm" || width === "xs" ? { width: "100%" } : {}),
         }}
       />
     </Box>

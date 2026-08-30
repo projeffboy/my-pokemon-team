@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Grid";
-import { appStyles } from "./styles";
 import Header from "./components/header";
 import Main from "./components/main";
 import Footer from "./components/footer";
@@ -35,9 +34,12 @@ export default function App() {
             <Grid
               container
               spacing={2}
-              justifyContent="center"
-              alignItems="center"
-              sx={appStyles.root}
+              sx={{
+                minHeight: "100dvh",
+                maxWidth: 1920,
+                mx: "auto",
+                p: 2,
+              }}
             >
               <Header />
               <Main />

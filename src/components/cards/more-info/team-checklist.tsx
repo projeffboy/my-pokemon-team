@@ -1,6 +1,5 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
-import { teamChecklistStyles } from "../../../styles";
 import CheckCircle from "@mui/icons-material/CheckCircle";
 import Cancel from "@mui/icons-material/Cancel";
 import { observer } from "mobx-react";
@@ -99,7 +98,7 @@ const TeamChecklist = observer(function TeamChecklist() {
     <Grid key={miniHeader} size={4}>
       {/* E.g. Offensive */}
       <Typography
-        sx={teamChecklistStyles.miniHeader}
+        sx={{ fontWeight: "bold", paddingBottom: 10 }}
         variant="body1"
         component="div"
         style={{ lineHeight: "initial" }}
@@ -110,17 +109,16 @@ const TeamChecklist = observer(function TeamChecklist() {
         <div key={check} style={{ display: "flex" }}>
           {/* Either a checkmark or a cross */}
           <div>
-            {checklist[miniHeader][check] ? (
+            {checklist[miniHeader][check] ?
               <CheckCircle style={{ color: "#16a085" }} />
-            ) : (
-              <Typography
+            : <Typography
                 variant="body1"
                 component="div"
                 style={{ lineHeight: "initial" }}
               >
                 <Cancel />
               </Typography>
-            )}
+            }
           </div>
           {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
           <Typography

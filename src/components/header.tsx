@@ -1,7 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { appStyles } from "../styles";
 import face1 from "../images/garchomp-shuffle-face.png";
 import face2 from "../images/floette-eternal-shuffle-face.png";
 
@@ -24,11 +23,25 @@ export default function Header() {
           component="img"
           src={face1}
           alt={face1Alt}
-          sx={appStyles.headerFace}
+          sx={{
+            display: "block",
+            height: 28,
+            padding: "0 6px",
+            "@media (min-width: 360px)": { height: 32 },
+            "@media (min-width: 600px)": { height: 48 },
+          }}
         />
       </Grid>
       <Grid>
-        <Typography variant="h3" sx={appStyles.headerTitle}>
+        <Typography
+          variant="h3"
+          sx={{
+            padding: "0 20px",
+            fontSize: "1.4rem",
+            "@media (min-width: 360px)": { fontSize: "1.6rem" },
+            "@media (min-width: 600px)": { fontSize: "2.8125rem" },
+          }}
+        >
           My Pokemon Team
         </Typography>
       </Grid>
@@ -37,7 +50,13 @@ export default function Header() {
           component="img"
           src={face2}
           alt={face2Alt}
-          sx={appStyles.headerFace}
+          sx={{
+            display: "block",
+            height: 28,
+            padding: "0 6px",
+            "@media (min-width: 360px)": { height: 32 },
+            "@media (min-width: 600px)": { height: 48 },
+          }}
         />
       </Grid>
       <Grid size={12}>
