@@ -4,7 +4,7 @@
 
 #### No guarantees on when I'll include the other generations, as well as the new diamond and pearl (BDSP). I also want to make teams saveable by URL. Hopefully in summer 2022...
 
-![My Pokemon Team Screenshot](src/mypokemonteam-screenshot.PNG)
+![My Pokemon Team Screenshot](src/images/mypokemonteam-screenshot.PNG)
 
 ## What makes this teambuilder special?
 

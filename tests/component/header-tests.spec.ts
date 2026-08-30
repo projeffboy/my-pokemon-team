@@ -6,17 +6,37 @@ import { expectImageToBeLoaded } from "helper";
 test.describe("Header Tests", () => {
   test("should display header elements correctly", async ({ page }) => {
     // Test that the title is still there
-    await expect(
-      page.getByRole("heading", { name: "My Pokemon Team" })
-    ).toBeVisible();
+    const title = page.getByRole("heading", { name: "My Pokemon Team" });
+    await expect(title).toBeVisible();
 
     // Test that the two images to its left and right are as well (and that the images are loading properly)
-    const leftImage = page.getByRole("img", { name: "Landorus Face" });
-    const rightImage = page.getByRole("img", { name: "Virizion Face" });
+    const leftImage = page.getByRole("img", { name: "Garchomp Face" });
+    const rightImage = page.getByRole("img", {
+      name: "Eternal Flower Floette Face",
+    });
 
     // Verify images are loaded successfully (not broken/404)
     await expectImageToBeLoaded(leftImage);
     await expectImageToBeLoaded(rightImage);
+
+    const [titleBox, leftImageBox, rightImageBox] = await Promise.all([
+      title.boundingBox(),
+      leftImage.boundingBox(),
+      rightImage.boundingBox(),
+    ]);
+    expect(titleBox).not.toBeNull();
+    expect(leftImageBox).not.toBeNull();
+    expect(rightImageBox).not.toBeNull();
+
+    const titleCenter = titleBox!.y + titleBox!.height / 2;
+    expect(leftImageBox!.y + leftImageBox!.height / 2).toBeCloseTo(
+      titleCenter,
+      0
+    );
+    expect(rightImageBox!.y + rightImageBox!.height / 2).toBeCloseTo(
+      titleCenter,
+      0
+    );
 
     // Check email contact info
     await expect(

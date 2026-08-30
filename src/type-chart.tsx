@@ -4,7 +4,7 @@ import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import TypeChartPng from "./type-chart.png";
+import TypeChartPng from "./images/type-chart.png";
 import { Breakpoint } from "./types";
 
 function TabContainer(props: { children?: React.ReactNode }) {

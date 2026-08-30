@@ -11,8 +11,8 @@ import Manual from "./manual";
 import Credits from "./credits";
 import PrivacyPolicy from "./privacy-policy";
 import UpdateLog from "./update-log";
-import face1 from "./landorus-face.png";
-import face2 from "./ogerpon-teal-mask-by-jormxdos.png";
+import face1 from "./images/garchomp-shuffle-face.png";
+import face2 from "./images/floette-eternal-shuffle-face.png";
 import TypeChartDialog from "./type-chart-dialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import GlobalStyles from "@mui/material/GlobalStyles";
@@ -28,8 +28,8 @@ import { Breakpoint } from "./types";
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;
 
-const face1Alt = "Landorus Face";
-const face2Alt = "Virizion Face";
+const face1Alt = "Garchomp Face";
+const face2Alt = "Eternal Flower Floette Face";
 
 function faceWidth(breakpoint: Breakpoint) {
   if (breakpoint !== "xs") {
@@ -96,13 +96,18 @@ function AppContent({ darkMode, setDarkMode }: AppContentProps) {
         sx={appStyles.root}
       >
         {/* Header */}
-        <Grid container size={12} justifyContent="center">
+        <Grid
+          container
+          size={12}
+          justifyContent="center"
+          alignItems="center"
+        >
           <Grid>
             <img
               src={face1}
               alt={face1Alt}
               height={faceWidth(width)}
-              style={{ padding: "0 6px" }}
+              style={{ display: "block", padding: "0 6px" }}
             />
           </Grid>
           <Grid>
@@ -121,7 +126,7 @@ function AppContent({ darkMode, setDarkMode }: AppContentProps) {
               src={face2}
               alt={face2Alt}
               height={faceWidth(width)}
-              style={{ padding: "0 6px" }}
+              style={{ display: "block", padding: "0 6px" }}
             />
           </Grid>
           <Grid size={12}>

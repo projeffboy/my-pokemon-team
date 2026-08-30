@@ -4,9 +4,9 @@ import { observer } from "mobx-react";
 import store from "../../../store";
 import pokedex from "../../../data/pokedex";
 import { pokemonInputStyles as spriteStyles } from "../../../styles";
-import questionMark from "../../../question-mark.png";
+import questionMark from "../../../images/question-mark.png";
 import altSpriteNum from "../../../data/altSpriteNum";
-import localSprites from "../../../img/local-sprites";
+import localSprites from "../../../images/local-sprites";
 import { Breakpoint } from "../../../types";
 
 interface SpriteProps {
