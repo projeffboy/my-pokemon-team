@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 interface RampProps {
@@ -19,20 +19,19 @@ declare global {
 }
 
 const Ramp = ({ PUB_ID, WEBSITE_ID }: RampProps) => {
-  const [rampInitialized, setRampInitialized] = useState(false);
+  const rampInitialized = useRef(false);
   const location = useLocation();
 
   useEffect(() => {
     if (!PUB_ID || !WEBSITE_ID) {
-      console.log("Missing Publisher Id and Website Id");
+      console.warn("Missing Publisher Id and Website Id");
       return;
     }
 
-    if (rampInitialized) {
+    if (rampInitialized.current) {
       return; // Prevent re-initialization
     }
-
-    setRampInitialized(true);
+    rampInitialized.current = true;
 
     const ramp = (window.ramp ??= { que: [] });
     ramp.passiveMode = true;
@@ -40,13 +39,17 @@ const Ramp = ({ PUB_ID, WEBSITE_ID }: RampProps) => {
     const configScript = document.createElement("script");
     configScript.src = `https://cdn.intergient.com/${PUB_ID}/${WEBSITE_ID}/ramp.js`;
     document.body.appendChild(configScript);
+  }, [PUB_ID, WEBSITE_ID]);
 
-    configScript.onload = () => {
-      ramp.que.push(() => {
-        window.ramp?.spaNewPage?.(location.pathname);
-      });
-    };
-  }, [PUB_ID, WEBSITE_ID, location.pathname]); // Only depend on PUB_ID, WEBSITE_ID, and location.pathname
+  // Notify Playwire on every SPA navigation (queued items run once ramp.js loads)
+  useEffect(() => {
+    if (!rampInitialized.current) return;
+
+    const ramp = (window.ramp ??= { que: [] });
+    ramp.que.push(() => {
+      window.ramp?.spaNewPage?.(location.pathname);
+    });
+  }, [location.pathname]);
 
   return null;
 };

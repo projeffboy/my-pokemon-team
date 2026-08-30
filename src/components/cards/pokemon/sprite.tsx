@@ -72,7 +72,7 @@ const Sprite = observer(function Sprite(props: SpriteProps) {
     (pokedexNumber !== undefined &&
       984 <= pokedexNumber &&
       pokedexNumber <= 995) ||
-    pokedexNumber == 0 ||
+    pokedexNumber === 0 ||
     (pokemon && (altSpriteNumMap[pokemon] ?? -1) >= 1320 + 93) ||
     [
       "dialgaorigin",

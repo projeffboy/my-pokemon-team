@@ -60,7 +60,9 @@ const PokemonShowdownTeam = observer(
         let teamPkmnRawData = this.state.textArea.split("\n\n"); // split team into each pokemon
         let numberOfTeamPkmn = 0;
 
-        teamPkmnRawData = teamPkmnRawData.filter(eachPkmnData => eachPkmnData); // get rid of empty lines
+        teamPkmnRawData = teamPkmnRawData
+          .filter(eachPkmnData => eachPkmnData) // get rid of empty lines
+          .slice(0, 6); // a team has at most 6 pokemon
         teamPkmnRawData.forEach((eachPkmnData, teamIndex) => {
           numberOfTeamPkmn++;
 
@@ -74,7 +76,6 @@ const PokemonShowdownTeam = observer(
           let pkmnName = pkmnNameAndNickname;
           if (pkmnName.includes("(")) {
             pkmnName = pkmnName.split("(")[1].replace(")", "");
-            console.log(pkmnName);
           }
 
           // Check if the pokemon the user typed is legit

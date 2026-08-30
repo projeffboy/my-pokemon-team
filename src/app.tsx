@@ -1,16 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Snackbar from "@mui/material/Snackbar";
-import Button from "@mui/material/Button";
 import { observer } from "mobx-react";
 import store from "./store";
 import { appStyles } from "./styles";
 import Cards from "./components/cards";
-import Manual from "./manual";
-import Credits from "./credits";
-import PrivacyPolicy from "./privacy-policy";
-import UpdateLog from "./update-log";
+import Footer from "./components/footer";
 import face1 from "./images/garchomp-shuffle-face.png";
 import face2 from "./images/floette-eternal-shuffle-face.png";
 import TypeChartDialog from "./type-chart-dialog";
@@ -18,12 +15,9 @@ import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { ThemeProvider } from "@mui/material/styles"; // provide your custom theme
 import { theme, darkTheme } from "./styles";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./components/RAMP";
 import useWidth from "./use-width";
-import { Breakpoint } from "./types";
 
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;
@@ -31,30 +25,26 @@ const WEBSITE_ID = 75399;
 const face1Alt = "Garchomp Face";
 const face2Alt = "Eternal Flower Floette Face";
 
-function faceWidth(breakpoint: Breakpoint) {
-  if (breakpoint !== "xs") {
-    return 48;
-  } else if (window.innerWidth >= 360) {
-    return 32;
-  } else {
-    return 28;
-  }
-}
-
-function titleFontSize(breakpoint: Breakpoint) {
-  if (breakpoint !== "xs") {
-    return 2.8125;
-  } else if (window.innerWidth >= 360) {
-    return 1.6;
-  } else {
-    return 1.4;
-  }
+function getSystemDarkMode() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 }
 
 export default function App() {
-  const isSystemDark =
-    window && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const [darkMode, setDarkMode] = useState(isSystemDark);
+  const [darkMode, setDarkMode] = useState(getSystemDarkMode);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const systemDarkMode = window.matchMedia("(prefers-color-scheme: dark)");
+    const updateDarkMode = (event: MediaQueryListEvent) =>
+      setDarkMode(event.matches);
+
+    systemDarkMode.addEventListener("change", updateDarkMode);
+    return () => systemDarkMode.removeEventListener("change", updateDarkMode);
+  }, []);
 
   return (
     <Router>
@@ -97,36 +87,36 @@ function AppContent({ darkMode, setDarkMode }: AppContentProps) {
       >
         {/* Header */}
         <Grid
+          component="header"
           container
           size={12}
+          // Don't inherit the outer spacing: 16px gaps overflow 360px-wide phones
+          spacing={0}
           justifyContent="center"
           alignItems="center"
         >
           <Grid>
-            <img
+            <Box
+              component="img"
               src={face1}
               alt={face1Alt}
-              height={faceWidth(width)}
-              style={{ display: "block", padding: "0 6px" }}
+              sx={appStyles.headerFace}
             />
           </Grid>
           <Grid>
             <Typography
               variant="h3"
-              style={{
-                padding: "0 20px",
-                fontSize: titleFontSize(width) + "rem",
-              }}
+              sx={appStyles.headerTitle}
             >
               My Pokemon Team
             </Typography>
           </Grid>
           <Grid>
-            <img
+            <Box
+              component="img"
               src={face2}
               alt={face2Alt}
-              height={faceWidth(width)}
-              style={{ display: "block", padding: "0 6px" }}
+              sx={appStyles.headerFace}
             />
           </Grid>
           <Grid size={12}>
@@ -141,49 +131,11 @@ function AppContent({ darkMode, setDarkMode }: AppContentProps) {
           </Grid>
         </Grid>
         {/* Main */}
-        <Cards width={width} darkMode={darkMode} />
-        {/* Footer */}
-        <Grid
-          container
-          size={12}
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-          style={{ paddingBottom: 230 }}
-        >
-          <Grid>
-            <Manual darkMode={darkMode} />
-          </Grid>
-          <Grid>
-            <Button
-              href="https://jefferytang.com"
-              style={{ fontWeight: "initial", textTransform: "initial" }}
-            >
-              Jeffery Tang
-            </Button>
-          </Grid>
-          <Grid>
-            <Credits />
-          </Grid>
-          <Grid>
-            <UpdateLog />
-          </Grid>
-          <Grid>
-            <PrivacyPolicy />
-          </Grid>
-          <Grid>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={darkMode}
-                  onChange={() => setDarkMode(!darkMode)}
-                  value="darkMode"
-                />
-              }
-              label="Dark Mode"
-            />
-          </Grid>
+        <Grid component="main" container size={12} spacing={2}>
+          <Cards width={width} darkMode={darkMode} />
         </Grid>
+        {/* Footer */}
+        <Footer darkMode={darkMode} setDarkMode={setDarkMode} />
       </Grid>
       <MainSnackbar />
       <TypeChartDialog width={width} />
@@ -199,10 +151,11 @@ const MainSnackbar = observer(function MainSnackbar() {
       open={store.isSnackbarOpen}
       autoHideDuration={2500}
       onClose={() => (store.isSnackbarOpen = false)}
-      ContentProps={{
-        // role "alertdialog" matches Material UI v3's behavior (tests rely on it)
-        role: "alertdialog",
-        "aria-describedby": "message-id",
+      slotProps={{
+        content: {
+          role: "alert",
+          "aria-describedby": "message-id",
+        },
       }}
       message={<span id="message-id">{store.snackbarMsg}</span>}
     />

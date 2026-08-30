@@ -43,4 +43,23 @@ test.describe("Header Tests", () => {
       page.getByText("Report Bugs to jeffery124@gmail.com")
     ).toBeVisible();
   });
+
+  test("should resize the header within the xs breakpoint", async ({ page }) => {
+    const title = page.getByRole("heading", { name: "My Pokemon Team" });
+    const leftImage = page.getByRole("img", { name: "Garchomp Face" });
+
+    await page.setViewportSize({ width: 320, height: 568 });
+    await expect(title).toHaveCSS("font-size", "22.4px");
+    await expect(leftImage).toHaveCSS("height", "28px");
+
+    await page.setViewportSize({ width: 390, height: 693 });
+    await expect(title).toHaveCSS("font-size", "25.6px");
+    await expect(leftImage).toHaveCSS("height", "32px");
+  });
+
+  test("should expose page landmarks", async ({ page }) => {
+    await expect(page.getByRole("banner")).toBeVisible();
+    await expect(page.getByRole("main")).toBeVisible();
+    await expect(page.getByRole("contentinfo")).toBeVisible();
+  });
 });

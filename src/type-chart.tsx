@@ -86,7 +86,7 @@ class TypeChart extends React.Component<Props, State> {
             </Typography>
             <img
               alt="Infographic Type Chart"
-              src="http://i.imgur.com/fylyCdC.png"
+              src="https://i.imgur.com/fylyCdC.png"
               style={{ maxWidth: "100%" }}
             />
           </TabContainer>

@@ -110,4 +110,20 @@ test.describe("Footer Tests", () => {
     await expect(darkModeChecked).toBeChecked({ checked: systemPrefersDark });
     await verifyTheme(systemPrefersDark);
   });
+
+  test("should follow system theme changes", async ({ page }) => {
+    const darkModeSwitch = page.getByRole("switch", { name: "Dark Mode" });
+    const initiallyDark = await darkModeSwitch.isChecked();
+
+    await page.emulateMedia({ colorScheme: initiallyDark ? "light" : "dark" });
+
+    await expect(darkModeSwitch).toBeChecked({ checked: !initiallyDark });
+  });
+
+  test("should not reserve ad space in development", async ({ page }) => {
+    await expect(page.getByRole("contentinfo")).toHaveCSS(
+      "padding-bottom",
+      "0px"
+    );
+  });
 });

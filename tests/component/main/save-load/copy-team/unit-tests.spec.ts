@@ -15,7 +15,7 @@ test.describe("Save/Load Team: Copy Team - Unit Tests", () => {
 
     // Verify snackbar message
     const snackbar = page
-      .getByRole("alertdialog")
+      .getByRole("alert")
       .getByText("Empty team, nothing to copy.");
     await expect(snackbar).toBeVisible();
   });

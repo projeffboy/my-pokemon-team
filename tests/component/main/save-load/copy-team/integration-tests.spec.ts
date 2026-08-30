@@ -31,7 +31,7 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     await page.getByRole("button", { name: "Copy Team" }).click();
 
     // Verify snackbar
-    const snackbar = page.getByRole("alertdialog").getByText("Team copied.");
+    const snackbar = page.getByRole("alert").getByText("Team copied.");
     await expect(snackbar).toBeVisible();
 
     // Verify clipboard content

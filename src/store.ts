@@ -288,7 +288,7 @@ class Store {
       // Append previous evolution learnset to current learnset
       completeLearnset = [
         ...completeLearnset,
-        ...learnsets[baseForme + region],
+        ...(learnsets[baseForme + region] || []),
       ];
     }
 
@@ -447,8 +447,10 @@ class Store {
         move === "curse" ||
         (moves[move] &&
           moves[move].boosts &&
-          Object.values(moves[move].boosts).reduce((sum, num) => sum + num) >=
-            2)
+          Object.values(moves[move].boosts).reduce(
+            (sum, num) => sum + num,
+            0
+          ) >= 2)
     );
   }
 
@@ -498,7 +500,7 @@ class Store {
       const pkmn = teamPkmnProps.name;
 
       if (pkmn) {
-        const pkmnTypes = pokedex[pkmn].types; // that pokemon's types
+        const pkmnTypes = pokedex[pkmn]?.types || []; // that pokemon's types
 
         teamTypes.push(pkmnTypes);
       } else {
@@ -821,10 +823,12 @@ class Store {
           } else if (type === "Water") {
             effectiveness = 3;
           }
+          break;
         case "Purifying Salt":
           if (type === "Ghost") {
             effectiveness += 1;
           }
+          break;
         default:
       }
     }
@@ -1105,7 +1109,7 @@ class Store {
         filteredPokedex = { ...pokedex };
 
         for (const pkmn of banlist) {
-          const { otherFormes } = pokedex[pkmn];
+          const { otherFormes } = pokedex[pkmn] ?? {};
 
           // Don't just delete the banned pokemon, delete its other formes
           // E.g. delete giratina, as well as giratinaorigin

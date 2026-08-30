@@ -45,6 +45,19 @@ export const appStyles = {
     maxWidth: 1920,
     margin: "0 auto",
   },
+  headerFace: {
+    display: "block",
+    height: 28,
+    padding: "0 6px",
+    "@media (min-width: 360px)": { height: 32 },
+    "@media (min-width: 600px)": { height: 48 },
+  },
+  headerTitle: {
+    padding: "0 20px",
+    fontSize: "1.4rem",
+    "@media (min-width: 360px)": { fontSize: "1.6rem" },
+    "@media (min-width: 600px)": { fontSize: "2.8125rem" },
+  },
 };
 
 // When using the Paper component
