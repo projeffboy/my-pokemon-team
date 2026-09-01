@@ -17,22 +17,6 @@ export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
     { placeholder: "Ability", pokemonProperties: "ability" },
   ];
 
-  // 8 Grid Items About Each Pokemon
-  const pokemonInputs = inputs.map((input, i) => {
-    if ("pokemonProperties" in input) {
-      return (
-        <PokemonInput
-          key={i}
-          placeholder={input.placeholder}
-          teamIndex={teamIndex}
-          pokemonProperties={input.pokemonProperties}
-        />
-      );
-    } else {
-      return <PokemonSprite key={i} teamIndex={teamIndex} forceFullSize />;
-    }
-  });
-
   return (
     <div
       style={{
@@ -43,7 +27,20 @@ export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
       role="region"
       aria-label={`Pokemon ${teamIndex + 1}`}
     >
-      {pokemonInputs}
+      {inputs.map((input, i) => {
+        if ("pokemonProperties" in input) {
+          return (
+            <PokemonInput
+              key={i}
+              placeholder={input.placeholder}
+              teamIndex={teamIndex}
+              pokemonProperties={input.pokemonProperties}
+            />
+          );
+        } else {
+          return <PokemonSprite key={i} teamIndex={teamIndex} forceFullSize />;
+        }
+      })}
     </div>
   );
 }

@@ -40,11 +40,11 @@ const PokemonInput = observer(function PokemonInput({
 
   switch (pokemonProperties) {
     case "name":
-      optionValues = store.filteredPokemon; // store.allPokemon
+      optionValues = store.filteredPokemon;
       // Fall back to the ID so labels stay aligned with optionValues
       optionLabels = store.filteredPokemonNames.map(
         (name, i) => name ?? optionValues[i],
-      ); // store.allPokemonNames
+      );
       let pokemonName = store.team[teamIndex][pokemonProperties];
       if (pokemonName && !optionValues.includes(pokemonName)) {
         optionValues = [...optionValues, pokemonName];
