@@ -61,7 +61,7 @@ export type PokemonType =
   | "Steel"
   | "Water";
 
-export type PokemonProp =
+export type PokemonProperties =
   | "name"
   | "item"
   | "ability"
@@ -72,7 +72,7 @@ export type PokemonProp =
 
 export type OldMoves = Record<string, { isViable?: boolean }>;
 
-export interface TeamPkmnProps extends Record<string, string> {
+export interface TeamPokemonProperties extends Record<string, string> {
   name: string;
   item: string;
   move1: string;
@@ -82,6 +82,6 @@ export interface TeamPkmnProps extends Record<string, string> {
   ability: string;
 }
 
-export type Team = TeamPkmnProps[];
+export type Team = TeamPokemonProperties[];
 
 export type SearchFilterKey = "format" | "region" | "type" | "moves";

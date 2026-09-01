@@ -9,26 +9,26 @@ const itemsMap = items as Record<string, { spritenum?: number }>;
 const altSpriteNumMap = altSpriteNum as Record<string, number>;
 
 /*
- * Returns an icon of a pokemon (pkmnProp === 'pkmn') or an item (pkmnProp === 'item)
+ * Returns an icon of a pokemon (pokemonProperties === 'pokemon') or an item (pokemonProperties === 'item)
  * "smicons" is short for sun and moon icons for all the pokemon
  * You can find them here: https://play.pokemonshowdown.com/sprites/smicons-sheet.png
  * You can find the "itemicons" here: https://play.pokemonshowdown.com/sprites/itemicons-sheet.png
  */
 export default function PokemonIcon({
-  pkmnProp,
+  pokemonProperties,
   value,
 }: {
-  pkmnProp: string;
+  pokemonProperties: string;
   value: string;
 }) {
-  if (pkmnProp === "pkmn" || pkmnProp === "item") {
+  if (pokemonProperties === "pokemon" || pokemonProperties === "item") {
     let type;
     let left;
     let top;
     let width;
     let height;
 
-    if (pkmnProp === "pkmn") {
+    if (pokemonProperties === "pokemon") {
       type = PokemonIconsSheet;
 
       const pokedexNumber =
@@ -40,7 +40,7 @@ export default function PokemonIcon({
 
       width = 40;
       height = 30;
-    } else if (pkmnProp === "item") {
+    } else if (pokemonProperties === "item") {
       type = ItemIconsSheet;
 
       const itemNumber = itemsMap[value]?.spritenum ?? 0;

@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import store from "@/store";
 import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
-import { PokemonProp } from "@/types";
+import { PokemonProperties } from "@/types";
 
 /*
  * 1. If you change the pokemon name, <PokemonInputSelect /> triggers handleChange.
@@ -10,26 +10,26 @@ import { PokemonProp } from "@/types";
  */
 const PokemonInput = observer(function PokemonInput({
   placeholder,
-  pokemonProp,
+  pokemonProperties,
   teamIndex,
 }: {
   placeholder: string;
-  pokemonProp: PokemonProp;
+  pokemonProperties: PokemonProperties;
   teamIndex: number;
 }) {
   const handleChange = (inputVal: string) => {
-    if (pokemonProp === "name") {
-      store.clearTeamPkmnProps(teamIndex);
+    if (pokemonProperties === "name") {
+      store.clearTeamPokemonProperties(teamIndex);
     }
 
-    store.team[teamIndex][pokemonProp] = inputVal;
+    store.team[teamIndex][pokemonProperties] = inputVal;
 
     /*
      * If the input is where you put your pokemon name,
      * and the pokemon has only one type,
      * then auto select its ability.
      */
-    if (pokemonProp === "name") {
+    if (pokemonProperties === "name") {
       store.autoSelectItem();
       store.autoSelectAbility();
     }
@@ -38,17 +38,20 @@ const PokemonInput = observer(function PokemonInput({
   let optionValues: string[] = [];
   let optionLabels: string[] = [];
 
-  switch (pokemonProp) {
+  switch (pokemonProperties) {
     case "name":
       optionValues = store.filteredPokemon; // store.allPokemon
       // Fall back to the ID so labels stay aligned with optionValues
       optionLabels = store.filteredPokemonNames.map(
         (name, i) => name ?? optionValues[i],
       ); // store.allPokemonNames
-      let pkmnName = store.team[teamIndex][pokemonProp];
-      if (pkmnName && !optionValues.includes(pkmnName)) {
-        optionValues = [...optionValues, pkmnName];
-        optionLabels = [...optionLabels, store.pkmnName(pkmnName) ?? pkmnName];
+      let pokemonName = store.team[teamIndex][pokemonProperties];
+      if (pokemonName && !optionValues.includes(pokemonName)) {
+        optionValues = [...optionValues, pokemonName];
+        optionLabels = [
+          ...optionLabels,
+          store.pokemonName(pokemonName) ?? pokemonName,
+        ];
       }
       break;
     case "item":
@@ -74,8 +77,8 @@ const PokemonInput = observer(function PokemonInput({
       optionValues={optionValues}
       optionLabels={optionLabels}
       onChange={handleChange}
-      value={store.team[teamIndex][pokemonProp]}
-      pokemonProp={pokemonProp}
+      value={store.team[teamIndex][pokemonProperties]}
+      pokemonProperties={pokemonProperties}
       teamIndex={teamIndex}
     />
   );

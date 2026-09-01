@@ -31,33 +31,33 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
 
   const handleImport = (initialText: string) => {
     if (textArea !== initialText) {
-      let teamPkmnRawData = textArea.split("\n\n"); // split team into each pokemon
-      let numberOfTeamPkmn = 0;
+      let teamPokemonRawData = textArea.split("\n\n"); // split team into each pokemon
+      let numberOfTeamPokemon = 0;
 
-      teamPkmnRawData = teamPkmnRawData
-        .filter(eachPkmnData => eachPkmnData) // get rid of empty lines
+      teamPokemonRawData = teamPokemonRawData
+        .filter(eachPokemonData => eachPokemonData) // get rid of empty lines
         .slice(0, 6); // a team has at most 6 pokemon
-      teamPkmnRawData.forEach((eachPkmnData, teamIndex) => {
-        numberOfTeamPkmn++;
+      teamPokemonRawData.forEach((eachPokemonData, teamIndex) => {
+        numberOfTeamPokemon++;
 
-        const lines = eachPkmnData.split("\n"); // split pokemon into its properties
+        const lines = eachPokemonData.split("\n"); // split pokemon into its properties
 
         // Get pokemon and item names
-        const pkmnAndItemNames = lines[0].split("@").map(str => str.trim());
-        const [pkmnNameAndNickname, itemName] = pkmnAndItemNames;
+        const pokemonAndItemNames = lines[0].split("@").map(str => str.trim());
+        const [pokemonNameAndNickname, itemName] = pokemonAndItemNames;
 
         // Check for nickname
-        let pkmnName = pkmnNameAndNickname;
-        if (pkmnName.includes("(")) {
-          pkmnName = pkmnName.split("(")[1].replace(")", "");
+        let pokemonName = pokemonNameAndNickname;
+        if (pokemonName.includes("(")) {
+          pokemonName = pokemonName.split("(")[1].replace(")", "");
         }
 
         // Check if the pokemon the user typed is legit
-        const pkmn = store.pkmnNameInverse(
-          pkmnName.replace(/\(.\)/, "").trim(),
+        const pokemon = store.pokemonNameInverse(
+          pokemonName.replace(/\(.\)/, "").trim(),
         );
-        if (pkmn) {
-          store.team[teamIndex].name = pkmn; // if legit, set pokemon ID/name
+        if (pokemon) {
+          store.team[teamIndex].name = pokemon; // if legit, set pokemon ID/name
 
           // If team raw data does not mention item, leave it blank
           if (itemName) {
@@ -81,7 +81,7 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
               const ability = line.replace("Ability:", "").trim();
 
               // If legit, set ability
-              if (Object.values(store.abilities(pkmn)).includes(ability)) {
+              if (Object.values(store.abilities(pokemon)).includes(ability)) {
                 store.team[teamIndex].ability = ability;
                 abilityChanged = true;
               }
@@ -98,7 +98,7 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
               const move = store.moveNameInverse(moveName);
 
               const validMove =
-                store.canItLearn(move, pkmn) && move ? move : "";
+                store.canItLearn(move, pokemon) && move ? move : "";
 
               store.team[teamIndex]["move" + moveNum] = validMove;
 
@@ -123,8 +123,8 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
        *  -presses OK
        * Without this code, there will be two pikachus, at slot 1 and slot 3
        */
-      for (let i = numberOfTeamPkmn; i < 6; i++) {
-        store.clearTeamPkmnProps(i);
+      for (let i = numberOfTeamPokemon; i < 6; i++) {
+        store.clearTeamPokemonProperties(i);
       }
     } else {
       store.openSnackbar("No changes made.");
@@ -158,7 +158,7 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
       const { name, item, ability } = store.team[teamIndex];
 
       if (name) {
-        return `${store.pkmnName(name)} @ ${store.itemName(item)}
+        return `${store.pokemonName(name)} @ ${store.itemName(item)}
 Ability: ${ability}
 ${[1, 2, 3, 4]
   .map(num => {

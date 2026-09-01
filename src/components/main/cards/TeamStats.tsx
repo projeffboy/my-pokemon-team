@@ -239,14 +239,14 @@ const TypeDefenceTooltipInfo = ({
       <span style={{ color: `#${typeColor}` }}>{type}</span> does...
     </p>
     <ul style={{ listStyle: "none", padding: 0 }}>
-      {store.team.map((teamPkmnProps, i) => {
+      {store.team.map((teamPokemonProperties, i) => {
         // for each pokemon
-        const { name: pkmn, ability, item } = teamPkmnProps;
+        const { name: pokemon, ability, item } = teamPokemonProperties;
 
-        if (pkmn) {
-          const effectiveness = store.typeAgainstPkmn(
+        if (pokemon) {
+          const effectiveness = store.typeAgainstPokemon(
             type,
-            pkmn,
+            pokemon,
             ability,
             item,
           );
@@ -291,9 +291,9 @@ const TypeDefenceTooltipInfo = ({
           }
 
           return (
-            // multiplier, pkmn name, then pkmn icon
+            // multiplier, pokemon name, then pokemon icon
             <li
-              key={teamPkmnProps.name + i}
+              key={teamPokemonProperties.name + i}
               style={{ display: "flex", alignItems: "center" }}
             >
               <span
@@ -306,8 +306,10 @@ const TypeDefenceTooltipInfo = ({
               >
                 {multiplier}x
               </span>
-              <span style={{ paddingRight: 2 }}>to {store.pkmnName(pkmn)}</span>
-              <PokemonIcon pkmnProp="pkmn" value={pkmn} />
+              <span style={{ paddingRight: 2 }}>
+                to {store.pokemonName(pokemon)}
+              </span>
+              <PokemonIcon pokemonProperties="pokemon" value={pokemon} />
             </li>
           );
         }
@@ -335,44 +337,50 @@ function TypeCoverageTooltipInfo({
         <span style={{ color: `#${typeColor}` }}>{type}</span>:
       </p>
       <ul style={{ listStyle: "none", padding: 0 }}>
-        {store.team.map((teamPkmnProps, i) => {
+        {store.team.map((teamPokemonProperties, i) => {
           // For each team pokmeon
-          const { name: pkmn, ability } = teamPkmnProps;
+          const { name: pokemon, ability } = teamPokemonProperties;
 
           return (
-            <Fragment key={pkmn + i}>
+            <Fragment key={pokemon + i}>
               {[1, 2, 3, 4].map(num => {
                 // For each move number
-                const move = teamPkmnProps["move" + num];
+                const move = teamPokemonProperties["move" + num];
 
                 if (
                   move &&
-                  store.moveAgainstType(move, type, pkmn, ability) === -1
+                  store.moveAgainstType(move, type, pokemon, ability) === -1
                 ) {
                   hasSuperEffectiveMove = true;
-                  const moveType = store.moveType(move, pkmn, ability);
+                  const moveType = store.moveType(move, pokemon, ability);
 
                   return (
-                    // move name, pkmn name, then pkmn icon
+                    // move name, pokemon name, then pokemon icon
                     <li
                       key={move + num}
                       style={{
                         display: "flex",
                         alignItems: "center",
                         fontWeight:
-                          moveType && store.pkmnType(pkmn).includes(moveType) ?
+                          (
+                            moveType &&
+                            store.pokemonType(pokemon).includes(moveType)
+                          ) ?
                             500
                           : 400,
                       }}
                     >
                       <span style={{ width: 150 }}>{store.moveName(move)}</span>
-                      <span>{store.pkmnName(pkmn) + " "}</span>
-                      <PokemonIcon pkmnProp="pkmn" value={pkmn} />
+                      <span>{store.pokemonName(pokemon) + " "}</span>
+                      <PokemonIcon
+                        pokemonProperties="pokemon"
+                        value={pokemon}
+                      />
                     </li>
                   );
                 } else if (num === 4 && i === 5 && !hasSuperEffectiveMove) {
                   return (
-                    <li key={pkmn + i} style={{ textAlign: "center" }}>
+                    <li key={pokemon + i} style={{ textAlign: "center" }}>
                       Nothing
                     </li>
                   );

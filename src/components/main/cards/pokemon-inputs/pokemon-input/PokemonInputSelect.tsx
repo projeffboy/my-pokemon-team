@@ -13,7 +13,7 @@ export default function PokemonInputSelect({
   optionValues,
   optionLabels,
   placeholder,
-  pokemonProp,
+  pokemonProperties,
   teamIndex,
   value,
   onChange,
@@ -21,7 +21,7 @@ export default function PokemonInputSelect({
   optionValues: string[];
   optionLabels: string[];
   placeholder: string;
-  pokemonProp: string;
+  pokemonProperties: string;
   teamIndex: number;
   value: string;
   onChange: (value: string) => void;
@@ -31,12 +31,12 @@ export default function PokemonInputSelect({
     label: optionLabels[i] || "",
   }));
   const selectedOption = options.find(option => option.value === value) || null;
-  const id = "react-select-single-" + teamIndex + "-" + pokemonProp;
+  const id = "react-select-single-" + teamIndex + "-" + pokemonProperties;
 
   // Which kind of icon to show in the options
-  let iconProp = placeholder.toLowerCase();
-  if (iconProp === "name") {
-    iconProp = "pkmn";
+  let iconProperties = placeholder.toLowerCase();
+  if (iconProperties === "name") {
+    iconProperties = "pokemon";
   }
 
   return (
@@ -64,7 +64,10 @@ export default function PokemonInputSelect({
         const { key, ...otherOptionProps } = optionProps;
         return (
           <li key={option.value} {...otherOptionProps}>
-            <PokemonIcon pkmnProp={iconProp} value={option.value} />
+            <PokemonIcon
+              pokemonProperties={iconProperties}
+              value={option.value}
+            />
             <span style={{ paddingLeft: 4 }}>{option.label}</span>
           </li>
         );
@@ -78,7 +81,7 @@ export default function PokemonInputSelect({
             htmlInput: {
               ...params.inputProps,
               name: id,
-              "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProp}`,
+              "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProperties}`,
             },
           }}
         />

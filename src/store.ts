@@ -9,7 +9,7 @@ import {
   Items,
   OldMoves,
   Team,
-  TeamPkmnProps,
+  TeamPokemonProperties,
 } from "./types";
 
 // The store is mutated directly from components (e.g. store.team[i].name = ...),
@@ -72,33 +72,33 @@ class Store {
   /*
    * MAKING SENSE OF VARIABLE NAMES
    * There are three types of pokemon variables:
-   *  1. pkmn or pokemon (pokemon ID, not to be confused with pokedex ID):
+   *  1. pokemon or pokemonId (pokemon ID, not to be confused with pokedex ID):
    *    -only one word
    *    -no hyphens
    *    -lowercase
    *    -E.g. charizardmegay
-   *  2. pkmnName (pokemon name):
+   *  2. pokemonName (pokemon name):
    *    -words are separated by a hyphen, not a space
    *    -each word is capitalized
    *    -E.g. Charizard-Mega-Y
-   * 3. pkmnProps or pokemonProps (pokemon properties):
+   *  3. pokemonProperties (pokemon properties):
    *    -an object containing a pokemon's properties
    *    -these properties have to be obtained from pokedex.js
-   *    -E.g. const pkmnProps = pokedex['charizard']
+   *    -E.g. const pokemonProperties = pokedex['charizard']
    *
    *
    * Same variable naming scheme for items:
    *  1. item
    *  2. itemName
-   *  3. itemProps
+   *  3. itemProperties
    * And moves:
    *  1. move
    *  2. moveName
-   *  3. moveProps
+   *  3. moveProperties
    * And a pokemon's base forme:
    *  1. baseForme
    *  2. baseFormeName
-   *  3. baseFormeProps
+   *  3. baseFormeProperties
    *
    * `team` refer's to the user's pokemon team.
    * There's an @observable variable for it in the store.
@@ -107,28 +107,28 @@ class Store {
    *  -Functions like:
    *    -teamFourMoveslots
    *    -teamLearnsets
-   *  -Each element in @observable team is teamPkmnProps, containing within:
-   *    -teamPkmn (teamPkmnName = this.pkmnName(teamPkmn))
-   *    -teamPkmnProps
-   *    -teamPkmnItem
-   *    -teamPkmnMove1 (etc.)
-   *    -teamPkmnAbility
+   *  -Each element in @observable team is teamPokemonProperties, containing within:
+   *    -teamPokemon (teamPokemonName = this.pokemonName(teamPokemon))
+   *    -teamPokemonProperties
+   *    -teamPokemonItem
+   *    -teamPokemonMove1 (etc.)
+   *    -teamPokemonAbility
    *
    * Exception: `team` prefix can be dropped during iterations
    * E.g.: `this.teamItems.map(item => ..)` instead of `this.teamItems.map(teamItem => ..)`
-   * Exception to exception: You cannot drop the `team` prefix for `teamPkmnProps` no matter what
+   * Exception to exception: You cannot drop the `team` prefix for `teamPokemonProperties` no matter what
    */
 
   /*
    * STORE HELPER PROPERTIES
    *
-   * pokedex[pkmn]
+   * pokedex[pokemon]
    *  Input: pokemon ID
    *  Output: pokemon's properties from pokedex.js
    * moves[move]
    *  Input: move ID
    *  Output: move's properties from moves.js
-   * learnsets[pkmn]
+   * learnsets[pokemon]
    *  Input: pokemon ID
    *  Output: pokemon's learnset (in array form) from learnsets.min.js
    *  Drawback: If the pokemon has previous evolution(s), it doesn't include their learnsets
@@ -147,8 +147,8 @@ class Store {
 
   /* POKEDEX METHODS */
 
-  pkmnType(pkmn: string) {
-    return pokedex[pkmn]?.types || [];
+  pokemonType(pokemon: string) {
+    return pokedex[pokemon]?.types || [];
   }
 
   /* NOT USED
@@ -160,7 +160,7 @@ class Store {
 
   // returns pokemon names
   allPokemonNames() {
-    return this.allPokemon.map(pkmn => this.pkmnName(pkmn))
+    return this.allPokemon.map(pokemon => this.pokemonName(pokemon))
   }
   */
 
@@ -169,22 +169,22 @@ class Store {
    * (ID as in "venusaurmega", name as in "Venusaur Mega")
    * (output is in object form)
    */
-  abilities(pkmn: string) {
-    return pokedex[pkmn]?.abilities || {};
+  abilities(pokemon: string) {
+    return pokedex[pokemon]?.abilities || {};
   }
 
   // Input a pokemon ID to return its pokemon name
   // E.g. 'squirtle' => 'Squirtle'
-  pkmnName(pkmn: string) {
-    return pokedex[pkmn]?.name;
+  pokemonName(pokemon: string) {
+    return pokedex[pokemon]?.name;
   }
 
-  // The inverse of the pkmnName function
+  // The inverse of the pokemonName function
   // E.g. 'Squirtle' => 'squirtle'
-  pkmnNameInverse(pkmnName: string) {
-    for (const pkmn in pokedex) {
-      if (this.pkmnName(pkmn) === pkmnName) {
-        return pkmn;
+  pokemonNameInverse(pokemonName: string) {
+    for (const pokemon in pokedex) {
+      if (this.pokemonName(pokemon) === pokemonName) {
+        return pokemon;
       }
     }
   }
@@ -193,24 +193,24 @@ class Store {
   // E.g. 'giratinaorigin' => 'giratina'
   // (it will return undefined for pokemon already at the base forme)
   // E.g. 'wartortle' => undefined
-  baseForme(pkmn: string) {
-    const baseFormeName = pokedex[pkmn]?.baseSpecies;
+  baseForme(pokemon: string) {
+    const baseFormeName = pokedex[pokemon]?.baseSpecies;
     const baseForme =
-      baseFormeName ? this.pkmnNameInverse(baseFormeName) : undefined;
+      baseFormeName ? this.pokemonNameInverse(baseFormeName) : undefined;
 
     return baseForme;
   }
 
   // Input a pokemon ID to return its alternate forme(s)
   // E.g. 'charizard' => ['charizardmegax', 'charizardmegay']
-  forme(pkmn: string) {
-    return pokedex[pkmn]?.forme;
+  forme(pokemon: string) {
+    return pokedex[pokemon]?.forme;
   }
 
   // Get previous evolution
-  previousEvolution(pkmn: string) {
-    const pkmnProps = pokedex[pkmn];
-    const prevo = pkmnProps ? pkmnProps.prevo : undefined;
+  previousEvolution(pokemon: string) {
+    const pokemonProperties = pokedex[pokemon];
+    const prevo = pokemonProperties ? pokemonProperties.prevo : undefined;
     return prevo ?
         prevo.toLowerCase().replace("-", "").replace(":", "").replace(" ", "")
       : undefined;
@@ -223,7 +223,7 @@ class Store {
   }
 
   get itemNamesArr() {
-    return Object.values(items).map(itemProps => itemProps.name);
+    return Object.values(items).map(itemProperties => itemProperties.name);
   }
 
   itemName(item: string) {
@@ -240,21 +240,21 @@ class Store {
 
   /*
    * Gives you a pokemon's complete learnset, which includes the learnsets of its previous evolutions.
-   * If you just use learnsets[pkmn], it will not give you previous evolution learnsets.
+   * If you just use learnsets[pokemon], it will not give you previous evolution learnsets.
    * It also adds all the different hidden powers.
    */
-  completeLearnset(pkmn: string): string[] {
-    let completeLearnset: string[] = learnsets[pkmn] || [];
+  completeLearnset(pokemon: string): string[] {
+    let completeLearnset: string[] = learnsets[pokemon] || [];
 
-    let baseForme = this.baseForme(pkmn) || pkmn; // since learnsets[pkmn] requires pkmn to be at its base forme
+    let baseForme = this.baseForme(pokemon) || pokemon; // since learnsets[pokemon] requires pokemon to be at its base forme
 
     let isRegional = false;
 
     if (
-      pkmn.includes("alola") ||
-      pkmn.includes("galar") ||
-      pkmn.includes("hisui") ||
-      pkmn.includes("paldea")
+      pokemon.includes("alola") ||
+      pokemon.includes("galar") ||
+      pokemon.includes("hisui") ||
+      pokemon.includes("paldea")
     ) {
       isRegional = true;
     } else {
@@ -271,9 +271,9 @@ class Store {
         .replace("-", "");
 
       let region = "";
-      const pkmnFormeEntry = pokedex[baseForme];
-      if (isRegional && pkmnFormeEntry?.otherFormes) {
-        const otherFormes = pkmnFormeEntry.otherFormes;
+      const pokemonFormeEntry = pokedex[baseForme];
+      if (isRegional && pokemonFormeEntry?.otherFormes) {
+        const otherFormes = pokemonFormeEntry.otherFormes;
         if (otherFormes.some(forme => forme.includes("Alola"))) {
           region = "alola";
         } else if (otherFormes.some(forme => forme.includes("Galar"))) {
@@ -329,9 +329,9 @@ class Store {
     return completeLearnset;
   }
 
-  // Can `pkmn` learn `move`?
-  canItLearn = (move: string | undefined, pkmn: string): boolean =>
-    move ? this.completeLearnset(pkmn).includes(move) : false;
+  // Can `pokemon` learn `move`?
+  canItLearn = (move: string | undefined, pokemon: string): boolean =>
+    move ? this.completeLearnset(pokemon).includes(move) : false;
 
   /* TYPECHART METHODS */
 
@@ -361,7 +361,7 @@ class Store {
 
   team: Team = Array.from(
     { length: 6 },
-    (): TeamPkmnProps => ({
+    (): TeamPokemonProperties => ({
       name: "", // technically, this is the pokemon ID, not pokemon name
       // but name is much more clearer to those new to the source code
       item: "",
@@ -373,31 +373,31 @@ class Store {
     }),
   );
 
-  // Get the team's six pokemon id/name (pkmn)
-  get teamPkmn() {
-    return this.team.map(teamPkmnProps => teamPkmnProps.name);
+  // Get the team's six pokemon id/name (pokemon)
+  get teamPokemon() {
+    return this.team.map(teamPokemonProperties => teamPokemonProperties.name);
   }
 
   // Check if team is empty
   get isTeamEmpty() {
-    return !this.teamPkmn.some(pkmn => pkmn);
+    return !this.teamPokemon.some(pokemon => pokemon);
   }
 
   // Get the team's six items (in array form)
   get teamItems() {
-    return this.team.map(teamPkmnProps => teamPkmnProps.item);
+    return this.team.map(teamPokemonProperties => teamPokemonProperties.item);
   }
 
   // Get the team's moves that the user chose (in 1D array)
   get teamMoves() {
     const teamMoves: string[] = [];
 
-    this.team.forEach(teamPkmnProps => {
+    this.team.forEach(teamPokemonProperties => {
       teamMoves.push(
-        teamPkmnProps.move1,
-        teamPkmnProps.move2,
-        teamPkmnProps.move3,
-        teamPkmnProps.move4,
+        teamPokemonProperties.move1,
+        teamPokemonProperties.move2,
+        teamPokemonProperties.move3,
+        teamPokemonProperties.move4,
       );
     });
 
@@ -408,21 +408,22 @@ class Store {
   // It's an array of 6 arrays (for each pokemon),
   // Each containing 4 elements (for the 4 moves)
   get teamFourMoveslots() {
-    return this.team.map(teamPkmnProps => [
-      teamPkmnProps.move1,
-      teamPkmnProps.move2,
-      teamPkmnProps.move3,
-      teamPkmnProps.move4,
+    return this.team.map(teamPokemonProperties => [
+      teamPokemonProperties.move1,
+      teamPokemonProperties.move2,
+      teamPokemonProperties.move3,
+      teamPokemonProperties.move4,
     ]);
   }
 
   // Get team's possible abilities (in 2D array)
   get teamAbilities() {
-    return this.team.map(teamPkmnProps => {
-      if (teamPkmnProps.name) {
-        const teamPkmnAbilities = pokedex[teamPkmnProps.name]?.abilities || {};
+    return this.team.map(teamPokemonProperties => {
+      if (teamPokemonProperties.name) {
+        const teamPokemonAbilities =
+          pokedex[teamPokemonProperties.name]?.abilities || {};
 
-        return Object.values(teamPkmnAbilities) as string[];
+        return Object.values(teamPokemonAbilities) as string[];
       } else {
         return [];
       }
@@ -467,12 +468,12 @@ class Store {
       labels: [],
     };
 
-    for (const teamPkmnProps of this.team) {
-      const pkmn = teamPkmnProps.name;
+    for (const teamPokemonProperties of this.team) {
+      const pokemon = teamPokemonProperties.name;
 
-      if (pkmn) {
+      if (pokemon) {
         // the specific pokemon's complete learnset
-        let learnsetValues = this.completeLearnset(pkmn);
+        let learnsetValues = this.completeLearnset(pokemon);
 
         if (this.searchFilters.moves) {
           // search filter: if the user only wants to see viable moves
@@ -501,13 +502,13 @@ class Store {
   get teamTypes() {
     let teamTypes = [];
 
-    for (const teamPkmnProps of this.team) {
-      const pkmn = teamPkmnProps.name;
+    for (const teamPokemonProperties of this.team) {
+      const pokemon = teamPokemonProperties.name;
 
-      if (pkmn) {
-        const pkmnTypes = pokedex[pkmn]?.types || []; // that pokemon's types
+      if (pokemon) {
+        const pokemonTypes = pokedex[pokemon]?.types || []; // that pokemon's types
 
-        teamTypes.push(pkmnTypes);
+        teamTypes.push(pokemonTypes);
       } else {
         teamTypes.push([]);
       }
@@ -610,55 +611,55 @@ class Store {
   */
 
   // Clear a team pokemon's properties
-  clearTeamPkmnProps(teamIndex: number) {
-    const teamPkmnProps = this.team[teamIndex];
+  clearTeamPokemonProperties(teamIndex: number) {
+    const teamPokemonProperties = this.team[teamIndex];
 
-    for (const prop in teamPkmnProps) {
-      teamPkmnProps[prop] = "";
+    for (const property in teamPokemonProperties) {
+      teamPokemonProperties[property] = "";
     }
   }
 
   // Auto-select the item if necessary
   // E.g. Select Blastoisite when the user chooses Mega Blastoise
   autoSelectItem() {
-    for (const teamPkmnProps of this.team) {
+    for (const teamPokemonProperties of this.team) {
       // make sure you brush up on your ES6 destructuring!
-      let { name: pkmn, item: pkmnItem } = teamPkmnProps;
+      let { name: pokemon, item: pokemonItem } = teamPokemonProperties;
 
-      if (pkmn) {
+      if (pokemon) {
         // Auto select mega stone
         if (
-          pkmn.includes("mega") &&
-          pkmn !== "meganium" &&
-          pkmn !== "yanmega"
+          pokemon.includes("mega") &&
+          pokemon !== "meganium" &&
+          pokemon !== "yanmega"
         ) {
-          pkmnItem =
+          pokemonItem =
             this.itemsArr.find(
               item =>
                 // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
-                item.slice(0, 5) === pkmn.slice(0, 5),
+                item.slice(0, 5) === pokemon.slice(0, 5),
             ) || "";
 
           // Fuzzy match will give Charizard Y a Charizardite X
           // Hence this code
-          if (pkmn === "charizardmegay" || pkmn === "mewtwomegay") {
-            pkmnItem = pkmnItem.replace("x", "y");
+          if (pokemon === "charizardmegay" || pokemon === "mewtwomegay") {
+            pokemonItem = pokemonItem.replace("x", "y");
           }
           // Same with Sharpedo and Sharp Beak
-          else if (pkmn === "sharpedomega") {
-            pkmnItem = "sharpedonite";
+          else if (pokemon === "sharpedomega") {
+            pokemonItem = "sharpedonite";
           }
           // Same with Dragonite and Dragon Fang
-          else if (pkmn === "dragonitemega") {
-            pkmnItem = "dragoninite";
-          } else if (pkmn === "steelixmega") {
-            pkmnItem = "steelixite";
+          else if (pokemon === "dragonitemega") {
+            pokemonItem = "dragoninite";
+          } else if (pokemon === "steelixmega") {
+            pokemonItem = "steelixite";
           }
         }
 
         // Auto select plate for Arceus formes
-        else if (pkmn.includes("arceus")) {
-          const type = pkmn.replace("arceus", "");
+        else if (pokemon.includes("arceus")) {
+          const type = pokemon.replace("arceus", "");
           const typeToPlate: Record<string, string> = {
             bug: "insectplate",
             dark: "dreadplate",
@@ -680,41 +681,41 @@ class Store {
             water: "splashplate",
           };
 
-          pkmnItem = typeToPlate[type] || "";
+          pokemonItem = typeToPlate[type] || "";
         }
 
         // Auto select drive for Genesect
-        else if (pkmn.includes("genesect") && pkmn !== "genesect") {
-          const driveAdj = pkmn.replace("genesect", "");
+        else if (pokemon.includes("genesect") && pokemon !== "genesect") {
+          const driveAdj = pokemon.replace("genesect", "");
           const item = driveAdj + "drive";
 
-          pkmnItem = item;
+          pokemonItem = item;
         }
 
         // Auto select memory for Silvally
-        else if (pkmn.includes("silvally") && pkmn !== "silvally") {
-          const type = pkmn.replace("silvally", "");
+        else if (pokemon.includes("silvally") && pokemon !== "silvally") {
+          const type = pokemon.replace("silvally", "");
           const item = type + "memory";
 
-          pkmnItem = item;
+          pokemonItem = item;
         }
 
         // Pick Griseous Orb for Giratina
-        else if (pkmn === "giratinaorigin") {
-          pkmnItem = "griseousorb";
+        else if (pokemon === "giratinaorigin") {
+          pokemonItem = "griseousorb";
         }
       }
 
-      teamPkmnProps.item = pkmnItem;
+      teamPokemonProperties.item = pokemonItem;
     }
   }
 
   // Auto select the pokemon's ability if it only has one ability.
   // E.g. Select Thick Fat when the user chooses Venusaur-Mega
   autoSelectAbility() {
-    this.teamAbilities.forEach((pkmnAbilities, i) => {
-      if (pkmnAbilities.length === 1) {
-        this.team[i].ability = pkmnAbilities[0];
+    this.teamAbilities.forEach((pokemonAbilities, i) => {
+      if (pokemonAbilities.length === 1) {
+        this.team[i].ability = pokemonAbilities[0];
       }
     });
   }
@@ -724,14 +725,14 @@ class Store {
   *******************************/
 
   // Tells you the effectiveness of a type against a certain pokemon
-  typeAgainstPkmn(
+  typeAgainstPokemon(
     type: string,
-    pkmn: string,
-    pkmnAbility?: string,
+    pokemon: string,
+    pokemonAbility?: string,
     item?: string,
   ) {
-    const pkmnTypes = pokedex[pkmn]?.types || [];
-    const [type1, type2] = pkmnTypes;
+    const pokemonTypes = pokedex[pokemon]?.types || [];
+    const [type1, type2] = pokemonTypes;
     const type1Resistance = type1 ? (typechart[type1]?.[type] ?? 0) : 0;
 
     let effectiveness = type1Resistance;
@@ -758,8 +759,8 @@ class Store {
     }
 
     // Take into account ability for pokemon's resistances
-    if (pkmnAbility) {
-      switch (pkmnAbility) {
+    if (pokemonAbility) {
+      switch (pokemonAbility) {
         // Abilities that make you immune to certain types
         case "Volt Absorb":
         case "Lightning Rod":
@@ -858,7 +859,7 @@ class Store {
 
   // Tells you the move's type based on the pokemon using it and its ability
   // E.g. Arceus-Bug using Judgment or Aerilate Mega-Pinsir using Return.
-  moveType(move: string, pkmn: string, ability?: string) {
+  moveType(move: string, pokemon: string, ability?: string) {
     let moveType = moves[move]?.type;
 
     const abilitiesThatChangeNormalMoves: Record<string, string> = {
@@ -877,17 +878,18 @@ class Store {
     } else if (ability === "Normalize") {
       moveType = "Normal";
     } else if (move === "judgment") {
-      const pkmnProps = pokedex[pkmn];
-      moveType = pkmnProps?.types ? pkmnProps.types[0] : moveType; // Arceus only has one ability
-    } else if (move === "ivycudgel") {
-      const pkmnProps = pokedex[pkmn];
+      const pokemonProperties = pokedex[pokemon];
       moveType =
-        pkmnProps?.types ?
-          pkmnProps.types[pkmnProps.types.length > 1 ? 1 : 0]
+        pokemonProperties?.types ? pokemonProperties.types[0] : moveType; // Arceus only has one ability
+    } else if (move === "ivycudgel") {
+      const pokemonProperties = pokedex[pokemon];
+      moveType =
+        pokemonProperties?.types ?
+          pokemonProperties.types[pokemonProperties.types.length > 1 ? 1 : 0]
         : moveType;
     } else if (move === "technoblast") {
       // For Genesect
-      switch (pkmn) {
+      switch (pokemon) {
         case "genesectdouse":
           moveType = "Water";
           break;
@@ -904,7 +906,7 @@ class Store {
       }
     } else if (move === "multiattack") {
       // For Silvally
-      const type = pkmn.replace("silvally", "") || "normal";
+      const type = pokemon.replace("silvally", "") || "normal";
       const capitalizedType = capitalizeWord(type);
 
       moveType = capitalizedType;
@@ -920,15 +922,15 @@ class Store {
   }
 
   isMoveStrongEnough(move: string) {
-    const moveProps = moves[move];
+    const moveProperties = moves[move];
 
     return (
-      moveProps &&
-      moveProps.category !== "Status" &&
-      (Number(moveProps.basePower || 0) >= 40 ||
-        moveProps.multihit ||
-        moveProps.basePowerCallback ||
-        moveProps.onModifyMove)
+      moveProperties &&
+      moveProperties.category !== "Status" &&
+      (Number(moveProperties.basePower || 0) >= 40 ||
+        moveProperties.multihit ||
+        moveProperties.basePowerCallback ||
+        moveProperties.onModifyMove)
     );
   }
 
@@ -937,10 +939,10 @@ class Store {
   moveAgainstType(
     move: string,
     typeAgainst: string,
-    pkmn: string,
+    pokemon: string,
     ability?: string,
   ) {
-    const moveType = this.moveType(move, pkmn, ability);
+    const moveType = this.moveType(move, pokemon, ability);
 
     // BUG: If the user picks freeze-dry or flying press multiple times, it can be exploited
     if (move === "freezedry" && typeAgainst === "Water") {
@@ -972,10 +974,10 @@ class Store {
       let typeDefence = { ...this.cleanSlate };
 
       for (const type in typeDefence) {
-        for (const teamPkmnProps of this.team) {
-          const { name: pkmn, ability, item } = teamPkmnProps;
-          if (pkmn) {
-            let score = this.typeAgainstPkmn(type, pkmn, ability, item);
+        for (const teamPokemonProperties of this.team) {
+          const { name: pokemon, ability, item } = teamPokemonProperties;
+          if (pokemon) {
+            let score = this.typeAgainstPokemon(type, pokemon, ability, item);
             if (score === 3) {
               score = 2;
             }
@@ -1004,47 +1006,47 @@ class Store {
       // Scoresheet of how many types your moves are supereffective against
       let typeCoverage = { ...this.cleanSlate };
 
-      for (const teamPkmnProps of this.team) {
+      for (const teamPokemonProperties of this.team) {
         // for each pokmeon
-        const { name: pkmn, ability } = teamPkmnProps;
+        const { name: pokemon, ability } = teamPokemonProperties;
 
         let typesUsed = [];
-        let pkmnHasFreezeDry = false;
-        let pkmnHasFlyingPress = false;
+        let pokemonHasFreezeDry = false;
+        let pokemonHasFlyingPress = false;
 
         for (const i of [1, 2, 3, 4]) {
           //  for each move
-          const move = teamPkmnProps["move" + i];
+          const move = teamPokemonProperties["move" + i];
 
           if (move && this.isMoveStrongEnough(move)) {
-            const moveType = this.moveType(move, pkmn, ability);
+            const moveType = this.moveType(move, pokemon, ability);
 
             Object.keys(typeCoverage).forEach(type => {
               // for each type
               if (
                 // If the move is not a repeated freeze dry
-                (!pkmnHasFreezeDry || move !== "freezedry") &&
+                (!pokemonHasFreezeDry || move !== "freezedry") &&
                 // If the move is not a repeated flying press
-                (!pkmnHasFlyingPress || move !== "flyingpress") &&
+                (!pokemonHasFlyingPress || move !== "flyingpress") &&
                 // If the move's type is not repeated or it's freeze dry or flying rpess
                 (!typesUsed.includes(moveType) ||
                   move === "freezedry" ||
                   move === "flyingpress") &&
                 // if it's super effective (cuz supereffective is -1)
-                this.moveAgainstType(move, type, pkmn, ability) === -1
+                this.moveAgainstType(move, type, pokemon, ability) === -1
               ) {
                 typeCoverage[type]++;
 
-                if (moveType && this.pkmnType(pkmn).includes(moveType)) {
+                if (moveType && this.pokemonType(pokemon).includes(moveType)) {
                   typeCoverage[type]++;
                 }
               }
             });
 
             if (move === "freezedry") {
-              pkmnHasFreezeDry = true;
+              pokemonHasFreezeDry = true;
             } else if (move === "flyingpress") {
-              pkmnHasFlyingPress = true;
+              pokemonHasFlyingPress = true;
             } else {
               typesUsed.push(moveType);
             }
@@ -1129,8 +1131,8 @@ class Store {
 
         filteredPokedex = { ...pokedex };
 
-        for (const pkmn of banlist) {
-          const { otherFormes } = pokedex[pkmn] ?? {};
+        for (const pokemon of banlist) {
+          const { otherFormes } = pokedex[pokemon] ?? {};
 
           // Don't just delete the banned pokemon, delete its other formes
           // E.g. delete giratina, as well as giratinaorigin
@@ -1139,7 +1141,7 @@ class Store {
               otherForme => delete filteredPokedex[otherForme],
             );
           }
-          delete filteredPokedex[pkmn];
+          delete filteredPokedex[pokemon];
         }
         return filteredPokedex;
       }
@@ -1200,9 +1202,9 @@ class Store {
             tierMatched = true;
 
             // Add all the pokemon from that tier to filteredPokedex
-            for (const pkmn in pokedex) {
-              if (formats[pkmn] && formats[pkmn][tierType] === tier) {
-                filteredPokedex[pkmn] = pokedex[pkmn];
+            for (const pokemon in pokedex) {
+              if (formats[pokemon] && formats[pokemon][tierType] === tier) {
+                filteredPokedex[pokemon] = pokedex[pokemon];
               }
             }
           }
@@ -1232,53 +1234,53 @@ class Store {
         let filteredPokedex: Pokedex = {};
 
         // Only return pokemon from a certain region based on pokedex number
-        for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
-          const num = pkmnProps.num;
+        for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
+          const num = pokemonProperties.num;
           if (
             num !== undefined &&
             num >= range[0] &&
             num <= range[1] &&
             // If Kanto region, remove alola forms
-            !(region === "Kanto" && pkmn.includes("alola")) &&
-            !(region !== "Galar" && pkmn.includes("galar")) &&
-            !(region !== "Paldea" && pkmn.includes("paldea"))
+            !(region === "Kanto" && pokemon.includes("alola")) &&
+            !(region !== "Galar" && pokemon.includes("galar")) &&
+            !(region !== "Paldea" && pokemon.includes("paldea"))
           ) {
-            filteredPokedex[pkmn] = pkmnProps;
+            filteredPokedex[pokemon] = pokemonProperties;
           }
         }
 
         // If Alola region, add alola forms
         if (region === "Alola") {
-          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
-            if (pkmn.includes("alola")) {
-              filteredPokedex[pkmn] = pkmnProps;
+          for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
+            if (pokemon.includes("alola")) {
+              filteredPokedex[pokemon] = pokemonProperties;
             }
           }
         }
         // If Galar region, add galar forms
         if (region === "Galar") {
-          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
-            if (pkmn.includes("galar")) {
-              filteredPokedex[pkmn] = pkmnProps;
+          for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
+            if (pokemon.includes("galar")) {
+              filteredPokedex[pokemon] = pokemonProperties;
             }
           }
         }
         // If Hisui region, add hisui forms
         if (region === "Hisui") {
-          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
+          for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
             if (
-              pkmn.includes("hisui") ||
-              ["dialgaorigin", "palkiaorigin"].includes(pkmn)
+              pokemon.includes("hisui") ||
+              ["dialgaorigin", "palkiaorigin"].includes(pokemon)
             ) {
-              filteredPokedex[pkmn] = pkmnProps;
+              filteredPokedex[pokemon] = pokemonProperties;
             }
           }
         }
         // If Paldea region, add paldea forms
         if (region === "Paldea") {
-          for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
-            if (pkmn.includes("paldea")) {
-              filteredPokedex[pkmn] = pkmnProps;
+          for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
+            if (pokemon.includes("paldea")) {
+              filteredPokedex[pokemon] = pokemonProperties;
             }
           }
         }
@@ -1293,10 +1295,13 @@ class Store {
       let filteredPokedex: Pokedex = {};
 
       if (type) {
-        for (const [pkmn, pkmnProps] of Object.entries(pokedex)) {
+        for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
           // minor bug: cosmetic formes should not be ommitted
-          if (pkmnProps.types && pkmnProps.types.includes(type)) {
-            filteredPokedex[pkmn] = pkmnProps;
+          if (
+            pokemonProperties.types &&
+            pokemonProperties.types.includes(type)
+          ) {
+            filteredPokedex[pokemon] = pokemonProperties;
           }
         }
 
@@ -1308,7 +1313,7 @@ class Store {
   }
 
   get filteredPokemonNames() {
-    return this.filteredPokemon.map(pokemon => this.pkmnName(pokemon));
+    return this.filteredPokemon.map(pokemon => this.pokemonName(pokemon));
   }
 
   /*******

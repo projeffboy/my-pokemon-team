@@ -1,30 +1,31 @@
 import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "./pokemon-inputs/PokemonSprite";
-import { PokemonProp } from "@/types";
+import { PokemonProperties } from "@/types";
 
 export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
   const inputs: Array<
-    { placeholder: string; pokemonProp: PokemonProp } | { placeholder: "" }
+    | { placeholder: string; pokemonProperties: PokemonProperties }
+    | { placeholder: "" }
   > = [
-    { placeholder: "Name", pokemonProp: "name" },
-    { placeholder: "Move", pokemonProp: "move1" },
+    { placeholder: "Name", pokemonProperties: "name" },
+    { placeholder: "Move", pokemonProperties: "move1" },
     { placeholder: "" }, // pokemon sprite
-    { placeholder: "Move", pokemonProp: "move2" },
-    { placeholder: "Move", pokemonProp: "move3" },
-    { placeholder: "Move", pokemonProp: "move4" },
-    { placeholder: "Item", pokemonProp: "item" },
-    { placeholder: "Ability", pokemonProp: "ability" },
+    { placeholder: "Move", pokemonProperties: "move2" },
+    { placeholder: "Move", pokemonProperties: "move3" },
+    { placeholder: "Move", pokemonProperties: "move4" },
+    { placeholder: "Item", pokemonProperties: "item" },
+    { placeholder: "Ability", pokemonProperties: "ability" },
   ];
 
   // 8 Grid Items About Each Pokemon
   const pokemonInputs = inputs.map((input, i) => {
-    if ("pokemonProp" in input) {
+    if ("pokemonProperties" in input) {
       return (
         <PokemonInput
           key={i}
           placeholder={input.placeholder}
           teamIndex={teamIndex}
-          pokemonProp={input.pokemonProp}
+          pokemonProperties={input.pokemonProperties}
         />
       );
     } else {
