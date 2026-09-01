@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import face1 from "@/images/garchomp-shuffle-face.png";
-import face2 from "@/images/floette-eternal-shuffle-face.png";
+import face1 from "@/images/charizard-shuffle-face-cropped.png";
+import face2 from "@/images/venusaur-shuffle-face-cropped.png";
 import { fluidClamp } from "@/helper";
 import { breakpointValues, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH } from "@/theme";
 
@@ -91,13 +91,12 @@ export default function Header() {
           For Generations 6-9 (ZA/Champions)
         </Typography>
       </Grid>
-      <Grid size={12}>
+      <Grid size={12} sx={{ textAlign: "center" }}>
         <Typography
           variant="caption"
-          align="center"
           component="a"
           href="mailto:jeffery124@gmail.com"
-          sx={{ color: "inherit", display: "block", fontSize: "0.625rem" }}
+          sx={{ color: "inherit", fontSize: "0.625rem" }}
         >
           Report Bugs to jeffery124@gmail.com
         </Typography>
