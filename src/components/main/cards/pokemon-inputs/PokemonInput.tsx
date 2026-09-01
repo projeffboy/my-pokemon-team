@@ -10,26 +10,26 @@ import { PokemonProperties } from "@/types";
  */
 const PokemonInput = observer(function PokemonInput({
   placeholder,
-  pokemonProperties,
+  pokemonProperty,
   teamIndex,
 }: {
   placeholder: string;
-  pokemonProperties: PokemonProperties;
+  pokemonProperty: PokemonProperties;
   teamIndex: number;
 }) {
   const handleChange = (inputVal: string) => {
-    if (pokemonProperties === "name") {
+    if (pokemonProperty === "name") {
       store.clearTeamPokemonProperties(teamIndex);
     }
 
-    store.team[teamIndex][pokemonProperties] = inputVal;
+    store.team[teamIndex][pokemonProperty] = inputVal;
 
     /*
      * If the input is where you put your pokemon name,
      * and the pokemon has only one type,
      * then auto select its ability.
      */
-    if (pokemonProperties === "name") {
+    if (pokemonProperty === "name") {
       store.autoSelectItem();
       store.autoSelectAbility();
     }
@@ -38,14 +38,14 @@ const PokemonInput = observer(function PokemonInput({
   let optionValues: string[] = [];
   let optionLabels: string[] = [];
 
-  switch (pokemonProperties) {
+  switch (pokemonProperty) {
     case "name":
       optionValues = store.filteredPokemon;
       // Fall back to the ID so labels stay aligned with optionValues
       optionLabels = store.filteredPokemonNames.map(
         (name, i) => name ?? optionValues[i],
       );
-      let pokemonName = store.team[teamIndex][pokemonProperties];
+      let pokemonName = store.team[teamIndex][pokemonProperty];
       if (pokemonName && !optionValues.includes(pokemonName)) {
         optionValues = [...optionValues, pokemonName];
         optionLabels = [
@@ -77,8 +77,8 @@ const PokemonInput = observer(function PokemonInput({
       optionValues={optionValues}
       optionLabels={optionLabels}
       onChange={handleChange}
-      value={store.team[teamIndex][pokemonProperties]}
-      pokemonProperties={pokemonProperties}
+      value={store.team[teamIndex][pokemonProperty]}
+      pokemonProperty={pokemonProperty}
       teamIndex={teamIndex}
     />
   );

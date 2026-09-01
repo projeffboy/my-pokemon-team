@@ -22,11 +22,11 @@ type ItemData = Array<[React.HTMLAttributes<HTMLLIElement>, SelectOption]>;
 function RowComponent({
   index,
   itemData,
-  iconProperties,
+  iconProperty,
   style,
 }: RowComponentProps & {
   itemData: ItemData;
-  iconProperties: string;
+  iconProperty: string;
 }) {
   const [optionProps, option] = itemData[index];
   const { key, ...otherOptionProps } =
@@ -49,7 +49,7 @@ function RowComponent({
         wordBreak: "break-word",
       }}
     >
-      <PokemonIcon pokemonProperties={iconProperties} value={option.value} />
+      <PokemonIcon pokemonProperty={iconProperty} value={option.value} />
       <span style={{ flex: 1 }}>{option.label}</span>
     </Typography>
   );
@@ -60,12 +60,12 @@ function RowComponent({
 const VirtualizedListbox = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLElement> & {
-    iconProperties: string;
+    iconProperty: string;
     selectedValue: string;
     internalListRef: React.Ref<ListImperativeAPI>;
   }
 >(function VirtualizedListbox(props, ref) {
-  const { children, iconProperties, selectedValue, internalListRef, ...other } =
+  const { children, iconProperty, selectedValue, internalListRef, ...other } =
     props;
   const itemData = children as ItemData;
   const itemCount = itemData.length;
@@ -114,7 +114,7 @@ const VirtualizedListbox = React.forwardRef<
         rowCount={itemCount}
         rowHeight={dynamicRowHeight}
         rowComponent={RowComponent}
-        rowProps={{ itemData, iconProperties }}
+        rowProps={{ itemData, iconProperty }}
         style={{
           height: getHeight() + 2 * LISTBOX_PADDING,
           width: "100%",
