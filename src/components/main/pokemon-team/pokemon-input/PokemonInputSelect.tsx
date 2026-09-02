@@ -1,5 +1,6 @@
 import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useListRef } from "react-window";
 import VirtualizedListbox from "./pokemon-input-select/VirtualizedListbox";
 
@@ -60,6 +61,15 @@ export default function PokemonInputSelect({
       options={options}
       value={selectedOption}
       disableListWrap
+      sx={{
+        [`&.${autocompleteClasses.hasPopupIcon}.${autocompleteClasses.hasClearIcon} .${autocompleteClasses.inputRoot}`]:
+          {
+            pr: 0,
+          },
+        [`& .${autocompleteClasses.input}`]: {
+          textOverflow: "clip",
+        },
+      }}
       onChange={(event, newValue) => onChange(newValue ? newValue.value : "")}
       onInputChange={(event, newInputValue, reason) => {
         // Clearing out the text also clears the selection
@@ -72,9 +82,9 @@ export default function PokemonInputSelect({
       getOptionLabel={(option: SelectOption) => option.label}
       isOptionEqualToValue={(option, value) => option.value === value.value}
       noOptionsText={
-        <>
+        <Typography variant="body2" textAlign="center">
           Nothing found <br /> (Or you haven't selected a Pokemon)
-        </>
+        </Typography>
       }
       renderOption={(optionProps, option) =>
         // Deferred to VirtualizedListbox, which renders only the visible rows
@@ -83,7 +93,7 @@ export default function PokemonInputSelect({
       slotProps={{
         popper: {
           sx: {
-            minWidth: 160,
+            ...(pokemonProperty === "name" && { minWidth: 160 }),
             [`& .${autocompleteClasses.listbox}`]: {
               boxSizing: "border-box",
               "& ul": {
