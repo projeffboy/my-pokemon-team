@@ -23,7 +23,7 @@ const TeamStatsTooltip = observer(function TeamStatsTooltip({
   };
 
   return (
-    <Typography component="div">
+    <Typography component="div" variant="body2">
       {store.isTeamEmpty ? "First select a pokemon." : content()}
     </Typography>
   );

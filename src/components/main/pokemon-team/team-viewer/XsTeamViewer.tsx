@@ -32,7 +32,12 @@ const XsTeamViewer = observer(function XsTeamViewer() {
                 aria-controls={`team-slot-panel-${teamIndex}`}
                 aria-label={getPokemonLabel(teamIndex)}
                 label={teamIndex + 1}
-                sx={{ minWidth: 0 }}
+                sx={{
+                  minWidth: 0,
+                  px: 0,
+                  "& > :first-child": { pl: 1 },
+                  "& > :last-child": { pr: 1 },
+                }}
                 icon={
                   <Box aria-hidden="true">
                     <PokemonSprite teamIndex={teamIndex} />

@@ -98,7 +98,7 @@ const PokemonSprite = observer(function PokemonSprite({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        gridRow: "2 / 5",
+        gridRow: { xs: "2 / 7", md: "2 / 5" },
       }}
     >
       <img
@@ -118,7 +118,10 @@ const PokemonSprite = observer(function PokemonSprite({
         }}
         /* Apply miniSprite style if it's a mini sprite */
         style={{
-          maxHeight: width !== "lg" && width !== "xl" ? "100%" : "96px",
+          maxHeight:
+            width !== "md" && width !== "lg" && width !== "xl" ?
+              "160px"
+            : "96px",
           maxWidth: "100%",
           ...(width === "sm" || width === "xs" ? { width: "100%" } : {}),
         }}

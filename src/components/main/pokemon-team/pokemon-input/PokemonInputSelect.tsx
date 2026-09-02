@@ -116,6 +116,11 @@ export default function PokemonInputSelect({
           {...params}
           variant="standard"
           placeholder={placeholder}
+          sx={{
+            "& .MuiInputBase-input::placeholder": {
+              opacity: 0.6,
+            },
+          }}
           slotProps={{
             htmlInput: {
               ...params.inputProps,

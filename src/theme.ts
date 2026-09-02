@@ -24,10 +24,23 @@ export const theme = createTheme({
       palette: {
         primary: { main: grey[200] },
         secondary: { main: grey[200] },
-        background: { default: "#303030", paper: "#424242" },
+        background: { default: "#303030", paper: "#3a3a3a" },
         text: {
           primary: grey[300],
         },
+      },
+    },
+  },
+  components: {
+    MuiDialog: {
+      styleOverrides: {
+        paper: ({ theme }) =>
+          theme.palette.mode === "dark" ?
+            {
+              backgroundColor: "#3a3a3a",
+              backgroundImage: "none",
+            }
+          : {},
       },
     },
   },

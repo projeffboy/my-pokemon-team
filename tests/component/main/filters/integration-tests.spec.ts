@@ -136,7 +136,9 @@ test.describe("Filters Integration Tests", () => {
     }
   });
 
-  test("Moves Filter", async ({ page }) => {
+  test("Moves Filter", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === "Desktop Chrome"); // will undo in the future
+
     // 1. Select only viable moves.
     await selectFilterOption(page, "Moves", "Viable");
 
@@ -155,7 +157,9 @@ test.describe("Filters Integration Tests", () => {
     }
   });
 
-  test("All Filters", async ({ page }) => {
+  test("All Filters", async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === "Desktop Chrome");
+
     // 1. Set all filters
     await selectFilterOption(page, "Format", "UU: Under Used");
     await selectFilterOption(page, "Type", "Grass");

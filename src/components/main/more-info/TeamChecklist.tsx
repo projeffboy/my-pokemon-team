@@ -95,11 +95,11 @@ const TeamChecklist = observer(function TeamChecklist() {
   }
 
   return Object.keys(checklist).map((miniHeader, i) => (
-    <Grid key={miniHeader} size={4}>
+    <Grid key={miniHeader} size={4} sx={{ p: 1 }}>
       {/* E.g. Offensive */}
       <Typography
-        sx={{ fontWeight: "bold", pb: 10 }}
-        component="div"
+        sx={{ fontWeight: "bold", pb: 1 }}
+        component="h3"
         style={{ lineHeight: "initial" }}
       >
         {miniHeader}

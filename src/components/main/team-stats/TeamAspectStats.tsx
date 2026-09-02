@@ -130,6 +130,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
         </Typography>
       </Grid>
       <Grid container size={12}>
+        {/* grid of type scores */}
         {(Object.keys(types) as PokemonType[]).map((type, i) => (
           <Grid key={i} size={2}>
             <Box sx={{ px: { xs: 0.125, md: 0.375 }, py: 0.375 }}>
@@ -139,7 +140,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                   borderRadius: "5px",
                   width: { xs: "100%", md: "75%" },
                   m: "auto",
-                  py: 0.125,
+                  lineHeight: 1.25,
                 }}
                 style={{ backgroundColor: `#${types[type]}` }}
                 aria-owns={anchorEl[i] ? "mouse-over-popover-" + i : undefined}

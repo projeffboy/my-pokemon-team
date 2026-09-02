@@ -32,6 +32,11 @@ const SmTeamViewer = observer(function SmTeamViewer() {
                 aria-controls={`team-slot-panel-${teamIndex}`}
                 aria-label={`${getPokemonLabel(teamIndex)} and ${getPokemonLabel(teamIndex + 1)}`}
                 label={`${teamIndex + 1} - ${teamIndex + 2}`}
+                sx={{
+                  px: 0,
+                  "& > :first-child": { pl: 1 },
+                  "& > :last-child": { pr: 1 },
+                }}
                 icon={
                   <Box sx={{ display: "flex", height: 75 }} aria-hidden="true">
                     <PokemonSprite teamIndex={teamIndex} />

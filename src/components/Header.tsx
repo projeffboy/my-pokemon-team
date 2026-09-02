@@ -1,8 +1,8 @@
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import face1 from "@/images/charizard-shuffle-face-cropped.png";
-import face2 from "@/images/venusaur-shuffle-face-cropped.png";
+import face1 from "@/images/venusaur-shuffle-face-cropped.png";
+import face2 from "@/images/charizard-shuffle-face-cropped.png";
 import { fluidClamp } from "@/helper";
 import { breakpointValues, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH } from "@/theme";
 

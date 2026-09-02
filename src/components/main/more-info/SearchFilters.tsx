@@ -75,55 +75,62 @@ const SearchFilters = observer(function SearchFilters() {
     Moves: ["Viable"],
   };
 
-  return (Object.keys(inputLabels) as InputLabelKey[]).map(inputLabel => (
+  return (
     <Grid
-      key={inputLabel}
       container
-      justifyContent="center"
-      size={{ xs: 6, lg: 3 }}
+      sx={{ pt: { xs: 0, md: 0 }, pb: { xs: 2, md: 0.5 }, minHeight: 120 }}
     >
-      <FormControl
-        variant="standard"
-        sx={{
-          minWidth: { xs: 90, md: 120 },
-          m: 1.25,
-          mt: { xs: 0, lg: 1.25 },
-        }}
-      >
-        {/* E.g. Format */}
-        <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
-        <Select
-          value={store.searchFilters[inputToFilterKey[inputLabel]]}
-          onChange={e => handleChange(inputLabel, e)}
-          inputProps={{ id: inputLabel }}
-          MenuProps={{
-            anchorOrigin: {
-              vertical: "top", // Anchor the menu higher
-              horizontal: "left",
-            },
-            transformOrigin: {
-              vertical: "bottom", // Transform it upwards
-              horizontal: "left",
-            },
-            PaperProps: {
-              style: {
-                maxHeight: 450, // Limit the menu height
-                overflowY: "auto", // Enable scrolling for overflow
-              },
-            },
-          }}
+      {(Object.keys(inputLabels) as InputLabelKey[]).map(inputLabel => (
+        <Grid
+          key={inputLabel}
+          container
+          justifyContent="center"
+          size={{ xs: 6, lg: 3 }}
         >
-          <MenuItem value="">All</MenuItem>
-          {/* OU: OverUsed */}
-          {inputLabels[inputLabel].map((inputValue: string) => (
-            <MenuItem key={inputValue} value={inputValue}>
-              {inputValue}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+          <FormControl
+            variant="standard"
+            sx={{
+              minWidth: { xs: 90, md: 120 },
+              m: 1.25,
+              mt: { xs: 0, lg: 1.25 },
+            }}
+          >
+            {/* E.g. Format */}
+            <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
+            <Select
+              value={store.searchFilters[inputToFilterKey[inputLabel]]}
+              onChange={e => handleChange(inputLabel, e)}
+              inputProps={{ id: inputLabel }}
+              MenuProps={{
+                anchorOrigin: {
+                  vertical: "top", // Anchor the menu higher
+                  horizontal: "left",
+                },
+                transformOrigin: {
+                  vertical: "bottom", // Transform it upwards
+                  horizontal: "left",
+                },
+                PaperProps: {
+                  style: {
+                    maxHeight: 450, // Limit the menu height
+                    overflowY: "auto", // Enable scrolling for overflow
+                  },
+                },
+              }}
+            >
+              <MenuItem value="">All</MenuItem>
+              {/* OU: OverUsed */}
+              {inputLabels[inputLabel].map((inputValue: string) => (
+                <MenuItem key={inputValue} value={inputValue}>
+                  {inputValue}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </Grid>
+      ))}
     </Grid>
-  ));
+  );
 });
 
 export default SearchFilters;

@@ -18,7 +18,7 @@ function UpdateLog() {
         onClick={toggleDialog}
         style={{ fontWeight: "initial", textTransform: "initial" }}
       >
-        Updates (Aug 28, 2026)
+        Updates (Sep 2, 2026)
       </Button>
       <Dialog
         open={isDialogOpen}
