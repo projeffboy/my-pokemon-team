@@ -70,7 +70,7 @@ export default function PokemonInputSelect({
           textOverflow: "clip",
         },
       }}
-      onChange={(event, newValue) => onChange(newValue ? newValue.value : "")}
+      onChange={(event, newValue) => onChange(newValue?.value ?? "")}
       onInputChange={(event, newInputValue, reason) => {
         // Clearing out the text also clears the selection
         // (matches the old react-select behavior)

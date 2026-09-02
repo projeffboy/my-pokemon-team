@@ -24,7 +24,7 @@ const PokemonSprite = observer(function PokemonSprite({
       "md"
     : breakpoint;
   const pokemon = store.team[teamIndex].name; // unhyphenated name
-  const pokedexNumber = pokemon ? pokedexMap[pokemon]?.num : undefined;
+  const pokedexNumber = pokedexMap[pokemon]?.num;
 
   let spriteFilename = pokemon; // the filename of the pokemon sprite (usually just the pokemon name)
 
@@ -88,7 +88,7 @@ const PokemonSprite = observer(function PokemonSprite({
     imgFormat = "png";
   }
 
-  const localSprite = pokemon ? localSpritesMap[pokemon] : undefined;
+  const localSprite = localSpritesMap[pokemon];
 
   /* Either Return Sprite or Mini Sprite */
   return (

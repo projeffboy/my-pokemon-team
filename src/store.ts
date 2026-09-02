@@ -209,8 +209,7 @@ class Store {
 
   // Get previous evolution
   previousEvolution(pokemon: string) {
-    const pokemonProperties = pokedex[pokemon];
-    const prevo = pokemonProperties ? pokemonProperties.prevo : undefined;
+    const prevo = pokedex[pokemon]?.prevo;
     return prevo ?
         prevo.toLowerCase().replace("-", "").replace(":", "").replace(" ", "")
       : undefined;
@@ -227,9 +226,7 @@ class Store {
   }
 
   itemName(item: string) {
-    const itemInfo = items[item];
-
-    return itemInfo ? itemInfo.name || "" : "";
+    return items[item]?.name || "";
   }
 
   itemNameInverse(itemName: string) {
