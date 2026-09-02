@@ -1,7 +1,5 @@
 import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import Popper from "@mui/material/Popper";
-import { styled } from "@mui/material/styles";
 import { useListRef } from "react-window";
 import VirtualizedListbox from "./pokemon-input-select/VirtualizedListbox";
 
@@ -9,23 +7,6 @@ interface SelectOption {
   value: string;
   label: string;
 }
-
-const StyledPopper = styled(Popper)({
-  // Autocomplete sets an inline width matching the (often narrow) input;
-  // override it so long option labels have room to wrap next to the icon
-  width: "auto !important",
-  minWidth: 160,
-  [`& .${autocompleteClasses.listbox}`]: {
-    boxSizing: "border-box",
-    "& ul": {
-      padding: 0,
-      margin: 0,
-    },
-    [`& .${autocompleteClasses.option}`]: {
-      padding: "4px 2px",
-    },
-  },
-});
 
 export default function PokemonInputSelect({
   optionValues,
@@ -50,14 +31,10 @@ export default function PokemonInputSelect({
   }));
   const selectedOption = options.find(option => option.value === value) || null;
   const id = "react-select-single-" + teamIndex + "-" + pokemonProperty;
+  const internalListRef = useListRef(null);
 
   // Which kind of icon to show in the options
-  let iconProperty = placeholder.toLowerCase();
-  if (iconProperty === "name") {
-    iconProperty = "pokemon";
-  }
-
-  const internalListRef = useListRef(null);
+  const iconProperty = placeholder.toLowerCase();
 
   // Scrolls the virtualized list to keep the keyboard-highlighted option in view
   // (guarded because the list may be closed/stale, e.g. after an auto-selected value)
@@ -80,7 +57,6 @@ export default function PokemonInputSelect({
   return (
     <Autocomplete
       id={id}
-      sx={{ minWidth: 0 }}
       options={options}
       value={selectedOption}
       disableListWrap
@@ -104,10 +80,22 @@ export default function PokemonInputSelect({
         // Deferred to VirtualizedListbox, which renders only the visible rows
         [optionProps, option] as unknown as React.ReactNode
       }
-      slots={{
-        popper: StyledPopper,
-      }}
       slotProps={{
+        popper: {
+          sx: {
+            minWidth: 160,
+            [`& .${autocompleteClasses.listbox}`]: {
+              boxSizing: "border-box",
+              "& ul": {
+                padding: 0,
+                margin: 0,
+              },
+              [`& .${autocompleteClasses.option}`]: {
+                padding: "4px 2px",
+              },
+            },
+          },
+        },
         listbox: {
           component: VirtualizedListbox,
           iconProperty,

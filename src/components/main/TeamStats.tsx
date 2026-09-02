@@ -309,7 +309,7 @@ const TypeDefenceTooltipInfo = ({
               <span style={{ paddingRight: 2 }}>
                 to {store.pokemonName(pokemon)}
               </span>
-              <PokemonIcon pokemonProperty="pokemon" value={pokemon} />
+              <PokemonIcon pokemonProperty="name" value={pokemon} />
             </li>
           );
         }
@@ -372,7 +372,7 @@ function TypeCoverageTooltipInfo({
                     >
                       <span style={{ width: 150 }}>{store.moveName(move)}</span>
                       <span>{store.pokemonName(pokemon) + " "}</span>
-                      <PokemonIcon pokemonProperty="pokemon" value={pokemon} />
+                      <PokemonIcon pokemonProperty="name" value={pokemon} />
                     </li>
                   );
                 } else if (num === 4 && i === 5 && !hasSuperEffectiveMove) {
