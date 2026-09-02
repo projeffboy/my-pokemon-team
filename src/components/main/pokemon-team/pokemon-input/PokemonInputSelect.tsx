@@ -34,9 +34,6 @@ export default function PokemonInputSelect({
   const id = "react-select-single-" + teamIndex + "-" + pokemonProperty;
   const internalListRef = useListRef(null);
 
-  // Which kind of icon to show in the options
-  const iconProperty = placeholder.toLowerCase();
-
   // Scrolls the virtualized list to keep the keyboard-highlighted option in view
   // (guarded because the list may be closed/stale, e.g. after an auto-selected value)
   const handleHighlightChange = (
@@ -86,21 +83,30 @@ export default function PokemonInputSelect({
       slotProps={{
         popper: {
           sx: {
-            ...(pokemonProperty === "name" && { minWidth: 160 }),
+            // Asuming 4px inline padding (defined in VirtualizedListbox)
+            // and 2px left padding on non-icon part of the dropdown row:
+            // Minimum width to fit Dudunsparce-Three-Segment row in two lines
+            ...(pokemonProperty === "name" && { minWidth: 161 }),
+            // Minimum width to fit Aerodactylite row in one line
+            ...(pokemonProperty === "item" && { minWidth: 130 }),
+            [`& .${autocompleteClasses.noOptions}`]: {
+              py: 1.5,
+              px: 1,
+            },
             [`& .${autocompleteClasses.listbox}`]: {
               "& ul": {
                 p: 0,
                 m: 0,
               },
               [`& .${autocompleteClasses.option}`]: {
-                p: "4px 2px",
+                py: 0.5,
               },
             },
           },
         },
         listbox: {
           component: VirtualizedListbox,
-          iconProperty,
+          pokemonProperty,
           selectedValue: value,
           internalListRef,
         } as never,

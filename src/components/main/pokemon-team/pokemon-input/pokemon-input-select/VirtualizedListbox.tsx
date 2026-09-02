@@ -9,7 +9,7 @@ import {
 import PokemonIcon from "./PokemonIcon";
 
 const LISTBOX_PADDING = 0; // px
-const ITEM_SIZE = 48; // Reduced after removing padding
+const ITEM_SIZE = 48;
 
 interface SelectOption {
   value: string;
@@ -22,26 +22,27 @@ type ItemData = Array<[React.HTMLAttributes<HTMLLIElement>, SelectOption]>;
 function RowComponent({
   index,
   itemData,
-  iconProperty,
+  pokemonProperty,
   style,
 }: RowComponentProps & {
   itemData: ItemData;
-  iconProperty: string;
+  pokemonProperty: string;
 }) {
   const [optionProps, option] = itemData[index];
   const { key, ...otherOptionProps } =
     optionProps as React.HTMLAttributes<HTMLLIElement> & { key?: React.Key };
-  const inlineStyle = {
-    ...style,
-    top: ((style.top as number | undefined) ?? 0) + LISTBOX_PADDING,
-  };
+  const hasIcon = ["name", "item"].includes(pokemonProperty);
 
   return (
     <Typography
       key={key}
       component="li"
       {...otherOptionProps}
-      style={inlineStyle}
+      style={{
+        ...style,
+        top: ((style.top as number | undefined) ?? 0) + LISTBOX_PADDING,
+        paddingInline: hasIcon ? 4 : 8,
+      }}
       sx={{
         display: "flex",
         alignItems: "flex-start",
@@ -49,8 +50,10 @@ function RowComponent({
         wordBreak: "break-word",
       }}
     >
-      <PokemonIcon pokemonProperty={iconProperty} value={option.value} />
-      <span style={{ flex: 1 }}>{option.label}</span>
+      {hasIcon && (
+        <PokemonIcon pokemonProperty={pokemonProperty} value={option.value} />
+      )}
+      <span style={{ flex: 1, paddingLeft: 2 }}>{option.label}</span>
     </Typography>
   );
 }
@@ -60,13 +63,14 @@ function RowComponent({
 const VirtualizedListbox = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLElement> & {
-    iconProperty: string;
+    pokemonProperty: string;
     selectedValue: string;
     internalListRef: React.Ref<ListImperativeAPI>;
   }
->(function VirtualizedListbox(props, ref) {
-  const { children, iconProperty, selectedValue, internalListRef, ...other } =
-    props;
+>(function VirtualizedListbox(
+  { children, pokemonProperty, selectedValue, internalListRef, ...other },
+  ref,
+) {
   const itemData = children as ItemData;
   const itemCount = itemData.length;
   // Rows with wrapped (two-line) labels measure taller than single-line rows;
@@ -96,11 +100,12 @@ const VirtualizedListbox = React.forwardRef<
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Uses the measured average row height (rows are shorter than ITEM_SIZE on
+  // wider screens, where MUI's option minHeight is no longer forced to 48px)
+  // so the popup doesn't reserve extra empty space below the rows
   const getHeight = () => {
-    if (itemCount > 8) {
-      return 8 * ITEM_SIZE;
-    }
-    return itemCount * ITEM_SIZE;
+    const rowHeight = dynamicRowHeight.getAverageRowHeight();
+    return Math.min(itemCount, 8) * rowHeight;
   };
 
   const { className, style, ...otherProps } = other;
@@ -114,7 +119,7 @@ const VirtualizedListbox = React.forwardRef<
         rowCount={itemCount}
         rowHeight={dynamicRowHeight}
         rowComponent={RowComponent}
-        rowProps={{ itemData, iconProperty }}
+        rowProps={{ itemData, pokemonProperty }}
         style={{
           height: getHeight() + 2 * LISTBOX_PADDING,
           width: "100%",
