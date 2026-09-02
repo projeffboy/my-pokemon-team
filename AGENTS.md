@@ -43,3 +43,5 @@ State is managed via a single MobX store (src/store.ts, `makeAutoObservable` + `
 # Other
 
 `npm start` starts the website at `localhost:3000`.
+
+Ask me clarification questions if necessary in response to my prompt.

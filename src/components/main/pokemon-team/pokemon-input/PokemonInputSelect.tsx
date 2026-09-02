@@ -71,13 +71,6 @@ export default function PokemonInputSelect({
         },
       }}
       onChange={(event, newValue) => onChange(newValue?.value ?? "")}
-      onInputChange={(event, newInputValue, reason) => {
-        // Clearing out the text also clears the selection
-        // (matches the old react-select behavior)
-        if (reason === "input" && newInputValue === "" && value) {
-          onChange("");
-        }
-      }}
       onHighlightChange={handleHighlightChange}
       getOptionLabel={(option: SelectOption) => option.label}
       isOptionEqualToValue={(option, value) => option.value === value.value}
@@ -95,13 +88,12 @@ export default function PokemonInputSelect({
           sx: {
             ...(pokemonProperty === "name" && { minWidth: 160 }),
             [`& .${autocompleteClasses.listbox}`]: {
-              boxSizing: "border-box",
               "& ul": {
-                padding: 0,
-                margin: 0,
+                p: 0,
+                m: 0,
               },
               [`& .${autocompleteClasses.option}`]: {
-                padding: "4px 2px",
+                p: "4px 2px",
               },
             },
           },
