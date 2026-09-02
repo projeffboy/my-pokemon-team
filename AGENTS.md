@@ -36,8 +36,6 @@ Make sure to use MUI best practices when making UI related code changes.
 When inside the `sx` prop, use their syntax if possible, so `p: 1` instead of `padding: 4px`.
 For CSS, do not use `!important` unless there is no other way.
 
-Prettier formats all files.
-
 State is managed via a single MobX store (src/store.ts, `makeAutoObservable` + `enforceActions: "never"`); components mutate it directly.
 
 # Other
