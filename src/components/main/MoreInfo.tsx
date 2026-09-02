@@ -52,9 +52,9 @@ export default function MoreInfo() {
             onChange={handleChange}
             variant="fullWidth"
             aria-label="Team tools"
-            sx={{
-              backgroundColor: "#222",
-            }}
+            sx={theme =>
+              theme.palette.mode === "dark" ? { backgroundColor: "#222" } : {}
+            }
           >
             {tabs.map(({ title, shortTitle }, index) => (
               <Tab

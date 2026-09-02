@@ -36,6 +36,7 @@ export default function App() {
               spacing={2}
               sx={{
                 minHeight: "100dvh",
+                alignContent: "flex-start",
                 maxWidth: 1920,
                 mx: "auto",
                 p: 2,
