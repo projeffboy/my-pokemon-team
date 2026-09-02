@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import PokemonInputs from "./PokemonInputs";
-import TeamViewer from "./team-viewer/TeamViewer";
+import PokemonInputs from "./pokemon-team/PokemonInputs";
+import TeamViewer from "./pokemon-team/team-viewer/TeamViewer";
 import { useIsMdDown } from "@/WidthContext";
 
 export default function PokemonTeam() {

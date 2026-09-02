@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import PokemonTeam from "./main/pokemon-team/PokemonTeam";
+import PokemonTeam from "./main/PokemonTeam";
 import TeamStats from "./main/TeamStats";
 import MoreInfo from "./main/MoreInfo";
 
