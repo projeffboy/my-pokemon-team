@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import { observer } from "mobx-react";
 import store from "@/store";
-import PokemonIcon from "./pokemon-inputs/pokemon-input/pokemon-input-select/PokemonIcon";
+import PokemonIcon from "./pokemon-team/pokemon-input/pokemon-input-select/PokemonIcon";
 import { PokemonType } from "@/types";
 import { useIsLgDown } from "@/WidthContext";
 

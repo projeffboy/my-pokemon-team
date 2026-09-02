@@ -19,10 +19,10 @@ For more info, check `/package.json`
 
 # Testing
 
-Testing is very important, because it checks for regressions when making changes to development files.
+Testing is very important, because it checks for regressions when changing development files.
 Test commands: `npm run typecheck && npm test`. If you are modifying UI, run `npm run test:update-snapshots` first.
 
-When making changes to development files:
+When changing development files:
 
 1. Before editing anything, run the tests first. If it fails, abort. Otherwise, we cannot confirm if any regressions found in step 2 are caused by you.
 2. After you complete your task, you MUST run the tests. If the tests fail, either figure out what you did wrong to cause the regressions, or give up and let me know.

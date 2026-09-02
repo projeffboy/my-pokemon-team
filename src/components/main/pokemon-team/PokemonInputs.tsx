@@ -1,5 +1,5 @@
-import PokemonInput from "./pokemon-inputs/PokemonInput";
-import PokemonSprite from "./pokemon-inputs/PokemonSprite";
+import PokemonInput from "./pokemon-input/PokemonInput";
+import PokemonSprite from "./pokemon-input/PokemonSprite";
 import { PokemonProperties } from "@/types";
 
 export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {

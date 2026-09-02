@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import store from "@/store";
-import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
+import PokemonInputSelect from "./PokemonInputSelect";
 import { PokemonProperties } from "@/types";
 
 /*

@@ -6,7 +6,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react";
 import PokemonInputs from "../PokemonInputs";
-import PokemonSprite from "../pokemon-inputs/PokemonSprite";
+import PokemonSprite from "../pokemon-input/PokemonSprite";
 import getPokemonLabel from "./getPokemonLabel";
 
 const XsTeamViewer = observer(function XsTeamViewer() {
