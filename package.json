@@ -21,7 +21,6 @@
     "preview": "vite preview",
     "update:data": "node scripts/update-data.mjs",
     "test": "playwright test",
-    "test:quick": "playwright test --project='iPhone'",
     "test:update-snapshots": "playwright test tests/snapshot/snapshot-tests.spec.ts --update-snapshots",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
   },
