@@ -1,4 +1,4 @@
-import { Fragment, useState, type MouseEvent } from "react";
+import { useState, type MouseEvent } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -7,10 +7,10 @@ import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import { observer } from "mobx-react";
 import store from "@/store";
-import PokemonIcon from "../pokemon-team/pokemon-input/pokemon-input-select/PokemonIcon";
 import { PokemonType } from "@/types";
 import { useIsLgDown } from "@/WidthContext";
 import type { TeamStatTitle } from "../TeamStats";
+import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
 
 type TeamStatType = "typeDefence" | "typeCoverage";
 
@@ -185,166 +185,5 @@ const TeamAspectStats = observer(function TeamAspectStats({
     </Grid>
   );
 });
-
-const TeamStatsTooltip = observer(function TeamStatsTooltip({
-  teamStatType,
-  ...otherProps
-}: {
-  teamStatType: TeamStatTitle;
-  typeColor: string;
-  type: PokemonType;
-}) {
-  const content = () => {
-    if (teamStatType === "Team Defence")
-      return <TypeDefenceTooltipInfo {...otherProps} />;
-    if (teamStatType === "Team Type Coverage")
-      return <TypeCoverageTooltipInfo {...otherProps} />;
-    return null;
-  };
-
-  return (
-    <Typography component="div">
-      {store.isTeamEmpty ? "First select a pokemon." : content()}
-    </Typography>
-  );
-});
-
-const TypeDefenceTooltipInfo = ({
-  typeColor,
-  type,
-}: {
-  typeColor: string;
-  type: PokemonType;
-}) => (
-  <>
-    <p>
-      <span style={{ color: `#${typeColor}` }}>{type}</span> does...
-    </p>
-    <ul style={{ listStyle: "none", padding: 0 }}>
-      {store.team.map((teamPokemonProperties, i) => {
-        const { name: pokemon, ability, item } = teamPokemonProperties;
-        if (!pokemon) return null;
-        const effectiveness = store.typeAgainstPokemon(
-          type,
-          pokemon,
-          ability,
-          item,
-        );
-        let multiplier = 1;
-        let color = "initial";
-        switch (effectiveness) {
-          case -2:
-            multiplier = 4;
-            color = "red";
-            break;
-          case -1.5:
-            multiplier = 3;
-            color = "red";
-            break;
-          case -1:
-            multiplier = 2;
-            color = "#f9d130";
-            break;
-          case -0.5:
-            multiplier = 1.5;
-            color = "#f9d130";
-            break;
-          case 1:
-            multiplier = 0.5;
-            color = "yellowgreen";
-            break;
-          case 2:
-            multiplier = 0.25;
-            color = "forestgreen";
-            break;
-          case 3:
-            multiplier = 0;
-            color = "grey";
-            break;
-        }
-        return (
-          <li
-            key={teamPokemonProperties.name + i}
-            style={{ display: "flex", alignItems: "center" }}
-          >
-            <span
-              style={{ color, width: 40, textAlign: "right", paddingRight: 4 }}
-            >
-              {multiplier}x
-            </span>
-            <span style={{ paddingRight: 2 }}>
-              to {store.pokemonName(pokemon)}
-            </span>
-            <PokemonIcon pokemonProperty="name" value={pokemon} />
-          </li>
-        );
-      })}
-    </ul>
-  </>
-);
-
-function TypeCoverageTooltipInfo({
-  typeColor,
-  type,
-}: {
-  typeColor: string;
-  type: PokemonType;
-}) {
-  let hasSuperEffectiveMove = false;
-  return (
-    <>
-      <p>
-        Super effective against{" "}
-        <span style={{ color: `#${typeColor}` }}>{type}</span>:
-      </p>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {store.team.map((teamPokemonProperties, i) => {
-          const { name: pokemon, ability } = teamPokemonProperties;
-          return (
-            <Fragment key={pokemon + i}>
-              {[1, 2, 3, 4].map(num => {
-                const move = teamPokemonProperties["move" + num];
-                if (
-                  move &&
-                  store.moveAgainstType(move, type, pokemon, ability) === -1
-                ) {
-                  hasSuperEffectiveMove = true;
-                  const moveType = store.moveType(move, pokemon, ability);
-                  return (
-                    <li
-                      key={move + num}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        fontWeight:
-                          (
-                            moveType &&
-                            store.pokemonType(pokemon).includes(moveType)
-                          ) ?
-                            500
-                          : 400,
-                      }}
-                    >
-                      <span style={{ width: 150 }}>{store.moveName(move)}</span>
-                      <span>{store.pokemonName(pokemon) + " "}</span>
-                      <PokemonIcon pokemonProperty="name" value={pokemon} />
-                    </li>
-                  );
-                }
-                if (num === 4 && i === 5 && !hasSuperEffectiveMove)
-                  return (
-                    <li key={pokemon + i} style={{ textAlign: "center" }}>
-                      Nothing
-                    </li>
-                  );
-                return null;
-              })}
-            </Fragment>
-          );
-        })}
-      </ul>
-    </>
-  );
-}
 
 export default TeamAspectStats;
