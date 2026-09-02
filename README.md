@@ -2,7 +2,7 @@
 
 ### All purpose Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
 
-![My Pokemon Team Screenshot](src/images/mypokemonteam-screenshot.png)
+![My Pokemon Team Screenshot](src/images/mypokemonteam-screenshot.PNG)
 
 ## What makes this teambuilder special?
 
