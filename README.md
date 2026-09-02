@@ -1,10 +1,8 @@
 # [My Pokemon Team](https://mypokemonteam.com)
 
-### The Ultimate Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
+### All purpose Pokemon Teambuilder at [mypokemonteam.com](https://mypokemonteam.com)
 
-#### No guarantees on when I'll include the other generations, as well as the new diamond and pearl (BDSP). I also want to make teams saveable by URL. Hopefully in summer 2022...
-
-![My Pokemon Team Screenshot](src/images/mypokemonteam-screenshot.PNG)
+![My Pokemon Team Screenshot](src/images/mypokemonteam-screenshot.png)
 
 ## What makes this teambuilder special?
 
@@ -13,21 +11,11 @@
 3. There's a team checklist.
 4. The sprites are animated, which is nice
 
-## Features to Work on
-
-1. Fix bugs, especially gen 8 related.
-2. Rewrite bad code.
-
-You can check out the issues tab to see what other improvements I have in mind. Or you can create a new issue if you have suggestions of your own :)
-
-If you want to help me write code for new features, I would suggest that you save your time, because my code is messy and getting borderline unmaintainable. I'll have to rewrite all the bad code first.
-
 ## Major Credits
 
 - Nintendo, The Pokemon Company, Game Freak
-- [Ogerpon Teal Mask (by jormxdos)](https://www.deviantart.com/jormxdos)
 - [Pokemon Showdown](https://pokemonshowdown.com/): animated sprites, non-animated sprites, and all the pokemon data (thanks Zarel!)
-- [Javascript React framework](https://reactjs.org/)
+- [Typescript React framework](https://reactjs.org/)
 - [Material UI](https://material-ui.com/)
 - [MobX state management](https://mobx.js.org/)
 
@@ -37,19 +25,3 @@ If you want to help me write code for new features, I would suggest that you sav
 - [Non-table Type Chart](https://pinterest.ca/pin/307159637067301004/)
 - [Assigning each type a color](https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors')
 - [r/stunfisk](https://reddit.com/r/stunfisk)
-
-# Coding Guidelines
-
-1. Prettier is used to format all file types
-
-## Updating Pokemon Data
-
-Clone `pokemon-showdown` and `pokemon-showdown-client` beside this repository,
-update both checkouts, then run:
-
-```sh
-npm run update:data
-```
-
-This updates the TypeScript datasets in `src/data`. `old-moves.js` is maintained
-separately and is not changed by this command.
