@@ -98,7 +98,7 @@ const PokemonSprite = observer(function PokemonSprite({
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        gridRow: { xs: "2 / 7", md: "2 / 5" },
+        gridRow: "2 / 5",
       }}
     >
       <img

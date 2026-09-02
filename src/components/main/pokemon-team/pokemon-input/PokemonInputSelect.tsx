@@ -27,8 +27,6 @@ const StyledPopper = styled(Popper)({
   },
 });
 
-// Returns an autocomplete input (replaces the old react-virtualized-select)
-// In charge of communicating with the store (store.js)
 export default function PokemonInputSelect({
   optionValues,
   optionLabels,

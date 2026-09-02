@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import PokemonInput from "./pokemon-input/PokemonInput";
 import PokemonSprite from "./pokemon-input/PokemonSprite";
 import { PokemonProperties } from "@/types";
@@ -18,10 +19,10 @@ export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
   ];
 
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "grid",
-        gridColumnGap: "10px",
+        columnGap: 1,
         gridTemplateColumns: "1fr 1fr",
       }}
       role="region"
@@ -41,6 +42,6 @@ export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
           return <PokemonSprite key={i} teamIndex={teamIndex} forceFullSize />;
         }
       })}
-    </div>
+    </Box>
   );
 }

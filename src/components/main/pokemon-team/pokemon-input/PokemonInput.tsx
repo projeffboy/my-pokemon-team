@@ -3,11 +3,6 @@ import store from "@/store";
 import PokemonInputSelect from "./PokemonInputSelect";
 import { PokemonProperties } from "@/types";
 
-/*
- * 1. If you change the pokemon name, <PokemonInputSelect /> triggers handleChange.
- * 2. It updates the change to the store.
- * 3. Since the store is reactive, the prop value passed to <PokemonInputSelect /> will be updated too.
- */
 const PokemonInput = observer(function PokemonInput({
   placeholder,
   pokemonProperty,
@@ -24,11 +19,7 @@ const PokemonInput = observer(function PokemonInput({
 
     store.team[teamIndex][pokemonProperty] = inputVal;
 
-    /*
-     * If the input is where you put your pokemon name,
-     * and the pokemon has only one type,
-     * then auto select its ability.
-     */
+    // if pokemon can only have one item and/or ability
     if (pokemonProperty === "name") {
       store.autoSelectItem();
       store.autoSelectAbility();
@@ -41,11 +32,10 @@ const PokemonInput = observer(function PokemonInput({
   switch (pokemonProperty) {
     case "name":
       optionValues = store.filteredPokemon;
-      // Fall back to the ID so labels stay aligned with optionValues
       optionLabels = store.filteredPokemonNames.map(
         (name, i) => name ?? optionValues[i],
       );
-      let pokemonName = store.team[teamIndex][pokemonProperty];
+      let pokemonName = store.team[teamIndex].name;
       if (pokemonName && !optionValues.includes(pokemonName)) {
         optionValues = [...optionValues, pokemonName];
         optionLabels = [
