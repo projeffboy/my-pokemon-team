@@ -8,7 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
-import Ramp from "./components/RAMP";
+import Ramp from "./RAMP";
 import { cookieStorageManager } from "./color-scheme-storage";
 import { WidthProvider } from "./WidthContext";
 
