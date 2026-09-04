@@ -10,6 +10,8 @@ const MainSnackbar = observer(function MainSnackbar() {
       open={store.isSnackbarOpen}
       autoHideDuration={2500}
       onClose={() => (store.isSnackbarOpen = false)}
+      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      sx={{ mb: "230px" }}
       slotProps={{
         content: {
           role: "alert",
