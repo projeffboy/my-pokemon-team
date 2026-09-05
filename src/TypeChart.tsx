@@ -34,7 +34,12 @@ function TypeChart() {
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "background.paper" }}>
       <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} centered>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          centered
+          textColor="inherit"
+        >
           <Tab label="Table" />
           <Tab label="List" />
           <Tab label="Infographic" />
