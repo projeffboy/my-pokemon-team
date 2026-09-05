@@ -1,5 +1,11 @@
-import { test } from "fixtures";
-import { selectAbility, selectItem, selectMove, selectPokemon } from "helper";
+import { test, expect } from "fixtures";
+import {
+  selectAbility,
+  selectItem,
+  selectMove,
+  selectPokemon,
+  getTeamTextFromUrl,
+} from "helper";
 import type { Page } from "@playwright/test";
 
 const team = [
@@ -67,6 +73,17 @@ test.describe("Casual Team", () => {
 
     for (let i = 0; i < team.length; i++) {
       await addPokemon(page, i, team[i]);
+    }
+
+    // The URL's `team` param should reflect the fully built team
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Pikachu");
+    const teamText = getTeamTextFromUrl(page);
+    for (const pokemon of team) {
+      expect(teamText).toContain(pokemon.name);
+      expect(teamText).toContain(`Ability: ${pokemon.ability}`);
+      for (const move of pokemon.moves) {
+        expect(teamText).toContain(`- ${move}`);
+      }
     }
   });
 });

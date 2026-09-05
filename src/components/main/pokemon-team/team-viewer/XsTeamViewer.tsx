@@ -4,7 +4,11 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import LinkIcon from "@mui/icons-material/Link";
 import { observer } from "mobx-react";
+import store from "@/store";
 import PokemonInputs from "../PokemonInputs";
 import PokemonSprite from "../pokemon-input/PokemonSprite";
 import getPokemonLabel from "./getPokemonLabel";
@@ -12,10 +16,24 @@ import getPokemonLabel from "./getPokemonLabel";
 const XsTeamViewer = observer(function XsTeamViewer() {
   const [tabIndex, setTabIndex] = useState(0);
 
+  const handleShare = async () => {
+    if (store.isTeamEmpty) {
+      store.openSnackbar("Pokemon team is empty");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      store.openSnackbar("Pokemon team link copied");
+    } catch {
+      store.openSnackbar("Couldn't copy the link.");
+    }
+  };
+
   return (
     <>
       <Grid size={12}>
-        <Paper>
+        <Paper sx={{ display: "flex", alignItems: "stretch" }}>
           <Tabs
             value={tabIndex}
             onChange={(_event: SyntheticEvent, value: number) =>
@@ -24,6 +42,7 @@ const XsTeamViewer = observer(function XsTeamViewer() {
             variant="fullWidth"
             textColor="secondary"
             aria-label="Pokemon team slots"
+            sx={{ flexGrow: 1, minWidth: 0 }}
           >
             {[0, 1, 2, 3, 4, 5].map(teamIndex => (
               <Tab
@@ -46,6 +65,16 @@ const XsTeamViewer = observer(function XsTeamViewer() {
               />
             ))}
           </Tabs>
+          <Button
+            onClick={handleShare}
+            aria-label="Share pokemon team link"
+            sx={{ minWidth: 0, px: 1.5, flexDirection: "column" }}
+          >
+            <LinkIcon fontSize="small" />
+            <Typography variant="caption" component="span">
+              Share
+            </Typography>
+          </Button>
         </Paper>
       </Grid>
       <Grid

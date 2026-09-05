@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
 import MainSnackbar from "./components/MainSnackbar";
+import TeamLinkSync from "./components/TeamLinkSync";
 import TypeChartDialog from "./TypeChartDialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
@@ -19,6 +20,8 @@ export default function App() {
   return (
     <Router>
       <>
+        <TeamLinkSync />
+
         {process.env.NODE_ENV === "production" && (
           <Ramp PUB_ID={PUB_ID} WEBSITE_ID={WEBSITE_ID} />
         )}

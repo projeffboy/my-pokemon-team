@@ -56,7 +56,7 @@ test.describe("Save/Load Team: Copy Team - Integration Tests", () => {
     }
 
     // We check for the expected format
-    const expectedSubstrings = ["Pikachu @", "Ability:", "-Thunderbolt"];
+    const expectedSubstrings = ["Pikachu @", "Ability:", "- Thunderbolt"];
     for (const substring of expectedSubstrings) {
       expect(clipboardText).toContain(substring);
     }

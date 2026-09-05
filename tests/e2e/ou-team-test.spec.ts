@@ -6,6 +6,7 @@ import {
   selectAbility,
   selectItem,
   selectMove,
+  getTeamTextFromUrl,
 } from "helper";
 import fs from "fs";
 import path from "path";
@@ -74,6 +75,10 @@ test.describe("Importing an OU team", () => {
     // 2. Basic check
     await doBasicCheck(page);
 
+    // The URL's `team` param should reflect the imported team
+    await expect(page).toHaveURL(/[?&]team=/);
+    expect(getTeamTextFromUrl(page)).toContain("Garchomp");
+
     // 3. Delete Garchomp (Slot 3)
     // Navigate to Pokemon 3-4 tab
     // (matched by visible text, not accessible name, since the tab's
@@ -84,6 +89,9 @@ test.describe("Importing an OU team", () => {
 
     // 4. Basic check
     await doBasicCheck(page);
+
+    // The URL should no longer mention the deleted Garchomp
+    await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("Garchomp");
 
     // 5. Set filter to OU
     await page.getByText("Filters", { exact: true }).click();
@@ -140,5 +148,14 @@ test.describe("Importing an OU team", () => {
 
     // 10. Basic check
     await doBasicCheck(page);
+
+    // The URL should reflect all the modifications made throughout the test
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Toxic");
+    const finalTeamText = getTeamTextFromUrl(page);
+    expect(finalTeamText).toContain("Ogerpon-Wellspring");
+    expect(finalTeamText).toContain("Focus Blast");
+    expect(finalTeamText).not.toContain("Garchomp");
+    expect(finalTeamText).not.toContain("Thunder Wave");
+    expect(finalTeamText).not.toContain("Psyshock");
   });
 });

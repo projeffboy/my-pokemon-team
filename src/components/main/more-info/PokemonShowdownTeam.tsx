@@ -13,6 +13,7 @@ import ImportExport from "@mui/icons-material/ImportExport";
 import FileCopy from "@mui/icons-material/FileCopy";
 import { observer } from "mobx-react";
 import store from "@/store";
+import { applyTeamText, serializeTeamText } from "@/team-link";
 
 const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -33,101 +34,7 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
 
   const handleImport = (initialText: string) => {
     if (textArea !== initialText) {
-      let teamPokemonRawData = textArea.split("\n\n"); // split team into each pokemon
-      let numberOfTeamPokemon = 0;
-
-      teamPokemonRawData = teamPokemonRawData
-        .filter(eachPokemonData => eachPokemonData) // get rid of empty lines
-        .slice(0, 6); // a team has at most 6 pokemon
-      teamPokemonRawData.forEach((eachPokemonData, teamIndex) => {
-        numberOfTeamPokemon++;
-
-        const lines = eachPokemonData.split("\n"); // split pokemon into its properties
-
-        // Get pokemon and item names
-        const pokemonAndItemNames = lines[0].split("@").map(str => str.trim());
-        const [pokemonNameAndNickname, itemName] = pokemonAndItemNames;
-
-        // Check for nickname
-        let pokemonName = pokemonNameAndNickname;
-        if (pokemonName.includes("(")) {
-          pokemonName = pokemonName.split("(")[1].replace(")", "");
-        }
-
-        // Check if the pokemon the user typed is legit
-        const pokemon = store.pokemonNameInverse(
-          pokemonName.replace(/\(.\)/, "").trim(),
-        );
-        if (pokemon) {
-          store.team[teamIndex].name = pokemon; // if legit, set pokemon ID/name
-
-          // If team raw data does not mention item, leave it blank
-          if (itemName) {
-            // Check if item is legit
-            const item = store.itemNameInverse(itemName);
-            if (item) {
-              store.team[teamIndex].item = item; // if legit, set item ID/name
-            } else {
-              store.autoSelectItem();
-            }
-          } else {
-            store.team[teamIndex].item = "";
-          }
-
-          let moveNum = 1;
-          let abilityChanged = false;
-
-          lines.slice(1).forEach(line => {
-            if (line.includes("Ability:")) {
-              // if property has to do with abilities
-              const ability = line.replace("Ability:", "").trim();
-
-              // If legit, set ability
-              if (Object.values(store.abilities(pokemon)).includes(ability)) {
-                store.team[teamIndex].ability = ability;
-                abilityChanged = true;
-              }
-            } else if (line[0] === "-" && moveNum <= 4) {
-              // if property has to do with moves
-              const moveName = line
-                .slice(1)
-                .trim()
-                .replace("[", "") // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
-                .replace("]", "");
-
-              // If legit, set move
-              // Otherwise, set it blank
-              const move = store.moveNameInverse(moveName);
-
-              const validMove =
-                store.canItLearn(move, pokemon) && move ? move : "";
-
-              store.team[teamIndex]["move" + moveNum] = validMove;
-
-              moveNum++;
-            }
-          });
-
-          // If team raw data does not mention ability, leave it blank
-          if (!abilityChanged) {
-            store.team[teamIndex].ability = "";
-            store.autoSelectAbility();
-          }
-        }
-      });
-
-      /*
-       * Clears unwanted duplicate pokemon
-       * Happens when the user for example...
-       *  -adds pikachu to the 3rd team slot (`teamIndex` of 2)
-       *  -presses import/export button
-       *  -modifies that pikachu's raw data
-       *  -presses OK
-       * Without this code, there will be two pikachus, at slot 1 and slot 3
-       */
-      for (let i = numberOfTeamPokemon; i < 6; i++) {
-        store.clearTeamPokemonProperties(i);
-      }
+      applyTeamText(textArea);
     } else {
       store.openSnackbar("No changes made.");
     }
@@ -155,29 +62,7 @@ const PokemonShowdownTeam = observer(function PokemonShowdownTeam() {
     }
   };
 
-  const pokemonShowdownTeamInfo = [0, 1, 2, 3, 4, 5]
-    .map(teamIndex => {
-      const { name, item, ability } = store.team[teamIndex];
-
-      if (name) {
-        return `${store.pokemonName(name)} @ ${store.itemName(item)}
-Ability: ${ability}
-${[1, 2, 3, 4]
-  .map(num => {
-    const move = store.team[teamIndex]["move" + num];
-
-    if (move) {
-      return "-" + store.moveName(move);
-    } else {
-      return "-";
-    }
-  })
-  .join("\n")}\n\n`;
-      } else {
-        return "";
-      }
-    })
-    .join("");
+  const pokemonShowdownTeamInfo = serializeTeamText();
 
   return (
     <Grid

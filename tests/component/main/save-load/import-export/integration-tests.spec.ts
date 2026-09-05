@@ -1,4 +1,5 @@
 import { test, expect } from "fixtures";
+import { getTeamTextFromUrl } from "helper";
 import type { Page } from "@playwright/test";
 
 interface VerifyPokemonPropertyOptions {
@@ -61,6 +62,10 @@ test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
     await importTeam(page, "Gigalith");
 
     await verifyPokemonProperty(page, "Gigalith");
+
+    // The URL's `team` param should stay in sync with the store
+    await expect(page).toHaveURL(/[?&]team=/);
+    expect(getTeamTextFromUrl(page)).toContain("Gigalith");
   });
 
   test("Paste in a pokemon's details", async ({ page }) => {
@@ -84,6 +89,20 @@ Ability: Chlorophyll
     await verifyPokemonProperty(page, "Weepinbell");
     for (const [value, property] of expectedValues) {
       await verifyPokemonProperty(page, value, { property });
+    }
+
+    // The URL's `team` param should decode back to the imported team
+    await expect(page).toHaveURL(/[?&]team=/);
+    const teamText = getTeamTextFromUrl(page);
+    expect(teamText).toContain("Weepinbell @ Life Orb");
+    expect(teamText).toContain("Ability: Chlorophyll");
+    for (const move of [
+      "Solar Beam",
+      "Sludge Bomb",
+      "Sleep Powder",
+      "Sunny Day",
+    ]) {
+      expect(teamText).toContain(`- ${move}`);
     }
   });
 });
