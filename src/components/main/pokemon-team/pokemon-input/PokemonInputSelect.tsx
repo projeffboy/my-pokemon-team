@@ -73,7 +73,7 @@ export default function PokemonInputSelect({
       isOptionEqualToValue={(option, value) => option.value === value.value}
       noOptionsText={
         <Typography variant="body2" textAlign="center">
-          Nothing found <br /> (Or you haven't selected a Pokemon)
+          Nothing found <br /> (you haven't selected a pokemon)
         </Typography>
       }
       renderOption={(optionProps, option) =>
