@@ -32,8 +32,8 @@ const XsTeamViewer = observer(function XsTeamViewer() {
 
   return (
     <>
-      <Grid size={12}>
-        <Paper sx={{ display: "flex", alignItems: "stretch" }}>
+      <Grid size={12} sx={{ display: "flex", gap: 1 }}>
+        <Paper sx={{ flexGrow: 1, minWidth: 0 }}>
           <Tabs
             value={tabIndex}
             onChange={(_event: SyntheticEvent, value: number) =>
@@ -65,6 +65,8 @@ const XsTeamViewer = observer(function XsTeamViewer() {
               />
             ))}
           </Tabs>
+        </Paper>
+        <Paper sx={{ display: "flex", alignItems: "stretch" }}>
           <Button
             onClick={handleShare}
             aria-label="Share pokemon team link"
