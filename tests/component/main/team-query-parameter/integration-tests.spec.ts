@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { toBase64Url } from "@/base64url";
+import { toBase64Url } from "@/app/shared/base64url";
 import { getTeamTextFromUrl } from "helper";
 
 test.describe("Save/Load Team: Share Link - Integration Tests", () => {

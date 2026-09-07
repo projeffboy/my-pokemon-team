@@ -1,6 +1,6 @@
 export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
 
-export interface PokedexEntry {
+interface PokedexEntry {
   num?: number;
   types?: string[];
   name?: string;
@@ -17,7 +17,7 @@ export interface PokedexEntry {
 
 export type Pokedex = Record<string, PokedexEntry>;
 
-export interface MoveEntry {
+interface MoveEntry {
   type?: string;
   status?: string;
   secondary?: { chance?: number; status?: string };
@@ -85,3 +85,7 @@ export interface TeamPokemonProperties extends Record<string, string> {
 export type Team = TeamPokemonProperties[];
 
 export type SearchFilterKey = "format" | "region" | "type" | "moves";
+
+export type TeamStatType = "typeDefence" | "typeCoverage";
+
+export type TeamStatTitle = "Team Defence" | "Team Type Coverage";

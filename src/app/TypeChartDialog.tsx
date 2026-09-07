@@ -1,0 +1,72 @@
+import Fab from "@mui/material/Fab";
+import TableChart from "@mui/icons-material/TableChart";
+
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import TypeChart from "./type-chart-dialog/TypeChart";
+import { useBreakpoint } from "./shared/WidthContext";
+
+export default function TypeChartDialog() {
+  const width = useBreakpoint();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const toggleDialog = () => setIsDialogOpen(open => !open);
+
+  const fab = () => {
+    if (width === "xs") {
+      return (
+        <Fab
+          onClick={toggleDialog}
+          color="primary"
+          size="small"
+          style={{ position: "fixed", bottom: 116, right: 16 }}
+          aria-label="Type Chart"
+        >
+          <TableChart />
+        </Fab>
+      );
+    } else if (width === "sm") {
+      return (
+        <Fab
+          onClick={toggleDialog}
+          color="primary"
+          style={{ position: "fixed", bottom: 116, right: 24 }}
+          aria-label="Type Chart"
+        >
+          <TableChart />
+        </Fab>
+      );
+    } else {
+      return (
+        <Fab
+          onClick={toggleDialog}
+          color="primary"
+          variant="extended"
+          style={{ position: "fixed", bottom: 116, right: 24 }}
+        >
+          <TableChart style={{ marginRight: 8 }} />
+          Type Chart
+        </Fab>
+      );
+    }
+  };
+
+  return (
+    <>
+      {fab()}
+      <Dialog
+        open={isDialogOpen}
+        onClose={toggleDialog}
+        aria-labelledby="form-dialog-title"
+        maxWidth="md"
+        fullWidth
+      >
+        <TypeChart />
+        <DialogActions>
+          <Button onClick={toggleDialog}>Go Back</Button>
+        </DialogActions>
+      </Dialog>
+    </>
+  );
+}

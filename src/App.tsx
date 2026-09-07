@@ -1,17 +1,17 @@
 import Grid from "@mui/material/Grid";
-import Header from "./components/Header";
-import Main from "./components/Main";
-import Footer from "./components/Footer";
-import MainSnackbar from "./components/MainSnackbar";
-import TeamLinkSync from "./components/TeamLinkSync";
-import TypeChartDialog from "./TypeChartDialog";
+import Header from "./app/Header";
+import Main from "./app/Main";
+import Footer from "./app/Footer";
+import MainSnackbar from "./app/MainSnackbar";
+import TeamLinkSync from "./app/TeamLinkSync";
+import TypeChartDialog from "./app/TypeChartDialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./theme";
+import { theme } from "./app/theme";
 import { BrowserRouter as Router } from "react-router-dom";
-import Ramp from "./RAMP";
-import { cookieStorageManager } from "./color-scheme-storage";
-import { WidthProvider } from "./WidthContext";
+import Ramp from "./app/RAMP";
+import { cookieStorageManager } from "./app/color-scheme-storage";
+import { WidthProvider } from "./app/shared/WidthContext";
 
 const PUB_ID = 1025446;
 const WEBSITE_ID = 75399;

@@ -1,5 +1,5 @@
 import { makeAutoObservable, configure } from "mobx";
-import { capitalizeWord } from "./helper-functions";
+import { capitalizeWord } from "./helper";
 import {
   Pokedex,
   Moves,

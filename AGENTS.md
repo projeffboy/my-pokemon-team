@@ -22,6 +22,23 @@ There is no backend, all the data comes from static local files in `/src/data`, 
 
 For more info, check `/package.json`
 
+## Scripts
+
+According to `/package.json`:
+
+```jsonc
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "update:data": "node scripts/update-data.mjs", // update data files
+    "test": "playwright test",
+    "test:update-snapshots": "playwright test tests/snapshot/snapshot-tests.spec.ts --update-snapshots", // update snapshots
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
+  },
+```
+
 ## Testing
 
 ### Executing Tests
@@ -37,6 +54,15 @@ When changing development files:
 ### Writing Tests
 
 When choosing example pokemon(s) for your test, try to choose pokemon that haven't been selected for other tests.
+
+## File Structure Conventions
+
+`src/app` mirrors the component tree, so a file's path tells you who renders it. Four rules (rule 3 overrules rules 1-2):
+
+1. A file that has children gets a sibling folder named after it in kebab-case, holding only those children. `TeamStats.tsx` owns `team-stats/`.
+2. Imports point down: `./child-folder/Thing`. Siblings cannot be imported.
+3. When two siblings or cousins need the same thing, it moves to a `shared/` folder at their nearest common ancestor.
+4. If an import cannot be reached with `./` or a single `../`, use the `@` alias (`@/*` maps to `src/*`). No `../../`.
 
 ## General Coding Conventions
 

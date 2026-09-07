@@ -5,6 +5,9 @@ const PRECISION = 6;
 
 const round = (value: number) => Number(value.toFixed(PRECISION));
 
+export const capitalizeWord = (word: string) =>
+  word ? word[0].toUpperCase() + word.slice(1) : word;
+
 export function fluidClamp(
   minSize: number,
   maxSize: number,
