@@ -2,8 +2,6 @@ import { test, expect } from "fixtures";
 import { expectImageToBeLoaded } from "helper";
 import type { Locator, Page } from "@playwright/test";
 
-// Test configuration based on component-tests.md requirements
-
 test.describe("FAB (Floating Action Button) Tests", () => {
   test("should display and interact with Type Chart FAB", async ({ page }) => {
     // Click FAB to open Type Chart dialog

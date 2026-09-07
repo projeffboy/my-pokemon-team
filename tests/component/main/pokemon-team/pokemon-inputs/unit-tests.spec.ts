@@ -1,8 +1,6 @@
 import { test, expect } from "fixtures";
 import type { Page } from "@playwright/test";
 
-// Test configuration based on ui-main-tests.md requirements for Pokemon Card Unit Tests
-
 test.describe("Pokemon Card - Unit Tests", () => {
   // Helper to ensure card is visible (handles responsive tabs)
   const ensureCardVisible = async (page: Page, index: number) => {

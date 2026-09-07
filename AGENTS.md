@@ -57,12 +57,18 @@ When choosing example pokemon(s) for your test, try to choose pokemon that haven
 
 ## File Structure Conventions
 
-`src/app` mirrors the component tree, so a file's path tells you who renders it. Four rules (rule 3 overrules rules 1-2):
+### App
+
+Inside `src/`, `App.tsx` and `app/` mirror the component tree, so a file's path tells you who renders it. Four rules (rule 3 overrules rules 1-2):
 
 1. A file that has children gets a sibling folder named after it in kebab-case, holding only those children. `TeamStats.tsx` owns `team-stats/`.
 2. Imports point down: `./child-folder/Thing`. Siblings cannot be imported.
 3. When two siblings or cousins need the same thing, it moves to a `shared/` folder at their nearest common ancestor.
 4. If an import cannot be reached with `./` or a single `../`, use the `@` alias (`@/*` maps to `src/*`). No `../../`.
+
+### Tests
+
+`tests/component/` mirrors `src/app/`, with one exception: every tested component gets a kebab-case folder, even if it has no children in `src`. So `src/app/main/more-info/TeamChecklist.tsx` is tested in `tests/component/main/more-info/team-checklist/`, holding `unit-tests.spec.ts` and/or `integration-tests.spec.ts`. When a folder needs more than one file of the same kind, prepend a descriptive name (e.g. `team-defence-unit-tests.spec.ts`). Tests spanning siblings live in their nearest common ancestor folder.
 
 ## General Coding Conventions
 

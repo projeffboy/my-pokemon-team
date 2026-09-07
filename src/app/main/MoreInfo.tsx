@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import TeamChecklist from "./more-info/TeamChecklist";
 import SearchFilters from "./more-info/SearchFilters";
-import PokemonShowdownTeam from "./more-info/PokemonShowdownTeam";
+import PokemonShowdownTeam from "./more-info/SaveLoadTeam";
 import { useIsLgDown } from "@/app/shared/WidthContext";
 
 export default function MoreInfo() {

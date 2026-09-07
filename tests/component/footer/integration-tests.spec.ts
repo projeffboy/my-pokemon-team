@@ -1,67 +1,6 @@
 import { test, expect } from "fixtures";
 
-// Test configuration based on component-tests.md requirements
-
-test.describe("Footer Tests", () => {
-  test("should test Manual button and dialog", async ({ page }) => {
-    const manualButton = page.getByRole("button", { name: "Manual" });
-    await manualButton.click();
-
-    // Should load popup/dialog - look for dialog or modal content
-    const dialog = page.getByRole("dialog");
-    await expect(dialog).toBeVisible();
-    await expect(dialog).toContainText("Manual Help Guide");
-  });
-
-  test("should test Jeffery Tang button and external link", async ({
-    page,
-  }) => {
-    // Buttons with an href render as anchors (role "link")
-    const jefferyButton = page.getByRole("link", { name: "Jeffery Tang" });
-    await expect(jefferyButton).toBeVisible();
-    await expect(jefferyButton).toHaveAttribute(
-      "href",
-      "https://jefferytang.com",
-    );
-  });
-
-  test("should test Credits button and dialog", async ({ page }) => {
-    const creditsButton = page.getByRole("button", { name: "Credits" });
-    await creditsButton.click();
-
-    // Should open a dialog
-    const dialog = page.getByRole("dialog");
-    await expect(dialog).toBeVisible();
-    await expect(dialog).toContainText("Credits");
-  });
-
-  test("should test Updates button and GitHub link", async ({ page }) => {
-    const updatesButton = page.getByRole("button", { name: "Updates" });
-    await updatesButton.click();
-
-    // Should open a dialog
-    const dialog = page.getByRole("dialog");
-    await expect(dialog).toBeVisible();
-    await expect(dialog).toContainText("Update Log");
-
-    const link = dialog.locator(
-      "a[href='https://github.com/projeffboy/my-pokemon-team']",
-    );
-    await expect(link).toBeVisible();
-  });
-
-  test("should test Privacy Policy button and dialog", async ({ page }) => {
-    const privacyButton = page.getByRole("button", {
-      name: "Privacy Policy",
-    });
-    await privacyButton.click();
-
-    // Should open a dialog
-    const dialog = page.getByRole("dialog");
-    await expect(dialog).toBeVisible();
-    await expect(dialog).toContainText("Privacy Policy");
-  });
-
+test.describe("Footer - Integration Tests", () => {
   test("should select system, light, and dark themes", async ({ page }) => {
     const systemButton = page.getByRole("button", { name: "Use system theme" });
     const lightButton = page.getByRole("button", { name: "Use light theme" });
@@ -134,13 +73,6 @@ test.describe("Footer Tests", () => {
     await expect(body).toHaveCSS(
       "background-color",
       initiallyDark ? "rgb(238, 238, 238)" : "rgb(48, 48, 48)",
-    );
-  });
-
-  test("should not reserve ad space in development", async ({ page }) => {
-    await expect(page.getByRole("contentinfo")).toHaveCSS(
-      "padding-bottom",
-      "0px",
     );
   });
 });
