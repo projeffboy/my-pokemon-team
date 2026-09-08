@@ -3,7 +3,10 @@ import { expectImageToBeLoaded } from "helper";
 import type { Locator, Page } from "@playwright/test";
 
 test.describe("FAB (Floating Action Button) Tests", () => {
-  test("should display and interact with Type Chart FAB", async ({ page }) => {
+  test("should show all type charts without external requests", async ({ page }) => {
+    const appOrigin = new URL(page.url()).origin;
+    await page.route(url => url.origin !== appOrigin, route => route.abort());
+
     // Click FAB to open Type Chart dialog
     const fabButton = page.getByRole("button", { name: "Type Chart" });
     await fabButton.click();
