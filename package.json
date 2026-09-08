@@ -2,6 +2,9 @@
   "name": "pokemon-teambuilder",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "24.x"
+  },
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -20,8 +23,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "update:data": "node scripts/update-data.mjs",
-    "test": "playwright test",
-    "test:update-snapshots": "playwright test tests/snapshot/snapshot-tests.spec.ts --update-snapshots",
+    "test": "npm run typecheck && npm run test:smoke && npm run test:dev",
+    "test:dev": "playwright test",
+    "test:smoke": "playwright test --config=playwright.smoke.config.ts",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
   },
   "devDependencies": {
