@@ -1,5 +1,7 @@
 // Pokemon Showdown team text <-> store conversion (see https://pokepast.es/syntax.html)
 import store from "@/store";
+import { createEmptyTeam, getAutoSelectedItem } from "@/store/shared/team";
+import type { Team } from "@/types";
 
 // Converts the store's current team into Pokemon Showdown team text format
 export function serializeTeamText(): string {
@@ -21,18 +23,16 @@ ${[1, 2, 3, 4]
     .join("");
 }
 
-// Parses Pokemon Showdown team text and mutates the store's team accordingly.
+// Parses Pokemon Showdown team text into a fresh six-slot team.
 // Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected).
-export function applyTeamText(text: string): void {
-  let teamPokemonRawData = text
+export function parseTeamText(text: string): Team {
+  const team = createEmptyTeam();
+  const teamPokemonRawData = text
     .split("\n\n")
     .filter(eachPokemonData => eachPokemonData) // get rid of empty lines
     .slice(0, 6); // a team has at most 6 pokemon
-  let numberOfTeamPokemon = 0;
 
   teamPokemonRawData.forEach((eachPokemonData, teamIndex) => {
-    numberOfTeamPokemon++;
-
     const lines = eachPokemonData.split("\n"); // split pokemon into its properties
 
     // Get pokemon and item names
@@ -55,23 +55,19 @@ export function applyTeamText(text: string): void {
     const pokemon = store.pokemonNameInverse(pokemonName.trim());
     if (!pokemon) return;
 
-    store.team[teamIndex].name = pokemon; // if legit, set pokemon ID/name
+    const member = team[teamIndex];
+    member.name = pokemon;
+    const abilities = Object.values(store.abilities(pokemon));
+    member.ability = abilities.length === 1 ? abilities[0] : "";
 
     // If team raw data does not mention item, leave it blank
     if (itemName) {
       // Check if item is legit
       const item = store.itemNameInverse(itemName);
-      if (item) {
-        store.team[teamIndex].item = item; // if legit, set item ID/name
-      } else {
-        store.autoSelectItem();
-      }
-    } else {
-      store.team[teamIndex].item = "";
+      member.item = item || getAutoSelectedItem(pokemon, "");
     }
 
     let moveNum = 1;
-    let abilityChanged = false;
 
     lines.slice(1).forEach(line => {
       if (line.includes("Ability:")) {
@@ -79,9 +75,8 @@ export function applyTeamText(text: string): void {
         const ability = line.replace("Ability:", "").trim();
 
         // If legit, set ability
-        if (Object.values(store.abilities(pokemon)).includes(ability)) {
-          store.team[teamIndex].ability = ability;
-          abilityChanged = true;
+        if (abilities.includes(ability)) {
+          member.ability = ability;
         }
       } else if (line.startsWith("-") && moveNum <= 4) {
         // if property has to do with moves
@@ -97,21 +92,12 @@ export function applyTeamText(text: string): void {
 
         const validMove = store.canItLearn(move, pokemon) && move ? move : "";
 
-        store.team[teamIndex]["move" + moveNum] = validMove;
+        member["move" + moveNum] = validMove;
 
         moveNum++;
       }
     });
-
-    // If team raw data does not mention ability, leave it blank
-    if (!abilityChanged) {
-      store.team[teamIndex].ability = "";
-      store.autoSelectAbility();
-    }
   });
 
-  // Clears unwanted duplicate pokemon left over from a previously longer team
-  for (let i = numberOfTeamPokemon; i < 6; i++) {
-    store.clearTeamPokemonProperties(i);
-  }
+  return team;
 }

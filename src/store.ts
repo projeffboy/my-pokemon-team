@@ -8,7 +8,6 @@ import type {
   Items,
   SearchFilters,
   Team,
-  TeamPokemonProperties,
 } from "./types";
 import { completeLearnset, canItLearn, getTeamLearnsets } from "./store/learnsets";
 import {
@@ -28,6 +27,7 @@ import {
   pokemonNameInverse,
   previousEvolution,
 } from "./store/shared/pokemon";
+import { createEmptyTeam, getAutoSelectedItem } from "./store/shared/team";
 
 const pokedex: Pokedex = pokedexData;
 const moves: Moves = movesData;
@@ -113,19 +113,11 @@ class Store {
     }
   }
 
-  team: Team = Array.from(
-    { length: 6 },
-    (): TeamPokemonProperties => ({
-      name: "", // technically, this is the pokemon ID, not pokemon name
-      // but name is much more clearer to those new to the source code
-      item: "",
-      move1: "",
-      move2: "",
-      move3: "",
-      move4: "",
-      ability: "", // chosen ability
-    }),
-  );
+  team: Team = createEmptyTeam();
+
+  replaceTeam(team: Team) {
+    this.team = team;
+  }
 
   // Get the team's six pokemon id/name (pokemon)
   get teamPokemon() {
@@ -272,91 +264,8 @@ class Store {
   // Auto-select the item if necessary
   // E.g. Select Blastoisite when the user chooses Mega Blastoise
   autoSelectItem() {
-    for (const teamPokemonProperties of this.team) {
-      // make sure you brush up on your ES6 destructuring!
-      let { name: pokemon, item: pokemonItem } = teamPokemonProperties;
-
-      if (pokemon) {
-        // Auto select mega stone
-        if (
-          pokemon.includes("mega") &&
-          pokemon !== "meganium" &&
-          pokemon !== "yanmega"
-        ) {
-          pokemonItem =
-            this.itemsArr.find(
-              item =>
-                // fuzzy match pokemon name with mega stone name (e.g. blastoisite and blastoise)
-                item.slice(0, 5) === pokemon.slice(0, 5),
-            ) || "";
-
-          // Fuzzy match will give Charizard Y a Charizardite X
-          // Hence this code
-          if (pokemon === "charizardmegay" || pokemon === "mewtwomegay") {
-            pokemonItem = pokemonItem.replace("x", "y");
-          }
-          // Same with Sharpedo and Sharp Beak
-          else if (pokemon === "sharpedomega") {
-            pokemonItem = "sharpedonite";
-          }
-          // Same with Dragonite and Dragon Fang
-          else if (pokemon === "dragonitemega") {
-            pokemonItem = "dragoninite";
-          } else if (pokemon === "steelixmega") {
-            pokemonItem = "steelixite";
-          }
-        }
-
-        // Auto select plate for Arceus formes
-        else if (pokemon.includes("arceus")) {
-          const type = pokemon.replace("arceus", "");
-          const typeToPlate: Record<string, string> = {
-            bug: "insectplate",
-            dark: "dreadplate",
-            dragon: "dracoplate",
-            electric: "zapplate",
-            fairy: "pixieplate",
-            fighting: "fistplate",
-            fire: "flameplate",
-            flying: "skyplate",
-            ghost: "spookyplate",
-            grass: "meadowplate",
-            ground: "earthplate",
-            ice: "icicleplate",
-            normal: "", // no plate for normal type
-            poison: "toxicplate",
-            psychic: "mindplate",
-            rock: "stoneplate",
-            steel: "ironplate",
-            water: "splashplate",
-          };
-
-          pokemonItem = typeToPlate[type] || "";
-        }
-
-        // Auto select drive for Genesect
-        else if (pokemon.includes("genesect") && pokemon !== "genesect") {
-          const driveAdj = pokemon.replace("genesect", "");
-          const item = driveAdj + "drive";
-
-          pokemonItem = item;
-        }
-
-        // Auto select memory for Silvally
-        else if (pokemon.includes("silvally") && pokemon !== "silvally") {
-          const type = pokemon.replace("silvally", "");
-          const item = type + "memory";
-
-          pokemonItem = item;
-        }
-
-        // Pick Griseous Orb for Giratina
-        else if (pokemon === "giratinaorigin") {
-          pokemonItem = "griseousorb";
-        }
-      }
-
-      teamPokemonProperties.item = pokemonItem;
+    for (const member of this.team) {
+      member.item = getAutoSelectedItem(member.name, member.item);
     }
   }
 
