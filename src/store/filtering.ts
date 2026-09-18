@@ -1,5 +1,6 @@
 import pokedex from "@/data/pokedex";
 import formatsData from "@/data/formats";
+import { isPokemonType } from "@/types";
 import type { Formats, Pokedex, SearchFilters } from "@/types";
 
 type PokemonFilters = Readonly<Pick<SearchFilters, "format" | "region" | "type">>;
@@ -109,9 +110,9 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       "LC",
     ];
 
-    if (smogonSinglesTiers.includes(tierAbbr[format])) {
+    if (smogonSinglesTiers.includes(tierAbbr[format] ?? "")) {
       return filterByTier(smogonSinglesTiers, "tier");
-    } else if (["DUber", "DOU", "DUU"].includes(tierAbbr[format])) {
+    } else if (["DUber", "DOU", "DUU"].includes(tierAbbr[format] ?? "")) {
       return filterByTier(["DUber", "DOU", "DUU", "(DUU)"], "doublesTier");
     }
 
@@ -124,9 +125,9 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
           tierMatched = true;
 
           // Add all the pokemon from that tier to filteredPokedex
-          for (const pokemon in pokedex) {
-            if (formats[pokemon] && formats[pokemon][tierType] === tier) {
-              filteredPokedex[pokemon] = pokedex[pokemon];
+          for (const [pokemon, entry] of Object.entries(pokedex)) {
+            if (formats[pokemon]?.[tierType] === tier) {
+              filteredPokedex[pokemon] = entry;
             }
           }
         }
@@ -224,6 +225,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
         // minor bug: cosmetic formes should not be omitted
         if (
           pokemonProperties.types &&
+          isPokemonType(type) &&
           pokemonProperties.types.includes(type)
         ) {
           filteredPokedex[pokemon] = pokemonProperties;

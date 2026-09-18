@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
 import { observer } from "mobx-react";
 import store from "@/store";
-import { PokemonType, type TeamStatType } from "@/types";
+import { POKEMON_TYPES, type PokemonType, type TeamStatType } from "@/types";
 import { useIsLgDown } from "@/app/shared/WidthContext";
 import type { TeamStatTitle } from "@/types";
 import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
@@ -129,7 +129,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
       </Grid>
       <Grid container size={12}>
         {/* grid of type scores */}
-        {(Object.keys(types) as PokemonType[]).map((type, i) => (
+        {POKEMON_TYPES.map((type, i) => (
           <Grid key={i} size={2}>
             <Box sx={{ px: { xs: 0.125, md: 0.375 }, py: 0.375 }}>
               <Box

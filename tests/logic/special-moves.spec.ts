@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import type { PokemonType } from "@/types";
 import { moveType, moveAgainstType } from "@/store/shared/effectiveness";
 
 test.describe("move types", () => {
@@ -39,7 +40,7 @@ test.describe("move types", () => {
 });
 
 test.describe("move effectiveness", () => {
-  const cases: [string, string, string, number | undefined][] = [
+  const cases: [string, PokemonType, string, number | undefined][] = [
     ["icebeam", "Water", "cryogonal", 1],
     ["freezedry", "Water", "cryogonal", -1],
     ["freezedry", "Grass", "cryogonal", -1],
@@ -70,4 +71,8 @@ test.describe("move effectiveness", () => {
     expect(moveAgainstType("hypervoice", "Dragon", "sylveon")).toBe(0);
     expect(moveAgainstType("hypervoice", "Dragon", "sylveon", "Pixilate")).toBe(-1);
   });
+});
+
+test("unknown Silvally formes retain Multi-Attack\'s default type", () => {
+  expect(moveType("multiattack", "silvallyunknown")).toBe("Normal");
 });

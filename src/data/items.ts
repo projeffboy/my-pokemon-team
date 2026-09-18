@@ -1,5 +1,7 @@
 // @ts-nocheck -- callbacks depend on Pokemon Showdown simulator types.
-const data: Record<string, any> = {
+import type { Items } from "../types";
+
+const data: Items = {
 	abilityshield: {
 		name: "Ability Shield",
 		spritenum: 746,

@@ -1,9 +1,10 @@
 import { test, expect } from "@playwright/test";
+import type { PokemonType } from "@/types";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
 test.describe("type effectiveness", () => {
-  const cases: [string, string, number][] = [
+  const cases: [PokemonType, string, number][] = [
     ["Water", "mudsdale", -1],
     ["Rock", "mudsdale", 1],
     ["Fire", "mudsdale", 0],
@@ -22,7 +23,7 @@ test.describe("type effectiveness", () => {
     });
   }
 
-  const immunityCases = [
+  const immunityCases: [PokemonType, string, string][] = [
     ["Electric", "lanturn", "Volt Absorb"],
     ["Electric", "seaking", "Lightning Rod"],
     ["Electric", "electivire", "Motor Drive"],
@@ -46,7 +47,7 @@ test.describe("type effectiveness", () => {
     });
   }
 
-  const abilityCases: [string, string, string, number][] = [
+  const abilityCases: [PokemonType, string, string, number][] = [
     ["Fire", "araquanid", "Water Bubble", 1],
     ["Fire", "walrein", "Thick Fat", 1],
     ["Ice", "hariyama", "Thick Fat", 1],
@@ -82,4 +83,9 @@ test.describe("type effectiveness", () => {
     expect(typeAgainstPokemon("Water", "notapokemon")).toBe(0);
   });
 
+});
+
+test("MissingNo's Bird type leaves its Normal matchups intact", () => {
+  expect(typeAgainstPokemon("Fighting", "missingno")).toBe(-1);
+  expect(typeAgainstPokemon("Ghost", "missingno")).toBe(3);
 });

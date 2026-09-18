@@ -1,8 +1,8 @@
 export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
 
-interface PokedexEntry {
+export interface PokedexEntry {
   num?: number;
-  types?: string[];
+  types?: (PokemonType | "Bird")[];
   name?: string;
   baseSpecies?: string;
   otherFormes?: string[];
@@ -17,8 +17,8 @@ interface PokedexEntry {
 
 export type Pokedex = Record<string, PokedexEntry>;
 
-interface MoveEntry {
-  type?: string;
+export interface MoveEntry {
+  type?: PokemonType | "Stellar" | "???";
   status?: string;
   secondary?: { chance?: number; status?: string };
   boosts?: Record<string, number>;
@@ -37,7 +37,14 @@ export type Learnsets = Record<string, string[]>;
 
 export type Formats = Record<string, Record<string, string>>;
 
-export type TypeChart = Record<string, Record<string, number>>;
+type TypeChartStatus =
+  | "prankster" | "par" | "brn" | "trapped" | "powder"
+  | "sandstorm" | "hail" | "psn" | "tox" | "frz";
+
+export type TypeChart = Record<
+  PokemonType,
+  Record<PokemonType, number> & Partial<Record<TypeChartStatus, number>>
+>;
 
 export type Items = Record<string, { name?: string; spritenum?: number }>;
 
@@ -61,18 +68,22 @@ export type PokemonType =
   | "Steel"
   | "Water";
 
-export type PokemonProperties =
-  | "name"
-  | "item"
-  | "ability"
-  | "move1"
-  | "move2"
-  | "move3"
-  | "move4";
+export const MOVE_KEYS = ["move1", "move2", "move3", "move4"] as const;
+export type MoveKey = (typeof MOVE_KEYS)[number];
+export type PokemonProperties = keyof TeamPokemonProperties;
 
-export type OldMoves = Record<string, { isViable?: boolean }>;
+export const POKEMON_TYPES: readonly PokemonType[] = [
+  "Bug", "Dark", "Dragon", "Electric", "Fairy", "Fighting", "Fire", "Flying",
+  "Ghost", "Grass", "Ground", "Ice", "Normal", "Poison", "Psychic", "Rock", "Steel", "Water",
+];
 
-export interface TeamPokemonProperties extends Record<string, string> {
+export function isPokemonType(value: string): value is PokemonType {
+  return POKEMON_TYPES.some(type => type === value);
+}
+
+export type OldMoves = Record<string, { name?: string; isViable?: boolean }>;
+
+export interface TeamPokemonProperties {
   name: string;
   item: string;
   move1: string;

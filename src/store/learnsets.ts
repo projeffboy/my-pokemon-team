@@ -7,7 +7,7 @@ import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
 
 const pokedex: Pokedex = pokedexData;
 
-const oldMoves = oldMovesData as OldMoves;
+const oldMoves: OldMoves = oldMovesData;
 
 export function completeLearnset(pokemon: string): string[] {
   let completeLearnset: string[] = learnsets[pokemon] || [];
@@ -27,8 +27,10 @@ export function completeLearnset(pokemon: string): string[] {
     completeLearnset = [...completeLearnset, ...(learnsets[baseForme] || [])];
   }
 
-  while (previousEvolution(baseForme)) {
-    baseForme = previousEvolution(baseForme)!;
+  while (true) {
+    const prevo = previousEvolution(baseForme);
+    if (!prevo) break;
+    baseForme = prevo;
     baseForme = baseForme
       .replace("\u2019", "") // sirfetch'd
       .replace(".", "") // fixes the mr. mime family

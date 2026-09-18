@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import store from "@/store";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
-import type { PokemonType } from "@/types";
+import { MOVE_KEYS, type PokemonType } from "@/types";
 
 export default function TypeCoverageTooltipInfo({
   typeColor,
@@ -23,8 +23,8 @@ export default function TypeCoverageTooltipInfo({
           const { name: pokemon, ability } = teamPokemonProperties;
           return (
             <Fragment key={pokemon + i}>
-              {[1, 2, 3, 4].map(num => {
-                const move = teamPokemonProperties["move" + num];
+              {MOVE_KEYS.map((key, index) => {
+                const move = teamPokemonProperties[key];
                 if (
                   move &&
                   store.moveAgainstType(move, type, pokemon, ability) === -1
@@ -33,7 +33,7 @@ export default function TypeCoverageTooltipInfo({
                   const moveType = store.moveType(move, pokemon, ability);
                   return (
                     <li
-                      key={move + num}
+                      key={move + key}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -52,7 +52,7 @@ export default function TypeCoverageTooltipInfo({
                     </li>
                   );
                 }
-                if (num === 4 && i === 5 && !hasSuperEffectiveMove)
+                if (index === 3 && i === 5 && !hasSuperEffectiveMove)
                   return (
                     <li key={pokemon + i} style={{ textAlign: "center" }}>
                       Nothing

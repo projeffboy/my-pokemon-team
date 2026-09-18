@@ -56,7 +56,7 @@ test.describe("team coverage", () => {
   for (const [pokemon, move, target] of [
     ["cryogonal", "freezedry", "Water"],
     ["hawlucha", "flyingpress", "Grass"],
-  ]) {
+  ] as const) {
     test(`duplicate ${move} slots do not inflate coverage`, () => {
       const team = createTeam();
       Object.assign(team[0], { name: pokemon, move1: move });

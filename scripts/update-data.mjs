@@ -25,9 +25,18 @@ function convertExport(source, exportName, checkTypes = true) {
   const declaration = new RegExp(
     `export const ${exportName}: import\\([^)]*\\)\\.[^=]+ =`,
   );
+  const typeName = {
+    Pokedex: "PokedexEntry",
+    Moves: "MoveEntry",
+    Items: "Items",
+    FormatsData: "Formats",
+  }[exportName];
+  const dataType = ["Pokedex", "Moves"].includes(exportName)
+    ? `Record<string, ${typeName} & Record<string, unknown>>`
+    : typeName;
   const converted = source.replace(
     declaration,
-    "const data: Record<string, any> =",
+    `const data: ${dataType} =`,
   );
 
   if (converted === source) {
@@ -38,7 +47,7 @@ function convertExport(source, exportName, checkTypes = true) {
     checkTypes ? "" : (
       "// @ts-nocheck -- callbacks depend on Pokemon Showdown simulator types.\n"
     );
-  return `${header}${converted.trimEnd()}\n\nexport default data;\n`;
+  return `${header}import type { ${typeName} } from "../types";\n\n${converted.trimEnd()}\n\nexport default data;\n`;
 }
 
 function renderTypedData(typeName, data) {
