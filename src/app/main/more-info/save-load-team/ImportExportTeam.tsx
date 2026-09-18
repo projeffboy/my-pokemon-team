@@ -10,7 +10,7 @@ import Link from "@mui/material/Link";
 import ImportExport from "@mui/icons-material/ImportExport";
 import { observer } from "mobx-react";
 import store from "@/store";
-import { applyTeamText, serializeTeamText } from "@/app/shared/team-text";
+import { parseTeamText, serializeTeamText } from "@/app/shared/team-text";
 
 const ImportExportTeam = observer(function ImportExportTeam() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -31,7 +31,7 @@ const ImportExportTeam = observer(function ImportExportTeam() {
 
   const handleImport = (initialText: string) => {
     if (textArea !== initialText) {
-      applyTeamText(textArea);
+      store.replaceTeam(parseTeamText(textArea));
     } else {
       store.openSnackbar("No changes made.");
     }
