@@ -1,6 +1,6 @@
 // Pokemon Showdown team text <-> store conversion (see https://pokepast.es/syntax.html)
 import store from "@/store";
-import { createEmptyTeam, getAutoSelectedItem } from "@/store/shared/team";
+import { createEmptyTeam, getAutoSelectedItem } from "@/shared/team";
 import type { Team } from "@/types";
 
 // Converts the store's current team into Pokemon Showdown team text format

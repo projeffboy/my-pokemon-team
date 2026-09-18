@@ -27,7 +27,7 @@ import {
   pokemonNameInverse,
   previousEvolution,
 } from "./store/shared/pokemon";
-import { createEmptyTeam, getAutoSelectedItem } from "./store/shared/team";
+import { createEmptyTeam, getAutoSelectedItem } from "./shared/team";
 
 const pokedex: Pokedex = pokedexData;
 const moves: Moves = movesData;
