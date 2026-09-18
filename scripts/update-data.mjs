@@ -31,6 +31,11 @@ function convertExport(source, exportName, checkTypes = true) {
     Items: "Items",
     FormatsData: "Formats",
   }[exportName];
+
+  if (typeName === undefined) {
+    throw new Error(`Unknown export name: ${exportName}`);
+  }
+
   const dataType = ["Pokedex", "Moves"].includes(exportName)
     ? `Record<string, ${typeName} & Record<string, unknown>>`
     : typeName;

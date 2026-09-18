@@ -139,7 +139,9 @@ export function moveType(move: string, pokemon: string, ability?: string) {
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
 
-  const abilitiesThatChangeNormalMoves: Record<string, PokemonType> = {
+  const abilitiesThatChangeNormalMoves: Partial<
+    Record<string, PokemonType>
+  > = {
     Aerilate: "Flying",
     Pixilate: "Fairy",
     Refrigerate: "Ice",

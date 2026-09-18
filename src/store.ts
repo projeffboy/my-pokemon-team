@@ -168,8 +168,8 @@ class Store {
   get teamAbilities() {
     return this.team.map(teamPokemonProperties => {
       if (teamPokemonProperties.name) {
-        const teamPokemonAbilities =
-          pokedex[teamPokemonProperties.name]?.abilities || {};
+        const teamPokemonAbilities: Record<string, string> =
+          pokedex[teamPokemonProperties.name]?.abilities ?? {};
 
         return Object.values(teamPokemonAbilities);
       } else {
