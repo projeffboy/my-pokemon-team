@@ -101,5 +101,6 @@ test("Battle Stadium exclusions do not mutate the source Pokedex or filters", ()
 
 test("unknown format and type filters return no species", () => {
   expect(filterPokemon({ ...all, format: "Unknown" })).toEqual([]);
+  expect(filterPokemon({ ...all, region: "Unknown" })).toEqual([]);
   expect(filterPokemon({ ...all, type: "Unknown" })).toEqual([]);
 });

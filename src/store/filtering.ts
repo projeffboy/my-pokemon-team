@@ -153,6 +153,9 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
         Paldea: [906, 1025],
       };
       const range = regionNumberRange[region];
+      if (!range) {
+        return {};
+      }
       let filteredPokedex: Pokedex = {};
 
       // Only return pokemon from a certain region based on pokedex number
@@ -218,7 +221,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
 
     if (type) {
       for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
-        // minor bug: cosmetic formes should not be ommitted
+        // minor bug: cosmetic formes should not be omitted
         if (
           pokemonProperties.types &&
           pokemonProperties.types.includes(type)
