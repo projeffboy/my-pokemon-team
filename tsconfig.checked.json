@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "noUncheckedIndexedAccess": true },
+  "include": ["src/types.ts", "src/store.ts", "src/store/**/*.ts", "tests/type-contracts.ts"],
+  "exclude": []
+}

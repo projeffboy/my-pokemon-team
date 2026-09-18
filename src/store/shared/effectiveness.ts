@@ -1,27 +1,27 @@
-import type { Pokedex, Moves } from "@/types";
+import type { Pokedex, Moves, PokemonType } from "@/types";
 import pokedexData from "@/data/pokedex";
 import movesData from "@/data/moves";
 import typechart from "@/data/typechart";
-import { capitalizeWord } from "@/helper";
+import { isPokemonType } from "@/types";
 
 const pokedex: Pokedex = pokedexData;
 const moves: Moves = movesData;
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
 export function typeAgainstPokemon(
-  type: string,
+  type: PokemonType,
   pokemon: string,
   pokemonAbility?: string,
   item?: string,
 ) {
   const pokemonTypes = pokedex[pokemon]?.types || [];
   const [type1, type2] = pokemonTypes;
-  const type1Resistance = type1 ? (typechart[type1]?.[type] ?? 0) : 0;
+  const type1Resistance = type1 && isPokemonType(type1) ? typechart[type1][type] : 0;
 
   let effectiveness = type1Resistance;
 
   if (type2) {
-    const type2Resistance = type2 ? (typechart[type2]?.[type] ?? 0) : 0;
+    const type2Resistance = isPokemonType(type2) ? typechart[type2][type] : 0;
 
     if (type1Resistance === 2 || type2Resistance === 2) {
       effectiveness = 3;
@@ -135,9 +135,13 @@ export function typeAgainstPokemon(
 // Tells you the move's type based on the pokemon using it and its ability
 // E.g. Arceus-Bug using Judgment or Aerilate Mega-Pinsir using Return.
 export function moveType(move: string, pokemon: string, ability?: string) {
-  let moveType = moves[move]?.type;
+  const rawType = moves[move]?.type;
+  let moveType: PokemonType | undefined =
+    rawType && isPokemonType(rawType) ? rawType : undefined;
 
-  const abilitiesThatChangeNormalMoves: Record<string, string> = {
+  const abilitiesThatChangeNormalMoves: Partial<
+    Record<string, PokemonType>
+  > = {
     Aerilate: "Flying",
     Pixilate: "Fairy",
     Refrigerate: "Ice",
@@ -155,13 +159,11 @@ export function moveType(move: string, pokemon: string, ability?: string) {
   } else if (move === "judgment") {
     const pokemonProperties = pokedex[pokemon];
     moveType =
-      pokemonProperties?.types ? pokemonProperties.types[0] : moveType; // Arceus only has one ability
+      pokemonProperties?.types?.find(isPokemonType) ?? moveType;
   } else if (move === "ivycudgel") {
     const pokemonProperties = pokedex[pokemon];
     moveType =
-      pokemonProperties?.types ?
-        pokemonProperties.types[pokemonProperties.types.length > 1 ? 1 : 0]
-      : moveType;
+      pokemonProperties?.types?.filter(isPokemonType).at(-1) ?? moveType;
   } else if (move === "technoblast") {
     // For Genesect
     switch (pokemon) {
@@ -182,13 +184,12 @@ export function moveType(move: string, pokemon: string, ability?: string) {
   } else if (move === "multiattack") {
     // For Silvally
     const type = pokemon.replace("silvally", "") || "normal";
-    const capitalizedType = capitalizeWord(type);
+    const capitalizedType = type.charAt(0).toUpperCase() + type.slice(1);
 
-    moveType = capitalizedType;
+    if (isPokemonType(capitalizedType)) moveType = capitalizedType;
   } else if (
     ability === "Liquid Voice" &&
-    moves[move]?.flags &&
-    moves[move]!.flags!.sound === 1
+    moves[move]?.flags?.sound === 1
   ) {
     moveType = "Water";
   }
@@ -213,7 +214,7 @@ export function isMoveStrongEnough(move: string) {
 // For status and weak moves, this function will return undefined
 export function moveAgainstType(
   move: string,
-  typeAgainst: string,
+  typeAgainst: PokemonType,
   pokemon: string,
   ability?: string,
 ) {

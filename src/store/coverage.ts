@@ -1,5 +1,5 @@
 import pokedex from "@/data/pokedex";
-import type { ReadonlyTeam } from "@/types";
+import { POKEMON_TYPES, type PokemonType, type ReadonlyTeam } from "@/types";
 import {
   typeAgainstPokemon,
   moveType,
@@ -7,7 +7,7 @@ import {
   moveAgainstType,
 } from "./shared/effectiveness";
 
-export function createTypeScores(): Record<string, number> {
+export function createTypeScores(): Record<PokemonType, number> {
   return {
     Bug: 0,
     Dark: 0,
@@ -36,7 +36,7 @@ export function calculateTypeDefence(team: ReadonlyTeam) {
   for (const { name, ability, item } of team) {
     if (!name) continue;
 
-    for (const type of Object.keys(scores)) {
+    for (const type of POKEMON_TYPES) {
       const score = typeAgainstPokemon(type, name, ability, item);
       scores[type] += Math.max(-1.5, Math.min(1.5, score));
     }
@@ -51,7 +51,7 @@ export function calculateTypeCoverage(team: ReadonlyTeam) {
 
   for (const pokemon of team) {
     const { name, ability } = pokemon;
-    const typesUsed = new Set<string | undefined>();
+    const typesUsed = new Set<PokemonType | undefined>();
     const specialMovesUsed = new Set<string>();
 
     const moves = [pokemon.move1, pokemon.move2, pokemon.move3, pokemon.move4];
@@ -65,7 +65,7 @@ export function calculateTypeCoverage(team: ReadonlyTeam) {
       }
 
       const hasStab = type && pokedex[name]?.types?.includes(type);
-      for (const target of Object.keys(scores)) {
+      for (const target of POKEMON_TYPES) {
         if (moveAgainstType(move, target, name, ability) === -1) {
           scores[target] += hasStab ? 2 : 1;
         }

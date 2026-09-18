@@ -1,7 +1,9 @@
 // @ts-nocheck -- callbacks depend on Pokemon Showdown simulator types.
 // List of flags and their descriptions can be found in sim/dex-moves.ts
 
-const data: Record<string, any> = {
+import type { MoveEntry } from "../types";
+
+const data: Record<string, MoveEntry & Record<string, unknown>> = {
 	"10000000voltthunderbolt": {
 		num: 719,
 		accuracy: true,

@@ -1,4 +1,5 @@
 // Pokemon Showdown team text <-> store conversion (see https://pokepast.es/syntax.html)
+import { MOVE_KEYS } from "@/types";
 import store from "@/store";
 import { createEmptyTeam, getAutoSelectedItem } from "@/shared/team";
 import type { Team } from "@/types";
@@ -13,9 +14,9 @@ export function serializeTeamText(): string {
 
       return `${store.pokemonName(name)} @ ${store.itemName(item)}
 Ability: ${ability}
-${[1, 2, 3, 4]
-  .map(num => {
-    const move = store.team[teamIndex]["move" + num];
+${MOVE_KEYS
+  .map(key => {
+    const move = store.team[teamIndex][key];
     return move ? `- ${store.moveName(move)}` : "-";
   })
   .join("\n")}\n\n`;
@@ -92,7 +93,8 @@ export function parseTeamText(text: string): Team {
 
         const validMove = store.canItLearn(move, pokemon) && move ? move : "";
 
-        member["move" + moveNum] = validMove;
+        const moveKey = MOVE_KEYS[moveNum - 1];
+        if (moveKey) member[moveKey] = validMove;
 
         moveNum++;
       }

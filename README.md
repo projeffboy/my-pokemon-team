@@ -75,7 +75,7 @@ npm test
 
 `npm run test:smoke` creates a fresh production build in `build/` and serves it with Vite preview on port 4173. These quick checks confirm the homepage and a bundled image load, selected Pokemon and ability survive reloading, and a saved team link restores its Pokemon, ability, item, and move. External requests are blocked to keep the checks independent of third-party services, and uncaught browser errors fail the tests. Keep port 4173 free, even when testing locally. The smoke tests do not deploy the site or check Vercel's hosting configuration.
 
-`npm run typecheck` checks the application and test types without running tests. The standalone `test:logic`, `test:dev`, and `test:smoke` commands do not run typechecking themselves.
+`npm run typecheck` checks the application and test types without running tests. It also runs `tsconfig.checked.json`, which enables `noUncheckedIndexedAccess` for the store and calculation modules. Expand that config as additional modules handle missing indexed values explicitly. The standalone `test:logic`, `test:dev`, and `test:smoke` commands do not run typechecking themselves.
 
 ### CI
 

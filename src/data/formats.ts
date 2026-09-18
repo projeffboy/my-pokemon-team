@@ -1,4 +1,6 @@
-const data: Record<string, any> = {
+import type { Formats } from "../types";
+
+const data: Formats = {
 	bulbasaur: {
 		tier: "LC",
 	},

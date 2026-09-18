@@ -3,12 +3,14 @@ import pokedexData from "./data/pokedex";
 import itemsData from "./data/items";
 import movesData from "./data/moves";
 import type {
+  PokemonType,
   Pokedex,
   Moves,
   Items,
   SearchFilters,
   Team,
 } from "./types";
+import { MOVE_KEYS, isPokemonType } from "./types";
 import { completeLearnset, canItLearn, getTeamLearnsets } from "./store/learnsets";
 import {
   createTypeScores,
@@ -46,7 +48,7 @@ class Store {
   }
 
   pokemonType(pokemon: string) {
-    return pokedex[pokemon]?.types || [];
+    return pokedex[pokemon]?.types?.filter(isPokemonType) || [];
   }
 
   abilities(pokemon: string) {
@@ -166,10 +168,10 @@ class Store {
   get teamAbilities() {
     return this.team.map(teamPokemonProperties => {
       if (teamPokemonProperties.name) {
-        const teamPokemonAbilities =
-          pokedex[teamPokemonProperties.name]?.abilities || {};
+        const teamPokemonAbilities: Record<string, string> =
+          pokedex[teamPokemonProperties.name]?.abilities ?? {};
 
-        return Object.values(teamPokemonAbilities) as string[];
+        return Object.values(teamPokemonAbilities);
       } else {
         return [];
       }
@@ -215,7 +217,7 @@ class Store {
       const pokemon = teamPokemonProperties.name;
 
       if (pokemon) {
-        const pokemonTypes = pokedex[pokemon]?.types || []; // that pokemon's types
+        const pokemonTypes = this.pokemonType(pokemon); // that pokemon's types
 
         teamTypes.push(pokemonTypes);
       } else {
@@ -256,9 +258,11 @@ class Store {
   clearTeamPokemonProperties(teamIndex: number) {
     const teamPokemonProperties = this.team[teamIndex];
 
-    for (const property in teamPokemonProperties) {
-      teamPokemonProperties[property] = "";
-    }
+    if (!teamPokemonProperties) return;
+    teamPokemonProperties.name = "";
+    teamPokemonProperties.item = "";
+    teamPokemonProperties.ability = "";
+    for (const key of MOVE_KEYS) teamPokemonProperties[key] = "";
   }
 
   // Auto-select the item if necessary
@@ -273,14 +277,16 @@ class Store {
   // E.g. Select Thick Fat when the user chooses Venusaur-Mega
   autoSelectAbility() {
     this.teamAbilities.forEach((pokemonAbilities, i) => {
-      if (pokemonAbilities.length === 1) {
-        this.team[i].ability = pokemonAbilities[0];
+      const member = this.team[i];
+      const ability = pokemonAbilities[0];
+      if (member && pokemonAbilities.length === 1 && ability !== undefined) {
+        member.ability = ability;
       }
     });
   }
 
   typeAgainstPokemon(
-    type: string,
+    type: PokemonType,
     pokemon: string,
     ability?: string,
     item?: string,
@@ -296,7 +302,7 @@ class Store {
     return isMoveStrongEnough(move);
   }
 
-  moveAgainstType(move: string, type: string, pokemon: string, ability?: string) {
+  moveAgainstType(move: string, type: PokemonType, pokemon: string, ability?: string) {
     return moveAgainstType(move, type, pokemon, ability);
   }
 

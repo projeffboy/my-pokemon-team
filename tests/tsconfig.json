@@ -8,5 +8,5 @@
     }
   },
   "include": ["**/*.ts"],
-  "exclude": []
+  "exclude": ["type-contracts.ts"]
 }

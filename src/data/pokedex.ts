@@ -1,4 +1,6 @@
-const data: Record<string, any> = {
+import type { PokedexEntry } from "../types";
+
+const data: Record<string, PokedexEntry & Record<string, unknown>> = {
 	bulbasaur: {
 		num: 1,
 		name: "Bulbasaur",
