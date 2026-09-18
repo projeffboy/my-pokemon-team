@@ -84,7 +84,11 @@ export interface TeamPokemonProperties extends Record<string, string> {
 
 export type Team = TeamPokemonProperties[];
 
+export type ReadonlyTeam = readonly Readonly<TeamPokemonProperties>[];
+
 export type SearchFilterKey = "format" | "region" | "type" | "moves";
+
+export type SearchFilters = Record<SearchFilterKey, string>;
 
 export type TeamStatType = "typeDefence" | "typeCoverage";
 

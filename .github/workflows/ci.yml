@@ -34,6 +34,9 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Logic tests
+        run: npm run test:logic
+
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium webkit
 
@@ -51,6 +54,8 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            playwright-logic-report/
+            logic-test-results/
             playwright-smoke-report/
             smoke-test-results/
           retention-days: 7

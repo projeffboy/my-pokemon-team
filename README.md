@@ -20,8 +20,11 @@ This is a single-page application with no backend. Pokemon data comes from local
 - State management: MobX with mobx-react.
 - Virtualized lists: react-window.
 - Browser testing: Playwright.
+- Direct rule testing: Playwright's test runner in Node, without a browser.
 
 See [package.json](package.json) for dependency versions and the exact script definitions.
+
+The single [MobX store](src/store.ts) owns team edits, search filter selections, and snackbar state. Its computed getters delegate to pure functions in [learnsets](src/store/learnsets.ts), [team coverage and defence](src/store/coverage.ts), and [filtering](src/store/filtering.ts). Shared [effectiveness rules](src/store/shared/effectiveness.ts) calculate type matchups and special move types. These modules read the bundled data and explicit inputs without importing the store or MobX.
 
 ## Local development
 
@@ -64,17 +67,19 @@ npx playwright install --with-deps chromium webkit
 npm test
 ```
 
-`npm test` checks the application and test types, builds and smoke-tests the production app, then runs the development tests. Both suites use all four Playwright browser profiles. Playwright starts and stops the servers automatically. `npm run build` runs Vite alone, so use `npm test` for the full set of checks.
+`npm test` checks the application and test types, runs the direct logic tests, builds and smoke-tests the production app, then runs the development browser tests. Both browser suites use all four Playwright browser profiles. Playwright starts and stops the servers automatically. `npm run build` runs Vite alone, so use `npm test` for the full set of checks.
 
-`npm run test:dev` runs only the development tests, using Vite on port 3000. Pass Playwright options to this command to narrow the run, for example `npm run test:dev -- --project="Desktop Chrome"`.
+`npm run test:logic` runs [direct rule tests](tests/logic/logic-tests.md) once in Node without starting a browser or Vite. These cover effectiveness, learnset inheritance, special moves, filtering, team parsing, and MobX recomputation. Run a subset with, for example, `npm run test:logic -- learnsets`.
+
+`npm run test:dev` runs only the development browser tests, using Vite on port 3000. These verify that the UI connects the rules to the controls and displayed results. Pass Playwright options to this command to narrow the run, for example `npm run test:dev -- --project="Desktop Chrome"`.
 
 `npm run test:smoke` creates a fresh production build in `build/` and serves it with Vite preview on port 4173. These quick checks confirm the homepage and a bundled image load, selected Pokemon and ability survive reloading, and a saved team link restores its Pokemon, ability, item, and move. External requests are blocked to keep the checks independent of third-party services, and uncaught browser errors fail the tests. Keep port 4173 free, even when testing locally. The smoke tests do not deploy the site or check Vercel's hosting configuration.
 
-`npm run typecheck` checks the application and test types without running browser tests. The standalone `test:dev` and `test:smoke` commands do not run typechecking themselves.
+`npm run typecheck` checks the application and test types without running tests. The standalone `test:logic`, `test:dev`, and `test:smoke` commands do not run typechecking themselves.
 
 ### CI
 
-The [CI workflow](.github/workflows/ci.yml) runs these checks on pull requests and manual dispatch only. It keeps typechecking, production smoke tests, and development tests as separate steps. CI uses `npm ci` to install the locked dependencies and keeps both suites' Playwright reports and available failure traces in the `playwright-results` artifact for seven days. Smoke reports and results use `playwright-smoke-report/` and `smoke-test-results/` so the development tests do not overwrite them. To use Playwright's CI settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
+The [CI workflow](.github/workflows/ci.yml) runs these checks on pull requests and manual dispatch only. It keeps typechecking, logic tests, production smoke tests, and development browser tests as separate steps. CI uses `npm ci` to install the locked dependencies and keeps all suites' Playwright reports and available failure traces in the `playwright-results` artifact for seven days. Logic reports and results use `playwright-logic-report/` and `logic-test-results/`; smoke reports and results use `playwright-smoke-report/` and `smoke-test-results/`. To use Playwright's CI settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
 
 ## Major Credits
 

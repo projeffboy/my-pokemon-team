@@ -23,7 +23,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "update:data": "node scripts/update-data.mjs",
-    "test": "npm run typecheck && npm run test:smoke && npm run test:dev",
+    "test": "npm run typecheck && npm run test:logic && npm run test:smoke && npm run test:dev",
+    "test:logic": "playwright test --config=playwright.logic.config.ts",
     "test:dev": "playwright test",
     "test:smoke": "playwright test --config=playwright.smoke.config.ts",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
