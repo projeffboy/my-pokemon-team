@@ -778,6 +778,7 @@ class Store {
           }
           break;
         case "Levitate":
+        case "Eelevate":
         case "Earth Eater":
           if (type === "Ground") {
             effectiveness = 3;

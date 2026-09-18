@@ -1,7 +1,7 @@
-import type { Learnsets } from "@/types";
+import type { Learnsets } from "../types";
 
 const data: Learnsets = {
-  missingno: [
+  "missingno": [
     "blizzard",
     "bubblebeam",
     "cut",
@@ -27,9 +27,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "triattack",
-    "watergun",
+    "watergun"
   ],
-  bulbasaur: [
+  "bulbasaur": [
     "acidspray",
     "amnesia",
     "attract",
@@ -118,9 +118,9 @@ const data: Learnsets = {
     "vinewhip",
     "weatherball",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  ivysaur: [
+  "ivysaur": [
     "acidspray",
     "amnesia",
     "attract",
@@ -201,9 +201,9 @@ const data: Learnsets = {
     "vinewhip",
     "weatherball",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  venusaur: [
+  "venusaur": [
     "acidspray",
     "amnesia",
     "attract",
@@ -298,9 +298,9 @@ const data: Learnsets = {
     "vinewhip",
     "weatherball",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  charmander: [
+  "charmander": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -410,9 +410,9 @@ const data: Learnsets = {
     "weatherball",
     "willowisp",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  charmeleon: [
+  "charmeleon": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -511,9 +511,9 @@ const data: Learnsets = {
     "toxic",
     "weatherball",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  charizard: [
+  "charizard": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -642,9 +642,9 @@ const data: Learnsets = {
     "weatherball",
     "willowisp",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  squirtle: [
+  "squirtle": [
     "aquajet",
     "aquaring",
     "aquatail",
@@ -753,9 +753,9 @@ const data: Learnsets = {
     "withdraw",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wartortle: [
+  "wartortle": [
     "aquatail",
     "attract",
     "aurasphere",
@@ -847,9 +847,9 @@ const data: Learnsets = {
     "whirlpool",
     "withdraw",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  blastoise: [
+  "blastoise": [
     "aquajet",
     "aquatail",
     "attract",
@@ -962,11 +962,23 @@ const data: Learnsets = {
     "whirlpool",
     "withdraw",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  caterpie: ["bugbite", "electroweb", "snore", "stringshot", "tackle"],
-  metapod: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  butterfree: [
+  "caterpie": [
+    "bugbite",
+    "electroweb",
+    "snore",
+    "stringshot",
+    "tackle"
+  ],
+  "metapod": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "butterfree": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -1053,11 +1065,22 @@ const data: Learnsets = {
     "twister",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  weedle: ["bugbite", "electroweb", "poisonsting", "stringshot"],
-  kakuna: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  beedrill: [
+  "weedle": [
+    "bugbite",
+    "electroweb",
+    "poisonsting",
+    "stringshot"
+  ],
+  "kakuna": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "beedrill": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -1138,9 +1161,9 @@ const data: Learnsets = {
     "twineedle",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  pidgey: [
+  "pidgey": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1204,9 +1227,9 @@ const data: Learnsets = {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  pidgeotto: [
+  "pidgeotto": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1267,9 +1290,9 @@ const data: Learnsets = {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  pidgeot: [
+  "pidgeot": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1332,9 +1355,9 @@ const data: Learnsets = {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  rattata: [
+  "rattata": [
     "assurance",
     "attract",
     "bide",
@@ -1414,9 +1437,9 @@ const data: Learnsets = {
     "watergun",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rattataalola: [
+  "rattataalola": [
     "assurance",
     "attract",
     "bite",
@@ -1479,9 +1502,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raticate: [
+  "raticate": [
     "assurance",
     "attract",
     "bide",
@@ -1564,9 +1587,9 @@ const data: Learnsets = {
     "watergun",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raticatealola: [
+  "raticatealola": [
     "assurance",
     "attract",
     "bite",
@@ -1633,9 +1656,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raticatealolatotem: [
+  "raticatealolatotem": [
     "assurance",
     "attract",
     "bite",
@@ -1698,9 +1721,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spearow: [
+  "spearow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1769,9 +1792,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  fearow: [
+  "fearow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -1839,9 +1862,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  ekans: [
+  "ekans": [
     "acid",
     "acidspray",
     "aquatail",
@@ -1936,9 +1959,9 @@ const data: Learnsets = {
     "toxicspikes",
     "trailblaze",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  arbok: [
+  "arbok": [
     "acid",
     "acidspray",
     "aquatail",
@@ -2038,9 +2061,9 @@ const data: Learnsets = {
     "toxicspikes",
     "trailblaze",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  pichu: [
+  "pichu": [
     "attract",
     "bestow",
     "bide",
@@ -2127,9 +2150,9 @@ const data: Learnsets = {
     "volttackle",
     "wildcharge",
     "wish",
-    "zapcannon",
+    "zapcannon"
   ],
-  pichuspikyeared: [
+  "pichuspikyeared": [
     "attract",
     "captivate",
     "chargebeam",
@@ -2172,9 +2195,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "uproar",
-    "volttackle",
+    "volttackle"
   ],
-  pikachu: [
+  "pikachu": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2295,9 +2318,9 @@ const data: Learnsets = {
     "wildcharge",
     "wish",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  pikachucosplay: [
+  "pikachucosplay": [
     "agility",
     "attract",
     "brickbreak",
@@ -2351,14 +2374,24 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  pikachurockstar: ["meteormash"],
-  pikachubelle: ["iciclecrash"],
-  pikachupopstar: ["drainingkiss"],
-  pikachuphd: ["electricterrain"],
-  pikachulibre: ["flyingpress"],
-  pikachuoriginal: [
+  "pikachurockstar": [
+    "meteormash"
+  ],
+  "pikachubelle": [
+    "iciclecrash"
+  ],
+  "pikachupopstar": [
+    "drainingkiss"
+  ],
+  "pikachuphd": [
+    "electricterrain"
+  ],
+  "pikachulibre": [
+    "flyingpress"
+  ],
+  "pikachuoriginal": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2444,9 +2477,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachuhoenn: [
+  "pikachuhoenn": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2532,9 +2565,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachusinnoh: [
+  "pikachusinnoh": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2620,9 +2653,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachuunova: [
+  "pikachuunova": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2708,9 +2741,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachukalos: [
+  "pikachukalos": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2796,9 +2829,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachualola: [
+  "pikachualola": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2884,9 +2917,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachupartner: [
+  "pikachupartner": [
     "agility",
     "alluringvoice",
     "attract",
@@ -2972,9 +3005,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pikachustarter: [
+  "pikachustarter": [
     "agility",
     "bodyslam",
     "brickbreak",
@@ -3036,9 +3069,9 @@ const data: Learnsets = {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zippyzap",
+    "zippyzap"
   ],
-  pikachuworld: [
+  "pikachuworld": [
     "agility",
     "attract",
     "bodyslam",
@@ -3107,9 +3140,9 @@ const data: Learnsets = {
     "voltswitch",
     "volttackle",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  raichu: [
+  "raichu": [
     "agility",
     "alluringvoice",
     "attract",
@@ -3219,9 +3252,9 @@ const data: Learnsets = {
     "uproar",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  raichualola: [
+  "raichualola": [
     "agility",
     "alluringvoice",
     "allyswitch",
@@ -3323,9 +3356,9 @@ const data: Learnsets = {
     "upperhand",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  sandshrew: [
+  "sandshrew": [
     "aerialace",
     "agility",
     "amnesia",
@@ -3424,9 +3457,9 @@ const data: Learnsets = {
     "throatchop",
     "toxic",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  sandshrewalola: [
+  "sandshrewalola": [
     "aerialace",
     "amnesia",
     "aquatail",
@@ -3517,9 +3550,9 @@ const data: Learnsets = {
     "toxic",
     "tripleaxel",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  sandslash: [
+  "sandslash": [
     "aerialace",
     "agility",
     "amnesia",
@@ -3620,9 +3653,9 @@ const data: Learnsets = {
     "throatchop",
     "toxic",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  sandslashalola: [
+  "sandslashalola": [
     "aerialace",
     "agility",
     "amnesia",
@@ -3716,9 +3749,9 @@ const data: Learnsets = {
     "toxic",
     "tripleaxel",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  nidoranf: [
+  "nidoranf": [
     "aerialace",
     "attract",
     "beatup",
@@ -3797,9 +3830,9 @@ const data: Learnsets = {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidorina: [
+  "nidorina": [
     "aerialace",
     "attract",
     "beatup",
@@ -3876,9 +3909,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidoqueen: [
+  "nidoqueen": [
     "aerialace",
     "aquatail",
     "attract",
@@ -4011,9 +4044,9 @@ const data: Learnsets = {
     "venoshock",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  nidoranm: [
+  "nidoranm": [
     "amnesia",
     "attract",
     "beatup",
@@ -4093,9 +4126,9 @@ const data: Learnsets = {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidorino: [
+  "nidorino": [
     "amnesia",
     "attract",
     "beatup",
@@ -4171,9 +4204,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  nidoking: [
+  "nidoking": [
     "amnesia",
     "aquatail",
     "attract",
@@ -4307,9 +4340,9 @@ const data: Learnsets = {
     "venoshock",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  cleffa: [
+  "cleffa": [
     "afteryou",
     "alluringvoice",
     "amnesia",
@@ -4414,9 +4447,9 @@ const data: Learnsets = {
     "wonderroom",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  clefairy: [
+  "clefairy": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -4570,9 +4603,9 @@ const data: Learnsets = {
     "wonderroom",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  clefable: [
+  "clefable": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -4728,9 +4761,9 @@ const data: Learnsets = {
     "wonderroom",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vulpix: [
+  "vulpix": [
     "agility",
     "attract",
     "babydolleyes",
@@ -4817,9 +4850,9 @@ const data: Learnsets = {
     "toxic",
     "weatherball",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vulpixalola: [
+  "vulpixalola": [
     "agility",
     "aquatail",
     "attract",
@@ -4906,9 +4939,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ninetales: [
+  "ninetales": [
     "agility",
     "attract",
     "batonpass",
@@ -5000,9 +5033,9 @@ const data: Learnsets = {
     "toxic",
     "weatherball",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ninetalesalola: [
+  "ninetalesalola": [
     "agility",
     "aquatail",
     "attract",
@@ -5091,9 +5124,9 @@ const data: Learnsets = {
     "tripleaxel",
     "weatherball",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  igglybuff: [
+  "igglybuff": [
     "alluringvoice",
     "attract",
     "bodyslam",
@@ -5190,9 +5223,9 @@ const data: Learnsets = {
     "wildcharge",
     "wish",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  jigglypuff: [
+  "jigglypuff": [
     "alluringvoice",
     "allyswitch",
     "amnesia",
@@ -5340,9 +5373,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wigglytuff: [
+  "wigglytuff": [
     "alluringvoice",
     "allyswitch",
     "amnesia",
@@ -5495,9 +5528,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zubat: [
+  "zubat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -5579,9 +5612,9 @@ const data: Learnsets = {
     "venoshock",
     "whirlwind",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  golbat: [
+  "golbat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -5662,9 +5695,9 @@ const data: Learnsets = {
     "venoshock",
     "whirlwind",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  crobat: [
+  "crobat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -5743,9 +5776,9 @@ const data: Learnsets = {
     "venoshock",
     "wingattack",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oddish: [
+  "oddish": [
     "absorb",
     "acid",
     "acidspray",
@@ -5819,9 +5852,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  gloom: [
+  "gloom": [
     "absorb",
     "acid",
     "acidspray",
@@ -5893,9 +5926,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  vileplume: [
+  "vileplume": [
     "absorb",
     "acid",
     "acidspray",
@@ -5974,9 +6007,9 @@ const data: Learnsets = {
     "trailblaze",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  bellossom: [
+  "bellossom": [
     "absorb",
     "acid",
     "acidspray",
@@ -6055,9 +6088,9 @@ const data: Learnsets = {
     "uproar",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  paras: [
+  "paras": [
     "absorb",
     "aerialace",
     "afteryou",
@@ -6144,9 +6177,9 @@ const data: Learnsets = {
     "venoshock",
     "wideguard",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  parasect: [
+  "parasect": [
     "absorb",
     "aerialace",
     "afteryou",
@@ -6226,9 +6259,9 @@ const data: Learnsets = {
     "toxic",
     "venoshock",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  venonat: [
+  "venonat": [
     "acidspray",
     "agility",
     "attract",
@@ -6302,9 +6335,9 @@ const data: Learnsets = {
     "toxic",
     "toxicspikes",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  venomoth: [
+  "venomoth": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -6397,9 +6430,9 @@ const data: Learnsets = {
     "uturn",
     "venoshock",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  diglett: [
+  "diglett": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6481,9 +6514,9 @@ const data: Learnsets = {
     "throatchop",
     "toxic",
     "uproar",
-    "workup",
+    "workup"
   ],
-  diglettalola: [
+  "diglettalola": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6561,9 +6594,9 @@ const data: Learnsets = {
     "thrash",
     "toxic",
     "uproar",
-    "workup",
+    "workup"
   ],
-  dugtrio: [
+  "dugtrio": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6648,9 +6681,9 @@ const data: Learnsets = {
     "toxic",
     "triattack",
     "uproar",
-    "workup",
+    "workup"
   ],
-  dugtrioalola: [
+  "dugtrioalola": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -6732,9 +6765,9 @@ const data: Learnsets = {
     "toxic",
     "triattack",
     "uproar",
-    "workup",
+    "workup"
   ],
-  meowth: [
+  "meowth": [
     "aerialace",
     "agility",
     "amnesia",
@@ -6846,9 +6879,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  meowthalola: [
+  "meowthalola": [
     "aerialace",
     "agility",
     "amnesia",
@@ -6942,9 +6975,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  meowthgalar: [
+  "meowthgalar": [
     "aerialace",
     "amnesia",
     "assurance",
@@ -7020,9 +7053,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  persian: [
+  "persian": [
     "aerialace",
     "agility",
     "amnesia",
@@ -7132,9 +7165,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  persianalola: [
+  "persianalola": [
     "aerialace",
     "agility",
     "amnesia",
@@ -7231,9 +7264,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  perrserker: [
+  "perrserker": [
     "aerialace",
     "amnesia",
     "assurance",
@@ -7313,9 +7346,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  psyduck: [
+  "psyduck": [
     "aerialace",
     "amnesia",
     "aquatail",
@@ -7435,9 +7468,9 @@ const data: Learnsets = {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  golduck: [
+  "golduck": [
     "aerialace",
     "amnesia",
     "aquajet",
@@ -7559,9 +7592,9 @@ const data: Learnsets = {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mankey: [
+  "mankey": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -7679,9 +7712,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  primeape: [
+  "primeape": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -7796,9 +7829,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  annihilape: [
+  "annihilape": [
     "acrobatics",
     "assurance",
     "bodyslam",
@@ -7876,9 +7909,9 @@ const data: Learnsets = {
     "thunderpunch",
     "uproar",
     "uturn",
-    "vacuumwave",
+    "vacuumwave"
   ],
-  growlithe: [
+  "growlithe": [
     "aerialace",
     "agility",
     "attract",
@@ -7959,9 +7992,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  growlithehisui: [
+  "growlithehisui": [
     "agility",
     "bite",
     "bodyslam",
@@ -8015,9 +8048,9 @@ const data: Learnsets = {
     "thrash",
     "thunderfang",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  arcanine: [
+  "arcanine": [
     "aerialace",
     "agility",
     "attract",
@@ -8107,9 +8140,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  arcaninehisui: [
+  "arcaninehisui": [
     "aerialace",
     "agility",
     "bite",
@@ -8172,9 +8205,9 @@ const data: Learnsets = {
     "thief",
     "thunderfang",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  poliwag: [
+  "poliwag": [
     "amnesia",
     "attract",
     "bellydrum",
@@ -8252,9 +8285,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  poliwhirl: [
+  "poliwhirl": [
     "amnesia",
     "attract",
     "bellydrum",
@@ -8343,9 +8376,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  poliwrath: [
+  "poliwrath": [
     "amnesia",
     "attract",
     "batonpass",
@@ -8460,9 +8493,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  politoed: [
+  "politoed": [
     "amnesia",
     "attract",
     "bellydrum",
@@ -8552,9 +8585,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  abra: [
+  "abra": [
     "allyswitch",
     "attract",
     "barrier",
@@ -8650,9 +8683,9 @@ const data: Learnsets = {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kadabra: [
+  "kadabra": [
     "allyswitch",
     "attract",
     "bide",
@@ -8754,9 +8787,9 @@ const data: Learnsets = {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  alakazam: [
+  "alakazam": [
     "allyswitch",
     "attract",
     "barrier",
@@ -8866,9 +8899,9 @@ const data: Learnsets = {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  machop: [
+  "machop": [
     "attract",
     "bide",
     "bodyslam",
@@ -8964,9 +8997,9 @@ const data: Learnsets = {
     "vacuumwave",
     "vitalthrow",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  machoke: [
+  "machoke": [
     "attract",
     "bide",
     "bodyslam",
@@ -9056,9 +9089,9 @@ const data: Learnsets = {
     "vacuumwave",
     "vitalthrow",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  machamp: [
+  "machamp": [
     "assurance",
     "attract",
     "bide",
@@ -9159,9 +9192,9 @@ const data: Learnsets = {
     "vitalthrow",
     "wakeupslap",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  bellsprout: [
+  "bellsprout": [
     "acid",
     "acidspray",
     "attract",
@@ -9242,9 +9275,9 @@ const data: Learnsets = {
     "weatherball",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  weepinbell: [
+  "weepinbell": [
     "acid",
     "acidspray",
     "attract",
@@ -9323,9 +9356,9 @@ const data: Learnsets = {
     "weatherball",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  victreebel: [
+  "victreebel": [
     "acid",
     "acidspray",
     "attract",
@@ -9410,9 +9443,9 @@ const data: Learnsets = {
     "vinewhip",
     "weatherball",
     "worryseed",
-    "wrap",
+    "wrap"
   ],
-  tentacool: [
+  "tentacool": [
     "acid",
     "acidarmor",
     "acidspray",
@@ -9504,9 +9537,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  tentacruel: [
+  "tentacruel": [
     "acid",
     "acidarmor",
     "acidspray",
@@ -9600,9 +9633,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  geodude: [
+  "geodude": [
     "ancientpower",
     "attract",
     "autotomize",
@@ -9688,9 +9721,9 @@ const data: Learnsets = {
     "terablast",
     "thunderpunch",
     "toxic",
-    "wideguard",
+    "wideguard"
   ],
-  geodudealola: [
+  "geodudealola": [
     "attract",
     "autotomize",
     "bide",
@@ -9769,9 +9802,9 @@ const data: Learnsets = {
     "voltswitch",
     "wideguard",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  graveler: [
+  "graveler": [
     "ancientpower",
     "attract",
     "bide",
@@ -9858,9 +9891,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "thunderpunch",
-    "toxic",
+    "toxic"
   ],
-  graveleralola: [
+  "graveleralola": [
     "allyswitch",
     "attract",
     "bide",
@@ -9940,9 +9973,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  golem: [
+  "golem": [
     "ancientpower",
     "attract",
     "bide",
@@ -10035,9 +10068,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "thunderpunch",
-    "toxic",
+    "toxic"
   ],
-  golemalola: [
+  "golemalola": [
     "allyswitch",
     "attract",
     "bide",
@@ -10125,9 +10158,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  ponyta: [
+  "ponyta": [
     "agility",
     "allyswitch",
     "attract",
@@ -10194,9 +10227,9 @@ const data: Learnsets = {
     "thrash",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  ponytagalar: [
+  "ponytagalar": [
     "agility",
     "allyswitch",
     "attract",
@@ -10241,9 +10274,9 @@ const data: Learnsets = {
     "takedown",
     "thrash",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rapidash: [
+  "rapidash": [
     "agility",
     "allyswitch",
     "attract",
@@ -10320,9 +10353,9 @@ const data: Learnsets = {
     "throatchop",
     "toxic",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  rapidashgalar: [
+  "rapidashgalar": [
     "agility",
     "allyswitch",
     "attract",
@@ -10377,9 +10410,9 @@ const data: Learnsets = {
     "trickroom",
     "wildcharge",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowpoke: [
+  "slowpoke": [
     "afteryou",
     "amnesia",
     "aquatail",
@@ -10493,9 +10526,9 @@ const data: Learnsets = {
     "wonderroom",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowpokegalar: [
+  "slowpokegalar": [
     "acid",
     "amnesia",
     "attract",
@@ -10573,9 +10606,9 @@ const data: Learnsets = {
     "whirlpool",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowbro: [
+  "slowbro": [
     "aerialace",
     "afteryou",
     "amnesia",
@@ -10710,9 +10743,9 @@ const data: Learnsets = {
     "wonderroom",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowbrogalar: [
+  "slowbrogalar": [
     "acid",
     "acidspray",
     "amnesia",
@@ -10820,9 +10853,9 @@ const data: Learnsets = {
     "withdraw",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowking: [
+  "slowking": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -10957,9 +10990,9 @@ const data: Learnsets = {
     "wonderroom",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slowkinggalar: [
+  "slowkinggalar": [
     "acid",
     "acidspray",
     "amnesia",
@@ -11069,9 +11102,9 @@ const data: Learnsets = {
     "whirlpool",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  magnemite: [
+  "magnemite": [
     "bide",
     "charge",
     "chargebeam",
@@ -11145,9 +11178,9 @@ const data: Learnsets = {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  magneton: [
+  "magneton": [
     "bide",
     "charge",
     "chargebeam",
@@ -11225,9 +11258,9 @@ const data: Learnsets = {
     "triattack",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  magnezone: [
+  "magnezone": [
     "allyswitch",
     "barrier",
     "bodypress",
@@ -11308,9 +11341,9 @@ const data: Learnsets = {
     "triattack",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  farfetchd: [
+  "farfetchd": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -11407,9 +11440,9 @@ const data: Learnsets = {
     "whirlwind",
     "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  farfetchdgalar: [
+  "farfetchdgalar": [
     "assurance",
     "attract",
     "bodyslam",
@@ -11459,9 +11492,9 @@ const data: Learnsets = {
     "superpower",
     "swordsdance",
     "throatchop",
-    "workup",
+    "workup"
   ],
-  sirfetchd: [
+  "sirfetchd": [
     "assurance",
     "attract",
     "bodyslam",
@@ -11505,9 +11538,9 @@ const data: Learnsets = {
     "superpower",
     "swordsdance",
     "throatchop",
-    "workup",
+    "workup"
   ],
-  doduo: [
+  "doduo": [
     "acrobatics",
     "acupressure",
     "aerialace",
@@ -11583,9 +11616,9 @@ const data: Learnsets = {
     "triattack",
     "uproar",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  dodrio: [
+  "dodrio": [
     "acrobatics",
     "acupressure",
     "aerialace",
@@ -11667,9 +11700,9 @@ const data: Learnsets = {
     "triattack",
     "uproar",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  seel: [
+  "seel": [
     "aquajet",
     "aquaring",
     "aquatail",
@@ -11756,9 +11789,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  dewgong: [
+  "dewgong": [
     "alluringvoice",
     "aquajet",
     "aquaring",
@@ -11843,9 +11876,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  grimer: [
+  "grimer": [
     "acidarmor",
     "acidspray",
     "attract",
@@ -11938,9 +11971,9 @@ const data: Learnsets = {
     "toxic",
     "venoshock",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grimeralola: [
+  "grimeralola": [
     "acidarmor",
     "acidspray",
     "assurance",
@@ -12038,9 +12071,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  muk: [
+  "muk": [
     "acidarmor",
     "acidspray",
     "attract",
@@ -12142,9 +12175,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mukalola: [
+  "mukalola": [
     "acidarmor",
     "acidspray",
     "attract",
@@ -12241,9 +12274,9 @@ const data: Learnsets = {
     "toxic",
     "venomdrench",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shellder: [
+  "shellder": [
     "aquaring",
     "attract",
     "aurorabeam",
@@ -12319,9 +12352,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "withdraw",
+    "withdraw"
   ],
-  cloyster: [
+  "cloyster": [
     "attract",
     "aurorabeam",
     "avalanche",
@@ -12409,9 +12442,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "withdraw",
+    "withdraw"
   ],
-  gastly: [
+  "gastly": [
     "acidspray",
     "allyswitch",
     "astonish",
@@ -12507,9 +12540,9 @@ const data: Learnsets = {
     "venoshock",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  haunter: [
+  "haunter": [
     "acidspray",
     "allyswitch",
     "attract",
@@ -12607,9 +12640,9 @@ const data: Learnsets = {
     "venoshock",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  gengar: [
+  "gengar": [
     "acidspray",
     "allyswitch",
     "astonish",
@@ -12733,9 +12766,9 @@ const data: Learnsets = {
     "venoshock",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  onix: [
+  "onix": [
     "ancientpower",
     "attract",
     "bide",
@@ -12824,9 +12857,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "twister",
-    "wideguard",
+    "wideguard"
   ],
-  steelix: [
+  "steelix": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -12922,9 +12955,9 @@ const data: Learnsets = {
     "thunderfang",
     "torment",
     "toxic",
-    "twister",
+    "twister"
   ],
-  drowzee: [
+  "drowzee": [
     "allyswitch",
     "assist",
     "attract",
@@ -13040,9 +13073,9 @@ const data: Learnsets = {
     "wakeupslap",
     "wish",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hypno: [
+  "hypno": [
     "allyswitch",
     "attract",
     "barrier",
@@ -13159,9 +13192,9 @@ const data: Learnsets = {
     "trickroom",
     "wakeupslap",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  krabby: [
+  "krabby": [
     "agility",
     "allyswitch",
     "amnesia",
@@ -13243,9 +13276,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  kingler: [
+  "kingler": [
     "agility",
     "allyswitch",
     "amnesia",
@@ -13330,9 +13363,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wideguard",
-    "xscissor",
+    "xscissor"
   ],
-  voltorb: [
+  "voltorb": [
     "agility",
     "bide",
     "charge",
@@ -13400,9 +13433,9 @@ const data: Learnsets = {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  voltorbhisui: [
+  "voltorbhisui": [
     "agility",
     "bulletseed",
     "charge",
@@ -13449,9 +13482,9 @@ const data: Learnsets = {
     "thunderwave",
     "voltswitch",
     "wildcharge",
-    "worryseed",
+    "worryseed"
   ],
-  electrode: [
+  "electrode": [
     "agility",
     "bide",
     "charge",
@@ -13524,9 +13557,9 @@ const data: Learnsets = {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  electrodehisui: [
+  "electrodehisui": [
     "agility",
     "bulletseed",
     "charge",
@@ -13576,9 +13609,9 @@ const data: Learnsets = {
     "thundershock",
     "thunderwave",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  exeggcute: [
+  "exeggcute": [
     "absorb",
     "ancientpower",
     "attract",
@@ -13668,9 +13701,9 @@ const data: Learnsets = {
     "uproar",
     "wish",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  exeggutor: [
+  "exeggutor": [
     "absorb",
     "ancientpower",
     "attract",
@@ -13771,9 +13804,9 @@ const data: Learnsets = {
     "uproar",
     "woodhammer",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  exeggutoralola: [
+  "exeggutoralola": [
     "absorb",
     "attract",
     "barrage",
@@ -13873,9 +13906,9 @@ const data: Learnsets = {
     "uproar",
     "woodhammer",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cubone: [
+  "cubone": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -13971,9 +14004,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "watergun",
+    "watergun"
   ],
-  marowak: [
+  "marowak": [
     "aerialace",
     "attract",
     "bide",
@@ -14072,9 +14105,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "watergun",
+    "watergun"
   ],
-  marowakalola: [
+  "marowakalola": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -14171,9 +14204,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  marowakalolatotem: [
+  "marowakalolatotem": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -14252,9 +14285,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  tyrogue: [
+  "tyrogue": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -14319,9 +14352,9 @@ const data: Learnsets = {
     "upperhand",
     "uproar",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  hitmonlee: [
+  "hitmonlee": [
     "attract",
     "aurasphere",
     "axekick",
@@ -14422,9 +14455,9 @@ const data: Learnsets = {
     "uproar",
     "vacuumwave",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  hitmonchan: [
+  "hitmonchan": [
     "agility",
     "attract",
     "aurasphere",
@@ -14525,9 +14558,9 @@ const data: Learnsets = {
     "upperhand",
     "uproar",
     "vacuumwave",
-    "workup",
+    "workup"
   ],
-  hitmontop: [
+  "hitmontop": [
     "aerialace",
     "agility",
     "attract",
@@ -14613,9 +14646,9 @@ const data: Learnsets = {
     "uproar",
     "vacuumwave",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  lickitung: [
+  "lickitung": [
     "acid",
     "amnesia",
     "aquatail",
@@ -14733,9 +14766,9 @@ const data: Learnsets = {
     "workup",
     "wrap",
     "wringout",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lickilicky: [
+  "lickilicky": [
     "amnesia",
     "aquatail",
     "attract",
@@ -14835,9 +14868,9 @@ const data: Learnsets = {
     "workup",
     "wrap",
     "wringout",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  koffing: [
+  "koffing": [
     "acidspray",
     "assurance",
     "attract",
@@ -14916,9 +14949,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "willowisp",
-    "zapcannon",
+    "zapcannon"
   ],
-  weezing: [
+  "weezing": [
     "acidspray",
     "assurance",
     "attract",
@@ -14996,9 +15029,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "willowisp",
-    "zapcannon",
+    "zapcannon"
   ],
-  weezinggalar: [
+  "weezinggalar": [
     "acidspray",
     "aromatherapy",
     "aromaticmist",
@@ -15069,9 +15102,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  rhyhorn: [
+  "rhyhorn": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -15178,9 +15211,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "uproar",
-    "zapcannon",
+    "zapcannon"
   ],
-  rhydon: [
+  "rhydon": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -15314,9 +15347,9 @@ const data: Learnsets = {
     "uproar",
     "watergun",
     "whirlpool",
-    "zapcannon",
+    "zapcannon"
   ],
-  rhyperior: [
+  "rhyperior": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -15440,9 +15473,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "whirlpool",
+    "whirlpool"
   ],
-  happiny: [
+  "happiny": [
     "aromatherapy",
     "attract",
     "captivate",
@@ -15515,9 +15548,9 @@ const data: Learnsets = {
     "uproar",
     "waterpulse",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chansey: [
+  "chansey": [
     "allyswitch",
     "aromatherapy",
     "attract",
@@ -15660,9 +15693,9 @@ const data: Learnsets = {
     "wish",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  blissey: [
+  "blissey": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -15794,9 +15827,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tangela: [
+  "tangela": [
     "absorb",
     "amnesia",
     "ancientpower",
@@ -15876,9 +15909,9 @@ const data: Learnsets = {
     "vinewhip",
     "wakeupslap",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  tangrowth: [
+  "tangrowth": [
     "absorb",
     "aerialace",
     "amnesia",
@@ -15961,9 +15994,9 @@ const data: Learnsets = {
     "toxic",
     "vinewhip",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  kangaskhan: [
+  "kangaskhan": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -16087,9 +16120,9 @@ const data: Learnsets = {
     "wish",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  horsea: [
+  "horsea": [
     "agility",
     "attract",
     "aurorabeam",
@@ -16161,9 +16194,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  seadra: [
+  "seadra": [
     "agility",
     "attract",
     "bide",
@@ -16233,9 +16266,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  kingdra: [
+  "kingdra": [
     "agility",
     "attract",
     "blizzard",
@@ -16308,9 +16341,9 @@ const data: Learnsets = {
     "wavecrash",
     "weatherball",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  goldeen: [
+  "goldeen": [
     "acupressure",
     "agility",
     "aquaring",
@@ -16385,9 +16418,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  seaking: [
+  "seaking": [
     "agility",
     "aquaring",
     "aquatail",
@@ -16461,9 +16494,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  staryu: [
+  "staryu": [
     "attract",
     "bide",
     "blizzard",
@@ -16539,9 +16572,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "zapcannon",
+    "zapcannon"
   ],
-  starmie: [
+  "starmie": [
     "agility",
     "allyswitch",
     "attract",
@@ -16634,9 +16667,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  mimejr: [
+  "mimejr": [
     "allyswitch",
     "attract",
     "barrier",
@@ -16726,9 +16759,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "wakeupslap",
-    "wonderroom",
+    "wonderroom"
   ],
-  mrmime: [
+  "mrmime": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -16856,9 +16889,9 @@ const data: Learnsets = {
     "wideguard",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mrmimegalar: [
+  "mrmimegalar": [
     "allyswitch",
     "attract",
     "avalanche",
@@ -16947,9 +16980,9 @@ const data: Learnsets = {
     "tripleaxel",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mrrime: [
+  "mrrime": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -17038,9 +17071,9 @@ const data: Learnsets = {
     "tripleaxel",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  scyther: [
+  "scyther": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -17129,9 +17162,9 @@ const data: Learnsets = {
     "uturn",
     "vacuumwave",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  scizor: [
+  "scizor": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -17228,9 +17261,9 @@ const data: Learnsets = {
     "vacuumwave",
     "venoshock",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  kleavor: [
+  "kleavor": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -17286,9 +17319,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "vacuumwave",
-    "xscissor",
+    "xscissor"
   ],
-  smoochum: [
+  "smoochum": [
     "attract",
     "auroraveil",
     "avalanche",
@@ -17380,9 +17413,9 @@ const data: Learnsets = {
     "waterpulse",
     "wish",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  jynx: [
+  "jynx": [
     "allyswitch",
     "attract",
     "auroraveil",
@@ -17503,9 +17536,9 @@ const data: Learnsets = {
     "waterpulse",
     "wonderroom",
     "wringout",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  elekid: [
+  "elekid": [
     "attract",
     "barrier",
     "bodyslam",
@@ -17591,9 +17624,9 @@ const data: Learnsets = {
     "uproar",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  electabuzz: [
+  "electabuzz": [
     "attract",
     "bide",
     "bodyslam",
@@ -17689,9 +17722,9 @@ const data: Learnsets = {
     "uproar",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  electivire: [
+  "electivire": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -17784,9 +17817,9 @@ const data: Learnsets = {
     "uproar",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  magby: [
+  "magby": [
     "acidspray",
     "attract",
     "barrier",
@@ -17869,9 +17902,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  magmar: [
+  "magmar": [
     "acidspray",
     "attract",
     "bide",
@@ -17967,9 +18000,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  magmortar: [
+  "magmortar": [
     "acidspray",
     "attract",
     "bodyslam",
@@ -18063,9 +18096,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  pinsir: [
+  "pinsir": [
     "attract",
     "bide",
     "bind",
@@ -18150,9 +18183,9 @@ const data: Learnsets = {
     "toxic",
     "visegrip",
     "vitalthrow",
-    "xscissor",
+    "xscissor"
   ],
-  tauros: [
+  "tauros": [
     "assurance",
     "attract",
     "bide",
@@ -18248,9 +18281,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  taurospaldeacombat: [
+  "taurospaldeacombat": [
     "assurance",
     "bodypress",
     "bodyslam",
@@ -18300,9 +18333,9 @@ const data: Learnsets = {
     "trailblaze",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  taurospaldeablaze: [
+  "taurospaldeablaze": [
     "bodypress",
     "bodyslam",
     "bulkup",
@@ -18357,9 +18390,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  taurospaldeaaqua: [
+  "taurospaldeaaqua": [
     "aquajet",
     "bodypress",
     "bodyslam",
@@ -18413,18 +18446,18 @@ const data: Learnsets = {
     "whirlpool",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  magikarp: [
+  "magikarp": [
     "bounce",
     "celebrate",
     "flail",
     "happyhour",
     "hydropump",
     "splash",
-    "tackle",
+    "tackle"
   ],
-  gyarados: [
+  "gyarados": [
     "aquatail",
     "attract",
     "avalanche",
@@ -18525,9 +18558,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "zapcannon",
+    "zapcannon"
   ],
-  lapras: [
+  "lapras": [
     "alluringvoice",
     "ancientpower",
     "aquatail",
@@ -18639,10 +18672,12 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ditto: ["transform"],
-  eevee: [
+  "ditto": [
+    "transform"
+  ],
+  "eevee": [
     "alluringvoice",
     "attract",
     "babydolleyes",
@@ -18718,9 +18753,9 @@ const data: Learnsets = {
     "weatherball",
     "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  eeveestarter: [
+  "eeveestarter": [
     "alluringvoice",
     "babydolleyes",
     "baddybad",
@@ -18775,9 +18810,9 @@ const data: Learnsets = {
     "veeveevolley",
     "weatherball",
     "wish",
-    "yawn",
+    "yawn"
   ],
-  vaporeon: [
+  "vaporeon": [
     "acidarmor",
     "alluringvoice",
     "aquaring",
@@ -18875,9 +18910,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  jolteon: [
+  "jolteon": [
     "agility",
     "alluringvoice",
     "attract",
@@ -18975,9 +19010,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  flareon: [
+  "flareon": [
     "alluringvoice",
     "attract",
     "babydolleyes",
@@ -19072,9 +19107,9 @@ const data: Learnsets = {
     "willowisp",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  espeon: [
+  "espeon": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -19176,9 +19211,9 @@ const data: Learnsets = {
     "weatherball",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  umbreon: [
+  "umbreon": [
     "alluringvoice",
     "assurance",
     "attract",
@@ -19277,9 +19312,9 @@ const data: Learnsets = {
     "weatherball",
     "wonderroom",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  leafeon: [
+  "leafeon": [
     "aerialace",
     "alluringvoice",
     "attract",
@@ -19368,9 +19403,9 @@ const data: Learnsets = {
     "weatherball",
     "workup",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  glaceon: [
+  "glaceon": [
     "alluringvoice",
     "aquatail",
     "attract",
@@ -19457,9 +19492,9 @@ const data: Learnsets = {
     "tripleaxel",
     "waterpulse",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  porygon: [
+  "porygon": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -19546,9 +19581,9 @@ const data: Learnsets = {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  porygon2: [
+  "porygon2": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -19626,9 +19661,9 @@ const data: Learnsets = {
     "trickroom",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  porygonz: [
+  "porygonz": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -19707,9 +19742,9 @@ const data: Learnsets = {
     "uproar",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  omanyte: [
+  "omanyte": [
     "ancientpower",
     "attract",
     "aurorabeam",
@@ -19789,9 +19824,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "withdraw",
-    "wringout",
+    "wringout"
   ],
-  omastar: [
+  "omastar": [
     "ancientpower",
     "attract",
     "bide",
@@ -19877,9 +19912,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "withdraw",
+    "withdraw"
   ],
-  kabuto: [
+  "kabuto": [
     "absorb",
     "aerialace",
     "ancientpower",
@@ -19962,9 +19997,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "wringout",
+    "wringout"
   ],
-  kabutops: [
+  "kabutops": [
     "absorb",
     "aerialace",
     "ancientpower",
@@ -20067,9 +20102,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wringout",
-    "xscissor",
+    "xscissor"
   ],
-  aerodactyl: [
+  "aerodactyl": [
     "aerialace",
     "agility",
     "aircutter",
@@ -20168,9 +20203,9 @@ const data: Learnsets = {
     "twister",
     "whirlwind",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  munchlax: [
+  "munchlax": [
     "afteryou",
     "amnesia",
     "attract",
@@ -20276,9 +20311,9 @@ const data: Learnsets = {
     "whirlpool",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  snorlax: [
+  "snorlax": [
     "afteryou",
     "amnesia",
     "attract",
@@ -20416,9 +20451,9 @@ const data: Learnsets = {
     "workup",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  articuno: [
+  "articuno": [
     "aerialace",
     "agility",
     "aircutter",
@@ -20508,9 +20543,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlwind",
+    "whirlwind"
   ],
-  articunogalar: [
+  "articunogalar": [
     "agility",
     "aircutter",
     "airslash",
@@ -20568,9 +20603,9 @@ const data: Learnsets = {
     "terablast",
     "trick",
     "trickroom",
-    "uturn",
+    "uturn"
   ],
-  zapdos: [
+  "zapdos": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -20658,9 +20693,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlwind",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  zapdosgalar: [
+  "zapdosgalar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -20722,9 +20757,9 @@ const data: Learnsets = {
     "throatchop",
     "thunderouskick",
     "trailblaze",
-    "uturn",
+    "uturn"
   ],
-  moltres: [
+  "moltres": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -20808,9 +20843,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlwind",
     "willowisp",
-    "wingattack",
+    "wingattack"
   ],
-  moltresgalar: [
+  "moltresgalar": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -20864,9 +20899,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "uturn",
-    "wingattack",
+    "wingattack"
   ],
-  dratini: [
+  "dratini": [
     "agility",
     "aquajet",
     "aquatail",
@@ -20952,9 +20987,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  dragonair: [
+  "dragonair": [
     "agility",
     "aquatail",
     "attract",
@@ -21038,9 +21073,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  dragonite: [
+  "dragonite": [
     "aerialace",
     "agility",
     "aircutter",
@@ -21179,9 +21214,9 @@ const data: Learnsets = {
     "whirlpool",
     "wingattack",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  mewtwo: [
+  "mewtwo": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -21349,9 +21384,9 @@ const data: Learnsets = {
     "willowisp",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mew: [
+  "mew": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -21726,9 +21761,9 @@ const data: Learnsets = {
     "worryseed",
     "xscissor",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chikorita: [
+  "chikorita": [
     "ancientpower",
     "aromatherapy",
     "attract",
@@ -21805,9 +21840,9 @@ const data: Learnsets = {
     "vinewhip",
     "workup",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  bayleef: [
+  "bayleef": [
     "ancientpower",
     "aromatherapy",
     "attract",
@@ -21881,9 +21916,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  meganium: [
+  "meganium": [
     "ancientpower",
     "aromatherapy",
     "attract",
@@ -21971,9 +22006,9 @@ const data: Learnsets = {
     "weatherball",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cyndaquil: [
+  "cyndaquil": [
     "aerialace",
     "attract",
     "blastburn",
@@ -22051,9 +22086,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  quilava: [
+  "quilava": [
     "aerialace",
     "attract",
     "bodyslam",
@@ -22127,9 +22162,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  typhlosion: [
+  "typhlosion": [
     "aerialace",
     "attract",
     "blastburn",
@@ -22231,9 +22266,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  typhlosionhisui: [
+  "typhlosionhisui": [
     "aerialace",
     "blastburn",
     "bodyslam",
@@ -22302,9 +22337,9 @@ const data: Learnsets = {
     "thunderpunch",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  totodile: [
+  "totodile": [
     "aerialace",
     "ancientpower",
     "aquajet",
@@ -22403,9 +22438,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  croconaw: [
+  "croconaw": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -22503,9 +22538,9 @@ const data: Learnsets = {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  feraligatr: [
+  "feraligatr": [
     "aerialace",
     "agility",
     "ancientpower",
@@ -22620,9 +22655,9 @@ const data: Learnsets = {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  sentret: [
+  "sentret": [
     "amnesia",
     "aquatail",
     "assist",
@@ -22721,9 +22756,9 @@ const data: Learnsets = {
     "uturn",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  furret: [
+  "furret": [
     "agility",
     "amnesia",
     "aquatail",
@@ -22823,9 +22858,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hoothoot: [
+  "hoothoot": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -22917,9 +22952,9 @@ const data: Learnsets = {
     "whirlwind",
     "wingattack",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  noctowl: [
+  "noctowl": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -23012,9 +23047,9 @@ const data: Learnsets = {
     "twister",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ledyba: [
+  "ledyba": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -23088,9 +23123,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  ledian: [
+  "ledian": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -23163,9 +23198,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  spinarak: [
+  "spinarak": [
     "absorb",
     "acidspray",
     "agility",
@@ -23246,9 +23281,9 @@ const data: Learnsets = {
     "trailblaze",
     "twineedle",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  ariados: [
+  "ariados": [
     "absorb",
     "acidspray",
     "agility",
@@ -23329,9 +23364,9 @@ const data: Learnsets = {
     "trailblaze",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  chinchou: [
+  "chinchou": [
     "agility",
     "amnesia",
     "aquaring",
@@ -23408,9 +23443,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  lanturn: [
+  "lanturn": [
     "agility",
     "amnesia",
     "aquaring",
@@ -23492,9 +23527,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  togepi: [
+  "togepi": [
     "aerialace",
     "afteryou",
     "ancientpower",
@@ -23595,9 +23630,9 @@ const data: Learnsets = {
     "workup",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  togetic: [
+  "togetic": [
     "aerialace",
     "afteryou",
     "aircutter",
@@ -23712,9 +23747,9 @@ const data: Learnsets = {
     "workup",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  togekiss: [
+  "togekiss": [
     "aerialace",
     "afteryou",
     "aircutter",
@@ -23828,9 +23863,9 @@ const data: Learnsets = {
     "wish",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  natu: [
+  "natu": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -23923,9 +23958,9 @@ const data: Learnsets = {
     "twister",
     "uturn",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  xatu: [
+  "xatu": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -24016,9 +24051,9 @@ const data: Learnsets = {
     "twister",
     "uturn",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mareep: [
+  "mareep": [
     "afteryou",
     "agility",
     "attract",
@@ -24090,9 +24125,9 @@ const data: Learnsets = {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  flaaffy: [
+  "flaaffy": [
     "afteryou",
     "agility",
     "attract",
@@ -24175,9 +24210,9 @@ const data: Learnsets = {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  ampharos: [
+  "ampharos": [
     "afteryou",
     "agility",
     "attract",
@@ -24277,9 +24312,9 @@ const data: Learnsets = {
     "trailblaze",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  azurill: [
+  "azurill": [
     "alluringvoice",
     "aquajet",
     "attract",
@@ -24353,9 +24388,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  marill: [
+  "marill": [
     "alluringvoice",
     "amnesia",
     "aquajet",
@@ -24463,9 +24498,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  azumarill: [
+  "azumarill": [
     "alluringvoice",
     "amnesia",
     "aquaring",
@@ -24564,9 +24599,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  bonsly: [
+  "bonsly": [
     "afteryou",
     "attract",
     "block",
@@ -24640,9 +24675,9 @@ const data: Learnsets = {
     "thief",
     "toxic",
     "trailblaze",
-    "uproar",
+    "uproar"
   ],
-  sudowoodo: [
+  "sudowoodo": [
     "afteryou",
     "attract",
     "block",
@@ -24742,9 +24777,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "woodhammer",
+    "woodhammer"
   ],
-  hoppip: [
+  "hoppip": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -24827,9 +24862,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  skiploom: [
+  "skiploom": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -24905,9 +24940,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  jumpluff: [
+  "jumpluff": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -24986,9 +25021,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  aipom: [
+  "aipom": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -25101,9 +25136,9 @@ const data: Learnsets = {
     "uturn",
     "waterpulse",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  ambipom: [
+  "ambipom": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -25200,9 +25235,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  sunkern: [
+  "sunkern": [
     "absorb",
     "afteryou",
     "attract",
@@ -25265,9 +25300,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  sunflora: [
+  "sunflora": [
     "absorb",
     "afteryou",
     "attract",
@@ -25336,9 +25371,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  yanma: [
+  "yanma": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -25410,9 +25445,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "whirlwind",
-    "wingattack",
+    "wingattack"
   ],
-  yanmega: [
+  "yanmega": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -25488,9 +25523,9 @@ const data: Learnsets = {
     "thief",
     "toxic",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  wooper: [
+  "wooper": [
     "acidspray",
     "afteryou",
     "amnesia",
@@ -25582,9 +25617,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  wooperpaldea: [
+  "wooperpaldea": [
     "acidspray",
     "afteryou",
     "amnesia",
@@ -25643,9 +25678,9 @@ const data: Learnsets = {
     "venoshock",
     "waterfall",
     "waterpulse",
-    "yawn",
+    "yawn"
   ],
-  quagsire: [
+  "quagsire": [
     "acidspray",
     "afteryou",
     "amnesia",
@@ -25747,9 +25782,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  clodsire: [
+  "clodsire": [
     "acidspray",
     "amnesia",
     "bodypress",
@@ -25807,9 +25842,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpulse",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  murkrow: [
+  "murkrow": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -25905,9 +25940,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "whirlwind",
-    "wingattack",
+    "wingattack"
   ],
-  honchkrow: [
+  "honchkrow": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -25993,9 +26028,9 @@ const data: Learnsets = {
     "twister",
     "uproar",
     "uturn",
-    "wingattack",
+    "wingattack"
   ],
-  misdreavus: [
+  "misdreavus": [
     "aerialace",
     "allyswitch",
     "astonish",
@@ -26102,9 +26137,9 @@ const data: Learnsets = {
     "uproar",
     "willowisp",
     "wonderroom",
-    "zapcannon",
+    "zapcannon"
   ],
-  mismagius: [
+  "mismagius": [
     "aerialace",
     "allyswitch",
     "astonish",
@@ -26200,10 +26235,12 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  unown: ["hiddenpower"],
-  wynaut: [
+  "unown": [
+    "hiddenpower"
+  ],
+  "wynaut": [
     "amnesia",
     "charm",
     "counter",
@@ -26212,9 +26249,9 @@ const data: Learnsets = {
     "mirrorcoat",
     "safeguard",
     "splash",
-    "tickle",
+    "tickle"
   ],
-  wobbuffet: [
+  "wobbuffet": [
     "amnesia",
     "charm",
     "counter",
@@ -26222,9 +26259,9 @@ const data: Learnsets = {
     "encore",
     "mirrorcoat",
     "safeguard",
-    "splash",
+    "splash"
   ],
-  girafarig: [
+  "girafarig": [
     "agility",
     "allyswitch",
     "amnesia",
@@ -26336,9 +26373,9 @@ const data: Learnsets = {
     "wish",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pineco: [
+  "pineco": [
     "attract",
     "bide",
     "bodyslam",
@@ -26416,9 +26453,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "toxicspikes",
-    "venoshock",
+    "venoshock"
   ],
-  forretress: [
+  "forretress": [
     "allyswitch",
     "attract",
     "autotomize",
@@ -26515,9 +26552,9 @@ const data: Learnsets = {
     "toxicspikes",
     "venoshock",
     "voltswitch",
-    "zapcannon",
+    "zapcannon"
   ],
-  dunsparce: [
+  "dunsparce": [
     "agility",
     "airslash",
     "amnesia",
@@ -26633,9 +26670,9 @@ const data: Learnsets = {
     "wildcharge",
     "yawn",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dudunsparce: [
+  "dudunsparce": [
     "agility",
     "airslash",
     "amnesia",
@@ -26721,9 +26758,9 @@ const data: Learnsets = {
     "uproar",
     "wildcharge",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gligar: [
+  "gligar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -26834,9 +26871,9 @@ const data: Learnsets = {
     "uturn",
     "venoshock",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  gliscor: [
+  "gliscor": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -26938,9 +26975,9 @@ const data: Learnsets = {
     "toxicspikes",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  snubbull: [
+  "snubbull": [
     "attract",
     "bite",
     "bodyslam",
@@ -27051,9 +27088,9 @@ const data: Learnsets = {
     "waterpulse",
     "wildcharge",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  granbull: [
+  "granbull": [
     "attract",
     "bite",
     "bodyslam",
@@ -27170,9 +27207,9 @@ const data: Learnsets = {
     "waterpulse",
     "wildcharge",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  qwilfish: [
+  "qwilfish": [
     "acidspray",
     "acupressure",
     "agility",
@@ -27271,9 +27308,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  qwilfishhisui: [
+  "qwilfishhisui": [
     "acidspray",
     "acupressure",
     "agility",
@@ -27341,9 +27378,9 @@ const data: Learnsets = {
     "toxicspikes",
     "venoshock",
     "waterfall",
-    "waterpulse",
+    "waterpulse"
   ],
-  overqwil: [
+  "overqwil": [
     "acidspray",
     "acupressure",
     "agility",
@@ -27407,9 +27444,9 @@ const data: Learnsets = {
     "toxicspikes",
     "venoshock",
     "waterfall",
-    "waterpulse",
+    "waterpulse"
   ],
-  shuckle: [
+  "shuckle": [
     "acid",
     "acupressure",
     "afteryou",
@@ -27490,9 +27527,9 @@ const data: Learnsets = {
     "toxic",
     "venoshock",
     "withdraw",
-    "wrap",
+    "wrap"
   ],
-  heracross: [
+  "heracross": [
     "aerialace",
     "armthrust",
     "assurance",
@@ -27590,9 +27627,9 @@ const data: Learnsets = {
     "upperhand",
     "vacuumwave",
     "venoshock",
-    "workup",
+    "workup"
   ],
-  sneasel: [
+  "sneasel": [
     "aerialace",
     "agility",
     "assist",
@@ -27709,9 +27746,9 @@ const data: Learnsets = {
     "upperhand",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  sneaselhisui: [
+  "sneaselhisui": [
     "acidspray",
     "aerialace",
     "agility",
@@ -27775,9 +27812,9 @@ const data: Learnsets = {
     "trailblaze",
     "vacuumwave",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  weavile: [
+  "weavile": [
     "aerialace",
     "agility",
     "assurance",
@@ -27887,9 +27924,9 @@ const data: Learnsets = {
     "upperhand",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  sneasler: [
+  "sneasler": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -27954,9 +27991,9 @@ const data: Learnsets = {
     "uturn",
     "vacuumwave",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  teddiursa: [
+  "teddiursa": [
     "aerialace",
     "attract",
     "avalanche",
@@ -28058,9 +28095,9 @@ const data: Learnsets = {
     "uproar",
     "workup",
     "yawn",
-    "zapcannon",
+    "zapcannon"
   ],
-  ursaring: [
+  "ursaring": [
     "aerialace",
     "attract",
     "avalanche",
@@ -28165,9 +28202,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "workup",
-    "zapcannon",
+    "zapcannon"
   ],
-  ursaluna: [
+  "ursaluna": [
     "aerialace",
     "avalanche",
     "bodypress",
@@ -28241,9 +28278,9 @@ const data: Learnsets = {
     "throatchop",
     "thunderpunch",
     "trailblaze",
-    "uproar",
+    "uproar"
   ],
-  ursalunabloodmoon: [
+  "ursalunabloodmoon": [
     "avalanche",
     "bloodmoon",
     "bodypress",
@@ -28312,9 +28349,9 @@ const data: Learnsets = {
     "thunderpunch",
     "trailblaze",
     "uproar",
-    "vacuumwave",
+    "vacuumwave"
   ],
-  slugma: [
+  "slugma": [
     "acidarmor",
     "afteryou",
     "amnesia",
@@ -28394,9 +28431,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "willowisp",
-    "yawn",
+    "yawn"
   ],
-  magcargo: [
+  "magcargo": [
     "afteryou",
     "amnesia",
     "ancientpower",
@@ -28481,9 +28518,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "willowisp",
-    "yawn",
+    "yawn"
   ],
-  swinub: [
+  "swinub": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -28561,9 +28598,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  piloswine: [
+  "piloswine": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -28644,9 +28681,9 @@ const data: Learnsets = {
     "thrash",
     "throatchop",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  mamoswine: [
+  "mamoswine": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -28734,9 +28771,9 @@ const data: Learnsets = {
     "thrash",
     "throatchop",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  corsola: [
+  "corsola": [
     "amnesia",
     "ancientpower",
     "aquaring",
@@ -28831,9 +28868,9 @@ const data: Learnsets = {
     "toxic",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  corsolagalar: [
+  "corsolagalar": [
     "amnesia",
     "ancientpower",
     "astonish",
@@ -28900,9 +28937,9 @@ const data: Learnsets = {
     "throatchop",
     "waterpulse",
     "whirlpool",
-    "willowisp",
+    "willowisp"
   ],
-  cursola: [
+  "cursola": [
     "amnesia",
     "ancientpower",
     "astonish",
@@ -28971,9 +29008,9 @@ const data: Learnsets = {
     "tackle",
     "throatchop",
     "whirlpool",
-    "willowisp",
+    "willowisp"
   ],
-  remoraid: [
+  "remoraid": [
     "acidspray",
     "assurance",
     "attract",
@@ -29045,9 +29082,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "waterspout",
-    "whirlpool",
+    "whirlpool"
   ],
-  octillery: [
+  "octillery": [
     "assurance",
     "attract",
     "aurorabeam",
@@ -29126,9 +29163,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  delibird: [
+  "delibird": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -29230,9 +29267,9 @@ const data: Learnsets = {
     "trailblaze",
     "tripleaxel",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  mantyke: [
+  "mantyke": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -29296,9 +29333,9 @@ const data: Learnsets = {
     "watersport",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  mantine: [
+  "mantine": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -29385,9 +29422,9 @@ const data: Learnsets = {
     "watersport",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  skarmory: [
+  "skarmory": [
     "aerialace",
     "agility",
     "aircutter",
@@ -29477,9 +29514,9 @@ const data: Learnsets = {
     "twister",
     "whirlwind",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  houndour: [
+  "houndour": [
     "attract",
     "beatup",
     "bite",
@@ -29574,9 +29611,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  houndoom: [
+  "houndoom": [
     "attract",
     "beatup",
     "bite",
@@ -29671,9 +29708,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  phanpy: [
+  "phanpy": [
     "ancientpower",
     "attract",
     "bodyslam",
@@ -29750,9 +29787,9 @@ const data: Learnsets = {
     "thief",
     "toxic",
     "trailblaze",
-    "watergun",
+    "watergun"
   ],
-  donphan: [
+  "donphan": [
     "ancientpower",
     "assurance",
     "attract",
@@ -29845,9 +29882,9 @@ const data: Learnsets = {
     "throatchop",
     "thunderfang",
     "toxic",
-    "trailblaze",
+    "trailblaze"
   ],
-  stantler: [
+  "stantler": [
     "agility",
     "astonish",
     "attract",
@@ -29948,9 +29985,9 @@ const data: Learnsets = {
     "uproar",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wyrdeer: [
+  "wyrdeer": [
     "agility",
     "astonish",
     "bodyslam",
@@ -30016,9 +30053,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  smeargle: [
+  "smeargle": [
     "captivate",
     "doubleslap",
     "falseswipe",
@@ -30031,9 +30068,9 @@ const data: Learnsets = {
     "sketch",
     "sleeptalk",
     "spore",
-    "tailwhip",
+    "tailwhip"
   ],
-  miltank: [
+  "miltank": [
     "afteryou",
     "attract",
     "belch",
@@ -30132,9 +30169,9 @@ const data: Learnsets = {
     "whirlpool",
     "workup",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  raikou: [
+  "raikou": [
     "agility",
     "aurasphere",
     "bite",
@@ -30220,9 +30257,9 @@ const data: Learnsets = {
     "voltswitch",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  entei: [
+  "entei": [
     "agility",
     "bite",
     "bodyslam",
@@ -30305,9 +30342,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  suicune: [
+  "suicune": [
     "agility",
     "airslash",
     "aquaring",
@@ -30392,9 +30429,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  larvitar: [
+  "larvitar": [
     "ancientpower",
     "assurance",
     "attract",
@@ -30474,9 +30511,9 @@ const data: Learnsets = {
     "thrash",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  pupitar: [
+  "pupitar": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -30557,9 +30594,9 @@ const data: Learnsets = {
     "thrash",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  tyranitar: [
+  "tyranitar": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -30693,9 +30730,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  lugia: [
+  "lugia": [
     "acrobatics",
     "aerialace",
     "aeroblast",
@@ -30814,9 +30851,9 @@ const data: Learnsets = {
     "whirlwind",
     "wonderroom",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hooh: [
+  "hooh": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -30919,9 +30956,9 @@ const data: Learnsets = {
     "whirlwind",
     "willowisp",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  celebi: [
+  "celebi": [
     "aerialace",
     "allyswitch",
     "ancientpower",
@@ -31026,9 +31063,9 @@ const data: Learnsets = {
     "weatherball",
     "wonderroom",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  treecko: [
+  "treecko": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -31126,9 +31163,9 @@ const data: Learnsets = {
     "trailblaze",
     "upperhand",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  grovyle: [
+  "grovyle": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -31223,9 +31260,9 @@ const data: Learnsets = {
     "vacuumwave",
     "workup",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  sceptile: [
+  "sceptile": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -31342,9 +31379,9 @@ const data: Learnsets = {
     "vacuumwave",
     "workup",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  torchic: [
+  "torchic": [
     "aerialace",
     "agility",
     "assurance",
@@ -31426,9 +31463,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  combusken: [
+  "combusken": [
     "aerialace",
     "agility",
     "assurance",
@@ -31526,9 +31563,9 @@ const data: Learnsets = {
     "uproar",
     "vacuumwave",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  blaziken: [
+  "blaziken": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -31647,9 +31684,9 @@ const data: Learnsets = {
     "uturn",
     "vacuumwave",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  mudkip: [
+  "mudkip": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -31734,9 +31771,9 @@ const data: Learnsets = {
     "whirlpool",
     "wideguard",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  marshtomp: [
+  "marshtomp": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -31826,9 +31863,9 @@ const data: Learnsets = {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  swampert: [
+  "swampert": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -31938,9 +31975,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  poochyena: [
+  "poochyena": [
     "assurance",
     "astonish",
     "attract",
@@ -32017,9 +32054,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "yawn",
+    "yawn"
   ],
-  mightyena: [
+  "mightyena": [
     "assurance",
     "attract",
     "bite",
@@ -32097,9 +32134,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "yawn",
+    "yawn"
   ],
-  zigzagoon: [
+  "zigzagoon": [
     "attract",
     "babydolleyes",
     "bellydrum",
@@ -32180,9 +32217,9 @@ const data: Learnsets = {
     "trick",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  zigzagoongalar: [
+  "zigzagoongalar": [
     "assurance",
     "attract",
     "babydolleyes",
@@ -32238,9 +32275,9 @@ const data: Learnsets = {
     "thunderwave",
     "trick",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  linoone: [
+  "linoone": [
     "attract",
     "babydolleyes",
     "bellydrum",
@@ -32329,9 +32366,9 @@ const data: Learnsets = {
     "trick",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  linoonegalar: [
+  "linoonegalar": [
     "assurance",
     "attract",
     "babydolleyes",
@@ -32394,9 +32431,9 @@ const data: Learnsets = {
     "thunderwave",
     "trick",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  obstagoon: [
+  "obstagoon": [
     "assurance",
     "attract",
     "babydolleyes",
@@ -32477,18 +32514,24 @@ const data: Learnsets = {
     "trick",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  wurmple: [
+  "wurmple": [
     "bugbite",
     "electroweb",
     "poisonsting",
     "snore",
     "stringshot",
-    "tackle",
+    "tackle"
   ],
-  silcoon: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  beautifly: [
+  "silcoon": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "beautifly": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -32548,10 +32591,16 @@ const data: Learnsets = {
     "twister",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  cascoon: ["bugbite", "electroweb", "harden", "irondefense", "stringshot"],
-  dustox: [
+  "cascoon": [
+    "bugbite",
+    "electroweb",
+    "harden",
+    "irondefense",
+    "stringshot"
+  ],
+  "dustox": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -32611,9 +32660,9 @@ const data: Learnsets = {
     "twister",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  lotad: [
+  "lotad": [
     "absorb",
     "astonish",
     "attract",
@@ -32685,9 +32734,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lombre: [
+  "lombre": [
     "absorb",
     "astonish",
     "attract",
@@ -32780,9 +32829,9 @@ const data: Learnsets = {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ludicolo: [
+  "ludicolo": [
     "absorb",
     "amnesia",
     "astonish",
@@ -32883,9 +32932,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  seedot: [
+  "seedot": [
     "absorb",
     "amnesia",
     "astonish",
@@ -32960,9 +33009,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  nuzleaf: [
+  "nuzleaf": [
     "absorb",
     "aircutter",
     "amnesia",
@@ -33067,9 +33116,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  shiftry: [
+  "shiftry": [
     "absorb",
     "aerialace",
     "aircutter",
@@ -33202,9 +33251,9 @@ const data: Learnsets = {
     "whirlwind",
     "willowisp",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  taillow: [
+  "taillow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -33266,9 +33315,9 @@ const data: Learnsets = {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  swellow: [
+  "swellow": [
     "aerialace",
     "agility",
     "aircutter",
@@ -33325,9 +33374,9 @@ const data: Learnsets = {
     "twister",
     "uturn",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  wingull: [
+  "wingull": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -33405,9 +33454,9 @@ const data: Learnsets = {
     "watersport",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  pelipper: [
+  "pelipper": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -33494,9 +33543,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  ralts: [
+  "ralts": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -33602,9 +33651,9 @@ const data: Learnsets = {
     "willowisp",
     "wish",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kirlia: [
+  "kirlia": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -33702,9 +33751,9 @@ const data: Learnsets = {
     "tripleaxel",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gardevoir: [
+  "gardevoir": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -33818,9 +33867,9 @@ const data: Learnsets = {
     "willowisp",
     "wish",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gallade: [
+  "gallade": [
     "aerialace",
     "agility",
     "airslash",
@@ -33966,9 +34015,9 @@ const data: Learnsets = {
     "wonderroom",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  surskit: [
+  "surskit": [
     "acrobatics",
     "agility",
     "aquajet",
@@ -34043,9 +34092,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "watersport",
+    "watersport"
   ],
-  masquerain: [
+  "masquerain": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -34134,9 +34183,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "weatherball",
-    "whirlwind",
+    "whirlwind"
   ],
-  shroomish: [
+  "shroomish": [
     "absorb",
     "attract",
     "bodyslam",
@@ -34199,9 +34248,9 @@ const data: Learnsets = {
     "venoshock",
     "wakeupslap",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  breloom: [
+  "breloom": [
     "absorb",
     "aerialace",
     "attract",
@@ -34304,9 +34353,9 @@ const data: Learnsets = {
     "venoshock",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slakoth: [
+  "slakoth": [
     "aerialace",
     "afteryou",
     "amnesia",
@@ -34402,9 +34451,9 @@ const data: Learnsets = {
     "workup",
     "xscissor",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vigoroth: [
+  "vigoroth": [
     "aerialace",
     "afteryou",
     "amnesia",
@@ -34514,9 +34563,9 @@ const data: Learnsets = {
     "waterpulse",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  slaking: [
+  "slaking": [
     "aerialace",
     "afteryou",
     "amnesia",
@@ -34640,9 +34689,9 @@ const data: Learnsets = {
     "workup",
     "xscissor",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  nincada: [
+  "nincada": [
     "absorb",
     "aerialace",
     "bide",
@@ -34696,9 +34745,9 @@ const data: Learnsets = {
     "sunnyday",
     "swagger",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  ninjask: [
+  "ninjask": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -34767,9 +34816,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  shedinja: [
+  "shedinja": [
     "absorb",
     "aerialace",
     "agility",
@@ -34839,9 +34888,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "willowisp",
-    "xscissor",
+    "xscissor"
   ],
-  whismur: [
+  "whismur": [
     "astonish",
     "attract",
     "blizzard",
@@ -34914,9 +34963,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  loudred: [
+  "loudred": [
     "astonish",
     "attract",
     "bite",
@@ -34995,9 +35044,9 @@ const data: Learnsets = {
     "uproar",
     "waterpulse",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  exploud: [
+  "exploud": [
     "astonish",
     "attract",
     "avalanche",
@@ -35091,9 +35140,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  makuhita: [
+  "makuhita": [
     "armthrust",
     "attract",
     "bellydrum",
@@ -35193,9 +35242,9 @@ const data: Learnsets = {
     "whirlwind",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hariyama: [
+  "hariyama": [
     "armthrust",
     "attract",
     "bellydrum",
@@ -35296,9 +35345,9 @@ const data: Learnsets = {
     "whirlpool",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  nosepass: [
+  "nosepass": [
     "ancientpower",
     "attract",
     "block",
@@ -35382,9 +35431,9 @@ const data: Learnsets = {
     "toxic",
     "voltswitch",
     "wideguard",
-    "zapcannon",
+    "zapcannon"
   ],
-  probopass: [
+  "probopass": [
     "allyswitch",
     "ancientpower",
     "attract",
@@ -35471,9 +35520,9 @@ const data: Learnsets = {
     "triattack",
     "voltswitch",
     "wideguard",
-    "zapcannon",
+    "zapcannon"
   ],
-  skitty: [
+  "skitty": [
     "assist",
     "attract",
     "batonpass",
@@ -35556,9 +35605,9 @@ const data: Learnsets = {
     "wildcharge",
     "wish",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  delcatty: [
+  "delcatty": [
     "attract",
     "blizzard",
     "bodyslam",
@@ -35630,9 +35679,9 @@ const data: Learnsets = {
     "waterpulse",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sableye: [
+  "sableye": [
     "aerialace",
     "allyswitch",
     "astonish",
@@ -35769,9 +35818,9 @@ const data: Learnsets = {
     "willowisp",
     "wonderroom",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mawile: [
+  "mawile": [
     "ancientpower",
     "assurance",
     "astonish",
@@ -35880,9 +35929,9 @@ const data: Learnsets = {
     "tickle",
     "torment",
     "toxic",
-    "visegrip",
+    "visegrip"
   ],
-  aron: [
+  "aron": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -35956,9 +36005,9 @@ const data: Learnsets = {
     "takedown",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  lairon: [
+  "lairon": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -36031,9 +36080,9 @@ const data: Learnsets = {
     "takedown",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  aggron: [
+  "aggron": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -36155,9 +36204,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  meditite: [
+  "meditite": [
     "acupressure",
     "aerialace",
     "attract",
@@ -36266,9 +36315,9 @@ const data: Learnsets = {
     "upperhand",
     "vacuumwave",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  medicham: [
+  "medicham": [
     "acupressure",
     "aerialace",
     "attract",
@@ -36376,9 +36425,9 @@ const data: Learnsets = {
     "upperhand",
     "vacuumwave",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  electrike: [
+  "electrike": [
     "agility",
     "attract",
     "bite",
@@ -36443,9 +36492,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  manectric: [
+  "manectric": [
     "agility",
     "attract",
     "bite",
@@ -36515,9 +36564,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  plusle: [
+  "plusle": [
     "agility",
     "alluringvoice",
     "attract",
@@ -36605,9 +36654,9 @@ const data: Learnsets = {
     "voltswitch",
     "watersport",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  minun: [
+  "minun": [
     "agility",
     "alluringvoice",
     "attract",
@@ -36693,9 +36742,9 @@ const data: Learnsets = {
     "uproar",
     "voltswitch",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  volbeat: [
+  "volbeat": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -36784,9 +36833,9 @@ const data: Learnsets = {
     "trick",
     "uturn",
     "waterpulse",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  illumise: [
+  "illumise": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -36880,9 +36929,9 @@ const data: Learnsets = {
     "uturn",
     "waterpulse",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  budew: [
+  "budew": [
     "absorb",
     "attract",
     "bulletseed",
@@ -36941,9 +36990,9 @@ const data: Learnsets = {
     "venoshock",
     "watersport",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  roselia: [
+  "roselia": [
     "absorb",
     "aromatherapy",
     "attract",
@@ -37018,9 +37067,9 @@ const data: Learnsets = {
     "uproar",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  roserade: [
+  "roserade": [
     "absorb",
     "aromatherapy",
     "attract",
@@ -37089,9 +37138,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  gulpin: [
+  "gulpin": [
     "acidarmor",
     "acidspray",
     "amnesia",
@@ -37177,9 +37226,9 @@ const data: Learnsets = {
     "venoshock",
     "waterpulse",
     "wringout",
-    "yawn",
+    "yawn"
   ],
-  swalot: [
+  "swalot": [
     "acidspray",
     "amnesia",
     "attract",
@@ -37269,9 +37318,9 @@ const data: Learnsets = {
     "waterpulse",
     "wringout",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  carvanha: [
+  "carvanha": [
     "agility",
     "ancientpower",
     "aquajet",
@@ -37341,9 +37390,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpulse",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sharpedo: [
+  "sharpedo": [
     "agility",
     "ancientpower",
     "aquajet",
@@ -37426,9 +37475,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpulse",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wailmer: [
+  "wailmer": [
     "amnesia",
     "aquaring",
     "astonish",
@@ -37496,9 +37545,9 @@ const data: Learnsets = {
     "waterspout",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wailord: [
+  "wailord": [
     "amnesia",
     "astonish",
     "attract",
@@ -37566,9 +37615,9 @@ const data: Learnsets = {
     "waterspout",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  numel: [
+  "numel": [
     "afteryou",
     "amnesia",
     "ancientpower",
@@ -37657,9 +37706,9 @@ const data: Learnsets = {
     "trailblaze",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  camerupt: [
+  "camerupt": [
     "afteryou",
     "amnesia",
     "attract",
@@ -37749,9 +37798,9 @@ const data: Learnsets = {
     "trailblaze",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  torkoal: [
+  "torkoal": [
     "afteryou",
     "amnesia",
     "ancientpower",
@@ -37839,9 +37888,9 @@ const data: Learnsets = {
     "willowisp",
     "withdraw",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spoink: [
+  "spoink": [
     "allyswitch",
     "amnesia",
     "attract",
@@ -37933,9 +37982,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grumpig: [
+  "grumpig": [
     "allyswitch",
     "amnesia",
     "attract",
@@ -38055,9 +38104,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spinda: [
+  "spinda": [
     "assist",
     "attract",
     "batonpass",
@@ -38159,9 +38208,9 @@ const data: Learnsets = {
     "wildcharge",
     "wish",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  trapinch: [
+  "trapinch": [
     "astonish",
     "attract",
     "bide",
@@ -38224,9 +38273,9 @@ const data: Learnsets = {
     "swagger",
     "takedown",
     "terablast",
-    "toxic",
+    "toxic"
   ],
-  vibrava: [
+  "vibrava": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -38314,9 +38363,9 @@ const data: Learnsets = {
     "toxic",
     "twister",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  flygon: [
+  "flygon": [
     "aerialace",
     "agility",
     "aircutter",
@@ -38426,9 +38475,9 @@ const data: Learnsets = {
     "twister",
     "uproar",
     "uturn",
-    "vacuumwave",
+    "vacuumwave"
   ],
-  cacnea: [
+  "cacnea": [
     "absorb",
     "acid",
     "attract",
@@ -38531,9 +38580,9 @@ const data: Learnsets = {
     "toxicspikes",
     "trailblaze",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  cacturne: [
+  "cacturne": [
     "absorb",
     "attract",
     "block",
@@ -38644,9 +38693,9 @@ const data: Learnsets = {
     "trailblaze",
     "venoshock",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  swablu: [
+  "swablu": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -38729,9 +38778,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "twister",
-    "uproar",
+    "uproar"
   ],
-  altaria: [
+  "altaria": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -38831,9 +38880,9 @@ const data: Learnsets = {
     "uproar",
     "weatherball",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  zangoose: [
+  "zangoose": [
     "aerialace",
     "agility",
     "attract",
@@ -38957,9 +39006,9 @@ const data: Learnsets = {
     "waterpulse",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  seviper: [
+  "seviper": [
     "acidspray",
     "aquatail",
     "assurance",
@@ -39063,9 +39112,9 @@ const data: Learnsets = {
     "wrap",
     "wringout",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lunatone: [
+  "lunatone": [
     "acrobatics",
     "allyswitch",
     "ancientpower",
@@ -39159,9 +39208,9 @@ const data: Learnsets = {
     "toxic",
     "trickroom",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  solrock: [
+  "solrock": [
     "acrobatics",
     "allyswitch",
     "ancientpower",
@@ -39259,9 +39308,9 @@ const data: Learnsets = {
     "weatherball",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  barboach: [
+  "barboach": [
     "amnesia",
     "aquatail",
     "attract",
@@ -39331,9 +39380,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  whiscash: [
+  "whiscash": [
     "amnesia",
     "aquatail",
     "attract",
@@ -39414,9 +39463,9 @@ const data: Learnsets = {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  corphish: [
+  "corphish": [
     "aerialace",
     "ancientpower",
     "aquajet",
@@ -39502,9 +39551,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  crawdaunt: [
+  "crawdaunt": [
     "aerialace",
     "ancientpower",
     "attract",
@@ -39599,9 +39648,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  baltoy: [
+  "baltoy": [
     "allyswitch",
     "ancientpower",
     "bulldoze",
@@ -39685,9 +39734,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  claydol: [
+  "claydol": [
     "allyswitch",
     "ancientpower",
     "bodypress",
@@ -39781,9 +39830,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lileep: [
+  "lileep": [
     "acid",
     "amnesia",
     "ancientpower",
@@ -39853,9 +39902,9 @@ const data: Learnsets = {
     "toxic",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  cradily: [
+  "cradily": [
     "acid",
     "amnesia",
     "ancientpower",
@@ -39934,9 +39983,9 @@ const data: Learnsets = {
     "toxic",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  anorith: [
+  "anorith": [
     "aerialace",
     "ancientpower",
     "aquajet",
@@ -40002,9 +40051,9 @@ const data: Learnsets = {
     "toxic",
     "watergun",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  armaldo: [
+  "armaldo": [
     "aerialace",
     "ancientpower",
     "aquatail",
@@ -40083,9 +40132,9 @@ const data: Learnsets = {
     "toxic",
     "watergun",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  feebas: [
+  "feebas": [
     "attract",
     "blizzard",
     "brine",
@@ -40138,9 +40187,9 @@ const data: Learnsets = {
     "toxic",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  milotic: [
+  "milotic": [
     "alluringvoice",
     "aquaring",
     "aquatail",
@@ -40226,9 +40275,9 @@ const data: Learnsets = {
     "watersport",
     "weatherball",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  castform: [
+  "castform": [
     "amnesia",
     "attract",
     "avalanche",
@@ -40298,9 +40347,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  kecleon: [
+  "kecleon": [
     "aerialace",
     "afteryou",
     "ancientpower",
@@ -40411,9 +40460,9 @@ const data: Learnsets = {
     "trickroom",
     "waterpulse",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  shuppet: [
+  "shuppet": [
     "allyswitch",
     "astonish",
     "attract",
@@ -40501,9 +40550,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  banette: [
+  "banette": [
     "allyswitch",
     "attract",
     "bodyslam",
@@ -40597,9 +40646,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  duskull: [
+  "duskull": [
     "allyswitch",
     "astonish",
     "attract",
@@ -40681,9 +40730,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  dusclops: [
+  "dusclops": [
     "allyswitch",
     "astonish",
     "attract",
@@ -40784,9 +40833,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  dusknoir: [
+  "dusknoir": [
     "allyswitch",
     "astonish",
     "attract",
@@ -40887,9 +40936,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  tropius: [
+  "tropius": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -40985,9 +41034,9 @@ const data: Learnsets = {
     "whirlwind",
     "wideguard",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chingling: [
+  "chingling": [
     "allyswitch",
     "astonish",
     "attract",
@@ -41066,9 +41115,9 @@ const data: Learnsets = {
     "wish",
     "wrap",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chimecho: [
+  "chimecho": [
     "allyswitch",
     "astonish",
     "attract",
@@ -41168,9 +41217,9 @@ const data: Learnsets = {
     "wish",
     "wrap",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  absol: [
+  "absol": [
     "aerialace",
     "airslash",
     "assurance",
@@ -41283,9 +41332,9 @@ const data: Learnsets = {
     "willowisp",
     "wish",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  snorunt: [
+  "snorunt": [
     "astonish",
     "attract",
     "avalanche",
@@ -41347,9 +41396,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  glalie: [
+  "glalie": [
     "astonish",
     "attract",
     "avalanche",
@@ -41427,9 +41476,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  froslass: [
+  "froslass": [
     "allyswitch",
     "astonish",
     "attract",
@@ -41524,9 +41573,9 @@ const data: Learnsets = {
     "wakeupslap",
     "waterpulse",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  spheal: [
+  "spheal": [
     "aquaring",
     "aquatail",
     "attract",
@@ -41593,9 +41642,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  sealeo: [
+  "sealeo": [
     "aquatail",
     "attract",
     "aurorabeam",
@@ -41654,9 +41703,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  walrein: [
+  "walrein": [
     "aquatail",
     "attract",
     "aurorabeam",
@@ -41729,9 +41778,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  clamperl: [
+  "clamperl": [
     "aquaring",
     "attract",
     "barrier",
@@ -41776,9 +41825,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  huntail: [
+  "huntail": [
     "aquatail",
     "attract",
     "batonpass",
@@ -41833,9 +41882,9 @@ const data: Learnsets = {
     "toxic",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  gorebyss: [
+  "gorebyss": [
     "agility",
     "amnesia",
     "aquaring",
@@ -41891,9 +41940,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  relicanth: [
+  "relicanth": [
     "amnesia",
     "ancientpower",
     "aquatail",
@@ -41971,9 +42020,9 @@ const data: Learnsets = {
     "watersport",
     "whirlpool",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  luvdisc: [
+  "luvdisc": [
     "agility",
     "aquajet",
     "aquaring",
@@ -42038,9 +42087,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "wish",
+    "wish"
   ],
-  bagon: [
+  "bagon": [
     "aerialace",
     "attract",
     "bite",
@@ -42112,9 +42161,9 @@ const data: Learnsets = {
     "toxic",
     "twister",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shelgon: [
+  "shelgon": [
     "aerialace",
     "attract",
     "bite",
@@ -42184,9 +42233,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "twister",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  salamence: [
+  "salamence": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -42280,9 +42329,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "twister",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  beldum: [
+  "beldum": [
     "headbutt",
     "holdback",
     "irondefense",
@@ -42291,9 +42340,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "terablast",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  metang: [
+  "metang": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -42387,9 +42436,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "trick",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  metagross: [
+  "metagross": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -42492,9 +42541,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "trick",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  regirock: [
+  "regirock": [
     "ancientpower",
     "block",
     "bodypress",
@@ -42581,9 +42630,9 @@ const data: Learnsets = {
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "zapcannon",
+    "zapcannon"
   ],
-  regice: [
+  "regice": [
     "amnesia",
     "ancientpower",
     "auroraveil",
@@ -42666,9 +42715,9 @@ const data: Learnsets = {
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "zapcannon",
+    "zapcannon"
   ],
-  registeel: [
+  "registeel": [
     "aerialace",
     "amnesia",
     "ancientpower",
@@ -42757,9 +42806,9 @@ const data: Learnsets = {
     "thunderpunch",
     "thunderwave",
     "toxic",
-    "zapcannon",
+    "zapcannon"
   ],
-  latias: [
+  "latias": [
     "aerialace",
     "agility",
     "aircutter",
@@ -42882,9 +42931,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  latios: [
+  "latios": [
     "aerialace",
     "agility",
     "aircutter",
@@ -43000,9 +43049,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kyogre: [
+  "kyogre": [
     "ancientpower",
     "aquaring",
     "aquatail",
@@ -43075,9 +43124,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpulse",
     "waterspout",
-    "whirlpool",
+    "whirlpool"
   ],
-  groudon: [
+  "groudon": [
     "aerialace",
     "ancientpower",
     "block",
@@ -43185,9 +43234,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rayquaza: [
+  "rayquaza": [
     "aerialace",
     "airslash",
     "ancientpower",
@@ -43294,9 +43343,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpulse",
     "whirlpool",
-    "wildcharge",
+    "wildcharge"
   ],
-  jirachi: [
+  "jirachi": [
     "aerialace",
     "allyswitch",
     "amnesia",
@@ -43409,9 +43458,9 @@ const data: Learnsets = {
     "uturn",
     "waterpulse",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  deoxys: [
+  "deoxys": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -43540,12 +43589,12 @@ const data: Learnsets = {
     "wonderroom",
     "wrap",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  deoxysattack: [],
-  deoxysdefense: [],
-  deoxysspeed: [],
-  turtwig: [
+  "deoxysattack": [],
+  "deoxysdefense": [],
+  "deoxysspeed": [],
+  "turtwig": [
     "absorb",
     "amnesia",
     "attract",
@@ -43626,9 +43675,9 @@ const data: Learnsets = {
     "withdraw",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grotle: [
+  "grotle": [
     "absorb",
     "amnesia",
     "attract",
@@ -43701,9 +43750,9 @@ const data: Learnsets = {
     "withdraw",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  torterra: [
+  "torterra": [
     "absorb",
     "amnesia",
     "attract",
@@ -43798,9 +43847,9 @@ const data: Learnsets = {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chimchar: [
+  "chimchar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -43899,9 +43948,9 @@ const data: Learnsets = {
     "vacuumwave",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  monferno: [
+  "monferno": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44002,9 +44051,9 @@ const data: Learnsets = {
     "vacuumwave",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  infernape: [
+  "infernape": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44123,9 +44172,9 @@ const data: Learnsets = {
     "vacuumwave",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  piplup: [
+  "piplup": [
     "aerialace",
     "agility",
     "aquaring",
@@ -44211,9 +44260,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  prinplup: [
+  "prinplup": [
     "aerialace",
     "agility",
     "attract",
@@ -44297,9 +44346,9 @@ const data: Learnsets = {
     "watersport",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  empoleon: [
+  "empoleon": [
     "aerialace",
     "agility",
     "aircutter",
@@ -44411,9 +44460,9 @@ const data: Learnsets = {
     "wavecrash",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  starly: [
+  "starly": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44478,9 +44527,9 @@ const data: Learnsets = {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  staravia: [
+  "staravia": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44538,9 +44587,9 @@ const data: Learnsets = {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  staraptor: [
+  "staraptor": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -44604,9 +44653,9 @@ const data: Learnsets = {
     "uturn",
     "whirlwind",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  bidoof: [
+  "bidoof": [
     "amnesia",
     "aquatail",
     "attract",
@@ -44676,9 +44725,9 @@ const data: Learnsets = {
     "toxic",
     "watersport",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  bibarel: [
+  "bibarel": [
     "amnesia",
     "aquajet",
     "aquatail",
@@ -44758,9 +44807,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  kricketot: [
+  "kricketot": [
     "bide",
     "bugbite",
     "endeavor",
@@ -44773,9 +44822,9 @@ const data: Learnsets = {
     "strugglebug",
     "tackle",
     "terablast",
-    "uproar",
+    "uproar"
   ],
-  kricketune: [
+  "kricketune": [
     "absorb",
     "aerialace",
     "attract",
@@ -44848,9 +44897,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "xscissor",
+    "xscissor"
   ],
-  shinx: [
+  "shinx": [
     "attract",
     "babydolleyes",
     "bite",
@@ -44922,9 +44971,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  luxio: [
+  "luxio": [
     "attract",
     "bite",
     "captivate",
@@ -44991,9 +45040,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  luxray: [
+  "luxray": [
     "agility",
     "attract",
     "bite",
@@ -45068,9 +45117,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  cranidos: [
+  "cranidos": [
     "ancientpower",
     "assurance",
     "attract",
@@ -45155,9 +45204,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rampardos: [
+  "rampardos": [
     "ancientpower",
     "assurance",
     "attract",
@@ -45256,9 +45305,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shieldon: [
+  "shieldon": [
     "ancientpower",
     "attract",
     "blizzard",
@@ -45335,9 +45384,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "trailblaze",
-    "wideguard",
+    "wideguard"
   ],
-  bastiodon: [
+  "bastiodon": [
     "ancientpower",
     "attract",
     "avalanche",
@@ -45420,18 +45469,18 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "trailblaze",
-    "wideguard",
+    "wideguard"
   ],
-  burmy: [
+  "burmy": [
     "bugbite",
     "electroweb",
     "hiddenpower",
     "protect",
     "snore",
     "stringshot",
-    "tackle",
+    "tackle"
   ],
-  wormadam: [
+  "wormadam": [
     "allyswitch",
     "attract",
     "bugbite",
@@ -45491,9 +45540,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  wormadamsandy: [
+  "wormadamsandy": [
     "allyswitch",
     "attract",
     "bugbite",
@@ -45554,9 +45603,9 @@ const data: Learnsets = {
     "thief",
     "toxic",
     "uproar",
-    "venoshock",
+    "venoshock"
   ],
-  wormadamtrash: [
+  "wormadamtrash": [
     "allyswitch",
     "attract",
     "bugbite",
@@ -45615,9 +45664,9 @@ const data: Learnsets = {
     "thief",
     "toxic",
     "uproar",
-    "venoshock",
+    "venoshock"
   ],
-  mothim: [
+  "mothim": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -45680,9 +45729,9 @@ const data: Learnsets = {
     "toxic",
     "twister",
     "uturn",
-    "venoshock",
+    "venoshock"
   ],
-  combee: [
+  "combee": [
     "aircutter",
     "bugbite",
     "bugbuzz",
@@ -45700,9 +45749,9 @@ const data: Learnsets = {
     "sweetscent",
     "swift",
     "tailwind",
-    "terablast",
+    "terablast"
   ],
-  vespiquen: [
+  "vespiquen": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -45795,9 +45844,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  pachirisu: [
+  "pachirisu": [
     "aerialace",
     "agility",
     "alluringvoice",
@@ -45887,9 +45936,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  buizel: [
+  "buizel": [
     "agility",
     "aquajet",
     "aquaring",
@@ -45975,9 +46024,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "wavecrash",
-    "whirlpool",
+    "whirlpool"
   ],
-  floatzel: [
+  "floatzel": [
     "agility",
     "aquajet",
     "aquatail",
@@ -46064,9 +46113,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "wavecrash",
-    "whirlpool",
+    "whirlpool"
   ],
-  cherubi: [
+  "cherubi": [
     "aromatherapy",
     "attract",
     "bulletseed",
@@ -46124,9 +46173,9 @@ const data: Learnsets = {
     "tickle",
     "toxic",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  cherrim: [
+  "cherrim": [
     "attract",
     "bulletseed",
     "captivate",
@@ -46182,9 +46231,9 @@ const data: Learnsets = {
     "takedown",
     "toxic",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  shellos: [
+  "shellos": [
     "acidarmor",
     "amnesia",
     "ancientpower",
@@ -46259,9 +46308,89 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "yawn",
+    "yawn"
   ],
-  gastrodon: [
+  "gastrodon": [
+    "amnesia",
+    "ancientpower",
+    "attract",
+    "blizzard",
+    "block",
+    "bodyslam",
+    "brine",
+    "bulldoze",
+    "captivate",
+    "chillingwater",
+    "confide",
+    "curse",
+    "dig",
+    "dive",
+    "doubleteam",
+    "earthpower",
+    "earthquake",
+    "endure",
+    "facade",
+    "flash",
+    "frustration",
+    "gigaimpact",
+    "hail",
+    "harden",
+    "headbutt",
+    "helpinghand",
+    "hiddenpower",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icywind",
+    "infestation",
+    "liquidation",
+    "memento",
+    "mudbomb",
+    "muddywater",
+    "mudshot",
+    "mudslap",
+    "mudsport",
+    "naturalgift",
+    "painsplit",
+    "protect",
+    "raindance",
+    "recover",
+    "rest",
+    "return",
+    "rockblast",
+    "rockslide",
+    "rocksmash",
+    "rocktomb",
+    "round",
+    "sandstorm",
+    "sandtomb",
+    "scald",
+    "secretpower",
+    "skittersmack",
+    "sleeptalk",
+    "sludgebomb",
+    "sludgewave",
+    "snore",
+    "snowscape",
+    "spikes",
+    "stealthrock",
+    "stompingtantrum",
+    "stoneedge",
+    "strength",
+    "stringshot",
+    "substitute",
+    "surf",
+    "swagger",
+    "takedown",
+    "terablast",
+    "toxic",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "weatherball",
+    "whirlpool"
+  ],
+  "gastrodoneast": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -46340,89 +46469,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
+    "yawn"
   ],
-  gastrodoneast: [
-    "amnesia",
-    "ancientpower",
-    "attract",
-    "blizzard",
-    "block",
-    "bodyslam",
-    "brine",
-    "bulldoze",
-    "captivate",
-    "chillingwater",
-    "confide",
-    "curse",
-    "dig",
-    "dive",
-    "doubleteam",
-    "earthpower",
-    "earthquake",
-    "endure",
-    "facade",
-    "flash",
-    "frustration",
-    "gigaimpact",
-    "hail",
-    "harden",
-    "headbutt",
-    "helpinghand",
-    "hiddenpower",
-    "hydropump",
-    "hyperbeam",
-    "icebeam",
-    "icywind",
-    "infestation",
-    "liquidation",
-    "memento",
-    "mudbomb",
-    "muddywater",
-    "mudshot",
-    "mudslap",
-    "mudsport",
-    "naturalgift",
-    "painsplit",
-    "protect",
-    "raindance",
-    "recover",
-    "rest",
-    "return",
-    "rockblast",
-    "rockslide",
-    "rocksmash",
-    "rocktomb",
-    "round",
-    "sandstorm",
-    "sandtomb",
-    "scald",
-    "secretpower",
-    "skittersmack",
-    "sleeptalk",
-    "sludgebomb",
-    "sludgewave",
-    "snore",
-    "snowscape",
-    "spikes",
-    "stealthrock",
-    "stompingtantrum",
-    "stoneedge",
-    "strength",
-    "stringshot",
-    "substitute",
-    "surf",
-    "swagger",
-    "takedown",
-    "terablast",
-    "toxic",
-    "waterfall",
-    "watergun",
-    "waterpulse",
-    "weatherball",
-    "whirlpool",
-    "yawn",
-  ],
-  drifloon: [
+  "drifloon": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -46515,9 +46564,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  drifblim: [
+  "drifblim": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -46611,9 +46660,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "weatherball",
-    "willowisp",
+    "willowisp"
   ],
-  buneary: [
+  "buneary": [
     "afteryou",
     "agility",
     "assurance",
@@ -46705,9 +46754,9 @@ const data: Learnsets = {
     "tripleaxel",
     "uproar",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  lopunny: [
+  "lopunny": [
     "acrobatics",
     "afteryou",
     "agility",
@@ -46806,9 +46855,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  glameow: [
+  "glameow": [
     "aerialace",
     "assist",
     "assurance",
@@ -46881,9 +46930,9 @@ const data: Learnsets = {
     "uturn",
     "wakeupslap",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  purugly: [
+  "purugly": [
     "aerialace",
     "assist",
     "attract",
@@ -46955,9 +47004,9 @@ const data: Learnsets = {
     "toxic",
     "uturn",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  stunky: [
+  "stunky": [
     "acidspray",
     "assurance",
     "astonish",
@@ -47050,9 +47099,9 @@ const data: Learnsets = {
     "toxicspikes",
     "trailblaze",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  skuntank: [
+  "skuntank": [
     "acidspray",
     "assurance",
     "attract",
@@ -47146,9 +47195,9 @@ const data: Learnsets = {
     "toxicspikes",
     "trailblaze",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  bronzor: [
+  "bronzor": [
     "allyswitch",
     "ancientpower",
     "bodyslam",
@@ -47233,9 +47282,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bronzong: [
+  "bronzong": [
     "allyswitch",
     "ancientpower",
     "block",
@@ -47333,9 +47382,9 @@ const data: Learnsets = {
     "trickroom",
     "weatherball",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chatot: [
+  "chatot": [
     "aerialace",
     "agility",
     "aircutter",
@@ -47394,9 +47443,9 @@ const data: Learnsets = {
     "twister",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  spiritomb: [
+  "spiritomb": [
     "allyswitch",
     "attract",
     "bodyslam",
@@ -47481,9 +47530,9 @@ const data: Learnsets = {
     "uproar",
     "waterpulse",
     "willowisp",
-    "wonderroom",
+    "wonderroom"
   ],
-  gible: [
+  "gible": [
     "aerialace",
     "attract",
     "bite",
@@ -47560,9 +47609,9 @@ const data: Learnsets = {
     "thrash",
     "thunderfang",
     "toxic",
-    "twister",
+    "twister"
   ],
-  gabite: [
+  "gabite": [
     "aerialace",
     "attract",
     "bite",
@@ -47643,9 +47692,9 @@ const data: Learnsets = {
     "terablast",
     "thunderfang",
     "toxic",
-    "twister",
+    "twister"
   ],
-  garchomp: [
+  "garchomp": [
     "aerialace",
     "aquatail",
     "attract",
@@ -47738,9 +47787,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "twister",
-    "whirlpool",
+    "whirlpool"
   ],
-  riolu: [
+  "riolu": [
     "aerialace",
     "agility",
     "attract",
@@ -47837,9 +47886,9 @@ const data: Learnsets = {
     "upperhand",
     "vacuumwave",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lucario: [
+  "lucario": [
     "aerialace",
     "agility",
     "attract",
@@ -47953,9 +48002,9 @@ const data: Learnsets = {
     "vacuumwave",
     "waterpulse",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hippopotas: [
+  "hippopotas": [
     "amnesia",
     "attract",
     "bite",
@@ -48022,9 +48071,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlwind",
-    "yawn",
+    "yawn"
   ],
-  hippowdon: [
+  "hippowdon": [
     "amnesia",
     "attract",
     "bite",
@@ -48093,9 +48142,9 @@ const data: Learnsets = {
     "toxic",
     "waterpulse",
     "weatherball",
-    "yawn",
+    "yawn"
   ],
-  skorupi: [
+  "skorupi": [
     "acupressure",
     "aerialace",
     "agility",
@@ -48172,9 +48221,9 @@ const data: Learnsets = {
     "twineedle",
     "venoshock",
     "whirlwind",
-    "xscissor",
+    "xscissor"
   ],
-  drapion: [
+  "drapion": [
     "acupressure",
     "aerialace",
     "agility",
@@ -48264,9 +48313,9 @@ const data: Learnsets = {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  croagunk: [
+  "croagunk": [
     "acidspray",
     "acupressure",
     "aerialace",
@@ -48376,9 +48425,9 @@ const data: Learnsets = {
     "venoshock",
     "wakeupslap",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  toxicroak: [
+  "toxicroak": [
     "acidspray",
     "aerialace",
     "assurance",
@@ -48485,9 +48534,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  carnivine: [
+  "carnivine": [
     "acidspray",
     "attract",
     "bind",
@@ -48556,9 +48605,9 @@ const data: Learnsets = {
     "toxic",
     "vinewhip",
     "worryseed",
-    "wringout",
+    "wringout"
   ],
-  finneon: [
+  "finneon": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -48629,9 +48678,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  lumineon: [
+  "lumineon": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -48700,9 +48749,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  snover: [
+  "snover": [
     "attract",
     "avalanche",
     "blizzard",
@@ -48777,9 +48826,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  abomasnow: [
+  "abomasnow": [
     "attract",
     "auroraveil",
     "avalanche",
@@ -48873,9 +48922,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  rotom: [
+  "rotom": [
     "allyswitch",
     "astonish",
     "charge",
@@ -48942,14 +48991,24 @@ const data: Learnsets = {
     "trick",
     "uproar",
     "voltswitch",
-    "willowisp",
+    "willowisp"
   ],
-  rotomheat: ["overheat"],
-  rotomwash: ["hydropump"],
-  rotomfrost: ["blizzard"],
-  rotomfan: ["airslash"],
-  rotommow: ["leafstorm"],
-  uxie: [
+  "rotomheat": [
+    "overheat"
+  ],
+  "rotomwash": [
+    "hydropump"
+  ],
+  "rotomfrost": [
+    "blizzard"
+  ],
+  "rotomfan": [
+    "airslash"
+  ],
+  "rotommow": [
+    "leafstorm"
+  ],
+  "uxie": [
     "acrobatics",
     "allyswitch",
     "amnesia",
@@ -49046,9 +49105,9 @@ const data: Learnsets = {
     "waterpulse",
     "wonderroom",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mesprit: [
+  "mesprit": [
     "acrobatics",
     "allyswitch",
     "batonpass",
@@ -49145,9 +49204,9 @@ const data: Learnsets = {
     "uturn",
     "waterpulse",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  azelf: [
+  "azelf": [
     "acrobatics",
     "allyswitch",
     "assurance",
@@ -49247,9 +49306,9 @@ const data: Learnsets = {
     "uturn",
     "waterpulse",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dialga: [
+  "dialga": [
     "aerialace",
     "ancientpower",
     "aurasphere",
@@ -49341,10 +49400,10 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "trickroom",
-    "twister",
+    "twister"
   ],
-  dialgaorigin: [],
-  palkia: [
+  "dialgaorigin": [],
+  "palkia": [
     "aerialace",
     "ancientpower",
     "aquaring",
@@ -49442,10 +49501,10 @@ const data: Learnsets = {
     "twister",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  palkiaorigin: [],
-  heatran: [
+  "palkiaorigin": [],
+  "heatran": [
     "ancientpower",
     "attract",
     "bodypress",
@@ -49531,9 +49590,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  regigigas: [
+  "regigigas": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -49617,9 +49676,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "wideguard",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  giratina: [
+  "giratina": [
     "aerialace",
     "aircutter",
     "ancientpower",
@@ -49716,10 +49775,10 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "twister",
-    "willowisp",
+    "willowisp"
   ],
-  giratinaorigin: [],
-  cresselia: [
+  "giratinaorigin": [],
+  "cresselia": [
     "allyswitch",
     "attract",
     "aurorabeam",
@@ -49799,9 +49858,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "trickroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  phione: [
+  "phione": [
     "acidarmor",
     "alluringvoice",
     "ancientpower",
@@ -49867,9 +49926,9 @@ const data: Learnsets = {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  manaphy: [
+  "manaphy": [
     "acidarmor",
     "alluringvoice",
     "ancientpower",
@@ -49950,9 +50009,9 @@ const data: Learnsets = {
     "watersport",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darkrai: [
+  "darkrai": [
     "aerialace",
     "blizzard",
     "brickbreak",
@@ -50048,9 +50107,9 @@ const data: Learnsets = {
     "trick",
     "willowisp",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  shaymin: [
+  "shaymin": [
     "aircutter",
     "airslash",
     "aromatherapy",
@@ -50122,10 +50181,10 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shayminsky: [],
-  arceus: [
+  "shayminsky": [],
+  "arceus": [
     "acidspray",
     "aerialace",
     "agility",
@@ -50300,26 +50359,26 @@ const data: Learnsets = {
     "willowisp",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  arceusbug: [],
-  arceusdark: [],
-  arceusdragon: [],
-  arceuselectric: [],
-  arceusfairy: [],
-  arceusfighting: [],
-  arceusfire: [],
-  arceusflying: [],
-  arceusghost: [],
-  arceusgrass: [],
-  arceusground: [],
-  arceusice: [],
-  arceuspoison: [],
-  arceuspsychic: [],
-  arceusrock: [],
-  arceussteel: [],
-  arceuswater: [],
-  victini: [
+  "arceusbug": [],
+  "arceusdark": [],
+  "arceusdragon": [],
+  "arceuselectric": [],
+  "arceusfairy": [],
+  "arceusfighting": [],
+  "arceusfire": [],
+  "arceusflying": [],
+  "arceusghost": [],
+  "arceusgrass": [],
+  "arceusground": [],
+  "arceusice": [],
+  "arceuspoison": [],
+  "arceuspsychic": [],
+  "arceusrock": [],
+  "arceussteel": [],
+  "arceuswater": [],
+  "victini": [
     "batonpass",
     "blazekick",
     "blueflare",
@@ -50419,9 +50478,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  snivy: [
+  "snivy": [
     "aerialace",
     "aquatail",
     "aromatherapy",
@@ -50499,9 +50558,9 @@ const data: Learnsets = {
     "workup",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  servine: [
+  "servine": [
     "aerialace",
     "aquatail",
     "attract",
@@ -50570,9 +50629,9 @@ const data: Learnsets = {
     "workup",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  serperior: [
+  "serperior": [
     "aerialace",
     "aquatail",
     "attract",
@@ -50655,9 +50714,9 @@ const data: Learnsets = {
     "workup",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  tepig: [
+  "tepig": [
     "assurance",
     "attract",
     "bodyslam",
@@ -50729,9 +50788,9 @@ const data: Learnsets = {
     "willowisp",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pignite: [
+  "pignite": [
     "armthrust",
     "assurance",
     "attract",
@@ -50819,9 +50878,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  emboar: [
+  "emboar": [
     "armthrust",
     "assurance",
     "attract",
@@ -50921,9 +50980,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oshawott: [
+  "oshawott": [
     "aerialace",
     "airslash",
     "aquacutter",
@@ -51000,9 +51059,9 @@ const data: Learnsets = {
     "watersport",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  dewott: [
+  "dewott": [
     "aerialace",
     "airslash",
     "aquajet",
@@ -51072,9 +51131,9 @@ const data: Learnsets = {
     "watersport",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  samurott: [
+  "samurott": [
     "aerialace",
     "airslash",
     "aquajet",
@@ -51160,9 +51219,9 @@ const data: Learnsets = {
     "watersport",
     "whirlpool",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  samurotthisui: [
+  "samurotthisui": [
     "aerialace",
     "airslash",
     "aquajet",
@@ -51227,9 +51286,9 @@ const data: Learnsets = {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "xscissor",
+    "xscissor"
   ],
-  patrat: [
+  "patrat": [
     "afteryou",
     "aquatail",
     "assurance",
@@ -51292,9 +51351,9 @@ const data: Learnsets = {
     "thunderbolt",
     "toxic",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  watchog: [
+  "watchog": [
     "afteryou",
     "aquatail",
     "attract",
@@ -51371,9 +51430,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lillipup: [
+  "lillipup": [
     "aerialace",
     "afteryou",
     "attract",
@@ -51433,9 +51492,9 @@ const data: Learnsets = {
     "uproar",
     "wildcharge",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  herdier: [
+  "herdier": [
     "aerialace",
     "afteryou",
     "attract",
@@ -51491,9 +51550,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  stoutland: [
+  "stoutland": [
     "aerialace",
     "afteryou",
     "attract",
@@ -51554,9 +51613,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  purrloin: [
+  "purrloin": [
     "aerialace",
     "assist",
     "assurance",
@@ -51630,9 +51689,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "uturn",
-    "yawn",
+    "yawn"
   ],
-  liepard: [
+  "liepard": [
     "aerialace",
     "assist",
     "assurance",
@@ -51709,9 +51768,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "trick",
-    "uturn",
+    "uturn"
   ],
-  pansage: [
+  "pansage": [
     "acrobatics",
     "astonish",
     "attract",
@@ -51783,9 +51842,9 @@ const data: Learnsets = {
     "uproar",
     "vinewhip",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  simisage: [
+  "simisage": [
     "acrobatics",
     "attract",
     "brickbreak",
@@ -51849,9 +51908,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  pansear: [
+  "pansear": [
     "acrobatics",
     "amnesia",
     "astonish",
@@ -51923,9 +51982,9 @@ const data: Learnsets = {
     "uproar",
     "willowisp",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  simisear: [
+  "simisear": [
     "acrobatics",
     "attract",
     "brickbreak",
@@ -51991,9 +52050,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  panpour: [
+  "panpour": [
     "acrobatics",
     "aquaring",
     "aquatail",
@@ -52067,9 +52126,9 @@ const data: Learnsets = {
     "waterpledge",
     "waterpulse",
     "watersport",
-    "workup",
+    "workup"
   ],
-  simipour: [
+  "simipour": [
     "acrobatics",
     "aquatail",
     "attract",
@@ -52136,9 +52195,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpledge",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  munna: [
+  "munna": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -52213,9 +52272,9 @@ const data: Learnsets = {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  musharna: [
+  "musharna": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -52286,9 +52345,9 @@ const data: Learnsets = {
     "wonderroom",
     "worryseed",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pidove: [
+  "pidove": [
     "aerialace",
     "agility",
     "aircutter",
@@ -52340,9 +52399,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "wish",
-    "workup",
+    "workup"
   ],
-  tranquill: [
+  "tranquill": [
     "aerialace",
     "agility",
     "aircutter",
@@ -52388,9 +52447,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  unfezant: [
+  "unfezant": [
     "aerialace",
     "agility",
     "aircutter",
@@ -52441,9 +52500,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  blitzle: [
+  "blitzle": [
     "agility",
     "attract",
     "batonpass",
@@ -52508,9 +52567,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  zebstrika: [
+  "zebstrika": [
     "agility",
     "allyswitch",
     "attract",
@@ -52580,9 +52639,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  roggenrola: [
+  "roggenrola": [
     "attract",
     "autotomize",
     "block",
@@ -52633,9 +52692,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "toxic",
-    "wideguard",
+    "wideguard"
   ],
-  boldore: [
+  "boldore": [
     "attract",
     "block",
     "bodypress",
@@ -52683,9 +52742,9 @@ const data: Learnsets = {
     "substitute",
     "swagger",
     "tackle",
-    "toxic",
+    "toxic"
   ],
-  gigalith: [
+  "gigalith": [
     "attract",
     "block",
     "bodypress",
@@ -52741,9 +52800,9 @@ const data: Learnsets = {
     "tackle",
     "throatchop",
     "toxic",
-    "weatherball",
+    "weatherball"
   ],
-  woobat: [
+  "woobat": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -52832,9 +52891,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "venomdrench",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  swoobat: [
+  "swoobat": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -52923,9 +52982,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "venomdrench",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  drilbur: [
+  "drilbur": [
     "aerialace",
     "attract",
     "brickbreak",
@@ -52988,9 +53047,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  excadrill: [
+  "excadrill": [
     "aerialace",
     "attract",
     "bodyslam",
@@ -53064,9 +53123,9 @@ const data: Learnsets = {
     "terablast",
     "throatchop",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  audino: [
+  "audino": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -53174,9 +53233,9 @@ const data: Learnsets = {
     "wish",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  timburr: [
+  "timburr": [
     "attract",
     "bide",
     "block",
@@ -53256,9 +53315,9 @@ const data: Learnsets = {
     "toxic",
     "wakeupslap",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  gurdurr: [
+  "gurdurr": [
     "attract",
     "bide",
     "block",
@@ -53331,9 +53390,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  conkeldurr: [
+  "conkeldurr": [
     "attract",
     "bide",
     "block",
@@ -53414,9 +53473,9 @@ const data: Learnsets = {
     "toxic",
     "upperhand",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  tympole: [
+  "tympole": [
     "acid",
     "afteryou",
     "aquaring",
@@ -53467,9 +53526,9 @@ const data: Learnsets = {
     "uproar",
     "venomdrench",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  palpitoad: [
+  "palpitoad": [
     "acid",
     "afteryou",
     "aquaring",
@@ -53521,9 +53580,9 @@ const data: Learnsets = {
     "uproar",
     "venomdrench",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  seismitoad: [
+  "seismitoad": [
     "acid",
     "afteryou",
     "aquaring",
@@ -53599,9 +53658,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  throh: [
+  "throh": [
     "attract",
     "bide",
     "bind",
@@ -53671,9 +53730,9 @@ const data: Learnsets = {
     "vitalthrow",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sawk: [
+  "sawk": [
     "attract",
     "bide",
     "block",
@@ -53741,9 +53800,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sewaddle: [
+  "sewaddle": [
     "agility",
     "airslash",
     "attract",
@@ -53809,9 +53868,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  swadloon: [
+  "swadloon": [
     "attract",
     "batonpass",
     "bugbite",
@@ -53869,9 +53928,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  leavanny: [
+  "leavanny": [
     "aerialace",
     "agility",
     "airslash",
@@ -53954,9 +54013,9 @@ const data: Learnsets = {
     "trailblaze",
     "tripleaxel",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  venipede: [
+  "venipede": [
     "agility",
     "attract",
     "bite",
@@ -54008,9 +54067,9 @@ const data: Learnsets = {
     "toxicspikes",
     "twineedle",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  whirlipede: [
+  "whirlipede": [
     "agility",
     "attract",
     "bugbite",
@@ -54059,9 +54118,9 @@ const data: Learnsets = {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  scolipede: [
+  "scolipede": [
     "agility",
     "aquatail",
     "assurance",
@@ -54132,9 +54191,9 @@ const data: Learnsets = {
     "toxicspikes",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  cottonee: [
+  "cottonee": [
     "absorb",
     "attract",
     "beatup",
@@ -54195,9 +54254,9 @@ const data: Learnsets = {
     "terablast",
     "tickle",
     "toxic",
-    "worryseed",
+    "worryseed"
   ],
-  whimsicott: [
+  "whimsicott": [
     "absorb",
     "attract",
     "beatup",
@@ -54266,9 +54325,9 @@ const data: Learnsets = {
     "toxic",
     "trickroom",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  petilil: [
+  "petilil": [
     "absorb",
     "afteryou",
     "aromatherapy",
@@ -54326,9 +54385,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "trailblaze",
-    "worryseed",
+    "worryseed"
   ],
-  lilligant: [
+  "lilligant": [
     "absorb",
     "afteryou",
     "alluringvoice",
@@ -54395,9 +54454,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "weatherball",
-    "worryseed",
+    "worryseed"
   ],
-  lilliganthisui: [
+  "lilliganthisui": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -54459,9 +54518,9 @@ const data: Learnsets = {
     "upperhand",
     "vacuumwave",
     "victorydance",
-    "weatherball",
+    "weatherball"
   ],
-  basculin: [
+  "basculin": [
     "agility",
     "aquajet",
     "aquatail",
@@ -54535,9 +54594,9 @@ const data: Learnsets = {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  basculinwhitestriped: [
+  "basculinwhitestriped": [
     "agility",
     "aquajet",
     "bite",
@@ -54583,67 +54642,9 @@ const data: Learnsets = {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  basculegion: [
-    "agility",
-    "aquajet",
-    "bite",
-    "blizzard",
-    "chillingwater",
-    "confuseray",
-    "crunch",
-    "doubleedge",
-    "endeavor",
-    "endure",
-    "facade",
-    "flail",
-    "flipturn",
-    "gigaimpact",
-    "headbutt",
-    "headsmash",
-    "hex",
-    "hydropump",
-    "hyperbeam",
-    "icebeam",
-    "icefang",
-    "icywind",
-    "lastrespects",
-    "liquidation",
-    "muddywater",
-    "mudshot",
-    "nightshade",
-    "outrage",
-    "painsplit",
-    "phantomforce",
-    "protect",
-    "psychicfangs",
-    "raindance",
-    "rest",
-    "scaleshot",
-    "scaryface",
-    "shadowball",
-    "sleeptalk",
-    "snowscape",
-    "soak",
-    "spite",
-    "substitute",
-    "surf",
-    "swift",
-    "tackle",
-    "tailwhip",
-    "takedown",
-    "terablast",
-    "thrash",
-    "uproar",
-    "waterfall",
-    "watergun",
-    "waterpulse",
-    "wavecrash",
-    "whirlpool",
-    "zenheadbutt",
-  ],
-  basculegionf: [
+  "basculegion": [
     "agility",
     "aquajet",
     "bite",
@@ -54699,9 +54700,67 @@ const data: Learnsets = {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sandile: [
+  "basculegionf": [
+    "agility",
+    "aquajet",
+    "bite",
+    "blizzard",
+    "chillingwater",
+    "confuseray",
+    "crunch",
+    "doubleedge",
+    "endeavor",
+    "endure",
+    "facade",
+    "flail",
+    "flipturn",
+    "gigaimpact",
+    "headbutt",
+    "headsmash",
+    "hex",
+    "hydropump",
+    "hyperbeam",
+    "icebeam",
+    "icefang",
+    "icywind",
+    "lastrespects",
+    "liquidation",
+    "muddywater",
+    "mudshot",
+    "nightshade",
+    "outrage",
+    "painsplit",
+    "phantomforce",
+    "protect",
+    "psychicfangs",
+    "raindance",
+    "rest",
+    "scaleshot",
+    "scaryface",
+    "shadowball",
+    "sleeptalk",
+    "snowscape",
+    "soak",
+    "spite",
+    "substitute",
+    "surf",
+    "swift",
+    "tackle",
+    "tailwhip",
+    "takedown",
+    "terablast",
+    "thrash",
+    "uproar",
+    "waterfall",
+    "watergun",
+    "waterpulse",
+    "wavecrash",
+    "whirlpool",
+    "zenheadbutt"
+  ],
+  "sandile": [
     "aquatail",
     "assurance",
     "attract",
@@ -54781,9 +54840,9 @@ const data: Learnsets = {
     "thunderfang",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  krokorok: [
+  "krokorok": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -54875,9 +54934,9 @@ const data: Learnsets = {
     "thunderfang",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  krookodile: [
+  "krookodile": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -54985,9 +55044,9 @@ const data: Learnsets = {
     "thunderfang",
     "torment",
     "toxic",
-    "uproar",
+    "uproar"
   ],
-  darumaka: [
+  "darumaka": [
     "attract",
     "bellydrum",
     "bite",
@@ -55055,9 +55114,9 @@ const data: Learnsets = {
     "willowisp",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darumakagalar: [
+  "darumakagalar": [
     "attract",
     "avalanche",
     "bellydrum",
@@ -55114,9 +55173,9 @@ const data: Learnsets = {
     "willowisp",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darmanitan: [
+  "darmanitan": [
     "attract",
     "bellydrum",
     "bite",
@@ -55205,9 +55264,9 @@ const data: Learnsets = {
     "uturn",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  darmanitangalar: [
+  "darmanitangalar": [
     "attract",
     "avalanche",
     "bellydrum",
@@ -55273,9 +55332,9 @@ const data: Learnsets = {
     "uturn",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  maractus: [
+  "maractus": [
     "absorb",
     "acupressure",
     "aerialace",
@@ -55340,9 +55399,9 @@ const data: Learnsets = {
     "uproar",
     "weatherball",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  dwebble: [
+  "dwebble": [
     "aerialace",
     "attract",
     "block",
@@ -55402,9 +55461,9 @@ const data: Learnsets = {
     "toxic",
     "wideguard",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  crustle: [
+  "crustle": [
     "aerialace",
     "attract",
     "block",
@@ -55468,9 +55527,9 @@ const data: Learnsets = {
     "swordsdance",
     "toxic",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  scraggy: [
+  "scraggy": [
     "acidspray",
     "amnesia",
     "assurance",
@@ -55571,9 +55630,9 @@ const data: Learnsets = {
     "upperhand",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  scrafty: [
+  "scrafty": [
     "acidspray",
     "amnesia",
     "assurance",
@@ -55677,9 +55736,9 @@ const data: Learnsets = {
     "upperhand",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sigilyph: [
+  "sigilyph": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -55762,9 +55821,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  yamask: [
+  "yamask": [
     "afteryou",
     "allyswitch",
     "astonish",
@@ -55834,9 +55893,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  yamaskgalar: [
+  "yamaskgalar": [
     "allyswitch",
     "astonish",
     "attract",
@@ -55886,9 +55945,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cofagrigus: [
+  "cofagrigus": [
     "afteryou",
     "allyswitch",
     "astonish",
@@ -55965,9 +56024,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  runerigus: [
+  "runerigus": [
     "allyswitch",
     "amnesia",
     "astonish",
@@ -56034,9 +56093,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tirtouga: [
+  "tirtouga": [
     "ancientpower",
     "aquajet",
     "aquatail",
@@ -56105,9 +56164,9 @@ const data: Learnsets = {
     "whirlpool",
     "wideguard",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  carracosta: [
+  "carracosta": [
     "ancientpower",
     "aquajet",
     "aquatail",
@@ -56180,9 +56239,9 @@ const data: Learnsets = {
     "whirlpool",
     "wideguard",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  archen: [
+  "archen": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -56257,9 +56316,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  archeops: [
+  "archeops": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -56339,9 +56398,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  trubbish: [
+  "trubbish": [
     "acidspray",
     "amnesia",
     "attract",
@@ -56398,9 +56457,9 @@ const data: Learnsets = {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  garbodor: [
+  "garbodor": [
     "acidspray",
     "amnesia",
     "attract",
@@ -56466,9 +56525,9 @@ const data: Learnsets = {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  zorua: [
+  "zorua": [
     "aerialace",
     "agility",
     "assurance",
@@ -56552,9 +56611,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  zoruahisui: [
+  "zoruahisui": [
     "agility",
     "bittermalice",
     "burningjealousy",
@@ -56610,9 +56669,9 @@ const data: Learnsets = {
     "torment",
     "trick",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  zoroark: [
+  "zoroark": [
     "aerialace",
     "agility",
     "assurance",
@@ -56706,9 +56765,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  zoroarkhisui: [
+  "zoroarkhisui": [
     "aerialace",
     "agility",
     "bittermalice",
@@ -56777,9 +56836,9 @@ const data: Learnsets = {
     "torment",
     "trick",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  minccino: [
+  "minccino": [
     "afteryou",
     "alluringvoice",
     "aquatail",
@@ -56852,9 +56911,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "wakeupslap",
-    "workup",
+    "workup"
   ],
-  cinccino: [
+  "cinccino": [
     "afteryou",
     "alluringvoice",
     "aquatail",
@@ -56929,9 +56988,9 @@ const data: Learnsets = {
     "tripleaxel",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  gothita: [
+  "gothita": [
     "allyswitch",
     "attract",
     "calmmind",
@@ -57020,9 +57079,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gothorita: [
+  "gothorita": [
     "allyswitch",
     "attract",
     "calmmind",
@@ -57107,9 +57166,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gothitelle: [
+  "gothitelle": [
     "allyswitch",
     "attract",
     "bodyslam",
@@ -57202,9 +57261,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  solosis: [
+  "solosis": [
     "acidarmor",
     "afteryou",
     "allyswitch",
@@ -57283,9 +57342,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  duosion: [
+  "duosion": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -57362,9 +57421,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  reuniclus: [
+  "reuniclus": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -57462,9 +57521,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ducklett: [
+  "ducklett": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -57524,9 +57583,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "wingattack",
+    "wingattack"
   ],
-  swanna: [
+  "swanna": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -57588,9 +57647,9 @@ const data: Learnsets = {
     "watersport",
     "weatherball",
     "whirlpool",
-    "wingattack",
+    "wingattack"
   ],
-  vanillite: [
+  "vanillite": [
     "acidarmor",
     "allyswitch",
     "astonish",
@@ -57642,9 +57701,9 @@ const data: Learnsets = {
     "taunt",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  vanillish: [
+  "vanillish": [
     "acidarmor",
     "allyswitch",
     "astonish",
@@ -57691,9 +57750,9 @@ const data: Learnsets = {
     "taunt",
     "toxic",
     "uproar",
-    "waterpulse",
+    "waterpulse"
   ],
-  vanilluxe: [
+  "vanilluxe": [
     "acidarmor",
     "allyswitch",
     "astonish",
@@ -57745,9 +57804,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  deerling: [
+  "deerling": [
     "agility",
     "aromatherapy",
     "attract",
@@ -57818,9 +57877,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sawsbuck: [
+  "sawsbuck": [
     "agility",
     "aromatherapy",
     "attract",
@@ -57900,9 +57959,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  emolga: [
+  "emolga": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -57969,9 +58028,9 @@ const data: Learnsets = {
     "toxic",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  karrablast: [
+  "karrablast": [
     "acidspray",
     "aerialace",
     "attract",
@@ -58024,9 +58083,9 @@ const data: Learnsets = {
     "swordsdance",
     "takedown",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  escavalier: [
+  "escavalier": [
     "acidspray",
     "aerialace",
     "agility",
@@ -58093,9 +58152,9 @@ const data: Learnsets = {
     "taunt",
     "toxic",
     "twineedle",
-    "xscissor",
+    "xscissor"
   ],
-  foongus: [
+  "foongus": [
     "absorb",
     "afteryou",
     "astonish",
@@ -58151,9 +58210,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  amoonguss: [
+  "amoonguss": [
     "absorb",
     "afteryou",
     "astonish",
@@ -58211,9 +58270,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "venoshock",
-    "worryseed",
+    "worryseed"
   ],
-  frillish: [
+  "frillish": [
     "absorb",
     "acidarmor",
     "attract",
@@ -58284,9 +58343,9 @@ const data: Learnsets = {
     "waterspout",
     "whirlpool",
     "willowisp",
-    "wringout",
+    "wringout"
   ],
-  jellicent: [
+  "jellicent": [
     "absorb",
     "acidarmor",
     "attract",
@@ -58356,9 +58415,9 @@ const data: Learnsets = {
     "waterspout",
     "whirlpool",
     "willowisp",
-    "wringout",
+    "wringout"
   ],
-  alomomola: [
+  "alomomola": [
     "acrobatics",
     "alluringvoice",
     "aquajet",
@@ -58432,9 +58491,9 @@ const data: Learnsets = {
     "whirlpool",
     "wideguard",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  joltik: [
+  "joltik": [
     "absorb",
     "agility",
     "attract",
@@ -58503,9 +58562,9 @@ const data: Learnsets = {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  galvantula: [
+  "galvantula": [
     "absorb",
     "agility",
     "attract",
@@ -58575,9 +58634,9 @@ const data: Learnsets = {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  ferroseed: [
+  "ferroseed": [
     "acidspray",
     "assurance",
     "attract",
@@ -58637,9 +58696,9 @@ const data: Learnsets = {
     "thunderbolt",
     "thunderwave",
     "toxic",
-    "worryseed",
+    "worryseed"
   ],
-  ferrothorn: [
+  "ferrothorn": [
     "aerialace",
     "assurance",
     "attract",
@@ -58713,9 +58772,9 @@ const data: Learnsets = {
     "thunderbolt",
     "thunderwave",
     "toxic",
-    "worryseed",
+    "worryseed"
   ],
-  klink: [
+  "klink": [
     "assurance",
     "autotomize",
     "bind",
@@ -58768,9 +58827,9 @@ const data: Learnsets = {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  klang: [
+  "klang": [
     "allyswitch",
     "assurance",
     "autotomize",
@@ -58824,9 +58883,9 @@ const data: Learnsets = {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  klinklang: [
+  "klinklang": [
     "allyswitch",
     "assurance",
     "autotomize",
@@ -58886,9 +58945,9 @@ const data: Learnsets = {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  tynamo: [
+  "tynamo": [
     "charge",
     "chargebeam",
     "knockoff",
@@ -58896,9 +58955,9 @@ const data: Learnsets = {
     "spark",
     "tackle",
     "terablast",
-    "thunderwave",
+    "thunderwave"
   ],
-  eelektrik: [
+  "eelektrik": [
     "acid",
     "acidspray",
     "acrobatics",
@@ -58959,9 +59018,9 @@ const data: Learnsets = {
     "uturn",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  eelektross: [
+  "eelektross": [
     "acid",
     "acidspray",
     "acrobatics",
@@ -59058,9 +59117,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  elgyem: [
+  "elgyem": [
     "afteryou",
     "agility",
     "allyswitch",
@@ -59142,9 +59201,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  beheeyem: [
+  "beheeyem": [
     "afteryou",
     "agility",
     "allyswitch",
@@ -59228,9 +59287,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  litwick: [
+  "litwick": [
     "acid",
     "acidarmor",
     "allyswitch",
@@ -59302,9 +59361,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  lampent: [
+  "lampent": [
     "allyswitch",
     "astonish",
     "attract",
@@ -59372,9 +59431,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  chandelure: [
+  "chandelure": [
     "allyswitch",
     "astonish",
     "attract",
@@ -59446,9 +59505,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "trickroom",
-    "willowisp",
+    "willowisp"
   ],
-  axew: [
+  "axew": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -59528,9 +59587,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  fraxure: [
+  "fraxure": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -59606,9 +59665,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  haxorus: [
+  "haxorus": [
     "aerialace",
     "aquatail",
     "assurance",
@@ -59694,9 +59753,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  cubchoo: [
+  "cubchoo": [
     "aerialace",
     "assurance",
     "attract",
@@ -59779,9 +59838,9 @@ const data: Learnsets = {
     "trailblaze",
     "waterpulse",
     "xscissor",
-    "yawn",
+    "yawn"
   ],
-  beartic: [
+  "beartic": [
     "aerialace",
     "aquajet",
     "assurance",
@@ -59881,9 +59940,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  cryogonal: [
+  "cryogonal": [
     "acidarmor",
     "acrobatics",
     "ancientpower",
@@ -59949,9 +60008,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "tripleaxel",
-    "waterpulse",
+    "waterpulse"
   ],
-  shelmet: [
+  "shelmet": [
     "absorb",
     "acid",
     "acidarmor",
@@ -60003,9 +60062,9 @@ const data: Learnsets = {
     "toxic",
     "toxicspikes",
     "venoshock",
-    "yawn",
+    "yawn"
   ],
-  accelgor: [
+  "accelgor": [
     "absorb",
     "acid",
     "acidarmor",
@@ -60067,9 +60126,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "watershuriken",
-    "yawn",
+    "yawn"
   ],
-  stunfisk: [
+  "stunfisk": [
     "aquatail",
     "astonish",
     "attract",
@@ -60143,9 +60202,9 @@ const data: Learnsets = {
     "uproar",
     "watergun",
     "waterpulse",
-    "yawn",
+    "yawn"
   ],
-  stunfiskgalar: [
+  "stunfiskgalar": [
     "astonish",
     "attract",
     "bind",
@@ -60202,9 +60261,9 @@ const data: Learnsets = {
     "thunderwave",
     "uproar",
     "watergun",
-    "yawn",
+    "yawn"
   ],
-  mienfoo: [
+  "mienfoo": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -60287,9 +60346,9 @@ const data: Learnsets = {
     "upperhand",
     "uturn",
     "vitalthrow",
-    "workup",
+    "workup"
   ],
-  mienshao: [
+  "mienshao": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -60379,9 +60438,9 @@ const data: Learnsets = {
     "uturn",
     "vacuumwave",
     "wideguard",
-    "workup",
+    "workup"
   ],
-  druddigon: [
+  "druddigon": [
     "aerialace",
     "aquatail",
     "attract",
@@ -60472,9 +60531,9 @@ const data: Learnsets = {
     "thunderfang",
     "thunderpunch",
     "torment",
-    "toxic",
+    "toxic"
   ],
-  golett: [
+  "golett": [
     "allyswitch",
     "astonish",
     "block",
@@ -60563,9 +60622,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "thunderpunch",
-    "toxic",
+    "toxic"
   ],
-  golurk: [
+  "golurk": [
     "allyswitch",
     "astonish",
     "block",
@@ -60670,9 +60729,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "trick",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pawniard: [
+  "pawniard": [
     "aerialace",
     "airslash",
     "assurance",
@@ -60756,9 +60815,9 @@ const data: Learnsets = {
     "thunderwave",
     "torment",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  bisharp: [
+  "bisharp": [
     "aerialace",
     "airslash",
     "assurance",
@@ -60843,9 +60902,9 @@ const data: Learnsets = {
     "thunderwave",
     "torment",
     "toxic",
-    "xscissor",
+    "xscissor"
   ],
-  kingambit: [
+  "kingambit": [
     "aerialace",
     "airslash",
     "assurance",
@@ -60903,9 +60962,9 @@ const data: Learnsets = {
     "thunderwave",
     "torment",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bouffalant: [
+  "bouffalant": [
     "aerialace",
     "amnesia",
     "assurance",
@@ -60978,9 +61037,9 @@ const data: Learnsets = {
     "uproar",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rufflet: [
+  "rufflet": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -61046,9 +61105,9 @@ const data: Learnsets = {
     "whirlwind",
     "wingattack",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  braviary: [
+  "braviary": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -61121,9 +61180,9 @@ const data: Learnsets = {
     "whirlwind",
     "wingattack",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  braviaryhisui: [
+  "braviaryhisui": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -61191,9 +61250,9 @@ const data: Learnsets = {
     "vacuumwave",
     "whirlwind",
     "wingattack",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  vullaby: [
+  "vullaby": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -61266,9 +61325,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "whirlwind",
+    "whirlwind"
   ],
-  mandibuzz: [
+  "mandibuzz": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -61347,9 +61406,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "whirlwind",
+    "whirlwind"
   ],
-  heatmor: [
+  "heatmor": [
     "aerialace",
     "amnesia",
     "attract",
@@ -61429,9 +61488,9 @@ const data: Learnsets = {
     "tickle",
     "toxic",
     "willowisp",
-    "wrap",
+    "wrap"
   ],
-  durant: [
+  "durant": [
     "aerialace",
     "agility",
     "attract",
@@ -61496,9 +61555,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "visegrip",
-    "xscissor",
+    "xscissor"
   ],
-  deino: [
+  "deino": [
     "aquatail",
     "assurance",
     "astonish",
@@ -61565,9 +61624,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zweilous: [
+  "zweilous": [
     "aquatail",
     "assurance",
     "attract",
@@ -61635,9 +61694,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hydreigon: [
+  "hydreigon": [
     "acrobatics",
     "aquatail",
     "assurance",
@@ -61741,9 +61800,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  larvesta: [
+  "larvesta": [
     "absorb",
     "acrobatics",
     "amnesia",
@@ -61804,9 +61863,9 @@ const data: Learnsets = {
     "uturn",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  volcarona: [
+  "volcarona": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -61884,9 +61943,9 @@ const data: Learnsets = {
     "whirlwind",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cobalion: [
+  "cobalion": [
     "aerialace",
     "airslash",
     "aurasphere",
@@ -61968,9 +62027,9 @@ const data: Learnsets = {
     "voltswitch",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  terrakion: [
+  "terrakion": [
     "aerialace",
     "airslash",
     "aurasphere",
@@ -62045,9 +62104,9 @@ const data: Learnsets = {
     "upperhand",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  virizion: [
+  "virizion": [
     "aerialace",
     "airslash",
     "aurasphere",
@@ -62128,9 +62187,9 @@ const data: Learnsets = {
     "workup",
     "worryseed",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tornadus: [
+  "tornadus": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -62212,10 +62271,10 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "weatherball",
+    "weatherball"
   ],
-  tornadustherian: [],
-  thundurus: [
+  "tornadustherian": [],
+  "thundurus": [
     "acrobatics",
     "agility",
     "assurance",
@@ -62305,10 +62364,10 @@ const data: Learnsets = {
     "weatherball",
     "wildboltstorm",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  thundurustherian: [],
-  reshiram: [
+  "thundurustherian": [],
+  "reshiram": [
     "ancientpower",
     "blueflare",
     "bodypress",
@@ -62400,9 +62459,9 @@ const data: Learnsets = {
     "toxic",
     "weatherball",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zekrom: [
+  "zekrom": [
     "ancientpower",
     "bodypress",
     "bodyslam",
@@ -62500,9 +62559,9 @@ const data: Learnsets = {
     "voltswitch",
     "weatherball",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  landorus: [
+  "landorus": [
     "attract",
     "block",
     "bodyslam",
@@ -62581,10 +62640,10 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "uturn",
-    "weatherball",
+    "weatherball"
   ],
-  landorustherian: [],
-  kyurem: [
+  "landorustherian": [],
+  "kyurem": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -62670,9 +62729,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kyuremblack: [
+  "kyuremblack": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -62759,9 +62818,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kyuremwhite: [
+  "kyuremwhite": [
     "aerialace",
     "ancientpower",
     "avalanche",
@@ -62848,9 +62907,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  keldeo: [
+  "keldeo": [
     "aerialace",
     "airslash",
     "aquajet",
@@ -62931,10 +62990,10 @@ const data: Learnsets = {
     "vacuumwave",
     "waterpulse",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  keldeoresolute: [],
-  meloetta: [
+  "keldeoresolute": [],
+  "meloetta": [
     "acrobatics",
     "alluringvoice",
     "allyswitch",
@@ -63040,9 +63099,9 @@ const data: Learnsets = {
     "wakeupslap",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  genesect: [
+  "genesect": [
     "aerialace",
     "allyswitch",
     "assurance",
@@ -63124,13 +63183,13 @@ const data: Learnsets = {
     "uturn",
     "xscissor",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  genesectburn: [],
-  genesectchill: [],
-  genesectdouse: [],
-  genesectshock: [],
-  chespin: [
+  "genesectburn": [],
+  "genesectchill": [],
+  "genesectdouse": [],
+  "genesectshock": [],
+  "chespin": [
     "aerialace",
     "attract",
     "bellydrum",
@@ -63226,9 +63285,9 @@ const data: Learnsets = {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  quilladin: [
+  "quilladin": [
     "aerialace",
     "attract",
     "bite",
@@ -63322,9 +63381,9 @@ const data: Learnsets = {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chesnaught: [
+  "chesnaught": [
     "aerialace",
     "attract",
     "bellydrum",
@@ -63439,9 +63498,9 @@ const data: Learnsets = {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  fennekin: [
+  "fennekin": [
     "agility",
     "attract",
     "burningjealousy",
@@ -63515,9 +63574,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "wish",
-    "workup",
+    "workup"
   ],
-  braixen: [
+  "braixen": [
     "agility",
     "allyswitch",
     "attract",
@@ -63599,9 +63658,9 @@ const data: Learnsets = {
     "willowisp",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  delphox: [
+  "delphox": [
     "agility",
     "allyswitch",
     "attract",
@@ -63704,9 +63763,9 @@ const data: Learnsets = {
     "willowisp",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  froakie: [
+  "froakie": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -63783,9 +63842,9 @@ const data: Learnsets = {
     "waterpledge",
     "waterpulse",
     "watersport",
-    "workup",
+    "workup"
   ],
-  frogadier: [
+  "frogadier": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -63859,9 +63918,9 @@ const data: Learnsets = {
     "watergun",
     "waterpledge",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  greninja: [
+  "greninja": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -63952,9 +64011,9 @@ const data: Learnsets = {
     "waterpulse",
     "watershuriken",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  greninjabond: [
+  "greninjabond": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -64039,9 +64098,9 @@ const data: Learnsets = {
     "waterpulse",
     "watershuriken",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  bunnelby: [
+  "bunnelby": [
     "agility",
     "attract",
     "bounce",
@@ -64106,9 +64165,9 @@ const data: Learnsets = {
     "toxic",
     "uturn",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  diggersby: [
+  "diggersby": [
     "agility",
     "attract",
     "bodyslam",
@@ -64196,9 +64255,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  fletchling: [
+  "fletchling": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -64256,9 +64315,9 @@ const data: Learnsets = {
     "toxic",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  fletchinder: [
+  "fletchinder": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -64321,9 +64380,9 @@ const data: Learnsets = {
     "toxic",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  talonflame: [
+  "talonflame": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -64393,9 +64452,9 @@ const data: Learnsets = {
     "upperhand",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  scatterbug: [
+  "scatterbug": [
     "bugbite",
     "poisonpowder",
     "pounce",
@@ -64404,9 +64463,9 @@ const data: Learnsets = {
     "strugglebug",
     "stunspore",
     "tackle",
-    "terablast",
+    "terablast"
   ],
-  spewpa: [
+  "spewpa": [
     "bugbite",
     "electroweb",
     "harden",
@@ -64414,9 +64473,9 @@ const data: Learnsets = {
     "pounce",
     "protect",
     "strugglebug",
-    "terablast",
+    "terablast"
   ],
-  vivillon: [
+  "vivillon": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -64483,9 +64542,9 @@ const data: Learnsets = {
     "thief",
     "toxic",
     "uturn",
-    "weatherball",
+    "weatherball"
   ],
-  vivillonfancy: [
+  "vivillonfancy": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -64551,9 +64610,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "toxic",
-    "uturn",
+    "uturn"
   ],
-  vivillonpokeball: [
+  "vivillonpokeball": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -64618,9 +64677,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "toxic",
-    "uturn",
+    "uturn"
   ],
-  litleo: [
+  "litleo": [
     "acrobatics",
     "attract",
     "bodyslam",
@@ -64687,9 +64746,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  pyroar: [
+  "pyroar": [
     "acrobatics",
     "attract",
     "bodyslam",
@@ -64759,9 +64818,9 @@ const data: Learnsets = {
     "trailblaze",
     "wildcharge",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  flabebe: [
+  "flabebe": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -64831,9 +64890,9 @@ const data: Learnsets = {
     "trailblaze",
     "vinewhip",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  floette: [
+  "floette": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -64901,9 +64960,9 @@ const data: Learnsets = {
     "trick",
     "vinewhip",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  floetteeternal: [
+  "floetteeternal": [
     "afteryou",
     "allyswitch",
     "aromatherapy",
@@ -64957,9 +65016,9 @@ const data: Learnsets = {
     "toxic",
     "vinewhip",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  florges: [
+  "florges": [
     "afteryou",
     "alluringvoice",
     "allyswitch",
@@ -65029,9 +65088,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "wish",
-    "worryseed",
+    "worryseed"
   ],
-  skiddo: [
+  "skiddo": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -65100,9 +65159,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gogoat: [
+  "gogoat": [
     "aerialace",
     "attract",
     "bodyslam",
@@ -65177,9 +65236,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pancham: [
+  "pancham": [
     "aerialace",
     "armthrust",
     "attract",
@@ -65270,9 +65329,9 @@ const data: Learnsets = {
     "uproar",
     "vitalthrow",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pangoro: [
+  "pangoro": [
     "aerialace",
     "armthrust",
     "attract",
@@ -65384,9 +65443,9 @@ const data: Learnsets = {
     "vitalthrow",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  furfrou: [
+  "furfrou": [
     "attract",
     "babydolleyes",
     "bite",
@@ -65443,9 +65502,9 @@ const data: Learnsets = {
     "uturn",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  espurr: [
+  "espurr": [
     "allyswitch",
     "assist",
     "attract",
@@ -65522,9 +65581,9 @@ const data: Learnsets = {
     "wonderroom",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  meowstic: [
+  "meowstic": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -65613,9 +65672,9 @@ const data: Learnsets = {
     "trickroom",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  meowsticf: [
+  "meowsticf": [
     "alluringvoice",
     "allyswitch",
     "attract",
@@ -65703,9 +65762,9 @@ const data: Learnsets = {
     "trickroom",
     "wonderroom",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  honedge: [
+  "honedge": [
     "aerialace",
     "afteryou",
     "attract",
@@ -65762,9 +65821,9 @@ const data: Learnsets = {
     "swordsdance",
     "tackle",
     "toxic",
-    "wideguard",
+    "wideguard"
   ],
-  doublade: [
+  "doublade": [
     "aerialace",
     "afteryou",
     "attract",
@@ -65818,9 +65877,9 @@ const data: Learnsets = {
     "swagger",
     "swordsdance",
     "tackle",
-    "toxic",
+    "toxic"
   ],
-  aegislash: [
+  "aegislash": [
     "aerialace",
     "afteryou",
     "airslash",
@@ -65883,9 +65942,9 @@ const data: Learnsets = {
     "swordsdance",
     "tackle",
     "toxic",
-    "wideguard",
+    "wideguard"
   ],
-  spritzee: [
+  "spritzee": [
     "afteryou",
     "allyswitch",
     "aromatherapy",
@@ -65948,9 +66007,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "trickroom",
-    "wish",
+    "wish"
   ],
-  aromatisse: [
+  "aromatisse": [
     "afteryou",
     "allyswitch",
     "aromatherapy",
@@ -66018,9 +66077,9 @@ const data: Learnsets = {
     "thunderbolt",
     "torment",
     "toxic",
-    "trickroom",
+    "trickroom"
   ],
-  swirlix: [
+  "swirlix": [
     "afteryou",
     "amnesia",
     "aromatherapy",
@@ -66078,9 +66137,9 @@ const data: Learnsets = {
     "thunderbolt",
     "toxic",
     "wish",
-    "yawn",
+    "yawn"
   ],
-  slurpuff: [
+  "slurpuff": [
     "afteryou",
     "amnesia",
     "aromatherapy",
@@ -66140,9 +66199,9 @@ const data: Learnsets = {
     "thunder",
     "thunderbolt",
     "toxic",
-    "wish",
+    "wish"
   ],
-  inkay: [
+  "inkay": [
     "acupressure",
     "aerialace",
     "allyswitch",
@@ -66228,9 +66287,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "trickroom",
-    "wrap",
+    "wrap"
   ],
-  malamar: [
+  "malamar": [
     "aerialace",
     "allyswitch",
     "attract",
@@ -66318,9 +66377,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "trickroom",
-    "wrap",
+    "wrap"
   ],
-  binacle: [
+  "binacle": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -66406,9 +66465,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  barbaracle: [
+  "barbaracle": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -66506,9 +66565,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "withdraw",
-    "xscissor",
+    "xscissor"
   ],
-  skrelp: [
+  "skrelp": [
     "acid",
     "acidarmor",
     "acidspray",
@@ -66577,9 +66636,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  dragalge: [
+  "dragalge": [
     "acid",
     "acidspray",
     "aquatail",
@@ -66652,9 +66711,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  clauncher: [
+  "clauncher": [
     "aquajet",
     "aquatail",
     "attract",
@@ -66720,9 +66779,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "watersport",
-    "weatherball",
+    "weatherball"
   ],
-  clawitzer: [
+  "clawitzer": [
     "aquajet",
     "aquatail",
     "attract",
@@ -66795,9 +66854,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "watersport",
-    "weatherball",
+    "weatherball"
   ],
-  helioptile: [
+  "helioptile": [
     "agility",
     "allyswitch",
     "attract",
@@ -66860,9 +66919,9 @@ const data: Learnsets = {
     "toxic",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  heliolisk: [
+  "heliolisk": [
     "agility",
     "allyswitch",
     "attract",
@@ -66939,9 +66998,9 @@ const data: Learnsets = {
     "uturn",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  tyrunt: [
+  "tyrunt": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -67016,9 +67075,9 @@ const data: Learnsets = {
     "thrash",
     "thunderfang",
     "toxic",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tyrantrum: [
+  "tyrantrum": [
     "aerialace",
     "ancientpower",
     "assurance",
@@ -67096,9 +67155,9 @@ const data: Learnsets = {
     "thrash",
     "thunderfang",
     "toxic",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  amaura: [
+  "amaura": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -67176,9 +67235,9 @@ const data: Learnsets = {
     "toxic",
     "waterpulse",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  aurorus: [
+  "aurorus": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -67256,9 +67315,9 @@ const data: Learnsets = {
     "toxic",
     "waterpulse",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sylveon: [
+  "sylveon": [
     "alluringvoice",
     "attract",
     "babydolleyes",
@@ -67339,9 +67398,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  hawlucha: [
+  "hawlucha": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -67449,9 +67508,9 @@ const data: Learnsets = {
     "wingattack",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dedenne: [
+  "dedenne": [
     "aerialace",
     "agility",
     "allyswitch",
@@ -67526,9 +67585,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  carbink: [
+  "carbink": [
     "afteryou",
     "allyswitch",
     "ancientpower",
@@ -67607,9 +67666,9 @@ const data: Learnsets = {
     "terrainpulse",
     "toxic",
     "trickroom",
-    "wonderroom",
+    "wonderroom"
   ],
-  goomy: [
+  "goomy": [
     "absorb",
     "acidarmor",
     "attract",
@@ -67659,9 +67718,9 @@ const data: Learnsets = {
     "thunderbolt",
     "toxic",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  sliggoo: [
+  "sliggoo": [
     "absorb",
     "acidarmor",
     "acidspray",
@@ -67712,9 +67771,9 @@ const data: Learnsets = {
     "thunderbolt",
     "toxic",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  sliggoohisui: [
+  "sliggoohisui": [
     "absorb",
     "acidarmor",
     "acidspray",
@@ -67758,9 +67817,9 @@ const data: Learnsets = {
     "thunder",
     "thunderbolt",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  goodra: [
+  "goodra": [
     "absorb",
     "acidspray",
     "aquatail",
@@ -67846,9 +67905,9 @@ const data: Learnsets = {
     "toxic",
     "watergun",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  goodrahisui: [
+  "goodrahisui": [
     "absorb",
     "acidspray",
     "blizzard",
@@ -67914,9 +67973,9 @@ const data: Learnsets = {
     "thunderpunch",
     "watergun",
     "waterpulse",
-    "weatherball",
+    "weatherball"
   ],
-  klefki: [
+  "klefki": [
     "astonish",
     "attract",
     "calmmind",
@@ -67981,9 +68040,9 @@ const data: Learnsets = {
     "thunderwave",
     "torment",
     "toxic",
-    "trickroom",
+    "trickroom"
   ],
-  phantump: [
+  "phantump": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68067,9 +68126,9 @@ const data: Learnsets = {
     "venomdrench",
     "willowisp",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  trevenant: [
+  "trevenant": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68166,9 +68225,9 @@ const data: Learnsets = {
     "willowisp",
     "woodhammer",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  pumpkaboo: [
+  "pumpkaboo": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68241,9 +68300,9 @@ const data: Learnsets = {
     "trickortreat",
     "trickroom",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  pumpkaboosuper: [
+  "pumpkaboosuper": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68316,9 +68375,9 @@ const data: Learnsets = {
     "trickortreat",
     "trickroom",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  gourgeist: [
+  "gourgeist": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68395,9 +68454,9 @@ const data: Learnsets = {
     "trickortreat",
     "trickroom",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  gourgeistsuper: [
+  "gourgeistsuper": [
     "allyswitch",
     "astonish",
     "attract",
@@ -68474,9 +68533,9 @@ const data: Learnsets = {
     "trickortreat",
     "trickroom",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  bergmite: [
+  "bergmite": [
     "afteryou",
     "attract",
     "auroraveil",
@@ -68538,9 +68597,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "toxic",
-    "waterpulse",
+    "waterpulse"
   ],
-  avalugg: [
+  "avalugg": [
     "afteryou",
     "attract",
     "avalanche",
@@ -68614,9 +68673,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "waterpulse",
-    "wideguard",
+    "wideguard"
   ],
-  avalugghisui: [
+  "avalugghisui": [
     "avalanche",
     "bite",
     "blizzard",
@@ -68667,9 +68726,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "terablast",
-    "wideguard",
+    "wideguard"
   ],
-  noibat: [
+  "noibat": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -68741,9 +68800,9 @@ const data: Learnsets = {
     "whirlwind",
     "wildcharge",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  noivern: [
+  "noivern": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -68829,9 +68888,9 @@ const data: Learnsets = {
     "whirlwind",
     "wildcharge",
     "wingattack",
-    "xscissor",
+    "xscissor"
   ],
-  xerneas: [
+  "xerneas": [
     "aromatherapy",
     "aurorabeam",
     "block",
@@ -68900,9 +68959,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  yveltal: [
+  "yveltal": [
     "acrobatics",
     "aerialace",
     "airslash",
@@ -68968,9 +69027,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zygarde: [
+  "zygarde": [
     "bind",
     "bite",
     "block",
@@ -69040,9 +69099,9 @@ const data: Learnsets = {
     "thousandarrows",
     "thousandwaves",
     "toxic",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zygarde10: [
+  "zygarde10": [
     "bind",
     "dig",
     "dragonbreath",
@@ -69055,9 +69114,9 @@ const data: Learnsets = {
     "outrage",
     "safeguard",
     "sandstorm",
-    "thousandarrows",
+    "thousandarrows"
   ],
-  diancie: [
+  "diancie": [
     "afteryou",
     "allyswitch",
     "amnesia",
@@ -69147,9 +69206,9 @@ const data: Learnsets = {
     "terrainpulse",
     "toxic",
     "trickroom",
-    "wonderroom",
+    "wonderroom"
   ],
-  hoopa: [
+  "hoopa": [
     "allyswitch",
     "astonish",
     "block",
@@ -69246,10 +69305,10 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hoopaunbound: [],
-  volcanion: [
+  "hoopaunbound": [],
+  "volcanion": [
     "bodypress",
     "bodyslam",
     "brickbreak",
@@ -69331,9 +69390,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  rowlet: [
+  "rowlet": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -69408,9 +69467,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  dartrix: [
+  "dartrix": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -69485,9 +69544,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  decidueye: [
+  "decidueye": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -69583,9 +69642,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  decidueyehisui: [
+  "decidueyehisui": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -69656,9 +69715,9 @@ const data: Learnsets = {
     "trailblaze",
     "triplearrows",
     "upperhand",
-    "uturn",
+    "uturn"
   ],
-  litten: [
+  "litten": [
     "acrobatics",
     "attract",
     "bite",
@@ -69722,9 +69781,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  torracat: [
+  "torracat": [
     "acrobatics",
     "attract",
     "bite",
@@ -69786,9 +69845,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  incineroar: [
+  "incineroar": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -69892,9 +69951,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  popplio: [
+  "popplio": [
     "acrobatics",
     "amnesia",
     "aquajet",
@@ -69961,9 +70020,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  brionne: [
+  "brionne": [
     "acrobatics",
     "amnesia",
     "aquajet",
@@ -70027,9 +70086,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  primarina: [
+  "primarina": [
     "acrobatics",
     "alluringvoice",
     "amnesia",
@@ -70115,9 +70174,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlpool",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  pikipek: [
+  "pikipek": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -70175,9 +70234,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  trumbeak: [
+  "trumbeak": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -70235,9 +70294,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  toucannon: [
+  "toucannon": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -70307,9 +70366,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "uturn",
-    "workup",
+    "workup"
   ],
-  yungoos: [
+  "yungoos": [
     "attract",
     "bide",
     "bite",
@@ -70375,9 +70434,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gumshoos: [
+  "gumshoos": [
     "attract",
     "bide",
     "bite",
@@ -70457,9 +70516,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  gumshoostotem: [
+  "gumshoostotem": [
     "attract",
     "bide",
     "bite",
@@ -70515,9 +70574,9 @@ const data: Learnsets = {
     "uturn",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  grubbin: [
+  "grubbin": [
     "acrobatics",
     "attract",
     "batonpass",
@@ -70569,9 +70628,9 @@ const data: Learnsets = {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  charjabug: [
+  "charjabug": [
     "acrobatics",
     "attract",
     "batonpass",
@@ -70626,9 +70685,9 @@ const data: Learnsets = {
     "visegrip",
     "voltswitch",
     "wildcharge",
-    "xscissor",
+    "xscissor"
   ],
-  vikavolt: [
+  "vikavolt": [
     "acrobatics",
     "agility",
     "airslash",
@@ -70702,9 +70761,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "xscissor",
-    "zapcannon",
+    "zapcannon"
   ],
-  vikavolttotem: [
+  "vikavolttotem": [
     "acrobatics",
     "agility",
     "airslash",
@@ -70756,9 +70815,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "xscissor",
-    "zapcannon",
+    "zapcannon"
   ],
-  crabrawler: [
+  "crabrawler": [
     "amnesia",
     "attract",
     "bodyslam",
@@ -70831,9 +70890,9 @@ const data: Learnsets = {
     "visegrip",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  crabominable: [
+  "crabominable": [
     "amnesia",
     "attract",
     "avalanche",
@@ -70917,9 +70976,9 @@ const data: Learnsets = {
     "toxic",
     "upperhand",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oricorio: [
+  "oricorio": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -70984,9 +71043,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uturn",
-    "workup",
+    "workup"
   ],
-  cutiefly: [
+  "cutiefly": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -71064,9 +71123,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "uturn",
-    "wonderroom",
+    "wonderroom"
   ],
-  ribombee: [
+  "ribombee": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -71149,9 +71208,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "uturn",
-    "wonderroom",
+    "wonderroom"
   ],
-  ribombeetotem: [
+  "ribombeetotem": [
     "absorb",
     "acrobatics",
     "aerialace",
@@ -71210,9 +71269,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "uturn",
-    "wonderroom",
+    "wonderroom"
   ],
-  rockruff: [
+  "rockruff": [
     "attract",
     "bite",
     "bodyslam",
@@ -71276,9 +71335,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  rockruffdusk: [
+  "rockruffdusk": [
     "attract",
     "bite",
     "bodyslam",
@@ -71343,9 +71402,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lycanroc: [
+  "lycanroc": [
     "accelerock",
     "agility",
     "assurance",
@@ -71421,9 +71480,9 @@ const data: Learnsets = {
     "thunderfang",
     "toxic",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lycanrocmidnight: [
+  "lycanrocmidnight": [
     "attract",
     "bite",
     "bodyslam",
@@ -71512,9 +71571,9 @@ const data: Learnsets = {
     "trailblaze",
     "upperhand",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lycanrocdusk: [
+  "lycanrocdusk": [
     "accelerock",
     "attract",
     "bite",
@@ -71594,9 +71653,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wishiwashi: [
+  "wishiwashi": [
     "aquaring",
     "aquatail",
     "attract",
@@ -71648,9 +71707,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "watersport",
-    "whirlpool",
+    "whirlpool"
   ],
-  mareanie: [
+  "mareanie": [
     "acidspray",
     "afteryou",
     "attract",
@@ -71716,9 +71775,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "waterpulse",
-    "wideguard",
+    "wideguard"
   ],
-  toxapex: [
+  "toxapex": [
     "acidspray",
     "afteryou",
     "attract",
@@ -71791,9 +71850,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "waterpulse",
-    "wideguard",
+    "wideguard"
   ],
-  mudbray: [
+  "mudbray": [
     "attract",
     "bide",
     "bodyslam",
@@ -71850,9 +71909,9 @@ const data: Learnsets = {
     "swagger",
     "takedown",
     "terablast",
-    "toxic",
+    "toxic"
   ],
-  mudsdale: [
+  "mudsdale": [
     "attract",
     "bide",
     "bodypress",
@@ -71914,9 +71973,9 @@ const data: Learnsets = {
     "swagger",
     "takedown",
     "terablast",
-    "toxic",
+    "toxic"
   ],
-  dewpider: [
+  "dewpider": [
     "aquaring",
     "attract",
     "aurorabeam",
@@ -71979,9 +72038,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  araquanid: [
+  "araquanid": [
     "aquaring",
     "attract",
     "bite",
@@ -72047,9 +72106,9 @@ const data: Learnsets = {
     "waterpulse",
     "wideguard",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  araquanidtotem: [
+  "araquanidtotem": [
     "aquaring",
     "attract",
     "bite",
@@ -72099,9 +72158,9 @@ const data: Learnsets = {
     "waterpulse",
     "wideguard",
     "wonderroom",
-    "xscissor",
+    "xscissor"
   ],
-  fomantis: [
+  "fomantis": [
     "aromatherapy",
     "attract",
     "bugbite",
@@ -72159,9 +72218,9 @@ const data: Learnsets = {
     "trailblaze",
     "weatherball",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  lurantis: [
+  "lurantis": [
     "aerialace",
     "attract",
     "brickbreak",
@@ -72232,9 +72291,9 @@ const data: Learnsets = {
     "trailblaze",
     "weatherball",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  lurantistotem: [
+  "lurantistotem": [
     "aerialace",
     "attract",
     "brickbreak",
@@ -72289,9 +72348,9 @@ const data: Learnsets = {
     "synthesis",
     "toxic",
     "worryseed",
-    "xscissor",
+    "xscissor"
   ],
-  morelull: [
+  "morelull": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -72347,9 +72406,9 @@ const data: Learnsets = {
     "thunderwave",
     "toxic",
     "wonderroom",
-    "worryseed",
+    "worryseed"
   ],
-  shiinotic: [
+  "shiinotic": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -72407,9 +72466,9 @@ const data: Learnsets = {
     "toxic",
     "weatherball",
     "wonderroom",
-    "worryseed",
+    "worryseed"
   ],
-  salandit: [
+  "salandit": [
     "acidspray",
     "agility",
     "attract",
@@ -72486,9 +72545,9 @@ const data: Learnsets = {
     "trailblaze",
     "venomdrench",
     "venoshock",
-    "willowisp",
+    "willowisp"
   ],
-  salazzle: [
+  "salazzle": [
     "acidspray",
     "acrobatics",
     "agility",
@@ -72581,9 +72640,9 @@ const data: Learnsets = {
     "trailblaze",
     "venomdrench",
     "venoshock",
-    "willowisp",
+    "willowisp"
   ],
-  salazzletotem: [
+  "salazzletotem": [
     "acrobatics",
     "attract",
     "captivate",
@@ -72640,9 +72699,9 @@ const data: Learnsets = {
     "toxic",
     "venomdrench",
     "venoshock",
-    "willowisp",
+    "willowisp"
   ],
-  stufful: [
+  "stufful": [
     "aerialace",
     "attract",
     "babydolleyes",
@@ -72704,9 +72763,9 @@ const data: Learnsets = {
     "toxic",
     "wideguard",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bewear: [
+  "bewear": [
     "aerialace",
     "attract",
     "babydolleyes",
@@ -72776,9 +72835,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  bounsweet: [
+  "bounsweet": [
     "acupressure",
     "aromatherapy",
     "aromaticmist",
@@ -72836,9 +72895,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  steenee: [
+  "steenee": [
     "aromatherapy",
     "aromaticmist",
     "attract",
@@ -72903,9 +72962,9 @@ const data: Learnsets = {
     "trailblaze",
     "tripleaxel",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tsareena: [
+  "tsareena": [
     "acrobatics",
     "aromatherapy",
     "aromaticmist",
@@ -72982,9 +73041,9 @@ const data: Learnsets = {
     "tropkick",
     "uturn",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  comfey: [
+  "comfey": [
     "acrobatics",
     "afteryou",
     "alluringvoice",
@@ -73067,9 +73126,9 @@ const data: Learnsets = {
     "uturn",
     "vinewhip",
     "worryseed",
-    "wrap",
+    "wrap"
   ],
-  oranguru: [
+  "oranguru": [
     "afteryou",
     "allyswitch",
     "attract",
@@ -73160,9 +73219,9 @@ const data: Learnsets = {
     "wonderroom",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  passimian: [
+  "passimian": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -73253,9 +73312,9 @@ const data: Learnsets = {
     "uturn",
     "vacuumwave",
     "vitalthrow",
-    "workup",
+    "workup"
   ],
-  wimpod: [
+  "wimpod": [
     "aquajet",
     "assurance",
     "attract",
@@ -73293,9 +73352,9 @@ const data: Learnsets = {
     "taunt",
     "toxic",
     "waterfall",
-    "wideguard",
+    "wideguard"
   ],
-  golisopod: [
+  "golisopod": [
     "aerialace",
     "assurance",
     "attract",
@@ -73376,9 +73435,9 @@ const data: Learnsets = {
     "venoshock",
     "waterfall",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  sandygast: [
+  "sandygast": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -73450,9 +73509,9 @@ const data: Learnsets = {
     "swallow",
     "terablast",
     "toxic",
-    "trick",
+    "trick"
   ],
-  palossand: [
+  "palossand": [
     "absorb",
     "afteryou",
     "amnesia",
@@ -73525,9 +73584,9 @@ const data: Learnsets = {
     "terablast",
     "terrainpulse",
     "toxic",
-    "trick",
+    "trick"
   ],
-  pyukumuku: [
+  "pyukumuku": [
     "attract",
     "batonpass",
     "bestow",
@@ -73567,9 +73626,9 @@ const data: Learnsets = {
     "tickle",
     "toxic",
     "venomdrench",
-    "watersport",
+    "watersport"
   ],
-  typenull: [
+  "typenull": [
     "aerialace",
     "airslash",
     "confide",
@@ -73625,9 +73684,9 @@ const data: Learnsets = {
     "triattack",
     "uturn",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  silvally: [
+  "silvally": [
     "aerialace",
     "airslash",
     "bite",
@@ -73713,9 +73772,9 @@ const data: Learnsets = {
     "uturn",
     "workup",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  minior: [
+  "minior": [
     "acrobatics",
     "ancientpower",
     "attract",
@@ -73779,9 +73838,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  komala: [
+  "komala": [
     "acrobatics",
     "attract",
     "bodyslam",
@@ -73854,9 +73913,9 @@ const data: Learnsets = {
     "woodhammer",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  turtonator: [
+  "turtonator": [
     "attract",
     "block",
     "bodypress",
@@ -73936,9 +73995,9 @@ const data: Learnsets = {
     "venoshock",
     "wideguard",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  togedemaru: [
+  "togedemaru": [
     "afteryou",
     "agility",
     "assurance",
@@ -74016,9 +74075,9 @@ const data: Learnsets = {
     "wish",
     "workup",
     "zenheadbutt",
-    "zingzap",
+    "zingzap"
   ],
-  togedemarutotem: [
+  "togedemarutotem": [
     "afteryou",
     "attract",
     "bounce",
@@ -74077,9 +74136,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "zenheadbutt",
-    "zingzap",
+    "zingzap"
   ],
-  mimikyu: [
+  "mimikyu": [
     "afteryou",
     "astonish",
     "attract",
@@ -74166,9 +74225,9 @@ const data: Learnsets = {
     "willowisp",
     "woodhammer",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  mimikyutotem: [
+  "mimikyutotem": [
     "afteryou",
     "astonish",
     "attract",
@@ -74234,9 +74293,9 @@ const data: Learnsets = {
     "willowisp",
     "woodhammer",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  bruxish: [
+  "bruxish": [
     "aerialace",
     "afteryou",
     "agility",
@@ -74320,9 +74379,9 @@ const data: Learnsets = {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "wonderroom",
+    "wonderroom"
   ],
-  drampa: [
+  "drampa": [
     "amnesia",
     "attract",
     "blizzard",
@@ -74410,9 +74469,9 @@ const data: Learnsets = {
     "twister",
     "uproar",
     "waterpulse",
-    "workup",
+    "workup"
   ],
-  dhelmise: [
+  "dhelmise": [
     "absorb",
     "aerialace",
     "allyswitch",
@@ -74488,9 +74547,9 @@ const data: Learnsets = {
     "thief",
     "toxic",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  jangmoo: [
+  "jangmoo": [
     "aerialace",
     "aquatail",
     "attract",
@@ -74556,9 +74615,9 @@ const data: Learnsets = {
     "toxic",
     "uproar",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  hakamoo: [
+  "hakamoo": [
     "aerialace",
     "aquatail",
     "attract",
@@ -74636,9 +74695,9 @@ const data: Learnsets = {
     "uproar",
     "vacuumwave",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  kommoo: [
+  "kommoo": [
     "aerialace",
     "aquatail",
     "attract",
@@ -74743,9 +74802,9 @@ const data: Learnsets = {
     "vacuumwave",
     "waterpulse",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  kommoototem: [
+  "kommoototem": [
     "aerialace",
     "aquatail",
     "attract",
@@ -74825,9 +74884,9 @@ const data: Learnsets = {
     "uproar",
     "waterpulse",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  tapukoko: [
+  "tapukoko": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -74901,9 +74960,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "withdraw",
-    "workup",
+    "workup"
   ],
-  tapulele: [
+  "tapulele": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -74974,9 +75033,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  tapubulu: [
+  "tapubulu": [
     "brickbreak",
     "brutalswing",
     "bulkup",
@@ -75057,9 +75116,9 @@ const data: Learnsets = {
     "woodhammer",
     "workup",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tapufini: [
+  "tapufini": [
     "aquaring",
     "blizzard",
     "brine",
@@ -75130,11 +75189,17 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  cosmog: ["splash", "teleport"],
-  cosmoem: ["cosmicpower", "teleport"],
-  solgaleo: [
+  "cosmog": [
+    "splash",
+    "teleport"
+  ],
+  "cosmoem": [
+    "cosmicpower",
+    "teleport"
+  ],
+  "solgaleo": [
     "agility",
     "bodyslam",
     "bulldoze",
@@ -75221,9 +75286,9 @@ const data: Learnsets = {
     "wideguard",
     "wildcharge",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  lunala: [
+  "lunala": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -75308,9 +75373,9 @@ const data: Learnsets = {
     "wideguard",
     "willowisp",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  nihilego: [
+  "nihilego": [
     "acid",
     "acidspray",
     "allyswitch",
@@ -75382,9 +75447,9 @@ const data: Learnsets = {
     "wonderroom",
     "worryseed",
     "wrap",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  buzzwole: [
+  "buzzwole": [
     "bodyslam",
     "bounce",
     "brickbreak",
@@ -75449,9 +75514,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "vitalthrow",
-    "workup",
+    "workup"
   ],
-  pheromosa: [
+  "pheromosa": [
     "agility",
     "assurance",
     "blizzard",
@@ -75517,9 +75582,9 @@ const data: Learnsets = {
     "toxic",
     "tripleaxel",
     "triplekick",
-    "uturn",
+    "uturn"
   ],
-  xurkitree: [
+  "xurkitree": [
     "bind",
     "brutalswing",
     "calmmind",
@@ -75577,9 +75642,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "wrap",
-    "zapcannon",
+    "zapcannon"
   ],
-  celesteela: [
+  "celesteela": [
     "absorb",
     "acrobatics",
     "airslash",
@@ -75644,9 +75709,9 @@ const data: Learnsets = {
     "tackle",
     "toxic",
     "wideguard",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  kartana: [
+  "kartana": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -75691,9 +75756,9 @@ const data: Learnsets = {
     "tailwind",
     "toxic",
     "vacuumwave",
-    "xscissor",
+    "xscissor"
   ],
-  guzzlord: [
+  "guzzlord": [
     "amnesia",
     "belch",
     "bite",
@@ -75769,9 +75834,9 @@ const data: Learnsets = {
     "thrash",
     "toxic",
     "wideguard",
-    "wringout",
+    "wringout"
   ],
-  necrozma: [
+  "necrozma": [
     "aerialace",
     "allyswitch",
     "autotomize",
@@ -75861,12 +75926,19 @@ const data: Learnsets = {
     "toxic",
     "trickroom",
     "wringout",
-    "xscissor",
+    "xscissor"
   ],
-  necrozmaduskmane: ["sunsteelstrike"],
-  necrozmadawnwings: ["moongeistbeam"],
-  necrozmaultra: ["moongeistbeam", "sunsteelstrike"],
-  magearna: [
+  "necrozmaduskmane": [
+    "sunsteelstrike"
+  ],
+  "necrozmadawnwings": [
+    "moongeistbeam"
+  ],
+  "necrozmaultra": [
+    "moongeistbeam",
+    "sunsteelstrike"
+  ],
+  "magearna": [
     "afteryou",
     "agility",
     "aurasphere",
@@ -75970,9 +76042,9 @@ const data: Learnsets = {
     "trumpcard",
     "voltswitch",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  magearnaoriginal: [
+  "magearnaoriginal": [
     "agility",
     "aurasphere",
     "aurorabeam",
@@ -76055,9 +76127,9 @@ const data: Learnsets = {
     "trickroom",
     "voltswitch",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  marshadow: [
+  "marshadow": [
     "acrobatics",
     "agility",
     "assurance",
@@ -76141,9 +76213,9 @@ const data: Learnsets = {
     "toxic",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  poipole: [
+  "poipole": [
     "acid",
     "charm",
     "confide",
@@ -76180,9 +76252,9 @@ const data: Learnsets = {
     "toxicspikes",
     "uproar",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  naganadel: [
+  "naganadel": [
     "acid",
     "acrobatics",
     "aerialace",
@@ -76259,9 +76331,9 @@ const data: Learnsets = {
     "uturn",
     "venomdrench",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  stakataka: [
+  "stakataka": [
     "allyswitch",
     "autotomize",
     "bide",
@@ -76327,9 +76399,9 @@ const data: Learnsets = {
     "trickroom",
     "wideguard",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  blacephalon: [
+  "blacephalon": [
     "afteryou",
     "astonish",
     "calmmind",
@@ -76395,9 +76467,9 @@ const data: Learnsets = {
     "trick",
     "uproar",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zeraora: [
+  "zeraora": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -76480,9 +76552,9 @@ const data: Learnsets = {
     "toxic",
     "voltswitch",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  meltan: [
+  "meltan": [
     "acidarmor",
     "endure",
     "facade",
@@ -76502,9 +76574,9 @@ const data: Learnsets = {
     "thunderbolt",
     "thundershock",
     "thunderwave",
-    "toxic",
+    "toxic"
   ],
-  melmetal: [
+  "melmetal": [
     "acidarmor",
     "bodypress",
     "bodyslam",
@@ -76551,9 +76623,9 @@ const data: Learnsets = {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "toxic",
+    "toxic"
   ],
-  grookey: [
+  "grookey": [
     "acrobatics",
     "assurance",
     "attract",
@@ -76611,9 +76683,9 @@ const data: Learnsets = {
     "uturn",
     "woodhammer",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  thwackey: [
+  "thwackey": [
     "acrobatics",
     "assurance",
     "attract",
@@ -76667,9 +76739,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "woodhammer",
-    "workup",
+    "workup"
   ],
-  rillaboom: [
+  "rillaboom": [
     "acrobatics",
     "assurance",
     "attract",
@@ -76746,9 +76818,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "woodhammer",
-    "workup",
+    "workup"
   ],
-  scorbunny: [
+  "scorbunny": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -76804,9 +76876,9 @@ const data: Learnsets = {
     "terablast",
     "trailblaze",
     "uturn",
-    "workup",
+    "workup"
   ],
-  raboot: [
+  "raboot": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -76862,9 +76934,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "weatherball",
-    "workup",
+    "workup"
   ],
-  cinderace: [
+  "cinderace": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -76939,9 +77011,9 @@ const data: Learnsets = {
     "weatherball",
     "willowisp",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sobble: [
+  "sobble": [
     "aquajet",
     "aquaring",
     "attract",
@@ -76987,9 +77059,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  drizzile: [
+  "drizzile": [
     "attract",
     "batonpass",
     "bind",
@@ -77030,9 +77102,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  inteleon: [
+  "inteleon": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -77100,9 +77172,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  skwovet: [
+  "skwovet": [
     "amnesia",
     "assurance",
     "attract",
@@ -77149,9 +77221,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "trailblaze",
-    "uproar",
+    "uproar"
   ],
-  greedent: [
+  "greedent": [
     "amnesia",
     "assurance",
     "attract",
@@ -77212,9 +77284,9 @@ const data: Learnsets = {
     "thunderfang",
     "trailblaze",
     "uproar",
-    "wildcharge",
+    "wildcharge"
   ],
-  rookidee: [
+  "rookidee": [
     "aerialace",
     "agility",
     "aircutter",
@@ -77261,9 +77333,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "uturn",
-    "workup",
+    "workup"
   ],
-  corvisquire: [
+  "corvisquire": [
     "aerialace",
     "agility",
     "aircutter",
@@ -77307,9 +77379,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "uturn",
-    "workup",
+    "workup"
   ],
-  corviknight: [
+  "corviknight": [
     "aerialace",
     "agility",
     "aircutter",
@@ -77372,10 +77444,16 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "uturn",
-    "workup",
+    "workup"
   ],
-  blipbug: ["infestation", "recover", "stickyweb", "strugglebug", "supersonic"],
-  dottler: [
+  "blipbug": [
+    "infestation",
+    "recover",
+    "stickyweb",
+    "strugglebug",
+    "supersonic"
+  ],
+  "dottler": [
     "allyswitch",
     "attract",
     "bodypress",
@@ -77415,9 +77493,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  orbeetle: [
+  "orbeetle": [
     "afteryou",
     "agility",
     "allyswitch",
@@ -77470,9 +77548,9 @@ const data: Learnsets = {
     "trickroom",
     "uturn",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  nickit: [
+  "nickit": [
     "agility",
     "assurance",
     "attract",
@@ -77507,9 +77585,9 @@ const data: Learnsets = {
     "tailwhip",
     "taunt",
     "thief",
-    "torment",
+    "torment"
   ],
-  thievul: [
+  "thievul": [
     "acrobatics",
     "agility",
     "assurance",
@@ -77555,9 +77633,9 @@ const data: Learnsets = {
     "taunt",
     "thief",
     "thunderfang",
-    "uturn",
+    "uturn"
   ],
-  gossifleur: [
+  "gossifleur": [
     "aromatherapy",
     "attract",
     "bulletseed",
@@ -77595,9 +77673,9 @@ const data: Learnsets = {
     "sunnyday",
     "sweetscent",
     "synthesis",
-    "worryseed",
+    "worryseed"
   ],
-  eldegoss: [
+  "eldegoss": [
     "aromatherapy",
     "attract",
     "bulletseed",
@@ -77635,9 +77713,9 @@ const data: Learnsets = {
     "sunnyday",
     "sweetscent",
     "synthesis",
-    "weatherball",
+    "weatherball"
   ],
-  wooloo: [
+  "wooloo": [
     "agility",
     "attract",
     "copycat",
@@ -77667,9 +77745,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "thunderwave",
-    "wildcharge",
+    "wildcharge"
   ],
-  dubwool: [
+  "dubwool": [
     "agility",
     "attract",
     "batonpass",
@@ -77707,9 +77785,9 @@ const data: Learnsets = {
     "takedown",
     "thunderwave",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chewtle: [
+  "chewtle": [
     "assurance",
     "attract",
     "bite",
@@ -77752,9 +77830,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  drednaw: [
+  "drednaw": [
     "assurance",
     "attract",
     "bite",
@@ -77827,9 +77905,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  yamper: [
+  "yamper": [
     "attract",
     "bite",
     "charge",
@@ -77867,9 +77945,9 @@ const data: Learnsets = {
     "thunderwave",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  boltund: [
+  "boltund": [
     "agility",
     "attract",
     "bite",
@@ -77912,9 +77990,9 @@ const data: Learnsets = {
     "thunderwave",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  rolycoly: [
+  "rolycoly": [
     "ancientpower",
     "attract",
     "block",
@@ -77957,9 +78035,9 @@ const data: Learnsets = {
     "takedown",
     "temperflare",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  carkol: [
+  "carkol": [
     "ancientpower",
     "attract",
     "bodypress",
@@ -78014,9 +78092,9 @@ const data: Learnsets = {
     "takedown",
     "temperflare",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  coalossal: [
+  "coalossal": [
     "ancientpower",
     "attract",
     "bodypress",
@@ -78080,9 +78158,9 @@ const data: Learnsets = {
     "tarshot",
     "temperflare",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  applin: [
+  "applin": [
     "astonish",
     "attract",
     "defensecurl",
@@ -78093,9 +78171,9 @@ const data: Learnsets = {
     "rollout",
     "suckerpunch",
     "terablast",
-    "withdraw",
+    "withdraw"
   ],
-  flapple: [
+  "flapple": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -78147,9 +78225,9 @@ const data: Learnsets = {
     "twister",
     "uturn",
     "wingattack",
-    "withdraw",
+    "withdraw"
   ],
-  appletun: [
+  "appletun": [
     "amnesia",
     "appleacid",
     "astonish",
@@ -78209,9 +78287,9 @@ const data: Learnsets = {
     "terablast",
     "trailblaze",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  silicobra: [
+  "silicobra": [
     "attract",
     "belch",
     "bodyslam",
@@ -78254,9 +78332,9 @@ const data: Learnsets = {
     "substitute",
     "takedown",
     "terablast",
-    "wrap",
+    "wrap"
   ],
-  sandaconda: [
+  "sandaconda": [
     "attract",
     "bodypress",
     "bodyslam",
@@ -78309,9 +78387,9 @@ const data: Learnsets = {
     "terablast",
     "thunderfang",
     "wrap",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cramorant: [
+  "cramorant": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -78372,9 +78450,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  arrokuda: [
+  "arrokuda": [
     "acupressure",
     "agility",
     "aquajet",
@@ -78420,9 +78498,9 @@ const data: Learnsets = {
     "throatchop",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  barraskewda: [
+  "barraskewda": [
     "agility",
     "aquajet",
     "assurance",
@@ -78469,9 +78547,9 @@ const data: Learnsets = {
     "throatchop",
     "waterfall",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  toxel: [
+  "toxel": [
     "acid",
     "attract",
     "belch",
@@ -78492,9 +78570,9 @@ const data: Learnsets = {
     "snore",
     "substitute",
     "tearfullook",
-    "terablast",
+    "terablast"
   ],
-  toxtricity: [
+  "toxtricity": [
     "acid",
     "acidspray",
     "attract",
@@ -78574,9 +78652,9 @@ const data: Learnsets = {
     "uproar",
     "venoshock",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  toxtricitylowkey: [
+  "toxtricitylowkey": [
     "acid",
     "acidspray",
     "attract",
@@ -78657,9 +78735,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  sizzlipede: [
+  "sizzlipede": [
     "attract",
     "bite",
     "brutalswing",
@@ -78696,9 +78774,9 @@ const data: Learnsets = {
     "substitute",
     "sunnyday",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  centiskorch: [
+  "centiskorch": [
     "attract",
     "bite",
     "brutalswing",
@@ -78744,9 +78822,9 @@ const data: Learnsets = {
     "venoshock",
     "willowisp",
     "wrap",
-    "xscissor",
+    "xscissor"
   ],
-  clobbopus: [
+  "clobbopus": [
     "attract",
     "bind",
     "bodyslam",
@@ -78788,9 +78866,9 @@ const data: Learnsets = {
     "superpower",
     "taunt",
     "waterfall",
-    "workup",
+    "workup"
   ],
-  grapploct: [
+  "grapploct": [
     "attract",
     "bind",
     "bodyslam",
@@ -78840,9 +78918,9 @@ const data: Learnsets = {
     "topsyturvy",
     "waterfall",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  sinistea: [
+  "sinistea": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -78888,9 +78966,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  sinisteaantique: [
+  "sinisteaantique": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -78937,9 +79015,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  polteageist: [
+  "polteageist": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -78993,9 +79071,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  polteageistantique: [
+  "polteageistantique": [
     "allyswitch",
     "aromatherapy",
     "aromaticmist",
@@ -79049,9 +79127,9 @@ const data: Learnsets = {
     "trickroom",
     "willowisp",
     "withdraw",
-    "wonderroom",
+    "wonderroom"
   ],
-  hatenna: [
+  "hatenna": [
     "afteryou",
     "aromatherapy",
     "aromaticmist",
@@ -79102,9 +79180,9 @@ const data: Learnsets = {
     "terablast",
     "thunderwave",
     "trick",
-    "trickroom",
+    "trickroom"
   ],
-  hattrem: [
+  "hattrem": [
     "aromatherapy",
     "aromaticmist",
     "attract",
@@ -79153,9 +79231,9 @@ const data: Learnsets = {
     "terablast",
     "thunderwave",
     "trick",
-    "trickroom",
+    "trickroom"
   ],
-  hatterene: [
+  "hatterene": [
     "agility",
     "aromatherapy",
     "aromaticmist",
@@ -79221,9 +79299,9 @@ const data: Learnsets = {
     "thunderwave",
     "trick",
     "trickroom",
-    "wonderroom",
+    "wonderroom"
   ],
-  impidimp: [
+  "impidimp": [
     "assurance",
     "attract",
     "bite",
@@ -79273,9 +79351,9 @@ const data: Learnsets = {
     "torment",
     "trailblaze",
     "trick",
-    "uproar",
+    "uproar"
   ],
-  morgrem: [
+  "morgrem": [
     "assurance",
     "attract",
     "bite",
@@ -79327,9 +79405,9 @@ const data: Learnsets = {
     "torment",
     "trailblaze",
     "trick",
-    "uproar",
+    "uproar"
   ],
-  grimmsnarl: [
+  "grimmsnarl": [
     "assurance",
     "attract",
     "bite",
@@ -79404,9 +79482,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "uproar",
-    "wonderroom",
+    "wonderroom"
   ],
-  milcery: [
+  "milcery": [
     "acidarmor",
     "aromatherapy",
     "aromaticmist",
@@ -79434,9 +79512,9 @@ const data: Learnsets = {
     "sweetkiss",
     "sweetscent",
     "tackle",
-    "terablast",
+    "terablast"
   ],
-  alcremie: [
+  "alcremie": [
     "acidarmor",
     "alluringvoice",
     "aromatherapy",
@@ -79489,9 +79567,9 @@ const data: Learnsets = {
     "tackle",
     "terablast",
     "triattack",
-    "wonderroom",
+    "wonderroom"
   ],
-  falinks: [
+  "falinks": [
     "agility",
     "assurance",
     "beatup",
@@ -79548,9 +79626,9 @@ const data: Learnsets = {
     "trailblaze",
     "upperhand",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pincurchin: [
+  "pincurchin": [
     "acupressure",
     "assurance",
     "attract",
@@ -79610,9 +79688,9 @@ const data: Learnsets = {
     "venoshock",
     "watergun",
     "wildcharge",
-    "zingzap",
+    "zingzap"
   ],
-  snom: [
+  "snom": [
     "attract",
     "bugbite",
     "bugbuzz",
@@ -79633,9 +79711,9 @@ const data: Learnsets = {
     "snore",
     "strugglebug",
     "substitute",
-    "terablast",
+    "terablast"
   ],
-  frosmoth: [
+  "frosmoth": [
     "acrobatics",
     "airslash",
     "attract",
@@ -79691,9 +79769,9 @@ const data: Learnsets = {
     "tripleaxel",
     "uturn",
     "weatherball",
-    "wideguard",
+    "wideguard"
   ],
-  stonjourner: [
+  "stonjourner": [
     "ancientpower",
     "assurance",
     "attract",
@@ -79748,9 +79826,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "wideguard",
-    "wonderroom",
+    "wonderroom"
   ],
-  eiscue: [
+  "eiscue": [
     "agility",
     "amnesia",
     "aquaring",
@@ -79805,9 +79883,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  indeedee: [
+  "indeedee": [
     "afteryou",
     "allyswitch",
     "aromatherapy",
@@ -79864,9 +79942,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  indeedeef: [
+  "indeedeef": [
     "alluringvoice",
     "allyswitch",
     "aromatherapy",
@@ -79923,9 +80001,9 @@ const data: Learnsets = {
     "terrainpulse",
     "trick",
     "trickroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  morpeko: [
+  "morpeko": [
     "agility",
     "assurance",
     "attract",
@@ -79999,9 +80077,9 @@ const data: Learnsets = {
     "torment",
     "uproar",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  cufant: [
+  "cufant": [
     "attract",
     "belch",
     "bodypress",
@@ -80058,9 +80136,9 @@ const data: Learnsets = {
     "terablast",
     "whirlwind",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  copperajah: [
+  "copperajah": [
     "attract",
     "bodypress",
     "bodyslam",
@@ -80124,9 +80202,9 @@ const data: Learnsets = {
     "taunt",
     "terablast",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  dracozolt: [
+  "dracozolt": [
     "aerialace",
     "ancientpower",
     "bodyslam",
@@ -80184,9 +80262,9 @@ const data: Learnsets = {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "wildcharge",
+    "wildcharge"
   ],
-  arctozolt: [
+  "arctozolt": [
     "ancientpower",
     "avalanche",
     "blizzard",
@@ -80240,9 +80318,9 @@ const data: Learnsets = {
     "thunderpunch",
     "thundershock",
     "thunderwave",
-    "wildcharge",
+    "wildcharge"
   ],
-  dracovish: [
+  "dracovish": [
     "ancientpower",
     "bite",
     "bodyslam",
@@ -80292,9 +80370,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  arctovish: [
+  "arctovish": [
     "ancientpower",
     "auroraveil",
     "avalanche",
@@ -80339,9 +80417,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  duraludon: [
+  "duraludon": [
     "attract",
     "bodypress",
     "bodyslam",
@@ -80401,9 +80479,9 @@ const data: Learnsets = {
     "terablast",
     "thunder",
     "thunderbolt",
-    "thunderwave",
+    "thunderwave"
   ],
-  dreepy: [
+  "dreepy": [
     "astonish",
     "attract",
     "batonpass",
@@ -80429,9 +80507,9 @@ const data: Learnsets = {
     "suckerpunch",
     "swift",
     "terablast",
-    "thunderwave",
+    "thunderwave"
   ],
-  drakloak: [
+  "drakloak": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -80491,9 +80569,9 @@ const data: Learnsets = {
     "thunderbolt",
     "thunderwave",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  dragapult: [
+  "dragapult": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -80563,9 +80641,9 @@ const data: Learnsets = {
     "thunderwave",
     "triattack",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  zacian: [
+  "zacian": [
     "agility",
     "airslash",
     "assurance",
@@ -80628,10 +80706,12 @@ const data: Learnsets = {
     "thunderfang",
     "trailblaze",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  zaciancrowned: ["behemothblade"],
-  zamazenta: [
+  "zaciancrowned": [
+    "behemothblade"
+  ],
+  "zamazenta": [
     "agility",
     "bite",
     "bodypress",
@@ -80699,10 +80779,12 @@ const data: Learnsets = {
     "trailblaze",
     "wideguard",
     "wildcharge",
-    "workup",
+    "workup"
   ],
-  zamazentacrowned: ["behemothbash"],
-  eternatus: [
+  "zamazentacrowned": [
+    "behemothbash"
+  ],
+  "eternatus": [
     "agility",
     "assurance",
     "bodyslam",
@@ -80755,9 +80837,9 @@ const data: Learnsets = {
     "toxic",
     "toxicspikes",
     "venomdrench",
-    "venoshock",
+    "venoshock"
   ],
-  kubfu: [
+  "kubfu": [
     "acrobatics",
     "aerialace",
     "attract",
@@ -80805,9 +80887,9 @@ const data: Learnsets = {
     "thunderpunch",
     "uturn",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  urshifu: [
+  "urshifu": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -80882,9 +80964,9 @@ const data: Learnsets = {
     "uturn",
     "wickedblow",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  urshifurapidstrike: [
+  "urshifurapidstrike": [
     "acrobatics",
     "aerialace",
     "aquajet",
@@ -80956,9 +81038,9 @@ const data: Learnsets = {
     "waterfall",
     "whirlpool",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  zarude: [
+  "zarude": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -81040,9 +81122,9 @@ const data: Learnsets = {
     "throatchop",
     "trailblaze",
     "uturn",
-    "vinewhip",
+    "vinewhip"
   ],
-  zarudedada: [
+  "zarudedada": [
     "acrobatics",
     "aerialace",
     "assurance",
@@ -81124,9 +81206,9 @@ const data: Learnsets = {
     "throatchop",
     "trailblaze",
     "uturn",
-    "vinewhip",
+    "vinewhip"
   ],
-  regieleki: [
+  "regieleki": [
     "acrobatics",
     "agility",
     "ancientpower",
@@ -81173,9 +81255,9 @@ const data: Learnsets = {
     "thunderwave",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  regidrago: [
+  "regidrago": [
     "ancientpower",
     "bite",
     "bodyslam",
@@ -81218,9 +81300,9 @@ const data: Learnsets = {
     "thrash",
     "thunderfang",
     "twister",
-    "visegrip",
+    "visegrip"
   ],
-  glastrier: [
+  "glastrier": [
     "assurance",
     "avalanche",
     "blizzard",
@@ -81275,9 +81357,9 @@ const data: Learnsets = {
     "torment",
     "trailblaze",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  spectrier: [
+  "spectrier": [
     "agility",
     "assurance",
     "bodyslam",
@@ -81327,9 +81409,9 @@ const data: Learnsets = {
     "terablast",
     "thrash",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  calyrex: [
+  "calyrex": [
     "agility",
     "allyswitch",
     "aromatherapy",
@@ -81398,9 +81480,9 @@ const data: Learnsets = {
     "trick",
     "trickroom",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  calyrexice: [
+  "calyrexice": [
     "agility",
     "allyswitch",
     "aromatherapy",
@@ -81508,9 +81590,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  calyrexshadow: [
+  "calyrexshadow": [
     "agility",
     "allyswitch",
     "aromatherapy",
@@ -81608,9 +81690,9 @@ const data: Learnsets = {
     "uproar",
     "willowisp",
     "wonderroom",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  enamorus: [
+  "enamorus": [
     "agility",
     "alluringvoice",
     "astonish",
@@ -81661,10 +81743,10 @@ const data: Learnsets = {
     "twister",
     "uproar",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  enamorustherian: [],
-  sprigatito: [
+  "enamorustherian": [],
+  "sprigatito": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -81710,9 +81792,9 @@ const data: Learnsets = {
     "terablast",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  floragato: [
+  "floragato": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -81759,9 +81841,9 @@ const data: Learnsets = {
     "thunderpunch",
     "trailblaze",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  meowscarada: [
+  "meowscarada": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -81833,9 +81915,9 @@ const data: Learnsets = {
     "trickroom",
     "tripleaxel",
     "uturn",
-    "worryseed",
+    "worryseed"
   ],
-  fuecoco: [
+  "fuecoco": [
     "belch",
     "bite",
     "bodyslam",
@@ -81880,9 +81962,9 @@ const data: Learnsets = {
     "thunderfang",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  crocalor: [
+  "crocalor": [
     "bite",
     "bodyslam",
     "crunch",
@@ -81926,9 +82008,9 @@ const data: Learnsets = {
     "thunderfang",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  skeledirge: [
+  "skeledirge": [
     "alluringvoice",
     "bite",
     "blastburn",
@@ -81990,9 +82072,9 @@ const data: Learnsets = {
     "torchsong",
     "willowisp",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  quaxly: [
+  "quaxly": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -82033,9 +82115,9 @@ const data: Learnsets = {
     "waterpledge",
     "whirlpool",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  quaxwell: [
+  "quaxwell": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -82077,9 +82159,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  quaquaval: [
+  "quaquaval": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -82144,9 +82226,9 @@ const data: Learnsets = {
     "wavecrash",
     "whirlpool",
     "wingattack",
-    "workup",
+    "workup"
   ],
-  lechonk: [
+  "lechonk": [
     "bodyslam",
     "bulldoze",
     "bulletseed",
@@ -82188,9 +82270,9 @@ const data: Learnsets = {
     "uproar",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oinkologne: [
+  "oinkologne": [
     "belch",
     "bodypress",
     "bodyslam",
@@ -82237,9 +82319,9 @@ const data: Learnsets = {
     "uproar",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  oinkolognef: [
+  "oinkolognef": [
     "belch",
     "bodypress",
     "bodyslam",
@@ -82286,9 +82368,9 @@ const data: Learnsets = {
     "uproar",
     "workup",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tarountula: [
+  "tarountula": [
     "assurance",
     "block",
     "bodyslam",
@@ -82332,9 +82414,9 @@ const data: Learnsets = {
     "throatchop",
     "toxicspikes",
     "trailblaze",
-    "xscissor",
+    "xscissor"
   ],
-  spidops: [
+  "spidops": [
     "aerialace",
     "assurance",
     "block",
@@ -82389,9 +82471,9 @@ const data: Learnsets = {
     "trailblaze",
     "upperhand",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  nymble: [
+  "nymble": [
     "agility",
     "assurance",
     "astonish",
@@ -82422,9 +82504,9 @@ const data: Learnsets = {
     "thief",
     "trailblaze",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  lokix: [
+  "lokix": [
     "aerialace",
     "agility",
     "assurance",
@@ -82474,9 +82556,9 @@ const data: Learnsets = {
     "throatchop",
     "trailblaze",
     "uturn",
-    "xscissor",
+    "xscissor"
   ],
-  rellor: [
+  "rellor": [
     "bugbite",
     "bugbuzz",
     "cosmicpower",
@@ -82509,9 +82591,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "weatherball",
-    "xscissor",
+    "xscissor"
   ],
-  rabsca: [
+  "rabsca": [
     "bugbite",
     "bugbuzz",
     "calmmind",
@@ -82579,9 +82661,9 @@ const data: Learnsets = {
     "trickroom",
     "weatherball",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  greavard: [
+  "greavard": [
     "allyswitch",
     "bite",
     "bulldoze",
@@ -82633,9 +82715,9 @@ const data: Learnsets = {
     "thunderfang",
     "trick",
     "uproar",
-    "yawn",
+    "yawn"
   ],
-  houndstone: [
+  "houndstone": [
     "bite",
     "bodypress",
     "bulldoze",
@@ -82685,9 +82767,9 @@ const data: Learnsets = {
     "thunderfang",
     "trick",
     "uproar",
-    "willowisp",
+    "willowisp"
   ],
-  flittle: [
+  "flittle": [
     "agility",
     "allyswitch",
     "babydolleyes",
@@ -82732,9 +82814,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  espathra: [
+  "espathra": [
     "aerialace",
     "agility",
     "babydolleyes",
@@ -82796,9 +82878,9 @@ const data: Learnsets = {
     "trickroom",
     "uproar",
     "uturn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  farigiraf: [
+  "farigiraf": [
     "agility",
     "amnesia",
     "assurance",
@@ -82872,9 +82954,9 @@ const data: Learnsets = {
     "trickroom",
     "twinbeam",
     "uproar",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  wiglett: [
+  "wiglett": [
     "agility",
     "aquajet",
     "blizzard",
@@ -82913,9 +82995,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  wugtrio: [
+  "wugtrio": [
     "agility",
     "aquajet",
     "blizzard",
@@ -82956,9 +83038,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "wrap",
+    "wrap"
   ],
-  dondozo: [
+  "dondozo": [
     "aquatail",
     "avalanche",
     "bodypress",
@@ -83004,9 +83086,9 @@ const data: Learnsets = {
     "waterpulse",
     "wavecrash",
     "yawn",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  veluza: [
+  "veluza": [
     "agility",
     "aquacutter",
     "aquajet",
@@ -83054,9 +83136,9 @@ const data: Learnsets = {
     "thrash",
     "waterfall",
     "waterpulse",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  finizen: [
+  "finizen": [
     "acrobatics",
     "agility",
     "aquajet",
@@ -83100,9 +83182,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  palafin: [
+  "palafin": [
     "acrobatics",
     "agility",
     "aquajet",
@@ -83164,9 +83246,9 @@ const data: Learnsets = {
     "waterpulse",
     "wavecrash",
     "whirlpool",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  smoliv: [
+  "smoliv": [
     "absorb",
     "bulletseed",
     "charm",
@@ -83202,9 +83284,9 @@ const data: Learnsets = {
     "terablast",
     "terrainpulse",
     "trailblaze",
-    "weatherball",
+    "weatherball"
   ],
-  dolliv: [
+  "dolliv": [
     "absorb",
     "bulletseed",
     "charm",
@@ -83237,9 +83319,9 @@ const data: Learnsets = {
     "terablast",
     "terrainpulse",
     "trailblaze",
-    "weatherball",
+    "weatherball"
   ],
-  arboliva: [
+  "arboliva": [
     "absorb",
     "alluringvoice",
     "bulletseed",
@@ -83288,9 +83370,9 @@ const data: Learnsets = {
     "terablast",
     "terrainpulse",
     "trailblaze",
-    "weatherball",
+    "weatherball"
   ],
-  capsakid: [
+  "capsakid": [
     "bite",
     "bulletseed",
     "crunch",
@@ -83329,9 +83411,9 @@ const data: Learnsets = {
     "thief",
     "trailblaze",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  scovillain: [
+  "scovillain": [
     "bite",
     "bulletseed",
     "burningjealousy",
@@ -83378,9 +83460,9 @@ const data: Learnsets = {
     "trailblaze",
     "willowisp",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tadbulb: [
+  "tadbulb": [
     "acidspray",
     "charge",
     "chargebeam",
@@ -83420,9 +83502,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  bellibolt: [
+  "bellibolt": [
     "acidspray",
     "charge",
     "chargebeam",
@@ -83465,9 +83547,9 @@ const data: Learnsets = {
     "waterpulse",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  varoom: [
+  "varoom": [
     "acidspray",
     "assurance",
     "bodyslam",
@@ -83514,9 +83596,9 @@ const data: Learnsets = {
     "toxicspikes",
     "uproar",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  revavroom: [
+  "revavroom": [
     "acidspray",
     "assurance",
     "bodyslam",
@@ -83571,9 +83653,9 @@ const data: Learnsets = {
     "toxicspikes",
     "uproar",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  orthworm: [
+  "orthworm": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -83618,9 +83700,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "terablast",
-    "wrap",
+    "wrap"
   ],
-  tandemaus: [
+  "tandemaus": [
     "aerialace",
     "afteryou",
     "agility",
@@ -83670,9 +83752,9 @@ const data: Learnsets = {
     "thunderwave",
     "tickle",
     "uturn",
-    "waterpulse",
+    "waterpulse"
   ],
-  maushold: [
+  "maushold": [
     "aerialace",
     "agility",
     "babydolleyes",
@@ -83722,9 +83804,9 @@ const data: Learnsets = {
     "tidyup",
     "trailblaze",
     "uturn",
-    "waterpulse",
+    "waterpulse"
   ],
-  cetoddle: [
+  "cetoddle": [
     "amnesia",
     "avalanche",
     "bellydrum",
@@ -83772,9 +83854,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "waterpulse",
-    "yawn",
+    "yawn"
   ],
-  cetitan: [
+  "cetitan": [
     "amnesia",
     "avalanche",
     "blizzard",
@@ -83820,9 +83902,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "terablast",
-    "waterpulse",
+    "waterpulse"
   ],
-  frigibax: [
+  "frigibax": [
     "aquatail",
     "avalanche",
     "bite",
@@ -83857,9 +83939,9 @@ const data: Learnsets = {
     "swordsdance",
     "tackle",
     "takedown",
-    "terablast",
+    "terablast"
   ],
-  arctibax: [
+  "arctibax": [
     "aerialace",
     "avalanche",
     "bite",
@@ -83895,9 +83977,9 @@ const data: Learnsets = {
     "swordsdance",
     "tackle",
     "takedown",
-    "terablast",
+    "terablast"
   ],
-  baxcalibur: [
+  "baxcalibur": [
     "aerialace",
     "avalanche",
     "bite",
@@ -83950,9 +84032,9 @@ const data: Learnsets = {
     "takedown",
     "terablast",
     "thunderfang",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tatsugiri: [
+  "tatsugiri": [
     "batonpass",
     "chillingwater",
     "counter",
@@ -83988,9 +84070,9 @@ const data: Learnsets = {
     "terablast",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  tatsugiristretchy: [
+  "tatsugiristretchy": [
     "batonpass",
     "celebrate",
     "chillingwater",
@@ -84027,9 +84109,9 @@ const data: Learnsets = {
     "terablast",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  cyclizar: [
+  "cyclizar": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -84085,9 +84167,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "uturn",
-    "wildcharge",
+    "wildcharge"
   ],
-  pawmi: [
+  "pawmi": [
     "agility",
     "batonpass",
     "bite",
@@ -84137,9 +84219,9 @@ const data: Learnsets = {
     "thunderwave",
     "voltswitch",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  pawmo: [
+  "pawmo": [
     "agility",
     "armthrust",
     "batonpass",
@@ -84192,9 +84274,9 @@ const data: Learnsets = {
     "thunderwave",
     "upperhand",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  pawmot: [
+  "pawmot": [
     "agility",
     "armthrust",
     "batonpass",
@@ -84265,9 +84347,9 @@ const data: Learnsets = {
     "thunderwave",
     "upperhand",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  wattrel: [
+  "wattrel": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -84313,9 +84395,9 @@ const data: Learnsets = {
     "uturn",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  kilowattrel: [
+  "kilowattrel": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -84362,9 +84444,9 @@ const data: Learnsets = {
     "uturn",
     "voltswitch",
     "weatherball",
-    "wildcharge",
+    "wildcharge"
   ],
-  bombirdier: [
+  "bombirdier": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -84425,9 +84507,9 @@ const data: Learnsets = {
     "torment",
     "uturn",
     "whirlwind",
-    "wingattack",
+    "wingattack"
   ],
-  squawkabilly: [
+  "squawkabilly": [
     "aerialace",
     "aircutter",
     "airslash",
@@ -84474,9 +84556,9 @@ const data: Learnsets = {
     "thief",
     "torment",
     "uproar",
-    "uturn",
+    "uturn"
   ],
-  flamigo: [
+  "flamigo": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -84530,9 +84612,9 @@ const data: Learnsets = {
     "uturn",
     "waterpulse",
     "wideguard",
-    "wingattack",
+    "wingattack"
   ],
-  klawf: [
+  "klawf": [
     "ancientpower",
     "block",
     "bodyslam",
@@ -84587,9 +84669,9 @@ const data: Learnsets = {
     "throatchop",
     "trailblaze",
     "visegrip",
-    "xscissor",
+    "xscissor"
   ],
-  nacli: [
+  "nacli": [
     "ancientpower",
     "bodyslam",
     "bulldoze",
@@ -84628,9 +84710,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "terablast",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  naclstack: [
+  "naclstack": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -84672,9 +84754,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "terablast",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  garganacl: [
+  "garganacl": [
     "avalanche",
     "block",
     "bodypress",
@@ -84731,9 +84813,9 @@ const data: Learnsets = {
     "terablast",
     "thunderpunch",
     "wideguard",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  glimmet: [
+  "glimmet": [
     "acidarmor",
     "acidspray",
     "ancientpower",
@@ -84774,9 +84856,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "toxicspikes",
-    "venoshock",
+    "venoshock"
   ],
-  glimmora: [
+  "glimmora": [
     "acidarmor",
     "acidspray",
     "ancientpower",
@@ -84823,9 +84905,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "toxicspikes",
-    "venoshock",
+    "venoshock"
   ],
-  shroodle: [
+  "shroodle": [
     "acidspray",
     "acrobatics",
     "batonpass",
@@ -84878,9 +84960,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uturn",
-    "venoshock",
+    "venoshock"
   ],
-  grafaiai: [
+  "grafaiai": [
     "acidspray",
     "acrobatics",
     "batonpass",
@@ -84936,9 +85018,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "venoshock",
-    "xscissor",
+    "xscissor"
   ],
-  fidough: [
+  "fidough": [
     "agility",
     "alluringvoice",
     "babydolleyes",
@@ -84986,9 +85068,9 @@ const data: Learnsets = {
     "trailblaze",
     "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  dachsbun: [
+  "dachsbun": [
     "agility",
     "alluringvoice",
     "babydolleyes",
@@ -85036,9 +85118,9 @@ const data: Learnsets = {
     "terablast",
     "thunderfang",
     "trailblaze",
-    "workup",
+    "workup"
   ],
-  maschiff: [
+  "maschiff": [
     "bite",
     "bodyslam",
     "charm",
@@ -85081,9 +85163,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "thunderfang",
-    "trailblaze",
+    "trailblaze"
   ],
-  mabosstiff: [
+  "mabosstiff": [
     "bite",
     "bodyslam",
     "charm",
@@ -85133,9 +85215,9 @@ const data: Learnsets = {
     "thief",
     "thunderfang",
     "trailblaze",
-    "wildcharge",
+    "wildcharge"
   ],
-  bramblin: [
+  "bramblin": [
     "absorb",
     "astonish",
     "beatup",
@@ -85179,9 +85261,9 @@ const data: Learnsets = {
     "substitute",
     "terablast",
     "thief",
-    "trailblaze",
+    "trailblaze"
   ],
-  brambleghast: [
+  "brambleghast": [
     "absorb",
     "astonish",
     "bulletseed",
@@ -85223,9 +85305,9 @@ const data: Learnsets = {
     "substitute",
     "terablast",
     "thief",
-    "trailblaze",
+    "trailblaze"
   ],
-  gimmighoul: [
+  "gimmighoul": [
     "astonish",
     "confuseray",
     "endure",
@@ -85243,9 +85325,9 @@ const data: Learnsets = {
     "tackle",
     "takedown",
     "terablast",
-    "thief",
+    "thief"
   ],
-  gholdengo: [
+  "gholdengo": [
     "astonish",
     "chargebeam",
     "confuseray",
@@ -85290,9 +85372,9 @@ const data: Learnsets = {
     "thunderbolt",
     "thunderpunch",
     "thunderwave",
-    "trick",
+    "trick"
   ],
-  greattusk: [
+  "greattusk": [
     "bodypress",
     "bodyslam",
     "brickbreak",
@@ -85350,9 +85432,9 @@ const data: Learnsets = {
     "terablast",
     "throatchop",
     "thunderfang",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  brutebonnet: [
+  "brutebonnet": [
     "absorb",
     "astonish",
     "bodypress",
@@ -85403,9 +85485,9 @@ const data: Learnsets = {
     "thrash",
     "trailblaze",
     "venoshock",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  sandyshocks: [
+  "sandyshocks": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -85459,9 +85541,9 @@ const data: Learnsets = {
     "triattack",
     "voltswitch",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  screamtail: [
+  "screamtail": [
     "amnesia",
     "batonpass",
     "bite",
@@ -85541,9 +85623,9 @@ const data: Learnsets = {
     "uproar",
     "waterpulse",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  fluttermane: [
+  "fluttermane": [
     "astonish",
     "calmmind",
     "chargebeam",
@@ -85592,9 +85674,9 @@ const data: Learnsets = {
     "thunderbolt",
     "thunderwave",
     "trickroom",
-    "wish",
+    "wish"
   ],
-  slitherwing: [
+  "slitherwing": [
     "acrobatics",
     "aerialace",
     "bodypress",
@@ -85651,9 +85733,9 @@ const data: Learnsets = {
     "whirlwind",
     "wildcharge",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  roaringmoon: [
+  "roaringmoon": [
     "acrobatics",
     "aerialace",
     "airslash",
@@ -85721,9 +85803,9 @@ const data: Learnsets = {
     "thunderfang",
     "uturn",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  irontreads: [
+  "irontreads": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -85775,9 +85857,9 @@ const data: Learnsets = {
     "thunderfang",
     "voltswitch",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ironmoth: [
+  "ironmoth": [
     "acidspray",
     "acrobatics",
     "agility",
@@ -85829,9 +85911,9 @@ const data: Learnsets = {
     "toxicspikes",
     "uturn",
     "venoshock",
-    "whirlwind",
+    "whirlwind"
   ],
-  ironhands: [
+  "ironhands": [
     "armthrust",
     "bellydrum",
     "bodypress",
@@ -85887,9 +85969,9 @@ const data: Learnsets = {
     "thunderpunch",
     "voltswitch",
     "whirlwind",
-    "wildcharge",
+    "wildcharge"
   ],
-  ironjugulis: [
+  "ironjugulis": [
     "acrobatics",
     "aircutter",
     "airslash",
@@ -85945,9 +86027,9 @@ const data: Learnsets = {
     "triattack",
     "uturn",
     "workup",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ironthorns: [
+  "ironthorns": [
     "bite",
     "blizzard",
     "bodypress",
@@ -86023,9 +86105,9 @@ const data: Learnsets = {
     "thunderpunch",
     "thunderwave",
     "voltswitch",
-    "wildcharge",
+    "wildcharge"
   ],
-  ironbundle: [
+  "ironbundle": [
     "acrobatics",
     "agility",
     "aircutter",
@@ -86066,9 +86148,9 @@ const data: Learnsets = {
     "thief",
     "uturn",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  ironvaliant: [
+  "ironvaliant": [
     "aerialace",
     "agility",
     "aurasphere",
@@ -86148,9 +86230,9 @@ const data: Learnsets = {
     "vacuumwave",
     "wideguard",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tinglu: [
+  "tinglu": [
     "bodypress",
     "bodyslam",
     "bulldoze",
@@ -86196,9 +86278,9 @@ const data: Learnsets = {
     "thrash",
     "throatchop",
     "whirlwind",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chienpao: [
+  "chienpao": [
     "acrobatics",
     "aerialace",
     "avalanche",
@@ -86243,9 +86325,9 @@ const data: Learnsets = {
     "takedown",
     "taunt",
     "terablast",
-    "throatchop",
+    "throatchop"
   ],
-  wochien: [
+  "wochien": [
     "absorb",
     "bodypress",
     "bodyslam",
@@ -86297,9 +86379,9 @@ const data: Learnsets = {
     "terablast",
     "tickle",
     "trailblaze",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chiyu: [
+  "chiyu": [
     "bounce",
     "burningjealousy",
     "confuseray",
@@ -86345,9 +86427,9 @@ const data: Learnsets = {
     "temperflare",
     "terablast",
     "willowisp",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  koraidon: [
+  "koraidon": [
     "acrobatics",
     "agility",
     "ancientpower",
@@ -86419,9 +86501,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  miraidon: [
+  "miraidon": [
     "acrobatics",
     "agility",
     "bodyslam",
@@ -86477,9 +86559,9 @@ const data: Learnsets = {
     "uturn",
     "voltswitch",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tinkatink: [
+  "tinkatink": [
     "astonish",
     "babydolleyes",
     "brutalswing",
@@ -86525,9 +86607,9 @@ const data: Learnsets = {
     "swordsdance",
     "terablast",
     "thief",
-    "thunderwave",
+    "thunderwave"
   ],
-  tinkatuff: [
+  "tinkatuff": [
     "astonish",
     "babydolleyes",
     "brickbreak",
@@ -86571,9 +86653,9 @@ const data: Learnsets = {
     "swordsdance",
     "terablast",
     "thief",
-    "thunderwave",
+    "thunderwave"
   ],
-  tinkaton: [
+  "tinkaton": [
     "astonish",
     "babydolleyes",
     "brickbreak",
@@ -86622,9 +86704,9 @@ const data: Learnsets = {
     "swordsdance",
     "terablast",
     "thief",
-    "thunderwave",
+    "thunderwave"
   ],
-  charcadet: [
+  "charcadet": [
     "astonish",
     "celebrate",
     "clearsmog",
@@ -86654,9 +86736,9 @@ const data: Learnsets = {
     "sunnyday",
     "takedown",
     "terablast",
-    "willowisp",
+    "willowisp"
   ],
-  armarouge: [
+  "armarouge": [
     "acidspray",
     "allyswitch",
     "armorcannon",
@@ -86714,9 +86796,9 @@ const data: Learnsets = {
     "trickroom",
     "weatherball",
     "wideguard",
-    "willowisp",
+    "willowisp"
   ],
-  ceruledge: [
+  "ceruledge": [
     "allyswitch",
     "astonish",
     "bitterblade",
@@ -86774,9 +86856,9 @@ const data: Learnsets = {
     "throatchop",
     "vacuumwave",
     "willowisp",
-    "xscissor",
+    "xscissor"
   ],
-  toedscool: [
+  "toedscool": [
     "absorb",
     "acidspray",
     "acupressure",
@@ -86835,9 +86917,9 @@ const data: Learnsets = {
     "trailblaze",
     "trickroom",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  toedscruel: [
+  "toedscruel": [
     "absorb",
     "acidspray",
     "bulletseed",
@@ -86893,9 +86975,9 @@ const data: Learnsets = {
     "trailblaze",
     "trickroom",
     "venoshock",
-    "wrap",
+    "wrap"
   ],
-  walkingwake: [
+  "walkingwake": [
     "agility",
     "aquajet",
     "bite",
@@ -86948,9 +87030,9 @@ const data: Learnsets = {
     "waterfall",
     "waterpulse",
     "weatherball",
-    "whirlpool",
+    "whirlpool"
   ],
-  ironleaves: [
+  "ironleaves": [
     "aerialace",
     "agility",
     "airslash",
@@ -87007,9 +87089,9 @@ const data: Learnsets = {
     "trailblaze",
     "wildcharge",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  dipplin: [
+  "dipplin": [
     "astonish",
     "bodyslam",
     "bugbite",
@@ -87050,9 +87132,9 @@ const data: Learnsets = {
     "syrupbomb",
     "takedown",
     "terablast",
-    "withdraw",
+    "withdraw"
   ],
-  poltchageist: [
+  "poltchageist": [
     "absorb",
     "astonish",
     "calmmind",
@@ -87090,9 +87172,9 @@ const data: Learnsets = {
     "terablast",
     "trickroom",
     "uproar",
-    "withdraw",
+    "withdraw"
   ],
-  poltchageistartisan: [
+  "poltchageistartisan": [
     "absorb",
     "astonish",
     "calmmind",
@@ -87130,52 +87212,9 @@ const data: Learnsets = {
     "terablast",
     "trickroom",
     "uproar",
-    "withdraw",
+    "withdraw"
   ],
-  sinistcha: [
-    "absorb",
-    "astonish",
-    "calmmind",
-    "curse",
-    "endure",
-    "energyball",
-    "foulplay",
-    "gigadrain",
-    "grassyterrain",
-    "hex",
-    "hyperbeam",
-    "imprison",
-    "irondefense",
-    "leafstorm",
-    "lifedew",
-    "magicalleaf",
-    "matchagotcha",
-    "megadrain",
-    "memento",
-    "nastyplot",
-    "nightshade",
-    "painsplit",
-    "phantomforce",
-    "poltergeist",
-    "protect",
-    "psychup",
-    "ragepowder",
-    "reflect",
-    "rest",
-    "scald",
-    "shadowball",
-    "sleeptalk",
-    "solarbeam",
-    "spite",
-    "strengthsap",
-    "stunspore",
-    "substitute",
-    "terablast",
-    "trickroom",
-    "uproar",
-    "withdraw",
-  ],
-  sinistchamasterpiece: [
+  "sinistcha": [
     "absorb",
     "astonish",
     "calmmind",
@@ -87216,9 +87255,52 @@ const data: Learnsets = {
     "terablast",
     "trickroom",
     "uproar",
-    "withdraw",
+    "withdraw"
   ],
-  okidogi: [
+  "sinistchamasterpiece": [
+    "absorb",
+    "astonish",
+    "calmmind",
+    "curse",
+    "endure",
+    "energyball",
+    "foulplay",
+    "gigadrain",
+    "grassyterrain",
+    "hex",
+    "hyperbeam",
+    "imprison",
+    "irondefense",
+    "leafstorm",
+    "lifedew",
+    "magicalleaf",
+    "matchagotcha",
+    "megadrain",
+    "memento",
+    "nastyplot",
+    "nightshade",
+    "painsplit",
+    "phantomforce",
+    "poltergeist",
+    "protect",
+    "psychup",
+    "ragepowder",
+    "reflect",
+    "rest",
+    "scald",
+    "shadowball",
+    "sleeptalk",
+    "solarbeam",
+    "spite",
+    "strengthsap",
+    "stunspore",
+    "substitute",
+    "terablast",
+    "trickroom",
+    "uproar",
+    "withdraw"
+  ],
+  "okidogi": [
     "bite",
     "bodypress",
     "bodyslam",
@@ -87283,9 +87365,9 @@ const data: Learnsets = {
     "thunderpunch",
     "toxic",
     "upperhand",
-    "uproar",
+    "uproar"
   ],
-  munkidori: [
+  "munkidori": [
     "acidspray",
     "batonpass",
     "calmmind",
@@ -87341,9 +87423,9 @@ const data: Learnsets = {
     "trick",
     "uproar",
     "uturn",
-    "venoshock",
+    "venoshock"
   ],
-  fezandipiti: [
+  "fezandipiti": [
     "acidspray",
     "acrobatics",
     "aerialace",
@@ -87406,9 +87488,9 @@ const data: Learnsets = {
     "uproar",
     "uturn",
     "venoshock",
-    "wingattack",
+    "wingattack"
   ],
-  ogerpon: [
+  "ogerpon": [
     "brickbreak",
     "bulletseed",
     "charm",
@@ -87470,12 +87552,12 @@ const data: Learnsets = {
     "uturn",
     "vinewhip",
     "woodhammer",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ogerponhearthflame: [],
-  ogerponwellspring: [],
-  ogerponcornerstone: [],
-  archaludon: [
+  "ogerponhearthflame": [],
+  "ogerponwellspring": [],
+  "ogerponcornerstone": [],
+  "archaludon": [
     "aurasphere",
     "bodypress",
     "bodyslam",
@@ -87531,9 +87613,9 @@ const data: Learnsets = {
     "terablast",
     "thunder",
     "thunderbolt",
-    "thunderwave",
+    "thunderwave"
   ],
-  hydrapple: [
+  "hydrapple": [
     "astonish",
     "bodypress",
     "bodyslam",
@@ -87589,9 +87671,9 @@ const data: Learnsets = {
     "terablast",
     "uproar",
     "withdraw",
-    "yawn",
+    "yawn"
   ],
-  gougingfire: [
+  "gougingfire": [
     "ancientpower",
     "bite",
     "bodyslam",
@@ -87652,9 +87734,9 @@ const data: Learnsets = {
     "temperflare",
     "terablast",
     "thunderfang",
-    "weatherball",
+    "weatherball"
   ],
-  ragingbolt: [
+  "ragingbolt": [
     "ancientpower",
     "bodypress",
     "bodyslam",
@@ -87709,9 +87791,9 @@ const data: Learnsets = {
     "voltswitch",
     "weatherball",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  ironboulder: [
+  "ironboulder": [
     "aerialace",
     "agility",
     "airslash",
@@ -87760,9 +87842,9 @@ const data: Learnsets = {
     "throatchop",
     "wildcharge",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ironcrown: [
+  "ironcrown": [
     "agility",
     "airslash",
     "bodyslam",
@@ -87811,9 +87893,9 @@ const data: Learnsets = {
     "terablast",
     "voltswitch",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  terapagos: [
+  "terapagos": [
     "ancientpower",
     "aurasphere",
     "bodypress",
@@ -87872,9 +87954,9 @@ const data: Learnsets = {
     "weatherball",
     "wildcharge",
     "withdraw",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pecharunt: [
+  "pecharunt": [
     "acidspray",
     "astonish",
     "curse",
@@ -87909,9 +87991,9 @@ const data: Learnsets = {
     "terablast",
     "toxic",
     "venoshock",
-    "withdraw",
+    "withdraw"
   ],
-  syclar: [
+  "syclar": [
     "absorb",
     "attract",
     "avalanche",
@@ -87983,9 +88065,9 @@ const data: Learnsets = {
     "trailblaze",
     "uturn",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  syclant: [
+  "syclant": [
     "absorb",
     "attract",
     "avalanche",
@@ -88071,9 +88153,9 @@ const data: Learnsets = {
     "tripleaxel",
     "uturn",
     "waterpulse",
-    "xscissor",
+    "xscissor"
   ],
-  revenankh: [
+  "revenankh": [
     "ancientpower",
     "armthrust",
     "attract",
@@ -88190,9 +88272,9 @@ const data: Learnsets = {
     "willowisp",
     "wonderroom",
     "workup",
-    "wrap",
+    "wrap"
   ],
-  embirch: [
+  "embirch": [
     "amnesia",
     "aromatherapy",
     "attract",
@@ -88276,9 +88358,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  flarelm: [
+  "flarelm": [
     "amnesia",
     "ancientpower",
     "attract",
@@ -88367,9 +88449,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "worryseed",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pyroak: [
+  "pyroak": [
     "amnesia",
     "ancientpower",
     "aromaticmist",
@@ -88471,9 +88553,9 @@ const data: Learnsets = {
     "woodhammer",
     "worryseed",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  breezi: [
+  "breezi": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -88554,9 +88636,9 @@ const data: Learnsets = {
     "venoshock",
     "whirlwind",
     "wish",
-    "wonderroom",
+    "wonderroom"
   ],
-  fidgit: [
+  "fidgit": [
     "acrobatics",
     "aerialace",
     "afteryou",
@@ -88657,9 +88739,9 @@ const data: Learnsets = {
     "venoshock",
     "whirlwind",
     "wideguard",
-    "wonderroom",
+    "wonderroom"
   ],
-  rebble: [
+  "rebble": [
     "accelerock",
     "acupressure",
     "aerialace",
@@ -88728,9 +88810,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "vacuumwave",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  tactite: [
+  "tactite": [
     "accelerock",
     "acupressure",
     "aerialace",
@@ -88800,9 +88882,9 @@ const data: Learnsets = {
     "toxic",
     "trick",
     "vacuumwave",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  stratagem: [
+  "stratagem": [
     "accelerock",
     "acupressure",
     "aerialace",
@@ -88879,9 +88961,9 @@ const data: Learnsets = {
     "trick",
     "vacuumwave",
     "weatherball",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  privatyke: [
+  "privatyke": [
     "aquacutter",
     "aquajet",
     "armthrust",
@@ -88980,9 +89062,9 @@ const data: Learnsets = {
     "wideguard",
     "workup",
     "wrap",
-    "yawn",
+    "yawn"
   ],
-  arghonaut: [
+  "arghonaut": [
     "aquacutter",
     "aquajet",
     "armthrust",
@@ -89089,9 +89171,9 @@ const data: Learnsets = {
     "wideguard",
     "workup",
     "wrap",
-    "yawn",
+    "yawn"
   ],
-  nohface: [
+  "nohface": [
     "assurance",
     "attract",
     "captivate",
@@ -89181,9 +89263,9 @@ const data: Learnsets = {
     "uturn",
     "willowisp",
     "wish",
-    "yawn",
+    "yawn"
   ],
-  kitsunoh: [
+  "kitsunoh": [
     "assurance",
     "attract",
     "bulldoze",
@@ -89281,9 +89363,9 @@ const data: Learnsets = {
     "trickroom",
     "upperhand",
     "uturn",
-    "willowisp",
+    "willowisp"
   ],
-  monohm: [
+  "monohm": [
     "aerialace",
     "aquatail",
     "attract",
@@ -89368,9 +89450,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlwind",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  duohm: [
+  "duohm": [
     "aerialace",
     "aquatail",
     "attract",
@@ -89463,9 +89545,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlwind",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  cyclohm: [
+  "cyclohm": [
     "aerialace",
     "aquatail",
     "attract",
@@ -89566,9 +89648,9 @@ const data: Learnsets = {
     "weatherball",
     "whirlwind",
     "wildcharge",
-    "zapcannon",
+    "zapcannon"
   ],
-  dorsoil: [
+  "dorsoil": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -89653,9 +89735,9 @@ const data: Learnsets = {
     "torment",
     "toxic",
     "uturn",
-    "wideguard",
+    "wideguard"
   ],
-  colossoil: [
+  "colossoil": [
     "ancientpower",
     "aquatail",
     "attract",
@@ -89747,9 +89829,9 @@ const data: Learnsets = {
     "thunderfang",
     "torment",
     "toxic",
-    "uturn",
+    "uturn"
   ],
-  protowatt: [
+  "protowatt": [
     "bubble",
     "charge",
     "confuseray",
@@ -89764,9 +89846,9 @@ const data: Learnsets = {
     "speedswap",
     "terablast",
     "thundershock",
-    "watergun",
+    "watergun"
   ],
-  krilowatt: [
+  "krilowatt": [
     "aquatail",
     "attract",
     "blizzard",
@@ -89853,9 +89935,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "wildcharge",
+    "wildcharge"
   ],
-  voodoll: [
+  "voodoll": [
     "acupressure",
     "afteryou",
     "assurance",
@@ -89939,9 +90021,9 @@ const data: Learnsets = {
     "vacuumwave",
     "voltswitch",
     "workup",
-    "wrap",
+    "wrap"
   ],
-  voodoom: [
+  "voodoom": [
     "acupressure",
     "afteryou",
     "assurance",
@@ -90042,9 +90124,9 @@ const data: Learnsets = {
     "vacuumwave",
     "voltswitch",
     "workup",
-    "wrap",
+    "wrap"
   ],
-  scratchet: [
+  "scratchet": [
     "aerialace",
     "attract",
     "batonpass",
@@ -90116,9 +90198,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  tomohawk: [
+  "tomohawk": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -90207,9 +90289,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "whirlwind",
-    "workup",
+    "workup"
   ],
-  necturine: [
+  "necturine": [
     "attract",
     "calmmind",
     "confide",
@@ -90275,9 +90357,9 @@ const data: Learnsets = {
     "trailblaze",
     "vinewhip",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  necturna: [
+  "necturna": [
     "attract",
     "calmmind",
     "confide",
@@ -90349,9 +90431,9 @@ const data: Learnsets = {
     "trailblaze",
     "vinewhip",
     "willowisp",
-    "worryseed",
+    "worryseed"
   ],
-  mollux: [
+  "mollux": [
     "acid",
     "acidarmor",
     "acidspray",
@@ -90429,9 +90511,9 @@ const data: Learnsets = {
     "venomdrench",
     "venoshock",
     "willowisp",
-    "withdraw",
+    "withdraw"
   ],
-  cupra: [
+  "cupra": [
     "allyswitch",
     "ancientpower",
     "attract",
@@ -90509,9 +90591,9 @@ const data: Learnsets = {
     "wish",
     "wonderroom",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  argalis: [
+  "argalis": [
     "allyswitch",
     "ancientpower",
     "attract",
@@ -90587,9 +90669,9 @@ const data: Learnsets = {
     "wish",
     "wonderroom",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  aurumoth: [
+  "aurumoth": [
     "allyswitch",
     "ancientpower",
     "attract",
@@ -90682,9 +90764,9 @@ const data: Learnsets = {
     "wish",
     "wonderroom",
     "xscissor",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  brattler: [
+  "brattler": [
     "aromatherapy",
     "attract",
     "beatup",
@@ -90766,9 +90848,9 @@ const data: Learnsets = {
     "wildcharge",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  malaconda: [
+  "malaconda": [
     "attract",
     "beatup",
     "bind",
@@ -90853,9 +90935,9 @@ const data: Learnsets = {
     "wildcharge",
     "worryseed",
     "wrap",
-    "wringout",
+    "wringout"
   ],
-  cawdet: [
+  "cawdet": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -90926,9 +91008,9 @@ const data: Learnsets = {
     "waterpulse",
     "watersport",
     "whirlpool",
-    "wingattack",
+    "wingattack"
   ],
-  cawmodore: [
+  "cawmodore": [
     "acrobatics",
     "aerialace",
     "agility",
@@ -91003,9 +91085,9 @@ const data: Learnsets = {
     "upperhand",
     "waterpulse",
     "whirlpool",
-    "wingattack",
+    "wingattack"
   ],
-  volkritter: [
+  "volkritter": [
     "absorb",
     "aquajet",
     "aquaring",
@@ -91074,9 +91156,9 @@ const data: Learnsets = {
     "watergun",
     "waterpulse",
     "whirlpool",
-    "willowisp",
+    "willowisp"
   ],
-  volkraken: [
+  "volkraken": [
     "absorb",
     "aquaring",
     "assurance",
@@ -91148,9 +91230,9 @@ const data: Learnsets = {
     "waterpulse",
     "whirlpool",
     "willowisp",
-    "wringout",
+    "wringout"
   ],
-  snugglow: [
+  "snugglow": [
     "acid",
     "acidspray",
     "aquatail",
@@ -91216,9 +91298,9 @@ const data: Learnsets = {
     "waterpulse",
     "wideguard",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  plasmanta: [
+  "plasmanta": [
     "acid",
     "acidspray",
     "aquatail",
@@ -91290,9 +91372,9 @@ const data: Learnsets = {
     "venoshock",
     "waterpulse",
     "wildcharge",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  floatoy: [
+  "floatoy": [
     "attract",
     "bite",
     "blizzard",
@@ -91363,9 +91445,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  caimanoe: [
+  "caimanoe": [
     "attract",
     "blizzard",
     "bodypress",
@@ -91444,9 +91526,9 @@ const data: Learnsets = {
     "waterfall",
     "watergun",
     "waterpulse",
-    "whirlpool",
+    "whirlpool"
   ],
-  naviathan: [
+  "naviathan": [
     "attract",
     "blizzard",
     "bodypress",
@@ -91532,9 +91614,9 @@ const data: Learnsets = {
     "wavecrash",
     "whirlpool",
     "wideguard",
-    "wildcharge",
+    "wildcharge"
   ],
-  crucibelle: [
+  "crucibelle": [
     "acidarmor",
     "acidspray",
     "assurance",
@@ -91618,9 +91700,9 @@ const data: Learnsets = {
     "withdraw",
     "wonderroom",
     "woodhammer",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  pluffle: [
+  "pluffle": [
     "allyswitch",
     "attract",
     "beatup",
@@ -91680,9 +91762,9 @@ const data: Learnsets = {
     "wideguard",
     "wish",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  kerfluffle: [
+  "kerfluffle": [
     "allyswitch",
     "attract",
     "aurasphere",
@@ -91768,9 +91850,9 @@ const data: Learnsets = {
     "vacuumwave",
     "wakeupslap",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  pajantom: [
+  "pajantom": [
     "aerialace",
     "astonish",
     "attract",
@@ -91859,9 +91941,9 @@ const data: Learnsets = {
     "venoshock",
     "whirlpool",
     "wrap",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  mumbao: [
+  "mumbao": [
     "attract",
     "bodyslam",
     "bulletseed",
@@ -91927,9 +92009,9 @@ const data: Learnsets = {
     "trailblaze",
     "wish",
     "woodhammer",
-    "worryseed",
+    "worryseed"
   ],
-  jumbao: [
+  "jumbao": [
     "armthrust",
     "attract",
     "block",
@@ -92008,9 +92090,9 @@ const data: Learnsets = {
     "trailblaze",
     "wish",
     "wonderroom",
-    "worryseed",
+    "worryseed"
   ],
-  fawnifer: [
+  "fawnifer": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -92077,9 +92159,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "workup",
-    "worryseed",
+    "worryseed"
   ],
-  electrelk: [
+  "electrelk": [
     "attract",
     "bodyslam",
     "brickbreak",
@@ -92152,9 +92234,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "worryseed",
-    "zapcannon",
+    "zapcannon"
   ],
-  caribolt: [
+  "caribolt": [
     "attract",
     "bodyslam",
     "boomburst",
@@ -92238,9 +92320,9 @@ const data: Learnsets = {
     "wildcharge",
     "workup",
     "worryseed",
-    "zapcannon",
+    "zapcannon"
   ],
-  smogecko: [
+  "smogecko": [
     "acidspray",
     "aerialace",
     "attract",
@@ -92310,9 +92392,9 @@ const data: Learnsets = {
     "trailblaze",
     "venomdrench",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  smoguana: [
+  "smoguana": [
     "acidspray",
     "aerialace",
     "attract",
@@ -92383,9 +92465,9 @@ const data: Learnsets = {
     "trailblaze",
     "venomdrench",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  smokomodo: [
+  "smokomodo": [
     "acidspray",
     "aerialace",
     "attract",
@@ -92475,9 +92557,9 @@ const data: Learnsets = {
     "trailblaze",
     "venomdrench",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  swirlpool: [
+  "swirlpool": [
     "acidarmor",
     "allyswitch",
     "aquajet",
@@ -92559,9 +92641,9 @@ const data: Learnsets = {
     "waterpledge",
     "waterpulse",
     "whirlpool",
-    "workup",
+    "workup"
   ],
-  coribalis: [
+  "coribalis": [
     "allyswitch",
     "aquajet",
     "attract",
@@ -92642,9 +92724,9 @@ const data: Learnsets = {
     "whirlpool",
     "wonderroom",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  snaelstrom: [
+  "snaelstrom": [
     "alluringvoice",
     "allyswitch",
     "aquajet",
@@ -92734,9 +92816,9 @@ const data: Learnsets = {
     "whirlpool",
     "wonderroom",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  justyke: [
+  "justyke": [
     "allyswitch",
     "aurasphere",
     "bodyslam",
@@ -92797,9 +92879,9 @@ const data: Learnsets = {
     "terablast",
     "trickroom",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  equilibra: [
+  "equilibra": [
     "allyswitch",
     "aurasphere",
     "bodyslam",
@@ -92866,9 +92948,9 @@ const data: Learnsets = {
     "terablast",
     "trickroom",
     "wonderroom",
-    "workup",
+    "workup"
   ],
-  solotl: [
+  "solotl": [
     "acrobatics",
     "agility",
     "allyswitch",
@@ -92930,9 +93012,9 @@ const data: Learnsets = {
     "twister",
     "willowisp",
     "workup",
-    "yawn",
+    "yawn"
   ],
-  astrolotl: [
+  "astrolotl": [
     "acrobatics",
     "agility",
     "alluringvoice",
@@ -93000,9 +93082,9 @@ const data: Learnsets = {
     "terablast",
     "thunderwave",
     "willowisp",
-    "workup",
+    "workup"
   ],
-  miasmite: [
+  "miasmite": [
     "agility",
     "aromatherapy",
     "attract",
@@ -93063,9 +93145,9 @@ const data: Learnsets = {
     "thunderfang",
     "uproar",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  miasmaw: [
+  "miasmaw": [
     "agility",
     "attract",
     "bite",
@@ -93139,9 +93221,9 @@ const data: Learnsets = {
     "uturn",
     "wildcharge",
     "workup",
-    "xscissor",
+    "xscissor"
   ],
-  chromera: [
+  "chromera": [
     "acidspray",
     "aerialace",
     "alluringvoice",
@@ -93217,9 +93299,9 @@ const data: Learnsets = {
     "trailblaze",
     "uproar",
     "venomdrench",
-    "wideguard",
+    "wideguard"
   ],
-  venomicon: [
+  "venomicon": [
     "acidspray",
     "aircutter",
     "airslash",
@@ -93290,9 +93372,9 @@ const data: Learnsets = {
     "uturn",
     "venomdrench",
     "venoshock",
-    "withdraw",
+    "withdraw"
   ],
-  saharascal: [
+  "saharascal": [
     "ancientpower",
     "attract",
     "bodypress",
@@ -93335,9 +93417,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  saharaja: [
+  "saharaja": [
     "attract",
     "bodypress",
     "bodyslam",
@@ -93389,9 +93471,9 @@ const data: Learnsets = {
     "terablast",
     "thief",
     "watergun",
-    "waterpulse",
+    "waterpulse"
   ],
-  ababo: [
+  "ababo": [
     "bodyslam",
     "bulkup",
     "charm",
@@ -93433,9 +93515,9 @@ const data: Learnsets = {
     "trailblaze",
     "trick",
     "wildcharge",
-    "wish",
+    "wish"
   ],
-  scattervein: [
+  "scattervein": [
     "batonpass",
     "bodyslam",
     "brutalswing",
@@ -93504,9 +93586,9 @@ const data: Learnsets = {
     "willowisp",
     "wish",
     "wrap",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  hemogoblin: [
+  "hemogoblin": [
     "batonpass",
     "bodyslam",
     "brutalswing",
@@ -93575,9 +93657,9 @@ const data: Learnsets = {
     "wildcharge",
     "willowisp",
     "wrap",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  cresceidon: [
+  "cresceidon": [
     "amnesia",
     "aquaring",
     "blizzard",
@@ -93637,9 +93719,9 @@ const data: Learnsets = {
     "whirlpool",
     "wideguard",
     "wish",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  chuggon: [
+  "chuggon": [
     "acidspray",
     "bite",
     "bodyslam",
@@ -93692,9 +93774,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "venoshock",
+    "venoshock"
   ],
-  draggalong: [
+  "draggalong": [
     "acidspray",
     "bite",
     "bodyslam",
@@ -93750,9 +93832,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "venoshock",
+    "venoshock"
   ],
-  chuggalong: [
+  "chuggalong": [
     "acidspray",
     "bite",
     "bodyslam",
@@ -93817,9 +93899,9 @@ const data: Learnsets = {
     "toxic",
     "trailblaze",
     "uproar",
-    "venoshock",
+    "venoshock"
   ],
-  flox: [
+  "flox": [
     "blizzard",
     "bodyslam",
     "bulldoze",
@@ -93876,9 +93958,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  shox: [
+  "shox": [
     "blizzard",
     "bodyslam",
     "bulldoze",
@@ -93948,9 +94030,9 @@ const data: Learnsets = {
     "voltswitch",
     "wildcharge",
     "zapcannon",
-    "zenheadbutt",
+    "zenheadbutt"
   ],
-  ramnarok: [
+  "ramnarok": [
     "ancientpower",
     "aurorabeam",
     "auroraveil",
@@ -94019,9 +94101,64 @@ const data: Learnsets = {
     "thunder",
     "thunderbolt",
     "wildcharge",
-    "willowisp",
+    "willowisp"
   ],
-  obliteryx: [
+  "scraptor": [
+    "acrobatics",
+    "aerialace",
+    "aircutter",
+    "airslash",
+    "bite",
+    "crunch",
+    "darkpulse",
+    "darkestlariat",
+    "doubleedge",
+    "dragonrush",
+    "drillpeck",
+    "dualwingbeat",
+    "encore",
+    "endure",
+    "facade",
+    "faketears",
+    "firefang",
+    "fly",
+    "foulplay",
+    "gust",
+    "heatwave",
+    "helpinghand",
+    "hurricane",
+    "knockoff",
+    "lashout",
+    "leer",
+    "memento",
+    "mudslap",
+    "nastyplot",
+    "powertrip",
+    "protect",
+    "quickattack",
+    "quickguard",
+    "rest",
+    "roar",
+    "roost",
+    "scaryface",
+    "shadowball",
+    "sleeptalk",
+    "snarl",
+    "steelwing",
+    "substitute",
+    "suckerpunch",
+    "swift",
+    "tailwind",
+    "takedown",
+    "taunt",
+    "terablast",
+    "thief",
+    "throatchop",
+    "thunderfang",
+    "whirlwind",
+    "wingattack"
+  ],
+  "obliteryx": [
     "acrobatics",
     "aerialace",
     "aircutter",
@@ -94089,27 +94226,27 @@ const data: Learnsets = {
     "throatchop",
     "thunderfang",
     "whirlwind",
-    "wingattack",
+    "wingattack"
   ],
-  pokestarsmeargle: [],
-  pokestarufo: [],
-  pokestarufo2: [],
-  pokestarbrycenman: [],
-  pokestarmt: [],
-  pokestarmt2: [],
-  pokestartransport: [],
-  pokestargiant: [],
-  pokestargiant2: [],
-  pokestarhumanoid: [],
-  pokestarmonster: [],
-  pokestarf00: [],
-  pokestarf002: [],
-  pokestarspirit: [],
-  pokestarblackdoor: [],
-  pokestarwhitedoor: [],
-  pokestarblackbelt: [],
-  pokestargiantpropo2: [],
-  pokestarufopropu2: [],
+  "pokestarsmeargle": [],
+  "pokestarufo": [],
+  "pokestarufo2": [],
+  "pokestarbrycenman": [],
+  "pokestarmt": [],
+  "pokestarmt2": [],
+  "pokestartransport": [],
+  "pokestargiant": [],
+  "pokestargiant2": [],
+  "pokestarhumanoid": [],
+  "pokestarmonster": [],
+  "pokestarf00": [],
+  "pokestarf002": [],
+  "pokestarspirit": [],
+  "pokestarblackdoor": [],
+  "pokestarwhitedoor": [],
+  "pokestarblackbelt": [],
+  "pokestargiantpropo2": [],
+  "pokestarufopropu2": []
 };
 
 export default data;
