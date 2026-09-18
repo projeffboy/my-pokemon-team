@@ -5,6 +5,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import TypeChartPng from "@/images/type-chart.png";
+import TypeChartListPng from "@/images/type-chart-list.png";
+import TypeChartInfographicPng from "@/images/type-chart-infographic.png";
 import { useBreakpoint } from "../shared/WidthContext";
 
 function TabContainer({ children }: { children?: ReactNode }) {
@@ -64,7 +66,7 @@ function TypeChart() {
           </Typography>
           <img
             alt="List Pokemon Type Chart"
-            src="https://i.pinimg.com/originals/7b/c6/58/7bc65872baa79ac690e9e4ae1aa8cb64.png"
+            src={TypeChartListPng}
             style={{ maxWidth: "100%" }}
           />
         </TabContainer>
@@ -79,7 +81,7 @@ function TypeChart() {
           </Typography>
           <img
             alt="Infographic Type Chart"
-            src="https://i.imgur.com/fylyCdC.png"
+            src={TypeChartInfographicPng}
             style={{ maxWidth: "100%" }}
           />
         </TabContainer>

@@ -3,7 +3,23 @@ import { expectImageToBeLoaded } from "helper";
 import type { Locator, Page } from "@playwright/test";
 
 test.describe("FAB (Floating Action Button) Tests", () => {
-  test("should display and interact with Type Chart FAB", async ({ page }) => {
+  test("should show all type charts without external requests", async ({ page }) => {
+    const appHost = new URL(page.url()).host;
+    await page.route("**/*", route => {
+      const requestUrl = new URL(route.request().url());
+      const protocol = requestUrl.protocol;
+      const isNetworkProtocol =
+        protocol === "http:" ||
+        protocol === "https:" ||
+        protocol === "ws:" ||
+        protocol === "wss:";
+      if (isNetworkProtocol && requestUrl.host !== appHost) {
+        void route.abort();
+        return;
+      }
+      void route.continue();
+    });
+
     // Click FAB to open Type Chart dialog
     const fabButton = page.getByRole("button", { name: "Type Chart" });
     await fabButton.click();

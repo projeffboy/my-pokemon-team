@@ -25,9 +25,10 @@ yarn-error.log*
 
 # Playwright
 /test-results/
+/smoke-test-results/
 /test-examples/
 /playwright-report/
+/playwright-smoke-report/
 /blob-report/
 /playwright/.cache/
 /tests/ui/examples/
-/tests/snapshot/snapshot-tests.spec.ts-snapshots/
