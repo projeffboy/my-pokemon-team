@@ -66,13 +66,12 @@ test.describe("learnset inheritance", () => {
     expect(canItLearn("hiddenpowerice", "dachsbun")).toBe(false);
   });
 
-  test("deduplicates inherited moves without mutating the source data", () => {
+  test("deduplicates inherited moves into a frozen, cached result without mutating the source data", () => {
     const original = [...learnsets.roserade];
     const complete = completeLearnset("roserade");
     expect(complete.length).toBe(new Set(complete).size);
-    expect(completeLearnset("roserade")).toEqual(complete);
-    complete.push("notamove");
-    expect(canItLearn("notamove", "roserade")).toBe(false);
+    expect(completeLearnset("roserade")).toBe(complete); // cached
+    expect(Object.isFrozen(complete)).toBe(true);
     expect(learnsets.roserade).toEqual(original);
   });
 
@@ -100,7 +99,7 @@ test.describe("learnset inheritance", () => {
     expect(viable.values.slice(1)).toEqual(Array(5).fill([]));
     expect(viable.labels.slice(1)).toEqual(Array(5).fill([]));
 
-    viable.values[0].push("notamove");
+    expect(Object.isFrozen(all.values[0])).toBe(true);
     expect(getTeamLearnsets(team, false)).toEqual(all);
   });
 });

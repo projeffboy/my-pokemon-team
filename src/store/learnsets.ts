@@ -1,27 +1,31 @@
 import learnsets from "@/data/learnsets";
-import pokedexData from "@/data/pokedex";
+import pokedex from "@/data/pokedex";
 import moves from "@/data/moves";
 import viableMoves from "@/data/viable-moves";
-import type { Pokedex, ReadonlyTeam } from "@/types";
+import type { ReadonlyTeam } from "@/types";
 import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
 
-const pokedex: Pokedex = pokedexData;
+const REGIONS = ["alola", "galar", "hisui", "paldea"];
+const completeLearnsets = new Map<string, readonly string[]>();
 
-export function completeLearnset(pokemon: string): string[] {
+export function completeLearnset(pokemon: string): readonly string[] {
+  let learnset = completeLearnsets.get(pokemon);
+  if (!learnset) {
+    learnset = Object.freeze(buildCompleteLearnset(pokemon));
+    completeLearnsets.set(pokemon, learnset);
+  }
+
+  return learnset;
+}
+
+function buildCompleteLearnset(pokemon: string): string[] {
   let completeLearnset: string[] = learnsets[pokemon] || [];
 
   let baseForme = getBaseForme(pokemon) || pokemon; // since learnsets[pokemon] requires pokemon to be at its base forme
 
-  let isRegional = false;
+  const isRegional = REGIONS.some(region => pokemon.includes(region));
 
-  if (
-    pokemon.includes("alola") ||
-    pokemon.includes("galar") ||
-    pokemon.includes("hisui") ||
-    pokemon.includes("paldea")
-  ) {
-    isRegional = true;
-  } else {
+  if (!isRegional) {
     completeLearnset = [...completeLearnset, ...(learnsets[baseForme] || [])];
   }
 
@@ -29,27 +33,15 @@ export function completeLearnset(pokemon: string): string[] {
     const prevo = previousEvolution(baseForme);
     if (!prevo) break;
     baseForme = prevo;
-    baseForme = baseForme
-      .replace("\u2019", "") // sirfetch'd
-      .replace(".", "") // fixes the mr. mime family
-      .replace("é", "e")
-      .replace("é", "e")
-      .replace("-", "");
 
-    let region = "";
-    const pokemonFormeEntry = pokedex[baseForme];
-    if (isRegional && pokemonFormeEntry?.otherFormes) {
-      const otherFormes = pokemonFormeEntry.otherFormes;
-      if (otherFormes.some(forme => forme.includes("Alola"))) {
-        region = "alola";
-      } else if (otherFormes.some(forme => forme.includes("Galar"))) {
-        region = "galar";
-      } else if (otherFormes.some(forme => forme.includes("Hisui"))) {
-        region = "hisui";
-      } else if (otherFormes.some(forme => forme.includes("Paldea"))) {
-        region = "paldea";
-      }
-    }
+    // Regional formes are walked from their base forme, so switch back to the regional prevo
+    // E.g. Persian-Alola => Persian => Meowth => Meowth-Alola
+    const otherFormes = (isRegional && pokedex[baseForme]?.otherFormes) || [];
+    const region =
+      REGIONS.find(region =>
+        otherFormes.some(forme => forme.toLowerCase().includes(region)),
+      ) ?? "";
+
     // Append previous evolution learnset to current learnset
     completeLearnset = [
       ...completeLearnset,

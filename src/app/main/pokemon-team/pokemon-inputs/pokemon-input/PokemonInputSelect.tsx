@@ -18,8 +18,8 @@ export default function PokemonInputSelect({
   value,
   onChange,
 }: {
-  optionValues: string[];
-  optionLabels: string[];
+  optionValues: readonly string[];
+  optionLabels: readonly string[];
   placeholder: string;
   pokemonProperty: string;
   teamIndex: number;

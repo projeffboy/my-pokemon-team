@@ -26,8 +26,8 @@ const PokemonInput = observer(function PokemonInput({
     }
   };
 
-  let optionValues: string[] = [];
-  let optionLabels: string[] = [];
+  let optionValues: readonly string[] = [];
+  let optionLabels: readonly string[] = [];
 
   switch (pokemonProperty) {
     case "name":

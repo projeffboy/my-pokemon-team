@@ -1,16 +1,12 @@
-import type { Pokedex } from "@/types";
-import pokedexData from "@/data/pokedex";
+import pokedex from "@/data/pokedex";
+import { idsByName } from "@/shared/ids-by-name";
 
-const pokedex: Pokedex = pokedexData;
+const pokemonIds = idsByName(pokedex);
 
 // The inverse of the pokemonName function
 // E.g. 'Squirtle' => 'squirtle'
 export function pokemonNameInverse(pokemonName: string) {
-  for (const pokemon in pokedex) {
-    if (pokedex[pokemon]?.name === pokemonName) {
-      return pokemon;
-    }
-  }
+  return pokemonIds.get(pokemonName);
 }
 
 // Input a pokemon ID to return the pokemon ID of its base forme
@@ -19,16 +15,14 @@ export function pokemonNameInverse(pokemonName: string) {
 // E.g. 'wartortle' => undefined
 export function baseForme(pokemon: string) {
   const baseFormeName = pokedex[pokemon]?.baseSpecies;
-  const baseForme =
-    baseFormeName ? pokemonNameInverse(baseFormeName) : undefined;
 
-  return baseForme;
+  return baseFormeName ? pokemonNameInverse(baseFormeName) : undefined;
 }
 
 // Get previous evolution
+// E.g. 'mrrime' => 'mrmimegalar'
 export function previousEvolution(pokemon: string) {
   const prevo = pokedex[pokemon]?.prevo;
-  return prevo ?
-      prevo.toLowerCase().replace("-", "").replace(":", "").replace(" ", "")
-    : undefined;
+
+  return prevo ? pokemonNameInverse(prevo) : undefined;
 }

@@ -1,9 +1,14 @@
-import pokedexData from "@/data/pokedex";
-import type { Pokedex, Team, TeamPokemonProperties } from "@/types";
+import pokedex from "@/data/pokedex";
+import items from "@/data/items";
+import type { Team, TeamPokemonProperties } from "@/types";
+import { idsByName } from "./ids-by-name";
 
-const pokedex: Pokedex = pokedexData;
+const itemIds = idsByName(items);
 
-const toId = (name: string) => name.toLowerCase().replace(/[^a-z0-9]/g, "");
+// E.g. 'Leftovers' => 'leftovers'
+export function itemNameInverse(itemName: string) {
+  return itemIds.get(itemName);
+}
 
 export function createEmptyTeam(): Team {
   return Array.from({ length: 6 }, (): TeamPokemonProperties => ({
@@ -22,5 +27,5 @@ export function getAutoSelectedItem(pokemon: string, pokemonItem: string): strin
   const { requiredItem, requiredItems } = pokedex[pokemon] ?? {};
   const itemName = requiredItem ?? requiredItems?.[0];
 
-  return itemName ? toId(itemName) : pokemonItem;
+  return (itemName && itemNameInverse(itemName)) || pokemonItem;
 }

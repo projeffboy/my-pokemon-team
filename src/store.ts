@@ -29,11 +29,17 @@ import {
   pokemonNameInverse,
   previousEvolution,
 } from "./store/shared/pokemon";
-import { createEmptyTeam, getAutoSelectedItem } from "./shared/team";
+import {
+  createEmptyTeam,
+  getAutoSelectedItem,
+  itemNameInverse,
+} from "./shared/team";
+import { idsByName } from "./shared/ids-by-name";
 
 const pokedex: Pokedex = pokedexData;
 const moves: Moves = movesData;
 const items: Items = itemsData;
+const moveIds = idsByName(moves);
 
 // Components mutate the store directly.
 configure({ enforceActions: "never" });
@@ -90,7 +96,7 @@ class Store {
   }
 
   itemNameInverse(itemName: string) {
-    return this.itemsArr[this.itemNamesArr.indexOf(itemName)];
+    return itemNameInverse(itemName);
   }
 
   completeLearnset(pokemon: string) {
@@ -108,11 +114,7 @@ class Store {
 
   // Inverse function of moveName
   moveNameInverse(moveName: string) {
-    for (const move in moves) {
-      if (moveName === this.moveName(move)) {
-        return move;
-      }
-    }
+    return moveIds.get(moveName);
   }
 
   team: Team = createEmptyTeam();
