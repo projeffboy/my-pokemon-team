@@ -1,13 +1,11 @@
 import learnsets from "@/data/learnsets";
 import pokedexData from "@/data/pokedex";
 import moves from "@/data/moves";
-import oldMovesData from "@/data/old-moves";
-import type { Pokedex, OldMoves, ReadonlyTeam } from "@/types";
+import viableMoves from "@/data/viable-moves";
+import type { Pokedex, ReadonlyTeam } from "@/types";
 import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
 
 const pokedex: Pokedex = pokedexData;
-
-const oldMoves: OldMoves = oldMovesData;
 
 export function completeLearnset(pokemon: string): string[] {
   let completeLearnset: string[] = learnsets[pokemon] || [];
@@ -104,7 +102,7 @@ export const canItLearn = (move: string | undefined, pokemon: string): boolean =
 export function getTeamLearnsets(team: ReadonlyTeam, viableOnly: boolean) {
   const values = team.map(({ name }) => {
     const learnset = name ? completeLearnset(name) : [];
-    return viableOnly ? learnset.filter(move => oldMoves[move]?.isViable) : learnset;
+    return viableOnly ? learnset.filter(move => viableMoves.has(move)) : learnset;
   });
 
   return {

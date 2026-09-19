@@ -24,63 +24,84 @@ async function loadTypeScriptExport(sourcePath, exportName) {
   return (await import(moduleUrl))[exportName];
 }
 
-function convertExport(source, exportName, checkTypes = true) {
-  const declaration = new RegExp(
-    `export const ${exportName}: import\\([^)]*\\)\\.[^=]+ =`,
-  );
-  const typeName = {
-    Pokedex: "PokedexEntry",
-    Moves: "MoveEntry",
-    Items: "Items",
-    FormatsData: "Formats",
-  }[exportName];
+// `onePerLine` keeps each entry on its own line so data updates produce readable diffs
+function renderTypedData(typeName, data, onePerLine = false) {
+  const json =
+    onePerLine ?
+      `{\n${Object.entries(data)
+        .map(([id, entry]) => `  ${JSON.stringify(id)}: ${JSON.stringify(entry)},`)
+        .join("\n")}\n}`
+    : JSON.stringify(data, null, 2);
 
-  if (typeName === undefined) {
-    throw new Error(`Unknown export name: ${exportName}`);
-  }
-
-  const dataType = ["Pokedex", "Moves"].includes(exportName)
-    ? `Record<string, ${typeName} & Record<string, unknown>>`
-    : typeName;
-  const converted = source.replace(
-    declaration,
-    `const data: ${dataType} =`,
-  );
-
-  if (converted === source) {
-    throw new Error(`Could not find the ${exportName} export`);
-  }
-
-  const header =
-    checkTypes ? "" : (
-      "// @ts-nocheck -- callbacks depend on Pokemon Showdown simulator types.\n"
-    );
-  return `${header}import type { ${typeName} } from "../types";\n\n${converted.trimEnd()}\n\nexport default data;\n`;
-}
-
-function renderTypedData(typeName, data) {
   return [
     `import type { ${typeName} } from "../types";`,
     "",
-    `const data: ${typeName} = ${JSON.stringify(data, null, 2)};`,
+    `const data: ${typeName} = ${json};`,
     "",
     "export default data;",
     "",
   ].join("\n");
 }
 
-async function updateDirectDataset(
-  sourceName,
-  exportName,
-  targetName,
-  checkTypes = true,
-) {
-  const source = await read(
+// Keep only the fields the app reads, so the rest of Showdown's data stays out of the bundle.
+// Callbacks become `true` since the app only checks whether they exist.
+function pick(entry, keys) {
+  return Object.fromEntries(
+    keys
+      .filter(key => entry[key] !== undefined)
+      .map(key => [key, typeof entry[key] === "function" ? true : entry[key]]),
+  );
+}
+
+const projections = {
+  Pokedex: entry =>
+    pick(entry, [
+      "num",
+      "name",
+      "types",
+      "baseSpecies",
+      "forme",
+      "otherFormes",
+      "prevo",
+      "abilities",
+      "requiredItem",
+      "requiredItems",
+    ]),
+  Moves: entry => ({
+    ...pick(entry, [
+      "name",
+      "type",
+      "category",
+      "basePower",
+      "multihit",
+      "basePowerCallback",
+      "onModifyMove",
+      "status",
+      "boosts",
+    ]),
+    ...(entry.secondary && {
+      secondary: pick(entry.secondary, ["chance", "status"]),
+    }),
+    ...(entry.flags?.sound && { flags: { sound: 1 } }),
+  }),
+  Items: entry => pick(entry, ["name", "spritenum"]),
+  Formats: entry => pick(entry, ["tier", "doublesTier"]),
+};
+
+async function updateProjectedDataset(sourceName, exportName, typeName) {
+  const dataset = await loadTypeScriptExport(
     path.join(showdownRoot, "data", `${sourceName}.ts`),
+    exportName,
+  );
+  const projected = Object.fromEntries(
+    Object.entries(dataset).map(([id, entry]) => [
+      id,
+      projections[typeName](entry),
+    ]),
   );
   await fs.writeFile(
-    path.join(dataRoot, `${targetName}.ts`),
-    convertExport(source, exportName, checkTypes),
+    path.join(dataRoot, `${typeName.toLowerCase()}.ts`),
+    renderTypedData(typeName, projected, true),
   );
 }
 
@@ -187,10 +208,10 @@ async function updateIconIndexes() {
 }
 
 await Promise.all([
-  updateDirectDataset("pokedex", "Pokedex", "pokedex"),
-  updateDirectDataset("moves", "Moves", "moves", false),
-  updateDirectDataset("items", "Items", "items", false),
-  updateDirectDataset("formats-data", "FormatsData", "formats"),
+  updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
+  updateProjectedDataset("moves", "Moves", "Moves"),
+  updateProjectedDataset("items", "Items", "Items"),
+  updateProjectedDataset("formats-data", "FormatsData", "Formats"),
   updateLearnsets(),
   updateTypeChart(),
   updateIconIndexes(),

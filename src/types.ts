@@ -83,8 +83,6 @@ export function isPokemonType(value: string): value is PokemonType {
   return POKEMON_TYPES.some(type => type === value);
 }
 
-export type OldMoves = Record<string, { name?: string; isViable?: boolean }>;
-
 export interface TeamPokemonProperties {
   name: string;
   item: string;

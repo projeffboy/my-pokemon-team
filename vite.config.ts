@@ -22,6 +22,15 @@ export default defineConfig({
   },
   build: {
     outDir: "build",
+    rollupOptions: {
+      output: {
+        // Pokemon data and dependencies change less often than app code, so they cache separately
+        manualChunks(id) {
+          if (id.includes("/src/data/")) return "data";
+          if (id.includes("/node_modules/")) return "vendor";
+        },
+      },
+    },
   },
   define: {
     __LATEST_COMMIT_DATE__: JSON.stringify(latestCommitDate),

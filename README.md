@@ -60,6 +60,8 @@ This update is run manually when new data is needed. It reads the `pokemon-showd
 
 Learnsets combine every generation with the games Showdown keeps in separate mods: Pokemon Champions, Legends: Z-A, Legends: Arceus, and BDSP. To include another game, add its mod to `learnsetMods` in `scripts/update-data.mjs`.
 
+To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data.mjs` and to the matching type in `src/types.ts`, then rerun the update. `src/data/viable-moves.ts` is a frozen list (Showdown no longer flags viable moves) and is not regenerated.
+
 ## Testing
 
 After setting up the project, install the Playwright browsers and run all checks:
