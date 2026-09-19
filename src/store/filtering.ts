@@ -1,9 +1,40 @@
 import pokedex from "@/data/pokedex";
 import formats from "@/data/formats";
 import { isPokemonType } from "@/types";
+import { baseForme } from "./shared/pokemon";
 import type { Pokedex, SearchFilters } from "@/types";
 
 type PokemonFilters = Readonly<Pick<SearchFilters, "format" | "region" | "type">>;
+
+const REGION_NUMBER_RANGE: Record<string, [number, number]> = {
+  Kanto: [1, 151],
+  Johto: [152, 251],
+  Hoenn: [252, 386],
+  Sinnoh: [387, 493],
+  Unova: [494, 649],
+  Kalos: [650, 721],
+  Alola: [722, 809],
+  Galar: [810, 898],
+  Hisui: [899, 905],
+  Paldea: [906, 1025],
+};
+
+// Regional formes belong to the region they were introduced in, not their pokedex number's region
+const REGIONAL_FORMES: Record<string, string> = {
+  Alola: "alola",
+  Galar: "galar",
+  Hisui: "hisui",
+  Paldea: "paldea",
+};
+const HISUI_ORIGIN_FORMES = ["dialgaorigin", "palkiaorigin"];
+
+const BATTLE_STADIUM_BANNED_TAGS = ["Restricted Legendary", "Mythical"];
+
+function isBannedFromBattleStadium(pokemon: string | undefined) {
+  return !!pokedex[pokemon ?? ""]?.tags?.some(tag =>
+    BATTLE_STADIUM_BANNED_TAGS.includes(tag),
+  );
+}
 
 export function filterPokemon({ format, region, type }: PokemonFilters) {
   return Object.keys(
@@ -15,64 +46,18 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       return pokedex;
     }
 
-    let filteredPokedex: Pokedex = {};
+    const filteredPokedex: Pokedex = {};
 
     if (format === "Battle Stadium Singles") {
-      let banlist = [
-        "calyrex",
-        "celebi",
-        "cosmoem",
-        "cosmog",
-        "dialga",
-        "diancie",
-        "eternatus",
-        "giratina",
-        "groudon",
-        "hooh",
-        "jirachi",
-        "keldeo",
-        "kyogre",
-        "kyurem",
-        "lugia",
-        "lunala",
-        "magearna",
-        "marshadow",
-        "melmetal",
-        "meltan",
-        "mew",
-        "mewtwo",
-        "necrozma",
-        "palkia",
-        "rayquaza",
-        "reshiram",
-        "solgaleo",
-        "victini",
-        "volcanion",
-        "xerneas",
-        "yveltal",
-        "zacian",
-        "zamazenta",
-        "zarude",
-        "zekrom",
-        "zeraora",
-        "zygarde",
-      ];
-
-      filteredPokedex = { ...pokedex };
-
-      for (const pokemon of banlist) {
-        const { otherFormes } = pokedex[pokemon] ?? {};
-
-        // Don't just delete the banned pokemon, delete its other formes
-        // E.g. delete giratina, as well as giratinaorigin
-        if (otherFormes) {
-          otherFormes.forEach(
-            otherForme => delete filteredPokedex[otherForme],
-          );
-        }
-        delete filteredPokedex[pokemon];
-      }
-      return filteredPokedex;
+      // Formes share their base species' ban
+      // E.g. exclude giratina, as well as giratinaorigin
+      return Object.fromEntries(
+        Object.entries(pokedex).filter(
+          ([pokemon]) =>
+            !isBannedFromBattleStadium(pokemon) &&
+            !isBannedFromBattleStadium(baseForme(pokemon)),
+        ),
+      );
     }
 
     const tierAbbr: Record<string, string> = {
@@ -88,8 +73,6 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       "Doubles OU": "DOU",
       "Doubles UU": "DUU",
     };
-
-    filteredPokedex = {}; // clear out filteredPokedex
 
     let smogonSinglesTiers = [
       "Uber",
@@ -139,81 +122,38 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
   }
 
   function filterByRegion(pokedex: Pokedex) {
-    if (region) {
-      const regionNumberRange: Record<string, [number, number]> = {
-        Kanto: [1, 151],
-        Johto: [152, 251],
-        Hoenn: [252, 386],
-        Sinnoh: [387, 493],
-        Unova: [494, 649],
-        Kalos: [650, 721],
-        Alola: [722, 809],
-        Galar: [810, 898],
-        Hisui: [899, 905],
-        Paldea: [906, 1025],
-      };
-      const range = regionNumberRange[region];
-      if (!range) {
-        return {};
-      }
-      let filteredPokedex: Pokedex = {};
-
-      // Only return pokemon from a certain region based on pokedex number
-      for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
-        const num = pokemonProperties.num;
-        if (
-          num !== undefined &&
-          num >= range[0] &&
-          num <= range[1] &&
-          // If Kanto region, remove alola forms
-          !(region === "Kanto" && pokemon.includes("alola")) &&
-          !(region !== "Galar" && pokemon.includes("galar")) &&
-          !(region !== "Paldea" && pokemon.includes("paldea"))
-        ) {
-          filteredPokedex[pokemon] = pokemonProperties;
-        }
-      }
-
-      // If Alola region, add alola forms
-      if (region === "Alola") {
-        for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
-          if (pokemon.includes("alola")) {
-            filteredPokedex[pokemon] = pokemonProperties;
-          }
-        }
-      }
-      // If Galar region, add galar forms
-      if (region === "Galar") {
-        for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
-          if (pokemon.includes("galar")) {
-            filteredPokedex[pokemon] = pokemonProperties;
-          }
-        }
-      }
-      // If Hisui region, add hisui forms
-      if (region === "Hisui") {
-        for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
-          if (
-            pokemon.includes("hisui") ||
-            ["dialgaorigin", "palkiaorigin"].includes(pokemon)
-          ) {
-            filteredPokedex[pokemon] = pokemonProperties;
-          }
-        }
-      }
-      // If Paldea region, add paldea forms
-      if (region === "Paldea") {
-        for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
-          if (pokemon.includes("paldea")) {
-            filteredPokedex[pokemon] = pokemonProperties;
-          }
-        }
-      }
-
-      return filteredPokedex;
-    } else {
+    if (!region) {
       return pokedex;
     }
+
+    const range = REGION_NUMBER_RANGE[region];
+    if (!range) {
+      return {};
+    }
+
+    const regionalForme = REGIONAL_FORMES[region];
+    const otherRegionalFormes = Object.values(REGIONAL_FORMES).filter(
+      forme => forme !== regionalForme,
+    );
+    const filteredPokedex: Pokedex = {};
+
+    for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
+      const num = pokemonProperties.num;
+      const isInNumberRange =
+        num !== undefined && num >= range[0] && num <= range[1];
+
+      // E.g. Alola includes vulpixalola, and Kanto excludes it
+      if (
+        (regionalForme && pokemon.includes(regionalForme)) ||
+        (region === "Hisui" && HISUI_ORIGIN_FORMES.includes(pokemon)) ||
+        (isInNumberRange &&
+          !otherRegionalFormes.some(forme => pokemon.includes(forme)))
+      ) {
+        filteredPokedex[pokemon] = pokemonProperties;
+      }
+    }
+
+    return filteredPokedex;
   }
 
   function filterByType(pokedex: Pokedex) {

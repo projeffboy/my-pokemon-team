@@ -66,6 +66,7 @@ const projections = {
       "abilities",
       "requiredItem",
       "requiredItems",
+      "tags",
     ]),
   Moves: entry => ({
     ...pick(entry, [

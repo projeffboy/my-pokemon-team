@@ -15,6 +15,7 @@ export interface PokedexEntry {
   isNonstandard?: string;
   requiredItem?: string;
   requiredItems?: string[];
+  tags?: string[];
 }
 
 export type Pokedex = Record<string, PokedexEntry>;
