@@ -1,5 +1,9 @@
 import { Fragment } from "react";
 import store from "@/store";
+import {
+  moveAgainstType,
+  moveType as getMoveType,
+} from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import { MOVE_KEYS, type PokemonType } from "@/types";
 
@@ -27,10 +31,10 @@ export default function TypeCoverageTooltipInfo({
                 const move = teamPokemonProperties[key];
                 if (
                   move &&
-                  store.moveAgainstType(move, type, pokemon, ability) === -1
+                  moveAgainstType(move, type, pokemon, ability) === -1
                 ) {
                   hasSuperEffectiveMove = true;
-                  const moveType = store.moveType(move, pokemon, ability);
+                  const moveType = getMoveType(move, pokemon, ability);
                   return (
                     <li
                       key={move + key}

@@ -2,6 +2,12 @@
 import { MOVE_KEYS } from "@/types";
 import store from "@/store";
 import { createEmptyTeam, getAutoSelectedItem } from "@/shared/team";
+import {
+  pokemonNameInverse,
+  itemNameInverse,
+  moveNameInverse,
+} from "@/shared/names";
+import { canItLearn } from "@/store/learnsets";
 import type { Team } from "@/types";
 
 // Converts the store's current team into Pokemon Showdown team text format
@@ -47,13 +53,13 @@ export function parseTeamText(text: string): Team {
       const beforeParen = pokemonName.split("(")[0].trim();
       const insideParen = pokemonName.match(/\(([^)]+)\)/)?.[1]?.trim();
       const validCandidate = [beforeParen, insideParen].find(candidate =>
-        candidate ? !!store.pokemonNameInverse(candidate) : false,
+        candidate ? !!pokemonNameInverse(candidate) : false,
       );
       pokemonName = validCandidate || beforeParen || insideParen || pokemonName;
     }
 
     // Check if the pokemon the user typed is legit
-    const pokemon = store.pokemonNameInverse(pokemonName.trim());
+    const pokemon = pokemonNameInverse(pokemonName.trim());
     if (!pokemon) return;
 
     const member = team[teamIndex];
@@ -64,7 +70,7 @@ export function parseTeamText(text: string): Team {
     // If team raw data does not mention item, leave it blank
     if (itemName) {
       // Check if item is legit
-      const item = store.itemNameInverse(itemName);
+      const item = itemNameInverse(itemName);
       member.item = item || getAutoSelectedItem(pokemon, "");
     }
 
@@ -89,9 +95,9 @@ export function parseTeamText(text: string): Team {
 
         // If legit, set move
         // Otherwise, set it blank
-        const move = store.moveNameInverse(moveName);
+        const move = moveNameInverse(moveName);
 
-        const validMove = store.canItLearn(move, pokemon) && move ? move : "";
+        const validMove = canItLearn(move, pokemon) && move ? move : "";
 
         const moveKey = MOVE_KEYS[moveNum - 1];
         if (moveKey) member[moveKey] = validMove;

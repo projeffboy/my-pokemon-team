@@ -1,13 +1,5 @@
 import pokedex from "@/data/pokedex";
-import { idsByName } from "@/shared/ids-by-name";
-
-const pokemonIds = idsByName(pokedex);
-
-// The inverse of the pokemonName function
-// E.g. 'Squirtle' => 'squirtle'
-export function pokemonNameInverse(pokemonName: string) {
-  return pokemonIds.get(pokemonName);
-}
+import { pokemonNameInverse } from "@/shared/names";
 
 // Input a pokemon ID to return the pokemon ID of its base forme
 // E.g. 'giratinaorigin' => 'giratina'

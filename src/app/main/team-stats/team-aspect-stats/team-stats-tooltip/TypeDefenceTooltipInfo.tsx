@@ -1,4 +1,5 @@
 import store from "@/store";
+import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import type { PokemonType } from "@/types";
 
@@ -18,7 +19,7 @@ export default function TypeDefenceTooltipInfo({
         {store.team.map((teamPokemonProperties, i) => {
           const { name: pokemon, ability, item } = teamPokemonProperties;
           if (!pokemon) return null;
-          const effectiveness = store.typeAgainstPokemon(
+          const effectiveness = typeAgainstPokemon(
             type,
             pokemon,
             ability,

@@ -1,14 +1,6 @@
 import pokedex from "@/data/pokedex";
-import items from "@/data/items";
 import type { Team, TeamPokemonProperties } from "@/types";
-import { idsByName } from "./ids-by-name";
-
-const itemIds = idsByName(items);
-
-// E.g. 'Leftovers' => 'leftovers'
-export function itemNameInverse(itemName: string) {
-  return itemIds.get(itemName);
-}
+import { itemNameInverse } from "./names";
 
 export function createEmptyTeam(): Team {
   return Array.from({ length: 6 }, (): TeamPokemonProperties => ({

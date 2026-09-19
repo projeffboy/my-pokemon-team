@@ -1,10 +1,9 @@
 import pokedex from "@/data/pokedex";
-import formatsData from "@/data/formats";
+import formats from "@/data/formats";
 import { isPokemonType } from "@/types";
-import type { Formats, Pokedex, SearchFilters } from "@/types";
+import type { Pokedex, SearchFilters } from "@/types";
 
 type PokemonFilters = Readonly<Pick<SearchFilters, "format" | "region" | "type">>;
-const formats: Formats = formatsData;
 
 export function filterPokemon({ format, region, type }: PokemonFilters) {
   return Object.keys(

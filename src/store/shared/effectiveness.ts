@@ -1,11 +1,8 @@
-import type { Pokedex, Moves, PokemonType } from "@/types";
-import pokedexData from "@/data/pokedex";
-import movesData from "@/data/moves";
+import type { PokemonType } from "@/types";
+import pokedex from "@/data/pokedex";
+import moves from "@/data/moves";
 import typechart from "@/data/typechart";
 import { isPokemonType } from "@/types";
-
-const pokedex: Pokedex = pokedexData;
-const moves: Moves = movesData;
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
 export function typeAgainstPokemon(
