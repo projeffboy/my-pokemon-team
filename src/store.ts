@@ -1,39 +1,13 @@
 import { makeAutoObservable, configure } from "mobx";
-import pokedexData from "./data/pokedex";
-import itemsData from "./data/items";
-import movesData from "./data/moves";
-import type {
-  PokemonType,
-  Pokedex,
-  Moves,
-  Items,
-  SearchFilters,
-  Team,
-} from "./types";
+import pokedex from "./data/pokedex";
+import items from "./data/items";
+import moves from "./data/moves";
+import type { SearchFilters, Team } from "./types";
 import { MOVE_KEYS, isPokemonType } from "./types";
-import { completeLearnset, canItLearn, getTeamLearnsets } from "./store/learnsets";
-import {
-  createTypeScores,
-  calculateTypeDefence,
-  calculateTypeCoverage,
-} from "./store/coverage";
+import { getTeamLearnsets } from "./store/learnsets";
+import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
-import {
-  typeAgainstPokemon,
-  moveType,
-  isMoveStrongEnough,
-  moveAgainstType,
-} from "./store/shared/effectiveness";
-import {
-  baseForme,
-  pokemonNameInverse,
-  previousEvolution,
-} from "./store/shared/pokemon";
 import { createEmptyTeam, getAutoSelectedItem } from "./shared/team";
-
-const pokedex: Pokedex = pokedexData;
-const moves: Moves = movesData;
-const items: Items = itemsData;
 
 // Components mutate the store directly.
 configure({ enforceActions: "never" });
@@ -41,10 +15,6 @@ configure({ enforceActions: "never" });
 class Store {
   constructor() {
     makeAutoObservable(this);
-  }
-
-  get cleanSlate() {
-    return createTypeScores();
   }
 
   pokemonType(pokemon: string) {
@@ -61,20 +31,8 @@ class Store {
     return pokedex[pokemon]?.name;
   }
 
-  pokemonNameInverse(name: string) {
-    return pokemonNameInverse(name);
-  }
-
-  baseForme(pokemon: string) {
-    return baseForme(pokemon);
-  }
-
   forme(pokemon: string) {
     return pokedex[pokemon]?.forme;
-  }
-
-  previousEvolution(pokemon: string) {
-    return previousEvolution(pokemon);
   }
 
   get itemsArr() {
@@ -89,30 +47,9 @@ class Store {
     return items[item]?.name || "";
   }
 
-  itemNameInverse(itemName: string) {
-    return this.itemsArr[this.itemNamesArr.indexOf(itemName)];
-  }
-
-  completeLearnset(pokemon: string) {
-    return completeLearnset(pokemon);
-  }
-
-  canItLearn(move: string | undefined, pokemon: string) {
-    return canItLearn(move, pokemon);
-  }
-
   // Get the proper name of move
   moveName(move: string) {
     return moves[move]?.name;
-  }
-
-  // Inverse function of moveName
-  moveNameInverse(moveName: string) {
-    for (const move in moves) {
-      if (moveName === this.moveName(move)) {
-        return move;
-      }
-    }
   }
 
   team: Team = createEmptyTeam();
@@ -138,44 +75,21 @@ class Store {
 
   // Get the team's moves that the user chose (in 1D array)
   get teamMoves() {
-    const teamMoves: string[] = [];
-
-    this.team.forEach(teamPokemonProperties => {
-      teamMoves.push(
-        teamPokemonProperties.move1,
-        teamPokemonProperties.move2,
-        teamPokemonProperties.move3,
-        teamPokemonProperties.move4,
-      );
-    });
-
-    return teamMoves;
+    return this.teamFourMoveslots.flat();
   }
 
   // Basically the above but a 2D array,
   // It's an array of 6 arrays (for each pokemon),
   // Each containing 4 elements (for the 4 moves)
   get teamFourMoveslots() {
-    return this.team.map(teamPokemonProperties => [
-      teamPokemonProperties.move1,
-      teamPokemonProperties.move2,
-      teamPokemonProperties.move3,
-      teamPokemonProperties.move4,
-    ]);
+    return this.team.map(teamPokemonProperties =>
+      MOVE_KEYS.map(key => teamPokemonProperties[key]),
+    );
   }
 
   // Get team's possible abilities (in 2D array)
   get teamAbilities() {
-    return this.team.map(teamPokemonProperties => {
-      if (teamPokemonProperties.name) {
-        const teamPokemonAbilities: Record<string, string> =
-          pokedex[teamPokemonProperties.name]?.abilities ?? {};
-
-        return Object.values(teamPokemonAbilities);
-      } else {
-        return [];
-      }
-    });
+    return this.team.map(({ name }) => Object.values(this.abilities(name)));
   }
 
   // Does the team contain moves that inflict non-volatile status?
@@ -209,33 +123,14 @@ class Store {
     return getTeamLearnsets(this.team, !!this.searchFilters.moves);
   }
 
-  // Get the team's types
-  get teamTypes() {
-    let teamTypes = [];
-
-    for (const teamPokemonProperties of this.team) {
-      const pokemon = teamPokemonProperties.name;
-
-      if (pokemon) {
-        const pokemonTypes = this.pokemonType(pokemon); // that pokemon's types
-
-        teamTypes.push(pokemonTypes);
-      } else {
-        teamTypes.push([]);
-      }
-    }
-
-    return teamTypes;
-  }
-
   // Does the team have these items?
   doesTeamHaveItems(items: string[]) {
     // array input
     return this.teamItems.some(teamItem => items.includes(teamItem));
   }
 
-  // Does the team have this one particular item?
-  doesTeamHaveMove = (move: string) => this.teamMoves.includes(move); // String input
+  // Does the team have this one particular move?
+  doesTeamHaveMove = (move: string) => this.teamMoves.includes(move);
 
   doesTeamHaveMoves(moves: string[]) {
     return this.teamMoves.some(teamMove => moves.includes(teamMove));
@@ -266,7 +161,7 @@ class Store {
   }
 
   // Auto-select the item if necessary
-  // E.g. Select Blastoisite when the user chooses Mega Blastoise
+  // E.g. Select Blastoisinite when the user chooses Mega Blastoise
   autoSelectItem() {
     for (const member of this.team) {
       member.item = getAutoSelectedItem(member.name, member.item);
@@ -283,27 +178,6 @@ class Store {
         member.ability = ability;
       }
     });
-  }
-
-  typeAgainstPokemon(
-    type: PokemonType,
-    pokemon: string,
-    ability?: string,
-    item?: string,
-  ) {
-    return typeAgainstPokemon(type, pokemon, ability, item);
-  }
-
-  moveType(move: string, pokemon: string, ability?: string) {
-    return moveType(move, pokemon, ability);
-  }
-
-  isMoveStrongEnough(move: string) {
-    return isMoveStrongEnough(move);
-  }
-
-  moveAgainstType(move: string, type: PokemonType, pokemon: string, ability?: string) {
-    return moveAgainstType(move, type, pokemon, ability);
   }
 
   get typeDefence() {

@@ -8,7 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Link from "@mui/material/Link";
 import ImportExport from "@mui/icons-material/ImportExport";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { parseTeamText, serializeTeamText } from "@/app/shared/team-text";
 

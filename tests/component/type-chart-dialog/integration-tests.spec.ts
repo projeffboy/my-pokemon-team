@@ -3,7 +3,9 @@ import { expectImageToBeLoaded } from "helper";
 import type { Locator, Page } from "@playwright/test";
 
 test.describe("FAB (Floating Action Button) Tests", () => {
-  test("should show all type charts without external requests", async ({ page }) => {
+  test("should show all type charts without external requests", async ({
+    page,
+  }) => {
     const appHost = new URL(page.url()).host;
     await page.route("**/*", route => {
       const requestUrl = new URL(route.request().url());

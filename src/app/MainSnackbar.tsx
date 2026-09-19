@@ -1,5 +1,5 @@
 import Snackbar from "@mui/material/Snackbar";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 
 // Snackbar is managed by MobX

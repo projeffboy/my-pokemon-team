@@ -54,20 +54,26 @@ for (const [region, regional, original] of [
   });
 }
 
-test("Kanto excludes Alolan and Galarian formes", () => {
+test("Kanto excludes every later regional forme", () => {
   const result = filterPokemon({ ...all, region: "Kanto" });
   expect(result).not.toContain("rattataalola");
   expect(result).not.toContain("ponytagalar");
+  expect(result).not.toContain("growlithehisui");
+  expect(result).not.toContain("taurospaldeablaze");
 });
 
 test("Hisui includes the origin formes", () => {
   const result = filterPokemon({ ...all, region: "Hisui" });
-  expect(result).toEqual(expect.arrayContaining(["dialgaorigin", "palkiaorigin"]));
+  expect(result).toEqual(
+    expect.arrayContaining(["dialgaorigin", "palkiaorigin"]),
+  );
 });
 
 test("singles formats include lower tiers in tier order", () => {
   const result = filterPokemon({ ...all, format: "OU: Over Used" });
-  expect(result).toEqual(expect.arrayContaining(["tinglu", "milotic", "dreepy"]));
+  expect(result).toEqual(
+    expect.arrayContaining(["tinglu", "milotic", "dreepy"]),
+  );
   expect(result).not.toContain("miraidon");
   expect(result.indexOf("tinglu")).toBeLessThan(result.indexOf("milotic"));
   expect(result.indexOf("milotic")).toBeLessThan(result.indexOf("dreepy"));
@@ -83,9 +89,13 @@ test("doubles formats use doubles tiers, including untiered DUU species", () => 
 });
 
 test("format, region, and type filters intersect", () => {
-  expect(filterPokemon({
-    format: "Little Cup (LC)", region: "Kalos", type: "Poison",
-  })).toEqual(["skrelp"]);
+  expect(
+    filterPokemon({
+      format: "Little Cup (LC)",
+      region: "Kalos",
+      type: "Poison",
+    }),
+  ).toEqual(["skrelp"]);
 });
 
 test("Battle Stadium exclusions do not mutate the source Pokedex or filters", () => {
@@ -95,6 +105,16 @@ test("Battle Stadium exclusions do not mutate the source Pokedex or filters", ()
   expect(result).not.toContain("zekrom");
   expect(result).not.toContain("xerneas");
   expect(result).toContain("terrakion");
+  // formes of banned species, mythicals, and Gen 9 restricted legendaries
+  for (const banned of [
+    "kyuremblack",
+    "necrozmaultra",
+    "hoopaunbound",
+    "miraidon",
+  ]) {
+    expect(result).not.toContain(banned);
+  }
+  expect(result).toContain("landorustherian");
   expect(Object.keys(pokedex)).toEqual(expectedKeys);
   expect(filters).toEqual({ ...all, format: "Battle Stadium Singles" });
 });

@@ -8,6 +8,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.
 - `filtering.spec.ts` covers formats, tiers, regions, types, and combined filters.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.
+- `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
 
 Rule tests import functions from `src/store/` and use plain team objects. They need no MobX store or reset fixture. Tests use the bundled Pokemon data and explicit expected results.

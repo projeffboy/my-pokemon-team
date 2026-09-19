@@ -1,6 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": { "noUncheckedIndexedAccess": true },
-  "include": ["src/types.ts", "src/store.ts", "src/store/**/*.ts", "tests/type-contracts.ts"],
+  "include": [
+    "src/types.ts",
+    "src/store.ts",
+    "src/store/**/*.ts",
+    "src/shared/**/*.ts",
+    "src/app/shared/team-text.ts",
+    "src/app/shared/team-link.ts",
+    "tests/type-contracts.ts"
+  ],
   "exclude": []
 }

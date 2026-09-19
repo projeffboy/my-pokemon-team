@@ -11,7 +11,7 @@
     "@mui/icons-material": "^7.0.0",
     "@mui/material": "^7.0.0",
     "mobx": "^6.13.0",
-    "mobx-react": "^9.2.0",
+    "mobx-react-lite": "^4.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.0.0",
@@ -23,19 +23,27 @@
     "build": "vite build",
     "preview": "vite preview",
     "update:data": "node scripts/update-data.mjs",
-    "test": "npm run typecheck && npm run test:logic && npm run test:smoke && npm run test:dev",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "npm run typecheck && npm run lint && npm run test:logic && npm run test:smoke && npm run test:dev",
     "test:logic": "playwright test --config=playwright.logic.config.ts",
     "test:dev": "playwright test",
     "test:smoke": "playwright test --config=playwright.smoke.config.ts",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.checked.json && tsc --noEmit -p tests/tsconfig.json"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.53.2",
     "@types/node": "^24.0.10",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.5",
     "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^10.11.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.12.0",
+    "prettier": "^3.9.8",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.70.0",
     "vite": "^7.0.0"
   }
 }

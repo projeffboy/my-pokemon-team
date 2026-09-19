@@ -51,6 +51,8 @@ test.describe("Xs Team Viewer - Unit Tests", () => {
     const panel = page.getByRole("tabpanel", {
       name: "Pokemon 4 (empty)",
     });
-    await expect(panel.getByRole("region", { name: "Pokemon 4" })).toBeVisible();
+    await expect(
+      panel.getByRole("region", { name: "Pokemon 4" }),
+    ).toBeVisible();
   });
 });

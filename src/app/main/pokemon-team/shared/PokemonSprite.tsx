@@ -1,14 +1,13 @@
 import Box from "@mui/material/Box";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import pokedex from "@/data/pokedex";
+import { baseForme } from "@/store/shared/pokemon";
 import questionMark from "@/images/question-mark.png";
 import altSpriteNum from "@/data/altSpriteNum";
 import localSprites from "@/images/local-sprites";
 import { useBreakpoint } from "@/app/shared/WidthContext";
 
-const pokedexMap = pokedex as Record<string, { num?: number }>;
-const altSpriteNumMap = altSpriteNum as Record<string, number>;
 const localSpritesMap = localSprites as Record<string, string>;
 
 const PokemonSprite = observer(function PokemonSprite({
@@ -24,7 +23,7 @@ const PokemonSprite = observer(function PokemonSprite({
       "md"
     : breakpoint;
   const pokemon = store.team[teamIndex].name; // unhyphenated name
-  const pokedexNumber = pokedexMap[pokemon]?.num;
+  const pokedexNumber = pokedex[pokemon]?.num;
 
   let spriteFilename = pokemon; // the filename of the pokemon sprite (usually just the pokemon name)
 
@@ -44,7 +43,7 @@ const PokemonSprite = observer(function PokemonSprite({
        * separated by a hyphen
        * all lowercase
        */
-      const spriteFilenamePart1 = store.baseForme(pokemon);
+      const spriteFilenamePart1 = baseForme(pokemon);
       const forme = store.forme(pokemon);
       const spriteFilenamePart2 = (forme || "").toLowerCase().replace("-", "");
       spriteFilename = `${spriteFilenamePart1}-${spriteFilenamePart2}`;
@@ -74,7 +73,7 @@ const PokemonSprite = observer(function PokemonSprite({
       984 <= pokedexNumber &&
       pokedexNumber <= 995) ||
     pokedexNumber === 0 ||
-    (pokemon && (altSpriteNumMap[pokemon] ?? -1) >= 1320 + 93) ||
+    (pokemon && (altSpriteNum[pokemon] ?? -1) >= 1320 + 93) ||
     [
       "dialgaorigin",
       "palkiaorigin",
