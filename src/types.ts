@@ -13,6 +13,8 @@ export interface PokedexEntry {
   doublesTier?: string;
   natDexTier?: string;
   isNonstandard?: string;
+  requiredItem?: string;
+  requiredItems?: string[];
 }
 
 export type Pokedex = Record<string, PokedexEntry>;

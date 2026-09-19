@@ -266,7 +266,7 @@ class Store {
   }
 
   // Auto-select the item if necessary
-  // E.g. Select Blastoisite when the user chooses Mega Blastoise
+  // E.g. Select Blastoisinite when the user chooses Mega Blastoise
   autoSelectItem() {
     for (const member of this.team) {
       member.item = getAutoSelectedItem(member.name, member.item);
