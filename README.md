@@ -18,7 +18,7 @@ This is a single-page application with no backend. Pokemon data comes from local
 - UI: React and Material UI (MUI).
 - Build and typechecking: Vite and TypeScript.
 - Linting and formatting: ESLint and Prettier.
-- State management: MobX with mobx-react.
+- State management: MobX with mobx-react-lite.
 - Virtualized lists: react-window.
 - Browser testing: Playwright.
 - Direct rule testing: Playwright's test runner in Node, without a browser.
