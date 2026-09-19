@@ -4,7 +4,6 @@ import {
   MEDIUM_VIEWPORT_WIDTH,
   selectPokemon,
   selectAbility,
-  selectItem,
   selectMove,
   getTeamTextFromUrl,
 } from "helper";
@@ -106,7 +105,9 @@ test.describe("Importing an OU team", () => {
     // Ensure we are on tab 3-4
     await page.getByRole("tab").filter({ hasText: "3 - 4" }).click();
     await selectPokemon(page, "Ogerpon-Wellspring", 2);
-    await selectItem(page, "Wellspring Mask", 2);
+    await expect(page.getByLabel("Pokemon 3's item")).toHaveValue(
+      "Wellspring Mask",
+    ); // auto-selected
     await selectAbility(page, "Water Absorb", 2);
     await selectMove(page, "Ivy Cudgel", 1, 2);
     await selectMove(page, "U-turn", 2, 2);
