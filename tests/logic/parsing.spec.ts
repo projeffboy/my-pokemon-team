@@ -25,18 +25,28 @@ test.describe("Showdown team text", () => {
     expect(parseTeamText("")).toEqual(createTeam());
   });
 
-  test("parses independently of the current team without notifying observers", ({ store }) => {
+  test("parses independently of the current team without notifying observers", ({
+    store,
+  }) => {
     store.replaceTeam(parseTeamText(reuniclusText));
     const originalTeam = store.team;
     const snapshots: string[] = [];
-    const dispose = autorun(() => { snapshots.push(encodeTeamForUrl()); });
+    const dispose = autorun(() => {
+      snapshots.push(encodeTeamForUrl());
+    });
     try {
       const team = parseTeamText("Eelektross\n- Thunderbolt");
-      expect(team).toEqual(createTeam({
-        name: "eelektross", ability: "Levitate", move1: "thunderbolt",
-      }));
+      expect(team).toEqual(
+        createTeam({
+          name: "eelektross",
+          ability: "Levitate",
+          move1: "thunderbolt",
+        }),
+      );
       team[0].move1 = "";
-      expect(parseTeamText("Eelektross\n- Thunderbolt")[0].move1).toBe("thunderbolt");
+      expect(parseTeamText("Eelektross\n- Thunderbolt")[0].move1).toBe(
+        "thunderbolt",
+      );
       expect(store.team).toBe(originalTeam);
       expect(serializeTeamText()).toBe(`${reuniclusText}\n\n`);
       expect(snapshots).toHaveLength(1);
@@ -66,17 +76,27 @@ test.describe("Showdown team text", () => {
     "Jelly (Reuniclus) (F)",
   ]) {
     test(`accepts ${header}`, () => {
-      const team = parseTeamText(`${header} @ Leftovers\nAbility: Regenerator\n- Psychic`);
+      const team = parseTeamText(
+        `${header} @ Leftovers\nAbility: Regenerator\n- Psychic`,
+      );
       expect(team[0]).toMatchObject({
-        name: "reuniclus", item: "leftovers", ability: "Regenerator", move1: "psychic",
+        name: "reuniclus",
+        item: "leftovers",
+        ability: "Regenerator",
+        move1: "psychic",
       });
     });
   }
 
   test("accepts bracketed Hidden Power and inherited moves", () => {
-    const team = parseTeamText("Roserade\n- Hidden Power [Fire]\n- Sleep Powder\n- Water Sport");
+    const team = parseTeamText(
+      "Roserade\n- Hidden Power [Fire]\n- Sleep Powder\n- Water Sport",
+    );
     expect(team[0]).toMatchObject({
-      name: "roserade", move1: "hiddenpowerfire", move2: "sleeppowder", move3: "watersport",
+      name: "roserade",
+      move1: "hiddenpowerfire",
+      move2: "sleeppowder",
+      move3: "watersport",
     });
   });
 
@@ -90,12 +110,20 @@ Modest Nature
 - Psychic
 -`);
     expect(team[0]).toEqual({
-      name: "reuniclus", item: "", ability: "", move1: "", move2: "", move3: "psychic", move4: "",
+      name: "reuniclus",
+      item: "",
+      ability: "",
+      move1: "",
+      move2: "",
+      move3: "psychic",
+      move4: "",
     });
   });
 
   test("chooses the only available ability when the supplied ability is invalid", () => {
-    const team = parseTeamText("Cryogonal\nAbility: Imaginary Ability\n- Ice Beam");
+    const team = parseTeamText(
+      "Cryogonal\nAbility: Imaginary Ability\n- Ice Beam",
+    );
     expect(team[0].ability).toBe("Levitate");
   });
 
@@ -105,37 +133,68 @@ Modest Nature
 Altaria-Mega @ Imaginary Item
 
 Ampharos-Mega`);
-    expect(team).toEqual(createTeam(
-      { name: "ampharosmega", item: "leftovers", ability: "Mold Breaker" },
-      { name: "altariamega", item: "altarianite", ability: "Pixilate" },
-      { name: "ampharosmega", ability: "Mold Breaker" },
-    ));
+    expect(team).toEqual(
+      createTeam(
+        { name: "ampharosmega", item: "leftovers", ability: "Mold Breaker" },
+        { name: "altariamega", item: "altarianite", ability: "Pixilate" },
+        { name: "ampharosmega", ability: "Mold Breaker" },
+      ),
+    );
   });
 
   test("ignores invalid species while preserving subsequent slot positions", () => {
-    const team = parseTeamText("Not a Pokemon\n- Tackle\n\nAromatisse\n- Moonblast");
-    expect(team.map(pokemon => pokemon.name)).toEqual(["", "aromatisse", "", "", "", ""]);
+    const team = parseTeamText(
+      "Not a Pokemon\n- Tackle\n\nAromatisse\n- Moonblast",
+    );
+    expect(team.map(pokemon => pokemon.name)).toEqual([
+      "",
+      "aromatisse",
+      "",
+      "",
+      "",
+      "",
+    ]);
     expect(team[1].move1).toBe("moonblast");
   });
 
   test("limits each Pokemon to four moves", () => {
     const team = parseTeamText(`${reuniclusText}\n- Energy Ball`);
-    expect([team[0].move1, team[0].move2, team[0].move3, team[0].move4]).toEqual(["psychic", "recover", "shadowball", "focusblast"]);
+    expect([
+      team[0].move1,
+      team[0].move2,
+      team[0].move3,
+      team[0].move4,
+    ]).toEqual(["psychic", "recover", "shadowball", "focusblast"]);
     expect(team[0]).not.toHaveProperty("move5");
   });
 
   test("limits a team to six Pokemon", () => {
     const names = [
-      "Arbok", "Sunflora", "Lumineon", "Chimecho", "Beheeyem", "Komala", "Dhelmise",
+      "Arbok",
+      "Sunflora",
+      "Lumineon",
+      "Chimecho",
+      "Beheeyem",
+      "Komala",
+      "Dhelmise",
     ];
     const team = parseTeamText(names.join("\n\n"));
     expect(team.map(pokemon => pokemon.name)).toEqual([
-      "arbok", "sunflora", "lumineon", "chimecho", "beheeyem", "komala",
+      "arbok",
+      "sunflora",
+      "lumineon",
+      "chimecho",
+      "beheeyem",
+      "komala",
     ]);
   });
 
-  test("clears every property of slots left over from a longer team", ({ store }) => {
-    store.replaceTeam(parseTeamText(`${reuniclusText}\n\nCryogonal @ Leftovers\n- Ice Beam`));
+  test("clears every property of slots left over from a longer team", ({
+    store,
+  }) => {
+    store.replaceTeam(
+      parseTeamText(`${reuniclusText}\n\nCryogonal @ Leftovers\n- Ice Beam`),
+    );
     const emptySlot = { ...store.team[5] };
     store.replaceTeam(parseTeamText(reuniclusText));
     expect(store.team.slice(1)).toEqual(Array(5).fill(emptySlot));
@@ -145,17 +204,27 @@ Ampharos-Mega`);
     expect(serializeTeamText()).toBe("");
   });
 
-  test("replacement clears omitted moves, items, abilities, and invalid species", ({ store }) => {
+  test("replacement clears omitted moves, items, abilities, and invalid species", ({
+    store,
+  }) => {
     store.replaceTeam(parseTeamText(`${reuniclusText}\n\n${reuniclusText}`));
-    store.replaceTeam(parseTeamText("Reuniclus\n- Psychic\n\nNot a Pokemon\n- Tackle"));
-    expect(store.team).toEqual(createTeam({ name: "reuniclus", move1: "psychic" }));
+    store.replaceTeam(
+      parseTeamText("Reuniclus\n- Psychic\n\nNot a Pokemon\n- Tackle"),
+    );
+    expect(store.team).toEqual(
+      createTeam({ name: "reuniclus", move1: "psychic" }),
+    );
   });
 
   for (const source of ["text", "URL"] as const) {
-    test(`${source} replacement publishes one complete URL update and keeps nested edits reactive`, ({ store }) => {
+    test(`${source} replacement publishes one complete URL update and keeps nested edits reactive`, ({
+      store,
+    }) => {
       store.replaceTeam(parseTeamText(reuniclusText));
       const snapshots: string[] = [];
-      const dispose = autorun(() => { snapshots.push(encodeTeamForUrl()); });
+      const dispose = autorun(() => {
+        snapshots.push(encodeTeamForUrl());
+      });
       const text = [
         ["Eelektross", "Levitate"],
         ["Delcatty", "Normalize"],
@@ -163,7 +232,12 @@ Ampharos-Mega`);
         ["Swalot", "Liquid Ooze"],
         ["Spinda", "Own Tempo"],
         ["Maractus", "Water Absorb"],
-      ].map(([name, ability]) => `${name} @ Leftovers\nAbility: ${ability}\n- Protect\n-\n-\n-\n\n`).join("");
+      ]
+        .map(
+          ([name, ability]) =>
+            `${name} @ Leftovers\nAbility: ${ability}\n- Protect\n-\n-\n-\n\n`,
+        )
+        .join("");
       try {
         if (source === "text") {
           store.replaceTeam(parseTeamText(text));
@@ -183,8 +257,12 @@ Ampharos-Mega`);
     });
   }
 
-  test("serializes canonical Showdown text and restores all team properties", ({ store }) => {
-    store.replaceTeam(parseTeamText(`${reuniclusText}\n\nCryogonal @ Leftovers\n- Ice Beam`));
+  test("serializes canonical Showdown text and restores all team properties", ({
+    store,
+  }) => {
+    store.replaceTeam(
+      parseTeamText(`${reuniclusText}\n\nCryogonal @ Leftovers\n- Ice Beam`),
+    );
     const expectedTeam = store.team.map(pokemon => ({ ...pokemon }));
     const serialized = serializeTeamText();
     expect(serialized).toBe(
@@ -232,9 +310,14 @@ test.describe("team URL encoding", () => {
     ["malformed", "%not-base64%"],
     ["truncated", "A"],
     ["invalid UTF-8", "_w"],
-    ["oversized", toBase64Url("Komala".padEnd(MAX_ENCODED_TEAM_PARAM_LENGTH, " "))],
+    [
+      "oversized",
+      toBase64Url("Komala".padEnd(MAX_ENCODED_TEAM_PARAM_LENGTH, " ")),
+    ],
   ]) {
-    test(`ignores ${description} URL parameters without changing the team`, ({ store }) => {
+    test(`ignores ${description} URL parameters without changing the team`, ({
+      store,
+    }) => {
       store.replaceTeam(parseTeamText(reuniclusText));
       const expectedTeam = store.team.map(pokemon => ({ ...pokemon }));
       expect(() => importTeamFromUrlParam(param)).not.toThrow();
@@ -242,8 +325,10 @@ test.describe("team URL encoding", () => {
     });
   }
 
-  test("accepts a parameter at the size limit and rejects it just above", ({ store }) => {
-    const text = "Komala".padEnd(MAX_ENCODED_TEAM_PARAM_LENGTH * 3 / 4, " ");
+  test("accepts a parameter at the size limit and rejects it just above", ({
+    store,
+  }) => {
+    const text = "Komala".padEnd((MAX_ENCODED_TEAM_PARAM_LENGTH * 3) / 4, " ");
     const param = toBase64Url(text);
     expect(param).toHaveLength(MAX_ENCODED_TEAM_PARAM_LENGTH);
     importTeamFromUrlParam(param);
@@ -251,7 +336,9 @@ test.describe("team URL encoding", () => {
 
     store.replaceTeam(parseTeamText(reuniclusText));
     const oversizedParam = toBase64Url(text + " ");
-    expect(oversizedParam.length).toBeGreaterThan(MAX_ENCODED_TEAM_PARAM_LENGTH);
+    expect(oversizedParam.length).toBeGreaterThan(
+      MAX_ENCODED_TEAM_PARAM_LENGTH,
+    );
     expect(fromBase64Url(oversizedParam).trim()).toBe("Komala");
     importTeamFromUrlParam(oversizedParam);
     expect(store.team[0].name).toBe("reuniclus");

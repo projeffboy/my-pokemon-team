@@ -13,7 +13,8 @@ export function typeAgainstPokemon(
 ) {
   const pokemonTypes = pokedex[pokemon]?.types || [];
   const [type1, type2] = pokemonTypes;
-  const type1Resistance = type1 && isPokemonType(type1) ? typechart[type1][type] : 0;
+  const type1Resistance =
+    type1 && isPokemonType(type1) ? typechart[type1][type] : 0;
 
   let effectiveness = type1Resistance;
 
@@ -117,12 +118,7 @@ export function typeAgainstPokemon(
   }
 
   // If pokemon wields an air balloon
-  if (
-    item &&
-    item === "airballoon" &&
-    type === "Ground" &&
-    effectiveness < 2
-  ) {
+  if (item && item === "airballoon" && type === "Ground" && effectiveness < 2) {
     effectiveness += 1;
   }
 
@@ -136,9 +132,7 @@ export function moveType(move: string, pokemon: string, ability?: string) {
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
 
-  const abilitiesThatChangeNormalMoves: Partial<
-    Record<string, PokemonType>
-  > = {
+  const abilitiesThatChangeNormalMoves: Partial<Record<string, PokemonType>> = {
     Aerilate: "Flying",
     Pixilate: "Fairy",
     Refrigerate: "Ice",
@@ -155,8 +149,7 @@ export function moveType(move: string, pokemon: string, ability?: string) {
     moveType = "Normal";
   } else if (move === "judgment") {
     const pokemonProperties = pokedex[pokemon];
-    moveType =
-      pokemonProperties?.types?.find(isPokemonType) ?? moveType;
+    moveType = pokemonProperties?.types?.find(isPokemonType) ?? moveType;
   } else if (move === "ivycudgel") {
     const pokemonProperties = pokedex[pokemon];
     moveType =
@@ -184,10 +177,7 @@ export function moveType(move: string, pokemon: string, ability?: string) {
     const capitalizedType = type.charAt(0).toUpperCase() + type.slice(1);
 
     if (isPokemonType(capitalizedType)) moveType = capitalizedType;
-  } else if (
-    ability === "Liquid Voice" &&
-    moves[move]?.flags?.sound === 1
-  ) {
+  } else if (ability === "Liquid Voice" && moves[move]?.flags?.sound === 1) {
     moveType = "Water";
   }
 

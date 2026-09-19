@@ -69,10 +69,12 @@ test.describe("move effectiveness", () => {
 
   test("effectiveness uses the ability's converted move type", () => {
     expect(moveAgainstType("hypervoice", "Dragon", "sylveon")).toBe(0);
-    expect(moveAgainstType("hypervoice", "Dragon", "sylveon", "Pixilate")).toBe(-1);
+    expect(moveAgainstType("hypervoice", "Dragon", "sylveon", "Pixilate")).toBe(
+      -1,
+    );
   });
 });
 
-test("unknown Silvally formes retain Multi-Attack\'s default type", () => {
+test("unknown Silvally formes retain Multi-Attack's default type", () => {
   expect(moveType("multiattack", "silvallyunknown")).toBe("Normal");
 });

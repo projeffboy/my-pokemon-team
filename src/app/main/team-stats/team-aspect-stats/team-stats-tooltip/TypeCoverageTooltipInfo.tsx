@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import {
   moveAgainstType,
@@ -7,7 +8,7 @@ import {
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import { MOVE_KEYS, type PokemonType } from "@/types";
 
-export default function TypeCoverageTooltipInfo({
+const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   typeColor,
   type,
 }: {
@@ -70,4 +71,6 @@ export default function TypeCoverageTooltipInfo({
       </ul>
     </>
   );
-}
+});
+
+export default TypeCoverageTooltipInfo;

@@ -1,6 +1,10 @@
 import learnsets from "@/data/learnsets";
 import { test, expect } from "@playwright/test";
-import { completeLearnset, canItLearn, getTeamLearnsets } from "@/store/learnsets";
+import {
+  completeLearnset,
+  canItLearn,
+  getTeamLearnsets,
+} from "@/store/learnsets";
 import { createTeam } from "./shared/team";
 
 test.describe("learnset inheritance", () => {
@@ -54,15 +58,30 @@ test.describe("learnset inheritance", () => {
   }
 
   test("expands Hidden Power into its supported types only", () => {
-    const hiddenPowers = completeLearnset("unown")
-      .filter(move => move.startsWith("hiddenpower"));
-    expect(hiddenPowers.sort()).toEqual([
-      "hiddenpower", "hiddenpowerbug", "hiddenpowerdark", "hiddenpowerdragon",
-      "hiddenpowerelectric", "hiddenpowerfighting", "hiddenpowerfire",
-      "hiddenpowerflying", "hiddenpowerghost", "hiddenpowergrass",
-      "hiddenpowerground", "hiddenpowerice", "hiddenpowerpoison",
-      "hiddenpowerpsychic", "hiddenpowerrock", "hiddenpowersteel", "hiddenpowerwater",
-    ].sort());
+    const hiddenPowers = completeLearnset("unown").filter(move =>
+      move.startsWith("hiddenpower"),
+    );
+    expect(hiddenPowers.sort()).toEqual(
+      [
+        "hiddenpower",
+        "hiddenpowerbug",
+        "hiddenpowerdark",
+        "hiddenpowerdragon",
+        "hiddenpowerelectric",
+        "hiddenpowerfighting",
+        "hiddenpowerfire",
+        "hiddenpowerflying",
+        "hiddenpowerghost",
+        "hiddenpowergrass",
+        "hiddenpowerground",
+        "hiddenpowerice",
+        "hiddenpowerpoison",
+        "hiddenpowerpsychic",
+        "hiddenpowerrock",
+        "hiddenpowersteel",
+        "hiddenpowerwater",
+      ].sort(),
+    );
     expect(canItLearn("hiddenpowerice", "dachsbun")).toBe(false);
   });
 
@@ -85,9 +104,9 @@ test.describe("learnset inheritance", () => {
   });
 
   test("builds aligned move values and labels while preserving empty slots", () => {
-    const team = Object.freeze(createTeam({ name: "whimsicott" }).map(
-      pokemon => Object.freeze(pokemon),
-    ));
+    const team = Object.freeze(
+      createTeam({ name: "whimsicott" }).map(pokemon => Object.freeze(pokemon)),
+    );
     const all = getTeamLearnsets(team, false);
     const viable = getTeamLearnsets(team, true);
 

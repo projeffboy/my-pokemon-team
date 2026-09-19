@@ -1,9 +1,13 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 
-test("defence recomputes after nested species, item, and ability edits", ({ store }) => {
+test("defence recomputes after nested species, item, and ability edits", ({
+  store,
+}) => {
   let groundScore = 0;
-  const dispose = autorun(() => { groundScore = store.typeDefence.Ground; });
+  const dispose = autorun(() => {
+    groundScore = store.typeDefence.Ground;
+  });
   try {
     expect(groundScore).toBe(0);
     store.team[0].name = "bronzong";
@@ -19,9 +23,13 @@ test("defence recomputes after nested species, item, and ability edits", ({ stor
   }
 });
 
-test("coverage recomputes after nested move, ability, and species edits", ({ store }) => {
+test("coverage recomputes after nested move, ability, and species edits", ({
+  store,
+}) => {
   let dragonScore = 0;
-  const dispose = autorun(() => { dragonScore = store.typeCoverage.Dragon; });
+  const dispose = autorun(() => {
+    dragonScore = store.typeCoverage.Dragon;
+  });
   try {
     store.team[0].name = "sylveon";
     store.team[0].move1 = "hypervoice";
@@ -43,7 +51,9 @@ test("coverage recomputes after nested move, ability, and species edits", ({ sto
 
 test("learnsets recompute after species and move filter edits", ({ store }) => {
   let learnsets = store.teamLearnsets;
-  const dispose = autorun(() => { learnsets = store.teamLearnsets; });
+  const dispose = autorun(() => {
+    learnsets = store.teamLearnsets;
+  });
   try {
     expect(learnsets.values[0]).toEqual([]);
     store.team[0].name = "whimsicott";
@@ -54,15 +64,21 @@ test("learnsets recompute after species and move filter edits", ({ store }) => {
     store.team[0].name = "cryogonal";
     expect(learnsets.values[0]).not.toContain("encore");
     expect(learnsets.values[0]).toContain("icebeam");
-    expect(learnsets.labels[0][learnsets.values[0].indexOf("icebeam")]).toBe("Ice Beam");
+    expect(learnsets.labels[0][learnsets.values[0].indexOf("icebeam")]).toBe(
+      "Ice Beam",
+    );
   } finally {
     dispose();
   }
 });
 
-test("Pokemon options recompute after each filter and filter replacement", ({ store }) => {
+test("Pokemon options recompute after each filter and filter replacement", ({
+  store,
+}) => {
   let names: (string | undefined)[] = [];
-  const dispose = autorun(() => { names = store.filteredPokemonNames; });
+  const dispose = autorun(() => {
+    names = store.filteredPokemonNames;
+  });
   try {
     expect(names).toContain("Milotic");
     store.searchFilters.type = "Psychic";

@@ -15,7 +15,10 @@ export function createEmptyTeam(): Team {
 }
 
 // E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric
-export function getAutoSelectedItem(pokemon: string, pokemonItem: string): string {
+export function getAutoSelectedItem(
+  pokemon: string,
+  pokemonItem: string,
+): string {
   const { requiredItem, requiredItems } = pokedex[pokemon] ?? {};
   const itemName = requiredItem ?? requiredItems?.[0];
 

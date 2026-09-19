@@ -27,8 +27,7 @@ export default function PokemonIcon({
     if (pokemonProperty === "name") {
       type = PokemonIconsSheet;
 
-      const pokedexNumber =
-        altSpriteNum[value] ?? pokedex[value]?.num ?? 0;
+      const pokedexNumber = altSpriteNum[value] ?? pokedex[value]?.num ?? 0;
 
       // Copied from Pokemon Showdown code
       left = (pokedexNumber % 12) * 40;

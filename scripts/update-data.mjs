@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import ts from "typescript";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -29,7 +29,9 @@ function renderTypedData(typeName, data, onePerLine = false) {
   const json =
     onePerLine ?
       `{\n${Object.entries(data)
-        .map(([id, entry]) => `  ${JSON.stringify(id)}: ${JSON.stringify(entry)},`)
+        .map(
+          ([id, entry]) => `  ${JSON.stringify(id)}: ${JSON.stringify(entry)},`,
+        )
         .join("\n")}\n}`
     : JSON.stringify(data, null, 2);
 

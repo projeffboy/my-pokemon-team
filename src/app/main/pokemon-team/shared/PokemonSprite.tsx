@@ -1,5 +1,5 @@
 import Box from "@mui/material/Box";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import pokedex from "@/data/pokedex";
 import { baseForme } from "@/store/shared/pokemon";

@@ -7,9 +7,13 @@ import {
 import { createTeam } from "./shared/team";
 
 test("calculations accept frozen teams and return independent score objects", () => {
-  const team = Object.freeze(createTeam({
-    name: "glaceon", move1: "icebeam", ability: "Ice Body",
-  }).map(pokemon => Object.freeze(pokemon)));
+  const team = Object.freeze(
+    createTeam({
+      name: "glaceon",
+      move1: "icebeam",
+      ability: "Ice Body",
+    }).map(pokemon => Object.freeze(pokemon)),
+  );
   const original = JSON.stringify(team);
   const coverage = calculateTypeCoverage(team);
   const defence = calculateTypeDefence(team);
@@ -42,11 +46,20 @@ test("team defence sums contributions after capping each at 1.5", () => {
 test.describe("team coverage", () => {
   test("counts each ordinary move type once per Pokemon and awards STAB", () => {
     const team = createTeam();
-    expect(Object.values(calculateTypeCoverage(team))).toEqual(Array(18).fill(0));
+    expect(Object.values(calculateTypeCoverage(team))).toEqual(
+      Array(18).fill(0),
+    );
     Object.assign(team[0], {
-      name: "cryogonal", move1: "icebeam", move2: "blizzard", move3: "flashcannon",
+      name: "cryogonal",
+      move1: "icebeam",
+      move2: "blizzard",
+      move3: "flashcannon",
     });
-    expect(calculateTypeCoverage(team)).toMatchObject({ Dragon: 2, Fairy: 1, Water: 0 });
+    expect(calculateTypeCoverage(team)).toMatchObject({
+      Dragon: 2,
+      Fairy: 1,
+      Water: 0,
+    });
 
     Object.assign(team[1], { name: "beartic", move1: "icebeam" });
     expect(calculateTypeCoverage(team).Dragon).toBe(4);
@@ -70,19 +83,33 @@ test.describe("team coverage", () => {
 
   test("Freeze-Dry still covers Water after a regular Ice move", () => {
     const team = createTeam();
-    Object.assign(team[0], { name: "cryogonal", move1: "icebeam", move2: "freezedry" });
+    Object.assign(team[0], {
+      name: "cryogonal",
+      move1: "icebeam",
+      move2: "freezedry",
+    });
     expect(calculateTypeCoverage(team).Water).toBe(2);
   });
 
   test("Flying Press still covers Grass after a regular Fighting move", () => {
     const team = createTeam();
-    Object.assign(team[0], { name: "hawlucha", move1: "closecombat", move2: "flyingpress" });
+    Object.assign(team[0], {
+      name: "hawlucha",
+      move1: "closecombat",
+      move2: "flyingpress",
+    });
     expect(calculateTypeCoverage(team).Grass).toBe(2);
   });
 
   test("weak and status moves do not add coverage", () => {
     const team = createTeam();
-    Object.assign(team[0], { name: "togedemaru", move1: "nuzzle", move2: "thunderwave" });
-    expect(Object.values(calculateTypeCoverage(team))).toEqual(Array(18).fill(0));
+    Object.assign(team[0], {
+      name: "togedemaru",
+      move1: "nuzzle",
+      move2: "thunderwave",
+    });
+    expect(Object.values(calculateTypeCoverage(team))).toEqual(
+      Array(18).fill(0),
+    );
   });
 });

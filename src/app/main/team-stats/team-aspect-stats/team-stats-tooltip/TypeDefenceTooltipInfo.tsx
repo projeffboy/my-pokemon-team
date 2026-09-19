@@ -1,9 +1,10 @@
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import type { PokemonType } from "@/types";
 
-export default function TypeDefenceTooltipInfo({
+const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
   typeColor,
   type,
 }: {
@@ -82,4 +83,6 @@ export default function TypeDefenceTooltipInfo({
       </ul>
     </>
   );
-}
+});
+
+export default TypeDefenceTooltipInfo;

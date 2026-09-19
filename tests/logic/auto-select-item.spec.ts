@@ -27,7 +27,14 @@ test.describe("auto-selected items", () => {
     });
   }
 
-  for (const pokemon of ["mrmimegalar", "meganium", "yanmega", "rayquazamega", "arceus", ""]) {
+  for (const pokemon of [
+    "mrmimegalar",
+    "meganium",
+    "yanmega",
+    "rayquazamega",
+    "arceus",
+    "",
+  ]) {
     test(`"${pokemon}" keeps its current item`, () => {
       expect(getAutoSelectedItem(pokemon, "leftovers")).toBe("leftovers");
     });

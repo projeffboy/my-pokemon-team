@@ -4,7 +4,9 @@ import { isPokemonType } from "@/types";
 import { baseForme } from "./shared/pokemon";
 import type { Pokedex, SearchFilters } from "@/types";
 
-type PokemonFilters = Readonly<Pick<SearchFilters, "format" | "region" | "type">>;
+type PokemonFilters = Readonly<
+  Pick<SearchFilters, "format" | "region" | "type">
+>;
 
 const REGION_NUMBER_RANGE: Record<string, [number, number]> = {
   Kanto: [1, 151],
@@ -74,7 +76,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       "Doubles UU": "DUU",
     };
 
-    let smogonSinglesTiers = [
+    const smogonSinglesTiers = [
       "Uber",
       "OU",
       "UUBL",
@@ -157,7 +159,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
   }
 
   function filterByType(pokedex: Pokedex) {
-    let filteredPokedex: Pokedex = {};
+    const filteredPokedex: Pokedex = {};
 
     if (type) {
       for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {

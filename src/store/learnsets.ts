@@ -88,13 +88,17 @@ function buildCompleteLearnset(pokemon: string): string[] {
 }
 
 // Can `pokemon` learn `move`?
-export const canItLearn = (move: string | undefined, pokemon: string): boolean =>
-  move ? completeLearnset(pokemon).includes(move) : false;
+export const canItLearn = (
+  move: string | undefined,
+  pokemon: string,
+): boolean => (move ? completeLearnset(pokemon).includes(move) : false);
 
 export function getTeamLearnsets(team: ReadonlyTeam, viableOnly: boolean) {
   const values = team.map(({ name }) => {
     const learnset = name ? completeLearnset(name) : [];
-    return viableOnly ? learnset.filter(move => viableMoves.has(move)) : learnset;
+    return viableOnly ?
+        learnset.filter(move => viableMoves.has(move))
+      : learnset;
   });
 
   return {

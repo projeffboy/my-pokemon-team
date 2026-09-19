@@ -1,0 +1,6 @@
+build
+src/data
+package-lock.json
+playwright-report
+playwright-logic-report
+playwright-smoke-report

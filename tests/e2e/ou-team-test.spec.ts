@@ -1,7 +1,5 @@
 import { test, expect } from "fixtures";
 import {
-  createViewport,
-  MEDIUM_VIEWPORT_WIDTH,
   selectPokemon,
   selectAbility,
   selectMove,

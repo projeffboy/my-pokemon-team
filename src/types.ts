@@ -41,8 +41,16 @@ export type Learnsets = Record<string, string[]>;
 export type Formats = Record<string, Record<string, string>>;
 
 type TypeChartStatus =
-  | "prankster" | "par" | "brn" | "trapped" | "powder"
-  | "sandstorm" | "hail" | "psn" | "tox" | "frz";
+  | "prankster"
+  | "par"
+  | "brn"
+  | "trapped"
+  | "powder"
+  | "sandstorm"
+  | "hail"
+  | "psn"
+  | "tox"
+  | "frz";
 
 export type TypeChart = Record<
   PokemonType,
@@ -76,8 +84,24 @@ export type MoveKey = (typeof MOVE_KEYS)[number];
 export type PokemonProperties = keyof TeamPokemonProperties;
 
 export const POKEMON_TYPES: readonly PokemonType[] = [
-  "Bug", "Dark", "Dragon", "Electric", "Fairy", "Fighting", "Fire", "Flying",
-  "Ghost", "Grass", "Ground", "Ice", "Normal", "Poison", "Psychic", "Rock", "Steel", "Water",
+  "Bug",
+  "Dark",
+  "Dragon",
+  "Electric",
+  "Fairy",
+  "Fighting",
+  "Fire",
+  "Flying",
+  "Ghost",
+  "Grass",
+  "Ground",
+  "Ice",
+  "Normal",
+  "Poison",
+  "Psychic",
+  "Rock",
+  "Steel",
+  "Water",
 ];
 
 export function isPokemonType(value: string): value is PokemonType {

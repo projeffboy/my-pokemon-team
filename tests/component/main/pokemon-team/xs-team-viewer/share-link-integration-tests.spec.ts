@@ -29,7 +29,7 @@ test.describe("Share Link - Integration Tests", () => {
       "Pokemon team link copied",
     );
 
-    let clipboardText = "";
+    let clipboardText: string;
     if (testInfo.project.name === "iPhone") {
       await page.evaluate(() => {
         const textarea = document.createElement("textarea");

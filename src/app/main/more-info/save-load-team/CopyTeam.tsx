@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import FileCopy from "@mui/icons-material/FileCopy";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { serializeTeamText } from "@/app/shared/team-text";
 
@@ -9,7 +9,7 @@ const CopyTeam = observer(function CopyTeam() {
     if (text !== "") {
       // Copied this code from https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
 
-      let textArea = document.createElement("textarea");
+      const textArea = document.createElement("textarea");
 
       textArea.value = text;
       document.body.appendChild(textArea);

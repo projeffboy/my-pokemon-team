@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { POKEMON_TYPES, type PokemonType, type TeamStatType } from "@/types";
 import { useIsLgDown } from "@/app/shared/WidthContext";

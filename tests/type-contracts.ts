@@ -1,8 +1,17 @@
-import type { TeamPokemonProperties, MoveKey, PokemonType, Moves } from "@/types";
+import type {
+  TeamPokemonProperties,
+  MoveKey,
+  PokemonType,
+  Moves,
+} from "@/types";
 import { createTypeScores } from "@/store/coverage";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 
-export function checkTypeContracts(member: TeamPokemonProperties, moves: Moves, key: MoveKey) {
+export function checkTypeContracts(
+  member: TeamPokemonProperties,
+  moves: Moves,
+  key: MoveKey,
+) {
   member[key] = "surf";
   // @ts-expect-error Unknown team properties must not be writable.
   member.move5 = "surf";

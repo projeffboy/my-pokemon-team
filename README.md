@@ -17,6 +17,7 @@ This is a single-page application with no backend. Pokemon data comes from local
 
 - UI: React and Material UI (MUI).
 - Build and typechecking: Vite and TypeScript.
+- Linting and formatting: ESLint and Prettier.
 - State management: MobX with mobx-react.
 - Virtualized lists: react-window.
 - Browser testing: Playwright.
@@ -71,7 +72,7 @@ npx playwright install --with-deps chromium webkit
 npm test
 ```
 
-`npm test` checks the application and test types, runs the direct logic tests, builds and smoke-tests the production app, then runs the development browser tests. Both browser suites use all four Playwright browser profiles. Playwright starts and stops the servers automatically. `npm run build` runs Vite alone, so use `npm test` for the full set of checks.
+`npm test` checks the application and test types, lints, runs the direct logic tests, builds and smoke-tests the production app, then runs the development browser tests. Both browser suites use all four Playwright browser profiles. Playwright starts and stops the servers automatically. `npm run build` runs Vite alone, so use `npm test` for the full set of checks.
 
 `npm run test:logic` runs [direct rule tests](tests/logic/logic-tests.md) once in Node without starting a browser or Vite. These cover effectiveness, learnset inheritance, special moves, filtering, team parsing, and MobX recomputation. Run a subset with, for example, `npm run test:logic -- learnsets`.
 
@@ -79,11 +80,13 @@ npm test
 
 `npm run test:smoke` creates a fresh production build in `build/` and serves it with Vite preview on port 4173. These quick checks confirm the homepage and a bundled image load, selected Pokemon and ability survive reloading, and a saved team link restores its Pokemon, ability, item, and move. External requests are blocked to keep the checks independent of third-party services, and uncaught browser errors fail the tests. Keep port 4173 free, even when testing locally. The smoke tests do not deploy the site or check Vercel's hosting configuration.
 
-`npm run typecheck` checks the application and test types without running tests. It also runs `tsconfig.checked.json`, which enables `noUncheckedIndexedAccess` for the store and calculation modules. Expand that config as additional modules handle missing indexed values explicitly. The standalone `test:logic`, `test:dev`, and `test:smoke` commands do not run typechecking themselves.
+`npm run typecheck` checks the application and test types without running tests. It also runs `tsconfig.checked.json`, which enables `noUncheckedIndexedAccess` for the store, calculation, and team parsing modules. Expand that config as additional modules handle missing indexed values explicitly. The standalone `test:logic`, `test:dev`, and `test:smoke` commands do not run typechecking themselves.
+
+`npm run lint` runs ESLint and checks Prettier formatting; `npm run format` applies the formatting. Generated files in `src/data` are excluded from both.
 
 ### CI
 
-The [CI workflow](.github/workflows/ci.yml) runs these checks on pull requests and manual dispatch only. It keeps typechecking, logic tests, production smoke tests, and development browser tests as separate steps. CI uses `npm ci` to install the locked dependencies and keeps all suites' Playwright reports and available failure traces in the `playwright-results` artifact for seven days. Logic reports and results use `playwright-logic-report/` and `logic-test-results/`; smoke reports and results use `playwright-smoke-report/` and `smoke-test-results/`. To use Playwright's CI settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
+The [CI workflow](.github/workflows/ci.yml) runs these checks on pull requests and manual dispatch only. It keeps typechecking, linting, logic tests, production smoke tests, and development browser tests as separate steps. CI uses `npm ci` to install the locked dependencies and keeps all suites' Playwright reports and available failure traces in the `playwright-results` artifact for seven days. Logic reports and results use `playwright-logic-report/` and `logic-test-results/`; smoke reports and results use `playwright-smoke-report/` and `smoke-test-results/`. To use Playwright's CI settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
 
 ## Major Credits
 

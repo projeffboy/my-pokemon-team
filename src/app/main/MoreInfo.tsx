@@ -1,4 +1,4 @@
-import { useState, type ReactNode, type SyntheticEvent } from "react";
+import { useState, type SyntheticEvent } from "react";
 import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -67,7 +67,7 @@ export default function MoreInfo() {
           </Tabs>
         </AppBar>
         {/* The stuff below the tabs */}
-        {tabs.map(({ title, content }, index) => (
+        {tabs.map(({ content }, index) => (
           // tab container
           <Grid
             id={`team-tool-panel-${index}`}

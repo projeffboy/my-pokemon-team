@@ -73,8 +73,12 @@ test.describe("type effectiveness", () => {
   }
 
   test("Air Balloon adds one Ground defence point without changing immunity", () => {
-    expect(typeAgainstPokemon("Ground", "toxtricity", "", "airballoon")).toBe(-1);
-    expect(typeAgainstPokemon("Ground", "bronzong", "Levitate", "airballoon")).toBe(3);
+    expect(typeAgainstPokemon("Ground", "toxtricity", "", "airballoon")).toBe(
+      -1,
+    );
+    expect(
+      typeAgainstPokemon("Ground", "bronzong", "Levitate", "airballoon"),
+    ).toBe(3);
     expect(typeAgainstPokemon("Fire", "toxtricity", "", "airballoon")).toBe(0);
   });
 
@@ -82,7 +86,6 @@ test.describe("type effectiveness", () => {
     expect(typeAgainstPokemon("Water", "")).toBe(0);
     expect(typeAgainstPokemon("Water", "notapokemon")).toBe(0);
   });
-
 });
 
 test("MissingNo's Bird type leaves its Normal matchups intact", () => {

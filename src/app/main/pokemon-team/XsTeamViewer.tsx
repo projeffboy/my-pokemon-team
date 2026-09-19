@@ -7,7 +7,7 @@ import Tabs from "@mui/material/Tabs";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import LinkIcon from "@mui/icons-material/Link";
-import { observer } from "mobx-react";
+import { observer } from "mobx-react-lite";
 import store from "@/store";
 import PokemonInputs from "./PokemonInputs";
 import PokemonSprite from "./shared/PokemonSprite";

@@ -34,12 +34,16 @@ test("preserves selections after reloading", async ({ page }) => {
   await selectPokemon(page, "Mantine");
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mantine");
   await selectAbility(page, "Water Absorb");
-  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue("Water Absorb");
+  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
+    "Water Absorb",
+  );
   await expect(page).toHaveURL(/[?&]team=/);
 
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mantine");
-  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue("Water Absorb");
+  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
+    "Water Absorb",
+  );
   expect(pageErrors).toEqual([]);
 });
 
