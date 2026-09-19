@@ -1,5 +1,5 @@
 import { createContext, useContext, type ReactNode } from "react";
-import useWidth, { type WidthInfo } from "../width-context/use-width";
+import useWidth, { type WidthInfo } from "./width-context/use-width";
 
 const WidthContext = createContext<WidthInfo | undefined>(undefined);
 
