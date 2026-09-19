@@ -4,8 +4,11 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import ts from "typescript";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const showdownRoot = path.resolve(root, "../pokemon-showdown");
-const clientRoot = path.resolve(root, "../pokemon-showdown-client");
+const showdownRoot =
+  process.env.SHOWDOWN_ROOT ?? path.resolve(root, "../pokemon-showdown");
+const clientRoot =
+  process.env.SHOWDOWN_CLIENT_ROOT ??
+  path.resolve(root, "../pokemon-showdown-client");
 const dataRoot = path.join(root, "src/data");
 
 async function read(relativePath) {
@@ -81,10 +84,24 @@ async function updateDirectDataset(
   );
 }
 
+// Games whose learnsets Showdown keeps outside data/learnsets.ts:
+// Champions, Legends: Z-A, Legends: Arceus, and BDSP
+const learnsetMods = [
+  "champions",
+  "championsregmb",
+  "gen9legends",
+  "gen8legends",
+  "gen8bdsp",
+];
+
 async function updateLearnsets() {
-  const learnsets = await loadTypeScriptExport(
-    path.join(showdownRoot, "data/learnsets.ts"),
-    "Learnsets",
+  const [learnsets, ...modLearnsets] = await Promise.all(
+    [
+      "data/learnsets.ts",
+      ...learnsetMods.map(mod => `data/mods/${mod}/learnsets.ts`),
+    ].map(file =>
+      loadTypeScriptExport(path.join(showdownRoot, file), "Learnsets"),
+    ),
   );
   const flattened = Object.fromEntries(
     Object.entries(learnsets).map(([species, entry]) => [
@@ -92,6 +109,16 @@ async function updateLearnsets() {
       Object.keys(entry.learnset ?? {}),
     ]),
   );
+  for (const modLearnset of modLearnsets) {
+    for (const [species, entry] of Object.entries(modLearnset)) {
+      flattened[species] = [
+        ...new Set([
+          ...(flattened[species] ?? []),
+          ...Object.keys(entry.learnset ?? {}),
+        ]),
+      ].sort();
+    }
+  }
   await fs.writeFile(
     path.join(dataRoot, "learnsets.ts"),
     renderTypedData("Learnsets", flattened),

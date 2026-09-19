@@ -5,21 +5,21 @@ import { createTeam } from "./shared/team";
 
 test.describe("learnset inheritance", () => {
   test("includes moves from both earlier evolutions", () => {
-    expect(learnsets.roserade).not.toContain("sleeppowder");
+    expect(learnsets.roserade).not.toContain("sweetkiss");
     expect(learnsets.roserade).not.toContain("watersport");
     expect(learnsets.roselia).not.toContain("watersport");
 
     expect(completeLearnset("roserade")).toEqual(
-      expect.arrayContaining(["sleeppowder", "watersport", "petaldance"]),
+      expect.arrayContaining(["sweetkiss", "watersport", "petaldance"]),
     );
     expect(canItLearn("watersport", "roserade")).toBe(true);
   });
 
   test("a Mega forme inherits its base forme and previous evolution", () => {
     expect(learnsets.slowbromega).toBeUndefined();
-    expect(learnsets.slowbro).not.toContain("bellydrum");
+    expect(learnsets.slowbro).not.toContain("mefirst");
     expect(completeLearnset("slowbromega")).toEqual(
-      expect.arrayContaining(["psychic", "bellydrum"]),
+      expect.arrayContaining(["psychic", "mefirst"]),
     );
   });
 
@@ -35,12 +35,20 @@ test.describe("learnset inheritance", () => {
     expect(canItLearn("bellydrum", "marowakalola")).toBe(true);
   });
 
-  for (const [pokemon, move] of [
-    ["mrrime", "healingwish"],
-    ["sirfetchd", "skyattack"],
+  test("mrrime resolves punctuation in its predecessor's name", () => {
+    expect(learnsets.mrrime).not.toContain("healingwish");
+    expect(canItLearn("healingwish", "mrrime")).toBe(true);
+  });
+
+  for (const [game, pokemon, move] of [
+    ["Champions", "meganium", "dazzlinggleam"],
+    ["Champions", "rotomfan", "electroball"],
+    ["Champions Regulation M-B", "archaludon", "mirrorcoat"],
+    ["Legends: Z-A", "grapploct", "bulletpunch"],
+    ["Legends: Arceus", "decidueyehisui", "focusenergy"],
+    ["BDSP", "mismagius", "grudge"],
   ]) {
-    test(`${pokemon} resolves punctuation in its predecessor's name`, () => {
-      expect(learnsets[pokemon]).not.toContain(move);
+    test(`${pokemon} can learn its ${game} move ${move}`, () => {
       expect(canItLearn(move, pokemon)).toBe(true);
     });
   }

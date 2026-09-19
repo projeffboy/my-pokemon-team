@@ -56,7 +56,9 @@ Refresh the Pokemon Showdown data in `src/data` with:
 npm run update:data
 ```
 
-This update is run manually when new data is needed.
+This update is run manually when new data is needed. It reads the `pokemon-showdown` and `pokemon-showdown-client` repositories cloned next to this one; set `SHOWDOWN_ROOT` and `SHOWDOWN_CLIENT_ROOT` to use other locations.
+
+Learnsets combine every generation with the games Showdown keeps in separate mods: Pokemon Champions, Legends: Z-A, Legends: Arceus, and BDSP. To include another game, add its mod to `learnsetMods` in `scripts/update-data.mjs`.
 
 ## Testing
 
