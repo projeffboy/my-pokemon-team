@@ -1,21 +1,12 @@
 import raichuMegaX from "./raichumegax.png";
 import raichuMegaY from "./raichumegay.png";
-import clefableMega from "./clefablemega.png";
-import victreebelMega from "./victreebelmega.png";
-import starmieMega from "./starmiemega.png";
-import dragoniteMega from "./dragonitemega.png";
-import meganiumMega from "./meganiummega.png";
-import feraligatrMega from "./feraligatrmega.png";
-import skarmoryMega from "./skarmorymega.png";
 import chimechoMega from "./chimechomega.png";
 import absolMegaZ from "./absolmegaz.png";
 import staraptorMega from "./staraptormega.png";
 import garchompMegaZ from "./garchompmegaz.png";
 import lucarioMegaZ from "./lucariomegaz.png";
-import froslassMega from "./froslassmega.png";
 import heatranMega from "./heatranmega.png";
 import darkraiMega from "./darkraimega.png";
-import emboarMega from "./emboarmega.png";
 import excadrillMega from "./excadrillmega.png";
 import scolipedeMega from "./scolipedemega.png";
 import scraftyMega from "./scraftymega.png";
@@ -49,22 +40,13 @@ import baxcaliburMega from "./baxcaliburmega.png";
 export default {
   raichumegax: raichuMegaX,
   raichumegay: raichuMegaY,
-  clefablemega: clefableMega,
-  victreebelmega: victreebelMega,
-  starmiemega: starmieMega,
-  dragonitemega: dragoniteMega,
-  meganiummega: meganiumMega,
-  feraligatrmega: feraligatrMega,
-  skarmorymega: skarmoryMega,
   chimechomega: chimechoMega,
   absolmegaz: absolMegaZ,
   staraptormega: staraptorMega,
   garchompmegaz: garchompMegaZ,
   lucariomegaz: lucarioMegaZ,
-  froslassmega: froslassMega,
   heatranmega: heatranMega,
   darkraimega: darkraiMega,
-  emboarmega: emboarMega,
   excadrillmega: excadrillMega,
   scolipedemega: scolipedeMega,
   scraftymega: scraftyMega,

@@ -63,6 +63,11 @@ function UpdateLog() {
           <Typography paragraph>
             Hisuian formes are listed under the Hisui region only.
           </Typography>
+          <Typography paragraph>
+            Nine Legends: Z-A megas are now animated instead of still images:
+            Mega Clefable, Victreebel, Starmie, Dragonite, Meganium, Feraligatr,
+            Skarmory, Froslass, and Emboar.
+          </Typography>
 
           <Typography variant="subtitle2">Sep 17, 2026</Typography>
           <Typography paragraph>Added Regulation M-C pokemon.</Typography>
