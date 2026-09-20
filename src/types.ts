@@ -15,7 +15,6 @@ export interface PokedexEntry {
   isNonstandard?: string;
   requiredItem?: string;
   requiredItems?: string[];
-  tags?: string[];
 }
 
 export type Pokedex = Record<string, PokedexEntry>;
@@ -38,7 +37,10 @@ export type Moves = Record<string, MoveEntry>;
 
 export type Learnsets = Record<string, string[]>;
 
-export type Formats = Record<string, Record<string, string>>;
+export type Formats = Record<
+  string,
+  { tier?: string; doublesTier?: string; champions?: true }
+>;
 
 type TypeChartStatus =
   | "prankster"
