@@ -1,6 +1,6 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import PokemonInputs from "./pokemon-team/PokemonInputs";
+import PokemonInputs from "./pokemon-team/shared/PokemonInputs";
 import SmTeamViewer from "./pokemon-team/SmTeamViewer";
 import XsTeamViewer from "./pokemon-team/XsTeamViewer";
 import { useBreakpoint, useIsMdDown } from "@/app/shared/WidthContext";

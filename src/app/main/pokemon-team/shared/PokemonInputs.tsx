@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import PokemonInput from "./pokemon-inputs/PokemonInput";
-import PokemonSprite from "./shared/PokemonSprite";
+import PokemonSprite from "./PokemonSprite";
 import { PokemonProperties } from "@/types";
 
 export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {

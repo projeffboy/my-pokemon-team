@@ -22,7 +22,7 @@ const PokemonSprite = observer(function PokemonSprite({
     forceFullSize && (breakpoint === "xs" || breakpoint === "sm") ?
       "md"
     : breakpoint;
-  const pokemon = store.team[teamIndex].name; // unhyphenated name
+  const pokemon = store.team[teamIndex]?.name ?? ""; // unhyphenated name
   const pokedexNumber = pokedex[pokemon]?.num;
 
   let spriteFilename = pokemon; // the filename of the pokemon sprite (usually just the pokemon name)

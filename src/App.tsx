@@ -7,7 +7,7 @@ import TeamLinkSync from "./app/TeamLinkSync";
 import TypeChartDialog from "./app/TypeChartDialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
-import { theme } from "./app/theme";
+import { theme } from "./app/shared/theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import Ramp from "./app/RAMP";
 import { cookieStorageManager } from "./app/color-scheme-storage";

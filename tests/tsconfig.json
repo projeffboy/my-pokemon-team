@@ -1,12 +1,14 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
+    "noUncheckedIndexedAccess": false,
     "paths": {
       "@/*": ["../src/*"],
       "fixtures": ["./fixtures.ts"],
       "helper": ["./helper.ts"]
     }
   },
+  "files": [],
   "include": ["**/*.ts"],
   "exclude": ["type-contracts.ts"]
 }

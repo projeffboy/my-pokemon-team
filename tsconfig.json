@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
+    "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "bundler",
@@ -17,6 +18,7 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
+  "files": ["tests/type-contracts.ts"],
   "include": [
     "src",
     "vite.config.ts",

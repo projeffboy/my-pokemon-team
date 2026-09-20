@@ -29,7 +29,7 @@
     "test:logic": "playwright test --config=playwright.logic.config.ts",
     "test:dev": "playwright test",
     "test:smoke": "playwright test --config=playwright.smoke.config.ts",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.checked.json && tsc --noEmit -p tests/tsconfig.json"
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
