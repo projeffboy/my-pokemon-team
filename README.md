@@ -2,7 +2,7 @@
 
 An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A and Pokemon Champions. Try it at [mypokemonteam.com](https://mypokemonteam.com).
 
-![My Pokemon Team Screenshot](src/images/mypokemonteam-screenshot.PNG)
+![My Pokemon Team Screenshot](public/mypokemonteam-screenshot-2026.png)
 
 ## What makes this teambuilder special?
 
@@ -14,12 +14,13 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 
 ## Architecture
 
-This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown. The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com).
+This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown. The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com), and merging to `master` deploys to it.
 
 - UI: React and Material UI (MUI).
 - Build and typechecking: Vite and TypeScript.
 - Linting and formatting: ESLint and Prettier.
 - State management: MobX with mobx-react-lite.
+- URL handling for shared team links: React Router.
 - Virtualized lists: react-window.
 - Browser testing: Playwright.
 - Direct rule testing: Playwright's test runner in Node, without a browser.
@@ -60,7 +61,11 @@ This update is run manually when new data is needed. It reads the `pokemon-showd
 
 Learnsets combine every generation with the games Showdown keeps in separate mods: Pokemon Champions, Legends: Z-A, Legends: Arceus, and BDSP. To include another game, add its mod to `learnsetMods` in `scripts/update-data.mjs`.
 
-To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data.mjs` and to the matching type in `src/types.ts`, then rerun the update. `src/data/viable-moves.ts` is a frozen list (Showdown no longer flags viable moves) and is not regenerated.
+The Pokemon Champions (M-C) format filter reads eligibility from Showdown's `champions` mod, which follows the current regulation. When that mod moves to a new regulation, rename the filter to match.
+
+The Viable moves filter comes from the Showdown client's teambuilder. The script runs the client's own `BattleMoveSearch.moveIsNotUseless` function, and a move is viable if any pokemon that learns it, with any of its abilities, finds it useful in singles or doubles. If the update fails with "Could not find BattleMoveSearch.moveIsNotUseless", the client has restructured that function and `updateViableMoves` needs adjusting.
+
+To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data.mjs` and to the matching type in `src/types.ts`, then rerun the update.
 
 ## Testing
 
@@ -73,7 +78,7 @@ npm test
 
 `npm test` runs these in order, and each can be run alone:
 
-- `npm run typecheck`: application and test types, plus `noUncheckedIndexedAccess` for the modules listed in [tsconfig.checked.json](tsconfig.checked.json).
+- `npm run typecheck`: application types with `noUncheckedIndexedAccess`, then test types.
 - `npm run lint`: ESLint and Prettier (`npm run format` applies the formatting). Generated files in `src/data` are excluded.
 - `npm run test:logic`: [direct rule tests](tests/logic/logic-tests.md) in Node, without a browser.
 - `npm run test:smoke`: builds the production app and checks its essential flows with Vite preview on port 4173.

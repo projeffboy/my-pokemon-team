@@ -39,9 +39,50 @@ function UpdateLog() {
             </Button>
           </div>
 
+          <Typography variant="subtitle2">Sep 19, 2026</Typography>
+          <Typography paragraph>
+            The new Pokemon Champions (M-C) format filter only lists pokemon
+            that are eligible for Pokemon Champions. It replaces Battle Stadium
+            Singles.
+          </Typography>
+          <Typography paragraph>
+            The Viable moves filter now follows Pokemon Showdown's current list
+            of usually useful moves, so it includes moves from generations 8 and
+            9 like Body Press, Flip Turn, and Rage Fist.
+          </Typography>
+          <Typography paragraph>
+            Pokemon can now learn their moves from Pokemon Champions, Legends:
+            Z-A, Legends: Arceus, and BDSP. For example, Meganium can now learn
+            Dazzling Gleam.
+          </Typography>
+          <Typography paragraph>
+            Required items are auto-selected for primals, crowned formes, and
+            Ogerpon masks, and the right mega stone is picked for Raichu-Mega-Y
+            and the Mega-Z formes.
+          </Typography>
+          <Typography paragraph>
+            Hisuian formes are listed under the Hisui region only.
+          </Typography>
+
+          <Typography variant="subtitle2">Sep 17, 2026</Typography>
+          <Typography paragraph>Added Regulation M-C pokemon.</Typography>
+
+          <Typography variant="subtitle2">Sep 5, 2026</Typography>
+          <Typography paragraph>
+            Your team is now saved in the page's link, so you can share a team
+            by copying the address. On phones, the share button copies it for
+            you.
+          </Typography>
+
+          <Typography variant="subtitle2">Aug 31, 2026</Typography>
+          <Typography paragraph>
+            The dropdowns open faster. Venusaur and Charizard sit next to the
+            title to commemorate Worlds 2026.
+          </Typography>
+
           <Typography variant="subtitle2">Aug 28, 2026</Typography>
           <Typography paragraph>
-            See above GitHub repo commits to see what was updated.
+            Fixed sprite bugs and updated the Pokemon data.
           </Typography>
 
           <Typography variant="subtitle2">May 16, 2026</Typography>
