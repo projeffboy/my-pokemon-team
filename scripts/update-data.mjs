@@ -196,8 +196,8 @@ async function updateLearnsets() {
 
 // Showdown's teambuilder sorts "usually useful" moves with BattleMoveSearch.moveIsNotUseless,
 // which judges a move for one set. Run that function itself, so its rules stay Showdown's:
-// a move is viable if any pokemon that learns it, with any of its abilities, finds it useful
-// in singles or doubles. (Gen 9 singles alone would drop sleep moves like Spore.)
+// a move is viable if any pokemon that learns it, with any of its abilities and required items,
+// finds it useful in singles or doubles. (Gen 9 singles alone would drop sleep moves like Spore.)
 async function updateViableMoves(learnsets) {
   const [pokedex, moves, source] = await Promise.all([
     loadTypeScriptExport(path.join(showdownRoot, "data/pokedex.ts"), "Pokedex"),
@@ -239,9 +239,17 @@ async function updateViableMoves(learnsets) {
       ...(learnsets[toId(entry.baseSpecies)] ?? []),
     ];
     const species = { baseSpecies: entry.name, ...entry, id };
+    // A forme always holds its required item, e.g. Techno Blast needs Genesect-Douse's Drive
+    const items = [
+      "",
+      entry.requiredItem,
+      ...(entry.requiredItems ?? []),
+    ].filter(item => item !== undefined);
     // Cosmetic formes list no abilities; their base species covers them
-    for (const ability of Object.values(entry.abilities ?? {})) {
-      const set = { ability, item: "", moves: [] };
+    const sets = Object.values(entry.abilities ?? {}).flatMap(ability =>
+      items.map(item => ({ ability, item, moves: [] })),
+    );
+    for (const set of sets) {
       for (const move of [
         ...learnset,
         ...(learnset.includes("hiddenpower") ? hiddenPowers : []),

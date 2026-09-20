@@ -455,6 +455,7 @@ const data: ReadonlySet<string> = new Set([
   "tailslap",
   "tailwind",
   "taunt",
+  "technoblast",
   "teleport",
   "temperflare",
   "terablast",

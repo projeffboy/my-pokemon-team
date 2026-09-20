@@ -121,4 +121,13 @@ test.describe("learnset inheritance", () => {
     expect(Object.isFrozen(all.values[0])).toBe(true);
     expect(getTeamLearnsets(team, false)).toEqual(all);
   });
+
+  test("viable moves include ones that rely on a forme's required item", () => {
+    const [viable = []] = getTeamLearnsets(
+      createTeam({ name: "genesectchill" }),
+      true,
+    ).values;
+
+    expect(viable).toContain("technoblast");
+  });
 });
