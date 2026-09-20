@@ -13,11 +13,14 @@ const PokemonInput = observer(function PokemonInput({
   teamIndex: number;
 }) {
   const handleChange = (inputVal: string) => {
+    const member = store.team[teamIndex];
+    if (!member) return;
+
     if (pokemonProperty === "name") {
       store.clearTeamPokemonProperties(teamIndex);
     }
 
-    store.team[teamIndex][pokemonProperty] = inputVal;
+    member[pokemonProperty] = inputVal;
 
     // if pokemon can only have one item and/or ability
     if (pokemonProperty === "name") {
@@ -26,6 +29,7 @@ const PokemonInput = observer(function PokemonInput({
     }
   };
 
+  const member = store.team[teamIndex];
   let optionValues: readonly string[];
   let optionLabels: readonly string[];
 
@@ -33,9 +37,9 @@ const PokemonInput = observer(function PokemonInput({
     case "name": {
       optionValues = store.filteredPokemon;
       optionLabels = store.filteredPokemonNames.map(
-        (name, i) => name ?? optionValues[i],
+        (name, i) => name ?? optionValues[i] ?? "",
       );
-      const pokemonName = store.team[teamIndex].name;
+      const pokemonName = member?.name;
       if (pokemonName && !optionValues.includes(pokemonName)) {
         optionValues = [...optionValues, pokemonName];
         optionLabels = [
@@ -48,17 +52,17 @@ const PokemonInput = observer(function PokemonInput({
     case "item":
       optionValues = store.itemsArr;
       optionLabels = store.itemNamesArr.map(
-        (name, i) => name ?? store.itemsArr[i],
+        (name, i) => name ?? store.itemsArr[i] ?? "",
       );
       break;
     case "ability":
-      optionValues = store.teamAbilities[teamIndex];
+      optionValues = store.teamAbilities[teamIndex] ?? [];
       optionLabels = optionValues;
       break;
     default: // for the moves
-      optionValues = store.teamLearnsets.values[teamIndex];
-      optionLabels = store.teamLearnsets.labels[teamIndex].map(
-        (name, i) => name ?? optionValues[i],
+      optionValues = store.teamLearnsets.values[teamIndex] ?? [];
+      optionLabels = (store.teamLearnsets.labels[teamIndex] ?? []).map(
+        (name, i) => name ?? optionValues[i] ?? "",
       );
   }
 
@@ -68,7 +72,7 @@ const PokemonInput = observer(function PokemonInput({
       optionValues={optionValues}
       optionLabels={optionLabels}
       onChange={handleChange}
-      value={store.team[teamIndex][pokemonProperty]}
+      value={member?.[pokemonProperty] ?? ""}
       pokemonProperty={pokemonProperty}
       teamIndex={teamIndex}
     />

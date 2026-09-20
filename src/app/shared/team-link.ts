@@ -1,7 +1,7 @@
 // Shared store <-> URL team param conversion
 import store from "@/store";
-import { toBase64Url, fromBase64Url } from "@/app/shared/base64url";
-import { serializeTeamText, parseTeamText } from "@/app/shared/team-text";
+import { toBase64Url, fromBase64Url } from "./base64url";
+import { serializeTeamText, parseTeamText } from "./team-text";
 
 // Limit applies to the raw (still-encoded) URL param, before any decoding is attempted
 export const MAX_ENCODED_TEAM_PARAM_LENGTH = 16 * 1024;

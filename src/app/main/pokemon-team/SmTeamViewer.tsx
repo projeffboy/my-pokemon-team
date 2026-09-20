@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react-lite";
-import PokemonInputs from "./PokemonInputs";
+import PokemonInputs from "./shared/PokemonInputs";
 import PokemonSprite from "./shared/PokemonSprite";
 import getPokemonLabel from "./shared/get-pokemon-label";
 

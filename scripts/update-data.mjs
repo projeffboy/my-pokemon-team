@@ -15,14 +15,19 @@ async function read(relativePath) {
   return fs.readFile(relativePath, "utf8");
 }
 
-async function loadTypeScriptExport(sourcePath, exportName) {
-  const source = await read(sourcePath);
+async function importTypeScript(source) {
   const javascript = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.ES2022 },
   }).outputText;
   const moduleUrl = `data:text/javascript;base64,${Buffer.from(javascript).toString("base64")}`;
-  return (await import(moduleUrl))[exportName];
+  return import(moduleUrl);
 }
+
+async function loadTypeScriptExport(sourcePath, exportName) {
+  return (await importTypeScript(await read(sourcePath)))[exportName];
+}
+
+const toId = text => `${text ?? ""}`.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 // `onePerLine` keeps each entry on its own line so data updates produce readable diffs
 function renderTypedData(typeName, data, onePerLine = false) {
@@ -68,7 +73,6 @@ const projections = {
       "abilities",
       "requiredItem",
       "requiredItems",
-      "tags",
     ]),
   Moves: entry => ({
     ...pick(entry, [
@@ -105,6 +109,46 @@ async function updateProjectedDataset(sourceName, exportName, typeName) {
   await fs.writeFile(
     path.join(dataRoot, `${typeName.toLowerCase()}.ts`),
     renderTypedData(typeName, projected, true),
+  );
+}
+
+// Showdown's `champions` mod tracks the current Pokemon Champions regulation. A forme without
+// its own entry there is as legal as the forme or species it comes from.
+async function updateFormats() {
+  const [pokedex, formatsData, championsFormatsData] = await Promise.all(
+    [
+      ["data/pokedex.ts", "Pokedex"],
+      ["data/formats-data.ts", "FormatsData"],
+      ["data/mods/champions/formats-data.ts", "FormatsData"],
+    ].map(([file, exportName]) =>
+      loadTypeScriptExport(path.join(showdownRoot, file), exportName),
+    ),
+  );
+  const championsData = { ...formatsData, ...championsFormatsData };
+  const isChampionsLegal = id => {
+    const entry = championsData[id];
+    if (entry?.isNonstandard) return false;
+    if (entry?.tier) return entry.tier !== "Illegal";
+
+    const { battleOnly, baseSpecies } = pokedex[id] ?? {};
+    const parent = toId([battleOnly, baseSpecies].flat().find(Boolean));
+    return !!parent && parent !== id && isChampionsLegal(parent);
+  };
+  const ids = new Set([...Object.keys(formatsData), ...Object.keys(pokedex)]);
+  const projected = Object.fromEntries(
+    [...ids]
+      .map(id => [
+        id,
+        {
+          ...projections.Formats(formatsData[id] ?? {}),
+          ...(isChampionsLegal(id) && { champions: true }),
+        },
+      ])
+      .filter(([, entry]) => Object.keys(entry).length),
+  );
+  await fs.writeFile(
+    path.join(dataRoot, "formats.ts"),
+    renderTypedData("Formats", projected, true),
   );
 }
 
@@ -146,6 +190,90 @@ async function updateLearnsets() {
   await fs.writeFile(
     path.join(dataRoot, "learnsets.ts"),
     renderTypedData("Learnsets", flattened),
+  );
+  return flattened;
+}
+
+// Showdown's teambuilder sorts "usually useful" moves with BattleMoveSearch.moveIsNotUseless,
+// which judges a move for one set. Run that function itself, so its rules stay Showdown's:
+// a move is viable if any pokemon that learns it, with any of its abilities and required items,
+// finds it useful in singles or doubles. (Gen 9 singles alone would drop sleep moves like Spore.)
+async function updateViableMoves(learnsets) {
+  const [pokedex, moves, source] = await Promise.all([
+    loadTypeScriptExport(path.join(showdownRoot, "data/pokedex.ts"), "Pokedex"),
+    loadTypeScriptExport(path.join(showdownRoot, "data/moves.ts"), "Moves"),
+    read(
+      path.join(
+        clientRoot,
+        "play.pokemonshowdown.com/src/battle-dex-search.ts",
+      ),
+    ),
+  ]);
+  // The method, followed by the four move lists it reads
+  const match = source.match(
+    /\tprivate (moveIsNotUseless\([\s\S]*?static readonly GOOD_DOUBLES_MOVES = [\s\S]*?;\n)/,
+  );
+  if (!match) {
+    throw new Error("Could not find BattleMoveSearch.moveIsNotUseless");
+  }
+  const { BattleMoveSearch } = await importTypeScript(
+    `const toID = ${toId};\nexport class BattleMoveSearch {\n${match[1]}}`,
+  );
+  const dex = {
+    gen: 9,
+    moves: { get: id => ({ exists: id in moves, flags: {}, ...moves[id] }) },
+  };
+  const searches = [
+    { formatType: null, isDoubles: false },
+    { formatType: "doubles", isDoubles: true },
+  ].map(format => Object.assign(new BattleMoveSearch(), { dex, ...format }));
+  const hiddenPowers = Object.keys(moves).filter(
+    id => id.startsWith("hiddenpower") && id !== "hiddenpower",
+  );
+
+  const viable = new Set();
+  for (const [id, entry] of Object.entries(pokedex)) {
+    // Formes also learn their base species' moves
+    const learnset = [
+      ...(learnsets[id] ?? []),
+      ...(learnsets[toId(entry.baseSpecies)] ?? []),
+    ];
+    const species = { baseSpecies: entry.name, ...entry, id };
+    // A forme always holds its required item, e.g. Techno Blast needs Genesect-Douse's Drive
+    const items = [
+      "",
+      entry.requiredItem,
+      ...(entry.requiredItems ?? []),
+    ].filter(item => item !== undefined);
+    // Cosmetic formes list no abilities; their base species covers them
+    const sets = Object.values(entry.abilities ?? {}).flatMap(ability =>
+      items.map(item => ({ ability, item, moves: [] })),
+    );
+    for (const set of sets) {
+      for (const move of [
+        ...learnset,
+        ...(learnset.includes("hiddenpower") ? hiddenPowers : []),
+      ]) {
+        if (
+          searches.some(search =>
+            search.moveIsNotUseless(move, species, [], set),
+          )
+        ) {
+          viable.add(move);
+        }
+      }
+    }
+  }
+
+  await fs.writeFile(
+    path.join(dataRoot, "viable-moves.ts"),
+    [
+      "// Moves that Pokemon Showdown's teambuilder lists as usually useful for at least one pokemon",
+      `const data: ReadonlySet<string> = new Set(${JSON.stringify([...viable].sort(), null, 2)});`,
+      "",
+      "export default data;",
+      "",
+    ].join("\n"),
   );
 }
 
@@ -214,8 +342,8 @@ await Promise.all([
   updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
   updateProjectedDataset("moves", "Moves", "Moves"),
   updateProjectedDataset("items", "Items", "Items"),
-  updateProjectedDataset("formats-data", "FormatsData", "Formats"),
-  updateLearnsets(),
+  updateFormats(),
+  updateLearnsets().then(updateViableMoves),
   updateTypeChart(),
   updateIconIndexes(),
 ]);

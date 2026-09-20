@@ -1,7 +1,6 @@
 import pokedex from "@/data/pokedex";
 import formats from "@/data/formats";
 import { isPokemonType } from "@/types";
-import { baseForme } from "./shared/pokemon";
 import type { Pokedex, SearchFilters } from "@/types";
 
 type PokemonFilters = Readonly<
@@ -30,14 +29,6 @@ const REGIONAL_FORMES: Record<string, string> = {
 };
 const HISUI_ORIGIN_FORMES = ["dialgaorigin", "palkiaorigin"];
 
-const BATTLE_STADIUM_BANNED_TAGS = ["Restricted Legendary", "Mythical"];
-
-function isBannedFromBattleStadium(pokemon: string | undefined) {
-  return !!pokedex[pokemon ?? ""]?.tags?.some(tag =>
-    BATTLE_STADIUM_BANNED_TAGS.includes(tag),
-  );
-}
-
 export function filterPokemon({ format, region, type }: PokemonFilters) {
   return Object.keys(
     filterByFormat(filterByRegion(filterByType({ ...pokedex }))),
@@ -50,14 +41,10 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
 
     const filteredPokedex: Pokedex = {};
 
-    if (format === "Battle Stadium Singles") {
-      // Formes share their base species' ban
-      // E.g. exclude giratina, as well as giratinaorigin
+    if (format === "Pokemon Champions (M-C)") {
       return Object.fromEntries(
         Object.entries(pokedex).filter(
-          ([pokemon]) =>
-            !isBannedFromBattleStadium(pokemon) &&
-            !isBannedFromBattleStadium(baseForme(pokemon)),
+          ([pokemon]) => formats[pokemon]?.champions,
         ),
       );
     }
@@ -100,7 +87,10 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       return filterByTier(["DUber", "DOU", "DUU", "(DUU)"], "doublesTier");
     }
 
-    function filterByTier(arrayOfTiers: string[], tierType: string) {
+    function filterByTier(
+      arrayOfTiers: string[],
+      tierType: "tier" | "doublesTier",
+    ) {
       let tierMatched = false;
 
       for (const tier of arrayOfTiers) {

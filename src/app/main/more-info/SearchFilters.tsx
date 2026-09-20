@@ -27,7 +27,7 @@ const SearchFilters = observer(function SearchFilters() {
 
   const inputLabels: Record<InputLabelKey, string[]> = {
     Format: [
-      "Battle Stadium Singles",
+      "Pokemon Champions (M-C)",
       "Uber",
       "OU: Over Used",
       "UU: Under Used",

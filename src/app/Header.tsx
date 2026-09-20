@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import face1 from "@/images/venusaur-shuffle-face-cropped.png";
 import face2 from "@/images/charizard-shuffle-face-cropped.png";
-import { fluidClamp } from "@/helper";
+import { fluidClamp } from "./header/fluid-clamp";
 import {
   breakpointValues,
   MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
-} from "@/app/theme";
+} from "./shared/theme";
 
 const { sm } = breakpointValues;
 const faceHeight = fluidClamp(28, 48, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH, sm);

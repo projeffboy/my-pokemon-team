@@ -94,7 +94,7 @@ const TeamChecklist = observer(function TeamChecklist() {
     checklistAbbr[7] = "Volturn";
   }
 
-  return Object.keys(checklist).map((miniHeader, i) => (
+  return Object.entries(checklist).map(([miniHeader, checks], i) => (
     <Grid key={miniHeader} size={4} sx={{ p: 1 }}>
       {/* E.g. Offensive */}
       <Typography
@@ -104,11 +104,11 @@ const TeamChecklist = observer(function TeamChecklist() {
       >
         {miniHeader}
       </Typography>
-      {Object.keys(checklist[miniHeader]).map((check, j) => (
+      {Object.entries(checks).map(([check, isChecked], j) => (
         <div key={check} style={{ display: "flex" }}>
           {/* Either a checkmark or a cross */}
           <div>
-            {checklist[miniHeader][check] ?
+            {isChecked ?
               <CheckCircle style={{ color: "#16a085" }} />
             : <Typography component="div" style={{ lineHeight: "initial" }}>
                 <Cancel />

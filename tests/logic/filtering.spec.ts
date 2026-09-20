@@ -98,25 +98,27 @@ test("format, region, and type filters intersect", () => {
   ).toEqual(["skrelp"]);
 });
 
-test("Battle Stadium exclusions do not mutate the source Pokedex or filters", () => {
+test("Pokemon Champions keeps only eligible species without mutating the source Pokedex or filters", () => {
   const expectedKeys = Object.keys(pokedex);
-  const filters = Object.freeze({ ...all, format: "Battle Stadium Singles" });
+  const filters = Object.freeze({ ...all, format: "Pokemon Champions (M-C)" });
   const result = filterPokemon(filters);
-  expect(result).not.toContain("zekrom");
-  expect(result).not.toContain("xerneas");
-  expect(result).toContain("terrakion");
-  // formes of banned species, mythicals, and Gen 9 restricted legendaries
-  for (const banned of [
-    "kyuremblack",
-    "necrozmaultra",
-    "hoopaunbound",
-    "miraidon",
+  // eligible species, their megas, and formes that inherit their species' eligibility
+  for (const eligible of [
+    "hydreigon",
+    "scovillainmega",
+    "floetteeternal",
+    "meowsticf",
+    "aegislashblade",
+    "polteageistantique",
   ]) {
-    expect(result).not.toContain(banned);
+    expect(result).toContain(eligible);
   }
-  expect(result).toContain("landorustherian");
+  // species outside the game, their formes, and unevolved pokemon it leaves out
+  for (const ineligible of ["clodsire", "gastrodoneast", "mewtwo", "ivysaur"]) {
+    expect(result).not.toContain(ineligible);
+  }
   expect(Object.keys(pokedex)).toEqual(expectedKeys);
-  expect(filters).toEqual({ ...all, format: "Battle Stadium Singles" });
+  expect(filters).toEqual({ ...all, format: "Pokemon Champions (M-C)" });
 });
 
 test("unknown format and type filters return no species", () => {

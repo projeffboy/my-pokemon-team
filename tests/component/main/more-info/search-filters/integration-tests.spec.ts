@@ -95,6 +95,19 @@ test.describe("Filters Integration Tests", () => {
     }
   });
 
+  test("Pokemon Champions Format Filter", async ({ page }) => {
+    await selectFilterOption(page, "Format", "Pokemon Champions (M-C)");
+
+    // Eligible: Kommo-o, Glimmora-Mega
+    await checkPokemonSelectable(page, "Kommo-o");
+    await checkPokemonSelectable(page, "Glimmora", "Glimmora-Mega");
+
+    // Not eligible: Wooper, Zekrom
+    for (const name of ["Wooper", "Zekrom"]) {
+      await checkPokemonNotSelectable(page, name);
+    }
+  });
+
   test("Type Filter", async ({ page }) => {
     // 1. Select type electric
     await selectFilterOption(page, "Type", "Electric");
@@ -150,8 +163,8 @@ test.describe("Filters Integration Tests", () => {
       await checkMoveSelectable(page, move);
     }
 
-    // Moves that can't be selected: Dig, Attract, Hyper Beam, Poison Fang
-    const notSelectableMoves = ["Dig", "Attract", "Hyper Beam", "Poison Fang"];
+    // Moves that can't be selected: Dig, Attract, Hyper Beam, Venoshock
+    const notSelectableMoves = ["Dig", "Attract", "Hyper Beam", "Venoshock"];
     for (const move of notSelectableMoves) {
       await checkMoveNotSelectable(page, move);
     }

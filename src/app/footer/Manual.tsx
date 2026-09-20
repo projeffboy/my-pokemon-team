@@ -157,6 +157,11 @@ function Manual() {
             </Link>
             .
           </Typography>
+          <Typography paragraph>
+            The Pokemon Champions (M-C) format only lists the pokemon you can
+            use in Pokemon Champions under Regulation M-C, including their mega
+            evolutions.
+          </Typography>
           <Typography variant="h6">Team Checklist Terms</Typography>
           <Typography variant="subtitle2" gutterBottom>
             What do things like entry hazard, phazer, and volt-turn even mean?

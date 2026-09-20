@@ -28,7 +28,10 @@ function RowComponent({
   itemData: ItemData;
   pokemonProperty: string;
 }) {
-  const [optionProps, option] = itemData[index];
+  const row = itemData[index];
+  if (!row) return null;
+
+  const [optionProps, option] = row;
   const { key, ...otherOptionProps } =
     optionProps as React.HTMLAttributes<HTMLLIElement> & { key?: React.Key };
   const hasIcon = ["name", "item"].includes(pokemonProperty);
