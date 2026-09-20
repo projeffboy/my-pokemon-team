@@ -12,7 +12,7 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 4. Search filters narrow down the Pokemon by format, type, region, and moves
 5. The sprites are animated, which is nice
 
-## Architecture
+## Tech Stack
 
 This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown. The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com), and merging to `master` deploys to it.
 
