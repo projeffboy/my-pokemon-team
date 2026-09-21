@@ -39,6 +39,17 @@ function UpdateLog() {
             </Button>
           </div>
 
+          <Typography variant="subtitle2">Sep 21, 2026</Typography>
+          <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
+            <li>
+              Fixed the missing sprites of 14 formes, like Vivillon-Icy Snow.
+            </li>
+            <li>
+              CAP pokemon like Syclant are no longer listed, but still load from
+              links and imports.
+            </li>
+          </Typography>
+
           <Typography variant="subtitle2">Sep 19, 2026</Typography>
           <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
             <li>
