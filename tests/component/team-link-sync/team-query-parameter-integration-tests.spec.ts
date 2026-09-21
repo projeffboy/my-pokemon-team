@@ -30,4 +30,27 @@ Ability: Sand Stream
     expect(getTeamTextFromUrl(page)).toContain("Ability: Sand Stream");
     expect(getTeamTextFromUrl(page)).toContain("- Crunch");
   });
+
+  test("loads a CAP pokemon that the dropdown does not offer", async ({
+    page,
+  }) => {
+    await page.goto(`/?team=${toBase64Url("Voodoom\n- Dark Pulse")}`);
+
+    await expect(
+      page.getByRole("combobox", { name: "Pokemon 1's name" }),
+    ).toHaveValue("Voodoom");
+    await expect(
+      page.getByRole("combobox", { name: "Pokemon 1's move1" }),
+    ).toHaveValue("Dark Pulse");
+    expect(getTeamTextFromUrl(page)).toContain("Voodoom");
+
+    const name = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    await name.click({ force: true });
+    await name.fill("Voodoll");
+    await expect(page.getByText("Nothing found")).toBeVisible();
+    await name.fill("Houndoo");
+    await expect(
+      page.getByRole("option", { name: "Houndoom", exact: true }),
+    ).toBeVisible();
+  });
 });

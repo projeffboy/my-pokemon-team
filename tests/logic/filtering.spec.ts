@@ -4,12 +4,31 @@ import { filterPokemon } from "@/store/filtering";
 
 const all = { format: "", region: "", type: "" };
 
+const isCap = (pokemon: string) => {
+  const num = pokedex[pokemon]?.num ?? 0;
+  return num < 0 && num > -5000;
+};
+
 test("empty filters preserve Pokedex order and return an independent list", () => {
-  const expected = Object.keys(pokedex);
+  const expected = Object.keys(pokedex).filter(pokemon => !isCap(pokemon));
   const result = filterPokemon(Object.freeze({ ...all }));
   expect(result).toEqual(expected);
   result.pop();
   expect(filterPokemon(all)).toEqual(expected);
+});
+
+test("CAP pokemon are hidden, but MissingNo. and Pokestar pokemon are not", () => {
+  const result = filterPokemon(all);
+  for (const cap of [
+    "syclar",
+    "crucibellemega",
+    "ramnarokradiant",
+    "obliteryx",
+  ])
+    expect(result).not.toContain(cap);
+  expect(filterPokemon({ ...all, type: "Ghost" })).not.toContain("pajantom");
+  expect(result).toContain("missingno");
+  expect(result).toContain("pokestargiant");
 });
 
 test("type filtering includes either type of a dual-type species", () => {

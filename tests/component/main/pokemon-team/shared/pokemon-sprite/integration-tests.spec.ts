@@ -31,6 +31,25 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/starmie-mega.gif`);
     });
 
+    test("should drop the space in a two-word forme", async ({ page }) => {
+      await selectPokemon(page, "Vivillon-Icy Snow");
+
+      await expect(
+        page.getByRole("img", { name: "vivillon-icysnow" }),
+      ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/vivillon-icysnow.gif`);
+    });
+
+    test("should reuse the base sprite for a forme that looks the same", async ({
+      page,
+    }) => {
+      await selectPokemon(page, "Rockruff-Dusk");
+
+      await expect(page.getByRole("img", { name: "rockruff" })).toHaveAttribute(
+        "src",
+        `${SHOWDOWN_SPRITES}/ani/rockruff.gif`,
+      );
+    });
+
     test("should bundle a mega that Showdown does not host", async ({
       page,
     }) => {
@@ -53,6 +72,16 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
           .getByRole("tablist", { name: "Pokemon team slots" })
           .locator('img[alt="froslass-mega"]'),
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/dex/froslass-mega.png`);
+    });
+
+    test("should use the base dex sprite for a totem", async ({ page }) => {
+      await selectPokemon(page, "Salazzle-Totem");
+
+      await expect(
+        page
+          .getByRole("tablist", { name: "Pokemon team slots" })
+          .locator('img[alt="salazzle"]'),
+      ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/dex/salazzle.png`);
     });
   });
 });
