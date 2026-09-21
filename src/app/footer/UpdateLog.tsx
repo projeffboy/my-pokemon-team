@@ -39,6 +39,12 @@ function UpdateLog() {
             </Button>
           </div>
 
+          <Typography variant="subtitle2">Sep 21, 2026</Typography>
+          <Typography paragraph>
+            Fixed missing abilities and types for cosmetic formes such as
+            Vivillon-Garden.
+          </Typography>
+
           <Typography variant="subtitle2">Sep 19, 2026</Typography>
           <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
             <li>
