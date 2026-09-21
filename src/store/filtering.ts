@@ -29,10 +29,21 @@ const REGIONAL_FORMES: Record<string, string> = {
 };
 const HISUI_ORIGIN_FORMES = ["dialgaorigin", "palkiaorigin"];
 
+// Showdown numbers CAP (fan-made) pokemon from -1 down, and Pokestar pokemon from -5000 down
+const isCap = (num: number | undefined) =>
+  num !== undefined && num < 0 && num > -5000;
+
+// CAP pokemon still load from share links and imports; they are only hidden from the options
 export function filterPokemon({ format, region, type }: PokemonFilters) {
   return Object.keys(
-    filterByFormat(filterByRegion(filterByType({ ...pokedex }))),
+    filterByFormat(filterByRegion(filterByType(withoutCap(pokedex)))),
   );
+
+  function withoutCap(pokedex: Pokedex): Pokedex {
+    return Object.fromEntries(
+      Object.entries(pokedex).filter(([, { num }]) => !isCap(num)),
+    );
+  }
 
   function filterByFormat(pokedex: Pokedex) {
     if (format === "") {
