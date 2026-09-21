@@ -19,6 +19,12 @@ test("type filtering includes either type of a dual-type species", () => {
   expect(psychic).not.toContain("milotic");
 });
 
+test("cosmetic formes retain their species' type and region filters", () => {
+  const result = filterPokemon({ ...all, type: "Bug", region: "Kalos" });
+  expect(result).toContain("vivillongarden");
+  expect(result).toContain("vivillonpolar");
+});
+
 const regionCases = [
   ["Kanto", "bulbasaur", "mew", "chikorita"],
   ["Johto", "chikorita", "celebi", "treecko"],

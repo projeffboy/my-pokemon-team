@@ -7,6 +7,7 @@ export default tseslint.config(
   {
     ignores: [
       "build",
+      ".vercel/output",
       "src/data",
       "src/app/RAMP.ts",
       "playwright-*report",

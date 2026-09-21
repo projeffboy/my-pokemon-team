@@ -7,6 +7,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `special-moves.spec.ts` covers move type changes, Freeze-Dry, Flying Press, and coverage eligibility.
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.
 - `filtering.spec.ts` covers formats, tiers, regions, types, and combined filters.
+- `pokedex.spec.ts` checks inherited cosmetic-form data and distinct battle formes.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
