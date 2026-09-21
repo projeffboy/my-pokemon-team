@@ -10,6 +10,21 @@ import { useBreakpoint } from "@/app/shared/WidthContext";
 
 const localSpritesMap = localSprites as Record<string, string>;
 
+// Showdown has no sprite under these names, because they look like another forme
+const SPRITE_FILENAME_EXCEPTIONS: Record<string, string> = {
+  raticatealolatotem: "raticate-alola",
+  marowakalolatotem: "marowak-alola",
+  ribombeetotem: "ribombee",
+  araquanidtotem: "araquanid",
+  lurantistotem: "lurantis",
+  salazzletotem: "salazzle",
+  togedemarutotem: "togedemaru",
+  mimikyubustedtotem: "mimikyu-busted",
+  greninjabond: "greninja",
+  rockruffdusk: "rockruff",
+  toxtricitylowkeygmax: "toxtricity-gmax",
+};
+
 const PokemonSprite = observer(function PokemonSprite({
   teamIndex,
   forceFullSize = false,
@@ -29,11 +44,9 @@ const PokemonSprite = observer(function PokemonSprite({
 
   // If user has chosen a pokemon
   if (pokemon) {
-    // Raticate Alola Totem's URL is the exception
-    if (pokemon === "raticatealolatotem") {
-      spriteFilename = "raticate-totem-a";
-    } else if (pokemon === "mimikyubustedtotem") {
-      spriteFilename = "mimikyu-totem-busted";
+    const exception = SPRITE_FILENAME_EXCEPTIONS[pokemon];
+    if (exception) {
+      spriteFilename = exception;
     }
     // We only need to modify spriteFilename if the pokemon has an alternate forme
     else if (store.forme(pokemon)) {
@@ -45,7 +58,9 @@ const PokemonSprite = observer(function PokemonSprite({
        */
       const spriteFilenamePart1 = baseForme(pokemon);
       const forme = store.forme(pokemon);
-      const spriteFilenamePart2 = (forme || "").toLowerCase().replace("-", "");
+      const spriteFilenamePart2 = (forme || "")
+        .toLowerCase()
+        .replace(/[- ]/g, "");
       spriteFilename = `${spriteFilenamePart1}-${spriteFilenamePart2}`;
 
       spriteFilename = spriteFilename.replace("%", "").replace("'", "");
