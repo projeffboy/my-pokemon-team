@@ -31,10 +31,6 @@ class Store {
     return pokedex[pokemon]?.name;
   }
 
-  forme(pokemon: string) {
-    return pokedex[pokemon]?.forme;
-  }
-
   get itemsArr() {
     return Object.keys(items);
   }

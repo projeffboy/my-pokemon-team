@@ -2,28 +2,13 @@ import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import pokedex from "@/data/pokedex";
-import { baseForme } from "@/store/shared/pokemon";
 import questionMark from "@/images/question-mark.png";
 import altSpriteNum from "@/data/altSpriteNum";
 import localSprites from "@/images/local-sprites";
 import { useBreakpoint } from "@/app/shared/WidthContext";
+import { spriteUrls } from "./pokemon-sprite/sprite-urls";
 
 const localSpritesMap = localSprites as Record<string, string>;
-
-// Showdown has no sprite under these names, because they look like another forme
-const SPRITE_FILENAME_EXCEPTIONS: Record<string, string> = {
-  raticatealolatotem: "raticate-alola",
-  marowakalolatotem: "marowak-alola",
-  ribombeetotem: "ribombee",
-  araquanidtotem: "araquanid",
-  lurantistotem: "lurantis",
-  salazzletotem: "salazzle",
-  togedemarutotem: "togedemaru",
-  mimikyubustedtotem: "mimikyu-busted",
-  greninjabond: "greninja",
-  rockruffdusk: "rockruff",
-  toxtricitylowkeygmax: "toxtricity-gmax",
-};
 
 const PokemonSprite = observer(function PokemonSprite({
   teamIndex,
@@ -37,71 +22,12 @@ const PokemonSprite = observer(function PokemonSprite({
     forceFullSize && (breakpoint === "xs" || breakpoint === "sm") ?
       "md"
     : breakpoint;
+  const isSmall = width === "sm" || width === "xs"; // below 960px
   const pokemon = store.team[teamIndex]?.name ?? ""; // unhyphenated name
-  const pokedexNumber = pokedex[pokemon]?.num;
-
-  let spriteFilename = pokemon; // the filename of the pokemon sprite (usually just the pokemon name)
-
-  // If user has chosen a pokemon
-  if (pokemon) {
-    const exception = SPRITE_FILENAME_EXCEPTIONS[pokemon];
-    if (exception) {
-      spriteFilename = exception;
-    }
-    // We only need to modify spriteFilename if the pokemon has an alternate forme
-    else if (store.forme(pokemon)) {
-      /*
-       * the sprite filename consists of two parts:
-       * base species name and forme name
-       * separated by a hyphen
-       * all lowercase
-       */
-      const spriteFilenamePart1 = baseForme(pokemon);
-      const forme = store.forme(pokemon);
-      const spriteFilenamePart2 = (forme || "")
-        .toLowerCase()
-        .replace(/[- ]/g, "");
-      spriteFilename = `${spriteFilenamePart1}-${spriteFilenamePart2}`;
-
-      spriteFilename = spriteFilename.replace("%", "").replace("'", "");
-    }
-  }
-
-  /* Mini Sprite (for smaller screen sizes) */
-  let typeOfSprite = "ani";
-  let imgFormat = "gif";
-  if (width === "sm" || width === "xs") {
-    // below 960px
-    typeOfSprite = "dex";
-    if (
-      (pokedexNumber && 810 <= pokedexNumber && pokedexNumber <= 898) ||
-      (pokemon && pokemon.includes("galar"))
-    ) {
-      typeOfSprite = "bw";
-    }
-
-    imgFormat = "png";
-  }
-
-  if (
-    (pokedexNumber !== undefined &&
-      984 <= pokedexNumber &&
-      pokedexNumber <= 995) ||
-    pokedexNumber === 0 ||
-    (pokemon && (altSpriteNum[pokemon] ?? -1) >= 1320 + 93) ||
-    [
-      "dialgaorigin",
-      "palkiaorigin",
-      "basculinwhitestriped",
-      "ursaluna",
-      "pichuspikyeared",
-      "miraidon",
-    ].includes(pokemon)
-  ) {
-    typeOfSprite = "gen5";
-    imgFormat = "png";
-  }
-
+  const sprite =
+    pokemon ?
+      spriteUrls(pokemon, pokedex[pokemon], altSpriteNum[pokemon], isSmall)
+    : undefined;
   const localSprite = localSpritesMap[pokemon];
 
   /* Either Return Sprite or Mini Sprite */
@@ -116,19 +42,13 @@ const PokemonSprite = observer(function PokemonSprite({
       }}
     >
       <img
-        alt={spriteFilename || "question-mark"}
-        /* URL from Pokemon Showdown */
-        src={
-          localSprite ||
-          (spriteFilename ?
-            `https://play.pokemonshowdown.com/sprites/${typeOfSprite}/${spriteFilename}.${imgFormat}`
-            // The placeholder (question mark) sprite
-          : questionMark)
-        }
+        alt={sprite?.filename ?? "question-mark"}
+        // A bundled sprite, else Showdown's, else the question mark placeholder
+        src={localSprite || sprite?.src || questionMark}
         onError={e => {
           // Prevent infinite loops if the fallback image also fails
           e.currentTarget.onerror = null;
-          e.currentTarget.src = `https://play.pokemonshowdown.com/sprites/gen5/${spriteFilename}.png`;
+          if (sprite) e.currentTarget.src = sprite.fallback;
         }}
         /* Apply miniSprite style if it's a mini sprite */
         style={{
@@ -137,7 +57,7 @@ const PokemonSprite = observer(function PokemonSprite({
               "160px"
             : "96px",
           maxWidth: "100%",
-          ...(width === "sm" || width === "xs" ? { width: "100%" } : {}),
+          ...(isSmall ? { width: "100%" } : {}),
         }}
       />
     </Box>

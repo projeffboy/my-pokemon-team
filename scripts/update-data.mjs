@@ -346,6 +346,105 @@ async function updateIconIndexes() {
   );
 }
 
+const loadAppData = async name =>
+  (await importTypeScript(await read(path.join(dataRoot, `${name}.ts`))))
+    .default;
+
+// Share links hold display names, so a name that disappears empties that slot in old links.
+// Showdown's aliases say what a removed ID is called now.
+async function reportNameChanges(before, after) {
+  const aliases = await loadTypeScriptExport(
+    path.join(showdownRoot, "data/aliases.ts"),
+    "Aliases",
+  );
+  const lines = Object.entries(before).flatMap(([dataset, oldEntries]) => {
+    const newNames = new Set(Object.values(after[dataset]).map(e => e.name));
+    return Object.entries(oldEntries)
+      .filter(([, { name }]) => !newNames.has(name))
+      .map(([id, { name }]) => {
+        const newName = after[dataset][id]?.name ?? aliases[id];
+        return `  ${dataset}: ${name} ${newNames.has(newName) ? `is now ${newName}` : "was removed"}`;
+      });
+  });
+  console.log(
+    lines.length ?
+      `Old share links lose these names:\n${lines.join("\n")}`
+    : "No pokemon, move, or item was renamed or removed.",
+  );
+}
+
+const showdownSprites = "https://play.pokemonshowdown.com/sprites";
+
+// The bundled icon sheets have to show every icon index in src/data
+async function reportIconSheets() {
+  for (const name of ["pokemonicons-sheet", "itemicons-sheet"]) {
+    const local = await fs.readFile(path.join(root, `src/images/${name}.png`));
+    const response = await fetch(`${showdownSprites}/${name}.png`);
+    console.log(
+      local.equals(Buffer.from(await response.arrayBuffer())) ?
+        `${name}.png matches Showdown's.`
+      : `${name}.png differs from Showdown's, last changed ${response.headers.get("last-modified")}.`,
+    );
+  }
+}
+
+const exists = async url => (await fetch(url, { method: "HEAD" })).ok;
+
+// Request what PokemonSprite.tsx would, at both sprite sizes
+async function reportNewSprites(before, { pokedex }, iconIndexes) {
+  const { spriteUrls } = await importTypeScript(
+    await read(
+      path.join(
+        root,
+        "src/app/main/pokemon-team/shared/pokemon-sprite/sprite-urls.ts",
+      ),
+    ),
+  );
+  const localSprites = await fs.readdir(
+    path.join(root, "src/images/local-sprites"),
+  );
+  const newIds = Object.keys(pokedex).filter(id => !(id in before.pokedex));
+  const check = async id => {
+    const lines = [];
+    for (const isSmall of [false, true]) {
+      const { src, fallback } = spriteUrls(
+        id,
+        pokedex[id],
+        iconIndexes[id],
+        isSmall,
+      );
+      if (await exists(src)) continue;
+      const hasFallback = src !== fallback && (await exists(fallback));
+      lines.push(
+        `  ${pokedex[id].name}: no ${src.replace(`${showdownSprites}/`, "")}, so it shows ${hasFallback ? "the static gen5 sprite" : "a broken image"}`,
+      );
+    }
+    return lines;
+  };
+  const lines = [];
+  const unbundled = newIds.filter(id => !localSprites.includes(`${id}.png`));
+  for (let i = 0; i < unbundled.length; i += 8) {
+    lines.push(...(await Promise.all(unbundled.slice(i, i + 8).map(check))));
+  }
+  const problems = [...new Set(lines.flat())];
+  console.log(
+    problems.length ?
+      `${newIds.length} new pokemon, with these sprites missing on Showdown:\n${problems.join("\n")}`
+    : `${newIds.length} new pokemon, all with sprites.`,
+  );
+}
+
+const loadReportedData = async () =>
+  Object.fromEntries(
+    await Promise.all(
+      ["pokedex", "moves", "items"].map(async name => [
+        name,
+        await loadAppData(name),
+      ]),
+    ),
+  );
+const before = await loadReportedData();
+
 await Promise.all([
   updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
   updateProjectedDataset("moves", "Moves", "Moves"),
@@ -367,3 +466,15 @@ await Promise.all(
     "typechart",
   ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),
 );
+
+const after = await loadReportedData();
+await reportNameChanges(before, after);
+try {
+  await reportIconSheets();
+  await reportNewSprites(before, after, await loadAppData("altSpriteNum"));
+} catch (error) {
+  if (error.message !== "fetch failed") throw error;
+  console.warn(
+    "Could not reach play.pokemonshowdown.com, so the icon sheets and new sprites were not checked.",
+  );
+}
