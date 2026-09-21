@@ -45,6 +45,10 @@ function UpdateLog() {
               Fixed the missing sprites of 14 formes, like Vivillon-Icy Snow.
             </li>
             <li>
+              Fixed the blank icons of 46 Legends: Z-A mega stones, like
+              Dragoninite.
+            </li>
+            <li>
               CAP pokemon like Syclant are no longer listed, but still load from
               links and imports.
             </li>
