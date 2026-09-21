@@ -40,33 +40,27 @@ function UpdateLog() {
           </div>
 
           <Typography variant="subtitle2">Sep 19, 2026</Typography>
-          <Typography paragraph>
-            The new Pokemon Champions (M-C) format filter only lists pokemon
-            that are eligible for Pokemon Champions. It replaces Battle Stadium
-            Singles.
-          </Typography>
-          <Typography paragraph>
-            The Viable moves filter now follows Pokemon Showdown's current list
-            of usually useful moves, so it includes moves from generations 8 and
-            9 like Body Press, Flip Turn, and Rage Fist.
-          </Typography>
-          <Typography paragraph>
-            Pokemon can now learn their moves from Pokemon Champions, Legends:
-            Z-A, Legends: Arceus, and BDSP. For example, Meganium can now learn
-            Dazzling Gleam.
-          </Typography>
-          <Typography paragraph>
-            Required items are auto-selected for primals, crowned formes, and
-            Ogerpon masks, and the right mega stone is picked for Raichu-Mega-Y
-            and the Mega-Z formes.
-          </Typography>
-          <Typography paragraph>
-            Hisuian formes are listed under the Hisui region only.
-          </Typography>
-          <Typography paragraph>
-            Nine Legends: Z-A megas are now animated instead of still images:
-            Mega Clefable, Victreebel, Starmie, Dragonite, Meganium, Feraligatr,
-            Skarmory, Froslass, and Emboar.
+          <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
+            <li>
+              New Pokemon Champions (M-C) format filter, replacing Battle
+              Stadium Singles.
+            </li>
+            <li>
+              The Viable moves filter includes gen 8 and 9 moves like Body Press
+              and Flip Turn.
+            </li>
+            <li>
+              Added moves from Pokemon Champions, Legends: Z-A, Legends: Arceus,
+              and BDSP, e.g. Meganium learns Dazzling Gleam.
+            </li>
+            <li>
+              Required items are auto-selected for primals, crowned formes,
+              Ogerpon masks, Raichu-Mega-Y, and the Mega-Z formes.
+            </li>
+            <li>Hisuian formes are listed under the Hisui region only.</li>
+            <li>
+              Nine Legends: Z-A megas are now animated, like Mega Dragonite.
+            </li>
           </Typography>
 
           <Typography variant="subtitle2">Sep 17, 2026</Typography>

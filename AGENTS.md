@@ -78,6 +78,8 @@ The text holds display names, which are matched exactly. When a data update rena
 
 `src/app/footer/UpdateLog.tsx` is for changes players notice, such as "added Regulation M-C pokemon" or "Meganium can now learn Dazzling Gleam". Add an entry for those, newest first; never for refactors, tooling, or other code-only changes.
 
+Keep entries concise. A date after Sep 19, 2026 with more than one change is a bulleted list with one short line per change; give one example rather than listing everything affected.
+
 ## Ads
 
 `src/app/RAMP.ts` is the Playwire ad integration, which earns the site's revenue to pay for its maintenance and upkeep. Only change it for a clear efficiency gain, and put that change in its own commit so it can be reverted alone if revenue drops.
