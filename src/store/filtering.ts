@@ -164,7 +164,6 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
 
     if (type) {
       for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
-        // minor bug: cosmetic formes should not be omitted
         if (
           pokemonProperties.types &&
           isPokemonType(type) &&

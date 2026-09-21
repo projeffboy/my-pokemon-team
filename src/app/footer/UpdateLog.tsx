@@ -48,6 +48,10 @@ function UpdateLog() {
               CAP pokemon like Syclant are no longer listed, but still load from
               links and imports.
             </li>
+            <li>
+              Fixed missing abilities and types for cosmetic formes such as
+              Vivillon-Garden.
+            </li>
           </Typography>
 
           <Typography variant="subtitle2">Sep 19, 2026</Typography>

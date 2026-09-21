@@ -61,8 +61,15 @@ function pick(entry, keys) {
 }
 
 const projections = {
-  Pokedex: entry =>
-    pick(entry, [
+  Pokedex: (entry, pokedex) => {
+    if (entry.isCosmeticForme) {
+      entry = {
+        ...pokedex[toId(entry.baseSpecies)],
+        ...entry,
+        otherFormes: undefined,
+      };
+    }
+    return pick(entry, [
       "num",
       "name",
       "types",
@@ -73,7 +80,8 @@ const projections = {
       "abilities",
       "requiredItem",
       "requiredItems",
-    ]),
+    ]);
+  },
   Moves: entry => ({
     ...pick(entry, [
       "name",
@@ -103,7 +111,7 @@ async function updateProjectedDataset(sourceName, exportName, typeName) {
   const projected = Object.fromEntries(
     Object.entries(dataset).map(([id, entry]) => [
       id,
-      projections[typeName](entry),
+      projections[typeName](entry, dataset),
     ]),
   );
   await fs.writeFile(

@@ -1,4 +1,5 @@
 import { test, expect } from "fixtures";
+import { selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 
 test.describe("Pokemon Card - Unit Tests", () => {
@@ -66,6 +67,23 @@ test.describe("Pokemon Card - Unit Tests", () => {
       const questionMark = card.getByRole("img", { name: "question-mark" });
       await expect(questionMark).toBeVisible();
     }
+  });
+
+  test("should list and select abilities for Vivillon-Garden", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Vivillon-Garden");
+    const ability = page.getByRole("combobox", { name: "Pokemon 1's ability" });
+    await ability.click();
+    await expect(page.getByRole("option")).toHaveText([
+      "Shield Dust",
+      "Compound Eyes",
+      "Friend Guard",
+    ]);
+    await page
+      .getByRole("option", { name: "Compound Eyes", exact: true })
+      .click();
+    await expect(ability).toHaveValue("Compound Eyes");
   });
 
   test("should show 'Nothing found' message in moves and abilities when no pokemon is selected", async ({
