@@ -7,14 +7,14 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 ## What makes this teambuilder special?
 
 1. You can import/export your team to Pokemon Showdown, or share it as a link
-2. It's very accurate, it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
+2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
 3. There's a team checklist
 4. Search filters narrow down the Pokemon by format, type, region, and moves
 5. The sprites are animated, which is nice
 
 ## Tech Stack
 
-This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown. The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com), and merging to `master` deploys to it.
+This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown. The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com). Vercel deploys `master` to it once CI passes.
 
 - UI: React and Material UI (MUI).
 - Build and typechecking: Vite and TypeScript.
@@ -27,7 +27,7 @@ This is a single-page application with no backend. Pokemon data comes from local
 
 See [package.json](package.json) for dependency versions and the exact script definitions, and [AGENTS.md](AGENTS.md) for the code structure and conventions.
 
-## Local development
+## Local Development
 
 Use Node 24, as specified in [.nvmrc](.nvmrc). With nvm installed, set up a fresh checkout and start the app with:
 
@@ -49,7 +49,7 @@ npm run preview
 
 Vite preview uses port 4173 by default. It serves the existing build, so rebuild after making changes.
 
-## Updating Pokemon data
+## Updating Pokemon Data
 
 Refresh the Pokemon Showdown data in `src/data` with:
 
@@ -78,7 +78,7 @@ npm test
 
 `npm test` runs these in order, and each can be run alone:
 
-- `npm run typecheck`: application types with `noUncheckedIndexedAccess`, then test types.
+- `npm run typecheck`: application types with `noUncheckedIndexedAccess`, including the compile-time checks in `tests/type-contracts.ts`, then test types.
 - `npm run lint`: ESLint and Prettier (`npm run format` applies the formatting). Generated files in `src/data` are excluded.
 - `npm run test:logic`: [direct rule tests](tests/logic/logic-tests.md) in Node, without a browser.
 - `npm run test:smoke`: builds the production app and checks its essential flows with Vite preview on port 4173.
@@ -86,7 +86,7 @@ npm test
 
 Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 
-The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and keeps the Playwright reports as an artifact. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
+The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and pushes to `master`, and keeps the Playwright reports as an artifact. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
 
 ## Major Credits
 

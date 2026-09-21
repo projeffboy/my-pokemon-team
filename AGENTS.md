@@ -1,6 +1,8 @@
 # About the Project
 
-React/Vite Pokemon teambuilder web app. It is a single-page app with no backend, hosted on Vercel. Merging to `master` deploys to production.
+React/Vite Pokemon teambuilder web app. It is a single-page app with no backend, hosted on Vercel.
+
+Changes reach `master` through a pull request or a direct push. CI runs on both, and Vercel deploys `master` to production only after CI passes.
 
 See [README.md](README.md) for setup and the test commands, and [package.json](package.json) for current command definitions and dependency versions.
 
@@ -18,6 +20,8 @@ While iterating, run the narrowest check that covers your change, such as `npm r
 
 Rule tests (effectiveness, learnsets, filtering, parsing) go in `tests/logic/`, and UI wiring tests go in the browser suites; see [logic-tests.md](tests/logic/logic-tests.md).
 
+Compile-time checks, such as a `@ts-expect-error` on a call the types must reject, go in `tests/type-contracts.ts`. `npm run typecheck` compiles it with the app's strict settings; nothing runs it.
+
 In the browser suites, a unit test exercises one UI group, such as Team Defence, and an integration test exercises several, such as Team Defence and the pokemon inputs. Snackbars do not count as a separate group.
 
 Browser tests import `test` and `expect` from `"fixtures"`, which opens the site before each test, and page helpers such as `selectPokemon` from `"helper"`. Both are path aliases in `tests/tsconfig.json`. The smoke suite is the exception: it imports `test` from `@playwright/test`, because it has to block external requests before it opens the site.
@@ -34,6 +38,8 @@ Inside `src/`, `App.tsx` and `app/` mirror the component tree, so a file's path 
 2. Imports point down: `./child-folder/Thing`. Siblings cannot be imported, except that files in the same `shared/` folder may import each other.
 3. When more than one file needs the same thing, it moves to a `shared/` folder at their nearest common ancestor. That includes a parent and its own children: `PokemonTeam.tsx` and both team viewers render `PokemonInputs`, so it lives in `pokemon-team/shared/`.
 4. If an import cannot be reached with `./` or a single `../`, use the `@` alias (`@/*` maps to `src/*`). No `../../` (ESLint enforces this).
+
+Component files are PascalCase `.tsx`, and every other module is kebab-case `.ts`, such as `team-link.ts` and `use-width.ts`. `RAMP.ts` is the one exception.
 
 ### Tests
 
@@ -62,7 +68,9 @@ For responsive styling, use MUI's breakpoint objects, such as `sx={{ px: { xs: 0
 
 ## Images
 
-Host images statically with the site, except for sprites and icons from Smogon / Pokemon Showdown, which may use their external URLs.
+Host images statically with the site, except for pokemon sprites, which load from Pokemon Showdown's URLs. The pokemon and item icon sheets also come from Showdown, but keep them bundled in `src/images/`: Showdown changes its sheets as it adds pokemon and items, and a sheet that no longer matches `src/data/` can cause bugs or crash the site.
+
+Formes that Showdown has no usable sprite for are bundled in `src/images/local-sprites/`, and `PokemonSprite.tsx` uses a local sprite before any Showdown URL. Read [local-sprites-sources.md](src/images/local-sprites/local-sprites-sources.md) before adding or deleting one.
 
 Images that the code imports go in `src/images/`: Vite gives them hashed filenames, ships only the ones that are imported, and fails the build if one is missing. `public/` is only for files that something outside the bundle fetches by a fixed URL, such as the favicon, `robots.txt`, and the link-preview screenshot named in `index.html`. `vercel.json` caches every image for a year as immutable, so when replacing a `public/` image, give it a new filename.
 
@@ -78,7 +86,7 @@ The text holds display names, which are matched exactly. When a data update rena
 
 `src/app/footer/UpdateLog.tsx` is for changes players notice, such as "added Regulation M-C pokemon" or "Meganium can now learn Dazzling Gleam". Add an entry for those, newest first; never for refactors, tooling, or other code-only changes.
 
-Keep entries concise. A date after Sep 19, 2026 with more than one change is a bulleted list with one short line per change; give one example rather than listing everything affected.
+Keep entries concise. A date with more than one change is a bulleted list with one short line per change; give one example rather than listing everything affected. Entries before Sep 19, 2026 are paragraphs; leave them as they are.
 
 ## Ads
 
