@@ -54,3 +54,29 @@ Ability: Sand Stream
     ).toBeVisible();
   });
 });
+
+test.describe("Save/Load Team: Share Link - Navigation", () => {
+  test("loads the team of the URL that back/forward navigation lands on", async ({
+    page,
+  }) => {
+    await page.goto(`/?team=${toBase64Url("Skeledirge\n- Torch Song")}`);
+    const pokemonName = page.getByRole("combobox", {
+      name: "Pokemon 1's name",
+    });
+    await expect(pokemonName).toHaveValue("Skeledirge");
+
+    // The app only ever replaces history entries, so create a second one by hand
+    await page.evaluate(
+      teamParameter => history.pushState(null, "", `/?team=${teamParameter}`),
+      toBase64Url("Meowscarada\n- Flower Trick"),
+    );
+    await expect(pokemonName).toHaveValue("Skeledirge");
+
+    await page.goBack();
+    await expect(pokemonName).toHaveValue("Skeledirge");
+    await page.goForward();
+    await expect(pokemonName).toHaveValue("Meowscarada");
+    await page.goBack();
+    await expect(pokemonName).toHaveValue("Skeledirge");
+  });
+});
