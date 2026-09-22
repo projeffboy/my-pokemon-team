@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography";
 import {
   List,
   RowComponentProps,
-  ListImperativeAPI,
   useDynamicRowHeight,
+  ListImperativeAPI,
 } from "react-window";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 
@@ -64,19 +64,27 @@ function RowComponent({
   );
 }
 
+// The Autocomplete's listbox slot only accepts list element props, so the
+// select passes what the listbox needs through this context instead
+export const VirtualizedListboxContext = React.createContext<{
+  pokemonProperty: string;
+  selectedValue: string;
+  internalListRef: React.RefObject<ListImperativeAPI | null>;
+} | null>(null);
+
 // Virtualizes the Autocomplete's option list with react-window so only
 // the visible rows are rendered (matches MUI's Autocomplete virtualization pattern)
 const VirtualizedListbox = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLElement> & {
-    pokemonProperty: string;
-    selectedValue: string;
-    internalListRef: React.Ref<ListImperativeAPI>;
+  React.HTMLAttributes<HTMLElement>
+>(function VirtualizedListbox({ children, ...other }, ref) {
+  const context = React.useContext(VirtualizedListboxContext);
+  if (!context) {
+    throw new Error(
+      "VirtualizedListbox must be used within a VirtualizedListboxContext",
+    );
   }
->(function VirtualizedListbox(
-  { children, pokemonProperty, selectedValue, internalListRef, ...other },
-  ref,
-) {
+  const { pokemonProperty, selectedValue, internalListRef } = context;
   const itemData = children as ItemData;
   const itemCount = itemData.length;
   // Rows with wrapped (two-line) labels measure taller than single-line rows;
@@ -92,9 +100,7 @@ const VirtualizedListbox = React.forwardRef<
     const index = itemData.findIndex(
       ([, option]) => option.value === selectedValue,
     );
-    if (index === -1 || !internalListRef || !("current" in internalListRef)) {
-      return;
-    }
+    if (index === -1) return;
     // react-window's imperative API object exists synchronously, but its
     // internal DOM element ref isn't attached until just after mount, so
     // scrollToRow silently no-ops if called immediately. Defer to the next

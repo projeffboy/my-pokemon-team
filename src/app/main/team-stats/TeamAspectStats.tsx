@@ -123,7 +123,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
       <Grid container size={12}>
         {/* grid of type scores */}
         {POKEMON_TYPES.map((type, i) => (
-          <Grid key={i} size={2}>
+          <Grid key={type} size={2}>
             <Box sx={{ px: { xs: 0.125, md: 0.375 }, py: 0.375 }}>
               <ButtonBase
                 sx={{

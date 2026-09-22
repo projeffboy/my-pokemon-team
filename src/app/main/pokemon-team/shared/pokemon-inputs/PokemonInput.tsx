@@ -14,20 +14,12 @@ const PokemonInput = observer(function PokemonInput({
   teamIndex: number;
 }) {
   const handleChange = (inputValue: string) => {
+    if (pokemonProperty === "name") {
+      store.selectPokemon(teamIndex, inputValue);
+      return;
+    }
     const member = store.team[teamIndex];
-    if (!member) return;
-
-    if (pokemonProperty === "name") {
-      store.clearTeamPokemonProperties(teamIndex);
-    }
-
-    member[pokemonProperty] = inputValue;
-
-    // if pokemon can only have one item and/or ability
-    if (pokemonProperty === "name") {
-      store.autoSelectItem();
-      store.autoSelectAbility();
-    }
+    if (member) member[pokemonProperty] = inputValue;
   };
 
   const member = store.team[teamIndex];

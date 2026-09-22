@@ -2,7 +2,9 @@ import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useListRef } from "react-window";
-import VirtualizedListbox from "./pokemon-input-select/VirtualizedListbox";
+import VirtualizedListbox, {
+  VirtualizedListboxContext,
+} from "./pokemon-input-select/VirtualizedListbox";
 
 interface SelectOption {
   value: string;
@@ -53,84 +55,85 @@ export default function PokemonInputSelect({
   };
 
   return (
-    <Autocomplete
-      id={id}
-      options={options}
-      value={selectedOption}
-      disableListWrap
-      sx={{
-        [`&.${autocompleteClasses.hasPopupIcon}.${autocompleteClasses.hasClearIcon} .${autocompleteClasses.inputRoot}`]:
-          {
-            pr: 0,
+    <VirtualizedListboxContext
+      value={{ pokemonProperty, selectedValue: value, internalListRef }}
+    >
+      <Autocomplete
+        id={id}
+        options={options}
+        value={selectedOption}
+        disableListWrap
+        sx={{
+          [`&.${autocompleteClasses.hasPopupIcon}.${autocompleteClasses.hasClearIcon} .${autocompleteClasses.inputRoot}`]:
+            {
+              pr: 0,
+            },
+          [`& .${autocompleteClasses.input}`]: {
+            textOverflow: "clip",
           },
-        [`& .${autocompleteClasses.input}`]: {
-          textOverflow: "clip",
-        },
-      }}
-      onChange={(event, newValue) => onChange(newValue?.value ?? "")}
-      onHighlightChange={handleHighlightChange}
-      getOptionLabel={(option: SelectOption) => option.label}
-      isOptionEqualToValue={(option, value) => option.value === value.value}
-      noOptionsText={
-        <Typography variant="body2" sx={{ textAlign: "center" }}>
-          Nothing found <br /> (you haven't selected a pokemon)
-        </Typography>
-      }
-      renderOption={(optionProps, option) =>
-        // Deferred to VirtualizedListbox, which renders only the visible rows
-        [optionProps, option] as unknown as React.ReactNode
-      }
-      slotProps={{
-        popper: {
-          sx: {
-            // Asuming 4px inline padding (defined in VirtualizedListbox)
-            // and 2px left padding on non-icon part of the dropdown row:
-            // Minimum width to fit Dudunsparce-Three-Segment row in two lines
-            ...(pokemonProperty === "name" && { minWidth: 161 }),
-            // Minimum width to fit Aerodactylite row in one line
-            ...(pokemonProperty === "item" && { minWidth: 130 }),
-            [`& .${autocompleteClasses.noOptions}`]: {
-              py: 1.5,
-              px: 1,
-            },
-            [`& .${autocompleteClasses.listbox}`]: {
-              "& ul": {
-                p: 0,
-                m: 0,
+        }}
+        onChange={(event, newValue) => onChange(newValue?.value ?? "")}
+        onHighlightChange={handleHighlightChange}
+        getOptionLabel={(option: SelectOption) => option.label}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
+        noOptionsText={
+          <Typography variant="body2" sx={{ textAlign: "center" }}>
+            Nothing found <br /> (you haven't selected a pokemon)
+          </Typography>
+        }
+        // Hands each option to VirtualizedListbox as a [props, option] tuple, which
+        // renders only the visible rows. MUI types the return as a ReactNode, so
+        // the tuple has to be cast; this is MUI's own virtualization pattern.
+        renderOption={(optionProps, option) =>
+          [optionProps, option] as unknown as React.ReactNode
+        }
+        slotProps={{
+          popper: {
+            sx: {
+              // Asuming 4px inline padding (defined in VirtualizedListbox)
+              // and 2px left padding on non-icon part of the dropdown row:
+              // Minimum width to fit Dudunsparce-Three-Segment row in two lines
+              ...(pokemonProperty === "name" && { minWidth: 161 }),
+              // Minimum width to fit Aerodactylite row in one line
+              ...(pokemonProperty === "item" && { minWidth: 130 }),
+              [`& .${autocompleteClasses.noOptions}`]: {
+                py: 1.5,
+                px: 1,
               },
-              [`& .${autocompleteClasses.option}`]: {
-                py: 0.5,
-                px: ["name", "item"].includes(pokemonProperty) ? 0.5 : 1,
+              [`& .${autocompleteClasses.listbox}`]: {
+                "& ul": {
+                  p: 0,
+                  m: 0,
+                },
+                [`& .${autocompleteClasses.option}`]: {
+                  py: 0.5,
+                  px: ["name", "item"].includes(pokemonProperty) ? 0.5 : 1,
+                },
               },
             },
           },
-        },
-        listbox: {
-          component: VirtualizedListbox,
-          pokemonProperty,
-          selectedValue: value,
-          internalListRef,
-        } as never,
-      }}
-      renderInput={params => (
-        <TextField
-          {...params}
-          variant="standard"
-          placeholder={placeholder}
-          sx={{
-            "& .MuiInputBase-input::placeholder": {
-              opacity: 0.6,
-            },
-          }}
-          slotProps={{
-            htmlInput: {
-              ...params.inputProps,
-              name: id,
-              "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProperty}`,
-            },
-          }}
-        />
-      )}
-    />
+          listbox: { component: VirtualizedListbox },
+        }}
+        renderInput={params => (
+          <TextField
+            {...params}
+            variant="standard"
+            placeholder={placeholder}
+            sx={{
+              "& .MuiInputBase-input::placeholder": {
+                opacity: 0.6,
+              },
+            }}
+            slotProps={{
+              htmlInput: {
+                ...params.inputProps,
+                name: id,
+                "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProperty}`,
+              },
+            }}
+          />
+        )}
+      />
+    </VirtualizedListboxContext>
   );
 }

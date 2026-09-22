@@ -10,32 +10,23 @@ import SearchFilters from "./more-info/SearchFilters";
 import PokemonShowdownTeam from "./more-info/SaveLoadTeam";
 import { useIsLgDown } from "@/app/shared/WidthContext";
 
+const TABS = [
+  { title: "Search Filters", shortTitle: "Filters", Content: SearchFilters },
+  { title: "Team Checklist", shortTitle: "Checklist", Content: TeamChecklist },
+  {
+    title: "Save/Load Team",
+    shortTitle: "Save/Load",
+    Content: PokemonShowdownTeam,
+  },
+];
+
 export default function MoreInfo() {
   const isLgDown = useIsLgDown();
   const [tabIndex, setTabIndex] = useState(0);
 
-  // Click to change tab
   const handleChange = (_event: SyntheticEvent, value: number) => {
     setTabIndex(value);
   };
-
-  const tabs = [
-    {
-      title: "Search Filters",
-      shortTitle: "Filters",
-      content: <SearchFilters />,
-    },
-    {
-      title: "Team Checklist",
-      shortTitle: "Checklist",
-      content: <TeamChecklist />,
-    },
-    {
-      title: "Save/Load Team",
-      shortTitle: "Save/Load",
-      content: <PokemonShowdownTeam />,
-    },
-  ];
 
   return (
     <Grid size={12}>
@@ -56,7 +47,7 @@ export default function MoreInfo() {
               theme.applyStyles("dark", { backgroundColor: grey[900] })
             }
           >
-            {tabs.map(({ title, shortTitle }, index) => (
+            {TABS.map(({ title, shortTitle }, index) => (
               <Tab
                 id={`team-tool-tab-${index}`}
                 aria-controls={`team-tool-panel-${index}`}
@@ -68,9 +59,9 @@ export default function MoreInfo() {
           </Tabs>
         </AppBar>
         {/* The stuff below the tabs */}
-        {tabs.map(({ content }, index) => (
-          // tab container
+        {TABS.map(({ title, Content }, index) => (
           <Grid
+            key={title}
             id={`team-tool-panel-${index}`}
             aria-labelledby={`team-tool-tab-${index}`}
             role="tabpanel"
@@ -78,7 +69,7 @@ export default function MoreInfo() {
             container
             justifyContent="center"
           >
-            {tabIndex === index && content}
+            {tabIndex === index && <Content />}
           </Grid>
         ))}
       </Paper>

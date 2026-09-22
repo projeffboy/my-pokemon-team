@@ -16,7 +16,7 @@ test("defence recomputes after nested species, item, and ability edits", ({
     expect(groundScore).toBe(0);
     store.team[0].ability = "Levitate";
     expect(groundScore).toBe(1.5);
-    store.clearTeamPokemonProperties(0);
+    store.selectPokemon(0, "");
     expect(groundScore).toBe(0);
   } finally {
     dispose();
@@ -42,7 +42,7 @@ test("coverage recomputes after nested move, ability, and species edits", ({
     expect(dragonScore).toBe(2);
     store.team[0].name = "exploud";
     expect(dragonScore).toBe(1);
-    store.clearTeamPokemonProperties(0);
+    store.selectPokemon(0, "");
     expect(dragonScore).toBe(0);
   } finally {
     dispose();

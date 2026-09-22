@@ -5,6 +5,9 @@ import Link from "@mui/material/Link";
 import Folder from "@mui/icons-material/Folder";
 import entries, { type Change, type Entry } from "./update-log/entries";
 
+const changeKey = (change: Change) =>
+  typeof change === "string" ? change : change.text;
+
 function ChangeText({ change }: { change: Change }) {
   if (typeof change === "string") return change;
   return (
@@ -25,14 +28,14 @@ function UpdateEntry(entry: Entry) {
       </Typography>
       {isList ?
         <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
-          {changes.map((change, i) => (
-            <li key={i}>
+          {changes.map(change => (
+            <li key={changeKey(change)}>
               <ChangeText change={change} />
             </li>
           ))}
         </Typography>
-      : changes.map((change, i) => (
-          <Typography key={i} sx={{ mb: 2 }}>
+      : changes.map(change => (
+          <Typography key={changeKey(change)} sx={{ mb: 2 }}>
             <ChangeText change={change} />
           </Typography>
         ))

@@ -56,32 +56,17 @@ class Store {
     return getTeamLearnsets(this.team, this.viableMovesOnly);
   }
 
-  clearTeamPokemonProperties(teamIndex: number) {
+  // Choosing a pokemon resets the slot, then fills in its only item and ability
+  // when it has one, e.g. Blastoisinite and Thick Fat for Blastoise-Mega
+  selectPokemon(teamIndex: number, name: string) {
     const member = this.team[teamIndex];
 
     if (!member) return;
-    member.name = "";
-    member.item = "";
-    member.ability = "";
+    member.name = name;
+    member.item = getAutoSelectedItem(name, "");
+    const abilities = pokemonAbilities(name);
+    member.ability = abilities.length === 1 ? (abilities[0] ?? "") : "";
     for (const key of MOVE_KEYS) member[key] = "";
-  }
-
-  // E.g. select Blastoisinite when the user chooses Blastoise-Mega
-  autoSelectItem() {
-    for (const member of this.team) {
-      member.item = getAutoSelectedItem(member.name, member.item);
-    }
-  }
-
-  // E.g. select Thick Fat when the user chooses Venusaur-Mega, its only ability
-  autoSelectAbility() {
-    this.teamAbilities.forEach((pokemonAbilities, i) => {
-      const member = this.team[i];
-      const ability = pokemonAbilities[0];
-      if (member && pokemonAbilities.length === 1 && ability !== undefined) {
-        member.ability = ability;
-      }
-    });
   }
 
   get typeDefence() {

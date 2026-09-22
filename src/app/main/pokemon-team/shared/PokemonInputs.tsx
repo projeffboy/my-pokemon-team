@@ -3,21 +3,21 @@ import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "./PokemonSprite";
 import { PokemonProperties } from "@/types";
 
-export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
-  const inputs: Array<
-    | { placeholder: string; pokemonProperty: PokemonProperties }
-    | { placeholder: "" }
-  > = [
-    { placeholder: "Name", pokemonProperty: "name" },
-    { placeholder: "Move", pokemonProperty: "move1" },
-    { placeholder: "" }, // pokemon sprite
-    { placeholder: "Move", pokemonProperty: "move2" },
-    { placeholder: "Move", pokemonProperty: "move3" },
-    { placeholder: "Move", pokemonProperty: "move4" },
-    { placeholder: "Item", pokemonProperty: "item" },
-    { placeholder: "Ability", pokemonProperty: "ability" },
-  ];
+// "sprite" marks the pokemon sprite's cell in the grid
+const INPUTS: ReadonlyArray<
+  { placeholder: string; pokemonProperty: PokemonProperties } | "sprite"
+> = [
+  { placeholder: "Name", pokemonProperty: "name" },
+  { placeholder: "Move", pokemonProperty: "move1" },
+  "sprite",
+  { placeholder: "Move", pokemonProperty: "move2" },
+  { placeholder: "Move", pokemonProperty: "move3" },
+  { placeholder: "Move", pokemonProperty: "move4" },
+  { placeholder: "Item", pokemonProperty: "item" },
+  { placeholder: "Ability", pokemonProperty: "ability" },
+];
 
+export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
   return (
     <Box
       sx={{
@@ -28,20 +28,16 @@ export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
       role="region"
       aria-label={`Pokemon ${teamIndex + 1}`}
     >
-      {inputs.map((input, i) => {
-        if ("pokemonProperty" in input) {
-          return (
-            <PokemonInput
-              key={i}
-              placeholder={input.placeholder}
-              teamIndex={teamIndex}
-              pokemonProperty={input.pokemonProperty}
-            />
-          );
-        } else {
-          return <PokemonSprite key={i} teamIndex={teamIndex} forceFullSize />;
-        }
-      })}
+      {INPUTS.map(input =>
+        input === "sprite" ?
+          <PokemonSprite key="sprite" teamIndex={teamIndex} forceFullSize />
+        : <PokemonInput
+            key={input.pokemonProperty}
+            placeholder={input.placeholder}
+            teamIndex={teamIndex}
+            pokemonProperty={input.pokemonProperty}
+          />,
+      )}
     </Box>
   );
 }
