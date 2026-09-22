@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 
 declare global {
   interface Window {
@@ -19,7 +18,6 @@ const Ramp = ({
   WEBSITE_ID: number;
 }) => {
   const [rampInitialized, setRampInitialized] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     if (!PUB_ID || !WEBSITE_ID) {
@@ -47,7 +45,7 @@ const Ramp = ({
         window.ramp?.spaNewPage?.(location.pathname);
       });
     };
-  }, [PUB_ID, WEBSITE_ID, location.pathname]); // Only depend on PUB_ID, WEBSITE_ID, and location.pathname
+  }, [PUB_ID, WEBSITE_ID]);
 
   return null;
 };
