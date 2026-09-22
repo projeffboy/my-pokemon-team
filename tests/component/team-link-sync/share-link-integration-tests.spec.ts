@@ -30,7 +30,6 @@ Ability: Sand Stream
     page,
   }) => {
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
-    await page.waitForTimeout(500);
     await page.getByRole("button", { name: "Import/Export Team" }).click();
 
     const teamText = `Gengar (Giga) @ Choice Specs
@@ -65,7 +64,6 @@ Ability: Cursed Body
     );
 
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
-    await page.waitForTimeout(500);
     await page.getByRole("button", { name: "Import/Export Team" }).click();
 
     const teamText = Array.from({ length: 8 }, (_, index) => {
@@ -116,7 +114,6 @@ Ability: ${index % 2 === 0 ? "Static" : "Overgrow"}
     );
 
     await page.getByRole("tab", { name: /Save\/Load/ }).click();
-    await page.waitForTimeout(500);
     await page.getByRole("button", { name: "Import/Export Team" }).click();
 
     const teamText = `DefinitelyNotAPokemon

@@ -25,15 +25,14 @@ const doBasicCheck = async (page: Page) => {
     page.getByRole("region", { name: "Team Type Coverage" }),
   ).toBeVisible();
 
-  const typeMap = { Fire: "FIR", Water: "WTR", Grass: "GRS" };
-  const types: (keyof typeof typeMap)[] = ["Fire", "Water", "Grass"];
-  for (const type of types) {
-    const abbr = typeMap[type];
-    const typeElement = page
+  for (const type of ["Fire", "Water", "Grass"]) {
+    await page
       .getByRole("region", { name: "Team Defence" })
-      .getByText(abbr, { exact: false });
-    await typeElement.first().hover();
-    await page.waitForTimeout(500);
+      .getByLabel(type, { exact: true })
+      .hover();
+    await expect(
+      page.getByRole("tooltip", { name: `${type} does...` }),
+    ).toBeVisible();
   }
 
   await page.getByText("Checklist", { exact: true }).click();
@@ -119,9 +118,9 @@ test.describe("Importing an OU team", () => {
     // Navigate to Save/Load tab where Copy Team button is located
     await page.getByText("Save/Load", { exact: true }).click();
     await page.getByRole("button", { name: "Copy Team" }).click();
+    await expect(page.getByRole("alert")).toHaveText("Team copied.");
 
     if (browserName === "chromium") {
-      await page.waitForTimeout(500);
       const clipboardText = await page.evaluate(() =>
         navigator.clipboard.readText(),
       );
