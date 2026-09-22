@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Sep 22, 2026",
+    changes: [
+      "Fixed some returning visitors seeing the August version of the site.",
+    ],
+  },
+  {
     date: "Sep 21, 2026",
     changes: [
       "Positive type scores are teal, like the checklist.",

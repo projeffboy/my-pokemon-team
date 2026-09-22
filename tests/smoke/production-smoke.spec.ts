@@ -65,3 +65,25 @@ test("opens a saved team link in the built app", async ({ page }) => {
   await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Earth Power");
   expect(pageErrors).toEqual([]);
 });
+
+test("removes the service worker left by the old build", async ({ page }) => {
+  const pageErrors: Error[] = [];
+  page.on("pageerror", error => pageErrors.push(error));
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+
+  // Stand in for a browser that still has the Create React App worker
+  await page.evaluate(() =>
+    navigator.serviceWorker.register("/service-worker.js"),
+  );
+
+  await expect(async () => {
+    const registrations = await page.evaluate(() =>
+      navigator.serviceWorker.getRegistrations().then(list => list.length),
+    );
+    expect(registrations).toBe(0);
+  }).toPass();
+  await expect(
+    page.getByRole("heading", { name: "My Pokemon Team", level: 1 }),
+  ).toBeVisible();
+  expect(pageErrors).toEqual([]);
+});

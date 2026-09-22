@@ -55,6 +55,10 @@ export default tseslint.config(
     },
   },
   {
+    files: ["public/**"],
+    languageOptions: { globals: globals.serviceworker },
+  },
+  {
     files: ["scripts/**", "*.config.{js,ts}", "tests/**"],
     languageOptions: { globals: globals.node },
     // Playwright fixtures must destructure their first argument, even when empty
