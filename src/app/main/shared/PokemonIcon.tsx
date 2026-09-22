@@ -1,8 +1,8 @@
 import pokedex from "@/data/pokedex";
 import items from "@/data/items";
 import altSpriteNum from "@/data/altSpriteNum";
-import PokemonIconsSheet from "@/images/icon-sheets/pokemonicons-sheet.webp";
-import ItemIconsSheet from "@/images/icon-sheets/itemicons-sheet.webp";
+import PokemonIconsSheet from "@/images/icon-sheets/pokemonicons-sheet.png";
+import ItemIconsSheet from "@/images/icon-sheets/itemicons-sheet.png";
 
 /*
  * Returns an icon of a pokemon (pokemonProperty === 'name') or an item (pokemonProperty === 'item)

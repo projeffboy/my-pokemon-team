@@ -4,10 +4,10 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import TableChart from "@mui/icons-material/TableChart";
+import { useBreakpoint } from "./shared/WidthContext";
 
 // The chart images and their tabs load the first time the dialog opens
 const TypeChart = lazy(() => import("./type-chart-dialog/TypeChart"));
-import { useBreakpoint } from "./shared/WidthContext";
 
 export default function TypeChartDialog() {
   const width = useBreakpoint();

@@ -1,23 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { autorun } from "mobx";
+import { observer } from "mobx-react-lite";
+import store from "@/store";
 import {
   encodeTeamForUrl,
   importTeamFromUrlParameter,
 } from "./shared/team-link";
-import { learnsetsReady } from "@/store/learnsets";
 
 // Keeps the `team` URL parameter and the store's team in sync.
 // Not rendered visually; mount once inside the Router.
-export default function TeamLinkSync() {
+const TeamLinkSync = observer(function TeamLinkSync() {
   const [searchParams, setSearchParams] = useSearchParams();
   const lastSyncedTeamParameter = useRef<string | null>(null);
 
   // Parsing a team validates its moves, so nothing syncs until the learnsets have loaded
-  const [learnsetsLoaded, setLearnsetsLoaded] = useState(false);
-  useEffect(() => {
-    learnsetsReady.then(() => setLearnsetsLoaded(true));
-  }, []);
+  const { learnsetsLoaded } = store;
 
   // URL -> store: runs on initial load and whenever navigation (back/forward, manual
   // address bar edits) changes the `team` parameter to something we didn't just write ourselves.
@@ -50,4 +48,6 @@ export default function TeamLinkSync() {
   }, [setSearchParams, learnsetsLoaded]);
 
   return null;
-}
+});
+
+export default TeamLinkSync;

@@ -14,18 +14,17 @@ const latestCommitDate = execSync(
 // The learnsets import carries `with { type: "json" }`, which Node needs for the logic tests.
 // Browsers then insist on real JSON with a JSON content type, but the dev server would send
 // Vite's JavaScript transform of the file, so serve the file itself. Builds bundle it instead.
-function serveJsonModules(): Plugin {
+function serveLearnsetsJson(): Plugin {
+  const pathname = "/src/data/learnsets.json";
   return {
-    name: "serve-json-modules",
+    name: "serve-learnsets-json",
     apply: "serve",
     configureServer(server) {
+      const file = path.join(server.config.root, pathname);
       server.middlewares.use(async (request, response, next) => {
-        const pathname = request.url?.replace(/\?import$/, "");
-        if (pathname === request.url || !pathname?.endsWith(".json")) {
-          return next();
-        }
+        if (request.url?.split("?")[0] !== pathname) return next();
         try {
-          const json = await readFile(path.join(server.config.root, pathname));
+          const json = await readFile(file);
           response.setHeader("Content-Type", "application/json");
           response.end(json);
         } catch (error) {
@@ -37,7 +36,7 @@ function serveJsonModules(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), serveJsonModules()],
+  plugins: [react(), serveLearnsetsJson()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
