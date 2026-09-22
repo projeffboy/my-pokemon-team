@@ -10,7 +10,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.0",
     "@mui/material": "^7.0.0",
-    "mobx": "^6.13.0",
+    "mobx": "^7.0.3",
     "mobx-react-lite": "^4.1.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
