@@ -2,7 +2,7 @@
 
 An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A and Pokemon Champions. Try it at [mypokemonteam.com](https://mypokemonteam.com).
 
-![My Pokemon Team Screenshot](public/mypokemonteam-screenshot-2026.png)
+![My Pokemon Team Screenshot](.github/mypokemonteam-screenshot-2026.png)
 
 ## What makes this teambuilder special?
 
