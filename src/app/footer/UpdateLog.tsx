@@ -3,7 +3,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Folder from "@mui/icons-material/Folder";
-import FooterDialog from "./shared/FooterDialog";
 import entries, { type Change, type Entry } from "./update-log/entries";
 
 function ChangeText({ change }: { change: Change }) {
@@ -44,10 +43,7 @@ function UpdateEntry(entry: Entry) {
 
 export default function UpdateLog() {
   return (
-    <FooterDialog
-      button={`Updates (${__LATEST_COMMIT_DATE__})`}
-      title="Update Log"
-    >
+    <>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <Button
           variant="outlined"
@@ -62,6 +58,6 @@ export default function UpdateLog() {
       {entries.map(entry => (
         <UpdateEntry key={entry.date} {...entry} />
       ))}
-    </FooterDialog>
+    </>
   );
 }

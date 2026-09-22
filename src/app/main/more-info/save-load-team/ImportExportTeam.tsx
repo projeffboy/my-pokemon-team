@@ -86,7 +86,10 @@ const ImportExportTeam = observer(function ImportExportTeam() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={() => handleImport(pokemonShowdownTeamInfo)}>
+          <Button
+            onClick={() => handleImport(pokemonShowdownTeamInfo)}
+            disabled={!store.learnsetsLoaded}
+          >
             Update
           </Button>
         </DialogActions>

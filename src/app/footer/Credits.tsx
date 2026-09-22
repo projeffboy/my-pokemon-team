@@ -16,7 +16,6 @@ import Code from "@mui/icons-material/Code";
 import Layers from "@mui/icons-material/Layers";
 import TrendingUp from "@mui/icons-material/TrendingUp";
 import pokemonShowdownLogo from "@/images/pokemon-showdown-logo.png";
-import FooterDialog from "./shared/FooterDialog";
 
 interface Credit {
   icon: ReactElement;
@@ -78,7 +77,7 @@ const credits: Credit[] = [
 
 export default function Credits() {
   return (
-    <FooterDialog button="Credits" title="Credits">
+    <>
       <Link href="https://pokemonshowdown.com">
         <Box
           component="img"
@@ -105,6 +104,6 @@ export default function Credits() {
           </ListItem>
         ))}
       </List>
-    </FooterDialog>
+    </>
   );
 }

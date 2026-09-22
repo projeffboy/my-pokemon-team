@@ -7,11 +7,13 @@ import ComputerIcon from "@mui/icons-material/Computer";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useColorScheme } from "@mui/material/styles";
-import Manual from "./footer/Manual";
-import Credits from "./footer/Credits";
-import PrivacyPolicy from "./footer/PrivacyPolicy";
-import UpdateLog from "./footer/UpdateLog";
-import type { MouseEvent } from "react";
+import FooterDialog from "./footer/FooterDialog";
+import { lazy, type MouseEvent } from "react";
+
+const Manual = lazy(() => import("./footer/Manual"));
+const Credits = lazy(() => import("./footer/Credits"));
+const PrivacyPolicy = lazy(() => import("./footer/PrivacyPolicy"));
+const UpdateLog = lazy(() => import("./footer/UpdateLog"));
 
 type ColorMode = "system" | "light" | "dark";
 
@@ -40,7 +42,11 @@ export default function Footer() {
         pb: process.env.NODE_ENV === "production" ? "230px" : 0,
       }}
     >
-      <Manual />
+      <FooterDialog
+        button="Manual"
+        title="Manual Help Guide"
+        content={Manual}
+      />
       <Button
         variant="footer"
         href="https://jefferytang.com"
@@ -49,9 +55,17 @@ export default function Footer() {
       >
         Jeffery Tang
       </Button>
-      <Credits />
-      <UpdateLog />
-      <PrivacyPolicy />
+      <FooterDialog button="Credits" title="Credits" content={Credits} />
+      <FooterDialog
+        button={`Updates (${__LATEST_COMMIT_DATE__})`}
+        title="Update Log"
+        content={UpdateLog}
+      />
+      <FooterDialog
+        button="Privacy Policy"
+        title="Privacy Policy"
+        content={PrivacyPolicy}
+      />
       <ToggleButtonGroup
         exclusive
         size="small"

@@ -1,11 +1,10 @@
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import FooterDialog from "./shared/FooterDialog";
 
 export default function PrivacyPolicy() {
   return (
-    <FooterDialog button="Privacy Policy" title="Privacy Policy">
+    <>
       <Typography sx={{ mb: 2 }}>
         All or partial advertising on this Website or App is managed by Playwire
         LLC. If Playwire publisher advertising services are used, Playwire LLC
@@ -34,6 +33,6 @@ export default function PrivacyPolicy() {
           Advertise on this site.
         </Link>
       </Typography>
-    </FooterDialog>
+    </>
   );
 }

@@ -1,6 +1,4 @@
-import type { Learnsets } from "../types";
-
-const data: Learnsets = {
+{
   "missingno": [
     "blizzard",
     "bubblebeam",
@@ -97364,6 +97362,4 @@ const data: Learnsets = {
   "pokestarblackbelt": [],
   "pokestargiantpropo2": [],
   "pokestarufopropu2": []
-};
-
-export default data;
+}

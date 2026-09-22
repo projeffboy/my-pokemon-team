@@ -1,11 +1,17 @@
-import learnsets from "@/data/learnsets";
+import learnsetsJson from "@/data/learnsets.json" with { type: "json" };
 import { test, expect } from "@playwright/test";
 import {
   completeLearnset,
   canItLearn,
   getTeamLearnsets,
+  learnsetsReady,
 } from "@/store/learnsets";
 import { createTeam } from "./shared/team";
+import type { Learnsets } from "@/types";
+
+const learnsets: Learnsets = learnsetsJson;
+
+test.beforeAll(() => learnsetsReady);
 
 test.describe("learnset inheritance", () => {
   test("includes moves from both earlier evolutions", () => {

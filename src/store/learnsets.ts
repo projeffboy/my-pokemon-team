@@ -1,12 +1,21 @@
-import learnsets from "@/data/learnsets";
 import pokedex from "@/data/pokedex";
 import moves from "@/data/moves";
 import viableMoves from "@/data/viable-moves";
-import type { ReadonlyTeam } from "@/types";
+import type { Learnsets, ReadonlyTeam } from "@/types";
 import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
 
 const REGIONS = ["alola", "galar", "hisui", "paldea"];
 const completeLearnsets = new Map<string, readonly string[]>();
+
+// The learnsets are most of the bundled data, so they load after the app instead of blocking it.
+// Until then every learnset is empty.
+let learnsets: Learnsets = {};
+export const learnsetsReady: Promise<void> = import("@/data/learnsets.json", {
+  with: { type: "json" },
+}).then(module => {
+  learnsets = module.default;
+  completeLearnsets.clear();
+});
 
 export function completeLearnset(pokemon: string): readonly string[] {
   let learnset = completeLearnsets.get(pokemon);

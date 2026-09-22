@@ -53,8 +53,17 @@ async function writeData<N extends keyof DataTypes>(
   data: DataTypes[N],
   onePerLine = false,
 ) {
+  const file = typeName.toLowerCase();
+  // Learnsets are the bulk of the data and load lazily as JSON, which the browser parses faster
+  if (typeName === "Learnsets") {
+    await fs.writeFile(
+      path.join(dataRoot, `${file}.json`),
+      `${JSON.stringify(data, null, 2)}\n`,
+    );
+    return;
+  }
   await fs.writeFile(
-    path.join(dataRoot, `${typeName.toLowerCase()}.ts`),
+    path.join(dataRoot, `${file}.ts`),
     renderTypedData(typeName, data, onePerLine),
   );
 }

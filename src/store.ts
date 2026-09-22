@@ -1,7 +1,7 @@
 import { makeAutoObservable, configure } from "mobx";
 import type { SearchFilters, Team } from "./types";
 import { MOVE_KEYS } from "./types";
-import { getTeamLearnsets } from "./store/learnsets";
+import { getTeamLearnsets, learnsetsReady } from "./store/learnsets";
 import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
 import { evaluateChecklist } from "./store/checklist";
@@ -15,7 +15,18 @@ configure({ enforceActions: "never" });
 class Store {
   constructor() {
     makeAutoObservable(this);
+    learnsetsReady.then(
+      () => {
+        this.learnsetsLoaded = true;
+      },
+      () =>
+        this.openSnackbar(
+          "The move lists could not be loaded. Reload the page to try again.",
+        ),
+    );
   }
+
+  learnsetsLoaded = false;
 
   team: Team = createEmptyTeam();
 
@@ -35,8 +46,14 @@ class Store {
     return this.team.map(({ name }) => pokemonAbilities(name));
   }
 
+  // A boolean computed, so typing in the move filter does not rebuild the learnsets on every keystroke
+  get viableMovesOnly() {
+    return !!this.searchFilters.moves;
+  }
+
   get teamLearnsets() {
-    return getTeamLearnsets(this.team, !!this.searchFilters.moves);
+    if (!this.learnsetsLoaded) return { values: [], labels: [] };
+    return getTeamLearnsets(this.team, this.viableMovesOnly);
   }
 
   clearTeamPokemonProperties(teamIndex: number) {

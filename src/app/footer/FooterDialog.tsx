@@ -1,19 +1,26 @@
-import { useId, useState, type ReactNode } from "react";
+import {
+  Suspense,
+  useId,
+  useState,
+  type ComponentType,
+  type ReactNode,
+} from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
-// A footer button that opens a dialog with the given content and a Go Back action
+// A footer button that opens a dialog with the given content and a Go Back action.
+// The content is a lazy component, so its code loads the first time the dialog opens.
 export default function FooterDialog({
   button,
   title,
-  children,
+  content: Content,
 }: {
   button: ReactNode;
   title: string;
-  children: ReactNode;
+  content: ComponentType;
 }) {
   const titleId = useId();
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +38,11 @@ export default function FooterDialog({
         sx={{ height: "calc(100% - 60px)" }}
       >
         <DialogTitle id={titleId}>{title}</DialogTitle>
-        <DialogContent>{children}</DialogContent>
+        <DialogContent>
+          <Suspense>
+            <Content />
+          </Suspense>
+        </DialogContent>
         <DialogActions>
           <Button onClick={toggle}>Go Back</Button>
         </DialogActions>

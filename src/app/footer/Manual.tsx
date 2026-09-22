@@ -5,7 +5,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import FooterDialog from "./shared/FooterDialog";
 
 type TypeRow = [string, string, string];
 type TermRow = [string, string];
@@ -41,7 +40,7 @@ const rowsOfTerms: TermRow[] = [
 
 export default function Manual() {
   return (
-    <FooterDialog button="Manual" title="Manual Help Guide">
+    <>
       <Typography variant="h6">Team Defence</Typography>
       <Typography variant="subtitle2" component="h4" gutterBottom>
         How is your team's type defence calculated?
@@ -148,6 +147,6 @@ export default function Manual() {
           ))}
         </TableBody>
       </Table>
-    </FooterDialog>
+    </>
   );
 }

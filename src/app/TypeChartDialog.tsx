@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import Fab from "@mui/material/Fab";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import TableChart from "@mui/icons-material/TableChart";
-import TypeChart from "./type-chart-dialog/TypeChart";
+
+// The chart images and their tabs load the first time the dialog opens
+const TypeChart = lazy(() => import("./type-chart-dialog/TypeChart"));
 import { useBreakpoint } from "./shared/WidthContext";
 
 export default function TypeChartDialog() {
@@ -33,7 +35,9 @@ export default function TypeChartDialog() {
         maxWidth="md"
         fullWidth
       >
-        <TypeChart />
+        <Suspense>
+          <TypeChart />
+        </Suspense>
         <DialogActions>
           <Button onClick={toggleDialog}>Go Back</Button>
         </DialogActions>
