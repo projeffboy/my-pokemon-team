@@ -12,6 +12,49 @@ import { useIsLgDown } from "@/app/shared/WidthContext";
 import type { TeamStatTitle } from "@/types";
 import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
 
+const TYPE_COLORS: Record<PokemonType, string> = {
+  Bug: "#a8b820",
+  Dark: "#6f5747",
+  Dragon: "#7036fc",
+  Electric: "#f9d130",
+  Fairy: "#fd67d7",
+  Fighting: "#c02f27",
+  Fire: "#f17f2e",
+  Flying: "#a990f1",
+  Ghost: "#715799",
+  Grass: "#78c850",
+  Ground: "#e1c067",
+  Ice: "#95d7d8",
+  Normal: "#a9a878",
+  Poison: "#a03fa1",
+  Psychic: "#f95788",
+  Rock: "#b89f38",
+  Steel: "#b8b8d0",
+  Water: "#6890f0",
+};
+
+// Shown at lg and below
+const TYPE_ABBREVIATIONS: Record<PokemonType, string> = {
+  Bug: "BUG",
+  Dark: "DRK",
+  Dragon: "DRG",
+  Electric: "ELC",
+  Fairy: "FRY",
+  Fighting: "FGT",
+  Fire: "FIR",
+  Flying: "FLY",
+  Ghost: "GHT",
+  Grass: "GRS",
+  Ground: "GRD",
+  Ice: "ICE",
+  Normal: "NRM",
+  Poison: "PSN",
+  Psychic: "PSY",
+  Rock: "RCK",
+  Steel: "STL",
+  Water: "WTR",
+};
+
 const TeamAspectStats = observer(function TeamAspectStats({
   title,
   titleId,
@@ -69,60 +112,15 @@ const TeamAspectStats = observer(function TeamAspectStats({
   const teamStatValues =
     teamStatType === "typeDefence" ? store.typeDefence : store.typeCoverage;
 
-  const types: Record<PokemonType, string> = {
-    Bug: "a8b820",
-    Dark: "6f5747",
-    Dragon: "7036fc",
-    Electric: "f9d130",
-    Fairy: "fd67d7",
-    Fighting: "c02f27",
-    Fire: "f17f2e",
-    Flying: "a990f1",
-    Ghost: "715799",
-    Grass: "78c850",
-    Ground: "e1c067",
-    Ice: "95d7d8",
-    Normal: "a9a878",
-    Poison: "a03fa1",
-    Psychic: "f95788",
-    Rock: "b89f38",
-    Steel: "b8b8d0",
-    Water: "6890f0",
-  };
-
-  const typeAbbr =
-    isLgDown ?
-      [
-        "BUG",
-        "DRK",
-        "DRG",
-        "ELC",
-        "FRY",
-        "FGT",
-        "FIR",
-        "FLY",
-        "GHT",
-        "GRS",
-        "GRD",
-        "ICE",
-        "NRM",
-        "PSN",
-        "PSY",
-        "RCK",
-        "STL",
-        "WTR",
-      ]
-    : [];
-
   return (
-    <Grid container style={{ textAlign: "center" }}>
+    <Grid container sx={{ textAlign: "center" }}>
       <Grid size={12}>
         <Typography
           id={titleId}
           variant="h6"
           component="h2"
           gutterBottom
-          style={{ marginBottom: "0.15em", marginTop: "-0.2em" }}
+          sx={{ mb: "0.15em", mt: "-0.2em" }}
         >
           {title}
         </Typography>
@@ -139,8 +137,8 @@ const TeamAspectStats = observer(function TeamAspectStats({
                   width: { xs: "100%", md: "75%" },
                   m: "auto",
                   lineHeight: 1.25,
+                  bgcolor: TYPE_COLORS[type],
                 }}
-                style={{ backgroundColor: `#${types[type]}` }}
                 aria-owns={anchorEl[i] ? "mouse-over-popover-" + i : undefined}
                 aria-haspopup="true"
                 aria-label={type}
@@ -148,7 +146,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 onMouseLeave={handlePopoverClose}
                 onClick={e => handleClick(e, i)}
               >
-                {typeAbbr[i] || type}
+                {isLgDown ? TYPE_ABBREVIATIONS[type] : type}
               </Box>
               <Popper
                 id={"mouse-over-popover-" + i}
@@ -160,10 +158,10 @@ const TeamAspectStats = observer(function TeamAspectStats({
               >
                 {({ TransitionProps }) => (
                   <Fade {...TransitionProps} timeout={150}>
-                    <Paper style={{ padding: 10 }}>
+                    <Paper sx={{ p: 1.25 }}>
                       <TeamStatsTooltip
                         type={type}
-                        typeColor={types[type]}
+                        typeColor={TYPE_COLORS[type]}
                         teamStatType={title}
                       />
                     </Paper>
@@ -173,7 +171,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
             </Box>
             <Typography
               component="div"
-              style={{ lineHeight: "initial" }}
+              sx={{ lineHeight: "initial" }}
               aria-label={`${type} score: ${formatPositiveScore(teamStatValues[type])}`}
             >
               {getTypeScore(teamStatValues[type])}

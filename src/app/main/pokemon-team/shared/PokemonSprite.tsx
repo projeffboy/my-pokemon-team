@@ -41,7 +41,8 @@ const PokemonSprite = observer(function PokemonSprite({
         gridRow: { xs: "2 / 7", md: "2 / 5" },
       }}
     >
-      <img
+      <Box
+        component="img"
         alt={sprite?.filename ?? "question-mark"}
         // A bundled sprite, else Showdown's, else the question mark placeholder
         src={localSprite || sprite?.src || questionMark}
@@ -50,14 +51,10 @@ const PokemonSprite = observer(function PokemonSprite({
           e.currentTarget.onerror = null;
           if (sprite) e.currentTarget.src = sprite.fallback;
         }}
-        /* Apply miniSprite style if it's a mini sprite */
-        style={{
-          maxHeight:
-            width !== "md" && width !== "lg" && width !== "xl" ?
-              "160px"
-            : "96px",
+        sx={{
+          maxHeight: isSmall ? 160 : 96,
           maxWidth: "100%",
-          ...(isSmall ? { width: "100%" } : {}),
+          width: isSmall ? "100%" : "auto",
         }}
       />
     </Box>

@@ -60,7 +60,7 @@ Do not add comments unless you think it is necessary or very helpful. Make them 
 
 Do not use `!important` in any styles, whether in `sx`, `style`, or CSS, unless there is no other way.
 
-When inside the `sx` prop, use MUI's syntax. For example, `p: 1` instead of `padding: "8px"`.
+Style with the `sx` prop, using MUI's syntax: `p: 1` instead of `padding: "8px"`. ESLint rejects the `style` prop; the exceptions are values that differ per element at runtime, such as a sprite sheet offset or react-window's row position, each with an `eslint-disable` comment saying why.
 
 Support both colour schemes: use theme palette values, or `theme.applyStyles("dark", ...)` when a colour must differ.
 

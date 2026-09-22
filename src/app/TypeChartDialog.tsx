@@ -1,60 +1,36 @@
-import Fab from "@mui/material/Fab";
-import TableChart from "@mui/icons-material/TableChart";
-
 import { useState } from "react";
+import Fab from "@mui/material/Fab";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
+import TableChart from "@mui/icons-material/TableChart";
 import TypeChart from "./type-chart-dialog/TypeChart";
 import { useBreakpoint } from "./shared/WidthContext";
 
 export default function TypeChartDialog() {
   const width = useBreakpoint();
+  const isExtended = width !== "xs" && width !== "sm";
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const toggleDialog = () => setIsDialogOpen(open => !open);
 
-  const fab = () => {
-    if (width === "xs") {
-      return (
-        <Fab
-          onClick={toggleDialog}
-          color="primary"
-          size="small"
-          style={{ position: "fixed", bottom: 116, right: 16 }}
-          aria-label="Type Chart"
-        >
-          <TableChart />
-        </Fab>
-      );
-    } else if (width === "sm") {
-      return (
-        <Fab
-          onClick={toggleDialog}
-          color="primary"
-          style={{ position: "fixed", bottom: 116, right: 24 }}
-          aria-label="Type Chart"
-        >
-          <TableChart />
-        </Fab>
-      );
-    } else {
-      return (
-        <Fab
-          onClick={toggleDialog}
-          color="primary"
-          variant="extended"
-          style={{ position: "fixed", bottom: 116, right: 24 }}
-        >
-          <TableChart style={{ marginRight: 8 }} />
-          Type Chart
-        </Fab>
-      );
-    }
-  };
-
   return (
     <>
-      {fab()}
+      <Fab
+        onClick={toggleDialog}
+        color="primary"
+        size={
+          width === "xs" ? "small"
+          : isExtended ?
+            "large"
+          : "medium"
+        }
+        variant={isExtended ? "extended" : "circular"}
+        sx={{ position: "fixed", bottom: 116, right: { xs: 16, sm: 24 } }}
+        aria-label="Type Chart"
+      >
+        <TableChart sx={{ mr: isExtended ? 1 : 0 }} />
+        {isExtended && "Type Chart"}
+      </Fab>
       <Dialog
         open={isDialogOpen}
         onClose={toggleDialog}

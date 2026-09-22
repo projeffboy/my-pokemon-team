@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
@@ -11,6 +10,7 @@ import Manual from "./footer/Manual";
 import Credits from "./footer/Credits";
 import PrivacyPolicy from "./footer/PrivacyPolicy";
 import UpdateLog from "./footer/UpdateLog";
+import FooterButton from "./footer/shared/FooterButton";
 import type { MouseEvent } from "react";
 
 type ColorMode = "system" | "light" | "dark";
@@ -34,20 +34,13 @@ export default function Footer() {
       justifyContent="center"
       alignItems="center"
       spacing={2}
-      style={{
-        paddingBottom: process.env.NODE_ENV === "production" ? 230 : 0,
-      }}
+      sx={{ pb: process.env.NODE_ENV === "production" ? "230px" : 0 }}
     >
       <Grid>
         <Manual />
       </Grid>
       <Grid>
-        <Button
-          href="https://jefferytang.com"
-          style={{ fontWeight: "initial", textTransform: "initial" }}
-        >
-          Jeffery Tang
-        </Button>
+        <FooterButton href="https://jefferytang.com">Jeffery Tang</FooterButton>
       </Grid>
       <Grid>
         <Credits />

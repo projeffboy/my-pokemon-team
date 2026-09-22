@@ -27,7 +27,7 @@ const CopyTeam = observer(function CopyTeam() {
 
   return (
     <Button onClick={() => handleCopy(serializeTeamText())} sx={{ ml: 1 }}>
-      Copy Team <FileCopy style={{ marginLeft: 5 }} />
+      Copy Team <FileCopy sx={{ ml: 0.5 }} />
     </Button>
   );
 });

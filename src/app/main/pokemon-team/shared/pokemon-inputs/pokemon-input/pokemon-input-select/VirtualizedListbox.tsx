@@ -1,4 +1,5 @@
 import * as React from "react";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {
   List,
@@ -41,12 +42,13 @@ function RowComponent({
       key={key}
       component="li"
       {...otherOptionProps}
+      // eslint-disable-next-line no-restricted-syntax -- react-window positions each row
       style={{
         ...style,
         top: ((style.top as number | undefined) ?? 0) + LISTBOX_PADDING,
-        paddingInline: hasIcon ? 4 : 8,
       }}
       sx={{
+        px: hasIcon ? 0.5 : 1,
         display: "flex",
         alignItems: "flex-start",
         whiteSpace: "normal",
@@ -56,7 +58,9 @@ function RowComponent({
       {hasIcon && (
         <PokemonIcon pokemonProperty={pokemonProperty} value={option.value} />
       )}
-      <span style={{ flex: 1, paddingLeft: 2 }}>{option.label}</span>
+      <Box component="span" sx={{ flex: 1, pl: 0.25 }}>
+        {option.label}
+      </Box>
     </Typography>
   );
 }
@@ -123,6 +127,7 @@ const VirtualizedListbox = React.forwardRef<
         rowHeight={dynamicRowHeight}
         rowComponent={RowComponent}
         rowProps={{ itemData, pokemonProperty }}
+        // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
         style={{
           height: getHeight() + 2 * LISTBOX_PADDING,
           width: "100%",

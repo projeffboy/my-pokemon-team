@@ -50,6 +50,7 @@ export default function PokemonIcon({
 
     return (
       <span
+        // eslint-disable-next-line no-restricted-syntax -- the sheet offset differs per icon
         style={{
           background: `
           transparent 

@@ -44,13 +44,13 @@ const ImportExportTeam = observer(function ImportExportTeam() {
   return (
     <>
       <Button onClick={e => handleClick(e, pokemonShowdownTeamInfo)}>
-        Import/Export Team <ImportExport style={{ marginLeft: 5 }} />
+        Import/Export Team <ImportExport sx={{ ml: 0.5 }} />
       </Button>
       <Dialog
         open={isDialogOpen}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
-        style={{ height: "calc(100% - 60px)" }}
+        sx={{ height: "calc(100% - 60px)" }}
       >
         <DialogTitle id="form-dialog-title">Import/Export</DialogTitle>
         <DialogContent>
@@ -59,7 +59,6 @@ const ImportExportTeam = observer(function ImportExportTeam() {
             <br />
             If you use{" "}
             <Link
-              style={{ color: "#2196f3" }}
               target="_blank"
               rel="noopener"
               href="https://play.pokemonshowdown.com/teambuilder"

@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import CheckCircle from "@mui/icons-material/CheckCircle";
 import Cancel from "@mui/icons-material/Cancel";
@@ -24,20 +25,19 @@ const TeamChecklist = observer(function TeamChecklist() {
     <Grid key={title} size={4} sx={{ p: 1 }}>
       {/* E.g. Offensive */}
       <Typography
-        sx={{ fontWeight: "bold", pb: 1 }}
+        sx={{ fontWeight: "bold", pb: 1, lineHeight: "initial" }}
         component="h3"
-        style={{ lineHeight: "initial" }}
       >
         {title}
       </Typography>
       {items.map(item => (
-        <div key={item.label} style={{ display: "flex" }}>
+        <Box key={item.label} sx={{ display: "flex" }}>
           {/* Either a checkmark or a cross */}
           <div>
             {item.isChecked ?
-              <CheckCircle style={{ color: "#16a085" }} />
-            : <Typography component="div" style={{ lineHeight: "initial" }}>
-                <Cancel />
+              <CheckCircle color="success" titleAccess="Checked" />
+            : <Typography component="div" sx={{ lineHeight: "initial" }}>
+                <Cancel titleAccess="Unchecked" />
               </Typography>
             }
           </div>
@@ -45,7 +45,7 @@ const TeamChecklist = observer(function TeamChecklist() {
           <Typography sx={{ px: 0.5 }} component="div">
             {labelFor(item)}
           </Typography>
-        </div>
+        </Box>
       ))}
     </Grid>
   ));

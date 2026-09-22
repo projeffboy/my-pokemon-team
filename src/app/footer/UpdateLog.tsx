@@ -1,23 +1,17 @@
-import { useState } from "react";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Folder from "@mui/icons-material/Folder";
+import FooterDialog from "./shared/FooterDialog";
 import entries, { type Change, type Entry } from "./update-log/entries";
 
 function ChangeText({ change }: { change: Change }) {
   if (typeof change === "string") return change;
   return (
     <>
-      {change.text} (
-      <Link style={{ color: "#2196f3" }} href={change.href}>
-        {change.credit}
-      </Link>
-      ){change.end ?? "."}
+      {change.text} (<Link href={change.href}>{change.credit}</Link>)
+      {change.end ?? "."}
     </>
   );
 }
@@ -46,47 +40,26 @@ function UpdateEntry(entry: Entry) {
   );
 }
 
-function UpdateLog() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const toggleDialog = () => setIsDialogOpen(open => !open);
-
+export default function UpdateLog() {
   return (
-    <>
-      <Button
-        onClick={toggleDialog}
-        style={{ fontWeight: "initial", textTransform: "initial" }}
-      >
-        Updates ({__LATEST_COMMIT_DATE__})
-      </Button>
-      <Dialog
-        open={isDialogOpen}
-        onClose={toggleDialog}
-        aria-labelledby="form-dialog-title"
-        style={{ height: "calc(100% - 60px)" }}
-      >
-        <DialogTitle id="form-dialog-title">Update Log</DialogTitle>
-        <DialogContent>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button
-              variant="outlined"
-              href="https://github.com/projeffboy/my-pokemon-team"
-              sx={{ my: 5 }}
-            >
-              <Folder style={{ marginRight: 5 }} />
-              GitHub Repo
-            </Button>
-          </div>
+    <FooterDialog
+      button={`Updates (${__LATEST_COMMIT_DATE__})`}
+      title="Update Log"
+    >
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Button
+          variant="outlined"
+          href="https://github.com/projeffboy/my-pokemon-team"
+          sx={{ my: 5 }}
+        >
+          <Folder sx={{ mr: 0.5 }} />
+          GitHub Repo
+        </Button>
+      </Box>
 
-          {entries.map(entry => (
-            <UpdateEntry key={entry.date} {...entry} />
-          ))}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={toggleDialog}>Go Back</Button>
-        </DialogActions>
-      </Dialog>
-    </>
+      {entries.map(entry => (
+        <UpdateEntry key={entry.date} {...entry} />
+      ))}
+    </FooterDialog>
   );
 }
-
-export default UpdateLog;

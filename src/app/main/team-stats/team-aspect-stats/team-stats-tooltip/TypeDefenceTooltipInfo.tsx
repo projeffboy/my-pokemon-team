@@ -1,9 +1,23 @@
+import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { pokemonName } from "@/shared/names";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import type { PokemonType } from "@/types";
+
+// Keyed by the type defence score, which is negative when the type is super effective
+const EFFECTIVENESS: Partial<
+  Record<number, { multiplier: number; color: string }>
+> = {
+  [-2]: { multiplier: 4, color: "red" },
+  [-1.5]: { multiplier: 3, color: "red" },
+  [-1]: { multiplier: 2, color: "#f9d130" },
+  [-0.5]: { multiplier: 1.5, color: "#f9d130" },
+  [1]: { multiplier: 0.5, color: "yellowgreen" },
+  [2]: { multiplier: 0.25, color: "forestgreen" },
+  [3]: { multiplier: 0, color: "grey" },
+};
 
 const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
   typeColor,
@@ -15,71 +29,37 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
   return (
     <>
       <p>
-        <span style={{ color: `#${typeColor}` }}>{type}</span> does...
+        <Box component="span" sx={{ color: typeColor }}>
+          {type}
+        </Box>{" "}
+        does...
       </p>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {store.team.map((teamPokemonProperties, i) => {
-          const { name: pokemon, ability, item } = teamPokemonProperties;
+      <Box component="ul" sx={{ listStyle: "none", p: 0 }}>
+        {store.team.map(({ name: pokemon, ability, item }, i) => {
           if (!pokemon) return null;
-          const effectiveness = typeAgainstPokemon(
-            type,
-            pokemon,
-            ability,
-            item,
-          );
-          let multiplier = 1;
-          let color = "initial";
-          switch (effectiveness) {
-            case -2:
-              multiplier = 4;
-              color = "red";
-              break;
-            case -1.5:
-              multiplier = 3;
-              color = "red";
-              break;
-            case -1:
-              multiplier = 2;
-              color = "#f9d130";
-              break;
-            case -0.5:
-              multiplier = 1.5;
-              color = "#f9d130";
-              break;
-            case 1:
-              multiplier = 0.5;
-              color = "yellowgreen";
-              break;
-            case 2:
-              multiplier = 0.25;
-              color = "forestgreen";
-              break;
-            case 3:
-              multiplier = 0;
-              color = "grey";
-              break;
-          }
+          const { multiplier = 1, color = "inherit" } =
+            EFFECTIVENESS[typeAgainstPokemon(type, pokemon, ability, item)] ??
+            {};
           return (
-            <li
-              key={teamPokemonProperties.name + i}
-              style={{ display: "flex", alignItems: "center" }}
+            <Box
+              component="li"
+              key={pokemon + i}
+              sx={{ display: "flex", alignItems: "center" }}
             >
-              <span
-                style={{
-                  color,
-                  width: 40,
-                  textAlign: "right",
-                  paddingRight: 4,
-                }}
+              <Box
+                component="span"
+                sx={{ color, width: 40, textAlign: "right", pr: 0.5 }}
               >
                 {multiplier}x
-              </span>
-              <span style={{ paddingRight: 2 }}>to {pokemonName(pokemon)}</span>
+              </Box>
+              <Box component="span" sx={{ pr: 0.25 }}>
+                to {pokemonName(pokemon)}
+              </Box>
               <PokemonIcon pokemonProperty="name" value={pokemon} />
-            </li>
+            </Box>
           );
         })}
-      </ul>
+      </Box>
     </>
   );
 });

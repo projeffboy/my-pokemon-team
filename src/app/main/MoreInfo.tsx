@@ -4,6 +4,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import { grey } from "@mui/material/colors";
 import TeamChecklist from "./more-info/TeamChecklist";
 import SearchFilters from "./more-info/SearchFilters";
 import PokemonShowdownTeam from "./more-info/SaveLoadTeam";
@@ -52,7 +53,7 @@ export default function MoreInfo() {
             variant="fullWidth"
             aria-label="Team tools"
             sx={theme =>
-              theme.palette.mode === "dark" ? { backgroundColor: "#222" } : {}
+              theme.applyStyles("dark", { backgroundColor: grey[900] })
             }
           >
             {tabs.map(({ title, shortTitle }, index) => (
