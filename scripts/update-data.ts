@@ -98,7 +98,8 @@ async function updateLearnsets() {
       ...learnsetMods.map(mod => `data/mods/${mod}/learnsets.ts`),
     ].map(file => loadShowdownTable(file, "Learnsets")),
   );
-  const flattened = flattenLearnsets(learnsets ?? {}, modLearnsets);
+  if (!learnsets) throw new Error("data/learnsets.ts exports no Learnsets");
+  const flattened = flattenLearnsets(learnsets, modLearnsets);
   await writeData("Learnsets", flattened);
   return flattened;
 }

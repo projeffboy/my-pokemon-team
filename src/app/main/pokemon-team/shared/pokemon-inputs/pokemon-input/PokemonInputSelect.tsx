@@ -100,6 +100,7 @@ export default function PokemonInputSelect({
               },
               [`& .${autocompleteClasses.option}`]: {
                 py: 0.5,
+                px: ["name", "item"].includes(pokemonProperty) ? 0.5 : 1,
               },
             },
           },

@@ -2,7 +2,7 @@ import { test, expect } from "./fixtures";
 import type { Locator, Page } from "@playwright/test";
 import { fromBase64Url } from "@/app/shared/base64url";
 import { breakpointValues } from "@/app/shared/theme";
-import { checklist } from "@/store/checklist";
+import { checklist, checklistLabel } from "@/store/checklist";
 
 const ASPECT_RATIO = 16 / 9;
 
@@ -77,17 +77,18 @@ export const selectMove = async (
   await page.getByRole("listbox").getByText(move, { exact: true }).click();
 };
 
-// The checklist label as shown at the page's viewport width (see TeamChecklist.tsx)
-export const checklistLabel = (page: Page, label: string) => {
+// The checklist label as shown at the page's viewport width
+const pageChecklistLabel = (page: Page, label: string) => {
   const item = checklist
     .flatMap(group => group.items)
     .find(item => item.label === label);
   if (!item) throw new Error(`Unknown checklist item: ${label}`);
 
   const width = page.viewportSize()?.width ?? Infinity;
-  if (width < breakpointValues.md) return item.shortAbbr ?? item.abbr ?? label;
-  if (width < breakpointValues.lg) return item.abbr ?? label;
-  return label;
+  return checklistLabel(item, {
+    isMdDown: width < breakpointValues.md,
+    isLgDown: width < breakpointValues.lg,
+  });
 };
 
 export const expectChecklistItem = async (
@@ -96,7 +97,7 @@ export const expectChecklistItem = async (
   isChecked: boolean,
 ) => {
   const row = page
-    .getByText(checklistLabel(page, label), { exact: true })
+    .getByText(pageChecklistLabel(page, label), { exact: true })
     .locator("..");
   await expect(
     row.getByRole("img", { name: isChecked ? "Checked" : "Unchecked" }),

@@ -144,6 +144,15 @@ export const checklist: ChecklistGroup[] = [
   },
 ];
 
+// The label shown at a viewport width: shortAbbr below md, abbr below lg
+export const checklistLabel = (
+  { label, abbr, shortAbbr }: Omit<ChecklistItem, "check">,
+  { isMdDown, isLgDown }: { isMdDown: boolean; isLgDown: boolean },
+) =>
+  isMdDown ? (shortAbbr ?? abbr ?? label)
+  : isLgDown ? (abbr ?? label)
+  : label;
+
 export function evaluateChecklist(team: ReadonlyTeam) {
   return checklist.map(({ title, items }) => ({
     title,

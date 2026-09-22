@@ -6,20 +6,11 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import Typography from "@mui/material/Typography";
 import { useIsMdDown, useIsLgDown } from "@/app/shared/WidthContext";
-import type { ChecklistItem } from "@/store/checklist";
+import { checklistLabel } from "@/store/checklist";
 
 const TeamChecklist = observer(function TeamChecklist() {
   const isMdDown = useIsMdDown();
   const isLgDown = useIsLgDown();
-
-  const labelFor = ({
-    label,
-    abbr,
-    shortAbbr,
-  }: Omit<ChecklistItem, "check">) =>
-    isMdDown ? (shortAbbr ?? abbr ?? label)
-    : isLgDown ? (abbr ?? label)
-    : label;
 
   return store.checklist.map(({ title, items }) => (
     <Grid key={title} size={4} sx={{ p: 1 }}>
@@ -43,7 +34,7 @@ const TeamChecklist = observer(function TeamChecklist() {
           </div>
           {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
           <Typography sx={{ px: 0.5 }} component="div">
-            {labelFor(item)}
+            {checklistLabel(item, { isMdDown, isLgDown })}
           </Typography>
         </Box>
       ))}

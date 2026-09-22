@@ -245,7 +245,9 @@ const damageCode: Record<string, number> = { 0: 0, 1: -1, 2: 1, 3: 2 };
 export function projectTypeChart(typeChart: ShowdownTable): TypeChart {
   return Object.fromEntries(
     POKEMON_TYPES.map(type => {
-      const { damageTaken } = typeChart[type.toLowerCase()] ?? {};
+      const entry = typeChart[type.toLowerCase()];
+      if (!entry) throw new Error(`Showdown's type chart has no ${type}`);
+      const { damageTaken } = entry;
       return [
         type,
         Object.fromEntries(

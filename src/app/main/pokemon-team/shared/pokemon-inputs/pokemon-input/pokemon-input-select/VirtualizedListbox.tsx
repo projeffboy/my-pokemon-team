@@ -48,7 +48,6 @@ function RowComponent({
         top: ((style.top as number | undefined) ?? 0) + LISTBOX_PADDING,
       }}
       sx={{
-        px: hasIcon ? 0.5 : 1,
         display: "flex",
         alignItems: "flex-start",
         whiteSpace: "normal",

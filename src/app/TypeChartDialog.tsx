@@ -18,12 +18,7 @@ export default function TypeChartDialog() {
       <Fab
         onClick={toggleDialog}
         color="primary"
-        size={
-          width === "xs" ? "small"
-          : isExtended ?
-            "large"
-          : "medium"
-        }
+        size={width === "xs" ? "small" : "large"}
         variant={isExtended ? "extended" : "circular"}
         sx={{ position: "fixed", bottom: 116, right: { xs: 16, sm: 24 } }}
         aria-label="Type Chart"
