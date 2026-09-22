@@ -1,18 +1,9 @@
-// @ts-check
 import { defineConfig, devices } from "@playwright/test";
 import {
   LARGE_VIEWPORT_WIDTH,
   MEDIUM_VIEWPORT_WIDTH,
   createViewport,
 } from "./tests/helper";
-
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 /**
  * @see https://playwright.dev/docs/test-configuration

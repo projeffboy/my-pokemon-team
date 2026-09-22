@@ -108,5 +108,6 @@ The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull request
 
 - [Bulbapedia's Type Chart](https://bulbapedia.bulbagarden.net/wiki/Type)
 - [Non-table Type Chart](https://pinterest.ca/pin/307159637067301004/)
+- [Infographic Type Chart](https://www.reddit.com/r/pokemon/comments/1oq3rg/was_getting_frustrated_finding_an_easytoread_type/)
 - [Assigning each type a color](https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors)
 - [r/stunfisk](https://reddit.com/r/stunfisk)

@@ -34,8 +34,3 @@ export function useIsMdDown() {
 export function useIsLgDown() {
   return useWidthContext().isLgDown;
 }
-
-// True below the 'xl' breakpoint (equivalent to theme.breakpoints.down('xl'))
-export function useIsXlDown() {
-  return useWidthContext().isXlDown;
-}

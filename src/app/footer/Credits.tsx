@@ -7,14 +7,14 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import BusinessIcon from "@mui/icons-material/Business";
-import GestureIcon from "@mui/icons-material/Gesture";
 import TableChart from "@mui/icons-material/TableChart";
 import ListIcon from "@mui/icons-material/List";
+import ImageIcon from "@mui/icons-material/Image";
 import ColorLens from "@mui/icons-material/ColorLens";
 import People from "@mui/icons-material/People";
 import Code from "@mui/icons-material/Code";
 import Layers from "@mui/icons-material/Layers";
-import TrendingUp from "@mui/icons-material/TrendingUp";
+import CloudIcon from "@mui/icons-material/Cloud";
 import pokemonShowdownLogo from "@/images/pokemon-showdown-logo.png";
 
 interface Credit {
@@ -28,26 +28,31 @@ const credits: Credit[] = [
   {
     icon: <BusinessIcon />,
     label: "Nintendo, The Pokemon Company, Game Freak",
-  },
-  {
-    icon: <GestureIcon />,
-    label: "Dragapult Pokemon Shuffle Fanart (By Shagapult)",
-    href: "https://twitter.com/Shagapult",
+    secondary:
+      "Pokemon itself, the Pokemon Shuffle art beside the title, and the Legends: Z-A mega sprites",
   },
   {
     icon: <TableChart />,
-    label: "Bulbapedia's Type Chart",
+    label: "Type chart table",
     href: "https://bulbapedia.bulbagarden.net/wiki/Type",
+    secondary: "From Bulbapedia",
   },
   {
     icon: <ListIcon />,
-    label: "Non-table Type Chart",
+    label: "Type chart list",
     href: "https://pinterest.ca/pin/307159637067301004/",
   },
   {
+    icon: <ImageIcon />,
+    label: "Type chart infographic",
+    href: "https://www.reddit.com/r/pokemon/comments/1oq3rg/was_getting_frustrated_finding_an_easytoread_type/",
+    secondary: "From r/pokemon",
+  },
+  {
     icon: <ColorLens />,
-    label: "Assigning each type a color",
+    label: "Type colours",
     href: "https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors",
+    secondary: "The colour of each type in the team stats",
   },
   {
     icon: <People />,
@@ -55,24 +60,14 @@ const credits: Credit[] = [
     href: "https://reddit.com/r/stunfisk",
     secondary: "It's a good community",
   },
+  { icon: <Code />, label: "React", href: "https://react.dev/" },
+  { icon: <Code />, label: "MobX", href: "https://mobx.js.org/" },
   {
-    icon: <Code />,
-    label: "Javascript React framework",
-    href: "https://reactjs.org/",
+    icon: <Layers />,
+    label: "Material UI",
+    href: "https://mui.com/material-ui/",
   },
-  {
-    icon: <Code />,
-    label: "MobX state management",
-    href: "https://mobx.js.org/",
-  },
-  { icon: <Layers />, label: "Material UI", href: "https://material-ui.com/" },
-  {
-    icon: <TrendingUp />,
-    label: "Google Analytics",
-    href: "https://support.google.com/analytics/answer/1008015?hl=en",
-    secondary:
-      "For checking the viewcount and finding out where everyone is from (I didn't enable gender and age)",
-  },
+  { icon: <CloudIcon />, label: "Vercel", href: "https://vercel.com/" },
 ];
 
 export default function Credits() {
@@ -82,16 +77,16 @@ export default function Credits() {
         <Box
           component="img"
           src={pokemonShowdownLogo}
-          alt="Pokemon Showdown Logo"
+          alt="Pokemon Showdown"
           sx={{ width: "50%", minWidth: 200 }}
         />
       </Link>
       <Typography sx={{ mb: 2 }}>
         The folks at Pokemon Showdown are very generous to let me use all of
-        their GIFs, sprites, and pokemon data. Absolutely indispensable!
+        their sprites, icons, and pokemon data. Absolutely indispensable!
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Other
+        Also thanks to
       </Typography>
       <List>
         {credits.map(({ icon, label, href, secondary }) => (

@@ -6,7 +6,6 @@ export interface WidthInfo {
   breakpoint: Breakpoint;
   isMdDown: boolean;
   isLgDown: boolean;
-  isXlDown: boolean;
 }
 
 /*
@@ -29,5 +28,5 @@ export default function useWidth(): WidthInfo {
     : isXlDown ? "lg"
     : "xl";
 
-  return { breakpoint, isMdDown, isLgDown, isXlDown };
+  return { breakpoint, isMdDown, isLgDown };
 }

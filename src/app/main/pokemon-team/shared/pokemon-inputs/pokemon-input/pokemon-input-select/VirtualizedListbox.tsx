@@ -47,12 +47,7 @@ function RowComponent({
         ...style,
         top: ((style.top as number | undefined) ?? 0) + LISTBOX_PADDING,
       }}
-      sx={{
-        display: "flex",
-        alignItems: "flex-start",
-        whiteSpace: "normal",
-        wordBreak: "break-word",
-      }}
+      sx={{ alignItems: "flex-start", wordBreak: "break-word" }}
     >
       {hasIcon && (
         <PokemonIcon pokemonProperty={pokemonProperty} value={option.value} />
@@ -133,10 +128,7 @@ const VirtualizedListbox = React.forwardRef<
         rowComponent={RowComponent}
         rowProps={{ itemData, pokemonProperty }}
         // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
-        style={{
-          height: getHeight() + 2 * LISTBOX_PADDING,
-          width: "100%",
-        }}
+        style={{ height: getHeight() + 2 * LISTBOX_PADDING }}
         overscanCount={5}
         tagName="ul"
       />

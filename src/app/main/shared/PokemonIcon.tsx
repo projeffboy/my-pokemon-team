@@ -52,14 +52,7 @@ export default function PokemonIcon({
       <span
         // eslint-disable-next-line no-restricted-syntax -- the sheet offset differs per icon
         style={{
-          background: `
-          transparent 
-          url(${type}) 
-          no-repeat 
-          scroll 
-          -${left}px -${top}px
-        `,
-          overflow: "visible",
+          background: `url(${type}) no-repeat -${left}px -${top}px`,
           width,
           height,
         }}

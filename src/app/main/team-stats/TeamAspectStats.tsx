@@ -114,7 +114,6 @@ const TeamAspectStats = observer(function TeamAspectStats({
           id={titleId}
           variant="h6"
           component="h2"
-          gutterBottom
           sx={{ mb: "0.15em", mt: "-0.2em" }}
         >
           {title}

@@ -16,13 +16,7 @@ const faceSpacing = fluidClamp(4, 8, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH, sm);
 
 export default function Header() {
   return (
-    <Grid
-      component="header"
-      container
-      size={12}
-      spacing={0}
-      justifyContent="center"
-    >
+    <Grid component="header" container size={12}>
       <Stack
         direction="row"
         sx={{ width: "100%", alignItems: "center", justifyContent: "center" }}
@@ -32,9 +26,7 @@ export default function Header() {
           src={face1}
           alt=""
           sx={{
-            display: "block",
             height: faceHeight,
-            width: "auto",
             pr: faceSpacing,
           }}
         />
@@ -60,9 +52,7 @@ export default function Header() {
           src={face2}
           alt=""
           sx={{
-            display: "block",
             height: faceHeight,
-            width: "auto",
             pl: faceSpacing,
           }}
         />

@@ -92,6 +92,8 @@ Keep entries concise. A date's `changes` render as a bulleted list when there is
 
 `src/app/RAMP.ts` is the Playwire ad integration, which earns the site's revenue to pay for its maintenance and upkeep. Only change it for a clear efficiency gain, and put that change in its own commit so it can be reverted alone if revenue drops.
 
+`public/robots.txt` explicitly allows AmazonAdBot for the same ad integration. Leave it as it is, even though it looks redundant.
+
 ## Other
 
 Ask me clarification questions if necessary in response to my prompt.

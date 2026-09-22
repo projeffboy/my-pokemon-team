@@ -35,7 +35,7 @@ export default function TypeChart() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "background.paper" }}>
+    <>
       <AppBar position="static">
         <Tabs
           value={value}
@@ -66,6 +66,6 @@ export default function TypeChart() {
           />
         </Typography>
       )}
-    </Box>
+    </>
   );
 }

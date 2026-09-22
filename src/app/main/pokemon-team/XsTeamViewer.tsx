@@ -39,7 +39,6 @@ const XsTeamViewer = observer(function XsTeamViewer() {
             variant="fullWidth"
             textColor="secondary"
             aria-label="Pokemon team slots"
-            sx={{ flexGrow: 1, minWidth: 0 }}
           >
             {[0, 1, 2, 3, 4, 5].map(teamIndex => (
               <Tab
@@ -63,7 +62,7 @@ const XsTeamViewer = observer(function XsTeamViewer() {
             ))}
           </Tabs>
         </Paper>
-        <Paper sx={{ display: "flex", alignItems: "stretch" }}>
+        <Paper sx={{ display: "flex" }}>
           <Button
             onClick={handleShare}
             aria-label="Share pokemon team link"

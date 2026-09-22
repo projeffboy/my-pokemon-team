@@ -76,10 +76,7 @@ const SearchFilters = observer(function SearchFilters() {
   };
 
   return (
-    <Grid
-      container
-      sx={{ pt: { xs: 0, md: 0 }, pb: { xs: 2, md: 0.5 }, minHeight: 120 }}
-    >
+    <Grid container sx={{ pb: { xs: 2, md: 0.5 }, minHeight: 120 }}>
       {(Object.keys(inputLabels) as InputLabelKey[]).map(inputLabel => {
         const labelId = `search-filter-${inputLabel}-label`;
         return (
