@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { allItemIds, allItemNames, pokemonName } from "@/shared/names";
 import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
 import { PokemonProperties } from "@/types";
 
@@ -39,21 +40,16 @@ const PokemonInput = observer(function PokemonInput({
       optionLabels = store.filteredPokemonNames.map(
         (name, i) => name ?? optionValues[i] ?? "",
       );
-      const pokemonName = member?.name;
-      if (pokemonName && !optionValues.includes(pokemonName)) {
-        optionValues = [...optionValues, pokemonName];
-        optionLabels = [
-          ...optionLabels,
-          store.pokemonName(pokemonName) ?? pokemonName,
-        ];
+      const selected = member?.name;
+      if (selected && !optionValues.includes(selected)) {
+        optionValues = [...optionValues, selected];
+        optionLabels = [...optionLabels, pokemonName(selected) ?? selected];
       }
       break;
     }
     case "item":
-      optionValues = store.itemsArr;
-      optionLabels = store.itemNamesArr.map(
-        (name, i) => name ?? store.itemsArr[i] ?? "",
-      );
+      optionValues = allItemIds;
+      optionLabels = allItemNames;
       break;
     case "ability":
       optionValues = store.teamAbilities[teamIndex] ?? [];

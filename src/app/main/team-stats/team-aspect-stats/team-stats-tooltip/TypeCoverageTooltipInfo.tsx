@@ -1,6 +1,8 @@
 import { Fragment } from "react";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { moveName, pokemonName } from "@/shared/names";
+import { pokemonTypes } from "@/shared/pokedex";
 import {
   moveAgainstType,
   moveType as getMoveType,
@@ -43,16 +45,13 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
                         display: "flex",
                         alignItems: "center",
                         fontWeight:
-                          (
-                            moveType &&
-                            store.pokemonType(pokemon).includes(moveType)
-                          ) ?
+                          moveType && pokemonTypes(pokemon).includes(moveType) ?
                             500
                           : 400,
                       }}
                     >
-                      <span style={{ width: 150 }}>{store.moveName(move)}</span>
-                      <span>{store.pokemonName(pokemon) + " "}</span>
+                      <span style={{ width: 150 }}>{moveName(move)}</span>
+                      <span>{pokemonName(pokemon) + " "}</span>
                       <PokemonIcon pokemonProperty="name" value={pokemon} />
                     </li>
                   );

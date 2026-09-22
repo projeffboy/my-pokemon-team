@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { pokemonName } from "@/shared/names";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import type { PokemonType } from "@/types";
@@ -73,9 +74,7 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
               >
                 {multiplier}x
               </span>
-              <span style={{ paddingRight: 2 }}>
-                to {store.pokemonName(pokemon)}
-              </span>
+              <span style={{ paddingRight: 2 }}>to {pokemonName(pokemon)}</span>
               <PokemonIcon pokemonProperty="name" value={pokemon} />
             </li>
           );

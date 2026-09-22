@@ -8,7 +8,7 @@ See [README.md](README.md) for setup and the test commands, and [package.json](p
 
 ## Architecture
 
-State is managed via a single MobX store (`src/store.ts`, `makeAutoObservable` + `enforceActions: "never"`); components mutate it directly. Its computed getters delegate to pure functions in `src/store/` (learnsets, coverage, filtering, effectiveness), which take explicit inputs and never import the store or MobX. Components may also call these functions directly, as the team stats tooltips do. `src/shared/` holds helpers needed by both the store and the app (name lookups, empty teams, auto-selected items).
+State is managed via a single MobX store (`src/store.ts`, `makeAutoObservable` + `enforceActions: "never"`); components mutate it directly. Its computed getters delegate to pure functions in `src/store/` (learnsets, coverage, filtering, effectiveness), which take explicit inputs and never import the store or MobX. Components may also call these functions directly, as the team stats tooltips do. `src/shared/` holds helpers needed by both the store and the app (name and pokedex lookups, empty teams, auto-selected items).
 
 `src/data/` is generated from Pokemon Showdown by `npm run update:data`. To change it, edit `scripts/update-data.ts` and rerun it instead of editing the files by hand.
 

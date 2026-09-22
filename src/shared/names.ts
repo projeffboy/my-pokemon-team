@@ -24,3 +24,16 @@ export const itemNameInverse = (name: string) => itemIds.get(name);
 
 // E.g. 'Hydro Pump' => 'hydropump'
 export const moveNameInverse = (name: string) => moveIds.get(name);
+
+// E.g. 'squirtle' => 'Squirtle'
+export const pokemonName = (pokemon: string) => pokedex[pokemon]?.name;
+
+// E.g. 'leftovers' => 'Leftovers'
+export const itemName = (item: string) => items[item]?.name ?? "";
+
+// E.g. 'hydropump' => 'Hydro Pump'
+export const moveName = (move: string) => moves[move]?.name;
+
+// Every item, as the item input's options
+export const allItemIds = Object.keys(items);
+export const allItemNames = allItemIds.map(id => items[id]?.name ?? id);

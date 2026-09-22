@@ -3,10 +3,14 @@ import { MOVE_KEYS } from "@/types";
 import store from "@/store";
 import { createEmptyTeam, getAutoSelectedItem } from "@/shared/team";
 import {
+  pokemonName,
+  itemName,
+  moveName,
   pokemonNameInverse,
   itemNameInverse,
   moveNameInverse,
 } from "@/shared/names";
+import { pokemonAbilities } from "@/shared/pokedex";
 import { canItLearn } from "@/store/learnsets";
 import type { Team } from "@/types";
 
@@ -18,11 +22,11 @@ export function serializeTeamText(): string {
 
       if (!name) return "";
 
-      return `${store.pokemonName(name)} @ ${store.itemName(item)}
+      return `${pokemonName(name)} @ ${itemName(item)}
 Ability: ${ability}
 ${MOVE_KEYS.map(key => {
   const move = member[key];
-  return move ? `- ${store.moveName(move)}` : "-";
+  return move ? `- ${moveName(move)}` : "-";
 }).join("\n")}\n\n`;
     })
     .join("");
@@ -43,33 +47,33 @@ export function parseTeamText(text: string): Team {
     // Get pokemon and item names
     const [firstLine = ""] = lines;
     const pokemonAndItemNames = firstLine.split("@").map(str => str.trim());
-    const [pokemonNameAndNickname = "", itemName] = pokemonAndItemNames;
+    const [pokemonNameAndNickname = "", itemText] = pokemonAndItemNames;
 
     // Ignore nicknames and keep the actual species name, while accepting either
     // "Species (Nickname)" or "Nickname (Species)" input.
-    let pokemonName = pokemonNameAndNickname.trim();
-    if (pokemonName.includes("(")) {
-      const beforeParen = pokemonName.split("(")[0]?.trim();
-      const insideParen = pokemonName.match(/\(([^)]+)\)/)?.[1]?.trim();
+    let species = pokemonNameAndNickname.trim();
+    if (species.includes("(")) {
+      const beforeParen = species.split("(")[0]?.trim();
+      const insideParen = species.match(/\(([^)]+)\)/)?.[1]?.trim();
       const validCandidate = [beforeParen, insideParen].find(candidate =>
         candidate ? !!pokemonNameInverse(candidate) : false,
       );
-      pokemonName = validCandidate || beforeParen || insideParen || pokemonName;
+      species = validCandidate || beforeParen || insideParen || species;
     }
 
     // Check if the pokemon the user typed is legit
-    const pokemon = pokemonNameInverse(pokemonName.trim());
+    const pokemon = pokemonNameInverse(species.trim());
     const member = team[teamIndex];
     if (!pokemon || !member) return;
 
     member.name = pokemon;
-    const abilities = Object.values(store.abilities(pokemon));
+    const abilities = pokemonAbilities(pokemon);
     member.ability = (abilities.length === 1 && abilities[0]) || "";
 
     // If team raw data does not mention item, leave it blank
-    if (itemName) {
+    if (itemText) {
       // Check if item is legit
-      const item = itemNameInverse(itemName);
+      const item = itemNameInverse(itemText);
       member.item = item || getAutoSelectedItem(pokemon, "");
     }
 
@@ -86,7 +90,7 @@ export function parseTeamText(text: string): Team {
         }
       } else if (line.startsWith("-") && moveNum <= 4) {
         // if property has to do with moves
-        const moveName = line
+        const moveText = line
           .replace(/^-\s*/, "")
           .trim()
           .replace("[", "") // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
@@ -94,7 +98,7 @@ export function parseTeamText(text: string): Team {
 
         // If legit, set move
         // Otherwise, set it blank
-        const move = moveNameInverse(moveName);
+        const move = moveNameInverse(moveText);
 
         const validMove = canItLearn(move, pokemon) && move ? move : "";
 
