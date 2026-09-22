@@ -84,9 +84,9 @@ The text holds display names, which are matched exactly. When a data update rena
 
 ## Update Log
 
-`src/app/footer/UpdateLog.tsx` is for changes players notice, such as "added Regulation M-C pokemon" or "Meganium can now learn Dazzling Gleam". Add an entry for those, newest first; never for refactors, tooling, or other code-only changes.
+`src/app/footer/update-log/entries.ts` lists changes players notice, such as "added Regulation M-C pokemon" or "Meganium can now learn Dazzling Gleam". Add an entry for those, newest first; never for refactors, tooling, or other code-only changes.
 
-Keep entries concise. A date with more than one change is a bulleted list with one short line per change; give one example rather than listing everything affected. Entries before Sep 19, 2026 are paragraphs; leave them as they are.
+Keep entries concise. A date's `changes` render as a bulleted list when there is more than one, with one short line per change; give one example rather than listing everything affected. Entries before Sep 19, 2026 use `paragraphs` instead; leave them as they are.
 
 ## Ads
 

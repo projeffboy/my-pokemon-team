@@ -7,6 +7,44 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Folder from "@mui/icons-material/Folder";
+import entries, { type Change, type Entry } from "./update-log/entries";
+
+function ChangeText({ change }: { change: Change }) {
+  if (typeof change === "string") return change;
+  return (
+    <>
+      {change.text} (
+      <Link style={{ color: "#2196f3" }} href={change.href}>
+        {change.credit}
+      </Link>
+      ){change.end ?? "."}
+    </>
+  );
+}
+
+function UpdateEntry(entry: Entry) {
+  const changes = "changes" in entry ? entry.changes : entry.paragraphs;
+  const isList = "changes" in entry && changes.length > 1;
+  return (
+    <>
+      <Typography variant="subtitle2">{entry.date}</Typography>
+      {isList ?
+        <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
+          {changes.map((change, i) => (
+            <li key={i}>
+              <ChangeText change={change} />
+            </li>
+          ))}
+        </Typography>
+      : changes.map((change, i) => (
+          <Typography key={i} paragraph>
+            <ChangeText change={change} />
+          </Typography>
+        ))
+      }
+    </>
+  );
+}
 
 function UpdateLog() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -39,372 +77,9 @@ function UpdateLog() {
             </Button>
           </div>
 
-          <Typography variant="subtitle2">Sep 21, 2026</Typography>
-          <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
-            <li>
-              Fixed the missing sprites of 14 formes, like Vivillon-Icy Snow.
-            </li>
-            <li>
-              Fixed the blank icons of 46 Legends: Z-A mega stones, like
-              Dragoninite.
-            </li>
-            <li>
-              CAP pokemon like Syclant are no longer listed, but still load from
-              links and imports.
-            </li>
-            <li>
-              Fixed missing abilities and types for cosmetic formes such as
-              Vivillon-Garden.
-            </li>
-          </Typography>
-
-          <Typography variant="subtitle2">Sep 19, 2026</Typography>
-          <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
-            <li>
-              New Pokemon Champions (M-C) format filter, replacing Battle
-              Stadium Singles.
-            </li>
-            <li>
-              The Viable moves filter includes gen 8 and 9 moves like Body Press
-              and Flip Turn.
-            </li>
-            <li>
-              Added moves from Pokemon Champions, Legends: Z-A, Legends: Arceus,
-              and BDSP, e.g. Meganium learns Dazzling Gleam.
-            </li>
-            <li>
-              Required items are auto-selected for primals, crowned formes,
-              Ogerpon masks, Raichu-Mega-Y, and the Mega-Z formes.
-            </li>
-            <li>Hisuian formes are listed under the Hisui region only.</li>
-            <li>
-              Nine Legends: Z-A megas are now animated, like Mega Dragonite.
-            </li>
-          </Typography>
-
-          <Typography variant="subtitle2">Sep 17, 2026</Typography>
-          <Typography paragraph>Added Regulation M-C pokemon.</Typography>
-
-          <Typography variant="subtitle2">Sep 5, 2026</Typography>
-          <Typography paragraph>
-            Your team is now saved in the page's link, so you can share a team
-            by copying the address. On phones, the share button copies it for
-            you.
-          </Typography>
-
-          <Typography variant="subtitle2">Aug 31, 2026</Typography>
-          <Typography paragraph>
-            The dropdowns open faster. Venusaur and Charizard sit next to the
-            title to commemorate Worlds 2026.
-          </Typography>
-
-          <Typography variant="subtitle2">Aug 28, 2026</Typography>
-          <Typography paragraph>
-            Fixed sprite bugs and updated the Pokemon data.
-          </Typography>
-
-          <Typography variant="subtitle2">May 16, 2026</Typography>
-          <Typography paragraph>Pokemon Legends Z-A update.</Typography>
-
-          <Typography variant="subtitle2">May 15, 2024</Typography>
-          <Typography paragraph>
-            You can import a Pokemon Showdown team with nicknames, although the
-            nicknames are not saved (Credits: TBD).
-          </Typography>
-
-          <Typography variant="subtitle2">February 17, 2024</Typography>
-          <Typography paragraph>
-            Moves with variable base power like low kick, grass knot, and heavy
-            slam count towards type coverage again (Credits: Timo).
-          </Typography>
-
-          <Typography variant="subtitle2">February 13, 2024</Typography>
-          <Typography paragraph>Indigo Disk DLC update.</Typography>
-
-          <Typography variant="subtitle2">October 28, 2023</Typography>
-          <Typography paragraph>
-            Moves with variable base power like low kick and grass knot now
-            count towards type coverage (this used to work before gen 9).
-          </Typography>
-
-          <Typography variant="subtitle2">October 20, 2023</Typography>
-          <Typography paragraph>
-            Teal Mask DLC update moves (Credits: Anonymous).
-          </Typography>
-
-          <Typography variant="subtitle2">October 7, 2023</Typography>
-          <Typography paragraph>
-            Teal Mask DLC update (Credits: Agame4free).
-          </Typography>
-          <Typography paragraph>
-            Selecting Mega Sharpedo doesn't give it Sharp Beak now (Credits:
-            Owen W.).
-          </Typography>
-
-          <Typography variant="subtitle2">April 8, 2023</Typography>
-          <Typography paragraph>
-            Added Iron Leaves and Walking Wake (Credits: Meta Maxis).
-          </Typography>
-
-          <Typography variant="subtitle2">Feb 14, 2023</Typography>
-          <Typography paragraph>
-            Fixed it so that moves with variable power, like low kick, are taken
-            into account towards type coverage once again. (Credits: Jackalupe).
-          </Typography>
-
-          <Typography variant="subtitle2">Jan 17, 2023</Typography>
-          <Typography paragraph>
-            Mortal spin is treated as a spinner move (Credits: anonymous).
-          </Typography>
-
-          <Typography variant="subtitle2">Jan 10, 2023</Typography>
-          <Typography paragraph>
-            The Paldea sprites now match the names in the dropdown list
-            (Credits: anonymous).
-          </Typography>
-
-          <Typography variant="subtitle2">Dec 18, 2022</Typography>
-          <Typography paragraph>
-            Items are updated for gen 9 (Credits: Abner Garcia II).
-          </Typography>
-          <Typography paragraph>
-            Fixed a bug where selecting a pokemon whose pre-evolution has a
-            hyphen in their name crashes, like Basculeigon (Credits: anonymous).
-          </Typography>
-
-          <Typography variant="subtitle2">Nov 27, 2022</Typography>
-          <Typography paragraph>
-            Hisuain form pokemon have proper movesets (Credits: anonymous).
-          </Typography>
-
-          <Typography variant="subtitle2">Nov 20, 2022</Typography>
-          <Typography paragraph>
-            Sprites weren't working for pokemon of alternate formes, e.g. mega
-            abomasnow (Credits: Cashton Bermingham).
-          </Typography>
-          <Typography paragraph>
-            Updated the the site for Pokemon Scarlet and Violet (generation 9).
-            Expect bugs!
-          </Typography>
-          <Typography paragraph>
-            Moves with a 100% of inflicting a status condition (e.g. nuzzle) are
-            counted towards the checklist.
-          </Typography>
-          <Typography paragraph>Curse is treated as a setup move.</Typography>
-
-          <Typography variant="subtitle2">May 1, 2022</Typography>
-          <Typography paragraph>
-            Added floral healing and court change to team checklist. Renamed
-            "Switch/Turn Move" to "Volt-turn Move".
-          </Typography>
-
-          <Typography variant="subtitle2">Jan 4, 2022</Typography>
-          <Typography paragraph>
-            Liquid voice affects team type coverage.
-          </Typography>
-
-          <Typography variant="subtitle2">Jan 3, 2022</Typography>
-          <Typography paragraph>
-            Fluffy and dry skin affects team defence (Anonymous x2).
-          </Typography>
-          <Typography paragraph>Dark mode (to be improved).</Typography>
-
-          <Typography variant="subtitle2">Nov 17, 2021</Typography>
-          <Typography paragraph>
-            Up until now, moves would not register for type coverage if you had
-            a status or weak move of the same type on the same pokemon
-            (Anonymous).
-          </Typography>
-
-          <Typography variant="subtitle2">May 4, 2021</Typography>
-          <Typography paragraph>
-            I used the replaceAll() Javascript function which breaks on Samsung
-            browsers (Credits: Anonymous).
-          </Typography>
-
-          <Typography variant="subtitle2">Apr 29, 2021</Typography>
-          <Typography paragraph>
-            One of the offensive checklist items accepts either U-turn, Volt
-            Switch, or Flip Turn instead of requiring both Volt Switch and
-            U-turn.
-          </Typography>
-          <Typography paragraph>
-            Zygarde 10% and Oricorio-Pa'u sprites load properly now.
-          </Typography>
-          <Typography paragraph>
-            Florges and Floette don't crash anymore (Vegard Hamborg).
-          </Typography>
-
-          <Typography variant="subtitle2">Apr 8, 2021</Typography>
-          <Typography paragraph>
-            The checklist is green for checked items.
-          </Typography>
-
-          <Typography variant="subtitle2">Mar 31, 2021</Typography>
-          <Typography paragraph>
-            Choosing Sirfetch'd used to crash the site (dpplasma1).
-          </Typography>
-          <Typography paragraph>
-            Further digging uncovered that the entire Mr. Mime family crashed
-            the site.
-          </Typography>
-          <Typography paragraph>
-            Galarian formes no longer take the base forme movesets instead.
-          </Typography>
-
-          <Typography variant="subtitle2">Jan 11, 2021</Typography>
-          <Typography paragraph>
-            Fixed flying press bug. Updated how galar sprites are presented.
-          </Typography>
-          <Typography paragraph>
-            Movesets for alola formes no longer take the base forme movesets
-            instead (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/NintendoSwitch/comments/kuhc3d/pokemon_sword_and_shield_teambuilder/giv1p6v?utm_source=share&utm_medium=web2x&context=3"
-            >
-              thouartthee
-            </Link>
-            ).
-          </Typography>
-          <Typography paragraph>
-            Updated type defence so that what was once -2 or 2 is now -1.5 or
-            1.5 (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/stunfisk/comments/kuix21/updated_gen_8_teambuilder_mypokemonteamcom/gitspzk?utm_source=share&utm_medium=web2x&context=3"
-            >
-              GoneWithLaw
-            </Link>
-            ).
-          </Typography>
-
-          <Typography variant="subtitle2">Jan 10, 2021</Typography>
-          <Typography paragraph>
-            Updated the site to accomodate generation 8 pokemon! Slight design
-            tweaks.
-          </Typography>
-
-          <Typography variant="subtitle2">Mar 26, 2019</Typography>
-          <Typography paragraph>
-            Importing Pokemon Showdown teams with gender specified works now (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ejehmud?utm_source=share&utm_medium=web2x"
-            >
-              jkelligan
-            </Link>
-            ).
-          </Typography>
-
-          <Typography variant="subtitle2">Mar 10, 2019</Typography>
-          <Typography paragraph>
-            Fixed a bug where changing search filters caused some of the
-            selected pokemon names to disappear.{" "}
-          </Typography>
-          <Typography paragraph>
-            Water Bubble gives you +1 for Fire (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei6m1q0"
-            >
-              beyardo
-            </Link>
-            ).{" "}
-          </Typography>
-          <Typography paragraph>
-            You can now pick Primal Kyogre and Primal Groudon through the Uber
-            search filter.
-          </Typography>
-          <Typography paragraph>
-            Was missing Fairy and Normal in the search filters. They're included
-            now.
-          </Typography>
-
-          <Typography variant="subtitle2">Mar 9, 2019</Typography>
-          <Typography paragraph>
-            You can now click (as well as hover) over the types for more
-            information. Good for phones.
-          </Typography>
-          <Typography paragraph>There's now a type chart button!</Typography>
-          <Typography paragraph>
-            Fixed a bug where alolan-form pokemon had the movesets of their
-            non-alolan forms (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4t5g6"
-            >
-              DJdeMaster
-            </Link>
-            ).
-          </Typography>
-          <Typography paragraph>
-            The search filter VGC 2018 is updated to VGC 2019 (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4xcwx"
-            >
-              Elmodipus
-            </Link>
-            ).
-          </Typography>
-          <Typography paragraph>
-            Added the "superior" type chart (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="http://i.imgur.com/fylyCdC.png"
-            >
-              Bardock_RD
-            </Link>
-            ).
-          </Typography>
-          <Typography paragraph>
-            The code is now open sourced (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/stunfisk/comments/az2f34/behold_the_ultimate_teambuilder/ei4yxo3"
-            >
-              Crescive_Delta
-            </Link>
-            )!{" "}
-          </Typography>
-
-          <Typography variant="subtitle2">Mar 8, 2019</Typography>
-          <Typography paragraph>
-            Updated the Smogon formats/tiers (for the search filters).
-          </Typography>
-          <Typography paragraph>
-            Included a manual page clarifying how to use this site.
-          </Typography>
-
-          <Typography variant="subtitle2">Mar 6, 2019</Typography>
-          <Typography paragraph>
-            Super effective STAB moves now count for +2 instead of +1.
-          </Typography>
-
-          <Typography variant="subtitle2">Feb 25, 2019</Typography>
-          <Typography paragraph>
-            Fixed a bug where alternate formes had the moveset of their base
-            forme. For example, White Kyurem couldn't learn Fusion Flare (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eh95wr3"
-            >
-              DMSivally
-            </Link>
-            ).
-          </Typography>
-          <Typography paragraph>
-            Fixing the above bug caused selecting Megas to break the app. This
-            is fixed too now (
-            <Link
-              style={{ color: "#2196f3" }}
-              href="https://www.reddit.com/r/pokemon/comments/aumnvh/brand_new_ultra_sun_and_moon_team_builder/eha3o9p"
-            >
-              kwiszat
-            </Link>
-            ).
-          </Typography>
+          {entries.map(entry => (
+            <UpdateEntry key={entry.date} {...entry} />
+          ))}
         </DialogContent>
         <DialogActions>
           <Button onClick={toggleDialog}>Go Back</Button>
