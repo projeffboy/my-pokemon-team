@@ -6,7 +6,7 @@ import reactHooks from "eslint-plugin-react-hooks";
 export default tseslint.config(
   {
     ignores: [
-      "build",
+      "dist",
       ".vercel/output",
       "src/data",
       "src/app/RAMP.ts",

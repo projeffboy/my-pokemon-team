@@ -40,7 +40,7 @@ npm start
 
 The development server runs at [localhost:3000](http://localhost:3000). `npm run dev` starts the same server.
 
-To build the production app into `build/` and preview it locally:
+To build the production app into `dist/` and preview it locally:
 
 ```sh
 npm run build

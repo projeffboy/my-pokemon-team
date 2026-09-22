@@ -1,4 +1,4 @@
-build
+dist
 src/data
 package-lock.json
 playwright-report

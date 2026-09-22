@@ -47,7 +47,6 @@ export default defineConfig({
     strictPort: true,
   },
   build: {
-    outDir: "build",
     rollupOptions: {
       output: {
         // Pokemon data and dependencies change less often than app code, so they cache separately
