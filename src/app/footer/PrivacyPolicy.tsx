@@ -6,7 +6,7 @@ import FooterDialog from "./shared/FooterDialog";
 export default function PrivacyPolicy() {
   return (
     <FooterDialog button="Privacy Policy" title="Privacy Policy">
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         All or partial advertising on this Website or App is managed by Playwire
         LLC. If Playwire publisher advertising services are used, Playwire LLC
         may collect and use certain aggregated and anonymized data for
@@ -17,8 +17,8 @@ export default function PrivacyPolicy() {
         </Link>
         .
       </Typography>
-      <Typography paragraph>
-        <Link href="http://www.playwire.com" rel="noopener" target="_blank">
+      <Typography sx={{ mb: 2 }}>
+        <Link href="http://www.playwire.com">
           <Box
             component="img"
             src="https://www.playwire.com/hubfs/Powered-by-Playwire-Badges/Ads-Powered-by-playwire-2021-standalone-large-300px.png"
@@ -29,11 +29,8 @@ export default function PrivacyPolicy() {
           />
         </Link>
       </Typography>
-      <Typography paragraph align="center">
-        <Link
-          href="https://www.playwire.com/contact-direct-sales"
-          rel="noopener"
-        >
+      <Typography sx={{ mb: 2, textAlign: "center" }}>
+        <Link href="https://www.playwire.com/contact-direct-sales">
           Advertise on this site.
         </Link>
       </Typography>

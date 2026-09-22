@@ -87,7 +87,7 @@ export default function Credits() {
           sx={{ width: "50%", minWidth: 200 }}
         />
       </Link>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         The folks at Pokemon Showdown are very generous to let me use all of
         their GIFs, sprites, and pokemon data. Absolutely indispensable!
       </Typography>

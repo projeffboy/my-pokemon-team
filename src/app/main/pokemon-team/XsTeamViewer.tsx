@@ -12,22 +12,19 @@ import store from "@/store";
 import PokemonInputs from "./shared/PokemonInputs";
 import PokemonSprite from "./shared/PokemonSprite";
 import getPokemonLabel from "./shared/get-pokemon-label";
+import copyToClipboard from "../shared/copy-to-clipboard";
 
 const XsTeamViewer = observer(function XsTeamViewer() {
   const [tabIndex, setTabIndex] = useState(0);
 
-  const handleShare = async () => {
-    if (store.isTeamEmpty) {
-      store.openSnackbar("Pokemon team is empty");
-      return;
-    }
-
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      store.openSnackbar("Pokemon team link copied");
-    } catch {
-      store.openSnackbar("Couldn't copy the link.");
-    }
+  const handleShare = () => {
+    if (store.isTeamEmpty) store.openSnackbar("Pokemon team is empty");
+    else
+      copyToClipboard(
+        window.location.href,
+        "Pokemon team link copied",
+        "Could not copy the link.",
+      );
   };
 
   return (

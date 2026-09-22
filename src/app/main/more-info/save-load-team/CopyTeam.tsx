@@ -3,30 +3,17 @@ import FileCopy from "@mui/icons-material/FileCopy";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { serializeTeamText } from "@/app/shared/team-text";
+import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
 
 const CopyTeam = observer(function CopyTeam() {
-  const handleCopy = (text: string) => {
-    if (text !== "") {
-      // Copied this code from https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
-
-      const textArea = document.createElement("textarea");
-
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand("copy");
-      textArea.remove();
-
-      //
-
-      store.openSnackbar("Team copied.");
-    } else {
-      store.openSnackbar("Empty team, nothing to copy.");
-    }
+  const handleCopy = () => {
+    const text = serializeTeamText();
+    if (text === "") store.openSnackbar("Empty team, nothing to copy.");
+    else copyToClipboard(text, "Team copied.", "Could not copy the team.");
   };
 
   return (
-    <Button onClick={() => handleCopy(serializeTeamText())} sx={{ ml: 1 }}>
+    <Button onClick={handleCopy} sx={{ ml: 1 }}>
       Copy Team <FileCopy sx={{ ml: 0.5 }} />
     </Button>
   );

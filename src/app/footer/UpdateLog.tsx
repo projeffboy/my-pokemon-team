@@ -21,7 +21,9 @@ function UpdateEntry(entry: Entry) {
   const isList = "changes" in entry && changes.length > 1;
   return (
     <>
-      <Typography variant="subtitle2">{entry.date}</Typography>
+      <Typography variant="subtitle2" component="h3">
+        {entry.date}
+      </Typography>
       {isList ?
         <Typography component="ul" sx={{ pl: 3, mb: 2 }}>
           {changes.map((change, i) => (
@@ -31,7 +33,7 @@ function UpdateEntry(entry: Entry) {
           ))}
         </Typography>
       : changes.map((change, i) => (
-          <Typography key={i} paragraph>
+          <Typography key={i} sx={{ mb: 2 }}>
             <ChangeText change={change} />
           </Typography>
         ))

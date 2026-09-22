@@ -11,6 +11,9 @@ const entries: Entry[] = [
   {
     date: "Sep 21, 2026",
     changes: [
+      "Positive type scores are teal, like the checklist.",
+      "Links open in a new tab.",
+      "The type tiles in Team Defence and Coverage work with the keyboard.",
       "Fixed the missing sprites of 14 formes, like Vivillon-Icy Snow.",
       "Fixed the blank icons of 46 Legends: Z-A mega stones, like Dragoninite.",
       "CAP pokemon like Syclant are no longer listed, but still load from links and imports.",

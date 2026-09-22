@@ -4,7 +4,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import FooterButton from "./FooterButton";
 
 // A footer button that opens a dialog with the given content and a Go Back action
 export default function FooterDialog({
@@ -22,7 +21,9 @@ export default function FooterDialog({
 
   return (
     <>
-      <FooterButton onClick={toggle}>{button}</FooterButton>
+      <Button variant="footer" onClick={toggle}>
+        {button}
+      </Button>
       <Dialog
         open={isOpen}
         onClose={toggle}

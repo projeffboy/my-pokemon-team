@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type MouseEvent } from "react";
+import { useId, useState, type ChangeEvent, type MouseEvent } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -13,6 +13,7 @@ import store from "@/store";
 import { parseTeamText, serializeTeamText } from "@/app/shared/team-text";
 
 const ImportExportTeam = observer(function ImportExportTeam() {
+  const titleId = useId();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [textArea, setTextArea] = useState("");
 
@@ -49,20 +50,16 @@ const ImportExportTeam = observer(function ImportExportTeam() {
       <Dialog
         open={isDialogOpen}
         onClose={handleClose}
-        aria-labelledby="form-dialog-title"
+        aria-labelledby={titleId}
         sx={{ height: "calc(100% - 60px)" }}
       >
-        <DialogTitle id="form-dialog-title">Import/Export</DialogTitle>
+        <DialogTitle id={titleId}>Import/Export</DialogTitle>
         <DialogContent>
           <DialogContentText>
             You can take a look at and change the raw data of your pokemon team.
             <br />
             If you use{" "}
-            <Link
-              target="_blank"
-              rel="noopener"
-              href="https://play.pokemonshowdown.com/teambuilder"
-            >
+            <Link href="https://play.pokemonshowdown.com/teambuilder">
               Pokemon Showdown
             </Link>
             , you can paste your team here.

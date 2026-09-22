@@ -1,6 +1,12 @@
 import { createTheme } from "@mui/material/styles";
 import { blue, grey } from "@mui/material/colors";
 
+declare module "@mui/material/Button" {
+  interface ButtonPropsVariantOverrides {
+    footer: true;
+  }
+}
+
 export const MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH = 320;
 export const breakpointValues = {
   xs: 0,
@@ -10,10 +16,11 @@ export const breakpointValues = {
   xl: 1920,
 };
 
-// The team checklist's checkmarks
+// The team checklist's checkmarks and the positive type scores
 const success = { main: "#16a085" };
 
 export const theme = createTheme({
+  cssVariables: { colorSchemeSelector: "data" },
   breakpoints: { values: breakpointValues },
   colorSchemes: {
     light: {
@@ -37,18 +44,44 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiButton: {
+      variants: [
+        {
+          // A footer link in the body font rather than MUI's bold uppercase button text
+          props: { variant: "footer" },
+          style: ({ theme }) => ({
+            padding: "6px 8px",
+            fontWeight: "inherit",
+            textTransform: "none",
+            color: (theme.vars || theme).palette.primary.main,
+            "@media (hover: hover)": {
+              "&:hover": {
+                backgroundColor: theme.alpha(
+                  (theme.vars || theme).palette.primary.main,
+                  (theme.vars || theme).palette.action.hoverOpacity,
+                ),
+              },
+            },
+          }),
+        },
+      ],
+    },
     MuiDialog: {
       styleOverrides: {
         // Plain paper instead of MUI's lighter elevation overlay
         paper: ({ theme }) =>
-          theme.applyStyles("dark", {
-            backgroundColor: theme.palette.background.paper,
-            backgroundImage: "none",
-          }),
+          theme.applyStyles("dark", { backgroundImage: "none" }),
       },
     },
     MuiLink: {
+      // Every link is external, and a new tab keeps the current team open;
+      // an in-app link would have to override target
+      defaultProps: { target: "_blank", rel: "noopener" },
       styleOverrides: { root: { color: blue[500] } },
+    },
+    MuiTypography: {
+      // Dialog titles are h2, so the h6-styled section headings are h3
+      defaultProps: { variantMapping: { h6: "h3", subtitle2: "p" } },
     },
   },
 });

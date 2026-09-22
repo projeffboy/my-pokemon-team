@@ -10,13 +10,13 @@ import type { PokemonType } from "@/types";
 const EFFECTIVENESS: Partial<
   Record<number, { multiplier: number; color: string }>
 > = {
-  [-2]: { multiplier: 4, color: "red" },
-  [-1.5]: { multiplier: 3, color: "red" },
-  [-1]: { multiplier: 2, color: "#f9d130" },
-  [-0.5]: { multiplier: 1.5, color: "#f9d130" },
-  [1]: { multiplier: 0.5, color: "yellowgreen" },
-  [2]: { multiplier: 0.25, color: "forestgreen" },
-  [3]: { multiplier: 0, color: "grey" },
+  [-2]: { multiplier: 4, color: "error.main" },
+  [-1.5]: { multiplier: 3, color: "error.main" },
+  [-1]: { multiplier: 2, color: "warning.main" },
+  [-0.5]: { multiplier: 1.5, color: "warning.main" },
+  [1]: { multiplier: 0.5, color: "success.light" },
+  [2]: { multiplier: 0.25, color: "success.main" },
+  [3]: { multiplier: 0, color: "text.disabled" },
 };
 
 const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({

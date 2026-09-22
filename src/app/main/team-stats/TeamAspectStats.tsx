@@ -1,7 +1,8 @@
-import { useState, type MouseEvent } from "react";
+import { useState, type KeyboardEvent, type SyntheticEvent } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
 import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
 import Fade from "@mui/material/Fade";
@@ -66,11 +67,11 @@ const TeamAspectStats = observer(function TeamAspectStats({
   const teamStatType: TeamStatType =
     title === "Team Defence" ? "typeDefence" : "typeCoverage";
 
-  // For popover (anchorEl means the element that the popover should be anchored to)
-  // Why 18? There are 18 types
-  const [anchorEl, setAnchorEl] = useState<Array<HTMLElement | null>>(() =>
-    Array(18).fill(null),
-  );
+  // The type tile whose popover is open, if any
+  const [popover, setPopover] = useState<{
+    index: number;
+    anchorEl: HTMLElement;
+  } | null>(null);
 
   const formatPositiveScore = (value: number) =>
     value > 0 ? `+${value}` : value;
@@ -79,34 +80,28 @@ const TeamAspectStats = observer(function TeamAspectStats({
     const formattedValue = formatPositiveScore(value);
 
     if (value < 0) {
-      return <Box sx={{ color: "red" }}>{formattedValue}</Box>;
+      return <Box sx={{ color: "error.main" }}>{formattedValue}</Box>;
     } else if (value > 0) {
-      return (
-        <Box
-          sx={[
-            { color: "green" },
-            theme => theme.applyStyles("dark", { color: "limegreen" }),
-          ]}
-        >
-          {formattedValue}
-        </Box>
-      );
+      return <Box sx={{ color: "success.main" }}>{formattedValue}</Box>;
     } else {
       return <Box>{formattedValue}</Box>;
     }
   };
 
-  const handlePopoverOpen = (e: MouseEvent<HTMLElement>, i: number) => {
-    const nextAnchorEl = Array<HTMLElement | null>(18).fill(null);
-    nextAnchorEl[i] = e.currentTarget;
-    setAnchorEl(nextAnchorEl);
+  const handlePopoverOpen = (e: SyntheticEvent<HTMLElement>, i: number) => {
+    if (popover?.anchorEl !== e.currentTarget)
+      setPopover({ index: i, anchorEl: e.currentTarget });
   };
 
-  const handlePopoverClose = () => setAnchorEl(Array(18).fill(null));
+  const handlePopoverClose = () => setPopover(null);
 
-  const handleClick = (e: MouseEvent<HTMLElement>, i: number) => {
-    if (anchorEl.every(x => x === null)) handlePopoverOpen(e, i);
-    else handlePopoverClose();
+  const handleClick = (e: SyntheticEvent<HTMLElement>, i: number) => {
+    if (popover) handlePopoverClose();
+    else handlePopoverOpen(e, i);
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
+    if (e.key === "Escape") handlePopoverClose();
   };
 
   const teamStatValues =
@@ -130,30 +125,36 @@ const TeamAspectStats = observer(function TeamAspectStats({
         {POKEMON_TYPES.map((type, i) => (
           <Grid key={i} size={2}>
             <Box sx={{ px: { xs: 0.125, md: 0.375 }, py: 0.375 }}>
-              <Box
+              <ButtonBase
                 sx={{
-                  color: "white",
+                  display: "block",
+                  color: "common.white",
                   borderRadius: "5px",
                   width: { xs: "100%", md: "75%" },
-                  m: "auto",
+                  mx: "auto",
+                  font: "inherit",
                   lineHeight: 1.25,
                   bgcolor: TYPE_COLORS[type],
                 }}
-                aria-owns={anchorEl[i] ? "mouse-over-popover-" + i : undefined}
-                aria-haspopup="true"
+                aria-describedby={
+                  popover?.index === i ? "mouse-over-popover-" + i : undefined
+                }
                 aria-label={type}
                 onMouseEnter={e => handlePopoverOpen(e, i)}
                 onMouseLeave={handlePopoverClose}
+                onFocus={e => handlePopoverOpen(e, i)}
+                onBlur={handlePopoverClose}
+                onKeyDown={handleKeyDown}
                 onClick={e => handleClick(e, i)}
               >
                 {isLgDown ? TYPE_ABBREVIATIONS[type] : type}
-              </Box>
+              </ButtonBase>
               <Popper
                 id={"mouse-over-popover-" + i}
                 role="tooltip"
                 sx={{ pointerEvents: "none" }}
-                open={!!anchorEl[i]}
-                anchorEl={anchorEl[i]}
+                open={popover?.index === i}
+                anchorEl={popover?.anchorEl}
                 transition
               >
                 {({ TransitionProps }) => (

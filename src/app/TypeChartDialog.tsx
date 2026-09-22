@@ -29,7 +29,7 @@ export default function TypeChartDialog() {
       <Dialog
         open={isDialogOpen}
         onClose={toggleDialog}
-        aria-labelledby="form-dialog-title"
+        aria-label="Type Chart"
         maxWidth="md"
         fullWidth
       >

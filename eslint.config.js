@@ -26,11 +26,18 @@ export default tseslint.config(
   },
   {
     files: ["src/**/*.{ts,tsx}"],
-    languageOptions: { globals: globals.browser },
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     plugins: { "react-hooks": reactHooks },
     rules: {
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
+      "@typescript-eslint/no-deprecated": "error",
       "no-restricted-syntax": [
         "error",
         {

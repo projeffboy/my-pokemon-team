@@ -80,55 +80,53 @@ const SearchFilters = observer(function SearchFilters() {
       container
       sx={{ pt: { xs: 0, md: 0 }, pb: { xs: 2, md: 0.5 }, minHeight: 120 }}
     >
-      {(Object.keys(inputLabels) as InputLabelKey[]).map(inputLabel => (
-        <Grid
-          key={inputLabel}
-          container
-          justifyContent="center"
-          size={{ xs: 6, lg: 3 }}
-        >
-          <FormControl
-            variant="standard"
-            sx={{
-              minWidth: { xs: 90, md: 120 },
-              m: 1.25,
-              mt: { xs: 0, lg: 1.25 },
-            }}
+      {(Object.keys(inputLabels) as InputLabelKey[]).map(inputLabel => {
+        const labelId = `search-filter-${inputLabel}-label`;
+        return (
+          <Grid
+            key={inputLabel}
+            container
+            justifyContent="center"
+            size={{ xs: 6, lg: 3 }}
           >
-            {/* E.g. Format */}
-            <InputLabel htmlFor={inputLabel}>{inputLabel}</InputLabel>
-            <Select
-              value={store.searchFilters[inputToFilterKey[inputLabel]]}
-              onChange={e => handleChange(inputLabel, e)}
-              inputProps={{ id: inputLabel }}
-              MenuProps={{
-                anchorOrigin: {
-                  vertical: "top", // Anchor the menu higher
-                  horizontal: "left",
-                },
-                transformOrigin: {
-                  vertical: "bottom", // Transform it upwards
-                  horizontal: "left",
-                },
-                PaperProps: {
-                  style: {
-                    maxHeight: 450, // Limit the menu height
-                    overflowY: "auto", // Enable scrolling for overflow
-                  },
-                },
+            <FormControl
+              variant="standard"
+              sx={{
+                minWidth: { xs: 90, md: 120 },
+                m: 1.25,
+                mt: { xs: 0, lg: 1.25 },
               }}
             >
-              <MenuItem value="">All</MenuItem>
-              {/* OU: OverUsed */}
-              {inputLabels[inputLabel].map((inputValue: string) => (
-                <MenuItem key={inputValue} value={inputValue}>
-                  {inputValue}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Grid>
-      ))}
+              {/* E.g. Format */}
+              <InputLabel id={labelId}>{inputLabel}</InputLabel>
+              <Select
+                value={store.searchFilters[inputToFilterKey[inputLabel]]}
+                onChange={e => handleChange(inputLabel, e)}
+                labelId={labelId}
+                MenuProps={{
+                  anchorOrigin: {
+                    vertical: "top", // Anchor the menu higher
+                    horizontal: "left",
+                  },
+                  transformOrigin: {
+                    vertical: "bottom", // Transform it upwards
+                    horizontal: "left",
+                  },
+                  slotProps: { paper: { sx: { maxHeight: 450 } } },
+                }}
+              >
+                <MenuItem value="">All</MenuItem>
+                {/* OU: OverUsed */}
+                {inputLabels[inputLabel].map((inputValue: string) => (
+                  <MenuItem key={inputValue} value={inputValue}>
+                    {inputValue}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+        );
+      })}
     </Grid>
   );
 });

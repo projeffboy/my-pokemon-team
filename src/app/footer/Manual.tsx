@@ -7,16 +7,16 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import FooterDialog from "./shared/FooterDialog";
 
-type TypeRow = [string, string, string, string];
+type TypeRow = [string, string, string];
 type TermRow = [string, string];
 
 const rowsOfTypeEffectivness: TypeRow[] = [
-  ["No effect", "+1.5", "green", "limegreen"],
-  ["0.25x effective", "+1.5", "green", "limegreen"],
-  ["0.5x effective", "+1", "green", "limegreen"],
-  ["1x effective", "0", "text.primary", "text.primary"],
-  ["2x super effective", "-1", "red", "red"],
-  ["4x super effective", "-1.5", "red", "red"],
+  ["No effect", "+1.5", "success.main"],
+  ["0.25x effective", "+1.5", "success.main"],
+  ["0.5x effective", "+1", "success.main"],
+  ["1x effective", "0", "text.primary"],
+  ["2x super effective", "-1", "error.main"],
+  ["4x super effective", "-1.5", "error.main"],
 ];
 
 const rowsOfTerms: TermRow[] = [
@@ -43,10 +43,10 @@ export default function Manual() {
   return (
     <FooterDialog button="Manual" title="Manual Help Guide">
       <Typography variant="h6">Team Defence</Typography>
-      <Typography variant="subtitle2" gutterBottom>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
         How is your team's type defence calculated?
       </Typography>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         Every pokemon in your team is weak to certain types and resistant to
         other types. If a type is not very effective against one of your
         pokemon, you gain points. But if it's super effective, you lose points:
@@ -64,20 +64,14 @@ export default function Manual() {
               <TableCell component="th" scope="row">
                 {row[0]}
               </TableCell>
-              <TableCell
-                align="right"
-                sx={[
-                  { color: row[2] },
-                  theme => theme.applyStyles("dark", { color: row[3] }),
-                ]}
-              >
+              <TableCell align="right" sx={{ color: row[2] }}>
                 {row[1]}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         <strong>Note:</strong> Abilities like Levitate, Thick Fat, Filter, and
         Sap Sipper are taken into account. For example, if your Bronzong has
         Levitate, you get +1.5 for Ground. And if it has Heatproof, you get 0
@@ -85,25 +79,25 @@ export default function Manual() {
       </Typography>
 
       <Typography variant="h6">Team Type Coverage</Typography>
-      <Typography variant="subtitle2" gutterBottom>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
         How is your team's type coverage calculated?
       </Typography>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         First, what is type coverage? It's about how many types your moves are
         super effective against. If one of your moves is super effective against
         a type, you gain +1. If that move also has the same type as the pokemon
         using it (STAB), then you gain another +1.
       </Typography>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         <strong>Note:</strong> Abilities like Aerilate and Pixilate are taken
         into account. So are moves like Freeze Dry and Flying Press. For
         example, Freeze Dry also gives you +1 against Water.
       </Typography>
       <Typography variant="h6">Formats (aka Tiers)</Typography>
-      <Typography variant="subtitle2" gutterBottom>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
         What is Ubers, OU, VGC, etc.?
       </Typography>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         Ubers, OU, and{" "}
         <Link href="https://play.pokemon.com/en-us/resources/rules/?category=vgc">
           VGC
@@ -121,15 +115,15 @@ export default function Manual() {
         </Link>
         .
       </Typography>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         The Pokemon Champions (M-C) format only lists the pokemon you can use in
         Pokemon Champions under Regulation M-C, including their mega evolutions.
       </Typography>
       <Typography variant="h6">Team Checklist Terms</Typography>
-      <Typography variant="subtitle2" gutterBottom>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
         What do things like entry hazard, phazer, and volt-turn even mean?
       </Typography>
-      <Typography paragraph>
+      <Typography sx={{ mb: 2 }}>
         Smogon has a{" "}
         <Link href="https://www.smogon.com/dp/articles/pokemon_dictionary">
           dictionary for pokemon terms

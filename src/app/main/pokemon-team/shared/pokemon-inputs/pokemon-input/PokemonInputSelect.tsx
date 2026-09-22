@@ -72,7 +72,7 @@ export default function PokemonInputSelect({
       getOptionLabel={(option: SelectOption) => option.label}
       isOptionEqualToValue={(option, value) => option.value === value.value}
       noOptionsText={
-        <Typography variant="body2" textAlign="center">
+        <Typography variant="body2" sx={{ textAlign: "center" }}>
           Nothing found <br /> (you haven't selected a pokemon)
         </Typography>
       }

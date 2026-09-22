@@ -1,4 +1,5 @@
-import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
@@ -10,7 +11,6 @@ import Manual from "./footer/Manual";
 import Credits from "./footer/Credits";
 import PrivacyPolicy from "./footer/PrivacyPolicy";
 import UpdateLog from "./footer/UpdateLog";
-import FooterButton from "./footer/shared/FooterButton";
 import type { MouseEvent } from "react";
 
 type ColorMode = "system" | "light" | "dark";
@@ -27,55 +27,54 @@ export default function Footer() {
   };
 
   return (
-    <Grid
+    <Stack
       component="footer"
-      container
-      size={12}
-      justifyContent="center"
-      alignItems="center"
+      direction="row"
+      useFlexGap
       spacing={2}
-      sx={{ pb: process.env.NODE_ENV === "production" ? "230px" : 0 }}
+      sx={{
+        width: "100%",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignItems: "center",
+        pb: process.env.NODE_ENV === "production" ? "230px" : 0,
+      }}
     >
-      <Grid>
-        <Manual />
-      </Grid>
-      <Grid>
-        <FooterButton href="https://jefferytang.com">Jeffery Tang</FooterButton>
-      </Grid>
-      <Grid>
-        <Credits />
-      </Grid>
-      <Grid>
-        <UpdateLog />
-      </Grid>
-      <Grid>
-        <PrivacyPolicy />
-      </Grid>
-      <Grid>
-        <ToggleButtonGroup
-          exclusive
-          size="small"
-          value={selectedMode}
-          onChange={handleModeChange}
-          aria-label="Color scheme"
-        >
-          <Tooltip title="Use system theme">
-            <ToggleButton value="system" aria-label="Use system theme">
-              <ComputerIcon />
-            </ToggleButton>
-          </Tooltip>
-          <Tooltip title="Use light theme">
-            <ToggleButton value="light" aria-label="Use light theme">
-              <LightModeIcon />
-            </ToggleButton>
-          </Tooltip>
-          <Tooltip title="Use dark theme">
-            <ToggleButton value="dark" aria-label="Use dark theme">
-              <DarkModeIcon />
-            </ToggleButton>
-          </Tooltip>
-        </ToggleButtonGroup>
-      </Grid>
-    </Grid>
+      <Manual />
+      <Button
+        variant="footer"
+        href="https://jefferytang.com"
+        target="_blank"
+        rel="noopener"
+      >
+        Jeffery Tang
+      </Button>
+      <Credits />
+      <UpdateLog />
+      <PrivacyPolicy />
+      <ToggleButtonGroup
+        exclusive
+        size="small"
+        value={selectedMode}
+        onChange={handleModeChange}
+        aria-label="Color scheme"
+      >
+        <Tooltip title="Use system theme">
+          <ToggleButton value="system" aria-label="Use system theme">
+            <ComputerIcon />
+          </ToggleButton>
+        </Tooltip>
+        <Tooltip title="Use light theme">
+          <ToggleButton value="light" aria-label="Use light theme">
+            <LightModeIcon />
+          </ToggleButton>
+        </Tooltip>
+        <Tooltip title="Use dark theme">
+          <ToggleButton value="dark" aria-label="Use dark theme">
+            <DarkModeIcon />
+          </ToggleButton>
+        </Tooltip>
+      </ToggleButtonGroup>
+    </Stack>
   );
 }
