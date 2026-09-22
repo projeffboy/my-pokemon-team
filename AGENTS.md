@@ -39,7 +39,7 @@ Inside `src/`, `App.tsx` and `app/` mirror the component tree, so a file's path 
 3. When more than one file needs the same thing, it moves to a `shared/` folder at their nearest common ancestor. That includes a parent and its own children: `PokemonTeam.tsx` and both team viewers render `PokemonInputs`, so it lives in `pokemon-team/shared/`.
 4. If an import cannot be reached with `./` or a single `../`, use the `@` alias (`@/*` maps to `src/*`). No `../../` (ESLint enforces this).
 
-Component files are PascalCase `.tsx`, and every other module is kebab-case `.ts`, such as `team-link.ts` and `use-width.ts`. `RAMP.ts` is the one exception.
+Component files are PascalCase `.tsx`, and every other module is kebab-case `.ts`, such as `team-link.ts` and `use-width.ts`.
 
 ### Tests
 
@@ -90,7 +90,7 @@ Keep entries concise. A date's `changes` render as a bulleted list when there is
 
 ## Ads
 
-`src/app/RAMP.ts` is the Playwire ad integration, which earns the site's revenue to pay for its maintenance and upkeep. Only change it for a clear efficiency gain, and put that change in its own commit so it can be reverted alone if revenue drops.
+The `playwireAds` plugin in `vite.config.ts` is the Playwire ad integration, which earns the site's revenue to pay for its maintenance and upkeep. It injects the ad script into production builds only. Only change it for a clear efficiency gain, and put that change in its own commit so it can be reverted alone if revenue drops.
 
 `public/robots.txt` explicitly allows AmazonAdBot for the same ad integration. Leave it as it is, even though it looks redundant.
 

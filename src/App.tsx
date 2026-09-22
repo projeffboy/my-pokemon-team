@@ -8,21 +8,14 @@ import TypeChartDialog from "./app/TypeChartDialog";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./app/shared/theme";
-import Ramp from "./app/RAMP";
 import { cookieStorageManager } from "./app/color-scheme-storage";
 import { WidthProvider } from "./app/shared/WidthContext";
-
-const PUB_ID = 1025446;
-const WEBSITE_ID = 75399;
 
 export default function App() {
   return (
     <>
       <TeamLinkSync />
 
-      {process.env.NODE_ENV === "production" && (
-        <Ramp PUB_ID={PUB_ID} WEBSITE_ID={WEBSITE_ID} />
-      )}
       <ThemeProvider
         theme={theme}
         defaultMode="system"

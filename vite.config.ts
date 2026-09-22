@@ -35,8 +35,45 @@ function serveLearnsetsJson(): Plugin {
   };
 }
 
+// Playwire ads earn the site's revenue. The tags go in the HTML, as Playwire's SPA guide
+// shows, rather than in a component, so the browser finds ramp.js while the bundle is still
+// loading. Only builds get them, so dev and tests stay ad-free.
+function playwireAds(): Plugin {
+  return {
+    name: "playwire-ads",
+    apply: "build",
+    transformIndexHtml: () => [
+      {
+        tag: "link",
+        attrs: { rel: "preconnect", href: "https://cdn.intergient.com" },
+        injectTo: "head",
+      },
+      {
+        tag: "script",
+        attrs: { "data-cfasync": "false" },
+        children: [
+          "window.ramp = window.ramp || {};",
+          "window.ramp.que = window.ramp.que || [];",
+          "window.ramp.passiveMode = true;",
+          "window.ramp.que.push(function () { window.ramp.spaNewPage(window.location.pathname); });",
+        ].join(" "),
+        injectTo: "head",
+      },
+      {
+        tag: "script",
+        attrs: {
+          "data-cfasync": "false",
+          async: true,
+          src: "https://cdn.intergient.com/1025446/75399/ramp.js",
+        },
+        injectTo: "body",
+      },
+    ],
+  };
+}
+
 export default defineConfig({
-  plugins: [react(), serveLearnsetsJson()],
+  plugins: [react(), serveLearnsetsJson(), playwireAds()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
