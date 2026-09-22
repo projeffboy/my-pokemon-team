@@ -14,8 +14,8 @@ test("selecting a pokemon resets the slot and auto-selects its only item and abi
     move1: "",
   });
 
-  store.selectPokemon(1, "bronzong");
-  expect(member).toMatchObject({ name: "bronzong", item: "", ability: "" });
+  store.selectPokemon(1, "kingdra");
+  expect(member).toMatchObject({ name: "kingdra", item: "", ability: "" });
 });
 
 test("selecting a pokemon leaves the other slots alone", ({ store }) => {

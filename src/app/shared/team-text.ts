@@ -1,7 +1,11 @@
 // Pokemon Showdown team text <-> store conversion (see https://pokepast.es/syntax.html)
 import { MOVE_KEYS } from "@/types";
 import store from "@/store";
-import { createEmptyTeam, getAutoSelectedItem } from "@/shared/team";
+import {
+  createEmptyTeam,
+  getAutoSelectedAbility,
+  getAutoSelectedItem,
+} from "@/shared/team";
 import {
   pokemonName,
   itemName,
@@ -68,7 +72,7 @@ export function parseTeamText(text: string): Team {
 
     member.name = pokemon;
     const abilities = pokemonAbilities(pokemon);
-    member.ability = (abilities.length === 1 && abilities[0]) || "";
+    member.ability = getAutoSelectedAbility(pokemon);
 
     // If team raw data does not mention item, leave it blank
     if (itemText) {

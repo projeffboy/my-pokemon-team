@@ -5,7 +5,11 @@ import { getTeamLearnsets, learnsetsReady } from "./store/learnsets";
 import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
 import { evaluateChecklist } from "./store/checklist";
-import { createEmptyTeam, getAutoSelectedItem } from "./shared/team";
+import {
+  createEmptyTeam,
+  getAutoSelectedAbility,
+  getAutoSelectedItem,
+} from "./shared/team";
 import { pokemonName } from "./shared/names";
 import { pokemonAbilities } from "./shared/pokedex";
 
@@ -64,8 +68,7 @@ class Store {
     if (!member) return;
     member.name = name;
     member.item = getAutoSelectedItem(name, "");
-    const abilities = pokemonAbilities(name);
-    member.ability = abilities.length === 1 ? (abilities[0] ?? "") : "";
+    member.ability = getAutoSelectedAbility(name);
     for (const key of MOVE_KEYS) member[key] = "";
   }
 

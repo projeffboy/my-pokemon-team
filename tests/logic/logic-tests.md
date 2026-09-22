@@ -10,6 +10,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `filtering.spec.ts` covers formats, tiers, regions, types, and combined filters.
 - `pokedex.spec.ts` checks inherited cosmetic-form data and distinct battle formes.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.
+- `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, and leaves the other slots alone.
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
 - `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, learnset merging, viable moves, the type chart, rename reports, and the rendered file format.

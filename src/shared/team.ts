@@ -1,6 +1,7 @@
 import pokedex from "@/data/pokedex";
 import type { Team, TeamPokemonProperties } from "@/types";
 import { itemNameInverse } from "./names";
+import { pokemonAbilities } from "./pokedex";
 
 export function createEmptyTeam(): Team {
   return Array.from({ length: 6 }, (): TeamPokemonProperties => ({
@@ -23,4 +24,10 @@ export function getAutoSelectedItem(
   const itemName = requiredItem ?? requiredItems?.[0];
 
   return (itemName && itemNameInverse(itemName)) || pokemonItem;
+}
+
+// E.g. Thick Fat for Venusaur-Mega, its only ability
+export function getAutoSelectedAbility(pokemon: string): string {
+  const abilities = pokemonAbilities(pokemon);
+  return abilities.length === 1 ? (abilities[0] ?? "") : "";
 }
