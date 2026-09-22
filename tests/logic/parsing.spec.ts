@@ -335,7 +335,7 @@ test.describe("team URL encoding", () => {
     expect(store.team[0].name).toBe("komala");
 
     store.replaceTeam(parseTeamText(reuniclusText));
-    const oversizedParam = toBase64Url(text + " ");
+    const oversizedParam = toBase64Url(`${text} `);
     expect(oversizedParam.length).toBeGreaterThan(
       MAX_ENCODED_TEAM_PARAM_LENGTH,
     );

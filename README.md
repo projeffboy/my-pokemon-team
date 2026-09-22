@@ -70,10 +70,10 @@ To keep the bundle small, the script only keeps the fields the app reads. To use
 After writing the data, the script reports what the update may have broken:
 
 - Pokemon, moves, and items that were renamed or removed. Share links store display names, so old links lose those entries.
-- Whether the bundled icon sheets in `src/images` still match Showdown's. If one differs, look for blank or shifted icons in the app, and replace the sheet if there are any.
+- Whether the bundled icon sheets in `src/images/icon-sheets` still match Showdown's. If one differs, look for blank or shifted icons in the app, and replace the sheet if there are any.
 - New pokemon with a sprite that Showdown does not host, at either sprite size. Bundle one as described in [local-sprites-sources.md](src/images/local-sprites/local-sprites-sources.md).
 
-The last two checks need a connection to play.pokemonshowdown.com and are skipped without one. If players will notice the update, add an entry to the update log in `src/app/footer/UpdateLog.tsx`.
+The last two checks need a connection to play.pokemonshowdown.com and are skipped without one. If players will notice the update, add an entry to the update log in `src/app/footer/update-log/entries.ts`.
 
 ## Testing
 

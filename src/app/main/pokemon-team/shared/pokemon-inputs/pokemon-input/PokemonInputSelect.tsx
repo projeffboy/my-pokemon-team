@@ -31,7 +31,7 @@ export default function PokemonInputSelect({
     label: optionLabels[i] || "",
   }));
   const selectedOption = options.find(option => option.value === value) || null;
-  const id = "react-select-single-" + teamIndex + "-" + pokemonProperty;
+  const id = `react-select-single-${teamIndex}-${pokemonProperty}`;
   const internalListRef = useListRef(null);
 
   // Scrolls the virtualized list to keep the keyboard-highlighted option in view

@@ -198,7 +198,9 @@ const showdownSprites = "https://play.pokemonshowdown.com/sprites";
 // The bundled icon sheets have to show every icon index in src/data
 async function reportIconSheets() {
   for (const name of ["pokemonicons-sheet", "itemicons-sheet"]) {
-    const local = await fs.readFile(path.join(root, `src/images/${name}.png`));
+    const local = await fs.readFile(
+      path.join(root, `src/images/icon-sheets/${name}.png`),
+    );
     const response = await fetch(`${showdownSprites}/${name}.png`);
     console.log(
       local.equals(Buffer.from(await response.arrayBuffer())) ?

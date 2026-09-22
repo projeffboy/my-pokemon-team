@@ -68,13 +68,13 @@ For responsive styling, use MUI's breakpoint objects, such as `sx={{ px: { xs: 0
 
 ## Images
 
-Host images statically with the site, except for pokemon sprites, which load from Pokemon Showdown's URLs. The pokemon and item icon sheets also come from Showdown, but keep them bundled in `src/images/`: Showdown changes its sheets as it adds pokemon and items, and a sheet that no longer matches `src/data/` can cause bugs or crash the site. `npm run update:data` reports when a bundled sheet differs from Showdown's.
+Host images statically with the site, except for pokemon sprites, which load from Pokemon Showdown's URLs. The pokemon and item icon sheets also come from Showdown, but keep them bundled in `src/images/icon-sheets/`: Showdown changes its sheets as it adds pokemon and items, and a sheet that no longer matches `src/data/` can cause bugs or crash the site. `npm run update:data` reports when a bundled sheet differs from Showdown's.
 
 Formes that Showdown has no usable sprite for are bundled in `src/images/local-sprites/`, and `PokemonSprite.tsx` uses a local sprite before any Showdown URL. `npm run update:data` reports new pokemon whose sprites Showdown does not host. Read [local-sprites-sources.md](src/images/local-sprites/local-sprites-sources.md) before adding or deleting a local sprite.
 
 Images that the code imports go in `src/images/`: Vite gives them hashed filenames, ships only the ones that are imported, and fails the build if one is missing. `public/` is only for files that something outside the bundle fetches by a fixed URL, such as the favicon, `robots.txt`, and the link-preview screenshot named in `index.html`. `vercel.json` caches every image for a year as immutable, so when replacing a `public/` image, give it a new filename.
 
-Keep source documentation for downloaded images in a `*-sources.md` file beside them, like `src/images/type-chart-sources.md`.
+Keep source documentation for downloaded images in a `*-sources.md` file beside them, like `src/images/type-charts/type-chart-sources.md`.
 
 ## Share Links
 

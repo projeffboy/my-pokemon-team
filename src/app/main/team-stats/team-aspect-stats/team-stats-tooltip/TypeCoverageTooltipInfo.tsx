@@ -58,7 +58,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
             <Box component="span" sx={{ width: 150 }}>
               {moveName(move)}
             </Box>
-            <span>{pokemonName(pokemon) + " "}</span>
+            <span>{`${pokemonName(pokemon)} `}</span>
             <PokemonIcon pokemonProperty="name" value={pokemon} />
           </Box>
         ))}

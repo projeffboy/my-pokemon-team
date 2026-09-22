@@ -11,7 +11,7 @@ export function typeAgainstPokemon(
   pokemonAbility?: string,
   item?: string,
 ) {
-  const pokemonTypes = pokedex[pokemon]?.types || [];
+  const pokemonTypes = pokedex[pokemon]?.types ?? [];
   const [type1, type2] = pokemonTypes;
   const type1Resistance =
     type1 && isPokemonType(type1) ? typechart[type1][type] : 0;
@@ -152,8 +152,7 @@ export function moveType(move: string, pokemon: string, ability?: string) {
     moveType = pokemonProperties?.types?.find(isPokemonType) ?? moveType;
   } else if (move === "ivycudgel") {
     const pokemonProperties = pokedex[pokemon];
-    moveType =
-      pokemonProperties?.types?.filter(isPokemonType).at(-1) ?? moveType;
+    moveType = pokemonProperties?.types?.findLast(isPokemonType) ?? moveType;
   } else if (move === "technoblast") {
     // For Genesect
     switch (pokemon) {

@@ -2,8 +2,8 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import face1 from "@/images/venusaur-shuffle-face-cropped.png";
-import face2 from "@/images/charizard-shuffle-face-cropped.png";
+import face1 from "@/images/pokemon-shuffle-faces/venusaur-shuffle-face-cropped.png";
+import face2 from "@/images/pokemon-shuffle-faces/charizard-shuffle-face-cropped.png";
 import { fluidClamp } from "./header/fluid-clamp";
 import {
   breakpointValues,

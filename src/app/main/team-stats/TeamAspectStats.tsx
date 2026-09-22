@@ -137,7 +137,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                   bgcolor: TYPE_COLORS[type],
                 }}
                 aria-describedby={
-                  popover?.index === i ? "mouse-over-popover-" + i : undefined
+                  popover?.index === i ? `mouse-over-popover-${i}` : undefined
                 }
                 aria-label={type}
                 onMouseEnter={e => handlePopoverOpen(e, i)}
@@ -150,7 +150,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 {isLgDown ? TYPE_ABBREVIATIONS[type] : type}
               </ButtonBase>
               <Popper
-                id={"mouse-over-popover-" + i}
+                id={`mouse-over-popover-${i}`}
                 role="tooltip"
                 sx={{ pointerEvents: "none" }}
                 open={popover?.index === i}

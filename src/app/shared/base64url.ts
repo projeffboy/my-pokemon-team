@@ -2,16 +2,15 @@
 
 export function toBase64Url(text: string): string {
   const bytes = new TextEncoder().encode(text);
-  let binary = "";
-  bytes.forEach(byte => (binary += String.fromCharCode(byte)));
+  const binary = Array.from(bytes, byte => String.fromCharCode(byte)).join("");
   return btoa(binary)
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
+    .replaceAll("+", "-")
+    .replaceAll("/", "_")
     .replace(/=+$/, "");
 }
 
 export function fromBase64Url(encoded: string): string {
-  let base64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
+  let base64 = encoded.replaceAll("-", "+").replaceAll("_", "/");
   base64 += "=".repeat((4 - (base64.length % 4)) % 4);
   const binary = atob(base64);
   const bytes = Uint8Array.from(binary, char => char.charCodeAt(0));

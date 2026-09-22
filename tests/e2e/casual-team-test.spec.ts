@@ -59,8 +59,8 @@ const addPokemon = async (
   await selectItem(page, pokemon.item, index);
   await selectAbility(page, pokemon.ability, index);
 
-  for (let i = 0; i < pokemon.moves.length; i++) {
-    await selectMove(page, pokemon.moves[i], i + 1, index);
+  for (const [i, move] of pokemon.moves.entries()) {
+    await selectMove(page, move, i + 1, index);
   }
 };
 
@@ -71,8 +71,8 @@ test.describe("Casual Team", () => {
       "This test only runs on mobile",
     );
 
-    for (let i = 0; i < team.length; i++) {
-      await addPokemon(page, i, team[i]);
+    for (const [i, pokemon] of team.entries()) {
+      await addPokemon(page, i, pokemon);
     }
 
     // The URL's `team` param should reflect the fully built team

@@ -22,6 +22,7 @@ export default tseslint.config(
         "error",
         { ignoreRestSiblings: true },
       ],
+      "prefer-template": "error",
     },
   },
   {

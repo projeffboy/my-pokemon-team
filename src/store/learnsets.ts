@@ -19,14 +19,14 @@ export function completeLearnset(pokemon: string): readonly string[] {
 }
 
 function buildCompleteLearnset(pokemon: string): string[] {
-  let completeLearnset: string[] = learnsets[pokemon] || [];
+  let completeLearnset: string[] = learnsets[pokemon] ?? [];
 
-  let baseForme = getBaseForme(pokemon) || pokemon; // since learnsets[pokemon] requires pokemon to be at its base forme
+  let baseForme = getBaseForme(pokemon) ?? pokemon; // since learnsets[pokemon] requires pokemon to be at its base forme
 
   const isRegional = REGIONS.some(region => pokemon.includes(region));
 
   if (!isRegional) {
-    completeLearnset = [...completeLearnset, ...(learnsets[baseForme] || [])];
+    completeLearnset = [...completeLearnset, ...(learnsets[baseForme] ?? [])];
   }
 
   while (true) {
@@ -36,7 +36,8 @@ function buildCompleteLearnset(pokemon: string): string[] {
 
     // Regional formes are walked from their base forme, so switch back to the regional prevo
     // E.g. Persian-Alola => Persian => Meowth => Meowth-Alola
-    const otherFormes = (isRegional && pokedex[baseForme]?.otherFormes) || [];
+    const otherFormes =
+      isRegional ? (pokedex[baseForme]?.otherFormes ?? []) : [];
     const region =
       REGIONS.find(region =>
         otherFormes.some(forme => forme.toLowerCase().includes(region)),
@@ -45,7 +46,7 @@ function buildCompleteLearnset(pokemon: string): string[] {
     // Append previous evolution learnset to current learnset
     completeLearnset = [
       ...completeLearnset,
-      ...(learnsets[baseForme + region] || []),
+      ...(learnsets[`${baseForme}${region}`] ?? []),
     ];
   }
 
@@ -74,7 +75,7 @@ function buildCompleteLearnset(pokemon: string): string[] {
       "steel",
       "water",
     ];
-    const hiddenpowers = pokemonTypes.map(type => "hiddenpower" + type);
+    const hiddenpowers = pokemonTypes.map(type => `hiddenpower${type}`);
 
     // remove hidden power normal
     completeLearnset.splice(completeLearnset.indexOf("hiddenpower"), 1);

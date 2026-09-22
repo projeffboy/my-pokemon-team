@@ -172,7 +172,7 @@ const checkScoreAndPopover = async (
     // We use a regex to be more robust against whitespace differences (e.g. "0.5xto" vs "0.5x to")
     const escapedText = text
       .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-      .replace(/ /g, "\\s*");
+      .replaceAll(" ", "\\s*");
     await expect(tooltip).toContainText(new RegExp(escapedText));
   }
 
