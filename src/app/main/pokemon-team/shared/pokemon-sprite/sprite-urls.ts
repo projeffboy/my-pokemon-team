@@ -1,4 +1,4 @@
-// scripts/update-data.mjs loads this file on its own, so it cannot import anything
+// scripts/update-data.ts loads this file on its own, so it cannot import anything
 
 const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
 
