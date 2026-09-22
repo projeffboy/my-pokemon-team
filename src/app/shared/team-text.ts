@@ -46,7 +46,7 @@ export function parseTeamText(text: string): Team {
 
     // Get pokemon and item names
     const [firstLine = ""] = lines;
-    const pokemonAndItemNames = firstLine.split("@").map(str => str.trim());
+    const pokemonAndItemNames = firstLine.split("@").map(part => part.trim());
     const [pokemonNameAndNickname = "", itemText] = pokemonAndItemNames;
 
     // Ignore nicknames and keep the actual species name, while accepting either
@@ -77,7 +77,7 @@ export function parseTeamText(text: string): Team {
       member.item = item || getAutoSelectedItem(pokemon, "");
     }
 
-    let moveNum = 1;
+    let moveIndex = 0;
 
     lines.slice(1).forEach(line => {
       if (line.includes("Ability:")) {
@@ -88,7 +88,7 @@ export function parseTeamText(text: string): Team {
         if (abilities.includes(ability)) {
           member.ability = ability;
         }
-      } else if (line.startsWith("-") && moveNum <= 4) {
+      } else if (line.startsWith("-") && moveIndex < MOVE_KEYS.length) {
         // if property has to do with moves
         const moveText = line
           .replace(/^-\s*/, "")
@@ -102,10 +102,10 @@ export function parseTeamText(text: string): Team {
 
         const validMove = canItLearn(move, pokemon) && move ? move : "";
 
-        const moveKey = MOVE_KEYS[moveNum - 1];
+        const moveKey = MOVE_KEYS[moveIndex];
         if (moveKey) member[moveKey] = validMove;
 
-        moveNum++;
+        moveIndex++;
       }
     });
   });

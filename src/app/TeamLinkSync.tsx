@@ -1,36 +1,39 @@
 import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 import { autorun } from "mobx";
-import { encodeTeamForUrl, importTeamFromUrlParam } from "./shared/team-link";
+import {
+  encodeTeamForUrl,
+  importTeamFromUrlParameter,
+} from "./shared/team-link";
 
-// Keeps the `team` URL param and the store's team in sync.
+// Keeps the `team` URL parameter and the store's team in sync.
 // Not rendered visually; mount once inside the Router.
 export default function TeamLinkSync() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const lastSyncedParam = useRef<string | null>(null);
+  const lastSyncedTeamParameter = useRef<string | null>(null);
 
   // URL -> store: runs on initial load and whenever navigation (back/forward, manual
-  // address bar edits) changes the `team` param to something we didn't just write ourselves.
+  // address bar edits) changes the `team` parameter to something we didn't just write ourselves.
   useEffect(() => {
-    const param = searchParams.get("team");
-    if (param === lastSyncedParam.current) return;
+    const teamParameter = searchParams.get("team");
+    if (teamParameter === lastSyncedTeamParameter.current) return;
 
-    lastSyncedParam.current = param;
-    if (param) importTeamFromUrlParam(param);
+    lastSyncedTeamParameter.current = teamParameter;
+    if (teamParameter) importTeamFromUrlParameter(teamParameter);
   }, [searchParams]);
 
-  // store -> URL: keeps the URL's `team` param canonical for the current team.
+  // store -> URL: keeps the URL's `team` parameter canonical for the current team.
   useEffect(() => {
     return autorun(() => {
       const encoded = encodeTeamForUrl();
-      lastSyncedParam.current = encoded || null;
+      lastSyncedTeamParameter.current = encoded || null;
 
       setSearchParams(
-        previousParams => {
-          const nextParams = new URLSearchParams(previousParams);
-          if (encoded) nextParams.set("team", encoded);
-          else nextParams.delete("team");
-          return nextParams;
+        previousParameters => {
+          const nextParameters = new URLSearchParams(previousParameters);
+          if (encoded) nextParameters.set("team", encoded);
+          else nextParameters.delete("team");
+          return nextParameters;
         },
         { replace: true },
       );

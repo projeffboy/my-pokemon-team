@@ -34,9 +34,9 @@ test.describe("Pokemon Card - Unit Tests", () => {
     // Check move fields for cards 2, 4, 5
     for (const i of [1, 3, 4]) {
       await ensureCardVisible(page, i);
-      for (let moveNum = 1; moveNum <= 4; moveNum++) {
+      for (let moveNumber = 1; moveNumber <= 4; moveNumber++) {
         const moveField = page.getByRole("combobox", {
-          name: `Pokemon ${i + 1}'s move${moveNum}`,
+          name: `Pokemon ${i + 1}'s move${moveNumber}`,
         });
         await expect(moveField).toHaveValue("");
       }

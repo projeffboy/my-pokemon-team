@@ -71,7 +71,7 @@ test.describe("Importing an OU team", () => {
     // 2. Basic check
     await doBasicCheck(page);
 
-    // The URL's `team` param should reflect the imported team
+    // The URL's `team` parameter should reflect the imported team
     await expect(page).toHaveURL(/[?&]team=/);
     expect(getTeamTextFromUrl(page)).toContain("Garchomp");
 

@@ -60,7 +60,7 @@ test.describe("Save/Load Team: Import/Export Team - Integration Tests", () => {
 
     await verifyPokemonProperty(page, "Gigalith");
 
-    // The URL's `team` param should stay in sync with the store
+    // The URL's `team` parameter should stay in sync with the store
     await expect(page).toHaveURL(/[?&]team=/);
     expect(getTeamTextFromUrl(page)).toContain("Gigalith");
   });
@@ -88,7 +88,7 @@ Ability: Chlorophyll
       await verifyPokemonProperty(page, value, { property });
     }
 
-    // The URL's `team` param should decode back to the imported team
+    // The URL's `team` parameter should decode back to the imported team
     await expect(page).toHaveURL(/[?&]team=/);
     const teamText = getTeamTextFromUrl(page);
     expect(teamText).toContain("Weepinbell @ Life Orb");

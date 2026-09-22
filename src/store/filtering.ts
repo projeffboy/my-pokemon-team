@@ -60,7 +60,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       );
     }
 
-    const tierAbbr: Record<string, string> = {
+    const tierAbbreviationByFormat: Record<string, string> = {
       Uber: "Uber",
       "OU: Over Used": "OU",
       "UU: Under Used": "UU",
@@ -92,9 +92,11 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       "LC",
     ];
 
-    if (smogonSinglesTiers.includes(tierAbbr[format] ?? "")) {
+    if (smogonSinglesTiers.includes(tierAbbreviationByFormat[format] ?? "")) {
       return filterByTier(smogonSinglesTiers, "tier");
-    } else if (["DUber", "DOU", "DUU"].includes(tierAbbr[format] ?? "")) {
+    } else if (
+      ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
+    ) {
       return filterByTier(["DUber", "DOU", "DUU", "(DUU)"], "doublesTier");
     }
 
@@ -106,7 +108,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
 
       for (const tier of arrayOfTiers) {
         // If the tier matches or it's a lower tier
-        if (tierAbbr[format] === tier || tierMatched) {
+        if (tierAbbreviationByFormat[format] === tier || tierMatched) {
           tierMatched = true;
 
           // Add all the pokemon from that tier to filteredPokedex

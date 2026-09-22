@@ -22,11 +22,11 @@ export const goToSite = async (page: Page) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 };
 
-// Decodes the `team` URL param (see src/app/shared/team-link.ts) into Pokemon Showdown team
-// text, or returns "" if the team is empty and the param is absent
+// Decodes the `team` URL parameter (see src/app/shared/team-link.ts) into Pokemon Showdown team
+// text, or returns "" if the team is empty and the parameter is absent
 export const getTeamTextFromUrl = (page: Page) => {
-  const param = new URL(page.url()).searchParams.get("team");
-  return param ? fromBase64Url(param) : "";
+  const teamParameter = new URL(page.url()).searchParams.get("team");
+  return teamParameter ? fromBase64Url(teamParameter) : "";
 };
 
 // Helper function to verify that an image has loaded successfully (not broken/404)

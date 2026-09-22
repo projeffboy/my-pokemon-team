@@ -2,8 +2,8 @@ import { parseTeamText, serializeTeamText } from "@/app/shared/team-text";
 import { fromBase64Url, toBase64Url } from "@/app/shared/base64url";
 import {
   encodeTeamForUrl,
-  importTeamFromUrlParam,
-  MAX_ENCODED_TEAM_PARAM_LENGTH,
+  importTeamFromUrlParameter,
+  MAX_ENCODED_TEAM_PARAMETER_LENGTH,
 } from "@/app/shared/team-link";
 import { autorun } from "mobx";
 import { createTeam } from "./shared/team";
@@ -242,7 +242,7 @@ Ampharos-Mega`);
         if (source === "text") {
           store.replaceTeam(parseTeamText(text));
         } else {
-          importTeamFromUrlParam(toBase64Url(text));
+          importTeamFromUrlParameter(toBase64Url(text));
         }
         expect(snapshots).toEqual([
           toBase64Url(`${reuniclusText}\n\n`),
@@ -297,22 +297,22 @@ test.describe("team URL encoding", () => {
     expect(encodeTeamForUrl()).toBe("");
     store.replaceTeam(parseTeamText(reuniclusText));
     const expectedTeam = store.team.map(pokemon => ({ ...pokemon }));
-    const param = encodeTeamForUrl();
-    expect(fromBase64Url(param)).toBe(`${reuniclusText}\n\n`);
+    const teamParameter = encodeTeamForUrl();
+    expect(fromBase64Url(teamParameter)).toBe(`${reuniclusText}\n\n`);
 
     store.replaceTeam(parseTeamText(""));
-    importTeamFromUrlParam(param);
+    importTeamFromUrlParameter(teamParameter);
     expect(store.team).toEqual(expectedTeam);
   });
 
-  for (const [description, param] of [
+  for (const [description, teamParameter] of [
     ["empty", ""],
     ["malformed", "%not-base64%"],
     ["truncated", "A"],
     ["invalid UTF-8", "_w"],
     [
       "oversized",
-      toBase64Url("Komala".padEnd(MAX_ENCODED_TEAM_PARAM_LENGTH, " ")),
+      toBase64Url("Komala".padEnd(MAX_ENCODED_TEAM_PARAMETER_LENGTH, " ")),
     ],
   ]) {
     test(`ignores ${description} URL parameters without changing the team`, ({
@@ -320,7 +320,7 @@ test.describe("team URL encoding", () => {
     }) => {
       store.replaceTeam(parseTeamText(reuniclusText));
       const expectedTeam = store.team.map(pokemon => ({ ...pokemon }));
-      expect(() => importTeamFromUrlParam(param)).not.toThrow();
+      expect(() => importTeamFromUrlParameter(teamParameter)).not.toThrow();
       expect(store.team).toEqual(expectedTeam);
     });
   }
@@ -328,19 +328,22 @@ test.describe("team URL encoding", () => {
   test("accepts a parameter at the size limit and rejects it just above", ({
     store,
   }) => {
-    const text = "Komala".padEnd((MAX_ENCODED_TEAM_PARAM_LENGTH * 3) / 4, " ");
-    const param = toBase64Url(text);
-    expect(param).toHaveLength(MAX_ENCODED_TEAM_PARAM_LENGTH);
-    importTeamFromUrlParam(param);
+    const text = "Komala".padEnd(
+      (MAX_ENCODED_TEAM_PARAMETER_LENGTH * 3) / 4,
+      " ",
+    );
+    const teamParameter = toBase64Url(text);
+    expect(teamParameter).toHaveLength(MAX_ENCODED_TEAM_PARAMETER_LENGTH);
+    importTeamFromUrlParameter(teamParameter);
     expect(store.team[0].name).toBe("komala");
 
     store.replaceTeam(parseTeamText(reuniclusText));
-    const oversizedParam = toBase64Url(`${text} `);
-    expect(oversizedParam.length).toBeGreaterThan(
-      MAX_ENCODED_TEAM_PARAM_LENGTH,
+    const oversizedParameter = toBase64Url(`${text} `);
+    expect(oversizedParameter.length).toBeGreaterThan(
+      MAX_ENCODED_TEAM_PARAMETER_LENGTH,
     );
-    expect(fromBase64Url(oversizedParam).trim()).toBe("Komala");
-    importTeamFromUrlParam(oversizedParam);
+    expect(fromBase64Url(oversizedParameter).trim()).toBe("Komala");
+    importTeamFromUrlParameter(oversizedParameter);
     expect(store.team[0].name).toBe("reuniclus");
   });
 });

@@ -95,11 +95,11 @@ class Store {
   }
 
   isSnackbarOpen = false;
-  snackbarMsg = "";
+  snackbarMessage = "";
 
-  openSnackbar(msg: string) {
+  openSnackbar(message: string) {
     this.isSnackbarOpen = true;
-    this.snackbarMsg = msg;
+    this.snackbarMessage = message;
   }
 }
 

@@ -75,7 +75,7 @@ test.describe("Casual Team", () => {
       await addPokemon(page, i, pokemon);
     }
 
-    // The URL's `team` param should reflect the fully built team
+    // The URL's `team` parameter should reflect the fully built team
     await expect.poll(() => getTeamTextFromUrl(page)).toContain("Pikachu");
     const teamText = getTeamTextFromUrl(page);
     for (const pokemon of team) {

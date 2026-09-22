@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 
 // Snackbar is managed by MobX
-// Can be opened by importing store.js then running store.openSnackbar(msg)
+// Open it with `store.openSnackbar(message)` from `@/store`
 const MainSnackbar = observer(function MainSnackbar() {
   return (
     <Snackbar
@@ -18,7 +18,7 @@ const MainSnackbar = observer(function MainSnackbar() {
           "aria-describedby": "message-id",
         },
       }}
-      message={<span id="message-id">{store.snackbarMsg}</span>}
+      message={<span id="message-id">{store.snackbarMessage}</span>}
     />
   );
 });

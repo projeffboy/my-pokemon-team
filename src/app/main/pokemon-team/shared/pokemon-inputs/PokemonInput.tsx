@@ -13,7 +13,7 @@ const PokemonInput = observer(function PokemonInput({
   pokemonProperty: PokemonProperties;
   teamIndex: number;
 }) {
-  const handleChange = (inputVal: string) => {
+  const handleChange = (inputValue: string) => {
     const member = store.team[teamIndex];
     if (!member) return;
 
@@ -21,7 +21,7 @@ const PokemonInput = observer(function PokemonInput({
       store.clearTeamPokemonProperties(teamIndex);
     }
 
-    member[pokemonProperty] = inputVal;
+    member[pokemonProperty] = inputValue;
 
     // if pokemon can only have one item and/or ability
     if (pokemonProperty === "name") {
