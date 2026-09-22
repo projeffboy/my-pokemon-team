@@ -5,10 +5,21 @@ updates:
     schedule:
       interval: weekly
     groups:
-      # One PR for all minor and patch updates; majors get their own PRs
+      # Peer-dependent pairs must bump together; a dependency joins the first matching group
+      mobx:
+        patterns: ["mobx", "mobx-react-lite"]
+        update-types: ["major"]
+      vite:
+        patterns: ["vite", "@vitejs/*"]
+        update-types: ["major"]
+      # One PR for all minor and patch updates; other majors get their own PRs
       minor-and-patch:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+    ignore:
+      # typescript-eslint does not support TypeScript 6.1+ yet
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
