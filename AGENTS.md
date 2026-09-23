@@ -96,6 +96,8 @@ Playwire's own config inserts the top banner above `#root > div > div:nth-child(
 
 `public/robots.txt` explicitly allows AmazonAdBot for the same ad integration. Leave it as it is, even though it looks redundant.
 
+If a `playwire-docs/` folder is present, it holds Playwire's help-center docs (support.playwire.com) as Markdown. Start at its README.md, and consult it when working on the ad integration, such as the `playwireAds` plugin, `spaNewPage`, or ad unit placement. The folder is local and never committed.
+
 ## Other
 
 Ask me clarification questions if necessary in response to my prompt.

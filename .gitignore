@@ -18,3 +18,6 @@ npm-debug.log*
 /playwright-report/
 /playwright-logic-report/
 /playwright-smoke-report/
+
+# Playwire docs (local symlink, see AGENTS.md)
+/playwire-docs
