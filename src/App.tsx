@@ -25,21 +25,24 @@ export default function App() {
       >
         <CssBaseline />
         <WidthProvider>
-          <Grid
-            container
-            spacing={2}
-            sx={{
-              minHeight: "100dvh",
-              alignContent: "flex-start",
-              maxWidth: 1920,
-              mx: "auto",
-              p: 2,
-            }}
-          >
-            <Header />
-            <Main />
-            <Footer />
-          </Grid>
+          {/* Playwire inserts the top banner above `#root > div > div:nth-child(1)` */}
+          <div>
+            <Grid
+              container
+              spacing={2}
+              sx={{
+                minHeight: "100dvh",
+                alignContent: "flex-start",
+                maxWidth: 1920,
+                mx: "auto",
+                p: 2,
+              }}
+            >
+              <Header />
+              <Main />
+              <Footer />
+            </Grid>
+          </div>
           <MainSnackbar />
           <TypeChartDialog />
         </WidthProvider>
