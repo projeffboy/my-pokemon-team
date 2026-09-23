@@ -44,6 +44,13 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        // The ad iframes inherit the dark scheme from <html>, but their documents are light,
+        // and Chrome paints a mismatched iframe as an opaque white box instead of transparent
+        iframe: { colorScheme: "light" },
+      },
+    },
     MuiButton: {
       variants: [
         {
