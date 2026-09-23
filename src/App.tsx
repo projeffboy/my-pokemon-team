@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import Header from "./app/Header";
 import Main from "./app/Main";
@@ -12,6 +13,12 @@ import { cookieStorageManager } from "./app/color-scheme-storage";
 import { WidthProvider } from "./app/shared/WidthContext";
 
 export default function App() {
+  // Playwire looks for the element it inserts the banner above only once, when it handles
+  // this call, so make it after the first render has put the Grid below into the DOM.
+  useEffect(() => {
+    window.ramp?.que.push(() => window.ramp?.spaNewPage?.(location.pathname));
+  }, []);
+
   return (
     <>
       <TeamLinkSync />

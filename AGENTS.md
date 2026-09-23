@@ -92,7 +92,7 @@ Keep entries concise. A date's `changes` render as a bulleted list when there is
 
 The `playwireAds` plugin in `vite.config.ts` is the Playwire ad integration, which earns the site's revenue to pay for its maintenance and upkeep. It injects the ad script into production builds only. Only change it for a clear efficiency gain, and put that change in its own commit so it can be reverted alone if revenue drops.
 
-Playwire's own config inserts the top banner above `#root > div > div:nth-child(1)`, so `App.tsx` keeps the page's Grid container as the first child of a plain `div` under `#root`. Changing that structure silently removes the banner.
+Playwire's own config inserts the top banner above `#root > div > div:nth-child(1)`, so `App.tsx` keeps the page's Grid container as the first child of a plain `div` under `#root`. Changing that structure silently removes the banner. Playwire looks for that element only once, when it handles the `spaNewPage` call, so `App.tsx` makes the call in an effect after the first render rather than from the HTML.
 
 `public/robots.txt` explicitly allows AmazonAdBot for the same ad integration. Leave it as it is, even though it looks redundant.
 
