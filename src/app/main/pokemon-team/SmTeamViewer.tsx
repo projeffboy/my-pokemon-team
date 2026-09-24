@@ -61,7 +61,7 @@ const SmTeamViewer = observer(function SmTeamViewer() {
 
           return (
             <Grid key={offset} size={12}>
-              <Paper sx={{ p: 1, overflow: "clip" }}>
+              <Paper sx={{ p: 1 }}>
                 <PokemonInputs teamIndex={teamIndex} />
               </Paper>
             </Grid>

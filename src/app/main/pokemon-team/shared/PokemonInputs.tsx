@@ -17,8 +17,6 @@ const INPUTS: ReadonlyArray<
   { placeholder: "Ability", pokemonProperty: "ability" },
 ];
 
-// Rendered inside a card Paper with `overflow: "clip"`, which keeps a long
-// item's overflowing icon inside the card instead of widening the page
 export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
   return (
     <Box
@@ -26,6 +24,8 @@ export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
         display: "grid",
         columnGap: 1,
         gridTemplateColumns: "1fr 1fr",
+        // A long item's icon stops at the card's padding instead of widening the page
+        overflow: "clip",
       }}
       role="region"
       aria-label={`Pokemon ${teamIndex + 1}`}
