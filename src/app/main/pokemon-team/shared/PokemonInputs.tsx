@@ -24,6 +24,8 @@ export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
         display: "grid",
         columnGap: 1,
         gridTemplateColumns: "1fr 1fr",
+        // A long item's icon stops at the card's padding instead of widening the page
+        overflow: "clip",
       }}
       role="region"
       aria-label={`Pokemon ${teamIndex + 1}`}

@@ -1,10 +1,14 @@
 import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useListRef } from "react-window";
 import VirtualizedListbox, {
   VirtualizedListboxContext,
 } from "./pokemon-input-select/VirtualizedListbox";
+import PokemonIcon from "@/app/main/shared/PokemonIcon";
+
+const ITEM_ICON_CLASS = "item-icon";
 
 interface SelectOption {
   value: string;
@@ -64,12 +68,20 @@ export default function PokemonInputSelect({
         value={selectedOption}
         disableListWrap
         sx={{
+          // Stops a wide item icon row from widening its grid column
+          ...(pokemonProperty === "item" && { minWidth: 0 }),
           [`&.${autocompleteClasses.hasPopupIcon}.${autocompleteClasses.hasClearIcon} .${autocompleteClasses.inputRoot}`]:
             {
               pr: 0,
             },
           [`& .${autocompleteClasses.input}`]: {
             textOverflow: "clip",
+          },
+          // Sizes the input to its text so the item icon follows it, never clipping the name
+          // (browsers without field-sizing keep the full-width input, icon at the far right)
+          "@supports (field-sizing: content)": {
+            [`& .${autocompleteClasses.inputRoot}:has(.${ITEM_ICON_CLASS}) .${autocompleteClasses.input}`]:
+              { fieldSizing: "content", flex: "none", width: "auto" },
           },
         }}
         onChange={(event, newValue) => onChange(newValue?.value ?? "")}
@@ -110,25 +122,56 @@ export default function PokemonInputSelect({
           },
           listbox: { component: VirtualizedListbox },
         }}
-        renderInput={params => (
-          <TextField
-            {...params}
-            variant="standard"
-            placeholder={placeholder}
-            sx={{
-              "& .MuiInputBase-input::placeholder": {
-                opacity: 0.6,
-              },
-            }}
-            slotProps={{
-              htmlInput: {
-                ...params.inputProps,
-                name: id,
-                "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProperty}`,
-              },
-            }}
-          />
-        )}
+        renderInput={params => {
+          // Hidden while the typed text differs from the selected item's name
+          const itemIcon =
+            (
+              pokemonProperty === "item" &&
+              selectedOption &&
+              params.inputProps.value === selectedOption.label
+            ) ?
+              <Box
+                component="span"
+                className={ITEM_ICON_CLASS}
+                role="img"
+                aria-label={`${selectedOption.label} icon`}
+                // Right margin keeps the icon left of the 28px dropdown arrow
+                sx={{ display: "flex", flexShrink: 0, mr: 3.5 }}
+              >
+                <PokemonIcon pokemonProperty="item" value={value} />
+              </Box>
+            : undefined;
+
+          return (
+            <TextField
+              {...params}
+              variant="standard"
+              placeholder={placeholder}
+              sx={{
+                "& .MuiInputBase-input::placeholder": {
+                  opacity: 0.6,
+                },
+              }}
+              slotProps={{
+                input: {
+                  ...params.InputProps,
+                  endAdornment:
+                    itemIcon ?
+                      <>
+                        {itemIcon}
+                        {params.InputProps.endAdornment}
+                      </>
+                    : params.InputProps.endAdornment,
+                },
+                htmlInput: {
+                  ...params.inputProps,
+                  name: id,
+                  "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProperty}`,
+                },
+              }}
+            />
+          );
+        }}
       />
     </VirtualizedListboxContext>
   );

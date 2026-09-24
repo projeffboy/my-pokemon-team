@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { selectPokemon } from "helper";
+import { selectItem, selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 
 test.describe("Pokemon Card - Unit Tests", () => {
@@ -84,6 +84,30 @@ test.describe("Pokemon Card - Unit Tests", () => {
       .getByRole("option", { name: "Compound Eyes", exact: true })
       .click();
     await expect(ability).toHaveValue("Compound Eyes");
+  });
+
+  test("should show the selected item's icon in the item input", async ({
+    page,
+  }) => {
+    const card = page.getByRole("region", { name: "Pokemon 1" });
+    const rockyHelmetIcon = card.getByRole("img", {
+      name: "Rocky Helmet icon",
+    });
+    const assaultVestIcon = card.getByRole("img", {
+      name: "Assault Vest icon",
+    });
+
+    await selectItem(page, "Rocky Helmet");
+    await expect(rockyHelmetIcon).toBeVisible();
+
+    // Typing a different name hides the icon until an item is picked
+    const input = page.getByLabel("Pokemon 1's item");
+    await input.fill("Assault");
+    await expect(rockyHelmetIcon).toBeHidden();
+
+    await page.getByRole("listbox").getByText("Assault Vest").click();
+    await expect(assaultVestIcon).toBeVisible();
+    await expect(rockyHelmetIcon).toBeHidden();
   });
 
   test("should show 'Nothing found' message in moves and abilities when no pokemon is selected", async ({
