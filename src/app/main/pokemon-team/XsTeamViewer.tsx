@@ -81,7 +81,7 @@ const XsTeamViewer = observer(function XsTeamViewer() {
         role="tabpanel"
         aria-labelledby={`team-slot-tab-${tabIndex}`}
       >
-        <Paper sx={{ p: 1 }}>
+        <Paper sx={{ p: 1, overflow: "clip" }}>
           <PokemonInputs teamIndex={tabIndex} />
         </Paper>
       </Grid>

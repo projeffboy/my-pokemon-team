@@ -16,7 +16,7 @@ export default function PokemonTeam() {
       : <SmTeamViewer />
     : [0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} size={6}>
-          <Paper sx={{ p: 1 }}>
+          <Paper sx={{ p: 1, overflow: "clip" }}>
             {/* teamIndex is the pokemon's team slot number - 1 */}
             <PokemonInputs teamIndex={num} />
           </Paper>

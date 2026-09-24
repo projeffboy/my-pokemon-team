@@ -17,6 +17,8 @@ const INPUTS: ReadonlyArray<
   { placeholder: "Ability", pokemonProperty: "ability" },
 ];
 
+// Rendered inside a card Paper with `overflow: "clip"`, which keeps a long
+// item's overflowing icon inside the card instead of widening the page
 export default function PokemonInputs({ teamIndex }: { teamIndex: number }) {
   return (
     <Box
