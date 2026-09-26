@@ -12,6 +12,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./app/shared/theme";
 import { cookieStorageManager } from "./app/color-scheme-storage";
 import { WidthProvider } from "./app/shared/WidthContext";
+import { TranslationProvider } from "./app/shared/TranslationContext";
 
 export default function App() {
   // Playwire looks for the element it inserts the banner above only once, when it handles
@@ -32,29 +33,31 @@ export default function App() {
         noSsr
       >
         <CssBaseline />
-        <WidthProvider>
-          {/* Playwire inserts the top banner above `#root > div > div:nth-child(1)` */}
-          <div>
-            <Grid
-              container
-              spacing={2}
-              sx={{
-                minHeight: "100dvh",
-                alignContent: "flex-start",
-                maxWidth: 1920,
-                mx: "auto",
-                p: 2,
-              }}
-            >
-              <Header />
-              <Main />
-              <Footer />
-            </Grid>
-          </div>
-          <MainSnackbar />
-          <HistoryFab />
-          <Dialogs />
-        </WidthProvider>
+        <TranslationProvider>
+          <WidthProvider>
+            {/* Playwire inserts the top banner above `#root > div > div:nth-child(1)` */}
+            <div>
+              <Grid
+                container
+                spacing={2}
+                sx={{
+                  minHeight: "100dvh",
+                  alignContent: "flex-start",
+                  maxWidth: 1920,
+                  mx: "auto",
+                  p: 2,
+                }}
+              >
+                <Header />
+                <Main />
+                <Footer />
+              </Grid>
+            </div>
+            <MainSnackbar />
+            <HistoryFab />
+            <Dialogs />
+          </WidthProvider>
+        </TranslationProvider>
       </ThemeProvider>
     </>
   );

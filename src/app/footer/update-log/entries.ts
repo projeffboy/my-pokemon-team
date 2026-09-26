@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Sep 26, 2026",
+    changes: [
+      "The site is now in Japanese, Korean, Chinese, French, German, Spanish, and Italian too, with the pokemon, move, item, and ability names from PokeAPI. Pick a language from the button beside the generation.",
+    ],
+  },
+  {
     date: "Sep 25, 2026",
     changes: [
       "Save several teams in your browser, each with a name, generation, and format, and switch between them from the Teams button.",

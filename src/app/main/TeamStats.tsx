@@ -19,29 +19,21 @@ import TeamAspectStats from "./team-stats/shared/TeamAspectStats";
 import TeamChecklist from "./team-stats/TeamChecklist";
 import MatrixAnalysis from "./team-stats/MatrixAnalysis";
 import { useBreakpoint } from "@/app/shared/WidthContext";
+import { useTranslation } from "@/app/shared/TranslationContext";
+import type { TeamStatType } from "@/types";
 
 type View = "defence" | "coverage" | "checklist" | "matrix";
 
-const VIEWS: { view: View; label: string; Icon: typeof ShieldIcon }[] = [
-  { view: "defence", label: "Team Defence", Icon: ShieldIcon },
-  { view: "coverage", label: "Team Type Coverage", Icon: GpsFixedIcon },
-  { view: "checklist", label: "Team Checklist", Icon: ChecklistIcon },
-  { view: "matrix", label: "Matrix Analysis", Icon: GridOnIcon },
-];
-
-const statSection = (
-  title: "Team Defence" | "Team Type Coverage",
-  hideTitle = false,
-) => {
-  const titleId = `${title.replaceAll(" ", "-").toLowerCase()}-heading`;
+const statSection = (stat: TeamStatType, hideTitle = false) => {
+  const titleId = `${stat}-heading`;
   return (
     <Box
-      key={title}
+      key={stat}
       role="region"
       aria-labelledby={titleId}
       sx={{ p: 1, pb: 0 }}
     >
-      <TeamAspectStats title={title} titleId={titleId} hideTitle={hideTitle} />
+      <TeamAspectStats stat={stat} titleId={titleId} hideTitle={hideTitle} />
     </Box>
   );
 };
@@ -50,36 +42,43 @@ const statSection = (
 // as tabs; from tablets up it stacks the stats and checklist, or shows the matrix, and
 // scrolls inside the team column's height.
 export default function TeamStats() {
+  const { t } = useTranslation();
   const isXs = useBreakpoint() === "xs";
   const [view, setView] = useState<View>("defence");
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const closeMenu = () => setMenuAnchor(null);
 
+  const views: { view: View; label: string; Icon: typeof ShieldIcon }[] = [
+    { view: "defence", label: t.stats.teamDefence, Icon: ShieldIcon },
+    { view: "coverage", label: t.stats.teamTypeCoverage, Icon: GpsFixedIcon },
+    { view: "checklist", label: t.stats.teamChecklist, Icon: ChecklistIcon },
+    { view: "matrix", label: t.stats.matrixAnalysis, Icon: GridOnIcon },
+  ];
   const isTabbed = view === "defence" || view === "coverage";
   const title =
-    view === "matrix" ? "Matrix Analysis"
-    : isXs && view === "checklist" ? "Team Checklist"
-    : "Team Stats";
+    view === "matrix" ? t.stats.matrixAnalysis
+    : isXs && view === "checklist" ? t.stats.teamChecklist
+    : t.stats.teamStats;
   const menuItems =
-    isXs ? VIEWS : (
+    isXs ? views : (
       [
         {
           view: "defence" as const,
-          label: "Team Stats and Checklist",
+          label: t.stats.teamStatsAndChecklist,
           Icon: ChecklistIcon,
         },
-        VIEWS[3]!,
+        views[3]!,
       ]
     );
 
   const body =
     view === "matrix" ?
-      <Box role="region" aria-label="Matrix Analysis">
+      <Box role="region" aria-label={t.stats.matrixAnalysis}>
         <MatrixAnalysis />
       </Box>
     : isXs ?
       view === "checklist" ?
-        <Box role="region" aria-label="Team Checklist">
+        <Box role="region" aria-label={t.stats.teamChecklist}>
           <TeamChecklist />
         </Box>
       : <>
@@ -88,22 +87,26 @@ export default function TeamStats() {
             onChange={(_event: SyntheticEvent, value: View) => setView(value)}
             variant="fullWidth"
             textColor="secondary"
-            aria-label="Team stat"
+            aria-label={t.stats.teamStat}
           >
-            <Tab value="defence" label="Defence" />
-            <Tab value="coverage" label="Coverage" />
+            <Tab value="defence" label={t.stats.defence} />
+            <Tab value="coverage" label={t.stats.coverage} />
           </Tabs>
           {statSection(
-            view === "defence" ? "Team Defence" : "Team Type Coverage",
+            view === "defence" ? "typeDefence" : "typeCoverage",
             true,
           )}
         </>
     : <>
-        {statSection("Team Defence")}
-        {statSection("Team Type Coverage")}
-        <Box role="region" aria-label="Team Checklist" sx={{ px: 1, pt: 1 }}>
+        {statSection("typeDefence")}
+        {statSection("typeCoverage")}
+        <Box
+          role="region"
+          aria-label={t.stats.teamChecklist}
+          sx={{ px: 1, pt: 1 }}
+        >
           <Typography variant="h6" component="h3" sx={{ textAlign: "center" }}>
-            Team Checklist
+            {t.stats.teamChecklist}
           </Typography>
           <TeamChecklist />
         </Box>
@@ -112,7 +115,7 @@ export default function TeamStats() {
   return (
     <Paper
       component="section"
-      aria-label="Team analysis"
+      aria-label={t.stats.teamAnalysis}
       sx={{
         position: { sm: "absolute" },
         inset: { sm: 0 },
@@ -133,7 +136,7 @@ export default function TeamStats() {
         {isXs && !isTabbed && (
           <IconButton
             size="small"
-            aria-label="Back to Team Stats"
+            aria-label={t.stats.backToTeamStats}
             onClick={() => setView("defence")}
           >
             <ArrowBackIcon />
@@ -144,7 +147,7 @@ export default function TeamStats() {
         </Typography>
         <IconButton
           size="small"
-          aria-label="More analyses"
+          aria-label={t.stats.moreAnalyses}
           aria-haspopup="menu"
           aria-expanded={!!menuAnchor}
           onClick={(event: MouseEvent<HTMLElement>) =>

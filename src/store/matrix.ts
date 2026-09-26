@@ -5,8 +5,8 @@ import {
   type PokemonType,
   type ReadonlyTeam,
 } from "@/types";
-import { moveName, pokemonName } from "@/shared/names";
 import { pokemonTypes } from "@/shared/pokedex";
+import { english, type Translation } from "@/i18n/translation";
 import {
   isMoveStrongEnough,
   moveAgainstType,
@@ -54,9 +54,10 @@ export function formatMultiplier(multiplier: number) {
   }
 }
 
-const typesLabel = (pokemon: string) => pokemonTypes(pokemon).join("/");
-
-export function defenceMatrix(team: ReadonlyTeam): Matrix {
+export function defenceMatrix(
+  team: ReadonlyTeam,
+  { t, names }: Translation = english,
+): Matrix {
   return Object.fromEntries(
     POKEMON_TYPES.map(type => [
       type,
@@ -66,17 +67,24 @@ export function defenceMatrix(team: ReadonlyTeam): Matrix {
         const multiplier = scoreToMultiplier(score);
         const plain = scoreToMultiplier(typeAgainstPokemon(type, name));
         const cause =
-          multiplier === plain ? ""
+          multiplier === plain ? undefined
           : (
             item === "airballoon" &&
             scoreToMultiplier(typeAgainstPokemon(type, name, ability)) !==
               multiplier
           ) ?
-            " with Air Balloon"
-          : ` with ${ability}`;
+            names.item(item)
+          : names.ability(ability);
+        const types = pokemonTypes(name).map(names.type).join("/");
         return {
           multiplier,
-          reason: `${type} does ${multiplier}x to ${pokemonName(name)} (${typesLabel(name)})${cause}`,
+          reason: t.matrix.defenceReason(
+            names.type(type),
+            multiplier,
+            names.pokemon(name),
+            types,
+            cause,
+          ),
         };
       }),
     ]),
@@ -102,7 +110,10 @@ function moveMultiplier(
 }
 
 // Each slot's best damaging move against each type
-export function coverageMatrix(team: ReadonlyTeam): Matrix {
+export function coverageMatrix(
+  team: ReadonlyTeam,
+  { t, names }: Translation = english,
+): Matrix {
   return Object.fromEntries(
     POKEMON_TYPES.map(target => [
       target,
@@ -121,16 +132,22 @@ export function coverageMatrix(team: ReadonlyTeam): Matrix {
         if (!best) {
           return {
             multiplier: 1,
-            reason: `${pokemonName(name)} has no damaging move`,
+            reason: t.matrix.noDamagingMove(names.pokemon(name)),
           };
         }
         const type =
           best.move === "flyingpress" ?
-            "Fighting/Flying"
-          : (moveType(best.move, name, ability) ?? "");
+            `${names.type("Fighting")}/${names.type("Flying")}`
+          : names.type(moveType(best.move, name, ability) ?? "");
         return {
           multiplier: best.multiplier,
-          reason: `${pokemonName(name)}'s ${moveName(best.move)} (${type}) does ${best.multiplier}x to ${target}`,
+          reason: t.matrix.coverageReason(
+            names.pokemon(name),
+            names.move(best.move),
+            type,
+            best.multiplier,
+            names.type(target),
+          ),
         };
       }),
     ]),

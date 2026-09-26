@@ -14,6 +14,8 @@ import {
   parseTeamText,
   serializeTeamText,
 } from "@/app/shared/team-text";
+import fill from "@/app/shared/fill";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const ImportTeamForm = observer(function ImportTeamForm({
   isImport,
@@ -22,6 +24,8 @@ const ImportTeamForm = observer(function ImportTeamForm({
   isImport: boolean;
   titleId: string;
 }) {
+  const { t } = useTranslation();
+  const { importDialog } = t;
   const initialText = isImport ? "" : serializeTeamText();
   const [text, setText] = useState(initialText);
   const close = () => store.closeDialog();
@@ -32,55 +36,63 @@ const ImportTeamForm = observer(function ImportTeamForm({
       store.addTeam({ ...(name && { name }), generation, format, team });
     }
     store.openSnackbar(
-      teams.length === 1 ? "Team imported" : `${teams.length} teams imported`,
+      teams.length === 1 ?
+        importDialog.imported
+      : importDialog.importedMany(teams.length),
     );
     close();
   };
 
   const handleUpdate = () => {
     if (text !== initialText) store.replaceTeam(parseTeamText(text));
-    else store.openSnackbar("No changes made.");
+    else store.openSnackbar(importDialog.noChanges);
     close();
   };
 
   return (
     <>
       <DialogTitle id={titleId}>
-        {isImport ? "Import Team" : "Edit Pokepaste"}
+        {isImport ? importDialog.importTitle : importDialog.editTitle}
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {isImport ?
-            "Paste a team, or a whole backup with several teams, in "
-          : "This is your team's raw text. Change it here, or paste it into "}
-          <Link href="https://play.pokemonshowdown.com/teambuilder">
-            Pokemon Showdown
-          </Link>
-          {isImport ? "'s format." : "."}
+          {fill(
+            isImport ?
+              importDialog.importDescription
+            : importDialog.editDescription,
+            {
+              showdown: (
+                <Link href="https://play.pokemonshowdown.com/teambuilder">
+                  {importDialog.showdown}
+                </Link>
+              ),
+            },
+          )}
         </DialogContentText>
         <TextField
           autoFocus
           variant="standard"
-          placeholder={isImport ? "Paste a team here" : "Your team is empty"}
-          label="Pokemon Showdown Team Raw Text"
+          placeholder={
+            isImport ?
+              importDialog.importPlaceholder
+            : importDialog.editPlaceholder
+          }
+          label={importDialog.label}
           multiline
           fullWidth
           sx={{ my: 2.5 }}
           value={text}
           onChange={event => setText(event.target.value)}
         />
-        <DialogContentText>
-          Nicknames, levels, genders, shiny, tera types, natures, EVs, and IVs
-          are kept. Happiness is ignored.
-        </DialogContentText>
+        <DialogContentText>{importDialog.kept}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={close}>Cancel</Button>
+        <Button onClick={close}>{t.cancel}</Button>
         <Button
           onClick={isImport ? handleImport : handleUpdate}
           disabled={!store.learnsetsLoaded || (isImport && !text.trim())}
         >
-          {isImport ? "Import" : "Update"}
+          {isImport ? importDialog.import : importDialog.update}
         </Button>
       </DialogActions>
     </>

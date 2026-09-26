@@ -15,6 +15,7 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { NameView } from "@/types";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const LISTBOX_PADDING = 0; // px
 const ITEM_SIZE = 48;
@@ -133,6 +134,7 @@ export const VirtualizedListboxContext = React.createContext<{
 const VirtualizedListbox = observer(
   React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLElement>>(
     function VirtualizedListbox({ children, ...other }, ref) {
+      const { t } = useTranslation();
       const context = React.useContext(VirtualizedListboxContext);
       if (!context) {
         throw new Error(
@@ -196,13 +198,13 @@ const VirtualizedListbox = observer(
               }}
               // Keeps the focus, and so the popup, in the input
               onMouseDown={event => event.preventDefault()}
-              aria-label="Name list view"
+              aria-label={t.team.nameListView}
               sx={{ display: "flex", m: 0.5, "& > *": { flex: 1 } }}
             >
-              <ToggleButton value="list" aria-label="List view">
+              <ToggleButton value="list" aria-label={t.team.listView}>
                 <ViewListIcon fontSize="small" />
               </ToggleButton>
-              <ToggleButton value="grid" aria-label="Grid view">
+              <ToggleButton value="grid" aria-label={t.team.gridView}>
                 <GridViewIcon fontSize="small" />
               </ToggleButton>
             </ToggleButtonGroup>

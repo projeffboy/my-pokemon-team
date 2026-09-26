@@ -5,18 +5,20 @@ import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 // Undo and redo the current team's edits
 const HistoryFab = observer(function HistoryFab() {
+  const { t } = useTranslation();
   const buttons = [
     {
-      label: "Undo",
+      label: t.undo,
       Icon: UndoIcon,
       enabled: store.canUndo,
       act: () => store.undo(),
     },
     {
-      label: "Redo",
+      label: t.redo,
       Icon: RedoIcon,
       enabled: store.canRedo,
       act: () => store.redo(),
@@ -26,7 +28,7 @@ const HistoryFab = observer(function HistoryFab() {
   return (
     <Box
       role="group"
-      aria-label="History"
+      aria-label={t.history}
       sx={{
         position: "fixed",
         right: { xs: 16, md: 24 },

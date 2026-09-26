@@ -7,6 +7,7 @@ import type {
   TeamPokemon,
 } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "@/shared/generations";
+import { isLocale, type Locale } from "@/i18n/locales";
 import { createEmptyTeam, createSavedTeam } from "@/shared/team";
 import { DEFAULT_SORT } from "./sorting";
 
@@ -18,6 +19,8 @@ export interface StoredState {
   isMoreOpen: boolean;
   sort: SortOrder;
   nameView: NameView;
+  // Unset until a language is chosen, so the browser's language applies
+  locale?: Locale;
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -106,6 +109,7 @@ export function loadStoredState(
     isMoreOpen: raw.isMoreOpen === true,
     sort: sanitizeSort(raw.sort),
     nameView: raw.nameView === "grid" ? "grid" : "list",
+    ...(isLocale(raw.locale) && { locale: raw.locale }),
   };
 }
 

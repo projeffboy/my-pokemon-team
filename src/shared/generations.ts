@@ -5,32 +5,17 @@ export const LATEST_GENERATION: Generation = 9;
 // Newest first, as the generation menu lists them
 export const GENERATIONS: readonly Generation[] = [9, 8, 7, 6, 5, 4, 3, 2, 1];
 
-export const GENERATION_GAMES: Record<
-  Generation,
-  { short: string; games: string }
-> = {
-  9: { short: "SV / ZA", games: "Scarlet / Violet · Legends: Z-A" },
-  8: {
-    short: "SwSh / BDSP / PLA",
-    games:
-      "Sword / Shield · Brilliant Diamond / Shining Pearl · Legends: Arceus",
-  },
-  7: {
-    short: "SM / USUM",
-    games: "Sun / Moon · Ultra Sun / Ultra Moon · Let's Go",
-  },
-  6: { short: "XY / ORAS", games: "X / Y · Omega Ruby / Alpha Sapphire" },
-  5: { short: "BW / B2W2", games: "Black / White · Black 2 / White 2" },
-  4: {
-    short: "DPPt / HGSS",
-    games: "Diamond / Pearl / Platinum · HeartGold / SoulSilver",
-  },
-  3: {
-    short: "RSE / FRLG",
-    games: "Ruby / Sapphire / Emerald · FireRed / LeafGreen",
-  },
-  2: { short: "GSC", games: "Gold / Silver / Crystal" },
-  1: { short: "RBY", games: "Red / Blue / Yellow" },
+// Each generation's games, abbreviated; the full titles are in src/i18n
+export const GENERATION_GAMES: Record<Generation, string> = {
+  9: "SV / ZA",
+  8: "SwSh / BDSP / PLA",
+  7: "SM / USUM",
+  6: "XY / ORAS",
+  5: "BW / B2W2",
+  4: "DPPt / HGSS",
+  3: "RSE / FRLG",
+  2: "GSC",
+  1: "RBY",
 };
 
 // Smogon's strategy dex is organised by each generation's main games
@@ -45,8 +30,6 @@ const SMOGON_DEX_CODES: Record<Generation, string> = {
   8: "ss",
   9: "sv",
 };
-
-export const generationLabel = (generation: Generation) => `Gen ${generation}`;
 
 export const isGeneration = (value: unknown): value is Generation =>
   GENERATIONS.includes(value as Generation);

@@ -6,30 +6,29 @@ import LinkIcon from "@mui/icons-material/Link";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import ManageTeamMenu from "./team-toolbar/ManageTeamMenu";
 
 export const shareTeamLink = () => {
-  if (store.isTeamEmpty) store.openSnackbar("Pokemon team is empty");
+  const { team } = store.translation.t;
+  if (store.isTeamEmpty) store.openSnackbar(team.teamEmpty);
   else
-    copyToClipboard(
-      window.location.href,
-      "Pokemon team link copied",
-      "Could not copy the link.",
-    );
+    copyToClipboard(window.location.href, team.linkCopied, team.linkNotCopied);
 };
 
 // Actions on the whole team: switching teams, randomizing, sharing, and managing it
 const TeamToolbar = observer(function TeamToolbar() {
+  const { t } = useTranslation();
   const handleRandomize = () => {
     store.randomizeTeam();
-    store.openSnackbar("Randomized");
+    store.openSnackbar(t.team.randomized);
   };
 
   return (
     <Stack
       direction="row"
       role="toolbar"
-      aria-label="Team actions"
+      aria-label={t.team.teamActions}
       useFlexGap
       spacing={0.5}
       sx={{ flexWrap: "wrap", justifyContent: "center" }}
@@ -38,21 +37,21 @@ const TeamToolbar = observer(function TeamToolbar() {
         startIcon={<GroupsIcon />}
         onClick={() => store.openDialog("teams")}
       >
-        Teams
+        {t.team.teams}
       </Button>
       <Button
         startIcon={<CasinoIcon />}
         onClick={handleRandomize}
         disabled={!store.learnsetsLoaded}
       >
-        Randomize
+        {t.team.randomize}
       </Button>
       <Button
         startIcon={<LinkIcon />}
         onClick={shareTeamLink}
-        aria-label="Share pokemon team link"
+        aria-label={t.team.shareTeamLink}
       >
-        Share Team
+        {t.team.shareTeam}
       </Button>
       <ManageTeamMenu />
     </Stack>

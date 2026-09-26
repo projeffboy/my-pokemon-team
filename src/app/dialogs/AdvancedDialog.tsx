@@ -18,11 +18,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { STAT_KEYS, type Gender, type TeamPokemon } from "@/types";
-import { natureLabel, allNatureIds, pokemonName } from "@/shared/names";
+import natures from "@/data/natures";
+import { allNatureIds } from "@/shared/names";
 import {
   DEFAULT_LEVEL,
   evTotal,
-  GENDER_NAMES,
   genderOptions,
   getEv,
   getIv,
@@ -32,11 +32,11 @@ import {
   MAX_LEVEL,
   setDetail,
   setStat,
-  STAT_NAMES,
   TERA_TYPES,
 } from "@/shared/set-details";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import { useBreakpoint } from "@/app/shared/WidthContext";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const clamp = (value: number, max: number) =>
   Math.min(max, Math.max(0, Math.round(value)));
@@ -50,10 +50,19 @@ const AdvancedForm = observer(function AdvancedForm({
   teamIndex: number;
   titleId: string;
 }) {
+  const { t, names } = useTranslation();
   const close = () => store.closeDialog();
-  const name = pokemonName(member.name) ?? member.name;
+  const name = names.pokemon(member.name);
   const genders = genderOptions(member.name);
   const total = evTotal(member.evs);
+  const natureLabel = (id: string) => {
+    const { plus, minus } = natures[id] ?? {};
+    return t.natureLabel(
+      names.nature(id),
+      plus && t.statNames[plus],
+      minus && t.statNames[minus],
+    );
+  };
 
   return (
     <>
@@ -63,23 +72,23 @@ const AdvancedForm = observer(function AdvancedForm({
       >
         <PokemonIcon pokemonProperty="name" value={member.name} />
         <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-          Advanced
+          {t.team.advanced}
           <Typography
             variant="body2"
             component="div"
             sx={{ color: "text.secondary" }}
           >
-            {name}, slot {teamIndex + 1}
+            {t.advanced.subtitle(name, teamIndex + 1)}
           </Typography>
         </Box>
-        <IconButton aria-label="Close" onClick={close} edge="end">
+        <IconButton aria-label={t.close} onClick={close} edge="end">
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
           <TextField
-            label="Nickname"
+            label={t.advanced.nickname}
             placeholder={name}
             value={member.nickname ?? ""}
             onChange={event =>
@@ -90,7 +99,7 @@ const AdvancedForm = observer(function AdvancedForm({
           />
           <Stack direction="row" spacing={1.5}>
             <TextField
-              label="Level"
+              label={t.advanced.level}
               type="number"
               value={member.level ?? DEFAULT_LEVEL}
               onChange={event => {
@@ -106,33 +115,33 @@ const AdvancedForm = observer(function AdvancedForm({
             />
             <TextField
               select
-              label="Gender"
+              label={t.advanced.gender}
               value={member.gender ?? ""}
               onChange={event =>
                 setDetail(member, "gender", event.target.value as Gender | "")
               }
               fullWidth
             >
-              <MenuItem value="">Any</MenuItem>
+              <MenuItem value="">{t.any}</MenuItem>
               {genders.map(gender => (
                 <MenuItem key={gender} value={gender}>
-                  {GENDER_NAMES[gender]}
+                  {t.genders[gender]}
                 </MenuItem>
               ))}
             </TextField>
             <TextField
               select
-              label="Tera Type"
+              label={t.advanced.teraType}
               value={member.teraType ?? ""}
               onChange={event =>
                 setDetail(member, "teraType", event.target.value)
               }
               fullWidth
             >
-              <MenuItem value="">None</MenuItem>
+              <MenuItem value="">{t.none}</MenuItem>
               {TERA_TYPES.map(type => (
                 <MenuItem key={type} value={type}>
-                  {type}
+                  {names.type(type)}
                 </MenuItem>
               ))}
             </TextField>
@@ -140,14 +149,14 @@ const AdvancedForm = observer(function AdvancedForm({
           <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
             <TextField
               select
-              label="Nature"
+              label={t.advanced.nature}
               value={member.nature ?? ""}
               onChange={event =>
                 setDetail(member, "nature", event.target.value)
               }
               fullWidth
             >
-              <MenuItem value="">None</MenuItem>
+              <MenuItem value="">{t.none}</MenuItem>
               {allNatureIds.map(nature => (
                 <MenuItem key={nature} value={nature}>
                   {natureLabel(nature)}
@@ -164,20 +173,20 @@ const AdvancedForm = observer(function AdvancedForm({
                   }
                 />
               }
-              label="Shiny"
+              label={t.advanced.shiny}
             />
           </Stack>
           <Box>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Typography variant="subtitle2" component="h3">
-                EVs
+                {t.advanced.evs}
               </Typography>
               <Typography
                 variant="body2"
                 sx={{
                   color: total > MAX_EV_TOTAL ? "error.main" : "text.secondary",
                 }}
-                aria-label={`EV total: ${total} of ${MAX_EV_TOTAL}`}
+                aria-label={t.advanced.evTotal(total, MAX_EV_TOTAL)}
               >
                 {total} / {MAX_EV_TOTAL}
               </Typography>
@@ -195,7 +204,7 @@ const AdvancedForm = observer(function AdvancedForm({
                     variant="body2"
                     sx={{ width: 32, flexShrink: 0 }}
                   >
-                    {STAT_NAMES[stat]}
+                    {t.statNames[stat]}
                   </Typography>
                   <Slider
                     id={id}
@@ -207,7 +216,7 @@ const AdvancedForm = observer(function AdvancedForm({
                     onChange={(_event, value) =>
                       setStat(member, "evs", stat, clamp(value, MAX_EV))
                     }
-                    aria-label={`${STAT_NAMES[stat]} EVs`}
+                    aria-label={t.advanced.statEvs(t.statNames[stat])}
                   />
                   <Typography
                     variant="body2"
@@ -221,7 +230,7 @@ const AdvancedForm = observer(function AdvancedForm({
           </Box>
           <Box>
             <Typography variant="subtitle2" component="h3" sx={{ mb: 1 }}>
-              IVs
+              {t.advanced.ivs}
             </Typography>
             <Box
               sx={{
@@ -235,7 +244,7 @@ const AdvancedForm = observer(function AdvancedForm({
                   key={stat}
                   size="small"
                   type="number"
-                  label={STAT_NAMES[stat]}
+                  label={t.statNames[stat]}
                   value={getIv(member.ivs, stat)}
                   onChange={event =>
                     setStat(
@@ -249,7 +258,7 @@ const AdvancedForm = observer(function AdvancedForm({
                     htmlInput: {
                       min: 0,
                       max: MAX_IV,
-                      "aria-label": `${STAT_NAMES[stat]} IVs`,
+                      "aria-label": t.advanced.statIvs(t.statNames[stat]),
                     },
                   }}
                 />
@@ -259,8 +268,8 @@ const AdvancedForm = observer(function AdvancedForm({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => store.resetDetails(teamIndex)}>Reset</Button>
-        <Button onClick={close}>Done</Button>
+        <Button onClick={() => store.resetDetails(teamIndex)}>{t.reset}</Button>
+        <Button onClick={close}>{t.done}</Button>
       </DialogActions>
     </>
   );

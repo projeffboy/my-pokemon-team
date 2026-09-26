@@ -10,6 +10,7 @@ import { useColorScheme } from "@mui/material/styles";
 import FooterDialog from "./footer/FooterDialog";
 import TypeChartDialog from "./footer/TypeChartDialog";
 import { lazy, type MouseEvent } from "react";
+import { useTranslation } from "./shared/TranslationContext";
 
 const Manual = lazy(() => import("./footer/Manual"));
 const Credits = lazy(() => import("./footer/Credits"));
@@ -19,6 +20,7 @@ const UpdateLog = lazy(() => import("./footer/UpdateLog"));
 type ColorMode = "system" | "light" | "dark";
 
 export default function Footer() {
+  const { t } = useTranslation();
   const { mode, setMode } = useColorScheme();
   const selectedMode = mode ?? "system";
 
@@ -45,8 +47,8 @@ export default function Footer() {
     >
       <TypeChartDialog />
       <FooterDialog
-        button="Manual"
-        title="Manual Help Guide"
+        button={t.footer.manual}
+        title={t.footer.manualTitle}
         content={Manual}
       />
       <Button
@@ -57,15 +59,19 @@ export default function Footer() {
       >
         Jeffery Tang
       </Button>
-      <FooterDialog button="Credits" title="Credits" content={Credits} />
       <FooterDialog
-        button={`Updates (${__LATEST_COMMIT_DATE__})`}
-        title="Update Log"
+        button={t.footer.credits}
+        title={t.footer.credits}
+        content={Credits}
+      />
+      <FooterDialog
+        button={t.footer.updates(__LATEST_COMMIT_DATE__)}
+        title={t.footer.updateLog}
         content={UpdateLog}
       />
       <FooterDialog
-        button="Privacy Policy"
-        title="Privacy Policy"
+        button={t.footer.privacyPolicy}
+        title={t.footer.privacyPolicy}
         content={PrivacyPolicy}
       />
       <ToggleButtonGroup
@@ -73,20 +79,20 @@ export default function Footer() {
         size="small"
         value={selectedMode}
         onChange={handleModeChange}
-        aria-label="Color scheme"
+        aria-label={t.footer.colorScheme}
       >
-        <Tooltip title="Use system theme">
-          <ToggleButton value="system" aria-label="Use system theme">
+        <Tooltip title={t.footer.systemTheme}>
+          <ToggleButton value="system" aria-label={t.footer.systemTheme}>
             <ComputerIcon />
           </ToggleButton>
         </Tooltip>
-        <Tooltip title="Use light theme">
-          <ToggleButton value="light" aria-label="Use light theme">
+        <Tooltip title={t.footer.lightTheme}>
+          <ToggleButton value="light" aria-label={t.footer.lightTheme}>
             <LightModeIcon />
           </ToggleButton>
         </Tooltip>
-        <Tooltip title="Use dark theme">
-          <ToggleButton value="dark" aria-label="Use dark theme">
+        <Tooltip title={t.footer.darkTheme}>
+          <ToggleButton value="dark" aria-label={t.footer.darkTheme}>
             <DarkModeIcon />
           </ToggleButton>
         </Tooltip>

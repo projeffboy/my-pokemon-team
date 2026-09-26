@@ -191,3 +191,10 @@ export type NameView = "list" | "grid";
 export type TeamStatType = "typeDefence" | "typeCoverage";
 
 export type TeamStatTitle = "Team Defence" | "Team Type Coverage";
+
+// The names of src/data in one language, from PokeAPI. Pokemon, moves, items, and natures are
+// keyed by their Showdown ID, and abilities, types, and regions by their English name.
+export type NameTranslations = Record<
+  "pokemon" | "moves" | "items" | "abilities" | "natures" | "types" | "regions",
+  Record<string, string>
+>;

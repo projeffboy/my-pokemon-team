@@ -7,6 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { useTranslation } from "./TranslationContext";
 
 // Asks before a team is deleted, since deleting cannot be undone
 const DeleteTeamDialog = observer(function DeleteTeamDialog({
@@ -16,29 +17,27 @@ const DeleteTeamDialog = observer(function DeleteTeamDialog({
   teamId: string | null;
   onClose: () => void;
 }) {
+  const { t } = useTranslation();
   const titleId = useId();
   const team = store.teams.find(team => team.id === teamId);
-  const name = team?.name || "this team";
+  const name = team?.name || t.deleteDialog.thisTeam;
 
   const handleDelete = () => {
     if (teamId) store.deleteTeam(teamId);
-    store.openSnackbar("Team deleted");
+    store.openSnackbar(t.team.teamDeleted);
     onClose();
   };
 
   return (
     <Dialog open={!!teamId} onClose={onClose} aria-labelledby={titleId}>
-      <DialogTitle id={titleId}>Delete {name}?</DialogTitle>
+      <DialogTitle id={titleId}>{t.deleteDialog.title(name)}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          The team and its pokemon are removed from this browser. This cannot be
-          undone.
-        </DialogContentText>
+        <DialogContentText>{t.deleteDialog.description}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{t.cancel}</Button>
         <Button color="error" onClick={handleDelete}>
-          Delete
+          {t.team.delete}
         </Button>
       </DialogActions>
     </Dialog>

@@ -20,25 +20,3 @@ export const TYPE_COLORS: Record<PokemonType, string> = {
   Steel: "#b8b8d0",
   Water: "#6890f0",
 };
-
-// Shown where a full type name does not fit
-export const TYPE_ABBREVIATIONS: Record<PokemonType, string> = {
-  Bug: "BUG",
-  Dark: "DRK",
-  Dragon: "DRG",
-  Electric: "ELC",
-  Fairy: "FRY",
-  Fighting: "FGT",
-  Fire: "FIR",
-  Flying: "FLY",
-  Ghost: "GHT",
-  Grass: "GRS",
-  Ground: "GRD",
-  Ice: "ICE",
-  Normal: "NRM",
-  Poison: "PSN",
-  Psychic: "PSY",
-  Rock: "RCK",
-  Steel: "STL",
-  Water: "WTR",
-};

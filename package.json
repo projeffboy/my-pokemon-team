@@ -23,6 +23,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "update:data": "node scripts/update-data.ts",
+    "update:translations": "node scripts/update-translations.ts",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write .",
     "test": "npm run typecheck && npm run lint && npm run test:logic && npm run test:smoke && npm run test:dev",

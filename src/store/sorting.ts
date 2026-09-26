@@ -1,15 +1,17 @@
 import pokedex from "@/data/pokedex";
 import formats from "@/data/formats";
 import { STAT_KEYS, type SortKey, type SortOrder } from "@/types";
-import { baseStatTotal, STAT_FULL_NAMES } from "@/shared/set-details";
+import { baseStatTotal } from "@/shared/set-details";
+import { pokemonNameInverse } from "@/shared/names";
+import { english, type Translation } from "@/i18n/translation";
 
-// The Sort dialog's options, in order
-export const SORT_OPTIONS: readonly { key: SortKey; label: string }[] = [
-  { key: "name", label: "Name" },
-  { key: "num", label: "Pokedex number" },
-  { key: "format", label: "Format" },
-  { key: "bst", label: "Base stat total" },
-  ...STAT_KEYS.map(key => ({ key, label: STAT_FULL_NAMES[key] })),
+// The Sort dialog's options, in order; their labels are in src/i18n
+export const SORT_KEYS: readonly SortKey[] = [
+  "name",
+  "num",
+  "format",
+  "bst",
+  ...STAT_KEYS,
 ];
 
 export const DEFAULT_SORT: SortOrder = { by: "name", descending: false };
@@ -61,15 +63,22 @@ function sortValue(pokemon: string, by: SortKey): number {
 const isOddball = (pokemon: string) => (pokedex[pokemon]?.num ?? 0) <= 0;
 
 // Sorts pokemon IDs by the chosen key, with ties broken by name. Names sort
-// case-insensitively, and formes stay grouped after their species.
+// case-insensitively in the current language, and formes stay grouped after
+// their species, since a translated forme may not start with its species.
 export function sortPokemon(
   pokemon: readonly string[],
   { by, descending }: SortOrder,
+  { locale, names }: Translation = english,
 ): string[] {
+  const species = (id: string) => {
+    const base = pokedex[id]?.baseSpecies;
+    return names.pokemon((base && pokemonNameInverse(base)) || id);
+  };
+  const compare = (a: string, b: string) =>
+    a.localeCompare(b, locale, { sensitivity: "base" });
   const byName = (a: string, b: string) =>
-    (pokedex[a]?.name ?? a).localeCompare(pokedex[b]?.name ?? b, "en", {
-      sensitivity: "base",
-    });
+    compare(species(a), species(b)) ||
+    compare(pokedex[a]?.name ?? a, pokedex[b]?.name ?? b);
   const direction = descending ? -1 : 1;
   return [...pokemon].sort(
     (a, b) =>

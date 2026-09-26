@@ -17,10 +17,10 @@ import { FORMATS } from "@/shared/formats";
 import {
   GENERATION_GAMES,
   GENERATIONS,
-  generationLabel,
   isGeneration,
 } from "@/shared/generations";
 import { validateTeam } from "@/store/validation";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const TeamSettingsForm = observer(function TeamSettingsForm({
   team,
@@ -31,11 +31,13 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
   titleId: string;
   onClose: () => void;
 }) {
+  const translation = useTranslation();
+  const { t } = translation;
   const [name, setName] = useState(team.name);
   const [generation, setGeneration] = useState<Generation>(team.generation);
   const [format, setFormat] = useState(team.format);
   const [problems, setProblems] = useState<string[] | null>(null);
-  const where = `${generationLabel(generation)}${format ? ` ${format}` : ""}`;
+  const where = `${t.generation(generation)}${format ? ` ${format}` : ""}`;
 
   const handleSave = () => {
     store.setTeamSettings(team.id, { name: name.trim(), generation, format });
@@ -44,12 +46,12 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
 
   return (
     <>
-      <DialogTitle id={titleId}>Name and Format</DialogTitle>
+      <DialogTitle id={titleId}>{t.team.nameAndFormat}</DialogTitle>
       <DialogContent>
         <Stack spacing={2.5} sx={{ pt: 1 }}>
           <TextField
             autoFocus
-            label="Team name"
+            label={t.settings.teamName}
             value={name}
             onChange={event => setName(event.target.value)}
             fullWidth
@@ -57,7 +59,7 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
           <Stack direction="row" spacing={1.5}>
             <TextField
               select
-              label="Generation"
+              label={t.generationSelect}
               value={generation}
               onChange={event => {
                 const value = Number(event.target.value);
@@ -67,19 +69,18 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
             >
               {GENERATIONS.map(generation => (
                 <MenuItem key={generation} value={generation}>
-                  {generationLabel(generation)} (
-                  {GENERATION_GAMES[generation].short})
+                  {t.generation(generation)} ({GENERATION_GAMES[generation]})
                 </MenuItem>
               ))}
             </TextField>
             <TextField
               select
-              label="Format"
+              label={t.filters.format}
               value={format}
               onChange={event => setFormat(event.target.value)}
               fullWidth
             >
-              <MenuItem value="">All</MenuItem>
+              <MenuItem value="">{t.all}</MenuItem>
               {FORMATS.map(format => (
                 <MenuItem key={format} value={format}>
                   {format}
@@ -91,10 +92,12 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
             variant="outlined"
             startIcon={<FactCheckIcon />}
             onClick={() =>
-              setProblems(validateTeam(team.team, generation, format))
+              setProblems(
+                validateTeam(team.team, generation, format, translation),
+              )
             }
           >
-            Check team for {where}
+            {t.settings.checkTeamFor(where)}
           </Button>
           {problems && (
             <Alert severity={problems.length ? "warning" : "success"}>
@@ -104,14 +107,14 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
                     <li key={problem}>{problem}</li>
                   ))}
                 </Box>
-              : `The team is valid for ${where}.`}
+              : t.settings.validFor(where)}
             </Alert>
           )}
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSave}>Save</Button>
+        <Button onClick={onClose}>{t.cancel}</Button>
+        <Button onClick={handleSave}>{t.save}</Button>
       </DialogActions>
     </>
   );

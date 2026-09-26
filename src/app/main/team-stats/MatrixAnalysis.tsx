@@ -13,7 +13,6 @@ import { alpha } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { POKEMON_TYPES } from "@/types";
-import { pokemonName } from "@/shared/names";
 import {
   coverageMatrix,
   defenceMatrix,
@@ -21,22 +20,10 @@ import {
   type MatrixCell,
 } from "@/store/matrix";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
-import { TYPE_ABBREVIATIONS, TYPE_COLORS } from "./shared/type-colors";
+import { useTranslation } from "@/app/shared/TranslationContext";
+import { TYPE_COLORS } from "./shared/type-colors";
 
 type MatrixKind = "defence" | "coverage";
-
-const DESCRIPTIONS: Record<MatrixKind, string> = {
-  defence: "How hard each attacking type hits each pokemon.",
-  coverage: "How hard each pokemon's best move hits each type.",
-};
-
-const LEGEND = [
-  { multiplier: 2, label: "×2 weak" },
-  { multiplier: 4, label: "×4" },
-  { multiplier: 0.5, label: "½ resists" },
-  { multiplier: 0.25, label: "¼" },
-  { multiplier: 0, label: "0 immune" },
-];
 
 // The cell background: red for super effective, teal for resisted, grey for immune
 const cellColor = (
@@ -52,9 +39,20 @@ const cellColor = (
 
 // Every type against every slot, in one table. Tap a cell for the reason.
 const MatrixAnalysis = observer(function MatrixAnalysis() {
+  const translation = useTranslation();
+  const { t, names } = translation;
   const [kind, setKind] = useState<MatrixKind>("defence");
   const matrix =
-    kind === "defence" ? defenceMatrix(store.team) : coverageMatrix(store.team);
+    kind === "defence" ?
+      defenceMatrix(store.team, translation)
+    : coverageMatrix(store.team, translation);
+  const legend = [
+    { multiplier: 2, label: t.matrix.weak },
+    { multiplier: 4, label: t.matrix.quadruple },
+    { multiplier: 0.5, label: t.matrix.resists },
+    { multiplier: 0.25, label: t.matrix.quarter },
+    { multiplier: 0, label: t.matrix.immune },
+  ];
 
   const cellSx = (cell: MatrixCell | null) => ({
     textAlign: "center",
@@ -87,14 +85,17 @@ const MatrixAnalysis = observer(function MatrixAnalysis() {
         onChange={(_event, value: MatrixKind | null) => {
           if (value) setKind(value);
         }}
-        aria-label="Matrix"
+        aria-label={t.matrix.matrix}
         sx={{ alignSelf: "center" }}
       >
-        <ToggleButton value="defence">Defence</ToggleButton>
-        <ToggleButton value="coverage">Coverage</ToggleButton>
+        <ToggleButton value="defence">{t.stats.defence}</ToggleButton>
+        <ToggleButton value="coverage">{t.stats.coverage}</ToggleButton>
       </ToggleButtonGroup>
       <Typography variant="body2" sx={{ textAlign: "center" }}>
-        {DESCRIPTIONS[kind]} Tap a cell for the reason.
+        {kind === "defence" ?
+          t.matrix.defenceDescription
+        : t.matrix.coverageDescription}{" "}
+        {t.matrix.tapForReason}
       </Typography>
       <Table size="small" sx={{ tableLayout: "fixed" }}>
         <TableHead>
@@ -103,7 +104,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis() {
             {store.team.map(({ name }, i) => (
               <TableCell
                 key={i}
-                aria-label={`Slot ${i + 1}${name ? `: ${pokemonName(name) ?? name}` : ""}`}
+                aria-label={t.matrix.slot(i + 1, name && names.pokemon(name))}
                 sx={{ textAlign: "center", p: 0 }}
               >
                 <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -132,9 +133,9 @@ const MatrixAnalysis = observer(function MatrixAnalysis() {
                     textAlign: "center",
                     lineHeight: "22px",
                   }}
-                  aria-label={type}
+                  aria-label={names.type(type)}
                 >
-                  {TYPE_ABBREVIATIONS[type]}
+                  {t.typeAbbreviations[type]}
                 </Box>
               </TableCell>
               {matrix[type].map((cell, i) => (
@@ -168,7 +169,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis() {
           fontSize: 12,
         }}
       >
-        {LEGEND.map(({ multiplier, label }) => (
+        {legend.map(({ multiplier, label }) => (
           <Box
             key={label}
             sx={{ display: "flex", alignItems: "center", gap: 0.5 }}

@@ -31,7 +31,6 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { SavedTeam } from "@/types";
 import { formatShortName } from "@/shared/formats";
-import { generationLabel } from "@/shared/generations";
 import { isTeamEmpty } from "@/shared/team";
 import { serializeTeam, serializeTeams } from "@/app/shared/team-text";
 import { teamUrl } from "@/app/shared/team-link";
@@ -39,15 +38,16 @@ import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
 import { useBreakpoint } from "@/app/shared/WidthContext";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import TeamSettingsDialog from "./shared/TeamSettingsDialog";
 import downloadText from "./teams-dialog/download-text";
 
-const teamSubtitle = ({ generation, format }: SavedTeam) =>
-  `${generationLabel(generation)}${format ? ` · ${formatShortName(format)}` : ""}`;
-
 // Every saved team: open one, or manage it through its menu
 const TeamsDialog = observer(function TeamsDialog() {
+  const { t } = useTranslation();
   const titleId = useId();
+  const teamSubtitle = ({ generation, format }: SavedTeam) =>
+    `${t.generation(generation)}${format ? ` · ${formatShortName(format)}` : ""}`;
   const isXs = useBreakpoint() === "xs";
   const [menu, setMenu] = useState<{
     teamId: string;
@@ -66,44 +66,44 @@ const TeamsDialog = observer(function TeamsDialog() {
 
   const menuItems = (team: SavedTeam) => [
     {
-      label: "Name and Format",
+      label: t.team.nameAndFormat,
       Icon: SettingsIcon,
       act: () => setSettingsTeamId(team.id),
     },
     {
-      label: "Share",
+      label: t.team.share,
       Icon: LinkIcon,
       act: () =>
         isTeamEmpty(team.team) ?
-          store.openSnackbar("Pokemon team is empty")
+          store.openSnackbar(t.team.teamEmpty)
         : copyToClipboard(
             teamUrl(team.team),
-            "Pokemon team link copied",
-            "Could not copy the link.",
+            t.team.linkCopied,
+            t.team.linkNotCopied,
           ),
     },
     {
-      label: "Copy text",
+      label: t.team.copyText,
       Icon: ContentCopyIcon,
       act: () =>
         isTeamEmpty(team.team) ?
-          store.openSnackbar("Empty team, nothing to copy.")
+          store.openSnackbar(t.team.nothingToCopy)
         : copyToClipboard(
             serializeTeam(team.team),
-            "Team copied.",
-            "Could not copy the team.",
+            t.team.teamCopied,
+            t.team.teamNotCopied,
           ),
     },
     {
-      label: "Duplicate",
+      label: t.team.duplicate,
       Icon: FileCopyIcon,
       act: () => {
         store.duplicateTeam(team.id);
-        store.openSnackbar("Team duplicated");
+        store.openSnackbar(t.team.teamDuplicated);
       },
     },
     {
-      label: "Edit Pokepaste",
+      label: t.team.editPokepaste,
       Icon: EditNoteIcon,
       act: () => {
         store.selectTeam(team.id);
@@ -111,7 +111,7 @@ const TeamsDialog = observer(function TeamsDialog() {
       },
     },
     {
-      label: "Delete",
+      label: t.team.delete,
       Icon: DeleteIcon,
       act: () => setDeletingTeamId(team.id),
     },
@@ -127,10 +127,10 @@ const TeamsDialog = observer(function TeamsDialog() {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id={titleId}>Teams</DialogTitle>
+        <DialogTitle id={titleId}>{t.team.teams}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
-            Tap a team to open it. The ⋮ button has its settings and actions.
+            {t.teams.description}
           </DialogContentText>
           <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
             <Button
@@ -141,7 +141,7 @@ const TeamsDialog = observer(function TeamsDialog() {
                 close();
               }}
             >
-              New Team
+              {t.teams.newTeam}
             </Button>
             <Button
               variant="outlined"
@@ -153,13 +153,13 @@ const TeamsDialog = observer(function TeamsDialog() {
                 close();
               }}
             >
-              Random Team
+              {t.teams.randomTeam}
             </Button>
           </Stack>
-          <List aria-label="Saved teams">
+          <List aria-label={t.teams.savedTeams}>
             {store.teams.map(team => {
               const isCurrent = team.id === store.currentTeamId;
-              const name = team.name || "Team";
+              const name = team.name || t.team.unnamedTeam;
               return (
                 <ListItem
                   key={team.id}
@@ -167,7 +167,7 @@ const TeamsDialog = observer(function TeamsDialog() {
                   secondaryAction={
                     <IconButton
                       edge="end"
-                      aria-label={`Options for ${name}`}
+                      aria-label={t.teams.optionsFor(name)}
                       aria-haspopup="menu"
                       onClick={(event: MouseEvent<HTMLElement>) =>
                         setMenu({
@@ -183,7 +183,7 @@ const TeamsDialog = observer(function TeamsDialog() {
                   <ListItemButton
                     selected={isCurrent}
                     aria-current={isCurrent}
-                    aria-label={`Load ${name}`}
+                    aria-label={t.teams.load(name)}
                     onClick={() => load(team)}
                     sx={{ borderRadius: 1, mb: 0.5 }}
                   >
@@ -234,19 +234,19 @@ const TeamsDialog = observer(function TeamsDialog() {
               startIcon={<UploadIcon />}
               onClick={() => store.openDialog("importTeam")}
             >
-              Import Team
+              {t.teams.importTeam}
             </Button>
             <Button
               variant="outlined"
               startIcon={<DownloadIcon />}
               onClick={() =>
                 downloadText(
-                  "my-pokemon-teams.txt",
+                  t.teams.exportFilename,
                   serializeTeams(store.teams),
                 )
               }
             >
-              Export All
+              {t.teams.exportAll}
             </Button>
           </Stack>
           <Typography
@@ -254,11 +254,11 @@ const TeamsDialog = observer(function TeamsDialog() {
             component="p"
             sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
           >
-            Teams are saved in this browser.
+            {t.teams.savedInBrowser}
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={close}>Close</Button>
+          <Button onClick={close}>{t.close}</Button>
         </DialogActions>
       </Dialog>
       <Menu

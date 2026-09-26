@@ -2,7 +2,8 @@ import { test, expect } from "./fixtures";
 import type { Locator, Page } from "@playwright/test";
 import { fromBase64Url } from "@/app/shared/base64url";
 import { breakpointValues } from "@/app/shared/theme";
-import { checklist, checklistLabel } from "@/store/checklist";
+import { checklistLabel } from "@/store/checklist";
+import en from "@/i18n/en";
 
 const ASPECT_RATIO = 16 / 9;
 
@@ -158,11 +159,11 @@ export const selectMove = async (
   await page.getByRole("listbox").getByText(move, { exact: true }).click();
 };
 
-// The checklist label as shown at the page's viewport width
+// The checklist label as shown at the page's viewport width, from its English label
 const pageChecklistLabel = (page: Page, label: string) => {
-  const item = checklist
-    .flatMap(group => group.items)
-    .find(item => item.label === label);
+  const item = Object.values(en.checklist.items).find(
+    item => item.label === label,
+  );
   if (!item) throw new Error(`Unknown checklist item: ${label}`);
 
   const width = page.viewportSize()?.width ?? Infinity;

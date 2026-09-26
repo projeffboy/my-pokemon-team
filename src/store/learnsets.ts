@@ -1,7 +1,7 @@
 import pokedex from "@/data/pokedex";
-import moves from "@/data/moves";
 import viableMoves from "@/data/viable-moves";
 import type { Learnsets, ReadonlyTeam } from "@/types";
+import { englishNames, type Names } from "@/i18n/names";
 import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
 
 const REGIONS = ["alola", "galar", "hisui", "paldea"];
@@ -103,7 +103,11 @@ export const canItLearn = (
   pokemon: string,
 ): boolean => (move ? completeLearnset(pokemon).includes(move) : false);
 
-export function getTeamLearnsets(team: ReadonlyTeam, viableOnly: boolean) {
+export function getTeamLearnsets(
+  team: ReadonlyTeam,
+  viableOnly: boolean,
+  names: Names = englishNames,
+) {
   const values = team.map(({ name }) => {
     const learnset = name ? completeLearnset(name) : [];
     return viableOnly ?
@@ -113,6 +117,6 @@ export function getTeamLearnsets(team: ReadonlyTeam, viableOnly: boolean) {
 
   return {
     values,
-    labels: values.map(learnset => learnset.map(move => moves[move]?.name)),
+    labels: values.map(learnset => learnset.map(names.move)),
   };
 }

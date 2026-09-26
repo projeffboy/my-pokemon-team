@@ -6,6 +6,7 @@ import face1 from "@/images/pokemon-shuffle-faces/venusaur-shuffle-face-cropped.
 import face2 from "@/images/pokemon-shuffle-faces/charizard-shuffle-face-cropped.png";
 import { fluidClamp } from "./header/fluid-clamp";
 import GenerationSelect from "./header/GenerationSelect";
+import LanguageSelect from "./header/LanguageSelect";
 import FeedbackDialog from "./header/FeedbackDialog";
 import {
   breakpointValues,
@@ -65,6 +66,7 @@ export default function Header() {
         sx={{ width: "100%", maxWidth: 420, mx: "auto", alignItems: "stretch" }}
       >
         <GenerationSelect />
+        <LanguageSelect />
         <FeedbackDialog />
       </Stack>
     </Grid>

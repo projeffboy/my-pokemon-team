@@ -14,12 +14,19 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import type { SortKey } from "@/types";
-import { SORT_OPTIONS } from "@/store/sorting";
+import { STAT_KEYS, type SortKey, type StatKey } from "@/types";
+import { SORT_KEYS } from "@/store/sorting";
+import { useTranslation } from "@/app/shared/TranslationContext";
+
+const isStat = (key: SortKey): key is StatKey =>
+  STAT_KEYS.includes(key as StatKey);
 
 // The order of the Name dropdown's options
 const SortDialog = observer(function SortDialog() {
+  const { t } = useTranslation();
   const titleId = useId();
+  const label = (key: SortKey) =>
+    isStat(key) ? t.statFullNames[key] : t.sort[key];
   const isOpen = store.dialog?.name === "sort";
   const close = () => store.closeDialog();
 
@@ -31,11 +38,11 @@ const SortDialog = observer(function SortDialog() {
       fullWidth
       maxWidth="xs"
     >
-      <DialogTitle id={titleId}>Sort</DialogTitle>
+      <DialogTitle id={titleId}>{t.team.sort}</DialogTitle>
       <DialogContent>
         <Stack spacing={2}>
           <FormControl>
-            <FormLabel id={`${titleId}-by`}>Sort by</FormLabel>
+            <FormLabel id={`${titleId}-by`}>{t.sort.sortBy}</FormLabel>
             <RadioGroup
               aria-labelledby={`${titleId}-by`}
               value={store.sort.by}
@@ -44,19 +51,19 @@ const SortDialog = observer(function SortDialog() {
               }
               sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
             >
-              {SORT_OPTIONS.map(({ key, label }) => (
+              {SORT_KEYS.map(key => (
                 <FormControlLabel
                   key={key}
                   value={key}
                   control={<Radio size="small" />}
-                  label={label}
+                  label={label(key)}
                 />
               ))}
             </RadioGroup>
           </FormControl>
           <FormControl>
             <FormLabel id={`${titleId}-order`} sx={{ mb: 1 }}>
-              Order
+              {t.sort.order}
             </FormLabel>
             <ToggleButtonGroup
               exclusive
@@ -67,14 +74,16 @@ const SortDialog = observer(function SortDialog() {
               }}
               aria-labelledby={`${titleId}-order`}
             >
-              <ToggleButton value="ascending">Ascending</ToggleButton>
-              <ToggleButton value="descending">Descending</ToggleButton>
+              <ToggleButton value="ascending">{t.sort.ascending}</ToggleButton>
+              <ToggleButton value="descending">
+                {t.sort.descending}
+              </ToggleButton>
             </ToggleButtonGroup>
           </FormControl>
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={close}>Done</Button>
+        <Button onClick={close}>{t.done}</Button>
       </DialogActions>
     </Dialog>
   );

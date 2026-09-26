@@ -2,7 +2,6 @@ import pokedex from "@/data/pokedex";
 import items from "@/data/items";
 import moves from "@/data/moves";
 import natures from "@/data/natures";
-import { STAT_NAMES } from "./set-details";
 
 function idsByName(data: Record<string, { name?: string }>) {
   const ids = new Map<string, string>();
@@ -43,18 +42,8 @@ export const moveName = (move: string) => moves[move]?.name;
 // E.g. 'jolly' => 'Jolly'
 export const natureName = (nature: string) => natures[nature]?.name;
 
-// E.g. 'jolly' => 'Jolly (+Spe, -SpA)', or 'Hardy (neutral)'
-export function natureLabel(nature: string) {
-  const { name, plus, minus } = natures[nature] ?? {};
-  if (!name) return "";
-  return plus && minus ?
-      `${name} (+${STAT_NAMES[plus]}, -${STAT_NAMES[minus]})`
-    : `${name} (neutral)`;
-}
-
 // Every item, as the item input's options
 export const allItemIds = Object.keys(items);
-export const allItemNames = allItemIds.map(id => items[id]?.name ?? id);
 
 export const allNatureIds = Object.keys(natures);
 

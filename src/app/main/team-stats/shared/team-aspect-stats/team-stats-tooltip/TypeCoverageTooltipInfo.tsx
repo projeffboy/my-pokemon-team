@@ -1,8 +1,9 @@
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { moveName, pokemonName } from "@/shared/names";
 import { pokemonTypes } from "@/shared/pokedex";
+import fill from "@/app/shared/fill";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import {
   moveAgainstType,
   moveType as getMoveType,
@@ -17,6 +18,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   typeColor: string;
   type: PokemonType;
 }) {
+  const { t, names } = useTranslation();
   const superEffectiveMoves = store.team.flatMap((member, i) =>
     MOVE_KEYS.flatMap(key => {
       const { name: pokemon, ability } = member;
@@ -33,16 +35,18 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   return (
     <>
       <p>
-        Super effective against{" "}
-        <Box component="span" sx={{ color: typeColor }}>
-          {type}
-        </Box>
-        :
+        {fill(t.stats.superEffectiveAgainst, {
+          type: (
+            <Box component="span" sx={{ color: typeColor }}>
+              {names.type(type)}
+            </Box>
+          ),
+        })}
       </p>
       <Box component="ul" sx={{ listStyle: "none", p: 0 }}>
         {superEffectiveMoves.length === 0 && (
           <Box component="li" sx={{ textAlign: "center" }}>
-            Nothing
+            {t.nothing}
           </Box>
         )}
         {superEffectiveMoves.map(({ key, move, pokemon, isStab }) => (
@@ -56,9 +60,9 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
             }}
           >
             <Box component="span" sx={{ width: 150 }}>
-              {moveName(move)}
+              {names.move(move)}
             </Box>
-            <span>{`${pokemonName(pokemon)} `}</span>
+            <span>{`${names.pokemon(pokemon)} `}</span>
             <PokemonIcon pokemonProperty="name" value={pokemon} />
           </Box>
         ))}

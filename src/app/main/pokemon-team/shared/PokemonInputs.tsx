@@ -11,8 +11,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { pokemonName } from "@/shared/names";
 import { useIsMdDown } from "@/app/shared/WidthContext";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "./PokemonSprite";
 import { MOVE_KEYS } from "@/types";
@@ -40,10 +40,11 @@ const PokemonInputs = observer(function PokemonInputs({
   teamIndex: number;
   onMoveToSlot?: (teamIndex: number) => void;
 }) {
+  const { t, names } = useTranslation();
   const isMdDown = useIsMdDown();
   const showTools = !isMdDown || store.isMoreOpen;
   const pokemon = store.team[teamIndex]?.name ?? "";
-  const label = pokemonName(pokemon) ?? pokemon;
+  const label = names.pokemon(pokemon);
 
   const moveToSlot = (otherIndex: number) => {
     store.swapSlots(teamIndex, otherIndex);
@@ -53,7 +54,7 @@ const PokemonInputs = observer(function PokemonInputs({
   const slotNav = (direction: -1 | 1) => {
     const otherIndex = teamIndex + direction;
     const disabled = otherIndex < 0 || otherIndex >= store.team.length;
-    const title = `Move to the ${direction < 0 ? "previous" : "next"} slot`;
+    const title = direction < 0 ? t.team.previousSlot : t.team.nextSlot;
     return (
       <Tooltip title={title}>
         <span>
@@ -93,7 +94,7 @@ const PokemonInputs = observer(function PokemonInputs({
         },
       }}
       role="region"
-      aria-label={`Pokemon ${teamIndex + 1}`}
+      aria-label={t.team.slot(teamIndex + 1)}
     >
       <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
         {showTools && (
@@ -105,7 +106,7 @@ const PokemonInputs = observer(function PokemonInputs({
               sx={smallButton}
               onClick={() => store.openDialog("filters", { teamIndex })}
             >
-              Filters
+              {t.team.filters}
             </Button>
             <Button
               size="small"
@@ -114,12 +115,12 @@ const PokemonInputs = observer(function PokemonInputs({
               sx={smallButton}
               onClick={() => store.openDialog("sort", { teamIndex })}
             >
-              Sort
+              {t.team.sort}
             </Button>
           </Box>
         )}
         <PokemonInput
-          placeholder="Name"
+          placeholder={t.team.name}
           teamIndex={teamIndex}
           pokemonProperty="name"
         />
@@ -144,11 +145,11 @@ const PokemonInputs = observer(function PokemonInputs({
           >
             <PokemonSprite teamIndex={teamIndex} forceFullSize />
             {pokemon && (
-              <Tooltip title={`About ${label}`}>
+              <Tooltip title={t.team.about(label)}>
                 <IconButton
                   className={SLOT_NAV_CLASS}
                   size="small"
-                  aria-label={`About ${label}`}
+                  aria-label={t.team.about(label)}
                   onClick={() => store.openDialog("info", { teamIndex })}
                   sx={{ position: "absolute", top: -4, right: -4 }}
                 >
@@ -166,10 +167,10 @@ const PokemonInputs = observer(function PokemonInputs({
             startIcon={<CasinoIcon />}
             sx={smallButton}
             disabled={!store.learnsetsLoaded}
-            aria-label={`Random pokemon for slot ${teamIndex + 1}`}
+            aria-label={t.team.randomFor(teamIndex + 1)}
             onClick={() => store.randomizeSlot(teamIndex)}
           >
-            Random
+            {t.team.random}
           </Button>
           {showTools && (
             <Button
@@ -178,10 +179,10 @@ const PokemonInputs = observer(function PokemonInputs({
               startIcon={<TuneIcon />}
               sx={smallButton}
               disabled={!pokemon}
-              aria-label={`Advanced options for slot ${teamIndex + 1}`}
+              aria-label={t.team.advancedFor(teamIndex + 1)}
               onClick={() => store.openDialog("advanced", { teamIndex })}
             >
-              Advanced
+              {t.team.advanced}
             </Button>
           )}
         </Box>
@@ -190,18 +191,18 @@ const PokemonInputs = observer(function PokemonInputs({
         {MOVE_KEYS.map(key => (
           <PokemonInput
             key={key}
-            placeholder="Move"
+            placeholder={t.team.move}
             teamIndex={teamIndex}
             pokemonProperty={key}
           />
         ))}
         <PokemonInput
-          placeholder="Item"
+          placeholder={t.team.item}
           teamIndex={teamIndex}
           pokemonProperty="item"
         />
         <PokemonInput
-          placeholder="Ability"
+          placeholder={t.team.ability}
           teamIndex={teamIndex}
           pokemonProperty="ability"
         />

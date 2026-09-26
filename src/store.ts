@@ -1,4 +1,10 @@
-import { makeAutoObservable, configure, reaction, toJS } from "mobx";
+import {
+  makeAutoObservable,
+  configure,
+  observable,
+  reaction,
+  toJS,
+} from "mobx";
 import type {
   Generation,
   NameView,
@@ -32,8 +38,9 @@ import {
   isTeamEmpty,
 } from "./shared/team";
 import { clearDetails } from "./shared/set-details";
-import { pokemonName } from "./shared/names";
 import { pokemonAbilities } from "./shared/pokedex";
+import { detectLocale, type Locale } from "./i18n/locales";
+import { english, loadTranslation, type Translation } from "./i18n/translation";
 
 // Components mutate the store directly.
 configure({ enforceActions: "never" });
@@ -51,6 +58,8 @@ export type DialogName =
 const HISTORY_LIMIT = 50;
 
 const storage = typeof localStorage === "undefined" ? undefined : localStorage;
+const browserLanguages =
+  typeof navigator === "undefined" ? [] : navigator.languages;
 
 const teamKey = (team: Team) => JSON.stringify(toJS(team));
 
@@ -62,22 +71,39 @@ class Store {
     this.isMoreOpen = stored.isMoreOpen;
     this.sort = stored.sort;
     this.nameView = stored.nameView;
+    this.locale = stored.locale ?? detectLocale(browserLanguages);
     this.lastSnapshot = teamKey(this.team);
     this.historyTeamId = this.currentTeamId;
 
     makeAutoObservable<Store, "lastSnapshot" | "historyTeamId">(this, {
       lastSnapshot: false,
       historyTeamId: false,
+      translation: observable.ref,
     });
 
     learnsetsReady.then(
       () => {
         this.learnsetsLoaded = true;
       },
-      () =>
-        this.openSnackbar(
-          "The move lists could not be loaded. Reload the page to try again.",
-        ),
+      () => this.openSnackbar(this.translation.t.team.learnsetsFailed),
+    );
+
+    // The chosen language's text and names load on demand; a language chosen in the
+    // meantime wins, and a failed load leaves the previous language in place
+    reaction(
+      () => this.locale,
+      locale => {
+        if (typeof document !== "undefined")
+          document.documentElement.lang = locale;
+        loadTranslation(locale).then(
+          translation => {
+            if (translation.locale === this.locale)
+              this.translation = translation;
+          },
+          () => {},
+        );
+      },
+      { fireImmediately: true },
     );
 
     reaction(
@@ -143,10 +169,11 @@ class Store {
   }
 
   private nextTeamName() {
+    const { teamNumber } = this.translation.t.team;
     const names = new Set(this.teams.map(({ name }) => name));
     let number = this.teams.length + 1;
-    while (names.has(`Team ${number}`)) number++;
-    return `Team ${number}`;
+    while (names.has(teamNumber(number))) number++;
+    return teamNumber(number);
   }
 
   // A new team in the current team's generation and format, which becomes the current one
@@ -172,7 +199,8 @@ class Store {
     if (index === -1) return;
     const { generation, format } = this.teams.splice(index, 1)[0] ?? {};
     if (!this.teams.length) {
-      this.teams.push(createSavedTeam({ name: "Team 1", generation, format }));
+      const name = this.translation.t.team.teamNumber(1);
+      this.teams.push(createSavedTeam({ name, generation, format }));
     }
     if (this.currentTeamId === id) {
       const neighbour = this.teams[Math.min(index, this.teams.length - 1)];
@@ -185,9 +213,10 @@ class Store {
     const source = this.teams[index];
     if (!source) return;
     const { id: _sourceId, ...settings } = toJS(source);
+    const { copyOf, unnamedTeam } = this.translation.t.team;
     const copy = createSavedTeam({
       ...settings,
-      name: `${source.name || "Team"} copy`,
+      name: copyOf(source.name || unnamedTeam),
     });
     this.teams.splice(index + 1, 0, copy);
     this.currentTeamId = copy.id;
@@ -236,7 +265,11 @@ class Store {
 
   get teamLearnsets() {
     if (!this.learnsetsLoaded) return { values: [], labels: [] };
-    return getTeamLearnsets(this.team, this.viableMovesOnly);
+    return getTeamLearnsets(
+      this.team,
+      this.viableMovesOnly,
+      this.translation.names,
+    );
   }
 
   // Choosing a pokemon resets the slot, then fills in its only item and ability
@@ -307,11 +340,15 @@ class Store {
   }
 
   get filteredPokemon() {
-    return sortPokemon(filterPokemon(this.searchFilters), this.sort);
+    return sortPokemon(
+      filterPokemon(this.searchFilters),
+      this.sort,
+      this.translation,
+    );
   }
 
   get filteredPokemonNames() {
-    return this.filteredPokemon.map(pokemonName);
+    return this.filteredPokemon.map(this.translation.names.pokemon);
   }
 
   // Undo and redo, per team
@@ -352,6 +389,10 @@ class Store {
 
   // UI state
 
+  // The site's language, and its text and names once they have loaded
+  locale: Locale;
+  translation: Translation = english;
+
   // On phones and tablets, "More" shows the team tools, filters, and advanced sets
   isMoreOpen: boolean;
 
@@ -387,6 +428,7 @@ class Store {
       isMoreOpen: this.isMoreOpen,
       sort: this.sort,
       nameView: this.nameView,
+      locale: this.locale,
     };
   }
 }

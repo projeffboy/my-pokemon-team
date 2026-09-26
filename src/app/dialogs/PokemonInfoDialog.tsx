@@ -12,29 +12,21 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import pokedex from "@/data/pokedex";
 import { POKEMON_TYPES, STAT_KEYS } from "@/types";
-import { pokemonName } from "@/shared/names";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
-import { baseStatTotal, STAT_FULL_NAMES } from "@/shared/set-details";
-import { generationLabel, smogonDexUrl } from "@/shared/generations";
+import { baseStatTotal } from "@/shared/set-details";
+import { smogonDexUrl } from "@/shared/generations";
 import { introducedIn } from "@/store/filtering";
 import { scoreToMultiplier } from "@/store/matrix";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import PokemonSprite from "@/app/main/pokemon-team/shared/PokemonSprite";
 import { TYPE_COLORS } from "@/app/main/team-stats/shared/type-colors";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const MAX_BASE_STAT = 255;
 
-const typeChip = (type: keyof typeof TYPE_COLORS, suffix = "") => (
-  <Chip
-    key={type}
-    label={`${type}${suffix}`}
-    size="small"
-    sx={{ bgcolor: TYPE_COLORS[type], color: "common.white", fontWeight: 500 }}
-  />
-);
-
 // A slot's species: types, abilities, base stats, and weaknesses with its ability and item
 const PokemonInfoDialog = observer(function PokemonInfoDialog() {
+  const { t, names } = useTranslation();
   const titleId = useId();
   const { dialog } = store;
   const teamIndex = dialog?.teamIndex ?? 0;
@@ -43,7 +35,19 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
   const entry = pokedex[pokemon];
   const isOpen = dialog?.name === "info" && !!entry;
   const close = () => store.closeDialog();
-  const name = pokemonName(pokemon) ?? pokemon;
+  const name = names.pokemon(pokemon);
+  const typeChip = (type: keyof typeof TYPE_COLORS, suffix = "") => (
+    <Chip
+      key={type}
+      label={`${names.type(type)}${suffix}`}
+      size="small"
+      sx={{
+        bgcolor: TYPE_COLORS[type],
+        color: "common.white",
+        fontWeight: 500,
+      }}
+    />
+  );
   const weaknesses =
     member ?
       POKEMON_TYPES.map(type => ({
@@ -56,7 +60,7 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
   const about = [
     `#${entry?.num ?? "?"}`,
     entry?.forme,
-    entry && generationLabel(introducedIn(entry)),
+    entry && t.generation(introducedIn(entry)),
   ].filter(part => part);
 
   return (
@@ -88,17 +92,19 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
             </Box>
             <Box>
               <Typography variant="overline" component="h3">
-                Abilities
+                {t.info.abilities}
               </Typography>
-              <Typography>{pokemonAbilities(pokemon).join(", ")}</Typography>
+              <Typography>
+                {pokemonAbilities(pokemon).map(names.ability).join(", ")}
+              </Typography>
             </Box>
             <Box>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="overline" component="h3">
-                  Base stats
+                  {t.info.baseStats}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  Total {baseStatTotal(entry.baseStats)}
+                  {t.info.total(baseStatTotal(entry.baseStats))}
                 </Typography>
               </Box>
               {STAT_KEYS.map(stat => {
@@ -112,13 +118,13 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
                       gap: 1,
                       py: 0.25,
                     }}
-                    aria-label={`${STAT_FULL_NAMES[stat]}: ${value}`}
+                    aria-label={t.info.statValue(t.statFullNames[stat], value)}
                   >
                     <Typography
                       variant="body2"
                       sx={{ width: 56, flexShrink: 0 }}
                     >
-                      {STAT_FULL_NAMES[stat]}
+                      {t.statFullNames[stat]}
                     </Typography>
                     <Box
                       sx={{
@@ -152,14 +158,14 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
             </Box>
             <Box>
               <Typography variant="overline" component="h3">
-                Weak to
+                {t.info.weakTo}
               </Typography>
               <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
                 {weaknesses.length ?
                   weaknesses.map(({ type, multiplier }) =>
                     typeChip(type, multiplier > 2 ? ` ×${multiplier}` : ""),
                   )
-                : <Typography variant="body2">Nothing</Typography>}
+                : <Typography variant="body2">{t.nothing}</Typography>}
               </Box>
             </Box>
           </DialogContent>
@@ -167,13 +173,13 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
             <Link
               href={smogonDexUrl(
                 store.currentTeam.generation,
-                entry.baseSpecies ?? name,
+                entry.baseSpecies ?? entry.name ?? pokemon,
               )}
               sx={{ mr: "auto", ml: 1 }}
             >
-              Smogon dex
+              {t.info.smogonDex}
             </Link>
-            <Button onClick={close}>Close</Button>
+            <Button onClick={close}>{t.close}</Button>
           </DialogActions>
         </>
       )}

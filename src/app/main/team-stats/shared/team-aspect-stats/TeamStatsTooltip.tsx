@@ -1,8 +1,8 @@
 import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { PokemonType } from "@/types";
-import type { TeamStatTitle } from "@/types";
+import type { PokemonType, TeamStatType } from "@/types";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import TypeDefenceTooltipInfo from "./team-stats-tooltip/TypeDefenceTooltipInfo";
 import TypeCoverageTooltipInfo from "./team-stats-tooltip/TypeCoverageTooltipInfo";
 
@@ -10,21 +10,19 @@ const TeamStatsTooltip = observer(function TeamStatsTooltip({
   teamStatType,
   ...otherProps
 }: {
-  teamStatType: TeamStatTitle;
+  teamStatType: TeamStatType;
   typeColor: string;
   type: PokemonType;
 }) {
-  const content = () => {
-    if (teamStatType === "Team Defence")
-      return <TypeDefenceTooltipInfo {...otherProps} />;
-    if (teamStatType === "Team Type Coverage")
-      return <TypeCoverageTooltipInfo {...otherProps} />;
-    return null;
-  };
+  const { t } = useTranslation();
+  const content = () =>
+    teamStatType === "typeDefence" ?
+      <TypeDefenceTooltipInfo {...otherProps} />
+    : <TypeCoverageTooltipInfo {...otherProps} />;
 
   return (
     <Typography component="div" variant="body2">
-      {store.isTeamEmpty ? "First select a pokemon." : content()}
+      {store.isTeamEmpty ? t.stats.selectPokemonFirst : content()}
     </Typography>
   );
 });

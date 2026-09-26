@@ -15,6 +15,7 @@ export const MAX_EV = 252;
 export const MAX_EV_TOTAL = 510;
 export const MAX_IV = 31;
 
+// Showdown's stat abbreviations, as its team text writes them
 export const STAT_NAMES: Record<StatKey, string> = {
   hp: "HP",
   atk: "Atk",
@@ -22,15 +23,6 @@ export const STAT_NAMES: Record<StatKey, string> = {
   spa: "SpA",
   spd: "SpD",
   spe: "Spe",
-};
-
-export const STAT_FULL_NAMES: Record<StatKey, string> = {
-  hp: "HP",
-  atk: "Attack",
-  def: "Defense",
-  spa: "Sp. Atk",
-  spd: "Sp. Def",
-  spe: "Speed",
 };
 
 export const TERA_TYPES: readonly string[] = [...POKEMON_TYPES, "Stellar"];
@@ -60,12 +52,6 @@ export function genderOptions(pokemon: string): readonly Gender[] {
   const gender = pokedex[pokemon]?.gender;
   return gender ? [gender] : ["M", "F"];
 }
-
-export const GENDER_NAMES: Record<Gender, string> = {
-  M: "Male",
-  F: "Female",
-  N: "Genderless",
-};
 
 // Does the slot hold anything the Advanced dialog can reset?
 export const hasDetails = (member: Readonly<TeamPokemon>) =>

@@ -12,10 +12,11 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
 5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on)
 6. The sprites are animated, which is nice
+7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI
 
 ## Tech Stack
 
-This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown. The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com). Vercel deploys `master` to it once CI passes.
+This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown, and its translations from [PokeAPI](https://pokeapi.co/). The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com). Vercel deploys `master` to it once CI passes.
 
 - UI: React and Material UI (MUI).
 - Build and typechecking: Vite and TypeScript.
@@ -75,6 +76,16 @@ After writing the data, the script reports what the update may have broken:
 
 The last two checks need a connection to play.pokemonshowdown.com and are skipped without one. If players will notice the update, add an entry to the update log in `src/app/footer/update-log/entries.ts`.
 
+## Updating Translations
+
+The pokemon, move, item, ability, nature, type, and region names in the other eight languages come from [PokeAPI](https://github.com/PokeAPI/pokeapi)'s CSV tables. Refresh them in `src/data/translations` after a data update with:
+
+```sh
+npm run update:translations
+```
+
+It reads the tables from GitHub (set `POKEAPI_CSV_URL` to read another copy) and reports, per language, the names it had to leave in English, such as an item PokeAPI has not translated yet, and the formes it named after their translated species and English forme. The UI text itself is written by hand in `src/i18n`.
+
 ## Testing
 
 After setting up the project, install the Playwright browsers and run all checks:
@@ -100,6 +111,7 @@ The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull request
 
 - Nintendo, The Pokemon Company, Game Freak
 - [Pokemon Showdown](https://pokemonshowdown.com/): animated sprites, non-animated sprites, and all the pokemon data (thanks Zarel!)
+- [PokeAPI](https://pokeapi.co/): the pokemon, move, item, and ability names in every language
 - [React](https://react.dev/)
 - [Material UI](https://mui.com/material-ui/)
 - [MobX state management](https://mobx.js.org/)

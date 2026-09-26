@@ -1,8 +1,9 @@
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { pokemonName } from "@/shared/names";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
+import fill from "@/app/shared/fill";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import PokemonIcon from "@/app/main/shared/PokemonIcon";
 import type { PokemonType } from "@/types";
 
@@ -26,13 +27,17 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
   typeColor: string;
   type: PokemonType;
 }) {
+  const { t, names } = useTranslation();
   return (
     <>
       <p>
-        <Box component="span" sx={{ color: typeColor }}>
-          {type}
-        </Box>{" "}
-        does...
+        {fill(t.stats.typeDoes, {
+          type: (
+            <Box component="span" sx={{ color: typeColor }}>
+              {names.type(type)}
+            </Box>
+          ),
+        })}
       </p>
       <Box component="ul" sx={{ listStyle: "none", p: 0 }}>
         {store.team.map(({ name: pokemon, ability, item }, i) => {
@@ -50,10 +55,10 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
                 component="span"
                 sx={{ color, width: 40, textAlign: "right", pr: 0.5 }}
               >
-                {multiplier}x
+                {t.stats.multiplier(multiplier)}
               </Box>
               <Box component="span" sx={{ pr: 0.25 }}>
-                to {pokemonName(pokemon)}
+                {t.stats.toPokemon(names.pokemon(pokemon))}
               </Box>
               <PokemonIcon pokemonProperty="name" value={pokemon} />
             </Box>

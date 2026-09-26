@@ -8,26 +8,27 @@ import TypeChartPng from "@/images/type-charts/type-chart.webp";
 import TypeChartListPng from "@/images/type-charts/type-chart-list.webp";
 import TypeChartInfographicPng from "@/images/type-charts/type-chart-infographic.webp";
 import { useBreakpoint } from "@/app/shared/WidthContext";
-
-const charts = [
-  { label: "Table", alt: "Bulbapedia Pokemon Type Chart", src: TypeChartPng },
-  {
-    label: "List",
-    alt: "List Pokemon Type Chart",
-    src: TypeChartListPng,
-    caption: "Strong against → Type → Strong against",
-  },
-  {
-    label: "Infographic",
-    alt: "Infographic Type Chart",
-    src: TypeChartInfographicPng,
-    caption: "Also applies for Gen 7-9",
-  },
-];
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 export default function TypeChart() {
+  const { t } = useTranslation();
   const width = useBreakpoint();
   const [value, setValue] = useState(() => (width === "xs" ? 1 : 0));
+  const charts = [
+    { label: t.typeChart.table, alt: t.typeChart.tableAlt, src: TypeChartPng },
+    {
+      label: t.typeChart.list,
+      alt: t.typeChart.listAlt,
+      src: TypeChartListPng,
+      caption: t.typeChart.listCaption,
+    },
+    {
+      label: t.typeChart.infographic,
+      alt: t.typeChart.infographicAlt,
+      src: TypeChartInfographicPng,
+      caption: t.typeChart.infographicCaption,
+    },
+  ];
   const chart = charts[value];
 
   const handleChange = (_event: SyntheticEvent, newValue: number) => {

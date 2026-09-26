@@ -21,6 +21,8 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `teams.spec.ts` checks the store's saved teams, slot tools, and undo history.
 - `teams-storage.spec.ts` covers loading and saving the teams from localStorage, including malformed data.
 - `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, learnset merging, viable moves, the type chart, rename reports, and the rendered file format.
+- `update-translations.spec.ts` covers the translation update's pure transforms in `scripts/update-translations/transforms.ts`: CSV parsing, species and forme names, the mega and regional templates, Hidden Power, Z-Move and Z-Crystal suffixes, abilities with a detail, duplicate names, the report, and the rendered file format.
+- `translations.spec.ts` covers the language detection, the English fallback of translated names, name sorting by species in another language, translated matrix reasons and team problems, every language having English's message keys, and the store loading a language and saving the choice.
 
 Rule tests import functions from `src/store/` and use plain team objects. They need no MobX store or reset fixture. Tests use the bundled Pokemon data and explicit expected results.
 

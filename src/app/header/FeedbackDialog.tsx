@@ -13,12 +13,15 @@ import FeedbackIcon from "@mui/icons-material/Feedback";
 import SendIcon from "@mui/icons-material/Send";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import fill from "@/app/shared/fill";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const EMAIL = "jeffery124@gmail.com";
 
 // Feedback goes by email: the Send button opens the visitor's mail app with the message
 // and, if they like, their team link, so a bug can be reproduced
 const FeedbackDialog = observer(function FeedbackDialog() {
+  const { t } = useTranslation();
   const titleId = useId();
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -27,36 +30,36 @@ const FeedbackDialog = observer(function FeedbackDialog() {
 
   const body = [
     message,
-    attachLink && !store.isTeamEmpty ? `My team: ${location.href}` : "",
+    attachLink && !store.isTeamEmpty ?
+      `${t.feedback.myTeam} ${location.href}`
+    : "",
   ]
     .filter(part => part)
     .join("\n\n");
-  const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent("My Pokemon Team feedback")}&body=${encodeURIComponent(body)}`;
+  const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent(t.feedback.subject)}&body=${encodeURIComponent(body)}`;
 
   return (
     <>
-      <Tooltip title="Send feedback">
+      <Tooltip title={t.feedback.button}>
         <Button
           variant="outlined"
           onClick={() => setIsOpen(true)}
-          aria-label="Send feedback"
+          aria-label={t.feedback.button}
           sx={{ minWidth: 0, px: 1.5, flexShrink: 0 }}
         >
           <FeedbackIcon />
         </Button>
       </Tooltip>
       <Dialog open={isOpen} onClose={close} aria-labelledby={titleId} fullWidth>
-        <DialogTitle id={titleId}>Send Feedback</DialogTitle>
+        <DialogTitle id={titleId}>{t.feedback.title}</DialogTitle>
         <DialogContent>
           <DialogContentText sx={{ mb: 2 }}>
-            Found a bug or have a suggestion? Sending opens your email app with
-            the message addressed to {EMAIL}. Attach your team link so problems
-            can be reproduced.
+            {fill(t.feedback.description, { email: EMAIL })}
           </DialogContentText>
           <TextField
             autoFocus
-            label="Your feedback"
-            placeholder="e.g. Meganium is missing Dazzling Gleam"
+            label={t.feedback.label}
+            placeholder={t.feedback.placeholder}
             multiline
             minRows={4}
             fullWidth
@@ -71,18 +74,18 @@ const FeedbackDialog = observer(function FeedbackDialog() {
                 onChange={event => setAttachLink(event.target.checked)}
               />
             }
-            label="Attach my team link"
+            label={t.feedback.attachLink}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={close}>Cancel</Button>
+          <Button onClick={close}>{t.cancel}</Button>
           <Button
             href={mailto}
             disabled={!message.trim()}
             onClick={close}
             startIcon={<SendIcon />}
           >
-            Send
+            {t.feedback.send}
           </Button>
         </DialogActions>
       </Dialog>

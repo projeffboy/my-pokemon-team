@@ -11,23 +11,26 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { POKEMON_TYPES, type TeamStatType } from "@/types";
 import { useIsLgDown } from "@/app/shared/WidthContext";
-import type { TeamStatTitle } from "@/types";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
-import { TYPE_ABBREVIATIONS, TYPE_COLORS } from "./type-colors";
+import { TYPE_COLORS } from "./type-colors";
 
 // The 18 type scores of one team stat. The heading can be hidden when a tab names the stat.
 const TeamAspectStats = observer(function TeamAspectStats({
-  title,
+  stat: teamStatType,
   titleId,
   hideTitle = false,
 }: {
-  title: TeamStatTitle;
+  stat: TeamStatType;
   titleId: string;
   hideTitle?: boolean;
 }) {
+  const { t, names } = useTranslation();
   const isLgDown = useIsLgDown();
-  const teamStatType: TeamStatType =
-    title === "Team Defence" ? "typeDefence" : "typeCoverage";
+  const title =
+    teamStatType === "typeDefence" ?
+      t.stats.teamDefence
+    : t.stats.teamTypeCoverage;
 
   // The type tile whose popover is open, if any
   const [popover, setPopover] = useState<{
@@ -100,7 +103,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 aria-describedby={
                   popover?.index === i ? `mouse-over-popover-${i}` : undefined
                 }
-                aria-label={type}
+                aria-label={names.type(type)}
                 onMouseEnter={e => handlePopoverOpen(e, i)}
                 onMouseLeave={handlePopoverClose}
                 onFocus={e => handlePopoverOpen(e, i)}
@@ -108,7 +111,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 onKeyDown={handleKeyDown}
                 onClick={e => handleClick(e, i)}
               >
-                {isLgDown ? TYPE_ABBREVIATIONS[type] : type}
+                {isLgDown ? t.typeAbbreviations[type] : names.type(type)}
               </ButtonBase>
               <Popper
                 id={`mouse-over-popover-${i}`}
@@ -124,7 +127,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                       <TeamStatsTooltip
                         type={type}
                         typeColor={TYPE_COLORS[type]}
-                        teamStatType={title}
+                        teamStatType={teamStatType}
                       />
                     </Paper>
                   </Fade>
@@ -134,7 +137,10 @@ const TeamAspectStats = observer(function TeamAspectStats({
             <Typography
               component="div"
               sx={{ lineHeight: "initial" }}
-              aria-label={`${type} score: ${formatPositiveScore(teamStatValues[type])}`}
+              aria-label={t.stats.score(
+                names.type(type),
+                `${formatPositiveScore(teamStatValues[type])}`,
+              )}
             >
               {getTypeScore(teamStatValues[type])}
             </Typography>

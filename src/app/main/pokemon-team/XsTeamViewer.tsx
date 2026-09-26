@@ -11,8 +11,10 @@ import PokemonSprite from "./shared/PokemonSprite";
 import MoreToggle from "./shared/MoreToggle";
 import getPokemonLabel from "./shared/get-pokemon-label";
 import TeamToolbar from "./TeamToolbar";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const XsTeamViewer = observer(function XsTeamViewer() {
+  const translation = useTranslation();
   const [tabIndex, setTabIndex] = useState(0);
 
   return (
@@ -33,14 +35,14 @@ const XsTeamViewer = observer(function XsTeamViewer() {
             }
             variant="fullWidth"
             textColor="secondary"
-            aria-label="Pokemon team slots"
+            aria-label={translation.t.team.slots}
           >
             {[0, 1, 2, 3, 4, 5].map(teamIndex => (
               <Tab
                 key={teamIndex}
                 id={`team-slot-tab-${teamIndex}`}
                 aria-controls={`team-slot-panel-${teamIndex}`}
-                aria-label={getPokemonLabel(teamIndex)}
+                aria-label={getPokemonLabel(teamIndex, translation)}
                 label={teamIndex + 1}
                 sx={{
                   minWidth: 0,

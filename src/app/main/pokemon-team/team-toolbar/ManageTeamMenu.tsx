@@ -17,15 +17,18 @@ import store from "@/store";
 import { serializeTeamText } from "@/app/shared/team-text";
 import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 export const copyTeamText = () => {
+  const { team } = store.translation.t;
   const text = serializeTeamText();
-  if (text === "") store.openSnackbar("Empty team, nothing to copy.");
-  else copyToClipboard(text, "Team copied.", "Could not copy the team.");
+  if (text === "") store.openSnackbar(team.nothingToCopy);
+  else copyToClipboard(text, team.teamCopied, team.teamNotCopied);
 };
 
 // The current team's settings and text, plus importing another
 const ManageTeamMenu = observer(function ManageTeamMenu() {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const close = () => setAnchorEl(null);
@@ -33,28 +36,28 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
 
   const items = [
     {
-      label: "Name and Format",
+      label: t.team.nameAndFormat,
       Icon: SettingsIcon,
       act: () => store.openDialog("teamSettings", { teamId }),
     },
     {
-      label: "Duplicate",
+      label: t.team.duplicate,
       Icon: FileCopyIcon,
       act: () => {
         store.duplicateTeam(teamId);
-        store.openSnackbar("Team duplicated");
+        store.openSnackbar(t.team.teamDuplicated);
       },
     },
-    { label: "Copy text", Icon: ContentCopyIcon, act: copyTeamText },
+    { label: t.team.copyText, Icon: ContentCopyIcon, act: copyTeamText },
     {
-      label: "Edit Pokepaste",
+      label: t.team.editPokepaste,
       Icon: EditNoteIcon,
       act: () => store.openDialog("editTeam"),
     },
-    { label: "Delete", Icon: DeleteIcon, act: () => setIsDeleting(true) },
+    { label: t.team.delete, Icon: DeleteIcon, act: () => setIsDeleting(true) },
     "divider" as const,
     {
-      label: "Import team",
+      label: t.team.importTeam,
       Icon: DownloadIcon,
       act: () => store.openDialog("importTeam"),
     },
@@ -67,11 +70,11 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
         onClick={(event: MouseEvent<HTMLElement>) =>
           setAnchorEl(event.currentTarget)
         }
-        aria-label="Manage team"
+        aria-label={t.team.manageTeamMenu}
         aria-haspopup="menu"
         aria-expanded={!!anchorEl}
       >
-        Manage Team
+        {t.team.manageTeam}
       </Button>
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={close}>
         {items.map((item, i) =>
