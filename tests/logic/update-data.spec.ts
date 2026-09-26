@@ -311,3 +311,35 @@ export default data;
     'const data: Learnsets = {\n  "unown": [\n    "hiddenpower"\n  ]\n};',
   );
 });
+
+test("pokedex entries keep their base stats and fixed gender", () => {
+  const entry = {
+    num: 445,
+    name: "Garchomp",
+    types: ["Dragon", "Ground"],
+    baseStats: { hp: 108, atk: 130, def: 95, spa: 80, spd: 85, spe: 102 },
+    abilities: { 0: "Sand Veil", H: "Rough Skin" },
+    heightm: 1.9,
+    weightkg: 95,
+    genderRatio: { M: 0.5, F: 0.5 },
+    eggGroups: ["Monster", "Dragon"],
+  };
+  expect(projections.Pokedex(entry, { garchomp: entry })).toEqual({
+    num: 445,
+    name: "Garchomp",
+    types: ["Dragon", "Ground"],
+    baseStats: { hp: 108, atk: 130, def: 95, spa: 80, spd: 85, spe: 102 },
+    abilities: { 0: "Sand Veil", H: "Rough Skin" },
+  });
+  const genderless = { num: 81, name: "Magnemite", gender: "N" };
+  expect(projections.Pokedex(genderless, { magnemite: genderless })).toEqual(
+    genderless,
+  );
+});
+
+test("natures keep their name and stat changes", () => {
+  expect(
+    projections.Natures({ name: "Jolly", plus: "spe", minus: "spa" }),
+  ).toEqual({ name: "Jolly", plus: "spe", minus: "spa" });
+  expect(projections.Natures({ name: "Hardy" })).toEqual({ name: "Hardy" });
+});

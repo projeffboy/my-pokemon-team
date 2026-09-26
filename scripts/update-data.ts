@@ -71,7 +71,7 @@ async function writeData<N extends keyof DataTypes>(
 async function updateProjectedDataset(
   sourceName: string,
   exportName: string,
-  typeName: "Pokedex" | "Moves" | "Items",
+  typeName: "Pokedex" | "Moves" | "Items" | "Natures",
 ) {
   const table = await loadShowdownTable(`data/${sourceName}.ts`, exportName);
   await writeData(typeName, projectTable(typeName, table), true);
@@ -283,6 +283,7 @@ await Promise.all([
   updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
   updateProjectedDataset("moves", "Moves", "Moves"),
   updateProjectedDataset("items", "Items", "Items"),
+  updateProjectedDataset("natures", "Natures", "Natures"),
   updateFormats(),
   updateLearnsets().then(updateViableMoves),
   updateTypeChart(),
@@ -296,6 +297,7 @@ await Promise.all(
     "items",
     "learnsets",
     "moves",
+    "natures",
     "pokedex",
     "typechart",
   ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),
