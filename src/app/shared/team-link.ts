@@ -12,8 +12,9 @@ export function encodeTeamForUrl(): string {
   return toBase64Url(serializeTeamText());
 }
 
-// Decodes a `team` URL parameter value and applies it to the store. Malformed, oversized,
-// or non-UTF-8 payloads are ignored rather than throwing.
+// Decodes a `team` URL parameter value and opens it in the store: in the current team
+// when it is empty, else in the saved team it matches or a new one. Malformed,
+// oversized, or non-UTF-8 payloads are ignored rather than throwing.
 export function importTeamFromUrlParameter(teamParameter: string): void {
   if (
     !teamParameter ||
@@ -28,5 +29,5 @@ export function importTeamFromUrlParameter(teamParameter: string): void {
     return;
   }
 
-  store.replaceTeam(parseTeamText(text));
+  store.openTeamFromLink(parseTeamText(text));
 }
