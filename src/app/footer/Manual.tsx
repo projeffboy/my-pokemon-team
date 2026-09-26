@@ -5,56 +5,55 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
-type TypeRow = [string, string, string];
-type TermRow = [string, string];
-
-const rowsOfTypeEffectivness: TypeRow[] = [
-  ["No effect", "+1.5", "success.main"],
-  ["0.25x effective", "+1.5", "success.main"],
-  ["0.5x effective", "+1", "success.main"],
-  ["1x effective", "0", "text.primary"],
-  ["2x super effective", "-1", "error.main"],
-  ["4x super effective", "-1.5", "error.main"],
-];
-
-const rowsOfTerms: TermRow[] = [
-  ["Defogger", "A pokemon that knows Defog (which blows away entry hazards)."],
-  [
-    "Reliable Recovery",
-    "Moves that are guaranteed to recover 50% or more of your HP every time you use it (under normal weather conditions). E.g. Recover, Softboiled, Milk Drink, Slack Off, Synthesis.",
-  ],
-  [
-    "Status Moves",
-    "Here, they refer to accurate moves that paralyze, burn, or poison, as well as moves that cause sleep. E.g. Toxic, Will-O-Wisp, Thunder Wave, Sing.",
-  ],
-  [
-    "Boosting Move",
-    "Moves that increase your stats (preferrably by 2+), like Swords Dance and Calm Mind.",
-  ],
-  [
-    "Choice Item",
-    "An item that increases a stat by 50% but locks you into one move. There are three of these items: Choice Band, Choice Specs, and Choice Scarf.",
-  ],
-];
+import fill from "@/app/shared/fill";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 export default function Manual() {
+  const { t } = useTranslation();
+  const { manual } = t;
+  const { effectiveness } = manual;
+  const rowsOfTypeEffectivness: [string, string, string][] = [
+    [effectiveness.immune, "+1.5", "success.main"],
+    [effectiveness.quarter, "+1.5", "success.main"],
+    [effectiveness.half, "+1", "success.main"],
+    [effectiveness.neutral, "0", "text.primary"],
+    [effectiveness.double, "-1", "error.main"],
+    [effectiveness.quadruple, "-1.5", "error.main"],
+  ];
+
   return (
     <>
-      <Typography variant="h6">Team Defence</Typography>
+      <Typography variant="h6">{manual.teams}</Typography>
       <Typography variant="subtitle2" component="h4" gutterBottom>
-        How is your team's type defence calculated?
+        {manual.teamsQuestion}
       </Typography>
-      <Typography sx={{ mb: 2 }}>
-        Every pokemon in your team is weak to certain types and resistant to
-        other types. If a type is not very effective against one of your
-        pokemon, you gain points. But if it's super effective, you lose points:
+      <Typography sx={{ mb: 2 }}>{manual.teamsAnswer}</Typography>
+      <Typography sx={{ mb: 2 }}>{manual.teamsAnswer2}</Typography>
+      <Typography variant="h6">{manual.generations}</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        {manual.generationsQuestion}
       </Typography>
+      <Typography sx={{ mb: 2 }}>{manual.generationsAnswer}</Typography>
+      <Typography variant="h6">{manual.advanced}</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        {manual.advancedQuestion}
+      </Typography>
+      <Typography sx={{ mb: 2 }}>{manual.advancedAnswer}</Typography>
+      <Typography variant="h6">{manual.matrix}</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        {manual.matrixQuestion}
+      </Typography>
+      <Typography sx={{ mb: 2 }}>{manual.matrixAnswer}</Typography>
+      <Typography variant="h6">{manual.defence}</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        {manual.defenceQuestion}
+      </Typography>
+      <Typography sx={{ mb: 2 }}>{manual.defenceAnswer}</Typography>
       <Table sx={{ mb: 2.5 }}>
         <TableHead>
           <TableRow>
-            <TableCell>Type Effectiveness Against You</TableCell>
-            <TableCell align="right">Points</TableCell>
+            <TableCell>{manual.effectivenessHeading}</TableCell>
+            <TableCell align="right">{manual.pointsHeading}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -71,73 +70,64 @@ export default function Manual() {
         </TableBody>
       </Table>
       <Typography sx={{ mb: 2 }}>
-        <strong>Note:</strong> Abilities like Levitate, Thick Fat, Filter, and
-        Sap Sipper are taken into account. For example, if your Bronzong has
-        Levitate, you get +1.5 for Ground. And if it has Heatproof, you get 0
-        for Fire instead.
+        <strong>{manual.note}</strong> {manual.defenceNote}
       </Typography>
 
-      <Typography variant="h6">Team Type Coverage</Typography>
+      <Typography variant="h6">{manual.coverage}</Typography>
       <Typography variant="subtitle2" component="h4" gutterBottom>
-        How is your team's type coverage calculated?
+        {manual.coverageQuestion}
       </Typography>
+      <Typography sx={{ mb: 2 }}>{manual.coverageAnswer}</Typography>
       <Typography sx={{ mb: 2 }}>
-        First, what is type coverage? It's about how many types your moves are
-        super effective against. If one of your moves is super effective against
-        a type, you gain +1. If that move also has the same type as the pokemon
-        using it (STAB), then you gain another +1.
+        <strong>{manual.note}</strong> {manual.coverageNote}
       </Typography>
-      <Typography sx={{ mb: 2 }}>
-        <strong>Note:</strong> Abilities like Aerilate and Pixilate are taken
-        into account. So are moves like Freeze Dry and Flying Press. For
-        example, Freeze Dry also gives you +1 against Water.
-      </Typography>
-      <Typography variant="h6">Formats (aka Tiers)</Typography>
+      <Typography variant="h6">{manual.formats}</Typography>
       <Typography variant="subtitle2" component="h4" gutterBottom>
-        What is Ubers, OU, VGC, etc.?
+        {manual.formatsQuestion}
       </Typography>
       <Typography sx={{ mb: 2 }}>
-        Ubers, OU, and{" "}
-        <Link href="https://play.pokemon.com/en-us/resources/rules/?category=vgc">
-          VGC
-        </Link>{" "}
-        are formats (or tiers) that ban some pokemon and enforce certain rules.
-        Battle Stadium Singles/Doubles and VGC are the only ones endorsed by The
-        Pokemon Company, while the other ones are maintained by{" "}
-        <Link href="https://www.smogon.com/">Smogon</Link>. You can check out{" "}
-        <Link href="https://www.smogon.com/ingame/battle/tiering-faq">
-          Smogon's FAQ about tiers
-        </Link>{" "}
-        or{" "}
-        <Link href="https://en.softonic.com/articles/competitive-pokemon-smogon">
-          this guide that gives a brief description about each tier
-        </Link>
-        .
+        {fill(manual.formatsAnswer, {
+          vgc: (
+            <Link href="https://play.pokemon.com/en-us/resources/rules/?category=vgc">
+              {manual.vgc}
+            </Link>
+          ),
+          smogon: <Link href="https://www.smogon.com/">{manual.smogon}</Link>,
+          faq: (
+            <Link href="https://www.smogon.com/ingame/battle/tiering-faq">
+              {manual.faq}
+            </Link>
+          ),
+          guide: (
+            <Link href="https://en.softonic.com/articles/competitive-pokemon-smogon">
+              {manual.guide}
+            </Link>
+          ),
+        })}
       </Typography>
-      <Typography sx={{ mb: 2 }}>
-        The Pokemon Champions (M-C) format only lists the pokemon you can use in
-        Pokemon Champions under Regulation M-C, including their mega evolutions.
-      </Typography>
-      <Typography variant="h6">Team Checklist Terms</Typography>
+      <Typography sx={{ mb: 2 }}>{manual.champions}</Typography>
+      <Typography variant="h6">{manual.terms}</Typography>
       <Typography variant="subtitle2" component="h4" gutterBottom>
-        What do things like entry hazard, phazer, and volt-turn even mean?
+        {manual.termsQuestion}
       </Typography>
       <Typography sx={{ mb: 2 }}>
-        Smogon has a{" "}
-        <Link href="https://www.smogon.com/dp/articles/pokemon_dictionary">
-          dictionary for pokemon terms
-        </Link>
-        , but it's a bit outdated. Here are some of the terms it doesn't cover:
+        {fill(manual.termsAnswer, {
+          dictionary: (
+            <Link href="https://www.smogon.com/dp/articles/pokemon_dictionary">
+              {manual.dictionary}
+            </Link>
+          ),
+        })}
       </Typography>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Term</TableCell>
-            <TableCell sx={{ px: 0.5 }}>Definition</TableCell>
+            <TableCell>{manual.termHeading}</TableCell>
+            <TableCell sx={{ px: 0.5 }}>{manual.definitionHeading}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rowsOfTerms.map(row => (
+          {manual.definitions.map(row => (
             <TableRow key={row[0]}>
               <TableCell component="th" scope="row">
                 {row[0]}

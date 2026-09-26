@@ -2,7 +2,7 @@ import { test, expect } from "fixtures";
 import { toBase64Url } from "@/app/shared/base64url";
 import { getTeamTextFromUrl } from "helper";
 
-test.describe("Save/Load Team: Share Link - Integration Tests", () => {
+test.describe("Share Link - Integration Tests", () => {
   test("loads a team from the URL parameter on initial page load", async ({
     page,
   }) => {
@@ -55,7 +55,7 @@ Ability: Sand Stream
   });
 });
 
-test.describe("Save/Load Team: Share Link - Navigation", () => {
+test.describe("Share Link - Navigation", () => {
   test("loads the team of the URL that back/forward navigation lands on", async ({
     page,
   }) => {

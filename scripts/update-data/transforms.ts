@@ -6,6 +6,7 @@ import {
   type Learnsets,
   type MoveEntry,
   type Moves,
+  type Natures,
   type Pokedex,
   type PokedexEntry,
   type TypeChart,
@@ -22,6 +23,7 @@ export type DataTypes = {
   Formats: Formats;
   Learnsets: Learnsets;
   TypeChart: TypeChart;
+  Natures: Natures;
 };
 
 export const toId = (text: unknown) =>
@@ -86,6 +88,9 @@ export const projections = {
       "otherFormes",
       "prevo",
       "abilities",
+      "baseStats",
+      "gender",
+      "gen",
       "requiredItem",
       "requiredItems",
     ]);
@@ -115,12 +120,13 @@ export const projections = {
     pick<Items[string]>(entry, ["name", "spritenum"]),
   Formats: (entry: ShowdownEntry): Formats[string] =>
     pick<Formats[string]>(entry, ["tier", "doublesTier"]),
+  Natures: (entry: ShowdownEntry): Natures[string] =>
+    pick<Natures[string]>(entry, ["name", "plus", "minus"]),
 };
 
-export function projectTable<N extends "Pokedex" | "Moves" | "Items">(
-  typeName: N,
-  table: ShowdownTable,
-): DataTypes[N] {
+export function projectTable<
+  N extends "Pokedex" | "Moves" | "Items" | "Natures",
+>(typeName: N, table: ShowdownTable): DataTypes[N] {
   return Object.fromEntries(
     Object.entries(table).map(([id, entry]) => [
       id,

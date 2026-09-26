@@ -17,11 +17,11 @@ test.describe("Header Tests", () => {
     await expect(images.nth(0)).toHaveAttribute("alt", "");
     await expect(images.nth(1)).toHaveAttribute("alt", "");
 
-    await expect(page.getByText("For Generations 6-9")).toBeVisible();
-
-    const email = page.getByRole("link", {
-      name: "Report Bugs to jeffery124@gmail.com",
-    });
-    await expect(email).toHaveAttribute("href", "mailto:jeffery124@gmail.com");
+    await expect(
+      page.getByRole("combobox", { name: "Generation" }),
+    ).toContainText("Gen 9 (SV / ZA)");
+    await expect(
+      page.getByRole("button", { name: "Send feedback" }),
+    ).toBeVisible();
   });
 });

@@ -5,6 +5,9 @@ import Typography from "@mui/material/Typography";
 import face1 from "@/images/pokemon-shuffle-faces/venusaur-shuffle-face-cropped.png";
 import face2 from "@/images/pokemon-shuffle-faces/charizard-shuffle-face-cropped.png";
 import { fluidClamp } from "./header/fluid-clamp";
+import GenerationSelect from "./header/GenerationSelect";
+import LanguageSelect from "./header/LanguageSelect";
+import FeedbackDialog from "./header/FeedbackDialog";
 import {
   breakpointValues,
   MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
@@ -16,7 +19,7 @@ const faceSpacing = fluidClamp(4, 8, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH, sm);
 
 export default function Header() {
   return (
-    <Grid component="header" container size={12}>
+    <Grid component="header" container size={12} spacing={1.5}>
       <Stack
         direction="row"
         sx={{ width: "100%", alignItems: "center", justifyContent: "center" }}
@@ -57,34 +60,15 @@ export default function Header() {
           }}
         />
       </Stack>
-      <Grid size={12}>
-        <Typography
-          variant="subtitle1"
-          component="p"
-          sx={theme => ({
-            textAlign: "center",
-            fontSize: fluidClamp(
-              0.75,
-              Number.parseFloat(`${theme.typography.subtitle1.fontSize}`),
-              MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
-              sm,
-              "rem",
-            ),
-          })}
-        >
-          For Generations 6-9 (ZA/Champions)
-        </Typography>
-      </Grid>
-      <Grid size={12} sx={{ textAlign: "center" }}>
-        <Typography
-          variant="caption"
-          component="a"
-          href="mailto:jeffery124@gmail.com"
-          sx={{ color: "inherit", fontSize: "0.625rem" }}
-        >
-          Report Bugs to jeffery124@gmail.com
-        </Typography>
-      </Grid>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{ width: "100%", maxWidth: 420, mx: "auto", alignItems: "stretch" }}
+      >
+        <GenerationSelect />
+        <LanguageSelect />
+        <FeedbackDialog />
+      </Stack>
     </Grid>
   );
 }

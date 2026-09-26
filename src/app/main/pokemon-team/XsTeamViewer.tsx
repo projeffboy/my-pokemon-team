@@ -4,31 +4,28 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import LinkIcon from "@mui/icons-material/Link";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import PokemonInputs from "./shared/PokemonInputs";
 import PokemonSprite from "./shared/PokemonSprite";
+import MoreToggle from "./shared/MoreToggle";
 import getPokemonLabel from "./shared/get-pokemon-label";
-import copyToClipboard from "../shared/copy-to-clipboard";
+import TeamToolbar from "./TeamToolbar";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const XsTeamViewer = observer(function XsTeamViewer() {
+  const translation = useTranslation();
   const [tabIndex, setTabIndex] = useState(0);
-
-  const handleShare = () => {
-    if (store.isTeamEmpty) store.openSnackbar("Pokemon team is empty");
-    else
-      copyToClipboard(
-        window.location.href,
-        "Pokemon team link copied",
-        "Could not copy the link.",
-      );
-  };
 
   return (
     <>
+      {store.isMoreOpen && (
+        <Grid size={12}>
+          <Paper sx={{ px: 1, py: 0.5 }}>
+            <TeamToolbar />
+          </Paper>
+        </Grid>
+      )}
       <Grid size={12} sx={{ display: "flex", gap: 1 }}>
         <Paper sx={{ flexGrow: 1, minWidth: 0 }}>
           <Tabs
@@ -38,20 +35,20 @@ const XsTeamViewer = observer(function XsTeamViewer() {
             }
             variant="fullWidth"
             textColor="secondary"
-            aria-label="Pokemon team slots"
+            aria-label={translation.t.team.slots}
           >
             {[0, 1, 2, 3, 4, 5].map(teamIndex => (
               <Tab
                 key={teamIndex}
                 id={`team-slot-tab-${teamIndex}`}
                 aria-controls={`team-slot-panel-${teamIndex}`}
-                aria-label={getPokemonLabel(teamIndex)}
+                aria-label={getPokemonLabel(teamIndex, translation)}
                 label={teamIndex + 1}
                 sx={{
                   minWidth: 0,
                   px: 0,
-                  "& > :first-child": { pl: 1 },
-                  "& > :last-child": { pr: 1 },
+                  "& > :first-of-type": { pl: 1 },
+                  "& > :last-of-type": { pr: 1 },
                 }}
                 icon={
                   <Box aria-hidden="true">
@@ -63,16 +60,7 @@ const XsTeamViewer = observer(function XsTeamViewer() {
           </Tabs>
         </Paper>
         <Paper sx={{ display: "flex" }}>
-          <Button
-            onClick={handleShare}
-            aria-label="Share pokemon team link"
-            sx={{ minWidth: 0, px: 1.5, flexDirection: "column" }}
-          >
-            <LinkIcon fontSize="small" />
-            <Typography variant="caption" component="span">
-              Share
-            </Typography>
-          </Button>
+          <MoreToggle />
         </Paper>
       </Grid>
       <Grid
@@ -82,7 +70,7 @@ const XsTeamViewer = observer(function XsTeamViewer() {
         aria-labelledby={`team-slot-tab-${tabIndex}`}
       >
         <Paper sx={{ p: 1 }}>
-          <PokemonInputs teamIndex={tabIndex} />
+          <PokemonInputs teamIndex={tabIndex} onMoveToSlot={setTabIndex} />
         </Paper>
       </Grid>
     </>

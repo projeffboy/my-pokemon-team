@@ -1,17 +1,19 @@
 import { test, expect } from "@playwright/test";
 import { evaluateChecklist } from "@/store/checklist";
 import type { ReadonlyTeam } from "@/types";
+import en from "@/i18n/en";
 import { createTeam } from "./shared/team";
 
+// The passed checks, by their English labels
 const checked = (team: ReadonlyTeam) =>
   evaluateChecklist(team)
     .flatMap(group => group.items)
     .filter(item => item.isChecked)
-    .map(item => item.label);
+    .map(item => en.checklist.items[item.key].label);
 
 test("an empty team passes no check, in three groups of three", () => {
   const groups = evaluateChecklist(createTeam());
-  expect(groups.map(group => group.title)).toEqual([
+  expect(groups.map(group => en.checklist.groups[group.key])).toEqual([
     "General",
     "Defensive",
     "Offensive",

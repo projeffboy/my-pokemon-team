@@ -1,7 +1,7 @@
-import type { TeamPokemonProperties } from "@/types";
+import type { Team, TeamPokemon } from "@/types";
 
-export function createTeam(...members: Partial<TeamPokemonProperties>[]) {
-  return Array.from({ length: 6 }, (_, i): TeamPokemonProperties => ({
+export function createTeam(...members: Partial<TeamPokemon>[]): Team {
+  return Array.from({ length: 6 }, (_, i): TeamPokemon => ({
     name: "",
     item: "",
     ability: "",

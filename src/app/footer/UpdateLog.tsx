@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Folder from "@mui/icons-material/Folder";
 import entries, { type Change, type Entry } from "./update-log/entries";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 const changeKey = (change: Change) =>
   typeof change === "string" ? change : change.text;
@@ -44,7 +45,9 @@ function UpdateEntry(entry: Entry) {
   );
 }
 
+// The entries themselves stay in English
 export default function UpdateLog() {
+  const { t } = useTranslation();
   return (
     <>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
@@ -54,7 +57,7 @@ export default function UpdateLog() {
           sx={{ my: 5 }}
         >
           <Folder sx={{ mr: 0.5 }} />
-          GitHub Repo
+          {t.footer.githubRepo}
         </Button>
       </Box>
 
