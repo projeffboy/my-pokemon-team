@@ -20,7 +20,7 @@ const MoreToggle = observer(function MoreToggle() {
       sx={{ minWidth: 0, px: 1.5, flexDirection: "column" }}
     >
       <Icon fontSize="small" />
-      <Typography variant="caption" component="span">
+      <Typography variant="caption" component="span" noWrap>
         {isMoreOpen ? t.team.less : t.team.more}
       </Typography>
     </Button>
