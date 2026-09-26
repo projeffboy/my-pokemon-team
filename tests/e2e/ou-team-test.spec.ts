@@ -1,9 +1,15 @@
 import { test, expect } from "fixtures";
 import {
-  selectPokemon,
-  selectAbility,
-  selectMove,
+  clickMenuItem,
+  closeDialog,
   getTeamTextFromUrl,
+  openEditPokepaste,
+  openFilters,
+  openManageTeamMenu,
+  selectAbility,
+  selectDialogOption,
+  selectMove,
+  selectPokemon,
 } from "helper";
 import fs from "fs";
 import path from "path";
@@ -35,8 +41,13 @@ const doBasicCheck = async (page: Page) => {
     ).toBeVisible();
   }
 
-  await page.getByText("Checklist", { exact: true }).click();
   await expect(page.getByText("Hazard", { exact: true })).toBeVisible();
+};
+
+const updatePokepaste = async (page: Page, text: string) => {
+  await page.getByRole("textbox").fill(text);
+  await page.getByRole("button", { name: "Update" }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
 };
 
 test.describe("Importing an OU team", () => {
@@ -62,11 +73,8 @@ test.describe("Importing an OU team", () => {
     ).toBeVisible();
 
     // 1. Import team
-    await page.getByText("Save/Load", { exact: true }).click();
-    await page.getByRole("button", { name: "Import/Export Team" }).click();
-
-    await page.getByRole("textbox").fill(ouTeamText);
-    await page.getByRole("button", { name: "Update" }).click();
+    await openEditPokepaste(page);
+    await updatePokepaste(page, ouTeamText);
 
     // 2. Basic check
     await doBasicCheck(page);
@@ -90,13 +98,9 @@ test.describe("Importing an OU team", () => {
     await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("Garchomp");
 
     // 5. Set filter to OU
-    await page.getByText("Filters", { exact: true }).click();
-    await page
-      .getByText("Format", { exact: true })
-      .locator("..")
-      .getByRole("combobox")
-      .click();
-    await page.getByRole("option", { name: "OU: Over Used" }).click();
+    await openFilters(page);
+    await selectDialogOption(page, "Format", "OU: Over Used");
+    await closeDialog(page);
 
     // 6. Add Ogerpon-Wellspring manually (Slot 3)
     // Ensure we are on tab 3-4
@@ -114,10 +118,9 @@ test.describe("Importing an OU team", () => {
     // 7. Basic check
     await doBasicCheck(page);
 
-    // 8. Press "Copy Team" and check
-    // Navigate to Save/Load tab where Copy Team button is located
-    await page.getByText("Save/Load", { exact: true }).click();
-    await page.getByRole("button", { name: "Copy Team" }).click();
+    // 8. Copy the team's text and check
+    await openManageTeamMenu(page);
+    await clickMenuItem(page, "Copy text");
     await expect(page.getByRole("alert")).toHaveText("Team copied.");
 
     if (browserName === "chromium") {
@@ -132,17 +135,15 @@ test.describe("Importing an OU team", () => {
       expect(clipboardText).toContain("Multiscale");
     }
 
-    // 9. Import/Export modifications
-    // Already on Save/Load tab
-    await page.getByRole("button", { name: "Import/Export Team" }).click();
+    // 9. Edit the team's text
+    await openEditPokepaste(page);
 
     let currentTeamText = await page.getByRole("textbox").inputValue();
 
     currentTeamText = currentTeamText.replace("Thunder Wave", "Toxic");
     currentTeamText = currentTeamText.replace("Psyshock", "Focus Blast");
 
-    await page.getByRole("textbox").fill(currentTeamText);
-    await page.getByRole("button", { name: "Update" }).click();
+    await updatePokepaste(page, currentTeamText);
 
     // 10. Basic check
     await doBasicCheck(page);

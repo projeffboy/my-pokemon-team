@@ -1,7 +1,8 @@
 // Shared store <-> URL team parameter conversion
 import store from "@/store";
+import type { ReadonlyTeam } from "@/types";
 import { toBase64Url, fromBase64Url } from "./base64url";
-import { serializeTeamText, parseTeamText } from "./team-text";
+import { parseTeamText, serializeTeam, serializeTeamText } from "./team-text";
 
 // Limit applies to the raw (still-encoded) URL parameter, before any decoding is attempted
 export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
@@ -10,6 +11,14 @@ export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
 export function encodeTeamForUrl(): string {
   if (store.isTeamEmpty) return "";
   return toBase64Url(serializeTeamText());
+}
+
+// The share link of any team, as the address bar shows the current one
+export function teamUrl(team: ReadonlyTeam): string {
+  const url = new URL(location.href);
+  url.search = "";
+  url.searchParams.set("team", toBase64Url(serializeTeam(team)));
+  return url.href;
 }
 
 // Decodes a `team` URL parameter value and opens it in the store: in the current team

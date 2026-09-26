@@ -46,7 +46,9 @@ const isCap = (num: number | undefined) =>
 export function introducedIn({
   num = 0,
   forme = "",
+  gen,
 }: PokedexEntry): Generation {
+  if (gen !== undefined) return Math.min(9, Math.max(1, gen)) as Generation;
   if (num >= 906 || forme.includes("Paldea")) return 9;
   if (num >= 810 || ["Gmax", "Galar", "Galar-Zen", "Hisui"].includes(forme))
     return 8;
@@ -65,7 +67,7 @@ export function isInGeneration(entry: PokedexEntry, generation: Generation) {
   if (generation === LATEST_GENERATION) return true;
   const forme = entry.forme ?? "";
   if (forme.includes("Mega") || forme === "Primal")
-    return generation !== 8 && generation >= 6;
+    return generation !== 8 && generation >= introducedIn(entry);
   if (forme === "Gmax" || forme === "Eternamax") return generation === 8;
   return introducedIn(entry) <= generation;
 }

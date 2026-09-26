@@ -77,3 +77,28 @@ export function clearDetails(member: TeamPokemon) {
 
 export const baseStatTotal = (baseStats: BaseStats | undefined) =>
   baseStats ? STAT_KEYS.reduce((sum, stat) => sum + baseStats[stat], 0) : 0;
+
+// Sets a detail, or removes it when it is back at its default
+export function setDetail<K extends keyof TeamPokemonDetails>(
+  member: TeamPokemon,
+  key: K,
+  value: TeamPokemonDetails[K] | "",
+) {
+  if (value === undefined || value === "" || value === false)
+    delete member[key];
+  else (member as Record<K, TeamPokemonDetails[K]>)[key] = value;
+}
+
+// Sets one EV or IV, keeping only the stats that differ from the default
+export function setStat(
+  member: TeamPokemon,
+  kind: "evs" | "ivs",
+  stat: StatKey,
+  value: number,
+) {
+  const isDefault = kind === "evs" ? value === 0 : value === MAX_IV;
+  const stats = { ...member[kind] };
+  if (isDefault) delete stats[stat];
+  else stats[stat] = value;
+  setDetail(member, kind, Object.keys(stats).length ? stats : undefined);
+}

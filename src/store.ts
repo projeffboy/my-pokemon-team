@@ -1,6 +1,7 @@
 import { makeAutoObservable, configure, reaction, toJS } from "mobx";
 import type {
   Generation,
+  NameView,
   PokemonFilters,
   SavedTeam,
   SearchFilters,
@@ -60,6 +61,7 @@ class Store {
     this.currentTeamId = stored.currentTeamId;
     this.isMoreOpen = stored.isMoreOpen;
     this.sort = stored.sort;
+    this.nameView = stored.nameView;
     this.lastSnapshot = teamKey(this.team);
     this.historyTeamId = this.currentTeamId;
 
@@ -83,6 +85,12 @@ class Store {
       json => saveStoredState(storage, JSON.parse(json) as StoredState),
       { delay: 250 },
     );
+    // An edit made just before leaving the page would miss the delayed save above
+    if (typeof addEventListener !== "undefined") {
+      addEventListener("pagehide", () =>
+        saveStoredState(storage, JSON.parse(JSON.stringify(this.storedState))),
+      );
+    }
 
     // Undo history is per team, so switching teams starts it afresh
     reaction(
@@ -347,10 +355,17 @@ class Store {
   // On phones and tablets, "More" shows the team tools, filters, and advanced sets
   isMoreOpen: boolean;
 
-  dialog: { name: DialogName; teamIndex: number } | null = null;
+  // How the Name dropdown lists its options
+  nameView: NameView;
 
-  openDialog(name: DialogName, teamIndex = 0) {
-    this.dialog = { name, teamIndex };
+  // The open dialog, with the team slot or saved team it is about
+  dialog: { name: DialogName; teamIndex: number; teamId: string } | null = null;
+
+  openDialog(
+    name: DialogName,
+    { teamIndex = 0, teamId = this.currentTeamId } = {},
+  ) {
+    this.dialog = { name, teamIndex, teamId };
   }
 
   closeDialog() {
@@ -371,6 +386,7 @@ class Store {
       currentTeamId: this.currentTeamId,
       isMoreOpen: this.isMoreOpen,
       sort: this.sort,
+      nameView: this.nameView,
     };
   }
 }

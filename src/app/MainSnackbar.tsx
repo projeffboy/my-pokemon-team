@@ -10,7 +10,9 @@ const MainSnackbar = observer(function MainSnackbar() {
       open={store.isSnackbarOpen}
       autoHideDuration={2500}
       onClose={() => (store.isSnackbarOpen = false)}
-      anchorOrigin={{ vertical: "top", horizontal: "left" }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      // Above the undo and redo buttons
+      sx={{ bottom: { xs: 176, sm: 176 } }}
       slotProps={{
         content: {
           role: "alert",

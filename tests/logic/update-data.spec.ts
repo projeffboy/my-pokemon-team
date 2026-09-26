@@ -331,7 +331,7 @@ test("pokedex entries keep their base stats and fixed gender", () => {
     baseStats: { hp: 108, atk: 130, def: 95, spa: 80, spd: 85, spe: 102 },
     abilities: { 0: "Sand Veil", H: "Rough Skin" },
   });
-  const genderless = { num: 81, name: "Magnemite", gender: "N" };
+  const genderless = { num: 81, name: "Magnemite", gender: "N", gen: 9 };
   expect(projections.Pokedex(genderless, { magnemite: genderless })).toEqual(
     genderless,
   );

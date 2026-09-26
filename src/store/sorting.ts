@@ -56,6 +56,10 @@ function sortValue(pokemon: string, by: SortKey): number {
   }
 }
 
+// MissingNo. and the Pokestar pokemon have no real number, tier, or stats,
+// so every sort but name lists them last
+const isOddball = (pokemon: string) => (pokedex[pokemon]?.num ?? 0) <= 0;
+
 // Sorts pokemon IDs by the chosen key, with ties broken by name. Names sort
 // case-insensitively, and formes stay grouped after their species.
 export function sortPokemon(
@@ -69,6 +73,7 @@ export function sortPokemon(
   const direction = descending ? -1 : 1;
   return [...pokemon].sort(
     (a, b) =>
+      (by === "name" ? 0 : Number(isOddball(a)) - Number(isOddball(b))) ||
       direction * (sortValue(a, by) - sortValue(b, by)) ||
       (by === "name" ? direction : 1) * byName(a, b),
   );

@@ -79,3 +79,14 @@ test("breaks ties by name whichever way the values are sorted", () => {
     ]);
   }
 });
+
+test("MissingNo. and Pokestar pokemon come last in every sort but name", () => {
+  const ids = ["missingno", "pokestarsmeargle", "bulbasaur"];
+  for (const descending of [false, true]) {
+    expect(sortPokemon(ids, { by: "num", descending })[0]).toBe("bulbasaur");
+    expect(sortPokemon(ids, { by: "bst", descending })[0]).toBe("bulbasaur");
+  }
+  expect(sortPokemon(ids, { by: "name", descending: false })[0]).toBe(
+    "bulbasaur",
+  );
+});

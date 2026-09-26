@@ -8,6 +8,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useColorScheme } from "@mui/material/styles";
 import FooterDialog from "./footer/FooterDialog";
+import TypeChartDialog from "./footer/TypeChartDialog";
 import { lazy, type MouseEvent } from "react";
 
 const Manual = lazy(() => import("./footer/Manual"));
@@ -42,6 +43,7 @@ export default function Footer() {
         pb: process.env.NODE_ENV === "production" ? "230px" : 0,
       }}
     >
+      <TypeChartDialog />
       <FooterDialog
         button="Manual"
         title="Manual Help Guide"

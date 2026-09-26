@@ -47,6 +47,7 @@ test("fills in defaults and drops malformed fields", () => {
   expect(state?.currentTeamId).toBe("a");
   expect(state?.isMoreOpen).toBe(false);
   expect(state?.sort).toEqual({ by: "num", descending: true });
+  expect(state?.nameView).toBe("list");
   expect(state?.teams[0]).toMatchObject({
     id: "a",
     name: "",
@@ -76,6 +77,7 @@ test("saves the state and survives a storage that throws", () => {
     currentTeamId: "",
     isMoreOpen: true,
     sort: { by: "name" as const, descending: false },
+    nameView: "grid" as const,
   };
   saveStoredState(storage, state);
   expect(JSON.parse(items.get("mypokemonteam") ?? "")).toEqual(state);

@@ -90,6 +90,7 @@ export const projections = {
       "abilities",
       "baseStats",
       "gender",
+      "gen",
       "requiredItem",
       "requiredItems",
     ]);

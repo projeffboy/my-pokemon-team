@@ -5,7 +5,8 @@ import Main from "./app/Main";
 import Footer from "./app/Footer";
 import MainSnackbar from "./app/MainSnackbar";
 import TeamLinkSync from "./app/TeamLinkSync";
-import TypeChartDialog from "./app/TypeChartDialog";
+import HistoryFab from "./app/HistoryFab";
+import Dialogs from "./app/Dialogs";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./app/shared/theme";
@@ -51,7 +52,8 @@ export default function App() {
             </Grid>
           </div>
           <MainSnackbar />
-          <TypeChartDialog />
+          <HistoryFab />
+          <Dialogs />
         </WidthProvider>
       </ThemeProvider>
     </>

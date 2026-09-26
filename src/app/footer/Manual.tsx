@@ -41,6 +41,55 @@ const rowsOfTerms: TermRow[] = [
 export default function Manual() {
   return (
     <>
+      <Typography variant="h6">Teams</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        Where are my teams saved?
+      </Typography>
+      <Typography sx={{ mb: 2 }}>
+        Your teams are saved in this browser, so they are here when you come
+        back, but not on another device. The Teams button lists them, and each
+        team's menu renames it, sets its generation and format, duplicates it,
+        shares it, or deletes it. Export All downloads every team as Showdown
+        text, which Import Team reads back. The address bar always holds the
+        current team, so copying the address (or pressing Share Team) shares it.
+      </Typography>
+      <Typography sx={{ mb: 2 }}>
+        On phones and tablets, the More button shows the team tools, the Filters
+        and Sort buttons, and the Advanced button. The undo and redo buttons at
+        the bottom step through the current team's changes.
+      </Typography>
+      <Typography variant="h6">Generations</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        What does the generation change?
+      </Typography>
+      <Typography sx={{ mb: 2 }}>
+        The generation, chosen at the top, lists only the pokemon and formes
+        that existed in it: megas in Gens 6, 7, and 9, Gigantamax formes in Gen
+        8, and so on. Everything else stays current: the moves, abilities, type
+        chart, and formats come from the newest games, so an old generation's
+        team may know moves it could not learn back then.
+      </Typography>
+      <Typography variant="h6">Advanced Options</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        Nicknames, levels, natures, EVs, and IVs
+      </Typography>
+      <Typography sx={{ mb: 2 }}>
+        Each pokemon's Advanced button sets its nickname, level, gender, shiny,
+        tera type, nature, EVs, and IVs, in the same way as Pokemon Showdown.
+        They travel with the team in share links and in the Copy text and Edit
+        Pokepaste text, and the Name and Format dialog's check reports EVs over
+        510, repeated moves, banned pokemon, and clauses.
+      </Typography>
+      <Typography variant="h6">Matrix Analysis</Typography>
+      <Typography variant="subtitle2" component="h4" gutterBottom>
+        Where do the type scores come from?
+      </Typography>
+      <Typography sx={{ mb: 2 }}>
+        The matrix, in the analysis panel's menu, shows every type against every
+        pokemon. Defence is how hard each attacking type hits each pokemon, with
+        its ability and item counted, and Coverage is how hard each pokemon's
+        best damaging move hits each type. Tap a cell for the reason.
+      </Typography>
       <Typography variant="h6">Team Defence</Typography>
       <Typography variant="subtitle2" component="h4" gutterBottom>
         How is your team's type defence calculated?

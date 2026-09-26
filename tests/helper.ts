@@ -22,6 +22,84 @@ export const goToSite = async (page: Page) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 };
 
+// Below md, the page's width decides whether the team tools hide behind the More button
+export const isMdDown = (page: Page) =>
+  (page.viewportSize()?.width ?? Infinity) < breakpointValues.md;
+
+const isXs = (page: Page) =>
+  (page.viewportSize()?.width ?? Infinity) < breakpointValues.sm;
+
+// Shows the team tools, filters, and advanced buttons on phones and tablets
+export const openTeamTools = async (page: Page) => {
+  const more = page.getByRole("button", { name: "More team tools" });
+  if (await more.isVisible()) await more.click();
+};
+
+export const openManageTeamMenu = async (page: Page) => {
+  await openTeamTools(page);
+  await page.getByRole("button", { name: "Manage team" }).click();
+  await expect(page.getByRole("menu")).toBeVisible();
+};
+
+export const clickMenuItem = async (page: Page, name: string) => {
+  await page.getByRole("menuitem", { name, exact: true }).click();
+  await expect(page.getByRole("menu")).toBeHidden();
+};
+
+// Opens the current team's text in the Edit Pokepaste dialog
+export const openEditPokepaste = async (page: Page) => {
+  await openManageTeamMenu(page);
+  await clickMenuItem(page, "Edit Pokepaste");
+  await expect(
+    page.getByRole("dialog", { name: "Edit Pokepaste" }),
+  ).toBeVisible();
+};
+
+// Opens a slot tool's dialog, such as Filters, Sort, or Advanced, from the first visible card
+const openSlotDialog = async (page: Page, button: RegExp, dialog: string) => {
+  await openTeamTools(page);
+  await page.getByRole("button", { name: button }).first().click();
+  await expect(page.getByRole("dialog", { name: dialog })).toBeVisible();
+};
+
+export const openFilters = (page: Page) =>
+  openSlotDialog(page, /^Filters$/, "Filters");
+
+export const openSort = (page: Page) => openSlotDialog(page, /^Sort$/, "Sort");
+
+export const openAdvanced = (page: Page) =>
+  openSlotDialog(page, /^Advanced options for slot/, "Advanced");
+
+// Picks an option in a dialog's select, found by its label
+export const selectDialogOption = async (
+  page: Page,
+  label: string,
+  option: string,
+) => {
+  await page.getByRole("combobox", { name: label }).click();
+  await page.getByRole("option", { name: option, exact: true }).click();
+};
+
+export const closeDialog = async (page: Page, button = "Done") => {
+  await page.getByRole("button", { name: button, exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+};
+
+// Shows one of the analysis panel's views: on phones each is behind the panel's menu
+export const openAnalysis = async (
+  page: Page,
+  name:
+    | "Team Defence"
+    | "Team Type Coverage"
+    | "Team Checklist"
+    | "Matrix Analysis",
+) => {
+  if (name !== "Matrix Analysis" && !isXs(page)) return;
+  await page.getByRole("button", { name: "More analyses" }).click();
+  await clickMenuItem(page, name);
+  await expect(page.getByRole("region", { name })).toBeVisible();
+};
+
 // Decodes the `team` URL parameter (see src/app/shared/team-link.ts) into Pokemon Showdown team
 // text, or returns "" if the team is empty and the parameter is absent
 export const getTeamTextFromUrl = (page: Page) => {

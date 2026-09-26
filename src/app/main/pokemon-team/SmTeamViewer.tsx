@@ -5,17 +5,27 @@ import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react-lite";
+import store from "@/store";
 import PokemonInputs from "./shared/PokemonInputs";
 import PokemonSprite from "./shared/PokemonSprite";
+import MoreToggle from "./shared/MoreToggle";
 import getPokemonLabel from "./shared/get-pokemon-label";
+import TeamToolbar from "./TeamToolbar";
 
 const SmTeamViewer = observer(function SmTeamViewer() {
   const [tabIndex, setTabIndex] = useState(0);
 
   return (
     <>
-      <Grid size={12}>
-        <Paper>
+      {store.isMoreOpen && (
+        <Grid size={12}>
+          <Paper sx={{ px: 1, py: 0.5 }}>
+            <TeamToolbar />
+          </Paper>
+        </Grid>
+      )}
+      <Grid size={12} sx={{ display: "flex", gap: 1 }}>
+        <Paper sx={{ flexGrow: 1, minWidth: 0 }}>
           <Tabs
             value={tabIndex}
             onChange={(_event: SyntheticEvent, value: number) =>
@@ -34,8 +44,8 @@ const SmTeamViewer = observer(function SmTeamViewer() {
                 label={`${teamIndex + 1} - ${teamIndex + 2}`}
                 sx={{
                   px: 0,
-                  "& > :first-child": { pl: 1 },
-                  "& > :last-child": { pr: 1 },
+                  "& > :first-of-type": { pl: 1 },
+                  "& > :last-of-type": { pr: 1 },
                 }}
                 icon={
                   <Box sx={{ display: "flex", height: 75 }} aria-hidden="true">
@@ -46,6 +56,9 @@ const SmTeamViewer = observer(function SmTeamViewer() {
               />
             ))}
           </Tabs>
+        </Paper>
+        <Paper sx={{ display: "flex" }}>
+          <MoreToggle />
         </Paper>
       </Grid>
       <Grid
@@ -62,7 +75,10 @@ const SmTeamViewer = observer(function SmTeamViewer() {
           return (
             <Grid key={offset} size={12}>
               <Paper sx={{ p: 1 }}>
-                <PokemonInputs teamIndex={teamIndex} />
+                <PokemonInputs
+                  teamIndex={teamIndex}
+                  onMoveToSlot={slot => setTabIndex(Math.floor(slot / 2))}
+                />
               </Paper>
             </Grid>
           );

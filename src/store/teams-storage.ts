@@ -1,5 +1,6 @@
 import type {
   BaseStats,
+  NameView,
   SavedTeam,
   SortOrder,
   Team,
@@ -16,6 +17,7 @@ export interface StoredState {
   currentTeamId: string;
   isMoreOpen: boolean;
   sort: SortOrder;
+  nameView: NameView;
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -103,6 +105,7 @@ export function loadStoredState(
       ),
     isMoreOpen: raw.isMoreOpen === true,
     sort: sanitizeSort(raw.sort),
+    nameView: raw.nameView === "grid" ? "grid" : "list",
   };
 }
 
@@ -125,5 +128,6 @@ export const initialStoredState = (): StoredState => {
     currentTeamId: team.id,
     isMoreOpen: false,
     sort: DEFAULT_SORT,
+    nameView: "list",
   };
 };

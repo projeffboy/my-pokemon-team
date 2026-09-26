@@ -8,7 +8,9 @@ See [README.md](README.md) for setup and the test commands, and [package.json](p
 
 ## Architecture
 
-State is managed via a single MobX store (`src/store.ts`, `makeAutoObservable` + `enforceActions: "never"`); components mutate it directly. Its computed getters delegate to pure functions in `src/store/` (learnsets, coverage, filtering, effectiveness), which take explicit inputs and never import the store or MobX. Components may also call these functions directly, as the team stats tooltips do. `src/shared/` holds helpers needed by both the store and the app (name and pokedex lookups, empty teams, auto-selected items).
+State is managed via a single MobX store (`src/store.ts`, `makeAutoObservable` + `enforceActions: "never"`); components mutate it directly. Its computed getters delegate to pure functions in `src/store/` (learnsets, coverage, filtering, sorting, effectiveness, matrices, validation), which take explicit inputs and never import the store or MobX. Components may also call these functions directly, as the team stats tooltips do. `src/shared/` holds helpers needed by both the store and the app (name and pokedex lookups, empty teams, auto-selected items, generations, formats, set details).
+
+The store holds every saved team (`teams`), and `store.team` is the current one's slots. Dialogs that several places open (teams, filters, sort, a slot's advanced options) are rendered once in `src/app/Dialogs.tsx` and opened through `store.openDialog`.
 
 `src/data/` is generated from Pokemon Showdown by `npm run update:data`. To change it, edit `scripts/update-data.ts` and rerun it instead of editing the files by hand.
 
@@ -81,6 +83,12 @@ Keep source documentation for downloaded images in a `*-sources.md` file beside 
 The address bar always holds the current team as `?team=`, the base64url encoding of its Showdown team text (`src/app/TeamLinkSync.tsx`, `src/app/shared/team-link.ts`, `src/app/shared/team-text.ts`). Players bookmark and post these links, so every link made so far must keep loading the same team. Do not rename the `team` parameter, change the encoding, or make `parseTeamText` reject text it accepts today. If the format has to change, keep decoding the old one as well.
 
 The text holds display names, which are matched exactly. When a data update renames or removes a pokemon, item, or move, old links silently lose that entry. `npm run update:data` reports those names, so pass them on when you run it.
+
+The text also carries Showdown's set details (nickname, gender, level, shiny, tera type, EVs, nature, IVs), which `parseTeamText` reads and `serializeTeam` writes only when they differ from their defaults.
+
+## Saved Teams
+
+The teams, the current team, and a few settings persist in localStorage under the `mypokemonteam` key (`src/store/teams-storage.ts`). Players keep teams there for months, so do not rename the key, and keep `loadStoredState` accepting every shape that has been saved so far: add fields with defaults rather than changing existing ones.
 
 ## Update Log
 

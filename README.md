@@ -8,9 +8,10 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 
 1. You can import/export your team to Pokemon Showdown, or share it as a link
 2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
-3. There's a team checklist
-4. Search filters narrow down the Pokemon by format, type, region, and moves
-5. The sprites are animated, which is nice
+3. There's a team checklist, and a matrix of every type against every pokemon
+4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
+5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on)
+6. The sprites are animated, which is nice
 
 ## Tech Stack
 

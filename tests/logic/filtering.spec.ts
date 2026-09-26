@@ -162,6 +162,7 @@ test("each species and forme knows the generation it appeared in", () => {
   expect(introducedIn({ num: 128, forme: "Paldea-Combat" })).toBe(9);
   expect(introducedIn({ num: 906 })).toBe(9);
   expect(introducedIn({ num: 251 })).toBe(2);
+  expect(introducedIn({ num: 154, forme: "Mega", gen: 9 })).toBe(9);
 });
 
 test("megas skip gen 8 and Gigantamax formes exist only there", () => {
@@ -171,6 +172,7 @@ test("megas skip gen 8 and Gigantamax formes exist only there", () => {
   expect(isInGeneration({ num: 3, forme: "Gmax" }, 8)).toBe(true);
   expect(isInGeneration({ num: 3, forme: "Gmax" }, 7)).toBe(false);
   expect(isInGeneration({ num: 3, forme: "Gmax" }, 9)).toBe(true);
+  expect(isInGeneration({ num: 154, forme: "Mega", gen: 9 }, 7)).toBe(false);
 });
 
 test("a generation lists the pokemon that existed in it", () => {
@@ -184,6 +186,8 @@ test("a generation lists the pokemon that existed in it", () => {
   const gen6 = filterPokemon({ ...filters, generation: 6 });
   expect(gen6).toContain("diancie");
   expect(gen6).toContain("groudonprimal");
+  expect(gen6).toContain("garchompmega");
+  expect(gen6).not.toContain("garchompmegaz");
   expect(gen6).not.toContain("rowlet");
   expect(gen6).not.toContain("raichualola");
 

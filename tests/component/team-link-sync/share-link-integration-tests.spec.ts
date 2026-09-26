@@ -1,8 +1,8 @@
 import { test, expect } from "fixtures";
 import { toBase64Url } from "@/app/shared/base64url";
-import { getTeamTextFromUrl, selectPokemon } from "helper";
+import { getTeamTextFromUrl, openEditPokepaste, selectPokemon } from "helper";
 
-test.describe("Save/Load Team: Share Link - Integration Tests", () => {
+test.describe("Share Link - Integration Tests", () => {
   test("keeps the URL stable after a single UI edit", async ({ page }) => {
     const teamText = `Tyranitar
 Ability: Sand Stream
@@ -29,8 +29,7 @@ Ability: Sand Stream
   test("preserves the expected values during a full Showdown round trip", async ({
     page,
   }) => {
-    await page.getByRole("tab", { name: /Save\/Load/ }).click();
-    await page.getByRole("button", { name: "Import/Export Team" }).click();
+    await openEditPokepaste(page);
 
     const teamText = `Gengar (Giga) @ Choice Specs
 Ability: Cursed Body
@@ -47,7 +46,7 @@ Ability: Cursed Body
     await expect(page.getByRole("dialog")).toBeHidden();
 
     const decodedTeamText = getTeamTextFromUrl(page);
-    expect(decodedTeamText).toContain("Gengar @ Choice Specs");
+    expect(decodedTeamText).toContain("Giga (Gengar) @ Choice Specs");
     expect(decodedTeamText).toContain("Ability: Cursed Body");
     expect(decodedTeamText).toContain("- Shadow Ball");
     expect(decodedTeamText).toContain("- Sludge Bomb");
@@ -63,8 +62,7 @@ Ability: Cursed Body
       "This test only runs on mobile",
     );
 
-    await page.getByRole("tab", { name: /Save\/Load/ }).click();
-    await page.getByRole("button", { name: "Import/Export Team" }).click();
+    await openEditPokepaste(page);
 
     const teamText = Array.from({ length: 8 }, (_, index) => {
       const pokemon = index % 2 === 0 ? "Pikachu" : "Bulbasaur";
@@ -113,8 +111,7 @@ Ability: ${index % 2 === 0 ? "Static" : "Overgrow"}
       "This test only runs on mobile",
     );
 
-    await page.getByRole("tab", { name: /Save\/Load/ }).click();
-    await page.getByRole("button", { name: "Import/Export Team" }).click();
+    await openEditPokepaste(page);
 
     const teamText = `DefinitelyNotAPokemon
 Ability: Static

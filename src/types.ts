@@ -18,6 +18,9 @@ export interface PokedexEntry {
   baseStats?: BaseStats;
   // Set when a species is always male, always female, or genderless
   gender?: Gender;
+  // Showdown states the generation only where its number and forme do not tell,
+  // such as the Legends: Z-A megas
+  gen?: number;
   tier?: string;
   doublesTier?: string;
   natDexTier?: string;
@@ -182,6 +185,8 @@ export interface SortOrder {
   by: SortKey;
   descending: boolean;
 }
+
+export type NameView = "list" | "grid";
 
 export type TeamStatType = "typeDefence" | "typeCoverage";
 
