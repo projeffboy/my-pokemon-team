@@ -29,6 +29,16 @@ export const isMdDown = (page: Page) =>
 const isXs = (page: Page) =>
   (page.viewportSize()?.width ?? Infinity) < breakpointValues.sm;
 
+// Brings a slot's card on screen: the tabbed viewers show one slot or one pair at a time
+export const showSlot = async (page: Page, slotIndex: number) => {
+  const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s name`);
+  if (await input.isVisible()) return;
+  await page
+    .getByRole("tab", { name: new RegExp(`Pokemon ${slotIndex + 1} \\(`) })
+    .click();
+  await expect(input).toBeVisible();
+};
+
 // Shows the team tools, filters, and advanced buttons on phones and tablets
 export const openTeamTools = async (page: Page) => {
   const more = page.getByRole("button", { name: "More team tools" });
@@ -86,14 +96,7 @@ export const closeDialog = async (page: Page, button = "Done") => {
 };
 
 // Shows one of the analysis panel's views: on phones each is behind the panel's menu
-export const openAnalysis = async (
-  page: Page,
-  name:
-    | "Team Defence"
-    | "Team Type Coverage"
-    | "Team Checklist"
-    | "Matrix Analysis",
-) => {
+export const openAnalysis = async (page: Page, name: string) => {
   if (name !== "Matrix Analysis" && !isXs(page)) return;
   await page.getByRole("button", { name: "More analyses" }).click();
   await clickMenuItem(page, name);
@@ -185,6 +188,10 @@ export const expectChecklistItem = async (
 // Shared unit tests for Team Defence and Team Type Coverage
 export const teamScoreUnitTests = (headingName: string) => {
   test.describe(`${headingName} - Unit Tests`, () => {
+    test.beforeEach(async ({ page }) => {
+      await openAnalysis(page, headingName);
+    });
+
     test("should display all 18 types with score of 0", async ({ page }) => {
       const section = page.getByRole("region", { name: headingName });
       await expect(section).toBeVisible();
@@ -225,6 +232,7 @@ const checkScoreAndPopover = async (
   textToIdentifyPopover: string,
   expectedPopoverText: string[],
 ) => {
+  await openAnalysis(page, cardName);
   const section = page.getByRole("region", { name: cardName });
   await expect(section).toBeVisible();
 

@@ -4,11 +4,13 @@ import {
   openManageTeamMenu,
   selectDialogOption,
   selectPokemon,
+  showSlot,
 } from "helper";
 
 test.describe("Team Settings Dialog - Integration Tests", () => {
   test("renames the team, sets its format, and checks it", async ({ page }) => {
     await selectPokemon(page, "Koraidon");
+    await showSlot(page, 1);
     await selectPokemon(page, "Koraidon", 1);
 
     await openManageTeamMenu(page);
