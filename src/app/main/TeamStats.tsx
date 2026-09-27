@@ -48,11 +48,16 @@ export default function TeamStats() {
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const closeMenu = () => setMenuAnchor(null);
 
+  const matrixView = {
+    view: "matrix" as const,
+    label: t.stats.matrixAnalysis,
+    Icon: GridOnIcon,
+  };
   const views: { view: View; label: string; Icon: typeof ShieldIcon }[] = [
     { view: "defence", label: t.stats.teamDefence, Icon: ShieldIcon },
     { view: "coverage", label: t.stats.teamTypeCoverage, Icon: GpsFixedIcon },
     { view: "checklist", label: t.stats.teamChecklist, Icon: ChecklistIcon },
-    { view: "matrix", label: t.stats.matrixAnalysis, Icon: GridOnIcon },
+    matrixView,
   ];
   const isTabbed = view === "defence" || view === "coverage";
   const title =
@@ -67,7 +72,7 @@ export default function TeamStats() {
           label: t.stats.teamStatsAndChecklist,
           Icon: ChecklistIcon,
         },
-        views[3]!,
+        matrixView,
       ]
     );
 

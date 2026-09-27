@@ -63,11 +63,18 @@ const tables: PokeApiTables = {
     "237,5,Puissance Cachée",
     "622,5,Turbo-Charge",
   ),
-  items: rows("id,identifier", "234,leftovers", "817,normalium-z--held"),
+  items: rows(
+    "id,identifier",
+    "234,leftovers",
+    "817,normalium-z--held",
+    // Ends in "bag" without being a bag copy of another item
+    "900,berserk-gene-bag",
+  ),
   item_names: rows(
     "item_id,local_language_id,name",
     "234,5,Restes",
     "817,5,Normazélite",
+    "900,5,Sac Gène",
   ),
   abilities: rows("id,identifier", "47,thick-fat", "301,embody-aspect"),
   ability_names: rows(

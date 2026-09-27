@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -55,6 +55,7 @@ const AdvancedForm = observer(function AdvancedForm({
   const name = names.pokemon(member.name);
   const genders = genderOptions(member.name);
   const total = evTotal(member.evs);
+  const [levelText, setLevelText] = useState<string>();
   const natureLabel = (id: string) => {
     const { plus, minus } = natures[id] ?? {};
     return t.natureLabel(
@@ -105,8 +106,10 @@ const AdvancedForm = observer(function AdvancedForm({
             <TextField
               label={t.advanced.level}
               type="number"
-              value={member.level ?? DEFAULT_LEVEL}
+              // The text being typed, which may be empty, until editing ends
+              value={levelText ?? member.level ?? DEFAULT_LEVEL}
               onChange={event => {
+                setLevelText(event.target.value);
                 const level = clamp(Number(event.target.value), MAX_LEVEL);
                 setDetail(
                   member,
@@ -114,6 +117,7 @@ const AdvancedForm = observer(function AdvancedForm({
                   level === DEFAULT_LEVEL || level < 1 ? undefined : level,
                 );
               }}
+              onBlur={() => setLevelText(undefined)}
               slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
               sx={{ width: 90, flexShrink: 0 }}
             />

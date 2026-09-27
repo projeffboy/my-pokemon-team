@@ -23,7 +23,12 @@ function serveDataJson(): Plugin {
     configureServer(server) {
       server.middlewares.use(async (request, response, next) => {
         const pathname = request.url?.split("?")[0] ?? "";
-        if (!pathname.startsWith(folder) || !pathname.endsWith(".json"))
+        // A path with ".." could leave the folder
+        if (
+          !pathname.startsWith(folder) ||
+          !pathname.endsWith(".json") ||
+          pathname.includes("..")
+        )
           return next();
         try {
           const json = await readFile(path.join(server.config.root, pathname));

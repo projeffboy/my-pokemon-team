@@ -28,6 +28,11 @@ const PokemonInput = observer(function PokemonInput({
   const member = store.team[teamIndex];
   // Stable while the language is, since a new array resets the text being typed
   const allItemNames = useMemo(() => allItemIds.map(names.item), [names]);
+  const abilities = store.teamAbilities[teamIndex];
+  const abilityNames = useMemo(
+    () => abilities?.map(names.ability) ?? [],
+    [abilities, names],
+  );
   let optionValues: readonly string[];
   let optionLabels: readonly string[];
 
@@ -47,8 +52,8 @@ const PokemonInput = observer(function PokemonInput({
       optionLabels = allItemNames;
       break;
     case "ability":
-      optionValues = store.teamAbilities[teamIndex] ?? [];
-      optionLabels = optionValues.map(names.ability);
+      optionValues = abilities ?? [];
+      optionLabels = abilityNames;
       break;
     default: // for the moves
       optionValues = store.teamLearnsets.values[teamIndex] ?? [];

@@ -7,7 +7,7 @@ import ja from "@/data/translations/ja.json" with { type: "json" };
 import { sortPokemon } from "@/store/sorting";
 import { defenceMatrix } from "@/store/matrix";
 import { validateTeam } from "@/store/validation";
-import { loadStoredState } from "@/store/teams-storage";
+import { loadStoredState, type StoredState } from "@/store/teams-storage";
 import { createTeam } from "./shared/team";
 
 const japanese: Translation = {
@@ -124,4 +124,16 @@ test("the store loads a language on demand and keeps it in the saved state", asy
   ).toBeUndefined();
   store.locale = "en";
   await expect.poll(() => store.translation.locale).toBe("en");
+});
+
+test("a language is saved only once it is chosen", ({ store }) => {
+  const saved = () =>
+    (store as unknown as { storedState: StoredState }).storedState.locale;
+  store.chosenLocale = undefined;
+  // Node has no browser languages, so English applies without being saved
+  expect(store.locale).toBe("en");
+  expect(saved()).toBeUndefined();
+  store.chooseLocale("en");
+  expect(saved()).toBe("en");
+  store.chosenLocale = undefined;
 });

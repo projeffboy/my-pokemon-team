@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import PokemonInputs from "./pokemon-team/shared/PokemonInputs";
-import TeamToolbar from "./pokemon-team/TeamToolbar";
+import TeamToolbar from "./pokemon-team/shared/TeamToolbar";
 import SmTeamViewer from "./pokemon-team/SmTeamViewer";
 import XsTeamViewer from "./pokemon-team/XsTeamViewer";
 import { useBreakpoint, useIsMdDown } from "@/app/shared/WidthContext";

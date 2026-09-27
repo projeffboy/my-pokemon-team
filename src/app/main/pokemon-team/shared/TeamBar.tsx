@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import MoreToggle from "./MoreToggle";
-import TeamToolbar from "../TeamToolbar";
+import TeamToolbar from "./TeamToolbar";
 
 // The slot tabs beside the More button. When More is open, the team toolbar sits
 // above them and joins the button, so the two read as one shape.

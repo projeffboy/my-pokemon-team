@@ -74,8 +74,7 @@ export function sortPokemon(
     const base = pokedex[id]?.baseSpecies;
     return names.pokemon((base && pokemonNameInverse(base)) || id);
   };
-  const compare = (a: string, b: string) =>
-    a.localeCompare(b, locale, { sensitivity: "base" });
+  const { compare } = new Intl.Collator(locale, { sensitivity: "base" });
   const byName = (a: string, b: string) =>
     compare(species(a), species(b)) ||
     compare(pokedex[a]?.name ?? a, pokedex[b]?.name ?? b);

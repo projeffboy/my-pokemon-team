@@ -22,6 +22,7 @@ const zhHans: Messages = {
     1: "红／蓝／黄",
   } as Record<number, string>,
   language: "语言",
+  languageFailed: "无法加载语言，请重试。",
   feedback: {
     button: "发送反馈",
     title: "发送反馈",

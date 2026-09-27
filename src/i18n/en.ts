@@ -26,6 +26,7 @@ const en = {
     1: "Red / Blue / Yellow",
   } as Record<number, string>,
   language: "Language",
+  languageFailed: "That language could not be loaded. Try again.",
   feedback: {
     button: "Send feedback",
     title: "Send Feedback",

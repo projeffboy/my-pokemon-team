@@ -152,6 +152,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           popper: {
             ...(popperWidth && {
               placement: "bottom-start" as const,
+              // Inline, because it has to replace the width MUI sets inline from the input
               style: { width: popperWidth },
             }),
             sx: {

@@ -22,6 +22,7 @@ const fr: Messages = {
     1: "Rouge / Bleu / Jaune",
   } as Record<number, string>,
   language: "Langue",
+  languageFailed: "La langue n'a pas pu être chargée. Réessayez.",
   feedback: {
     button: "Envoyer un commentaire",
     title: "Envoyer un commentaire",

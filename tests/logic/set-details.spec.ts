@@ -84,6 +84,29 @@ test.describe("set details in Showdown text", () => {
     expect(serializeTeam([member])).toContain("Mew (Mewtwo) @ Life Orb");
   });
 
+  test("a nickname may hold parentheses and an at sign", () => {
+    for (const nickname of ["Big (Boss)", "a@b", "(^_^)", "Mr. @ (Mime)"]) {
+      const [member] = parseTeamText("Excadrill @ Choice Scarf");
+      member.nickname = nickname;
+      const [parsed] = parseTeamText(serializeTeam([member]));
+      expect(parsed, nickname).toMatchObject({
+        name: "excadrill",
+        item: "choicescarf",
+        nickname,
+      });
+    }
+    // Without an item, and as pasted text with several @
+    expect(parseTeamText("a@b (Excadrill)")[0]).toMatchObject({
+      name: "excadrill",
+      nickname: "a@b",
+      item: "",
+    });
+    expect(parseTeamText("Excadrill@Leftovers @ junk")[0]).toMatchObject({
+      name: "excadrill",
+      item: "leftovers",
+    });
+  });
+
   test("a nickname still being typed is written without its outer spaces", () => {
     const [member] = parseTeamText("Porygon-Z");
     member.nickname = "Big Bird ";

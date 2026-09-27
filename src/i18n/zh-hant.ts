@@ -22,6 +22,7 @@ const zhHant: Messages = {
     1: "紅／藍／黃",
   } as Record<number, string>,
   language: "語言",
+  languageFailed: "無法載入語言，請再試一次。",
   feedback: {
     button: "意見回饋",
     title: "意見回饋",

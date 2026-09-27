@@ -40,7 +40,7 @@ const LanguageSelect = observer(function LanguageSelect() {
             selected={locale === store.locale}
             lang={locale}
             onClick={() => {
-              store.locale = locale;
+              store.chooseLocale(locale);
               close();
             }}
           >

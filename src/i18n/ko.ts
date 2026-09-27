@@ -37,6 +37,7 @@ const ko: Messages = {
     1: "레드·그린·블루·피카츄",
   } as Record<number, string>,
   language: "언어",
+  languageFailed: "언어를 불러오지 못했습니다. 다시 시도해 주세요.",
   feedback: {
     button: "피드백 보내기",
     title: "피드백 보내기",

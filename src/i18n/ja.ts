@@ -22,6 +22,7 @@ const ja: Messages = {
     1: "赤・緑・青・ピカチュウ",
   } as Record<number, string>,
   language: "言語",
+  languageFailed: "言語を読み込めませんでした。もう一度お試しください。",
   feedback: {
     button: "フィードバックを送る",
     title: "フィードバックを送る",

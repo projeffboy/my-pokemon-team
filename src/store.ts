@@ -61,7 +61,16 @@ const storage = typeof localStorage === "undefined" ? undefined : localStorage;
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
 
-const teamKey = (team: Team) => JSON.stringify(toJS(team));
+// Set details are stored in the order they were edited, so keys are sorted
+// for the same team to give the same key
+const sortKeys = (_key: string, value: unknown) =>
+  typeof value === "object" && value !== null && !Array.isArray(value) ?
+    Object.fromEntries(
+      Object.entries(value).sort(([a], [b]) => (a < b ? -1 : 1)),
+    )
+  : value;
+
+const teamKey = (team: Team) => JSON.stringify(toJS(team), sortKeys);
 
 class Store {
   constructor() {
@@ -71,7 +80,7 @@ class Store {
     this.isMoreOpen = stored.isMoreOpen;
     this.sort = stored.sort;
     this.nameView = stored.nameView;
-    this.locale = stored.locale ?? detectLocale(browserLanguages);
+    this.chosenLocale = stored.locale;
     this.lastSnapshot = teamKey(this.team);
     this.historyTeamId = this.currentTeamId;
 
@@ -88,21 +97,9 @@ class Store {
       () => this.openSnackbar(this.translation.t.team.learnsetsFailed),
     );
 
-    // The chosen language's text and names load on demand; a language chosen in the
-    // meantime wins, and a failed load leaves the previous language in place
     reaction(
       () => this.locale,
-      locale => {
-        if (typeof document !== "undefined")
-          document.documentElement.lang = locale;
-        loadTranslation(locale).then(
-          translation => {
-            if (translation.locale === this.locale)
-              this.translation = translation;
-          },
-          () => {},
-        );
-      },
+      locale => this.loadLocale(locale),
       { fireImmediately: true },
     );
 
@@ -398,9 +395,41 @@ class Store {
 
   // UI state
 
-  // The site's language, and its text and names once they have loaded
-  locale: Locale;
+  // The language the visitor chose. Until they choose, the browser's applies
+  // and nothing is saved, so a change of browser language is followed.
+  chosenLocale: Locale | undefined;
+
+  get locale(): Locale {
+    return this.chosenLocale ?? detectLocale(browserLanguages);
+  }
+
+  set locale(locale: Locale) {
+    this.chosenLocale = locale;
+  }
+
+  // The text and names on screen, which load on demand
   translation: Translation = english;
+
+  // Choosing the language again retries a load that failed
+  chooseLocale(locale: Locale) {
+    const isRetry = locale === this.locale;
+    this.chosenLocale = locale;
+    if (isRetry && this.translation.locale !== locale) this.loadLocale(locale);
+  }
+
+  // A language chosen in the meantime wins, and a failed load leaves the
+  // previous language on screen
+  private loadLocale(locale: Locale) {
+    loadTranslation(locale).then(
+      translation => {
+        if (locale !== this.locale) return;
+        this.translation = translation;
+        if (typeof document !== "undefined")
+          document.documentElement.lang = locale;
+      },
+      () => this.openSnackbar(this.translation.t.languageFailed),
+    );
+  }
 
   // On phones and tablets, "More" shows the team tools, filters, and advanced sets
   isMoreOpen: boolean;
@@ -437,7 +466,7 @@ class Store {
       isMoreOpen: this.isMoreOpen,
       sort: this.sort,
       nameView: this.nameView,
-      locale: this.locale,
+      ...(this.chosenLocale && { locale: this.chosenLocale }),
     };
   }
 }

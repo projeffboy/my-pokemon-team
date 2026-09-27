@@ -125,6 +125,41 @@ function parseStats(
 
 const GENDER_SUFFIX = /\s*\((M|F|N)\)\s*$/;
 
+// The pokemon, nickname, and gender of a first line without its item, or undefined
+// when it names no pokemon. Accepts "Nickname (Species)", as Showdown writes it, and
+// "Species (Nickname)". The species is the last name in parentheses, so a nickname
+// may hold parentheses, and when both names are pokemon, such as a Mewtwo nicknamed
+// Mew, the one in parentheses is the species.
+function parseName(text: string) {
+  const gender = GENDER_SUFFIX.exec(text)?.[1] as Gender | undefined;
+  const name = text.replace(GENDER_SUFFIX, "").trim();
+  const last = /^(.*)\(([^()]*)\)$/.exec(name);
+  const first = /^([^(]*)\(([^)]+)\)/.exec(name);
+  const readings = [
+    { species: name, nickname: "" },
+    { species: last?.[2], nickname: last?.[1] },
+    { species: first?.[2], nickname: first?.[1] },
+    { species: first?.[1], nickname: first?.[2] },
+  ];
+  for (const { species = "", nickname = "" } of readings) {
+    const pokemon = pokemonNameInverse(species.trim());
+    if (pokemon) return { pokemon, nickname: nickname.trim(), gender };
+  }
+  return undefined;
+}
+
+// The item follows the last @ whose left side names a pokemon, so a nickname may hold one
+function parseFirstLine(line: string) {
+  const ats = [...line.matchAll(/@/g)].map(match => match.index).reverse();
+  for (const at of ats) {
+    const name = parseName(line.slice(0, at));
+    const [itemText = ""] = line.slice(at + 1).split("@");
+    if (name) return { ...name, itemText: itemText.trim() };
+  }
+  const name = parseName(line);
+  return name && { ...name, itemText: undefined };
+}
+
 // Parses Pokemon Showdown team text into a fresh six-slot team.
 // Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected).
 export function parseTeamText(text: string): Team {
@@ -138,35 +173,11 @@ export function parseTeamText(text: string): Team {
   teamPokemonRawData.forEach((eachPokemonData, teamIndex) => {
     const lines = eachPokemonData.split("\n"); // split pokemon into its properties
 
-    // Get pokemon and item names
     const [firstLine = ""] = lines;
-    const pokemonAndItemNames = firstLine.split("@").map(part => part.trim());
-    const [pokemonNameAndNickname = "", itemText] = pokemonAndItemNames;
-
-    // The gender comes last, e.g. "Jelly (Reuniclus) (F)"
-    const genderMatch = GENDER_SUFFIX.exec(pokemonNameAndNickname);
-    const gender = genderMatch?.[1] as Gender | undefined;
-    let species = pokemonNameAndNickname.replace(GENDER_SUFFIX, "").trim();
-    let nickname: string | undefined;
-
-    // Keep the species name and the nickname, accepting either "Nickname (Species)",
-    // as Showdown writes it, or "Species (Nickname)". When both are pokemon, such as
-    // a Mewtwo nicknamed Mew, the one in parentheses is the species.
-    if (species.includes("(")) {
-      const beforeParen = species.split("(")[0]?.trim() ?? "";
-      const insideParen = species.match(/\(([^)]+)\)/)?.[1]?.trim() ?? "";
-      const validCandidate = [insideParen, beforeParen].find(candidate =>
-        candidate ? !!pokemonNameInverse(candidate) : false,
-      );
-      const other = validCandidate === beforeParen ? insideParen : beforeParen;
-      species = validCandidate || beforeParen || insideParen || species;
-      if (validCandidate && other) nickname = other;
-    }
-
-    // Check if the pokemon the user typed is legit
-    const pokemon = pokemonNameInverse(species.trim());
+    const parsed = parseFirstLine(firstLine);
     const member = team[teamIndex];
-    if (!pokemon || !member) return;
+    if (!parsed || !member) return;
+    const { pokemon, nickname, gender, itemText } = parsed;
 
     member.name = pokemon;
     const abilities = pokemonAbilities(pokemon);

@@ -2,6 +2,9 @@ import { test, expect } from "./fixtures";
 import { createTeam } from "./shared/team";
 import { completeLearnset } from "@/store/learnsets";
 import { pokemonTypes } from "@/shared/pokedex";
+import { setDetail, setStat } from "@/shared/set-details";
+import { sanitizeTeam } from "@/store/teams-storage";
+import { parseTeamText, serializeTeam } from "@/app/shared/team-text";
 
 const settle = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -119,6 +122,24 @@ test.describe("slot tools", () => {
     const pokemon = store.teamPokemon;
     expect(pokemon.every(name => name)).toBe(true);
     expect(new Set(pokemon).size).toBe(6);
+  });
+
+  test("a link to the current team, with details set in any order, opens no new team", ({
+    store,
+  }) => {
+    store.selectPokemon(0, "gliscor");
+    const member = store.team[0];
+    setStat(member, "evs", "spe", 252);
+    setStat(member, "evs", "hp", 252);
+    setDetail(member, "nature", "jolly");
+    setDetail(member, "level", 50);
+    setDetail(member, "gender", "F");
+    setDetail(member, "nickname", "Batty");
+    // As a reload does: the saved team, then the team of the address bar
+    store.team = sanitizeTeam(JSON.parse(JSON.stringify(store.team)));
+    store.openTeamFromLink(parseTeamText(serializeTeam(store.team)));
+    expect(store.teams).toHaveLength(1);
+    expect(store.team[0]).toMatchObject({ name: "gliscor", nickname: "Batty" });
   });
 
   test("randomizing the whole team repeats nobody when six options remain", ({

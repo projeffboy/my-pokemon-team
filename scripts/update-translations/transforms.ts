@@ -131,10 +131,13 @@ function namesById(rows: CsvRow[], idKey: string, nameKey = "name"): Names {
 }
 
 // PokeAPI's identifier for a Showdown ID, when they differ by more than punctuation
-const identifierOf = (rows: CsvRow[], normalize = (id: string) => id) => {
+const identifierOf = (
+  rows: CsvRow[],
+  normalize = (identifier: string) => identifier,
+) => {
   const ids = new Map<string, string>();
   for (const row of rows) {
-    const key = normalize(toId(row.identifier));
+    const key = toId(normalize(row.identifier ?? ""));
     if (!ids.has(key)) ids.set(key, row.id ?? "");
   }
   return ids;
@@ -283,10 +286,10 @@ export function buildTranslations(
   );
   const moveIds = identifierOf(
     tables.moves,
-    stripSuffix(["physical", "special"]),
+    stripSuffix(["--physical", "--special"]),
   );
   const moveNames = namesById(tables.move_names, "move_id");
-  const itemIds = identifierOf(tables.items, stripSuffix(["held", "bag"]));
+  const itemIds = identifierOf(tables.items, stripSuffix(["--held", "--bag"]));
   const itemNames = namesById(tables.item_names, "item_id");
   const abilityIds = identifierOf(tables.abilities);
   const abilityNames = namesById(tables.ability_names, "ability_id");

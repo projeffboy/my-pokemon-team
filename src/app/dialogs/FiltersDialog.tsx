@@ -1,5 +1,5 @@
-import { useId } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
+import { useId, useMemo } from "react";
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -19,7 +19,22 @@ import { useTranslation } from "@/app/shared/TranslationContext";
 
 // Narrows the Name dropdown of every slot. The format is the team's own setting.
 const FiltersDialog = observer(function FiltersDialog() {
-  const { t, names } = useTranslation();
+  const { t, names, locale } = useTranslation();
+  const abilities = useMemo(
+    () =>
+      [...allAbilities].sort((a, b) =>
+        names.ability(a).localeCompare(names.ability(b), locale),
+      ),
+    [names, locale],
+  );
+  // Typing matches the ability in the current language or in English
+  const filterAbilities = useMemo(
+    () =>
+      createFilterOptions<string>({
+        stringify: ability => `${names.ability(ability)} ${ability}`,
+      }),
+    [names],
+  );
   const titleId = useId();
   const isOpen = store.dialog?.name === "filters";
   const close = () => store.closeDialog();
@@ -106,8 +121,9 @@ const FiltersDialog = observer(function FiltersDialog() {
           </TextField>
           {selects.slice(0, 2).map(renderSelect)}
           <Autocomplete
-            options={allAbilities}
+            options={abilities}
             getOptionLabel={names.ability}
+            filterOptions={filterAbilities}
             value={store.filters.ability || null}
             onChange={(_event, value) => (store.filters.ability = value ?? "")}
             renderInput={params => (
