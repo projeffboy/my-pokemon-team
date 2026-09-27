@@ -12,6 +12,7 @@ const entries: Entry[] = [
     date: "Sep 26, 2026",
     changes: [
       "The site is now in Japanese, Korean, Chinese, French, German, Spanish, and Italian too, with the pokemon, move, item, and ability names from PokeAPI. Pick a language from the button beside the generation.",
+      "It is in Brazilian Portuguese as well, with the English names until the games are in Portuguese.",
     ],
   },
   {

@@ -3,8 +3,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import type { Items, Moves, Natures, Pokedex } from "../src/types.ts";
-import { LOCALES, type Locale } from "../src/i18n/locales.ts";
+import type { NamedLocale } from "../src/i18n/locales.ts";
 import {
+  LANGUAGE_IDS,
   POKEAPI_TABLES,
   type PokeApiTables,
   type ShowdownNames,
@@ -80,9 +81,7 @@ const isListed = (move: string) =>
 const moveName = (id: string) => moves[id]?.name ?? id;
 
 await fs.mkdir(path.join(dataRoot, "translations"), { recursive: true });
-for (const locale of LOCALES.filter(
-  (locale): locale is Exclude<Locale, "en"> => locale !== "en",
-)) {
+for (const locale of Object.keys(LANGUAGE_IDS) as NamedLocale[]) {
   const { translations, report } = buildTranslations(showdown, tables, locale);
   disambiguatePokemon(translations, pokedex, report);
   await fs.writeFile(

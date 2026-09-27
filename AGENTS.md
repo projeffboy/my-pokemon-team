@@ -16,11 +16,13 @@ The store holds every saved team (`teams`), and `store.team` is the current one'
 
 ## Languages
 
-The site is in English and the eight other languages of the Pokemon games (`src/i18n/locales.ts`). The store holds the chosen `locale` and, once loaded, its `translation`: the UI text (`t`) and the data names (`names`). Components read both through `useTranslation()` from `src/app/shared/TranslationContext.tsx`, and code outside components uses `store.translation`. Pure functions in `src/store/` that produce text, such as `validateTeam` and `defenceMatrix`, take a `Translation` as an explicit input and default to English.
+The site is in English, the eight other languages of the Pokemon games, and Brazilian Portuguese (`src/i18n/locales.ts`). The store holds the chosen `locale` and, once loaded, its `translation`: the UI text (`t`) and the data names (`names`). Components read both through `useTranslation()` from `src/app/shared/TranslationContext.tsx`, and code outside components uses `store.translation`. Pure functions in `src/store/` that produce text, such as `validateTeam` and `defenceMatrix`, take a `Translation` as an explicit input and default to English.
 
 UI text lives in `src/i18n/`: `en.ts` is the source of truth and defines the `Messages` type, and every other language is a `Messages`, so a missing key fails the typecheck. A message with a value or link in the middle holds a `{placeholder}` that `fill` in `src/app/shared/fill.tsx` replaces; parameterized messages are functions. Add every new user-facing string to `en.ts` and to each other language. The update log entries stay in English.
 
 Data names (pokemon, moves, items, abilities, natures, types, regions) are in `src/data/translations/<locale>.json`, generated from PokeAPI's CSV tables by `npm run update:translations`, and keyed by Showdown ID or English name. A name PokeAPI lacks falls back to English; the script reports each one. Rerun it after `npm run update:data`, so new pokemon get their names. To change how a name is built, edit `scripts/update-translations/transforms.ts`.
+
+Brazilian Portuguese has UI text only. The games are not in Portuguese until Pokemon Winds and Waves (2027), so PokeAPI has no Portuguese names and the names stay English, including the ones written in `pt-br.ts`. Once PokeAPI has them, stop excluding `pt-BR` from `NamedLocale` and give it PokeAPI's language ID (13) in `LANGUAGE_IDS`.
 
 The store's state stays English throughout: team text, share links, and Showdown import and export never change with the language, and the dropdowns match what is typed against both the translated and the English name.
 

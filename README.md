@@ -12,7 +12,7 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
 5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on)
 6. The sprites are animated, which is nice
-7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI
+7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI, and Brazilian Portuguese, with the English names until the games are in Portuguese
 
 ## Tech Stack
 

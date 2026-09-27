@@ -1,13 +1,13 @@
 // Pure transforms from PokeAPI's CSV tables to src/data/translations, kept apart from the I/O
 // so they can be tested
-import type { Locale } from "../../src/i18n/locales.ts";
+import type { NamedLocale } from "../../src/i18n/locales.ts";
 import type { NameTranslations, Pokedex } from "../../src/types.ts";
 
 export type CsvRow = Record<string, string>;
 
 // PokeAPI's language IDs for each locale, most preferred first. Japanese prefers the kanji
 // names (ja) and falls back to the kana-only ones (ja-Hrkt) where PokeAPI has no kanji row.
-export const LANGUAGE_IDS: Record<Exclude<Locale, "en">, string[]> = {
+export const LANGUAGE_IDS: Record<NamedLocale, string[]> = {
   ja: ["11", "1"],
   ko: ["3"],
   "zh-Hant": ["4"],
@@ -199,7 +199,7 @@ function findFormId(forms: Map<string, string>, id: string, forme: string) {
 
 // How each language writes a mega evolution's name, e.g. Méga-Dracaufeu X
 const MEGA_NAMES: Record<
-  Exclude<Locale, "en">,
+  NamedLocale,
   (name: string, suffix: string) => string
 > = {
   ja: (name, suffix) => `メガ${name}${suffix}`,
@@ -213,7 +213,7 @@ const MEGA_NAMES: Record<
 };
 
 // How each language names a Gigantamax forme, which PokeAPI only names in some languages
-const GMAX_FORMS: Record<Exclude<Locale, "en">, string> = {
+const GMAX_FORMS: Record<NamedLocale, string> = {
   ja: "キョダイマックスのすがた",
   ko: "거다이맥스의 모습",
   "zh-Hant": "超極巨化的樣子",
@@ -262,7 +262,7 @@ const firstName = (
 export function buildTranslations(
   showdown: ShowdownNames,
   tables: PokeApiTables,
-  locale: Exclude<Locale, "en">,
+  locale: NamedLocale,
 ): { translations: NameTranslations; report: TranslationReport } {
   const languageIds = LANGUAGE_IDS[locale];
   const lookup = (names: Names, id: string | undefined) =>

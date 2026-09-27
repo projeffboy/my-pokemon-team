@@ -1,7 +1,7 @@
 import type { NameTranslations } from "@/types";
 import en, { type Messages } from "./en";
 import { englishNames, localizedNames, type Names } from "./names";
-import type { Locale } from "./locales";
+import type { Locale, NamedLocale } from "./locales";
 
 // One language: its UI text and its data names
 export interface Translation {
@@ -19,7 +19,7 @@ export const english: Translation = {
 type Pack = [{ default: Messages }, { default: NameTranslations }];
 
 // Each language loads on demand, so the bundle only carries English
-const packs: Record<Exclude<Locale, "en">, () => Promise<Pack>> = {
+const packs: Record<NamedLocale, () => Promise<Pack>> = {
   ja: () =>
     Promise.all([
       import("./ja"),
@@ -64,6 +64,10 @@ const packs: Record<Exclude<Locale, "en">, () => Promise<Pack>> = {
 
 export async function loadTranslation(locale: Locale): Promise<Translation> {
   if (locale === "en") return english;
+  if (locale === "pt-BR") {
+    const messages = await import("./pt-br");
+    return { locale, t: messages.default, names: englishNames };
+  }
   const [messages, names] = await packs[locale]();
   return {
     locale,

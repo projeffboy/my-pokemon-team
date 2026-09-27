@@ -18,12 +18,13 @@ const japanese: Translation = {
 
 test("the browser's first supported language wins, and Chinese picks its script", () => {
   expect(detectLocale(["fr-CA", "en-US"])).toBe("fr");
-  expect(detectLocale(["pt-BR", "ja"])).toBe("ja");
+  expect(detectLocale(["nl-NL", "ja"])).toBe("ja");
+  expect(detectLocale(["pt-PT", "es"])).toBe("pt-BR");
   expect(detectLocale(["zh-TW"])).toBe("zh-Hant");
   expect(detectLocale(["zh-Hant-HK"])).toBe("zh-Hant");
   expect(detectLocale(["zh-CN"])).toBe("zh-Hans");
   expect(detectLocale(["zh"])).toBe("zh-Hans");
-  expect(detectLocale(["pt-BR"])).toBe("en");
+  expect(detectLocale(["hi-IN"])).toBe("en");
   expect(detectLocale([])).toBe("en");
 });
 
@@ -112,6 +113,12 @@ test("every other language names a slot's inputs in its own words", async () => 
     }
   }
   expect(en.team.input(1, "move2")).toBe("Pokemon 1's move2");
+});
+
+test("Portuguese has its own text and the English names", async () => {
+  const { t, names } = await loadTranslation("pt-BR");
+  expect(t.team.teams).toBe("Equipes");
+  expect(names).toBe(englishNames);
 });
 
 test("the store loads a language on demand and keeps it in the saved state", async ({

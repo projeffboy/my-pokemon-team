@@ -3,6 +3,7 @@ import { test, expect } from "fixtures";
 import { getTeamTextFromUrl } from "helper";
 import ja from "@/i18n/ja";
 import fr from "@/i18n/fr";
+import ptBR from "@/i18n/pt-br";
 
 const openLanguageMenu = async (page: Page) => {
   await page.getByRole("button", { name: /^(Language|言語|Langue)$/ }).click();
@@ -59,5 +60,19 @@ test.describe("Language Select - Integration Tests", () => {
     await expect(page.getByLabel(fr.team.input(1, "name"))).toHaveValue(
       "Aquali",
     );
+  });
+
+  test("Portuguese translates the page and keeps the English names", async ({
+    page,
+  }) => {
+    await openLanguageMenu(page);
+    await page.getByRole("menuitem", { name: "Português (Brasil)" }).click();
+
+    await expect(
+      page.getByRole("combobox", { name: ptBR.generationSelect }),
+    ).toBeVisible();
+    await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
+    await selectPokemon(page, ptBR.team.input(1, "name"), "Clodsire");
+    expect(getTeamTextFromUrl(page)).toContain("Clodsire");
   });
 });
