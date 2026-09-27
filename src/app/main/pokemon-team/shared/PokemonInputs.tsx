@@ -30,7 +30,9 @@ const edgeArrow = {
   "&.Mui-disabled": { bgcolor: "grey.200", color: "grey.900", opacity: 0.3 },
 } as const;
 
-// Two of these share a card's left column, so they are as compact as a labelled button gets
+// Two of these share a card's left column, so they are as compact as a labelled button gets,
+// and drop their icons where the column is too narrow for the longest labels
+const buttonRow = { display: "flex", gap: 0.75, containerType: "inline-size" };
 const smallButton = {
   flex: "1 1 0",
   minWidth: 0,
@@ -38,7 +40,12 @@ const smallButton = {
   fontSize: 11,
   letterSpacing: 0,
   whiteSpace: "nowrap",
-  "& .MuiButton-startIcon": { mr: 0.5, ml: 0, "& > svg": { fontSize: 16 } },
+  "& .MuiButton-startIcon": {
+    mr: 0.5,
+    ml: 0,
+    "& > svg": { fontSize: 16 },
+    "@container (max-width: 182px)": { display: "none" },
+  },
 } as const;
 
 // One team slot: the name, sprite, and slot tools on the left, and the moves,
@@ -125,7 +132,7 @@ const PokemonInputs = observer(function PokemonInputs({
     >
       <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
         {showTools && (
-          <Box sx={{ display: "flex", gap: 0.75, pt: 0.5 }}>
+          <Box sx={{ ...buttonRow, pt: 0.5 }}>
             <Button
               size="small"
               variant="outlined"
@@ -187,7 +194,11 @@ const PokemonInputs = observer(function PokemonInputs({
           </Box>
           {slotNav(1)}
         </Box>
-        <Box sx={{ display: "flex", gap: 0.75, pb: 0.5 }}>
+        <Box
+          sx={
+            showTools ? { ...buttonRow, pb: 0.5 } : { display: "flex", pb: 0.5 }
+          }
+        >
           <Button
             size="small"
             variant="outlined"
