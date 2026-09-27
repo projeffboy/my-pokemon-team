@@ -306,6 +306,18 @@ const AdvancedDialog = observer(function AdvancedDialog() {
           },
         }}
       >
+        <Box
+          aria-hidden="true"
+          sx={{
+            width: 36,
+            height: 4,
+            borderRadius: 2,
+            bgcolor: "action.disabled",
+            mx: "auto",
+            mt: 1,
+            flexShrink: 0,
+          }}
+        />
         {form}
       </Drawer>
     : <Dialog

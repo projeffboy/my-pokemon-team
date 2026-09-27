@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useState } from "react";
 import Autocomplete, {
   autocompleteClasses,
   createFilterOptions,
@@ -49,6 +49,8 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   onChange: (value: string) => void;
 }) {
   const { t } = useTranslation();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [popperWidth, setPopperWidth] = useState<number>();
   const filterOptions = useMemo(
     () =>
       createFilterOptions<SelectOption>({
@@ -103,6 +105,13 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     >
       <Autocomplete
         id={id}
+        ref={rootRef}
+        onOpen={() => {
+          // The Name dropdown spans both of the card's columns, which are 8px apart
+          const width = rootRef.current?.clientWidth;
+          if (pokemonProperty === "name" && width)
+            setPopperWidth(2 * width + 8);
+        }}
         options={options}
         value={selectedOption}
         disableListWrap
@@ -141,6 +150,10 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         }
         slotProps={{
           popper: {
+            ...(popperWidth && {
+              placement: "bottom-start" as const,
+              style: { width: popperWidth },
+            }),
             sx: {
               // Asuming 4px inline padding (defined in VirtualizedListbox)
               // and 2px left padding on non-icon part of the dropdown row:

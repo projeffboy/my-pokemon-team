@@ -24,6 +24,27 @@ export default function Footer() {
   const { mode, setMode } = useColorScheme();
   const selectedMode = mode ?? "system";
 
+  const modes = [
+    {
+      value: "system",
+      label: t.footer.systemTheme,
+      caption: t.footer.auto,
+      Icon: ComputerIcon,
+    },
+    {
+      value: "light",
+      label: t.footer.lightTheme,
+      caption: t.footer.light,
+      Icon: LightModeIcon,
+    },
+    {
+      value: "dark",
+      label: t.footer.darkTheme,
+      caption: t.footer.dark,
+      Icon: DarkModeIcon,
+    },
+  ];
+
   const handleModeChange = (
     _event: MouseEvent<HTMLElement>,
     newMode: ColorMode | null,
@@ -81,21 +102,18 @@ export default function Footer() {
         onChange={handleModeChange}
         aria-label={t.footer.colorScheme}
       >
-        <Tooltip title={t.footer.systemTheme}>
-          <ToggleButton value="system" aria-label={t.footer.systemTheme}>
-            <ComputerIcon />
-          </ToggleButton>
-        </Tooltip>
-        <Tooltip title={t.footer.lightTheme}>
-          <ToggleButton value="light" aria-label={t.footer.lightTheme}>
-            <LightModeIcon />
-          </ToggleButton>
-        </Tooltip>
-        <Tooltip title={t.footer.darkTheme}>
-          <ToggleButton value="dark" aria-label={t.footer.darkTheme}>
-            <DarkModeIcon />
-          </ToggleButton>
-        </Tooltip>
+        {modes.map(({ value, label, caption, Icon }) => (
+          <Tooltip key={value} title={label}>
+            <ToggleButton
+              value={value}
+              aria-label={label}
+              sx={{ gap: 0.75, px: 1.25, fontSize: 12, lineHeight: 1 }}
+            >
+              <Icon fontSize="small" />
+              <span aria-hidden="true">{caption}</span>
+            </ToggleButton>
+          </Tooltip>
+        ))}
       </ToggleButtonGroup>
     </Stack>
   );

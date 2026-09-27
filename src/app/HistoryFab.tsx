@@ -15,13 +15,19 @@ const HistoryFab = observer(function HistoryFab() {
       label: t.undo,
       Icon: UndoIcon,
       enabled: store.canUndo,
-      act: () => store.undo(),
+      act: () => {
+        store.undo();
+        store.openSnackbar(t.team.undone);
+      },
     },
     {
       label: t.redo,
       Icon: RedoIcon,
       enabled: store.canRedo,
-      act: () => store.redo(),
+      act: () => {
+        store.redo();
+        store.openSnackbar(t.team.redone);
+      },
     },
   ];
 

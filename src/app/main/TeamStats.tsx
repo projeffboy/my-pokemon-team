@@ -142,7 +142,12 @@ export default function TeamStats() {
             <ArrowBackIcon />
           </IconButton>
         )}
-        <Typography variant="h6" component="h2" sx={{ flexGrow: 1 }}>
+        {!(isXs && !isTabbed) && <Box sx={{ width: 34, flexShrink: 0 }} />}
+        <Typography
+          variant="h6"
+          component="h2"
+          sx={{ flexGrow: 1, textAlign: "center" }}
+        >
           {title}
         </Typography>
         <IconButton

@@ -86,7 +86,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis() {
           if (value) setKind(value);
         }}
         aria-label={t.matrix.matrix}
-        sx={{ alignSelf: "center" }}
+        fullWidth
       >
         <ToggleButton value="defence">{t.stats.defence}</ToggleButton>
         <ToggleButton value="coverage">{t.stats.coverage}</ToggleButton>

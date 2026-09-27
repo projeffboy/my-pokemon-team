@@ -1,5 +1,4 @@
 import { useState, type MouseEvent } from "react";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -18,6 +17,7 @@ import { serializeTeamText } from "@/app/shared/team-text";
 import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import ToolbarButton from "./shared/ToolbarButton";
 
 export const copyTeamText = () => {
   const { team } = store.translation.t;
@@ -65,8 +65,8 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
 
   return (
     <>
-      <Button
-        startIcon={<TuneIcon />}
+      <ToolbarButton
+        icon={<TuneIcon />}
         onClick={(event: MouseEvent<HTMLElement>) =>
           setAnchorEl(event.currentTarget)
         }
@@ -75,7 +75,7 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
         aria-expanded={!!anchorEl}
       >
         {t.team.manageTeam}
-      </Button>
+      </ToolbarButton>
       <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={close}>
         {items.map((item, i) =>
           item === "divider" ?

@@ -19,6 +19,17 @@ import { MOVE_KEYS } from "@/types";
 
 const SLOT_NAV_CLASS = "slot-nav";
 
+// On phones and tablets the slot arrows are light circles on the card's edges
+const edgeArrow = {
+  width: 28,
+  height: 28,
+  bgcolor: "grey.200",
+  color: "grey.900",
+  boxShadow: 4,
+  "&:hover": { bgcolor: "grey.300" },
+  "&.Mui-disabled": { bgcolor: "grey.200", color: "grey.900", opacity: 0.3 },
+} as const;
+
 // Two of these share a card's left column, so they are as compact as a labelled button gets
 const smallButton = {
   flex: "1 1 0",
@@ -57,42 +68,58 @@ const PokemonInputs = observer(function PokemonInputs({
     const title = direction < 0 ? t.team.previousSlot : t.team.nextSlot;
     return (
       <Tooltip title={title}>
-        <span>
+        <Box
+          component="span"
+          sx={
+            isMdDown ?
+              {
+                position: "absolute",
+                top: "50%",
+                transform: "translateY(-50%)",
+                zIndex: 1,
+                [direction < 0 ? "left" : "right"]: -22,
+              }
+            : undefined
+          }
+        >
           <IconButton
             className={SLOT_NAV_CLASS}
             size="small"
             aria-label={title}
             disabled={disabled}
             onClick={() => moveToSlot(otherIndex)}
+            sx={isMdDown ? edgeArrow : undefined}
           >
             {direction < 0 ?
               <ChevronLeftIcon />
             : <ChevronRightIcon />}
           </IconButton>
-        </span>
+        </Box>
       </Tooltip>
     );
   };
 
   return (
     <Box
-      sx={{
+      sx={theme => ({
         display: "grid",
         columnGap: 1,
         gridTemplateColumns: "1fr 1fr",
-        // A long item's icon stops at the card's padding instead of widening the page
-        overflow: "clip",
-        // With a mouse, the slot arrows and info button appear when the card is hovered or focused
+        position: "relative",
+        // With a mouse on a desktop, the slot arrows and info button appear when the
+        // card is hovered or focused
         "@media (hover: hover)": {
-          [`& .${SLOT_NAV_CLASS}`]: {
-            opacity: 0.3,
-            transition: "opacity .15s",
-          },
-          [`&:hover .${SLOT_NAV_CLASS}, &:focus-within .${SLOT_NAV_CLASS}`]: {
-            opacity: 1,
+          [theme.breakpoints.up("md")]: {
+            [`& .${SLOT_NAV_CLASS}`]: {
+              opacity: 0,
+              transition: "opacity .15s",
+            },
+            [`&:hover .${SLOT_NAV_CLASS}, &:focus-within .${SLOT_NAV_CLASS}`]: {
+              opacity: 1,
+            },
           },
         },
-      }}
+      })}
       role="region"
       aria-label={t.team.slot(teamIndex + 1)}
     >
@@ -168,7 +195,10 @@ const PokemonInputs = observer(function PokemonInputs({
             sx={smallButton}
             disabled={!store.learnsetsLoaded}
             aria-label={t.team.randomFor(teamIndex + 1)}
-            onClick={() => store.randomizeSlot(teamIndex)}
+            onClick={() => {
+              store.randomizeSlot(teamIndex);
+              store.openSnackbar(t.team.randomized);
+            }}
           >
             {t.team.random}
           </Button>
@@ -187,7 +217,15 @@ const PokemonInputs = observer(function PokemonInputs({
           )}
         </Box>
       </Box>
-      <Box sx={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minWidth: 0,
+          // A long item's icon stops at the column's edge instead of widening the page
+          overflow: "clip",
+        }}
+      >
         {MOVE_KEYS.map(key => (
           <PokemonInput
             key={key}

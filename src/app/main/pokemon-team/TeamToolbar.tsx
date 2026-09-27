@@ -1,4 +1,3 @@
-import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import GroupsIcon from "@mui/icons-material/Groups";
 import CasinoIcon from "@mui/icons-material/Casino";
@@ -8,6 +7,7 @@ import store from "@/store";
 import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import ManageTeamMenu from "./team-toolbar/ManageTeamMenu";
+import ToolbarButton from "./team-toolbar/shared/ToolbarButton";
 
 export const shareTeamLink = () => {
   const { team } = store.translation.t;
@@ -25,34 +25,27 @@ const TeamToolbar = observer(function TeamToolbar() {
   };
 
   return (
-    <Stack
-      direction="row"
-      role="toolbar"
-      aria-label={t.team.teamActions}
-      useFlexGap
-      spacing={0.5}
-      sx={{ flexWrap: "wrap", justifyContent: "center" }}
-    >
-      <Button
-        startIcon={<GroupsIcon />}
+    <Stack direction="row" role="toolbar" aria-label={t.team.teamActions}>
+      <ToolbarButton
+        icon={<GroupsIcon />}
         onClick={() => store.openDialog("teams")}
       >
         {t.team.teams}
-      </Button>
-      <Button
-        startIcon={<CasinoIcon />}
+      </ToolbarButton>
+      <ToolbarButton
+        icon={<CasinoIcon />}
         onClick={handleRandomize}
         disabled={!store.learnsetsLoaded}
       >
         {t.team.randomize}
-      </Button>
-      <Button
-        startIcon={<LinkIcon />}
+      </ToolbarButton>
+      <ToolbarButton
+        icon={<LinkIcon />}
         onClick={shareTeamLink}
         aria-label={t.team.shareTeamLink}
       >
         {t.team.shareTeam}
-      </Button>
+      </ToolbarButton>
       <ManageTeamMenu />
     </Stack>
   );

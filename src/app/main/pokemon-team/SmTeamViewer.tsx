@@ -5,12 +5,10 @@ import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react-lite";
-import store from "@/store";
 import PokemonInputs from "./shared/PokemonInputs";
 import PokemonSprite from "./shared/PokemonSprite";
-import MoreToggle from "./shared/MoreToggle";
+import TeamBar from "./shared/TeamBar";
 import getPokemonLabel from "./shared/get-pokemon-label";
-import TeamToolbar from "./TeamToolbar";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
 const SmTeamViewer = observer(function SmTeamViewer() {
@@ -19,15 +17,8 @@ const SmTeamViewer = observer(function SmTeamViewer() {
 
   return (
     <>
-      {store.isMoreOpen && (
-        <Grid size={12}>
-          <Paper sx={{ px: 1, py: 0.5 }}>
-            <TeamToolbar />
-          </Paper>
-        </Grid>
-      )}
-      <Grid size={12} sx={{ display: "flex", gap: 1 }}>
-        <Paper sx={{ flexGrow: 1, minWidth: 0 }}>
+      <TeamBar
+        tabs={
           <Tabs
             value={tabIndex}
             onChange={(_event: SyntheticEvent, value: number) =>
@@ -61,11 +52,8 @@ const SmTeamViewer = observer(function SmTeamViewer() {
               />
             ))}
           </Tabs>
-        </Paper>
-        <Paper sx={{ display: "flex" }}>
-          <MoreToggle />
-        </Paper>
-      </Grid>
+        }
+      />
       <Grid
         container
         size={12}

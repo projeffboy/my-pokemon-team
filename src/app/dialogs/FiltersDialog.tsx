@@ -58,6 +58,24 @@ const FiltersDialog = observer(function FiltersDialog() {
     store.filters = { type: "", region: "", ability: "", moves: "" };
   };
 
+  const renderSelect = ({ key, label, options }: (typeof selects)[number]) => (
+    <TextField
+      key={key}
+      select
+      label={label}
+      value={store.filters[key]}
+      onChange={event => (store.filters[key] = event.target.value)}
+      fullWidth
+    >
+      <MenuItem value="">{key === "moves" ? t.all : t.any}</MenuItem>
+      {options.map(({ value, label }) => (
+        <MenuItem key={value} value={value}>
+          {label}
+        </MenuItem>
+      ))}
+    </TextField>
+  );
+
   return (
     <Dialog
       open={isOpen}
@@ -86,23 +104,7 @@ const FiltersDialog = observer(function FiltersDialog() {
               </MenuItem>
             ))}
           </TextField>
-          {selects.map(({ key, label, options }) => (
-            <TextField
-              key={key}
-              select
-              label={label}
-              value={store.filters[key]}
-              onChange={event => (store.filters[key] = event.target.value)}
-              fullWidth
-            >
-              <MenuItem value="">{t.all}</MenuItem>
-              {options.map(({ value, label }) => (
-                <MenuItem key={value} value={value}>
-                  {label}
-                </MenuItem>
-              ))}
-            </TextField>
-          ))}
+          {selects.slice(0, 2).map(renderSelect)}
           <Autocomplete
             options={allAbilities}
             getOptionLabel={names.ability}
@@ -116,6 +118,7 @@ const FiltersDialog = observer(function FiltersDialog() {
               />
             )}
           />
+          {selects.slice(2).map(renderSelect)}
         </Stack>
       </DialogContent>
       <DialogActions>

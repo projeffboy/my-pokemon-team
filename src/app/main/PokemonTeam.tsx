@@ -15,7 +15,7 @@ export default function PokemonTeam() {
   return (
     <>
       <Grid size={12}>
-        <Paper sx={{ px: 1, py: 0.5 }}>
+        <Paper>
           <TeamToolbar />
         </Paper>
       </Grid>

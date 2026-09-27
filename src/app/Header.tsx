@@ -65,8 +65,8 @@ export default function Header() {
         spacing={1}
         sx={{ width: "100%", maxWidth: 420, mx: "auto", alignItems: "stretch" }}
       >
-        <GenerationSelect />
         <LanguageSelect />
+        <GenerationSelect />
         <FeedbackDialog />
       </Stack>
     </Grid>

@@ -199,13 +199,19 @@ const VirtualizedListbox = observer(
               // Keeps the focus, and so the popup, in the input
               onMouseDown={event => event.preventDefault()}
               aria-label={t.team.nameListView}
-              sx={{ display: "flex", m: 0.5, "& > *": { flex: 1 } }}
+              sx={{
+                display: "flex",
+                m: 0.5,
+                "& > *": { flex: 1, gap: 0.75, fontSize: 12, lineHeight: 1 },
+              }}
             >
               <ToggleButton value="list" aria-label={t.team.listView}>
                 <ViewListIcon fontSize="small" />
+                <span aria-hidden="true">{t.team.list}</span>
               </ToggleButton>
               <ToggleButton value="grid" aria-label={t.team.gridView}>
                 <GridViewIcon fontSize="small" />
+                <span aria-hidden="true">{t.team.grid}</span>
               </ToggleButton>
             </ToggleButtonGroup>
           )}

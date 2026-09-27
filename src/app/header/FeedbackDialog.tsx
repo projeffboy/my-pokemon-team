@@ -8,13 +8,13 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
-import Tooltip from "@mui/material/Tooltip";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import SendIcon from "@mui/icons-material/Send";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import CaptionButton from "./shared/CaptionButton";
 
 const EMAIL = "jeffery124@gmail.com";
 
@@ -40,16 +40,12 @@ const FeedbackDialog = observer(function FeedbackDialog() {
 
   return (
     <>
-      <Tooltip title={t.feedback.button}>
-        <Button
-          variant="outlined"
-          onClick={() => setIsOpen(true)}
-          aria-label={t.feedback.button}
-          sx={{ minWidth: 0, px: 1.5, flexShrink: 0 }}
-        >
-          <FeedbackIcon />
-        </Button>
-      </Tooltip>
+      <CaptionButton
+        icon={<FeedbackIcon />}
+        caption={t.feedback.caption}
+        label={t.feedback.button}
+        onClick={() => setIsOpen(true)}
+      />
       <Dialog open={isOpen} onClose={close} aria-labelledby={titleId} fullWidth>
         <DialogTitle id={titleId}>{t.feedback.title}</DialogTitle>
         <DialogContent>

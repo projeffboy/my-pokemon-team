@@ -2,7 +2,7 @@ import { useId, useState, type MouseEvent } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
+import Chip from "@mui/material/Chip";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import CasinoIcon from "@mui/icons-material/Casino";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -41,6 +42,8 @@ import { useBreakpoint } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import TeamSettingsDialog from "./shared/TeamSettingsDialog";
 import downloadText from "./teams-dialog/download-text";
+
+const halfWidth = { flex: "1 1 0", minWidth: 0 } as const;
 
 // Every saved team: open one, or manage it through its menu
 const TeamsDialog = observer(function TeamsDialog() {
@@ -127,17 +130,34 @@ const TeamsDialog = observer(function TeamsDialog() {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle id={titleId}>{t.team.teams}</DialogTitle>
+        <DialogTitle
+          id={titleId}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1,
+            py: 1,
+            pl: 1,
+            bgcolor: "grey.900",
+            color: "common.white",
+          }}
+        >
+          <IconButton aria-label={t.close} onClick={close} color="inherit">
+            <CloseIcon />
+          </IconButton>
+          {t.team.teams}
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText sx={{ mb: 2 }}>
+          <DialogContentText sx={{ my: 2 }}>
             {t.teams.description}
           </DialogContentText>
-          <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+          <Stack direction="row" spacing={1} sx={{ mb: 1, "& > *": halfWidth }}>
             <Button
               variant="outlined"
               startIcon={<AddIcon />}
               onClick={() => {
                 store.addTeam();
+                store.openSnackbar(t.teams.newTeamCreated);
                 close();
               }}
             >
@@ -150,6 +170,7 @@ const TeamsDialog = observer(function TeamsDialog() {
               onClick={() => {
                 store.addTeam();
                 store.randomizeTeam();
+                store.openSnackbar(t.teams.randomTeamCreated);
                 close();
               }}
             >
@@ -185,10 +206,33 @@ const TeamsDialog = observer(function TeamsDialog() {
                     aria-current={isCurrent}
                     aria-label={t.teams.load(name)}
                     onClick={() => load(team)}
-                    sx={{ borderRadius: 1, mb: 0.5 }}
+                    sx={{
+                      borderRadius: 1,
+                      mb: 1,
+                      border: 1,
+                      borderColor: isCurrent ? "text.primary" : "divider",
+                    }}
                   >
                     <ListItemText
-                      primary={name}
+                      primary={
+                        <>
+                          {name}
+                          {isCurrent && (
+                            <Chip
+                              label={t.teams.open}
+                              size="small"
+                              color="primary"
+                              sx={{
+                                ml: 1,
+                                height: 18,
+                                fontSize: 10,
+                                fontWeight: 700,
+                                textTransform: "uppercase",
+                              }}
+                            />
+                          )}
+                        </>
+                      }
                       secondary={
                         <>
                           {teamSubtitle(team)}
@@ -228,7 +272,7 @@ const TeamsDialog = observer(function TeamsDialog() {
               );
             })}
           </List>
-          <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+          <Stack direction="row" spacing={1} sx={{ mt: 1, "& > *": halfWidth }}>
             <Button
               variant="outlined"
               startIcon={<UploadIcon />}
@@ -239,12 +283,13 @@ const TeamsDialog = observer(function TeamsDialog() {
             <Button
               variant="outlined"
               startIcon={<DownloadIcon />}
-              onClick={() =>
+              onClick={() => {
                 downloadText(
                   t.teams.exportFilename,
                   serializeTeams(store.teams),
-                )
-              }
+                );
+                store.openSnackbar(t.teams.exported);
+              }}
             >
               {t.teams.exportAll}
             </Button>
@@ -257,9 +302,6 @@ const TeamsDialog = observer(function TeamsDialog() {
             {t.teams.savedInBrowser}
           </Typography>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={close}>{t.close}</Button>
-        </DialogActions>
       </Dialog>
       <Menu
         anchorEl={menu?.anchorEl}

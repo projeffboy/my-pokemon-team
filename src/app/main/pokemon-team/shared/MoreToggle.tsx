@@ -17,7 +17,7 @@ const MoreToggle = observer(function MoreToggle() {
       onClick={() => (store.isMoreOpen = !isMoreOpen)}
       aria-expanded={isMoreOpen}
       aria-label={isMoreOpen ? t.team.fewerTools : t.team.moreTools}
-      sx={{ minWidth: 0, px: 1.5, flexDirection: "column" }}
+      sx={{ minWidth: 0, width: "100%", px: 0.5, flexDirection: "column" }}
     >
       <Icon fontSize="small" />
       <Typography variant="caption" component="span" noWrap>

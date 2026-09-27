@@ -12,7 +12,7 @@ const openLanguageMenu = async (page: Page) => {
 // Like the helper's selectPokemon, but by the label in the current language
 const selectPokemon = async (page: Page, label: string, name: string) => {
   const input = page.getByLabel(label);
-  await input.click({ force: true });
+  await input.click();
   await input.fill(name);
   await page.getByRole("listbox").getByText(name, { exact: true }).click();
   await expect(input).toHaveValue(name);
@@ -39,7 +39,7 @@ test.describe("Language Select - Integration Tests", () => {
 
     // Typing the English name still finds the pokemon
     const input = page.getByLabel(ja.team.input(1, "name"));
-    await input.click({ force: true });
+    await input.click();
     await input.fill("Vaporeon");
     await page
       .getByRole("listbox")

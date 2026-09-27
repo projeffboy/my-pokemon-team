@@ -49,7 +49,11 @@ const SortDialog = observer(function SortDialog() {
               onChange={event =>
                 (store.sort.by = event.target.value as SortKey)
               }
-              sx={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                "& > :nth-of-type(-n + 4)": { gridColumn: "1 / -1" },
+              }}
             >
               {SORT_KEYS.map(key => (
                 <FormControlLabel
