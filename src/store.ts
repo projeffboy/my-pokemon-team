@@ -302,8 +302,17 @@ class Store {
     this.team[teamIndex] = randomSet(pokemon, completeLearnset(pokemon));
   }
 
+  // Six fresh picks: only the ones made so far count as taken, so the pokemon
+  // being replaced do not force a repeat when the filters leave six options
   randomizeTeam() {
-    for (let i = 0; i < this.team.length; i++) this.randomizeSlot(i);
+    const options = this.filteredPokemon;
+    const chosen: string[] = [];
+    for (let i = 0; i < this.team.length; i++) {
+      const pokemon = randomPokemon(options, chosen);
+      if (!pokemon) return;
+      chosen.push(pokemon);
+      this.team[i] = randomSet(pokemon, completeLearnset(pokemon));
+    }
   }
 
   resetDetails(teamIndex: number) {

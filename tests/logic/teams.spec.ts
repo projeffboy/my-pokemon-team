@@ -121,6 +121,26 @@ test.describe("slot tools", () => {
     expect(new Set(pokemon).size).toBe(6);
   });
 
+  test("randomizing the whole team repeats nobody when six options remain", ({
+    store,
+  }) => {
+    store.filters.ability = "Forewarn";
+    const options = [
+      "drowzee",
+      "hypno",
+      "jynx",
+      "smoochum",
+      "munna",
+      "musharna",
+    ];
+    expect([...store.filteredPokemon].sort()).toEqual([...options].sort());
+    options.forEach((pokemon, i) => store.selectPokemon(i, pokemon));
+    for (let run = 0; run < 20; run++) {
+      store.randomizeTeam();
+      expect([...store.teamPokemon].sort()).toEqual([...options].sort());
+    }
+  });
+
   test("selecting a pokemon clears its details, and resetting keeps the set", ({
     store,
   }) => {

@@ -78,6 +78,18 @@ test.describe("set details in Showdown text", () => {
     expect(parseTeamText("Reuniclus")[0].nickname).toBeUndefined();
   });
 
+  test("a nickname that is also a pokemon survives the round trip", () => {
+    const [member] = parseTeamText("Mew (Mewtwo) @ Life Orb");
+    expect(member).toMatchObject({ name: "mewtwo", nickname: "Mew" });
+    expect(serializeTeam([member])).toContain("Mew (Mewtwo) @ Life Orb");
+  });
+
+  test("a nickname still being typed is written without its outer spaces", () => {
+    const [member] = parseTeamText("Porygon-Z");
+    member.nickname = "Big Bird ";
+    expect(serializeTeam([member])).toContain("Big Bird (Porygon-Z)");
+  });
+
   test("accepts blank lines with spaces between pokemon", () => {
     const team = parseTeamText("Garchomp\n- Earthquake\n  \nKingdra\n- Surf");
     expect(team[1]).toMatchObject({ name: "kingdra", move1: "surf" });

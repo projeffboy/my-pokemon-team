@@ -91,8 +91,12 @@ const AdvancedForm = observer(function AdvancedForm({
             label={t.advanced.nickname}
             placeholder={name}
             value={member.nickname ?? ""}
+            // Trimmed when editing ends, so a space between words can be typed
             onChange={event =>
-              setDetail(member, "nickname", event.target.value.trim())
+              setDetail(member, "nickname", event.target.value.trimStart())
+            }
+            onBlur={() =>
+              setDetail(member, "nickname", member.nickname?.trim())
             }
             slotProps={{ htmlInput: { maxLength: 18 } }}
             fullWidth

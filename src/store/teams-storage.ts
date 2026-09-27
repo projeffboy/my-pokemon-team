@@ -9,7 +9,7 @@ import type {
 import { isGeneration, LATEST_GENERATION } from "@/shared/generations";
 import { isLocale, type Locale } from "@/i18n/locales";
 import { createEmptyTeam, createSavedTeam } from "@/shared/team";
-import { DEFAULT_SORT } from "./sorting";
+import { DEFAULT_SORT, SORT_KEYS } from "./sorting";
 
 const STORAGE_KEY = "mypokemonteam";
 
@@ -77,11 +77,10 @@ export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
 }
 
 function sanitizeSort(value: unknown): SortOrder {
-  if (!isRecord(value) || typeof value.by !== "string") return DEFAULT_SORT;
-  return {
-    by: value.by as SortOrder["by"],
-    descending: value.descending === true,
-  };
+  const by =
+    isRecord(value) ? SORT_KEYS.find(key => key === value.by) : undefined;
+  if (!isRecord(value) || !by) return DEFAULT_SORT;
+  return { by, descending: value.descending === true };
 }
 
 // The saved state, or undefined when nothing usable is saved

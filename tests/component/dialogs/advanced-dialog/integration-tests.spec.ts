@@ -15,7 +15,8 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     const dialog = page.getByRole("dialog", { name: "Advanced" });
     await expect(dialog).toContainText("Mudsdale, slot 1");
 
-    await dialog.getByLabel("Nickname").fill("Clyde");
+    // Typed key by key, so the space between the words has to survive
+    await dialog.getByLabel("Nickname").pressSequentially("Big Clyde ");
     await dialog.getByLabel("Level").fill("50");
     await selectDialogOption(page, "Gender", "Female");
     await selectDialogOption(page, "Tera Type", "Steel");
@@ -32,7 +33,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
       .poll(() => getTeamTextFromUrl(page))
       .toContain("Adamant Nature");
     const text = getTeamTextFromUrl(page);
-    expect(text).toContain("Clyde (Mudsdale) (F) @ ");
+    expect(text).toContain("Big Clyde (Mudsdale) (F) @ ");
     expect(text).toContain("Level: 50");
     expect(text).toContain("Shiny: Yes");
     expect(text).toContain("Tera Type: Steel");

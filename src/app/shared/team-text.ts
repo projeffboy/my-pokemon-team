@@ -51,8 +51,9 @@ const statsLine = (
 
 // One pokemon in Showdown's export format; details at their defaults are left out
 function serializeMember(member: Readonly<TeamPokemon>): string {
-  const { name, item, ability, nickname, gender, level, shiny, teraType } =
-    member;
+  const { name, item, ability, gender, level, shiny, teraType } = member;
+  // The Advanced dialog keeps a space being typed, which the text leaves out
+  const nickname = member.nickname?.trim();
   const species = pokemonName(name) ?? name;
   const nameLine = [
     nickname ? `${nickname} (${species})` : species,
@@ -148,12 +149,13 @@ export function parseTeamText(text: string): Team {
     let species = pokemonNameAndNickname.replace(GENDER_SUFFIX, "").trim();
     let nickname: string | undefined;
 
-    // Keep the species name and the nickname, accepting either
-    // "Species (Nickname)" or "Nickname (Species)" input.
+    // Keep the species name and the nickname, accepting either "Nickname (Species)",
+    // as Showdown writes it, or "Species (Nickname)". When both are pokemon, such as
+    // a Mewtwo nicknamed Mew, the one in parentheses is the species.
     if (species.includes("(")) {
       const beforeParen = species.split("(")[0]?.trim() ?? "";
       const insideParen = species.match(/\(([^)]+)\)/)?.[1]?.trim() ?? "";
-      const validCandidate = [beforeParen, insideParen].find(candidate =>
+      const validCandidate = [insideParen, beforeParen].find(candidate =>
         candidate ? !!pokemonNameInverse(candidate) : false,
       );
       const other = validCandidate === beforeParen ? insideParen : beforeParen;
