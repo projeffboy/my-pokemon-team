@@ -12,8 +12,8 @@ import store from "@/store";
 import {
   parseTeamsText,
   parseTeamText,
-  serializeTeamText,
-} from "@/app/shared/team-text";
+  serializeTeam,
+} from "@/store/team-text";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
@@ -26,12 +26,17 @@ const ImportTeamForm = observer(function ImportTeamForm({
 }) {
   const { t } = useTranslation();
   const { importDialog } = t;
-  const initialText = isImport ? "" : serializeTeamText();
+  const initialText = isImport ? "" : serializeTeam(store.team);
   const [text, setText] = useState(initialText);
+  const [isNothingFound, setIsNothingFound] = useState(false);
   const close = () => store.closeDialog();
 
   const handleImport = () => {
     const teams = parseTeamsText(text);
+    if (!teams.length) {
+      setIsNothingFound(true);
+      return;
+    }
     for (const { name, generation, format, team } of teams) {
       store.addTeam({ ...(name && { name }), generation, format, team });
     }
@@ -82,7 +87,12 @@ const ImportTeamForm = observer(function ImportTeamForm({
           fullWidth
           sx={{ my: 2.5 }}
           value={text}
-          onChange={event => setText(event.target.value)}
+          onChange={event => {
+            setText(event.target.value);
+            setIsNothingFound(false);
+          }}
+          error={isNothingFound}
+          helperText={isNothingFound && importDialog.nothingFound}
         />
         <DialogContentText>{importDialog.kept}</DialogContentText>
       </DialogContent>

@@ -18,8 +18,8 @@ import { smogonDexUrl } from "@/shared/generations";
 import { introducedIn } from "@/store/filtering";
 import { scoreToMultiplier } from "@/store/matrix";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
-import PokemonSprite from "@/app/main/pokemon-team/shared/PokemonSprite";
-import { TYPE_COLORS } from "@/app/main/team-stats/shared/type-colors";
+import PokemonSprite from "@/app/shared/PokemonSprite";
+import { TYPE_COLORS } from "@/app/shared/type-colors";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
 const MAX_BASE_STAT = 255;

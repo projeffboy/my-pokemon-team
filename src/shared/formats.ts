@@ -3,6 +3,12 @@ import { isGeneration, LATEST_GENERATION } from "./generations";
 
 export const CHAMPIONS_FORMAT = "Pokemon Champions (M-C)";
 
+// Pokemon Champions is a Gen 9 game, so a team in its format is a Gen 9 team
+export const CHAMPIONS_GENERATION: Generation = 9;
+
+export const formatGeneration = (format: string, generation: Generation) =>
+  format === CHAMPIONS_FORMAT ? CHAMPIONS_GENERATION : generation;
+
 // The Format options, as the Filters and Name and Format dialogs list them
 export const FORMATS: readonly string[] = [
   CHAMPIONS_FORMAT,
@@ -33,9 +39,6 @@ export const TIER_BY_FORMAT: Record<string, string> = {
   "Doubles OU": "DOU",
   "Doubles UU": "DUU",
 };
-
-export const isDoublesFormat = (format: string) =>
-  format === CHAMPIONS_FORMAT || format.startsWith("Doubles");
 
 // E.g. "OU" or "Champions (M-C)", for the team cards
 export const formatShortName = (format: string) =>
@@ -75,7 +78,10 @@ export function parseShowdownFormatId(id: string): {
       rest.startsWith(formatId),
     )?.[0] ?? "";
   return {
-    generation: isGeneration(generation) ? generation : LATEST_GENERATION,
+    generation: formatGeneration(
+      format,
+      isGeneration(generation) ? generation : LATEST_GENERATION,
+    ),
     format,
   };
 }

@@ -4,7 +4,7 @@ import CasinoIcon from "@mui/icons-material/Casino";
 import LinkIcon from "@mui/icons-material/Link";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
+import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import ManageTeamMenu from "./team-toolbar/ManageTeamMenu";
 import ToolbarButton from "./team-toolbar/shared/ToolbarButton";

@@ -8,7 +8,6 @@ const generation = (generation: number) => `Gen ${generation}`;
 
 const en = {
   // The header
-  siteName: "My Pokemon Team",
   generation,
   generationSelect: "Generation",
   championsGeneration: "Gen 9 · Champions",
@@ -357,6 +356,7 @@ const en = {
     imported: "Team imported",
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",
+    nothingFound: "No pokemon found in that text.",
   },
   deleteDialog: {
     title: (team: string) => `Delete ${team}?`,

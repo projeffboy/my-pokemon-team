@@ -2,9 +2,19 @@ import type { Messages } from "./en";
 
 const generation = (generation: number) => `第${generation}世代`;
 
+// A slot's inputs, for their accessible names
+const inputNames: Record<string, string> = {
+  name: "名稱",
+  move1: "招式 1",
+  move2: "招式 2",
+  move3: "招式 3",
+  move4: "招式 4",
+  item: "道具",
+  ability: "特性",
+};
+
 const zhHant: Messages = {
   // The header
-  siteName: "My Pokemon Team",
   generation,
   generationSelect: "世代",
   championsGeneration: "第9世代 · Champions",
@@ -97,8 +107,8 @@ const zhHant: Messages = {
     move: "招式",
     item: "道具",
     ability: "特性",
-    // The accessible name of each input, e.g. "寶可夢 1 的 move2"
-    input: (slot: number, property: string) => `寶可夢 ${slot} 的 ${property}`,
+    input: (slot: number, property: string) =>
+      `寶可夢 ${slot} 的 ${inputNames[property] ?? property}`,
     itemIcon: (item: string) => `${item}圖示`,
     nothingFound: "找不到結果",
     selectPokemonFirst: "（尚未選擇寶可夢）",
@@ -355,6 +365,7 @@ const zhHant: Messages = {
     imported: "已匯入隊伍",
     importedMany: (count: number) => `已匯入 ${count} 支隊伍`,
     noChanges: "沒有任何變更。",
+    nothingFound: "這段文字中找不到寶可夢。",
   },
   deleteDialog: {
     title: (team: string) => `要刪除${team}嗎？`,

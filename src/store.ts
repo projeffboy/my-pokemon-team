@@ -25,10 +25,14 @@ import { filterPokemon } from "./store/filtering";
 import { sortPokemon } from "./store/sorting";
 import { evaluateChecklist } from "./store/checklist";
 import { randomPokemon, randomSet } from "./store/random";
+import { serializeTeam } from "./store/team-text";
 import {
   initialStoredState,
   loadStoredState,
+  mergeStoredState,
   saveStoredState,
+  stableJson,
+  STORAGE_KEY,
   type StoredState,
 } from "./store/teams-storage";
 import {
@@ -61,16 +65,7 @@ const storage = typeof localStorage === "undefined" ? undefined : localStorage;
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
 
-// Set details are stored in the order they were edited, so keys are sorted
-// for the same team to give the same key
-const sortKeys = (_key: string, value: unknown) =>
-  typeof value === "object" && value !== null && !Array.isArray(value) ?
-    Object.fromEntries(
-      Object.entries(value).sort(([a], [b]) => (a < b ? -1 : 1)),
-    )
-  : value;
-
-const teamKey = (team: Team) => JSON.stringify(toJS(team), sortKeys);
+const teamKey = (team: Team) => stableJson(toJS(team));
 
 class Store {
   constructor() {
@@ -82,11 +77,12 @@ class Store {
     this.nameView = stored.nameView;
     this.chosenLocale = stored.locale;
     this.lastSnapshot = teamKey(this.team);
-    this.historyTeamId = this.currentTeamId;
+    this.lastRead = structuredClone(stored);
 
-    makeAutoObservable<Store, "lastSnapshot" | "historyTeamId">(this, {
+    makeAutoObservable<Store, "lastSnapshot" | "lastRead">(this, {
       lastSnapshot: false,
-      historyTeamId: false,
+      lastRead: false,
+      translationReady: false,
       translation: observable.ref,
     });
 
@@ -97,29 +93,30 @@ class Store {
       () => this.openSnackbar(this.translation.t.team.learnsetsFailed),
     );
 
+    this.translationReady = this.loadLocale(this.locale);
     reaction(
       () => this.locale,
       locale => this.loadLocale(locale),
-      { fireImmediately: true },
     );
 
     reaction(
       () => JSON.stringify(this.storedState),
-      json => saveStoredState(storage, JSON.parse(json) as StoredState),
+      () => this.save(),
       { delay: 250 },
     );
-    // An edit made just before leaving the page would miss the delayed save above
     if (typeof addEventListener !== "undefined") {
-      addEventListener("pagehide", () =>
-        saveStoredState(storage, JSON.parse(JSON.stringify(this.storedState))),
-      );
+      // An edit made just before leaving the page would miss the delayed save above
+      addEventListener("pagehide", () => this.save());
+      addEventListener("storage", ({ key, storageArea }) => {
+        if (key === STORAGE_KEY && storageArea === storage)
+          this.readOtherTabs();
+      });
     }
 
     // Undo history is per team, so switching teams starts it afresh
     reaction(
       () => this.currentTeamId,
-      teamId => {
-        this.historyTeamId = teamId;
+      () => {
         this.past = [];
         this.future = [];
         this.lastSnapshot = teamKey(this.team);
@@ -129,12 +126,7 @@ class Store {
     // Records the team before each burst of edits, so undo steps back through them
     reaction(
       () => teamKey(this.team),
-      snapshot => {
-        if (snapshot === this.lastSnapshot) return;
-        this.past = [...this.past, this.lastSnapshot].slice(-HISTORY_LIMIT);
-        this.future = [];
-        this.lastSnapshot = snapshot;
-      },
+      snapshot => this.recordEdit(snapshot),
       { delay: 400 },
     );
   }
@@ -228,16 +220,18 @@ class Store {
     if (team) Object.assign(team, settings);
   }
 
-  // A team opened from a link: the current team if it is empty or the same,
-  // else the saved team it matches, else a new team
+  // A team opened from a link: the current team or a saved team when it is the
+  // same, else the current team when it is empty, else a new team. Teams are the
+  // same when their link text is, since a saved team holds what the text leaves
+  // out, such as an empty slot before a pokemon.
   openTeamFromLink(team: Team) {
-    const key = teamKey(team);
-    if (isTeamEmpty(this.team) || teamKey(this.team) === key) {
-      this.team = team;
-      return;
-    }
-    const saved = this.teams.find(saved => teamKey(saved.team) === key);
+    if (isTeamEmpty(team)) return;
+    const text = serializeTeam(team);
+    const saved = [this.currentTeam, ...this.teams].find(
+      saved => serializeTeam(saved.team) === text,
+    );
     if (saved) this.currentTeamId = saved.id;
+    else if (isTeamEmpty(this.team)) this.team = team;
     else this.addTeam({ team });
   }
 
@@ -362,7 +356,14 @@ class Store {
   private past: string[] = [];
   private future: string[] = [];
   private lastSnapshot: string;
-  private historyTeamId: string;
+
+  // Undo and redo record first, so an edit the delayed reaction has yet to see is kept
+  private recordEdit(snapshot = teamKey(this.team)) {
+    if (snapshot === this.lastSnapshot) return;
+    this.past = [...this.past, this.lastSnapshot].slice(-HISTORY_LIMIT);
+    this.future = [];
+    this.lastSnapshot = snapshot;
+  }
 
   get canUndo() {
     return this.past.length > 0;
@@ -373,6 +374,7 @@ class Store {
   }
 
   undo() {
+    this.recordEdit();
     const snapshot = this.past[this.past.length - 1];
     if (snapshot === undefined) return;
     this.past = this.past.slice(0, -1);
@@ -381,6 +383,7 @@ class Store {
   }
 
   redo() {
+    this.recordEdit();
     const snapshot = this.future[this.future.length - 1];
     if (snapshot === undefined) return;
     this.future = this.future.slice(0, -1);
@@ -410,6 +413,9 @@ class Store {
   // The text and names on screen, which load on demand
   translation: Translation = english;
 
+  // Settles when the language the page opens in has loaded, or failed to
+  readonly translationReady: Promise<void>;
+
   // Choosing the language again retries a load that failed
   chooseLocale(locale: Locale) {
     const isRetry = locale === this.locale;
@@ -420,7 +426,7 @@ class Store {
   // A language chosen in the meantime wins, and a failed load leaves the
   // previous language on screen
   private loadLocale(locale: Locale) {
-    loadTranslation(locale).then(
+    return loadTranslation(locale).then(
       translation => {
         if (locale !== this.locale) return;
         this.translation = translation;
@@ -457,6 +463,34 @@ class Store {
   openSnackbar(message: string) {
     this.isSnackbarOpen = true;
     this.snackbarMessage = message;
+  }
+
+  // The saved state as this tab last read or saved it, which tells what other
+  // tabs have changed since, and what this tab has yet to save
+  private lastRead: StoredState;
+
+  // Takes in what other tabs saved, so that saving here does not undo it
+  private readOtherTabs() {
+    const theirs = loadStoredState(storage);
+    if (!theirs) return;
+    const merged = mergeStoredState(this.lastRead, this.storedState, theirs);
+    this.teams = merged.teams;
+    this.currentTeamId = merged.currentTeamId;
+    this.isMoreOpen = merged.isMoreOpen;
+    this.sort = merged.sort;
+    this.nameView = merged.nameView;
+    this.chosenLocale = merged.locale;
+    this.lastRead = { ...theirs, currentTeamId: merged.currentTeamId };
+  }
+
+  // A tab with nothing of its own to save leaves the saving to the tab in use:
+  // were it to save what it just read, it could undo a newer save
+  private save() {
+    this.readOtherTabs();
+    if (stableJson(this.storedState) === stableJson(this.lastRead)) return;
+    const state = JSON.parse(JSON.stringify(this.storedState)) as StoredState;
+    saveStoredState(storage, state);
+    this.lastRead = state;
   }
 
   private get storedState(): StoredState {

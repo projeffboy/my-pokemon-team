@@ -5,7 +5,7 @@ import pokedex from "@/data/pokedex";
 import questionMark from "@/images/question-mark.png";
 import altSpriteNum from "@/data/altSpriteNum";
 import localSprites from "@/images/local-sprites";
-import { useBreakpoint } from "@/app/shared/WidthContext";
+import { useBreakpoint } from "./WidthContext";
 import { spriteUrls } from "./pokemon-sprite/sprite-urls";
 
 const localSpritesMap = localSprites as Record<string, string>;

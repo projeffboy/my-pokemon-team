@@ -8,7 +8,7 @@ import {
   moveAgainstType,
   moveType as getMoveType,
 } from "@/store/shared/effectiveness";
-import PokemonIcon from "@/app/main/shared/PokemonIcon";
+import PokemonIcon from "@/app/shared/PokemonIcon";
 import { MOVE_KEYS, type PokemonType } from "@/types";
 
 const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({

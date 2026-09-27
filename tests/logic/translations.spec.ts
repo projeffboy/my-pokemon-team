@@ -103,6 +103,17 @@ test("every language has the same message keys as English", async () => {
   expect(await loadTranslation("en")).toBe(english);
 });
 
+test("every other language names a slot's inputs in its own words", async () => {
+  const properties = ["name", "move1", "move4", "item", "ability"];
+  for (const locale of LOCALES.filter(locale => locale !== "en")) {
+    const { t } = await loadTranslation(locale);
+    for (const property of properties) {
+      expect(t.team.input(1, property), locale).not.toContain(property);
+    }
+  }
+  expect(en.team.input(1, "move2")).toBe("Pokemon 1's move2");
+});
+
 test("the store loads a language on demand and keeps it in the saved state", async ({
   store,
 }) => {

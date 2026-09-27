@@ -14,7 +14,7 @@ import {
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { NameView } from "@/types";
-import PokemonIcon from "@/app/main/shared/PokemonIcon";
+import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
 const LISTBOX_PADDING = 0; // px

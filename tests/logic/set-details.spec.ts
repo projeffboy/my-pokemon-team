@@ -4,7 +4,7 @@ import {
   parseTeamText,
   serializeTeam,
   serializeTeams,
-} from "@/app/shared/team-text";
+} from "@/store/team-text";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 
@@ -133,7 +133,7 @@ Torkoal @ Heat Rock
 Ability: Drought
 - Eruption
 
-=== [gen9championsregmc] Champions ===
+=== [gen8championsregmc] Folder / Champions ===
 
 Garchomp
 `);
@@ -166,7 +166,8 @@ Garchomp
       "=== [gen9ou] Empty ===\n\n=== [gen9uu] Full ===\n\nKingdra\n",
     );
     expect(withEmpty.map(({ name }) => name)).toEqual(["Full"]);
-    expect(parseTeamsText("")).toHaveLength(1);
+    expect(parseTeamsText("")).toEqual([]);
+    expect(parseTeamsText("Not a pokemon @ Leftovers")).toEqual([]);
   });
 
   test("serializes every saved team under a header", () => {

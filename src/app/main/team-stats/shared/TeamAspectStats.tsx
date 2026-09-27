@@ -13,7 +13,7 @@ import { POKEMON_TYPES, type TeamStatType } from "@/types";
 import { useIsLgDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
-import { TYPE_COLORS } from "./type-colors";
+import { TYPE_COLORS } from "@/app/shared/type-colors";
 
 // The 18 type scores of one team stat. The heading can be hidden when a tab names the stat.
 const TeamAspectStats = observer(function TeamAspectStats({

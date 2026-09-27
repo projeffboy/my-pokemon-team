@@ -13,7 +13,12 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { Generation, SavedTeam } from "@/types";
-import { FORMATS } from "@/shared/formats";
+import {
+  CHAMPIONS_FORMAT,
+  CHAMPIONS_GENERATION,
+  FORMATS,
+  formatGeneration,
+} from "@/shared/formats";
 import {
   GENERATION_GAMES,
   GENERATIONS,
@@ -39,6 +44,20 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
   const [problems, setProblems] = useState<string[] | null>(null);
   const where = `${t.generation(generation)}${format ? ` ${format}` : ""}`;
 
+  // A check is of the generation and format it was made for
+  const changeGeneration = (generation: Generation) => {
+    setGeneration(generation);
+    if (format === CHAMPIONS_FORMAT && generation !== CHAMPIONS_GENERATION)
+      setFormat("");
+    setProblems(null);
+  };
+
+  const changeFormat = (format: string) => {
+    setFormat(format);
+    setGeneration(formatGeneration(format, generation));
+    setProblems(null);
+  };
+
   const handleSave = () => {
     store.setTeamSettings(team.id, { name: name.trim(), generation, format });
     onClose();
@@ -63,7 +82,7 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
               value={generation}
               onChange={event => {
                 const value = Number(event.target.value);
-                if (isGeneration(value)) setGeneration(value);
+                if (isGeneration(value)) changeGeneration(value);
               }}
               fullWidth
             >
@@ -77,7 +96,7 @@ const TeamSettingsForm = observer(function TeamSettingsForm({
               select
               label={t.filters.format}
               value={format}
-              onChange={event => setFormat(event.target.value)}
+              onChange={event => changeFormat(event.target.value)}
               fullWidth
             >
               <MenuItem value="">{t.all}</MenuItem>

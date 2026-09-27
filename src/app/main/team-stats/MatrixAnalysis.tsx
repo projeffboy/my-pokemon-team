@@ -19,9 +19,9 @@ import {
   formatMultiplier,
   type MatrixCell,
 } from "@/store/matrix";
-import PokemonIcon from "@/app/main/shared/PokemonIcon";
+import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import { TYPE_COLORS } from "./shared/type-colors";
+import { TYPE_COLORS } from "@/app/shared/type-colors";
 
 type MatrixKind = "defence" | "coverage";
 

@@ -1,6 +1,6 @@
 import pokedex from "@/data/pokedex";
 import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
-import { isDoublesFormat } from "@/shared/formats";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
 import { pokemonAbilities } from "@/shared/pokedex";
@@ -90,7 +90,8 @@ export function validateTeam(
     seenSpecies.add(base);
   }
 
-  if (isDoublesFormat(format)) {
+  // Smogon's doubles tiers have no Item Clause
+  if (format === CHAMPIONS_FORMAT) {
     const seenItems = new Set<string>();
     for (const { item } of members) {
       if (!item) continue;

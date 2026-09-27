@@ -53,10 +53,6 @@ export function genderOptions(pokemon: string): readonly Gender[] {
   return gender ? [gender] : ["M", "F"];
 }
 
-// Does the slot hold anything the Advanced dialog can reset?
-export const hasDetails = (member: Readonly<TeamPokemon>) =>
-  DETAIL_KEYS.some(key => member[key] !== undefined);
-
 export function clearDetails(member: TeamPokemon) {
   for (const key of DETAIL_KEYS) delete member[key];
 }

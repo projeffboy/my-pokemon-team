@@ -13,15 +13,15 @@ import DownloadIcon from "@mui/icons-material/Download";
 import TuneIcon from "@mui/icons-material/Tune";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { serializeTeamText } from "@/app/shared/team-text";
-import copyToClipboard from "@/app/main/shared/copy-to-clipboard";
+import { serializeTeam } from "@/store/team-text";
+import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import ToolbarButton from "./shared/ToolbarButton";
 
 export const copyTeamText = () => {
   const { team } = store.translation.t;
-  const text = serializeTeamText();
+  const text = serializeTeam(store.team);
   if (text === "") store.openSnackbar(team.nothingToCopy);
   else copyToClipboard(text, team.teamCopied, team.teamNotCopied);
 };

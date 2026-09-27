@@ -19,10 +19,10 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
 - `set-details.spec.ts` covers the set details in Showdown text (nickname, gender, level, shiny, tera type, EVs, nature, IVs), nicknames that are pokemon names or hold parentheses or an at sign, and backups with several teams.
 - `teams.spec.ts` checks the store's saved teams, slot tools, undo history, and that a link to the current team opens no new team.
-- `teams-storage.spec.ts` covers loading and saving the teams from localStorage, including malformed data.
+- `teams-storage.spec.ts` covers loading and saving the teams from localStorage, including malformed data, and merging in what another tab saved.
 - `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, learnset merging, viable moves, the type chart, rename reports, and the rendered file format.
 - `update-translations.spec.ts` covers the translation update's pure transforms in `scripts/update-translations/transforms.ts`: CSV parsing, species and forme names, the mega and regional templates, Hidden Power, Z-Move and Z-Crystal suffixes, abilities with a detail, duplicate names, the report, and the rendered file format.
-- `translations.spec.ts` covers the language detection, the English fallback of translated names, name sorting by species in another language, translated matrix reasons and team problems, every language having English's message keys, and the store loading a language and saving the choice.
+- `translations.spec.ts` covers the language detection, the English fallback of translated names, name sorting by species in another language, translated matrix reasons and team problems, every language having English's message keys, every language naming a slot's inputs, and the store loading a language and saving the choice.
 
 Rule tests import functions from `src/store/` and use plain team objects. They need no MobX store or reset fixture. Tests use the bundled Pokemon data and explicit expected results.
 

@@ -12,7 +12,7 @@ import TextField from "@mui/material/TextField";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { POKEMON_TYPES, type SearchFilterKey } from "@/types";
-import { FORMATS } from "@/shared/formats";
+import { FORMATS, formatGeneration } from "@/shared/formats";
 import { allAbilities } from "@/shared/names";
 import { REGIONS } from "@/shared/regions";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -109,7 +109,11 @@ const FiltersDialog = observer(function FiltersDialog() {
             select
             label={t.filters.format}
             value={store.currentTeam.format}
-            onChange={event => (store.currentTeam.format = event.target.value)}
+            onChange={event => {
+              const team = store.currentTeam;
+              team.format = event.target.value;
+              team.generation = formatGeneration(team.format, team.generation);
+            }}
             fullWidth
           >
             <MenuItem value="">{t.all}</MenuItem>

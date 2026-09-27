@@ -11,11 +11,11 @@ import {
   type Team,
   type TeamPokemon,
 } from "@/types";
-import store from "@/store";
 import {
   createEmptyTeam,
   getAutoSelectedAbility,
   getAutoSelectedItem,
+  isTeamEmpty,
 } from "@/shared/team";
 import {
   pokemonName,
@@ -37,7 +37,7 @@ import {
   TERA_TYPES,
 } from "@/shared/set-details";
 import { parseShowdownFormatId, showdownFormatId } from "@/shared/formats";
-import { canItLearn } from "@/store/learnsets";
+import { canItLearn } from "./learnsets";
 
 const statsLine = (
   stats: Partial<BaseStats> | undefined,
@@ -88,11 +88,6 @@ export const serializeTeam = (team: ReadonlyTeam) =>
   team
     .map(member => (member.name ? `${serializeMember(member)}\n\n` : ""))
     .join("");
-
-// Converts the store's current team into Pokemon Showdown team text format
-export function serializeTeamText(): string {
-  return serializeTeam(store.team);
-}
 
 // Every team, each under a header like Showdown's backup: === [gen9ou] Team name ===
 export const serializeTeams = (teams: readonly SavedTeam[]) =>
@@ -259,8 +254,8 @@ export interface ParsedTeam {
   team: Team;
 }
 
-// Splits a Showdown backup with `=== [gen9ou] Name ===` headers into its teams;
-// text without headers is one team
+// Splits a Showdown backup with `=== [gen9ou] Folder/Name ===` headers into its
+// teams that have pokemon; text without headers is one team
 export function parseTeamsText(text: string): ParsedTeam[] {
   const chunks: { header?: RegExpExecArray; lines: string[] }[] = [];
   for (const line of text.split("\n")) {
@@ -270,10 +265,9 @@ export function parseTeamsText(text: string): ParsedTeam[] {
     else chunks.push({ lines: [line] });
   }
   const teams = chunks.map(({ header, lines }) => ({
-    name: (header?.[2] ?? "").split("/").pop() ?? "",
+    name: (header?.[2] ?? "").split("/").pop()?.trim() ?? "",
     ...parseShowdownFormatId(header?.[1] ?? ""),
     team: parseTeamText(lines.join("\n")),
   }));
-  const withPokemon = teams.filter(({ team }) => team.some(({ name }) => name));
-  return withPokemon.length ? withPokemon : teams.slice(0, 1);
+  return teams.filter(({ team }) => !isTeamEmpty(team));
 }

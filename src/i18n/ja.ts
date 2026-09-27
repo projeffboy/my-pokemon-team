@@ -2,9 +2,19 @@ import type { Messages } from "./en";
 
 const generation = (generation: number) => `第${generation}世代`;
 
+// A slot's inputs, for their accessible names
+const inputNames: Record<string, string> = {
+  name: "名前",
+  move1: "技1",
+  move2: "技2",
+  move3: "技3",
+  move4: "技4",
+  item: "持ち物",
+  ability: "特性",
+};
+
 const ja: Messages = {
   // The header
-  siteName: "My Pokemon Team",
   generation,
   generationSelect: "世代",
   championsGeneration: "第9世代 · Champions",
@@ -97,8 +107,8 @@ const ja: Messages = {
     move: "技",
     item: "持ち物",
     ability: "特性",
-    // The accessible name of each input, e.g. "ポケモン1のmove2"
-    input: (slot: number, property: string) => `ポケモン${slot}の${property}`,
+    input: (slot: number, property: string) =>
+      `ポケモン${slot}の${inputNames[property] ?? property}`,
     itemIcon: (item: string) => `${item}のアイコン`,
     nothingFound: "見つかりません",
     selectPokemonFirst: "（ポケモンが選択されていません）",
@@ -356,6 +366,7 @@ const ja: Messages = {
     imported: "チームをインポートしました",
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",
+    nothingFound: "そのテキストにポケモンが見つかりませんでした。",
   },
   deleteDialog: {
     title: (team: string) => `${team}を削除しますか？`,

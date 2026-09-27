@@ -4,7 +4,7 @@ import store from "@/store";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import PokemonIcon from "@/app/main/shared/PokemonIcon";
+import PokemonIcon from "@/app/shared/PokemonIcon";
 import type { PokemonType } from "@/types";
 
 // Keyed by the type defence score, which is negative when the type is super effective

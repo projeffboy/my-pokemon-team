@@ -2,7 +2,7 @@
 import store from "@/store";
 import type { ReadonlyTeam } from "@/types";
 import { toBase64Url, fromBase64Url } from "./base64url";
-import { parseTeamText, serializeTeam, serializeTeamText } from "./team-text";
+import { parseTeamText, serializeTeam } from "@/store/team-text";
 
 // Limit applies to the raw (still-encoded) URL parameter, before any decoding is attempted
 export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
@@ -10,7 +10,7 @@ export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
 // Returns the `team` URL parameter value for the store's current team, or "" if the team is empty
 export function encodeTeamForUrl(): string {
   if (store.isTeamEmpty) return "";
-  return toBase64Url(serializeTeamText());
+  return toBase64Url(serializeTeam(store.team));
 }
 
 // The share link of any team, as the address bar shows the current one

@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -34,9 +34,10 @@ import {
   setStat,
   TERA_TYPES,
 } from "@/shared/set-details";
-import PokemonIcon from "@/app/main/shared/PokemonIcon";
+import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useBreakpoint } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import NumberField from "./advanced-dialog/NumberField";
 
 const clamp = (value: number, max: number) =>
   Math.min(max, Math.max(0, Math.round(value)));
@@ -55,7 +56,6 @@ const AdvancedForm = observer(function AdvancedForm({
   const name = names.pokemon(member.name);
   const genders = genderOptions(member.name);
   const total = evTotal(member.evs);
-  const [levelText, setLevelText] = useState<string>();
   const natureLabel = (id: string) => {
     const { plus, minus } = natures[id] ?? {};
     return t.natureLabel(
@@ -103,21 +103,17 @@ const AdvancedForm = observer(function AdvancedForm({
             fullWidth
           />
           <Stack direction="row" spacing={1.5}>
-            <TextField
+            <NumberField
               label={t.advanced.level}
-              type="number"
-              // The text being typed, which may be empty, until editing ends
-              value={levelText ?? member.level ?? DEFAULT_LEVEL}
-              onChange={event => {
-                setLevelText(event.target.value);
-                const level = clamp(Number(event.target.value), MAX_LEVEL);
+              value={member.level ?? DEFAULT_LEVEL}
+              onChange={(value = DEFAULT_LEVEL) => {
+                const level = clamp(value, MAX_LEVEL);
                 setDetail(
                   member,
                   "level",
                   level === DEFAULT_LEVEL || level < 1 ? undefined : level,
                 );
               }}
-              onBlur={() => setLevelText(undefined)}
               slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
               sx={{ width: 90, flexShrink: 0 }}
             />
@@ -248,19 +244,13 @@ const AdvancedForm = observer(function AdvancedForm({
               }}
             >
               {STAT_KEYS.map(stat => (
-                <TextField
+                <NumberField
                   key={stat}
                   size="small"
-                  type="number"
                   label={t.statNames[stat]}
                   value={getIv(member.ivs, stat)}
-                  onChange={event =>
-                    setStat(
-                      member,
-                      "ivs",
-                      stat,
-                      clamp(Number(event.target.value), MAX_IV),
-                    )
+                  onChange={(value = MAX_IV) =>
+                    setStat(member, "ivs", stat, clamp(value, MAX_IV))
                   }
                   slotProps={{
                     htmlInput: {

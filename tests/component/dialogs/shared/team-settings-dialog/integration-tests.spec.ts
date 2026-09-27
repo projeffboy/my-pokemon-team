@@ -27,7 +27,9 @@ test.describe("Team Settings Dialog - Integration Tests", () => {
     );
     await expect(dialog.getByRole("alert")).toContainText("Species Clause");
 
+    // The check was of OU
     await selectDialogOption(page, "Format", "Uber");
+    await expect(dialog.getByRole("alert")).toBeHidden();
     await dialog
       .getByRole("button", { name: "Check team for Gen 9 Uber" })
       .click();
@@ -42,5 +44,21 @@ test.describe("Team Settings Dialog - Integration Tests", () => {
     await expect(
       dialog.getByRole("combobox", { name: "Format" }),
     ).toContainText("Uber");
+  });
+
+  test("Pokemon Champions is a Gen 9 format", async ({ page }) => {
+    await openManageTeamMenu(page);
+    await clickMenuItem(page, "Name and Format");
+    const dialog = page.getByRole("dialog", { name: "Name and Format" });
+    const generation = dialog.getByRole("combobox", { name: "Generation" });
+    const format = dialog.getByRole("combobox", { name: "Format" });
+
+    await selectDialogOption(page, "Generation", "Gen 5 (BW / B2W2)");
+    await selectDialogOption(page, "Format", "Pokemon Champions (M-C)");
+    await expect(generation).toContainText("Gen 9");
+
+    await generation.click();
+    await page.getByRole("option", { name: "Gen 5 (BW / B2W2)" }).click();
+    await expect(format).not.toContainText("Champions");
   });
 });

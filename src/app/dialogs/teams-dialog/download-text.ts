@@ -5,5 +5,6 @@ export default function downloadText(filename: string, text: string) {
   link.href = url;
   link.download = filename;
   link.click();
-  URL.revokeObjectURL(url);
+  // Safari reads the file after the click returns
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

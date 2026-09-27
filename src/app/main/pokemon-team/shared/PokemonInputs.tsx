@@ -14,7 +14,7 @@ import store from "@/store";
 import { useIsMdDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import PokemonInput from "./pokemon-inputs/PokemonInput";
-import PokemonSprite from "./PokemonSprite";
+import PokemonSprite from "@/app/shared/PokemonSprite";
 import { MOVE_KEYS } from "@/types";
 
 const SLOT_NAV_CLASS = "slot-nav";

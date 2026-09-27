@@ -228,12 +228,7 @@ async function reportNewSprites(
   iconIndexes: Record<string, number>,
 ) {
   const { spriteUrls } = await importTypeScript(
-    await read(
-      path.join(
-        root,
-        "src/app/main/pokemon-team/shared/pokemon-sprite/sprite-urls.ts",
-      ),
-    ),
+    await read(path.join(root, "src/app/shared/pokemon-sprite/sprite-urls.ts")),
   );
   const localSprites = await fs.readdir(
     path.join(root, "src/images/local-sprites"),

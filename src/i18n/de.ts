@@ -6,9 +6,19 @@ const generation = (generation: number) => `Gen. ${generation}`;
 const times = (multiplier: number) =>
   `${String(multiplier).replace(".", ",")}x`;
 
+// A slot's inputs, for their accessible names
+const inputNames: Record<string, string> = {
+  name: "Name",
+  move1: "Attacke 1",
+  move2: "Attacke 2",
+  move3: "Attacke 3",
+  move4: "Attacke 4",
+  item: "Item",
+  ability: "Fähigkeit",
+};
+
 const de: Messages = {
   // The header
-  siteName: "My Pokemon Team",
   generation,
   generationSelect: "Generation",
   championsGeneration: "Gen. 9 · Champions",
@@ -102,9 +112,8 @@ const de: Messages = {
     move: "Attacke",
     item: "Item",
     ability: "Fähigkeit",
-    // The accessible name of each input, e.g. "move2 von Pokémon 1"
     input: (slot: number, property: string) =>
-      `${property} von Pokémon ${slot}`,
+      `${inputNames[property] ?? property} von Pokémon ${slot}`,
     itemIcon: (item: string) => `Symbol für ${item}`,
     nothingFound: "Nichts gefunden",
     selectPokemonFirst: "(du hast noch kein Pokémon ausgewählt)",
@@ -362,6 +371,7 @@ const de: Messages = {
     imported: "Team importiert",
     importedMany: (count: number) => `${count} Teams importiert`,
     noChanges: "Keine Änderungen vorgenommen.",
+    nothingFound: "In diesem Text wurde kein Pokémon gefunden.",
   },
   deleteDialog: {
     title: (team: string) => `${team} löschen?`,

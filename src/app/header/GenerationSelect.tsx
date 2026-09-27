@@ -3,7 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, CHAMPIONS_GENERATION } from "@/shared/formats";
 import {
   GENERATION_GAMES,
   GENERATIONS,
@@ -38,7 +38,7 @@ const GenerationSelect = observer(function GenerationSelect() {
   const handleChange = (value: string) => {
     const team = store.currentTeam;
     if (value === CHAMPIONS) {
-      team.generation = 9;
+      team.generation = CHAMPIONS_GENERATION;
       team.format = CHAMPIONS_FORMAT;
       return;
     }

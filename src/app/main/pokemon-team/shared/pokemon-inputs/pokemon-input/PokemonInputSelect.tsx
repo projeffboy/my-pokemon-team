@@ -13,7 +13,7 @@ import VirtualizedListbox, {
   GRID_COLUMNS,
   VirtualizedListboxContext,
 } from "./pokemon-input-select/VirtualizedListbox";
-import PokemonIcon from "@/app/main/shared/PokemonIcon";
+import PokemonIcon from "@/app/shared/PokemonIcon";
 import { englishNames } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
 

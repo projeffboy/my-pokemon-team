@@ -67,6 +67,35 @@ test.describe("Teams Dialog - Integration Tests", () => {
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Snorlax");
   });
 
+  test("a team made in another tab is kept when this tab saves", async ({
+    page,
+    context,
+  }) => {
+    await selectPokemon(page, "Snorlax");
+    const otherTab = await context.newPage();
+    await otherTab.goto("/", { waitUntil: "domcontentloaded" });
+    await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
+      "Snorlax",
+    );
+    await openTeams(otherTab);
+    await otherTab.getByRole("button", { name: "New Team" }).click();
+    await selectPokemon(otherTab, "Lapras");
+
+    await openTeams(page);
+    const teams = page.getByRole("list", { name: "Saved teams" });
+    await expect(teams.getByRole("button", { name: /^Load Team/ })).toHaveCount(
+      2,
+    );
+    await teams.getByRole("button", { name: "Load Team 1" }).click();
+    await expect(page.getByRole("dialog")).toBeHidden();
+    await selectPokemon(page, "Mamoswine");
+
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await openTeams(page);
+    await teams.getByRole("button", { name: "Load Team 2" }).click();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lapras");
+  });
+
   test("a random team fills every slot, and Export All downloads every team", async ({
     page,
   }) => {

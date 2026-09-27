@@ -11,7 +11,7 @@ import { isLocale, type Locale } from "@/i18n/locales";
 import { createEmptyTeam, createSavedTeam } from "@/shared/team";
 import { DEFAULT_SORT, SORT_KEYS } from "./sorting";
 
-const STORAGE_KEY = "mypokemonteam";
+export const STORAGE_KEY = "mypokemonteam";
 
 export interface StoredState {
   teams: SavedTeam[];
@@ -109,6 +109,54 @@ export function loadStoredState(
     sort: sanitizeSort(raw.sort),
     nameView: raw.nameView === "grid" ? "grid" : "list",
     ...(isLocale(raw.locale) && { locale: raw.locale }),
+  };
+}
+
+// Set details are stored in the order they were edited, so keys are sorted
+// for the same value to give the same text
+const sortKeys = (_key: string, value: unknown) =>
+  typeof value === "object" && value !== null && !Array.isArray(value) ?
+    Object.fromEntries(
+      Object.entries(value).sort(([a], [b]) => (a < b ? -1 : 1)),
+    )
+  : value;
+
+export const stableJson = (value: unknown) => JSON.stringify(value, sortKeys);
+
+// This tab's state with what other tabs have saved since `base`, the saved
+// state as this tab last read or saved it. What this tab changed too stays as
+// it is here, and so does the team it is on.
+export function mergeStoredState(
+  base: StoredState,
+  mine: StoredState,
+  theirs: StoredState,
+): StoredState {
+  const pick = <T>(base: T, mine: T, theirs: T) =>
+    (
+      stableJson(mine) === stableJson(base) &&
+      stableJson(mine) !== stableJson(theirs)
+    ) ?
+      theirs
+    : mine;
+  const find = ({ teams }: StoredState, id: string) =>
+    teams.find(team => team.id === id);
+  const ids = new Set([...mine.teams, ...theirs.teams].map(({ id }) => id));
+  const merged = [...ids]
+    .map(id => pick(find(base, id), find(mine, id), find(theirs, id)))
+    .filter(team => team !== undefined);
+  const teams = merged.length ? merged : mine.teams;
+  const currentTeam =
+    [mine, theirs]
+      .map(state => find({ ...state, teams }, state.currentTeamId))
+      .find(team => team) ?? teams[0];
+  const locale = pick(base.locale, mine.locale, theirs.locale);
+  return {
+    teams,
+    currentTeamId: currentTeam?.id ?? mine.currentTeamId,
+    isMoreOpen: pick(base.isMoreOpen, mine.isMoreOpen, theirs.isMoreOpen),
+    sort: pick(base.sort, mine.sort, theirs.sort),
+    nameView: pick(base.nameView, mine.nameView, theirs.nameView),
+    ...(locale && { locale }),
   };
 }
 

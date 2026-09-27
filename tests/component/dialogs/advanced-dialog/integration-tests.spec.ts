@@ -49,4 +49,27 @@ test.describe("Advanced Dialog - Integration Tests", () => {
       .poll(() => getTeamTextFromUrl(page))
       .not.toContain("Level: 50");
   });
+
+  test("an IV can be deleted and typed again, and is 31 when left empty", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Stakataka");
+    await openAdvanced(page);
+    const dialog = page.getByRole("dialog", { name: "Advanced" });
+    const speed = dialog.getByLabel("Spe IVs");
+
+    await speed.focus();
+    await speed.press("End");
+    await speed.press("Backspace");
+    await speed.press("Backspace");
+    await expect(speed).toHaveValue("");
+    await speed.pressSequentially("15");
+    await expect(speed).toHaveValue("15");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs: 15 Spe");
+
+    await speed.fill("");
+    await dialog.getByLabel("Nickname").focus();
+    await expect(speed).toHaveValue("31");
+    await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("IVs:");
+  });
 });

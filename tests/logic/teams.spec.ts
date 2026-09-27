@@ -4,7 +4,7 @@ import { completeLearnset } from "@/store/learnsets";
 import { pokemonTypes } from "@/shared/pokedex";
 import { setDetail, setStat } from "@/shared/set-details";
 import { sanitizeTeam } from "@/store/teams-storage";
-import { parseTeamText, serializeTeam } from "@/app/shared/team-text";
+import { parseTeamText, serializeTeam } from "@/store/team-text";
 
 const settle = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -66,9 +66,12 @@ test.describe("saved teams", () => {
     expect(store.isTeamEmpty).toBe(true);
   });
 
-  test("opens a linked team in the empty current team, a matching saved team, or a new team", ({
+  test("opens a linked team in a matching saved team, the empty current team, or a new team", ({
     store,
   }) => {
+    store.openTeamFromLink(createTeam());
+    expect(store.teams).toHaveLength(1);
+
     const linked = createTeam({ name: "milotic", move1: "scald" });
     store.openTeamFromLink(linked);
     expect(store.teams).toHaveLength(1);
@@ -85,6 +88,12 @@ test.describe("saved teams", () => {
     store.openTeamFromLink(createTeam({ name: "milotic", move1: "scald" }));
     expect(store.teams).toHaveLength(2);
     expect(store.currentTeamId).toBe(first.id);
+
+    // A saved team is opened even while the current team is empty
+    store.addTeam();
+    store.openTeamFromLink(createTeam({ name: "milotic", move1: "scald" }));
+    expect(store.currentTeamId).toBe(first.id);
+    expect(store.teams.filter(({ team }) => team[0]?.name)).toHaveLength(2);
   });
 });
 
@@ -140,6 +149,20 @@ test.describe("slot tools", () => {
     store.openTeamFromLink(parseTeamText(serializeTeam(store.team)));
     expect(store.teams).toHaveLength(1);
     expect(store.team[0]).toMatchObject({ name: "gliscor", nickname: "Batty" });
+  });
+
+  test("a link to the current team opens no new team when the team holds what the text leaves out", ({
+    store,
+  }) => {
+    // An empty slot before a pokemon, a gender the text does not write, and a
+    // nickname that ends in a space
+    store.selectPokemon(1, "magnezone");
+    setDetail(store.team[1], "gender", "N");
+    setDetail(store.team[1], "nickname", "Magnet ");
+    store.team = sanitizeTeam(JSON.parse(JSON.stringify(store.team)));
+    store.openTeamFromLink(parseTeamText(serializeTeam(store.team)));
+    expect(store.teams).toHaveLength(1);
+    expect(store.teamPokemon.slice(0, 2)).toEqual(["", "magnezone"]);
   });
 
   test("randomizing the whole team repeats nobody when six options remain", ({
@@ -217,6 +240,20 @@ test.describe("undo and redo", () => {
     expect(store.canRedo).toBe(false);
     store.undo();
     expect(store.team[0].name).toBe("");
+  });
+
+  test("undoing right after an edit undoes that edit alone", async ({
+    store,
+  }) => {
+    store.team[0].name = "milotic";
+    await settle();
+    store.team[1].name = "kingdra";
+    await settle();
+    store.team[2].name = "gliscor";
+    store.undo();
+    expect(store.teamPokemon.slice(0, 3)).toEqual(["milotic", "kingdra", ""]);
+    store.redo();
+    expect(store.team[2].name).toBe("gliscor");
   });
 
   test("switching teams starts a fresh history", async ({ store }) => {

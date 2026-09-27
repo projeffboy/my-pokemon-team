@@ -136,4 +136,22 @@ Ability: Drizzle
       "Doubles OU",
     );
   });
+
+  test("Import team adds nothing when the text names no pokemon", async ({
+    page,
+  }) => {
+    await page.getByRole("button", { name: "Cancel" }).click();
+    await openManageTeamMenu(page);
+    await clickMenuItem(page, "Import team");
+    const dialog = page.getByRole("dialog", { name: "Import Team" });
+
+    await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");
+    await dialog.getByRole("button", { name: "Import" }).click();
+    await expect(dialog).toContainText("No pokemon found in that text.");
+
+    await dialog.getByRole("button", { name: "Cancel" }).click();
+    await openManageTeamMenu(page);
+    await clickMenuItem(page, "Name and Format");
+    await expect(page.getByLabel("Team name")).toHaveValue("Team 1");
+  });
 });

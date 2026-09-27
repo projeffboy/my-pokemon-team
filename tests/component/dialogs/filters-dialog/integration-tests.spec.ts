@@ -97,7 +97,11 @@ test.describe("Filters Integration Tests", () => {
   });
 
   test("Pokemon Champions Format Filter", async ({ page }) => {
+    const generation = page.getByRole("combobox", { name: "Generation" });
+    await generation.click();
+    await page.getByRole("option", { name: /^Gen 4/ }).click();
     await selectFilterOption(page, "Format", "Pokemon Champions (M-C)");
+    await expect(generation).toContainText("Gen 9 (Champions)");
 
     // Eligible: Kommo-o, Glimmora-Mega
     await checkPokemonSelectable(page, "Kommo-o");

@@ -18,8 +18,18 @@ const josa = (word: string, withBatchim: string, without: string) => {
   return word + particle;
 };
 
+// A slot's inputs, for their accessible names
+const inputNames: Record<string, string> = {
+  name: "이름",
+  move1: "기술 1",
+  move2: "기술 2",
+  move3: "기술 3",
+  move4: "기술 4",
+  item: "지닌 물건",
+  ability: "특성",
+};
+
 const ko: Messages = {
-  siteName: "My Pokemon Team",
   generation,
   generationSelect: "세대",
   championsGeneration: "9세대 · Champions",
@@ -111,7 +121,8 @@ const ko: Messages = {
     move: "기술",
     item: "지닌 물건",
     ability: "특성",
-    input: (slot: number, property: string) => `포켓몬 ${slot}의 ${property}`,
+    input: (slot: number, property: string) =>
+      `포켓몬 ${slot}의 ${inputNames[property] ?? property}`,
     itemIcon: (item: string) => `${item} 아이콘`,
     nothingFound: "검색 결과 없음",
     selectPokemonFirst: "(포켓몬을 먼저 선택하세요)",
@@ -366,6 +377,7 @@ const ko: Messages = {
     imported: "팀을 가져왔습니다",
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
     noChanges: "변경된 내용이 없습니다.",
+    nothingFound: "텍스트에서 포켓몬을 찾지 못했습니다.",
   },
   deleteDialog: {
     title: (team: string) => `${josa(team, "을", "를")} 삭제할까요?`,

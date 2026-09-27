@@ -6,7 +6,7 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react-lite";
 import PokemonInputs from "./shared/PokemonInputs";
-import PokemonSprite from "./shared/PokemonSprite";
+import PokemonSprite from "@/app/shared/PokemonSprite";
 import TeamBar from "./shared/TeamBar";
 import getPokemonLabel from "./shared/get-pokemon-label";
 import { useTranslation } from "@/app/shared/TranslationContext";

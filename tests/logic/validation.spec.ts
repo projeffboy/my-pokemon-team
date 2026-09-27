@@ -57,7 +57,7 @@ test("reports EVs, levels, and tera types that the games do not allow", () => {
   ]);
 });
 
-test("applies Species Clause everywhere and Item Clause in doubles", () => {
+test("applies Species Clause everywhere and Item Clause in Champions", () => {
   const team = createTeam(
     { name: "milotic", item: "leftovers" },
     { name: "kingdra", item: "leftovers" },
@@ -68,8 +68,10 @@ test("applies Species Clause everywhere and Item Clause in doubles", () => {
   ]);
   expect(validateTeam(team, 9, "Doubles OU")).toEqual([
     "Two pokemon are Kingdra (Species Clause).",
-    "Two pokemon hold Leftovers (Item Clause).",
   ]);
+  expect(validateTeam(team, 9, "Pokemon Champions (M-C)")).toContain(
+    "Two pokemon hold Leftovers (Item Clause).",
+  );
   expect(
     validateTeam(
       createTeam(
