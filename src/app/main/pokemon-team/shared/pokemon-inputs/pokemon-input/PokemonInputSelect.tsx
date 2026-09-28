@@ -128,7 +128,7 @@ export default function PokemonInputSelect({
             (
               pokemonProperty === "item" &&
               selectedOption &&
-              params.inputProps.value === selectedOption.label
+              params.slotProps.htmlInput.value === selectedOption.label
             ) ?
               <Box
                 component="span"
@@ -153,18 +153,19 @@ export default function PokemonInputSelect({
                 },
               }}
               slotProps={{
+                ...params.slotProps,
                 input: {
-                  ...params.InputProps,
+                  ...params.slotProps.input,
                   endAdornment:
                     itemIcon ?
                       <>
                         {itemIcon}
-                        {params.InputProps.endAdornment}
+                        {params.slotProps.input.endAdornment}
                       </>
-                    : params.InputProps.endAdornment,
+                    : params.slotProps.input.endAdornment,
                 },
                 htmlInput: {
-                  ...params.inputProps,
+                  ...params.slotProps.htmlInput,
                   name: id,
                   "aria-label": `Pokemon ${teamIndex + 1}'s ${pokemonProperty}`,
                 },

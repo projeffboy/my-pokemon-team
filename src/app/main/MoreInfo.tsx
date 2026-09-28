@@ -67,7 +67,7 @@ export default function MoreInfo() {
             role="tabpanel"
             hidden={tabIndex !== index}
             container
-            justifyContent="center"
+            sx={{ justifyContent: "center" }}
           >
             {tabIndex === index && <Content />}
           </Grid>
