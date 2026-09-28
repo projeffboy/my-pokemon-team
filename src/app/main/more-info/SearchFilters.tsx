@@ -83,8 +83,8 @@ const SearchFilters = observer(function SearchFilters() {
           <Grid
             key={inputLabel}
             container
-            justifyContent="center"
             size={{ xs: 6, lg: 3 }}
+            sx={{ justifyContent: "center" }}
           >
             <FormControl
               variant="standard"
