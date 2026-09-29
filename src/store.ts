@@ -1,7 +1,7 @@
 import {
   makeAutoObservable,
   configure,
-  observable,
+  observableRef,
   reaction,
   toJS,
 } from "mobx";
@@ -83,7 +83,7 @@ class Store {
       lastSnapshot: false,
       lastRead: false,
       translationReady: false,
-      translation: observable.ref,
+      translation: observableRef,
     });
 
     learnsetsReady.then(
