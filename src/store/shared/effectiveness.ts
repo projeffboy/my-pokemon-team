@@ -1,25 +1,27 @@
 import type { PokemonType } from "@/types";
-import pokedex from "@/data/pokedex";
 import moves from "@/data/moves";
-import typechart from "@/data/typechart";
+import { pokemonTypes } from "@/shared/pokedex";
+import { moveTypeIn, typechartIn } from "@/shared/generation-data";
+import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType } from "@/types";
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
+// The generation decides the pokemon's types and the type chart.
 export function typeAgainstPokemon(
   type: PokemonType,
   pokemon: string,
   pokemonAbility?: string,
   item?: string,
+  generation = LATEST_GENERATION,
 ) {
-  const pokemonTypes = pokedex[pokemon]?.types ?? [];
-  const [type1, type2] = pokemonTypes;
-  const type1Resistance =
-    type1 && isPokemonType(type1) ? typechart[type1][type] : 0;
+  const typechart = typechartIn(generation);
+  const [type1, type2] = pokemonTypes(pokemon, generation);
+  const type1Resistance = type1 ? (typechart[type1]?.[type] ?? 0) : 0;
 
   let effectiveness = type1Resistance;
 
   if (type2) {
-    const type2Resistance = isPokemonType(type2) ? typechart[type2][type] : 0;
+    const type2Resistance = typechart[type2]?.[type] ?? 0;
 
     if (type1Resistance === 2 || type2Resistance === 2) {
       effectiveness = 3;
@@ -127,8 +129,13 @@ export function typeAgainstPokemon(
 
 // Tells you the move's type based on the pokemon using it and its ability
 // E.g. Arceus-Bug using Judgment or Aerilate Mega-Pinsir using Return.
-export function moveType(move: string, pokemon: string, ability?: string) {
-  const rawType = moves[move]?.type;
+export function moveType(
+  move: string,
+  pokemon: string,
+  ability?: string,
+  generation = LATEST_GENERATION,
+) {
+  const rawType = moveTypeIn(move, generation);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
 
@@ -148,11 +155,9 @@ export function moveType(move: string, pokemon: string, ability?: string) {
   } else if (ability === "Normalize") {
     moveType = "Normal";
   } else if (move === "judgment") {
-    const pokemonProperties = pokedex[pokemon];
-    moveType = pokemonProperties?.types?.find(isPokemonType) ?? moveType;
+    moveType = pokemonTypes(pokemon, generation)[0] ?? moveType;
   } else if (move === "ivycudgel") {
-    const pokemonProperties = pokedex[pokemon];
-    moveType = pokemonProperties?.types?.findLast(isPokemonType) ?? moveType;
+    moveType = pokemonTypes(pokemon, generation).at(-1) ?? moveType;
   } else if (move === "technoblast") {
     // For Genesect
     switch (pokemon) {
@@ -203,17 +208,17 @@ export function moveAgainstType(
   typeAgainst: PokemonType,
   pokemon: string,
   ability?: string,
+  generation = LATEST_GENERATION,
 ) {
-  const attackType = moveType(move, pokemon, ability);
+  const attackType = moveType(move, pokemon, ability, generation);
+  const defender = typechartIn(generation)[typeAgainst];
 
   if (move === "freezedry" && typeAgainst === "Water") {
     return -1;
   } else if (move === "flyingpress") {
     // since flying press is part flying and fighting
-    return typechart[typeAgainst].Flying + typechart[typeAgainst].Fighting;
+    return (defender?.Flying ?? 0) + (defender?.Fighting ?? 0);
   } else if (isMoveStrongEnough(move)) {
-    return attackType ?
-        (typechart[typeAgainst]?.[attackType] ?? undefined)
-      : undefined;
+    return attackType ? defender?.[attackType] : undefined;
   }
 }

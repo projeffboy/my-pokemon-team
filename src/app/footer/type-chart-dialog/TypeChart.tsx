@@ -7,13 +7,13 @@ import Typography from "@mui/material/Typography";
 import TypeChartPng from "@/images/type-charts/type-chart.webp";
 import TypeChartListPng from "@/images/type-charts/type-chart-list.webp";
 import TypeChartInfographicPng from "@/images/type-charts/type-chart-infographic.webp";
-import { useBreakpoint } from "@/app/shared/WidthContext";
+import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
 export default function TypeChart() {
   const { t } = useTranslation();
-  const width = useBreakpoint();
-  const [value, setValue] = useState(() => (width === "xs" ? 1 : 0));
+  const isSmDown = useIsSmDown();
+  const [value, setValue] = useState(() => (isSmDown ? 1 : 0));
   const charts = [
     { label: t.typeChart.table, alt: t.typeChart.tableAlt, src: TypeChartPng },
     {
@@ -53,7 +53,7 @@ export default function TypeChart() {
         <Typography component="div" sx={{ p: 3 }}>
           {chart.caption && (
             <Typography
-              variant={width === "xs" ? "caption" : "h5"}
+              variant={isSmDown ? "caption" : "h5"}
               sx={{ pb: 2.5, textAlign: "center" }}
             >
               {chart.caption}

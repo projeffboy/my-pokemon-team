@@ -89,6 +89,14 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
+    // Matches the rewrite in vercel.json, which the feedback screenshot uses
+    proxy: {
+      "/showdown-sprites": {
+        target: "https://play.pokemonshowdown.com",
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/showdown-sprites/, "/sprites"),
+      },
+    },
   },
   build: {
     rollupOptions: {
@@ -100,6 +108,8 @@ export default defineConfig({
           if (id.includes("/src/data/learnsets.json")) return;
           if (id.includes("/src/data/translations/")) return;
           if (id.includes("/src/data/")) return "data";
+          // Only sending feedback loads it
+          if (id.includes("/node_modules/modern-screenshot/")) return;
           if (id.includes("/node_modules/")) return "vendor";
         },
       },

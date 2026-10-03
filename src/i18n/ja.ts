@@ -19,32 +19,28 @@ const ja: Messages = {
   generationSelect: "世代",
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
-  championsGame: "Pokemon Champions",
-  generationGames: {
-    9: "スカーレット・バイオレット · Pokémon LEGENDS Z-A",
-    8: "ソード・シールド · ブリリアントダイヤモンド・シャイニングパール · LEGENDS アルセウス",
-    7: "サン・ムーン · ウルトラサン・ウルトラムーン · Let's Go",
-    6: "X・Y · オメガルビー・アルファサファイア",
-    5: "ブラック・ホワイト · ブラック2・ホワイト2",
-    4: "ダイヤモンド・パール・プラチナ · ハートゴールド・ソウルシルバー",
-    3: "ルビー・サファイア・エメラルド · ファイアレッド・リーフグリーン",
-    2: "金・銀・クリスタル",
-    1: "赤・緑・青・ピカチュウ",
-  } as Record<number, string>,
   language: "言語",
   languageFailed: "言語を読み込めませんでした。もう一度お試しください。",
   feedback: {
     button: "フィードバックを送る",
     title: "フィードバックを送る",
     description:
-      "バグを見つけましたか？提案がありますか？送信するとメールアプリが開き、{email}宛てのメッセージが作成されます。問題を再現できるように、チームのリンクを添付してください。",
+      "バグを見つけた、またはアイデアがありますか？お知らせください。",
     label: "フィードバック",
     placeholder: "例: メガニウムがマジカルシャインを覚えられない",
     attachLink: "チームのリンクを添付する",
-    subject: "My Pokemon Team feedback",
-    myTeam: "マイチーム:",
+    attachScreenshot: "ページのスクリーンショットを添付する",
+    addImage: "画像を追加",
+    imageUnreadable:
+      "この画像は読み込めませんでした。PNG または JPEG をお試しください。",
+    imagesTooLarge: "画像の合計サイズが大きすぎます。先に1枚削除してください。",
+    email: "メールアドレス（任意）",
+    emailHelper: "返信が必要な場合のみ",
     caption: "意見",
     send: "送信",
+    sent: "ありがとうございます！フィードバックを送信しました。",
+    failed:
+      "送信できませんでした。もう一度お試しいただくか、{email} までメールしてください。",
   },
 
   // Buttons shared by several dialogs
@@ -63,12 +59,12 @@ const ja: Messages = {
   // The team column
   team: {
     teams: "チーム一覧",
-    randomize: "ランダム編成",
-    randomized: "ランダム編成しました",
-    shareTeam: "チームを共有",
+    randomizedTeam: "ランダム編成しました",
+    randomizedPokemon: "ポケモンをランダムに選びました",
+    shareTeam: "共有",
     shareTeamLink: "ポケモンチームのリンクを共有",
     teamActions: "チームの操作",
-    manageTeam: "チームを管理",
+    manageTeam: "管理",
     manageTeamMenu: "チームの管理",
     nameAndFormat: "名前とフォーマット",
     duplicate: "複製",
@@ -101,8 +97,8 @@ const ja: Messages = {
     advanced: "詳細設定",
     advancedFor: (slot: number) => `スロット${slot}の詳細設定`,
     about: (pokemon: string) => `${pokemon}について`,
-    previousSlot: "前のスロットへ移動",
-    nextSlot: "次のスロットへ移動",
+    dragHint: "長押しドラッグで並べ替え",
+    moveToSlot: (pokemon: string) => `${pokemon}を別のスロットへ移動`,
     name: "名前",
     move: "技",
     item: "持ち物",
@@ -128,14 +124,12 @@ const ja: Messages = {
   },
 
   // The undo and redo buttons
-  history: "履歴",
   undo: "元に戻す",
   redo: "やり直す",
 
   // The analysis panel
   stats: {
     teamStats: "チーム分析",
-    teamStatsAndChecklist: "チーム分析とチェックリスト",
     teamAnalysis: "チームの分析",
     teamDefence: "チームの耐性",
     teamTypeCoverage: "チームの攻撃範囲",
@@ -143,9 +137,8 @@ const ja: Messages = {
     matrixAnalysis: "マトリックス分析",
     defence: "耐性",
     coverage: "攻撃範囲",
-    teamStat: "チーム分析の項目",
-    backToTeamStats: "チーム分析に戻る",
-    moreAnalyses: "その他の分析",
+    checklist: "チェック",
+    matrix: "マトリックス",
     score: (type: string, score: string) => `${type}のスコア: ${score}`,
     selectPokemonFirst: "まずポケモンを選んでください。",
     typeDoes: "{type}タイプの技は…",
@@ -188,13 +181,17 @@ const ja: Messages = {
     coverageDescription:
       "各ポケモンの最も効果的な技が各タイプにどれだけ効くか。",
     tapForReason: "セルをタップすると理由が表示されます。",
+    // The column that sums each row, as the Team Defence and Team Type Coverage scores do
+    teamScore: "チームのスコア",
     slot: (slot: number, pokemon: string | undefined) =>
       `スロット${slot}${pokemon ? `: ${pokemon}` : ""}`,
-    weak: "×2 弱点",
-    quadruple: "×4",
-    resists: "½ 耐性",
-    quarter: "¼",
-    immune: "0 無効",
+    weak: "弱点",
+    resists: "耐性",
+    immune: "無効",
+    // The same legend for the coverage matrix, where a strong hit is the good outcome
+    superEffective: "効果抜群",
+    resisted: "いまひとつ",
+    noEffect: "効果なし",
     defenceReason: (
       type: string,
       multiplier: number,
@@ -282,6 +279,9 @@ const ja: Messages = {
     statValue: (stat: string, value: number) => `${stat}: ${value}`,
     weakTo: "弱点",
     smogonDex: "Smogon図鑑",
+    bulbapedia: "Bulbapedia",
+    serebii: "Serebii",
+    showdownDex: "Showdown図鑑",
   },
 
   // The Filters and Sort dialogs
@@ -307,19 +307,25 @@ const ja: Messages = {
 
   // The Teams, Name and Format, Import, and Delete dialogs
   teams: {
-    description: "チームをタップして開きます。⋮ ボタンに設定と操作があります。",
     newTeam: "新しいチーム",
     randomTeam: "ランダムチーム",
+    randomTeamLabels: ["チームをランダムにする", "ランダムチーム", "ランダム"],
     savedTeams: "保存済みのチーム",
     optionsFor: (team: string) => `${team}のオプション`,
     load: (team: string) => `${team}を開く`,
     importTeam: "チームをインポート",
     exportAll: "すべてエクスポート",
+    copyAll: "すべてコピー",
     savedInBrowser: "チームはこのブラウザに保存されます。",
-    open: "表示中",
+    // The chip on the team being edited, and the one on each team that a tap opens
+    current: "表示中",
+    open: "開く",
     newTeamCreated: "空のチームを作成しました",
+    emptyTeamOpened: "空のチームを開きました",
     randomTeamCreated: "ランダムなチームを作成しました",
     exported: "すべてのチームをエクスポートしました",
+    copiedAll: "すべてのチームをコピーしました",
+    notCopiedAll: "チームをコピーできませんでした。",
     exportFilename: "my-pokemon-teams.txt",
   },
   settings: {
@@ -428,9 +434,9 @@ const ja: Messages = {
     teams: "チーム",
     teamsQuestion: "チームはどこに保存されますか？",
     teamsAnswer:
-      "チームはこのブラウザに保存されるので、次に来たときもここにありますが、別の端末には引き継がれません。「チーム一覧」ボタンで一覧が表示され、各チームのメニューから名前の変更、世代とフォーマットの設定、複製、共有、削除ができます。「すべてエクスポート」はすべてのチームをShowdownのテキストとしてダウンロードし、「チームをインポート」でそれを読み戻せます。アドレスバーには常に現在のチームが入っているので、アドレスをコピーする（または「チームを共有」を押す）とチームを共有できます。",
+      "チームはこのブラウザに保存されるので、次に来たときもここにありますが、別の端末には引き継がれません。「チーム一覧」ボタンで一覧が表示され、各チームのメニューから名前の変更、世代とフォーマットの設定、複製、共有、削除ができます。「すべてエクスポート」はすべてのチームをShowdownのテキストとしてダウンロードし、「チームをインポート」でそれを読み戻せます。アドレスバーには常に現在のチームが入っているので、アドレスをコピーする（または「共有」を押す）とチームを共有できます。",
     teamsAnswer2:
-      "スマートフォンやタブレットでは、「その他」ボタンでチームツール、「絞り込み」と「並べ替え」のボタン、「詳細設定」ボタンが表示されます。下部の「元に戻す」と「やり直す」ボタンで、現在のチームの変更を行き来できます。",
+      "「その他」ボタンでチームツール、「絞り込み」と「並べ替え」のボタン、「詳細設定」ボタンが表示されます。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは「管理」メニューにあります。",
     generations: "世代",
     generationsQuestion: "世代を変えると何が変わりますか？",
     generationsAnswer:
@@ -442,7 +448,7 @@ const ja: Messages = {
     matrix: "マトリックス分析",
     matrixQuestion: "タイプのスコアはどこから来ていますか？",
     matrixAnswer:
-      "分析パネルのメニューにあるマトリックスは、すべてのタイプとすべてのポケモンの相性を表示します。「耐性」は各攻撃タイプが各ポケモンにどれだけ効くかで、特性と持ち物も考慮されます。「攻撃範囲」は各ポケモンの最も効果的な攻撃技が各タイプにどれだけ効くかです。セルをタップすると理由が表示されます。",
+      "分析パネルにあるマトリックスは、すべてのタイプとすべてのポケモンの相性を表示します。「耐性」は各攻撃タイプが各ポケモンにどれだけ効くかで、特性と持ち物も考慮されます。「攻撃範囲」は各ポケモンの最も効果的な攻撃技が各タイプにどれだけ効くかです。セルをタップすると理由が表示されます。",
     defence: "チームの耐性",
     defenceQuestion: "チームのタイプ耐性はどう計算されますか？",
     defenceAnswer:

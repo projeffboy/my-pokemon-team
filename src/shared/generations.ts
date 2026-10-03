@@ -18,27 +18,5 @@ export const GENERATION_GAMES: Record<Generation, string> = {
   1: "RBY",
 };
 
-// Smogon's strategy dex is organised by each generation's main games
-const SMOGON_DEX_CODES: Record<Generation, string> = {
-  1: "rb",
-  2: "gs",
-  3: "rs",
-  4: "dp",
-  5: "bw",
-  6: "xy",
-  7: "sm",
-  8: "ss",
-  9: "sv",
-};
-
 export const isGeneration = (value: unknown): value is Generation =>
   GENERATIONS.includes(value as Generation);
-
-// E.g. https://www.smogon.com/dex/sv/pokemon/garchomp/ for any Garchomp forme
-export function smogonDexUrl(generation: Generation, baseSpeciesName: string) {
-  const slug = baseSpeciesName
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-  return `https://www.smogon.com/dex/${SMOGON_DEX_CODES[generation]}/pokemon/${slug}/`;
-}

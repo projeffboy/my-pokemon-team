@@ -6,7 +6,9 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react-lite";
 import PokemonInputs from "./shared/PokemonInputs";
-import PokemonSprite from "@/app/shared/PokemonSprite";
+import SlotDragContext from "./shared/SlotDragContext";
+import TabSlot from "./shared/TabSlot";
+import DragHint from "./shared/DragHint";
 import TeamBar from "./shared/TeamBar";
 import getPokemonLabel from "./shared/get-pokemon-label";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -16,48 +18,51 @@ const SmTeamViewer = observer(function SmTeamViewer() {
   const [tabIndex, setTabIndex] = useState(0);
 
   return (
-    <>
+    <SlotDragContext onMove={slot => setTabIndex(Math.floor(slot / 2))}>
       <TeamBar
         tabs={
-          <Tabs
-            value={tabIndex}
-            onChange={(_event: SyntheticEvent, value: number) =>
-              setTabIndex(value)
-            }
-            variant="fullWidth"
-            textColor="secondary"
-            aria-label={translation.t.team.slots}
-          >
-            {[0, 2, 4].map(teamIndex => (
-              <Tab
-                key={teamIndex}
-                id={`team-slot-tab-${teamIndex}`}
-                aria-controls={`team-slot-panel-${teamIndex}`}
-                aria-label={translation.t.team.slotPair(
-                  getPokemonLabel(teamIndex, translation),
-                  getPokemonLabel(teamIndex + 1, translation),
-                )}
-                label={`${teamIndex + 1} - ${teamIndex + 2}`}
-                sx={{
-                  px: 0,
-                  "& > :first-of-type": { pl: 1 },
-                  "& > :last-of-type": { pr: 1 },
-                }}
-                icon={
-                  <Box sx={{ display: "flex", height: 75 }} aria-hidden="true">
-                    <PokemonSprite teamIndex={teamIndex} />
-                    <PokemonSprite teamIndex={teamIndex + 1} />
-                  </Box>
-                }
-              />
-            ))}
-          </Tabs>
+          <>
+            <Tabs
+              value={tabIndex}
+              onChange={(_event: SyntheticEvent, value: number) =>
+                setTabIndex(value)
+              }
+              variant="fullWidth"
+              textColor="secondary"
+              aria-label={translation.t.team.slots}
+              // A dragged slot's neighbours slide over into the next tab
+              sx={{
+                "& .MuiTabs-scroller, & .MuiTab-root": { overflow: "visible" },
+              }}
+            >
+              {[0, 2, 4].map(teamIndex => (
+                <Tab
+                  key={teamIndex}
+                  id={`team-slot-tab-${teamIndex}`}
+                  aria-controls={`team-slot-panel-${teamIndex}`}
+                  aria-label={translation.t.team.slotPair(
+                    getPokemonLabel(teamIndex, translation),
+                    getPokemonLabel(teamIndex + 1, translation),
+                  )}
+                  // Three tabs at MUI's 90px minimum overflow the 200px at 600px wide
+                  sx={{ p: 0, minWidth: 0 }}
+                  icon={
+                    <Box sx={{ display: "flex", width: "100%" }}>
+                      <TabSlot teamIndex={teamIndex} />
+                      <TabSlot teamIndex={teamIndex + 1} />
+                    </Box>
+                  }
+                />
+              ))}
+            </Tabs>
+            <DragHint />
+          </>
         }
       />
       <Grid
         container
         size={12}
-        spacing={2}
+        spacing={3}
         id={`team-slot-panel-${2 * tabIndex}`}
         role="tabpanel"
         aria-labelledby={`team-slot-tab-${2 * tabIndex}`}
@@ -68,16 +73,13 @@ const SmTeamViewer = observer(function SmTeamViewer() {
           return (
             <Grid key={offset} size={12}>
               <Paper sx={{ p: 1 }}>
-                <PokemonInputs
-                  teamIndex={teamIndex}
-                  onMoveToSlot={slot => setTabIndex(Math.floor(slot / 2))}
-                />
+                <PokemonInputs teamIndex={teamIndex} />
               </Paper>
             </Grid>
           );
         })}
       </Grid>
-    </>
+    </SlotDragContext>
   );
 });
 

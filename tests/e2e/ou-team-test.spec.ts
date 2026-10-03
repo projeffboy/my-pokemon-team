@@ -10,6 +10,7 @@ import {
   selectDialogOption,
   selectMove,
   selectPokemon,
+  openAnalysis,
 } from "helper";
 import fs from "fs";
 import path from "path";
@@ -41,7 +42,9 @@ const doBasicCheck = async (page: Page) => {
     ).toBeVisible();
   }
 
+  await openAnalysis(page, "Team Checklist");
   await expect(page.getByText("Hazard", { exact: true })).toBeVisible();
+  await openAnalysis(page, "Team Defence");
 };
 
 const updatePokepaste = async (page: Page, text: string) => {
@@ -85,9 +88,7 @@ test.describe("Importing an OU team", () => {
 
     // 3. Delete Garchomp (Slot 3)
     // Navigate to Pokemon 3-4 tab
-    // (matched by visible text, not accessible name, since the tab's
-    // aria-label contains the Pokemon names instead of "3 - 4")
-    await page.getByRole("tab").filter({ hasText: "3 - 4" }).click();
+    await page.getByRole("tab", { name: /^Pokemon 3 \(/ }).click();
     await page.getByLabel("Pokemon 3's name").fill("");
     await page.getByLabel("Pokemon 3's name").press("Tab"); // Trigger change
 
@@ -104,7 +105,7 @@ test.describe("Importing an OU team", () => {
 
     // 6. Add Ogerpon-Wellspring manually (Slot 3)
     // Ensure we are on tab 3-4
-    await page.getByRole("tab").filter({ hasText: "3 - 4" }).click();
+    await page.getByRole("tab", { name: /^Pokemon 3 \(/ }).click();
     await selectPokemon(page, "Ogerpon-Wellspring", 2);
     await expect(page.getByLabel("Pokemon 3's item")).toHaveValue(
       "Wellspring Mask",

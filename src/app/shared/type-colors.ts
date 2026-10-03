@@ -1,4 +1,5 @@
-import type { PokemonType } from "@/types";
+import { getContrastRatio } from "@mui/material/styles";
+import { POKEMON_TYPES, type PokemonType } from "@/types";
 
 export const TYPE_COLORS: Record<PokemonType, string> = {
   Bug: "#a8b820",
@@ -20,3 +21,13 @@ export const TYPE_COLORS: Record<PokemonType, string> = {
   Steel: "#b8b8d0",
   Water: "#6890f0",
 };
+
+// Text on a type's colour: white where it reads as small text, and near-black elsewhere
+export const TYPE_TEXT_COLORS = Object.fromEntries(
+  POKEMON_TYPES.map(type => [
+    type,
+    getContrastRatio("#fff", TYPE_COLORS[type]) >= 4.5 ? "#fff" : (
+      "rgba(0, 0, 0, 0.87)"
+    ),
+  ]),
+) as Record<PokemonType, string>;

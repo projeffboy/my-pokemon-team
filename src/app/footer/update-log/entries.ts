@@ -9,6 +9,14 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 1, 2026",
+    changes: [
+      "Send feedback straight from the site, with a screenshot of the page or your own images attached.",
+      "Reorder your team by dragging its slots.",
+      "A team in an earlier generation uses that generation's types and type chart, with the sprites of its games: Clefable is a Normal type before Gen 6, and a Gen 1 team shows Red and Blue sprites.",
+    ],
+  },
+  {
     date: "Sep 26, 2026",
     changes: [
       "The site is now in Japanese, Korean, Chinese, French, German, Spanish, and Italian too, with the pokemon, move, item, and ability names from PokeAPI. Pick a language from the button beside the generation.",

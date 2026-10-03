@@ -103,6 +103,8 @@ npm test
 - `npm run test:smoke`: builds the production app and checks its essential flows with Vite preview on port 4173.
 - `npm run test:dev`: browser tests of the UI against the development server on port 3000.
 
+`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. Run it after changing `src/shared/dex-urls.ts` or updating the data. Bulbapedia's bot protection may challenge the browser, in which case its tests are skipped.
+
 Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 
 The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and pushes to `master`, and keeps the Playwright reports as an artifact. [Dependabot](.github/dependabot.yml) opens a weekly pull request for minor and patch updates, and one per major update, which CI checks like any other. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.

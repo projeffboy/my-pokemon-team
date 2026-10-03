@@ -7,8 +7,12 @@ import {
   type MoveEntry,
   type Moves,
   type Natures,
+  type PastGeneration,
+  type PastGenerations,
+  type PastTypeChart,
   type Pokedex,
   type PokedexEntry,
+  type PokemonType,
   type TypeChart,
 } from "../../src/types.ts";
 
@@ -24,6 +28,7 @@ export type DataTypes = {
   Learnsets: Learnsets;
   TypeChart: TypeChart;
   Natures: Natures;
+  PastGenerations: PastGenerations;
 };
 
 export const toId = (text: unknown) =>
@@ -264,6 +269,108 @@ export function projectTypeChart(typeChart: ShowdownTable): TypeChart {
       ];
     }),
   ) as TypeChart;
+}
+
+// Showdown's mods each inherit from the next generation's data: a mod's entry replaces
+// its parent's, merges into it with `inherit: true`, or deletes it when null
+export function resolveMod(
+  parent: ShowdownTable,
+  mod: Record<string, ShowdownEntry | null> = {},
+): ShowdownTable {
+  const resolved = { ...parent };
+  for (const [id, entry] of Object.entries(mod)) {
+    if (entry === null) {
+      delete resolved[id];
+    } else if (entry.inherit) {
+      const { inherit: _inherit, ...changes } = entry;
+      resolved[id] = { ...parent[id], ...changes };
+    } else {
+      resolved[id] = entry;
+    }
+  }
+  return resolved;
+}
+
+export type GenerationData = {
+  pokedex: ShowdownTable;
+  moves: ShowdownTable;
+  typechart: ShowdownTable;
+};
+export type ModData = Partial<
+  Record<keyof GenerationData, Record<string, ShowdownEntry | null>>
+>;
+
+// A generation's types are the chart's entries that are not marked as future
+const typesOf = (typechart: ShowdownTable) =>
+  POKEMON_TYPES.filter(type => {
+    const entry = typechart[type.toLowerCase()];
+    return entry && !entry.isNonstandard;
+  });
+
+// The chart over the generation's own types, without the status conditions
+const pastTypeChart = (typechart: ShowdownTable, types: PokemonType[]) =>
+  Object.fromEntries(
+    types.map(type => {
+      const { damageTaken } = typechart[type.toLowerCase()] ?? {};
+      const codes = isRecord(damageTaken) ? damageTaken : {};
+      return [
+        type,
+        Object.fromEntries(
+          types.map(attackType => [
+            attackType,
+            damageCode[`${codes[attackType] ?? 0}`],
+          ]),
+        ),
+      ];
+    }),
+  ) as PastTypeChart;
+
+// The entries whose field differs from the latest generation's
+const changedField = <T>(
+  latest: ShowdownTable,
+  resolved: ShowdownTable,
+  field: string,
+) =>
+  Object.fromEntries(
+    Object.entries(resolved)
+      .filter(
+        ([id, entry]) =>
+          entry[field] !== undefined &&
+          JSON.stringify(entry[field]) !== JSON.stringify(latest[id]?.[field]),
+      )
+      .map(([id, entry]) => [id, entry[field] as T]),
+  );
+
+// Each past generation's types, from Showdown's mods, which are listed newest first
+export function projectPastGenerations(
+  latest: GenerationData,
+  mods: Partial<Record<number, ModData>>,
+): PastGenerations {
+  const past: PastGenerations = {};
+  let parent = latest;
+  let nextChart = pastTypeChart(latest.typechart, typesOf(latest.typechart));
+  for (let gen = 8; gen >= 1; gen--) {
+    const mod = mods[gen] ?? {};
+    const resolved: GenerationData = {
+      pokedex: resolveMod(parent.pokedex, mod.pokedex),
+      moves: resolveMod(parent.moves, mod.moves),
+      typechart: resolveMod(parent.typechart, mod.typechart),
+    };
+    const types = typesOf(resolved.typechart);
+    const typechart = pastTypeChart(resolved.typechart, types);
+    const entry: PastGeneration = {
+      types,
+      pokemon: changedField(latest.pokedex, resolved.pokedex, "types"),
+      moves: changedField(latest.moves, resolved.moves, "type"),
+    };
+    if (JSON.stringify(typechart) !== JSON.stringify(nextChart)) {
+      entry.typechart = typechart;
+    }
+    past[gen as keyof PastGenerations] = entry;
+    parent = resolved;
+    nextChart = typechart;
+  }
+  return past;
 }
 
 export type NamedDatasets = Record<string, Record<string, { name?: string }>>;

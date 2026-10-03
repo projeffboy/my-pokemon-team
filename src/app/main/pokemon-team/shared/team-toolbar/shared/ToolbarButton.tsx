@@ -18,10 +18,12 @@ export default function ToolbarButton({
         pt: 1.25,
         pb: 1,
         px: 0.25,
-        fontSize: 11,
-        lineHeight: 1.2,
+        fontSize: 12,
+        lineHeight: "16px",
         letterSpacing: 0,
         textTransform: "none",
+        // A word longer than the column breaks instead of running into the next button
+        overflowWrap: "anywhere",
         "& > svg": { fontSize: 22 },
       }}
     >

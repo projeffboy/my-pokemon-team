@@ -1,7 +1,7 @@
 import { test, expect } from "fixtures";
 import { openEditPokepaste } from "helper";
 
-test.describe("Import Team Dialog - Unit Tests", () => {
+test.describe("Edit Team Dialog - Unit Tests", () => {
   test("cannot import while the learnsets fail to load", async ({ page }) => {
     // The learnsets load after the app (a JSON module in dev, a hashed chunk in the build),
     // and parsing a team depends on them

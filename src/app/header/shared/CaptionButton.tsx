@@ -38,9 +38,10 @@ export default function CaptionButton({
         component="span"
         aria-hidden="true"
         sx={{
-          fontSize: 10,
+          fontSize: 12,
           lineHeight: 1,
-          letterSpacing: "0.04em",
+          letterSpacing: 0,
+          textTransform: "none",
           whiteSpace: "nowrap",
         }}
       >

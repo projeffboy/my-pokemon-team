@@ -1,6 +1,6 @@
 # About the Project
 
-React/Vite Pokemon teambuilder web app. It is a single-page app with no backend, hosted on Vercel.
+React/Vite Pokemon teambuilder web app. It is a single-page app hosted on Vercel, whose only backend is the feedback function described in [Feedback](#feedback).
 
 Changes reach `master` through a pull request or a direct push. CI runs on both, and Vercel deploys `master` to production only after CI passes.
 
@@ -72,17 +72,19 @@ Do not add comments unless you think it is necessary or very helpful. Make them 
 
 ## Styling Conventions
 
+The design follows [Material Design 2](https://m2.material.io), the version Material UI implements, and Material UI's guidelines and component defaults. Check them before choosing spacing, sizes, or component patterns, and prefer their values over custom ones. Material UI does not implement Material Design 3, so do not restyle components toward it.
+
 Do not use `!important` in any styles, whether in `sx`, `style`, or CSS, unless there is no other way.
 
 Style with the `sx` prop, using MUI's syntax: `p: 1` instead of `padding: "8px"`. ESLint rejects the `style` prop; the exceptions are values that differ per element at runtime, such as a sprite sheet offset or react-window's row position, each with an `eslint-disable` comment saying why.
 
 Support both colour schemes: use theme palette values, or `theme.applyStyles("dark", ...)` when a colour must differ.
 
-For responsive styling, use MUI's breakpoint objects, such as `sx={{ px: { xs: 0, md: 1 } }}`. When logic needs the breakpoint, use the hooks in `src/app/shared/WidthContext.tsx` instead of calling `useMediaQuery`.
+For responsive styling, use MUI's breakpoint objects, such as `sx={{ px: { xxs: 0, md: 1 } }}`. The breakpoints are in `src/app/shared/theme.ts`: `xxs` (from 0, small phones; 320px is the narrowest supported width), `xs` (400px, larger phones), `sm` (600px, portrait tablets), `md` (960px, landscape tablets), `lg` (1200px, laptops), and `xl` (1920px). A value for every width goes on `xxs`, the smallest key, not `xs`. When logic needs the breakpoint, use the hooks in `src/app/shared/WidthContext.tsx` instead of calling `useMediaQuery`.
 
 ## Images
 
-Host images statically with the site, except for pokemon sprites, which load from Pokemon Showdown's URLs. The pokemon and item icon sheets also come from Showdown, but keep them bundled in `src/images/icon-sheets/`: Showdown changes its sheets as it adds pokemon and items, and a sheet that no longer matches `src/data/` can cause bugs or crash the site. `npm run update:data` reports when a bundled sheet differs from Showdown's.
+Host images statically with the site, except for pokemon sprites, which load from Pokemon Showdown's URLs. Showdown does not allow cross-origin reads, so the feedback screenshot fetches them through the `/showdown-sprites/` rewrite in `vercel.json` instead. The rewrite only answers the site's own requests, so other sites cannot use it as a proxy. The pokemon and item icon sheets also come from Showdown, but keep them bundled in `src/images/icon-sheets/`: Showdown changes its sheets as it adds pokemon and items, and a sheet that no longer matches `src/data/` can cause bugs or crash the site. `npm run update:data` reports when a bundled sheet differs from Showdown's.
 
 Formes that Showdown has no usable sprite for are bundled in `src/images/local-sprites/`, and `PokemonSprite.tsx` uses a local sprite before any Showdown URL. `npm run update:data` reports new pokemon whose sprites Showdown does not host. Read [local-sprites-sources.md](src/images/local-sprites/local-sprites-sources.md) before adding or deleting a local sprite.
 
@@ -100,9 +102,13 @@ The text also carries Showdown's set details (nickname, gender, level, shiny, te
 
 ## Saved Teams
 
-The teams, the current team, and a few settings, including the chosen language, persist in localStorage under the `mypokemonteam` key (`src/store/teams-storage.ts`). Players keep teams there for months, so do not rename the key, and keep `loadStoredState` accepting every shape that has been saved so far: add fields with defaults rather than changing existing ones.
+The teams, the current team, and a few settings, including the chosen language, persist in localStorage under the `mypokemonteam` key (`src/store/teams-storage.ts`). Saved teams never expire, but the drag hint's setting is forgotten three months after the last visit (`src/store/settings-expiry.ts`), and the light or dark choice is a cookie that also lasts three months after it (`src/app/color-scheme-storage.ts`). Players keep teams there for months, so do not rename the key, and keep `loadStoredState` accepting every shape that has been saved so far: add fields with defaults rather than changing existing ones.
 
 Every tab of the site shares that one key. A tab takes in what the others save as they save it, and merges team by team before it saves (`mergeStoredState`), so that it does not undo them. A tab with nothing of its own to save does not write.
+
+## Feedback
+
+The feedback dialog (`src/app/header/FeedbackDialog.tsx`) posts to `api/feedback.ts`, a Vercel function that emails it to the author through Resend, using the `RESEND_API_KEY` environment variable. Until a domain is verified in Resend, it sends from `onboarding@resend.dev` and can only reach the Resend account's own address. `npm run dev` does not run the function, so sending fails locally; test it on a preview deployment. A plain `vercel deploy` fails, because `vite.config.ts` reads the latest commit date from git and CLI uploads leave out `.git`, so run `vercel build` and then `vercel deploy --prebuilt`.
 
 ## Update Log
 

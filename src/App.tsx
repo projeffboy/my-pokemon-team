@@ -5,7 +5,6 @@ import Main from "./app/Main";
 import Footer from "./app/Footer";
 import MainSnackbar from "./app/MainSnackbar";
 import TeamLinkSync from "./app/TeamLinkSync";
-import HistoryFab from "./app/HistoryFab";
 import Dialogs from "./app/Dialogs";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
@@ -39,13 +38,13 @@ export default function App() {
             <div>
               <Grid
                 container
-                spacing={2}
+                spacing={{ xxs: 2, sm: 3 }}
                 sx={{
                   minHeight: "100dvh",
                   alignContent: "flex-start",
                   maxWidth: 1920,
                   mx: "auto",
-                  p: 2,
+                  p: { xxs: 2, sm: 3 },
                 }}
               >
                 <Header />
@@ -54,7 +53,6 @@ export default function App() {
               </Grid>
             </div>
             <MainSnackbar />
-            <HistoryFab />
             <Dialogs />
           </WidthProvider>
         </TranslationProvider>

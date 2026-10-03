@@ -19,32 +19,25 @@ const zhHant: Messages = {
   generationSelect: "世代",
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
-  championsGame: "Pokemon Champions",
-  generationGames: {
-    9: "朱／紫 · 傳說 Z-A",
-    8: "劍／盾 · 晶燦鑽石／明亮珍珠 · 傳說 阿爾宙斯",
-    7: "太陽／月亮 · 究極之日／究極之月 · Let's Go",
-    6: "X／Y · 終極紅寶石／始源藍寶石",
-    5: "黑／白 · 黑2／白2",
-    4: "鑽石／珍珠／白金 · 心金／魂銀",
-    3: "紅寶石／藍寶石／綠寶石 · 火紅／葉綠",
-    2: "金／銀／水晶",
-    1: "紅／藍／黃",
-  } as Record<number, string>,
   language: "語言",
   languageFailed: "無法載入語言，請再試一次。",
   feedback: {
     button: "意見回饋",
     title: "意見回饋",
-    description:
-      "發現錯誤或有建議嗎？按下傳送會開啟你的電子郵件程式，收件人為 {email}。請附上你的隊伍連結，以便重現問題。",
+    description: "發現了錯誤或有什麼想法？請告訴我。",
     label: "你的意見",
     placeholder: "例如：大竺葵沒有魔法閃耀",
     attachLink: "附上我的隊伍連結",
-    subject: "My Pokemon Team feedback",
-    myTeam: "我的隊伍：",
+    attachScreenshot: "附上頁面截圖",
+    addImage: "新增圖片",
+    imageUnreadable: "無法讀取這張圖片。請試試 PNG 或 JPEG。",
+    imagesTooLarge: "圖片總大小超出限制，請先刪除一張。",
+    email: "你的電子郵件（選填）",
+    emailHelper: "僅在需要回覆時填寫",
     caption: "意見",
     send: "傳送",
+    sent: "謝謝！你的意見已送出。",
+    failed: "傳送失敗。請再試一次，或寄信至 {email}。",
   },
 
   // Buttons shared by several dialogs
@@ -63,8 +56,8 @@ const zhHant: Messages = {
   // The team column
   team: {
     teams: "隊伍列表",
-    randomize: "隨機組隊",
-    randomized: "已隨機組隊",
+    randomizedTeam: "已隨機組隊",
+    randomizedPokemon: "已隨機選擇寶可夢",
     shareTeam: "分享隊伍",
     shareTeamLink: "分享寶可夢隊伍連結",
     teamActions: "隊伍操作",
@@ -101,8 +94,8 @@ const zhHant: Messages = {
     advanced: "進階",
     advancedFor: (slot: number) => `第 ${slot} 格的進階選項`,
     about: (pokemon: string) => `關於${pokemon}`,
-    previousSlot: "移到上一格",
-    nextSlot: "移到下一格",
+    dragHint: "長按拖曳即可調整順序",
+    moveToSlot: (pokemon: string) => `把${pokemon}移到其他格`,
     name: "名稱",
     move: "招式",
     item: "道具",
@@ -127,14 +120,12 @@ const zhHant: Messages = {
   },
 
   // The undo and redo buttons
-  history: "歷史紀錄",
   undo: "復原",
   redo: "重做",
 
   // The analysis panel
   stats: {
     teamStats: "隊伍數據",
-    teamStatsAndChecklist: "隊伍數據與檢查清單",
     teamAnalysis: "隊伍分析",
     teamDefence: "隊伍防禦",
     teamTypeCoverage: "隊伍屬性覆蓋",
@@ -142,9 +133,8 @@ const zhHant: Messages = {
     matrixAnalysis: "矩陣分析",
     defence: "防禦",
     coverage: "覆蓋",
-    teamStat: "隊伍數據",
-    backToTeamStats: "返回隊伍數據",
-    moreAnalyses: "更多分析",
+    checklist: "清單",
+    matrix: "矩陣",
     score: (type: string, score: string) => `${type}屬性分數：${score}`,
     selectPokemonFirst: "請先選擇寶可夢。",
     typeDoes: "{type}屬性招式造成的傷害…",
@@ -190,13 +180,17 @@ const zhHant: Messages = {
     defenceDescription: "每種攻擊屬性對每隻寶可夢的傷害倍率。",
     coverageDescription: "每隻寶可夢最強招式對每種屬性的傷害倍率。",
     tapForReason: "點一下格子查看原因。",
+    // The column that sums each row, as the Team Defence and Team Type Coverage scores do
+    teamScore: "隊伍得分",
     slot: (slot: number, pokemon: string | undefined) =>
       `第 ${slot} 格${pokemon ? `：${pokemon}` : ""}`,
-    weak: "×2 弱點",
-    quadruple: "×4",
-    resists: "½ 抵抗",
-    quarter: "¼",
-    immune: "0 無效",
+    weak: "弱點",
+    resists: "抵抗",
+    immune: "無效",
+    // The same legend for the coverage matrix, where a strong hit is the good outcome
+    superEffective: "效果絕佳",
+    resisted: "效果不好",
+    noEffect: "沒有效果",
     defenceReason: (
       type: string,
       multiplier: number,
@@ -282,6 +276,9 @@ const zhHant: Messages = {
     statValue: (stat: string, value: number) => `${stat}：${value}`,
     weakTo: "弱點",
     smogonDex: "Smogon 圖鑑",
+    bulbapedia: "Bulbapedia",
+    serebii: "Serebii",
+    showdownDex: "Showdown 圖鑑",
   },
 
   // The Filters and Sort dialogs
@@ -307,19 +304,25 @@ const zhHant: Messages = {
 
   // The Teams, Name and Format, Import, and Delete dialogs
   teams: {
-    description: "點一下隊伍即可開啟。⋮ 按鈕裡有它的設定與操作。",
     newTeam: "新隊伍",
     randomTeam: "隨機隊伍",
+    randomTeamLabels: ["隨機產生隊伍", "隨機隊伍", "隨機"],
     savedTeams: "已儲存的隊伍",
     optionsFor: (team: string) => `${team} 的選項`,
     load: (team: string) => `載入 ${team}`,
     importTeam: "匯入隊伍",
     exportAll: "全部匯出",
+    copyAll: "全部複製",
     savedInBrowser: "隊伍儲存在這個瀏覽器中。",
-    open: "使用中",
+    // The chip on the team being edited, and the one on each team that a tap opens
+    current: "使用中",
+    open: "開啟",
     newTeamCreated: "已建立空白隊伍",
+    emptyTeamOpened: "已開啟空白隊伍",
     randomTeamCreated: "已建立隨機隊伍",
     exported: "已匯出所有隊伍",
+    copiedAll: "已複製所有隊伍",
+    notCopiedAll: "無法複製隊伍。",
     exportFilename: "my-pokemon-teams.txt",
   },
   settings: {
@@ -428,7 +431,7 @@ const zhHant: Messages = {
     teamsAnswer:
       "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「全部匯出」會把每支隊伍以 Showdown 文字下載，「匯入隊伍」則能把它們讀回來。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
     teamsAnswer2:
-      "在手機和平板上，「更多」按鈕會顯示隊伍工具、「篩選」與「排序」按鈕，以及「進階」按鈕。底部的復原與重做按鈕可以逐步回溯目前隊伍的變更。",
+      "「更多」按鈕會顯示隊伍工具、「篩選」與「排序」按鈕，以及「進階」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於「管理隊伍」選單中。",
     generations: "世代",
     generationsQuestion: "世代會改變什麼？",
     generationsAnswer:
@@ -440,7 +443,7 @@ const zhHant: Messages = {
     matrix: "矩陣分析",
     matrixQuestion: "屬性分數從哪裡來？",
     matrixAnswer:
-      "分析面板選單裡的矩陣會顯示每種屬性對每隻寶可夢的關係。「防禦」是每種攻擊屬性對每隻寶可夢的傷害倍率，並計入其特性與道具；「覆蓋」是每隻寶可夢最強攻擊招式對每種屬性的傷害倍率。點一下格子查看原因。",
+      "分析面板裡的矩陣會顯示每種屬性對每隻寶可夢的關係。「防禦」是每種攻擊屬性對每隻寶可夢的傷害倍率，並計入其特性與道具；「覆蓋」是每隻寶可夢最強攻擊招式對每種屬性的傷害倍率。點一下格子查看原因。",
     defence: "隊伍防禦",
     defenceQuestion: "隊伍的屬性防禦是怎麼計算的？",
     defenceAnswer:

@@ -5,6 +5,7 @@ import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import PokemonIcon from "@/app/shared/PokemonIcon";
+import { TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import type { PokemonType } from "@/types";
 
 // Keyed by the type defence score, which is negative when the type is super effective
@@ -15,9 +16,9 @@ const EFFECTIVENESS: Partial<
   [-1.5]: { multiplier: 3, color: "error.main" },
   [-1]: { multiplier: 2, color: "warning.main" },
   [-0.5]: { multiplier: 1.5, color: "warning.main" },
-  [1]: { multiplier: 0.5, color: "success.light" },
+  [1]: { multiplier: 0.5, color: "success.main" },
   [2]: { multiplier: 0.25, color: "success.main" },
-  [3]: { multiplier: 0, color: "text.disabled" },
+  [3]: { multiplier: 0, color: "success.main" },
 };
 
 const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
@@ -33,7 +34,15 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
       <p>
         {fill(t.stats.typeDoes, {
           type: (
-            <Box component="span" sx={{ color: typeColor }}>
+            <Box
+              component="span"
+              sx={{
+                bgcolor: typeColor,
+                color: TYPE_TEXT_COLORS[type],
+                px: 0.5,
+                borderRadius: 0.5,
+              }}
+            >
               {names.type(type)}
             </Box>
           ),
@@ -43,8 +52,15 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
         {store.team.map(({ name: pokemon, ability, item }, i) => {
           if (!pokemon) return null;
           const { multiplier = 1, color = "inherit" } =
-            EFFECTIVENESS[typeAgainstPokemon(type, pokemon, ability, item)] ??
-            {};
+            EFFECTIVENESS[
+              typeAgainstPokemon(
+                type,
+                pokemon,
+                ability,
+                item,
+                store.currentTeam.generation,
+              )
+            ] ?? {};
           return (
             <Box
               component="li"
@@ -57,7 +73,7 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
               >
                 {t.stats.multiplier(multiplier)}
               </Box>
-              <Box component="span" sx={{ pr: 0.25 }}>
+              <Box component="span" sx={{ flexGrow: 1, pr: 0.25 }}>
                 {t.stats.toPokemon(names.pokemon(pokemon))}
               </Box>
               <PokemonIcon pokemonProperty="name" value={pokemon} />

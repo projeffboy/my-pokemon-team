@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
@@ -60,6 +61,7 @@ export default function Footer() {
       spacing={2}
       sx={{
         width: "100%",
+        rowGap: 0.5,
         flexWrap: "wrap",
         justifyContent: "center",
         alignItems: "center",
@@ -107,10 +109,24 @@ export default function Footer() {
             <ToggleButton
               value={value}
               aria-label={label}
-              sx={{ gap: 0.75, px: 1.25, fontSize: 12, lineHeight: 1 }}
+              sx={{
+                gap: 0.75,
+                minHeight: 48,
+                px: 1.25,
+                color: "text.secondary",
+                fontSize: 12,
+                lineHeight: 1,
+              }}
             >
               <Icon fontSize="small" />
-              <span aria-hidden="true">{caption}</span>
+              {/* Icons alone on 320px phones; the tooltip and label still name them */}
+              <Box
+                component="span"
+                aria-hidden="true"
+                sx={{ display: { xxs: "none", xs: "inline" } }}
+              >
+                {caption}
+              </Box>
             </ToggleButton>
           </Tooltip>
         ))}

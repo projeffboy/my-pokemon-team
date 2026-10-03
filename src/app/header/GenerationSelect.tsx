@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -10,6 +11,7 @@ import {
   isGeneration,
 } from "@/shared/generations";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { CHAMPIONS_LOGO, GAME_LOGOS } from "@/images/game-logos";
 
 const CHAMPIONS = "champions";
 
@@ -25,13 +27,13 @@ const GenerationSelect = observer(function GenerationSelect() {
       value: CHAMPIONS,
       label: t.championsGeneration,
       short: t.championsGenerationShort,
-      games: t.championsGame,
+      logos: [CHAMPIONS_LOGO],
     },
     ...GENERATIONS.map(generation => ({
       value: `${generation}`,
       label: t.generation(generation),
       short: `${t.generation(generation)} (${GENERATION_GAMES[generation]})`,
-      games: t.generationGames[generation],
+      logos: GAME_LOGOS[generation],
     })),
   ];
 
@@ -55,6 +57,8 @@ const GenerationSelect = observer(function GenerationSelect() {
       value={value}
       onChange={event => handleChange(event.target.value)}
       fullWidth
+      // 48px tall, the touch target size
+      sx={{ "& .MuiSelect-select": { py: "12.5px" } }}
       slotProps={{
         select: {
           renderValue: selected =>
@@ -64,9 +68,29 @@ const GenerationSelect = observer(function GenerationSelect() {
         htmlInput: { "aria-label": t.generationSelect },
       }}
     >
-      {options.map(({ value, label, games }) => (
+      {options.map(({ value, label, logos }) => (
         <MenuItem key={value} value={value}>
-          <ListItemText primary={label} secondary={games} />
+          <ListItemText
+            primary={label}
+            // The generation's games, as their logos; they wrap on phones
+            secondary={
+              <Box
+                component="span"
+                sx={{ display: "flex", flexWrap: "wrap", gap: 0.75, mt: 0.5 }}
+              >
+                {logos.map(({ src, name, isBoxFront }) => (
+                  <Box
+                    key={src}
+                    component="img"
+                    src={src}
+                    alt={name}
+                    sx={{ height: isBoxFront ? 56 : 28, width: "auto" }}
+                  />
+                ))}
+              </Box>
+            }
+            slotProps={{ secondary: { component: "span" } }}
+          />
         </MenuItem>
       ))}
     </TextField>

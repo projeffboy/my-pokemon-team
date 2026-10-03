@@ -183,3 +183,19 @@ test.describe("another tab's saves", () => {
     );
   });
 });
+
+test("remembers that the player knows slots drag, in any tab", () => {
+  const load = (knowsSlotDrag: unknown) =>
+    loadStoredState(
+      fakeStorage(JSON.stringify({ teams: [{ id: "a" }], knowsSlotDrag }))
+        .storage,
+    )?.knowsSlotDrag;
+  expect(load(true)).toBe(true);
+  expect(load("yes")).toBeUndefined();
+
+  const base = initialStoredState();
+  const knows = { ...base, knowsSlotDrag: true };
+  expect(mergeStoredState(base, base, knows).knowsSlotDrag).toBe(true);
+  expect(mergeStoredState(base, knows, base).knowsSlotDrag).toBe(true);
+  expect(mergeStoredState(base, base, base).knowsSlotDrag).toBeUndefined();
+});

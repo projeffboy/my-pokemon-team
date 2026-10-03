@@ -1,10 +1,9 @@
-import { useId, useState, type MouseEvent } from "react";
+import { useEffect, useId, useState, type MouseEvent } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Chip from "@mui/material/Chip";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
@@ -17,6 +16,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloseIcon from "@mui/icons-material/Close";
 import CasinoIcon from "@mui/icons-material/Casino";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -31,35 +32,64 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { SavedTeam } from "@/types";
-import { formatShortName } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, formatShortName } from "@/shared/formats";
+import { GENERATION_GAMES } from "@/shared/generations";
 import { isTeamEmpty } from "@/shared/team";
 import { serializeTeam, serializeTeams } from "@/store/team-text";
 import { teamUrl } from "@/app/shared/team-link";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import PokemonIcon from "@/app/shared/PokemonIcon";
+import questionMark from "@/images/question-mark.png";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
-import { useBreakpoint } from "@/app/shared/WidthContext";
+import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import ImportTeamForm from "./shared/ImportTeamForm";
 import TeamSettingsDialog from "./shared/TeamSettingsDialog";
 import downloadText from "./teams-dialog/download-text";
 
 const halfWidth = { flex: "1 1 0", minWidth: 0 } as const;
+// One of a team's six icons. On a narrow phone the slots shrink and the icons,
+// which have blank edges, overlap a little, so the six stay on one line.
+const iconSlot = {
+  flex: "0 1 40px",
+  minWidth: 0,
+  height: 30,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  "& > *": { flexShrink: 0 },
+} as const;
 
-// Every saved team: open one, or manage it through its menu
+// Every saved team: open one, or manage it through its menu. Import Team is a
+// second page of the dialog, which the Manage Team menu opens straight to.
 const TeamsDialog = observer(function TeamsDialog() {
   const { t } = useTranslation();
   const titleId = useId();
-  const teamSubtitle = ({ generation, format }: SavedTeam) =>
-    `${t.generation(generation)}${format ? ` · ${formatShortName(format)}` : ""}`;
-  const isXs = useBreakpoint() === "xs";
+  // E.g. "Gen 9 (SV / ZA) · OU". Champions is not played in the generation's
+  // games, so it shows without them: "Gen 9 · Champions (M-C)".
+  const teamSubtitle = ({ generation, format }: SavedTeam) => {
+    const games =
+      format === CHAMPIONS_FORMAT ? "" : ` (${GENERATION_GAMES[generation]})`;
+    return `${t.generation(generation)}${games}${format ? ` · ${formatShortName(format)}` : ""}`;
+  };
+  const isSmDown = useIsSmDown();
   const [menu, setMenu] = useState<{
     teamId: string;
     anchorEl: HTMLElement;
   } | null>(null);
   const [settingsTeamId, setSettingsTeamId] = useState<string | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
-  const isOpen = store.dialog?.name === "teams";
-  const close = () => store.closeDialog();
+  const dialogName = store.dialog?.name;
+  const isOpen = dialogName === "teams" || dialogName === "importTeam";
+  const [isImporting, setIsImporting] = useState(false);
+  // The Manage Team menu opens straight to the import page
+  useEffect(() => {
+    if (dialogName === "importTeam") setIsImporting(true);
+  }, [dialogName]);
+  const close = () => {
+    store.closeDialog();
+    setIsImporting(false);
+  };
   const menuTeam = store.teams.find(team => team.id === menu?.teamId);
 
   const load = (team: SavedTeam) => {
@@ -126,7 +156,7 @@ const TeamsDialog = observer(function TeamsDialog() {
         open={isOpen}
         onClose={close}
         aria-labelledby={titleId}
-        fullScreen={isXs}
+        fullScreen={isSmDown}
         fullWidth
         maxWidth="xs"
       >
@@ -142,166 +172,219 @@ const TeamsDialog = observer(function TeamsDialog() {
             color: "common.white",
           }}
         >
-          <IconButton aria-label={t.close} onClick={close} color="inherit">
-            <CloseIcon />
-          </IconButton>
-          {t.team.teams}
+          {isImporting ?
+            <IconButton
+              aria-label={t.goBack}
+              onClick={() => setIsImporting(false)}
+              color="inherit"
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          : <IconButton aria-label={t.close} onClick={close} color="inherit">
+              <CloseIcon />
+            </IconButton>
+          }
+          {isImporting ? t.importDialog.importTitle : t.team.teams}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText sx={{ my: 2 }}>
-            {t.teams.description}
-          </DialogContentText>
-          <Stack direction="row" spacing={1} sx={{ mb: 1, "& > *": halfWidth }}>
-            <Button
-              variant="outlined"
-              startIcon={<AddIcon />}
-              onClick={() => {
-                store.addTeam();
-                store.openSnackbar(t.teams.newTeamCreated);
-                close();
-              }}
+        {isImporting ?
+          <ImportTeamForm
+            isImport
+            onClose={() => setIsImporting(false)}
+            // The same gap below the title bar as the team list has
+            contentSx={{ pt: 2 }}
+          />
+        : <DialogContent>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ mt: 2, mb: 1, "& > *": halfWidth }}
             >
-              {t.teams.newTeam}
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<CasinoIcon />}
-              disabled={!store.learnsetsLoaded}
-              onClick={() => {
-                store.addTeam();
-                store.randomizeTeam();
-                store.openSnackbar(t.teams.randomTeamCreated);
-                close();
-              }}
-            >
-              {t.teams.randomTeam}
-            </Button>
-          </Stack>
-          <List aria-label={t.teams.savedTeams}>
-            {store.teams.map(team => {
-              const isCurrent = team.id === store.currentTeamId;
-              const name = team.name || t.team.unnamedTeam;
-              return (
-                <ListItem
-                  key={team.id}
-                  disablePadding
-                  secondaryAction={
-                    <IconButton
-                      edge="end"
-                      aria-label={t.teams.optionsFor(name)}
-                      aria-haspopup="menu"
-                      onClick={(event: MouseEvent<HTMLElement>) =>
-                        setMenu({
-                          teamId: team.id,
-                          anchorEl: event.currentTarget,
-                        })
-                      }
-                    >
-                      <MoreVertIcon />
-                    </IconButton>
-                  }
-                >
-                  <ListItemButton
-                    selected={isCurrent}
-                    aria-current={isCurrent}
-                    aria-label={t.teams.load(name)}
-                    onClick={() => load(team)}
-                    sx={{
-                      borderRadius: 1,
-                      mb: 1,
-                      border: 1,
-                      borderColor: isCurrent ? "text.primary" : "divider",
-                    }}
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={() => {
+                  const { isNew } = store.openEmptyTeam();
+                  store.openSnackbar(
+                    isNew ? t.teams.newTeamCreated : t.teams.emptyTeamOpened,
+                  );
+                  close();
+                }}
+              >
+                {t.teams.newTeam}
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<CasinoIcon />}
+                disabled={!store.learnsetsLoaded}
+                onClick={() => {
+                  store.openEmptyTeam();
+                  store.randomizeTeam();
+                  store.openSnackbar(t.teams.randomTeamCreated);
+                  close();
+                }}
+              >
+                {t.teams.randomTeam}
+              </Button>
+            </Stack>
+            <List aria-label={t.teams.savedTeams}>
+              {store.teams.map(team => {
+                const isCurrent = team.id === store.currentTeamId;
+                const name = team.name || t.team.unnamedTeam;
+                return (
+                  <ListItem
+                    key={team.id}
+                    disablePadding
+                    secondaryAction={
+                      <IconButton
+                        edge="end"
+                        aria-label={t.teams.optionsFor(name)}
+                        aria-haspopup="menu"
+                        onClick={(event: MouseEvent<HTMLElement>) =>
+                          setMenu({
+                            teamId: team.id,
+                            anchorEl: event.currentTarget,
+                          })
+                        }
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    }
                   >
-                    <ListItemText
-                      primary={
-                        <>
-                          {name}
-                          {isCurrent && (
+                    <ListItemButton
+                      selected={isCurrent}
+                      aria-current={isCurrent}
+                      aria-label={t.teams.load(name)}
+                      onClick={() => load(team)}
+                      sx={{
+                        borderRadius: 1,
+                        mb: 1,
+                        border: 1,
+                        borderColor: isCurrent ? "text.primary" : "divider",
+                      }}
+                    >
+                      <ListItemText
+                        primary={
+                          <>
+                            {name}
+                            {/* The whole card is the button; the chip shows that a tap opens the team */}
                             <Chip
-                              label={t.teams.open}
+                              label={
+                                isCurrent ?
+                                  t.teams.current
+                                : <>
+                                    {t.teams.open}
+                                    <ChevronRightIcon />
+                                  </>
+                              }
                               size="small"
                               color="primary"
+                              variant={isCurrent ? "filled" : "outlined"}
                               sx={{
                                 ml: 1,
-                                height: 18,
-                                fontSize: 10,
+                                flexShrink: 0,
+                                height: 20,
+                                fontSize: 12,
                                 fontWeight: 700,
                                 textTransform: "uppercase",
+                                cursor: "inherit",
+                                "& .MuiChip-label": {
+                                  display: "flex",
+                                  alignItems: "center",
+                                },
+                                "& svg": { fontSize: 16, mr: -0.75 },
                               }}
                             />
-                          )}
-                        </>
-                      }
-                      secondary={
-                        <>
-                          {teamSubtitle(team)}
-                          <Box
-                            component="span"
-                            sx={{ display: "flex", flexWrap: "wrap", mt: 0.5 }}
-                          >
-                            {team.team.map((member, i) =>
-                              member.name ?
-                                <PokemonIcon
-                                  key={i}
-                                  pokemonProperty="name"
-                                  value={member.name}
-                                />
-                              : <Box
-                                  key={i}
-                                  component="span"
-                                  sx={{
-                                    width: 40,
-                                    height: 30,
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                    color: "text.disabled",
-                                  }}
-                                >
-                                  ?
-                                </Box>,
-                            )}
-                          </Box>
-                        </>
-                      }
-                      slotProps={{ secondary: { component: "div" } }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              );
-            })}
-          </List>
-          <Stack direction="row" spacing={1} sx={{ mt: 1, "& > *": halfWidth }}>
+                          </>
+                        }
+                        secondary={
+                          <>
+                            {teamSubtitle(team)}
+                            <Box
+                              component="span"
+                              sx={{ display: "flex", mt: 0.5 }}
+                            >
+                              {team.team.map((member, i) => (
+                                <Box key={i} component="span" sx={iconSlot}>
+                                  {member.name ?
+                                    <PokemonIcon
+                                      pokemonProperty="name"
+                                      value={member.name}
+                                    />
+                                  : <Box
+                                      component="img"
+                                      src={questionMark}
+                                      alt=""
+                                      sx={{ height: 24 }}
+                                    />
+                                  }
+                                </Box>
+                              ))}
+                            </Box>
+                          </>
+                        }
+                        slotProps={{
+                          primary: {
+                            sx: { display: "flex", alignItems: "center" },
+                          },
+                          secondary: { component: "div" },
+                        }}
+                      />
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
+            </List>
             <Button
               variant="outlined"
+              fullWidth
               startIcon={<UploadIcon />}
-              onClick={() => store.openDialog("importTeam")}
+              onClick={() => setIsImporting(true)}
+              sx={{ mt: 1 }}
             >
               {t.teams.importTeam}
             </Button>
-            <Button
-              variant="outlined"
-              startIcon={<DownloadIcon />}
-              onClick={() => {
-                downloadText(
-                  t.teams.exportFilename,
-                  serializeTeams(store.teams),
-                );
-                store.openSnackbar(t.teams.exported);
-              }}
+            {/* Every team as one Showdown text, which Import Team reads back */}
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{ mt: 1, "& > *": halfWidth }}
             >
-              {t.teams.exportAll}
-            </Button>
-          </Stack>
-          <Typography
-            variant="caption"
-            component="p"
-            sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
-          >
-            {t.teams.savedInBrowser}
-          </Typography>
-        </DialogContent>
+              <Button
+                variant="outlined"
+                startIcon={<ContentCopyIcon />}
+                onClick={() =>
+                  copyToClipboard(
+                    serializeTeams(store.teams),
+                    t.teams.copiedAll,
+                    t.teams.notCopiedAll,
+                  )
+                }
+              >
+                {t.teams.copyAll}
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<DownloadIcon />}
+                onClick={() => {
+                  downloadText(
+                    t.teams.exportFilename,
+                    serializeTeams(store.teams),
+                  );
+                  store.openSnackbar(t.teams.exported);
+                }}
+              >
+                {t.teams.exportAll}
+              </Button>
+            </Stack>
+            <Typography
+              variant="caption"
+              component="p"
+              sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
+            >
+              {t.teams.savedInBrowser}
+            </Typography>
+          </DialogContent>
+        }
       </Dialog>
       <Menu
         anchorEl={menu?.anchorEl}

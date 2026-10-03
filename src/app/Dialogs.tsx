@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import TeamsDialog from "./dialogs/TeamsDialog";
 import TeamSettingsDialog from "./dialogs/shared/TeamSettingsDialog";
-import ImportTeamDialog from "./dialogs/ImportTeamDialog";
+import EditTeamDialog from "./dialogs/EditTeamDialog";
 import AdvancedDialog from "./dialogs/AdvancedDialog";
 import PokemonInfoDialog from "./dialogs/PokemonInfoDialog";
 import FiltersDialog from "./dialogs/FiltersDialog";
@@ -25,7 +25,7 @@ export default function Dialogs() {
     <>
       <TeamsDialog />
       <StoreTeamSettingsDialog />
-      <ImportTeamDialog />
+      <EditTeamDialog />
       <AdvancedDialog />
       <PokemonInfoDialog />
       <FiltersDialog />

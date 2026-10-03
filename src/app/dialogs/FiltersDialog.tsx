@@ -11,7 +11,8 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { POKEMON_TYPES, type SearchFilterKey } from "@/types";
+import type { SearchFilterKey } from "@/types";
+import { typesIn } from "@/shared/generation-data";
 import { FORMATS, formatGeneration } from "@/shared/formats";
 import { allAbilities } from "@/shared/names";
 import { REGIONS } from "@/shared/regions";
@@ -48,7 +49,7 @@ const FiltersDialog = observer(function FiltersDialog() {
     {
       key: "type",
       label: t.filters.type,
-      options: POKEMON_TYPES.map(type => ({
+      options: typesIn(store.currentTeam.generation).map(type => ({
         value: type,
         label: names.type(type),
       })),
@@ -78,7 +79,12 @@ const FiltersDialog = observer(function FiltersDialog() {
       key={key}
       select
       label={label}
-      value={store.filters[key]}
+      // The team's generation may no longer have the chosen type
+      value={
+        options.some(option => option.value === store.filters[key]) ?
+          store.filters[key]
+        : ""
+      }
       onChange={event => (store.filters[key] = event.target.value)}
       fullWidth
     >

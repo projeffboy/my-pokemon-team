@@ -13,12 +13,19 @@ test.describe("Pokemon Info Dialog - Unit Tests", () => {
     await expect(dialog).toContainText("Levitate, Heatproof, Heavy Metal");
     await expect(dialog.getByLabel("Defense: 116")).toBeVisible();
     await expect(dialog).toContainText("Total 500");
-    await expect(
-      dialog.getByRole("link", { name: "Smogon dex" }),
-    ).toHaveAttribute(
-      "href",
-      "https://www.smogon.com/dex/sv/pokemon/bronzong/",
-    );
+    const links = {
+      "Smogon dex": "https://www.smogon.com/dex/sv/pokemon/bronzong/",
+      Bulbapedia:
+        "https://bulbapedia.bulbagarden.net/wiki/Bronzong_(Pok%C3%A9mon)",
+      Serebii: "https://www.serebii.net/pokemon/bronzong/",
+      "Showdown dex": "https://dex.pokemonshowdown.com/pokemon/bronzong",
+    };
+    for (const [name, href] of Object.entries(links)) {
+      await expect(dialog.getByRole("link", { name })).toHaveAttribute(
+        "href",
+        href,
+      );
+    }
 
     // Weak to Fire and Ground, unless it has Levitate
     const weakTo = dialog

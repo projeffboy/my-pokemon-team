@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
-// Shows or hides the team tools, filters, and advanced sets on phones and tablets
+// Shows or hides the team toolbar, filters, and advanced sets on phones and tablets
 const MoreToggle = observer(function MoreToggle() {
   const { t } = useTranslation();
   const { isMoreOpen } = store;

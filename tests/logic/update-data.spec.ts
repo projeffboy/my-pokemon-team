@@ -5,6 +5,7 @@ import {
   nameChanges,
   pick,
   projectFormats,
+  projectPastGenerations,
   projectTypeChart,
   projections,
   renderTypedData,
@@ -342,4 +343,74 @@ test("natures keep their name and stat changes", () => {
     projections.Natures({ name: "Jolly", plus: "spe", minus: "spa" }),
   ).toEqual({ name: "Jolly", plus: "spe", minus: "spa" });
   expect(projections.Natures({ name: "Hardy" })).toEqual({ name: "Hardy" });
+});
+
+test("past generations resolve Showdown's mods, newest first, and keep what differs", () => {
+  const types = [
+    "Bug",
+    "Dark",
+    "Dragon",
+    "Electric",
+    "Fairy",
+    "Fighting",
+    "Fire",
+    "Flying",
+    "Ghost",
+    "Grass",
+    "Ground",
+    "Ice",
+    "Normal",
+    "Poison",
+    "Psychic",
+    "Rock",
+    "Steel",
+    "Water",
+  ];
+  const neutral = Object.fromEntries(types.map(type => [type, 0]));
+  const typechart = Object.fromEntries(
+    types.map(type => [
+      type.toLowerCase(),
+      { damageTaken: { ...neutral, prankster: 3 } },
+    ]),
+  );
+  const latest = {
+    pokedex: { a: { types: ["Fairy"] }, b: { types: ["Steel"] } },
+    moves: { m: { type: "Dark" } },
+    typechart,
+  };
+  const future = { inherit: true, isNonstandard: "Future" };
+  const past = projectPastGenerations(latest, {
+    5: {
+      typechart: { fairy: future },
+      pokedex: { a: { inherit: true, types: ["Normal"] } },
+    },
+    4: { pokedex: { b: null } },
+    3: { moves: { m: { inherit: true, type: "Normal" } } },
+    2: { pokedex: { c: { types: ["Bug"] } } },
+    1: {
+      typechart: {
+        dark: future,
+        steel: future,
+        poison: { damageTaken: { ...neutral, Bug: 1 } },
+      },
+    },
+  });
+  // Nothing changed in gens 6 to 8
+  expect(past[8]).toEqual({ types, pokemon: {}, moves: {} });
+  expect(past[6]).toEqual({ types, pokemon: {}, moves: {} });
+  // Gen 5 lost Fairy, so its chart differs from gen 6's; gen 4's is the same as gen 5's
+  expect(past[5]?.types).toHaveLength(17);
+  expect(past[5]?.pokemon).toEqual({ a: ["Normal"] });
+  expect(past[5]?.typechart?.Poison).toEqual(
+    Object.fromEntries(types.filter(t => t !== "Fairy").map(t => [t, 0])),
+  );
+  expect(past[5]?.typechart?.Fairy).toBeUndefined();
+  expect(past[4]?.typechart).toBeUndefined();
+  // Earlier mods inherit the later ones' changes
+  expect(past[4]?.pokemon).toEqual({ a: ["Normal"] });
+  expect(past[3]?.moves).toEqual({ m: "Normal" });
+  expect(past[2]?.pokemon).toEqual({ a: ["Normal"], c: ["Bug"] });
+  expect(past[1]?.types).toHaveLength(15);
+  expect(past[1]?.typechart?.Poison?.Bug).toBe(-1);
+  expect(past[1]?.typechart?.Poison).not.toHaveProperty("Dark");
 });

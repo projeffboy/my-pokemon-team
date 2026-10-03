@@ -21,6 +21,8 @@ export interface StoredState {
   nameView: NameView;
   // Unset until a language is chosen, so the browser's language applies
   locale?: Locale;
+  // Set once the player has dragged a slot tab or dismissed the hint about it
+  knowsSlotDrag?: boolean;
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
@@ -109,6 +111,7 @@ export function loadStoredState(
     sort: sanitizeSort(raw.sort),
     nameView: raw.nameView === "grid" ? "grid" : "list",
     ...(isLocale(raw.locale) && { locale: raw.locale }),
+    ...(raw.knowsSlotDrag === true && { knowsSlotDrag: true }),
   };
 }
 
@@ -157,6 +160,9 @@ export function mergeStoredState(
     sort: pick(base.sort, mine.sort, theirs.sort),
     nameView: pick(base.nameView, mine.nameView, theirs.nameView),
     ...(locale && { locale }),
+    ...((mine.knowsSlotDrag || theirs.knowsSlotDrag) && {
+      knowsSlotDrag: true,
+    }),
   };
 }
 

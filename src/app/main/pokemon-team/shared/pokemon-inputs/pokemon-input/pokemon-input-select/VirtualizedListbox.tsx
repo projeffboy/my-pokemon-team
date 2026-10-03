@@ -13,14 +13,19 @@ import {
 } from "react-window";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import type { NameView } from "@/types";
+import { isPokemonType, type NameView } from "@/types";
+import { moveTypeIn } from "@/shared/generation-data";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import typeIcons from "@/images/type-icons";
 
 const LISTBOX_PADDING = 0; // px
 const ITEM_SIZE = 48;
 export const GRID_COLUMNS = 5;
 const GRID_ROW_SIZE = 40;
+// The listbox's vertical padding, from MUI, and the view toggle's margins
+const PAPER_PADDING = 8;
+const TOGGLE_MARGIN = 8;
 
 interface SelectOption {
   value: string;
@@ -32,14 +37,38 @@ type ItemData = Array<[React.HTMLAttributes<HTMLLIElement>, SelectOption]>;
 
 type OptionProps = React.HTMLAttributes<HTMLLIElement> & { key?: React.Key };
 
+// A move's type, where the dropdown shows it
+const MoveTypeIcon = observer(function MoveTypeIcon({
+  move,
+}: {
+  move: string;
+}) {
+  const { names } = useTranslation();
+  const type = moveTypeIn(move, store.currentTeam.generation);
+  // A placeholder keeps the labels aligned for the few moves without a type
+  if (!type || !isPokemonType(type)) {
+    return <Box component="span" sx={{ width: 20, flexShrink: 0 }} />;
+  }
+  return (
+    <Box
+      component="img"
+      src={typeIcons[type]}
+      alt={names.type(type)}
+      sx={{ width: 20, height: 20, mt: 0.25, flexShrink: 0 }}
+    />
+  );
+});
+
 function RowComponent({
   index,
   itemData,
   pokemonProperty,
+  showMoveTypes,
   style,
 }: RowComponentProps & {
   itemData: ItemData;
   pokemonProperty: string;
+  showMoveTypes: boolean;
 }) {
   const row = itemData[index];
   if (!row) return null;
@@ -63,7 +92,8 @@ function RowComponent({
       {hasIcon && (
         <PokemonIcon pokemonProperty={pokemonProperty} value={option.value} />
       )}
-      <Box component="span" sx={{ flex: 1, pl: 0.25 }}>
+      {showMoveTypes && <MoveTypeIcon move={option.value} />}
+      <Box component="span" sx={{ flex: 1, pl: showMoveTypes ? 0.75 : 0.25 }}>
         {option.label}
       </Box>
     </Typography>
@@ -124,8 +154,12 @@ function GridRowComponent({
 // select passes what the listbox needs through this context instead
 export const VirtualizedListboxContext = React.createContext<{
   pokemonProperty: string;
+  // Whether the move options show their type, as the inputs do with the team tools
+  showMoveTypes: boolean;
   selectedValue: string;
   internalListRef: React.RefObject<ListImperativeAPI | null>;
+  // The room the popup has on the screen, measured when it opens
+  popupMaxHeight?: number;
 } | null>(null);
 
 // Virtualizes the Autocomplete's option list with react-window so only
@@ -141,7 +175,13 @@ const VirtualizedListbox = observer(
           "VirtualizedListbox must be used within a VirtualizedListboxContext",
         );
       }
-      const { pokemonProperty, selectedValue, internalListRef } = context;
+      const {
+        pokemonProperty,
+        showMoveTypes,
+        selectedValue,
+        internalListRef,
+        popupMaxHeight,
+      } = context;
       const isNameInput = pokemonProperty === "name";
       const isGrid = isNameInput && store.nameView === "grid";
       const itemData = children as ItemData;
@@ -175,13 +215,25 @@ const VirtualizedListbox = observer(
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, [isGrid]);
 
+      // The view toggle and the paper's padding take some of the popup's room
+      const toggleRef = React.useRef<HTMLDivElement>(null);
+      const [toggleHeight, setToggleHeight] = React.useState(0);
+      React.useLayoutEffect(() => {
+        setToggleHeight(toggleRef.current?.offsetHeight ?? 0);
+      }, [isNameInput]);
+
       // Uses the measured average row height (rows are shorter than ITEM_SIZE on
       // wider screens, where MUI's option minHeight is no longer forced to 48px)
-      // so the popup doesn't reserve extra empty space below the rows
+      // so the popup doesn't reserve extra empty space below the rows. Up to
+      // eight rows, or fewer where the screen has no room for them.
       const getHeight = () => {
-        if (isGrid) return Math.min(rowCount, 8) * GRID_ROW_SIZE;
-        const rowHeight = dynamicRowHeight.getAverageRowHeight();
-        return Math.min(itemCount, 8) * rowHeight;
+        const rowHeight =
+          isGrid ? GRID_ROW_SIZE : dynamicRowHeight.getAverageRowHeight();
+        const rows = Math.min(isGrid ? rowCount : itemCount, 8) * rowHeight;
+        if (popupMaxHeight === undefined) return rows;
+        const chrome =
+          PAPER_PADDING + (isNameInput ? toggleHeight + TOGGLE_MARGIN : 0);
+        return Math.min(rows, Math.max(2 * rowHeight, popupMaxHeight - chrome));
       };
 
       const { className, style, ...otherProps } = other;
@@ -190,6 +242,7 @@ const VirtualizedListbox = observer(
         <div ref={ref} {...otherProps}>
           {isNameInput && (
             <ToggleButtonGroup
+              ref={toggleRef}
               exclusive
               size="small"
               value={store.nameView}
@@ -199,10 +252,14 @@ const VirtualizedListbox = observer(
               // Keeps the focus, and so the popup, in the input
               onMouseDown={event => event.preventDefault()}
               aria-label={t.team.nameListView}
+              // As wide as its two labels, centred in the dropdown
               sx={{
                 display: "flex",
-                m: 0.5,
-                "& > *": { flex: 1, gap: 0.75, fontSize: 12, lineHeight: 1 },
+                justifyContent: "center",
+                width: "fit-content",
+                mx: "auto",
+                my: 0.5,
+                "& > *": { gap: 0.75, px: 0.75, fontSize: 12, lineHeight: 1 },
               }}
             >
               <ToggleButton value="list" aria-label={t.team.listView}>
@@ -236,7 +293,7 @@ const VirtualizedListbox = observer(
               rowCount={itemCount}
               rowHeight={dynamicRowHeight}
               rowComponent={RowComponent}
-              rowProps={{ itemData, pokemonProperty }}
+              rowProps={{ itemData, pokemonProperty, showMoveTypes }}
               // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
               style={{ height: getHeight() + 2 * LISTBOX_PADDING }}
               overscanCount={5}

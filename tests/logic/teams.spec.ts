@@ -30,6 +30,27 @@ test.describe("saved teams", () => {
     expect(store.addTeam().name).toBe("Team 4");
   });
 
+  test("New Team reuses an empty team of the same generation", ({ store }) => {
+    const first = store.currentTeamId;
+    expect(store.openEmptyTeam()).toMatchObject({
+      team: { id: first },
+      isNew: false,
+    });
+
+    store.team[0].name = "kingdra";
+    const { team: second, isNew } = store.openEmptyTeam();
+    expect(isNew).toBe(true);
+    expect(store.currentTeamId).toBe(second.id);
+
+    // Another empty team is reused, but not one of another generation
+    store.selectTeam(first);
+    expect(store.openEmptyTeam().team.id).toBe(second.id);
+    store.currentTeam.generation = 8;
+    store.selectTeam(first);
+    expect(store.openEmptyTeam().isNew).toBe(true);
+    expect(store.teams).toHaveLength(3);
+  });
+
   test("selects, renames, duplicates, and deletes teams", ({ store }) => {
     const first = store.currentTeam;
     first.team[0].name = "milotic";
@@ -107,6 +128,32 @@ test.describe("slot tools", () => {
     expect(store.teamPokemon.slice(0, 3)).toEqual(["kingdra", "", "milotic"]);
     store.swapSlots(2, 6);
     expect(store.team[2].name).toBe("milotic");
+  });
+
+  test("moves a pokemon to another slot, shifting the ones in between", ({
+    store,
+  }) => {
+    store.team[0].name = "clodsire";
+    store.team[1].name = "kilowattrel";
+    store.team[3].name = "bombirdier";
+    store.moveSlot(0, 3);
+    expect(store.teamPokemon).toEqual([
+      "kilowattrel",
+      "",
+      "bombirdier",
+      "clodsire",
+      "",
+      "",
+    ]);
+    store.moveSlot(3, 1);
+    expect(store.teamPokemon.slice(0, 4)).toEqual([
+      "kilowattrel",
+      "clodsire",
+      "",
+      "bombirdier",
+    ]);
+    store.moveSlot(1, 6);
+    expect(store.team[1].name).toBe("clodsire");
   });
 
   test("randomizes a slot from the filtered pokemon with a full set", ({

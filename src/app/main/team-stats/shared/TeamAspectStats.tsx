@@ -9,11 +9,13 @@ import Fade from "@mui/material/Fade";
 import { visuallyHidden } from "@mui/utils";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { POKEMON_TYPES, type TeamStatType } from "@/types";
-import { useIsLgDown } from "@/app/shared/WidthContext";
+import type { TeamStatType } from "@/types";
+import { typesIn } from "@/shared/generation-data";
+import { useBreakpoint, useIsLgDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
-import { TYPE_COLORS } from "@/app/shared/type-colors";
+import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
+import typeIcons from "@/images/type-icons";
 
 // The 18 type scores of one team stat. The heading can be hidden when a tab names the stat.
 const TeamAspectStats = observer(function TeamAspectStats({
@@ -27,6 +29,10 @@ const TeamAspectStats = observer(function TeamAspectStats({
 }) {
   const { t, names } = useTranslation();
   const isLgDown = useIsLgDown();
+  // Only 400-599px phones have tiles wide enough for an icon beside the
+  // abbreviation; the tile already names the type. The icon is left out rather
+  // than hidden, since the feedback screenshot pays for every image.
+  const hasIcon = useBreakpoint() === "xs";
   const title =
     teamStatType === "typeDefence" ?
       t.stats.teamDefence
@@ -86,19 +92,25 @@ const TeamAspectStats = observer(function TeamAspectStats({
       </Grid>
       <Grid container size={12}>
         {/* grid of type scores */}
-        {POKEMON_TYPES.map((type, i) => (
+        {typesIn(store.currentTeam.generation).map((type, i) => (
           <Grid key={type} size={2}>
-            <Box sx={{ px: { xs: 0.125, md: 0.375 }, py: 0.375 }}>
+            <Box sx={{ px: { xxs: 0.125, md: 0.375 }, py: 0.375 }}>
               <ButtonBase
                 sx={{
                   display: "block",
-                  color: "common.white",
+                  color: TYPE_TEXT_COLORS[type],
                   borderRadius: "5px",
-                  width: { xs: "100%", md: "75%" },
+                  width: { xxs: "100%", md: "75%" },
                   mx: "auto",
                   font: "inherit",
                   lineHeight: 1.25,
                   bgcolor: TYPE_COLORS[type],
+                  // The score below is part of the touch target
+                  "&::after": {
+                    content: '""',
+                    position: "absolute",
+                    inset: "-3px 0 -24px",
+                  },
                 }}
                 aria-describedby={
                   popover?.index === i ? `mouse-over-popover-${i}` : undefined
@@ -111,6 +123,19 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 onKeyDown={handleKeyDown}
                 onClick={e => handleClick(e, i)}
               >
+                {hasIcon && (
+                  <Box
+                    component="img"
+                    src={typeIcons[type]}
+                    alt=""
+                    sx={{
+                      width: 14,
+                      height: 14,
+                      mr: 0.375,
+                      verticalAlign: "-2px",
+                    }}
+                  />
+                )}
                 {isLgDown ? t.typeAbbreviations[type] : names.type(type)}
               </ButtonBase>
               <Popper

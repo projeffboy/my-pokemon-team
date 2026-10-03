@@ -1,6 +1,11 @@
 import type { StorageManager } from "@mui/material/styles";
 
-const ONE_WEEK_IN_SECONDS = 7 * 24 * 60 * 60;
+// A light or dark choice lasts three months after the player's last visit
+const THREE_MONTHS_IN_SECONDS = 91 * 24 * 60 * 60;
+
+const writeCookie = (name: string, value: string) => {
+  document.cookie = `${name}=${encodeURIComponent(value)}; Max-Age=${THREE_MONTHS_IN_SECONDS}; Path=/; SameSite=Lax`;
+};
 
 export const cookieStorageManager: StorageManager = ({ key }) => ({
   get(defaultValue) {
@@ -15,9 +20,10 @@ export const cookieStorageManager: StorageManager = ({ key }) => ({
         decodeURIComponent(cookie.slice(cookieName.length))
       : defaultValue;
 
-    return storedValue === "light" || storedValue === "dark" ?
-        storedValue
-      : defaultValue;
+    if (storedValue !== "light" && storedValue !== "dark") return defaultValue;
+    // Each visit restarts the three months of a saved choice
+    if (cookie) writeCookie(encodeURIComponent(key), storedValue);
+    return storedValue;
   },
   set(value) {
     if (typeof document === "undefined") return;
@@ -28,7 +34,7 @@ export const cookieStorageManager: StorageManager = ({ key }) => ({
       return;
     }
 
-    document.cookie = `${cookieName}=${encodeURIComponent(value)}; Max-Age=${ONE_WEEK_IN_SECONDS}; Path=/; SameSite=Lax`;
+    writeCookie(cookieName, value);
   },
   subscribe() {
     return () => {};

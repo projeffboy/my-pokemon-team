@@ -11,15 +11,22 @@ import Typography from "@mui/material/Typography";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import pokedex from "@/data/pokedex";
-import { POKEMON_TYPES, STAT_KEYS } from "@/types";
+import { STAT_KEYS } from "@/types";
+import { typesIn } from "@/shared/generation-data";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
 import { baseStatTotal } from "@/shared/set-details";
-import { smogonDexUrl } from "@/shared/generations";
+import {
+  bulbapediaUrl,
+  serebiiDexUrl,
+  showdownDexUrl,
+  smogonDexUrl,
+} from "@/shared/dex-urls";
 import { introducedIn } from "@/store/filtering";
 import { scoreToMultiplier } from "@/store/matrix";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import PokemonSprite from "@/app/shared/PokemonSprite";
-import { TYPE_COLORS } from "@/app/shared/type-colors";
+import dexLogos from "@/images/dex-logos";
+import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
 const MAX_BASE_STAT = 255;
@@ -32,6 +39,7 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
   const teamIndex = dialog?.teamIndex ?? 0;
   const member = store.team[teamIndex];
   const pokemon = member?.name ?? "";
+  const { generation } = store.currentTeam;
   const entry = pokedex[pokemon];
   const isOpen = dialog?.name === "info" && !!entry;
   const close = () => store.closeDialog();
@@ -43,25 +51,57 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
       size="small"
       sx={{
         bgcolor: TYPE_COLORS[type],
-        color: "common.white",
+        color: TYPE_TEXT_COLORS[type],
         fontWeight: 500,
       }}
     />
   );
   const weaknesses =
     member ?
-      POKEMON_TYPES.map(type => ({
-        type,
-        multiplier: scoreToMultiplier(
-          typeAgainstPokemon(type, pokemon, member.ability, member.item),
-        ),
-      })).filter(({ multiplier }) => multiplier > 1)
+      typesIn(generation)
+        .map(type => ({
+          type,
+          multiplier: scoreToMultiplier(
+            typeAgainstPokemon(
+              type,
+              pokemon,
+              member.ability,
+              member.item,
+              generation,
+            ),
+          ),
+        }))
+        .filter(({ multiplier }) => multiplier > 1)
     : [];
   const about = [
     `#${entry?.num ?? "?"}`,
     entry?.forme,
     entry && t.generation(introducedIn(entry)),
   ].filter(part => part);
+
+  const baseSpeciesName = entry?.baseSpecies ?? entry?.name ?? pokemon;
+  const dexLinks = [
+    {
+      label: t.info.smogonDex,
+      href: smogonDexUrl(generation, baseSpeciesName),
+      logo: dexLogos.smogon,
+    },
+    {
+      label: t.info.bulbapedia,
+      href: bulbapediaUrl(baseSpeciesName),
+      logo: dexLogos.bulbapedia,
+    },
+    {
+      label: t.info.serebii,
+      href: serebiiDexUrl(generation, entry?.num ?? 0, baseSpeciesName),
+      logo: dexLogos.serebii,
+    },
+    {
+      label: t.info.showdownDex,
+      href: showdownDexUrl(pokemon),
+      logo: dexLogos.showdown,
+    },
+  ];
 
   return (
     <Dialog
@@ -83,7 +123,9 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
               </Box>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                 <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
-                  {pokemonTypes(pokemon).map(type => typeChip(type))}
+                  {pokemonTypes(pokemon, generation).map(type =>
+                    typeChip(type),
+                  )}
                 </Box>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
                   {about.join(" · ")}
@@ -169,16 +211,39 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
               </Box>
             </Box>
           </DialogContent>
-          <DialogActions>
-            <Link
-              href={smogonDexUrl(
-                store.currentTeam.generation,
-                entry.baseSpecies ?? entry.name ?? pokemon,
-              )}
-              sx={{ mr: "auto", ml: 1 }}
+          <DialogActions sx={{ flexWrap: "wrap", rowGap: 1 }}>
+            {/* The pokemon in the other dexes */}
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                columnGap: 2,
+                rowGap: 0.5,
+                mr: "auto",
+                ml: 1,
+              }}
             >
-              {t.info.smogonDex}
-            </Link>
+              {dexLinks.map(({ label, href, logo }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  sx={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 0.75,
+                  }}
+                >
+                  {/* The site's logo; the link names the site */}
+                  <Box
+                    component="img"
+                    src={logo}
+                    alt=""
+                    sx={{ width: 16, height: 16 }}
+                  />
+                  {label}
+                </Link>
+              ))}
+            </Box>
             <Button onClick={close}>{t.close}</Button>
           </DialogActions>
         </>

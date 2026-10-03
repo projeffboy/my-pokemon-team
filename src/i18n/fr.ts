@@ -19,32 +19,27 @@ const fr: Messages = {
   generationSelect: "Génération",
   championsGeneration: "Gén. 9 · Champions",
   championsGenerationShort: "Gén. 9 (Champions)",
-  championsGame: "Pokémon Champions",
-  generationGames: {
-    9: "Écarlate / Violet · Légendes : Z-A",
-    8: "Épée / Bouclier · Diamant Étincelant / Perle Scintillante · Légendes : Arceus",
-    7: "Soleil / Lune · Ultra-Soleil / Ultra-Lune · Let's Go",
-    6: "X / Y · Rubis Oméga / Saphir Alpha",
-    5: "Noir / Blanc · Noir 2 / Blanc 2",
-    4: "Diamant / Perle / Platine · Or HeartGold / Argent SoulSilver",
-    3: "Rubis / Saphir / Émeraude · Rouge Feu / Vert Feuille",
-    2: "Or / Argent / Cristal",
-    1: "Rouge / Bleu / Jaune",
-  } as Record<number, string>,
   language: "Langue",
   languageFailed: "La langue n'a pas pu être chargée. Réessayez.",
   feedback: {
     button: "Envoyer un commentaire",
     title: "Envoyer un commentaire",
-    description:
-      "Vous avez trouvé un bug ou vous avez une suggestion ? L'envoi ouvre votre application de messagerie avec un message adressé à {email}. Joignez le lien de votre équipe pour que le problème puisse être reproduit.",
+    description: "Un bug ou une idée ? Dites-le-moi.",
     label: "Votre commentaire",
     placeholder: "ex. : Méganium n'a pas Éclat Magique",
     attachLink: "Joindre le lien de mon équipe",
-    subject: "My Pokemon Team feedback",
-    myTeam: "Mon équipe :",
+    attachScreenshot: "Joindre une capture d'écran de la page",
+    addImage: "Ajouter une image",
+    imageUnreadable:
+      "Impossible de lire cette image. Essayez un PNG ou un JPEG.",
+    imagesTooLarge:
+      "Les images sont trop lourdes pour être envoyées ensemble. Retirez-en une d'abord.",
+    email: "Votre e-mail (facultatif)",
+    emailHelper: "Pour vous répondre",
     caption: "Avis",
     send: "Envoyer",
+    sent: "Merci ! Votre commentaire a été envoyé.",
+    failed: "L'envoi a échoué. Réessayez, ou écrivez à {email}.",
   },
 
   // Buttons shared by several dialogs
@@ -63,12 +58,12 @@ const fr: Messages = {
   // The team column
   team: {
     teams: "Équipes",
-    randomize: "Aléatoire",
-    randomized: "Équipe générée au hasard",
-    shareTeam: "Partager l'équipe",
+    randomizedTeam: "Équipe générée au hasard",
+    randomizedPokemon: "Pokémon généré au hasard",
+    shareTeam: "Partager",
     shareTeamLink: "Partager le lien de l'équipe Pokémon",
     teamActions: "Actions de l'équipe",
-    manageTeam: "Gérer l'équipe",
+    manageTeam: "Gérer",
     manageTeamMenu: "Gérer l'équipe",
     nameAndFormat: "Nom et format",
     duplicate: "Dupliquer",
@@ -102,8 +97,9 @@ const fr: Messages = {
     advancedFor: (slot: number) =>
       `Options avancées pour l'emplacement ${slot}`,
     about: (pokemon: string) => `À propos de ${pokemon}`,
-    previousSlot: "Déplacer vers l'emplacement précédent",
-    nextSlot: "Déplacer vers l'emplacement suivant",
+    dragHint: "Maintenez et glissez pour réordonner",
+    moveToSlot: (pokemon: string) =>
+      `Déplacer ${pokemon} vers un autre emplacement`,
     name: "Nom",
     move: "Capacité",
     item: "Objet",
@@ -129,14 +125,12 @@ const fr: Messages = {
   },
 
   // The undo and redo buttons
-  history: "Historique",
   undo: "Annuler",
   redo: "Rétablir",
 
   // The analysis panel
   stats: {
     teamStats: "Stats de l'équipe",
-    teamStatsAndChecklist: "Stats et checklist de l'équipe",
     teamAnalysis: "Analyse de l'équipe",
     teamDefence: "Défense de l'équipe",
     teamTypeCoverage: "Couverture de types de l'équipe",
@@ -144,9 +138,8 @@ const fr: Messages = {
     matrixAnalysis: "Analyse matricielle",
     defence: "Défense",
     coverage: "Couverture",
-    teamStat: "Stat de l'équipe",
-    backToTeamStats: "Retour aux stats de l'équipe",
-    moreAnalyses: "Plus d'analyses",
+    checklist: "Checklist",
+    matrix: "Matrice",
     score: (type: string, score: string) => `Score ${type} : ${score}`,
     selectPokemonFirst: "Sélectionnez d'abord un Pokémon.",
     typeDoes: "{type} inflige...",
@@ -190,13 +183,17 @@ const fr: Messages = {
     coverageDescription:
       "L'efficacité de la meilleure capacité de chaque Pokémon contre chaque type.",
     tapForReason: "Touchez une case pour voir la raison.",
+    // The column that sums each row, as the Team Defence and Team Type Coverage scores do
+    teamScore: "Score de l'équipe",
     slot: (slot: number, pokemon: string | undefined) =>
       `Emplacement ${slot}${pokemon ? ` : ${pokemon}` : ""}`,
-    weak: "×2 faiblesse",
-    quadruple: "×4",
-    resists: "½ résistance",
-    quarter: "¼",
-    immune: "0 immunité",
+    weak: "Faiblesse",
+    resists: "Résistance",
+    immune: "Immunité",
+    // The same legend for the coverage matrix, where a strong hit is the good outcome
+    superEffective: "Super efficace",
+    resisted: "Peu efficace",
+    noEffect: "Aucun effet",
     defenceReason: (
       type: string,
       multiplier: number,
@@ -284,6 +281,9 @@ const fr: Messages = {
     statValue: (stat: string, value: number) => `${stat} : ${value}`,
     weakTo: "Faible contre",
     smogonDex: "Dex Smogon",
+    bulbapedia: "Bulbapedia",
+    serebii: "Serebii",
+    showdownDex: "Dex Showdown",
   },
 
   // The Filters and Sort dialogs
@@ -309,20 +309,30 @@ const fr: Messages = {
 
   // The Teams, Name and Format, Import, and Delete dialogs
   teams: {
-    description:
-      "Touchez une équipe pour l'ouvrir. Le bouton ⋮ contient ses paramètres et ses actions.",
     newTeam: "Nouvelle équipe",
     randomTeam: "Équipe aléatoire",
+    randomTeamLabels: [
+      "Randomiser l'équipe",
+      "Équipe aléatoire",
+      "Randomiser",
+      "Aléatoire",
+    ],
     savedTeams: "Équipes enregistrées",
     optionsFor: (team: string) => `Options de ${team}`,
     load: (team: string) => `Charger ${team}`,
     importTeam: "Importer une équipe",
     exportAll: "Tout exporter",
+    copyAll: "Tout copier",
     savedInBrowser: "Les équipes sont enregistrées dans ce navigateur.",
-    open: "Ouverte",
+    // The chip on the team being edited, and the one on each team that a tap opens
+    current: "Ouverte",
+    open: "Ouvrir",
     newTeamCreated: "Nouvelle équipe vide créée",
+    emptyTeamOpened: "Équipe vide ouverte",
     randomTeamCreated: "Équipe aléatoire créée",
     exported: "Toutes les équipes exportées",
+    copiedAll: "Toutes les équipes copiées",
+    notCopiedAll: "Impossible de copier les équipes.",
     exportFilename: "my-pokemon-teams.txt",
   },
   settings: {
@@ -432,9 +442,9 @@ const fr: Messages = {
     teams: "Équipes",
     teamsQuestion: "Où mes équipes sont-elles enregistrées ?",
     teamsAnswer:
-      "Vos équipes sont enregistrées dans ce navigateur : elles sont donc là à votre retour, mais pas sur un autre appareil. Le bouton Équipes les liste, et le menu de chaque équipe permet de la renommer, de choisir sa génération et son format, de la dupliquer, de la partager ou de la supprimer. Tout exporter télécharge toutes les équipes en texte Showdown, qu'Importer une équipe relit ensuite. La barre d'adresse contient toujours l'équipe actuelle : copier l'adresse (ou appuyer sur Partager l'équipe) la partage.",
+      "Vos équipes sont enregistrées dans ce navigateur : elles sont donc là à votre retour, mais pas sur un autre appareil. Le bouton Équipes les liste, et le menu de chaque équipe permet de la renommer, de choisir sa génération et son format, de la dupliquer, de la partager ou de la supprimer. Tout exporter télécharge toutes les équipes en texte Showdown, qu'Importer une équipe relit ensuite. La barre d'adresse contient toujours l'équipe actuelle : copier l'adresse (ou appuyer sur Partager) la partage.",
     teamsAnswer2:
-      "Sur téléphone et tablette, le bouton Plus affiche les outils d'équipe, les boutons Filtres et Trier, et le bouton Avancé. Les boutons Annuler et Rétablir en bas parcourent les modifications de l'équipe actuelle.",
+      "Le bouton Plus affiche les outils d'équipe, les boutons Filtres et Trier, et le bouton Avancé. Annuler et Rétablir parcourent les modifications de l'équipe actuelle ; sur téléphone et tablette, ils se trouvent dans le menu Gérer.",
     generations: "Générations",
     generationsQuestion: "Que change la génération ?",
     generationsAnswer:
@@ -446,7 +456,7 @@ const fr: Messages = {
     matrix: "Analyse matricielle",
     matrixQuestion: "D'où viennent les scores par type ?",
     matrixAnswer:
-      "La matrice, dans le menu du panneau d'analyse, montre chaque type contre chaque Pokémon. Défense indique l'efficacité de chaque type attaquant contre chaque Pokémon, talent et objet compris, et Couverture indique l'efficacité de la meilleure capacité offensive de chaque Pokémon contre chaque type. Touchez une case pour voir la raison.",
+      "La matrice, dans le panneau d'analyse, montre chaque type contre chaque Pokémon. Défense indique l'efficacité de chaque type attaquant contre chaque Pokémon, talent et objet compris, et Couverture indique l'efficacité de la meilleure capacité offensive de chaque Pokémon contre chaque type. Touchez une case pour voir la raison.",
     defence: "Défense de l'équipe",
     defenceQuestion:
       "Comment la défense de type de votre équipe est-elle calculée ?",

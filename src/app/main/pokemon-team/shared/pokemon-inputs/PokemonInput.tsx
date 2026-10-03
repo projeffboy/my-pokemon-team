@@ -10,10 +10,12 @@ const PokemonInput = observer(function PokemonInput({
   placeholder,
   pokemonProperty,
   teamIndex,
+  leadingIcon = false,
 }: {
   placeholder: string;
   pokemonProperty: PokemonProperties;
   teamIndex: number;
+  leadingIcon?: boolean;
 }) {
   const handleChange = (inputValue: string) => {
     if (pokemonProperty === "name") {
@@ -69,6 +71,7 @@ const PokemonInput = observer(function PokemonInput({
       value={member?.[pokemonProperty] ?? ""}
       pokemonProperty={pokemonProperty}
       teamIndex={teamIndex}
+      leadingIcon={leadingIcon}
     />
   );
 });

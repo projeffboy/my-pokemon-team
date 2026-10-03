@@ -1,4 +1,4 @@
-export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
+export type Breakpoint = "xxs" | "xs" | "sm" | "md" | "lg" | "xl";
 
 export const STAT_KEYS = ["hp", "atk", "def", "spa", "spd", "spe"] as const;
 export type StatKey = (typeof STAT_KEYS)[number];
@@ -72,6 +72,23 @@ export type TypeChart = Record<
 >;
 
 export type Items = Record<string, { name?: string; spritenum?: number }>;
+
+// A past generation's type chart holds only the types that existed then
+export type PastTypeChart = Partial<
+  Record<PokemonType, Partial<Record<PokemonType, number>>>
+>;
+
+// How a past generation differs from the latest one. The pokemon and moves are
+// those whose types differed, and the chart is there only where it differs from
+// the next generation's.
+export interface PastGeneration {
+  types: PokemonType[];
+  pokemon: Record<string, NonNullable<PokedexEntry["types"]>>;
+  moves: Record<string, NonNullable<MoveEntry["type"]>>;
+  typechart?: PastTypeChart;
+}
+
+export type PastGenerations = Partial<Record<Generation, PastGeneration>>;
 
 export type Natures = Record<
   string,

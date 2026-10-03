@@ -9,6 +9,7 @@ import {
   moveType as getMoveType,
 } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/shared/PokemonIcon";
+import { TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import { MOVE_KEYS, type PokemonType } from "@/types";
 
 const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
@@ -19,15 +20,20 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   type: PokemonType;
 }) {
   const { t, names } = useTranslation();
+  const { generation } = store.currentTeam;
   const superEffectiveMoves = store.team.flatMap((member, i) =>
     MOVE_KEYS.flatMap(key => {
       const { name: pokemon, ability } = member;
       const move = member[key];
-      if (!move || moveAgainstType(move, type, pokemon, ability) !== -1) {
+      if (
+        !move ||
+        moveAgainstType(move, type, pokemon, ability, generation) !== -1
+      ) {
         return [];
       }
-      const moveType = getMoveType(move, pokemon, ability);
-      const isStab = !!moveType && pokemonTypes(pokemon).includes(moveType);
+      const moveType = getMoveType(move, pokemon, ability, generation);
+      const isStab =
+        !!moveType && pokemonTypes(pokemon, generation).includes(moveType);
       return [{ key: `${i}-${key}`, move, pokemon, isStab }];
     }),
   );
@@ -37,7 +43,15 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
       <p>
         {fill(t.stats.superEffectiveAgainst, {
           type: (
-            <Box component="span" sx={{ color: typeColor }}>
+            <Box
+              component="span"
+              sx={{
+                bgcolor: typeColor,
+                color: TYPE_TEXT_COLORS[type],
+                px: 0.5,
+                borderRadius: 0.5,
+              }}
+            >
               {names.type(type)}
             </Box>
           ),

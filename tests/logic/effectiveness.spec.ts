@@ -1,6 +1,11 @@
 import { test, expect } from "@playwright/test";
 import type { PokemonType } from "@/types";
-import { typeAgainstPokemon } from "@/store/shared/effectiveness";
+import {
+  moveAgainstType,
+  moveType,
+  typeAgainstPokemon,
+} from "@/store/shared/effectiveness";
+import { typechartIn, typesIn } from "@/shared/generation-data";
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
 test.describe("type effectiveness", () => {
@@ -91,4 +96,45 @@ test.describe("type effectiveness", () => {
 test("MissingNo's Bird type leaves its Normal matchups intact", () => {
   expect(typeAgainstPokemon("Fighting", "missingno")).toBe(-1);
   expect(typeAgainstPokemon("Ghost", "missingno")).toBe(3);
+});
+
+test.describe("past generations", () => {
+  test("have fewer types, sharing a chart until it changed", () => {
+    expect(typesIn(1)).toHaveLength(15);
+    expect(typesIn(1)).not.toContain("Dark");
+    expect(typesIn(5)).toHaveLength(17);
+    expect(typesIn(5)).not.toContain("Fairy");
+    expect(typesIn(6)).toHaveLength(18);
+    expect(typechartIn(2)).toBe(typechartIn(5));
+    expect(typechartIn(6)).toBe(typechartIn(9));
+  });
+
+  // Gen 1 had no Dark or Steel, Psychic was immune to Ghost, Fire did not resist
+  // Ice, and Bug and Poison were weak to each other
+  const gen1Cases: [PokemonType, string, number, number][] = [
+    ["Ghost", "alakazam", 3, -1],
+    ["Ground", "magnemite", -1, -2],
+    ["Ice", "charmander", 0, 1],
+    ["Bug", "weezing", -1, 1],
+  ];
+  for (const [type, pokemon, gen1, gen9] of gen1Cases) {
+    test(`${type} against ${pokemon} scores ${gen1} in gen 1`, () => {
+      expect(typeAgainstPokemon(type, pokemon, "", "", 1)).toBe(gen1);
+      expect(typeAgainstPokemon(type, pokemon)).toBe(gen9);
+    });
+  }
+
+  test("Fairy pokemon had their old types, and Steel resisted Ghost, until gen 6", () => {
+    expect(typeAgainstPokemon("Fighting", "clefable", "", "", 5)).toBe(-1);
+    expect(typeAgainstPokemon("Fighting", "clefable", "", "", 6)).toBe(1);
+    expect(typeAgainstPokemon("Ghost", "bronzong", "", "", 5)).toBe(0);
+    expect(typeAgainstPokemon("Ghost", "bronzong")).toBe(-1);
+  });
+
+  test("Bite was a Normal move in gen 1", () => {
+    expect(moveType("bite", "arbok", "", 1)).toBe("Normal");
+    expect(moveType("bite", "arbok")).toBe("Dark");
+    expect(moveAgainstType("bite", "Ghost", "arbok", "", 1)).toBe(2);
+    expect(moveAgainstType("bite", "Ghost", "arbok")).toBe(-1);
+  });
 });

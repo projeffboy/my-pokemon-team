@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Box from "@mui/material/Box";
+import Collapse from "@mui/material/Collapse";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { observer } from "mobx-react-lite";
@@ -17,30 +18,32 @@ const TeamBar = observer(function TeamBar({ tabs }: { tabs: ReactNode }) {
       size={12}
       sx={[
         { display: "flex", flexDirection: "column" },
-        // One shadow around the joined shape instead of one per part
+        // One shadow around the joined shape instead of one per part. The parts keep
+        // their elevation, which lightens them in the dark scheme.
         isMoreOpen && {
+          "& > .MuiPaper-root, & > div > .MuiPaper-root": { boxShadow: "none" },
           filter:
             "drop-shadow(0 1px 1px rgba(0,0,0,0.14)) drop-shadow(0 1px 3px rgba(0,0,0,0.12))",
         },
       ]}
     >
-      {isMoreOpen && (
-        <Paper elevation={0} sx={{ borderRadius: "4px 4px 0 4px" }}>
+      {/* The toolbar slides open and shut */}
+      <Collapse in={isMoreOpen}>
+        <Paper sx={{ borderRadius: "4px 4px 0 4px", mb: 1 }}>
           <TeamToolbar />
         </Paper>
-      )}
+      </Collapse>
       <Box sx={{ display: "flex", gap: 1 }}>
+        <Paper sx={{ flexGrow: 1, minWidth: 0 }}>{tabs}</Paper>
         <Paper
-          elevation={isMoreOpen ? 0 : 1}
-          sx={{ flexGrow: 1, minWidth: 0, mt: isMoreOpen ? 1 : 0 }}
-        >
-          {tabs}
-        </Paper>
-        <Paper
-          elevation={isMoreOpen ? 0 : 1}
           sx={[
             { display: "flex", width: 56, flexShrink: 0 },
-            isMoreOpen && { borderRadius: "0 0 4px 4px" },
+            // Overlaps the toolbar by a pixel, so no line shows where they join
+            isMoreOpen && {
+              borderRadius: "0 0 4px 4px",
+              mt: "-1px",
+              pt: "1px",
+            },
           ]}
         >
           <MoreToggle />

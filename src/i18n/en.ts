@@ -12,32 +12,26 @@ const en = {
   generationSelect: "Generation",
   championsGeneration: "Gen 9 · Champions",
   championsGenerationShort: "Gen 9 (Champions)",
-  championsGame: "Pokemon Champions",
-  generationGames: {
-    9: "Scarlet / Violet · Legends: Z-A",
-    8: "Sword / Shield · Brilliant Diamond / Shining Pearl · Legends: Arceus",
-    7: "Sun / Moon · Ultra Sun / Ultra Moon · Let's Go",
-    6: "X / Y · Omega Ruby / Alpha Sapphire",
-    5: "Black / White · Black 2 / White 2",
-    4: "Diamond / Pearl / Platinum · HeartGold / SoulSilver",
-    3: "Ruby / Sapphire / Emerald · FireRed / LeafGreen",
-    2: "Gold / Silver / Crystal",
-    1: "Red / Blue / Yellow",
-  } as Record<number, string>,
   language: "Language",
   languageFailed: "That language could not be loaded. Try again.",
   feedback: {
     button: "Send feedback",
     title: "Send Feedback",
-    description:
-      "Found a bug or have a suggestion? Sending opens your email app with the message addressed to {email}. Attach your team link so problems can be reproduced.",
+    description: "Found a bug or have an idea? Let me know.",
     label: "Your feedback",
     placeholder: "e.g. Meganium is missing Dazzling Gleam",
     attachLink: "Attach my team link",
-    subject: "My Pokemon Team feedback",
-    myTeam: "My team:",
+    attachScreenshot: "Attach a screenshot of the page",
+    addImage: "Add image",
+    imageUnreadable: "That image couldn't be read. Try a PNG or JPEG.",
+    imagesTooLarge:
+      "The images are too large to send together. Remove one first.",
+    email: "Your email (optional)",
+    emailHelper: "Only if you want a reply",
     caption: "Feedback",
     send: "Send",
+    sent: "Thanks! Your feedback was sent.",
+    failed: "It couldn't be sent. Try again, or email {email}.",
   },
 
   // Buttons shared by several dialogs
@@ -56,12 +50,12 @@ const en = {
   // The team column
   team: {
     teams: "Teams",
-    randomize: "Randomize",
-    randomized: "Randomized",
-    shareTeam: "Share Team",
+    randomizedTeam: "Randomized team",
+    randomizedPokemon: "Randomized pokemon",
+    shareTeam: "Share",
     shareTeamLink: "Share pokemon team link",
     teamActions: "Team actions",
-    manageTeam: "Manage Team",
+    manageTeam: "Manage",
     manageTeamMenu: "Manage team",
     nameAndFormat: "Name and Format",
     duplicate: "Duplicate",
@@ -94,8 +88,8 @@ const en = {
     advanced: "Advanced",
     advancedFor: (slot: number) => `Advanced options for slot ${slot}`,
     about: (pokemon: string) => `About ${pokemon}`,
-    previousSlot: "Move to the previous slot",
-    nextSlot: "Move to the next slot",
+    dragHint: "Hold and drag to reorder",
+    moveToSlot: (pokemon: string) => `Move ${pokemon} to another slot`,
     name: "Name",
     move: "Move",
     item: "Item",
@@ -121,14 +115,12 @@ const en = {
   },
 
   // The undo and redo buttons
-  history: "History",
   undo: "Undo",
   redo: "Redo",
 
   // The analysis panel
   stats: {
     teamStats: "Team Stats",
-    teamStatsAndChecklist: "Team Stats and Checklist",
     teamAnalysis: "Team analysis",
     teamDefence: "Team Defence",
     teamTypeCoverage: "Team Type Coverage",
@@ -136,9 +128,8 @@ const en = {
     matrixAnalysis: "Matrix Analysis",
     defence: "Defence",
     coverage: "Coverage",
-    teamStat: "Team stat",
-    backToTeamStats: "Back to Team Stats",
-    moreAnalyses: "More analyses",
+    checklist: "Checklist",
+    matrix: "Matrix",
     score: (type: string, score: string) => `${type} score: ${score}`,
     selectPokemonFirst: "First select a pokemon.",
     typeDoes: "{type} does...",
@@ -180,13 +171,17 @@ const en = {
     defenceDescription: "How hard each attacking type hits each pokemon.",
     coverageDescription: "How hard each pokemon's best move hits each type.",
     tapForReason: "Tap a cell for the reason.",
+    // The column that sums each row, as the Team Defence and Team Type Coverage scores do
+    teamScore: "Team score",
     slot: (slot: number, pokemon: string | undefined) =>
       `Slot ${slot}${pokemon ? `: ${pokemon}` : ""}`,
-    weak: "×2 weak",
-    quadruple: "×4",
-    resists: "½ resists",
-    quarter: "¼",
-    immune: "0 immune",
+    weak: "Weak",
+    resists: "Resists",
+    immune: "Immune",
+    // The same legend for the coverage matrix, where a strong hit is the good outcome
+    superEffective: "Super effective",
+    resisted: "Resisted",
+    noEffect: "No effect",
     defenceReason: (
       type: string,
       multiplier: number,
@@ -271,6 +266,9 @@ const en = {
     statValue: (stat: string, value: number) => `${stat}: ${value}`,
     weakTo: "Weak to",
     smogonDex: "Smogon dex",
+    bulbapedia: "Bulbapedia",
+    serebii: "Serebii",
+    showdownDex: "Showdown dex",
   },
 
   // The Filters and Sort dialogs
@@ -296,20 +294,26 @@ const en = {
 
   // The Teams, Name and Format, Import, and Delete dialogs
   teams: {
-    description:
-      "Tap a team to open it. The ⋮ button has its settings and actions.",
     newTeam: "New Team",
     randomTeam: "Random Team",
+    // The toolbar shows the first one that fits on one line
+    randomTeamLabels: ["Randomize Team", "Random Team", "Randomize", "Random"],
     savedTeams: "Saved teams",
     optionsFor: (team: string) => `Options for ${team}`,
     load: (team: string) => `Load ${team}`,
     importTeam: "Import Team",
     exportAll: "Export All",
+    copyAll: "Copy All",
     savedInBrowser: "Teams are saved in this browser.",
+    // The chip on the team being edited, and the one on each team that a tap opens
+    current: "Current",
     open: "Open",
     newTeamCreated: "New empty team created",
+    emptyTeamOpened: "Opened your empty team",
     randomTeamCreated: "Random team created",
     exported: "Exported all teams",
+    copiedAll: "Copied all teams",
+    notCopiedAll: "Could not copy the teams.",
     exportFilename: "my-pokemon-teams.txt",
   },
   settings: {
@@ -418,9 +422,9 @@ const en = {
     teams: "Teams",
     teamsQuestion: "Where are my teams saved?",
     teamsAnswer:
-      "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share Team) shares it.",
+      "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
     teamsAnswer2:
-      "On phones and tablets, the More button shows the team tools, the Filters and Sort buttons, and the Advanced button. The undo and redo buttons at the bottom step through the current team's changes.",
+      "The More button shows the team tools, the Filters and Sort buttons, and the Advanced button. Undo and Redo step through the current team's changes; on phones and tablets they are in the Manage menu.",
     generations: "Generations",
     generationsQuestion: "What does the generation change?",
     generationsAnswer:
@@ -432,7 +436,7 @@ const en = {
     matrix: "Matrix Analysis",
     matrixQuestion: "Where do the type scores come from?",
     matrixAnswer:
-      "The matrix, in the analysis panel's menu, shows every type against every pokemon. Defence is how hard each attacking type hits each pokemon, with its ability and item counted, and Coverage is how hard each pokemon's best damaging move hits each type. Tap a cell for the reason.",
+      "The matrix, in the analysis panel, shows every type against every pokemon. Defence is how hard each attacking type hits each pokemon, with its ability and item counted, and Coverage is how hard each pokemon's best damaging move hits each type. Tap a cell for the reason.",
     defence: "Team Defence",
     defenceQuestion: "How is your team's type defence calculated?",
     defenceAnswer:

@@ -80,7 +80,7 @@ test("matrix reasons and team problems name things in the current language", () 
     { name: "bronzong", ability: "Levitate" },
     { name: "bronzong", ability: "Heatproof" },
   );
-  expect(defenceMatrix(team, japanese).Ground[0]?.reason).toBe(
+  expect(defenceMatrix(team, japanese).Ground?.[0]?.reason).toBe(
     "じめん does 0x to ドータクン (はがね/エスパー) with ふゆう",
   );
   expect(validateTeam(team, 9, "", japanese)).toEqual([

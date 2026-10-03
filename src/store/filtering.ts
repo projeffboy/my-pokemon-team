@@ -9,7 +9,7 @@ import type {
 } from "@/types";
 import { CHAMPIONS_FORMAT, TIER_BY_FORMAT } from "@/shared/formats";
 import { LATEST_GENERATION } from "@/shared/generations";
-import { pokemonAbilities } from "@/shared/pokedex";
+import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
 
 type Filters = Readonly<
   Partial<Pick<PokemonFilters, "generation" | "ability">> &
@@ -223,9 +223,8 @@ export function filterPokemon({
     if (type) {
       for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
         if (
-          pokemonProperties.types &&
           isPokemonType(type) &&
-          pokemonProperties.types.includes(type)
+          pokemonTypes(pokemon, generation).includes(type)
         ) {
           filteredPokedex[pokemon] = pokemonProperties;
         }

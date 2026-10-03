@@ -19,32 +19,25 @@ const zhHans: Messages = {
   generationSelect: "世代",
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
-  championsGame: "Pokemon Champions",
-  generationGames: {
-    9: "朱／紫 · 传说 Z-A",
-    8: "剑／盾 · 晶灿钻石／明亮珍珠 · 传说 阿尔宙斯",
-    7: "太阳／月亮 · 究极之日／究极之月 · Let's Go",
-    6: "X／Y · 终极红宝石／始源蓝宝石",
-    5: "黑／白 · 黑2／白2",
-    4: "钻石／珍珠／白金 · 心金／魂银",
-    3: "红宝石／蓝宝石／绿宝石 · 火红／叶绿",
-    2: "金／银／水晶",
-    1: "红／蓝／黄",
-  } as Record<number, string>,
   language: "语言",
   languageFailed: "无法加载语言，请重试。",
   feedback: {
     button: "发送反馈",
     title: "发送反馈",
-    description:
-      "发现了错误或有建议？点击发送后会打开你的邮件应用，收件人为 {email}。请附上你的队伍链接，以便重现问题。",
+    description: "发现了错误或有什么想法？请告诉我。",
     label: "你的反馈",
     placeholder: "例如：大竺葵缺少魔法闪耀",
     attachLink: "附上我的队伍链接",
-    subject: "My Pokemon Team feedback",
-    myTeam: "我的队伍：",
+    attachScreenshot: "附上页面截图",
+    addImage: "添加图片",
+    imageUnreadable: "无法读取该图片。请尝试 PNG 或 JPEG。",
+    imagesTooLarge: "图片总大小超出限制，请先删除一张。",
+    email: "你的邮箱（可选）",
+    emailHelper: "仅在需要回复时填写",
     caption: "反馈",
     send: "发送",
+    sent: "谢谢！你的反馈已发送。",
+    failed: "发送失败。请重试，或发邮件至 {email}。",
   },
 
   // 多个对话框共用的按钮
@@ -63,8 +56,8 @@ const zhHans: Messages = {
   // 队伍栏
   team: {
     teams: "队伍",
-    randomize: "随机生成",
-    randomized: "已随机生成",
+    randomizedTeam: "已随机组队",
+    randomizedPokemon: "已随机选择宝可梦",
     shareTeam: "分享队伍",
     shareTeamLink: "分享宝可梦队伍链接",
     teamActions: "队伍操作",
@@ -101,8 +94,8 @@ const zhHans: Messages = {
     advanced: "高级",
     advancedFor: (slot: number) => `栏位 ${slot} 的高级选项`,
     about: (pokemon: string) => `关于${pokemon}`,
-    previousSlot: "移到上一个栏位",
-    nextSlot: "移到下一个栏位",
+    dragHint: "长按拖动即可调整顺序",
+    moveToSlot: (pokemon: string) => `把${pokemon}移到其他栏位`,
     name: "名称",
     move: "招式",
     item: "道具",
@@ -128,14 +121,12 @@ const zhHans: Messages = {
   },
 
   // 撤销与重做按钮
-  history: "历史记录",
   undo: "撤销",
   redo: "重做",
 
   // 分析面板
   stats: {
     teamStats: "队伍统计",
-    teamStatsAndChecklist: "队伍统计与检查清单",
     teamAnalysis: "队伍分析",
     teamDefence: "队伍防御",
     teamTypeCoverage: "队伍属性打击面",
@@ -143,9 +134,8 @@ const zhHans: Messages = {
     matrixAnalysis: "矩阵分析",
     defence: "防御",
     coverage: "打击面",
-    teamStat: "队伍统计项",
-    backToTeamStats: "返回队伍统计",
-    moreAnalyses: "更多分析",
+    checklist: "清单",
+    matrix: "矩阵",
     score: (type: string, score: string) => `${type}得分：${score}`,
     selectPokemonFirst: "请先选择一只宝可梦。",
     typeDoes: "{type}属性攻击的效果：",
@@ -187,13 +177,17 @@ const zhHans: Messages = {
     defenceDescription: "每种攻击属性对每只宝可梦的伤害倍率。",
     coverageDescription: "每只宝可梦的最佳招式对每种属性的伤害倍率。",
     tapForReason: "点击格子查看原因。",
+    // The column that sums each row, as the Team Defence and Team Type Coverage scores do
+    teamScore: "队伍得分",
     slot: (slot: number, pokemon: string | undefined) =>
       `栏位 ${slot}${pokemon ? `：${pokemon}` : ""}`,
-    weak: "×2 弱点",
-    quadruple: "×4",
-    resists: "½ 抵抗",
-    quarter: "¼",
-    immune: "0 免疫",
+    weak: "弱点",
+    resists: "抵抗",
+    immune: "免疫",
+    // The same legend for the coverage matrix, where a strong hit is the good outcome
+    superEffective: "效果绝佳",
+    resisted: "效果不好",
+    noEffect: "无效",
     defenceReason: (
       type: string,
       multiplier: number,
@@ -278,6 +272,9 @@ const zhHans: Messages = {
     statValue: (stat: string, value: number) => `${stat}：${value}`,
     weakTo: "弱点",
     smogonDex: "Smogon 图鉴",
+    bulbapedia: "Bulbapedia",
+    serebii: "Serebii",
+    showdownDex: "Showdown 图鉴",
   },
 
   // 筛选与排序对话框
@@ -303,19 +300,25 @@ const zhHans: Messages = {
 
   // 队伍、名称与格式、导入、删除对话框
   teams: {
-    description: "点击队伍即可打开。⋮ 按钮包含其设置与操作。",
     newTeam: "新建队伍",
     randomTeam: "随机队伍",
+    randomTeamLabels: ["随机生成队伍", "随机队伍", "随机"],
     savedTeams: "已保存的队伍",
     optionsFor: (team: string) => `${team}的选项`,
     load: (team: string) => `加载${team}`,
     importTeam: "导入队伍",
     exportAll: "全部导出",
+    copyAll: "全部复制",
     savedInBrowser: "队伍保存在此浏览器中。",
-    open: "使用中",
+    // The chip on the team being edited, and the one on each team that a tap opens
+    current: "使用中",
+    open: "打开",
     newTeamCreated: "已创建空白队伍",
+    emptyTeamOpened: "已打开空白队伍",
     randomTeamCreated: "已创建随机队伍",
     exported: "已导出所有队伍",
+    copiedAll: "已复制所有队伍",
+    notCopiedAll: "无法复制队伍。",
     exportFilename: "my-pokemon-teams.txt",
   },
   settings: {
@@ -425,7 +428,7 @@ const zhHans: Messages = {
     teamsAnswer:
       "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
     teamsAnswer2:
-      "在手机和平板上，“更多”按钮会显示队伍工具、“筛选”和“排序”按钮以及“高级”按钮。底部的撤销和重做按钮可以逐步回溯当前队伍的改动。",
+      "“更多”按钮会显示队伍工具、“筛选”和“排序”按钮以及“高级”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于“管理队伍”菜单中。",
     generations: "世代",
     generationsQuestion: "世代会改变什么？",
     generationsAnswer:
@@ -437,7 +440,7 @@ const zhHans: Messages = {
     matrix: "矩阵分析",
     matrixQuestion: "属性得分从何而来？",
     matrixAnswer:
-      "分析面板菜单中的矩阵会显示每种属性对每只宝可梦的效果。“防御”是每种攻击属性对每只宝可梦的伤害倍率，并计入其特性和道具；“打击面”是每只宝可梦最强的攻击招式对每种属性的伤害倍率。点击格子可查看原因。",
+      "分析面板中的矩阵会显示每种属性对每只宝可梦的效果。“防御”是每种攻击属性对每只宝可梦的伤害倍率，并计入其特性和道具；“打击面”是每只宝可梦最强的攻击招式对每种属性的伤害倍率。点击格子可查看原因。",
     defence: "队伍防御",
     defenceQuestion: "队伍的属性防御是如何计算的？",
     defenceAnswer:

@@ -1,10 +1,5 @@
 import { test, expect } from "fixtures";
-import {
-  getTeamTextFromUrl,
-  openEditPokepaste,
-  openManageTeamMenu,
-  clickMenuItem,
-} from "helper";
+import { getTeamTextFromUrl, openEditPokepaste } from "helper";
 import type { Page } from "@playwright/test";
 
 interface VerifyPokemonPropertyOptions {
@@ -12,7 +7,7 @@ interface VerifyPokemonPropertyOptions {
   teamIndex?: number;
 }
 
-test.describe("Import Team Dialog - Integration Tests", () => {
+test.describe("Edit Team Dialog - Integration Tests", () => {
   test.beforeEach(async ({ page }) => {
     await openEditPokepaste(page);
   });
@@ -102,56 +97,5 @@ Ability: Chlorophyll
     ]) {
       expect(teamText).toContain(`- ${move}`);
     }
-  });
-
-  test("Import team adds the pasted teams as new teams", async ({ page }) => {
-    await page.getByRole("button", { name: "Cancel" }).click();
-    await openManageTeamMenu(page);
-    await clickMenuItem(page, "Import team");
-    const dialog = page.getByRole("dialog", { name: "Import Team" });
-    await expect(dialog).toBeVisible();
-    await expect(dialog.getByRole("button", { name: "Import" })).toBeDisabled();
-
-    await dialog.getByRole("textbox").fill(`=== [gen8uu] Sun ===
-
-Torkoal @ Heat Rock
-Ability: Drought
-- Eruption
-
-=== [gen9doublesou] Rain ===
-
-Pelipper @ Damp Rock
-Ability: Drizzle
-- Hurricane
-`);
-    await dialog.getByRole("button", { name: "Import" }).click();
-    await expect(page.getByRole("alert")).toContainText("2 teams imported");
-    await verifyPokemonProperty(page, "Pelipper");
-    await expect(page.getByLabel("Generation")).toContainText("Gen 9");
-
-    await openManageTeamMenu(page);
-    await clickMenuItem(page, "Name and Format");
-    await expect(page.getByLabel("Team name")).toHaveValue("Rain");
-    await expect(page.getByRole("combobox", { name: "Format" })).toContainText(
-      "Doubles OU",
-    );
-  });
-
-  test("Import team adds nothing when the text names no pokemon", async ({
-    page,
-  }) => {
-    await page.getByRole("button", { name: "Cancel" }).click();
-    await openManageTeamMenu(page);
-    await clickMenuItem(page, "Import team");
-    const dialog = page.getByRole("dialog", { name: "Import Team" });
-
-    await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");
-    await dialog.getByRole("button", { name: "Import" }).click();
-    await expect(dialog).toContainText("No pokemon found in that text.");
-
-    await dialog.getByRole("button", { name: "Cancel" }).click();
-    await openManageTeamMenu(page);
-    await clickMenuItem(page, "Name and Format");
-    await expect(page.getByLabel("Team name")).toHaveValue("Team 1");
   });
 });

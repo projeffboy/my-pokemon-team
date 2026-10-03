@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, {
   autocompleteClasses,
   createFilterOptions,
@@ -14,10 +14,21 @@ import VirtualizedListbox, {
   VirtualizedListboxContext,
 } from "./pokemon-input-select/VirtualizedListbox";
 import PokemonIcon from "@/app/shared/PokemonIcon";
+import { moveTypeIn } from "@/shared/generation-data";
 import { englishNames } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import typeIcons from "@/images/type-icons";
+import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
+import { useIsSmDown } from "@/app/shared/WidthContext";
+import { isPokemonType } from "@/types";
 
 const ITEM_ICON_CLASS = "item-icon";
+// The Name list fits Venusaur-Gmax on one line: 4px of padding, a 40px icon,
+// 2px, the name at 16px Roboto (114px), 4px, and 4px of slack for font
+// rendering; longer names wrap
+// Space kept between the popup and the edge of the screen
+const POPUP_MARGIN = 8;
+const NAME_LIST_WIDTH = 168;
 
 interface SelectOption {
   value: string;
@@ -39,6 +50,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   teamIndex,
   value,
   onChange,
+  leadingIcon = false,
 }: {
   optionValues: readonly string[];
   optionLabels: readonly string[];
@@ -47,10 +59,42 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   teamIndex: number;
   value: string;
   onChange: (value: string) => void;
+  // Shows a move's type or the item's icon before the text, instead of the
+  // item's icon after it
+  leadingIcon?: boolean;
 }) {
-  const { t } = useTranslation();
+  const { t, names } = useTranslation();
+  const isSmDown = useIsSmDown();
   const rootRef = useRef<HTMLDivElement>(null);
-  const [popperWidth, setPopperWidth] = useState<number>();
+  const [rootWidth, setRootWidth] = useState<number>();
+  const [popupMaxHeight, setPopupMaxHeight] = useState<number>();
+  const [isOpen, setIsOpen] = useState(false);
+  // The popup opens above or below the input, whichever has more room, and
+  // keeps to it rather than running off the screen
+  const measure = () => {
+    const root = rootRef.current;
+    if (!root) return;
+    const { top, bottom } = root.getBoundingClientRect();
+    const viewport = window.visualViewport;
+    const viewportTop = viewport?.offsetTop ?? 0;
+    const viewportBottom =
+      viewportTop + (viewport?.height ?? window.innerHeight);
+    setRootWidth(root.clientWidth);
+    setPopupMaxHeight(
+      Math.max(top - viewportTop, viewportBottom - bottom) - POPUP_MARGIN,
+    );
+  };
+  // The on-screen keyboard shrinks the viewport once the input has focus
+  useEffect(() => {
+    if (!isOpen) return;
+    const viewport = window.visualViewport;
+    viewport?.addEventListener("resize", measure);
+    window.addEventListener("resize", measure);
+    return () => {
+      viewport?.removeEventListener("resize", measure);
+      window.removeEventListener("resize", measure);
+    };
+  }, [isOpen]);
   const filterOptions = useMemo(
     () =>
       createFilterOptions<SelectOption>({
@@ -75,8 +119,13 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   );
   const id = `react-select-single-${teamIndex}-${pokemonProperty}`;
   const internalListRef = useListRef(null);
-  const columns =
-    pokemonProperty === "name" && store.nameView === "grid" ? GRID_COLUMNS : 1;
+  const isGrid = pokemonProperty === "name" && store.nameView === "grid";
+  const columns = isGrid ? GRID_COLUMNS : 1;
+  // The grid of icons spans both of the card's columns, which are 8px apart
+  const popperWidth =
+    pokemonProperty !== "name" ? undefined
+    : isGrid ? rootWidth && 2 * rootWidth + 8
+    : NAME_LIST_WIDTH;
 
   // Scrolls the virtualized list to keep the keyboard-highlighted option in view
   // (guarded because the list may be closed/stale, e.g. after an auto-selected value)
@@ -101,17 +150,22 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
 
   return (
     <VirtualizedListboxContext
-      value={{ pokemonProperty, selectedValue: value, internalListRef }}
+      value={{
+        pokemonProperty,
+        showMoveTypes: leadingIcon && pokemonProperty.startsWith("move"),
+        selectedValue: value,
+        internalListRef,
+        popupMaxHeight,
+      }}
     >
       <Autocomplete
         id={id}
         ref={rootRef}
         onOpen={() => {
-          // The Name dropdown spans both of the card's columns, which are 8px apart
-          const width = rootRef.current?.clientWidth;
-          if (pokemonProperty === "name" && width)
-            setPopperWidth(2 * width + 8);
+          measure();
+          setIsOpen(true);
         }}
+        onClose={() => setIsOpen(false)}
         options={options}
         value={selectedOption}
         disableListWrap
@@ -156,11 +210,8 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
               style: { width: popperWidth },
             }),
             sx: {
-              // Asuming 4px inline padding (defined in VirtualizedListbox)
+              // Assuming 4px inline padding (defined in VirtualizedListbox)
               // and 2px left padding on non-icon part of the dropdown row:
-              // Minimum width to fit Dudunsparce-Three-Segment row in two lines,
-              // or five icon columns
-              ...(pokemonProperty === "name" && { minWidth: 220 }),
               // Minimum width to fit Aerodactylite row in one line
               ...(pokemonProperty === "item" && { minWidth: 130 }),
               [`& .${autocompleteClasses.noOptions}`]: {
@@ -178,23 +229,63 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           listbox: { component: VirtualizedListbox },
         }}
         renderInput={params => {
-          // Hidden while the typed text differs from the selected item's name
+          // Icons hide while the typed text differs from the selected name
+          const isSelectionShown =
+            !!selectedOption &&
+            params.slotProps.htmlInput.value === selectedOption.label;
           const itemIcon =
-            (
-              pokemonProperty === "item" &&
-              selectedOption &&
-              params.slotProps.htmlInput.value === selectedOption.label
-            ) ?
+            isSelectionShown && pokemonProperty === "item" ?
               <Box
                 component="span"
-                className={ITEM_ICON_CLASS}
+                className={leadingIcon ? undefined : ITEM_ICON_CLASS}
                 role="img"
                 aria-label={t.team.itemIcon(selectedOption.label)}
-                // Right margin keeps the icon left of the 28px dropdown arrow
-                sx={{ display: "flex", flexShrink: 0, mr: 3.5 }}
+                // Right margin keeps a trailing icon left of the 28px dropdown arrow
+                sx={{
+                  display: "flex",
+                  flexShrink: 0,
+                  mr: leadingIcon ? 0.5 : 3.5,
+                }}
               >
                 <PokemonIcon pokemonProperty="item" value={value} />
               </Box>
+            : undefined;
+          const moveType =
+            (
+              isSelectionShown &&
+              leadingIcon &&
+              pokemonProperty.startsWith("move")
+            ) ?
+              moveTypeIn(value, store.currentTeam.generation)
+            : undefined;
+          // Phones show the type's abbreviation, as the team stats do
+          const typeIcon =
+            moveType && isPokemonType(moveType) ?
+              isSmDown ?
+                <Box
+                  component="span"
+                  role="img"
+                  aria-label={names.type(moveType)}
+                  sx={{
+                    flexShrink: 0,
+                    mr: 0.75,
+                    px: 0.5,
+                    borderRadius: 0.5,
+                    fontSize: 10,
+                    fontWeight: 500,
+                    lineHeight: "16px",
+                    bgcolor: TYPE_COLORS[moveType],
+                    color: TYPE_TEXT_COLORS[moveType],
+                  }}
+                >
+                  {t.typeAbbreviations[moveType]}
+                </Box>
+              : <Box
+                  component="img"
+                  src={typeIcons[moveType]}
+                  alt={names.type(moveType)}
+                  sx={{ width: 20, height: 20, mr: 0.75, flexShrink: 0 }}
+                />
             : undefined;
 
           return (
@@ -211,8 +302,10 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 ...params.slotProps,
                 input: {
                   ...params.slotProps.input,
+                  startAdornment:
+                    leadingIcon ? (typeIcon ?? itemIcon) : undefined,
                   endAdornment:
-                    itemIcon ?
+                    itemIcon && !leadingIcon ?
                       <>
                         {itemIcon}
                         {params.slotProps.input.endAdornment}

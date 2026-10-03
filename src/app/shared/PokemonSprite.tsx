@@ -5,7 +5,7 @@ import pokedex from "@/data/pokedex";
 import questionMark from "@/images/question-mark.png";
 import altSpriteNum from "@/data/altSpriteNum";
 import localSprites from "@/images/local-sprites";
-import { useBreakpoint } from "./WidthContext";
+import { useIsMdDown } from "./WidthContext";
 import { spriteUrls } from "./pokemon-sprite/sprite-urls";
 
 const localSpritesMap = localSprites as Record<string, string>;
@@ -13,20 +13,24 @@ const localSpritesMap = localSprites as Record<string, string>;
 const PokemonSprite = observer(function PokemonSprite({
   teamIndex,
   forceFullSize = false,
+  maxHeight,
 }: {
   teamIndex: number;
   forceFullSize?: boolean;
+  maxHeight?: number;
 }) {
-  const breakpoint = useBreakpoint();
-  const width =
-    forceFullSize && (breakpoint === "xs" || breakpoint === "sm") ?
-      "md"
-    : breakpoint;
-  const isSmall = width === "sm" || width === "xs"; // below 960px
+  // Below 960px the team viewers show dex sprites, except in a slot's card
+  const isSmall = useIsMdDown() && !forceFullSize;
   const pokemon = store.team[teamIndex]?.name ?? ""; // unhyphenated name
   const sprite =
     pokemon ?
-      spriteUrls(pokemon, pokedex[pokemon], altSpriteNum[pokemon], isSmall)
+      spriteUrls(
+        pokemon,
+        pokedex[pokemon],
+        altSpriteNum[pokemon],
+        isSmall,
+        store.currentTeam.generation,
+      )
     : undefined;
   const localSprite = localSpritesMap[pokemon];
 
@@ -51,7 +55,7 @@ const PokemonSprite = observer(function PokemonSprite({
           if (sprite) e.currentTarget.src = sprite.fallback;
         }}
         sx={{
-          maxHeight: isSmall ? 160 : 96,
+          maxHeight: maxHeight ?? (isSmall ? 160 : 96),
           maxWidth: "100%",
           width: isSmall ? "100%" : "auto",
         }}

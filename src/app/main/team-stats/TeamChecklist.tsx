@@ -17,7 +17,7 @@ const TeamChecklist = observer(function TeamChecklist() {
   return (
     <Grid container>
       {store.checklist.map(({ key, items }) => (
-        <Grid key={key} size={4} sx={{ p: 1 }}>
+        <Grid key={key} size={4} sx={{ px: { xxs: 0.5, md: 1 }, py: 1 }}>
           {/* E.g. Offensive */}
           <Typography
             sx={{ fontWeight: "bold", pb: 1, lineHeight: "initial" }}

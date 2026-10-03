@@ -1,12 +1,11 @@
-import { useId, useState } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import Link from "@mui/material/Link";
+import TextField from "@mui/material/TextField";
+import type { SxProps, Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import {
@@ -17,19 +16,25 @@ import {
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
+// A dialog's body and actions for pasting Showdown text: either new teams to import,
+// or the current team's text to edit. Importing or updating calls onDone; cancelling
+// calls onClose.
 const ImportTeamForm = observer(function ImportTeamForm({
   isImport,
-  titleId,
+  onClose,
+  onDone = onClose,
+  contentSx,
 }: {
   isImport: boolean;
-  titleId: string;
+  onClose: () => void;
+  onDone?: () => void;
+  contentSx?: SxProps<Theme>;
 }) {
   const { t } = useTranslation();
   const { importDialog } = t;
   const initialText = isImport ? "" : serializeTeam(store.team);
   const [text, setText] = useState(initialText);
   const [isNothingFound, setIsNothingFound] = useState(false);
-  const close = () => store.closeDialog();
 
   const handleImport = () => {
     const teams = parseTeamsText(text);
@@ -45,21 +50,18 @@ const ImportTeamForm = observer(function ImportTeamForm({
         importDialog.imported
       : importDialog.importedMany(teams.length),
     );
-    close();
+    onDone();
   };
 
   const handleUpdate = () => {
     if (text !== initialText) store.replaceTeam(parseTeamText(text));
     else store.openSnackbar(importDialog.noChanges);
-    close();
+    onDone();
   };
 
   return (
     <>
-      <DialogTitle id={titleId}>
-        {isImport ? importDialog.importTitle : importDialog.editTitle}
-      </DialogTitle>
-      <DialogContent>
+      <DialogContent sx={contentSx}>
         <DialogContentText>
           {fill(
             isImport ?
@@ -97,7 +99,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
         <DialogContentText>{importDialog.kept}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={close}>{t.cancel}</Button>
+        <Button onClick={onClose}>{t.cancel}</Button>
         <Button
           onClick={isImport ? handleImport : handleUpdate}
           disabled={!store.learnsetsLoaded || (isImport && !text.trim())}
@@ -109,29 +111,4 @@ const ImportTeamForm = observer(function ImportTeamForm({
   );
 });
 
-// Imports pasted Showdown text as new teams, or edits the current team's text
-const ImportTeamDialog = observer(function ImportTeamDialog() {
-  const titleId = useId();
-  const name = store.dialog?.name;
-  const isOpen = name === "importTeam" || name === "editTeam";
-
-  return (
-    <Dialog
-      open={isOpen}
-      onClose={() => store.closeDialog()}
-      aria-labelledby={titleId}
-      sx={{ height: "calc(100% - 60px)" }}
-      fullWidth
-    >
-      {isOpen && (
-        <ImportTeamForm
-          key={name}
-          isImport={name === "importTeam"}
-          titleId={titleId}
-        />
-      )}
-    </Dialog>
-  );
-});
-
-export default ImportTeamDialog;
+export default ImportTeamForm;

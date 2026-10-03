@@ -28,12 +28,7 @@ const LanguageSelect = observer(function LanguageSelect() {
         aria-haspopup="menu"
         aria-expanded={!!anchorEl}
       />
-      <Menu
-        anchorEl={anchorEl}
-        open={!!anchorEl}
-        onClose={close}
-        slotProps={{ paper: { sx: { width: 220 } } }}
-      >
+      <Menu anchorEl={anchorEl} open={!!anchorEl} onClose={close}>
         {LOCALES.map(locale => (
           <MenuItem
             key={locale}
@@ -45,7 +40,14 @@ const LanguageSelect = observer(function LanguageSelect() {
             }}
           >
             <ListItemText>{LOCALE_NAMES[locale]}</ListItemText>
-            {locale === store.locale && <CheckIcon fontSize="small" />}
+            {/* Hidden rather than left out, so every item is as wide as the longest */}
+            <CheckIcon
+              fontSize="small"
+              sx={{
+                ml: 2,
+                visibility: locale === store.locale ? "visible" : "hidden",
+              }}
+            />
           </MenuItem>
         ))}
       </Menu>

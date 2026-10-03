@@ -1,11 +1,12 @@
-import typechart from "@/data/typechart";
 import {
   MOVE_KEYS,
-  POKEMON_TYPES,
+  type Generation,
   type PokemonType,
   type ReadonlyTeam,
 } from "@/types";
 import { pokemonTypes } from "@/shared/pokedex";
+import { typechartIn, typesIn } from "@/shared/generation-data";
+import { LATEST_GENERATION } from "@/shared/generations";
 import { english, type Translation } from "@/i18n/translation";
 import {
   isMoveStrongEnough,
@@ -20,7 +21,8 @@ export interface MatrixCell {
   reason: string;
 }
 
-export type Matrix = Record<PokemonType, (MatrixCell | null)[]>;
+// A row per type of the generation
+export type Matrix = Partial<Record<PokemonType, (MatrixCell | null)[]>>;
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune;
 // Filter-like abilities give -1.5 = 3x and -0.5 = 1.5x
@@ -57,25 +59,26 @@ export function formatMultiplier(multiplier: number) {
 export function defenceMatrix(
   team: ReadonlyTeam,
   { t, names }: Translation = english,
+  generation: Generation = LATEST_GENERATION,
 ): Matrix {
+  const against = (type: PokemonType, name: string, ability = "", item = "") =>
+    scoreToMultiplier(
+      typeAgainstPokemon(type, name, ability, item, generation),
+    );
   return Object.fromEntries(
-    POKEMON_TYPES.map(type => [
+    typesIn(generation).map(type => [
       type,
       team.map(({ name, ability, item }) => {
         if (!name) return null;
-        const score = typeAgainstPokemon(type, name, ability, item);
-        const multiplier = scoreToMultiplier(score);
-        const plain = scoreToMultiplier(typeAgainstPokemon(type, name));
+        const multiplier = against(type, name, ability, item);
         const cause =
-          multiplier === plain ? undefined
+          multiplier === against(type, name) ? undefined
           : (
-            item === "airballoon" &&
-            scoreToMultiplier(typeAgainstPokemon(type, name, ability)) !==
-              multiplier
+            item === "airballoon" && against(type, name, ability) !== multiplier
           ) ?
             names.item(item)
           : names.ability(ability);
-        const types = pokemonTypes(name).map(names.type).join("/");
+        const types = pokemonTypes(name, generation).map(names.type).join("/");
         return {
           multiplier,
           reason: t.matrix.defenceReason(
@@ -97,14 +100,15 @@ function moveMultiplier(
   target: PokemonType,
   pokemon: string,
   ability: string,
+  generation: Generation,
 ) {
   if (move === "flyingpress") {
-    const flying = typechart[target].Flying;
-    const fighting = typechart[target].Fighting;
+    const flying = typechartIn(generation)[target]?.Flying ?? 0;
+    const fighting = typechartIn(generation)[target]?.Fighting ?? 0;
     if (flying === 2 || fighting === 2) return 0;
     return scoreToMultiplier(flying) * scoreToMultiplier(fighting);
   }
-  const score = moveAgainstType(move, target, pokemon, ability);
+  const score = moveAgainstType(move, target, pokemon, ability, generation);
   if (score === undefined) return undefined;
   return scoreToMultiplier(score === 2 ? 3 : score);
 }
@@ -113,9 +117,10 @@ function moveMultiplier(
 export function coverageMatrix(
   team: ReadonlyTeam,
   { t, names }: Translation = english,
+  generation: Generation = LATEST_GENERATION,
 ): Matrix {
   return Object.fromEntries(
-    POKEMON_TYPES.map(target => [
+    typesIn(generation).map(target => [
       target,
       team.map(member => {
         const { name, ability } = member;
@@ -125,7 +130,13 @@ export function coverageMatrix(
         );
         let best: { move: string; multiplier: number } | undefined;
         for (const move of moves) {
-          const multiplier = moveMultiplier(move, target, name, ability);
+          const multiplier = moveMultiplier(
+            move,
+            target,
+            name,
+            ability,
+            generation,
+          );
           if (multiplier !== undefined && multiplier > (best?.multiplier ?? -1))
             best = { move, multiplier };
         }
@@ -138,7 +149,7 @@ export function coverageMatrix(
         const type =
           best.move === "flyingpress" ?
             `${names.type("Fighting")}/${names.type("Flying")}`
-          : names.type(moveType(best.move, name, ability) ?? "");
+          : names.type(moveType(best.move, name, ability, generation) ?? "");
         return {
           multiplier: best.multiplier,
           reason: t.matrix.coverageReason(

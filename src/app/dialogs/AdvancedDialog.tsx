@@ -35,7 +35,7 @@ import {
   TERA_TYPES,
 } from "@/shared/set-details";
 import PokemonIcon from "@/app/shared/PokemonIcon";
-import { useBreakpoint } from "@/app/shared/WidthContext";
+import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import NumberField from "./advanced-dialog/NumberField";
 
@@ -276,7 +276,7 @@ const AdvancedForm = observer(function AdvancedForm({
 // A slot's set details: a bottom sheet on phones, a dialog elsewhere
 const AdvancedDialog = observer(function AdvancedDialog() {
   const titleId = useId();
-  const isXs = useBreakpoint() === "xs";
+  const isSmDown = useIsSmDown();
   const { dialog } = store;
   const teamIndex = dialog?.teamIndex ?? 0;
   const member = store.team[teamIndex];
@@ -291,7 +291,7 @@ const AdvancedDialog = observer(function AdvancedDialog() {
     />
   );
 
-  return isXs ?
+  return isSmDown ?
       <Drawer
         anchor="bottom"
         open={isOpen}

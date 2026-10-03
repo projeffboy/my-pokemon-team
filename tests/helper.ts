@@ -23,11 +23,11 @@ export const goToSite = async (page: Page) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 };
 
-// Below md, the page's width decides whether the team tools hide behind the More button
+// Below md, the More button beside the slot tabs also hides the team toolbar
 export const isMdDown = (page: Page) =>
   (page.viewportSize()?.width ?? Infinity) < breakpointValues.md;
 
-const isXs = (page: Page) =>
+export const isXs = (page: Page) =>
   (page.viewportSize()?.width ?? Infinity) < breakpointValues.sm;
 
 // Brings a slot's card on screen: the tabbed viewers show one slot or one pair at a time
@@ -40,7 +40,7 @@ export const showSlot = async (page: Page, slotIndex: number) => {
   await expect(input).toBeVisible();
 };
 
-// Shows the team tools, filters, and advanced buttons on phones and tablets
+// Shows the filters, sort, and advanced buttons, and the team toolbar on phones and tablets
 export const openTeamTools = async (page: Page) => {
   const more = page.getByRole("button", { name: "More team tools" });
   if (await more.isVisible()) await more.click();
@@ -96,11 +96,28 @@ export const closeDialog = async (page: Page, button = "Done") => {
   await expect(page.getByRole("dialog")).toBeHidden();
 };
 
-// Shows one of the analysis panel's views: on phones each is behind the panel's menu
+const ANALYSIS_TABS: Record<string, string> = {
+  "Team Defence": "Defence",
+  "Team Type Coverage": "Coverage",
+  "Team Checklist": "Checklist",
+  "Matrix Analysis": "Matrix",
+};
+
+// Shows one of the analysis panel's views: on phones each has a tab, and from
+// tablets up a switch in the panel's header shows the matrix
 export const openAnalysis = async (page: Page, name: string) => {
-  if (name !== "Matrix Analysis" && !isXs(page)) return;
-  await page.getByRole("button", { name: "More analyses" }).click();
-  await clickMenuItem(page, name);
+  if (isXs(page)) {
+    await page
+      .getByRole("tablist", { name: "Team analysis" })
+      .getByRole("tab", { name: ANALYSIS_TABS[name] })
+      .click();
+  } else {
+    // From tablets up, the header's switch shows the stats, the matrix, or the checklist
+    const stats = ["Team Defence", "Team Type Coverage"].includes(name);
+    await page
+      .getByRole("button", { name: stats ? "Team Stats" : name })
+      .click();
+  }
   await expect(page.getByRole("region", { name })).toBeVisible();
 };
 

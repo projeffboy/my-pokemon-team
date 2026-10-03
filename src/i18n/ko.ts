@@ -34,32 +34,27 @@ const ko: Messages = {
   generationSelect: "세대",
   championsGeneration: "9세대 · Champions",
   championsGenerationShort: "9세대 (Champions)",
-  championsGame: "Pokemon Champions",
-  generationGames: {
-    9: "스칼렛·바이올렛, Pokémon LEGENDS Z-A",
-    8: "소드·실드, 브릴리언트 다이아몬드·샤이닝 펄, LEGENDS 아르세우스",
-    7: "썬·문, 울트라썬·울트라문, 레츠고",
-    6: "X·Y, 오메가루비·알파사파이어",
-    5: "블랙·화이트, 블랙 2·화이트 2",
-    4: "디아루가·펄기아·기라티나, 하트골드·소울실버",
-    3: "루비·사파이어·에메랄드, 파이어레드·리프그린",
-    2: "금·은·크리스탈",
-    1: "레드·그린·블루·피카츄",
-  } as Record<number, string>,
   language: "언어",
   languageFailed: "언어를 불러오지 못했습니다. 다시 시도해 주세요.",
   feedback: {
     button: "피드백 보내기",
     title: "피드백 보내기",
-    description:
-      "버그를 발견했거나 제안이 있나요? 보내기를 누르면 {email} 앞으로 쓴 메시지가 이메일 앱에서 열립니다. 문제를 재현할 수 있도록 팀 링크를 첨부해 주세요.",
+    description: "버그를 발견했거나 아이디어가 있나요? 알려 주세요.",
     label: "피드백 내용",
     placeholder: "예: 메가니움이 매지컬샤인을 배우지 못해요",
     attachLink: "내 팀 링크 첨부",
-    subject: "My Pokemon Team 피드백",
-    myTeam: "내 팀:",
+    attachScreenshot: "페이지 스크린샷 첨부",
+    addImage: "이미지 추가",
+    imageUnreadable: "이미지를 읽을 수 없습니다. PNG나 JPEG로 시도해 보세요.",
+    imagesTooLarge:
+      "이미지가 너무 커서 함께 보낼 수 없습니다. 먼저 하나를 삭제하세요.",
+    email: "이메일 (선택)",
+    emailHelper: "답장을 원할 때만",
     caption: "피드백",
     send: "보내기",
+    sent: "감사합니다! 피드백을 보냈습니다.",
+    failed:
+      "보내지 못했습니다. 다시 시도하거나 {email}(으)로 이메일을 보내 주세요.",
   },
 
   cancel: "취소",
@@ -76,8 +71,8 @@ const ko: Messages = {
 
   team: {
     teams: "팀 목록",
-    randomize: "랜덤 생성",
-    randomized: "팀을 랜덤으로 채웠습니다",
+    randomizedTeam: "팀을 랜덤으로 채웠습니다",
+    randomizedPokemon: "포켓몬을 랜덤으로 골랐습니다",
     shareTeam: "팀 공유",
     shareTeamLink: "포켓몬 팀 링크 공유",
     teamActions: "팀 작업",
@@ -115,8 +110,8 @@ const ko: Messages = {
     advanced: "고급",
     advancedFor: (slot: number) => `슬롯 ${slot}의 고급 설정`,
     about: (pokemon: string) => `${pokemon} 정보`,
-    previousSlot: "이전 슬롯으로 이동",
-    nextSlot: "다음 슬롯으로 이동",
+    dragHint: "길게 눌러 끌어서 순서 변경",
+    moveToSlot: (pokemon: string) => `${pokemon}을(를) 다른 슬롯으로 이동`,
     name: "이름",
     move: "기술",
     item: "지닌 물건",
@@ -140,13 +135,11 @@ const ko: Messages = {
       "기술 목록을 불러오지 못했습니다. 페이지를 새로고침해 다시 시도하세요.",
   },
 
-  history: "기록",
   undo: "실행 취소",
   redo: "다시 실행",
 
   stats: {
     teamStats: "팀 통계",
-    teamStatsAndChecklist: "팀 통계와 체크리스트",
     teamAnalysis: "팀 분석",
     teamDefence: "팀 방어",
     teamTypeCoverage: "팀 타입 견제폭",
@@ -154,9 +147,8 @@ const ko: Messages = {
     matrixAnalysis: "매트릭스 분석",
     defence: "방어",
     coverage: "견제폭",
-    teamStat: "팀 통계 항목",
-    backToTeamStats: "팀 통계로 돌아가기",
-    moreAnalyses: "다른 분석",
+    checklist: "체크리스트",
+    matrix: "매트릭스",
     score: (type: string, score: string) => `${type} 점수: ${score}`,
     selectPokemonFirst: "먼저 포켓몬을 선택하세요.",
     typeDoes: "{type} 타입 기술의 효과...",
@@ -203,13 +195,17 @@ const ko: Messages = {
     coverageDescription:
       "각 포켓몬의 가장 강력한 기술이 각 타입에게 얼마나 효과적인지 보여 줍니다.",
     tapForReason: "칸을 누르면 이유가 표시됩니다.",
+    // The column that sums each row, as the Team Defence and Team Type Coverage scores do
+    teamScore: "팀 점수",
     slot: (slot: number, pokemon: string | undefined) =>
       `슬롯 ${slot}${pokemon ? `: ${pokemon}` : ""}`,
-    weak: "×2 약점",
-    quadruple: "×4",
-    resists: "½ 반감",
-    quarter: "¼",
-    immune: "0 무효",
+    weak: "약점",
+    resists: "반감",
+    immune: "무효",
+    // The same legend for the coverage matrix, where a strong hit is the good outcome
+    superEffective: "효과 굉장함",
+    resisted: "효과 별로",
+    noEffect: "효과 없음",
     defenceReason: (
       type: string,
       multiplier: number,
@@ -294,6 +290,9 @@ const ko: Messages = {
     statValue: (stat: string, value: number) => `${stat}: ${value}`,
     weakTo: "약점 타입",
     smogonDex: "Smogon 도감",
+    bulbapedia: "Bulbapedia",
+    serebii: "Serebii",
+    showdownDex: "Showdown 도감",
   },
 
   filters: {
@@ -317,19 +316,25 @@ const ko: Messages = {
   },
 
   teams: {
-    description: "팀을 누르면 열립니다. ⋮ 버튼에 설정과 작업이 있습니다.",
     newTeam: "새 팀",
     randomTeam: "랜덤 팀",
+    randomTeamLabels: ["팀 랜덤 생성", "랜덤 팀", "랜덤"],
     savedTeams: "저장된 팀",
     optionsFor: (team: string) => `${team} 옵션`,
     load: (team: string) => `${team} 불러오기`,
     importTeam: "팀 가져오기",
     exportAll: "전체 내보내기",
+    copyAll: "전체 복사",
     savedInBrowser: "팀은 이 브라우저에 저장됩니다.",
-    open: "열림",
+    // The chip on the team being edited, and the one on each team that a tap opens
+    current: "열림",
+    open: "열기",
     newTeamCreated: "빈 팀을 만들었습니다",
+    emptyTeamOpened: "빈 팀을 열었습니다",
     randomTeamCreated: "랜덤 팀을 만들었습니다",
     exported: "모든 팀을 내보냈습니다",
+    copiedAll: "모든 팀을 복사했습니다",
+    notCopiedAll: "팀을 복사하지 못했습니다.",
     exportFilename: "my-pokemon-teams.txt",
   },
   settings: {
@@ -440,7 +445,7 @@ const ko: Messages = {
     teamsAnswer:
       "팀은 이 브라우저에 저장되므로 다시 방문해도 그대로 있지만, 다른 기기에서는 볼 수 없습니다. 팀 목록 버튼이 팀을 나열하며, 각 팀의 메뉴에서 이름 변경, 세대와 포맷 설정, 복제, 공유, 삭제를 할 수 있습니다. 전체 내보내기는 모든 팀을 Showdown 텍스트로 내려받고, 팀 가져오기가 그 파일을 다시 읽어 들입니다. 주소창에는 항상 현재 팀이 들어 있으므로, 주소를 복사하거나 팀 공유 버튼을 누르면 팀을 공유할 수 있습니다.",
     teamsAnswer2:
-      "휴대폰과 태블릿에서는 더 보기 버튼을 누르면 팀 도구, 필터와 정렬 버튼, 고급 버튼이 나타납니다. 하단의 실행 취소와 다시 실행 버튼으로 현재 팀의 변경 내역을 오갈 수 있습니다.",
+      "더 보기 버튼을 누르면 팀 도구, 필터와 정렬 버튼, 고급 버튼이 나타납니다. 실행 취소와 다시 실행으로 현재 팀의 변경 내역을 오갈 수 있으며, 휴대폰과 태블릿에서는 팀 관리 메뉴에 있습니다.",
     generations: "세대",
     generationsQuestion: "세대를 바꾸면 무엇이 달라지나요?",
     generationsAnswer:
@@ -452,7 +457,7 @@ const ko: Messages = {
     matrix: "매트릭스 분석",
     matrixQuestion: "타입 점수는 어디서 나오나요?",
     matrixAnswer:
-      "분석 패널 메뉴의 매트릭스는 모든 타입을 모든 포켓몬과 대조해 보여 줍니다. 방어는 각 공격 타입이 특성과 지닌 물건까지 감안해 각 포켓몬에게 얼마나 효과적인지이고, 견제폭은 각 포켓몬의 가장 강력한 공격 기술이 각 타입에게 얼마나 효과적인지입니다. 칸을 누르면 이유가 표시됩니다.",
+      "분석 패널의 매트릭스는 모든 타입을 모든 포켓몬과 대조해 보여 줍니다. 방어는 각 공격 타입이 특성과 지닌 물건까지 감안해 각 포켓몬에게 얼마나 효과적인지이고, 견제폭은 각 포켓몬의 가장 강력한 공격 기술이 각 타입에게 얼마나 효과적인지입니다. 칸을 누르면 이유가 표시됩니다.",
     defence: "팀 방어",
     defenceQuestion: "팀의 타입 방어는 어떻게 계산되나요?",
     defenceAnswer:

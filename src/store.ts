@@ -24,7 +24,12 @@ import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
 import { sortPokemon } from "./store/sorting";
 import { evaluateChecklist } from "./store/checklist";
-import { randomPokemon, randomSet } from "./store/random";
+import {
+  completeSet,
+  isSetComplete,
+  randomPokemon,
+  randomSet,
+} from "./store/random";
 import { serializeTeam } from "./store/team-text";
 import {
   initialStoredState,
@@ -35,6 +40,7 @@ import {
   STORAGE_KEY,
   type StoredState,
 } from "./store/teams-storage";
+import { expireSettings } from "./store/settings-expiry";
 import {
   createSavedTeam,
   getAutoSelectedAbility,
@@ -43,6 +49,7 @@ import {
 } from "./shared/team";
 import { clearDetails } from "./shared/set-details";
 import { pokemonAbilities } from "./shared/pokedex";
+import { typesIn } from "./shared/generation-data";
 import { detectLocale, type Locale } from "./i18n/locales";
 import { english, loadTranslation, type Translation } from "./i18n/translation";
 
@@ -62,6 +69,7 @@ export type DialogName =
 const HISTORY_LIMIT = 50;
 
 const storage = typeof localStorage === "undefined" ? undefined : localStorage;
+expireSettings(storage, Date.now());
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
 
@@ -76,6 +84,7 @@ class Store {
     this.sort = stored.sort;
     this.nameView = stored.nameView;
     this.chosenLocale = stored.locale;
+    this.knowsSlotDrag = stored.knowsSlotDrag ?? false;
     this.lastSnapshot = teamKey(this.team);
     this.lastRead = structuredClone(stored);
 
@@ -177,6 +186,17 @@ class Store {
     this.teams.push(team);
     this.currentTeamId = team.id;
     return team;
+  }
+
+  // Switches to an empty team of the current generation, adding one only if there is none
+  openEmptyTeam() {
+    const { generation } = this.currentTeam;
+    const existing = [this.currentTeam, ...this.teams].find(
+      team => team.generation === generation && isTeamEmpty(team.team),
+    );
+    if (!existing) return { team: this.addTeam(), isNew: true };
+    this.currentTeamId = existing.id;
+    return { team: existing, isNew: false };
   }
 
   selectTeam(id: string) {
@@ -285,9 +305,34 @@ class Store {
     this.team[otherIndex] = member;
   }
 
+  // Moves a pokemon to another slot, and the ones in between over by one
+  moveSlot(teamIndex: number, otherIndex: number) {
+    const member = this.team[teamIndex];
+    if (!member || !this.team[otherIndex] || teamIndex === otherIndex) return;
+    this.team.splice(teamIndex, 1);
+    this.team.splice(otherIndex, 0, member);
+  }
+
+  // Whether the player has dragged a slot tab or dismissed the hint about it
+  knowsSlotDrag = false;
+
+  // The slot tabs explain dragging once there are pokemon to reorder
+  get showDragHint() {
+    return (
+      !this.knowsSlotDrag && this.team.filter(({ name }) => name).length > 1
+    );
+  }
+
   // A random pokemon from the filtered options, with a random set
+  // Fills in whatever the slot's set lacks, and a complete or empty slot gets a
+  // fresh random pokemon
   randomizeSlot(teamIndex: number) {
-    if (teamIndex < 0 || teamIndex >= this.team.length) return;
+    const member = this.team[teamIndex];
+    if (!member) return;
+    if (member.name && !isSetComplete(member)) {
+      this.team[teamIndex] = completeSet(member, completeLearnset(member.name));
+      return;
+    }
     const pokemon = randomPokemon(this.filteredPokemon, this.teamPokemon);
     if (!pokemon) return;
     this.team[teamIndex] = randomSet(pokemon, completeLearnset(pokemon));
@@ -312,11 +357,11 @@ class Store {
   }
 
   get typeDefence() {
-    return calculateTypeDefence(this.team);
+    return calculateTypeDefence(this.team, this.currentTeam.generation);
   }
 
   get typeCoverage() {
-    return calculateTypeCoverage(this.team);
+    return calculateTypeCoverage(this.team, this.currentTeam.generation);
   }
 
   get checklist() {
@@ -336,7 +381,14 @@ class Store {
 
   get searchFilters(): PokemonFilters {
     const { generation, format } = this.currentTeam;
-    return { ...this.filters, generation, format };
+    const { type } = this.filters;
+    // A type filter from a later generation does not apply to an earlier one
+    return {
+      ...this.filters,
+      type: typesIn(generation).some(known => known === type) ? type : "",
+      generation,
+      format,
+    };
   }
 
   get filteredPokemon() {
@@ -437,7 +489,7 @@ class Store {
     );
   }
 
-  // On phones and tablets, "More" shows the team tools, filters, and advanced sets
+  // "More" shows the slot tools: filters, sort, and advanced sets, plus the team toolbar on phones and tablets
   isMoreOpen: boolean;
 
   // How the Name dropdown lists its options
@@ -459,10 +511,13 @@ class Store {
 
   isSnackbarOpen = false;
   snackbarMessage = "";
+  // Whether the snackbar offers to undo the change it reports
+  isSnackbarUndoable = false;
 
-  openSnackbar(message: string) {
+  openSnackbar(message: string, undoable = false) {
     this.isSnackbarOpen = true;
     this.snackbarMessage = message;
+    this.isSnackbarUndoable = undoable;
   }
 
   // The saved state as this tab last read or saved it, which tells what other
@@ -480,6 +535,7 @@ class Store {
     this.sort = merged.sort;
     this.nameView = merged.nameView;
     this.chosenLocale = merged.locale;
+    this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
     this.lastRead = { ...theirs, currentTeamId: merged.currentTeamId };
   }
 
@@ -501,6 +557,7 @@ class Store {
       sort: this.sort,
       nameView: this.nameView,
       ...(this.chosenLocale && { locale: this.chosenLocale }),
+      ...(this.knowsSlotDrag && { knowsSlotDrag: true }),
     };
   }
 }

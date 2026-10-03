@@ -13,9 +13,19 @@ import {
   MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
 } from "./shared/theme";
 
-const { sm } = breakpointValues;
-const faceHeight = fluidClamp(28, 48, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH, sm);
-const faceSpacing = fluidClamp(4, 8, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH, sm);
+// Where the title reaches its full size: the page's margins widen at sm,
+// so the title needs a little more width than that to fit
+const fullSizeWidth = breakpointValues.sm + 40;
+const fluid = (min: number, max: number, unit?: "px" | "rem") =>
+  fluidClamp(
+    min,
+    max,
+    MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
+    fullSizeWidth,
+    unit,
+  );
+const faceHeight = fluid(28, 48);
+const faceSpacing = fluid(4, 8);
 
 export default function Header() {
   return (
@@ -38,12 +48,10 @@ export default function Header() {
           component="h1"
           noWrap
           sx={theme => ({
-            px: fluidClamp(8, 20, MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH, sm),
-            fontSize: fluidClamp(
+            px: fluid(8, 20),
+            fontSize: fluid(
               1.4,
               Number.parseFloat(`${theme.typography.h3.fontSize}`),
-              MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
-              sm,
               "rem",
             ),
           })}

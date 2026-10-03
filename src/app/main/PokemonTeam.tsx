@@ -1,19 +1,20 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
+import SlotDragContext from "./pokemon-team/shared/SlotDragContext";
 import PokemonInputs from "./pokemon-team/shared/PokemonInputs";
 import TeamToolbar from "./pokemon-team/shared/TeamToolbar";
 import SmTeamViewer from "./pokemon-team/SmTeamViewer";
 import XsTeamViewer from "./pokemon-team/XsTeamViewer";
-import { useBreakpoint, useIsMdDown } from "@/app/shared/WidthContext";
+import { useIsMdDown, useIsSmDown } from "@/app/shared/WidthContext";
 
 export default function PokemonTeam() {
   const isMdDown = useIsMdDown();
-  const width = useBreakpoint();
+  const isSmDown = useIsSmDown();
 
-  if (isMdDown) return width === "xs" ? <XsTeamViewer /> : <SmTeamViewer />;
+  if (isMdDown) return isSmDown ? <XsTeamViewer /> : <SmTeamViewer />;
 
   return (
-    <>
+    <SlotDragContext>
       <Grid size={12}>
         <Paper>
           <TeamToolbar />
@@ -27,6 +28,6 @@ export default function PokemonTeam() {
           </Paper>
         </Grid>
       ))}
-    </>
+    </SlotDragContext>
   );
 }

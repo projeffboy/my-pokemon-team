@@ -1,10 +1,21 @@
 import { test, expect } from "fixtures";
-import { getTeamTextFromUrl, isMdDown, selectPokemon } from "helper";
+import type { Locator, Page } from "@playwright/test";
+import {
+  getTeamTextFromUrl,
+  isMdDown,
+  selectMove,
+  selectPokemon,
+  showSlot,
+} from "helper";
 
 test.describe("Slot tools - Integration Tests", () => {
   test("Random fills the slot with a pokemon and four moves", async ({
     page,
   }) => {
+    // A few pokemon, such as Ditto, learn fewer than four moves, so the draws are fixed
+    await page.evaluate(() => {
+      Math.random = () => 0.5;
+    });
     await page
       .getByRole("button", { name: "Random pokemon for slot 1" })
       .click();
@@ -23,38 +34,98 @@ test.describe("Slot tools - Integration Tests", () => {
       .toHaveLength(4);
   });
 
-  test("moves a pokemon to the next slot and back", async ({ page }) => {
+  test("Random completes a partly filled slot, and replaces a complete one", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Lanturn");
+    await selectMove(page, "Volt Switch");
+    const random = page.getByRole("button", {
+      name: "Random pokemon for slot 1",
+    });
+    await random.click();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lanturn");
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
+      "Volt Switch",
+    );
+    for (const field of ["move2", "move3", "move4", "item", "ability"]) {
+      await expect(page.getByLabel(`Pokemon 1's ${field}`)).not.toHaveValue("");
+    }
+
+    await random.click();
+    await expect(page.getByLabel("Pokemon 1's name")).not.toHaveValue(
+      "Lanturn",
+    );
+  });
+
+  test("moves a pokemon to the slot picked from its sprite's menu", async ({
+    page,
+  }) => {
+    // Phones and tablets drag the slot tabs instead
+    test.skip(isMdDown(page), "The slot chip is on the desktop cards");
     await selectPokemon(page, "Quagsire");
     await page
-      .getByRole("button", { name: "Move to the next slot" })
-      .first()
+      .getByRole("button", { name: "Move Quagsire to another slot" })
       .click();
+    await page.getByRole("menuitem", { name: "Pokemon 4 (empty)" }).click();
+
+    await expect(page.getByLabel("Pokemon 4's name")).toHaveValue("Quagsire");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Quagsire");
+  });
+
+  test("swaps two pokemon when one card's chip is dragged onto the other card", async ({
+    page,
+  }) => {
+    test.skip(isMdDown(page), "Phones and tablets drag the slot tabs instead");
+    await selectPokemon(page, "Dhelmise");
+    await selectPokemon(page, "Orbeetle", 1);
+
+    await dragBetween(
+      page,
+      page.getByRole("button", { name: "Move Orbeetle to another slot" }),
+      page.getByRole("region", { name: "Pokemon 1", exact: true }),
+    );
+
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Orbeetle");
+    await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("Dhelmise");
+  });
+
+  test("dragging a slot tab along the row moves the slots in between over", async ({
+    page,
+  }) => {
+    test.skip(!isMdDown(page), "Desktop has no slot tabs");
+    await selectPokemon(page, "Dhelmise");
+    await showSlot(page, 1);
+    await selectPokemon(page, "Orbeetle", 1);
+    await showSlot(page, 2);
+    await selectPokemon(page, "Kingambit", 2);
+
+    const grips = page
+      .getByRole("tablist", { name: "Pokemon team slots" })
+      .getByTestId("DragIndicatorIcon");
+    await dragBetween(page, grips.nth(0), grips.nth(2));
 
     // A tabbed viewer follows the pokemon to its new slot
-    if (isMdDown(page)) {
-      await expect(
-        page.getByRole("tab", {
-          name: /^Pokemon 2 \(Quagsire\)|Pokemon 1 \(empty\) and Pokemon 2 \(Quagsire\)/,
-        }),
-      ).toHaveAttribute("aria-selected", "true");
-    }
-    await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("Quagsire");
-    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Quagsire");
-
-    await page
-      .getByRole("button", { name: "Move to the previous slot" })
-      .nth(
-        (
-          isMdDown(page) &&
-            !(await page.getByLabel("Pokemon 1's name").isVisible())
-        ) ?
-          0
-        : 1,
-      )
-      .click();
-    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Quagsire");
     await expect(
-      page.getByRole("button", { name: "Move to the previous slot" }).first(),
-    ).toBeDisabled();
+      page.getByRole("tab", { name: /Pokemon 3 \(Dhelmise\)/ }),
+    ).toHaveAttribute("aria-selected", "true");
+    await expect
+      .poll(() => getTeamTextFromUrl(page))
+      .toMatch(/Orbeetle[^]*Kingambit[^]*Dhelmise/);
   });
 });
+
+// Drags with the mouse from the middle of one element to the middle of another
+const dragBetween = async (page: Page, source: Locator, target: Locator) => {
+  // Choosing a pokemon can scroll the slot tabs off screen
+  await target.scrollIntoViewIfNeeded();
+  const from = await source.boundingBox();
+  const to = await target.boundingBox();
+  if (!from || !to) throw new Error("The slots are not on screen");
+
+  await page.mouse.move(from.x + from.width / 2, from.y + from.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(to.x + to.width / 2, to.y + to.height / 2, {
+    steps: 10,
+  });
+  await page.mouse.up();
+};

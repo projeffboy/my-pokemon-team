@@ -1,5 +1,12 @@
 import { test, expect } from "@playwright/test";
-import { pickRandom, randomPokemon, randomSet } from "@/store/random";
+import {
+  RANDOM_ITEMS,
+  completeSet,
+  isSetComplete,
+  pickRandom,
+  randomPokemon,
+  randomSet,
+} from "@/store/random";
 import { completeLearnset, learnsetsReady } from "@/store/learnsets";
 import { pokemonAbilities } from "@/shared/pokedex";
 
@@ -19,10 +26,19 @@ test("prefers pokemon that are not on the team yet", () => {
   expect(randomPokemon([], [], () => 0)).toBe("");
 });
 
-test("builds a set with an ability, the required item, and four different viable moves", () => {
+test("skips pokemon that learn no moves while others remain", () => {
+  expect(completeLearnset("pokestarufo")).toEqual([]);
+  for (const random of [() => 0, () => 0.99]) {
+    expect(randomPokemon(["pokestarufo", "lapras"], [], random)).toBe("lapras");
+  }
+  expect(randomPokemon(["pokestarufo"], [], () => 0)).toBe("pokestarufo");
+  expect(randomPokemon(["pokestarufo", "ditto"], [], () => 0)).toBe("ditto");
+});
+
+test("builds a set with an ability, an item, and four different viable moves", () => {
   const set = randomSet("swampert", completeLearnset("swampert"));
   expect(pokemonAbilities("swampert")).toContain(set.ability);
-  expect(set.item).toBe("");
+  expect(RANDOM_ITEMS).toContain(set.item);
   const moves = [set.move1, set.move2, set.move3, set.move4];
   expect(new Set(moves).size).toBe(4);
   for (const move of moves) {
@@ -41,4 +57,35 @@ test("falls back to the whole learnset, and leaves moves blank when it runs out"
     "",
     "",
   ]);
+});
+
+test("completes a set by filling only its empty fields, keeping its details", () => {
+  const member = {
+    name: "swampert",
+    item: "leftovers",
+    ability: "",
+    move1: "earthquake",
+    move2: "",
+    move3: "icebeam",
+    move4: "",
+    nickname: "Swampy",
+  };
+  expect(isSetComplete(member)).toBe(false);
+  const set = completeSet(member, completeLearnset("swampert"));
+  expect(set).toMatchObject({
+    name: "swampert",
+    item: "leftovers",
+    move1: "earthquake",
+    move3: "icebeam",
+    nickname: "Swampy",
+  });
+  expect(pokemonAbilities("swampert")).toContain(set.ability);
+  const moves = [set.move1, set.move2, set.move3, set.move4];
+  expect(new Set(moves).size).toBe(4);
+  expect(isSetComplete(set)).toBe(true);
+  expect(isSetComplete({ ...set, item: "" })).toBe(false);
+  expect(completeSet({ ...set, item: "" }, [])).toMatchObject({
+    ...set,
+    item: expect.stringMatching(/./),
+  });
 });
