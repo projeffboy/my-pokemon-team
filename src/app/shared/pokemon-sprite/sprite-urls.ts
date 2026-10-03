@@ -1,0 +1,96 @@
+// scripts/update-data.ts loads this file on its own, so it can only import types
+import type { Generation } from "@/types";
+
+const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
+
+// Showdown has no sprite under these names, because they look like another forme
+const FILENAME_EXCEPTIONS: Record<string, string> = {
+  raticatealolatotem: "raticate-alola",
+  marowakalolatotem: "marowak-alola",
+  ribombeetotem: "ribombee",
+  araquanidtotem: "araquanid",
+  lurantistotem: "lurantis",
+  salazzletotem: "salazzle",
+  togedemarutotem: "togedemaru",
+  mimikyubustedtotem: "mimikyu-busted",
+  greninjabond: "greninja",
+  rockruffdusk: "rockruff",
+  toxtricitylowkeygmax: "toxtricity-gmax",
+};
+
+const GEN5_ONLY = [
+  "dialgaorigin",
+  "palkiaorigin",
+  "basculinwhitestriped",
+  "ursaluna",
+  "pichuspikyeared",
+  "miraidon",
+];
+
+// Each past generation's own games' sprites; later generations share the current ones
+const PAST_FOLDERS: Partial<Record<Generation, string>> = {
+  1: "gen1rb",
+  2: "gen2",
+  3: "gen3",
+  4: "gen4",
+  5: "gen5ani",
+};
+
+type SpriteEntry = { num?: number; forme?: string; baseSpecies?: string };
+
+const toId = (text: string) => text.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+// A forme's sprite is named after its base species and forme, e.g. "vivillon-icysnow"
+function spriteFilename(pokemon: string, entry?: SpriteEntry) {
+  const exception = FILENAME_EXCEPTIONS[pokemon];
+  if (exception) return exception;
+  if (!entry?.forme || !entry.baseSpecies) return pokemon;
+  return `${toId(entry.baseSpecies)}-${toId(entry.forme)}`;
+}
+
+function spriteFolder(
+  pokemon: string,
+  num: number | undefined,
+  iconIndex: number | undefined,
+  isSmall: boolean,
+  generation: Generation,
+) {
+  if (
+    (num !== undefined && 984 <= num && num <= 995) ||
+    num === 0 ||
+    (iconIndex ?? -1) >= 1320 + 93 ||
+    GEN5_ONLY.includes(pokemon)
+  ) {
+    return "gen5";
+  }
+  const past = PAST_FOLDERS[generation];
+  if (past) return past;
+  if (!isSmall) return "ani";
+  return (num && 810 <= num && num <= 898) || pokemon.includes("galar") ?
+      "bw"
+    : "dex";
+}
+
+// `iconIndex` is the pokemon's altSpriteNum; `isSmall` is below the md breakpoint.
+// A pokemon the generation's games lack falls back to its static gen 5 sprite.
+export function spriteUrls(
+  pokemon: string,
+  entry: SpriteEntry | undefined,
+  iconIndex: number | undefined,
+  isSmall: boolean,
+  generation: Generation,
+) {
+  const filename = spriteFilename(pokemon, entry);
+  const folder = spriteFolder(
+    pokemon,
+    entry?.num,
+    iconIndex,
+    isSmall,
+    generation,
+  );
+  return {
+    filename,
+    src: `${SHOWDOWN_SPRITES}/${folder}/${filename}.${folder.endsWith("ani") ? "gif" : "png"}`,
+    fallback: `${SHOWDOWN_SPRITES}/gen5/${filename}.png`,
+  };
+}

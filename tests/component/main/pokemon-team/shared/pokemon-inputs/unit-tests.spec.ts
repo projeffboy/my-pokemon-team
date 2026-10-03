@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { selectItem, selectPokemon } from "helper";
+import { openTeamTools, selectItem, selectMove, selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 
 test.describe("Pokemon Card - Unit Tests", () => {
@@ -108,6 +108,35 @@ test.describe("Pokemon Card - Unit Tests", () => {
     await page.getByRole("listbox").getByText("Assault Vest").click();
     await expect(assaultVestIcon).toBeVisible();
     await expect(rockyHelmetIcon).toBeHidden();
+  });
+
+  test("should show a move's type icon before it once the team tools are shown", async ({
+    page,
+  }) => {
+    // The card also shows the pokemon's own types, so look inside the input
+    const input = page.getByLabel("Pokemon 1's move1");
+    const field = input.locator("..");
+    const electricIcon = field.getByRole("img", { name: "Electric" });
+
+    await selectPokemon(page, "Dracozolt");
+    await selectMove(page, "Bolt Beak");
+    // Hidden with the rest of the tools, until More is pressed
+    await expect(electricIcon).toBeHidden();
+    await openTeamTools(page);
+    await expect(electricIcon).toBeVisible();
+
+    // The icon comes before the name
+    const [iconBox, inputBox] = await Promise.all([
+      electricIcon.boundingBox(),
+      input.boundingBox(),
+    ]);
+    expect(iconBox!.x + iconBox!.width).toBeLessThanOrEqual(inputBox!.x);
+
+    // Typing a different name hides the icon until a move is picked
+    await input.fill("Dragon");
+    await expect(electricIcon).toBeHidden();
+    await page.getByRole("listbox").getByText("Dragon Pulse").click();
+    await expect(field.getByRole("img", { name: "Dragon" })).toBeVisible();
   });
 
   test("should show 'Nothing found' message in moves and abilities when no pokemon is selected", async ({

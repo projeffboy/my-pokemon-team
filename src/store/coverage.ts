@@ -1,5 +1,7 @@
-import pokedex from "@/data/pokedex";
-import { POKEMON_TYPES, type PokemonType, type ReadonlyTeam } from "@/types";
+import { type PokemonType, type ReadonlyTeam } from "@/types";
+import { pokemonTypes } from "@/shared/pokedex";
+import { typesIn } from "@/shared/generation-data";
+import { LATEST_GENERATION } from "@/shared/generations";
 import {
   typeAgainstPokemon,
   moveType,
@@ -30,14 +32,17 @@ export function createTypeScores(): Record<PokemonType, number> {
   };
 }
 
-export function calculateTypeDefence(team: ReadonlyTeam) {
+export function calculateTypeDefence(
+  team: ReadonlyTeam,
+  generation = LATEST_GENERATION,
+) {
   const scores = createTypeScores();
 
   for (const { name, ability, item } of team) {
     if (!name) continue;
 
-    for (const type of POKEMON_TYPES) {
-      const score = typeAgainstPokemon(type, name, ability, item);
+    for (const type of typesIn(generation)) {
+      const score = typeAgainstPokemon(type, name, ability, item, generation);
       scores[type] += Math.max(-1.5, Math.min(1.5, score));
     }
   }
@@ -45,7 +50,10 @@ export function calculateTypeDefence(team: ReadonlyTeam) {
   return scores;
 }
 
-export function calculateTypeCoverage(team: ReadonlyTeam) {
+export function calculateTypeCoverage(
+  team: ReadonlyTeam,
+  generation = LATEST_GENERATION,
+) {
   const scores = createTypeScores();
   if (!team.some(pokemon => pokemon.name)) return scores;
 
@@ -58,15 +66,15 @@ export function calculateTypeCoverage(team: ReadonlyTeam) {
     for (const move of moves) {
       if (!move || !isMoveStrongEnough(move)) continue;
 
-      const type = moveType(move, name, ability);
+      const type = moveType(move, name, ability, generation);
       const isSpecialMove = move === "freezedry" || move === "flyingpress";
       if (isSpecialMove ? specialMovesUsed.has(move) : typesUsed.has(type)) {
         continue;
       }
 
-      const hasStab = type && pokedex[name]?.types?.includes(type);
-      for (const target of POKEMON_TYPES) {
-        if (moveAgainstType(move, target, name, ability) === -1) {
+      const hasStab = type && pokemonTypes(name, generation).includes(type);
+      for (const target of typesIn(generation)) {
+        if (moveAgainstType(move, target, name, ability, generation) === -1) {
           scores[target] += hasStab ? 2 : 1;
         }
       }

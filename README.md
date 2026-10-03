@@ -8,13 +8,15 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 
 1. You can import/export your team to Pokemon Showdown, or share it as a link
 2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
-3. There's a team checklist
-4. Search filters narrow down the Pokemon by format, type, region, and moves
-5. The sprites are animated, which is nice
+3. There's a team checklist, and a matrix of every type against every pokemon
+4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
+5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on)
+6. The sprites are animated, which is nice
+7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI, and Brazilian Portuguese, with the English names until the games are in Portuguese
 
 ## Tech Stack
 
-This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown. The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com). Vercel deploys `master` to it once CI passes.
+This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown, and its translations from [PokeAPI](https://pokeapi.co/). The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com). Vercel deploys `master` to it once CI passes.
 
 - UI: React and Material UI (MUI).
 - Build and typechecking: Vite and TypeScript.
@@ -74,6 +76,16 @@ After writing the data, the script reports what the update may have broken:
 
 The last two checks need a connection to play.pokemonshowdown.com and are skipped without one. If players will notice the update, add an entry to the update log in `src/app/footer/update-log/entries.ts`.
 
+## Updating Translations
+
+The pokemon, move, item, ability, nature, type, and region names in the other eight languages come from [PokeAPI](https://github.com/PokeAPI/pokeapi)'s CSV tables. Refresh them in `src/data/translations` after a data update with:
+
+```sh
+npm run update:translations
+```
+
+It reads the tables from GitHub (set `POKEAPI_CSV_URL` to read another copy) and reports, per language, the names it had to leave in English, such as an item PokeAPI has not translated yet, and the formes it named after their translated species and English forme. The UI text itself is written by hand in `src/i18n`.
+
 ## Testing
 
 After setting up the project, install the Playwright browsers and run all checks:
@@ -91,6 +103,8 @@ npm test
 - `npm run test:smoke`: builds the production app and checks its essential flows with Vite preview on port 4173.
 - `npm run test:dev`: browser tests of the UI against the development server on port 3000.
 
+`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. Run it after changing `src/shared/dex-urls.ts` or updating the data. Bulbapedia's bot protection may challenge the browser, in which case its tests are skipped.
+
 Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 
 The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and pushes to `master`, and keeps the Playwright reports as an artifact. [Dependabot](.github/dependabot.yml) opens a weekly pull request for minor and patch updates, and one per major update, which CI checks like any other. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
@@ -99,6 +113,7 @@ The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull request
 
 - Nintendo, The Pokemon Company, Game Freak
 - [Pokemon Showdown](https://pokemonshowdown.com/): animated sprites, non-animated sprites, and all the pokemon data (thanks Zarel!)
+- [PokeAPI](https://pokeapi.co/): the pokemon, move, item, and ability names in every language
 - [React](https://react.dev/)
 - [Material UI](https://mui.com/material-ui/)
 - [MobX state management](https://mobx.js.org/)

@@ -9,6 +9,35 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 1, 2026",
+    changes: [
+      "Send feedback straight from the site, with a screenshot of the page or your own images attached.",
+      "Reorder your team by dragging its slots.",
+      "A team in an earlier generation uses that generation's types and type chart, with the sprites of its games: Clefable is a Normal type before Gen 6, and a Gen 1 team shows Red and Blue sprites.",
+    ],
+  },
+  {
+    date: "Sep 26, 2026",
+    changes: [
+      "The site is now in Japanese, Korean, Chinese, French, German, Spanish, and Italian too, with the pokemon, move, item, and ability names from PokeAPI. Pick a language from the button beside the generation.",
+      "It is in Brazilian Portuguese as well, with the English names until the games are in Portuguese.",
+    ],
+  },
+  {
+    date: "Sep 25, 2026",
+    changes: [
+      "Save several teams in your browser, each with a name, generation, and format, and switch between them from the Teams button.",
+      "Set nicknames, levels, genders, shiny, tera types, natures, EVs, and IVs in each pokemon's Advanced options; they are kept in share links and Showdown text.",
+      "Pick a generation, from Gen 1 to Gen 9, to list only the pokemon that existed then.",
+      "New Matrix Analysis shows how every type hits, or is hit by, each pokemon.",
+      "Sort the Name dropdown by name, pokedex number, format, or base stats, and filter it by ability.",
+      "Tap the info button on a sprite for a pokemon's types, abilities, base stats, and weaknesses.",
+      "Randomize a slot or the whole team, move pokemon between slots, and undo or redo changes.",
+      "Check whether a team is legal for its generation and format from its Name and Format dialog.",
+      "ZUBL pokemon like Kingdra are listed in PU and above.",
+    ],
+  },
+  {
     date: "Sep 22, 2026",
     changes: [
       "Fixed some returning visitors seeing the August version of the site.",

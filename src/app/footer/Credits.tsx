@@ -16,6 +16,7 @@ import Code from "@mui/icons-material/Code";
 import Layers from "@mui/icons-material/Layers";
 import CloudIcon from "@mui/icons-material/Cloud";
 import pokemonShowdownLogo from "@/images/pokemon-showdown-logo.png";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 interface Credit {
   icon: ReactElement;
@@ -24,53 +25,53 @@ interface Credit {
   secondary?: string;
 }
 
-const credits: Credit[] = [
-  {
-    icon: <BusinessIcon />,
-    label: "Nintendo, The Pokemon Company, Game Freak",
-    secondary:
-      "Pokemon itself, the Pokemon Shuffle art beside the title, and the Legends: Z-A mega sprites",
-  },
-  {
-    icon: <TableChart />,
-    label: "Type chart table",
-    href: "https://bulbapedia.bulbagarden.net/wiki/Type",
-    secondary: "From Bulbapedia",
-  },
-  {
-    icon: <ListIcon />,
-    label: "Type chart list",
-    href: "https://pinterest.ca/pin/307159637067301004/",
-  },
-  {
-    icon: <ImageIcon />,
-    label: "Type chart infographic",
-    href: "https://www.reddit.com/r/pokemon/comments/1oq3rg/was_getting_frustrated_finding_an_easytoread_type/",
-    secondary: "From r/pokemon",
-  },
-  {
-    icon: <ColorLens />,
-    label: "Type colours",
-    href: "https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors",
-    secondary: "The colour of each type in the team stats",
-  },
-  {
-    icon: <People />,
-    label: "r/stunfisk",
-    href: "https://reddit.com/r/stunfisk",
-    secondary: "It's a good community",
-  },
-  { icon: <Code />, label: "React", href: "https://react.dev/" },
-  { icon: <Code />, label: "MobX", href: "https://mobx.js.org/" },
-  {
-    icon: <Layers />,
-    label: "Material UI",
-    href: "https://mui.com/material-ui/",
-  },
-  { icon: <CloudIcon />, label: "Vercel", href: "https://vercel.com/" },
-];
-
 export default function Credits() {
+  const { t } = useTranslation();
+  const credits: Credit[] = [
+    {
+      icon: <BusinessIcon />,
+      label: t.credits.companies,
+      secondary: t.credits.companiesFor,
+    },
+    {
+      icon: <TableChart />,
+      label: t.credits.typeChartTable,
+      href: "https://bulbapedia.bulbagarden.net/wiki/Type",
+      secondary: t.credits.fromBulbapedia,
+    },
+    {
+      icon: <ListIcon />,
+      label: t.credits.typeChartList,
+      href: "https://pinterest.ca/pin/307159637067301004/",
+    },
+    {
+      icon: <ImageIcon />,
+      label: t.credits.typeChartInfographic,
+      href: "https://www.reddit.com/r/pokemon/comments/1oq3rg/was_getting_frustrated_finding_an_easytoread_type/",
+      secondary: t.credits.fromRPokemon,
+    },
+    {
+      icon: <ColorLens />,
+      label: t.credits.typeColours,
+      href: "https://guiguilegui.wordpress.com/2016/05/23/pokemon-type-classifier-using-their-colors",
+      secondary: t.credits.typeColoursFor,
+    },
+    {
+      icon: <People />,
+      label: "r/stunfisk",
+      href: "https://reddit.com/r/stunfisk",
+      secondary: t.credits.stunfiskFor,
+    },
+    { icon: <Code />, label: "React", href: "https://react.dev/" },
+    { icon: <Code />, label: "MobX", href: "https://mobx.js.org/" },
+    {
+      icon: <Layers />,
+      label: "Material UI",
+      href: "https://mui.com/material-ui/",
+    },
+    { icon: <CloudIcon />, label: "Vercel", href: "https://vercel.com/" },
+  ];
+
   return (
     <>
       <Link href="https://pokemonshowdown.com">
@@ -81,12 +82,9 @@ export default function Credits() {
           sx={{ width: "50%", minWidth: 200 }}
         />
       </Link>
-      <Typography sx={{ mb: 2 }}>
-        The folks at Pokemon Showdown are very generous to let me use all of
-        their sprites, icons, and pokemon data. Absolutely indispensable!
-      </Typography>
+      <Typography sx={{ mb: 2 }}>{t.credits.showdown}</Typography>
       <Typography variant="h6" gutterBottom>
-        Also thanks to
+        {t.credits.alsoThanks}
       </Typography>
       <List>
         {credits.map(({ icon, label, href, secondary }) => (

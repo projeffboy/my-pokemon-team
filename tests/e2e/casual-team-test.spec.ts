@@ -70,6 +70,8 @@ test.describe("Casual Team", () => {
       !["Android", "iPhone"].includes(testInfo.project.name),
       "This test only runs on mobile",
     );
+    // Its 42 selections take about 30 seconds in CI's WebKit
+    test.slow();
 
     for (const [i, pokemon] of team.entries()) {
       await addPokemon(page, i, pokemon);

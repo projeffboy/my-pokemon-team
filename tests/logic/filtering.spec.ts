@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import pokedex from "@/data/pokedex";
-import { filterPokemon } from "@/store/filtering";
+import { filterPokemon, introducedIn, isInGeneration } from "@/store/filtering";
 
 const all = { format: "", region: "", type: "" };
 
@@ -150,4 +150,66 @@ test("unknown format and type filters return no species", () => {
   expect(filterPokemon({ ...all, format: "Unknown" })).toEqual([]);
   expect(filterPokemon({ ...all, region: "Unknown" })).toEqual([]);
   expect(filterPokemon({ ...all, type: "Unknown" })).toEqual([]);
+});
+
+test("each species and forme knows the generation it appeared in", () => {
+  expect(introducedIn({ num: 1 })).toBe(1);
+  expect(introducedIn({ num: 3, forme: "Mega" })).toBe(6);
+  expect(introducedIn({ num: 383, forme: "Primal" })).toBe(6);
+  expect(introducedIn({ num: 26, forme: "Alola" })).toBe(7);
+  expect(introducedIn({ num: 52, forme: "Galar" })).toBe(8);
+  expect(introducedIn({ num: 157, forme: "Hisui" })).toBe(8);
+  expect(introducedIn({ num: 128, forme: "Paldea-Combat" })).toBe(9);
+  expect(introducedIn({ num: 906 })).toBe(9);
+  expect(introducedIn({ num: 251 })).toBe(2);
+  expect(introducedIn({ num: 154, forme: "Mega", gen: 9 })).toBe(9);
+});
+
+test("megas skip gen 8 and Gigantamax formes exist only there", () => {
+  expect(isInGeneration({ num: 3, forme: "Mega" }, 6)).toBe(true);
+  expect(isInGeneration({ num: 3, forme: "Mega" }, 8)).toBe(false);
+  expect(isInGeneration({ num: 3, forme: "Mega" }, 9)).toBe(true);
+  expect(isInGeneration({ num: 3, forme: "Gmax" }, 8)).toBe(true);
+  expect(isInGeneration({ num: 3, forme: "Gmax" }, 7)).toBe(false);
+  expect(isInGeneration({ num: 3, forme: "Gmax" }, 9)).toBe(true);
+  expect(isInGeneration({ num: 154, forme: "Mega", gen: 9 }, 7)).toBe(false);
+});
+
+test("a generation lists the pokemon that existed in it", () => {
+  const filters = { format: "", region: "", type: "" };
+  const gen1 = filterPokemon({ ...filters, generation: 1 });
+  expect(gen1).toContain("mew");
+  expect(gen1).not.toContain("chikorita");
+  expect(gen1).not.toContain("venusaurmega");
+  expect(gen1).not.toContain("raichualola");
+
+  const gen6 = filterPokemon({ ...filters, generation: 6 });
+  expect(gen6).toContain("diancie");
+  expect(gen6).toContain("groudonprimal");
+  expect(gen6).toContain("garchompmega");
+  expect(gen6).not.toContain("garchompmegaz");
+  expect(gen6).not.toContain("rowlet");
+  expect(gen6).not.toContain("raichualola");
+
+  const gen8 = filterPokemon({ ...filters, generation: 8 });
+  expect(gen8).toContain("meowthgalar");
+  expect(gen8).toContain("zoruahisui");
+  expect(gen8).toContain("pikachugmax");
+  expect(gen8).not.toContain("venusaurmega");
+  expect(gen8).not.toContain("sprigatito");
+
+  const gen9 = filterPokemon({ ...filters, generation: 9 });
+  expect(gen9).toEqual(filterPokemon(filters));
+});
+
+test("the ability filter keeps pokemon with that ability, in any slot", () => {
+  const filters = { format: "", region: "", type: "" };
+  const levitate = filterPokemon({ ...filters, ability: "Levitate" });
+  expect(levitate).toContain("bronzong");
+  expect(levitate).toContain("rotom");
+  expect(levitate).not.toContain("garchomp");
+  expect(filterPokemon({ ...filters, ability: "Rough Skin" })).toContain(
+    "garchomp",
+  );
+  expect(filterPokemon({ ...filters, ability: "Imaginary" })).toEqual([]);
 });

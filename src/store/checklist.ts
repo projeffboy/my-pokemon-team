@@ -1,16 +1,18 @@
 import moves from "@/data/moves";
 import { MOVE_KEYS, type ReadonlyTeam } from "@/types";
+import type { Messages } from "@/i18n/en";
+
+// The labels live in src/i18n, under these keys
+export type ChecklistGroupKey = keyof Messages["checklist"]["groups"];
+export type ChecklistItemKey = keyof Messages["checklist"]["items"];
 
 export interface ChecklistItem {
-  label: string;
-  // Shorter labels for screens at lg and below, then shorter still at md and below
-  shortLabel?: string;
-  shorterLabel?: string;
+  key: ChecklistItemKey;
   check: (team: ReadonlyTeam) => boolean;
 }
 
 export interface ChecklistGroup {
-  title: string;
+  key: ChecklistGroupKey;
   items: ChecklistItem[];
 }
 
@@ -84,11 +86,10 @@ const hasWishAndProtect = hasMovesTogether([
 
 export const checklist: ChecklistGroup[] = [
   {
-    title: "General",
+    key: "general",
     items: [
       {
-        label: "Entry Hazard",
-        shortLabel: "Hazard",
+        key: "entryHazard",
         check: hasAnyMove([
           "spikes",
           "stealthrock",
@@ -98,9 +99,7 @@ export const checklist: ChecklistGroup[] = [
         ]),
       },
       {
-        label: "Spinner/Defogger",
-        shortLabel: "Spinner",
-        shorterLabel: "Spin",
+        key: "spinner",
         check: hasAnyMove([
           "rapidspin",
           "defog",
@@ -110,58 +109,54 @@ export const checklist: ChecklistGroup[] = [
         ]),
       },
       {
-        label: "Reliable Recovery",
-        shortLabel: "Recovery",
-        shorterLabel: "Heal",
+        key: "recovery",
         check: team => hasRecovery(team) || hasWishAndProtect(team),
       },
     ],
   },
   {
-    title: "Defensive",
+    key: "defensive",
     items: [
-      { label: "Cleric", check: hasAnyMove(["aromatherapy", "healbell"]) },
-      { label: "Status Move", shortLabel: "Status", check: inflictsStatus },
+      { key: "cleric", check: hasAnyMove(["aromatherapy", "healbell"]) },
+      { key: "status", check: inflictsStatus },
       {
-        label: "Phazer",
+        key: "phazer",
         check: hasAnyMove(["circlethrow", "dragontail", "roar", "whirlwind"]),
       },
     ],
   },
   {
-    title: "Offensive",
+    key: "offensive",
     items: [
-      { label: "Boosting Move", shortLabel: "Setup", check: boostsStats },
+      { key: "boosting", check: boostsStats },
       {
-        label: "Volt-turn Move",
-        shortLabel: "Volt-turn",
-        shorterLabel: "Volturn",
+        key: "voltTurn",
         check: hasAnyMove(["voltswitch", "uturn", "flipturn"]),
       },
       {
-        label: "Choice Item",
-        shortLabel: "Choice",
+        key: "choice",
         check: hasAnyItem(["choicescarf", "choiceband", "choicespecs"]),
       },
     ],
   },
 ];
 
-// The label shown at a viewport width: shorterLabel below md, shortLabel below lg
+// The label shown at a viewport width: the shorter one below md, the short one below lg
 export const checklistLabel = (
-  { label, shortLabel, shorterLabel }: Omit<ChecklistItem, "check">,
+  {
+    label,
+    short,
+    shorter,
+  }: { label: string; short?: string; shorter?: string },
   { isMdDown, isLgDown }: { isMdDown: boolean; isLgDown: boolean },
 ) =>
-  isMdDown ? (shorterLabel ?? shortLabel ?? label)
-  : isLgDown ? (shortLabel ?? label)
+  isMdDown ? (shorter ?? short ?? label)
+  : isLgDown ? (short ?? label)
   : label;
 
 export function evaluateChecklist(team: ReadonlyTeam) {
-  return checklist.map(({ title, items }) => ({
-    title,
-    items: items.map(({ check, ...item }) => ({
-      ...item,
-      isChecked: check(team),
-    })),
+  return checklist.map(({ key, items }) => ({
+    key,
+    items: items.map(({ key, check }) => ({ key, isChecked: check(team) })),
   }));
 }

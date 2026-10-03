@@ -58,7 +58,7 @@ test("learnsets recompute after species and move filter edits", ({ store }) => {
     expect(learnsets.values[0]).toEqual([]);
     store.team[0].name = "whimsicott";
     expect(learnsets.values[0]).toContain("absorb");
-    store.searchFilters.moves = "Viable";
+    store.filters.moves = "Viable";
     expect(learnsets.values[0]).not.toContain("absorb");
     expect(learnsets.values[0]).toContain("encore");
     store.team[0].name = "cryogonal";
@@ -81,17 +81,18 @@ test("Pokemon options recompute after each filter and filter replacement", ({
   });
   try {
     expect(names).toContain("Milotic");
-    store.searchFilters.type = "Psychic";
+    store.filters.type = "Psychic";
     expect(names).toContain("Medicham");
     expect(names).not.toContain("Milotic");
     expect(names).toContain("Reuniclus");
-    store.searchFilters.region = "Hoenn";
+    store.filters.region = "Hoenn";
     expect(names).toContain("Medicham");
     expect(names).not.toContain("Reuniclus");
-    store.searchFilters.format = "Little Cup (LC)";
+    store.currentTeam.format = "Little Cup (LC)";
     expect(names).not.toContain("Medicham");
     expect(names).toContain("Spoink");
-    store.searchFilters = { format: "", region: "", type: "", moves: "" };
+    store.filters = { type: "", region: "", ability: "", moves: "" };
+    store.currentTeam.format = "";
     expect(names).toContain("Milotic");
   } finally {
     dispose();

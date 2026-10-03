@@ -1,6 +1,8 @@
+import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { allItemIds, allItemNames, pokemonName } from "@/shared/names";
+import { allItemIds } from "@/shared/names";
+import { useTranslation } from "@/app/shared/TranslationContext";
 import PokemonInputSelect from "./pokemon-input/PokemonInputSelect";
 import { PokemonProperties } from "@/types";
 
@@ -8,10 +10,12 @@ const PokemonInput = observer(function PokemonInput({
   placeholder,
   pokemonProperty,
   teamIndex,
+  leadingIcon = false,
 }: {
   placeholder: string;
   pokemonProperty: PokemonProperties;
   teamIndex: number;
+  leadingIcon?: boolean;
 }) {
   const handleChange = (inputValue: string) => {
     if (pokemonProperty === "name") {
@@ -22,20 +26,26 @@ const PokemonInput = observer(function PokemonInput({
     if (member) member[pokemonProperty] = inputValue;
   };
 
+  const { names } = useTranslation();
   const member = store.team[teamIndex];
+  // Stable while the language is, since a new array resets the text being typed
+  const allItemNames = useMemo(() => allItemIds.map(names.item), [names]);
+  const abilities = store.teamAbilities[teamIndex];
+  const abilityNames = useMemo(
+    () => abilities?.map(names.ability) ?? [],
+    [abilities, names],
+  );
   let optionValues: readonly string[];
   let optionLabels: readonly string[];
 
   switch (pokemonProperty) {
     case "name": {
       optionValues = store.filteredPokemon;
-      optionLabels = store.filteredPokemonNames.map(
-        (name, i) => name ?? optionValues[i] ?? "",
-      );
+      optionLabels = store.filteredPokemonNames;
       const selected = member?.name;
       if (selected && !optionValues.includes(selected)) {
         optionValues = [...optionValues, selected];
-        optionLabels = [...optionLabels, pokemonName(selected) ?? selected];
+        optionLabels = [...optionLabels, names.pokemon(selected)];
       }
       break;
     }
@@ -44,14 +54,12 @@ const PokemonInput = observer(function PokemonInput({
       optionLabels = allItemNames;
       break;
     case "ability":
-      optionValues = store.teamAbilities[teamIndex] ?? [];
-      optionLabels = optionValues;
+      optionValues = abilities ?? [];
+      optionLabels = abilityNames;
       break;
     default: // for the moves
       optionValues = store.teamLearnsets.values[teamIndex] ?? [];
-      optionLabels = (store.teamLearnsets.labels[teamIndex] ?? []).map(
-        (name, i) => name ?? optionValues[i] ?? "",
-      );
+      optionLabels = store.teamLearnsets.labels[teamIndex] ?? [];
   }
 
   return (
@@ -63,6 +71,7 @@ const PokemonInput = observer(function PokemonInput({
       value={member?.[pokemonProperty] ?? ""}
       pokemonProperty={pokemonProperty}
       teamIndex={teamIndex}
+      leadingIcon={leadingIcon}
     />
   );
 });

@@ -2,7 +2,8 @@ import { test, expect } from "./fixtures";
 import type { Locator, Page } from "@playwright/test";
 import { fromBase64Url } from "@/app/shared/base64url";
 import { breakpointValues } from "@/app/shared/theme";
-import { checklist, checklistLabel } from "@/store/checklist";
+import { checklistLabel } from "@/store/checklist";
+import en from "@/i18n/en";
 
 const ASPECT_RATIO = 16 / 9;
 
@@ -20,6 +21,104 @@ export const createViewport = (width: number) => ({
 // Helper function for navigation
 export const goToSite = async (page: Page) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
+};
+
+// Below md, the More button beside the slot tabs also hides the team toolbar
+export const isMdDown = (page: Page) =>
+  (page.viewportSize()?.width ?? Infinity) < breakpointValues.md;
+
+export const isXs = (page: Page) =>
+  (page.viewportSize()?.width ?? Infinity) < breakpointValues.sm;
+
+// Brings a slot's card on screen: the tabbed viewers show one slot or one pair at a time
+export const showSlot = async (page: Page, slotIndex: number) => {
+  const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s name`);
+  if (await input.isVisible()) return;
+  await page
+    .getByRole("tab", { name: new RegExp(`Pokemon ${slotIndex + 1} \\(`) })
+    .click();
+  await expect(input).toBeVisible();
+};
+
+// Shows the filters, sort, and advanced buttons, and the team toolbar on phones and tablets
+export const openTeamTools = async (page: Page) => {
+  const more = page.getByRole("button", { name: "More team tools" });
+  if (await more.isVisible()) await more.click();
+};
+
+export const openManageTeamMenu = async (page: Page) => {
+  await openTeamTools(page);
+  await page.getByRole("button", { name: "Manage team" }).click();
+  await expect(page.getByRole("menu")).toBeVisible();
+};
+
+export const clickMenuItem = async (page: Page, name: string) => {
+  await page.getByRole("menuitem", { name, exact: true }).click();
+  await expect(page.getByRole("menu")).toBeHidden();
+};
+
+// Opens the current team's text in the Edit Pokepaste dialog
+export const openEditPokepaste = async (page: Page) => {
+  await openManageTeamMenu(page);
+  await clickMenuItem(page, "Edit Pokepaste");
+  await expect(
+    page.getByRole("dialog", { name: "Edit Pokepaste" }),
+  ).toBeVisible();
+};
+
+// Opens a slot tool's dialog, such as Filters, Sort, or Advanced, from the first visible card
+const openSlotDialog = async (page: Page, button: RegExp, dialog: string) => {
+  await openTeamTools(page);
+  await page.getByRole("button", { name: button }).first().click();
+  await expect(page.getByRole("dialog", { name: dialog })).toBeVisible();
+};
+
+export const openFilters = (page: Page) =>
+  openSlotDialog(page, /^Filters$/, "Filters");
+
+export const openSort = (page: Page) => openSlotDialog(page, /^Sort$/, "Sort");
+
+export const openAdvanced = (page: Page) =>
+  openSlotDialog(page, /^Advanced options for slot/, "Advanced");
+
+// Picks an option in a dialog's select, found by its label
+export const selectDialogOption = async (
+  page: Page,
+  label: string,
+  option: string,
+) => {
+  await page.getByRole("combobox", { name: label }).click();
+  await page.getByRole("option", { name: option, exact: true }).click();
+};
+
+export const closeDialog = async (page: Page, button = "Done") => {
+  await page.getByRole("button", { name: button, exact: true }).click();
+  await expect(page.getByRole("dialog")).toBeHidden();
+};
+
+const ANALYSIS_TABS: Record<string, string> = {
+  "Team Defence": "Defence",
+  "Team Type Coverage": "Coverage",
+  "Team Checklist": "Checklist",
+  "Matrix Analysis": "Matrix",
+};
+
+// Shows one of the analysis panel's views: on phones each has a tab, and from
+// tablets up a switch in the panel's header shows the matrix
+export const openAnalysis = async (page: Page, name: string) => {
+  if (isXs(page)) {
+    await page
+      .getByRole("tablist", { name: "Team analysis" })
+      .getByRole("tab", { name: ANALYSIS_TABS[name] })
+      .click();
+  } else {
+    // From tablets up, the header's switch shows the stats, the matrix, or the checklist
+    const stats = ["Team Defence", "Team Type Coverage"].includes(name);
+    await page
+      .getByRole("button", { name: stats ? "Team Stats" : name })
+      .click();
+  }
+  await expect(page.getByRole("region", { name })).toBeVisible();
 };
 
 // Decodes the `team` URL parameter (see src/app/shared/team-link.ts) into Pokemon Showdown team
@@ -77,11 +176,11 @@ export const selectMove = async (
   await page.getByRole("listbox").getByText(move, { exact: true }).click();
 };
 
-// The checklist label as shown at the page's viewport width
+// The checklist label as shown at the page's viewport width, from its English label
 const pageChecklistLabel = (page: Page, label: string) => {
-  const item = checklist
-    .flatMap(group => group.items)
-    .find(item => item.label === label);
+  const item = Object.values(en.checklist.items).find(
+    item => item.label === label,
+  );
   if (!item) throw new Error(`Unknown checklist item: ${label}`);
 
   const width = page.viewportSize()?.width ?? Infinity;
@@ -107,6 +206,10 @@ export const expectChecklistItem = async (
 // Shared unit tests for Team Defence and Team Type Coverage
 export const teamScoreUnitTests = (headingName: string) => {
   test.describe(`${headingName} - Unit Tests`, () => {
+    test.beforeEach(async ({ page }) => {
+      await openAnalysis(page, headingName);
+    });
+
     test("should display all 18 types with score of 0", async ({ page }) => {
       const section = page.getByRole("region", { name: headingName });
       await expect(section).toBeVisible();
@@ -147,6 +250,7 @@ const checkScoreAndPopover = async (
   textToIdentifyPopover: string,
   expectedPopoverText: string[],
 ) => {
+  await openAnalysis(page, cardName);
   const section = page.getByRole("region", { name: cardName });
   await expect(section).toBeVisible();
 

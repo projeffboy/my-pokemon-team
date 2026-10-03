@@ -1,20 +1,21 @@
 import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import fill from "@/app/shared/fill";
+import { useTranslation } from "@/app/shared/TranslationContext";
 
 export default function PrivacyPolicy() {
+  const { t } = useTranslation();
   return (
     <>
       <Typography sx={{ mb: 2 }}>
-        All or partial advertising on this Website or App is managed by Playwire
-        LLC. If Playwire publisher advertising services are used, Playwire LLC
-        may collect and use certain aggregated and anonymized data for
-        advertising purposes. To learn more about the types of data collected,
-        how data is used and your choices as a user, please visit{" "}
-        <Link href="https://www.playwire.com/privacy-policy">
-          https://www.playwire.com/privacy-policy
-        </Link>
-        .
+        {fill(t.privacy.playwire, {
+          link: (
+            <Link href="https://www.playwire.com/privacy-policy">
+              https://www.playwire.com/privacy-policy
+            </Link>
+          ),
+        })}
       </Typography>
       <Typography sx={{ mb: 2 }}>
         <Link href="http://www.playwire.com">
@@ -30,7 +31,7 @@ export default function PrivacyPolicy() {
       </Typography>
       <Typography sx={{ mb: 2, textAlign: "center" }}>
         <Link href="https://www.playwire.com/contact-direct-sales">
-          Advertise on this site.
+          {t.privacy.advertise}
         </Link>
       </Typography>
     </>

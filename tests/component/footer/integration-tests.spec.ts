@@ -10,7 +10,7 @@ test.describe("Footer - Integration Tests", () => {
     });
 
     async function verifyTheme(darkMode: boolean) {
-      const DARK_BODY_BG = "rgb(48, 48, 48)";
+      const DARK_BODY_BG = "rgb(18, 18, 18)";
       const DARK_TITLE_COLOR = "rgb(224, 224, 224)";
       const LIGHT_BODY_BG = "rgb(238, 238, 238)";
       const LIGHT_TITLE_COLOR = "rgba(0, 0, 0, 0.87)";
@@ -39,16 +39,26 @@ test.describe("Footer - Integration Tests", () => {
     const [modeCookie] = await page.context().cookies();
     expect(modeCookie.name).toBe("mui-mode");
     expect(modeCookie.value).toBe("dark");
-    expect(modeCookie.expires).toBeGreaterThan(
-      Date.now() / 1000 + 6.9 * 24 * 60 * 60,
-    );
-    expect(modeCookie.expires).toBeLessThan(
-      Date.now() / 1000 + 7.1 * 24 * 60 * 60,
-    );
+    // Three months, restarted by each visit
+    const threeMonths = 91 * 24 * 60 * 60;
+    const expectThreeMonthsFromNow = async () => {
+      const [cookie] = await page.context().cookies();
+      const fromNow = (cookie?.expires ?? 0) - Date.now() / 1000;
+      expect(fromNow).toBeGreaterThan(threeMonths - 60);
+      expect(fromNow).toBeLessThan(threeMonths + 60);
+    };
+    await expectThreeMonthsFromNow();
 
+    // A cookie set to lapse sooner is renewed by the next visit
+    await page
+      .context()
+      .addCookies([
+        { ...modeCookie, expires: Math.round(Date.now() / 1000) + 60 },
+      ]);
     await page.reload();
     await expect(darkButton).toHaveAttribute("aria-pressed", "true");
     await verifyTheme(true);
+    await expectThreeMonthsFromNow();
 
     await lightButton.click();
     await expect(lightButton).toHaveAttribute("aria-pressed", "true");
@@ -72,7 +82,7 @@ test.describe("Footer - Integration Tests", () => {
     await expect(systemButton).toHaveAttribute("aria-pressed", "true");
     await expect(body).toHaveCSS(
       "background-color",
-      initiallyDark ? "rgb(238, 238, 238)" : "rgb(48, 48, 48)",
+      initiallyDark ? "rgb(238, 238, 238)" : "rgb(18, 18, 18)",
     );
   });
 });

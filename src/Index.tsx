@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
+import store from "./store";
 // Roboto for Material UI, self-hosted so it ships with the bundle's long-lived cache
 import "@fontsource/roboto/latin-300.css";
 import "@fontsource/roboto/latin-400.css";
@@ -18,8 +19,11 @@ window.addEventListener("vite:preloadError", event => {
 
 const rootEl = document.getElementById("root");
 if (!rootEl) throw new Error("Root element not found");
-createRoot(rootEl).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+// The page first appears in its language, instead of in English for a moment
+store.translationReady.then(() =>
+  createRoot(rootEl).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  ),
 );

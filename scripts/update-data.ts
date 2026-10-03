@@ -3,14 +3,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import type { Items, Learnsets, Moves, Pokedex } from "../src/types.ts";
+import { LATEST_GENERATION } from "../src/shared/generations.ts";
 import {
   type DataTypes,
+  type ModData,
   type MoveSearch,
   type ShowdownTable,
   collectViableMoves,
   flattenLearnsets,
   nameChanges,
   projectFormats,
+  projectPastGenerations,
   projectTable,
   projectTypeChart,
   renderTypedData,
@@ -48,12 +51,28 @@ async function loadTable(
 const loadShowdownTable = (file: string, exportName: string) =>
   loadTable(path.join(showdownRoot, file), exportName);
 
+// A mod only has the files it changes
+async function loadModTable(mod: string, file: string, exportName: string) {
+  const modPath = path.join(showdownRoot, `data/mods/${mod}/${file}.ts`);
+  try {
+    await fs.access(modPath);
+  } catch {
+    return undefined;
+  }
+  return loadTable(modPath, exportName);
+}
+
+// The data files named differently from their type, lowercased
+const DATA_FILES: Partial<Record<keyof DataTypes, string>> = {
+  PastGenerations: "past-generations",
+};
+
 async function writeData<N extends keyof DataTypes>(
   typeName: N,
   data: DataTypes[N],
   onePerLine = false,
 ) {
-  const file = typeName.toLowerCase();
+  const file = DATA_FILES[typeName] ?? typeName.toLowerCase();
   // Learnsets are the bulk of the data and load lazily as JSON, which the browser parses faster
   if (typeName === "Learnsets") {
     await fs.writeFile(
@@ -71,7 +90,7 @@ async function writeData<N extends keyof DataTypes>(
 async function updateProjectedDataset(
   sourceName: string,
   exportName: string,
-  typeName: "Pokedex" | "Moves" | "Items",
+  typeName: "Pokedex" | "Moves" | "Items" | "Natures",
 ) {
   const table = await loadShowdownTable(`data/${sourceName}.ts`, exportName);
   await writeData(typeName, projectTable(typeName, table), true);
@@ -170,6 +189,36 @@ async function updateTypeChart() {
   await writeData("TypeChart", projectTypeChart(typeChart));
 }
 
+// Showdown keeps each past generation's data in a mod that inherits from the next one's
+async function updatePastGenerations() {
+  const tables = [
+    ["pokedex", "Pokedex"],
+    ["moves", "Moves"],
+    ["typechart", "TypeChart"],
+  ] as const;
+  const [pokedex, moves, typechart] = await Promise.all(
+    tables.map(([file, exportName]) =>
+      loadShowdownTable(`data/${file}.ts`, exportName),
+    ),
+  );
+  if (!pokedex || !moves || !typechart) throw new Error("Missing base data");
+  const mods = Object.fromEntries(
+    await Promise.all(
+      [1, 2, 3, 4, 5, 6, 7, 8].map(async gen => {
+        const mod: ModData = {};
+        for (const [file, exportName] of tables) {
+          mod[file] = await loadModTable(`gen${gen}`, file, exportName);
+        }
+        return [gen, mod];
+      }),
+    ),
+  );
+  await writeData(
+    "PastGenerations",
+    projectPastGenerations({ pokedex, moves, typechart }, mods),
+  );
+}
+
 async function updateIconIndexes() {
   const source = await read(
     path.join(clientRoot, "play.pokemonshowdown.com/src/battle-dex-data.ts"),
@@ -228,12 +277,7 @@ async function reportNewSprites(
   iconIndexes: Record<string, number>,
 ) {
   const { spriteUrls } = await importTypeScript(
-    await read(
-      path.join(
-        root,
-        "src/app/main/pokemon-team/shared/pokemon-sprite/sprite-urls.ts",
-      ),
-    ),
+    await read(path.join(root, "src/app/shared/pokemon-sprite/sprite-urls.ts")),
   );
   const localSprites = await fs.readdir(
     path.join(root, "src/images/local-sprites"),
@@ -247,6 +291,7 @@ async function reportNewSprites(
         pokedex[id],
         iconIndexes[id],
         isSmall,
+        LATEST_GENERATION,
       );
       if (await exists(src)) continue;
       const hasFallback = src !== fallback && (await exists(fallback));
@@ -283,9 +328,11 @@ await Promise.all([
   updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
   updateProjectedDataset("moves", "Moves", "Moves"),
   updateProjectedDataset("items", "Items", "Items"),
+  updateProjectedDataset("natures", "Natures", "Natures"),
   updateFormats(),
   updateLearnsets().then(updateViableMoves),
   updateTypeChart(),
+  updatePastGenerations(),
   updateIconIndexes(),
 ]);
 
@@ -296,6 +343,8 @@ await Promise.all(
     "items",
     "learnsets",
     "moves",
+    "natures",
+    "past-generations",
     "pokedex",
     "typechart",
   ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),

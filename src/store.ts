@@ -1,49 +1,268 @@
-import { makeAutoObservable, configure } from "mobx";
-import type { SearchFilters, Team } from "./types";
+import {
+  makeAutoObservable,
+  configure,
+  observableRef,
+  reaction,
+  toJS,
+} from "mobx";
+import type {
+  Generation,
+  NameView,
+  PokemonFilters,
+  SavedTeam,
+  SearchFilters,
+  SortOrder,
+  Team,
+} from "./types";
 import { MOVE_KEYS } from "./types";
-import { getTeamLearnsets, learnsetsReady } from "./store/learnsets";
+import {
+  completeLearnset,
+  getTeamLearnsets,
+  learnsetsReady,
+} from "./store/learnsets";
 import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
+import { sortPokemon } from "./store/sorting";
 import { evaluateChecklist } from "./store/checklist";
 import {
-  createEmptyTeam,
+  completeSet,
+  isSetComplete,
+  randomPokemon,
+  randomSet,
+} from "./store/random";
+import { serializeTeam } from "./store/team-text";
+import {
+  initialStoredState,
+  loadStoredState,
+  mergeStoredState,
+  saveStoredState,
+  stableJson,
+  STORAGE_KEY,
+  type StoredState,
+} from "./store/teams-storage";
+import { expireSettings } from "./store/settings-expiry";
+import {
+  createSavedTeam,
   getAutoSelectedAbility,
   getAutoSelectedItem,
+  isTeamEmpty,
 } from "./shared/team";
-import { pokemonName } from "./shared/names";
+import { clearDetails } from "./shared/set-details";
 import { pokemonAbilities } from "./shared/pokedex";
+import { typesIn } from "./shared/generation-data";
+import { detectLocale, type Locale } from "./i18n/locales";
+import { english, loadTranslation, type Translation } from "./i18n/translation";
 
 // Components mutate the store directly.
 configure({ enforceActions: "never" });
 
+export type DialogName =
+  | "teams"
+  | "teamSettings"
+  | "importTeam"
+  | "editTeam"
+  | "advanced"
+  | "info"
+  | "filters"
+  | "sort";
+
+const HISTORY_LIMIT = 50;
+
+const storage = typeof localStorage === "undefined" ? undefined : localStorage;
+expireSettings(storage, Date.now());
+const browserLanguages =
+  typeof navigator === "undefined" ? [] : navigator.languages;
+
+const teamKey = (team: Team) => stableJson(toJS(team));
+
 class Store {
   constructor() {
-    makeAutoObservable(this);
+    const stored = loadStoredState(storage) ?? initialStoredState();
+    this.teams = stored.teams;
+    this.currentTeamId = stored.currentTeamId;
+    this.isMoreOpen = stored.isMoreOpen;
+    this.sort = stored.sort;
+    this.nameView = stored.nameView;
+    this.chosenLocale = stored.locale;
+    this.knowsSlotDrag = stored.knowsSlotDrag ?? false;
+    this.lastSnapshot = teamKey(this.team);
+    this.lastRead = structuredClone(stored);
+
+    makeAutoObservable<Store, "lastSnapshot" | "lastRead">(this, {
+      lastSnapshot: false,
+      lastRead: false,
+      translationReady: false,
+      translation: observableRef,
+    });
+
     learnsetsReady.then(
       () => {
         this.learnsetsLoaded = true;
       },
-      () =>
-        this.openSnackbar(
-          "The move lists could not be loaded. Reload the page to try again.",
-        ),
+      () => this.openSnackbar(this.translation.t.team.learnsetsFailed),
+    );
+
+    this.translationReady = this.loadLocale(this.locale);
+    reaction(
+      () => this.locale,
+      locale => this.loadLocale(locale),
+    );
+
+    reaction(
+      () => JSON.stringify(this.storedState),
+      () => this.save(),
+      { delay: 250 },
+    );
+    if (typeof addEventListener !== "undefined") {
+      // An edit made just before leaving the page would miss the delayed save above
+      addEventListener("pagehide", () => this.save());
+      addEventListener("storage", ({ key, storageArea }) => {
+        if (key === STORAGE_KEY && storageArea === storage)
+          this.readOtherTabs();
+      });
+    }
+
+    // Undo history is per team, so switching teams starts it afresh
+    reaction(
+      () => this.currentTeamId,
+      () => {
+        this.past = [];
+        this.future = [];
+        this.lastSnapshot = teamKey(this.team);
+      },
+    );
+
+    // Records the team before each burst of edits, so undo steps back through them
+    reaction(
+      () => teamKey(this.team),
+      snapshot => this.recordEdit(snapshot),
+      { delay: 400 },
     );
   }
 
   learnsetsLoaded = false;
 
-  team: Team = createEmptyTeam();
+  // Saved teams, of which one is being edited
+
+  teams: SavedTeam[];
+  currentTeamId: string;
+
+  get currentTeam(): SavedTeam {
+    const team =
+      this.teams.find(({ id }) => id === this.currentTeamId) ?? this.teams[0];
+    if (!team) throw new Error("There is always at least one team");
+    return team;
+  }
+
+  get team(): Team {
+    return this.currentTeam.team;
+  }
+
+  set team(team: Team) {
+    this.currentTeam.team = team;
+  }
 
   replaceTeam(team: Team) {
     this.team = team;
   }
+
+  private nextTeamName() {
+    const { teamNumber } = this.translation.t.team;
+    const names = new Set(this.teams.map(({ name }) => name));
+    let number = this.teams.length + 1;
+    while (names.has(teamNumber(number))) number++;
+    return teamNumber(number);
+  }
+
+  // A new team in the current team's generation and format, which becomes the current one
+  addTeam(settings: Partial<Omit<SavedTeam, "id">> = {}) {
+    const { generation, format } = this.currentTeam;
+    const team = createSavedTeam({
+      name: this.nextTeamName(),
+      generation,
+      format,
+      ...settings,
+    });
+    this.teams.push(team);
+    this.currentTeamId = team.id;
+    return team;
+  }
+
+  // Switches to an empty team of the current generation, adding one only if there is none
+  openEmptyTeam() {
+    const { generation } = this.currentTeam;
+    const existing = [this.currentTeam, ...this.teams].find(
+      team => team.generation === generation && isTeamEmpty(team.team),
+    );
+    if (!existing) return { team: this.addTeam(), isNew: true };
+    this.currentTeamId = existing.id;
+    return { team: existing, isNew: false };
+  }
+
+  selectTeam(id: string) {
+    if (this.teams.some(team => team.id === id)) this.currentTeamId = id;
+  }
+
+  deleteTeam(id: string) {
+    const index = this.teams.findIndex(team => team.id === id);
+    if (index === -1) return;
+    const { generation, format } = this.teams.splice(index, 1)[0] ?? {};
+    if (!this.teams.length) {
+      const name = this.translation.t.team.teamNumber(1);
+      this.teams.push(createSavedTeam({ name, generation, format }));
+    }
+    if (this.currentTeamId === id) {
+      const neighbour = this.teams[Math.min(index, this.teams.length - 1)];
+      if (neighbour) this.currentTeamId = neighbour.id;
+    }
+  }
+
+  duplicateTeam(id: string) {
+    const index = this.teams.findIndex(team => team.id === id);
+    const source = this.teams[index];
+    if (!source) return;
+    const { id: _sourceId, ...settings } = toJS(source);
+    const { copyOf, unnamedTeam } = this.translation.t.team;
+    const copy = createSavedTeam({
+      ...settings,
+      name: copyOf(source.name || unnamedTeam),
+    });
+    this.teams.splice(index + 1, 0, copy);
+    this.currentTeamId = copy.id;
+    return copy;
+  }
+
+  setTeamSettings(
+    id: string,
+    settings: { name: string; generation: Generation; format: string },
+  ) {
+    const team = this.teams.find(team => team.id === id);
+    if (team) Object.assign(team, settings);
+  }
+
+  // A team opened from a link: the current team or a saved team when it is the
+  // same, else the current team when it is empty, else a new team. Teams are the
+  // same when their link text is, since a saved team holds what the text leaves
+  // out, such as an empty slot before a pokemon.
+  openTeamFromLink(team: Team) {
+    if (isTeamEmpty(team)) return;
+    const text = serializeTeam(team);
+    const saved = [this.currentTeam, ...this.teams].find(
+      saved => serializeTeam(saved.team) === text,
+    );
+    if (saved) this.currentTeamId = saved.id;
+    else if (isTeamEmpty(this.team)) this.team = team;
+    else this.addTeam({ team });
+  }
+
+  // The current team
 
   get teamPokemon() {
     return this.team.map(({ name }) => name);
   }
 
   get isTeamEmpty() {
-    return !this.teamPokemon.some(pokemon => pokemon);
+    return isTeamEmpty(this.team);
   }
 
   get teamAbilities() {
@@ -52,12 +271,16 @@ class Store {
 
   // A boolean computed, so typing in the move filter does not rebuild the learnsets on every keystroke
   get viableMovesOnly() {
-    return !!this.searchFilters.moves;
+    return !!this.filters.moves;
   }
 
   get teamLearnsets() {
     if (!this.learnsetsLoaded) return { values: [], labels: [] };
-    return getTeamLearnsets(this.team, this.viableMovesOnly);
+    return getTeamLearnsets(
+      this.team,
+      this.viableMovesOnly,
+      this.translation.names,
+    );
   }
 
   // Choosing a pokemon resets the slot, then fills in its only item and ability
@@ -70,41 +293,272 @@ class Store {
     member.item = getAutoSelectedItem(name, "");
     member.ability = getAutoSelectedAbility(name);
     for (const key of MOVE_KEYS) member[key] = "";
+    clearDetails(member);
+  }
+
+  // Moves a pokemon to another slot, and that slot's pokemon to this one
+  swapSlots(teamIndex: number, otherIndex: number) {
+    const member = this.team[teamIndex];
+    const other = this.team[otherIndex];
+    if (!member || !other || teamIndex === otherIndex) return;
+    this.team[teamIndex] = other;
+    this.team[otherIndex] = member;
+  }
+
+  // Moves a pokemon to another slot, and the ones in between over by one
+  moveSlot(teamIndex: number, otherIndex: number) {
+    const member = this.team[teamIndex];
+    if (!member || !this.team[otherIndex] || teamIndex === otherIndex) return;
+    this.team.splice(teamIndex, 1);
+    this.team.splice(otherIndex, 0, member);
+  }
+
+  // Whether the player has dragged a slot tab or dismissed the hint about it
+  knowsSlotDrag = false;
+
+  // The slot tabs explain dragging once there are pokemon to reorder
+  get showDragHint() {
+    return (
+      !this.knowsSlotDrag && this.team.filter(({ name }) => name).length > 1
+    );
+  }
+
+  // A random pokemon from the filtered options, with a random set
+  // Fills in whatever the slot's set lacks, and a complete or empty slot gets a
+  // fresh random pokemon
+  randomizeSlot(teamIndex: number) {
+    const member = this.team[teamIndex];
+    if (!member) return;
+    if (member.name && !isSetComplete(member)) {
+      this.team[teamIndex] = completeSet(member, completeLearnset(member.name));
+      return;
+    }
+    const pokemon = randomPokemon(this.filteredPokemon, this.teamPokemon);
+    if (!pokemon) return;
+    this.team[teamIndex] = randomSet(pokemon, completeLearnset(pokemon));
+  }
+
+  // Six fresh picks: only the ones made so far count as taken, so the pokemon
+  // being replaced do not force a repeat when the filters leave six options
+  randomizeTeam() {
+    const options = this.filteredPokemon;
+    const chosen: string[] = [];
+    for (let i = 0; i < this.team.length; i++) {
+      const pokemon = randomPokemon(options, chosen);
+      if (!pokemon) return;
+      chosen.push(pokemon);
+      this.team[i] = randomSet(pokemon, completeLearnset(pokemon));
+    }
+  }
+
+  resetDetails(teamIndex: number) {
+    const member = this.team[teamIndex];
+    if (member) clearDetails(member);
   }
 
   get typeDefence() {
-    return calculateTypeDefence(this.team);
+    return calculateTypeDefence(this.team, this.currentTeam.generation);
   }
 
   get typeCoverage() {
-    return calculateTypeCoverage(this.team);
+    return calculateTypeCoverage(this.team, this.currentTeam.generation);
   }
 
   get checklist() {
     return evaluateChecklist(this.team);
   }
 
-  searchFilters: SearchFilters = {
-    format: "",
-    region: "",
+  // The Name dropdown's options
+
+  filters: SearchFilters = {
     type: "",
+    region: "",
+    ability: "",
     moves: "",
   };
 
+  sort: SortOrder;
+
+  get searchFilters(): PokemonFilters {
+    const { generation, format } = this.currentTeam;
+    const { type } = this.filters;
+    // A type filter from a later generation does not apply to an earlier one
+    return {
+      ...this.filters,
+      type: typesIn(generation).some(known => known === type) ? type : "",
+      generation,
+      format,
+    };
+  }
+
   get filteredPokemon() {
-    return filterPokemon(this.searchFilters);
+    return sortPokemon(
+      filterPokemon(this.searchFilters),
+      this.sort,
+      this.translation,
+    );
   }
 
   get filteredPokemonNames() {
-    return this.filteredPokemon.map(pokemonName);
+    return this.filteredPokemon.map(this.translation.names.pokemon);
+  }
+
+  // Undo and redo, per team
+
+  private past: string[] = [];
+  private future: string[] = [];
+  private lastSnapshot: string;
+
+  // Undo and redo record first, so an edit the delayed reaction has yet to see is kept
+  private recordEdit(snapshot = teamKey(this.team)) {
+    if (snapshot === this.lastSnapshot) return;
+    this.past = [...this.past, this.lastSnapshot].slice(-HISTORY_LIMIT);
+    this.future = [];
+    this.lastSnapshot = snapshot;
+  }
+
+  get canUndo() {
+    return this.past.length > 0;
+  }
+
+  get canRedo() {
+    return this.future.length > 0;
+  }
+
+  undo() {
+    this.recordEdit();
+    const snapshot = this.past[this.past.length - 1];
+    if (snapshot === undefined) return;
+    this.past = this.past.slice(0, -1);
+    this.future = [...this.future, this.lastSnapshot];
+    this.restore(snapshot);
+  }
+
+  redo() {
+    this.recordEdit();
+    const snapshot = this.future[this.future.length - 1];
+    if (snapshot === undefined) return;
+    this.future = this.future.slice(0, -1);
+    this.past = [...this.past, this.lastSnapshot];
+    this.restore(snapshot);
+  }
+
+  private restore(snapshot: string) {
+    this.lastSnapshot = snapshot;
+    this.team = JSON.parse(snapshot) as Team;
+  }
+
+  // UI state
+
+  // The language the visitor chose. Until they choose, the browser's applies
+  // and nothing is saved, so a change of browser language is followed.
+  chosenLocale: Locale | undefined;
+
+  get locale(): Locale {
+    return this.chosenLocale ?? detectLocale(browserLanguages);
+  }
+
+  set locale(locale: Locale) {
+    this.chosenLocale = locale;
+  }
+
+  // The text and names on screen, which load on demand
+  translation: Translation = english;
+
+  // Settles when the language the page opens in has loaded, or failed to
+  readonly translationReady: Promise<void>;
+
+  // Choosing the language again retries a load that failed
+  chooseLocale(locale: Locale) {
+    const isRetry = locale === this.locale;
+    this.chosenLocale = locale;
+    if (isRetry && this.translation.locale !== locale) this.loadLocale(locale);
+  }
+
+  // A language chosen in the meantime wins, and a failed load leaves the
+  // previous language on screen
+  private loadLocale(locale: Locale) {
+    return loadTranslation(locale).then(
+      translation => {
+        if (locale !== this.locale) return;
+        this.translation = translation;
+        if (typeof document !== "undefined")
+          document.documentElement.lang = locale;
+      },
+      () => this.openSnackbar(this.translation.t.languageFailed),
+    );
+  }
+
+  // "More" shows the slot tools: filters, sort, and advanced sets, plus the team toolbar on phones and tablets
+  isMoreOpen: boolean;
+
+  // How the Name dropdown lists its options
+  nameView: NameView;
+
+  // The open dialog, with the team slot or saved team it is about
+  dialog: { name: DialogName; teamIndex: number; teamId: string } | null = null;
+
+  openDialog(
+    name: DialogName,
+    { teamIndex = 0, teamId = this.currentTeamId } = {},
+  ) {
+    this.dialog = { name, teamIndex, teamId };
+  }
+
+  closeDialog() {
+    this.dialog = null;
   }
 
   isSnackbarOpen = false;
   snackbarMessage = "";
+  // Whether the snackbar offers to undo the change it reports
+  isSnackbarUndoable = false;
 
-  openSnackbar(message: string) {
+  openSnackbar(message: string, undoable = false) {
     this.isSnackbarOpen = true;
     this.snackbarMessage = message;
+    this.isSnackbarUndoable = undoable;
+  }
+
+  // The saved state as this tab last read or saved it, which tells what other
+  // tabs have changed since, and what this tab has yet to save
+  private lastRead: StoredState;
+
+  // Takes in what other tabs saved, so that saving here does not undo it
+  private readOtherTabs() {
+    const theirs = loadStoredState(storage);
+    if (!theirs) return;
+    const merged = mergeStoredState(this.lastRead, this.storedState, theirs);
+    this.teams = merged.teams;
+    this.currentTeamId = merged.currentTeamId;
+    this.isMoreOpen = merged.isMoreOpen;
+    this.sort = merged.sort;
+    this.nameView = merged.nameView;
+    this.chosenLocale = merged.locale;
+    this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
+    this.lastRead = { ...theirs, currentTeamId: merged.currentTeamId };
+  }
+
+  // A tab with nothing of its own to save leaves the saving to the tab in use:
+  // were it to save what it just read, it could undo a newer save
+  private save() {
+    this.readOtherTabs();
+    if (stableJson(this.storedState) === stableJson(this.lastRead)) return;
+    const state = JSON.parse(JSON.stringify(this.storedState)) as StoredState;
+    saveStoredState(storage, state);
+    this.lastRead = state;
+  }
+
+  private get storedState(): StoredState {
+    return {
+      teams: this.teams,
+      currentTeamId: this.currentTeamId,
+      isMoreOpen: this.isMoreOpen,
+      sort: this.sort,
+      nameView: this.nameView,
+      ...(this.chosenLocale && { locale: this.chosenLocale }),
+      ...(this.knowsSlotDrag && { knowsSlotDrag: true }),
+    };
   }
 }
 
