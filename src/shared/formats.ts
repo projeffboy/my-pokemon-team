@@ -1,3 +1,9 @@
+import {
+  LETS_GO,
+  LEGENDS_ARCEUS,
+  LEGENDS_ZA,
+  variantGeneration,
+} from "./game-variants";
 import type { Generation } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "./generations";
 
@@ -7,9 +13,11 @@ export const CHAMPIONS_FORMAT = "Pokemon Champions (M-C)";
 export const CHAMPIONS_GENERATION: Generation = 9;
 
 export const formatGeneration = (format: string, generation: Generation) =>
-  format === CHAMPIONS_FORMAT ? CHAMPIONS_GENERATION : generation;
+  format === CHAMPIONS_FORMAT ? CHAMPIONS_GENERATION : (
+    (variantGeneration(format) ?? generation)
+  );
 
-// The Format options, as the Filters and Name and Format dialogs list them
+// The Format options listed in the Filters dialog
 export const FORMATS: readonly string[] = [
   CHAMPIONS_FORMAT,
   "Uber",
@@ -24,6 +32,30 @@ export const FORMATS: readonly string[] = [
   "Doubles OU",
   "Doubles UU",
 ];
+
+// Supported tier formats in Showdown's config/formats.ts, including challenge-only
+// past-gen formats. RU exists in Gen 3 but not Gen 4; Gen 2 has no LC format.
+const FORMAT_GENERATIONS: Record<string, readonly Generation[]> = {
+  [CHAMPIONS_FORMAT]: [9],
+  "RU: Rarely Used": [3, 5, 6, 7, 8, 9],
+  "Little Cup (LC)": [1, 3, 4, 5, 6, 7, 8, 9],
+  "Doubles Uber": [8, 9],
+  "Doubles OU": [3, 4, 5, 6, 7, 8, 9],
+  "Doubles UU": [7, 8, 9],
+};
+
+export const formatsForGeneration = (generation: Generation) =>
+  FORMATS.filter(
+    format => FORMAT_GENERATIONS[format]?.includes(generation) ?? true,
+  );
+
+export const formatForGeneration = (format: string, generation: Generation) =>
+  (
+    variantGeneration(format) === generation ||
+    formatsForGeneration(generation).includes(format)
+  ) ?
+    format
+  : "";
 
 // Each format's Smogon tier, which formats.ts lists pokemon under
 export const TIER_BY_FORMAT: Record<string, string> = {
@@ -49,6 +81,9 @@ export const formatShortName = (format: string) =>
 // The format ID in a Showdown team header, e.g. `=== [gen9ou] My team ===`
 const SHOWDOWN_FORMAT_IDS: Record<string, string> = {
   [CHAMPIONS_FORMAT]: "champions",
+  [LETS_GO]: "letsgo",
+  [LEGENDS_ARCEUS]: "legendsarceus",
+  [LEGENDS_ZA]: "legendsza",
   Uber: "ubers",
   "OU: Over Used": "ou",
   "UU: Under Used": "uu",

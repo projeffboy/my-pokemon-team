@@ -10,5 +10,18 @@ export const pokemonTypes = (pokemon: string, generation = LATEST_GENERATION) =>
   )?.filter(isPokemonType) ?? [];
 
 // E.g. 'bronzong' => ['Levitate', 'Heatproof', 'Heavy Metal']
-export const pokemonAbilities = (pokemon: string) =>
-  Object.values(pokedex[pokemon]?.abilities ?? {});
+export const pokemonAbilities = (
+  pokemon: string,
+  generation = LATEST_GENERATION,
+) =>
+  generation < 3 ?
+    []
+  : (pastGenerations[generation]?.abilities?.[pokemon] ??
+    Object.values(pokedex[pokemon]?.abilities ?? {}));
+
+export const pokemonBaseStats = (
+  pokemon: string,
+  generation = LATEST_GENERATION,
+) =>
+  pastGenerations[generation]?.baseStats?.[pokemon] ??
+  pokedex[pokemon]?.baseStats;

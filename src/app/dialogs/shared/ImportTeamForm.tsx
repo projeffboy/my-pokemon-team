@@ -49,6 +49,8 @@ const ImportTeamForm = observer(function ImportTeamForm({
       teams.length === 1 ?
         importDialog.imported
       : importDialog.importedMany(teams.length),
+      false,
+      "import",
     );
     onDone();
   };

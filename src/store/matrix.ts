@@ -5,7 +5,7 @@ import {
   type ReadonlyTeam,
 } from "@/types";
 import { pokemonTypes } from "@/shared/pokedex";
-import { typechartIn, typesIn } from "@/shared/generation-data";
+import { typesIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { english, type Translation } from "@/i18n/translation";
 import {
@@ -56,15 +56,32 @@ export function formatMultiplier(multiplier: number) {
   }
 }
 
+export function defenceMultiplier(
+  type: PokemonType,
+  pokemon: string,
+  ability = "",
+  item = "",
+  generation = LATEST_GENERATION,
+) {
+  if (ability === "Dry Skin" && type === "Fire") {
+    return (
+      scoreToMultiplier(
+        typeAgainstPokemon(type, pokemon, "", item, generation),
+      ) * 1.25
+    );
+  }
+  return scoreToMultiplier(
+    typeAgainstPokemon(type, pokemon, ability, item, generation),
+  );
+}
+
 export function defenceMatrix(
   team: ReadonlyTeam,
   { t, names }: Translation = english,
   generation: Generation = LATEST_GENERATION,
 ): Matrix {
   const against = (type: PokemonType, name: string, ability = "", item = "") =>
-    scoreToMultiplier(
-      typeAgainstPokemon(type, name, ability, item, generation),
-    );
+    defenceMultiplier(type, name, ability, item, generation);
   return Object.fromEntries(
     typesIn(generation).map(type => [
       type,
@@ -102,15 +119,13 @@ function moveMultiplier(
   ability: string,
   generation: Generation,
 ) {
-  if (move === "flyingpress") {
-    const flying = typechartIn(generation)[target]?.Flying ?? 0;
-    const fighting = typechartIn(generation)[target]?.Fighting ?? 0;
-    if (flying === 2 || fighting === 2) return 0;
-    return scoreToMultiplier(flying) * scoreToMultiplier(fighting);
-  }
   const score = moveAgainstType(move, target, pokemon, ability, generation);
   if (score === undefined) return undefined;
-  return scoreToMultiplier(score === 2 ? 3 : score);
+  return scoreToMultiplier(
+    move === "flyingpress" ? score
+    : score === 2 ? 3
+    : score,
+  );
 }
 
 // Each slot's best damaging move against each type
@@ -148,7 +163,7 @@ export function coverageMatrix(
         }
         const type =
           best.move === "flyingpress" ?
-            `${names.type("Fighting")}/${names.type("Flying")}`
+            `${names.type(moveType(best.move, name, ability, generation) ?? "")}/${names.type("Flying")}`
           : names.type(moveType(best.move, name, ability, generation) ?? "");
         return {
           multiplier: best.multiplier,

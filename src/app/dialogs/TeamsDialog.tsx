@@ -1,10 +1,16 @@
-import { useEffect, useId, useState, type MouseEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import Chip from "@mui/material/Chip";
 import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -17,11 +23,9 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CloseIcon from "@mui/icons-material/Close";
 import CasinoIcon from "@mui/icons-material/Casino";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import SettingsIcon from "@mui/icons-material/Settings";
+import EditIcon from "@mui/icons-material/Edit";
 import LinkIcon from "@mui/icons-material/Link";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
@@ -32,7 +36,8 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { SavedTeam } from "@/types";
-import { CHAMPIONS_FORMAT, formatShortName } from "@/shared/formats";
+import { variantGeneration } from "@/shared/game-variants";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { GENERATION_GAMES } from "@/shared/generations";
 import { isTeamEmpty } from "@/shared/team";
 import { serializeTeam, serializeTeams } from "@/store/team-text";
@@ -41,11 +46,13 @@ import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import questionMark from "@/images/question-mark.png";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
+import DialogHeader from "@/app/shared/DialogHeader";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import ImportTeamForm from "./shared/ImportTeamForm";
 import TeamSettingsDialog from "./shared/TeamSettingsDialog";
 import downloadText from "./teams-dialog/download-text";
+import useDiceRoll from "@/app/shared/use-dice-roll";
 
 const halfWidth = { flex: "1 1 0", minWidth: 0 } as const;
 // One of a team's six icons. On a narrow phone the slots shrink and the icons,
@@ -65,14 +72,13 @@ const iconSlot = {
 const TeamsDialog = observer(function TeamsDialog() {
   const { t } = useTranslation();
   const titleId = useId();
-  // E.g. "Gen 9 (SV / ZA) · OU". Champions is not played in the generation's
-  // games, so it shows without them: "Gen 9 · Champions (M-C)".
-  const teamSubtitle = ({ generation, format }: SavedTeam) => {
-    const games =
-      format === CHAMPIONS_FORMAT ? "" : ` (${GENERATION_GAMES[generation]})`;
-    return `${t.generation(generation)}${games}${format ? ` · ${formatShortName(format)}` : ""}`;
-  };
+  const teamSubtitle = ({ generation, format }: SavedTeam) =>
+    format === CHAMPIONS_FORMAT ? t.championsGeneration
+    : variantGeneration(format) ?
+      t.gameVariants[format as keyof typeof t.gameVariants]
+    : `${t.generation(generation)} (${GENERATION_GAMES[generation]})`;
   const isSmDown = useIsSmDown();
+  const rollDice = useDiceRoll();
   const [menu, setMenu] = useState<{
     teamId: string;
     anchorEl: HTMLElement;
@@ -82,6 +88,21 @@ const TeamsDialog = observer(function TeamsDialog() {
   const dialogName = store.dialog?.name;
   const isOpen = dialogName === "teams" || dialogName === "importTeam";
   const [isImporting, setIsImporting] = useState(false);
+  const listRef = useRef<HTMLUListElement>(null);
+  const currentTeamRef = useRef<HTMLLIElement>(null);
+  const currentTeamId = store.currentTeamId;
+  const scrollToCurrentTeam = useCallback(() => {
+    const list = listRef.current;
+    const current = currentTeamRef.current;
+    if (!list || !current) return;
+    list.scrollTop +=
+      current.getBoundingClientRect().top -
+      list.getBoundingClientRect().top -
+      (list.clientHeight - current.offsetHeight) / 2;
+  }, []);
+  useEffect(() => {
+    if (isOpen && !isImporting) scrollToCurrentTeam();
+  }, [isOpen, isImporting, currentTeamId, scrollToCurrentTeam]);
   // The Manage Team menu opens straight to the import page
   useEffect(() => {
     if (dialogName === "importTeam") setIsImporting(true);
@@ -99,8 +120,8 @@ const TeamsDialog = observer(function TeamsDialog() {
 
   const menuItems = (team: SavedTeam) => [
     {
-      label: t.team.nameAndFormat,
-      Icon: SettingsIcon,
+      label: t.settings.editTeamName,
+      Icon: EditIcon,
       act: () => setSettingsTeamId(team.id),
     },
     {
@@ -108,11 +129,12 @@ const TeamsDialog = observer(function TeamsDialog() {
       Icon: LinkIcon,
       act: () =>
         isTeamEmpty(team.team) ?
-          store.openSnackbar(t.team.teamEmpty)
+          store.openSnackbar(t.team.teamEmpty, false, "warning")
         : copyToClipboard(
-            teamUrl(team.team),
+            teamUrl(team.team, team),
             t.team.linkCopied,
             t.team.linkNotCopied,
+            "link",
           ),
     },
     {
@@ -120,7 +142,7 @@ const TeamsDialog = observer(function TeamsDialog() {
       Icon: ContentCopyIcon,
       act: () =>
         isTeamEmpty(team.team) ?
-          store.openSnackbar(t.team.nothingToCopy)
+          store.openSnackbar(t.team.nothingToCopy, false, "warning")
         : copyToClipboard(
             serializeTeam(team.team),
             t.team.teamCopied,
@@ -131,8 +153,12 @@ const TeamsDialog = observer(function TeamsDialog() {
       label: t.team.duplicate,
       Icon: FileCopyIcon,
       act: () => {
-        store.duplicateTeam(team.id);
-        store.openSnackbar(t.team.teamDuplicated);
+        const copy = store.duplicateTeam(team.id);
+        store.openSnackbar(
+          copy ? t.team.teamDuplicated : t.team.cannotDuplicateEmptyTeam,
+          false,
+          copy ? "duplicate" : "warning",
+        );
       },
     },
     {
@@ -159,45 +185,34 @@ const TeamsDialog = observer(function TeamsDialog() {
         fullScreen={isSmDown}
         fullWidth
         maxWidth="xs"
+        slotProps={{ transition: { onEntered: scrollToCurrentTeam } }}
       >
-        <DialogTitle
+        <DialogHeader
           id={titleId}
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: 1,
-            py: 1,
-            pl: 1,
-            bgcolor: "grey.900",
-            color: "common.white",
-          }}
-        >
-          {isImporting ?
-            <IconButton
-              aria-label={t.goBack}
-              onClick={() => setIsImporting(false)}
-              color="inherit"
-            >
-              <ArrowBackIcon />
-            </IconButton>
-          : <IconButton aria-label={t.close} onClick={close} color="inherit">
-              <CloseIcon />
-            </IconButton>
-          }
-          {isImporting ? t.importDialog.importTitle : t.team.teams}
-        </DialogTitle>
+          title={isImporting ? t.importDialog.importTitle : t.team.teams}
+          onClose={isImporting ? () => setIsImporting(false) : close}
+          closeLabel={isImporting ? t.goBack : t.close}
+          back={isImporting}
+        />
         {isImporting ?
           <ImportTeamForm
             isImport
             onClose={() => setIsImporting(false)}
             // The same gap below the title bar as the team list has
-            contentSx={{ pt: 2 }}
+            contentSx={{ pt: 2, px: { xxs: 2, sm: 3 } }}
           />
-        : <DialogContent>
+        : <DialogContent
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
+              px: { xxs: 2, sm: 3 },
+            }}
+          >
             <Stack
               direction="row"
               spacing={1}
-              sx={{ mt: 2, mb: 1, "& > *": halfWidth }}
+              sx={{ mt: 2, mb: 1, flexShrink: 0, "& > *": halfWidth }}
             >
               <Button
                 variant="outlined"
@@ -206,6 +221,8 @@ const TeamsDialog = observer(function TeamsDialog() {
                   const { isNew } = store.openEmptyTeam();
                   store.openSnackbar(
                     isNew ? t.teams.newTeamCreated : t.teams.emptyTeamOpened,
+                    false,
+                    "add",
                   );
                   close();
                 }}
@@ -216,23 +233,33 @@ const TeamsDialog = observer(function TeamsDialog() {
                 variant="outlined"
                 startIcon={<CasinoIcon />}
                 disabled={!store.learnsetsLoaded}
-                onClick={() => {
+                onClick={event => {
+                  rollDice(event);
                   store.openEmptyTeam();
                   store.randomizeTeam();
-                  store.openSnackbar(t.teams.randomTeamCreated);
+                  store.openSnackbar(
+                    t.teams.randomTeamCreated,
+                    false,
+                    "random",
+                  );
                   close();
                 }}
               >
                 {t.teams.randomTeam}
               </Button>
             </Stack>
-            <List aria-label={t.teams.savedTeams}>
+            <List
+              ref={listRef}
+              aria-label={t.teams.savedTeams}
+              sx={{ minHeight: 0, flex: "1 1 auto", overflowY: "auto" }}
+            >
               {store.teams.map(team => {
                 const isCurrent = team.id === store.currentTeamId;
                 const name = team.name || t.team.unnamedTeam;
                 return (
                   <ListItem
                     key={team.id}
+                    ref={isCurrent ? currentTeamRef : undefined}
                     disablePadding
                     secondaryAction={
                       <IconButton
@@ -334,55 +361,57 @@ const TeamsDialog = observer(function TeamsDialog() {
                 );
               })}
             </List>
-            <Button
-              variant="outlined"
-              fullWidth
-              startIcon={<UploadIcon />}
-              onClick={() => setIsImporting(true)}
-              sx={{ mt: 1 }}
-            >
-              {t.teams.importTeam}
-            </Button>
-            {/* Every team as one Showdown text, which Import Team reads back */}
-            <Stack
-              direction="row"
-              spacing={1}
-              sx={{ mt: 1, "& > *": halfWidth }}
-            >
+            <Box sx={{ flexShrink: 0 }}>
               <Button
                 variant="outlined"
-                startIcon={<ContentCopyIcon />}
-                onClick={() =>
-                  copyToClipboard(
-                    serializeTeams(store.teams),
-                    t.teams.copiedAll,
-                    t.teams.notCopiedAll,
-                  )
-                }
+                fullWidth
+                startIcon={<UploadIcon />}
+                onClick={() => setIsImporting(true)}
+                sx={{ mt: 1 }}
               >
-                {t.teams.copyAll}
+                {t.teams.importTeam}
               </Button>
-              <Button
-                variant="outlined"
-                startIcon={<DownloadIcon />}
-                onClick={() => {
-                  downloadText(
-                    t.teams.exportFilename,
-                    serializeTeams(store.teams),
-                  );
-                  store.openSnackbar(t.teams.exported);
-                }}
+              {/* Every team as one Showdown text, which Import Team reads back */}
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ mt: 1, "& > *": halfWidth }}
               >
-                {t.teams.exportAll}
-              </Button>
-            </Stack>
-            <Typography
-              variant="caption"
-              component="p"
-              sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
-            >
-              {t.teams.savedInBrowser}
-            </Typography>
+                <Button
+                  variant="outlined"
+                  startIcon={<ContentCopyIcon />}
+                  onClick={() =>
+                    copyToClipboard(
+                      serializeTeams(store.teams),
+                      t.teams.copiedAll,
+                      t.teams.notCopiedAll,
+                    )
+                  }
+                >
+                  {t.teams.copyAll}
+                </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={<DownloadIcon />}
+                  onClick={() => {
+                    downloadText(
+                      t.teams.exportFilename,
+                      serializeTeams(store.teams),
+                    );
+                    store.openSnackbar(t.teams.exported, false, "export");
+                  }}
+                >
+                  {t.teams.exportAll}
+                </Button>
+              </Stack>
+              <Typography
+                variant="caption"
+                component="p"
+                sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
+              >
+                {t.teams.savedInBrowser}
+              </Typography>
+            </Box>
           </DialogContent>
         }
       </Dialog>

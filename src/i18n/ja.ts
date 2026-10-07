@@ -16,7 +16,19 @@ const inputNames: Record<string, string> = {
 const ja: Messages = {
   // The header
   generation,
+  generationGames: {
+    9: "スカーレット バイオレット",
+    8: "ソード シールド / ブリリアントダイヤモンド シャイニングパール",
+    7: "サン ムーン / ウルトラサン ウルトラムーン",
+    6: "X Y / オメガルビー アルファサファイア",
+    5: "ブラック ホワイト / ブラック2 ホワイト2",
+    4: "ダイヤモンド パール プラチナ / ハートゴールド ソウルシルバー",
+    3: "ルビー サファイア エメラルド / ファイアレッド リーフグリーン",
+    2: "金 銀 クリスタル",
+    1: "赤 青 ピカチュウ",
+  },
   generationSelect: "世代",
+  comingSoon: "近日公開",
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "言語",
@@ -61,12 +73,13 @@ const ja: Messages = {
     teams: "チーム一覧",
     randomizedTeam: "ランダム編成しました",
     randomizedPokemon: "ポケモンをランダムに選びました",
+    randomizedPokemonDetails: (details: string) =>
+      `ポケモンの${details}をランダムに選びました`,
     shareTeam: "共有",
     shareTeamLink: "ポケモンチームのリンクを共有",
     teamActions: "チームの操作",
     manageTeam: "管理",
     manageTeamMenu: "チームの管理",
-    nameAndFormat: "名前とフォーマット",
     duplicate: "複製",
     copyText: "テキストをコピー",
     editPokepaste: "Pokepasteを編集",
@@ -79,6 +92,7 @@ const ja: Messages = {
     nothingToCopy: "チームが空なので、コピーするものがありません。",
     teamCopied: "チームをコピーしました。",
     teamNotCopied: "チームをコピーできませんでした。",
+    cannotDuplicateEmptyTeam: "空のチームは複製できません",
     teamDuplicated: "チームを複製しました",
     teamDeleted: "チームを削除しました",
     slots: "ポケモンチームのスロット",
@@ -88,14 +102,18 @@ const ja: Messages = {
     slotPair: (first: string, second: string) => `${first}と${second}`,
     moreTools: "その他のチームツールを表示",
     fewerTools: "その他のチームツールを隠す",
+    advancedMode: "詳細",
     more: "その他",
     less: "隠す",
     filters: "絞り込み",
     sort: "並べ替え",
     random: "ランダム",
+    randomize: "ランダム化",
+    randomizePokemon: "ポケモンをランダムに選ぶ",
+    randomizeDetails: (details: string) => `${details}をランダムに選ぶ`,
     randomFor: (slot: number) => `スロット${slot}にランダムなポケモン`,
-    advanced: "詳細設定",
-    advancedFor: (slot: number) => `スロット${slot}の詳細設定`,
+    advanced: "その他の詳細",
+    advancedFor: (slot: number) => `スロット${slot}のその他の詳細`,
     about: (pokemon: string) => `${pokemon}について`,
     dragHint: "長押しドラッグで並べ替え",
     moveToSlot: (pokemon: string) => `${pokemon}を別のスロットへ移動`,
@@ -110,8 +128,24 @@ const ja: Messages = {
     selectPokemonFirst: "（ポケモンが選択されていません）",
     list: "リスト",
     grid: "グリッド",
-    undone: "直前の変更を元に戻しました",
-    redone: "変更をやり直しました",
+    pokemonInSlot: (pokemon: string, slot: number) =>
+      `${pokemon}をスロット${slot}に配置`,
+    removedPokemon: (pokemon: string, slot: number) =>
+      `スロット${slot}から${pokemon}を削除`,
+    addedValue: (value: string, pokemon: string) =>
+      `${pokemon}に${value}を追加`,
+    removedValue: (value: string, pokemon: string) =>
+      `${pokemon}から${value}を削除`,
+    replacedValue: (previous: string, value: string, pokemon: string) =>
+      `${pokemon}の${previous}を${value}に変更`,
+    setValue: (label: string, value: string, pokemon: string) =>
+      `${pokemon}の${label}を${value}に設定`,
+    swappedSlots: (first: string, second: string) =>
+      `${first}と${second}を入れ替え`,
+    moreChanges: (count: number) => `ほか${count}件の変更`,
+    undoAction: (action: string) => `元に戻す：${action}`,
+    redoAction: (action: string) => `やり直す：${action}`,
+    randomizeTeamAction: "チームをランダム生成",
     nameListView: "名前リスト表示",
     listView: "リスト表示",
     gridView: "グリッド表示",
@@ -258,14 +292,32 @@ const ja: Messages = {
     plus && minus ?
       `${nature}（+${plus}、-${minus}）`
     : `${nature}（補正なし）`,
+  gameVariantsCompact: {
+    "Legends: Arceus": "LEGENDS アルセウス",
+    "Legends: Z-A": "LEGENDS Z-A",
+  },
+  gameVariants: {
+    "Let’s Go": "Let’s Go! ピカチュウ / イーブイ",
+    "Legends: Arceus": "LEGENDS アルセウス",
+    "Legends: Z-A": "LEGENDS Z-A",
+  },
   advanced: {
     subtitle: (pokemon: string, slot: number) => `${pokemon}、スロット${slot}`,
+    dvs: "個体値（DV）",
+    statExperience: "能力値の経験値",
+    effortLevels: "がんばレベル",
+    avs: "覚醒値",
+    statAlignment: "能力補正",
     nickname: "ニックネーム",
+    nicknameLimit: (max: number) => `最大${max}文字です。`,
     level: "レベル",
     gender: "性別",
     teraType: "テラスタイプ",
     nature: "性格",
     shiny: "色違い",
+    sps: "SP",
+    spTotal: (total: number, max: number) => `SP合計: ${total} / ${max}`,
+    statSps: (stat: string) => `${stat}のSP`,
     evs: "努力値",
     ivs: "個体値",
     evTotal: (total: number, max: number) => `努力値合計: ${total} / ${max}`,
@@ -273,6 +325,7 @@ const ja: Messages = {
     statIvs: (stat: string) => `${stat}の個体値`,
   },
   info: {
+    special: "とくしゅ",
     abilities: "特性",
     baseStats: "種族値",
     total: (total: number) => `合計 ${total}`,
@@ -286,7 +339,6 @@ const ja: Messages = {
 
   // The Filters and Sort dialogs
   filters: {
-    description: "すべてのスロットの名前ドロップダウンを絞り込みます。",
     format: "フォーマット",
     type: "タイプ",
     region: "地方",
@@ -295,6 +347,7 @@ const ja: Messages = {
     ability: "特性",
   },
   sort: {
+    pokemon: "ポケモン",
     sortBy: "並べ替え基準",
     order: "順序",
     ascending: "昇順",
@@ -305,7 +358,7 @@ const ja: Messages = {
     bst: "種族値合計",
   },
 
-  // The Teams, Name and Format, Import, and Delete dialogs
+  // The Teams, Team name, Import, and Delete dialogs
   teams: {
     newTeam: "新しいチーム",
     randomTeam: "ランダムチーム",
@@ -328,10 +381,56 @@ const ja: Messages = {
     notCopiedAll: "チームをコピーできませんでした。",
     exportFilename: "my-pokemon-teams.txt",
   },
+  generationTransfer: {
+    title: "ゲームまたは世代を変更しますか？",
+    compactTitle: "ゲームを変更しますか？",
+    from: (where: string) => `変更元：${where}`,
+    fromLabel: "変更元",
+    toLabel: "変更先",
+    unavailableHeading: "これらのポケモンは引き継がれません",
+    allUnavailableHeading: "すべてのポケモンは引き継がれません",
+    pokemonAdjusted: (pokemon: string) => `${pokemon}の調整が必要です。`,
+    adjustedHeading: "あなたのポケモンは変更を加えて引き継がれます",
+    remainingAdjustedHeading: "残りのポケモンは変更を加えて引き継がれます",
+    universalChanges: "引き継がれるすべてのポケモンに適用",
+    levelSet: (level: number) => `レベルは${level}になります。`,
+    featuresUnused: (features: string, where: string) =>
+      `${where}では使用されません：${features}。`,
+    dvsConvertedToIvs: "DVはIVに変換されます。",
+    trainingSystemChanges: (from: string, to: string) =>
+      `育成方式が${from}から${to}に変わります。`,
+    removed: {
+      item: "削除される持ち物",
+      ability: "削除される特性",
+      moves: "削除される技：",
+      details: "削除される詳細",
+    },
+    ivsUnused: (where: string) => `${where}では個体値は適用されません。`,
+    ivsConvertedToDvs: "IVはDVに変換されます。",
+    trainingLimited: "このゲームの上限に合わせて調整されます。",
+    trainingApproximate: "近似変換のため、能力値が異なる場合があります。",
+    counts: {
+      pokemon: (count: number) => `ポケモン${count}匹`,
+      move: (count: number) => `技${count}個`,
+      item: (count: number) => `持ち物${count}個`,
+      ability: (count: number) => `特性${count}個`,
+    },
+    modify: "現在のチームを更新",
+    copy: "新しいチームにコピー",
+    createEmpty: "空のチームを作成",
+    clearExisting: "現在のチームを空にする",
+    emptyTeamHint: "空のチームを作成しても、元のチームは変更されません。",
+    carriedOver: "コピーしても、元のチームは変更されません。",
+    pokemonUnavailable: (where: string) => `${where}では使用できません。`,
+    loses: "失われる内容：",
+    entryLabel: (label: string, value: string) => `${label}：${value}`,
+    entryRemoved: (value: string) => `${value}が失われます。`,
+    loadFailed:
+      "世代データを読み込めませんでした。ページを再読み込みしてください。",
+  },
   settings: {
+    editTeamName: "チーム名を編集",
     teamName: "チーム名",
-    checkTeamFor: (where: string) => `${where}向けにチームをチェック`,
-    validFor: (where: string) => `このチームは${where}で使用できます。`,
   },
   validation: {
     empty: "チームが空です。",
@@ -347,6 +446,8 @@ const ja: Messages = {
       `${pokemon}の努力値の合計が${total}です（最大${max}）。`,
     tooManyStatEvs: (pokemon: string, max: number) =>
       `${pokemon}の1つのステータスの努力値が${max}を超えています。`,
+    nicknameTooLong: (pokemon: string, max: number) =>
+      `${pokemon}のニックネームは${max}文字以内にしてください。`,
     badLevel: (pokemon: string, max: number) =>
       `${pokemon}のレベルは1から${max}までにしてください。`,
     teraType: (pokemon: string) =>
@@ -415,7 +516,7 @@ const ja: Messages = {
     alsoThanks: "また、次の方々にも感謝します",
     companies: "Nintendo、株式会社ポケモン、Game Freak",
     companiesFor:
-      "ポケモンそのもの、タイトル横のポケとるのアート、Pokémon LEGENDS Z-Aのメガシンカのスプライト",
+      "ポケモンそのもの、タイトル横のポケとるのアート、LEGENDS Z-Aのメガシンカのスプライト",
     typeChartTable: "タイプ相性表（表）",
     fromBulbapedia: "Bulbapediaより",
     typeChartList: "タイプ相性表（リスト）",
@@ -436,15 +537,15 @@ const ja: Messages = {
     teamsAnswer:
       "チームはこのブラウザに保存されるので、次に来たときもここにありますが、別の端末には引き継がれません。「チーム一覧」ボタンで一覧が表示され、各チームのメニューから名前の変更、世代とフォーマットの設定、複製、共有、削除ができます。「すべてエクスポート」はすべてのチームをShowdownのテキストとしてダウンロードし、「チームをインポート」でそれを読み戻せます。アドレスバーには常に現在のチームが入っているので、アドレスをコピーする（または「共有」を押す）とチームを共有できます。",
     teamsAnswer2:
-      "「その他」ボタンでチームツール、「絞り込み」と「並べ替え」のボタン、「詳細設定」ボタンが表示されます。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは「管理」メニューにあります。",
+      "「その他」ボタンでチームツール、「絞り込み」と「並べ替え」のボタン、「その他の詳細」ボタンが表示されます。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは「管理」メニューにあります。",
     generations: "世代",
     generationsQuestion: "世代を変えると何が変わりますか？",
     generationsAnswer:
       "上部で選んだ世代に存在したポケモンとフォルムだけが一覧に表示されます。メガシンカは第6・7・9世代、キョダイマックスのすがたは第8世代、といった具合です。それ以外はすべて最新のままです。技、特性、タイプ相性表、フォーマットは最新の作品に基づくので、古い世代のチームが当時は覚えられなかった技を覚えていることがあります。",
-    advanced: "詳細設定",
+    advanced: "その他の詳細",
     advancedQuestion: "ニックネーム、レベル、性格、努力値、個体値",
     advancedAnswer:
-      "各ポケモンの「詳細設定」ボタンで、Pokemon Showdownと同じように、ニックネーム、レベル、性別、色違い、テラスタイプ、性格、努力値、個体値を設定できます。これらは共有リンクや「テキストをコピー」「Pokepasteを編集」のテキストにチームと一緒に含まれ、「名前とフォーマット」ダイアログのチェックでは、510を超える努力値、重複した技、禁止されたポケモン、ルール違反（Species Clauseなど）が報告されます。",
+      "各ポケモンの「その他の詳細」ボタンで、Pokemon Showdownと同じように、ニックネーム、レベル、性別、色違い、テラスタイプ、性格、努力値、個体値を設定できます。これらは共有リンクや「テキストをコピー」「Pokepasteを編集」のテキストにチームと一緒に含まれます。",
     matrix: "マトリックス分析",
     matrixQuestion: "タイプのスコアはどこから来ていますか？",
     matrixAnswer:

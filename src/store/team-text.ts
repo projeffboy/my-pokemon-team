@@ -30,7 +30,6 @@ import {
 import { pokemonAbilities } from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
-  MAX_EV,
   MAX_IV,
   MAX_LEVEL,
   STAT_NAMES,
@@ -73,6 +72,12 @@ function serializeMember(member: Readonly<TeamPokemon>): string {
     shiny ? "Shiny: Yes" : "",
     teraType ? `Tera Type: ${teraType}` : "",
     evs ? `EVs: ${evs}` : "",
+    member.statExperience ?
+      `Stat Experience: ${statsLine(member.statExperience, value => value === 0)}`
+    : "",
+    member.effortLevels ?
+      `Effort Levels: ${statsLine(member.effortLevels, value => value === 0)}`
+    : "",
     nature ? `${nature} Nature` : "",
     ivs ? `IVs: ${ivs}` : "",
     ...MOVE_KEYS.map(key => {
@@ -175,7 +180,9 @@ export function parseTeamText(text: string): Team {
     const { pokemon, nickname, gender, itemText } = parsed;
 
     member.name = pokemon;
-    const abilities = pokemonAbilities(pokemon);
+    const abilities = Array.from({ length: 9 }, (_, i) =>
+      pokemonAbilities(pokemon, (i + 1) as Generation),
+    ).flat();
     member.ability = getAutoSelectedAbility(pokemon);
     if (nickname) member.nickname = nickname;
     if (gender) member.gender = gender;
@@ -210,8 +217,20 @@ export function parseTeamText(text: string): Team {
         const teraType = value("Tera Type:");
         if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
       } else if (line.startsWith("EVs:")) {
-        const evs = parseStats(value("EVs:"), MAX_EV, ev => ev === 0);
+        const evs = parseStats(value("EVs:"), 255, ev => ev === 0);
         if (evs) member.evs = evs;
+      } else if (line.startsWith("Stat Experience:")) {
+        member.statExperience = parseStats(
+          value("Stat Experience:"),
+          65535,
+          n => n === 0,
+        );
+      } else if (line.startsWith("Effort Levels:")) {
+        member.effortLevels = parseStats(
+          value("Effort Levels:"),
+          10,
+          n => n === 0,
+        );
       } else if (line.startsWith("IVs:")) {
         const ivs = parseStats(value("IVs:"), MAX_IV, iv => iv === MAX_IV);
         if (ivs) member.ivs = ivs;

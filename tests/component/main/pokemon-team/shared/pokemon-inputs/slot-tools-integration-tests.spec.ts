@@ -3,15 +3,62 @@ import type { Locator, Page } from "@playwright/test";
 import {
   getTeamTextFromUrl,
   isMdDown,
+  openTeamTools,
   selectMove,
   selectPokemon,
   showSlot,
 } from "helper";
 
 test.describe("Slot tools - Integration Tests", () => {
+  test("adds slot action icons and labels in priority order as room grows", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Cufant");
+    await openTeamTools(page);
+    const random = page.getByRole("button", {
+      name: "Random pokemon for slot 1",
+    });
+    const details = page.getByRole("button", {
+      name: "More details for slot 1",
+    });
+    for (const { width, edit, label } of [
+      { width: 600, edit: false, label: "" },
+      { width: 320, edit: true, label: "" },
+      { width: 420, edit: true, label: "Random" },
+      { width: 480, edit: true, label: "Randomize" },
+    ]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await expect(details).toHaveText("More details");
+      await expect(random.getByTestId("CasinoIcon")).toBeVisible();
+      await expect(details.getByTestId("EditOutlinedIcon"))[
+        edit ? "toBeVisible" : "toBeHidden"
+      ]();
+      await expect(random.getByText("Random", { exact: true }))[
+        label === "Random" ? "toBeVisible" : "toBeHidden"
+      ]();
+      await expect(random.getByText("Randomize", { exact: true }))[
+        label === "Randomize" ? "toBeVisible" : "toBeHidden"
+      ]();
+      expect(
+        await details.evaluate(
+          button => button.scrollWidth > button.clientWidth,
+        ),
+      ).toBe(false);
+    }
+    await details.click();
+    await expect(
+      page.getByRole("dialog", { name: "More details" }),
+    ).toBeVisible();
+  });
+
   test("Random fills the slot with a pokemon and four moves", async ({
     page,
   }) => {
+    const grips = page
+      .getByRole("tablist", { name: "Pokemon team slots" })
+      .getByTestId("DragIndicatorIcon");
+    if (isMdDown(page)) await expect(grips).toHaveCount(0);
+
     // A few pokemon, such as Ditto, learn fewer than four moves, so the draws are fixed
     await page.evaluate(() => {
       Math.random = () => 0.5;
@@ -20,6 +67,7 @@ test.describe("Slot tools - Integration Tests", () => {
       .getByRole("button", { name: "Random pokemon for slot 1" })
       .click();
     await expect(page.getByLabel("Pokemon 1's name")).not.toHaveValue("");
+    if (isMdDown(page)) await expect(grips).toHaveCount(6);
     for (const move of [1, 2, 3, 4]) {
       await expect(page.getByLabel(`Pokemon 1's move${move}`)).not.toHaveValue(
         "",
@@ -42,8 +90,20 @@ test.describe("Slot tools - Integration Tests", () => {
     const random = page.getByRole("button", {
       name: "Random pokemon for slot 1",
     });
+    await random.hover();
+    await expect(page.getByRole("tooltip")).toHaveText(
+      "Randomize moves, item, and ability",
+    );
     await random.click();
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lanturn");
+    await expect(
+      page
+        .getByRole("alert")
+        .last()
+        .getByText("Randomized pokemon's moves, item, and ability", {
+          exact: true,
+        }),
+    ).toBeVisible();
     await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
       "Volt Switch",
     );
@@ -51,7 +111,15 @@ test.describe("Slot tools - Integration Tests", () => {
       await expect(page.getByLabel(`Pokemon 1's ${field}`)).not.toHaveValue("");
     }
 
+    await random.hover();
+    await expect(page.getByRole("tooltip")).toHaveText("Randomize pokemon");
     await random.click();
+    await expect(
+      page
+        .getByRole("alert")
+        .last()
+        .getByText("Randomized pokemon", { exact: true }),
+    ).toBeVisible();
     await expect(page.getByLabel("Pokemon 1's name")).not.toHaveValue(
       "Lanturn",
     );

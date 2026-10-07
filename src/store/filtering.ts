@@ -8,6 +8,7 @@ import type {
   PokemonFilters,
 } from "@/types";
 import { CHAMPIONS_FORMAT, TIER_BY_FORMAT } from "@/shared/formats";
+import { variantGeneration } from "@/shared/game-variants";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
 
@@ -98,10 +99,10 @@ export function filterPokemon({
   }
 
   function filterByAbility(pokedex: Pokedex): Pokedex {
-    if (!ability) return pokedex;
+    if (!ability || generation < 3) return pokedex;
     return Object.fromEntries(
       Object.entries(pokedex).filter(([pokemon]) =>
-        pokemonAbilities(pokemon).includes(ability),
+        pokemonAbilities(pokemon, generation).includes(ability),
       ),
     );
   }
@@ -113,7 +114,7 @@ export function filterPokemon({
   }
 
   function filterByFormat(pokedex: Pokedex) {
-    if (format === "") {
+    if (format === "" || variantGeneration(format)) {
       return pokedex;
     }
 

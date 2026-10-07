@@ -16,7 +16,19 @@ const inputNames: Record<string, string> = {
 const zhHans: Messages = {
   // 页眉
   generation,
+  generationGames: {
+    9: "朱 紫",
+    8: "剑 盾 / 晶灿钻石 明亮珍珠",
+    7: "太阳 月亮 / 究极之日 究极之月",
+    6: "X Y / 欧米伽红宝石 阿尔法蓝宝石",
+    5: "黑 白 / 黑2 白2",
+    4: "钻石 珍珠 白金 / 心金 魂银",
+    3: "红宝石 蓝宝石 绿宝石 / 火红 叶绿",
+    2: "金 银 水晶",
+    1: "红 蓝 皮卡丘",
+  },
   generationSelect: "世代",
+  comingSoon: "即将推出",
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "语言",
@@ -58,12 +70,13 @@ const zhHans: Messages = {
     teams: "队伍",
     randomizedTeam: "已随机组队",
     randomizedPokemon: "已随机选择宝可梦",
+    randomizedPokemonDetails: (details: string) =>
+      `已随机选择宝可梦的${details}`,
     shareTeam: "分享队伍",
     shareTeamLink: "分享宝可梦队伍链接",
     teamActions: "队伍操作",
     manageTeam: "管理队伍",
     manageTeamMenu: "管理队伍",
-    nameAndFormat: "名称与格式",
     duplicate: "创建副本",
     copyText: "复制文本",
     editPokepaste: "编辑 Pokepaste",
@@ -76,6 +89,7 @@ const zhHans: Messages = {
     nothingToCopy: "队伍为空，没有可复制的内容。",
     teamCopied: "已复制队伍。",
     teamNotCopied: "无法复制队伍。",
+    cannotDuplicateEmptyTeam: "无法创建空队伍的副本",
     teamDuplicated: "已创建队伍副本",
     teamDeleted: "已删除队伍",
     slots: "宝可梦队伍栏位",
@@ -85,14 +99,18 @@ const zhHans: Messages = {
     slotPair: (first: string, second: string) => `${first}和${second}`,
     moreTools: "更多队伍工具",
     fewerTools: "收起队伍工具",
+    advancedMode: "高级",
     more: "更多",
     less: "收起",
     filters: "筛选",
     sort: "排序",
     random: "随机",
+    randomize: "随机生成",
+    randomizePokemon: "随机选择宝可梦",
+    randomizeDetails: (details: string) => `随机选择${details}`,
     randomFor: (slot: number) => `为栏位 ${slot} 随机选择宝可梦`,
-    advanced: "高级",
-    advancedFor: (slot: number) => `栏位 ${slot} 的高级选项`,
+    advanced: "更多详情",
+    advancedFor: (slot: number) => `栏位 ${slot} 的更多详情`,
     about: (pokemon: string) => `关于${pokemon}`,
     dragHint: "长按拖动即可调整顺序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他栏位`,
@@ -108,8 +126,23 @@ const zhHans: Messages = {
     selectPokemonFirst: "（你还没有选择宝可梦）",
     list: "列表",
     grid: "网格",
-    undone: "已撤销上一次更改",
-    redone: "已重做更改",
+    pokemonInSlot: (pokemon: string, slot: number) =>
+      `将${pokemon}放到第${slot}个位置`,
+    removedPokemon: (pokemon: string, slot: number) =>
+      `从第${slot}个位置移除${pokemon}`,
+    addedValue: (value: string, pokemon: string) => `为${pokemon}添加${value}`,
+    removedValue: (value: string, pokemon: string) =>
+      `从${pokemon}移除${value}`,
+    replacedValue: (previous: string, value: string, pokemon: string) =>
+      `将${pokemon}的${previous}替换为${value}`,
+    setValue: (label: string, value: string, pokemon: string) =>
+      `将${pokemon}的${label}设为${value}`,
+    swappedSlots: (first: string, second: string) =>
+      `交换${first}和${second}的位置`,
+    moreChanges: (count: number) => `另有${count}项更改`,
+    undoAction: (action: string) => `撤销${action}`,
+    redoAction: (action: string) => `重做${action}`,
+    randomizeTeamAction: "随机生成队伍",
     nameListView: "名称列表视图",
     listView: "列表视图",
     gridView: "网格视图",
@@ -227,7 +260,7 @@ const zhHans: Messages = {
     Water: "水",
   } as Record<string, string>,
 
-  // 高级选项与信息对话框中的配置详情
+  // 更多详情与信息对话框中的配置详情
   statNames: {
     hp: "HP",
     atk: "攻击",
@@ -251,14 +284,32 @@ const zhHans: Messages = {
     minus: string | undefined,
   ) =>
     plus && minus ? `${nature}（+${plus}，-${minus}）` : `${nature}（无修正）`,
+  gameVariantsCompact: {
+    "Legends: Arceus": "传说 阿尔宙斯",
+    "Legends: Z-A": "传说 Z-A",
+  },
+  gameVariants: {
+    "Let’s Go": "Let’s Go! 皮卡丘／伊布",
+    "Legends: Arceus": "传说 阿尔宙斯",
+    "Legends: Z-A": "传说 Z-A",
+  },
   advanced: {
     subtitle: (pokemon: string, slot: number) => `${pokemon}，栏位 ${slot}`,
+    dvs: "个体值（DV）",
+    statExperience: "能力经验值",
+    effortLevels: "奋斗等级",
+    avs: "觉醒值",
+    statAlignment: "能力倾向",
     nickname: "昵称",
+    nicknameLimit: (max: number) => `最多${max}个字符。`,
     level: "等级",
     gender: "性别",
     teraType: "太晶属性",
     nature: "性格",
     shiny: "异色",
+    sps: "SP",
+    spTotal: (total: number, max: number) => `SP总计：${total}／${max}`,
+    statSps: (stat: string) => `${stat}SP`,
     evs: "努力值",
     ivs: "个体值",
     evTotal: (total: number, max: number) => `努力值总计：${total}／${max}`,
@@ -266,6 +317,7 @@ const zhHans: Messages = {
     statIvs: (stat: string) => `${stat}个体值`,
   },
   info: {
+    special: "特殊",
     abilities: "特性",
     baseStats: "种族值",
     total: (total: number) => `总计 ${total}`,
@@ -279,7 +331,6 @@ const zhHans: Messages = {
 
   // 筛选与排序对话框
   filters: {
-    description: "缩小每个栏位的名称下拉列表的范围。",
     format: "格式",
     type: "属性",
     region: "地区",
@@ -288,6 +339,7 @@ const zhHans: Messages = {
     ability: "特性",
   },
   sort: {
+    pokemon: "宝可梦",
     sortBy: "排序方式",
     order: "顺序",
     ascending: "升序",
@@ -321,10 +373,55 @@ const zhHans: Messages = {
     notCopiedAll: "无法复制队伍。",
     exportFilename: "my-pokemon-teams.txt",
   },
+  generationTransfer: {
+    title: "切换游戏或世代？",
+    compactTitle: "切换游戏？",
+    from: (where: string) => `当前：${where}`,
+    fromLabel: "从",
+    toLabel: "到",
+    unavailableHeading: "这些宝可梦不会保留",
+    allUnavailableHeading: "所有宝可梦都不会保留",
+    pokemonAdjusted: (pokemon: string) => `${pokemon}需要调整。`,
+    adjustedHeading: "你的宝可梦将调整后保留",
+    remainingAdjustedHeading: "其余宝可梦将调整后保留",
+    universalChanges: "适用于所有保留的宝可梦",
+    levelSet: (level: number) => `等级设为${level}。`,
+    featuresUnused: (features: string, where: string) =>
+      `${where}不使用：${features}。`,
+    dvsConvertedToIvs: "DV转换为IV。",
+    trainingSystemChanges: (from: string, to: string) =>
+      `训练方式从${from}变为${to}。`,
+    removed: {
+      item: "移除的道具",
+      ability: "移除的特性",
+      moves: "移除的招式：",
+      details: "移除的详细信息",
+    },
+    ivsUnused: (where: string) => `个体值不适用于${where}。`,
+    ivsConvertedToDvs: "IV将转换为DV。",
+    trainingLimited: "已调整至本游戏的上限。",
+    trainingApproximate: "近似转换，能力值可能不同。",
+    counts: {
+      pokemon: (count: number) => `${count}只宝可梦`,
+      move: (count: number) => `${count}个招式`,
+      item: (count: number) => `${count}件道具`,
+      ability: (count: number) => `${count}个特性`,
+    },
+    modify: "更新现有队伍",
+    copy: "复制到新队伍",
+    createEmpty: "创建空队伍",
+    clearExisting: "清空现有队伍",
+    emptyTeamHint: "创建空队伍不会更改原来的队伍。",
+    carriedOver: "复制不会更改原队伍。",
+    pokemonUnavailable: (where: string) => `无法在${where}中使用。`,
+    loses: "将失去：",
+    entryLabel: (label: string, value: string) => `${label}：${value}`,
+    entryRemoved: (value: string) => `将失去${value}。`,
+    loadFailed: "无法加载世代数据，请刷新页面重试。",
+  },
   settings: {
+    editTeamName: "编辑队伍名称",
     teamName: "队伍名称",
-    checkTeamFor: (where: string) => `检查队伍是否符合 ${where} 规则`,
-    validFor: (where: string) => `队伍符合 ${where} 规则。`,
   },
   validation: {
     empty: "队伍为空。",
@@ -340,6 +437,8 @@ const zhHans: Messages = {
       `${pokemon}的努力值总计 ${total}（最多 ${max}）。`,
     tooManyStatEvs: (pokemon: string, max: number) =>
       `${pokemon}的单项努力值超过了 ${max}。`,
+    nicknameTooLong: (pokemon: string, max: number) =>
+      `${pokemon}的昵称最多只能有${max}个字符。`,
     badLevel: (pokemon: string, max: number) =>
       `${pokemon}的等级必须在 1 到 ${max} 之间。`,
     teraType: (pokemon: string) =>
@@ -428,15 +527,15 @@ const zhHans: Messages = {
     teamsAnswer:
       "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
     teamsAnswer2:
-      "“更多”按钮会显示队伍工具、“筛选”和“排序”按钮以及“高级”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于“管理队伍”菜单中。",
+      "“更多”按钮会显示队伍工具、“筛选”和“排序”按钮以及“更多详情”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于“管理队伍”菜单中。",
     generations: "世代",
     generationsQuestion: "世代会改变什么？",
     generationsAnswer:
       "顶部选择的世代只会列出该世代中存在的宝可梦和形态：超级进化只在第6、7、9世代，超极巨化形态只在第8世代，以此类推。其他一切保持最新：招式、特性、属性相克表和格式都来自最新的游戏，所以旧世代的队伍可能会学会当时学不了的招式。",
-    advanced: "高级选项",
+    advanced: "更多详情",
     advancedQuestion: "昵称、等级、性格、努力值和个体值",
     advancedAnswer:
-      "每只宝可梦的“高级”按钮可以设置它的昵称、等级、性别、异色、太晶属性、性格、努力值和个体值，方式与 Pokemon Showdown 相同。这些设置会随队伍一起保存在分享链接、“复制文本”和“编辑 Pokepaste”的文本中；“名称与格式”对话框中的检查会报告超过 510 的努力值、重复的招式、被禁止的宝可梦以及各项限制条款。",
+      "每只宝可梦的“更多详情”按钮可以设置它的昵称、等级、性别、异色、太晶属性、性格、努力值和个体值，方式与 Pokemon Showdown 相同。这些设置会随队伍一起保存在分享链接、“复制文本”和“编辑 Pokepaste”的文本中。",
     matrix: "矩阵分析",
     matrixQuestion: "属性得分从何而来？",
     matrixAnswer:

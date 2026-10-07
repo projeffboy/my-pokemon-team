@@ -1,7 +1,7 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import SlotDragContext from "./pokemon-team/shared/SlotDragContext";
-import PokemonInputs from "./pokemon-team/shared/PokemonInputs";
+import PokemonCard from "./pokemon-team/shared/PokemonCard";
 import TeamToolbar from "./pokemon-team/shared/TeamToolbar";
 import SmTeamViewer from "./pokemon-team/SmTeamViewer";
 import XsTeamViewer from "./pokemon-team/XsTeamViewer";
@@ -16,16 +16,20 @@ export default function PokemonTeam() {
   return (
     <SlotDragContext>
       <Grid size={12}>
-        <Paper>
+        <Paper
+          sx={{
+            minHeight: 64,
+            display: "flex",
+            alignItems: "center",
+            "& > *": { width: "100%" },
+          }}
+        >
           <TeamToolbar />
         </Paper>
       </Grid>
       {[0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} size={6}>
-          <Paper sx={{ p: 1 }}>
-            {/* teamIndex is the pokemon's team slot number - 1 */}
-            <PokemonInputs teamIndex={num} />
-          </Paper>
+          <PokemonCard teamIndex={num} />
         </Grid>
       ))}
     </SlotDragContext>

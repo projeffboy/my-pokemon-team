@@ -1,6 +1,13 @@
 import pokedex from "@/data/pokedex";
 import viableMoves from "@/data/viable-moves";
-import type { Learnsets, ReadonlyTeam } from "@/types";
+import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
+import { generationBit, generationRules } from "@/shared/generation-rules";
+import type {
+  Generation,
+  GenerationTransferData,
+  Learnsets,
+  ReadonlyTeam,
+} from "@/types";
 import { englishNames, type Names } from "@/i18n/names";
 import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
 
@@ -10,9 +17,14 @@ const completeLearnsets = new Map<string, readonly string[]>();
 // The learnsets are most of the bundled data, so they load after the app instead of blocking it.
 // Until then every learnset is empty.
 let learnsets: Learnsets = {};
-export const learnsetsReady: Promise<void> = import("@/data/learnsets.json", {
-  with: { type: "json" },
-}).then(module => {
+let availability: GenerationTransferData | undefined;
+export const learnsetsReady: Promise<void> = Promise.all([
+  loadGenerationTransferData(),
+  import("@/data/learnsets.json", {
+    with: { type: "json" },
+  }),
+]).then(([data, module]) => {
+  availability = data;
   learnsets = module.default;
   completeLearnsets.clear();
 });
@@ -107,9 +119,15 @@ export function getTeamLearnsets(
   team: ReadonlyTeam,
   viableOnly: boolean,
   names: Names = englishNames,
+  generation?: Generation,
+  format = "",
 ) {
   const values = team.map(({ name }) => {
-    const learnset = name ? completeLearnset(name) : [];
+    const learnset =
+      name ?
+        generation ? generationLearnset(name, generation, format)
+        : completeLearnset(name)
+      : [];
     return viableOnly ?
         learnset.filter(move => viableMoves.has(move))
       : learnset;
@@ -119,4 +137,42 @@ export function getTeamLearnsets(
     values,
     labels: values.map(learnset => learnset.map(names.move)),
   };
+}
+
+export function availableItems(
+  items: readonly string[],
+  generation: Generation,
+  format = "",
+) {
+  if (!generationRules(generation, format).items) return [];
+  const bit = generationBit(generation, format);
+  return items.filter(item => !!((availability?.items[item] ?? 0) & bit));
+}
+export function availablePokemon(
+  pokemon: readonly string[],
+  generation: Generation,
+  format = "",
+) {
+  const bit = generationBit(generation, format);
+  return pokemon.filter(
+    id => !!((availability?.pokemon[id]?.generations ?? 0) & bit),
+  );
+}
+export function generationLearnset(
+  pokemon: string,
+  generation: Generation,
+  format = "",
+) {
+  const complete = completeLearnset(pokemon);
+  // The regular latest-generation editor is National Dex; game variants use their native pools.
+  if (generation === 9 && !format) return complete;
+  const bit = generationBit(generation, format);
+  return complete.filter(
+    move =>
+      !!(
+        (availability?.pokemon[pokemon]?.moves[
+          move.startsWith("hiddenpower") ? "hiddenpower" : move
+        ] ?? 0) & bit
+      ),
+  );
 }

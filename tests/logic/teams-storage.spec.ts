@@ -9,6 +9,22 @@ import {
 } from "@/store/teams-storage";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+
+test("fresh storage defaults to Champions while existing regular Gen 9 saves keep their profile", () => {
+  const initial = initialStoredState();
+  expect(initial.teams[0]).toMatchObject({
+    generation: 9,
+    format: CHAMPIONS_FORMAT,
+  });
+  const legacy = {
+    ...initial,
+    teams: [{ ...initial.teams[0], format: "" }],
+  };
+  expect(
+    loadStoredState(fakeStorage(JSON.stringify(legacy)).storage)?.teams[0],
+  ).toMatchObject({ generation: 9, format: "" });
+});
 
 const fakeStorage = (value: string | null) => {
   const items = new Map<string, string>();
@@ -21,6 +37,46 @@ const fakeStorage = (value: string | null) => {
     } as unknown as Storage,
   };
 };
+
+test("move sorting defaults for old saves and survives new saves", () => {
+  const state = initialStoredState();
+  const { moveSort: _moveSort, ...oldState } = state;
+  expect(
+    loadStoredState(fakeStorage(JSON.stringify(oldState)).storage)?.moveSort,
+  ).toEqual({ by: "name", descending: false });
+  expect(
+    loadStoredState(
+      fakeStorage(
+        JSON.stringify({
+          ...state,
+          moveSort: { by: "type", descending: true },
+        }),
+      ).storage,
+    )?.moveSort,
+  ).toEqual({ by: "type", descending: true });
+  expect(
+    loadStoredState(
+      fakeStorage(
+        JSON.stringify({
+          ...state,
+          moveSort: { by: "item", descending: true },
+        }),
+      ).storage,
+    )?.moveSort,
+  ).toEqual({ by: "name", descending: false });
+});
+
+test("tabs merge independent Pokemon and move sorting changes", () => {
+  const base = initialStoredState();
+  const mine = { ...base, sort: { by: "num" as const, descending: true } };
+  const theirs = {
+    ...base,
+    moveSort: { by: "type" as const, descending: true },
+  };
+  const merged = mergeStoredState(base, mine, theirs);
+  expect(merged.sort).toEqual(mine.sort);
+  expect(merged.moveSort).toEqual(theirs.moveSort);
+});
 
 test("returns nothing without storage, valid JSON, or teams", () => {
   expect(loadStoredState(undefined)).toBeUndefined();
@@ -61,7 +117,7 @@ test("fills in defaults and drops malformed fields", () => {
     }),
   );
   expect(loadStoredState(storage)?.sort).toEqual({
-    by: "name",
+    by: "num",
     descending: false,
   });
   expect(state?.teams[0]).toMatchObject({
@@ -93,6 +149,7 @@ test("saves the state and survives a storage that throws", () => {
     currentTeamId: "",
     isMoreOpen: true,
     sort: { by: "name" as const, descending: false },
+    moveSort: { by: "name" as const, descending: false },
     nameView: "grid" as const,
   };
   saveStoredState(storage, state);
@@ -198,4 +255,37 @@ test("remembers that the player knows slots drag, in any tab", () => {
   expect(mergeStoredState(base, base, knows).knowsSlotDrag).toBe(true);
   expect(mergeStoredState(base, knows, base).knowsSlotDrag).toBe(true);
   expect(mergeStoredState(base, base, base).knowsSlotDrag).toBeUndefined();
+});
+
+test("team filters load with defaults, survive saving, and merge across teams", () => {
+  const base = initialStoredState();
+  const first = base.teams[0]!;
+  const second = createSavedTeam({ name: "Second" });
+  base.teams.push(second);
+  const mine = structuredClone(base);
+  const theirs = structuredClone(base);
+  mine.teams[0]!.filters = {
+    type: "Grass",
+    region: "Johto",
+    ability: "Chlorophyll",
+    moves: "Viable",
+  };
+  theirs.teams[1]!.filters.type = "Water";
+  const merged = mergeStoredState(base, mine, theirs);
+  const { storage } = fakeStorage(null);
+  saveStoredState(storage, merged);
+  const loaded = loadStoredState(storage)!;
+  expect(loaded.teams[0]!.filters).toEqual(mine.teams[0]!.filters);
+  expect(loaded.teams[1]!.filters.type).toBe("Water");
+  const { filters: _filters, ...oldTeam } = first;
+  expect(sanitizeSavedTeam(oldTeam)?.filters).toEqual({
+    type: "",
+    region: "",
+    ability: "",
+    moves: "",
+  });
+  expect(
+    sanitizeSavedTeam({ ...first, filters: { type: "Fire", region: 5 } })
+      ?.filters,
+  ).toEqual({ type: "Fire", region: "", ability: "", moves: "" });
 });

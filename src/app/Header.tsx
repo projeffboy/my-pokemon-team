@@ -8,74 +8,81 @@ import { fluidClamp } from "./header/fluid-clamp";
 import GenerationSelect from "./header/GenerationSelect";
 import LanguageSelect from "./header/LanguageSelect";
 import FeedbackDialog from "./header/FeedbackDialog";
-import {
-  breakpointValues,
-  MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
-} from "./shared/theme";
+import { breakpointValues } from "./shared/theme";
 
 // Where the title reaches its full size: the page's margins widen at sm,
 // so the title needs a little more width than that to fit
 const fullSizeWidth = breakpointValues.sm + 40;
+const minimumTitleWidth = 300;
 const fluid = (min: number, max: number, unit?: "px" | "rem") =>
-  fluidClamp(
-    min,
-    max,
-    MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
-    fullSizeWidth,
-    unit,
-  );
-const faceHeight = fluid(28, 48);
-const faceSpacing = fluid(4, 8);
+  fluidClamp(min, max, minimumTitleWidth, fullSizeWidth, unit);
+const faceHeight = fluid(31, 48);
+const faceSpacing = fluid(3.75, 8);
 
 export default function Header() {
   return (
     <Grid component="header" container size={12} spacing={1.5}>
       <Stack
-        direction="row"
-        sx={{ width: "100%", alignItems: "center", justifyContent: "center" }}
+        spacing={1.5}
+        sx={{ width: "max-content", maxWidth: "100%", mx: "auto" }}
       >
-        <Box
-          component="img"
-          src={face1}
-          alt=""
+        <Stack
+          direction="row"
           sx={{
-            height: faceHeight,
-            pr: faceSpacing,
+            width: "100%",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: faceSpacing,
           }}
-        />
-        <Typography
-          variant="h3"
-          component="h1"
-          noWrap
-          sx={theme => ({
-            px: fluid(8, 20),
-            fontSize: fluid(
-              1.4,
-              Number.parseFloat(`${theme.typography.h3.fontSize}`),
-              "rem",
-            ),
-          })}
         >
-          My Pokemon Team
-        </Typography>
-        <Box
-          component="img"
-          src={face2}
-          alt=""
+          <Box
+            component="img"
+            src={face1}
+            alt=""
+            sx={{
+              height: faceHeight,
+              flexShrink: 0,
+            }}
+          />
+          <Typography
+            variant="h3"
+            component="h1"
+            sx={theme => ({
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+              px: fluid(1.125, 16),
+              fontSize: fluid(
+                1.3,
+                Number.parseFloat(`${theme.typography.h3.fontSize}`),
+                "rem",
+              ),
+            })}
+          >
+            My Pokemon Team
+          </Typography>
+          <Box
+            component="img"
+            src={face2}
+            alt=""
+            sx={{
+              height: faceHeight,
+              flexShrink: 0,
+            }}
+          />
+        </Stack>
+        <Stack
+          direction="row"
+          spacing={1}
           sx={{
-            height: faceHeight,
-            pl: faceSpacing,
+            width: "max-content",
+            maxWidth: "100%",
+            alignItems: "stretch",
           }}
-        />
-      </Stack>
-      <Stack
-        direction="row"
-        spacing={1}
-        sx={{ width: "100%", maxWidth: 420, mx: "auto", alignItems: "stretch" }}
-      >
-        <LanguageSelect />
-        <GenerationSelect />
-        <FeedbackDialog />
+        >
+          <LanguageSelect />
+          <GenerationSelect />
+          <FeedbackDialog />
+        </Stack>
       </Stack>
     </Grid>
   );

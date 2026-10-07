@@ -40,8 +40,8 @@ test("the defence matrix explains each slot's multiplier, including abilities an
     reason: "Fighting does 1.5x to Aggron-Mega (Steel) with Filter",
   });
   expect(matrix.Ground?.[2]).toEqual({
-    multiplier: 2,
-    reason: "Ground does 2x to Heatran (Fire/Steel) with Air Balloon",
+    multiplier: 0,
+    reason: "Ground does 0x to Heatran (Fire/Steel) with Air Balloon",
   });
   expect(matrix.Water?.[2]?.multiplier).toBe(2);
   expect(matrix.Water?.[3]).toBeNull();
@@ -76,4 +76,29 @@ test("the coverage matrix picks each slot's best damaging move against a type", 
     reason: "Chansey has no damaging move",
   });
   expect(matrix.Normal?.[3]).toBeNull();
+});
+
+test("Scrappy lets Exploud's Normal and Fighting moves hit Ghost neutrally", () => {
+  for (const move of ["headbutt", "lowkick"]) {
+    const team = createTeam({
+      name: "exploud",
+      ability: "Soundproof",
+      move1: move,
+    });
+    expect(coverageMatrix(team).Ghost?.[0]?.multiplier).toBe(0);
+    team[0].ability = "Scrappy";
+    expect(coverageMatrix(team).Ghost?.[0]?.multiplier).toBe(1);
+  }
+});
+
+test("Scrappy also removes the Fighting immunity from Flying Press", () => {
+  expect(
+    coverageMatrix(
+      createTeam({
+        name: "hawlucha",
+        ability: "Scrappy",
+        move1: "flyingpress",
+      }),
+    ).Ghost?.[0]?.multiplier,
+  ).toBe(1);
 });

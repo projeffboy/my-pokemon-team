@@ -107,7 +107,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
     setUploads([]);
     setUploadError(undefined);
     close();
-    store.openSnackbar(t.feedback.sent);
+    store.openSnackbar(t.feedback.sent, false, "send");
   };
 
   return (

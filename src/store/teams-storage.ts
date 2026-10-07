@@ -1,6 +1,7 @@
 import type {
   BaseStats,
   NameView,
+  MoveSortOrder,
   SavedTeam,
   SortOrder,
   Team,
@@ -8,8 +9,13 @@ import type {
 } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "@/shared/generations";
 import { isLocale, type Locale } from "@/i18n/locales";
-import { createEmptyTeam, createSavedTeam } from "@/shared/team";
-import { DEFAULT_SORT, SORT_KEYS } from "./sorting";
+import {
+  createEmptyTeam,
+  createSavedTeam,
+  createSearchFilters,
+  DEFAULT_TEAM_SETTINGS,
+} from "@/shared/team";
+import { DEFAULT_SORT, DEFAULT_MOVE_SORT, SORT_KEYS } from "./sorting";
 
 export const STORAGE_KEY = "mypokemonteam";
 
@@ -18,6 +24,7 @@ export interface StoredState {
   currentTeamId: string;
   isMoreOpen: boolean;
   sort: SortOrder;
+  moveSort: MoveSortOrder;
   nameView: NameView;
   // Unset until a language is chosen, so the browser's language applies
   locale?: Locale;
@@ -55,6 +62,8 @@ function sanitizeMember(value: unknown): TeamPokemon {
   if (typeof raw.nature === "string") member.nature = raw.nature;
   if (isStatMap(raw.evs)) member.evs = raw.evs;
   if (isStatMap(raw.ivs)) member.ivs = raw.ivs;
+  if (isStatMap(raw.statExperience)) member.statExperience = raw.statExperience;
+  if (isStatMap(raw.effortLevels)) member.effortLevels = raw.effortLevels;
   return member;
 }
 
@@ -74,6 +83,15 @@ export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
     generation:
       isGeneration(value.generation) ? value.generation : LATEST_GENERATION,
     format: string(value.format),
+    filters: Object.fromEntries(
+      Object.entries(createSearchFilters()).map(([key, fallback]) => [
+        key,
+        string(
+          isRecord(value.filters) ? value.filters[key] : undefined,
+          fallback,
+        ),
+      ]),
+    ) as SavedTeam["filters"],
     team: sanitizeTeam(value.team),
   };
 }
@@ -83,6 +101,12 @@ function sanitizeSort(value: unknown): SortOrder {
     isRecord(value) ? SORT_KEYS.find(key => key === value.by) : undefined;
   if (!isRecord(value) || !by) return DEFAULT_SORT;
   return { by, descending: value.descending === true };
+}
+
+function sanitizeMoveSort(value: unknown): MoveSortOrder {
+  if (!isRecord(value) || (value.by !== "name" && value.by !== "type"))
+    return DEFAULT_MOVE_SORT;
+  return { by: value.by, descending: value.descending === true };
 }
 
 // The saved state, or undefined when nothing usable is saved
@@ -109,6 +133,7 @@ export function loadStoredState(
       ),
     isMoreOpen: raw.isMoreOpen === true,
     sort: sanitizeSort(raw.sort),
+    moveSort: sanitizeMoveSort(raw.moveSort),
     nameView: raw.nameView === "grid" ? "grid" : "list",
     ...(isLocale(raw.locale) && { locale: raw.locale }),
     ...(raw.knowsSlotDrag === true && { knowsSlotDrag: true }),
@@ -158,6 +183,7 @@ export function mergeStoredState(
     currentTeamId: currentTeam?.id ?? mine.currentTeamId,
     isMoreOpen: pick(base.isMoreOpen, mine.isMoreOpen, theirs.isMoreOpen),
     sort: pick(base.sort, mine.sort, theirs.sort),
+    moveSort: pick(base.moveSort, mine.moveSort, theirs.moveSort),
     nameView: pick(base.nameView, mine.nameView, theirs.nameView),
     ...(locale && { locale }),
     ...((mine.knowsSlotDrag || theirs.knowsSlotDrag) && {
@@ -179,12 +205,13 @@ export function saveStoredState(
 }
 
 export const initialStoredState = (): StoredState => {
-  const team = createSavedTeam({ name: "Team 1" });
+  const team = createSavedTeam({ name: "Team 1", ...DEFAULT_TEAM_SETTINGS });
   return {
     teams: [team],
     currentTeamId: team.id,
     isMoreOpen: false,
     sort: DEFAULT_SORT,
+    moveSort: DEFAULT_MOVE_SORT,
     nameView: "list",
   };
 };

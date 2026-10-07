@@ -14,6 +14,8 @@ export function typeAgainstPokemon(
   item?: string,
   generation = LATEST_GENERATION,
 ) {
+  if (generation < 3) pokemonAbility = undefined;
+  if (generation < 2) item = undefined;
   const typechart = typechartIn(generation);
   const [type1, type2] = pokemonTypes(pokemon, generation);
   const type1Resistance = type1 ? (typechart[type1]?.[type] ?? 0) : 0;
@@ -39,7 +41,10 @@ export function typeAgainstPokemon(
       case "Volt Absorb":
       case "Lightning Rod":
       case "Motor Drive":
-        if (type === "Electric") {
+        if (
+          type === "Electric" &&
+          (pokemonAbility !== "Lightning Rod" || generation >= 5)
+        ) {
           effectiveness = 3;
         }
         break;
@@ -63,7 +68,10 @@ export function typeAgainstPokemon(
         break;
       case "Water Absorb":
       case "Storm Drain":
-        if (type === "Water") {
+        if (
+          type === "Water" &&
+          (pokemonAbility !== "Storm Drain" || generation >= 5)
+        ) {
           effectiveness = 3;
         }
         break;
@@ -119,10 +127,7 @@ export function typeAgainstPokemon(
     }
   }
 
-  // If pokemon wields an air balloon
-  if (item && item === "airballoon" && type === "Ground" && effectiveness < 2) {
-    effectiveness += 1;
-  }
+  if (item === "airballoon" && type === "Ground") effectiveness = 3;
 
   return effectiveness;
 }
@@ -135,6 +140,7 @@ export function moveType(
   ability?: string,
   generation = LATEST_GENERATION,
 ) {
+  if (generation < 3) ability = undefined;
   const rawType = moveTypeIn(move, generation);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
@@ -144,16 +150,44 @@ export function moveType(
     Pixilate: "Fairy",
     Refrigerate: "Ice",
     Galvanize: "Electric",
+    Dragonize: "Dragon",
   };
 
+  const preservesType = [
+    "judgment",
+    "multiattack",
+    "naturalgift",
+    "revelationdance",
+    "struggle",
+    "technoblast",
+    "terrainpulse",
+    "weatherball",
+  ].includes(move);
   if (
+    !preservesType &&
     ability &&
     abilitiesThatChangeNormalMoves[ability] &&
     moveType === "Normal"
   ) {
     moveType = abilitiesThatChangeNormalMoves[ability] || moveType;
-  } else if (ability === "Normalize") {
+  } else if (
+    ability === "Normalize" &&
+    moveType &&
+    !preservesType &&
+    (generation <= 6 || !move.startsWith("hiddenpower"))
+  ) {
     moveType = "Normal";
+  } else if (move === "revelationdance") {
+    moveType = pokemonTypes(pokemon, generation)[0] ?? moveType;
+  } else if (move === "aurawheel") {
+    moveType = pokemon === "morpekohangry" ? "Dark" : "Electric";
+  } else if (move === "ragingbull") {
+    const types: Record<string, PokemonType> = {
+      taurospaldeacombat: "Fighting",
+      taurospaldeablaze: "Fire",
+      taurospaldeaaqua: "Water",
+    };
+    moveType = types[pokemon] ?? moveType;
   } else if (move === "judgment") {
     moveType = pokemonTypes(pokemon, generation)[0] ?? moveType;
   } else if (move === "ivycudgel") {
@@ -210,15 +244,29 @@ export function moveAgainstType(
   ability?: string,
   generation = LATEST_GENERATION,
 ) {
+  if (generation < 3) ability = undefined;
   const attackType = moveType(move, pokemon, ability, generation);
   const defender = typechartIn(generation)[typeAgainst];
 
-  if (move === "freezedry" && typeAgainst === "Water") {
+  if (!isMoveStrongEnough(move) || !attackType) return undefined;
+  let score = defender?.[attackType];
+  if (
+    (ability === "Scrappy" || ability === "Mind's Eye") &&
+    typeAgainst === "Ghost" &&
+    (attackType === "Normal" || attackType === "Fighting")
+  )
+    score = 0;
+  if (
+    move === "thousandarrows" &&
+    attackType === "Ground" &&
+    typeAgainst === "Flying"
+  )
+    return 0;
+  if (move === "freezedry" && attackType === "Ice" && typeAgainst === "Water")
     return -1;
-  } else if (move === "flyingpress") {
-    // since flying press is part flying and fighting
-    return (defender?.Flying ?? 0) + (defender?.Fighting ?? 0);
-  } else if (isMoveStrongEnough(move)) {
-    return attackType ? defender?.[attackType] : undefined;
+  if (move === "flyingpress") {
+    if (score === 2) return 3;
+    return (score ?? 0) + (defender?.Flying ?? 0);
   }
+  return score;
 }

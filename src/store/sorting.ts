@@ -1,20 +1,52 @@
+import { pokemonBaseStats } from "@/shared/pokedex";
 import pokedex from "@/data/pokedex";
 import formats from "@/data/formats";
-import { STAT_KEYS, type SortKey, type SortOrder } from "@/types";
+import {
+  STAT_KEYS,
+  type Generation,
+  type MoveSortOrder,
+  type SortKey,
+  type SortOrder,
+} from "@/types";
 import { baseStatTotal } from "@/shared/set-details";
+import { moveTypeIn } from "@/shared/generation-data";
+import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonNameInverse } from "@/shared/names";
 import { english, type Translation } from "@/i18n/translation";
 
 // The Sort dialog's options, in order; their labels are in src/i18n
 export const SORT_KEYS: readonly SortKey[] = [
-  "name",
   "num",
+  "name",
   "format",
   "bst",
   ...STAT_KEYS,
 ];
 
-export const DEFAULT_SORT: SortOrder = { by: "name", descending: false };
+export const DEFAULT_SORT: SortOrder = { by: "num", descending: false };
+export const DEFAULT_MOVE_SORT: MoveSortOrder = {
+  by: "name",
+  descending: false,
+};
+
+export function sortMoves(
+  moves: readonly string[],
+  { by, descending }: MoveSortOrder = DEFAULT_MOVE_SORT,
+  generation: Generation = LATEST_GENERATION,
+  { locale, names }: Translation = english,
+): string[] {
+  const { compare } = new Intl.Collator(locale, { sensitivity: "base" });
+  const direction = descending ? -1 : 1;
+  const typeName = (move: string) => {
+    const type = moveTypeIn(move, generation);
+    return type ? names.type(type) : "";
+  };
+  return [...moves].sort(
+    (a, b) =>
+      (by === "type" ? direction * compare(typeName(a), typeName(b)) : 0) ||
+      (by === "name" ? direction : 1) * compare(names.move(a), names.move(b)),
+  );
+}
 
 // Smogon's singles tiers from the most to the least restricted, then unranked
 const TIER_RANK = [
@@ -42,7 +74,11 @@ const tierRank = (pokemon: string) => {
   return rank === -1 ? TIER_RANK.length : rank;
 };
 
-function sortValue(pokemon: string, by: SortKey): number {
+function sortValue(
+  pokemon: string,
+  by: SortKey,
+  generation: Generation,
+): number {
   const entry = pokedex[pokemon];
   switch (by) {
     case "name":
@@ -51,10 +87,16 @@ function sortValue(pokemon: string, by: SortKey): number {
       return entry?.num ?? 0;
     case "format":
       return tierRank(pokemon);
-    case "bst":
-      return baseStatTotal(entry?.baseStats);
+    case "bst": {
+      const stats = pokemonBaseStats(pokemon, generation);
+      return baseStatTotal(stats) - (generation === 1 ? (stats?.spd ?? 0) : 0);
+    }
     default:
-      return entry?.baseStats?.[by] ?? 0;
+      return (
+        pokemonBaseStats(pokemon, generation)?.[
+          generation === 1 && by === "spd" ? "spa" : by
+        ] ?? 0
+      );
   }
 }
 
@@ -69,6 +111,7 @@ export function sortPokemon(
   pokemon: readonly string[],
   { by, descending }: SortOrder,
   { locale, names }: Translation = english,
+  generation: Generation = LATEST_GENERATION,
 ): string[] {
   const species = (id: string) => {
     const base = pokedex[id]?.baseSpecies;
@@ -82,7 +125,8 @@ export function sortPokemon(
   return [...pokemon].sort(
     (a, b) =>
       (by === "name" ? 0 : Number(isOddball(a)) - Number(isOddball(b))) ||
-      direction * (sortValue(a, by) - sortValue(b, by)) ||
+      direction *
+        (sortValue(a, by, generation) - sortValue(b, by, generation)) ||
       (by === "name" ? direction : 1) * byName(a, b),
   );
 }

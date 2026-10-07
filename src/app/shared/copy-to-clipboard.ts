@@ -1,3 +1,4 @@
+import type { SnackbarKind } from "@/types";
 import store from "@/store";
 
 // The Clipboard API needs a secure context, which a dev server opened over the LAN lacks
@@ -17,12 +18,13 @@ export default async function copyToClipboard(
   text: string,
   copiedMessage: string,
   failedMessage: string,
+  kind: SnackbarKind = "copy",
 ) {
   try {
     if (navigator.clipboard) await navigator.clipboard.writeText(text);
     else if (!copyWithTextarea(text)) throw new Error("Copy failed");
-    store.openSnackbar(copiedMessage);
+    store.openSnackbar(copiedMessage, false, kind);
   } catch {
-    store.openSnackbar(failedMessage);
+    store.openSnackbar(failedMessage, false, "error");
   }
 }

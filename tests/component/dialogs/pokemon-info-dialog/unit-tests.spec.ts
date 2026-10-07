@@ -10,6 +10,32 @@ test.describe("Pokemon Info Dialog - Unit Tests", () => {
     const dialog = page.getByRole("dialog", { name: "Bronzong" });
     await expect(dialog).toBeVisible();
     await expect(dialog).toContainText("#437 · Gen 4");
+    for (const width of [320, 400, 960]) {
+      await page.setViewportSize({ width, height: 640 });
+      const metadata = dialog.getByText("#437 · Gen 4", { exact: true });
+      await expect
+        .poll(() =>
+          metadata.evaluate(element => {
+            const range = document.createRange();
+            range.selectNodeContents(element);
+            const text = range.getBoundingClientRect();
+            const bounds = element.getBoundingClientRect();
+            return (
+              text.height <=
+                parseFloat(getComputedStyle(element).lineHeight) + 1 &&
+              text.right <= bounds.right + 1
+            );
+          }),
+        )
+        .toBe(true);
+      await expect
+        .poll(() =>
+          dialog
+            .locator(".MuiDialogContent-root")
+            .evaluate(element => element.scrollWidth - element.clientWidth),
+        )
+        .toBe(0);
+    }
     await expect(dialog).toContainText("Levitate, Heatproof, Heavy Metal");
     await expect(dialog.getByLabel("Defense: 116")).toBeVisible();
     await expect(dialog).toContainText("Total 500");

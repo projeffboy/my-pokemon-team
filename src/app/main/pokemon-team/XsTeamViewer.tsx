@@ -1,10 +1,9 @@
 import { useState, type SyntheticEvent } from "react";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react-lite";
-import PokemonInputs from "./shared/PokemonInputs";
+import PokemonCard from "./shared/PokemonCard";
 import SlotDragContext from "./shared/SlotDragContext";
 import TabSlot from "./shared/TabSlot";
 import DragHint from "./shared/DragHint";
@@ -55,9 +54,7 @@ const XsTeamViewer = observer(function XsTeamViewer() {
         role="tabpanel"
         aria-labelledby={`team-slot-tab-${tabIndex}`}
       >
-        <Paper sx={{ p: 1 }}>
-          <PokemonInputs teamIndex={tabIndex} />
-        </Paper>
+        <PokemonCard teamIndex={tabIndex} />
       </Grid>
     </SlotDragContext>
   );

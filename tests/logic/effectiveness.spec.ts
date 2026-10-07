@@ -77,9 +77,9 @@ test.describe("type effectiveness", () => {
     });
   }
 
-  test("Air Balloon adds one Ground defence point without changing immunity", () => {
+  test("Air Balloon grants Ground immunity", () => {
     expect(typeAgainstPokemon("Ground", "toxtricity", "", "airballoon")).toBe(
-      -1,
+      3,
     );
     expect(
       typeAgainstPokemon("Ground", "bronzong", "Levitate", "airballoon"),
@@ -137,4 +137,20 @@ test.describe("past generations", () => {
     expect(moveAgainstType("bite", "Ghost", "arbok", "", 1)).toBe(2);
     expect(moveAgainstType("bite", "Ghost", "arbok")).toBe(-1);
   });
+});
+
+test("Scrappy bypasses Ghost immunity only for damaging Normal and Fighting moves", () => {
+  expect(moveAgainstType("headbutt", "Ghost", "exploud", "Scrappy")).toBe(0);
+  expect(moveAgainstType("lowkick", "Ghost", "exploud", "Scrappy")).toBe(0);
+  expect(moveAgainstType("headbutt", "Ghost", "exploud", "Soundproof")).toBe(2);
+  expect(moveAgainstType("lowkick", "Ghost", "exploud", "Soundproof")).toBe(2);
+  expect(moveAgainstType("headbutt", "Rock", "exploud", "Scrappy")).toBe(1);
+  expect(moveAgainstType("lowkick", "Rock", "exploud", "Scrappy")).toBe(-1);
+  expect(moveAgainstType("shadowball", "Normal", "exploud", "Scrappy")).toBe(2);
+  expect(
+    moveAgainstType("growl", "Ghost", "exploud", "Scrappy"),
+  ).toBeUndefined();
+  expect(moveAgainstType("flyingpress", "Ghost", "hawlucha", "Scrappy")).toBe(
+    0,
+  );
 });

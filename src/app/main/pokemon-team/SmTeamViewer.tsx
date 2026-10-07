@@ -1,11 +1,10 @@
 import { useState, type SyntheticEvent } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import { observer } from "mobx-react-lite";
-import PokemonInputs from "./shared/PokemonInputs";
+import PokemonCard from "./shared/PokemonCard";
 import SlotDragContext from "./shared/SlotDragContext";
 import TabSlot from "./shared/TabSlot";
 import DragHint from "./shared/DragHint";
@@ -72,9 +71,7 @@ const SmTeamViewer = observer(function SmTeamViewer() {
 
           return (
             <Grid key={offset} size={12}>
-              <Paper sx={{ p: 1 }}>
-                <PokemonInputs teamIndex={teamIndex} />
-              </Paper>
+              <PokemonCard teamIndex={teamIndex} />
             </Grid>
           );
         })}

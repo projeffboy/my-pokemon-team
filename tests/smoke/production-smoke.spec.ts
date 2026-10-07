@@ -31,19 +31,18 @@ test("preserves selections after reloading", async ({ page }) => {
   ).toBeVisible();
   await expectImageToBeLoaded(page.locator("header img").first());
 
-  await selectPokemon(page, "Mantine");
-  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mantine");
-  await selectAbility(page, "Water Absorb");
-  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
-    "Water Absorb",
-  );
+  await expect(
+    page.getByRole("combobox", { name: "Generation" }),
+  ).toContainText("Champions");
+  await selectPokemon(page, "Gyarados");
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
+  await selectAbility(page, "Moxie");
+  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue("Moxie");
   await expect(page).toHaveURL(/[?&]team=/);
 
   await page.reload({ waitUntil: "domcontentloaded" });
-  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mantine");
-  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
-    "Water Absorb",
-  );
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
+  await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue("Moxie");
   expect(pageErrors).toEqual([]);
 });
 

@@ -19,7 +19,7 @@ import { englishNames } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
-import { useIsSmDown } from "@/app/shared/WidthContext";
+import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { isPokemonType } from "@/types";
 
 const ITEM_ICON_CLASS = "item-icon";
@@ -29,6 +29,9 @@ const ITEM_ICON_CLASS = "item-icon";
 // Space kept between the popup and the edge of the screen
 const POPUP_MARGIN = 8;
 const NAME_LIST_WIDTH = 168;
+// At a 400px viewport: 32px page padding, 16px card padding, and an 8px column gap.
+const SMALL_PHONE_LIST_WIDTH = (400 - 32 - 16 - 8) / 2;
+const MIN_TEXT_LIST_WIDTH = (360 - 32 - 16 - 8) / 2;
 
 interface SelectOption {
   value: string;
@@ -64,7 +67,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   leadingIcon?: boolean;
 }) {
   const { t, names } = useTranslation();
-  const isSmDown = useIsSmDown();
+  const hasTypeIcons = useTypeIcons();
   const rootRef = useRef<HTMLDivElement>(null);
   const [rootWidth, setRootWidth] = useState<number>();
   const [popupMaxHeight, setPopupMaxHeight] = useState<number>();
@@ -156,6 +159,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         selectedValue: value,
         internalListRef,
         popupMaxHeight,
+        nameListWidth: NAME_LIST_WIDTH,
       }}
     >
       <Autocomplete
@@ -213,7 +217,15 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
               // Assuming 4px inline padding (defined in VirtualizedListbox)
               // and 2px left padding on non-icon part of the dropdown row:
               // Minimum width to fit Aerodactylite row in one line
-              ...(pokemonProperty === "item" && { minWidth: 130 }),
+              ...(pokemonProperty !== "name" && {
+                minWidth: {
+                  xxs:
+                    store.isMoreOpen || pokemonProperty === "item" ?
+                      SMALL_PHONE_LIST_WIDTH
+                    : MIN_TEXT_LIST_WIDTH,
+                  xs: pokemonProperty === "item" ? 130 : MIN_TEXT_LIST_WIDTH,
+                },
+              }),
               [`& .${autocompleteClasses.noOptions}`]: {
                 py: 1.5,
                 px: 1,
@@ -258,10 +270,10 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
             ) ?
               moveTypeIn(value, store.currentTeam.generation)
             : undefined;
-          // Phones show the type's abbreviation, as the team stats do
+          // Match the team stats' measured icon layout
           const typeIcon =
             moveType && isPokemonType(moveType) ?
-              isSmDown ?
+              !hasTypeIcons ?
                 <Box
                   component="span"
                   role="img"

@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { defenceMultiplier } from "@/store/matrix";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -49,9 +50,16 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
         })}
       </p>
       <Box component="ul" sx={{ listStyle: "none", p: 0 }}>
-        {store.team.map(({ name: pokemon, ability, item }, i) => {
+        {store.analysisTeam.map(({ name: pokemon, ability, item }, i) => {
           if (!pokemon) return null;
-          const { multiplier = 1, color = "inherit" } =
+          const multiplier = defenceMultiplier(
+            type,
+            pokemon,
+            ability,
+            item,
+            store.currentTeam.generation,
+          );
+          const { color = "inherit" } =
             EFFECTIVENESS[
               typeAgainstPokemon(
                 type,

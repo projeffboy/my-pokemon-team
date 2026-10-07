@@ -1,28 +1,22 @@
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { useTranslation } from "@/app/shared/TranslationContext";
+import useTeamToolsToggle from "./use-team-tools-toggle";
 
 // Shows or hides the team toolbar, filters, and advanced sets on phones and tablets
 const MoreToggle = observer(function MoreToggle() {
-  const { t } = useTranslation();
   const { isMoreOpen } = store;
-  const Icon = isMoreOpen ? ExpandLessIcon : ExpandMoreIcon;
+  const { label, ariaLabel, Icon, iconColor, pressed } = useTeamToolsToggle();
 
   return (
     <Button
       onClick={() => (store.isMoreOpen = !isMoreOpen)}
       aria-expanded={isMoreOpen}
-      aria-label={isMoreOpen ? t.team.fewerTools : t.team.moreTools}
-      sx={{ minWidth: 0, width: "100%", px: 0.5, flexDirection: "column" }}
+      aria-pressed={pressed}
+      aria-label={ariaLabel}
+      startIcon={<Icon sx={{ color: iconColor }} />}
     >
-      <Icon fontSize="small" />
-      <Typography variant="caption" component="span" noWrap>
-        {isMoreOpen ? t.team.less : t.team.more}
-      </Typography>
+      {label}
     </Button>
   );
 });

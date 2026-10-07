@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -10,23 +10,36 @@ import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { STAT_KEYS, type SortKey, type StatKey } from "@/types";
+import {
+  STAT_KEYS,
+  type MoveSortOrder,
+  type SortKey,
+  type StatKey,
+} from "@/types";
 import { SORT_KEYS } from "@/store/sorting";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
 const isStat = (key: SortKey): key is StatKey =>
   STAT_KEYS.includes(key as StatKey);
 
-// The order of the Name dropdown's options
+// Independent sorting for the Pokemon and Move dropdowns
 const SortDialog = observer(function SortDialog() {
   const { t } = useTranslation();
   const titleId = useId();
+  const [tab, setTab] = useState<"pokemon" | "moves">("pokemon");
+  const sort = tab === "moves" ? store.moveSort : store.sort;
   const label = (key: SortKey) =>
-    isStat(key) ? t.statFullNames[key] : t.sort[key];
+    isStat(key) ?
+      store.currentTeam.generation === 1 && key === "spa" ?
+        t.info.special
+      : t.statFullNames[key]
+    : t.sort[key];
   const isOpen = store.dialog?.name === "sort";
   const close = () => store.closeDialog();
 
@@ -40,29 +53,70 @@ const SortDialog = observer(function SortDialog() {
     >
       <DialogTitle id={titleId}>{t.team.sort}</DialogTitle>
       <DialogContent>
-        <Stack spacing={2}>
+        <Tabs
+          value={tab}
+          onChange={(_event, value: "pokemon" | "moves") => setTab(value)}
+          aria-label={t.team.sort}
+          variant="fullWidth"
+          sx={{ mb: 2 }}
+        >
+          <Tab
+            value="pokemon"
+            label={t.sort.pokemon}
+            id={`${titleId}-pokemon`}
+            aria-controls={`${titleId}-panel`}
+          />
+          <Tab
+            value="moves"
+            label={t.filters.moves}
+            id={`${titleId}-moves`}
+            aria-controls={`${titleId}-panel`}
+          />
+        </Tabs>
+        <Stack
+          spacing={2}
+          role="tabpanel"
+          id={`${titleId}-panel`}
+          aria-labelledby={`${titleId}-${tab}`}
+        >
           <FormControl>
             <FormLabel id={`${titleId}-by`}>{t.sort.sortBy}</FormLabel>
             <RadioGroup
               aria-labelledby={`${titleId}-by`}
-              value={store.sort.by}
-              onChange={event =>
-                (store.sort.by = event.target.value as SortKey)
-              }
+              value={sort.by}
+              onChange={event => {
+                if (tab === "moves")
+                  store.moveSort.by = event.target.value as MoveSortOrder["by"];
+                else store.sort.by = event.target.value as SortKey;
+              }}
               sx={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
-                "& > :nth-of-type(-n + 4)": { gridColumn: "1 / -1" },
+                ...(tab === "pokemon" && {
+                  "& > :nth-of-type(-n + 4)": { gridColumn: "1 / -1" },
+                }),
               }}
             >
-              {SORT_KEYS.map(key => (
-                <FormControlLabel
-                  key={key}
-                  value={key}
-                  control={<Radio size="small" />}
-                  label={label(key)}
-                />
-              ))}
+              {tab === "moves" ?
+                ["name", "type"].map(key => (
+                  <FormControlLabel
+                    key={key}
+                    value={key}
+                    control={<Radio size="small" />}
+                    label={key === "type" ? t.filters.type : t.sort.name}
+                  />
+                ))
+              : SORT_KEYS.filter(
+                  key => store.currentTeam.generation !== 1 || key !== "spd",
+                ).map(key => (
+                  <FormControlLabel
+                    key={key}
+                    value={key}
+                    control={<Radio size="small" />}
+                    label={label(key)}
+                  />
+                ))
+              }
             </RadioGroup>
           </FormControl>
           <FormControl>
@@ -72,9 +126,9 @@ const SortDialog = observer(function SortDialog() {
             <ToggleButtonGroup
               exclusive
               size="small"
-              value={store.sort.descending ? "descending" : "ascending"}
+              value={sort.descending ? "descending" : "ascending"}
               onChange={(_event, value: string | null) => {
-                if (value) store.sort.descending = value === "descending";
+                if (value) sort.descending = value === "descending";
               }}
               aria-labelledby={`${titleId}-order`}
             >

@@ -19,12 +19,12 @@ const DeleteTeamDialog = observer(function DeleteTeamDialog({
 }) {
   const { t } = useTranslation();
   const titleId = useId();
-  const team = store.teams.find(team => team.id === teamId);
+  const team = teamId ? store.findTeam(teamId) : undefined;
   const name = team?.name || t.deleteDialog.thisTeam;
 
   const handleDelete = () => {
     if (teamId) store.deleteTeam(teamId);
-    store.openSnackbar(t.team.teamDeleted);
+    store.openSnackbar(t.team.teamDeleted, false, "delete");
     onClose();
   };
 

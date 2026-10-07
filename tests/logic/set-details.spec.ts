@@ -66,7 +66,7 @@ test.describe("set details in Showdown text", () => {
     expect(team[0]).toEqual(
       createTeam({
         name: "garchomp",
-        evs: { atk: 252 },
+        evs: { atk: 255 },
         ivs: { atk: 0 },
       })[0],
     );

@@ -1,5 +1,89 @@
 import { test, expect } from "@playwright/test";
-import { sortPokemon } from "@/store/sorting";
+import { sortPokemon, sortMoves } from "@/store/sorting";
+import { english } from "@/i18n/translation";
+
+test("moves default to name ascending, can reverse, and leave the learnset intact", () => {
+  const moves = ["thunderpunch", "firepunch", "drainpunch", "icepunch"];
+  expect(sortMoves(moves)).toEqual([
+    "drainpunch",
+    "firepunch",
+    "icepunch",
+    "thunderpunch",
+  ]);
+  expect(sortMoves(moves, { by: "name", descending: true })).toEqual([
+    "thunderpunch",
+    "icepunch",
+    "firepunch",
+    "drainpunch",
+  ]);
+  expect(moves).toEqual([
+    "thunderpunch",
+    "firepunch",
+    "drainpunch",
+    "icepunch",
+  ]);
+});
+
+test("moves group by type in either direction, with name ties ascending", () => {
+  const moves = [
+    "firepunch",
+    "thunderpunch",
+    "drainpunch",
+    "focuspunch",
+    "icepunch",
+  ];
+  expect(sortMoves(moves, { by: "type", descending: false })).toEqual([
+    "thunderpunch",
+    "drainpunch",
+    "focuspunch",
+    "firepunch",
+    "icepunch",
+  ]);
+  expect(sortMoves(moves, { by: "type", descending: true })).toEqual([
+    "icepunch",
+    "firepunch",
+    "drainpunch",
+    "focuspunch",
+    "thunderpunch",
+  ]);
+});
+
+test("move type sorting uses the selected generation", () => {
+  const moves = ["bite", "ember", "watergun"];
+  expect(sortMoves(moves, { by: "type", descending: false }, 1)).toEqual([
+    "ember",
+    "bite",
+    "watergun",
+  ]);
+  expect(sortMoves(moves, { by: "type", descending: false }, 2)).toEqual([
+    "bite",
+    "ember",
+    "watergun",
+  ]);
+});
+
+test("move names and types sort by their translated labels", () => {
+  const translation = {
+    ...english,
+    names: {
+      ...english.names,
+      move: (id: string) => ({ ember: "Z", watergun: "A" })[id] ?? id,
+      type: (type: string) => ({ Fire: "A", Water: "Z" })[type] ?? type,
+    },
+  };
+  expect(sortMoves(["ember", "watergun"], undefined, 9, translation)).toEqual([
+    "watergun",
+    "ember",
+  ]);
+  expect(
+    sortMoves(
+      ["ember", "watergun"],
+      { by: "type", descending: false },
+      9,
+      translation,
+    ),
+  ).toEqual(["ember", "watergun"]);
+});
 
 test("sorts by name in either direction, ignoring case", () => {
   const ids = ["absol", "abra", "abomasnow"];

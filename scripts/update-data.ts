@@ -1,3 +1,4 @@
+import { generationTransferData } from "./update-data/generation-transfer.ts";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,6 +17,7 @@ import {
   projectPastGenerations,
   projectTable,
   projectTypeChart,
+  projectHiddenPowerSpreads,
   renderTypedData,
   toId,
 } from "./update-data/transforms.ts";
@@ -65,6 +67,7 @@ async function loadModTable(mod: string, file: string, exportName: string) {
 // The data files named differently from their type, lowercased
 const DATA_FILES: Partial<Record<keyof DataTypes, string>> = {
   PastGenerations: "past-generations",
+  HiddenPowerSpreads: "hidden-power-spreads",
 };
 
 async function writeData<N extends keyof DataTypes>(
@@ -189,14 +192,24 @@ async function updateTypeChart() {
   await writeData("TypeChart", projectTypeChart(typeChart));
 }
 
+async function updateHiddenPowerSpreads() {
+  const typeChart = await loadShowdownTable("data/typechart.ts", "TypeChart");
+  await writeData(
+    "HiddenPowerSpreads",
+    projectHiddenPowerSpreads(typeChart),
+    true,
+  );
+}
+
 // Showdown keeps each past generation's data in a mod that inherits from the next one's
 async function updatePastGenerations() {
   const tables = [
     ["pokedex", "Pokedex"],
     ["moves", "Moves"],
     ["typechart", "TypeChart"],
+    ["abilities", "Abilities"],
   ] as const;
-  const [pokedex, moves, typechart] = await Promise.all(
+  const [pokedex, moves, typechart, abilities] = await Promise.all(
     tables.map(([file, exportName]) =>
       loadShowdownTable(`data/${file}.ts`, exportName),
     ),
@@ -215,7 +228,7 @@ async function updatePastGenerations() {
   );
   await writeData(
     "PastGenerations",
-    projectPastGenerations({ pokedex, moves, typechart }, mods),
+    projectPastGenerations({ pokedex, moves, typechart, abilities }, mods),
   );
 }
 
@@ -322,43 +335,62 @@ const loadReportedData = async (): Promise<ReportedData> => {
   ]);
   return { pokedex, moves, items };
 };
-const before = await loadReportedData();
+async function updateData() {
+  if (process.argv.includes("--hidden-power-only")) {
+    await updateHiddenPowerSpreads();
+    return;
+  }
+  const before = await loadReportedData();
 
-await Promise.all([
-  updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
-  updateProjectedDataset("moves", "Moves", "Moves"),
-  updateProjectedDataset("items", "Items", "Items"),
-  updateProjectedDataset("natures", "Natures", "Natures"),
-  updateFormats(),
-  updateLearnsets().then(updateViableMoves),
-  updateTypeChart(),
-  updatePastGenerations(),
-  updateIconIndexes(),
-]);
+  await Promise.all([
+    updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
+    updateProjectedDataset("moves", "Moves", "Moves"),
+    updateProjectedDataset("items", "Items", "Items"),
+    updateProjectedDataset("natures", "Natures", "Natures"),
+    updateFormats(),
+    updateLearnsets().then(updateViableMoves),
+    updateTypeChart(),
+    updateHiddenPowerSpreads(),
+    updatePastGenerations(),
+    updateIconIndexes(),
+  ]);
 
-await Promise.all(
-  [
-    "altSpriteNum",
-    "formats",
-    "items",
-    "learnsets",
-    "moves",
-    "natures",
-    "past-generations",
-    "pokedex",
-    "typechart",
-  ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),
-);
-
-const after = await loadReportedData();
-await reportNameChanges(before, after);
-try {
-  await reportIconSheets();
-  await reportNewSprites(before, after, await loadAppData("altSpriteNum"));
-} catch (error) {
-  if (!(error instanceof Error) || error.message !== "fetch failed")
-    throw error;
-  console.warn(
-    "Could not reach play.pokemonshowdown.com, so the icon sheets and new sprites were not checked.",
+  await Promise.all(
+    [
+      "altSpriteNum",
+      "formats",
+      "items",
+      "learnsets",
+      "moves",
+      "natures",
+      "past-generations",
+      "pokedex",
+      "typechart",
+    ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),
   );
+
+  const transferData = generationTransferData(
+    showdownRoot,
+    Object.keys(await loadAppData<Pokedex>("pokedex")),
+    Object.keys(await loadAppData<Items>("items")),
+  );
+  await fs.writeFile(
+    path.join(dataRoot, "generation-transfer.json"),
+    `${JSON.stringify(transferData, null, 2)}\n`,
+  );
+
+  const after = await loadReportedData();
+  await reportNameChanges(before, after);
+  try {
+    await reportIconSheets();
+    await reportNewSprites(before, after, await loadAppData("altSpriteNum"));
+  } catch (error) {
+    if (!(error instanceof Error) || error.message !== "fetch failed")
+      throw error;
+    console.warn(
+      "Could not reach play.pokemonshowdown.com, so the icon sheets and new sprites were not checked.",
+    );
+  }
 }
+
+await updateData();

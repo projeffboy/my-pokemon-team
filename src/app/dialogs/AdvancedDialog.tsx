@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -9,35 +9,40 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Drawer from "@mui/material/Drawer";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import MenuItem from "@mui/material/MenuItem";
-import Slider from "@mui/material/Slider";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
+import MaleIcon from "@mui/icons-material/Male";
+import FemaleIcon from "@mui/icons-material/Female";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { STAT_KEYS, type Gender, type TeamPokemon } from "@/types";
+import { type Gender, type TeamPokemon } from "@/types";
 import natures from "@/data/natures";
 import { allNatureIds } from "@/shared/names";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import {
   DEFAULT_LEVEL,
-  evTotal,
   genderOptions,
-  getEv,
-  getIv,
-  MAX_EV,
-  MAX_EV_TOTAL,
-  MAX_IV,
   MAX_LEVEL,
   setDetail,
-  setStat,
   TERA_TYPES,
 } from "@/shared/set-details";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import NumberField from "./advanced-dialog/NumberField";
+import TrainingFields from "./advanced-dialog/TrainingFields";
+import {
+  generationRules,
+  gen2Dvs,
+  dvGender,
+  isShinyDv,
+  setLegacyShiny,
+} from "@/shared/generation-rules";
 
 const clamp = (value: number, max: number) =>
   Math.min(max, Math.max(0, Math.round(value)));
@@ -51,11 +56,25 @@ const AdvancedForm = observer(function AdvancedForm({
   teamIndex: number;
   titleId: string;
 }) {
-  const { t, names } = useTranslation();
+  const { t, names, locale } = useTranslation();
   const close = () => store.closeDialog();
   const name = names.pokemon(member.name);
   const genders = genderOptions(member.name);
-  const total = evTotal(member.evs);
+  const { generation, format } = store.currentTeam;
+  const champions = format === CHAMPIONS_FORMAT;
+  const rules = generationRules(generation, format);
+  const maxNicknameLength = nicknameLimit(generation, locale);
+  const [nicknameLimitAttempted, setNicknameLimitAttempted] = useState(false);
+  const nicknameTooLong = (member.nickname?.length ?? 0) > maxNicknameLength;
+  const dvMember = generation === 2 ? gen2Dvs(member) : member;
+  const gender =
+    generation === 2 ?
+      dvGender(dvMember)
+    : (member.gender ?? (genders.length === 1 ? genders[0] : "") ?? "");
+  const genderIcon =
+    gender === "M" ? <MaleIcon />
+    : gender === "F" ? <FemaleIcon />
+    : null;
   const natureLabel = (id: string) => {
     const { plus, minus } = natures[id] ?? {};
     return t.natureLabel(
@@ -79,7 +98,7 @@ const AdvancedForm = observer(function AdvancedForm({
             component="div"
             sx={{ color: "text.secondary" }}
           >
-            {t.advanced.subtitle(name, teamIndex + 1)}
+            {name}
           </Typography>
         </Box>
         <IconButton aria-label={t.close} onClick={close} edge="end">
@@ -88,185 +107,171 @@ const AdvancedForm = observer(function AdvancedForm({
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ pt: 1 }}>
-          <TextField
-            label={t.advanced.nickname}
-            placeholder={name}
-            value={member.nickname ?? ""}
-            // Trimmed when editing ends, so a space between words can be typed
-            onChange={event =>
-              setDetail(member, "nickname", event.target.value.trimStart())
-            }
-            onBlur={() =>
-              setDetail(member, "nickname", member.nickname?.trim())
-            }
-            slotProps={{ htmlInput: { maxLength: 18 } }}
-            fullWidth
-          />
-          <Stack direction="row" spacing={1.5}>
-            <NumberField
-              label={t.advanced.level}
-              value={member.level ?? DEFAULT_LEVEL}
-              onChange={(value = DEFAULT_LEVEL) => {
-                const level = clamp(value, MAX_LEVEL);
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: 2,
+              alignItems: "flex-start",
+              "& > *": { minWidth: 0 },
+            }}
+          >
+            <TextField
+              sx={{
+                flex: "0 1 auto",
+                width: `max(128px, ${maxNicknameLength + 6}ch)`,
+                maxWidth: "100%",
+              }}
+              label={t.advanced.nickname}
+              placeholder={name}
+              value={member.nickname ?? ""}
+              // Trimmed when editing ends, so a space between words can be typed
+              onChange={event => {
+                const nickname = event.target.value.trimStart();
+                setNicknameLimitAttempted(nickname.length > maxNicknameLength);
                 setDetail(
                   member,
-                  "level",
-                  level === DEFAULT_LEVEL || level < 1 ? undefined : level,
+                  "nickname",
+                  shortenNickname(nickname, maxNicknameLength),
                 );
               }}
-              slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
-              sx={{ width: 90, flexShrink: 0 }}
+              onBlur={() =>
+                setDetail(member, "nickname", member.nickname?.trim())
+              }
+              error={nicknameTooLong || nicknameLimitAttempted}
+              helperText={
+                nicknameTooLong ?
+                  t.validation.nicknameTooLong(name, maxNicknameLength)
+                : nicknameLimitAttempted ?
+                  t.advanced.nicknameLimit(maxNicknameLength)
+                : undefined
+              }
+              slotProps={{ formHelperText: { role: "status" } }}
             />
-            <TextField
-              select
-              label={t.advanced.gender}
-              value={member.gender ?? ""}
-              onChange={event =>
-                setDetail(member, "gender", event.target.value as Gender | "")
-              }
-              fullWidth
-            >
-              <MenuItem value="">{t.any}</MenuItem>
-              {genders.map(gender => (
-                <MenuItem key={gender} value={gender}>
-                  {t.genders[gender]}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              select
-              label={t.advanced.teraType}
-              value={member.teraType ?? ""}
-              onChange={event =>
-                setDetail(member, "teraType", event.target.value)
-              }
-              fullWidth
-            >
-              <MenuItem value="">{t.none}</MenuItem>
-              {TERA_TYPES.map(type => (
-                <MenuItem key={type} value={type}>
-                  {names.type(type)}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Stack>
-          <Stack direction="row" spacing={1.5} sx={{ alignItems: "center" }}>
-            <TextField
-              select
-              label={t.advanced.nature}
-              value={member.nature ?? ""}
-              onChange={event =>
-                setDetail(member, "nature", event.target.value)
-              }
-              fullWidth
-            >
-              <MenuItem value="">{t.none}</MenuItem>
-              {allNatureIds.map(nature => (
-                <MenuItem key={nature} value={nature}>
-                  {natureLabel(nature)}
-                </MenuItem>
-              ))}
-            </TextField>
-            <FormControlLabel
-              sx={{ flexShrink: 0, mr: 0 }}
-              control={
-                <Checkbox
-                  checked={!!member.shiny}
-                  onChange={event =>
-                    setDetail(member, "shiny", event.target.checked)
-                  }
-                />
-              }
-              label={t.advanced.shiny}
-            />
-          </Stack>
-          <Box>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography variant="subtitle2" component="h3">
-                {t.advanced.evs}
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{
-                  color: total > MAX_EV_TOTAL ? "error.main" : "text.secondary",
+            {!champions && (
+              <NumberField
+                label={t.advanced.level}
+                value={member.level ?? DEFAULT_LEVEL}
+                onChange={(value = DEFAULT_LEVEL) => {
+                  const level = clamp(value, MAX_LEVEL);
+                  setDetail(
+                    member,
+                    "level",
+                    level === DEFAULT_LEVEL || level < 1 ? undefined : level,
+                  );
                 }}
-                aria-label={t.advanced.evTotal(total, MAX_EV_TOTAL)}
+                slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
+                sx={{ flex: "0 0 80px" }}
+              />
+            )}
+            {rules.gender && (
+              <TextField
+                select
+                disabled={generation === 2}
+                label={t.advanced.gender}
+                value={gender}
+                onChange={event =>
+                  setDetail(member, "gender", event.target.value as Gender | "")
+                }
+                fullWidth
+                sx={{ flex: "1 1 144px" }}
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  select: { displayEmpty: true },
+                  input: {
+                    startAdornment: genderIcon && (
+                      <InputAdornment position="start">
+                        {genderIcon}
+                      </InputAdornment>
+                    ),
+                  },
+                }}
               >
-                {total} / {MAX_EV_TOTAL}
-              </Typography>
-            </Box>
-            {STAT_KEYS.map(stat => {
-              const id = `ev-${stat}-${teamIndex}`;
-              return (
-                <Box
-                  key={stat}
-                  sx={{ display: "flex", alignItems: "center", gap: 1.5 }}
-                >
-                  <Typography
-                    component="label"
-                    htmlFor={id}
-                    variant="body2"
-                    sx={{ width: 32, flexShrink: 0 }}
-                  >
-                    {t.statNames[stat]}
-                  </Typography>
-                  <Slider
-                    id={id}
-                    size="small"
-                    min={0}
-                    max={MAX_EV}
-                    step={4}
-                    value={getEv(member.evs, stat)}
-                    onChange={(_event, value) =>
-                      setStat(member, "evs", stat, clamp(value, MAX_EV))
+                <MenuItem value="">{t.any}</MenuItem>
+                {genders.map(gender => (
+                  <MenuItem key={gender} value={gender}>
+                    {t.genders[gender]}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+            {rules.tera && (
+              <TextField
+                select
+                label={t.advanced.teraType}
+                value={member.teraType ?? ""}
+                onChange={event =>
+                  setDetail(member, "teraType", event.target.value)
+                }
+                fullWidth
+                sx={{ flex: "1 1 120px" }}
+              >
+                <MenuItem value="">{t.none}</MenuItem>
+                {TERA_TYPES.map(type => (
+                  <MenuItem key={type} value={type}>
+                    {names.type(type)}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
+            {rules.shiny && (
+              <FormControlLabel
+                sx={{ flexShrink: 0, alignSelf: "center", m: 0 }}
+                control={
+                  <Checkbox
+                    checked={
+                      generation === 2 ? isShinyDv(dvMember) : !!member.shiny
                     }
-                    aria-label={t.advanced.statEvs(t.statNames[stat])}
+                    onChange={event =>
+                      generation === 2 ?
+                        setLegacyShiny(member, event.target.checked)
+                      : setDetail(member, "shiny", event.target.checked)
+                    }
                   />
-                  <Typography
-                    variant="body2"
-                    sx={{ width: 28, textAlign: "right", flexShrink: 0 }}
-                  >
-                    {getEv(member.evs, stat)}
-                  </Typography>
-                </Box>
-              );
-            })}
+                }
+                label={t.advanced.shiny}
+              />
+            )}
+            {rules.nature && (
+              <TextField
+                select
+                sx={{
+                  flex: "1 1",
+                  flexBasis: { xxs: champions ? "100%" : 156, xs: 220 },
+                }}
+                label={champions ? t.advanced.statAlignment : t.advanced.nature}
+                value={member.nature ?? ""}
+                onChange={event =>
+                  setDetail(member, "nature", event.target.value)
+                }
+                fullWidth
+              >
+                <MenuItem value="">{t.none}</MenuItem>
+                {allNatureIds.map(nature => (
+                  <MenuItem key={nature} value={nature}>
+                    {natureLabel(nature)}
+                  </MenuItem>
+                ))}
+              </TextField>
+            )}
           </Box>
-          <Box>
-            <Typography variant="subtitle2" component="h3" sx={{ mb: 1 }}>
-              {t.advanced.ivs}
-            </Typography>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: 1,
-              }}
-            >
-              {STAT_KEYS.map(stat => (
-                <NumberField
-                  key={stat}
-                  size="small"
-                  label={t.statNames[stat]}
-                  value={getIv(member.ivs, stat)}
-                  onChange={(value = MAX_IV) =>
-                    setStat(member, "ivs", stat, clamp(value, MAX_IV))
-                  }
-                  slotProps={{
-                    htmlInput: {
-                      min: 0,
-                      max: MAX_IV,
-                      "aria-label": t.advanced.statIvs(t.statNames[stat]),
-                    },
-                  }}
-                />
-              ))}
-            </Box>
-          </Box>
+          <TrainingFields
+            member={member}
+            generation={generation}
+            format={format}
+            teamIndex={teamIndex}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => store.resetDetails(teamIndex)}>{t.reset}</Button>
+        <Button
+          onClick={() => {
+            store.resetDetails(teamIndex);
+            setNicknameLimitAttempted(false);
+          }}
+        >
+          {t.reset}
+        </Button>
         <Button onClick={close}>{t.done}</Button>
       </DialogActions>
     </>
@@ -323,7 +328,7 @@ const AdvancedDialog = observer(function AdvancedDialog() {
         onClose={close}
         aria-labelledby={titleId}
         fullWidth
-        maxWidth="xs"
+        maxWidth="sm"
       >
         {form}
       </Dialog>;

@@ -26,6 +26,7 @@ export const TabSlotContent = observer(function TabSlotContent({
   teamIndex,
 }: Props) {
   const hasPokemon = Boolean(store.team[teamIndex]?.name);
+  const hasAnyPokemon = store.team.some(({ name }) => name);
   const wiggles =
     store.showDragHint &&
     store.team.findIndex(({ name }) => name) === teamIndex;
@@ -42,18 +43,23 @@ export const TabSlotContent = observer(function TabSlotContent({
         },
         wiggles && {
           animation: `${wiggle} 600ms ease-in-out 800ms`,
+          '[role="tablist"]:has([data-selection-animating]) &': {
+            animationPlayState: "paused",
+          },
           "@media (prefers-reduced-motion: reduce)": { animation: "none" },
         },
       ]}
     >
-      <DragIndicatorIcon
-        // Lying flat, and kept in empty slots too so every sprite lines up
-        sx={{
-          fontSize: 16,
-          transform: "rotate(90deg)",
-          visibility: hasPokemon ? "visible" : "hidden",
-        }}
-      />
+      {hasAnyPokemon && (
+        <DragIndicatorIcon
+          // Reserve grip space across the row so the sprites line up
+          sx={{
+            fontSize: 16,
+            transform: "rotate(90deg)",
+            visibility: hasPokemon ? "visible" : "hidden",
+          }}
+        />
+      )}
       <Box
         sx={{
           display: "flex",

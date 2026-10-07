@@ -36,8 +36,8 @@ const statSection = (stat: TeamStatType, hideTitle = false) => {
 };
 
 // The analysis panel. On phones it shows one analysis at a time, with a tab for
-// each; from tablets up a switch in its header shows the two stats, the matrix,
-// or the checklist as cards, and it scrolls inside the team column's height.
+// each; from tablets up the stats and checklist share a view, with a switch
+// for the matrix. Each view grows to its full height.
 export default function TeamStats() {
   const { t } = useTranslation();
   const isSmDown = useIsSmDown();
@@ -54,12 +54,9 @@ export default function TeamStats() {
   const switches: { view: View; label: string; Icon: typeof ShieldIcon }[] = [
     { view: "defence", label: t.stats.teamStats, Icon: BarChartIcon },
     { view: "matrix", label: t.stats.matrixAnalysis, Icon: GridOnIcon },
-    { view: "checklist", label: t.stats.teamChecklist, Icon: ChecklistIcon },
   ];
   const title =
-    isSmDown || view === "defence" || view === "coverage" ? t.stats.teamStats
-    : view === "matrix" ? t.stats.matrixAnalysis
-    : t.stats.teamChecklist;
+    !isSmDown && view === "matrix" ? t.stats.matrixAnalysis : t.stats.teamStats;
 
   const matrix = (
     <Box role="region" aria-label={t.stats.matrixAnalysis}>
@@ -82,6 +79,9 @@ export default function TeamStats() {
         px: 1,
         py: 0.5,
         flexShrink: 0,
+        minHeight: { sm: 48, md: 64 },
+        boxSizing: "border-box",
+        mb: { sm: 1, md: 3 },
       }}
     >
       <Typography variant="h6" component="h2">
@@ -91,7 +91,7 @@ export default function TeamStats() {
         <ToggleButtonGroup
           exclusive
           size="small"
-          value={view === "coverage" ? "defence" : view}
+          value={view === "matrix" ? "matrix" : "defence"}
           onChange={(_event, value: View | null) => {
             if (value) setView(value);
           }}
@@ -158,33 +158,33 @@ export default function TeamStats() {
       component="section"
       aria-label={t.stats.teamAnalysis}
       sx={{
-        position: "absolute",
-        inset: 0,
         display: "flex",
         flexDirection: "column",
       }}
     >
       {header}
-      {/* Each analysis is a card; the 4px margin keeps their shadows from being clipped */}
       <Box
         sx={{
-          flexGrow: 1,
-          minHeight: 0,
-          overflow: "auto",
           display: "flex",
           flexDirection: "column",
           gap: 3,
-          p: "4px",
-          m: "-4px",
         }}
       >
         {view === "matrix" ?
           <Paper>{matrix}</Paper>
-        : view === "checklist" ?
-          <Paper sx={{ p: 1 }}>{checklist}</Paper>
         : <>
             <Paper sx={{ pb: 1 }}>{statSection("typeDefence")}</Paper>
             <Paper sx={{ pb: 1 }}>{statSection("typeCoverage")}</Paper>
+            <Paper sx={{ p: 1 }}>
+              <Typography
+                variant="h6"
+                component="h3"
+                sx={{ textAlign: "center" }}
+              >
+                {t.stats.teamChecklist}
+              </Typography>
+              {checklist}
+            </Paper>
           </>
         }
       </Box>

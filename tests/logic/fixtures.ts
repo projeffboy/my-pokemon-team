@@ -1,7 +1,7 @@
 import { test as base } from "@playwright/test";
 import store from "@/store";
 import { learnsetsReady } from "@/store/learnsets";
-import { DEFAULT_SORT } from "@/store/sorting";
+import { DEFAULT_SORT, DEFAULT_MOVE_SORT } from "@/store/sorting";
 import { createSavedTeam } from "@/shared/team";
 
 const emptyFilters = { ...store.filters };
@@ -11,7 +11,9 @@ function resetStore() {
   store.teams = [team];
   store.currentTeamId = team.id;
   store.filters = { ...emptyFilters };
+  store.snackbars = [];
   store.sort = { ...DEFAULT_SORT };
+  store.moveSort = { ...DEFAULT_MOVE_SORT };
 }
 
 export const test = base.extend<{ store: typeof store }>({

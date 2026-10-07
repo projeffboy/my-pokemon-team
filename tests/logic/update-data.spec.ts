@@ -7,10 +7,29 @@ import {
   projectFormats,
   projectPastGenerations,
   projectTypeChart,
+  projectHiddenPowerSpreads,
   projections,
   renderTypedData,
   type MoveSearch,
 } from "../../scripts/update-data/transforms";
+
+test("Hidden Power spread generation keeps Showdown IVs and DVs, including all-default Dark", () => {
+  expect(
+    projectHiddenPowerSpreads({
+      fire: {
+        HPivs: { atk: 30, spa: 30, spe: 30 },
+        HPdvs: { atk: 14, def: 12 },
+        damageTaken: {},
+      },
+      dark: { HPivs: {} },
+      normal: { damageTaken: {} },
+      fairy: { damageTaken: {} },
+    }),
+  ).toEqual({
+    fire: { ivs: { atk: 30, spa: 30, spe: 30 }, dvs: { atk: 14, def: 12 } },
+    dark: { ivs: {}, dvs: {} },
+  });
+});
 
 test("pick keeps only the listed fields and marks callbacks as present", () => {
   const entry = {
@@ -331,6 +350,7 @@ test("pokedex entries keep their base stats and fixed gender", () => {
     types: ["Dragon", "Ground"],
     baseStats: { hp: 108, atk: 130, def: 95, spa: 80, spd: 85, spe: 102 },
     abilities: { 0: "Sand Veil", H: "Rough Skin" },
+    genderRatio: { M: 0.5, F: 0.5 },
   });
   const genderless = { num: 81, name: "Magnemite", gender: "N", gen: 9 };
   expect(projections.Pokedex(genderless, { magnemite: genderless })).toEqual(
@@ -413,4 +433,47 @@ test("past generations resolve Showdown's mods, newest first, and keep what diff
   expect(past[1]?.types).toHaveLength(15);
   expect(past[1]?.typechart?.Poison?.Bug).toBe(-1);
   expect(past[1]?.typechart?.Poison).not.toHaveProperty("Dark");
+});
+
+test("historical stats and abilities inherit through generations and cosmetic formes", () => {
+  const modernStats = { hp: 80, atk: 60, def: 70, spa: 90, spd: 100, spe: 110 };
+  const oldStats = { ...modernStats, spe: 100 };
+  const past = projectPastGenerations(
+    {
+      pokedex: {
+        bird: {
+          name: "Bird",
+          baseStats: modernStats,
+          abilities: { 0: "Modern", 1: "Second", H: "Hidden" },
+        },
+        birdblue: { baseSpecies: "Bird", isCosmeticForme: true },
+      },
+      moves: {},
+      typechart: {},
+      abilities: {
+        modern: { num: 1 },
+        original: { num: 2 },
+        second: { num: 77 },
+        hidden: { num: 124 },
+      },
+    },
+    {
+      5: {
+        pokedex: {
+          bird: {
+            inherit: true,
+            baseStats: oldStats,
+            abilities: { 0: "Original", 1: "Second", H: "Hidden" },
+          },
+        },
+      },
+    },
+  );
+  expect(past[5]?.baseStats).toEqual({ bird: oldStats, birdblue: oldStats });
+  expect(past[3]?.baseStats).toEqual(past[5]?.baseStats);
+  expect(past[6]?.baseStats).toBeUndefined();
+  expect(past[3]?.abilities?.bird).toEqual(["Original"]);
+  expect(past[3]?.abilities?.birdblue).toEqual(["Original"]);
+  expect(past[4]?.abilities?.bird).toEqual(["Original", "Second"]);
+  expect(past[5]?.abilities?.bird).toEqual(["Original", "Second", "Hidden"]);
 });

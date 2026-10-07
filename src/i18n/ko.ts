@@ -31,7 +31,19 @@ const inputNames: Record<string, string> = {
 
 const ko: Messages = {
   generation,
+  generationGames: {
+    9: "스칼렛 바이올렛",
+    8: "소드 실드 / 브릴리언트 다이아몬드 샤이닝 펄",
+    7: "썬 문 / 울트라썬 울트라문",
+    6: "X Y / 오메가루비 알파사파이어",
+    5: "블랙 화이트 / 블랙 2 화이트 2",
+    4: "디아루가 펄기아 기라티나 / 하트골드 소울실버",
+    3: "루비 사파이어 에메랄드 / 파이어레드 리프그린",
+    2: "골드 실버 크리스탈",
+    1: "레드 블루 피카츄",
+  },
   generationSelect: "세대",
+  comingSoon: "출시 예정",
   championsGeneration: "9세대 · Champions",
   championsGenerationShort: "9세대 (Champions)",
   language: "언어",
@@ -73,12 +85,13 @@ const ko: Messages = {
     teams: "팀 목록",
     randomizedTeam: "팀을 랜덤으로 채웠습니다",
     randomizedPokemon: "포켓몬을 랜덤으로 골랐습니다",
+    randomizedPokemonDetails: (details: string) =>
+      `포켓몬의 ${details}을(를) 랜덤으로 골랐습니다`,
     shareTeam: "팀 공유",
     shareTeamLink: "포켓몬 팀 링크 공유",
     teamActions: "팀 작업",
     manageTeam: "팀 관리",
     manageTeamMenu: "팀 관리",
-    nameAndFormat: "이름과 포맷",
     duplicate: "복제",
     copyText: "텍스트 복사",
     editPokepaste: "Pokepaste 편집",
@@ -91,6 +104,7 @@ const ko: Messages = {
     nothingToCopy: "팀이 비어 있어 복사할 내용이 없습니다.",
     teamCopied: "팀을 복사했습니다.",
     teamNotCopied: "팀을 복사하지 못했습니다.",
+    cannotDuplicateEmptyTeam: "빈 팀은 복제할 수 없습니다",
     teamDuplicated: "팀을 복제했습니다",
     teamDeleted: "팀을 삭제했습니다",
     slots: "포켓몬 팀 슬롯",
@@ -101,14 +115,18 @@ const ko: Messages = {
       `${josa(first, "과", "와")} ${second}`,
     moreTools: "팀 도구 더 보기",
     fewerTools: "팀 도구 접기",
+    advancedMode: "고급",
     more: "더 보기",
     less: "접기",
     filters: "필터",
     sort: "정렬",
     random: "랜덤",
+    randomize: "무작위 선택",
+    randomizePokemon: "포켓몬 무작위 선택",
+    randomizeDetails: (details: string) => `${details} 무작위 선택`,
     randomFor: (slot: number) => `슬롯 ${slot}에 랜덤 포켓몬 넣기`,
-    advanced: "고급",
-    advancedFor: (slot: number) => `슬롯 ${slot}의 고급 설정`,
+    advanced: "추가 세부 정보",
+    advancedFor: (slot: number) => `슬롯 ${slot}의 추가 세부 정보`,
     about: (pokemon: string) => `${pokemon} 정보`,
     dragHint: "길게 눌러 끌어서 순서 변경",
     moveToSlot: (pokemon: string) => `${pokemon}을(를) 다른 슬롯으로 이동`,
@@ -123,8 +141,24 @@ const ko: Messages = {
     selectPokemonFirst: "(포켓몬을 먼저 선택하세요)",
     list: "목록",
     grid: "격자",
-    undone: "마지막 변경을 되돌렸습니다",
-    redone: "변경을 다시 적용했습니다",
+    pokemonInSlot: (pokemon: string, slot: number) =>
+      `${pokemon}을(를) ${slot}번 슬롯에 배치`,
+    removedPokemon: (pokemon: string, slot: number) =>
+      `${slot}번 슬롯에서 ${pokemon}을(를) 제거`,
+    addedValue: (value: string, pokemon: string) =>
+      `${pokemon}에 ${value} 추가`,
+    removedValue: (value: string, pokemon: string) =>
+      `${pokemon}에서 ${value} 제거`,
+    replacedValue: (previous: string, value: string, pokemon: string) =>
+      `${pokemon}의 ${previous}을(를) ${value}(으)로 변경`,
+    setValue: (label: string, value: string, pokemon: string) =>
+      `${pokemon}의 ${label}을(를) ${value}(으)로 설정`,
+    swappedSlots: (first: string, second: string) =>
+      `${first}과(와) ${second}의 자리 교환`,
+    moreChanges: (count: number) => `추가 변경 ${count}개`,
+    undoAction: (action: string) => `실행 취소: ${action}`,
+    redoAction: (action: string) => `다시 실행: ${action}`,
+    randomizeTeamAction: "팀 무작위 생성",
     nameListView: "이름 목록 보기",
     listView: "목록 보기",
     gridView: "격자 보기",
@@ -269,14 +303,32 @@ const ko: Messages = {
     minus: string | undefined,
   ) =>
     plus && minus ? `${nature} (+${plus}, -${minus})` : `${nature} (무보정)`,
+  gameVariantsCompact: {
+    "Legends: Arceus": "LEGENDS 아르세우스",
+    "Legends: Z-A": "LEGENDS Z-A",
+  },
+  gameVariants: {
+    "Let’s Go": "레츠고! 피카츄 / 이브이",
+    "Legends: Arceus": "LEGENDS 아르세우스",
+    "Legends: Z-A": "LEGENDS Z-A",
+  },
   advanced: {
     subtitle: (pokemon: string, slot: number) => `${pokemon}, 슬롯 ${slot}`,
+    dvs: "개체값(DV)",
+    statExperience: "능력치 경험치",
+    effortLevels: "노력레벨",
+    avs: "각성값",
+    statAlignment: "능력치 보정",
     nickname: "닉네임",
+    nicknameLimit: (max: number) => `최대 ${max}자입니다.`,
     level: "레벨",
     gender: "성별",
     teraType: "테라스탈 타입",
     nature: "성격",
     shiny: "색이 다름",
+    sps: "SP",
+    spTotal: (total: number, max: number) => `SP 합계: ${total} / ${max}`,
+    statSps: (stat: string) => `${stat} SP`,
     evs: "노력치",
     ivs: "개체값",
     evTotal: (total: number, max: number) => `노력치 합계: ${total} / ${max}`,
@@ -284,6 +336,7 @@ const ko: Messages = {
     statIvs: (stat: string) => `${stat} 개체값`,
   },
   info: {
+    special: "특수",
     abilities: "특성",
     baseStats: "종족값",
     total: (total: number) => `합계 ${total}`,
@@ -296,7 +349,6 @@ const ko: Messages = {
   },
 
   filters: {
-    description: "모든 슬롯의 이름 목록에서 선택지를 좁힙니다.",
     format: "포맷",
     type: "타입",
     region: "지방",
@@ -305,6 +357,7 @@ const ko: Messages = {
     ability: "특성",
   },
   sort: {
+    pokemon: "포켓몬",
     sortBy: "정렬 기준",
     order: "순서",
     ascending: "오름차순",
@@ -337,10 +390,56 @@ const ko: Messages = {
     notCopiedAll: "팀을 복사하지 못했습니다.",
     exportFilename: "my-pokemon-teams.txt",
   },
+  generationTransfer: {
+    title: "게임 또는 세대를 변경할까요?",
+    compactTitle: "게임을 변경할까요?",
+    from: (where: string) => `현재 게임: ${where}`,
+    fromLabel: "변경 전",
+    toLabel: "변경 후",
+    unavailableHeading: "이 포켓몬들은 유지되지 않습니다",
+    allUnavailableHeading: "모든 포켓몬이 유지되지 않습니다",
+    pokemonAdjusted: (pokemon: string) => `${pokemon}의 조정이 필요합니다.`,
+    adjustedHeading: "포켓몬들이 변경 사항이 적용되어 유지됩니다",
+    remainingAdjustedHeading:
+      "나머지 포켓몬들은 변경 사항이 적용되어 유지됩니다",
+    universalChanges: "이전되는 모든 포켓몬에 적용",
+    levelSet: (level: number) => `레벨이 ${level}(으)로 설정됩니다.`,
+    featuresUnused: (features: string, where: string) =>
+      `${where}에서 사용되지 않음: ${features}.`,
+    dvsConvertedToIvs: "DV가 IV로 변환됩니다.",
+    trainingSystemChanges: (from: string, to: string) =>
+      `육성 방식이 ${from}에서 ${to}(으)로 변경됩니다.`,
+    removed: {
+      item: "제거되는 도구",
+      ability: "제거되는 특성",
+      moves: "제거되는 기술:",
+      details: "제거되는 세부 정보",
+    },
+    ivsUnused: (where: string) => `${where}에서는 개체값이 적용되지 않습니다.`,
+    ivsConvertedToDvs: "IV가 DV로 변환됩니다.",
+    trainingLimited: "이 게임의 한도에 맞게 조정됩니다.",
+    trainingApproximate: "근사 변환이므로 능력치가 달라질 수 있습니다.",
+    counts: {
+      pokemon: (count: number) => `포켓몬 ${count}마리`,
+      move: (count: number) => `기술 ${count}개`,
+      item: (count: number) => `도구 ${count}개`,
+      ability: (count: number) => `특성 ${count}개`,
+    },
+    modify: "현재 팀 업데이트",
+    copy: "새 팀으로 복사",
+    createEmpty: "빈 팀 만들기",
+    clearExisting: "기존 팀 비우기",
+    emptyTeamHint: "빈 팀을 만들면 원래 팀은 변경되지 않습니다.",
+    carriedOver: "복사해도 원래 팀은 변경되지 않습니다.",
+    pokemonUnavailable: (where: string) => `${where}에서 사용할 수 없습니다.`,
+    loses: "잃게 되는 항목:",
+    entryLabel: (label: string, value: string) => `${label}: ${value}`,
+    entryRemoved: (value: string) => `${value} 항목을 잃게 됩니다.`,
+    loadFailed: "세대 데이터를 불러올 수 없습니다. 페이지를 새로고침해 주세요.",
+  },
   settings: {
+    editTeamName: "팀 이름 편집",
     teamName: "팀 이름",
-    checkTeamFor: (where: string) => `${where} 기준으로 팀 검사`,
-    validFor: (where: string) => `이 팀은 ${where}에서 사용할 수 있습니다.`,
   },
   validation: {
     empty: "팀이 비어 있습니다.",
@@ -356,6 +455,8 @@ const ko: Messages = {
       `${pokemon}의 노력치 합계가 ${total}입니다 (최대 ${max}).`,
     tooManyStatEvs: (pokemon: string, max: number) =>
       `${pokemon}의 한 능력치에 노력치가 ${max}보다 많이 들어 있습니다.`,
+    nicknameTooLong: (pokemon: string, max: number) =>
+      `${pokemon}의 닉네임은 ${max}자 이하여야 합니다.`,
     badLevel: (pokemon: string, max: number) =>
       `${pokemon}의 레벨은 1부터 ${max} 사이여야 합니다.`,
     teraType: (pokemon: string) =>
@@ -424,7 +525,7 @@ const ko: Messages = {
     alsoThanks: "다음 분들께도 감사드립니다",
     companies: "Nintendo, The Pokemon Company, Game Freak",
     companiesFor:
-      "포켓몬 그 자체, 제목 옆의 포켓몬 셔플 아트, Pokémon LEGENDS Z-A의 메가진화 스프라이트",
+      "포켓몬 그 자체, 제목 옆의 포켓몬 셔플 아트, LEGENDS Z-A의 메가진화 스프라이트",
     typeChartTable: "타입 상성표 (표)",
     fromBulbapedia: "Bulbapedia 제공",
     typeChartList: "타입 상성표 (목록)",
@@ -445,15 +546,15 @@ const ko: Messages = {
     teamsAnswer:
       "팀은 이 브라우저에 저장되므로 다시 방문해도 그대로 있지만, 다른 기기에서는 볼 수 없습니다. 팀 목록 버튼이 팀을 나열하며, 각 팀의 메뉴에서 이름 변경, 세대와 포맷 설정, 복제, 공유, 삭제를 할 수 있습니다. 전체 내보내기는 모든 팀을 Showdown 텍스트로 내려받고, 팀 가져오기가 그 파일을 다시 읽어 들입니다. 주소창에는 항상 현재 팀이 들어 있으므로, 주소를 복사하거나 팀 공유 버튼을 누르면 팀을 공유할 수 있습니다.",
     teamsAnswer2:
-      "더 보기 버튼을 누르면 팀 도구, 필터와 정렬 버튼, 고급 버튼이 나타납니다. 실행 취소와 다시 실행으로 현재 팀의 변경 내역을 오갈 수 있으며, 휴대폰과 태블릿에서는 팀 관리 메뉴에 있습니다.",
+      "더 보기 버튼을 누르면 팀 도구, 필터와 정렬 버튼, 추가 세부 정보 버튼이 나타납니다. 실행 취소와 다시 실행으로 현재 팀의 변경 내역을 오갈 수 있으며, 휴대폰과 태블릿에서는 팀 관리 메뉴에 있습니다.",
     generations: "세대",
     generationsQuestion: "세대를 바꾸면 무엇이 달라지나요?",
     generationsAnswer:
       "상단에서 고른 세대에 존재했던 포켓몬과 폼만 목록에 나타납니다. 메가진화는 6, 7, 9세대에, 거다이맥스 폼은 8세대에 나오는 식입니다. 그 밖의 모든 것은 최신 기준입니다. 기술, 특성, 타입 상성표, 포맷은 최신 게임을 따르므로, 옛 세대의 팀이 당시에는 배울 수 없던 기술을 알고 있을 수도 있습니다.",
-    advanced: "고급 설정",
+    advanced: "추가 세부 정보",
     advancedQuestion: "닉네임, 레벨, 성격, 노력치, 개체값",
     advancedAnswer:
-      "각 포켓몬의 고급 버튼에서 Pokemon Showdown과 같은 방식으로 닉네임, 레벨, 성별, 색이 다름, 테라스탈 타입, 성격, 노력치, 개체값을 설정합니다. 이 정보는 공유 링크, 텍스트 복사, Pokepaste 편집 텍스트에 팀과 함께 담기며, 이름과 포맷 대화상자의 검사는 510을 넘는 노력치, 중복된 기술, 금지된 포켓몬, 클로즈 규정 위반을 알려 줍니다.",
+      "각 포켓몬의 추가 세부 정보 버튼에서 Pokemon Showdown과 같은 방식으로 닉네임, 레벨, 성별, 색이 다름, 테라스탈 타입, 성격, 노력치, 개체값을 설정합니다. 이 정보는 공유 링크, 텍스트 복사, Pokepaste 편집 텍스트에 팀과 함께 담깁니다.",
     matrix: "매트릭스 분석",
     matrixQuestion: "타입 점수는 어디서 나오나요?",
     matrixAnswer:

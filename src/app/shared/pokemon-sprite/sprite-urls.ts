@@ -79,6 +79,7 @@ export function spriteUrls(
   iconIndex: number | undefined,
   isSmall: boolean,
   generation: Generation,
+  shiny = false,
 ) {
   const filename = spriteFilename(pokemon, entry);
   const folder = spriteFolder(
@@ -88,9 +89,10 @@ export function spriteUrls(
     isSmall,
     generation,
   );
+  const variant = shiny && folder !== "gen1rb" ? "-shiny" : "";
   return {
     filename,
-    src: `${SHOWDOWN_SPRITES}/${folder}/${filename}.${folder.endsWith("ani") ? "gif" : "png"}`,
-    fallback: `${SHOWDOWN_SPRITES}/gen5/${filename}.png`,
+    src: `${SHOWDOWN_SPRITES}/${folder}${variant}/${filename}.${folder.endsWith("ani") ? "gif" : "png"}`,
+    fallback: `${SHOWDOWN_SPRITES}/gen5${variant}/${filename}.png`,
   };
 }

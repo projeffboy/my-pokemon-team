@@ -49,7 +49,7 @@ test.describe("move effectiveness", () => {
     ["flyingpress", "Grass", "hawlucha", -1],
     ["flyingpress", "Bug", "hawlucha", 0],
     ["flyingpress", "Rock", "hawlucha", 0],
-    ["flyingpress", "Ghost", "hawlucha", 2],
+    ["flyingpress", "Ghost", "hawlucha", 3],
     ["flyingpress", "Poison", "hawlucha", 1],
     ["machpunch", "Rock", "hitmonchan", -1],
     ["bulletseed", "Water", "cinccino", -1],

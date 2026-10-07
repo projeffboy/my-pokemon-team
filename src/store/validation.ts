@@ -4,6 +4,8 @@ import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
 import { pokemonAbilities } from "@/shared/pokedex";
+import { baseMoveId } from "@/shared/moves";
+import { nicknameLimit } from "@/shared/nickname";
 import { english, type Translation } from "@/i18n/translation";
 import {
   evTotal,
@@ -19,7 +21,7 @@ export function validateTeam(
   team: ReadonlyTeam,
   generation: Generation,
   format: string,
-  { t, names }: Translation = english,
+  { t, names, locale }: Translation = english,
 ): string[] {
   const members = team.filter(({ name }) => name);
   if (!members.length) return [t.validation.empty];
@@ -38,6 +40,9 @@ export function validateTeam(
     const { name, item, ability } = member;
     const label = names.pokemon(name);
     const entry = pokedex[name];
+    const maxNicknameLength = nicknameLimit(generation, locale);
+    if ((member.nickname?.trim().length ?? 0) > maxNicknameLength)
+      problems.push(t.validation.nicknameTooLong(label, maxNicknameLength));
 
     if (!allowed.has(name))
       problems.push(t.validation.notAllowed(label, where));
@@ -58,9 +63,14 @@ export function validateTeam(
       );
 
     const moves = MOVE_KEYS.map(key => member[key]).filter(move => move);
-    const repeated = moves.find((move, i) => moves.indexOf(move) !== i);
+    const moveIds = moves.map(baseMoveId);
+    const repeated = moves.find(
+      (_, i) => moveIds.indexOf(moveIds[i] ?? "") !== i,
+    );
     if (repeated)
-      problems.push(t.validation.repeatedMove(label, names.move(repeated)));
+      problems.push(
+        t.validation.repeatedMove(label, names.move(baseMoveId(repeated))),
+      );
 
     const total = evTotal(member.evs);
     if (total > MAX_EV_TOTAL)

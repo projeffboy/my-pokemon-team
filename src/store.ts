@@ -7,30 +7,41 @@ import {
 } from "mobx";
 import type {
   Generation,
+  MoveKey,
   NameView,
+  MoveSortOrder,
   PokemonFilters,
   SavedTeam,
   SearchFilters,
   SortOrder,
   Team,
+  SnackbarNotification,
+  SnackbarKind,
 } from "./types";
+import { generationRules, variantGeneration } from "./shared/generation-rules";
+import { formatForGeneration } from "./shared/formats";
+import { allItemIds } from "./shared/names";
 import { MOVE_KEYS } from "./types";
 import {
-  completeLearnset,
+  generationLearnset,
+  availableItems,
+  availablePokemon,
   getTeamLearnsets,
   learnsetsReady,
 } from "./store/learnsets";
 import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
-import { sortPokemon } from "./store/sorting";
+import { sortPokemon, sortMoves } from "./store/sorting";
 import { evaluateChecklist } from "./store/checklist";
 import {
   completeSet,
   isSetComplete,
   randomPokemon,
   randomSet,
+  randomizedFieldsMessage,
 } from "./store/random";
 import { serializeTeam } from "./store/team-text";
+import { describeTeamChange } from "./store/team-change";
 import {
   initialStoredState,
   loadStoredState,
@@ -48,6 +59,8 @@ import {
   isTeamEmpty,
 } from "./shared/team";
 import { clearDetails } from "./shared/set-details";
+import { canSelectMove } from "./shared/moves";
+import { matchHiddenPower } from "./shared/hidden-power";
 import { pokemonAbilities } from "./shared/pokedex";
 import { typesIn } from "./shared/generation-data";
 import { detectLocale, type Locale } from "./i18n/locales";
@@ -58,7 +71,6 @@ configure({ enforceActions: "never" });
 
 export type DialogName =
   | "teams"
-  | "teamSettings"
   | "importTeam"
   | "editTeam"
   | "advanced"
@@ -77,35 +89,60 @@ const teamKey = (team: Team) => stableJson(toJS(team));
 
 class Store {
   constructor() {
-    const stored = loadStoredState(storage) ?? initialStoredState();
+    const loaded = loadStoredState(storage);
+    const stored = loaded ?? initialStoredState();
     this.teams = stored.teams;
     this.currentTeamId = stored.currentTeamId;
     this.isMoreOpen = stored.isMoreOpen;
     this.sort = stored.sort;
+    this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
     this.chosenLocale = stored.locale;
     this.knowsSlotDrag = stored.knowsSlotDrag ?? false;
-    this.lastSnapshot = teamKey(this.team);
     this.lastRead = structuredClone(stored);
+    if (loaded) this.openUnsavedTeam();
+    this.lastSnapshot = teamKey(this.team);
 
-    makeAutoObservable<Store, "lastSnapshot" | "lastRead">(this, {
-      lastSnapshot: false,
-      lastRead: false,
-      translationReady: false,
-      translation: observableRef,
-    });
+    makeAutoObservable<Store, "lastSnapshot" | "lastRead" | "draftSnapshot">(
+      this,
+      {
+        lastSnapshot: false,
+        lastRead: false,
+        draftSnapshot: false,
+        translationReady: false,
+        translation: observableRef,
+      },
+    );
 
     learnsetsReady.then(
       () => {
         this.learnsetsLoaded = true;
       },
-      () => this.openSnackbar(this.translation.t.team.learnsetsFailed),
+      () =>
+        this.openSnackbar(
+          this.translation.t.team.learnsetsFailed,
+          false,
+          "error",
+        ),
     );
 
     this.translationReady = this.loadLocale(this.locale);
     reaction(
       () => this.locale,
       locale => this.loadLocale(locale),
+    );
+
+    reaction(
+      () => stableJson(this.currentTeam),
+      snapshot => {
+        if (
+          this.draftTeam?.id === this.currentTeamId &&
+          snapshot !== this.draftSnapshot
+        ) {
+          this.teams.push(this.draftTeam);
+          this.draftTeam = null;
+        }
+      },
     );
 
     reaction(
@@ -126,9 +163,8 @@ class Store {
     reaction(
       () => this.currentTeamId,
       () => {
-        this.past = [];
-        this.future = [];
-        this.lastSnapshot = teamKey(this.team);
+        if (this.draftTeam?.id !== this.currentTeamId) this.draftTeam = null;
+        this.resetHistory();
       },
     );
 
@@ -146,10 +182,18 @@ class Store {
 
   teams: SavedTeam[];
   currentTeamId: string;
+  private draftTeam: SavedTeam | null = null;
+  private draftSnapshot = "";
+
+  findTeam(id: string) {
+    return (
+      this.teams.find(team => team.id === id) ??
+      (this.draftTeam?.id === id ? this.draftTeam : undefined)
+    );
+  }
 
   get currentTeam(): SavedTeam {
-    const team =
-      this.teams.find(({ id }) => id === this.currentTeamId) ?? this.teams[0];
+    const team = this.findTeam(this.currentTeamId) ?? this.teams[0];
     if (!team) throw new Error("There is always at least one team");
     return team;
   }
@@ -172,6 +216,26 @@ class Store {
     let number = this.teams.length + 1;
     while (names.has(teamNumber(number))) number++;
     return teamNumber(number);
+  }
+
+  // A linked or fresh team stays out of saved teams until its first edit.
+  openUnsavedTeam(
+    team?: Team,
+    settings?: Pick<SavedTeam, "generation"> &
+      Partial<Pick<SavedTeam, "format">>,
+  ) {
+    const { generation, format } = this.currentTeam;
+    const draft = createSavedTeam({
+      name: this.nextTeamName(),
+      generation,
+      format:
+        settings ? formatForGeneration(format, settings.generation) : format,
+      ...settings,
+      ...(team && { team }),
+    });
+    this.draftSnapshot = stableJson(draft);
+    this.draftTeam = draft;
+    this.currentTeamId = draft.id;
   }
 
   // A new team in the current team's generation and format, which becomes the current one
@@ -204,6 +268,10 @@ class Store {
   }
 
   deleteTeam(id: string) {
+    if (this.draftTeam?.id === id) {
+      this.openUnsavedTeam();
+      return;
+    }
     const index = this.teams.findIndex(team => team.id === id);
     if (index === -1) return;
     const { generation, format } = this.teams.splice(index, 1)[0] ?? {};
@@ -219,40 +287,62 @@ class Store {
 
   duplicateTeam(id: string) {
     const index = this.teams.findIndex(team => team.id === id);
-    const source = this.teams[index];
-    if (!source) return;
+    const source = this.findTeam(id);
+    if (!source || isTeamEmpty(source.team)) return;
     const { id: _sourceId, ...settings } = toJS(source);
     const { copyOf, unnamedTeam } = this.translation.t.team;
     const copy = createSavedTeam({
       ...settings,
       name: copyOf(source.name || unnamedTeam),
     });
-    this.teams.splice(index + 1, 0, copy);
+    this.teams.splice(index === -1 ? this.teams.length : index + 1, 0, copy);
     this.currentTeamId = copy.id;
     return copy;
   }
 
-  setTeamSettings(
-    id: string,
-    settings: { name: string; generation: Generation; format: string },
+  transferTeamGeneration(
+    generation: Generation,
+    format: string,
+    team: Team,
+    newTeam: boolean,
   ) {
-    const team = this.teams.find(team => team.id === id);
-    if (team) Object.assign(team, settings);
+    if (newTeam) {
+      if (this.draftTeam?.id === this.currentTeamId) {
+        this.teams.push(this.draftTeam);
+        this.draftTeam = null;
+      }
+      this.addTeam({ generation, format, team, filters: toJS(this.filters) });
+    } else {
+      Object.assign(this.currentTeam, { generation, format, team });
+    }
+    this.resetHistory();
   }
 
-  // A team opened from a link: the current team or a saved team when it is the
-  // same, else the current team when it is empty, else a new team. Teams are the
-  // same when their link text is, since a saved team holds what the text leaves
-  // out, such as an empty slot before a pokemon.
-  openTeamFromLink(team: Team) {
+  renameTeam(id: string, name: string) {
+    const team = this.findTeam(id);
+    if (team) team.name = name;
+  }
+
+  // Link text matches saved teams even when the text leaves out empty slots.
+  openTeamFromLink(
+    team: Team,
+    settings?: Pick<SavedTeam, "generation"> &
+      Partial<Pick<SavedTeam, "format">>,
+  ) {
     if (isTeamEmpty(team)) return;
     const text = serializeTeam(team);
-    const saved = [this.currentTeam, ...this.teams].find(
-      saved => serializeTeam(saved.team) === text,
-    );
+    const preferredId =
+      this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId;
+    const matches = (saved: SavedTeam) =>
+      serializeTeam(saved.team) === text &&
+      (!settings ||
+        (saved.generation === settings.generation &&
+          (settings.format === undefined || saved.format === settings.format)));
+    const saved =
+      this.teams.find(saved => saved.id === preferredId && matches(saved)) ??
+      this.teams.find(matches);
     if (saved) this.currentTeamId = saved.id;
-    else if (isTeamEmpty(this.team)) this.team = team;
-    else this.addTeam({ team });
+    else this.openUnsavedTeam(team, settings);
   }
 
   // The current team
@@ -265,8 +355,50 @@ class Store {
     return isTeamEmpty(this.team);
   }
 
+  get rules() {
+    return generationRules(
+      this.currentTeam.generation,
+      this.currentTeam.format,
+    );
+  }
+
+  get teamItems() {
+    if (!this.learnsetsLoaded) return [];
+    return availableItems(
+      allItemIds,
+      this.currentTeam.generation,
+      this.currentTeam.format,
+    );
+  }
+
+  get analysisTeam() {
+    return this.team.map(member => ({
+      ...member,
+      ability: this.rules.abilities ? member.ability : "",
+      item: this.rules.items ? member.item : "",
+    }));
+  }
+
+  get filterAbilities() {
+    if (!this.learnsetsLoaded) return [];
+    const { generation, format } = this.currentTeam;
+    const species = filterPokemon({ generation, format, type: "", region: "" });
+    return [
+      ...new Set(
+        (variantGeneration(format) ?
+          availablePokemon(species, generation, format)
+        : species
+        ).flatMap(name => pokemonAbilities(name, generation)),
+      ),
+    ];
+  }
+
   get teamAbilities() {
-    return this.team.map(({ name }) => pokemonAbilities(name));
+    return this.team.map(({ name }) =>
+      this.rules.abilities ?
+        pokemonAbilities(name, this.currentTeam.generation)
+      : [],
+    );
   }
 
   // A boolean computed, so typing in the move filter does not rebuild the learnsets on every keystroke
@@ -276,11 +408,25 @@ class Store {
 
   get teamLearnsets() {
     if (!this.learnsetsLoaded) return { values: [], labels: [] };
-    return getTeamLearnsets(
+    const learnsets = getTeamLearnsets(
       this.team,
       this.viableMovesOnly,
       this.translation.names,
+      this.currentTeam.generation,
+      this.currentTeam.format,
     );
+    const values = learnsets.values.map(moves =>
+      sortMoves(
+        moves,
+        this.moveSort,
+        this.currentTeam.generation,
+        this.translation,
+      ),
+    );
+    return {
+      values,
+      labels: values.map(moves => moves.map(this.translation.names.move)),
+    };
   }
 
   // Choosing a pokemon resets the slot, then fills in its only item and ability
@@ -290,11 +436,37 @@ class Store {
 
     if (!member) return;
     member.name = name;
-    member.item = getAutoSelectedItem(name, "");
-    member.ability = getAutoSelectedAbility(name);
+    member.item = this.rules.items ? getAutoSelectedItem(name, "") : "";
+    member.ability =
+      this.rules.abilities ?
+        getAutoSelectedAbility(name, this.currentTeam.generation)
+      : "";
     for (const key of MOVE_KEYS) member[key] = "";
     clearDetails(member);
+    this.pokemonSelection = {
+      teamId: this.currentTeamId,
+      teamIndex,
+      sequence: (this.pokemonSelection?.sequence ?? 0) + 1,
+    };
   }
+
+  selectMove(teamIndex: number, key: MoveKey, move: string) {
+    const member = this.team[teamIndex];
+    if (!member || !canSelectMove(member, key, move)) return;
+    member[key] = move;
+    matchHiddenPower(
+      member,
+      move,
+      this.currentTeam.generation,
+      this.currentTeam.format,
+    );
+  }
+
+  pokemonSelection: {
+    teamId: string;
+    teamIndex: number;
+    sequence: number;
+  } | null = null;
 
   // Moves a pokemon to another slot, and that slot's pokemon to this one
   swapSlots(teamIndex: number, otherIndex: number) {
@@ -329,26 +501,67 @@ class Store {
   randomizeSlot(teamIndex: number) {
     const member = this.team[teamIndex];
     if (!member) return;
-    if (member.name && !isSetComplete(member)) {
-      this.team[teamIndex] = completeSet(member, completeLearnset(member.name));
-      return;
+    if (
+      member.name &&
+      !isSetComplete(
+        member,
+        this.currentTeam.generation,
+        this.currentTeam.format,
+      )
+    ) {
+      const completed = completeSet(
+        member,
+        generationLearnset(
+          member.name,
+          this.currentTeam.generation,
+          this.currentTeam.format,
+        ),
+        Math.random,
+        this.currentTeam.generation,
+        this.currentTeam.format,
+      );
+      this.team[teamIndex] = completed;
+      return randomizedFieldsMessage(member, completed, this.translation);
     }
     const pokemon = randomPokemon(this.filteredPokemon, this.teamPokemon);
     if (!pokemon) return;
-    this.team[teamIndex] = randomSet(pokemon, completeLearnset(pokemon));
+    this.team[teamIndex] = randomSet(
+      pokemon,
+      generationLearnset(
+        pokemon,
+        this.currentTeam.generation,
+        this.currentTeam.format,
+      ),
+      Math.random,
+      this.currentTeam.generation,
+      this.currentTeam.format,
+    );
+    return this.translation.t.team.randomizedPokemon;
   }
 
   // Six fresh picks: only the ones made so far count as taken, so the pokemon
   // being replaced do not force a repeat when the filters leave six options
   randomizeTeam() {
+    this.recordEdit();
     const options = this.filteredPokemon;
     const chosen: string[] = [];
     for (let i = 0; i < this.team.length; i++) {
       const pokemon = randomPokemon(options, chosen);
       if (!pokemon) return;
       chosen.push(pokemon);
-      this.team[i] = randomSet(pokemon, completeLearnset(pokemon));
+      this.team[i] = randomSet(
+        pokemon,
+        generationLearnset(
+          pokemon,
+          this.currentTeam.generation,
+          this.currentTeam.format,
+        ),
+        Math.random,
+        this.currentTeam.generation,
+        this.currentTeam.format,
+      );
     }
+    this.recordEdit(teamKey(this.team), true);
   }
 
   resetDetails(teamIndex: number) {
@@ -357,27 +570,32 @@ class Store {
   }
 
   get typeDefence() {
-    return calculateTypeDefence(this.team, this.currentTeam.generation);
+    return calculateTypeDefence(this.analysisTeam, this.currentTeam.generation);
   }
 
   get typeCoverage() {
-    return calculateTypeCoverage(this.team, this.currentTeam.generation);
+    return calculateTypeCoverage(
+      this.analysisTeam,
+      this.currentTeam.generation,
+    );
   }
 
   get checklist() {
-    return evaluateChecklist(this.team);
+    return evaluateChecklist(this.analysisTeam);
   }
 
   // The Name dropdown's options
 
-  filters: SearchFilters = {
-    type: "",
-    region: "",
-    ability: "",
-    moves: "",
-  };
+  get filters(): SearchFilters {
+    return this.currentTeam.filters;
+  }
+
+  set filters(filters: SearchFilters) {
+    this.currentTeam.filters = filters;
+  }
 
   sort: SortOrder;
+  moveSort: MoveSortOrder;
 
   get searchFilters(): PokemonFilters {
     const { generation, format } = this.currentTeam;
@@ -385,6 +603,7 @@ class Store {
     // A type filter from a later generation does not apply to an earlier one
     return {
       ...this.filters,
+      ability: this.rules.abilities ? this.filters.ability : "",
       type: typesIn(generation).some(known => known === type) ? type : "",
       generation,
       format,
@@ -392,10 +611,20 @@ class Store {
   }
 
   get filteredPokemon() {
+    if (variantGeneration(this.currentTeam.format) && !this.learnsetsLoaded)
+      return [];
+    const pokemon = filterPokemon(this.searchFilters);
     return sortPokemon(
-      filterPokemon(this.searchFilters),
+      variantGeneration(this.currentTeam.format) ?
+        availablePokemon(
+          pokemon,
+          this.currentTeam.generation,
+          this.currentTeam.format,
+        )
+      : pokemon,
       this.sort,
       this.translation,
+      this.currentTeam.generation,
     );
   }
 
@@ -405,14 +634,23 @@ class Store {
 
   // Undo and redo, per team
 
-  private past: string[] = [];
-  private future: string[] = [];
+  private past: { snapshot: string; randomizedTeam: boolean }[] = [];
+  private future: { snapshot: string; randomizedTeam: boolean }[] = [];
   private lastSnapshot: string;
 
+  private resetHistory() {
+    this.past = [];
+    this.future = [];
+    this.lastSnapshot = teamKey(this.team);
+  }
+
   // Undo and redo record first, so an edit the delayed reaction has yet to see is kept
-  private recordEdit(snapshot = teamKey(this.team)) {
+  private recordEdit(snapshot = teamKey(this.team), randomizedTeam = false) {
     if (snapshot === this.lastSnapshot) return;
-    this.past = [...this.past, this.lastSnapshot].slice(-HISTORY_LIMIT);
+    this.past = [
+      ...this.past,
+      { snapshot: this.lastSnapshot, randomizedTeam },
+    ].slice(-HISTORY_LIMIT);
     this.future = [];
     this.lastSnapshot = snapshot;
   }
@@ -427,20 +665,44 @@ class Store {
 
   undo() {
     this.recordEdit();
-    const snapshot = this.past[this.past.length - 1];
-    if (snapshot === undefined) return;
+    const entry = this.past.at(-1);
+    if (!entry) return;
     this.past = this.past.slice(0, -1);
-    this.future = [...this.future, this.lastSnapshot];
-    this.restore(snapshot);
+    this.future = [...this.future, { ...entry, snapshot: this.lastSnapshot }];
+    const previous = this.team;
+    this.restore(entry.snapshot);
+    const action =
+      entry.randomizedTeam ?
+        this.translation.t.team.randomizeTeamAction
+      : describeTeamChange(
+          this.team,
+          previous,
+          this.translation,
+          this.currentTeam.generation,
+          this.currentTeam.format,
+        );
+    return action ? this.translation.t.team.undoAction(action) : undefined;
   }
 
   redo() {
     this.recordEdit();
-    const snapshot = this.future[this.future.length - 1];
-    if (snapshot === undefined) return;
+    const entry = this.future.at(-1);
+    if (!entry) return;
     this.future = this.future.slice(0, -1);
-    this.past = [...this.past, this.lastSnapshot];
-    this.restore(snapshot);
+    this.past = [...this.past, { ...entry, snapshot: this.lastSnapshot }];
+    const previous = this.team;
+    this.restore(entry.snapshot);
+    const action =
+      entry.randomizedTeam ?
+        this.translation.t.team.randomizeTeamAction
+      : describeTeamChange(
+          previous,
+          this.team,
+          this.translation,
+          this.currentTeam.generation,
+          this.currentTeam.format,
+        );
+    return action ? this.translation.t.team.redoAction(action) : undefined;
   }
 
   private restore(snapshot: string) {
@@ -485,7 +747,8 @@ class Store {
         if (typeof document !== "undefined")
           document.documentElement.lang = locale;
       },
-      () => this.openSnackbar(this.translation.t.languageFailed),
+      () =>
+        this.openSnackbar(this.translation.t.languageFailed, false, "error"),
     );
   }
 
@@ -509,15 +772,44 @@ class Store {
     this.dialog = null;
   }
 
-  isSnackbarOpen = false;
-  snackbarMessage = "";
-  // Whether the snackbar offers to undo the change it reports
-  isSnackbarUndoable = false;
+  snackbars: SnackbarNotification[] = [];
+  private nextSnackbarId = 0;
 
-  openSnackbar(message: string, undoable = false) {
-    this.isSnackbarOpen = true;
-    this.snackbarMessage = message;
-    this.isSnackbarUndoable = undoable;
+  openSnackbar(message: string, undoable = false, kind: SnackbarKind = "info") {
+    this.snackbars = [
+      ...this.snackbars,
+      {
+        id: this.nextSnackbarId++,
+        kind,
+        message,
+        undoable,
+        teamId: this.currentTeamId,
+        snapshot: undoable ? teamKey(this.team) : "",
+        undoSnapshot: undoable ? this.snackbarUndoSnapshot : undefined,
+      },
+    ].slice(-3);
+  }
+
+  closeSnackbar(id: number) {
+    this.snackbars = this.snackbars.filter(
+      notification => notification.id !== id,
+    );
+  }
+
+  canUndoSnackbar(notification: SnackbarNotification) {
+    return (
+      notification.undoable &&
+      notification.teamId === this.currentTeamId &&
+      notification.snapshot === teamKey(this.team) &&
+      notification.undoSnapshot !== undefined &&
+      notification.undoSnapshot === this.snackbarUndoSnapshot
+    );
+  }
+
+  private get snackbarUndoSnapshot() {
+    return teamKey(this.team) !== this.lastSnapshot ?
+        this.lastSnapshot
+      : this.past.at(-1)?.snapshot;
   }
 
   // The saved state as this tab last read or saved it, which tells what other
@@ -530,9 +822,10 @@ class Store {
     if (!theirs) return;
     const merged = mergeStoredState(this.lastRead, this.storedState, theirs);
     this.teams = merged.teams;
-    this.currentTeamId = merged.currentTeamId;
+    if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
     this.isMoreOpen = merged.isMoreOpen;
     this.sort = merged.sort;
+    this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
     this.chosenLocale = merged.locale;
     this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
@@ -552,9 +845,11 @@ class Store {
   private get storedState(): StoredState {
     return {
       teams: this.teams,
-      currentTeamId: this.currentTeamId,
+      currentTeamId:
+        this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId,
       isMoreOpen: this.isMoreOpen,
       sort: this.sort,
+      moveSort: this.moveSort,
       nameView: this.nameView,
       ...(this.chosenLocale && { locale: this.chosenLocale }),
       ...(this.knowsSlotDrag && { knowsSlotDrag: true }),

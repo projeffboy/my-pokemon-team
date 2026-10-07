@@ -1,0 +1,435 @@
+import { test, expect } from "@playwright/test";
+import { planGenerationTransfer } from "@/store/generation-transfer";
+import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { createTeam } from "./shared/team";
+import { convertTraining } from "@/store/generation-transfer/training";
+import { generationRules, getDv, hpDv } from "@/shared/generation-rules";
+import { evTotal } from "@/shared/set-details";
+
+const data = await loadGenerationTransferData();
+const from = { generation: 9 as const, format: "" };
+
+test("EVs convert at level-50 SP thresholds and return to a minimal equivalent spread", () => {
+  for (const [ev, sp] of [
+    [0, 0],
+    [3, 0],
+    [4, 1],
+    [8, 1],
+    [11, 1],
+    [12, 2],
+    [131, 16],
+    [252, 32],
+    [255, 32],
+  ]) {
+    const converted = convertTraining(
+      createTeam({ evs: { hp: ev } })[0]!,
+      generationRules(3),
+      generationRules(9, CHAMPIONS_FORMAT),
+    );
+    expect(converted?.values.hp).toBe(sp);
+  }
+  const original = createTeam({
+    name: "forretress",
+    evs: { hp: 252, def: 252, spe: 4 },
+  });
+  const before = structuredClone(original);
+  const champions = planGenerationTransfer(
+    original,
+    { generation: 3, format: "" },
+    9,
+    CHAMPIONS_FORMAT,
+    data,
+  );
+  expect(champions.team[0]!.evs).toEqual({ hp: 32, def: 32, spe: 1 });
+  const back = planGenerationTransfer(
+    champions.team,
+    { generation: 9, format: CHAMPIONS_FORMAT },
+    3,
+    "",
+    data,
+  );
+  expect(back.team[0]!.evs).toEqual(original[0]!.evs);
+  expect(original).toEqual(before);
+});
+
+test("conversions fit per-stat and total budgets without discarding the spread", () => {
+  const source = createTeam({ name: "venusaur", evs: { hp: 255, def: 255 } });
+  const capped = planGenerationTransfer(
+    source,
+    { generation: 3, format: "" },
+    6,
+    "",
+    data,
+  );
+  expect(capped.team[0]!.evs).toEqual({ hp: 252, def: 252 });
+  expect(
+    capped.losses.find(loss => loss.field === "evs")?.conversion?.limited,
+  ).toBe(true);
+  const overBudget = createTeam({
+    name: "venusaur",
+    evs: { hp: 32, def: 32, spe: 2 },
+  });
+  const adapted = planGenerationTransfer(
+    overBudget,
+    { generation: 9, format: CHAMPIONS_FORMAT },
+    9,
+    "",
+    data,
+  );
+  expect(evTotal(adapted.team[0]!.evs)).toBeLessThanOrEqual(510);
+  expect(Object.values(adapted.team[0]!.evs!)).toEqual(
+    expect.arrayContaining([248, 12]),
+  );
+  expect(
+    adapted.losses.find(loss => loss.field === "evs")?.conversion?.limited,
+  ).toBe(true);
+});
+
+test("legacy training conversions preserve bonuses where possible and share Special", () => {
+  const source = createTeam({
+    name: "hypno",
+    evs: { hp: 100, spa: 80, spd: 120 },
+    ivs: { atk: 0, spa: 20, spd: 30 },
+  });
+  const legacy = planGenerationTransfer(source, from, 2, "", data);
+  expect(legacy.team[0]!.statExperience).toMatchObject({
+    hp: 10000,
+    spa: 14400,
+    spd: 14400,
+  });
+  expect(getDv(legacy.team[0]!, "atk")).toBe(0);
+  expect(getDv(legacy.team[0]!, "spa")).toBe(10);
+  expect(getDv(legacy.team[0]!, "spd")).toBe(10);
+  expect(getDv(legacy.team[0]!, "hp")).toBe(hpDv(legacy.team[0]!));
+  const modern = planGenerationTransfer(
+    legacy.team,
+    { generation: 2, format: "" },
+    3,
+    "",
+    data,
+  );
+  expect(modern.team[0]!.evs).toEqual({ hp: 100, spa: 120, spd: 120 });
+  expect(modern.team[0]!.ivs).toMatchObject({ atk: 1, spa: 21, spd: 21 });
+  expect(
+    modern.losses
+      .filter(loss => loss.conversion)
+      .every(loss => loss.conversion?.approximate),
+  ).toBe(true);
+  const raw = createTeam({
+    name: "hypno",
+    statExperience: { atk: 12345, spa: 65535, spd: 65535 },
+  });
+  const preserved = planGenerationTransfer(
+    raw,
+    { generation: 2, format: "" },
+    1,
+    "",
+    data,
+  );
+  expect(preserved.team[0]!.statExperience?.atk).toBe(12345);
+  const converted = planGenerationTransfer(
+    raw,
+    { generation: 2, format: "" },
+    3,
+    "",
+    data,
+  );
+  expect(evTotal(converted.team[0]!.evs)).toBeLessThanOrEqual(510);
+  expect(
+    converted.losses.find(loss => loss.field === "statExperience")?.conversion
+      ?.limited,
+  ).toBe(true);
+});
+
+test("Gen 9 includes Z-A Mega formes and their required stones", () => {
+  const original = createTeam({
+    name: "skarmorymega",
+    item: "skarmorite",
+    ability: "Stalwart",
+    move1: "bravebird",
+  });
+  expect(planGenerationTransfer(original, from, 9, "", data).losses).toEqual(
+    [],
+  );
+});
+
+test("unavailable species clears its whole slot without shifting later slots", () => {
+  const original = createTeam(
+    { name: "helioptile", item: "leftovers", move1: "thunderbolt" },
+    { name: "rattata" },
+  );
+  const before = structuredClone(original);
+  const plan = planGenerationTransfer(original, from, 5, "", data);
+  expect(plan.losses).toEqual([
+    { index: 0, pokemon: "helioptile", field: "pokemon", value: "helioptile" },
+  ]);
+  expect(Object.values(plan.team[0]!)).toEqual(["", "", "", "", "", "", ""]);
+  expect(plan.team[1]!.name).toBe("rattata");
+  expect(original).toEqual(before);
+});
+
+test("unavailable Primal forme converts to its available base and checks the base set", () => {
+  const original = createTeam(
+    {
+      name: "kyogreprimal",
+      item: "blueorb",
+      ability: "Primordial Sea",
+      move1: "surf",
+      move2: "originpulse",
+      nickname: "Ocean",
+      shiny: true,
+      level: 72,
+      evs: { hp: 128 },
+      ivs: { atk: 0 },
+    },
+    { name: "kyogre", ability: "Drizzle", move1: "surf" },
+  );
+  const before = structuredClone(original);
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 6, format: "" },
+    3,
+    "",
+    data,
+  );
+  expect(plan.team[0]).toMatchObject({
+    name: "kyogre",
+    item: "",
+    ability: "Drizzle",
+    move1: "surf",
+    move2: "",
+    nickname: "Ocean",
+    shiny: true,
+    level: 72,
+    evs: { hp: 128 },
+    ivs: { atk: 0 },
+  });
+  expect(plan.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "kyogreprimal",
+      field: "pokemon",
+      value: "kyogreprimal",
+      replacement: "kyogre",
+    },
+    { index: 0, pokemon: "kyogreprimal", field: "item", value: "blueorb" },
+    {
+      index: 0,
+      pokemon: "kyogreprimal",
+      field: "ability",
+      value: "Primordial Sea",
+      replacement: "Drizzle",
+    },
+    { index: 0, pokemon: "kyogreprimal", field: "move", value: "originpulse" },
+  ]);
+  expect(plan.team[1]).toEqual(original[1]);
+  expect(original).toEqual(before);
+});
+
+test("forme fallback leaves an ambiguous base ability for the player to choose", () => {
+  const plan = planGenerationTransfer(
+    createTeam({ name: "charizardmegax", ability: "Tough Claws" }),
+    { generation: 6, format: "" },
+    5,
+    "",
+    data,
+  );
+  expect(plan.team[0]).toMatchObject({ name: "charizard", ability: "" });
+  const ability = plan.losses.find(loss => loss.field === "ability");
+  expect(ability?.value).toBe("Tough Claws");
+  expect(ability?.replacement).toBeUndefined();
+});
+
+test("regional formes fall back only when their base species is available", () => {
+  const plan = planGenerationTransfer(
+    createTeam(
+      { name: "ninetalesalola", ability: "Snow Warning", move1: "icebeam" },
+      { name: "decidueyehisui", ability: "Scrappy" },
+    ),
+    from,
+    3,
+    "",
+    data,
+  );
+  expect(plan.team[0]).toMatchObject({
+    name: "ninetales",
+    ability: "Flash Fire",
+    move1: "",
+  });
+  expect(plan.team[1]?.name).toBe("");
+  expect(plan.losses.find(loss => loss.index === 1)).toEqual({
+    index: 1,
+    pokemon: "decidueyehisui",
+    field: "pokemon",
+    value: "decidueyehisui",
+  });
+});
+
+test("available formes keep their forme and ability", () => {
+  const original = createTeam({
+    name: "kyogreprimal",
+    item: "blueorb",
+    ability: "Primordial Sea",
+    move1: "surf",
+  });
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 6, format: "" },
+    7,
+    "",
+    data,
+  );
+  expect(plan.team).toEqual(original);
+  expect(plan.losses).toEqual([]);
+});
+
+test("keeps compatible moves and details and explains every unsupported field", () => {
+  const original = createTeam({
+    name: "slowbro",
+    move1: "surf",
+    move2: "slackoff",
+    item: "rockyhelmet",
+    ability: "Regenerator",
+    nature: "Bold",
+    gender: "M",
+    shiny: true,
+    teraType: "Water",
+    nickname: "Tank",
+    level: 50,
+    evs: { hp: 252 },
+    ivs: { spa: 0 },
+  });
+  const plan = planGenerationTransfer(original, from, 1, "", data);
+  expect(plan.team[0]).toMatchObject({
+    name: "slowbro",
+    move1: "surf",
+    move2: "",
+    item: "",
+    ability: "",
+    nickname: "Tank",
+    level: 50,
+  });
+  expect(plan.losses.map(loss => loss.field)).toEqual([
+    "item",
+    "ability",
+    "move",
+    "nature",
+    "gender",
+    "shiny",
+    "teraType",
+    "evs",
+    "ivs",
+  ]);
+  expect(original[0]!.move2).toBe("slackoff");
+});
+
+test("uses historical abilities and moves without treating tier filters as transfer bans", () => {
+  const historical = createTeam({
+    name: "gengar",
+    ability: "Levitate",
+    move1: "shadowball",
+  });
+  expect(
+    planGenerationTransfer(historical, from, 4, "OU: Over Used", data).losses,
+  ).toEqual([]);
+  historical[0]!.ability = "Cursed Body";
+  expect(
+    planGenerationTransfer(historical, from, 4, "Uber", data).losses.map(
+      loss => loss.field,
+    ),
+  ).toEqual(["ability"]);
+  const blastoise = createTeam({
+    name: "blastoise",
+    move1: "waterpulse",
+    move2: "surf",
+  });
+  const plan = planGenerationTransfer(blastoise, from, 2, "", data);
+  expect(plan.team[0]).toMatchObject({ move1: "", move2: "surf" });
+});
+
+test("Champions checks its own moves, items, abilities, and stat system", () => {
+  const original = createTeam({
+    name: "venusaur",
+    ability: "Overgrow",
+    move1: "gigadrain",
+    move2: "hiddenpowerice",
+    item: "assaultvest",
+    teraType: "Grass",
+    evs: { hp: 252 },
+    ivs: { atk: 0 },
+  });
+  const plan = planGenerationTransfer(
+    original,
+    from,
+    9,
+    CHAMPIONS_FORMAT,
+    data,
+  );
+  expect(plan.team[0]!.name).toBe("venusaur");
+  expect(plan.team[0]!.move1).toBe("gigadrain");
+  expect(plan.losses.map(loss => loss.field)).toEqual(
+    expect.arrayContaining(["move", "teraType", "evs", "ivs"]),
+  );
+  expect(plan.team[0]!.evs).toEqual({ hp: 32 });
+  expect(
+    plan.losses.find(loss => loss.field === "evs")?.conversion,
+  ).toMatchObject({ from: "evs", to: "sps", after: { hp: 32 } });
+  expect(original[0]!.evs).toEqual({ hp: 252 });
+});
+
+test("Hidden Power variants use the base move's historical availability", () => {
+  const original = createTeam({ name: "unown", move1: "hiddenpowerfire" });
+  expect(
+    planGenerationTransfer(original, from, 2, "", data).losses.filter(
+      loss => !loss.conversion,
+    ),
+  ).toEqual([]);
+});
+
+test("Champions sets surviving Pokemon to level 50 and reports adjustments without changing the original", () => {
+  const original = createTeam(
+    { name: "forretress", level: 56 },
+    { name: "charizard" },
+    { name: "venusaur", level: 50 },
+    { name: "cacturne", level: 56 },
+  );
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 3, format: "" },
+    9,
+    CHAMPIONS_FORMAT,
+    data,
+  );
+  expect(plan.team.slice(0, 3).map(member => member.level)).toEqual([
+    50, 50, 50,
+  ]);
+  expect(plan.losses.filter(loss => loss.field === "level")).toEqual([
+    {
+      index: 0,
+      pokemon: "forretress",
+      field: "level",
+      value: "56",
+      replacement: "50",
+    },
+    {
+      index: 1,
+      pokemon: "charizard",
+      field: "level",
+      value: "100",
+      replacement: "50",
+    },
+  ]);
+  expect(plan.team[3]!.name).toBe("");
+  expect(original[0]!.level).toBe(56);
+  expect(original[1]!.level).toBeUndefined();
+  const returning = planGenerationTransfer(
+    plan.team,
+    { generation: 9, format: CHAMPIONS_FORMAT },
+    3,
+    "",
+    data,
+  );
+  expect(returning.team[0]!.level).toBe(50);
+  expect(returning.losses).toEqual([]);
+});

@@ -2,6 +2,8 @@
 import {
   POKEMON_TYPES,
   type Formats,
+  type BaseStats,
+  type HiddenPowerSpreads,
   type Items,
   type Learnsets,
   type MoveEntry,
@@ -29,6 +31,7 @@ export type DataTypes = {
   TypeChart: TypeChart;
   Natures: Natures;
   PastGenerations: PastGenerations;
+  HiddenPowerSpreads: HiddenPowerSpreads;
 };
 
 export const toId = (text: unknown) =>
@@ -95,6 +98,7 @@ export const projections = {
       "abilities",
       "baseStats",
       "gender",
+      "genderRatio",
       "gen",
       "requiredItem",
       "requiredItems",
@@ -271,6 +275,22 @@ export function projectTypeChart(typeChart: ShowdownTable): TypeChart {
   ) as TypeChart;
 }
 
+export function projectHiddenPowerSpreads(
+  typeChart: ShowdownTable,
+): HiddenPowerSpreads {
+  return Object.fromEntries(
+    Object.entries(typeChart)
+      .filter(([, entry]) => isRecord(entry.HPivs))
+      .map(([type, entry]) => [
+        type,
+        {
+          ivs: entry.HPivs,
+          dvs: isRecord(entry.HPdvs) ? entry.HPdvs : {},
+        },
+      ]),
+  ) as HiddenPowerSpreads;
+}
+
 // Showdown's mods each inherit from the next generation's data: a mod's entry replaces
 // its parent's, merges into it with `inherit: true`, or deletes it when null
 export function resolveMod(
@@ -295,6 +315,7 @@ export type GenerationData = {
   pokedex: ShowdownTable;
   moves: ShowdownTable;
   typechart: ShowdownTable;
+  abilities?: ShowdownTable;
 };
 export type ModData = Partial<
   Record<keyof GenerationData, Record<string, ShowdownEntry | null>>
@@ -341,6 +362,16 @@ const changedField = <T>(
       .map(([id, entry]) => [id, entry[field] as T]),
   );
 
+// Showdown infers an ability's debut generation from its number when gen is absent.
+const abilityGeneration = (ability: ShowdownEntry = {}) => {
+  if (typeof ability.gen === "number") return ability.gen;
+  const num = Number(ability.num);
+  const index = [268, 234, 192, 165, 124, 77, 1].findIndex(
+    first => num >= first,
+  );
+  return index < 0 ? 0 : 9 - index;
+};
+
 // Each past generation's types, from Showdown's mods, which are listed newest first
 export function projectPastGenerations(
   latest: GenerationData,
@@ -349,12 +380,23 @@ export function projectPastGenerations(
   const past: PastGenerations = {};
   let parent = latest;
   let nextChart = pastTypeChart(latest.typechart, typesOf(latest.typechart));
+  const speciesFields = (table: ShowdownTable) =>
+    Object.fromEntries(
+      Object.entries(table).map(([id, species]) => [
+        id,
+        species.isCosmeticForme ?
+          { ...table[toId(species.baseSpecies)], ...species }
+        : species,
+      ]),
+    );
+  const latestSpecies = speciesFields(latest.pokedex);
   for (let gen = 8; gen >= 1; gen--) {
     const mod = mods[gen] ?? {};
     const resolved: GenerationData = {
       pokedex: resolveMod(parent.pokedex, mod.pokedex),
       moves: resolveMod(parent.moves, mod.moves),
       typechart: resolveMod(parent.typechart, mod.typechart),
+      abilities: resolveMod(parent.abilities ?? {}, mod.abilities),
     };
     const types = typesOf(resolved.typechart);
     const typechart = pastTypeChart(resolved.typechart, types);
@@ -363,6 +405,39 @@ export function projectPastGenerations(
       pokemon: changedField(latest.pokedex, resolved.pokedex, "types"),
       moves: changedField(latest.moves, resolved.moves, "type"),
     };
+    const resolvedSpecies = speciesFields(resolved.pokedex);
+    const baseStats = changedField<BaseStats>(
+      latestSpecies,
+      resolvedSpecies,
+      "baseStats",
+    );
+    if (Object.keys(baseStats).length) entry.baseStats = baseStats;
+    const abilities = Object.fromEntries(
+      Object.entries(resolvedSpecies).flatMap(([id, species]) => {
+        const current = isRecord(species.abilities) ? species.abilities : {};
+        const names =
+          gen < 3 ?
+            []
+          : Object.entries(current)
+              .filter(([slot, name]) => {
+                const introduced = abilityGeneration(
+                  resolved.abilities?.[toId(name)],
+                );
+                return !(gen < 5 && slot === "H") && introduced <= gen;
+              })
+              .map(([, name]) => String(name));
+        const latestAbilities = latestSpecies[id]?.abilities;
+        const latestNames = Object.values(
+          isRecord(latestAbilities) ? latestAbilities : {},
+        );
+        return (
+            gen < 3 || JSON.stringify(names) === JSON.stringify(latestNames)
+          ) ?
+            []
+          : [[id, names]];
+      }),
+    );
+    if (Object.keys(abilities).length) entry.abilities = abilities;
     if (JSON.stringify(typechart) !== JSON.stringify(nextChart)) {
       entry.typechart = typechart;
     }

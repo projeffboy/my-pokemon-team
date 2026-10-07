@@ -1,7 +1,95 @@
 import { test, expect } from "fixtures";
-import { isXs, openAnalysis, selectMove, selectPokemon } from "helper";
+import {
+  isXs,
+  openAnalysis,
+  selectAbility,
+  selectItem,
+  selectMove,
+  selectPokemon,
+} from "helper";
 
 test.describe("Matrix Analysis - Integration Tests", () => {
+  test("the defence matrix reflects Air Balloon and Dry Skin", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Heatran");
+    await selectItem(page, "Air Balloon");
+    await openAnalysis(page, "Matrix Analysis");
+    const matrix = page.getByRole("region", { name: "Matrix Analysis" });
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Ground does 0x to Heatran (Fire/Steel) with Air Balloon",
+        exact: true,
+      }),
+    ).toHaveText("0");
+    await selectPokemon(page, "Parasect");
+    await selectAbility(page, "Dry Skin");
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Fire does 5x to Parasect (Bug/Grass) with Dry Skin",
+        exact: true,
+      }),
+    ).toHaveText("×5");
+  });
+
+  test("the coverage matrix uses the user's forme-dependent move type", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Oricorio-Sensu");
+    await selectMove(page, "Revelation Dance");
+    await openAnalysis(page, "Matrix Analysis");
+    const matrix = page.getByRole("region", { name: "Matrix Analysis" });
+    await matrix.getByRole("button", { name: "Coverage", exact: true }).click();
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Oricorio-Sensu's Revelation Dance (Ghost) does 2x to Psychic",
+        exact: true,
+      }),
+    ).toHaveText("×2");
+    await selectPokemon(page, "Tauros-Paldea-Blaze");
+    await selectMove(page, "Raging Bull");
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Tauros-Paldea-Blaze's Raging Bull (Fire) does 2x to Grass",
+        exact: true,
+      }),
+    ).toHaveText("×2");
+  });
+
+  test("Scrappy removes Exploud's Ghost immunity in coverage", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Exploud");
+    await selectMove(page, "Headbutt");
+    await selectAbility(page, "Soundproof");
+    await openAnalysis(page, "Matrix Analysis");
+    const matrix = page.getByRole("region", { name: "Matrix Analysis" });
+    await matrix.getByRole("button", { name: "Coverage", exact: true }).click();
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Exploud's Headbutt (Normal) does 0x to Ghost",
+        exact: true,
+      }),
+    ).toHaveText("0");
+    await selectAbility(page, "Scrappy");
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Exploud's Headbutt (Normal) does 1x to Ghost",
+        exact: true,
+      }),
+    ).toHaveText("");
+    await selectMove(page, "Low Kick");
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Exploud's Low Kick (Fighting) does 1x to Ghost",
+        exact: true,
+      }),
+    ).toHaveText("");
+    await expect(
+      matrix.getByRole("cell", { name: "Ghost score: 0", exact: true }),
+    ).toHaveText("0");
+  });
+
   test("shows how each type hits each pokemon, and how each pokemon's moves hit each type", async ({
     page,
   }) => {

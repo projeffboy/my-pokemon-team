@@ -13,6 +13,8 @@ export const DEFAULT_LEVEL = 100;
 export const MAX_LEVEL = 100;
 export const MAX_EV = 252;
 export const MAX_EV_TOTAL = 510;
+export const MAX_SP = 32;
+export const MAX_SP_TOTAL = 66;
 export const MAX_IV = 31;
 
 // Showdown's stat abbreviations, as its team text writes them
@@ -35,6 +37,8 @@ export const DETAIL_KEYS = [
   "teraType",
   "nature",
   "evs",
+  "statExperience",
+  "effortLevels",
   "ivs",
 ] as const satisfies readonly (keyof TeamPokemonDetails)[];
 

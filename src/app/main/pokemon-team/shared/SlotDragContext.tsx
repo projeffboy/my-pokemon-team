@@ -18,7 +18,7 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import store from "@/store";
-import PokemonInputs from "./PokemonInputs";
+import PokemonCard from "./PokemonCard";
 import { TabSlotContent, tabSlot } from "./TabSlot";
 import { MoveSlotContext, isTab, tabId } from "./use-slot-drag";
 
@@ -122,18 +122,7 @@ export default function SlotDragContext({
           )}
           {dragged && !isTab(dragged.id) && (
             // Sized to the card's contents, so the paper extends past them by the card's padding
-            <Box
-              sx={{
-                m: -1,
-                p: 1,
-                bgcolor: "background.paper",
-                borderRadius: 1,
-                boxShadow: 6,
-                cursor: "grabbing",
-              }}
-            >
-              <PokemonInputs teamIndex={slotOf(dragged) ?? 0} isDragOverlay />
-            </Box>
+            <PokemonCard teamIndex={slotOf(dragged) ?? 0} isDragOverlay />
           )}
         </DragOverlay>
       </DndContext>

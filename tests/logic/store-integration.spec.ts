@@ -1,6 +1,38 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 
+test("move selection rejects duplicates but permits changing its own Hidden Power type", ({
+  store,
+}) => {
+  store.selectPokemon(0, "misdreavus");
+  store.selectMove(0, "move1", "hiddenpowerice");
+  store.selectMove(0, "move2", "hiddenpowerfire");
+  expect(store.team[0].move2).toBe("");
+  store.selectMove(0, "move1", "hiddenpowerfire");
+  expect(store.team[0].move1).toBe("hiddenpowerfire");
+  store.selectMove(0, "move2", "shadowball");
+  store.selectMove(0, "move3", "shadowball");
+  expect(store.team[0].move3).toBe("");
+  store.selectMove(0, "move2", "");
+  store.selectMove(0, "move3", "shadowball");
+  expect(store.team[0].move3).toBe("shadowball");
+});
+
+test("Hidden Power selection updates IVs atomically and a rejected duplicate cannot change them", ({
+  store,
+}) => {
+  store.currentTeam.generation = 3;
+  store.selectPokemon(0, "misdreavus");
+  store.selectMove(0, "move1", "hiddenpowerice");
+  expect(store.team[0].ivs).toEqual({ atk: 30, def: 30 });
+  store.selectMove(0, "move2", "hiddenpowerfire");
+  expect(store.team[0].ivs).toEqual({ atk: 30, def: 30 });
+  store.selectMove(0, "move1", "hiddenpowerfire");
+  expect(store.team[0].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+  store.selectMove(0, "move1", "shadowball");
+  expect(store.team[0].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+});
+
 test("defence recomputes after nested species, item, and ability edits", ({
   store,
 }) => {
@@ -13,7 +45,7 @@ test("defence recomputes after nested species, item, and ability edits", ({
     store.team[0].name = "bronzong";
     expect(groundScore).toBe(-1);
     store.team[0].item = "airballoon";
-    expect(groundScore).toBe(0);
+    expect(groundScore).toBe(1.5);
     store.team[0].ability = "Levitate";
     expect(groundScore).toBe(1.5);
     store.selectPokemon(0, "");

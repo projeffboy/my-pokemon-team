@@ -16,7 +16,19 @@ const inputNames: Record<string, string> = {
 const zhHant: Messages = {
   // The header
   generation,
+  generationGames: {
+    9: "朱 紫",
+    8: "劍 盾 / 晶燦鑽石 明亮珍珠",
+    7: "太陽 月亮 / 究極之日 究極之月",
+    6: "X Y / 歐米加紅寶石 阿爾法藍寶石",
+    5: "黑 白 / 黑2 白2",
+    4: "鑽石 珍珠 白金 / 心金 魂銀",
+    3: "紅寶石 藍寶石 綠寶石 / 火紅 葉綠",
+    2: "金 銀 水晶",
+    1: "紅 藍 皮卡丘",
+  },
   generationSelect: "世代",
+  comingSoon: "即將推出",
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "語言",
@@ -58,12 +70,13 @@ const zhHant: Messages = {
     teams: "隊伍列表",
     randomizedTeam: "已隨機組隊",
     randomizedPokemon: "已隨機選擇寶可夢",
+    randomizedPokemonDetails: (details: string) =>
+      `已隨機選擇寶可夢的${details}`,
     shareTeam: "分享隊伍",
     shareTeamLink: "分享寶可夢隊伍連結",
     teamActions: "隊伍操作",
     manageTeam: "管理隊伍",
     manageTeamMenu: "管理隊伍",
-    nameAndFormat: "名稱與格式",
     duplicate: "建立副本",
     copyText: "複製文字",
     editPokepaste: "編輯 Pokepaste",
@@ -76,6 +89,7 @@ const zhHant: Messages = {
     nothingToCopy: "隊伍是空的，沒有可複製的內容。",
     teamCopied: "已複製隊伍。",
     teamNotCopied: "無法複製隊伍。",
+    cannotDuplicateEmptyTeam: "無法建立空隊伍的副本",
     teamDuplicated: "已建立隊伍副本",
     teamDeleted: "已刪除隊伍",
     slots: "寶可夢隊伍欄位",
@@ -85,14 +99,18 @@ const zhHant: Messages = {
     slotPair: (first: string, second: string) => `${first} 與 ${second}`,
     moreTools: "更多隊伍工具",
     fewerTools: "收起隊伍工具",
+    advancedMode: "進階",
     more: "更多",
     less: "收起",
     filters: "篩選",
     sort: "排序",
     random: "隨機",
+    randomize: "隨機產生",
+    randomizePokemon: "隨機選擇寶可夢",
+    randomizeDetails: (details: string) => `隨機選擇${details}`,
     randomFor: (slot: number) => `為第 ${slot} 格隨機選擇寶可夢`,
-    advanced: "進階",
-    advancedFor: (slot: number) => `第 ${slot} 格的進階選項`,
+    advanced: "更多詳情",
+    advancedFor: (slot: number) => `第 ${slot} 格的更多詳情`,
     about: (pokemon: string) => `關於${pokemon}`,
     dragHint: "長按拖曳即可調整順序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他格`,
@@ -107,8 +125,23 @@ const zhHant: Messages = {
     selectPokemonFirst: "（尚未選擇寶可夢）",
     list: "清單",
     grid: "格狀",
-    undone: "已復原上一次變更",
-    redone: "已重做變更",
+    pokemonInSlot: (pokemon: string, slot: number) =>
+      `將${pokemon}放到第${slot}個位置`,
+    removedPokemon: (pokemon: string, slot: number) =>
+      `從第${slot}個位置移除${pokemon}`,
+    addedValue: (value: string, pokemon: string) => `為${pokemon}新增${value}`,
+    removedValue: (value: string, pokemon: string) =>
+      `從${pokemon}移除${value}`,
+    replacedValue: (previous: string, value: string, pokemon: string) =>
+      `將${pokemon}的${previous}替換為${value}`,
+    setValue: (label: string, value: string, pokemon: string) =>
+      `將${pokemon}的${label}設為${value}`,
+    swappedSlots: (first: string, second: string) =>
+      `交換${first}和${second}的位置`,
+    moreChanges: (count: number) => `另有${count}項變更`,
+    undoAction: (action: string) => `復原${action}`,
+    redoAction: (action: string) => `重做${action}`,
+    randomizeTeamAction: "隨機產生隊伍",
     nameListView: "名稱清單檢視",
     listView: "清單檢視",
     gridView: "格狀檢視",
@@ -255,14 +288,32 @@ const zhHant: Messages = {
     minus: string | undefined,
   ) =>
     plus && minus ? `${nature}（+${plus}，-${minus}）` : `${nature}（無修正）`,
+  gameVariantsCompact: {
+    "Legends: Arceus": "傳說 阿爾宙斯",
+    "Legends: Z-A": "傳說 Z-A",
+  },
+  gameVariants: {
+    "Let’s Go": "Let’s Go! 皮卡丘／伊布",
+    "Legends: Arceus": "傳說 阿爾宙斯",
+    "Legends: Z-A": "傳說 Z-A",
+  },
   advanced: {
     subtitle: (pokemon: string, slot: number) => `${pokemon}，第 ${slot} 格`,
+    dvs: "個體值（DV）",
+    statExperience: "能力經驗值",
+    effortLevels: "奮鬥等級",
+    avs: "覺醒值",
+    statAlignment: "能力傾向",
     nickname: "暱稱",
+    nicknameLimit: (max: number) => `最多${max}個字元。`,
     level: "等級",
     gender: "性別",
     teraType: "太晶屬性",
     nature: "性格",
     shiny: "異色",
+    sps: "SP",
+    spTotal: (total: number, max: number) => `SP總和：${total}／${max}`,
+    statSps: (stat: string) => `${stat}SP`,
     evs: "努力值",
     ivs: "個體值",
     evTotal: (total: number, max: number) => `努力值總和：${total}／${max}`,
@@ -270,6 +321,7 @@ const zhHant: Messages = {
     statIvs: (stat: string) => `${stat}個體值`,
   },
   info: {
+    special: "特殊",
     abilities: "特性",
     baseStats: "種族值",
     total: (total: number) => `合計 ${total}`,
@@ -283,7 +335,6 @@ const zhHant: Messages = {
 
   // The Filters and Sort dialogs
   filters: {
-    description: "縮小每個欄位的名稱下拉選單範圍。",
     format: "格式",
     type: "屬性",
     region: "地區",
@@ -292,6 +343,7 @@ const zhHant: Messages = {
     ability: "特性",
   },
   sort: {
+    pokemon: "寶可夢",
     sortBy: "排序依據",
     order: "順序",
     ascending: "升冪",
@@ -302,7 +354,7 @@ const zhHant: Messages = {
     bst: "種族值總和",
   },
 
-  // The Teams, Name and Format, Import, and Delete dialogs
+  // The Teams, Team name, Import, and Delete dialogs
   teams: {
     newTeam: "新隊伍",
     randomTeam: "隨機隊伍",
@@ -325,10 +377,55 @@ const zhHant: Messages = {
     notCopiedAll: "無法複製隊伍。",
     exportFilename: "my-pokemon-teams.txt",
   },
+  generationTransfer: {
+    title: "切換遊戲或世代？",
+    compactTitle: "切換遊戲？",
+    from: (where: string) => `目前：${where}`,
+    fromLabel: "從",
+    toLabel: "到",
+    unavailableHeading: "這些寶可夢不會保留",
+    allUnavailableHeading: "所有寶可夢都不會保留",
+    pokemonAdjusted: (pokemon: string) => `${pokemon}需要調整。`,
+    adjustedHeading: "你的寶可夢將調整後保留",
+    remainingAdjustedHeading: "其餘寶可夢將調整後保留",
+    universalChanges: "適用於所有保留的寶可夢",
+    levelSet: (level: number) => `等級設為${level}。`,
+    featuresUnused: (features: string, where: string) =>
+      `${where}不使用：${features}。`,
+    dvsConvertedToIvs: "DV轉換為IV。",
+    trainingSystemChanges: (from: string, to: string) =>
+      `培育方式從${from}變為${to}。`,
+    removed: {
+      item: "移除的道具",
+      ability: "移除的特性",
+      moves: "移除的招式：",
+      details: "移除的詳細資訊",
+    },
+    ivsUnused: (where: string) => `個體值不適用於${where}。`,
+    ivsConvertedToDvs: "IV將轉換為DV。",
+    trainingLimited: "已調整至本遊戲的上限。",
+    trainingApproximate: "近似轉換，能力值可能不同。",
+    counts: {
+      pokemon: (count: number) => `${count}隻寶可夢`,
+      move: (count: number) => `${count}個招式`,
+      item: (count: number) => `${count}件道具`,
+      ability: (count: number) => `${count}個特性`,
+    },
+    modify: "更新現有隊伍",
+    copy: "複製到新隊伍",
+    createEmpty: "建立空隊伍",
+    clearExisting: "清空現有隊伍",
+    emptyTeamHint: "建立空隊伍不會更改原來的隊伍。",
+    carriedOver: "複製不會更改原隊伍。",
+    pokemonUnavailable: (where: string) => `無法在${where}中使用。`,
+    loses: "將失去：",
+    entryLabel: (label: string, value: string) => `${label}：${value}`,
+    entryRemoved: (value: string) => `將失去${value}。`,
+    loadFailed: "無法載入世代資料，請重新整理頁面再試。",
+  },
   settings: {
+    editTeamName: "編輯隊伍名稱",
     teamName: "隊伍名稱",
-    checkTeamFor: (where: string) => `檢查隊伍是否符合 ${where}`,
-    validFor: (where: string) => `這支隊伍符合 ${where} 的規則。`,
   },
   validation: {
     empty: "隊伍是空的。",
@@ -344,6 +441,8 @@ const zhHant: Messages = {
       `${pokemon}的努力值共 ${total}（最多 ${max}）。`,
     tooManyStatEvs: (pokemon: string, max: number) =>
       `${pokemon}有一項能力的努力值超過 ${max}。`,
+    nicknameTooLong: (pokemon: string, max: number) =>
+      `${pokemon}的暱稱最多只能有${max}個字元。`,
     badLevel: (pokemon: string, max: number) =>
       `${pokemon}的等級必須在 1 到 ${max} 之間。`,
     teraType: (pokemon: string) =>
@@ -431,15 +530,15 @@ const zhHant: Messages = {
     teamsAnswer:
       "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「全部匯出」會把每支隊伍以 Showdown 文字下載，「匯入隊伍」則能把它們讀回來。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
     teamsAnswer2:
-      "「更多」按鈕會顯示隊伍工具、「篩選」與「排序」按鈕，以及「進階」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於「管理隊伍」選單中。",
+      "「更多」按鈕會顯示隊伍工具、「篩選」與「排序」按鈕，以及「更多詳情」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於「管理隊伍」選單中。",
     generations: "世代",
     generationsQuestion: "世代會改變什麼？",
     generationsAnswer:
       "在頂端選擇的世代只會列出該世代存在的寶可夢與形態：第6、7、9世代的超級進化、第8世代的超極巨化形態等等。其他一切維持最新：招式、特性、屬性相剋表與格式都來自最新的遊戲，所以舊世代的隊伍可能會學到當時學不了的招式。",
-    advanced: "進階選項",
+    advanced: "更多詳情",
     advancedQuestion: "暱稱、等級、性格、努力值與個體值",
     advancedAnswer:
-      "每隻寶可夢的「進階」按鈕可以設定暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值，方式與 Pokemon Showdown 相同。這些設定會隨隊伍一起放進分享連結、「複製文字」和「編輯 Pokepaste」的文字中；「名稱與格式」對話框的檢查會回報超過 510 的努力值、重複的招式、被禁止的寶可夢與各項條款。",
+      "每隻寶可夢的「更多詳情」按鈕可以設定暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值，方式與 Pokemon Showdown 相同。這些設定會隨隊伍一起放進分享連結、「複製文字」和「編輯 Pokepaste」的文字中。",
     matrix: "矩陣分析",
     matrixQuestion: "屬性分數從哪裡來？",
     matrixAnswer:

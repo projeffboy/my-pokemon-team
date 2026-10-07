@@ -9,6 +9,38 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 7, 2026",
+    changes: [
+      "Unavailable formes now convert to their base species when switching generations, e.g. Kyogre-Primal becomes Kyogre in Gen 3.",
+    ],
+  },
+  {
+    date: "Oct 6, 2026",
+    changes: [
+      "Nicknames now follow the games' character limits, with shortening previewed when switching to a game with a lower limit.",
+      "Selecting or randomizing Hidden Power now sets matching IVs or DVs when the current spread produces a different type.",
+      "Move selection and randomization now prevent duplicate moves, including multiple Hidden Power types; randomization counts Hidden Power as one move choice.",
+      "Generation changes now convert training values, including EVs to Champions SPs, instead of clearing compatible spreads.",
+      "Gen 2–4 Pokémon play their original game sprite animation on page load and when selected.",
+      "Set details and randomization now follow generation rules, including Gen 1–2 DVs and separate Legends and Let’s Go editors.",
+      "More details now uses SPs without IVs for Pokémon Champions, and only shows Tera Type for regular Gen 9 teams.",
+      "Pokédex entries now show generation-specific stats and abilities, e.g. Pidgeot's original Speed before Gen 6.",
+    ],
+  },
+  {
+    date: "Oct 5, 2026",
+    changes: [
+      "Shiny Pokémon now use shiny sprites.",
+      "Changing generations previews incompatible Pokémon and set details, with options to cancel, adjust the team, or create a copy.",
+      "Filters are saved separately for each team.",
+      "Sort moves by name or type in either direction.",
+      "Format choices now follow the selected generation, including past-generation tiers on Pokemon Showdown.",
+      "Fixed more type matchups, including Mind’s Eye, Thousand Arrows, Air Balloon, and forme-dependent moves such as Revelation Dance.",
+      "Scrappy now lets Normal and Fighting moves hit Ghost types in the coverage matrix, such as Exploud’s Headbutt.",
+      "New tabs start fresh teams. Team links open matching saved teams, or stay unsaved until you edit them.",
+    ],
+  },
+  {
     date: "Oct 1, 2026",
     changes: [
       "Send feedback straight from the site, with a screenshot of the page or your own images attached.",

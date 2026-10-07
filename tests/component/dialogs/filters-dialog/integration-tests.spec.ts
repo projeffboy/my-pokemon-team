@@ -2,6 +2,7 @@ import { test, expect } from "fixtures";
 import {
   closeDialog,
   openFilters,
+  openSort,
   selectDialogOption,
   selectPokemon,
 } from "helper";
@@ -96,12 +97,47 @@ test.describe("Filters Integration Tests", () => {
     }
   });
 
+  test("sorts the selected Pokemon even when filters exclude it", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Aron");
+    await selectFilterOption(page, "Region", "Hoenn");
+    await selectFilterOption(page, "Type", "Fire");
+    const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    const checkOrder = async (before: string, after: string) => {
+      await expect(input).toHaveValue("Aron");
+      await input.click();
+      const options = page.getByRole("listbox").getByRole("option");
+      await expect(options.filter({ hasText: /^Aron$/ })).toBeVisible();
+      const labels = await options.allTextContents();
+      expect(labels).toContain(before);
+      expect(labels).toContain(after);
+      expect(labels.indexOf(before)).toBeLessThan(labels.indexOf("Aron"));
+      expect(labels.indexOf("Aron")).toBeLessThan(labels.indexOf(after));
+      await input.press("Escape");
+    };
+
+    await checkOrder("Blaziken", "Numel");
+    await openSort(page);
+    await page.getByRole("radio", { name: "Name", exact: true }).check();
+    await closeDialog(page);
+    await input.click();
+    await expect(
+      page.getByRole("listbox").getByRole("option").first(),
+    ).toHaveText("Aron");
+    await input.press("Escape");
+
+    await openSort(page);
+    await page.getByRole("radio", { name: "Pokedex number" }).check();
+    await page.getByRole("button", { name: "Descending" }).click();
+    await closeDialog(page);
+    await checkOrder("Numel", "Blaziken");
+  });
+
   test("Pokemon Champions Format Filter", async ({ page }) => {
     const generation = page.getByRole("combobox", { name: "Generation" });
-    await generation.click();
-    await page.getByRole("option", { name: /^Gen 4/ }).click();
     await selectFilterOption(page, "Format", "Pokemon Champions (M-C)");
-    await expect(generation).toContainText("Gen 9 (Champions)");
+    await expect(generation).toContainText("Gen 9 · Champions");
 
     // Eligible: Kommo-o, Glimmora-Mega
     await checkPokemonSelectable(page, "Kommo-o");
@@ -113,9 +149,68 @@ test.describe("Filters Integration Tests", () => {
     }
   });
 
+  test("format options follow generation and clear unsupported selections", async ({
+    page,
+  }) => {
+    await selectFilterOption(page, "Format", "Doubles UU");
+    const generation = page.getByRole("combobox", { name: "Generation" });
+    await generation.click();
+    await page.getByRole("option", { name: /^Gen 2/ }).click();
+    await openFilters(page);
+    await page.getByRole("combobox", { name: "Format" }).click();
+    await expect(
+      page.getByRole("option", { name: "All", exact: true }),
+    ).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("option")).toHaveText([
+      "All",
+      "Uber",
+      "OU: Over Used",
+      "UU: Under Used",
+      "NU: Never Used",
+      "PU",
+      "ZU",
+    ]);
+    await page
+      .getByRole("option", { name: "OU: Over Used", exact: true })
+      .click();
+    await closeDialog(page);
+    await generation.click();
+    await page.getByRole("option", { name: /^Gen 3/ }).click();
+    await openFilters(page);
+    await expect(page.getByRole("combobox", { name: "Format" })).toContainText(
+      "OU: Over Used",
+    );
+    await page.getByRole("combobox", { name: "Format" }).click();
+    await expect(
+      page.getByRole("option", { name: "RU: Rarely Used", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("option", { name: "Little Cup (LC)", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("option", { name: "Doubles OU", exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("option", { name: "Doubles UU", exact: true }),
+    ).toHaveCount(0);
+    await page.keyboard.press("Escape");
+    await closeDialog(page);
+  });
+
   test("Type Filter", async ({ page }) => {
     // 1. Select type electric
-    await selectFilterOption(page, "Type", "Electric");
+    await openFilters(page);
+    const type = page.getByRole("combobox", { name: "Type", exact: true });
+    await type.click();
+    await expect(page.getByRole("option").locator("img")).toHaveCount(18);
+    const electric = page.getByRole("option", {
+      name: "Electric",
+      exact: true,
+    });
+    const icon = await electric.locator("img").getAttribute("src");
+    await electric.click();
+    await expect(type.locator("img")).toHaveAttribute("src", icon ?? "");
+    await closeDialog(page);
 
     // Pokemon that can be selected: Pichu, Pikachu, Raichu, Electabuzz, Vikavolt, Tapu Koko
     const selectablePokemon = [

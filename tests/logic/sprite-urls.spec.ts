@@ -24,3 +24,42 @@ test("pokemon Showdown only has static sprites for stay static in every generati
   expect(src).toMatch(/\/gen5\/miraidon\.png$/);
   expect(fallback).toBe(src);
 });
+
+test("shiny sprites keep the selected generation, image type and shiny fallback", () => {
+  for (const [generation, folder, extension] of [
+    [2, "gen2-shiny", "png"],
+    [3, "gen3-shiny", "png"],
+    [4, "gen4-shiny", "png"],
+    [5, "gen5ani-shiny", "gif"],
+    [9, "ani-shiny", "gif"],
+  ] as const) {
+    const { src, fallback } = spriteUrls(
+      "bulbasaur",
+      bulbasaur,
+      undefined,
+      false,
+      generation,
+      true,
+    );
+    expect(src).toBe(
+      `https://play.pokemonshowdown.com/sprites/${folder}/bulbasaur.${extension}`,
+    );
+    expect(fallback).toMatch(/\/gen5-shiny\/bulbasaur\.png$/);
+  }
+  expect(
+    spriteUrls("bulbasaur", bulbasaur, undefined, true, 9, true).src,
+  ).toMatch(/\/dex-shiny\/bulbasaur\.png$/);
+  expect(
+    spriteUrls("bulbasaur", bulbasaur, undefined, false, 1, true).src,
+  ).toMatch(/\/gen1rb\/bulbasaur\.png$/);
+  const staticShiny = spriteUrls(
+    "miraidon",
+    { num: 1008 },
+    undefined,
+    false,
+    9,
+    true,
+  );
+  expect(staticShiny.src).toMatch(/\/gen5-shiny\/miraidon\.png$/);
+  expect(staticShiny.fallback).toBe(staticShiny.src);
+});

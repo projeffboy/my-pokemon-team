@@ -2,23 +2,27 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import SortIcon from "@mui/icons-material/Sort";
 import CasinoIcon from "@mui/icons-material/Casino";
-import TuneIcon from "@mui/icons-material/Tune";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { useBreakpoint, useIsMdDown } from "@/app/shared/WidthContext";
+import { useIsMdDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import { pokemonTypes } from "@/shared/pokedex";
+import { isShinyInGeneration } from "@/shared/generation-rules";
 import typeIcons from "@/images/type-icons";
+import type { SyntheticEvent } from "react";
+import useDiceRoll from "@/app/shared/use-dice-roll";
 import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "@/app/shared/PokemonSprite";
 import SlotMoveHandle from "./pokemon-inputs/SlotMoveHandle";
 import useSlotDrag, { dropTarget } from "./use-slot-drag";
 import { MOVE_KEYS } from "@/types";
+import { randomizeSlotLabel } from "@/store/random";
 
 const SLOT_INFO_CLASS = "slot-info";
 
@@ -47,29 +51,6 @@ const smallButton = {
   "& .MuiButton-startIcon": { mr: 0.5, ml: 0, "& > svg": { fontSize: 16 } },
 } as const;
 
-// The buttons of a row get equal widths when the row has room for that, else the
-// longer label takes more of it, and they show their icons only where those fit too
-const rowButton = (labels: string[]) => {
-  const gap = 4;
-  const bare = labels.map(label => Math.ceil(textWidth(label)) + 8);
-  const withIcon = bare.map(width => width + 20);
-  const equal = (widths: number[]) =>
-    widths.length * Math.max(...widths) + (widths.length - 1) * gap;
-  const total = (widths: number[]) =>
-    widths.reduce((sum, width) => sum + width, (widths.length - 1) * gap);
-  return [
-    smallButton,
-    {
-      [`@container (max-width: ${equal(bare) - 1}px)`]: { flex: "1 1 auto" },
-      [`@container (min-width: ${total(withIcon)}px) and (max-width: ${equal(withIcon) - 1}px)`]:
-        { flex: "1 1 auto" },
-      [`@container (max-width: ${total(withIcon) - 1}px)`]: {
-        "& .MuiButton-startIcon": { display: "none" },
-      },
-    },
-  ];
-};
-
 // One team slot: the name, sprite, and slot tools on the left, and the moves,
 // item, and ability on the right. Another slot's card can be dropped on it, and
 // a copy of it follows the pointer while it is dragged.
@@ -80,20 +61,36 @@ const PokemonInputs = observer(function PokemonInputs({
   teamIndex: number;
   isDragOverlay?: boolean;
 }) {
-  const { t, names } = useTranslation();
+  const translation = useTranslation();
+  const { t, names } = translation;
   const isMdDown = useIsMdDown();
-  // The smallest phones have no room for the type icons beside the sprite
-  const isXxs = useBreakpoint() === "xxs";
+  const hasTypeIcons = useTypeIcons();
   const showTools = store.isMoreOpen;
-  const pokemon = store.team[teamIndex]?.name ?? "";
+  const member = store.team[teamIndex];
+  const pokemon = member?.name ?? "";
+  const randomTitle =
+    member ?
+      randomizeSlotLabel(
+        member,
+        translation,
+        store.currentTeam.generation,
+        store.currentTeam.format,
+      )
+    : t.team.randomizePokemon;
   const label = names.pokemon(pokemon);
   const { setCardRef, setGripRef, listeners, isDragged, isTarget } =
     useSlotDrag(teamIndex, isDragOverlay);
-  const toolsRow = rowButton([t.team.filters, t.team.sort]);
-  const slotRow = rowButton([t.team.random, t.team.advanced]);
-  const randomize = () => {
-    store.randomizeSlot(teamIndex);
-    store.openSnackbar(t.team.randomizedPokemon, true);
+  const detailsIconAt = Math.ceil(textWidth(t.team.advanced)) + 60;
+  const randomAt = detailsIconAt + Math.ceil(textWidth(t.team.random)) + 4;
+  const randomizeAt = Math.max(
+    randomAt + 1,
+    detailsIconAt + Math.ceil(textWidth(t.team.randomize)) + 4,
+  );
+  const rollDice = useDiceRoll();
+  const randomize = (event: SyntheticEvent<HTMLElement>) => {
+    rollDice(event);
+    const message = store.randomizeSlot(teamIndex);
+    if (message) store.openSnackbar(message, true, "random");
   };
 
   return (
@@ -105,12 +102,12 @@ const PokemonInputs = observer(function PokemonInputs({
           display: "grid",
           columnGap: 1,
           gridTemplateColumns: "1fr 1fr",
-          // With a mouse on a desktop, the info button appears when the card is
-          // hovered or focused
+          // Keep the first slot's info button visible; later slots reveal it
+          // when hovered or focused with a mouse on desktop.
           "@media (hover: hover)": {
             [theme.breakpoints.up("md")]: {
               [`& .${SLOT_INFO_CLASS}`]: {
-                opacity: 0,
+                opacity: teamIndex === 0 ? 1 : 0,
                 transition: "opacity .15s",
               },
               [`&:hover .${SLOT_INFO_CLASS}, &:focus-within .${SLOT_INFO_CLASS}`]:
@@ -140,28 +137,6 @@ const PokemonInputs = observer(function PokemonInputs({
           minWidth: 0,
         }}
       >
-        {showTools && (
-          <Box sx={{ ...buttonRow, pt: 0.5 }}>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<FilterListIcon />}
-              sx={toolsRow}
-              onClick={() => store.openDialog("filters", { teamIndex })}
-            >
-              {t.team.filters}
-            </Button>
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<SortIcon />}
-              sx={toolsRow}
-              onClick={() => store.openDialog("sort", { teamIndex })}
-            >
-              {t.team.sort}
-            </Button>
-          </Box>
-        )}
         <PokemonInput
           placeholder={t.team.name}
           teamIndex={teamIndex}
@@ -179,28 +154,26 @@ const PokemonInputs = observer(function PokemonInputs({
         >
           <Box
             sx={{
-              position: "relative",
+              position: "absolute",
+              inset: theme => theme.spacing(0.5, 0),
               // In front of the info and Random buttons where a large sprite
               // overlaps them, without taking their clicks
               zIndex: 1,
               pointerEvents: "none",
-              flexGrow: 1,
               minWidth: 0,
               display: "flex",
               justifyContent: "center",
             }}
           >
-            {/* Without the tools, the sprite area reaches the card's bottom, so a
-                large sprite can show at full size, over the Random button */}
             <PokemonSprite
               teamIndex={teamIndex}
               forceFullSize
+              fitContainer
               maxHeight={showTools ? undefined : 184}
             />
           </Box>
           {/* With the tools, the pokemon's types straddle the card's left edge at
-              the sprite area's top: their icons, or their abbreviations on the
-              smallest phones */}
+              the sprite area's top, matching the team stats' icons */}
           {showTools && pokemon && (
             <Box
               sx={{
@@ -217,7 +190,7 @@ const PokemonInputs = observer(function PokemonInputs({
               }}
             >
               {pokemonTypes(pokemon, store.currentTeam.generation).map(type =>
-                isXxs ?
+                !hasTypeIcons ?
                   <Box
                     key={type}
                     component="span"
@@ -243,6 +216,17 @@ const PokemonInputs = observer(function PokemonInputs({
                     sx={{ width: 20, height: 20 }}
                   />,
               )}
+              {member &&
+                isShinyInGeneration(member, store.currentTeam.generation) && (
+                  <AutoAwesomeIcon
+                    titleAccess={t.advanced.shiny}
+                    sx={{
+                      fontSize: 20,
+                      color: "warning.main",
+                      alignSelf: "center",
+                    }}
+                  />
+                )}
             </Box>
           )}
           {/* In the sprite area's top right corner, however the sprite is centred in it */}
@@ -267,24 +251,44 @@ const PokemonInputs = observer(function PokemonInputs({
           }
         >
           {showTools ?
-            <Tooltip title={t.team.randomFor(teamIndex + 1)}>
+            <Tooltip title={randomTitle}>
               {/* The span is the row's flex item, so the tooltip works while
                   the button is disabled and the button still sizes with the row */}
-              <Box component="span" sx={[...slotRow, { display: "flex" }]}>
+              <Box component="span" sx={{ display: "flex", flex: "0 0 auto" }}>
                 <Button
                   size="small"
                   variant="outlined"
-                  startIcon={<CasinoIcon />}
-                  sx={[smallButton, { flex: "1 1 auto" }]}
+                  sx={[smallButton, { flex: "0 0 auto", gap: 0.5 }]}
                   disabled={!store.learnsetsLoaded}
                   aria-label={t.team.randomFor(teamIndex + 1)}
                   onClick={randomize}
                 >
-                  {t.team.random}
+                  <CasinoIcon sx={{ fontSize: 16 }} />
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "none",
+                      [`@container (min-width: ${randomAt}px) and (max-width: ${randomizeAt - 1}px)`]:
+                        { display: "inline" },
+                    }}
+                  >
+                    {t.team.random}
+                  </Box>
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "none",
+                      [`@container (min-width: ${randomizeAt}px)`]: {
+                        display: "inline",
+                      },
+                    }}
+                  >
+                    {t.team.randomize}
+                  </Box>
                 </Button>
               </Box>
             </Tooltip>
-          : <Tooltip title={t.team.random}>
+          : <Tooltip title={randomTitle}>
               {/* Wrapped so the tooltip still works while the button is disabled */}
               <Box component="span" sx={{ display: "flex" }}>
                 <Button
@@ -304,8 +308,19 @@ const PokemonInputs = observer(function PokemonInputs({
             <Button
               size="small"
               variant="outlined"
-              startIcon={<TuneIcon />}
-              sx={slotRow}
+              startIcon={<EditOutlinedIcon />}
+              sx={[
+                smallButton,
+                {
+                  flex: "1 1 auto",
+                  "& .MuiButton-startIcon": {
+                    display: "none",
+                    [`@container (min-width: ${detailsIconAt}px)`]: {
+                      display: "inline-flex",
+                    },
+                  },
+                },
+              ]}
               disabled={!pokemon}
               aria-label={t.team.advancedFor(teamIndex + 1)}
               onClick={() => store.openDialog("advanced", { teamIndex })}
@@ -333,17 +348,21 @@ const PokemonInputs = observer(function PokemonInputs({
             leadingIcon={showTools}
           />
         ))}
-        <PokemonInput
-          placeholder={t.team.item}
-          teamIndex={teamIndex}
-          pokemonProperty="item"
-          leadingIcon={showTools}
-        />
-        <PokemonInput
-          placeholder={t.team.ability}
-          teamIndex={teamIndex}
-          pokemonProperty="ability"
-        />
+        {store.rules.items && (
+          <PokemonInput
+            placeholder={t.team.item}
+            teamIndex={teamIndex}
+            pokemonProperty="item"
+            leadingIcon={showTools}
+          />
+        )}
+        {store.rules.abilities && (
+          <PokemonInput
+            placeholder={t.team.ability}
+            teamIndex={teamIndex}
+            pokemonProperty="ability"
+          />
+        )}
       </Box>
     </Box>
   );

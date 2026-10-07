@@ -1,4 +1,4 @@
-import { test } from "fixtures";
+import { test, expect } from "fixtures";
 import {
   selectPokemon,
   selectAbility,
@@ -8,6 +8,19 @@ import {
 } from "helper";
 
 test.describe("Team Type Coverage - Integration Tests", () => {
+  test("shows each move before its pokemon", async ({ page }) => {
+    await selectPokemon(page, "Golduck");
+    await selectMove(page, "Surf", 1, 0);
+    await selectMove(page, "Ice Beam", 2, 0);
+    await checkTypeCoverageScoreAndPopover(page, "Ground", "+3", [
+      "Golduck",
+      "Surf",
+      "Ice Beam",
+    ]);
+    const row = page.getByRole("tooltip").getByRole("listitem");
+    await expect(row).toHaveText(["SurfGolduck", "Ice BeamGolduck"]);
+  });
+
   test("Special Move", async ({ page }) => {
     // 1. Select Glalie with Freeze Dry
     await selectPokemon(page, "Glalie");

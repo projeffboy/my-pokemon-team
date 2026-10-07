@@ -14,15 +14,16 @@ import { dragHandle, useMoveSlot } from "../use-slot-drag";
 // to the slot it is dropped on, and clicking it lists the slots instead
 const chip = {
   position: "absolute",
-  top: -12,
-  left: -30,
+  top: -8,
+  left: -26,
   zIndex: 1,
   p: 0.25,
-  border: 1,
-  borderColor: "divider",
-  borderRadius: 1,
-  bgcolor: "background.paper",
+  width: 22,
+  height: 28,
+  borderRadius: "4px 0 0 4px",
   color: "text.secondary",
+  "&:hover": { bgcolor: "action.hover" },
+  "&:focus-visible": { bgcolor: "action.focus" },
 } as const;
 
 const SlotMoveHandle = observer(function SlotMoveHandle({

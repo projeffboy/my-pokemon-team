@@ -18,7 +18,19 @@ const inputNames: Record<string, string> = {
 
 const ptBR: Messages = {
   generation,
+  generationGames: {
+    9: "Scarlet Violet",
+    8: "Sword Shield / Brilliant Diamond Shining Pearl",
+    7: "Sun Moon / Ultra Sun Ultra Moon",
+    6: "X Y / Omega Ruby Alpha Sapphire",
+    5: "Black White / Black 2 White 2",
+    4: "Diamond Pearl Platinum / HeartGold SoulSilver",
+    3: "Ruby Sapphire Emerald / FireRed LeafGreen",
+    2: "Gold Silver Crystal",
+    1: "Red Blue Yellow",
+  },
   generationSelect: "Geração",
+  comingSoon: "Em breve",
   championsGeneration: "Ger. 9 · Champions",
   championsGenerationShort: "Ger. 9 (Champions)",
   language: "Idioma",
@@ -59,12 +71,13 @@ const ptBR: Messages = {
     teams: "Equipes",
     randomizedTeam: "Equipe aleatorizada",
     randomizedPokemon: "Pokémon aleatorizado",
+    randomizedPokemonDetails: (details: string) =>
+      `Dados aleatorizados do Pokémon: ${details.toLowerCase()}`,
     shareTeam: "Copiar link",
     shareTeamLink: "Compartilhar o link da equipe Pokémon",
     teamActions: "Ações da equipe",
     manageTeam: "Gerenciar",
     manageTeamMenu: "Gerenciar equipe",
-    nameAndFormat: "Nome e formato",
     duplicate: "Duplicar",
     copyText: "Copiar texto",
     editPokepaste: "Editar Pokepaste",
@@ -77,6 +90,7 @@ const ptBR: Messages = {
     nothingToCopy: "A equipe está vazia, não há nada para copiar.",
     teamCopied: "Equipe copiada.",
     teamNotCopied: "Não foi possível copiar a equipe.",
+    cannotDuplicateEmptyTeam: "Não é possível duplicar uma equipe vazia",
     teamDuplicated: "Equipe duplicada",
     teamDeleted: "Equipe excluída",
     slots: "Slots da equipe Pokémon",
@@ -86,14 +100,18 @@ const ptBR: Messages = {
     slotPair: (first: string, second: string) => `${first} e ${second}`,
     moreTools: "Mais ferramentas da equipe",
     fewerTools: "Menos ferramentas da equipe",
+    advancedMode: "Avançado",
     more: "Mais",
     less: "Menos",
     filters: "Filtros",
     sort: "Ordenar",
     random: "Aleatório",
+    randomize: "Randomizar",
+    randomizePokemon: "Sortear Pokémon",
+    randomizeDetails: (details: string) => `Sortear ${details.toLowerCase()}`,
     randomFor: (slot: number) => `Pokémon aleatório para o slot ${slot}`,
-    advanced: "Avançado",
-    advancedFor: (slot: number) => `Opções avançadas do slot ${slot}`,
+    advanced: "Mais detalhes",
+    advancedFor: (slot: number) => `Mais detalhes do slot ${slot}`,
     about: (pokemon: string) => `Sobre ${pokemon}`,
     dragHint: "Segure e arraste para reordenar",
     moveToSlot: (pokemon: string) => `Mover ${pokemon} para outro slot`,
@@ -108,8 +126,24 @@ const ptBR: Messages = {
     selectPokemonFirst: "(você não selecionou nenhum Pokémon)",
     list: "Lista",
     grid: "Grade",
-    undone: "Última alteração desfeita",
-    redone: "Alteração refeita",
+    pokemonInSlot: (pokemon: string, slot: number) =>
+      `colocar ${pokemon} na posição ${slot}`,
+    removedPokemon: (pokemon: string, slot: number) =>
+      `remover ${pokemon} da posição ${slot}`,
+    addedValue: (value: string, pokemon: string) =>
+      `adicionar ${value} a ${pokemon}`,
+    removedValue: (value: string, pokemon: string) =>
+      `remover ${value} de ${pokemon}`,
+    replacedValue: (previous: string, value: string, pokemon: string) =>
+      `substituir ${previous} por ${value} para ${pokemon}`,
+    setValue: (label: string, value: string, pokemon: string) =>
+      `definir ${label} como ${value} para ${pokemon}`,
+    swappedSlots: (first: string, second: string) =>
+      `trocar ${first} e ${second} de posição`,
+    moreChanges: (count: number) => `${count} outras alterações`,
+    undoAction: (action: string) => `Desfazer ${action}`,
+    redoAction: (action: string) => `Refazer ${action}`,
+    randomizeTeamAction: "gerar equipe aleatória",
     nameListView: "Visualização da lista de nomes",
     listView: "Visualização em lista",
     gridView: "Visualização em grade",
@@ -248,14 +282,32 @@ const ptBR: Messages = {
     minus: string | undefined,
   ) =>
     plus && minus ? `${nature} (+${plus}, -${minus})` : `${nature} (neutra)`,
+  gameVariantsCompact: {
+    "Legends: Arceus": "Legends Arceus",
+    "Legends: Z-A": "Legends Z-A",
+  },
+  gameVariants: {
+    "Let’s Go": "Let’s Go, Pikachu! / Eevee!",
+    "Legends: Arceus": "Legends: Arceus",
+    "Legends: Z-A": "Legends: Z-A",
+  },
   advanced: {
     subtitle: (pokemon: string, slot: number) => `${pokemon}, slot ${slot}`,
+    dvs: "DVs",
+    statExperience: "Experiência de atributos",
+    effortLevels: "Níveis de esforço",
+    avs: "AVs",
+    statAlignment: "Alinhamento de atributos",
     nickname: "Apelido",
+    nicknameLimit: (max: number) => `Máximo de ${max} caracteres.`,
     level: "Nível",
     gender: "Gênero",
     teraType: "Tipo Tera",
     nature: "Natureza",
     shiny: "Shiny",
+    sps: "SPs",
+    spTotal: (total: number, max: number) => `Total de SPs: ${total} de ${max}`,
+    statSps: (stat: string) => `SPs de ${stat}`,
     evs: "EVs",
     ivs: "IVs",
     evTotal: (total: number, max: number) => `Total de EVs: ${total} de ${max}`,
@@ -263,6 +315,7 @@ const ptBR: Messages = {
     statIvs: (stat: string) => `IVs de ${stat}`,
   },
   info: {
+    special: "Especial",
     abilities: "Habilidades",
     baseStats: "Estatísticas base",
     total: (total: number) => `Total ${total}`,
@@ -275,7 +328,6 @@ const ptBR: Messages = {
   },
 
   filters: {
-    description: "Restringe a lista de nomes de todos os slots.",
     format: "Formato",
     type: "Tipo",
     region: "Região",
@@ -284,6 +336,7 @@ const ptBR: Messages = {
     ability: "Habilidade",
   },
   sort: {
+    pokemon: "Pokémon",
     sortBy: "Ordenar por",
     order: "Ordem",
     ascending: "Crescente",
@@ -321,10 +374,59 @@ const ptBR: Messages = {
     notCopiedAll: "Não foi possível copiar as equipes.",
     exportFilename: "my-pokemon-teams.txt",
   },
+  generationTransfer: {
+    title: "Mudar de jogo ou geração?",
+    compactTitle: "Mudar de jogo?",
+    from: (where: string) => `De ${where}`,
+    fromLabel: "De",
+    toLabel: "Para",
+    unavailableHeading: "Estes Pokémon não serão mantidos",
+    allUnavailableHeading: "Nenhum Pokémon será mantido",
+    pokemonAdjusted: (pokemon: string) => `${pokemon} precisa de ajustes.`,
+    adjustedHeading: "Seus Pokémon serão mantidos com alterações",
+    remainingAdjustedHeading:
+      "O restante dos seus Pokémon será mantido com alterações",
+    universalChanges: "Para todos os Pokémon transferidos",
+    levelSet: (level: number) => `O nível é definido como ${level}.`,
+    featuresUnused: (features: string, where: string) =>
+      `Não utilizado em ${where}: ${features}.`,
+    dvsConvertedToIvs: "DVs são convertidos em IVs.",
+    trainingSystemChanges: (from: string, to: string) =>
+      `O treinamento muda de ${from} para ${to}.`,
+    removed: {
+      item: "Item removido",
+      ability: "Habilidade removida",
+      moves: "Golpes removidos:",
+      details: "Detalhes removidos",
+    },
+    ivsUnused: (where: string) => `IVs não se aplicam em ${where}.`,
+    ivsConvertedToDvs: "Os IVs são convertidos em DVs.",
+    trainingLimited: "Ajustados aos limites deste jogo.",
+    trainingApproximate: "Conversão aproximada; os atributos podem variar.",
+    counts: {
+      pokemon: (count: number) => `${count} Pokémon`,
+      move: (count: number) => `${count} ${count === 1 ? "golpe" : "golpes"}`,
+      item: (count: number) => `${count} ${count === 1 ? "item" : "itens"}`,
+      ability: (count: number) =>
+        `${count} ${count === 1 ? "habilidade" : "habilidades"}`,
+    },
+    modify: "Atualizar equipe atual",
+    copy: "Copiar para nova equipe",
+    createEmpty: "Criar equipe vazia",
+    clearExisting: "Esvaziar equipe existente",
+    emptyTeamHint:
+      "Criar uma equipe vazia mantém sua equipe original inalterada.",
+    carriedOver: "Copiar mantém sua equipe original inalterada.",
+    pokemonUnavailable: (where: string) => `Indisponível em ${where}.`,
+    loses: "Perderá:",
+    entryLabel: (label: string, value: string) => `${label}: ${value}`,
+    entryRemoved: (value: string) => `Perderá ${value}.`,
+    loadFailed:
+      "Não foi possível carregar os dados das gerações. Recarregue a página.",
+  },
   settings: {
+    editTeamName: "Editar nome do time",
     teamName: "Nome da equipe",
-    checkTeamFor: (where: string) => `Verificar a equipe para ${where}`,
-    validFor: (where: string) => `A equipe é válida para ${where}.`,
   },
   validation: {
     empty: "A equipe está vazia.",
@@ -340,6 +442,8 @@ const ptBR: Messages = {
       `${pokemon} tem ${total} EVs (máximo ${max}).`,
     tooManyStatEvs: (pokemon: string, max: number) =>
       `${pokemon} tem mais de ${max} EVs em uma estatística.`,
+    nicknameTooLong: (pokemon: string, max: number) =>
+      `O apelido de ${pokemon} deve ter no máximo ${max} caracteres.`,
     badLevel: (pokemon: string, max: number) =>
       `O nível de ${pokemon} deve ser de 1 a ${max}.`,
     teraType: (pokemon: string) =>
@@ -428,15 +532,15 @@ const ptBR: Messages = {
     teamsAnswer:
       "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Exportar tudo baixa todas as equipes como texto do Showdown, que Importar equipe lê de volta. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
     teamsAnswer2:
-      "O botão Mais mostra as ferramentas da equipe, os botões Filtros e Ordenar e o botão Avançado. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam no menu Gerenciar.",
+      "O botão Mais mostra as ferramentas da equipe, os botões Filtros e Ordenar e o botão Mais detalhes. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam no menu Gerenciar.",
     generations: "Gerações",
     generationsQuestion: "O que a geração muda?",
     generationsAnswer:
       "A geração, escolhida no topo, lista apenas os Pokémon e formas que existiam nela: megas nas Ger. 6, 7 e 9, formas Gigantamax na Ger. 8 e assim por diante. Todo o resto permanece atual: os golpes, as habilidades, a tabela de tipos e os formatos vêm dos jogos mais recentes, então uma equipe de uma geração antiga pode conhecer golpes que não podia aprender na época.",
-    advanced: "Opções avançadas",
+    advanced: "Mais detalhes",
     advancedQuestion: "Apelidos, níveis, naturezas, EVs e IVs",
     advancedAnswer:
-      "O botão Avançado de cada Pokémon define seu apelido, nível, gênero, shiny, Tipo Tera, natureza, EVs e IVs, da mesma forma que o Pokemon Showdown. Eles acompanham a equipe nos links de compartilhamento e no texto de Copiar texto e Editar Pokepaste, e a verificação da janela Nome e formato aponta EVs acima de 510, golpes repetidos, Pokémon banidos e cláusulas.",
+      "O botão Mais detalhes de cada Pokémon define seu apelido, nível, gênero, shiny, Tipo Tera, natureza, EVs e IVs, da mesma forma que o Pokemon Showdown. Eles acompanham a equipe nos links de compartilhamento e no texto de Copiar texto e Editar Pokepaste.",
     matrix: "Análise de matriz",
     matrixQuestion: "De onde vêm as pontuações de tipo?",
     matrixAnswer:

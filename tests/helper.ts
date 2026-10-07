@@ -20,7 +20,9 @@ export const createViewport = (width: number) => ({
 
 // Helper function for navigation
 export const goToSite = async (page: Page) => {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
+  // These suites exercise regular Gen 9; the landing-page default has its own coverage.
+  await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+  await expect(page.locator("header .MuiSelect-nativeInput")).toHaveValue("9");
 };
 
 // Below md, the More button beside the slot tabs also hides the team toolbar
@@ -42,7 +44,10 @@ export const showSlot = async (page: Page, slotIndex: number) => {
 
 // Shows the filters, sort, and advanced buttons, and the team toolbar on phones and tablets
 export const openTeamTools = async (page: Page) => {
-  const more = page.getByRole("button", { name: "More team tools" });
+  const more = page.getByRole("button", {
+    name: /^(More team tools|Advanced)$/,
+    expanded: false,
+  });
   if (await more.isVisible()) await more.click();
 };
 
@@ -66,7 +71,7 @@ export const openEditPokepaste = async (page: Page) => {
   ).toBeVisible();
 };
 
-// Opens a slot tool's dialog, such as Filters, Sort, or Advanced, from the first visible card
+// Opens a team or slot tool's dialog after revealing the tools
 const openSlotDialog = async (page: Page, button: RegExp, dialog: string) => {
   await openTeamTools(page);
   await page.getByRole("button", { name: button }).first().click();
@@ -79,7 +84,7 @@ export const openFilters = (page: Page) =>
 export const openSort = (page: Page) => openSlotDialog(page, /^Sort$/, "Sort");
 
 export const openAdvanced = (page: Page) =>
-  openSlotDialog(page, /^Advanced options for slot/, "Advanced");
+  openSlotDialog(page, /^More details for slot/, "More details");
 
 // Picks an option in a dialog's select, found by its label
 export const selectDialogOption = async (
@@ -112,8 +117,8 @@ export const openAnalysis = async (page: Page, name: string) => {
       .getByRole("tab", { name: ANALYSIS_TABS[name] })
       .click();
   } else {
-    // From tablets up, the header's switch shows the stats, the matrix, or the checklist
-    const stats = ["Team Defence", "Team Type Coverage"].includes(name);
+    // From tablets up, the stats and checklist share the same view
+    const stats = name !== "Matrix Analysis";
     await page
       .getByRole("button", { name: stats ? "Team Stats" : name })
       .click();
@@ -225,10 +230,10 @@ export const teamScoreUnitTests = (headingName: string) => {
       await expect(section).toBeVisible();
 
       // Find the Dark type element within the section
-      const darkTypeElement = section
-        .locator("div")
-        .filter({ hasText: /^(Dark|DRK)$/ })
-        .first();
+      const darkTypeElement = section.getByRole("button", {
+        name: "Dark",
+        exact: true,
+      });
 
       // Hover over it and verify popover content
       // (retried because a late relayout, e.g. slow-loading fonts/images,

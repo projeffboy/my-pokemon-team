@@ -18,6 +18,8 @@ import { moveTypeIn } from "@/shared/generation-data";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
+import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
+import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 
 const LISTBOX_PADDING = 0; // px
 const ITEM_SIZE = 48;
@@ -43,11 +45,34 @@ const MoveTypeIcon = observer(function MoveTypeIcon({
 }: {
   move: string;
 }) {
-  const { names } = useTranslation();
+  const { t, names } = useTranslation();
+  const hasTypeIcons = useTypeIcons();
   const type = moveTypeIn(move, store.currentTeam.generation);
   // A placeholder keeps the labels aligned for the few moves without a type
   if (!type || !isPokemonType(type)) {
     return <Box component="span" sx={{ width: 20, flexShrink: 0 }} />;
+  }
+  if (!hasTypeIcons) {
+    return (
+      <Box
+        component="span"
+        role="img"
+        aria-label={names.type(type)}
+        sx={{
+          flexShrink: 0,
+          mt: 0.25,
+          px: 0.5,
+          borderRadius: 0.5,
+          fontSize: 10,
+          fontWeight: 500,
+          lineHeight: "16px",
+          bgcolor: TYPE_COLORS[type],
+          color: TYPE_TEXT_COLORS[type],
+        }}
+      >
+        {t.typeAbbreviations[type]}
+      </Box>
+    );
   }
   return (
     <Box
@@ -160,6 +185,7 @@ export const VirtualizedListboxContext = React.createContext<{
   internalListRef: React.RefObject<ListImperativeAPI | null>;
   // The room the popup has on the screen, measured when it opens
   popupMaxHeight?: number;
+  nameListWidth: number;
 } | null>(null);
 
 // Virtualizes the Autocomplete's option list with react-window so only
@@ -181,6 +207,7 @@ const VirtualizedListbox = observer(
         selectedValue,
         internalListRef,
         popupMaxHeight,
+        nameListWidth,
       } = context;
       const isNameInput = pokemonProperty === "name";
       const isGrid = isNameInput && store.nameView === "grid";
@@ -252,12 +279,12 @@ const VirtualizedListbox = observer(
               // Keeps the focus, and so the popup, in the input
               onMouseDown={event => event.preventDefault()}
               aria-label={t.team.nameListView}
-              // As wide as its two labels, centred in the dropdown
+              // Keep the toggle anchored while the grid widens the dropdown
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                width: "fit-content",
-                mx: "auto",
+                width: nameListWidth,
+                maxWidth: "100%",
                 my: 0.5,
                 "& > *": { gap: 0.75, px: 0.75, fontSize: 12, lineHeight: 1 },
               }}

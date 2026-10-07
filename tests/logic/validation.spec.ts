@@ -42,6 +42,20 @@ test("reports illegal abilities, missing required items, and repeated moves", ()
   ]);
 });
 
+test("different Hidden Power types are still duplicate moves", () => {
+  expect(
+    validateTeam(
+      createTeam({
+        name: "misdreavus",
+        move1: "hiddenpowerice",
+        move2: "hiddenpowerfire",
+      }),
+      3,
+      "",
+    ),
+  ).toEqual(["Misdreavus has Hidden Power twice."]);
+});
+
 test("reports EVs, levels, and tera types that the games do not allow", () => {
   const team = createTeam(
     { name: "milotic", evs: { hp: 252, atk: 252, spe: 252 }, level: 0 },

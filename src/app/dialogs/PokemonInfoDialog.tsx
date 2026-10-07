@@ -13,8 +13,11 @@ import store from "@/store";
 import pokedex from "@/data/pokedex";
 import { STAT_KEYS } from "@/types";
 import { typesIn } from "@/shared/generation-data";
-import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
-import { baseStatTotal } from "@/shared/set-details";
+import {
+  pokemonAbilities,
+  pokemonBaseStats,
+  pokemonTypes,
+} from "@/shared/pokedex";
 import {
   bulbapediaUrl,
   serebiiDexUrl,
@@ -26,8 +29,10 @@ import { scoreToMultiplier } from "@/store/matrix";
 import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import PokemonSprite from "@/app/shared/PokemonSprite";
 import dexLogos from "@/images/dex-logos";
+import typeIcons from "@/images/type-icons";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import StatIcon from "./pokemon-info-dialog/StatIcon";
 
 const MAX_BASE_STAT = 255;
 
@@ -37,16 +42,30 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
   const titleId = useId();
   const { dialog } = store;
   const teamIndex = dialog?.teamIndex ?? 0;
-  const member = store.team[teamIndex];
+  const member = store.analysisTeam[teamIndex];
   const pokemon = member?.name ?? "";
   const { generation } = store.currentTeam;
   const entry = pokedex[pokemon];
+  const stats = pokemonBaseStats(pokemon, generation);
+  const statKeys = STAT_KEYS.filter(stat => generation !== 1 || stat !== "spd");
+  const statName = (stat: (typeof STAT_KEYS)[number]) =>
+    generation === 1 && stat === "spa" ? t.info.special : t.statFullNames[stat];
+  const total = statKeys.reduce((sum, stat) => sum + (stats?.[stat] ?? 0), 0);
   const isOpen = dialog?.name === "info" && !!entry;
   const close = () => store.closeDialog();
   const name = names.pokemon(pokemon);
   const typeChip = (type: keyof typeof TYPE_COLORS, suffix = "") => (
     <Chip
       key={type}
+      icon={
+        <Box
+          component="img"
+          src={typeIcons[type]}
+          alt=""
+          aria-hidden="true"
+          sx={{ width: 18, height: 18 }}
+        />
+      }
       label={`${names.type(type)}${suffix}`}
       size="small"
       sx={{
@@ -117,7 +136,13 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
           <DialogContent
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: { xxs: 1, xs: 2 },
+              }}
+            >
               <Box sx={{ width: 96, flexShrink: 0 }}>
                 <PokemonSprite teamIndex={teamIndex} forceFullSize />
               </Box>
@@ -127,30 +152,40 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
                     typeChip(type),
                   )}
                 </Box>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: "text.secondary",
+                    whiteSpace: entry.forme ? "normal" : "nowrap",
+                  }}
+                >
                   {about.join(" · ")}
                 </Typography>
               </Box>
             </Box>
-            <Box>
-              <Typography variant="overline" component="h3">
-                {t.info.abilities}
-              </Typography>
-              <Typography>
-                {pokemonAbilities(pokemon).map(names.ability).join(", ")}
-              </Typography>
-            </Box>
+            {store.rules.abilities && (
+              <Box>
+                <Typography variant="overline" component="h3">
+                  {t.info.abilities}
+                </Typography>
+                <Typography>
+                  {pokemonAbilities(pokemon, generation)
+                    .map(names.ability)
+                    .join(", ")}
+                </Typography>
+              </Box>
+            )}
             <Box>
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="overline" component="h3">
                   {t.info.baseStats}
                 </Typography>
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  {t.info.total(baseStatTotal(entry.baseStats))}
+                  {t.info.total(total)}
                 </Typography>
               </Box>
-              {STAT_KEYS.map(stat => {
-                const value = entry.baseStats?.[stat] ?? 0;
+              {statKeys.map(stat => {
+                const value = stats?.[stat] ?? 0;
                 return (
                   <Box
                     key={stat}
@@ -160,13 +195,14 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
                       gap: 1,
                       py: 0.25,
                     }}
-                    aria-label={t.info.statValue(t.statFullNames[stat], value)}
+                    aria-label={t.info.statValue(statName(stat), value)}
                   >
+                    <StatIcon stat={stat} />
                     <Typography
                       variant="body2"
                       sx={{ width: 56, flexShrink: 0 }}
                     >
-                      {t.statFullNames[stat]}
+                      {statName(stat)}
                     </Typography>
                     <Box
                       sx={{

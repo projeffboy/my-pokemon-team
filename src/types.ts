@@ -4,6 +4,11 @@ export const STAT_KEYS = ["hp", "atk", "def", "spa", "spd", "spe"] as const;
 export type StatKey = (typeof STAT_KEYS)[number];
 export type BaseStats = Record<StatKey, number>;
 
+export type HiddenPowerSpreads = Record<
+  string,
+  { ivs: Partial<BaseStats>; dvs: Partial<BaseStats> }
+>;
+
 export type Gender = "M" | "F" | "N";
 
 export interface PokedexEntry {
@@ -18,6 +23,7 @@ export interface PokedexEntry {
   baseStats?: BaseStats;
   // Set when a species is always male, always female, or genderless
   gender?: Gender;
+  genderRatio?: { M: number; F: number };
   // Showdown states the generation only where its number and forme do not tell,
   // such as the Legends: Z-A megas
   gen?: number;
@@ -78,13 +84,14 @@ export type PastTypeChart = Partial<
   Record<PokemonType, Partial<Record<PokemonType, number>>>
 >;
 
-// How a past generation differs from the latest one. The pokemon and moves are
-// those whose types differed, and the chart is there only where it differs from
-// the next generation's.
+// Differences from the latest generation, with the chart only where it differs
+// from the next generation's. `pokemon` and `moves` hold historical types.
 export interface PastGeneration {
   types: PokemonType[];
   pokemon: Record<string, NonNullable<PokedexEntry["types"]>>;
   moves: Record<string, NonNullable<MoveEntry["type"]>>;
+  baseStats?: Record<string, BaseStats>;
+  abilities?: Record<string, string[]>;
   typechart?: PastTypeChart;
 }
 
@@ -165,6 +172,8 @@ export interface TeamPokemonDetails {
   teraType?: string;
   nature?: string;
   evs?: Partial<BaseStats>;
+  statExperience?: Partial<BaseStats>;
+  effortLevels?: Partial<BaseStats>;
   ivs?: Partial<BaseStats>;
 }
 
@@ -175,18 +184,45 @@ export type Team = TeamPokemon[];
 
 export type ReadonlyTeam = readonly Readonly<TeamPokemon>[];
 
+export type SnackbarKind =
+  | "info"
+  | "error"
+  | "warning"
+  | "link"
+  | "copy"
+  | "undo"
+  | "redo"
+  | "random"
+  | "delete"
+  | "duplicate"
+  | "add"
+  | "import"
+  | "export"
+  | "send";
+
+export interface SnackbarNotification {
+  kind: SnackbarKind;
+  id: number;
+  message: string;
+  undoable: boolean;
+  teamId: string;
+  snapshot: string;
+  undoSnapshot?: string;
+}
+
 export type Generation = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
-// A team as saved in the browser, with the settings of its Name and Format dialog
+// A team as saved in the browser, with its generation and filters
 export interface SavedTeam {
   id: string;
   name: string;
   generation: Generation;
   format: string;
+  filters: SearchFilters;
   team: Team;
 }
 
-// The Filters dialog's global filters; the format and generation are the current team's
+// The Filters dialog's values saved with each team; format and generation are separate
 export type SearchFilterKey = "type" | "region" | "ability" | "moves";
 
 export type SearchFilters = Record<SearchFilterKey, string>;
@@ -203,6 +239,11 @@ export interface SortOrder {
   descending: boolean;
 }
 
+export interface MoveSortOrder {
+  by: "name" | "type";
+  descending: boolean;
+}
+
 export type NameView = "list" | "grid";
 
 export type TeamStatType = "typeDefence" | "typeCoverage";
@@ -213,3 +254,16 @@ export type NameTranslations = Record<
   "pokemon" | "moves" | "items" | "abilities" | "natures" | "types" | "regions",
   Record<string, string>
 >;
+
+// Bits 0–8 represent Gen 1–9; bit 9 represents Champions.
+export interface GenerationTransferData {
+  pokemon: Record<
+    string,
+    {
+      generations: number;
+      moves: Record<string, number>;
+      abilities: Record<string, number>;
+    }
+  >;
+  items: Record<string, number>;
+}

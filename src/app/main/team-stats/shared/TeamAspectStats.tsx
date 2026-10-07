@@ -1,4 +1,9 @@
-import { useState, type KeyboardEvent, type SyntheticEvent } from "react";
+import {
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type SyntheticEvent,
+} from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -11,11 +16,11 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { TeamStatType } from "@/types";
 import { typesIn } from "@/shared/generation-data";
-import { useBreakpoint, useIsLgDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
-import typeIcons from "@/images/type-icons";
+import TypeLabel from "./TypeLabel";
+import useTypeLabelLayout from "./team-aspect-stats/use-type-label-layout";
 
 // The 18 type scores of one team stat. The heading can be hidden when a tab names the stat.
 const TeamAspectStats = observer(function TeamAspectStats({
@@ -28,11 +33,12 @@ const TeamAspectStats = observer(function TeamAspectStats({
   hideTitle?: boolean;
 }) {
   const { t, names } = useTranslation();
-  const isLgDown = useIsLgDown();
-  // Only 400-599px phones have tiles wide enough for an icon beside the
-  // abbreviation; the tile already names the type. The icon is left out rather
-  // than hidden, since the feedback screenshot pays for every image.
-  const hasIcon = useBreakpoint() === "xs";
+  const types = typesIn(store.currentTeam.generation);
+  const { gridRef, hasIcon, showFullName, chipWidth } = useTypeLabelLayout(
+    JSON.stringify(
+      types.map(type => [names.type(type), t.typeAbbreviations[type]]),
+    ),
+  );
   const title =
     teamStatType === "typeDefence" ?
       t.stats.teamDefence
@@ -43,6 +49,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
     index: number;
     anchorEl: HTMLElement;
   } | null>(null);
+  const typeAnchors = useRef<(HTMLDivElement | null)[]>([]);
 
   const formatPositiveScore = (value: number) =>
     value > 0 ? `+${value}` : value;
@@ -90,17 +97,29 @@ const TeamAspectStats = observer(function TeamAspectStats({
           {title}
         </Typography>
       </Grid>
-      <Grid container size={12}>
+      <Grid container size={12} ref={gridRef}>
         {/* grid of type scores */}
-        {typesIn(store.currentTeam.generation).map((type, i) => (
-          <Grid key={type} size={2}>
-            <Box sx={{ px: { xxs: 0.125, md: 0.375 }, py: 0.375 }}>
+        {types.map((type, i) => (
+          <Grid
+            key={type}
+            size={2}
+            ref={element => {
+              typeAnchors.current[i] = element;
+            }}
+          >
+            <Box
+              data-type-label-space
+              sx={{ px: { xxs: 0.125, md: 0.375 }, py: 0.375 }}
+            >
               <ButtonBase
                 sx={{
                   display: "block",
                   color: TYPE_TEXT_COLORS[type],
                   borderRadius: "5px",
-                  width: { xxs: "100%", md: "75%" },
+                  width: {
+                    xxs: "100%",
+                    lg: hasIcon && showFullName ? `${chipWidth}px` : "100%",
+                  },
                   mx: "auto",
                   font: "inherit",
                   lineHeight: 1.25,
@@ -123,27 +142,20 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 onKeyDown={handleKeyDown}
                 onClick={e => handleClick(e, i)}
               >
-                {hasIcon && (
-                  <Box
-                    component="img"
-                    src={typeIcons[type]}
-                    alt=""
-                    sx={{
-                      width: 14,
-                      height: 14,
-                      mr: 0.375,
-                      verticalAlign: "-2px",
-                    }}
-                  />
-                )}
-                {isLgDown ? t.typeAbbreviations[type] : names.type(type)}
+                <TypeLabel
+                  hasIcon={hasIcon}
+                  showFullName={showFullName}
+                  type={type}
+                  name={names.type(type)}
+                  abbreviation={t.typeAbbreviations[type] ?? names.type(type)}
+                />
               </ButtonBase>
               <Popper
                 id={`mouse-over-popover-${i}`}
                 role="tooltip"
                 sx={{ pointerEvents: "none" }}
                 open={popover?.index === i}
-                anchorEl={popover?.anchorEl}
+                anchorEl={popover ? typeAnchors.current[popover.index] : null}
                 transition
               >
                 {({ TransitionProps }) => (
