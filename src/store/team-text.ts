@@ -30,6 +30,8 @@ import {
 import { pokemonAbilities } from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
+  DEFAULT_HAPPINESS,
+  MAX_HAPPINESS,
   MAX_IV,
   MAX_LEVEL,
   STAT_NAMES,
@@ -37,6 +39,7 @@ import {
 } from "@/shared/set-details";
 import { parseShowdownFormatId, showdownFormatId } from "@/shared/formats";
 import { canItLearn } from "./learnsets";
+import { generationRules } from "@/shared/generation-rules";
 
 const statsLine = (
   stats: Partial<BaseStats> | undefined,
@@ -70,6 +73,9 @@ function serializeMember(member: Readonly<TeamPokemon>): string {
     `Ability: ${ability}`,
     level !== undefined && level !== DEFAULT_LEVEL ? `Level: ${level}` : "",
     shiny ? "Shiny: Yes" : "",
+    member.happiness !== undefined && member.happiness !== DEFAULT_HAPPINESS ?
+      `Happiness: ${member.happiness}`
+    : "",
     teraType ? `Tera Type: ${teraType}` : "",
     evs ? `EVs: ${evs}` : "",
     member.statExperience ?
@@ -162,7 +168,12 @@ function parseFirstLine(line: string) {
 
 // Parses Pokemon Showdown team text into a fresh six-slot team.
 // Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected).
-export function parseTeamText(text: string): Team {
+export function parseTeamText(
+  text: string,
+  generation: Generation = 9,
+  format = "",
+): Team {
+  const rules = generationRules(generation, format);
   const team = createEmptyTeam();
   const teamPokemonRawData = text
     .split(/\n\s*\n/)
@@ -213,6 +224,18 @@ export function parseTeamText(text: string): Team {
           member.level = level;
       } else if (line.startsWith("Shiny:")) {
         if (value("Shiny:").toLowerCase() === "yes") member.shiny = true;
+      } else if (line.startsWith("Happiness:") && rules.happiness) {
+        const raw = value("Happiness:");
+        const happiness = Number(raw);
+        if (
+          raw &&
+          Number.isInteger(happiness) &&
+          happiness >= 0 &&
+          happiness <= MAX_HAPPINESS
+        ) {
+          if (happiness === DEFAULT_HAPPINESS) delete member.happiness;
+          else member.happiness = happiness;
+        }
       } else if (line.startsWith("Tera Type:")) {
         const teraType = value("Tera Type:");
         if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
@@ -283,10 +306,17 @@ export function parseTeamsText(text: string): ParsedTeam[] {
     else if (chunks.length) chunks[chunks.length - 1]?.lines.push(line);
     else chunks.push({ lines: [line] });
   }
-  const teams = chunks.map(({ header, lines }) => ({
-    name: (header?.[2] ?? "").split("/").pop()?.trim() ?? "",
-    ...parseShowdownFormatId(header?.[1] ?? ""),
-    team: parseTeamText(lines.join("\n")),
-  }));
+  const teams = chunks.map(({ header, lines }) => {
+    const settings = parseShowdownFormatId(header?.[1] ?? "");
+    return {
+      name: (header?.[2] ?? "").split("/").pop()?.trim() ?? "",
+      ...settings,
+      team: parseTeamText(
+        lines.join("\n"),
+        settings.generation,
+        settings.format,
+      ),
+    };
+  });
   return teams.filter(({ team }) => !isTeamEmpty(team));
 }

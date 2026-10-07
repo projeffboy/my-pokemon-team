@@ -19,7 +19,7 @@ import TransferEndpoint from "./generation-transfer-dialog/TransferEndpoint";
 import { universalTransferChanges } from "@/store/generation-transfer/universal-changes";
 import type { GameLogo } from "@/images/game-logos";
 import type { TransferLoss } from "@/store/generation-transfer";
-import { isPokemonType, type Generation } from "@/types";
+import { isPokemonType, type Generation, type ReadonlyTeam } from "@/types";
 import { moveTypeIn } from "@/shared/generation-data";
 import typeIcons from "@/images/type-icons";
 
@@ -35,6 +35,7 @@ export default function GenerationTransferDialog({
   fromLogos,
   toLogos,
   losses,
+  team,
   onCancel,
   onModify,
   onNew,
@@ -50,6 +51,7 @@ export default function GenerationTransferDialog({
   fromLogos: GameLogo[];
   toLogos: GameLogo[];
   losses: TransferLoss[];
+  team: ReadonlyTeam;
   onCancel: () => void;
   onModify: () => void;
   onNew: () => void;
@@ -70,9 +72,15 @@ export default function GenerationTransferDialog({
       : t.advanced[loss.field]
     );
   };
+  const unavailable = new Set(
+    losses
+      .filter(loss => loss.field === "pokemon" && !loss.replacement)
+      .map(loss => loss.index),
+  );
   const universal = universalTransferChanges(
     { generation: fromGeneration, format: fromFormat },
     { generation: toGeneration, format: toFormat },
+    team.filter((_, index) => !unavailable.has(index)),
   );
   const universalMessages = [
     ...(universal.fixedLevel !== undefined ?
@@ -122,11 +130,6 @@ export default function GenerationTransferDialog({
   const adjustments = individualLosses.filter(
     loss =>
       loss.replacement !== undefined || loss.conversion || loss.field === "ivs",
-  );
-  const unavailable = new Set(
-    losses
-      .filter(loss => loss.field === "pokemon" && !loss.replacement)
-      .map(loss => loss.index),
   );
   const unavailableHeading =
     hasCarryover ? text.unavailableHeading : text.allUnavailableHeading;
@@ -301,228 +304,238 @@ export default function GenerationTransferDialog({
             </Box>
           </Box>
         )}
-        {slots.length > 0 && (
-          <Box role="group" aria-label={adjustedHeading}>
-            <Typography
-              variant="body2"
-              sx={{ mt: 2, color: "text.primary", fontWeight: 500 }}
-            >
-              {adjustedHeading}
-            </Typography>
-            {hasCarryover && universalMessages.length > 0 && (
-              <Box
-                component="ul"
-                aria-label={text.universalChanges}
-                sx={{ mt: 1, mb: 1, pl: 2.5, color: "text.secondary" }}
+        {slots.length > 0 &&
+          (universalMessages.length > 0 || individualSlots.length > 0) && (
+            <Box role="group" aria-label={adjustedHeading}>
+              <Typography
+                variant="body2"
+                sx={{ mt: 2, color: "text.primary", fontWeight: 500 }}
               >
-                {universalMessages.map((message, i) => (
-                  <Typography
-                    component="li"
-                    key={i}
-                    variant="body2"
-                    sx={{ mt: 0.5 }}
-                  >
-                    {message}
-                  </Typography>
-                ))}
-              </Box>
-            )}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns:
-                  individualSlots.length === 1 ?
-                    "minmax(0, 1fr)"
-                  : "repeat(2, minmax(0, 1fr))",
-                columnGap: 2,
-                rowGap: 1.5,
-                mt: 1,
-                position: "relative",
-                "&::after":
-                  individualSlots.length > 1 ?
-                    {
-                      content: '""',
-                      position: "absolute",
-                      top: 0,
-                      bottom: 0,
-                      left: "50%",
-                      borderLeft: 1,
-                      borderColor: "divider",
-                      pointerEvents: "none",
-                    }
-                  : undefined,
-              }}
-            >
-              {individualSlots.map((index, position) => {
-                const entries = removals.filter(loss => loss.index === index);
-                const changes = adjustments.filter(
-                  loss => loss.index === index,
-                );
-                const first = entries[0] ?? changes[0];
-                if (!first) return null;
-                const details = entries.filter(isDetail).map(valueName);
-                const moves = entries.filter(loss => loss.field === "move");
-                return (
-                  <Fragment key={first.index}>
-                    {position > 0 && position % 2 === 0 && (
-                      <Divider
-                        aria-hidden="true"
-                        sx={{ gridColumn: "1 / -1" }}
-                      />
-                    )}
-                    <Box
-                      role="group"
-                      aria-label={names.pokemon(first.pokemon)}
-                      sx={{ minWidth: 0, overflowWrap: "anywhere" }}
+                {adjustedHeading}
+              </Typography>
+              {hasCarryover && universalMessages.length > 0 && (
+                <Box
+                  component="ul"
+                  aria-label={text.universalChanges}
+                  sx={{ mt: 1, mb: 1, pl: 2.5, color: "text.secondary" }}
+                >
+                  {universalMessages.map((message, i) => (
+                    <Typography
+                      component="li"
+                      key={i}
+                      variant="body2"
+                      sx={{ mt: 0.5 }}
                     >
+                      {message}
+                    </Typography>
+                  ))}
+                </Box>
+              )}
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns:
+                    individualSlots.length === 1 ?
+                      "minmax(0, 1fr)"
+                    : "repeat(2, minmax(0, 1fr))",
+                  columnGap: 2,
+                  rowGap: 1.5,
+                  mt: 1,
+                  position: "relative",
+                  "&::after":
+                    individualSlots.length > 1 ?
+                      {
+                        content: '""',
+                        position: "absolute",
+                        top: 0,
+                        bottom: 0,
+                        left: "50%",
+                        borderLeft: 1,
+                        borderColor: "divider",
+                        pointerEvents: "none",
+                      }
+                    : undefined,
+                }}
+              >
+                {individualSlots.map((index, position) => {
+                  const entries = removals.filter(loss => loss.index === index);
+                  const changes = adjustments.filter(
+                    loss => loss.index === index,
+                  );
+                  const first = entries[0] ?? changes[0];
+                  if (!first) return null;
+                  const details = entries.filter(isDetail).map(valueName);
+                  const moves = entries.filter(loss => loss.field === "move");
+                  return (
+                    <Fragment key={first.index}>
+                      {position > 0 && position % 2 === 0 && (
+                        <Divider
+                          aria-hidden="true"
+                          sx={{ gridColumn: "1 / -1" }}
+                        />
+                      )}
                       <Box
-                        sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                        role="group"
+                        aria-label={names.pokemon(first.pokemon)}
+                        sx={{ minWidth: 0, overflowWrap: "anywhere" }}
                       >
                         <Box
-                          aria-hidden="true"
-                          sx={{ display: "flex", flexShrink: 0 }}
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 0.5,
+                          }}
                         >
-                          <PokemonIcon
-                            pokemonProperty="name"
-                            value={first.pokemon}
-                          />
+                          <Box
+                            aria-hidden="true"
+                            sx={{ display: "flex", flexShrink: 0 }}
+                          >
+                            <PokemonIcon
+                              pokemonProperty="name"
+                              value={first.pokemon}
+                            />
+                          </Box>
+                          {pokemonHeading(first)}
                         </Box>
-                        {pokemonHeading(first)}
-                      </Box>
-                      <Box sx={{ mt: 1 }}>
-                        {(["item", "ability"] as const).map(field => {
-                          const values = entries.filter(
-                            loss => loss.field === field,
-                          );
-                          if (field === "item")
-                            return values.map((item, i) => (
-                              <Box
-                                key={i}
-                                sx={{ color: "text.secondary", mb: 0.5 }}
-                              >
-                                <Typography variant="body2">
-                                  {text.entryLabel(text.removed.item, "")}
-                                </Typography>
+                        <Box sx={{ mt: 1 }}>
+                          {(["item", "ability"] as const).map(field => {
+                            const values = entries.filter(
+                              loss => loss.field === field,
+                            );
+                            if (field === "item")
+                              return values.map((item, i) => (
                                 <Box
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "flex-start",
-                                    gap: 0.5,
-                                  }}
+                                  key={i}
+                                  sx={{ color: "text.secondary", mb: 0.5 }}
                                 >
-                                  <Box
-                                    role="img"
-                                    aria-label={t.team.itemIcon(
-                                      valueName(item),
-                                    )}
-                                    sx={{ display: "flex", flexShrink: 0 }}
-                                  >
-                                    <PokemonIcon
-                                      pokemonProperty="item"
-                                      value={item.value ?? ""}
-                                    />
-                                  </Box>
                                   <Typography variant="body2">
-                                    {valueName(item)}
+                                    {text.entryLabel(text.removed.item, "")}
                                   </Typography>
-                                </Box>
-                              </Box>
-                            ));
-                          return (
-                            values.length > 0 && (
-                              <Typography
-                                key={field}
-                                variant="body2"
-                                sx={{ color: "text.secondary", mb: 0.5 }}
-                              >
-                                {text.entryLabel(
-                                  text.removed[field],
-                                  list.format(values.map(valueName)),
-                                )}
-                              </Typography>
-                            )
-                          );
-                        })}
-                        {moves.length > 0 && (
-                          <Box sx={{ color: "text.secondary" }}>
-                            <Typography variant="body2">
-                              {text.removed.moves}
-                            </Typography>
-                            <Box
-                              component="ul"
-                              sx={{ mt: 0, mb: 0.5, pl: 0, listStyle: "none" }}
-                            >
-                              {moves.map((move, i) => {
-                                const type = moveTypeIn(
-                                  move.value ?? "",
-                                  fromGeneration,
-                                );
-                                return (
                                   <Box
-                                    component="li"
-                                    key={i}
                                     sx={{
                                       display: "flex",
                                       alignItems: "flex-start",
                                       gap: 0.5,
                                     }}
                                   >
-                                    {type && isPokemonType(type) && (
-                                      <Box
-                                        component="img"
-                                        data-move-type={type}
-                                        src={typeIcons[type]}
-                                        alt={names.type(type)}
-                                        sx={{
-                                          width: 16,
-                                          height: 16,
-                                          mt: 0.25,
-                                          flexShrink: 0,
-                                        }}
+                                    <Box
+                                      role="img"
+                                      aria-label={t.team.itemIcon(
+                                        valueName(item),
+                                      )}
+                                      sx={{ display: "flex", flexShrink: 0 }}
+                                    >
+                                      <PokemonIcon
+                                        pokemonProperty="item"
+                                        value={item.value ?? ""}
                                       />
-                                    )}
+                                    </Box>
                                     <Typography variant="body2">
-                                      {valueName(move)}
+                                      {valueName(item)}
                                     </Typography>
                                   </Box>
-                                );
-                              })}
+                                </Box>
+                              ));
+                            return (
+                              values.length > 0 && (
+                                <Typography
+                                  key={field}
+                                  variant="body2"
+                                  sx={{ color: "text.secondary", mb: 0.5 }}
+                                >
+                                  {text.entryLabel(
+                                    text.removed[field],
+                                    list.format(values.map(valueName)),
+                                  )}
+                                </Typography>
+                              )
+                            );
+                          })}
+                          {moves.length > 0 && (
+                            <Box sx={{ color: "text.secondary" }}>
+                              <Typography variant="body2">
+                                {text.removed.moves}
+                              </Typography>
+                              <Box
+                                component="ul"
+                                sx={{
+                                  mt: 0,
+                                  mb: 0.5,
+                                  pl: 0,
+                                  listStyle: "none",
+                                }}
+                              >
+                                {moves.map((move, i) => {
+                                  const type = moveTypeIn(
+                                    move.value ?? "",
+                                    fromGeneration,
+                                  );
+                                  return (
+                                    <Box
+                                      component="li"
+                                      key={i}
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "flex-start",
+                                        gap: 0.5,
+                                      }}
+                                    >
+                                      {type && isPokemonType(type) && (
+                                        <Box
+                                          component="img"
+                                          data-move-type={type}
+                                          src={typeIcons[type]}
+                                          alt={names.type(type)}
+                                          sx={{
+                                            width: 16,
+                                            height: 16,
+                                            mt: 0.25,
+                                            flexShrink: 0,
+                                          }}
+                                        />
+                                      )}
+                                      <Typography variant="body2">
+                                        {valueName(move)}
+                                      </Typography>
+                                    </Box>
+                                  );
+                                })}
+                              </Box>
                             </Box>
-                          </Box>
-                        )}
-                        {details.length > 0 && (
-                          <Typography
-                            variant="body2"
-                            sx={{ color: "text.secondary", mb: 0.5 }}
-                          >
-                            {text.entryLabel(
-                              text.removed.details,
-                              list.format(details),
-                            )}
-                          </Typography>
-                        )}
-                        {changes.map((change, i) => (
-                          <AdjustmentDetails
-                            key={i}
-                            change={change}
-                            destination={destination}
-                            label={valueName(change)}
-                          />
-                        ))}
+                          )}
+                          {details.length > 0 && (
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "text.secondary", mb: 0.5 }}
+                            >
+                              {text.entryLabel(
+                                text.removed.details,
+                                list.format(details),
+                              )}
+                            </Typography>
+                          )}
+                          {changes.map((change, i) => (
+                            <AdjustmentDetails
+                              key={i}
+                              change={change}
+                              destination={destination}
+                              label={valueName(change)}
+                            />
+                          ))}
+                        </Box>
                       </Box>
-                    </Box>
-                  </Fragment>
-                );
-              })}
+                    </Fragment>
+                  );
+                })}
+              </Box>
             </Box>
-          </Box>
-        )}
+          )}
       </ScrollContent>
       <Box component="footer" sx={{ flexShrink: 0 }}>
         <DialogContentText
           variant="caption"
           component="p"
-          sx={{ my: 1, px: { xxs: 2, sm: 3 } }}
+          sx={{ my: 1, px: { xxs: 2, sm: 3 }, textAlign: "center" }}
         >
           {hasCarryover ? text.carriedOver : text.emptyTeamHint}
         </DialogContentText>

@@ -103,7 +103,7 @@ test.describe("Showdown team text", () => {
   test("ignores unknown properties and moves the species cannot learn", () => {
     const team = parseTeamText(`Reuniclus @ Imaginary Item
 Ability: Imaginary Ability
-Happiness: 0
+Imaginary Property: 0
 Imaginary Nature
 - Imaginary Move
 - Spore

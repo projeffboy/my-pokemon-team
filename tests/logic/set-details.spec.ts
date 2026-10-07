@@ -12,6 +12,7 @@ const fullSet = `Chompy (Garchomp) (F) @ Choice Scarf
 Ability: Rough Skin
 Level: 50
 Shiny: Yes
+Happiness: 0
 Tera Type: Steel
 EVs: 4 HP / 252 Atk / 252 Spe
 Jolly Nature
@@ -38,6 +39,7 @@ test.describe("set details in Showdown text", () => {
       gender: "F",
       level: 50,
       shiny: true,
+      happiness: 0,
       teraType: "Steel",
       evs: { hp: 4, atk: 252, spe: 252 },
       nature: "jolly",
@@ -48,7 +50,7 @@ test.describe("set details in Showdown text", () => {
 
   test("leaves out details at their defaults", () => {
     const team = parseTeamText(
-      "Garchomp (M)\nLevel: 100\nShiny: No\nEVs: 0 HP\nIVs: 31 Spe\n- Earthquake",
+      "Garchomp (M)\nLevel: 100\nShiny: No\nHappiness: 255\nEVs: 0 HP\nIVs: 31 Spe\n- Earthquake",
     );
     expect(team[0]).toEqual({
       ...createTeam({ name: "garchomp", move1: "earthquake" })[0],
@@ -76,6 +78,35 @@ test.describe("set details in Showdown text", () => {
     expect(parseTeamText("Jelly (Reuniclus)")[0].nickname).toBe("Jelly");
     expect(parseTeamText("Reuniclus (Jelly)")[0].nickname).toBe("Jelly");
     expect(parseTeamText("Reuniclus")[0].nickname).toBeUndefined();
+  });
+
+  test("happiness follows the selected game without dropping the rest of the set", () => {
+    const text = "Cleffa\nHappiness: 70\nLevel: 5\n- Charm";
+    expect(parseTeamText(text, 2)[0].happiness).toBe(70);
+    expect(parseTeamText(text, 1)[0]).toMatchObject({
+      level: 5,
+      move1: "charm",
+    });
+    expect(parseTeamText(text, 1)[0].happiness).toBeUndefined();
+    expect(
+      parseTeamsText(`=== [gen9championsregmc] Champions ===\n\n${text}`)[0]
+        ?.team[0]?.happiness,
+    ).toBeUndefined();
+    expect(
+      parseTeamsText(`=== [gen2] Gold ===\n\n${text}`)[0]?.team[0]?.happiness,
+    ).toBe(70);
+  });
+
+  test("ignores malformed happiness and retains both endpoints", () => {
+    for (const value of ["", "-1", "256", "1.5", "NaN", "Infinity", "bad"])
+      expect(
+        parseTeamText(`Cleffa\nHappiness: ${value}`)[0].happiness,
+      ).toBeUndefined();
+    expect(parseTeamText("Cleffa\nHappiness: 0")[0].happiness).toBe(0);
+    expect(parseTeamText("Cleffa\nHappiness: 254")[0].happiness).toBe(254);
+    expect(
+      parseTeamText("Cleffa\nHappiness: 255")[0].happiness,
+    ).toBeUndefined();
   });
 
   test("a nickname that is also a pokemon survives the round trip", () => {

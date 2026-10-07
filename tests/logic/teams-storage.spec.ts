@@ -11,6 +11,27 @@ import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 
+test("saved happiness survives a reload and is omitted for unsupported profiles", () => {
+  const regular = createSavedTeam({
+    generation: 3,
+    team: createTeam({ name: "zangoose", happiness: 0 }),
+  });
+  const saved = sanitizeSavedTeam(JSON.parse(JSON.stringify(regular)));
+  expect(saved?.team[0]?.happiness).toBe(0);
+  expect(
+    sanitizeSavedTeam({ ...regular, generation: 1 })?.team[0]?.happiness,
+  ).toBeUndefined();
+  expect(
+    sanitizeSavedTeam({ ...regular, generation: 9, format: CHAMPIONS_FORMAT })
+      ?.team[0]?.happiness,
+  ).toBeUndefined();
+  for (const happiness of [-1, 256, NaN, Infinity, "0"])
+    expect(
+      sanitizeSavedTeam({ ...regular, team: [{ name: "zangoose", happiness }] })
+        ?.team[0]?.happiness,
+    ).toBeUndefined();
+});
+
 test("fresh storage defaults to Champions while existing regular Gen 9 saves keep their profile", () => {
   const initial = initialStoredState();
   expect(initial.teams[0]).toMatchObject({
@@ -140,6 +161,20 @@ test("fills in defaults and drops malformed fields", () => {
   });
   expect(state?.teams[0].team[1].name).toBe("");
   expect(sanitizeSavedTeam({ name: "no id" })).toBeUndefined();
+});
+
+test("loads all name views and defaults unknown views to List", () => {
+  for (const view of ["list", "grid", "big-grid", "unknown"]) {
+    const { storage } = fakeStorage(
+      JSON.stringify({
+        teams: [{ id: "a" }],
+        nameView: view,
+      }),
+    );
+    expect(loadStoredState(storage)?.nameView).toBe(
+      view === "unknown" ? "list" : view,
+    );
+  }
 });
 
 test("saves the state and survives a storage that throws", () => {

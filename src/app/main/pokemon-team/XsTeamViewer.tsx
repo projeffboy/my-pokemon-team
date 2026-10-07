@@ -31,6 +31,7 @@ const XsTeamViewer = observer(function XsTeamViewer() {
               // A dragged slot's neighbours slide over into the next tab
               sx={{
                 "& .MuiTabs-scroller, & .MuiTab-root": { overflow: "visible" },
+                "& .MuiTab-root.Mui-selected": { bgcolor: "action.selected" },
               }}
             >
               {[0, 1, 2, 3, 4, 5].map(teamIndex => (

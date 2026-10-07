@@ -46,6 +46,7 @@ test.beforeAll(async () => {
 
 test("generation rules match the stat systems and feature introductions", () => {
   expect(generationRules(1)).toMatchObject({
+    happiness: false,
     gender: false,
     shiny: false,
     nature: false,
@@ -56,6 +57,7 @@ test("generation rules match the stat systems and feature introductions", () => 
     maxTotal: undefined,
   });
   expect(generationRules(2)).toMatchObject({
+    happiness: true,
     gender: true,
     shiny: true,
     nature: false,
@@ -71,6 +73,7 @@ test("generation rules match the stat systems and feature introductions", () => 
   expect(generationRules(5).maxStat).toBe(255);
   expect(generationRules(6).maxStat).toBe(252);
   expect(generationRules(9, CHAMPIONS_FORMAT)).toMatchObject({
+    happiness: false,
     investment: "sps",
     maxStat: 32,
     maxTotal: 66,
@@ -78,6 +81,7 @@ test("generation rules match the stat systems and feature introductions", () => 
     tera: false,
   });
   expect(generationRules(8, LEGENDS_ARCEUS)).toMatchObject({
+    happiness: true,
     investment: "effortLevels",
     maxStat: 10,
     maxTotal: undefined,
@@ -86,6 +90,7 @@ test("generation rules match the stat systems and feature introductions", () => 
     abilities: false,
   });
   expect(generationRules(9, LEGENDS_ZA)).toMatchObject({
+    happiness: true,
     investment: "evs",
     maxStat: 252,
     ivs: true,
@@ -94,6 +99,7 @@ test("generation rules match the stat systems and feature introductions", () => 
     tera: false,
   });
   expect(generationRules(7, LETS_GO)).toMatchObject({
+    happiness: true,
     investment: "avs",
     maxStat: 200,
     maxTotal: undefined,

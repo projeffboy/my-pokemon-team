@@ -31,6 +31,7 @@ export function generationRules(generation: Generation, format = "") {
   return {
     legacy,
     fixedLevel: champions ? 50 : undefined,
+    happiness: generation >= 2 && !champions,
     gender: generation >= 2,
     shiny: generation >= 2,
     nature: generation >= 3,

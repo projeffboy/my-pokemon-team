@@ -120,13 +120,16 @@ const it: Messages = {
     move: "Mossa",
     item: "Strumento",
     ability: "Abilità",
+    hidden: "Nascosta",
     input: (slot: number, property: string) =>
       `${inputNames[property] ?? property} del Pokémon ${slot}`,
     itemIcon: (item: string) => `Icona di ${item}`,
     nothingFound: "Nessun risultato",
+    noOtherMoves: "Nessun'altra mossa disponibile.",
     selectPokemonFirst: "(non hai selezionato un Pokémon)",
     list: "Elenco",
     grid: "Griglia",
+    bigGrid: "Griglia grande",
     pokemonInSlot: (pokemon: string, slot: number) =>
       `collocare ${pokemon} nello slot ${slot}`,
     removedPokemon: (pokemon: string, slot: number) =>
@@ -148,6 +151,7 @@ const it: Messages = {
     nameListView: "Vista dell'elenco dei nomi",
     listView: "Vista a elenco",
     gridView: "Vista a griglia",
+    bigGridView: "Vista a griglia grande",
     // The default names of new teams
     teamNumber: (number: number) => `Squadra ${number}`,
     unnamedTeam: "Squadra",
@@ -309,6 +313,7 @@ const it: Messages = {
     nickname: "Soprannome",
     nicknameLimit: (max: number) => `Massimo ${max} caratteri.`,
     level: "Livello",
+    happiness: "Felicità",
     gender: "Sesso",
     teraType: "Teratipo",
     nature: "Natura",
@@ -469,7 +474,7 @@ const it: Messages = {
     importPlaceholder: "Incolla qui una squadra",
     editPlaceholder: "La tua squadra è vuota",
     label: "Testo grezzo della squadra di Pokemon Showdown",
-    kept: "Soprannomi, livelli, sessi, cromatico, teratipi, nature, EV e IV vengono mantenuti. La felicità viene ignorata.",
+    kept: "Soprannomi, livelli, sessi, cromatico, teratipi, nature, EV e IV vengono mantenuti. La felicità viene mantenuta se il gioco selezionato la supporta.",
     import: "Importa",
     update: "Aggiorna",
     imported: "Squadra importata",

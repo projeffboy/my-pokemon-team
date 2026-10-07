@@ -10,10 +10,12 @@ import { useListRef } from "react-window";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import VirtualizedListbox, {
-  GRID_COLUMNS,
+  gridColumns,
   VirtualizedListboxContext,
 } from "./pokemon-input-select/VirtualizedListbox";
 import PokemonIcon from "@/app/shared/PokemonIcon";
+import HiddenAbilityLabel from "./pokemon-input-select/HiddenAbilityLabel";
+import { isHiddenAbility } from "@/shared/pokedex";
 import { moveTypeIn } from "@/shared/generation-data";
 import { englishNames } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -121,9 +123,13 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     [options, value],
   );
   const id = `react-select-single-${teamIndex}-${pokemonProperty}`;
+  const isMove = pokemonProperty.startsWith("move");
+  const missingPokemon =
+    (isMove || pokemonProperty === "ability") && !store.team[teamIndex]?.name;
+  const noOtherMoves = isMove && !missingPokemon && options.length === 0;
   const internalListRef = useListRef(null);
-  const isGrid = pokemonProperty === "name" && store.nameView === "grid";
-  const columns = isGrid ? GRID_COLUMNS : 1;
+  const isGrid = pokemonProperty === "name" && store.nameView !== "list";
+  const columns = isGrid ? gridColumns(store.nameView) : 1;
   // The grid of icons spans both of the card's columns, which are 8px apart
   const popperWidth =
     pokemonProperty !== "name" ? undefined
@@ -197,7 +203,14 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         isOptionEqualToValue={(option, value) => option.value === value.value}
         noOptionsText={
           <Typography variant="body2" sx={{ textAlign: "center" }}>
-            {t.team.nothingFound} <br /> {t.team.selectPokemonFirst}
+            {noOtherMoves ? t.team.noOtherMoves : t.team.nothingFound}
+            {missingPokemon && (
+              <>
+                {" "}
+                <br />
+                {t.team.selectPokemonFirst}
+              </>
+            )}
           </Typography>
         }
         // Hands each option to VirtualizedListbox as a [props, option] tuple, which
@@ -299,6 +312,15 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                   sx={{ width: 20, height: 20, mr: 0.75, flexShrink: 0 }}
                 />
             : undefined;
+          const hiddenAbility =
+            isSelectionShown &&
+            pokemonProperty === "ability" &&
+            store.isMoreOpen &&
+            isHiddenAbility(
+              store.team[teamIndex]?.name ?? "",
+              value,
+              store.currentTeam.generation,
+            );
 
           return (
             <TextField
@@ -317,7 +339,12 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                   startAdornment:
                     leadingIcon ? (typeIcon ?? itemIcon) : undefined,
                   endAdornment:
-                    itemIcon && !leadingIcon ?
+                    hiddenAbility ?
+                      <>
+                        <HiddenAbilityLabel ability={selectedOption.label} />
+                        {params.slotProps.input.endAdornment}
+                      </>
+                    : itemIcon && !leadingIcon ?
                       <>
                         {itemIcon}
                         {params.slotProps.input.endAdornment}

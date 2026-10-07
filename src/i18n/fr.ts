@@ -122,13 +122,16 @@ const fr: Messages = {
     move: "Capacité",
     item: "Objet",
     ability: "Talent",
+    hidden: "Caché",
     input: (slot: number, property: string) =>
       `${inputNames[property] ?? property} du Pokémon ${slot}`,
     itemIcon: (item: string) => `Icône de ${item}`,
     nothingFound: "Aucun résultat",
+    noOtherMoves: "Aucune autre capacité disponible.",
     selectPokemonFirst: "(vous n'avez pas sélectionné de Pokémon)",
     list: "Liste",
     grid: "Grille",
+    bigGrid: "Grande grille",
     pokemonInSlot: (pokemon: string, slot: number) =>
       `placer ${pokemon} à la place ${slot}`,
     removedPokemon: (pokemon: string, slot: number) =>
@@ -150,6 +153,7 @@ const fr: Messages = {
     nameListView: "Vue en liste de noms",
     listView: "Vue en liste",
     gridView: "Vue en grille",
+    bigGridView: "Vue en grande grille",
     // The default names of new teams
     teamNumber: (number: number) => `Équipe ${number}`,
     unnamedTeam: "Équipe",
@@ -312,6 +316,7 @@ const fr: Messages = {
     nickname: "Surnom",
     nicknameLimit: (max: number) => `${max} caractères maximum.`,
     level: "Niveau",
+    happiness: "Bonheur",
     gender: "Sexe",
     teraType: "Type Téracristal",
     nature: "Nature",
@@ -482,7 +487,7 @@ const fr: Messages = {
     importPlaceholder: "Collez une équipe ici",
     editPlaceholder: "Votre équipe est vide",
     label: "Texte brut de l'équipe Pokemon Showdown",
-    kept: "Les surnoms, niveaux, sexes, chromatiques, types Téracristal, natures, EV et IV sont conservés. Le bonheur est ignoré.",
+    kept: "Les surnoms, niveaux, sexes, chromatiques, types Téracristal, natures, EV et IV sont conservés. Le bonheur est aussi conservé si le jeu sélectionné le prend en charge.",
     import: "Importer",
     update: "Mettre à jour",
     imported: "Équipe importée",

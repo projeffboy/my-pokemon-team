@@ -8,6 +8,8 @@ import type {
   TeamPokemon,
 } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "@/shared/generations";
+import { generationRules } from "@/shared/generation-rules";
+import { MAX_HAPPINESS, DEFAULT_HAPPINESS } from "@/shared/set-details";
 import { isLocale, type Locale } from "@/i18n/locales";
 import {
   createEmptyTeam,
@@ -55,6 +57,14 @@ function sanitizeMember(value: unknown): TeamPokemon {
   };
   if (typeof raw.nickname === "string") member.nickname = raw.nickname;
   if (typeof raw.level === "number") member.level = raw.level;
+  if (
+    typeof raw.happiness === "number" &&
+    Number.isInteger(raw.happiness) &&
+    raw.happiness >= 0 &&
+    raw.happiness <= MAX_HAPPINESS &&
+    raw.happiness !== DEFAULT_HAPPINESS
+  )
+    member.happiness = raw.happiness;
   if (raw.gender === "M" || raw.gender === "F" || raw.gender === "N")
     member.gender = raw.gender;
   if (raw.shiny === true) member.shiny = true;
@@ -77,12 +87,17 @@ export function sanitizeTeam(value: unknown): Team {
 
 export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
   if (!isRecord(value) || typeof value.id !== "string") return undefined;
+  const generation =
+    isGeneration(value.generation) ? value.generation : LATEST_GENERATION;
+  const format = string(value.format);
+  const team = sanitizeTeam(value.team);
+  if (!generationRules(generation, format).happiness)
+    for (const member of team) delete member.happiness;
   return {
     id: value.id,
     name: string(value.name),
-    generation:
-      isGeneration(value.generation) ? value.generation : LATEST_GENERATION,
-    format: string(value.format),
+    generation,
+    format,
     filters: Object.fromEntries(
       Object.entries(createSearchFilters()).map(([key, fallback]) => [
         key,
@@ -92,7 +107,7 @@ export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
         ),
       ]),
     ) as SavedTeam["filters"],
-    team: sanitizeTeam(value.team),
+    team,
   };
 }
 
@@ -134,7 +149,10 @@ export function loadStoredState(
     isMoreOpen: raw.isMoreOpen === true,
     sort: sanitizeSort(raw.sort),
     moveSort: sanitizeMoveSort(raw.moveSort),
-    nameView: raw.nameView === "grid" ? "grid" : "list",
+    nameView:
+      raw.nameView === "grid" || raw.nameView === "big-grid" ?
+        raw.nameView
+      : "list",
     ...(isLocale(raw.locale) && { locale: raw.locale }),
     ...(raw.knowsSlotDrag === true && { knowsSlotDrag: true }),
   };

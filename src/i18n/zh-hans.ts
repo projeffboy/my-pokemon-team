@@ -118,14 +118,17 @@ const zhHans: Messages = {
     move: "招式",
     item: "道具",
     ability: "特性",
+    hidden: "隐藏",
     // 每个输入框的无障碍名称，例如“宝可梦 1 的 move2”
     input: (slot: number, property: string) =>
       `宝可梦 ${slot} 的 ${inputNames[property] ?? property}`,
     itemIcon: (item: string) => `${item}图标`,
     nothingFound: "未找到结果",
+    noOtherMoves: "没有其他可选招式。",
     selectPokemonFirst: "（你还没有选择宝可梦）",
     list: "列表",
     grid: "网格",
+    bigGrid: "大网格",
     pokemonInSlot: (pokemon: string, slot: number) =>
       `将${pokemon}放到第${slot}个位置`,
     removedPokemon: (pokemon: string, slot: number) =>
@@ -146,6 +149,7 @@ const zhHans: Messages = {
     nameListView: "名称列表视图",
     listView: "列表视图",
     gridView: "网格视图",
+    bigGridView: "大网格视图",
     // 新队伍的默认名称
     teamNumber: (number: number) => `队伍 ${number}`,
     unnamedTeam: "队伍",
@@ -303,6 +307,7 @@ const zhHans: Messages = {
     nickname: "昵称",
     nicknameLimit: (max: number) => `最多${max}个字符。`,
     level: "等级",
+    happiness: "亲密度",
     gender: "性别",
     teraType: "太晶属性",
     nature: "性格",
@@ -458,7 +463,7 @@ const zhHans: Messages = {
     importPlaceholder: "在此粘贴队伍",
     editPlaceholder: "你的队伍为空",
     label: "Pokemon Showdown 队伍原始文本",
-    kept: "昵称、等级、性别、异色、太晶属性、性格、努力值和个体值都会保留。亲密度会被忽略。",
+    kept: "昵称、等级、性别、异色、太晶属性、性格、努力值和个体值都会保留。所选游戏支持时，亲密度也会保留。",
     import: "导入",
     update: "更新",
     imported: "已导入队伍",

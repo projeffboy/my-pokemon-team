@@ -49,11 +49,14 @@ const TeamToolbar = observer(function TeamToolbar() {
     `${isMoreOpen}-${t.undo}-${t.redo}-${t.team.filters}-${t.team.sort}-${modeLabel}`,
   );
   const random = useFittingLabel(randomLabels);
-  const rollDice = useDiceRoll();
+  const diceRoll = useDiceRoll();
   const handleRandomize = (event: SyntheticEvent<HTMLElement>) => {
-    rollDice(event);
-    store.randomizeTeam();
-    store.openSnackbar(t.team.randomizedTeam, true, "random");
+    const teamId = store.currentTeamId;
+    diceRoll.onClick(event, () => {
+      if (store.currentTeamId !== teamId) return;
+      store.randomizeTeam();
+      store.openSnackbar(t.team.randomizedTeam, true, "random");
+    });
   };
 
   return (
@@ -80,6 +83,7 @@ const TeamToolbar = observer(function TeamToolbar() {
       <ToolbarButton
         ref={random.ref}
         icon={<TeamDiceIcon />}
+        {...diceRoll}
         onClick={handleRandomize}
         disabled={!store.learnsetsLoaded}
         aria-label={randomLabels[0]}

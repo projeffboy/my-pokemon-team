@@ -10,6 +10,49 @@ import { evTotal } from "@/shared/set-details";
 const data = await loadGenerationTransferData();
 const from = { generation: 9 as const, format: "" };
 
+test("happiness carries over only to games that support it", () => {
+  const original = createTeam({ name: "clefable", happiness: 0 });
+  const supported = planGenerationTransfer(original, from, 2, "", data);
+  expect(supported.team[0]?.happiness).toBe(0);
+  for (const [generation, format] of [
+    [1, ""],
+    [9, CHAMPIONS_FORMAT],
+  ] as const) {
+    const plan = planGenerationTransfer(
+      original,
+      from,
+      generation,
+      format,
+      data,
+    );
+    expect(plan.team[0]?.happiness).toBeUndefined();
+    expect(plan.losses).toContainEqual({
+      index: 0,
+      pokemon: "clefable",
+      field: "happiness",
+    });
+  }
+  expect(original[0]?.happiness).toBe(0);
+});
+
+test("leaving Champions preserves its effective level when the set omits it", () => {
+  const original = createTeam(
+    { name: "forretress" },
+    { name: "venusaur", level: 72 },
+  );
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 9, format: CHAMPIONS_FORMAT },
+    9,
+    "",
+    data,
+  );
+  expect(plan.team[0]!.level).toBe(50);
+  expect(plan.team[1]!.level).toBe(72);
+  expect(plan.losses.filter(loss => loss.field === "level")).toEqual([]);
+  expect(original[0]!.level).toBeUndefined();
+});
+
 test("EVs convert at level-50 SP thresholds and return to a minimal equivalent spread", () => {
   for (const [ev, sp] of [
     [0, 0],

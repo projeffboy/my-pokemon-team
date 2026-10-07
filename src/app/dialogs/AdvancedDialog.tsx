@@ -26,8 +26,10 @@ import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import {
   DEFAULT_LEVEL,
+  DEFAULT_HAPPINESS,
   genderOptions,
   MAX_LEVEL,
+  MAX_HAPPINESS,
   setDetail,
   TERA_TYPES,
 } from "@/shared/set-details";
@@ -194,6 +196,22 @@ const AdvancedForm = observer(function AdvancedForm({
                   </MenuItem>
                 ))}
               </TextField>
+            )}
+            {rules.happiness && (
+              <NumberField
+                label={t.advanced.happiness}
+                value={member.happiness ?? DEFAULT_HAPPINESS}
+                onChange={(value = DEFAULT_HAPPINESS) => {
+                  const happiness = clamp(value, MAX_HAPPINESS);
+                  setDetail(
+                    member,
+                    "happiness",
+                    happiness === DEFAULT_HAPPINESS ? undefined : happiness,
+                  );
+                }}
+                slotProps={{ htmlInput: { min: 0, max: MAX_HAPPINESS } }}
+                sx={{ flex: "0 0 112px" }}
+              />
             )}
             {rules.tera && (
               <TextField

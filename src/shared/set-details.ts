@@ -11,6 +11,8 @@ import {
 
 export const DEFAULT_LEVEL = 100;
 export const MAX_LEVEL = 100;
+export const DEFAULT_HAPPINESS = 255;
+export const MAX_HAPPINESS = 255;
 export const MAX_EV = 252;
 export const MAX_EV_TOTAL = 510;
 export const MAX_SP = 32;
@@ -32,6 +34,7 @@ export const TERA_TYPES: readonly string[] = [...POKEMON_TYPES, "Stellar"];
 export const DETAIL_KEYS = [
   "nickname",
   "level",
+  "happiness",
   "gender",
   "shiny",
   "teraType",

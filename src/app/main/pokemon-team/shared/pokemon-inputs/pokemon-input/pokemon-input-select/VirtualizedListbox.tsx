@@ -5,6 +5,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import ViewListIcon from "@mui/icons-material/ViewList";
 import GridViewIcon from "@mui/icons-material/GridView";
+import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import {
   List,
   RowComponentProps,
@@ -16,6 +17,7 @@ import store from "@/store";
 import { isPokemonType, type NameView } from "@/types";
 import { moveTypeIn } from "@/shared/generation-data";
 import PokemonIcon from "@/app/shared/PokemonIcon";
+import PokemonDexSprite from "./virtualized-listbox/PokemonDexSprite";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
 import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
@@ -23,10 +25,10 @@ import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 
 const LISTBOX_PADDING = 0; // px
 const ITEM_SIZE = 48;
-export const GRID_COLUMNS = 5;
+export const gridColumns = (view: NameView) => (view === "big-grid" ? 3 : 5);
 const GRID_ROW_SIZE = 40;
-// The listbox's vertical padding, from MUI, and the view toggle's margins
-const PAPER_PADDING = 8;
+const BIG_GRID_ROW_SIZE = 96;
+// The view toggle's top and bottom margins
 const TOGGLE_MARGIN = 8;
 
 interface SelectOption {
@@ -130,11 +132,14 @@ function GridRowComponent({
   index,
   itemData,
   style,
-}: RowComponentProps & { itemData: ItemData }) {
-  const cells = itemData.slice(
-    index * GRID_COLUMNS,
-    (index + 1) * GRID_COLUMNS,
-  );
+  columns,
+  large,
+}: RowComponentProps & {
+  itemData: ItemData;
+  columns: number;
+  large: boolean;
+}) {
+  const cells = itemData.slice(index * columns, (index + 1) * columns);
 
   return (
     <Box
@@ -142,7 +147,7 @@ function GridRowComponent({
       style={style}
       sx={{
         display: "grid",
-        gridTemplateColumns: `repeat(${GRID_COLUMNS}, minmax(0, 1fr))`,
+        gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
         px: 0.5,
       }}
     >
@@ -161,13 +166,15 @@ function GridRowComponent({
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              height: GRID_ROW_SIZE,
+              height: large ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE,
               borderRadius: 1,
               // Overrides the option class's list-row spacing
               "&&": { minHeight: 0, p: 0 },
             }}
           >
-            <PokemonIcon pokemonProperty="name" value={option.value} />
+            {large ?
+              <PokemonDexSprite pokemon={option.value} />
+            : <PokemonIcon pokemonProperty="name" value={option.value} />}
           </Box>
         );
       })}
@@ -210,10 +217,13 @@ const VirtualizedListbox = observer(
         nameListWidth,
       } = context;
       const isNameInput = pokemonProperty === "name";
-      const isGrid = isNameInput && store.nameView === "grid";
+      const isGrid = isNameInput && store.nameView !== "list";
+      const isBigGrid = isNameInput && store.nameView === "big-grid";
+      const columns = gridColumns(store.nameView);
+      const gridRowSize = isBigGrid ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE;
       const itemData = children as ItemData;
       const itemCount = itemData.length;
-      const rowCount = isGrid ? Math.ceil(itemCount / GRID_COLUMNS) : itemCount;
+      const rowCount = isGrid ? Math.ceil(itemCount / columns) : itemCount;
       // Rows with wrapped (two-line) labels measure taller than single-line rows;
       // resetting the cache (via `key`) whenever the option list changes
       const dynamicRowHeight = useDynamicRowHeight({
@@ -234,20 +244,20 @@ const VirtualizedListbox = observer(
         // animation frame to ensure the underlying element is ready.
         const frame = requestAnimationFrame(() => {
           internalListRef.current?.scrollToRow({
-            index: isGrid ? Math.floor(index / GRID_COLUMNS) : index,
+            index: isGrid ? Math.floor(index / columns) : index,
             align: "auto",
           });
         });
         return () => cancelAnimationFrame(frame);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [isGrid]);
+      }, [isGrid, columns]);
 
-      // The view toggle and the paper's padding take some of the popup's room
+      // The view toggle takes some of the popup's room
       const toggleRef = React.useRef<HTMLDivElement>(null);
       const [toggleHeight, setToggleHeight] = React.useState(0);
       React.useLayoutEffect(() => {
         setToggleHeight(toggleRef.current?.offsetHeight ?? 0);
-      }, [isNameInput]);
+      }, [isNameInput, isGrid]);
 
       // Uses the measured average row height (rows are shorter than ITEM_SIZE on
       // wider screens, where MUI's option minHeight is no longer forced to 48px)
@@ -255,18 +265,21 @@ const VirtualizedListbox = observer(
       // eight rows, or fewer where the screen has no room for them.
       const getHeight = () => {
         const rowHeight =
-          isGrid ? GRID_ROW_SIZE : dynamicRowHeight.getAverageRowHeight();
+          isGrid ? gridRowSize : dynamicRowHeight.getAverageRowHeight();
         const rows = Math.min(isGrid ? rowCount : itemCount, 8) * rowHeight;
         if (popupMaxHeight === undefined) return rows;
-        const chrome =
-          PAPER_PADDING + (isNameInput ? toggleHeight + TOGGLE_MARGIN : 0);
-        return Math.min(rows, Math.max(2 * rowHeight, popupMaxHeight - chrome));
+        const chrome = isNameInput ? toggleHeight + TOGGLE_MARGIN : 0;
+        return Math.min(rows, Math.max(0, popupMaxHeight - chrome));
       };
 
       const { className, style, ...otherProps } = other;
 
       return (
-        <div ref={ref} {...otherProps}>
+        <Box
+          ref={ref}
+          {...otherProps}
+          sx={{ "& .MuiAutocomplete-listbox": { p: 0 } }}
+        >
           {isNameInput && (
             <ToggleButtonGroup
               ref={toggleRef}
@@ -283,10 +296,24 @@ const VirtualizedListbox = observer(
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                width: nameListWidth,
+                width: isGrid ? "100%" : nameListWidth,
                 maxWidth: "100%",
                 my: 0.5,
-                "& > *": { gap: 0.75, px: 0.75, fontSize: 12, lineHeight: 1 },
+                "& > .MuiToggleButton-root": {
+                  gap: 0.75,
+                  px: isGrid ? 0.5 : 0.75,
+                  minWidth: 0,
+                  flex: isGrid ? 1 : undefined,
+                  flexDirection: isGrid ? "column" : "row",
+                  fontSize: 12,
+                  lineHeight: 1,
+                },
+                "& svg": { flexShrink: 0 },
+                "& > * > span[aria-hidden]": {
+                  minWidth: 0,
+                  width: isGrid ? "100%" : undefined,
+                  overflowWrap: "anywhere",
+                },
               }}
             >
               <ToggleButton value="list" aria-label={t.team.listView}>
@@ -297,17 +324,23 @@ const VirtualizedListbox = observer(
                 <GridViewIcon fontSize="small" />
                 <span aria-hidden="true">{t.team.grid}</span>
               </ToggleButton>
+              {isGrid && (
+                <ToggleButton value="big-grid" aria-label={t.team.bigGridView}>
+                  <ViewModuleIcon fontSize="small" />
+                  <span aria-hidden="true">{t.team.bigGrid}</span>
+                </ToggleButton>
+              )}
             </ToggleButtonGroup>
           )}
           {isGrid ?
             <List
               className={className}
               listRef={internalListRef}
-              key={`grid-${itemCount}`}
+              key={`${store.nameView}-${itemCount}`}
               rowCount={rowCount}
-              rowHeight={GRID_ROW_SIZE}
+              rowHeight={gridRowSize}
               rowComponent={GridRowComponent}
-              rowProps={{ itemData }}
+              rowProps={{ itemData, columns, large: isBigGrid }}
               // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
               style={{ height: getHeight() }}
               overscanCount={3}
@@ -327,7 +360,7 @@ const VirtualizedListbox = observer(
               tagName="ul"
             />
           }
-        </div>
+        </Box>
       );
     },
   ),

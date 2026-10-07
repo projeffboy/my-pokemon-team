@@ -1,8 +1,81 @@
 import { test, expect } from "fixtures";
 import { openTeamTools, selectItem, selectMove, selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
+import ja from "@/i18n/ja";
 
 test.describe("Pokemon Card - Unit Tests", () => {
+  test("Hidden labels appear only with More and enough space beside a selected hidden ability", async ({
+    page,
+  }) => {
+    const team = Buffer.from("Salamence\nAbility: Moxie\n").toString(
+      "base64url",
+    );
+    await page.goto(`/?gen=9&team=${team}`);
+    await page.setViewportSize({ width: 480, height: 1000 });
+    const ability = page.getByLabel("Pokemon 1's ability");
+    const field = ability.locator("..");
+    const hidden = field.getByText("Hidden", { exact: true });
+    await expect(hidden).toHaveCount(0);
+    await openTeamTools(page);
+
+    for (const { width, visible } of [
+      { width: 480, visible: true },
+      { width: 320, visible: false },
+      { width: 600, visible: false },
+      { width: 1366, visible: false },
+      { width: 480, visible: true },
+    ]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await expect(hidden)[visible ? "toBeVisible" : "toBeHidden"]();
+      await expect(ability).toHaveValue("Moxie");
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth > window.innerWidth,
+        ),
+      ).toBe(false);
+      if (visible) {
+        const [labelBox, inputBox, controlsBox] = await Promise.all([
+          hidden.boundingBox(),
+          ability.boundingBox(),
+          field.locator(".MuiAutocomplete-endAdornment").boundingBox(),
+        ]);
+        expect(labelBox).not.toBeNull();
+        expect(inputBox).not.toBeNull();
+        expect(controlsBox).not.toBeNull();
+        if (!labelBox || !inputBox || !controlsBox) return;
+        expect(labelBox.x).toBeGreaterThanOrEqual(inputBox.x + inputBox.width);
+        expect(labelBox.x + labelBox.width).toBeLessThanOrEqual(controlsBox.x);
+      }
+    }
+    await ability.fill("Intim");
+    await expect(hidden).toHaveCount(0);
+    await page.getByRole("option", { name: "Intimidate", exact: true }).click();
+    await expect(hidden).toHaveCount(0);
+  });
+
+  test("Hidden labels follow past abilities and the chosen language", async ({
+    page,
+  }) => {
+    const team = Buffer.from("Empoleon\nAbility: Defiant\n").toString(
+      "base64url",
+    );
+    await page.goto(`/?gen=8&team=${team}`);
+    await page.setViewportSize({ width: 480, height: 1000 });
+    await openTeamTools(page);
+    const ability = page.getByLabel("Pokemon 1's ability");
+    await expect(ability.locator("..").getByText("Hidden")).toBeVisible();
+    await page.getByRole("button", { name: "Language", exact: true }).click();
+    await page.getByRole("menuitem", { name: "日本語" }).click();
+    const translated = page.getByLabel(ja.team.input(1, "ability"));
+    await expect(
+      translated.locator("..").getByText(ja.team.hidden),
+    ).toBeVisible();
+    await page.getByRole("button", { name: ja.team.fewerTools }).click();
+    await expect(
+      translated.locator("..").getByText(ja.team.hidden),
+    ).toHaveCount(0);
+  });
+
   test("move selectors exclude duplicates and other Hidden Power types", async ({
     page,
   }) => {
@@ -16,6 +89,13 @@ test.describe("Pokemon Card - Unit Tests", () => {
     const empty = page.getByLabel("Pokemon 1's move3");
     await empty.fill("Hidden Power");
     await expect(page.getByRole("option")).toHaveCount(0);
+    await expect(
+      page.getByText("Nothing found", { exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("(you haven't selected a pokemon)"),
+    ).toHaveCount(0);
+    await expect(page.getByText("No other moves available.")).toHaveCount(0);
     await empty.fill("Shadow Ball");
     await expect(page.getByRole("option")).toHaveCount(0);
     await empty.press("Escape");
@@ -25,6 +105,39 @@ test.describe("Pokemon Card - Unit Tests", () => {
     );
     await selectMove(page, "Thunderbolt", 3);
     await expect(empty).toHaveValue("Thunderbolt");
+  });
+
+  test("Ditto's empty move slots explain that no other moves are available", async ({
+    page,
+  }) => {
+    const team = Buffer.from(
+      "Ditto @\nAbility: Limber\n- Transform\n",
+    ).toString("base64url");
+    await page.goto(`/?gen=3&team=${team}`);
+    const transform = page.getByLabel("Pokemon 1's move1");
+    await expect(transform).toHaveValue("Transform");
+    await page.getByLabel("Pokemon 1's move2").press("ArrowDown");
+    await expect(
+      page.getByText("No other moves available.", { exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("(you haven't selected a pokemon)"),
+    ).toHaveCount(0);
+    await page.getByLabel("Pokemon 1's move2").press("Escape");
+    await transform.press("ArrowDown");
+    await expect(
+      page.getByRole("option").filter({
+        has: page.getByText("Transform", { exact: true }),
+      }),
+    ).toBeVisible();
+    await transform.press("Escape");
+    await page.getByLabel("Pokemon 1's ability").fill("Intimidate");
+    await expect(
+      page.getByText("Nothing found", { exact: true }),
+    ).toBeVisible();
+    await expect(
+      page.getByText("(you haven't selected a pokemon)"),
+    ).toHaveCount(0);
   });
 
   // Helper to ensure card is visible (handles responsive tabs)

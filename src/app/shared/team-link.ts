@@ -90,8 +90,9 @@ export function importTeamFromUrlParameter(teamParameter: string): void {
     return;
   }
 
+  const settings = generationSettingsFromUrl() ?? { generation: 9, format: "" };
   store.openTeamFromLink(
-    parseTeamText(text),
-    generationSettingsFromUrl() ?? { generation: 9, format: "" },
+    parseTeamText(text, settings.generation, settings.format),
+    settings,
   );
 }

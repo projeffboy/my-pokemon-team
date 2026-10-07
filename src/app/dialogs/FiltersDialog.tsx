@@ -233,6 +233,7 @@ const FiltersDialog = observer(function FiltersDialog() {
       </Dialog>
       {pending?.teamId === store.currentTeamId && (
         <GenerationTransferDialog
+          team={store.team}
           fromGeneration={store.currentTeam.generation}
           fromFormat={store.currentTeam.format}
           toGeneration={pending.generation}

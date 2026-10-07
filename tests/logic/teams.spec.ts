@@ -6,6 +6,7 @@ import { setDetail, setStat } from "@/shared/set-details";
 import { sanitizeTeam } from "@/store/teams-storage";
 import { parseTeamText, serializeTeam } from "@/store/team-text";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { LETS_GO } from "@/shared/game-variants";
 
 const settle = () => new Promise(resolve => setTimeout(resolve, 500));
 
@@ -31,7 +32,9 @@ test.describe("saved teams", () => {
     expect(store.addTeam().name).toBe("Team 4");
   });
 
-  test("New Team reuses an empty team of the same generation", ({ store }) => {
+  test("New Team reuses an empty team of the same generation and format", ({
+    store,
+  }) => {
     const first = store.currentTeamId;
     expect(store.openEmptyTeam()).toMatchObject({
       team: { id: first },
@@ -51,6 +54,34 @@ test.describe("saved teams", () => {
     expect(store.openEmptyTeam().isNew).toBe(true);
     expect(store.teams).toHaveLength(3);
   });
+
+  for (const [generation, format] of [
+    [9, CHAMPIONS_FORMAT],
+    [7, LETS_GO],
+  ] as const) {
+    test(`New Team keeps ${format} when another format has an empty team`, ({
+      store,
+    }) => {
+      const regular = store.currentTeam;
+      regular.generation = generation;
+      const current = store.addTeam({ generation, format });
+      store.selectPokemon(0, "pinsir");
+
+      const { team: empty, isNew } = store.openEmptyTeam();
+      expect(isNew).toBe(true);
+      expect(empty).toMatchObject({ generation, format });
+      expect(store.currentTeamId).toBe(empty.id);
+      expect(store.currentTeamId).not.toBe(regular.id);
+      expect(store.teams).toHaveLength(3);
+
+      store.selectTeam(current.id);
+      expect(store.openEmptyTeam()).toMatchObject({
+        team: { id: empty.id },
+        isNew: false,
+      });
+      expect(store.teams).toHaveLength(3);
+    });
+  }
 
   test("does not duplicate empty saved teams or drafts", ({ store }) => {
     const id = store.currentTeamId;
@@ -95,6 +126,21 @@ test.describe("saved teams", () => {
     expect(store.teams).toHaveLength(1);
     expect(store.currentTeam.name).toBe("Team 1");
     expect(store.isTeamEmpty).toBe(true);
+  });
+
+  test("numbers copies of duplicates and skips names already in use", ({
+    store,
+  }) => {
+    const original = store.currentTeam;
+    original.name = "Rain";
+    store.selectPokemon(0, "pelipper");
+    const first = store.duplicateTeam(original.id);
+    expect(first?.name).toBe("Rain copy");
+    const second = store.duplicateTeam(first?.id ?? "");
+    expect(second?.name).toBe("Rain copy 2");
+    expect(store.duplicateTeam(second?.id ?? "")?.name).toBe("Rain copy 3");
+    expect(store.duplicateTeam(original.id)?.name).toBe("Rain copy 4");
+    expect(store.duplicateTeam(first?.id ?? "")?.name).toBe("Rain copy 5");
   });
 
   test("keeps unfamiliar links unsaved until edited and reopens matching saved teams", ({

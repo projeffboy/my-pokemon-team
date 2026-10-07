@@ -112,13 +112,16 @@ const en = {
     move: "Move",
     item: "Item",
     ability: "Ability",
+    hidden: "Hidden",
     // The accessible name of each input, e.g. "Pokemon 1's move2"
     input: (slot: number, property: string) => `Pokemon ${slot}'s ${property}`,
     itemIcon: (item: string) => `${item} icon`,
     nothingFound: "Nothing found",
+    noOtherMoves: "No other moves available.",
     selectPokemonFirst: "(you haven't selected a pokemon)",
     list: "List",
     grid: "Grid",
+    bigGrid: "Big Grid",
     pokemonInSlot: (pokemon: string, slot: number) =>
       `place ${pokemon} in slot ${slot}`,
     removedPokemon: (pokemon: string, slot: number) =>
@@ -141,6 +144,7 @@ const en = {
     nameListView: "Name list view",
     listView: "List view",
     gridView: "Grid view",
+    bigGridView: "Big grid view",
     // The default names of new teams
     teamNumber: (number: number) => `Team ${number}`,
     unnamedTeam: "Team",
@@ -299,6 +303,7 @@ const en = {
     nickname: "Nickname",
     nicknameLimit: (max: number) => `Maximum ${max} characters.`,
     level: "Level",
+    happiness: "Happiness",
     gender: "Gender",
     teraType: "Tera Type",
     nature: "Nature",
@@ -458,7 +463,7 @@ const en = {
     importPlaceholder: "Paste a team here",
     editPlaceholder: "Your team is empty",
     label: "Pokemon Showdown Team Raw Text",
-    kept: "Nicknames, levels, genders, shiny, tera types, natures, EVs, and IVs are kept. Happiness is ignored.",
+    kept: "Nicknames, levels, genders, shiny, tera types, natures, EVs, and IVs are kept. Happiness is also kept when the selected game supports it.",
     import: "Import",
     update: "Update",
     imported: "Team imported",

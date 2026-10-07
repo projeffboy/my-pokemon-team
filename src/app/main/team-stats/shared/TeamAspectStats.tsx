@@ -153,7 +153,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
               <Popper
                 id={`mouse-over-popover-${i}`}
                 role="tooltip"
-                sx={{ pointerEvents: "none" }}
+                sx={{ pointerEvents: "none", zIndex: "tooltip" }}
                 open={popover?.index === i}
                 anchorEl={popover ? typeAnchors.current[popover.index] : null}
                 transition
@@ -164,6 +164,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                       <TeamStatsTooltip
                         type={type}
                         typeColor={TYPE_COLORS[type]}
+                        hasIcon={hasIcon}
                         teamStatType={teamStatType}
                       />
                     </Paper>

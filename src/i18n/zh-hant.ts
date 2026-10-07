@@ -118,13 +118,16 @@ const zhHant: Messages = {
     move: "招式",
     item: "道具",
     ability: "特性",
+    hidden: "隱藏",
     input: (slot: number, property: string) =>
       `寶可夢 ${slot} 的 ${inputNames[property] ?? property}`,
     itemIcon: (item: string) => `${item}圖示`,
     nothingFound: "找不到結果",
+    noOtherMoves: "沒有其他可選招式。",
     selectPokemonFirst: "（尚未選擇寶可夢）",
     list: "清單",
     grid: "格狀",
+    bigGrid: "大格狀",
     pokemonInSlot: (pokemon: string, slot: number) =>
       `將${pokemon}放到第${slot}個位置`,
     removedPokemon: (pokemon: string, slot: number) =>
@@ -145,6 +148,7 @@ const zhHant: Messages = {
     nameListView: "名稱清單檢視",
     listView: "清單檢視",
     gridView: "格狀檢視",
+    bigGridView: "大格狀檢視",
     // The default names of new teams
     teamNumber: (number: number) => `隊伍 ${number}`,
     unnamedTeam: "隊伍",
@@ -307,6 +311,7 @@ const zhHant: Messages = {
     nickname: "暱稱",
     nicknameLimit: (max: number) => `最多${max}個字元。`,
     level: "等級",
+    happiness: "親密度",
     gender: "性別",
     teraType: "太晶屬性",
     nature: "性格",
@@ -461,7 +466,7 @@ const zhHant: Messages = {
     importPlaceholder: "在此貼上隊伍",
     editPlaceholder: "你的隊伍是空的",
     label: "Pokemon Showdown 隊伍原始文字",
-    kept: "暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值都會保留。親密度會被忽略。",
+    kept: "暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值都會保留。所選遊戲支援時，親密度也會保留。",
     import: "匯入",
     update: "更新",
     imported: "已匯入隊伍",

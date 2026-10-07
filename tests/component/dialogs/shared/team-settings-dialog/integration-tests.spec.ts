@@ -23,11 +23,12 @@ const openNameEditor = async (page: Page, teamName: string) => {
 const chooseGeneration = async (page: Page, generation: number) => {
   await page.getByRole("combobox", { name: "Generation" }).click();
   await page
-    .getByRole("option", { name: new RegExp(`^Gen ${generation} `) })
+    .getByRole("option")
+    .and(page.locator(`[data-value="${generation}"]`))
     .click();
-  await expect(
-    page.getByRole("combobox", { name: "Generation" }),
-  ).toContainText(`Gen ${generation}`);
+  await expect(page.locator("header .MuiSelect-nativeInput")).toHaveValue(
+    `${generation}`,
+  );
   await expect(page.locator(".MuiMenu-paper")).toBeHidden();
 };
 

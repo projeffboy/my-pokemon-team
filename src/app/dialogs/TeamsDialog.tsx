@@ -78,7 +78,7 @@ const TeamsDialog = observer(function TeamsDialog() {
       t.gameVariants[format as keyof typeof t.gameVariants]
     : `${t.generation(generation)} (${GENERATION_GAMES[generation]})`;
   const isSmDown = useIsSmDown();
-  const rollDice = useDiceRoll();
+  const diceRoll = useDiceRoll();
   const [menu, setMenu] = useState<{
     teamId: string;
     anchorEl: HTMLElement;
@@ -233,21 +233,34 @@ const TeamsDialog = observer(function TeamsDialog() {
                 variant="outlined"
                 startIcon={<CasinoIcon />}
                 disabled={!store.learnsetsLoaded}
+                {...diceRoll}
                 onClick={event => {
-                  rollDice(event);
-                  store.openEmptyTeam();
-                  store.randomizeTeam();
-                  store.openSnackbar(
-                    t.teams.randomTeamCreated,
-                    false,
-                    "random",
-                  );
-                  close();
+                  const teamId = store.currentTeamId;
+                  diceRoll.onClick(event, () => {
+                    if (store.currentTeamId !== teamId) return;
+                    store.openEmptyTeam();
+                    store.randomizeTeam();
+                    store.openSnackbar(
+                      t.teams.randomTeamCreated,
+                      false,
+                      "random",
+                    );
+                    close();
+                  });
                 }}
               >
                 {t.teams.randomTeam}
               </Button>
             </Stack>
+            <Button
+              variant="outlined"
+              fullWidth
+              startIcon={<UploadIcon />}
+              onClick={() => setIsImporting(true)}
+              sx={{ mb: 1, flexShrink: 0 }}
+            >
+              {t.teams.importTeam}
+            </Button>
             <List
               ref={listRef}
               aria-label={t.teams.savedTeams}
@@ -292,7 +305,16 @@ const TeamsDialog = observer(function TeamsDialog() {
                       <ListItemText
                         primary={
                           <>
-                            {name}
+                            <Box
+                              component="span"
+                              sx={{
+                                flex: "1 1 auto",
+                                minWidth: 0,
+                                overflowWrap: "anywhere",
+                              }}
+                            >
+                              {name}
+                            </Box>
                             {/* The whole card is the button; the chip shows that a tap opens the team */}
                             <Chip
                               label={
@@ -307,7 +329,6 @@ const TeamsDialog = observer(function TeamsDialog() {
                               color="primary"
                               variant={isCurrent ? "filled" : "outlined"}
                               sx={{
-                                ml: 1,
                                 flexShrink: 0,
                                 height: 20,
                                 fontSize: 12,
@@ -351,7 +372,13 @@ const TeamsDialog = observer(function TeamsDialog() {
                         }
                         slotProps={{
                           primary: {
-                            sx: { display: "flex", alignItems: "center" },
+                            sx: {
+                              display: "flex",
+                              flexWrap: "wrap",
+                              alignItems: "center",
+                              columnGap: 1,
+                              rowGap: 0.5,
+                            },
                           },
                           secondary: { component: "div" },
                         }}
@@ -362,15 +389,6 @@ const TeamsDialog = observer(function TeamsDialog() {
               })}
             </List>
             <Box sx={{ flexShrink: 0 }}>
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<UploadIcon />}
-                onClick={() => setIsImporting(true)}
-                sx={{ mt: 1 }}
-              >
-                {t.teams.importTeam}
-              </Button>
               {/* Every team as one Showdown text, which Import Team reads back */}
               <Stack
                 direction="row"

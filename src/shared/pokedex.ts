@@ -19,6 +19,27 @@ export const pokemonAbilities = (
   : (pastGenerations[generation]?.abilities?.[pokemon] ??
     Object.values(pokedex[pokemon]?.abilities ?? {}));
 
+export function isHiddenAbility(
+  pokemon: string,
+  ability: string,
+  generation = LATEST_GENERATION,
+) {
+  if (generation < 5 || !ability) return false;
+  const current = pokedex[pokemon]?.abilities;
+  const hidden = current?.H;
+  if (!hidden) return false;
+  const available = pokemonAbilities(pokemon, generation);
+  if (!available.includes(ability)) return false;
+  if (available.includes(hidden)) return ability === hidden;
+  // Historical lists keep hidden abilities after ordinary ones, even when renamed.
+  return (
+    ability === available.at(-1) &&
+    !Object.entries(current).some(
+      ([slot, name]) => slot !== "H" && name === ability,
+    )
+  );
+}
+
 export const pokemonBaseStats = (
   pokemon: string,
   generation = LATEST_GENERATION,

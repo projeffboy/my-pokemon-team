@@ -43,7 +43,11 @@ const NotificationSnackbar = observer(function NotificationSnackbar({
           role: "alert",
           "aria-describedby": messageId,
           sx: [
-            { flexGrow: 0, maxWidth: 600 },
+            {
+              flexGrow: 0,
+              maxWidth: 600,
+              "& .MuiSnackbarContent-action": { pl: { xxs: 1, xs: 2 } },
+            },
             age > 0 &&
               (theme => ({
                 position: "relative",

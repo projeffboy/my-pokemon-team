@@ -29,7 +29,7 @@ const TeamBar = observer(function TeamBar({ tabs }: { tabs: ReactNode }) {
         sx={{
           display: "flex",
           alignItems: "stretch",
-          minHeight: { sm: 48 },
+          minHeight: 48,
           boxSizing: "border-box",
           mb: 1,
           "& .MuiButton-root": {

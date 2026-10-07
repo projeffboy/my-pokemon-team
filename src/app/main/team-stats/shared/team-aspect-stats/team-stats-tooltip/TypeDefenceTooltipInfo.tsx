@@ -6,8 +6,8 @@ import { typeAgainstPokemon } from "@/store/shared/effectiveness";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import PokemonIcon from "@/app/shared/PokemonIcon";
-import { TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import type { PokemonType } from "@/types";
+import TypeBadge from "./shared/TypeBadge";
 
 // Keyed by the type defence score, which is negative when the type is super effective
 const EFFECTIVENESS: Partial<
@@ -25,9 +25,11 @@ const EFFECTIVENESS: Partial<
 const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
   typeColor,
   type,
+  hasIcon,
 }: {
   typeColor: string;
   type: PokemonType;
+  hasIcon: boolean;
 }) {
   const { t, names } = useTranslation();
   return (
@@ -35,17 +37,7 @@ const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
       <p>
         {fill(t.stats.typeDoes, {
           type: (
-            <Box
-              component="span"
-              sx={{
-                bgcolor: typeColor,
-                color: TYPE_TEXT_COLORS[type],
-                px: 0.5,
-                borderRadius: 0.5,
-              }}
-            >
-              {names.type(type)}
-            </Box>
+            <TypeBadge type={type} typeColor={typeColor} hasIcon={hasIcon} />
           ),
         })}
       </p>

@@ -16,8 +16,15 @@ test.describe("Sort Dialog - Integration Tests", () => {
       await expect(
         list.getByRole("option").filter({ hasText: second }),
       ).toBeVisible();
-      const labels = await list.getByRole("option").allTextContents();
-      expect(labels.indexOf(first)).toBeLessThan(labels.indexOf(second));
+      const labels = await list
+        .getByRole("option")
+        .locator(":scope > span:last-child")
+        .allTextContents();
+      const firstIndex = labels.indexOf(first);
+      const secondIndex = labels.indexOf(second);
+      expect(firstIndex).toBeGreaterThanOrEqual(0);
+      expect(secondIndex).toBeGreaterThanOrEqual(0);
+      expect(firstIndex).toBeLessThan(secondIndex);
       await input.press("Escape");
     };
     await checkOrder("Drain Punch", "Thunder Punch");

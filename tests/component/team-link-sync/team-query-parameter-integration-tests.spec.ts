@@ -21,6 +21,8 @@ test.describe("Share Link - Integration Tests", () => {
   test("fresh visits default to Champions and explicit regular Gen 9 links retain their game", async ({
     page,
   }) => {
+    // This sequence loads the app six times in addition to the fixture's first visit.
+    test.slow();
     await page.goto("/", { waitUntil: "domcontentloaded" });
     const generation = page.getByRole("combobox", { name: "Generation" });
     await expect(generation).toContainText("Champions");

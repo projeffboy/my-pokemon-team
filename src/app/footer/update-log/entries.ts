@@ -11,7 +11,10 @@ const entries: Entry[] = [
   {
     date: "Oct 7, 2026",
     changes: [
+      "Happiness is now kept in Showdown imports, exports and saved teams, with an editor for games that support it.",
       "Unavailable formes now convert to their base species when switching generations, e.g. Kyogre-Primal becomes Kyogre in Gen 3.",
+      "Champions Pokémon now keep level 50 when switching to another game.",
+      "New Team now keeps the selected game and format when reusing an empty saved team.",
     ],
   },
   {

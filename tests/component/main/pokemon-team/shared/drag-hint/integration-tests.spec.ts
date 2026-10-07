@@ -54,6 +54,8 @@ test.describe("Drag hint - Integration Tests", () => {
             )
             .not.toBe("");
           await expect(wiggle).toHaveCSS("animation-play-state", "paused");
+          await expect(wiggle).toHaveCSS("animation-name", "none");
+          await expect(wiggle).toHaveCSS("animation-delay", "5s");
           await wiggle.evaluate(element => {
             element.addEventListener(
               "animationstart",
@@ -93,6 +95,7 @@ test.describe("Drag hint - Integration Tests", () => {
           await expect(wiggle).toHaveAttribute(
             "data-wiggle-sprites-active",
             "false",
+            { timeout: 7000 },
           );
           await page.unroute(pattern);
         }

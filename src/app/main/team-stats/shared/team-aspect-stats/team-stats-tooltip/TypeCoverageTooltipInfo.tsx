@@ -9,15 +9,18 @@ import {
   moveType as getMoveType,
 } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/shared/PokemonIcon";
-import { TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
+import typeIcons from "@/images/type-icons";
 import { MOVE_KEYS, type PokemonType } from "@/types";
+import TypeBadge from "./shared/TypeBadge";
 
 const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   typeColor,
   type,
+  hasIcon,
 }: {
   typeColor: string;
   type: PokemonType;
+  hasIcon: boolean;
 }) {
   const { t, names } = useTranslation();
   const { generation } = store.currentTeam;
@@ -34,7 +37,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
       const moveType = getMoveType(move, pokemon, ability, generation);
       const isStab =
         !!moveType && pokemonTypes(pokemon, generation).includes(moveType);
-      return [{ key: `${i}-${key}`, move, pokemon, isStab }];
+      return [{ key: `${i}-${key}`, move, moveType, pokemon, isStab }];
     }),
   );
 
@@ -43,17 +46,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
       <p>
         {fill(t.stats.superEffectiveAgainst, {
           type: (
-            <Box
-              component="span"
-              sx={{
-                bgcolor: typeColor,
-                color: TYPE_TEXT_COLORS[type],
-                px: 0.5,
-                borderRadius: 0.5,
-              }}
-            >
-              {names.type(type)}
-            </Box>
+            <TypeBadge type={type} typeColor={typeColor} hasIcon={hasIcon} />
           ),
         })}
       </p>
@@ -63,7 +56,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
             {t.nothing}
           </Box>
         )}
-        {superEffectiveMoves.map(({ key, move, pokemon, isStab }) => (
+        {superEffectiveMoves.map(({ key, move, moveType, pokemon, isStab }) => (
           <Box
             component="li"
             key={key}
@@ -73,8 +66,24 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
               fontWeight: isStab ? 500 : 400,
             }}
           >
-            <Box component="span" sx={{ width: 150 }}>
-              {names.move(move)}
+            <Box
+              component="span"
+              sx={{
+                width: 150,
+                display: "flex",
+                alignItems: "center",
+                gap: 0.75,
+              }}
+            >
+              {moveType && (
+                <Box
+                  component="img"
+                  src={typeIcons[moveType]}
+                  alt={names.type(moveType)}
+                  sx={{ width: 20, height: 20, flexShrink: 0 }}
+                />
+              )}
+              <span>{names.move(move)}</span>
             </Box>
             <span>{`${names.pokemon(pokemon)} `}</span>
             <PokemonIcon pokemonProperty="name" value={pokemon} />

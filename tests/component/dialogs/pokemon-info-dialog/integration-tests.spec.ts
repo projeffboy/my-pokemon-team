@@ -3,15 +3,14 @@ import { selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 
 async function generation(page: Page, gen: number) {
-  await expect(async () => {
-    await page.getByRole("combobox", { name: "Generation" }).click();
-    await page
-      .getByRole("option", { name: new RegExp(`^Gen ${gen}\\b`) })
-      .click();
-    await expect(
-      page.getByRole("combobox", { name: "Generation" }),
-    ).toContainText(`Gen ${gen} (`, { timeout: 1000 });
-  }).toPass();
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  await page
+    .getByRole("option")
+    .and(page.locator(`[data-value="${gen}"]`))
+    .click();
+  await expect(page.locator("header .MuiSelect-nativeInput")).toHaveValue(
+    `${gen}`,
+  );
   await expect(page.locator(".MuiMenu-paper")).toBeHidden();
 }
 

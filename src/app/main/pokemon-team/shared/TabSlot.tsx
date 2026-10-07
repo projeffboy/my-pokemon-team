@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import { keyframes } from "@mui/material/styles";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -25,15 +26,22 @@ const wiggle = keyframes`
 export const TabSlotContent = observer(function TabSlotContent({
   teamIndex,
 }: Props) {
+  const [hasWiggled, setHasWiggled] = useState(false);
   const hasPokemon = Boolean(store.team[teamIndex]?.name);
   const hasAnyPokemon = store.team.some(({ name }) => name);
   const wiggles =
+    !hasWiggled &&
     store.showDragHint &&
     store.team.findIndex(({ name }) => name) === teamIndex;
+  const classicSprites =
+    store.currentTeam.generation >= 2 && store.currentTeam.generation <= 4;
 
   return (
     <Box
       className={LIFT_CLASS}
+      onAnimationEnd={event => {
+        if (event.target === event.currentTarget) setHasWiggled(true);
+      }}
       sx={[
         {
           display: "flex",
@@ -42,8 +50,9 @@ export const TabSlotContent = observer(function TabSlotContent({
           transition: "scale 200ms",
         },
         wiggles && {
-          animation: `${wiggle} 600ms ease-in-out 800ms`,
+          animation: `${wiggle} 600ms ease-in-out ${classicSprites ? "5s" : "800ms"}`,
           '[role="tablist"]:has([data-selection-animating]) &': {
+            animationName: "none",
             animationPlayState: "paused",
           },
           "@media (prefers-reduced-motion: reduce)": { animation: "none" },

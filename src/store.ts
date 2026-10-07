@@ -41,6 +41,7 @@ import {
   randomizedFieldsMessage,
 } from "./store/random";
 import { serializeTeam } from "./store/team-text";
+import { nextDuplicateName } from "./store/team-names";
 import { describeTeamChange } from "./store/team-change";
 import {
   initialStoredState,
@@ -252,11 +253,14 @@ class Store {
     return team;
   }
 
-  // Switches to an empty team of the current generation, adding one only if there is none
+  // Switches to an empty team of the current generation and format, adding one if needed
   openEmptyTeam() {
-    const { generation } = this.currentTeam;
+    const { generation, format } = this.currentTeam;
     const existing = [this.currentTeam, ...this.teams].find(
-      team => team.generation === generation && isTeamEmpty(team.team),
+      team =>
+        team.generation === generation &&
+        team.format === format &&
+        isTeamEmpty(team.team),
     );
     if (!existing) return { team: this.addTeam(), isNew: true };
     this.currentTeamId = existing.id;
@@ -293,7 +297,11 @@ class Store {
     const { copyOf, unnamedTeam } = this.translation.t.team;
     const copy = createSavedTeam({
       ...settings,
-      name: copyOf(source.name || unnamedTeam),
+      name: nextDuplicateName(
+        source.name || unnamedTeam,
+        this.teams.map(team => team.name),
+        copyOf,
+      ),
     });
     this.teams.splice(index === -1 ? this.teams.length : index + 1, 0, copy);
     this.currentTeamId = copy.id;

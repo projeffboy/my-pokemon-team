@@ -56,7 +56,14 @@ const ImportTeamForm = observer(function ImportTeamForm({
   };
 
   const handleUpdate = () => {
-    if (text !== initialText) store.replaceTeam(parseTeamText(text));
+    if (text !== initialText)
+      store.replaceTeam(
+        parseTeamText(
+          text,
+          store.currentTeam.generation,
+          store.currentTeam.format,
+        ),
+      );
     else store.openSnackbar(importDialog.noChanges);
     onDone();
   };

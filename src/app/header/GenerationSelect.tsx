@@ -242,6 +242,7 @@ const GenerationSelect = observer(function GenerationSelect() {
       </Box>
       {target && plan && (
         <GenerationTransferDialog
+          team={store.team}
           fromGeneration={generation}
           fromFormat={format}
           toGeneration={target.generation}

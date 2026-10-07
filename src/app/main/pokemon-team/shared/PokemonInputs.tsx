@@ -86,11 +86,14 @@ const PokemonInputs = observer(function PokemonInputs({
     randomAt + 1,
     detailsIconAt + Math.ceil(textWidth(t.team.randomize)) + 4,
   );
-  const rollDice = useDiceRoll();
+  const diceRoll = useDiceRoll();
   const randomize = (event: SyntheticEvent<HTMLElement>) => {
-    rollDice(event);
-    const message = store.randomizeSlot(teamIndex);
-    if (message) store.openSnackbar(message, true, "random");
+    const teamId = store.currentTeamId;
+    diceRoll.onClick(event, () => {
+      if (store.currentTeamId !== teamId) return;
+      const message = store.randomizeSlot(teamIndex);
+      if (message) store.openSnackbar(message, true, "random");
+    });
   };
 
   return (
@@ -261,6 +264,7 @@ const PokemonInputs = observer(function PokemonInputs({
                   sx={[smallButton, { flex: "0 0 auto", gap: 0.5 }]}
                   disabled={!store.learnsetsLoaded}
                   aria-label={t.team.randomFor(teamIndex + 1)}
+                  {...diceRoll}
                   onClick={randomize}
                 >
                   <CasinoIcon sx={{ fontSize: 16 }} />
@@ -297,6 +301,7 @@ const PokemonInputs = observer(function PokemonInputs({
                   sx={[smallButton, { flex: "0 0 auto", px: 0.75 }]}
                   disabled={!store.learnsetsLoaded}
                   aria-label={t.team.randomFor(teamIndex + 1)}
+                  {...diceRoll}
                   onClick={randomize}
                 >
                   <CasinoIcon sx={{ fontSize: 16 }} />

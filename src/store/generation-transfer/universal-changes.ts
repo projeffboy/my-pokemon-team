@@ -1,45 +1,79 @@
 import { generationRules } from "@/shared/generation-rules";
-import type { SavedTeam } from "@/types";
+import type { ReadonlyTeam, SavedTeam } from "@/types";
+import { MAX_IV } from "@/shared/set-details";
 import type { TransferLoss } from "../generation-transfer";
 
 type UniversalField =
-  "item" | "ability" | "nature" | "gender" | "shiny" | "teraType" | "ivs";
+  | "item"
+  | "ability"
+  | "nature"
+  | "gender"
+  | "shiny"
+  | "happiness"
+  | "teraType"
+  | "ivs";
 
 type Settings = Pick<SavedTeam, "generation" | "format">;
 
-export function universalTransferChanges(from: Settings, to: Settings) {
+export function universalTransferChanges(
+  from: Settings,
+  to: Settings,
+  team: ReadonlyTeam,
+) {
   const before = generationRules(from.generation, from.format);
   const after = generationRules(to.generation, to.format);
+  const members = team.filter(member => member.name);
+  const customIvs = members.some(member =>
+    Object.values(member.ivs ?? {}).some(
+      value => value !== undefined && value !== MAX_IV,
+    ),
+  );
+  const hasField = (field: UniversalField) =>
+    field === "ivs" ? customIvs : (
+      members.some(member => {
+        const value = member[field];
+        return value !== undefined && value !== "" && value !== false;
+      })
+    );
+  const hasTraining = members.some(member =>
+    [
+      before.investment === "effortLevels" ? member.effortLevels : member.evs,
+      ...(before.legacy ? [member.statExperience] : []),
+    ].some(stats => Object.values(stats ?? {}).some(value => (value ?? 0) > 0)),
+  );
   const features: [UniversalField, boolean, boolean][] = [
     ["item", before.items, after.items],
     ["ability", before.abilities, after.abilities],
     ["nature", before.nature, after.nature],
     ["gender", before.gender, after.gender],
     ["shiny", before.shiny, after.shiny],
+    ["happiness", before.happiness, after.happiness],
     ["teraType", before.tera, after.tera],
     ["ivs", before.ivs, after.ivs],
   ];
-  const removed = features
+  const unsupported = features
     .filter(
       ([, supportedBefore, supportedAfter]) =>
         supportedBefore && !supportedAfter,
     )
     .map(([field]) => field);
+  const removed = unsupported.filter(hasField);
   const fixedLevel =
     after.fixedLevel !== before.fixedLevel ? after.fixedLevel : undefined;
+  const convertsIvs = after.ivs && before.legacy !== after.legacy;
   const ivsConversion =
-    after.ivs && before.legacy !== after.legacy ?
+    customIvs && convertsIvs ?
       after.legacy ?
         "dvs"
       : "ivs"
     : undefined;
   const training =
-    before.investment !== after.investment ?
+    hasTraining && before.investment !== after.investment ?
       { from: before.investment, to: after.investment }
     : undefined;
   const isUniversal = (loss: TransferLoss) =>
-    removed.some(field => field === loss.field) ||
+    unsupported.some(field => field === loss.field) ||
     (loss.field === "level" && fixedLevel !== undefined) ||
-    (loss.field === "ivs" && ivsConversion !== undefined);
+    (loss.field === "ivs" && convertsIvs);
   return { fixedLevel, removed, ivsConversion, training, isUniversal };
 }

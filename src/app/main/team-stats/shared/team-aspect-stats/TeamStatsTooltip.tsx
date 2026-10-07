@@ -13,6 +13,7 @@ const TeamStatsTooltip = observer(function TeamStatsTooltip({
   teamStatType: TeamStatType;
   typeColor: string;
   type: PokemonType;
+  hasIcon: boolean;
 }) {
   const { t } = useTranslation();
   const content = () =>

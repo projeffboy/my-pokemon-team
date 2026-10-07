@@ -121,13 +121,16 @@ const ja: Messages = {
     move: "技",
     item: "持ち物",
     ability: "特性",
+    hidden: "隠れ特性",
     input: (slot: number, property: string) =>
       `ポケモン${slot}の${inputNames[property] ?? property}`,
     itemIcon: (item: string) => `${item}のアイコン`,
     nothingFound: "見つかりません",
+    noOtherMoves: "ほかに選べる技はありません。",
     selectPokemonFirst: "（ポケモンが選択されていません）",
     list: "リスト",
     grid: "グリッド",
+    bigGrid: "大きなグリッド",
     pokemonInSlot: (pokemon: string, slot: number) =>
       `${pokemon}をスロット${slot}に配置`,
     removedPokemon: (pokemon: string, slot: number) =>
@@ -149,6 +152,7 @@ const ja: Messages = {
     nameListView: "名前リスト表示",
     listView: "リスト表示",
     gridView: "グリッド表示",
+    bigGridView: "大きなグリッド表示",
     // The default names of new teams
     teamNumber: (number: number) => `チーム${number}`,
     unnamedTeam: "チーム",
@@ -311,6 +315,7 @@ const ja: Messages = {
     nickname: "ニックネーム",
     nicknameLimit: (max: number) => `最大${max}文字です。`,
     level: "レベル",
+    happiness: "なつき度",
     gender: "性別",
     teraType: "テラスタイプ",
     nature: "性格",
@@ -467,7 +472,7 @@ const ja: Messages = {
     importPlaceholder: "ここにチームを貼り付け",
     editPlaceholder: "チームは空です",
     label: "Pokemon Showdownチームの生テキスト",
-    kept: "ニックネーム、レベル、性別、色違い、テラスタイプ、性格、努力値、個体値は保持されます。なつき度は無視されます。",
+    kept: "ニックネーム、レベル、性別、色違い、テラスタイプ、性格、努力値、個体値は保持されます。選択したゲームで対応している場合、なつき度も保持されます。",
     import: "インポート",
     update: "更新",
     imported: "チームをインポートしました",

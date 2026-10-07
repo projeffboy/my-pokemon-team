@@ -6,7 +6,12 @@ import {
 } from "@/shared/generation-rules";
 import type { Generation } from "@/types";
 import { MOVE_KEYS, type ReadonlyTeam } from "@/types";
-import { DEFAULT_LEVEL, getEv, getIv } from "@/shared/set-details";
+import {
+  DEFAULT_LEVEL,
+  DEFAULT_HAPPINESS,
+  getEv,
+  getIv,
+} from "@/shared/set-details";
 import { english, type Translation } from "@/i18n/translation";
 import { stableJson } from "./teams-storage";
 
@@ -103,6 +108,11 @@ export function describeTeamChange(
       t.advanced.level,
       previous.level ?? DEFAULT_LEVEL,
       current.level ?? DEFAULT_LEVEL,
+    );
+    add(
+      t.advanced.happiness,
+      previous.happiness ?? DEFAULT_HAPPINESS,
+      current.happiness ?? DEFAULT_HAPPINESS,
     );
     add(
       t.advanced.gender,

@@ -125,13 +125,16 @@ const de: Messages = {
     move: "Attacke",
     item: "Item",
     ability: "Fähigkeit",
+    hidden: "Versteckt",
     input: (slot: number, property: string) =>
       `${inputNames[property] ?? property} von Pokémon ${slot}`,
     itemIcon: (item: string) => `Symbol für ${item}`,
     nothingFound: "Nichts gefunden",
+    noOtherMoves: "Keine weiteren Attacken verfügbar.",
     selectPokemonFirst: "(du hast noch kein Pokémon ausgewählt)",
     list: "Liste",
     grid: "Raster",
+    bigGrid: "Großes Raster",
     pokemonInSlot: (pokemon: string, slot: number) =>
       `${pokemon} auf Platz ${slot} setzen`,
     removedPokemon: (pokemon: string, slot: number) =>
@@ -153,6 +156,7 @@ const de: Messages = {
     nameListView: "Ansicht der Namensliste",
     listView: "Listenansicht",
     gridView: "Rasteransicht",
+    bigGridView: "Große Rasteransicht",
     // The default names of new teams
     teamNumber: (number: number) => `Team ${number}`,
     unnamedTeam: "Team",
@@ -314,6 +318,7 @@ const de: Messages = {
     nickname: "Spitzname",
     nicknameLimit: (max: number) => `Maximal ${max} Zeichen.`,
     level: "Level",
+    happiness: "Freundschaft",
     gender: "Geschlecht",
     teraType: "Tera-Typ",
     nature: "Wesen",
@@ -479,7 +484,7 @@ const de: Messages = {
     importPlaceholder: "Team hier einfügen",
     editPlaceholder: "Dein Team ist leer",
     label: "Rohtext des Pokemon-Showdown-Teams",
-    kept: "Spitznamen, Level, Geschlechter, Schillernd, Tera-Typen, Wesen, EV und DV bleiben erhalten. Freundschaft wird ignoriert.",
+    kept: "Spitznamen, Level, Geschlechter, Schillernd, Tera-Typen, Wesen, EV und DV bleiben erhalten. Freundschaft bleibt ebenfalls erhalten, wenn das gewählte Spiel sie unterstützt.",
     import: "Importieren",
     update: "Aktualisieren",
     imported: "Team importiert",

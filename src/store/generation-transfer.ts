@@ -112,7 +112,11 @@ export function planGenerationTransfer(
           replacement: String(rules.fixedLevel),
         });
       member.level = rules.fixedLevel;
-    }
+    } else if (
+      member.level === undefined &&
+      previousRules.fixedLevel !== undefined
+    )
+      member.level = previousRules.fixedLevel;
     if (member.item && (!rules.items || !has(data.items[member.item]))) {
       loss("item", member.item);
       member.item = "";
@@ -159,6 +163,7 @@ export function planGenerationTransfer(
     removeDetail("nature", generation < 3);
     removeDetail("gender", generation === 1);
     removeDetail("shiny", generation === 1);
+    removeDetail("happiness", !rules.happiness);
     removeDetail("teraType", !rules.tera);
     const training = convertTraining(original, previousRules, rules);
     if (training) {

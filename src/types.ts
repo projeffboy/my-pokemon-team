@@ -163,10 +163,11 @@ export interface TeamPokemonProperties {
 }
 
 // The Advanced dialog's set details. Each is optional so a slot without them is unchanged:
-// a missing level is 100, missing EVs are 0, and missing IVs are 31.
+// a missing level is 100, happiness is 255, EVs are 0, and IVs are 31.
 export interface TeamPokemonDetails {
   nickname?: string;
   level?: number;
+  happiness?: number;
   gender?: Gender;
   shiny?: boolean;
   teraType?: string;
@@ -244,7 +245,7 @@ export interface MoveSortOrder {
   descending: boolean;
 }
 
-export type NameView = "list" | "grid";
+export type NameView = "list" | "grid" | "big-grid";
 
 export type TeamStatType = "typeDefence" | "typeCoverage";
 

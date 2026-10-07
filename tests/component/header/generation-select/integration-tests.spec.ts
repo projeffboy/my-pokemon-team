@@ -24,7 +24,7 @@ const expectSelectable = async (
 test.describe("Generation Select - Integration Tests", () => {
   test("lists only the pokemon of the chosen generation", async ({ page }) => {
     await page.getByRole("combobox", { name: "Generation" }).click();
-    await page.getByRole("option", { name: /^Gen 1/ }).click();
+    await page.locator('[role="option"][data-value="1"]').click();
     await expect(
       page.getByRole("combobox", { name: "Generation" }),
     ).toContainText("Gen 1 ");
@@ -34,7 +34,7 @@ test.describe("Generation Select - Integration Tests", () => {
     await expectSelectable(page, "Venusaur-Mega", false);
 
     await page.getByRole("combobox", { name: "Generation" }).click();
-    await page.getByRole("option", { name: /^Gen 7/ }).click();
+    await page.locator('[role="option"][data-value="7"]').click();
     await expectSelectable(page, "Venusaur-Mega", true);
     await expectSelectable(page, "Meganium-Mega", false);
     await expectSelectable(page, "Rowlet", true);
@@ -48,7 +48,7 @@ test.describe("Generation Select - Integration Tests", () => {
     // still scrolling into view can land on the neighbouring option
     await expect(async () => {
       await page.getByRole("combobox", { name: "Generation" }).click();
-      await page.getByRole("option", { name: /^Gen 1/ }).click();
+      await page.locator('[role="option"][data-value="1"]').click();
       await expect(
         page.getByRole("combobox", { name: "Generation" }),
       ).toContainText("Gen 1 ", { timeout: 1000 });
@@ -73,7 +73,7 @@ test.describe("Generation Select - Integration Tests", () => {
     page,
   }) => {
     await page.getByRole("combobox", { name: "Generation" }).click();
-    await page.getByRole("option", { name: "Gen 9 · Champions" }).click();
+    await page.locator('[role="option"][data-value="champions"]').click();
     await expect(
       page.getByRole("combobox", { name: "Generation" }),
     ).toContainText("Champions");
@@ -109,7 +109,7 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
       "Kyogre-Primal",
     );
     await page.getByRole("combobox", { name: "Generation" }).click();
-    await page.getByRole("option", { name: /^Gen 3/ }).press("Enter");
+    await page.locator('[role="option"][data-value="3"]').press("Enter");
     const dialog = page.getByRole("dialog");
     await expect(dialog).toContainText(
       "Your Pokémon will carry over with changes",
@@ -181,7 +181,7 @@ for (const incompatible of [false, true]) {
     const chooseGeneration = async () => {
       await page.getByRole("combobox", { name: "Generation" }).click();
       await page
-        .getByRole("option", { name: incompatible ? /^Gen 1/ : /^Gen 7/ })
+        .locator(`[role="option"][data-value="${incompatible ? 1 : 7}"]`)
         .click();
     };
     await chooseGeneration();
@@ -219,7 +219,7 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
     );
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Slowbro");
     await page.getByRole("combobox", { name: "Generation" }).click();
-    await page.getByRole("option", { name: /^Gen 1/ }).press("Enter");
+    await page.locator('[role="option"][data-value="1"]').press("Enter");
     const dialog = page.getByRole("dialog", {
       name: /^(Switch game or generation\? Gen 1|Switch game\? Gen 1)$/,
     });
@@ -258,7 +258,7 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
     await expect(dialog).not.toContainText("Rocky Helmet");
     await expect(dialog).not.toContainText("Regenerator");
     await expect(dialog).toContainText(
-      "Not used in Gen 1: Item, Ability, Nature, Gender, Shiny, and Tera Type.",
+      "Not used in Gen 1: Item, Ability, Nature, Shiny, and Tera Type.",
     );
     await expect(dialog).toContainText("Slack Off");
     const slowbro = dialog.getByRole("group", { name: "Slowbro", exact: true });
@@ -361,7 +361,7 @@ Claydol @
   });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Cacturne");
   await page.getByRole("combobox", { name: "Generation" }).click();
-  await page.getByRole("option", { name: /^Gen 9 · Champions/ }).press("Enter");
+  await page.locator('[role="option"][data-value="champions"]').press("Enter");
   const dialog = page.getByRole("dialog");
   await expect(dialog).toHaveAccessibleName("Switch game? Gen 9 · Champions");
   await expect(dialog).toBeVisible();
@@ -601,7 +601,7 @@ test("generation transfer: all six adjustments fit two columns on phones", async
   });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Cacturne");
   await page.getByRole("combobox", { name: "Generation" }).click();
-  await page.getByRole("option", { name: /^Gen 8 · SwSh/ }).press("Enter");
+  await page.locator('[role="option"][data-value="8"]').press("Enter");
   const dialog = page.getByRole("dialog");
   await expect(
     dialog.getByText("Your Pokémon will carry over with changes", {
@@ -684,7 +684,7 @@ Level: 50
   });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gardevoir");
   await page.getByRole("combobox", { name: "Generation" }).click();
-  await page.getByRole("option", { name: /^Gen 9 · Champions/ }).press("Enter");
+  await page.locator('[role="option"][data-value="champions"]').press("Enter");
   const dialog = page.getByRole("dialog");
   const universal = dialog.getByRole("list", {
     name: "For every Pokémon carrying over",
@@ -692,7 +692,9 @@ Level: 50
   });
   await expect(universal).toContainText("Level is set to 50.");
   await expect(universal).toContainText("IVs don’t apply in Champions.");
-  await expect(universal).toContainText("Training changes from EVs to SPs.");
+  await expect(universal).not.toContainText(
+    "Training changes from EVs to SPs.",
+  );
   await expect(
     dialog.getByText("Level is set to 50.", { exact: true }),
   ).toHaveCount(1);
@@ -754,19 +756,17 @@ Ariados @
   });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Slowking");
   await page.getByRole("combobox", { name: "Generation" }).click();
-  await page.getByRole("option", { name: /^Gen 2/ }).press("Enter");
+  await page.locator('[role="option"][data-value="2"]').press("Enter");
   const dialog = page.getByRole("dialog");
   const universal = dialog.getByRole("list", {
     name: "For every Pokémon carrying over",
     exact: true,
   });
-  await expect(universal).toContainText(
-    "Not used in Gen 2: Ability and Nature.",
-  );
-  await expect(universal).toContainText("IVs are converted into DVs.");
+  await expect(universal).toContainText("Not used in Gen 2: Ability.");
+  await expect(universal).not.toContainText("IVs are converted into DVs.");
   await expect(
     dialog.getByText("IVs are converted into DVs.", { exact: true }),
-  ).toHaveCount(1);
+  ).toHaveCount(0);
   await expect(dialog).toContainText(
     "Your Pokémon will carry over with changes",
   );
@@ -801,7 +801,7 @@ for (const action of ["Cancel", "Create empty team", "Clear existing team"]) {
     );
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Unown");
     await page.getByRole("combobox", { name: "Generation" }).click();
-    await page.getByRole("option", { name: /^Gen 1/ }).press("Enter");
+    await page.locator('[role="option"][data-value="1"]').press("Enter");
     const dialog = page.getByRole("dialog");
     await expect(dialog).toContainText("All Pokémon won’t carry over");
     await expect(dialog).not.toContainText("These Pokémon won’t carry over");
@@ -874,12 +874,16 @@ Jirachi @
 - Thunderbolt
 
 Kakuna @
+Ability: Shed Skin
+Bold Nature
+IVs: 0 Atk
 - Harden
 
 Mewtwo @
 - Thunder Wave
 
 Celebi @ Lum Berry
+EVs: 4 HP
 - Shock Wave
 
 Lapras @ Sitrus Berry
@@ -890,7 +894,7 @@ Lapras @ Sitrus Berry
   });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Swellow");
   await page.getByRole("combobox", { name: "Generation" }).click();
-  await page.getByRole("option", { name: /^Gen 2/ }).press("Enter");
+  await page.locator('[role="option"][data-value="2"]').press("Enter");
   const dialog = page.getByRole("dialog");
   const unavailable = dialog.getByRole("group", {
     name: "These Pokémon won’t carry over",
@@ -931,6 +935,62 @@ Lapras @ Sitrus Berry
   ).toBe(true);
 });
 
+test("generation transfer: only summarizes fields set on carrying Pokemon", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  for (const configured of [false, true]) {
+    const details =
+      configured ?
+        `Ability: Swift Swim
+Bold Nature
+Shiny: Yes
+IVs: 0 Atk
+EVs: 4 HP
+`
+      : "";
+    const team = `Seaking${configured ? " (F)" : ""} @ ${configured ? "Leftovers" : ""}
+${details}- Megahorn
+
+Torchic (F) @ Leftovers
+Ability: Blaze
+Bold Nature
+Shiny: Yes
+IVs: 0 Atk
+EVs: 4 HP
+- Ember
+`;
+    await page.goto(`/?team=${Buffer.from(team).toString("base64url")}&gen=3`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Seaking");
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page.locator('[role="option"][data-value="1"]').press("Enter");
+    const dialog = page.getByRole("dialog");
+    const summary = dialog.getByRole("list", {
+      name: "For every Pokémon carrying over",
+      exact: true,
+    });
+    if (configured) {
+      await expect(summary).toContainText(
+        "Not used in Gen 1: Item, Ability, Nature, Gender, and Shiny.",
+      );
+      await expect(summary).toContainText("IVs are converted into DVs.");
+      await expect(summary).toContainText(
+        "Training changes from EVs to Stat experience.",
+      );
+    } else {
+      await expect(summary).toHaveCount(0);
+      await expect(dialog).not.toContainText("IVs are converted into DVs.");
+      await expect(dialog).not.toContainText("Training changes");
+    }
+    await expect(
+      dialog.getByRole("group", { name: "Seaking", exact: true }),
+    ).toContainText("Megahorn");
+    await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  }
+});
+
 test("generation transfer: expands game names when the endpoint has room", async ({
   page,
 }) => {
@@ -941,7 +1001,7 @@ test("generation transfer: expands game names when the endpoint has room", async
   );
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Noctowl");
   await page.getByRole("combobox", { name: "Generation" }).click();
-  await page.getByRole("option", { name: /^Gen 2/ }).press("Enter");
+  await page.locator('[role="option"][data-value="2"]').press("Enter");
   const dialog = page.getByRole("dialog");
   const source = dialog.getByTitle(
     "Ruby Sapphire Emerald / FireRed LeafGreen",
