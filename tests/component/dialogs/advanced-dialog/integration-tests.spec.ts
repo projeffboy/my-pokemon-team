@@ -118,15 +118,16 @@ test.describe("Advanced Dialog - Integration Tests", () => {
       ).toHaveValue(legacy ? "15" : "31");
     });
   }
-  test("gender defaults to the only available option and shows its symbol", async ({
-    page,
-  }) => {
-    for (const { pokemon, gender, icon } of [
-      { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
-      { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
-      { pokemon: "Carbink", gender: "Genderless", icon: undefined },
-      { pokemon: "Swablu", gender: "Any", icon: undefined },
-    ]) {
+  for (const { pokemon, gender, icon } of [
+    { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
+    { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
+    { pokemon: "Carbink", gender: "Genderless", icon: undefined },
+    { pokemon: "Swablu", gender: "Any", icon: undefined },
+  ]) {
+    test(`${pokemon}'s default gender and symbol survive Reset and reload`, async ({
+      page,
+    }) => {
+      test.setTimeout(60000);
       await selectPokemon(page, pokemon);
       await openAdvanced(page);
       const dialog = page.getByRole("dialog", { name: "More details" });
@@ -143,13 +144,23 @@ test.describe("Advanced Dialog - Integration Tests", () => {
         gender,
       );
       await closeDialog(page);
-      await page.reload();
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(
+        page.getByLabel("Pokemon 1's name", { exact: true }),
+      ).toHaveValue(pokemon);
       await openAdvanced(page);
       await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
         gender,
       );
       await closeDialog(page);
-    }
+    });
+  }
+
+  test("Swablu's gender can be chosen as Male, Female or Any", async ({
+    page,
+  }) => {
+    test.setTimeout(60000);
+    await selectPokemon(page, "Swablu");
     await openAdvanced(page);
     const dialog = page.getByRole("dialog", { name: "More details" });
     await selectDialogOption(page, "Gender", "Male");
