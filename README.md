@@ -119,7 +119,7 @@ npm test
 
 Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 
-The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and pushes to `master`, and keeps the Playwright reports as an artifact. [Dependabot](.github/dependabot.yml) opens a weekly pull request for minor and patch updates, and one per major update, which CI checks like any other. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
+The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and pushes to `master`, and keeps the Playwright reports as artifacts. Development tests run once per browser profile on separate runners, with one worker each. The `Validate` check passes only after every browser profile and the shared checks pass. [Dependabot](.github/dependabot.yml) opens a weekly pull request for minor and patch updates, and one per major update, which CI checks like any other. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
 
 ## Major Credits
 
