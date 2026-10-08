@@ -274,7 +274,13 @@ const checkScoreAndPopover = async (
 
   // The popover content is usually in a portal, so we search globally in page.
   // Scope to the specific tooltip for this type to avoid ambiguity if multiple tooltips have same text (it is possible for playwright to activate another tooltip before the previous tooltip fades out)
-  const tooltip = page.getByRole("tooltip", { name: textToIdentifyPopover });
+  const tooltip = page.getByRole("tooltip", {
+    name: new RegExp(
+      textToIdentifyPopover
+        .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+        .replaceAll(":", "\\s*:"),
+    ),
+  });
 
   // Check for expected content
   for (const text of expectedPopoverText) {

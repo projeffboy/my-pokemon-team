@@ -304,30 +304,37 @@ const VirtualizedListbox = observer(
                   px: isGrid ? 0.5 : 0.75,
                   minWidth: 0,
                   flex: isGrid ? 1 : undefined,
-                  flexDirection: isGrid ? "column" : "row",
+                  flexDirection: "row",
                   fontSize: 12,
                   lineHeight: 1,
                 },
                 "& svg": { flexShrink: 0 },
                 "& > * > span[aria-hidden]": {
                   minWidth: 0,
-                  width: isGrid ? "100%" : undefined,
-                  overflowWrap: "anywhere",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
                 },
               }}
             >
               <ToggleButton value="list" aria-label={t.team.listView}>
                 <ViewListIcon fontSize="small" />
-                <span aria-hidden="true">{t.team.list}</span>
+                <span aria-hidden="true" title={t.team.list}>
+                  {t.team.list}
+                </span>
               </ToggleButton>
               <ToggleButton value="grid" aria-label={t.team.gridView}>
                 <GridViewIcon fontSize="small" />
-                <span aria-hidden="true">{t.team.grid}</span>
+                <span aria-hidden="true" title={t.team.grid}>
+                  {t.team.grid}
+                </span>
               </ToggleButton>
               {isGrid && (
                 <ToggleButton value="big-grid" aria-label={t.team.bigGridView}>
                   <ViewModuleIcon fontSize="small" />
-                  <span aria-hidden="true">{t.team.bigGrid}</span>
+                  <span aria-hidden="true" title={t.team.bigGrid}>
+                    {t.team.bigGrid}
+                  </span>
                 </ToggleButton>
               )}
             </ToggleButtonGroup>

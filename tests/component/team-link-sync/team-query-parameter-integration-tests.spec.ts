@@ -4,6 +4,7 @@ import {
   clickMenuItem,
   getTeamTextFromUrl,
   openTeamTools,
+  selectAbility,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
@@ -18,6 +19,39 @@ const savedState = (page: Page) =>
   );
 
 test.describe("Share Link - Integration Tests", () => {
+  test("keeps early selections when learnsets finish loading", async ({
+    page,
+  }) => {
+    let releaseLearnsets = () => {};
+    let markRequested = () => {};
+    const requested = new Promise<void>(resolve => {
+      markRequested = resolve;
+    });
+    const released = new Promise<void>(resolve => {
+      releaseLearnsets = resolve;
+    });
+    await page.route("**/src/data/learnsets.json*", async route => {
+      markRequested();
+      await released;
+      await route.continue();
+    });
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await requested;
+    await selectPokemon(page, "Gyarados");
+    await selectAbility(page, "Moxie");
+    releaseLearnsets();
+    await page.getByLabel("Pokemon 1's move1").fill("Waterfall");
+    await expect(
+      page.getByRole("option", { name: "Waterfall", exact: true }),
+    ).toBeVisible();
+    await page.getByLabel("Pokemon 1's move1").press("Escape");
+
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
+    await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue("Moxie");
+    expect(getTeamTextFromUrl(page)).toContain("Gyarados");
+    expect(getTeamTextFromUrl(page)).toContain("Ability: Moxie");
+  });
+
   test("fresh visits default to Champions and explicit regular Gen 9 links retain their game", async ({
     page,
   }) => {

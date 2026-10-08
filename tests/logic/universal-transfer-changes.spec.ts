@@ -134,3 +134,37 @@ test("only lists configured fields on named team slots", () => {
   expect(changes.ivsConversion).toBe("dvs");
   expect(changes.training).toBeUndefined();
 });
+
+test("default IV and DV conversions are omitted in either direction", () => {
+  for (const [fromGeneration, generation] of [
+    [7, 2],
+    [2, 7],
+  ] as const) {
+    for (const member of [
+      { name: "bulbasaur" },
+      { name: "bulbasaur", ivs: { hp: 31, atk: 31 } },
+    ]) {
+      const changes = universalTransferChanges(
+        { generation: fromGeneration, format: "" },
+        { generation, format: "" },
+        createTeam(member),
+      );
+      expect(changes.ivsConversion).toBeUndefined();
+      expect(changes.removed).toEqual([]);
+    }
+  }
+});
+
+test("Gen 2 shiny imports describe their implicit nondefault DVs", () => {
+  const team = createTeam({ name: "bulbasaur", shiny: true });
+  const changes = universalTransferChanges(
+    { generation: 2, format: "" },
+    { generation: 7, format: "" },
+    team,
+  );
+  expect(changes.ivsConversion).toBe("ivs");
+  expect(
+    changes.isUniversal({ index: 0, pokemon: "bulbasaur", field: "ivs" }),
+  ).toBe(true);
+  expect(team[0]?.ivs).toBeUndefined();
+});

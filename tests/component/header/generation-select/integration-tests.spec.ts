@@ -991,6 +991,85 @@ EVs: 4 HP
   }
 });
 
+test("generation transfer: compatible default stats switch without confirmation", async ({
+  page,
+}) => {
+  for (const [from, generation] of [
+    [7, 2],
+    [7, 1],
+    [2, 7],
+    [1, 7],
+  ]) {
+    await page.goto(
+      `/?team=${Buffer.from("Bulbasaur @\n").toString("base64url")}&gen=${from}`,
+    );
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Bulbasaur");
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page
+      .locator(`[role="option"][data-value="${generation}"]`)
+      .press("Enter");
+    await expect(
+      page.getByRole("combobox", { name: "Generation" }),
+    ).toContainText(`Gen ${generation}`);
+    await expect(page.getByRole("dialog")).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Bulbasaur");
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const stored = JSON.parse(
+            localStorage.getItem("mypokemonteam") ?? "{}",
+          );
+          return stored.teams?.find(
+            (team: { id: string }) => team.id === stored.currentTeamId,
+          )?.generation;
+        }),
+      )
+      .toBe(generation);
+  }
+});
+
+test("generation transfer: Gen 2 preserves shiny defaults and explains gender changes", async ({
+  page,
+}) => {
+  for (const shiny of [true, false]) {
+    const team = shiny ? "Bulbasaur @\nShiny: Yes\n" : "Bulbasaur (F) @\n";
+    await page.goto(`/?team=${Buffer.from(team).toString("base64url")}&gen=7`);
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Bulbasaur");
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page.locator('[role="option"][data-value="2"]').press("Enter");
+    const dialog = page.getByRole("dialog");
+    if (!shiny) {
+      await expect(
+        dialog.getByRole("group", { name: "Bulbasaur", exact: true }),
+      ).toContainText("Gender: F → M");
+      await dialog
+        .getByRole("button", { name: "Update existing team", exact: true })
+        .click();
+    }
+    await expect(dialog).toBeHidden();
+    await expect(
+      page.getByRole("combobox", { name: "Generation" }),
+    ).toContainText("Gen 2");
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const stored = JSON.parse(
+            localStorage.getItem("mypokemonteam") ?? "{}",
+          );
+          const current = stored.teams?.find(
+            (team: { id: string }) => team.id === stored.currentTeamId,
+          );
+          return {
+            generation: current?.generation,
+            shiny: !!current?.team[0]?.shiny,
+            gender: current?.team[0]?.gender,
+          };
+        }),
+      )
+      .toEqual({ generation: 2, shiny, gender: "M" });
+  }
+});
+
 test("generation transfer: expands game names when the endpoint has room", async ({
   page,
 }) => {

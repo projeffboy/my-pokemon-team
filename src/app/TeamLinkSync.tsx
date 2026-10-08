@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
@@ -12,11 +12,12 @@ import {
 // Keeps the `team` URL parameter and the store's team in sync.
 // Not rendered visually; mount once.
 const TeamLinkSync = observer(function TeamLinkSync() {
-  // Parsing a team validates its moves, so nothing syncs until the learnsets have loaded
   const { learnsetsLoaded } = store;
 
-  useEffect(() => {
-    if (!learnsetsLoaded) return;
+  useLayoutEffect(() => {
+    // Team text needs learnsets; empty visits must initialize before the first edit.
+    if (!learnsetsLoaded && new URLSearchParams(location.search).get("team"))
+      return;
     let lastSyncedTeamParameter: string | null = null;
     let lastContext = "|";
     let initialNavigation = true;

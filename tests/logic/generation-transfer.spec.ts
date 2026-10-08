@@ -4,11 +4,125 @@ import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { createTeam } from "./shared/team";
 import { convertTraining } from "@/store/generation-transfer/training";
-import { generationRules, getDv, hpDv } from "@/shared/generation-rules";
-import { evTotal } from "@/shared/set-details";
+import {
+  generationRules,
+  getDv,
+  hpDv,
+  isShinyDv,
+} from "@/shared/generation-rules";
+import { evTotal, getIv } from "@/shared/set-details";
+import { STAT_KEYS } from "@/types";
 
 const data = await loadGenerationTransferData();
 const from = { generation: 9 as const, format: "" };
+
+test("default IVs and DVs transfer without reported adjustments", () => {
+  for (const [fromGeneration, generation] of [
+    [7, 2],
+    [7, 1],
+    [2, 7],
+    [1, 7],
+  ] as const) {
+    for (const member of [
+      { name: "bulbasaur" },
+      { name: "bulbasaur", ivs: { hp: 31, atk: 31 } },
+    ]) {
+      const original = createTeam(member);
+      const plan = planGenerationTransfer(
+        original,
+        { generation: fromGeneration, format: "" },
+        generation,
+        "",
+        data,
+      );
+      expect(plan.losses).toEqual([]);
+      expect(plan.team[0]?.name).toBe("bulbasaur");
+      for (const stat of STAT_KEYS)
+        expect(getIv(plan.team[0]?.ivs, stat)).toBe(31);
+      expect(original[0]).toMatchObject(member);
+    }
+  }
+});
+
+test("custom IVs and implicit Gen 2 shiny DVs retain conversion warnings", () => {
+  const custom = planGenerationTransfer(
+    createTeam({ name: "bulbasaur", ivs: { atk: 0 } }),
+    { generation: 7, format: "" },
+    2,
+    "",
+    data,
+  );
+  expect(custom.losses).toEqual([
+    expect.objectContaining({
+      field: "ivs",
+      conversion: expect.objectContaining({
+        from: "ivs",
+        to: "dvs",
+        before: expect.objectContaining({ atk: 0 }),
+        after: expect.objectContaining({ atk: 0 }),
+      }),
+    }),
+  ]);
+  const shiny = createTeam({ name: "bulbasaur", shiny: true });
+  const modern = planGenerationTransfer(
+    shiny,
+    { generation: 2, format: "" },
+    7,
+    "",
+    data,
+  );
+  expect(modern.losses).toEqual([
+    expect.objectContaining({
+      field: "ivs",
+      conversion: expect.objectContaining({
+        from: "dvs",
+        to: "ivs",
+        before: expect.objectContaining({ def: 10, spa: 10, spe: 10 }),
+        after: expect.objectContaining({ def: 21, spa: 21, spe: 21 }),
+      }),
+    }),
+  ]);
+  expect(modern.team[0]?.shiny).toBe(true);
+  expect(shiny[0]?.ivs).toBeUndefined();
+});
+
+test("modern shiny sets keep shiny Gen 2 DVs when their IVs are unset", () => {
+  const original = createTeam({ name: "bulbasaur", shiny: true });
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 7, format: "" },
+    2,
+    "",
+    data,
+  );
+  expect(plan.team[0]?.shiny).toBe(true);
+  expect(isShinyDv(plan.team[0]!)).toBe(true);
+  expect(plan.losses).toEqual([]);
+  expect(original[0]?.shiny).toBe(true);
+  expect(original[0]?.ivs).toBeUndefined();
+});
+
+test("Gen 2 DV-derived gender changes are reported for explicit modern genders", () => {
+  const original = createTeam({ name: "bulbasaur", gender: "F" });
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 7, format: "" },
+    2,
+    "",
+    data,
+  );
+  expect(plan.team[0]?.gender).toBe("M");
+  expect(plan.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "bulbasaur",
+      field: "gender",
+      value: "F",
+      replacement: "M",
+    },
+  ]);
+  expect(original[0]?.gender).toBe("F");
+});
 
 test("happiness carries over only to games that support it", () => {
   const original = createTeam({ name: "clefable", happiness: 0 });

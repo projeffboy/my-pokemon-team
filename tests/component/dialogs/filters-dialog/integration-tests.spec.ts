@@ -4,7 +4,9 @@ import {
   openFilters,
   openSort,
   selectDialogOption,
+  selectMove,
   selectPokemon,
+  getTeamTextFromUrl,
 } from "helper";
 import type { Page } from "@playwright/test";
 
@@ -268,6 +270,34 @@ test.describe("Filters Integration Tests", () => {
     for (const move of notSelectableMoves) {
       await checkMoveNotSelectable(page, move);
     }
+  });
+
+  test("selected moves stay visible when the Viable filter excludes them", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Luvdisc");
+    await selectMove(page, "Attract");
+    await selectFilterOption(page, "Moves", "Viable");
+
+    const selected = page.getByLabel("Pokemon 1's move1");
+    await expect(selected).toHaveValue("Attract");
+    expect(getTeamTextFromUrl(page)).toContain("- Attract");
+
+    const empty = page.getByLabel("Pokemon 1's move2");
+    await empty.fill("Attract");
+    await expect(
+      page.getByRole("option", { name: "Attract", exact: true }),
+    ).toHaveCount(0);
+    await empty.press("Escape");
+    await expect(selected).toHaveValue("Attract");
+
+    await selected.click();
+    await selected
+      .locator("..")
+      .getByRole("button", { name: "Clear", exact: true })
+      .click();
+    await expect(selected).toHaveValue("");
+    expect(getTeamTextFromUrl(page)).not.toContain("- Attract");
   });
 
   test("Ability Filter", async ({ page }) => {

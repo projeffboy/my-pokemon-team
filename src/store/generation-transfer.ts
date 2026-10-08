@@ -18,7 +18,7 @@ import {
   setLegacyShiny,
   gen2Dvs,
 } from "@/shared/generation-rules";
-import { DEFAULT_LEVEL, getIv } from "@/shared/set-details";
+import { DEFAULT_LEVEL, getIv, MAX_IV } from "@/shared/set-details";
 import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import pokedex from "@/data/pokedex";
 import { pokemonNameInverse } from "@/shared/names";
@@ -206,27 +206,28 @@ export function planGenerationTransfer(
           : Math.floor(getIv(source.ivs, stat) / 2) * 2 + 1,
         ]),
       );
-      if (rules.legacy) syncDvs(member, generation);
-      if (generation === 2 && member.shiny) setLegacyShiny(member, true);
+      if (generation === 2 && original.shiny) setLegacyShiny(member, true);
+      else if (rules.legacy) syncDvs(member, generation);
       const after = Object.fromEntries(
         STAT_KEYS.map(stat => [
           stat,
           rules.legacy ? getDv(member, stat) : getIv(member.ivs, stat),
         ]),
       );
-      losses.push({
-        index,
-        pokemon: original.name,
-        field: "ivs",
-        conversion: {
-          from: previousRules.legacy ? "dvs" : "ivs",
-          to: rules.legacy ? "dvs" : "ivs",
-          before,
-          after,
-          limited: false,
-          approximate: true,
-        },
-      });
+      if (STAT_KEYS.some(stat => getIv(source.ivs, stat) !== MAX_IV))
+        losses.push({
+          index,
+          pokemon: original.name,
+          field: "ivs",
+          conversion: {
+            from: previousRules.legacy ? "dvs" : "ivs",
+            to: rules.legacy ? "dvs" : "ivs",
+            before,
+            after,
+            limited: false,
+            approximate: true,
+          },
+        });
     } else if (
       rules.legacy &&
       (getIv(member.ivs, "spa") !== getIv(member.ivs, "spd") ||
@@ -236,6 +237,14 @@ export function planGenerationTransfer(
     if (generation === 2) {
       if (member.shiny) setLegacyShiny(member, true);
       else syncDvs(member, generation);
+      if (original.gender && member.gender !== original.gender)
+        losses.push({
+          index,
+          pokemon: original.name,
+          field: "gender",
+          value: original.gender,
+          replacement: member.gender,
+        });
     }
     return member;
   });

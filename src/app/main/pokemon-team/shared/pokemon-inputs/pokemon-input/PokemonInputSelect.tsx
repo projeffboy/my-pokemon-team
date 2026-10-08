@@ -17,7 +17,7 @@ import PokemonIcon from "@/app/shared/PokemonIcon";
 import HiddenAbilityLabel from "./pokemon-input-select/HiddenAbilityLabel";
 import { isHiddenAbility } from "@/shared/pokedex";
 import { moveTypeIn } from "@/shared/generation-data";
-import { englishNames } from "@/i18n/names";
+import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
@@ -41,11 +41,11 @@ interface SelectOption {
 }
 
 // Typing matches the label in the current language or the English name
-const englishName = (pokemonProperty: string, value: string) =>
-  pokemonProperty === "name" ? englishNames.pokemon(value)
-  : pokemonProperty === "item" ? englishNames.item(value)
-  : pokemonProperty === "ability" ? value
-  : englishNames.move(value);
+const optionName = (names: Names, pokemonProperty: string, value: string) =>
+  pokemonProperty === "name" ? names.pokemon(value)
+  : pokemonProperty === "item" ? names.item(value)
+  : pokemonProperty === "ability" ? names.ability(value)
+  : names.move(value);
 
 const PokemonInputSelect = observer(function PokemonInputSelect({
   optionValues,
@@ -104,7 +104,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     () =>
       createFilterOptions<SelectOption>({
         stringify: option =>
-          `${option.label} ${englishName(pokemonProperty, option.value)}`,
+          `${option.label} ${optionName(englishNames, pokemonProperty, option.value)}`,
       }),
     [pokemonProperty],
   );
@@ -119,8 +119,14 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     [optionValues, optionLabels],
   );
   const selectedOption = useMemo(
-    () => options.find(option => option.value === value) || null,
-    [options, value],
+    () =>
+      value ?
+        (options.find(option => option.value === value) ?? {
+          value,
+          label: optionName(names, pokemonProperty, value),
+        })
+      : null,
+    [options, value, names, pokemonProperty],
   );
   const id = `react-select-single-${teamIndex}-${pokemonProperty}`;
   const isMove = pokemonProperty.startsWith("move");

@@ -1,9 +1,47 @@
 import { test, expect } from "fixtures";
-import { openTeamTools, selectItem, selectMove, selectPokemon } from "helper";
+import {
+  getTeamTextFromUrl,
+  openTeamTools,
+  selectAbility,
+  selectItem,
+  selectMove,
+  selectPokemon,
+} from "helper";
 import type { Page } from "@playwright/test";
 import ja from "@/i18n/ja";
 
 test.describe("Pokemon Card - Unit Tests", () => {
+  test("imported items and abilities stay visible outside the current options", async ({
+    page,
+  }) => {
+    const team = Buffer.from(
+      "Gengar @ Berserk Gene\nAbility: Levitate\n",
+    ).toString("base64url");
+    await page.goto(`/?gen=9&team=${team}`);
+    await expect(page.getByLabel("Pokemon 1's item")).toHaveValue(
+      "Berserk Gene",
+    );
+    await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
+      "Levitate",
+    );
+    expect(getTeamTextFromUrl(page)).toContain("Gengar @ Berserk Gene");
+    expect(getTeamTextFromUrl(page)).toContain("Ability: Levitate");
+
+    await page.getByRole("button", { name: "Language", exact: true }).click();
+    await page.getByRole("menuitem", { name: "日本語" }).click();
+    await expect(page.getByLabel(ja.team.input(1, "ability"))).toHaveValue(
+      "ふゆう",
+    );
+    await page.getByRole("button", { name: ja.language, exact: true }).click();
+    await page.getByRole("menuitem", { name: "English", exact: true }).click();
+
+    await selectAbility(page, "Cursed Body");
+    await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
+      "Cursed Body",
+    );
+    expect(getTeamTextFromUrl(page)).toContain("Ability: Cursed Body");
+  });
+
   test("Hidden labels appear only with More and enough space beside a selected hidden ability", async ({
     page,
   }) => {

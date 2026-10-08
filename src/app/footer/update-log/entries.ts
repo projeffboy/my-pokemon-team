@@ -9,6 +9,15 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 8, 2026",
+    changes: [
+      "Switching generations no longer opens an empty confirmation for Pokémon with default stats.",
+      "Switching to Gen 2 now keeps shiny Pokémon shiny and previews required gender changes.",
+      "Fixed early team selections being cleared when Pokémon data finished loading afterward.",
+      "Selected moves, items and abilities now stay visible when filters or the selected generation exclude them, e.g. Attract with the Viable moves filter.",
+    ],
+  },
+  {
     date: "Oct 7, 2026",
     changes: [
       "Happiness is now kept in Showdown imports, exports and saved teams, with an editor for games that support it.",

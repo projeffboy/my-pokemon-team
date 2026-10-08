@@ -1,6 +1,6 @@
-import { generationRules } from "@/shared/generation-rules";
-import type { ReadonlyTeam, SavedTeam } from "@/types";
-import { MAX_IV } from "@/shared/set-details";
+import { generationRules, gen2Dvs } from "@/shared/generation-rules";
+import { STAT_KEYS, type ReadonlyTeam, type SavedTeam } from "@/types";
+import { getIv, MAX_IV } from "@/shared/set-details";
 import type { TransferLoss } from "../generation-transfer";
 
 type UniversalField =
@@ -23,11 +23,10 @@ export function universalTransferChanges(
   const before = generationRules(from.generation, from.format);
   const after = generationRules(to.generation, to.format);
   const members = team.filter(member => member.name);
-  const customIvs = members.some(member =>
-    Object.values(member.ivs ?? {}).some(
-      value => value !== undefined && value !== MAX_IV,
-    ),
-  );
+  const customIvs = members.some(member => {
+    const source = from.generation === 2 ? gen2Dvs(member) : member;
+    return STAT_KEYS.some(stat => getIv(source.ivs, stat) !== MAX_IV);
+  });
   const hasField = (field: UniversalField) =>
     field === "ivs" ? customIvs : (
       members.some(member => {
