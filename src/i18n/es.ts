@@ -391,6 +391,8 @@ const es: Messages = {
     ready: (count: number) => `Equipos en esta copia: ${count}`,
     error:
       "No se pudo leer este archivo. Elige una copia de seguridad de equipos guardada desde este sitio.",
+    tooLarge:
+      "Esta copia tiene demasiados equipos para añadirlos. Prueba con un archivo de copia más pequeño.",
     saveFailed: "No se pudo guardar la copia. Inténtalo de nuevo.",
     saved: "Copia de equipos guardada",
     alreadySaved: "Estos equipos ya están en tu colección.",

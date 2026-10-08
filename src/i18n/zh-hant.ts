@@ -392,6 +392,7 @@ const zhHant: Messages = {
     restore: "新增隊伍",
     ready: (count: number) => `此備份中的隊伍數：${count}`,
     error: "無法讀取此檔案。請選擇在本網站儲存的隊伍備份。",
+    tooLarge: "此備份中的隊伍太多，無法新增。請嘗試隊伍較少的備份檔案。",
     saveFailed: "無法儲存備份。請再試一次。",
     saved: "已儲存隊伍備份",
     alreadySaved: "這些隊伍已在你的隊伍列表中。",

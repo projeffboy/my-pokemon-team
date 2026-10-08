@@ -408,6 +408,8 @@ const fr: Messages = {
     ready: (count: number) => `Équipes dans cette sauvegarde : ${count}`,
     error:
       "Impossible de lire ce fichier. Choisis une sauvegarde d'équipes enregistrée depuis ce site.",
+    tooLarge:
+      "Cette sauvegarde contient trop d’équipes à ajouter. Essaie un fichier de sauvegarde plus petit.",
     saveFailed: "Impossible d'enregistrer la sauvegarde. Réessaie.",
     saved: "Sauvegarde des équipes enregistrée",
     alreadySaved: "Ces équipes sont déjà dans ta collection.",

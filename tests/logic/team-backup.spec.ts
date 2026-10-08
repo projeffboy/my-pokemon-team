@@ -202,6 +202,27 @@ test("size limits use UTF-8 bytes and reject oversized imports and exports", () 
   ).toBeUndefined();
 });
 
+test("exports fall back to compact JSON when indentation would exceed the byte limit", () => {
+  const source = collection();
+  source.teams[0]!.name = "";
+  const backup = { format: "mypokemonteam", version: 1, ...source };
+  const encoder = new TextEncoder();
+  const remaining =
+    MAX_TEAM_BACKUP_BYTES -
+    encoder.encode(`${JSON.stringify(backup)}\n`).byteLength;
+  source.teams[0]!.name = "x".repeat(remaining);
+  expect(
+    encoder.encode(`${JSON.stringify(backup, null, 2)}\n`).byteLength,
+  ).toBeGreaterThan(MAX_TEAM_BACKUP_BYTES);
+  const text = serializeTeamBackup(source);
+  expect(encoder.encode(text).byteLength).toBe(MAX_TEAM_BACKUP_BYTES);
+  expect(text).toBe(`${JSON.stringify(backup)}\n`);
+  const restored = parseTeamBackup(text);
+  expect(restored?.teams[0]?.name.length).toBe(remaining);
+  expect(restored?.teams[0]?.team).toEqual(source.teams[0]!.team);
+  expect(restored?.draftTeam).toEqual(source.draftTeam);
+});
+
 test("additive merges remap colliding IDs and leave source and existing records untouched", () => {
   const backup = document();
   const existing = { ...createSavedTeam({ name: "Keep me" }), id: "complete" };
@@ -326,7 +347,10 @@ test("restored complete records survive local saving, another setting change, an
   const store = new Store(storage);
   const source = collection();
   const before = store.currentTeamId;
-  expect(store.restoreTeamBackup(serializeTeamBackup(source))?.added).toBe(3);
+  expect(store.restoreTeamBackup(serializeTeamBackup(source))).toEqual({
+    added: 3,
+    skipped: 0,
+  });
   await new Promise(resolve => setTimeout(resolve, 500));
   expect(items.has(STORAGE_KEY)).toBe(true);
   store.nameView = "grid";
@@ -381,6 +405,45 @@ test("a failed restore save keeps complete noncurrent teams available for backup
   expect(reloaded.teams).toEqual(rescued?.teams);
   expect(reloaded.saveFailed).toBe(false);
 });
+
+for (const draft of [false, true]) {
+  test(`a valid restore that would exceed the combined byte limit preserves ${draft ? "the current draft" : "the current team and undo history"}`, async ({
+    store,
+  }) => {
+    const megabyte = 1024 * 1024;
+    store.filters.moves = "e".repeat((draft ? 1 : 2) * megabyte);
+    store.selectPokemon(0, "glimmet");
+    if (draft)
+      store.openUnsavedTeam(
+        createTeam({ name: "klefki", nickname: "d".repeat(2 * megabyte) }),
+      );
+    await new Promise(resolve => setTimeout(resolve, 500));
+    const current = store.currentTeam;
+    const before = store.exportTeamBackup();
+    const canUndo = store.canUndo;
+    const incoming = createSavedTeam({
+      name: "Imported collection",
+      filters: {
+        ...current.filters,
+        moves: "i".repeat((draft ? 8 : 9) * megabyte),
+      },
+    });
+    const file = serializeTeamBackup({
+      teams: [incoming],
+      currentTeamId: incoming.id,
+    });
+    expect(parseTeamBackup(file)?.teams).toHaveLength(1);
+    expect(store.restoreTeamBackup(file)).toEqual({ error: "tooLarge" });
+    expect(store.exportTeamBackup() === before).toBe(true);
+    expect(store.currentTeam).toBe(current);
+    expect(store.canUndo).toBe(canUndo);
+    if (!draft) {
+      expect(canUndo).toBe(true);
+      store.undo();
+      expect(store.team[0]!.name).toBe("");
+    }
+  });
+}
 
 for (const operation of ["export", "restore"] as const) {
   test(`${operation} reads other tabs' latest saved teams while preserving pending local edits and history`, () => {

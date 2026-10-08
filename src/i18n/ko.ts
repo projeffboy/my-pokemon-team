@@ -409,6 +409,8 @@ const ko: Messages = {
     ready: (count: number) => `이 백업의 팀 수: ${count}`,
     error:
       "이 파일을 읽을 수 없습니다. 이 사이트에서 저장한 팀 백업을 선택하세요.",
+    tooLarge:
+      "이 백업은 팀이 너무 많아 추가할 수 없습니다. 팀이 더 적은 백업 파일을 선택하세요.",
     saveFailed: "백업을 저장할 수 없습니다. 다시 시도하세요.",
     saved: "팀 백업을 저장했습니다",
     alreadySaved: "이미 컬렉션에 있는 팀입니다.",

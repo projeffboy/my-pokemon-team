@@ -408,6 +408,8 @@ const de: Messages = {
     ready: (count: number) => `Teams in dieser Sicherung: ${count}`,
     error:
       "Diese Datei konnte nicht gelesen werden. Wähle eine Team-Sicherung, die auf dieser Seite gespeichert wurde.",
+    tooLarge:
+      "Diese Sicherung enthält zu viele Teams zum Hinzufügen. Versuche es mit einer kleineren Sicherungsdatei.",
     saveFailed:
       "Die Sicherung konnte nicht gespeichert werden. Bitte versuche es erneut.",
     saved: "Team-Sicherung gespeichert",

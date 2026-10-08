@@ -22,7 +22,7 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
     count: number;
   }>();
   const [isReading, setIsReading] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState<"error" | "tooLarge">();
   const readVersion = useRef(0);
   useEffect(
     () => () => {
@@ -37,7 +37,7 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
     if (!selected) return;
     const version = ++readVersion.current;
     setFile(undefined);
-    setHasError(false);
+    setError(undefined);
     setIsReading(true);
     try {
       const text =
@@ -50,9 +50,9 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
           text,
           count: backup.teams.length + (backup.draftTeam ? 1 : 0),
         });
-      } else setHasError(true);
+      } else setError("error");
     } catch {
-      if (version === readVersion.current) setHasError(true);
+      if (version === readVersion.current) setError("error");
     } finally {
       if (version === readVersion.current) setIsReading(false);
     }
@@ -75,7 +75,11 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
     if (!file) return;
     const result = store.restoreTeamBackup(file.text);
     if (!result) {
-      setHasError(true);
+      setError("error");
+      return;
+    }
+    if ("error" in result) {
+      setError(result.error);
       return;
     }
     store.openSnackbar(
@@ -130,15 +134,15 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
             </Typography>
           </>
         )}
-        {hasError && (
+        {error && (
           <Alert severity="error" sx={{ mt: 2 }}>
-            {messages.error}
+            {messages[error]}
           </Alert>
         )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t.cancel}</Button>
-        <Button disabled={!file || isReading || hasError} onClick={restore}>
+        <Button disabled={!file || isReading || !!error} onClick={restore}>
           {messages.restore}
         </Button>
       </DialogActions>

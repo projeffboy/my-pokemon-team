@@ -277,6 +277,17 @@ export class Store {
     const existing =
       this.draftTeam ? [...this.teams, this.draftTeam] : this.teams;
     const { added, skipped } = mergeTeamBackup(existing, backup);
+    try {
+      serializeTeamBackup({
+        teams: [...toJS(this.teams), ...added],
+        currentTeamId: this.currentTeamId,
+        ...(this.draftTeam && { draftTeam: toJS(this.draftTeam) }),
+      });
+    } catch (error) {
+      return error instanceof RangeError ?
+          { error: "tooLarge" as const }
+        : undefined;
+    }
     this.teams.push(...added);
     return { added: added.length, skipped };
   }

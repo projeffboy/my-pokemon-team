@@ -140,9 +140,12 @@ export function serializeTeamBackup(collection: TeamBackupCollection): string {
     ...collection,
   };
   if (!isTeamBackup(backup)) throw new Error("Invalid team backup");
-  const text = `${JSON.stringify(backup, null, 2)}\n`;
-  if (!withinSizeLimit(text)) throw new Error("Team backup is too large");
-  return text;
+  const pretty = `${JSON.stringify(backup, null, 2)}\n`;
+  if (withinSizeLimit(pretty)) return pretty;
+  const compact = `${JSON.stringify(backup)}\n`;
+  if (!withinSizeLimit(compact))
+    throw new RangeError("Team backup is too large");
+  return compact;
 }
 
 export function parseTeamBackup(text: string): TeamBackup | undefined {

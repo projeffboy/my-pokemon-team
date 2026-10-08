@@ -388,6 +388,7 @@ const zhHans: Messages = {
     restore: "添加队伍",
     ready: (count: number) => `此备份中的队伍数：${count}`,
     error: "无法读取此文件。请选择在本网站保存的队伍备份。",
+    tooLarge: "此备份中的队伍太多，无法添加。请尝试队伍较少的备份文件。",
     saveFailed: "无法保存备份。请重试。",
     saved: "已保存队伍备份",
     alreadySaved: "这些队伍已在你的队伍列表中。",

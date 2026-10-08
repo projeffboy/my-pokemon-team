@@ -393,6 +393,8 @@ const ptBR: Messages = {
     ready: (count: number) => `Times neste backup: ${count}`,
     error:
       "Não foi possível ler este arquivo. Escolha um backup de times salvo neste site.",
+    tooLarge:
+      "Este backup contém times demais para adicionar. Tente um arquivo de backup menor.",
     saveFailed: "Não foi possível salvar o backup. Tente novamente.",
     saved: "Backup dos times salvo",
     alreadySaved: "Esses times já estão na sua coleção.",

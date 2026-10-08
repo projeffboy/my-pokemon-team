@@ -20,6 +20,96 @@ const openBackups = async (page: Page) => {
 };
 
 test.describe("Team backups", () => {
+  test("a backup that would exceed collection capacity leaves current work unchanged", async ({
+    page,
+  }) => {
+    test.slow();
+    const current = createSavedTeam({ name: "Current work", generation: 9 });
+    current.id = "current";
+    const existing = createSavedTeam({ name: "Stored", generation: 9 });
+    existing.id = "stored";
+    existing.filters.moves = "x".repeat(2 * 1024 * 1024);
+    const incoming = createSavedTeam({ name: "Incoming", generation: 9 });
+    incoming.id = "incoming";
+    incoming.filters.moves = "y".repeat(9 * 1024 * 1024);
+    await page.addInitScript(
+      teams => {
+        if (sessionStorage.getItem("seeded-backup-capacity")) return;
+        localStorage.setItem(
+          "mypokemonteam",
+          JSON.stringify({ teams, currentTeamId: "current" }),
+        );
+        sessionStorage.setItem("seeded-backup-capacity", "true");
+      },
+      [current, existing],
+    );
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await openTeams(page);
+    await page
+      .getByRole("button", { name: "Load Current work", exact: true })
+      .click();
+    const storedState = () =>
+      page.evaluate(async () => {
+        const { teams, currentTeamId } = JSON.parse(
+          localStorage.getItem("mypokemonteam")!,
+        );
+        const digest = await crypto.subtle.digest(
+          "SHA-256",
+          new TextEncoder().encode(JSON.stringify({ teams, currentTeamId })),
+        );
+        return Array.from(new Uint8Array(digest), byte =>
+          byte.toString(16).padStart(2, "0"),
+        ).join("");
+      });
+    const before = await storedState();
+    await openTeams(page);
+    const dialog = await openBackups(page);
+    const choose = async () => {
+      await dialog.locator("input[type=file]").setInputFiles({
+        name: "backup.json",
+        mimeType: "application/json",
+        buffer: Buffer.from(
+          JSON.stringify({
+            format: "mypokemonteam",
+            version: 1,
+            teams: [incoming],
+            currentTeamId: incoming.id,
+          }),
+        ),
+      });
+    };
+    await choose();
+    const add = dialog.getByRole("button", { name: "Add teams", exact: true });
+    await expect(dialog.getByText("Teams in this backup: 1")).toBeVisible();
+    await expect(add).toBeEnabled();
+    await add.click();
+    await expect(dialog.getByRole("alert")).toHaveText(
+      "This backup has too many teams to add. Try a smaller backup file.",
+    );
+    await expect(add).toBeDisabled();
+    expect(await storedState()).toBe(before);
+
+    incoming.filters.moves = "Protect";
+    await choose();
+    await expect(dialog.getByRole("alert")).toHaveCount(0);
+    await expect(add).toBeEnabled();
+    await add.click();
+    await expect(
+      page
+        .getByRole("dialog", { name: "Teams", exact: true })
+        .getByRole("list", { name: "Saved teams" })
+        .getByRole("listitem"),
+    ).toHaveCount(3);
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            JSON.parse(localStorage.getItem("mypokemonteam")!).currentTeamId,
+        ),
+      )
+      .toBe("current");
+  });
+
   test("downloaded backups restore complete teams without replacing current work or duplicating repeated imports", async ({
     page,
   }) => {

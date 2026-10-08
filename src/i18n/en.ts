@@ -389,6 +389,8 @@ const en = {
     ready: (count: number) => `Teams in this backup: ${count}`,
     error:
       "This file couldn't be read. Choose a team backup saved by this site.",
+    tooLarge:
+      "This backup has too many teams to add. Try a smaller backup file.",
     saveFailed: "Could not save the backup. Please try again.",
     saved: "Team backup saved",
     alreadySaved: "These teams are already in your collection.",
