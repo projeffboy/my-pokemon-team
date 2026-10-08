@@ -2,6 +2,7 @@ import moves from "@/data/moves";
 import formats from "@/data/formats";
 import typechart from "@/data/typechart";
 import pastGenerations from "@/data/past-generations";
+import gameVariants from "@/data/game-variants";
 import { LATEST_GENERATION } from "./generations";
 import {
   POKEMON_TYPES,
@@ -15,13 +16,26 @@ export const typesIn = (generation: Generation): readonly PokemonType[] =>
   pastGenerations[generation]?.types ?? POKEMON_TYPES;
 
 // E.g. 'bite' => 'Dark', or 'Normal' in gen 1
-export const moveTypeIn = (move: string, generation = LATEST_GENERATION) => {
+export const moveTypeIn = (
+  move: string,
+  generation = LATEST_GENERATION,
+  format = "",
+) => {
   const past = pastGenerations[generation];
-  return past && move in past.moves ? past.moves[move] : moves[move]?.type;
+  return (
+    gameVariants[format]?.moves?.[move]?.type ??
+    (past && move in past.moves ? past.moves[move] : moves[move]?.type)
+  );
 };
 
-export const moveDataIn = (move: string, generation = LATEST_GENERATION) =>
-  pastGenerations[generation]?.moveData?.[move] ?? moves[move];
+export const moveDataIn = (
+  move: string,
+  generation = LATEST_GENERATION,
+  format = "",
+) =>
+  gameVariants[format]?.moves?.[move] ??
+  pastGenerations[generation]?.moveData?.[move] ??
+  moves[move];
 
 export const pokemonFormatIn = (
   pokemon: string,

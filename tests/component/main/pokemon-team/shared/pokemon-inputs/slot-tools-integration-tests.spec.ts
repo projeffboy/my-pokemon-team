@@ -10,6 +10,62 @@ import {
 } from "helper";
 
 test.describe("Slot tools - Integration Tests", () => {
+  test("phone slot actions provide separate touch targets and open their dialogs", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 800 });
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
+    await selectPokemon(page, "Cufant");
+    await openTeamTools(page);
+    const random = page.getByRole("button", {
+      name: "Random pokemon for slot 1",
+    });
+    const details = page.getByRole("button", {
+      name: "More details for slot 1",
+    });
+    const info = page.getByRole("button", { name: "About Cufant" });
+    await expect(random).toBeEnabled();
+    for (const width of [320, 390, 430]) {
+      await page.setViewportSize({ width, height: 800 });
+      for (const action of [random, details, info]) {
+        await expect
+          .poll(() =>
+            action.evaluate(button => {
+              const bounds = button.getBoundingClientRect();
+              return bounds.width >= 44 && bounds.height >= 44;
+            }),
+          )
+          .toBe(true);
+      }
+      await expect
+        .poll(() =>
+          details.evaluate(button => button.scrollWidth <= button.clientWidth),
+        )
+        .toBe(true);
+      const randomBounds = await random.boundingBox();
+      const detailsBounds = await details.boundingBox();
+      expect(randomBounds).not.toBeNull();
+      expect(detailsBounds).not.toBeNull();
+      expect(randomBounds!.x + randomBounds!.width).toBeLessThanOrEqual(
+        detailsBounds!.x,
+      );
+      await details.click();
+      const advanced = page.getByRole("dialog", { name: "More details" });
+      await expect(advanced).toBeVisible();
+      await advanced.getByRole("button", { name: "Done", exact: true }).click();
+      await expect(advanced).toBeHidden();
+      await info.click();
+      const species = page.getByRole("dialog", { name: "Cufant", exact: true });
+      await expect(species).toBeVisible();
+      await species.getByRole("button", { name: "Close", exact: true }).click();
+      await expect(species).toBeHidden();
+    }
+  });
+
   test("adds slot action icons and labels in priority order as room grows", async ({
     page,
   }) => {
@@ -23,7 +79,7 @@ test.describe("Slot tools - Integration Tests", () => {
     });
     for (const { width, edit, label } of [
       { width: 600, edit: false, label: "" },
-      { width: 320, edit: true, label: "" },
+      { width: 320, edit: false, label: "" },
       { width: 420, edit: true, label: "Random" },
       { width: 480, edit: true, label: "Randomize" },
     ]) {

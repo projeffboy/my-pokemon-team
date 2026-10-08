@@ -8,7 +8,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { useIsMdDown } from "@/app/shared/WidthContext";
+import { useIsMdDown, useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
@@ -40,9 +40,9 @@ const textWidth = (text: string) => {
 const buttonRow = { display: "flex", gap: 0.5, containerType: "inline-size" };
 const smallButton = {
   flex: "1 1 0",
-  minWidth: 0,
+  minWidth: { xxs: 44, sm: 0 },
   // With the row's 4px of padding, as tall as one of the inputs beside it
-  height: 28,
+  height: { xxs: 44, sm: 28 },
   px: 0.5,
   fontSize: 12,
   letterSpacing: 0,
@@ -64,6 +64,7 @@ const PokemonInputs = observer(function PokemonInputs({
   const translation = useTranslation();
   const { t, names } = translation;
   const isMdDown = useIsMdDown();
+  const isSmDown = useIsSmDown();
   const hasTypeIcons = useTypeIcons();
   const showTools = store.isMoreOpen;
   const member = store.team[teamIndex];
@@ -80,11 +81,13 @@ const PokemonInputs = observer(function PokemonInputs({
   const label = names.pokemon(pokemon);
   const { setCardRef, setGripRef, listeners, isDragged, isTarget } =
     useSlotDrag(teamIndex, isDragOverlay);
-  const detailsIconAt = Math.ceil(textWidth(t.team.advanced)) + 60;
-  const randomAt = detailsIconAt + Math.ceil(textWidth(t.team.random)) + 4;
+  const compactDetailsIconAt = Math.ceil(textWidth(t.team.advanced)) + 60;
+  const detailsIconAt = compactDetailsIconAt + (isSmDown ? 18 : 0);
+  const randomAt =
+    compactDetailsIconAt + Math.ceil(textWidth(t.team.random)) + 4;
   const randomizeAt = Math.max(
     randomAt + 1,
-    detailsIconAt + Math.ceil(textWidth(t.team.randomize)) + 4,
+    compactDetailsIconAt + Math.ceil(textWidth(t.team.randomize)) + 4,
   );
   const diceRoll = useDiceRoll();
   const randomize = (event: SyntheticEvent<HTMLElement>) => {
@@ -239,7 +242,13 @@ const PokemonInputs = observer(function PokemonInputs({
                 className={SLOT_INFO_CLASS}
                 aria-label={t.team.about(label)}
                 onClick={() => store.openDialog("info", { teamIndex })}
-                sx={{ position: "absolute", top: 0, right: -8 }}
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  right: -8,
+                  width: { xxs: 44, sm: 36 },
+                  height: { xxs: 44, sm: 36 },
+                }}
               >
                 <InfoOutlinedIcon fontSize="small" />
               </IconButton>

@@ -24,6 +24,9 @@ function storedTeam() {
       canSave = value;
     },
     savedState: () => JSON.parse(state) as StoredState,
+    saveFromOtherTab(value: StoredState) {
+      state = JSON.stringify(value);
+    },
     editOtherTab(edit: (state: StoredState) => void) {
       const theirs = JSON.parse(state) as StoredState;
       edit(theirs);
@@ -80,6 +83,7 @@ test("a failed selection save survives another tab's changes until storage recov
 
 test("a failed save keeps unsaved team edits through later changes and retries when storage recovers", async () => {
   const { store, setCanSave, savedState } = storedTeam();
+  expect(store.saveFailed).toBe(false);
   store.selectPokemon(0, "mareanie");
   await settle();
   expect(savedState().teams[0]!.team[0]!.name).toBe("mareanie");
@@ -89,15 +93,68 @@ test("a failed save keeps unsaved team edits through later changes and retries w
   await settle();
   expect(store.team[0]!.name).toBe("toxapex");
   expect(savedState().teams[0]!.team[0]!.name).toBe("mareanie");
+  expect(store.saveFailed).toBe(true);
 
   store.nameView = "grid";
   await settle();
   expect(store.team[0]!.name).toBe("toxapex");
+  expect(store.saveFailed).toBe(true);
   expect(store.canUndo).toBe(true);
   setCanSave(true);
   store.nameView = "big-grid";
   await settle();
   expect(savedState().teams[0]!.team[0]!.name).toBe("toxapex");
+  expect(store.saveFailed).toBe(false);
+});
+
+test("blocked storage reports failure only after an attempted save", async () => {
+  let writes = 0;
+  const storage = {
+    getItem: () => null,
+    setItem: () => {
+      writes++;
+      throw new Error("SecurityError");
+    },
+  } as unknown as Storage;
+  const store = new Store(storage);
+  store.openUnsavedTeam(createTeam({ name: "minior" }));
+  await settle();
+  expect(writes).toBe(0);
+  expect(store.saveFailed).toBe(false);
+  store.team[0]!.move1 = "shellsmash";
+  await settle();
+  expect(writes).toBeGreaterThan(0);
+  expect(store.saveFailed).toBe(true);
+});
+
+test("undoing all pending changes clears a save failure without another write", async () => {
+  const { store, setCanSave, savedState } = storedTeam();
+  setCanSave(false);
+  store.selectPokemon(0, "tandemaus");
+  await settle();
+  expect(store.saveFailed).toBe(true);
+  store.undo();
+  await settle();
+  expect(store.team).toEqual(savedState().teams[0]!.team);
+  expect(store.saveFailed).toBe(false);
+});
+
+test("a peer saving this tab's pending changes clears failure even while this tab cannot write", async () => {
+  const { store, setCanSave, savedState, saveFromOtherTab } = storedTeam();
+  setCanSave(false);
+  store.selectPokemon(0, "pawmi");
+  await settle();
+  expect(store.saveFailed).toBe(true);
+  const backup = JSON.parse(store.exportTeamBackup());
+  expect(store.saveFailed).toBe(true);
+  saveFromOtherTab({ ...savedState(), teams: backup.teams });
+  store.exportTeamBackup();
+  expect(store.saveFailed).toBe(false);
+  expect(store.team[0]!.name).toBe("pawmi");
+  store.selectPokemon(0, "pawmo");
+  await settle();
+  expect(store.saveFailed).toBe(true);
+  expect(savedState().teams[0]!.team[0]!.name).toBe("pawmi");
 });
 
 test("a draft's first failed save keeps the imported team and its settings", async () => {

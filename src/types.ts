@@ -16,6 +16,7 @@ export interface PokedexEntry {
   types?: (PokemonType | "Bird")[];
   name?: string;
   baseSpecies?: string;
+  changesFrom?: string;
   otherFormes?: string[];
   prevo?: string;
   forme?: string;
@@ -77,7 +78,17 @@ export type TypeChart = Record<
   Record<PokemonType, number> & Partial<Record<TypeChartStatus, number>>
 >;
 
-export type Items = Record<string, { name?: string; spritenum?: number }>;
+export type Items = Record<
+  string,
+  {
+    name?: string;
+    spritenum?: number;
+    onPlate?: PokemonType;
+    onDrive?: PokemonType;
+    onMemory?: PokemonType;
+    naturalGift?: { type?: PokemonType };
+  }
+>;
 
 // A past generation's type chart holds only the types that existed then
 export type PastTypeChart = Partial<
@@ -98,6 +109,13 @@ export interface PastGeneration {
 }
 
 export type PastGenerations = Partial<Record<Generation, PastGeneration>>;
+
+export interface GameData {
+  moves?: Moves;
+  baseStats?: Record<string, BaseStats>;
+}
+
+export type GameVariantData = Record<string, GameData>;
 
 export type Natures = Record<
   string,

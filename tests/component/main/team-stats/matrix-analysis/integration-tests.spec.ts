@@ -1,4 +1,5 @@
 import { test, expect } from "fixtures";
+import { LETS_GO } from "@/shared/game-variants";
 import {
   isXs,
   openAnalysis,
@@ -9,6 +10,23 @@ import {
 } from "helper";
 
 test.describe("Matrix Analysis - Integration Tests", () => {
+  test("Let's Go Absorb contributes its native coverage to the matrix", async ({
+    page,
+  }) => {
+    const team = Buffer.from("Oddish\n- Absorb").toString("base64url");
+    await page.goto(`/?game=${encodeURIComponent(LETS_GO)}&team=${team}`);
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Absorb");
+    await openAnalysis(page, "Matrix Analysis");
+    const matrix = page.getByRole("region", { name: "Matrix Analysis" });
+    await matrix.getByRole("button", { name: "Coverage", exact: true }).click();
+    await expect(
+      matrix.getByRole("cell", {
+        name: "Oddish's Absorb (Grass) does 2x to Water",
+        exact: true,
+      }),
+    ).toHaveText("×2");
+  });
+
   test("the defence matrix reflects Air Balloon and Dry Skin", async ({
     page,
   }) => {

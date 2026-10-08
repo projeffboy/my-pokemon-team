@@ -375,6 +375,8 @@ const ja: Messages = {
     exportAll: "すべてエクスポート",
     copyAll: "すべてコピー",
     savedInBrowser: "チームはこのブラウザに保存されます。",
+    saveFailed:
+      "ブラウザにチームを保存できませんでした。バックアップを保存してチームを残しましょう。",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "表示中",
     open: "開く",
@@ -385,6 +387,23 @@ const ja: Messages = {
     copiedAll: "すべてのチームをコピーしました",
     notCopiedAll: "チームをコピーできませんでした。",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "チームのバックアップ",
+    description:
+      "チームの名前、ゲーム、フィルター、ポケモンの詳細を含め、すべてのチームを保存します。",
+    save: "バックアップを保存",
+    restoreDescription:
+      "バックアップファイルからチームを追加します。今あるチームはそのまま残ります。",
+    chooseFile: "バックアップファイルを選ぶ",
+    restore: "チームを追加",
+    ready: (count: number) => `このバックアップのチーム数: ${count}`,
+    error:
+      "このファイルを読み込めませんでした。このサイトで保存したチームのバックアップを選んでください。",
+    saveFailed: "バックアップを保存できませんでした。もう一度お試しください。",
+    saved: "チームのバックアップを保存しました",
+    alreadySaved: "これらのチームはすでにコレクションにあります。",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "ゲームまたは世代を変更しますか？",

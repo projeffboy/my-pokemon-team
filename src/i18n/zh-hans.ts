@@ -367,6 +367,7 @@ const zhHans: Messages = {
     exportAll: "全部导出",
     copyAll: "全部复制",
     savedInBrowser: "队伍保存在此浏览器中。",
+    saveFailed: "浏览器无法保存你的队伍。请保存备份以保留队伍。",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "使用中",
     open: "打开",
@@ -377,6 +378,20 @@ const zhHans: Messages = {
     copiedAll: "已复制所有队伍",
     notCopiedAll: "无法复制队伍。",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "队伍备份",
+    description: "保存所有队伍，包括名称、游戏、筛选条件和宝可梦的详细信息。",
+    save: "保存备份",
+    restoreDescription: "从备份文件中添加队伍。你已有的队伍会保留。",
+    chooseFile: "选择备份文件",
+    restore: "添加队伍",
+    ready: (count: number) => `此备份中的队伍数：${count}`,
+    error: "无法读取此文件。请选择在本网站保存的队伍备份。",
+    saveFailed: "无法保存备份。请重试。",
+    saved: "已保存队伍备份",
+    alreadySaved: "这些队伍已在你的队伍列表中。",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "切换游戏或世代？",

@@ -384,6 +384,8 @@ const ko: Messages = {
     exportAll: "전체 내보내기",
     copyAll: "전체 복사",
     savedInBrowser: "팀은 이 브라우저에 저장됩니다.",
+    saveFailed:
+      "브라우저에 팀을 저장하지 못했습니다. 팀을 보관하려면 백업을 저장하세요.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "열림",
     open: "열기",
@@ -394,6 +396,23 @@ const ko: Messages = {
     copiedAll: "모든 팀을 복사했습니다",
     notCopiedAll: "팀을 복사하지 못했습니다.",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "팀 백업",
+    description:
+      "이름, 게임, 필터, 포켓몬의 상세 정보를 포함한 모든 팀을 저장합니다.",
+    save: "백업 저장",
+    restoreDescription:
+      "백업 파일에서 팀을 추가합니다. 기존 팀은 그대로 유지됩니다.",
+    chooseFile: "백업 파일 선택",
+    restore: "팀 추가",
+    ready: (count: number) => `이 백업의 팀 수: ${count}`,
+    error:
+      "이 파일을 읽을 수 없습니다. 이 사이트에서 저장한 팀 백업을 선택하세요.",
+    saveFailed: "백업을 저장할 수 없습니다. 다시 시도하세요.",
+    saved: "팀 백업을 저장했습니다",
+    alreadySaved: "이미 컬렉션에 있는 팀입니다.",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "게임 또는 세대를 변경할까요?",

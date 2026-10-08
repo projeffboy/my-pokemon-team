@@ -8,8 +8,6 @@ import type {
   TeamPokemon,
 } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "@/shared/generations";
-import { generationRules } from "@/shared/generation-rules";
-import { MAX_HAPPINESS, DEFAULT_HAPPINESS } from "@/shared/set-details";
 import { isLocale, type Locale } from "@/i18n/locales";
 import {
   createEmptyTeam,
@@ -65,17 +63,11 @@ function sanitizeMember(value: unknown): TeamPokemon {
   };
   if (typeof raw.nickname === "string") member.nickname = raw.nickname;
   if (typeof raw.level === "number") member.level = raw.level;
-  if (
-    typeof raw.happiness === "number" &&
-    Number.isInteger(raw.happiness) &&
-    raw.happiness >= 0 &&
-    raw.happiness <= MAX_HAPPINESS &&
-    raw.happiness !== DEFAULT_HAPPINESS
-  )
+  if (typeof raw.happiness === "number" && Number.isFinite(raw.happiness))
     member.happiness = raw.happiness;
   if (raw.gender === "M" || raw.gender === "F" || raw.gender === "N")
     member.gender = raw.gender;
-  if (raw.shiny === true) member.shiny = true;
+  if (typeof raw.shiny === "boolean") member.shiny = raw.shiny;
   if (typeof raw.teraType === "string") member.teraType = raw.teraType;
   if (typeof raw.nature === "string") member.nature = raw.nature;
   if (isStatMap(raw.evs)) member.evs = raw.evs;
@@ -99,8 +91,6 @@ export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
     isGeneration(value.generation) ? value.generation : LATEST_GENERATION;
   const format = string(value.format);
   const team = sanitizeTeam(value.team);
-  if (!generationRules(generation, format).happiness)
-    for (const member of team) delete member.happiness;
   return {
     id: value.id,
     name: string(value.name),

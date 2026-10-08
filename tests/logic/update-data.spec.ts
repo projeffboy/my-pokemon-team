@@ -5,6 +5,7 @@ import {
   nameChanges,
   pick,
   projectFormats,
+  projectGameVariant,
   projectPastGenerations,
   projectTypeChart,
   projectHiddenPowerSpreads,
@@ -113,6 +114,50 @@ test("moves keep their secondary status chance and sound flag only", () => {
       secondary: null,
     }),
   ).toEqual({ name: "Boomburst", flags: { sound: 1 } });
+});
+
+test("only non-Z Plates supply Judgment's type", () => {
+  expect(projections.Items({ name: "Draco Plate", onPlate: "Dragon" })).toEqual(
+    {
+      name: "Draco Plate",
+      onPlate: "Dragon",
+    },
+  );
+  expect(
+    projections.Items({
+      name: "Dragonium Z",
+      onPlate: "Dragon",
+      zMove: "Dragon",
+    }),
+  ).toEqual({ name: "Dragonium Z" });
+  expect(
+    projections.Items({
+      name: "Liechi Berry",
+      naturalGift: { type: "Grass", basePower: 100 },
+    }),
+  ).toEqual({ name: "Liechi Berry", naturalGift: { type: "Grass" } });
+});
+
+test("battle formes preserve the specific species they inherit their moves from", () => {
+  const entry = {
+    name: "Meowstic-F-Mega",
+    baseSpecies: "Meowstic",
+    forme: "F-Mega",
+    battleOnly: "Meowstic-F",
+  };
+  expect(projections.Pokedex(entry, {})).toEqual({
+    name: "Meowstic-F-Mega",
+    baseSpecies: "Meowstic",
+    forme: "F-Mega",
+    changesFrom: "Meowstic-F",
+  });
+  expect(entry).not.toHaveProperty("changesFrom");
+  expect(
+    projections.Pokedex(
+      { name: "Mega", baseSpecies: "Base", forme: "Mega" },
+      {},
+    ),
+  ).toMatchObject({ changesFrom: "Base" });
 });
 
 test("formats mark champions legality, inherited through battle-only formes", () => {
@@ -363,6 +408,54 @@ test("natures keep their name and stat changes", () => {
     projections.Natures({ name: "Jolly", plus: "spe", minus: "spa" }),
   ).toEqual({ name: "Jolly", plus: "spe", minus: "spa" });
   expect(projections.Natures({ name: "Hardy" })).toEqual({ name: "Hardy" });
+});
+
+test("game variants keep native move and base-stat changes without copying standard data", () => {
+  const stats = { hp: 60, atk: 100, def: 105, spa: 130, spd: 105, spe: 120 };
+  const base = {
+    pokedex: {
+      starmiemega: { baseStats: stats },
+      ordinary: { baseStats: stats },
+    },
+    moves: {
+      absorb: {
+        name: "Absorb",
+        type: "Grass",
+        category: "Special",
+        basePower: 20,
+      },
+      tackle: {
+        name: "Tackle",
+        type: "Normal",
+        category: "Physical",
+        basePower: 40,
+      },
+    },
+    typechart: {},
+  };
+  const variant = projectGameVariant(base, {
+    pokedex: {
+      starmiemega: { inherit: true, baseStats: { ...stats, atk: 140 } },
+    },
+    moves: {
+      absorb: { inherit: true, basePower: 40 },
+      tackle: { inherit: true, pp: 35 },
+    },
+  });
+  expect(variant).toEqual({
+    moves: {
+      absorb: {
+        name: "Absorb",
+        type: "Grass",
+        category: "Special",
+        basePower: 40,
+      },
+    },
+    baseStats: { starmiemega: { ...stats, atk: 140 } },
+  });
+  expect(projectGameVariant(base, {})).toEqual({});
+  expect(base.pokedex.starmiemega.baseStats.atk).toBe(100);
+  expect(base.moves.absorb.basePower).toBe(20);
 });
 
 test("past generations resolve Showdown's mods, newest first, and keep what differs", () => {

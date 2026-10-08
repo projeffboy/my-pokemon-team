@@ -79,6 +79,38 @@ test("the coverage matrix picks each slot's best damaging move against a type", 
   expect(matrix.Normal?.[3]).toBeNull();
 });
 
+test("the defence matrix names immunity-removing held items as its cause", () => {
+  const matrix = defenceMatrix(
+    createTeam(
+      { name: "tornadus", item: "ironball" },
+      { name: "rhyperior", item: "ringtarget" },
+    ),
+  );
+  expect(matrix.Ground?.[0]).toEqual({
+    multiplier: 1,
+    reason: "Ground does 1x to Tornadus (Flying) with Iron Ball",
+  });
+  expect(matrix.Electric?.[1]).toEqual({
+    multiplier: 1,
+    reason: "Electric does 1x to Rhyperior (Ground/Rock) with Ring Target",
+  });
+});
+
+test("the coverage matrix uses Judgment's held Plate instead of its user's forme", () => {
+  const team = createTeam({
+    name: "arceusdragon",
+    ability: "Multitype",
+    item: "dragoniumz",
+    move1: "judgment",
+  });
+  expect(coverageMatrix(team, undefined, 7).Dragon?.[0]).toEqual({
+    multiplier: 1,
+    reason: "Arceus-Dragon's Judgment (Normal) does 1x to Dragon",
+  });
+  team[0].item = "dracoplate";
+  expect(coverageMatrix(team, undefined, 7).Dragon?.[0]?.multiplier).toBe(2);
+});
+
 test("Scrappy lets Exploud's Normal and Fighting moves hit Ghost neutrally", () => {
   for (const move of ["headbutt", "lowkick"]) {
     const team = createTeam({

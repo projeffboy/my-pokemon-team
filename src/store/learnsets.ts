@@ -1,4 +1,6 @@
 import viableMoves from "@/data/viable-moves";
+import pokedex from "@/data/pokedex";
+import { pokemonNameInverse } from "@/shared/names";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { generationBit, generationRules } from "@/shared/generation-rules";
 import type {
@@ -8,9 +10,8 @@ import type {
   ReadonlyTeam,
 } from "@/types";
 import { englishNames, type Names } from "@/i18n/names";
-import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
+import { previousEvolution } from "./shared/pokemon";
 
-const REGIONS = ["alola", "galar", "hisui", "paldea"];
 const completeLearnsets = new Map<string, readonly string[]>();
 
 // The learnsets are most of the bundled data, so they load after the app instead of blocking it.
@@ -39,21 +40,13 @@ export function completeLearnset(pokemon: string): readonly string[] {
 }
 
 function buildCompleteLearnset(pokemon: string): string[] {
-  let completeLearnset: string[] = learnsets[pokemon] ?? [];
-
-  let baseForme = getBaseForme(pokemon) ?? pokemon; // since learnsets[pokemon] requires pokemon to be at its base forme
-
-  const region = REGIONS.find(region => pokemon.includes(region));
-  if (region) baseForme = `${baseForme}${region}`;
-  completeLearnset = [...completeLearnset, ...(learnsets[baseForme] ?? [])];
-
-  while (true) {
-    const prevo = previousEvolution(baseForme);
-    if (!prevo) break;
-    baseForme = prevo;
-
-    // Append previous evolution learnset to current learnset
-    completeLearnset = [...completeLearnset, ...(learnsets[baseForme] ?? [])];
+  let completeLearnset: string[] = [];
+  const checked = new Set<string>();
+  let parent: string | undefined = pokemon;
+  while (parent && !checked.has(parent)) {
+    checked.add(parent);
+    completeLearnset.push(...(learnsets[parent] ?? []));
+    parent = learnsetParent(parent);
   }
 
   // turning array to set removes duplicates then back to array
@@ -92,6 +85,27 @@ function buildCompleteLearnset(pokemon: string): string[] {
   }
 
   return completeLearnset;
+}
+
+function learnsetParent(pokemon: string): string | undefined {
+  const entry = pokedex[pokemon];
+  if (!entry) return undefined;
+  if (!learnsets[pokemon] && entry.forme) {
+    return pokemonNameInverse(entry.changesFrom ?? entry.baseSpecies ?? "");
+  }
+  if (entry.prevo) return previousEvolution(pokemon);
+  if (entry.changesFrom && entry.baseSpecies !== "Kyurem")
+    return pokemonNameInverse(entry.changesFrom);
+
+  // Formes such as cap Pikachu can inherit their base species' egg moves.
+  let base = pokemonNameInverse(entry.baseSpecies ?? "");
+  let prevo = base && previousEvolution(base);
+  if (!prevo) return undefined;
+  while (prevo) {
+    base = prevo;
+    prevo = previousEvolution(base);
+  }
+  return base;
 }
 
 // Can `pokemon` learn `move`?

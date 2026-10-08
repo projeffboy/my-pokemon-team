@@ -1,5 +1,6 @@
 import type { PokemonType } from "@/types";
 import moves from "@/data/moves";
+import items from "@/data/items";
 import { pokemonTypes } from "@/shared/pokedex";
 import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
@@ -16,15 +17,27 @@ export function typeAgainstPokemon(
   generation = LATEST_GENERATION,
 ) {
   if (generation < 3) pokemonAbility = undefined;
-  if (generation < 2) item = undefined;
+  if (generation < 2 || (generation >= 4 && pokemonAbility === "Klutz"))
+    item = undefined;
   const typechart = typechartIn(generation);
-  const [type1, type2] = pokemonTypes(pokemon, generation);
-  const type1Resistance = type1 ? (typechart[type1]?.[type] ?? 0) : 0;
+  const types = pokemonTypes(pokemon, generation);
+  const [type1, type2] = types;
+  const grounded = item === "ironball" && generation >= 4;
+  const ignoresTypeImmunity = item === "ringtarget" && generation >= 5;
+  const resistance = (pokemonType: PokemonType | undefined) => {
+    const score = pokemonType ? (typechart[pokemonType]?.[type] ?? 0) : 0;
+    return (
+        score === 2 && (ignoresTypeImmunity || (grounded && type === "Ground"))
+      ) ?
+        0
+      : score;
+  };
+  const type1Resistance = resistance(type1);
 
   let effectiveness = type1Resistance;
 
   if (type2) {
-    const type2Resistance = typechart[type2]?.[type] ?? 0;
+    const type2Resistance = resistance(type2);
 
     if (type1Resistance === 2 || type2Resistance === 2) {
       effectiveness = 3;
@@ -34,6 +47,15 @@ export function typeAgainstPokemon(
   } else if (effectiveness === 2) {
     effectiveness = 3;
   }
+
+  // From Gen 5, Iron Ball also makes Flying holders take neutral Ground damage.
+  if (
+    grounded &&
+    generation >= 5 &&
+    type === "Ground" &&
+    types.includes("Flying")
+  )
+    effectiveness = 0;
 
   const halveDamage = () => {
     if (effectiveness !== 3)
@@ -67,6 +89,10 @@ export function typeAgainstPokemon(
         break;
       case "Levitate":
       case "Eelevate":
+        if (type === "Ground" && !grounded) {
+          effectiveness = 3;
+        }
+        break;
       case "Earth Eater":
         if (type === "Ground") {
           effectiveness = 3;
@@ -145,9 +171,12 @@ export function moveType(
   pokemon: string,
   ability?: string,
   generation = LATEST_GENERATION,
+  format = "",
+  item?: string,
 ) {
   if (generation < 3) ability = undefined;
-  const rawType = moveTypeIn(move, generation);
+  if (generation >= 4 && ability === "Klutz") item = "";
+  const rawType = moveTypeIn(move, generation, format);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
 
@@ -195,35 +224,50 @@ export function moveType(
     };
     moveType = types[pokemon] ?? moveType;
   } else if (move === "judgment") {
-    moveType = pokemonTypes(pokemon, generation)[0] ?? moveType;
+    moveType =
+      item === undefined ?
+        (pokemonTypes(pokemon, generation)[0] ?? moveType)
+      : (items[item]?.onPlate ?? moveType);
   } else if (move === "ivycudgel") {
     moveType = pokemonTypes(pokemon, generation).at(-1) ?? moveType;
   } else if (move === "technoblast") {
     // For Genesect
-    switch (pokemon) {
-      case "genesectdouse":
-        moveType = "Water";
-        break;
-      case "genesectshock":
-        moveType = "Electric";
-        break;
-      case "genesectburn":
-        moveType = "Fire";
-        break;
-      case "genesectchill":
-        moveType = "Ice";
-        break;
-      default:
-    }
+    if (item !== undefined) moveType = items[item]?.onDrive ?? moveType;
+    else
+      switch (pokemon) {
+        case "genesectdouse":
+          moveType = "Water";
+          break;
+        case "genesectshock":
+          moveType = "Electric";
+          break;
+        case "genesectburn":
+          moveType = "Fire";
+          break;
+        case "genesectchill":
+          moveType = "Ice";
+          break;
+        default:
+      }
   } else if (move === "multiattack") {
     // For Silvally
-    const type = pokemon.replace("silvally", "") || "normal";
-    const capitalizedType = type.charAt(0).toUpperCase() + type.slice(1);
-
-    if (isPokemonType(capitalizedType)) moveType = capitalizedType;
+    moveType =
+      item === undefined ?
+        (pokemonTypes(pokemon, generation)[0] ?? moveType)
+      : (items[item]?.onMemory ?? moveType);
+  } else if (move === "naturalgift" && item !== undefined) {
+    moveType = items[item]?.naturalGift?.type ?? moveType;
   } else if (ability === "Liquid Voice" && moves[move]?.flags?.sound === 1) {
     moveType = "Water";
   }
+
+  if (
+    ability === "Normalize" &&
+    generation <= 4 &&
+    move !== "struggle" &&
+    moveType
+  )
+    moveType = "Normal";
 
   return moveType;
 }
@@ -231,8 +275,17 @@ export function moveType(
 export function isMoveStrongEnough(
   move: string,
   generation = LATEST_GENERATION,
+  format = "",
+  item?: string,
+  ability?: string,
 ) {
-  const moveProperties = moveDataIn(move, generation);
+  // Every Natural Gift berry has at least 60 power, in every generation.
+  if (move === "naturalgift")
+    return (
+      !(generation >= 4 && ability === "Klutz") &&
+      !!items[item ?? ""]?.naturalGift?.type
+    );
+  const moveProperties = moveDataIn(move, generation, format);
 
   return (
     moveProperties &&
@@ -252,12 +305,18 @@ export function moveAgainstType(
   pokemon: string,
   ability?: string,
   generation = LATEST_GENERATION,
+  format = "",
+  item?: string,
 ) {
   if (generation < 3) ability = undefined;
-  const attackType = moveType(move, pokemon, ability, generation);
+  const attackType = moveType(move, pokemon, ability, generation, format, item);
   const defender = typechartIn(generation)[typeAgainst];
 
-  if (!isMoveStrongEnough(move, generation) || !attackType) return undefined;
+  if (
+    !isMoveStrongEnough(move, generation, format, item, ability) ||
+    !attackType
+  )
+    return undefined;
   let score = defender?.[attackType];
   if (
     (ability === "Scrappy" || ability === "Mind's Eye") &&

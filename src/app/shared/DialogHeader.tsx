@@ -19,6 +19,8 @@ export default function DialogHeader({
 }) {
   return (
     <DialogTitle
+      id={`${id}-heading`}
+      aria-label={title}
       sx={{
         display: "flex",
         alignItems: "center",

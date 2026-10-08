@@ -1,6 +1,6 @@
 # [My Pokemon Team](https://mypokemonteam.com)
 
-An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A and Pokemon Champions. Try it at [mypokemonteam.com](https://mypokemonteam.com).
+An all-purpose Pokemon teambuilder for generations 1-9, including Legends: Z-A and Pokemon Champions. Try it at [mypokemonteam.com](https://mypokemonteam.com).
 
 ![My Pokemon Team Screenshot](.github/mypokemonteam-screenshot-2026.png)
 
@@ -10,13 +10,23 @@ An all-purpose Pokemon teambuilder for generations 6-9, including Legends: Z-A a
 2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
 3. There's a team checklist, and a matrix of every type against every pokemon
 4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
-5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on)
+5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on). Team backups keep all of these details in a file you can restore on another device
 6. The sprites are animated, which is nice
 7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI, and Brazilian Portuguese, with the English names until the games are in Portuguese
 
+## Backing Up Teams
+
+Open **Teams → Team backups → Save backup** to download a JSON file with every saved team and the current unsaved draft. It keeps team names, generations, games, formats, filters, empty teams, and Pokemon details, including older games' training values.
+
+To restore it, open **Teams → Team backups → Choose backup file**, select the file, and press **Add teams**. Restoring adds teams without replacing your existing teams or changing the team you are editing. Importing the same backup again does not create extra copies.
+
+Backup files are read on your device and are not uploaded. Keep a copy somewhere safe: browser storage can be cleared or run out of space. If a browser save fails, the Teams dialog shows a message and the backup still includes your unsaved work.
+
+**Export All** and **Import Team** continue to use Pokemon Showdown text for sharing with other tools. Use **Team backups** to preserve the complete collection and its settings.
+
 ## Tech Stack
 
-This is a single-page application with no backend. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown, and its translations from [PokeAPI](https://pokeapi.co/). The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com). Vercel deploys `master` to it once CI passes.
+This is a single-page application: teams and Pokemon data stay in the browser, and a Vercel feedback function sends submitted feedback by email. Pokemon data comes from local files in [src/data](src/data), sourced from Pokemon Showdown, and its translations from [PokeAPI](https://pokeapi.co/). The production site is hosted on Vercel at [mypokemonteam.com](https://mypokemonteam.com). Vercel deploys `master` to it once CI passes.
 
 - UI: React and Material UI (MUI).
 - Build and typechecking: Vite and TypeScript.
@@ -61,6 +71,8 @@ npm run update:data
 This update is run manually when new data is needed. It reads the `pokemon-showdown` and `pokemon-showdown-client` repositories cloned next to this one; set `SHOWDOWN_ROOT` and `SHOWDOWN_CLIENT_ROOT` to use other locations.
 
 Learnsets combine every generation with the games Showdown keeps in separate mods: Pokemon Champions, Legends: Z-A, Legends: Arceus, and BDSP. To include another game, add its mod to `learnsetMods` in `scripts/update-data.ts`.
+
+Historical move rules are projected into `past-generations.ts`; game-specific move and base-stat differences, such as Let's Go Absorb and Legends: Z-A Mega Starmie, are projected into `game-variants.ts`.
 
 The Pokemon Champions (M-C) format filter reads eligibility from Showdown's `champions` mod, which follows the current regulation. When that mod moves to a new regulation, rename the filter to match.
 

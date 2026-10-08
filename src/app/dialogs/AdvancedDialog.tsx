@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useId, useLayoutEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -284,6 +284,7 @@ const AdvancedForm = observer(function AdvancedForm({
       <DialogActions>
         <Button
           onClick={() => {
+            if (store.dialog?.teamId !== store.currentTeamId) return;
             store.resetDetails(teamIndex);
             setNicknameLimitAttempted(false);
           }}
@@ -300,10 +301,14 @@ const AdvancedForm = observer(function AdvancedForm({
 const AdvancedDialog = observer(function AdvancedDialog() {
   const titleId = useId();
   const isSmDown = useIsSmDown();
-  const { dialog } = store;
+  const { dialog, currentTeamId } = store;
   const teamIndex = dialog?.teamIndex ?? 0;
   const member = store.team[teamIndex];
-  const isOpen = dialog?.name === "advanced" && !!member?.name;
+  const requested = dialog?.name === "advanced";
+  const isOpen = requested && dialog.teamId === currentTeamId && !!member?.name;
+  useLayoutEffect(() => {
+    if (requested && !isOpen) store.closeDialog();
+  }, [requested, isOpen]);
   const close = () => store.closeDialog();
   const form = isOpen && member && (
     <AdvancedForm

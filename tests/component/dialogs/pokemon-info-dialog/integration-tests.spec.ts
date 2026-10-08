@@ -1,5 +1,6 @@
 import { test, expect } from "fixtures";
-import { selectPokemon } from "helper";
+import { selectAbility, selectPokemon } from "helper";
+import { LEGENDS_ARCEUS, LEGENDS_ZA } from "@/shared/game-variants";
 import type { Page } from "@playwright/test";
 
 async function generation(page: Page, gen: number) {
@@ -12,6 +13,49 @@ async function generation(page: Page, gen: number) {
     `${gen}`,
   );
   await expect(page.locator(".MuiMenu-paper")).toBeHidden();
+}
+
+test("Dry Skin weaknesses show their actual damage multipliers", async ({
+  page,
+}) => {
+  for (const [pokemon, fire] of [
+    ["Parasect", "Fire ×5"],
+    ["Toxicroak", "Fire ×1.25"],
+  ]) {
+    await selectPokemon(page, pokemon!);
+    await selectAbility(page, "Dry Skin");
+    await page.getByRole("button", { name: `About ${pokemon}` }).click();
+    const dialog = page.getByRole("dialog", { name: pokemon!, exact: true });
+    const weakTo = dialog
+      .getByRole("heading", { name: "Weak to" })
+      .locator("..");
+    await expect(weakTo.getByText(fire!, { exact: true })).toBeVisible();
+    await dialog.getByRole("button", { name: "Close", exact: true }).click();
+  }
+});
+
+for (const profile of [
+  { game: LEGENDS_ZA, pokemon: "Mawile-Mega", attack: 147, total: 522 },
+  { game: LEGENDS_ARCEUS, pokemon: "Cherrim-Sunshine", attack: 90, total: 519 },
+]) {
+  test(`the Pokédex uses native stats in ${profile.game}`, async ({ page }) => {
+    const team = Buffer.from(profile.pokemon).toString("base64url");
+    await page.goto(`/?game=${encodeURIComponent(profile.game)}&team=${team}`);
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue(
+      profile.pokemon,
+    );
+    await page
+      .getByRole("button", { name: `About ${profile.pokemon}` })
+      .click();
+    const dialog = page.getByRole("dialog", {
+      name: profile.pokemon,
+      exact: true,
+    });
+    await expect(
+      dialog.getByLabel(`Attack: ${profile.attack}`, { exact: true }),
+    ).toBeVisible();
+    await expect(dialog).toContainText(`Total ${profile.total}`);
+  });
 }
 
 test("the Pokédex uses a single Special stat in Gen 1 and no abilities before Gen 3", async ({

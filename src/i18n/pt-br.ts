@@ -368,6 +368,8 @@ const ptBR: Messages = {
     exportAll: "Exportar tudo",
     copyAll: "Copiar tudo",
     savedInBrowser: "As equipes são salvas neste navegador.",
+    saveFailed:
+      "Seu navegador não conseguiu salvar suas equipes. Salve um backup para mantê-las.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "Aberta",
     open: "Abrir",
@@ -378,6 +380,23 @@ const ptBR: Messages = {
     copiedAll: "Todas as equipes copiadas",
     notCopiedAll: "Não foi possível copiar as equipes.",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "Backup dos times",
+    description:
+      "Salve todos os seus times, incluindo nomes, jogos, filtros e detalhes dos Pokémon.",
+    save: "Salvar backup",
+    restoreDescription:
+      "Adicione times de um arquivo de backup. Os times que você já tem serão mantidos.",
+    chooseFile: "Escolher arquivo de backup",
+    restore: "Adicionar times",
+    ready: (count: number) => `Times neste backup: ${count}`,
+    error:
+      "Não foi possível ler este arquivo. Escolha um backup de times salvo neste site.",
+    saveFailed: "Não foi possível salvar o backup. Tente novamente.",
+    saved: "Backup dos times salvo",
+    alreadySaved: "Esses times já estão na sua coleção.",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "Mudar de jogo ou geração?",

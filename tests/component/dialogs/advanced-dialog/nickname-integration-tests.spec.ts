@@ -2,16 +2,21 @@ import { test, expect } from "fixtures";
 import { openAdvanced, closeDialog, getTeamTextFromUrl } from "helper";
 import ja from "@/i18n/ja";
 
-test("nickname entry uses each game's limit and preserves imported nicknames until edited", async ({
-  page,
-}) => {
-  test.setTimeout(90000);
-  const original = "ABCDEFGHIJKLMNO";
-  for (let generation = 1; generation <= 9; generation++) {
+for (let generation = 1; generation <= 9; generation++) {
+  test(`nickname entry uses Gen ${generation}'s limit and preserves imported nicknames until edited`, async ({
+    page,
+  }) => {
+    test.setTimeout(60000);
+    const original = "ABCDEFGHIJKLMNO";
     const team = Buffer.from(`${original} (Golduck)\n-\n`).toString(
       "base64url",
     );
-    await page.goto(`/?gen=${generation}&team=${team}`);
+    await page.goto(`/?gen=${generation}&team=${team}`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(
+      page.getByLabel("Pokemon 1's name", { exact: true }),
+    ).toHaveValue("Golduck");
     await openAdvanced(page);
     const dialog = page.getByRole("dialog", { name: "More details" });
     const nickname = dialog.getByRole("textbox", {
@@ -42,8 +47,8 @@ test("nickname entry uses each game's limit and preserves imported nicknames unt
     await expect
       .poll(() => getTeamTextFromUrl(page))
       .toContain(`${expected} (Golduck)`);
-  }
-});
+  });
+}
 
 test("a generation change previews and applies the shorter nickname limit", async ({
   page,

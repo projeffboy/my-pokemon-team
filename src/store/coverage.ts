@@ -53,20 +53,22 @@ export function calculateTypeDefence(
 export function calculateTypeCoverage(
   team: ReadonlyTeam,
   generation = LATEST_GENERATION,
+  format = "",
 ) {
   const scores = createTypeScores();
   if (!team.some(pokemon => pokemon.name)) return scores;
 
   for (const pokemon of team) {
-    const { name, ability } = pokemon;
+    const { name, ability, item } = pokemon;
     const typesUsed = new Set<PokemonType | undefined>();
     const specialMovesUsed = new Set<string>();
 
     const moves = [pokemon.move1, pokemon.move2, pokemon.move3, pokemon.move4];
     for (const move of moves) {
-      if (!move || !isMoveStrongEnough(move, generation)) continue;
+      if (!move || !isMoveStrongEnough(move, generation, format, item, ability))
+        continue;
 
-      const type = moveType(move, name, ability, generation);
+      const type = moveType(move, name, ability, generation, format, item);
       const isSpecialMove = move === "freezedry" || move === "flyingpress";
       if (isSpecialMove ? specialMovesUsed.has(move) : typesUsed.has(type)) {
         continue;
@@ -74,7 +76,17 @@ export function calculateTypeCoverage(
 
       const hasStab = type && pokemonTypes(name, generation).includes(type);
       for (const target of typesIn(generation)) {
-        if (moveAgainstType(move, target, name, ability, generation) === -1) {
+        if (
+          moveAgainstType(
+            move,
+            target,
+            name,
+            ability,
+            generation,
+            format,
+            item,
+          ) === -1
+        ) {
           scores[target] += hasStab ? 2 : 1;
         }
       }

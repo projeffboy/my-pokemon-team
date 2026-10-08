@@ -3,6 +3,7 @@ import {
   isMoveStrongEnough,
   moveAgainstType,
   moveType,
+  typeAgainstPokemon,
 } from "@/store/shared/effectiveness";
 import { coverageMatrix, defenceMatrix } from "@/store/matrix";
 import { calculateTypeCoverage } from "@/store/coverage";
@@ -72,6 +73,47 @@ test("Air Balloon's immunity and Dry Skin's Fire penalty use accurate matrix mul
   expect(matrix.Fire?.[1]?.multiplier).toBe(1.25);
   expect(matrix.Fire?.[2]?.multiplier).toBe(5);
   expect(matrix.Water?.[1]?.multiplier).toBe(0);
+});
+
+test("Klutz prevents held items from changing defensive immunities", () => {
+  expect(typeAgainstPokemon("Ground", "swoobat", "Klutz", "ironball")).toBe(3);
+  expect(typeAgainstPokemon("Ghost", "lopunny", "Klutz", "ringtarget")).toBe(3);
+  expect(typeAgainstPokemon("Ground", "lopunny", "Klutz", "airballoon")).toBe(
+    0,
+  );
+  expect(
+    defenceMatrix(
+      createTeam({ name: "swoobat", ability: "Klutz", item: "ironball" }),
+    ).Ground?.[0]?.reason,
+  ).toBe("Ground does 0x to Swoobat (Psychic/Flying)");
+});
+
+test("Klutz prevents Natural Gift from providing damaging berry coverage", () => {
+  const team = createTeam({
+    name: "lopunny",
+    ability: "Klutz",
+    item: "cheriberry",
+    move1: "naturalgift",
+  });
+  expect(calculateTypeCoverage(team, 4).Grass).toBe(0);
+  expect(coverageMatrix(team, undefined, 4).Grass?.[0]?.reason).toBe(
+    "Lopunny has no damaging move",
+  );
+  team[0].ability = "Cute Charm";
+  expect(calculateTypeCoverage(team, 4).Grass).toBe(1);
+});
+
+test("Klutz leaves item-dependent attack types Normal while other attacks retain their type", () => {
+  for (const [move, item] of [
+    ["judgment", "dracoplate"],
+    ["technoblast", "chilldrive"],
+    ["multiattack", "ghostmemory"],
+  ]) {
+    expect(moveType(move, "smeargle", "Klutz", 7, "", item)).toBe("Normal");
+  }
+  expect(moveType("icebeam", "lopunny", "Klutz", 7, "", "cheriberry")).toBe(
+    "Ice",
+  );
 });
 
 test("Thick Fat preserves an eighth-damage resistance in the defence matrix", () => {

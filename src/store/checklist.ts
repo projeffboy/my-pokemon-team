@@ -1,5 +1,7 @@
-import moves from "@/data/moves";
-import { MOVE_KEYS, type ReadonlyTeam } from "@/types";
+import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
+import { moveDataIn } from "@/shared/generation-data";
+import { LATEST_GENERATION } from "@/shared/generations";
+import { pokemonTypes } from "@/shared/pokedex";
 import type { Messages } from "@/i18n/en";
 
 // The labels live in src/i18n, under these keys
@@ -8,7 +10,11 @@ export type ChecklistItemKey = keyof Messages["checklist"]["items"];
 
 export interface ChecklistItem {
   key: ChecklistItemKey;
-  check: (team: ReadonlyTeam) => boolean;
+  check: (
+    team: ReadonlyTeam,
+    generation: Generation,
+    format: string,
+  ) => boolean;
 }
 
 export interface ChecklistGroup {
@@ -46,27 +52,37 @@ const hasMovesTogether =
 
 // Moves that inflict a non-volatile status, like Toxic, or always do so as a
 // side effect, like Nuzzle
-const inflictsStatus: Check = team =>
+const inflictsStatus: Check = (team, generation, format) =>
   teamMoves(team).some(move => {
-    const { status, secondary } = moves[move] ?? {};
-    return !!(status || (secondary?.chance === 100 && secondary.status));
+    const { status, secondary } = moveDataIn(move, generation, format) ?? {};
+    return !!(
+      move === "yawn" ||
+      status ||
+      (secondary?.chance === 100 && secondary.status)
+    );
   });
 
 // Curse, Belly Drum, or moves that raise stats by two or more stages in total
-const boostsStats: Check = team =>
-  teamMoves(team).some(
-    move =>
-      move === "curse" ||
-      move === "bellydrum" ||
-      Object.values(moves[move]?.boosts ?? {}).reduce(
-        (sum, boost) => sum + boost,
-        0,
-      ) >= 2,
+const boostsStats: Check = (team, generation, format) =>
+  team.some(member =>
+    moveset(member).some(
+      move =>
+        (move === "curse" &&
+          !pokemonTypes(member.name, generation).includes("Ghost")) ||
+        move === "bellydrum" ||
+        Object.entries(
+          moveDataIn(move, generation, format)?.boosts ?? {},
+        ).reduce(
+          // Gen 1 stores its one Special stat in both modern Special fields.
+          (sum, [stat, boost]) =>
+            sum + (generation === 1 && stat === "spd" ? 0 : boost),
+          0,
+        ) >= 2,
+    ),
   );
 
 const hasRecovery = hasAnyMove([
   "healorder",
-  "floralhealing",
   "milkdrink",
   "moonlight",
   "morningsun",
@@ -82,7 +98,16 @@ const hasRecovery = hasAnyMove([
 // Wish with a protect-like move counts as reliable recovery
 const hasWishAndProtect = hasMovesTogether([
   "wish",
-  ["protect", "detect", "banefulbunker", "spikyshield", "kingsshield"],
+  [
+    "protect",
+    "detect",
+    "banefulbunker",
+    "spikyshield",
+    "kingsshield",
+    "obstruct",
+    "silktrap",
+    "burningbulwark",
+  ],
 ]);
 
 export const checklist: ChecklistGroup[] = [
@@ -102,17 +127,20 @@ export const checklist: ChecklistGroup[] = [
       },
       {
         key: "spinner",
-        check: hasAnyMove([
-          "rapidspin",
-          "defog",
-          "courtchange",
-          "tidyup",
-          "mortalspin",
-        ]),
+        check: (team, generation) =>
+          teamMoves(team).some(
+            move =>
+              ["rapidspin", "courtchange", "tidyup", "mortalspin"].includes(
+                move,
+              ) ||
+              (move === "defog" && generation >= 6),
+          ),
       },
       {
         key: "recovery",
-        check: team => hasRecovery(team) || hasWishAndProtect(team),
+        check: (team, generation, format) =>
+          hasRecovery(team, generation, format) ||
+          hasWishAndProtect(team, generation, format),
       },
     ],
   },
@@ -156,9 +184,16 @@ export const checklistLabel = (
   : isLgDown ? (short ?? label)
   : label;
 
-export function evaluateChecklist(team: ReadonlyTeam) {
+export function evaluateChecklist(
+  team: ReadonlyTeam,
+  generation = LATEST_GENERATION,
+  format = "",
+) {
   return checklist.map(({ key, items }) => ({
     key,
-    items: items.map(({ key, check }) => ({ key, isChecked: check(team) })),
+    items: items.map(({ key, check }) => ({
+      key,
+      isChecked: check(team, generation, format),
+    })),
   }));
 }

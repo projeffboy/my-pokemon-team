@@ -2,13 +2,71 @@ import { test, expect } from "fixtures";
 import {
   getTeamTextFromUrl,
   closeDialog,
+  clickMenuItem,
   openAdvanced,
+  openTeamTools,
   selectDialogOption,
   selectPokemon,
   selectMove,
 } from "helper";
 
 test.describe("Advanced Dialog - Integration Tests", () => {
+  test("deleting the detailed team in another tab preserves the remaining team's details", async ({
+    page,
+    context,
+  }) => {
+    test.slow();
+    await selectPokemon(page, "Magcargo");
+    await openAdvanced(page);
+    const details = page.getByRole("dialog", { name: "More details" });
+    await details.getByLabel("Level", { exact: true }).fill("50");
+    await closeDialog(page);
+    await expect
+      .poll(() => page.evaluate(() => localStorage.getItem("mypokemonteam")))
+      .toContain('"level":50');
+
+    const otherTab = await context.newPage();
+    await otherTab.goto(page.url());
+    await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
+      "Magcargo",
+    );
+    await openTeamTools(otherTab);
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: "New Team", exact: true })
+      .click();
+    await selectPokemon(otherTab, "Haxorus");
+    await openAdvanced(otherTab);
+    await otherTab
+      .getByRole("dialog", { name: "More details" })
+      .getByLabel("Level", { exact: true })
+      .fill("60");
+    await closeDialog(otherTab);
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("Level: 60");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Magcargo");
+    await openAdvanced(page);
+
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: "Options for Team 1", exact: true })
+      .click();
+    await clickMenuItem(otherTab, "Delete");
+    await otherTab
+      .getByRole("dialog", { name: "Delete Team 1?" })
+      .getByRole("button", { name: "Delete", exact: true })
+      .click();
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Haxorus");
+    if (await details.isVisible())
+      await details.getByRole("button", { name: "Reset", exact: true }).click();
+
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Level: 60");
+    await expect(details).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Haxorus");
+    await otherTab.close();
+  });
+
   for (const generation of [2, 3, 7, 8]) {
     test(`Gen ${generation} Hidden Power updates the displayed IVs or DVs and persists them`, async ({
       page,
@@ -186,7 +244,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await selectDialogOption(page, "Tera Type", "Steel");
     await selectDialogOption(page, "Nature", "Adamant (+Atk, -SpA)");
     await dialog.getByLabel("Shiny").check();
-    await dialog.getByLabel("Atk EVs").focus();
+    await dialog.getByRole("slider", { name: "Atk EVs" }).focus();
     await page.keyboard.press("End");
     await dialog.getByLabel("SpA IVs").fill("0");
     await expect(dialog.getByLabel(/^EV total/)).toContainText("252 / 510");

@@ -78,6 +78,7 @@ function sortValue(
   pokemon: string,
   by: SortKey,
   generation: Generation,
+  format: string,
 ): number {
   const entry = pokedex[pokemon];
   switch (by) {
@@ -88,12 +89,12 @@ function sortValue(
     case "format":
       return tierRank(pokemon, generation);
     case "bst": {
-      const stats = pokemonBaseStats(pokemon, generation);
+      const stats = pokemonBaseStats(pokemon, generation, format);
       return baseStatTotal(stats) - (generation === 1 ? (stats?.spd ?? 0) : 0);
     }
     default:
       return (
-        pokemonBaseStats(pokemon, generation)?.[
+        pokemonBaseStats(pokemon, generation, format)?.[
           generation === 1 && by === "spd" ? "spa" : by
         ] ?? 0
       );
@@ -112,6 +113,7 @@ export function sortPokemon(
   { by, descending }: SortOrder,
   { locale, names }: Translation = english,
   generation: Generation = LATEST_GENERATION,
+  format = "",
 ): string[] {
   const species = (id: string) => {
     const base = pokedex[id]?.baseSpecies;
@@ -126,7 +128,8 @@ export function sortPokemon(
     (a, b) =>
       (by === "name" ? 0 : Number(isOddball(a)) - Number(isOddball(b))) ||
       direction *
-        (sortValue(a, by, generation) - sortValue(b, by, generation)) ||
+        (sortValue(a, by, generation, format) -
+          sortValue(b, by, generation, format)) ||
       (by === "name" ? direction : 1) * byName(a, b),
   );
 }

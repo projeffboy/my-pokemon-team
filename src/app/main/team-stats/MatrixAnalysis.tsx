@@ -78,11 +78,11 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
   const translation = useTranslation();
   const { t, names } = translation;
   const isDefence = kind === "defence";
-  const { generation } = store.currentTeam;
+  const { generation, format } = store.currentTeam;
   const matrix =
     isDefence ?
       defenceMatrix(store.analysisTeam, translation, generation)
-    : coverageMatrix(store.analysisTeam, translation, generation);
+    : coverageMatrix(store.analysisTeam, translation, generation, format);
   const scores = isDefence ? store.typeDefence : store.typeCoverage;
   // Empty slots get no column
   const slots = store.analysisTeam.flatMap(({ name }, slot) =>

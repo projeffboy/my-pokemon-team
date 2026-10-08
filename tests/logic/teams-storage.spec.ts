@@ -12,7 +12,7 @@ import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 
-test("saved happiness survives a reload and is omitted for unsupported profiles", () => {
+test("saved set details survive reload even when unsupported or outside a game's limits", () => {
   const regular = createSavedTeam({
     generation: 3,
     team: createTeam({ name: "zangoose", happiness: 0 }),
@@ -21,16 +21,27 @@ test("saved happiness survives a reload and is omitted for unsupported profiles"
   expect(saved?.team[0]?.happiness).toBe(0);
   expect(
     sanitizeSavedTeam({ ...regular, generation: 1 })?.team[0]?.happiness,
-  ).toBeUndefined();
+  ).toBe(0);
   expect(
     sanitizeSavedTeam({ ...regular, generation: 9, format: CHAMPIONS_FORMAT })
       ?.team[0]?.happiness,
-  ).toBeUndefined();
-  for (const happiness of [-1, 256, NaN, Infinity, "0"])
+  ).toBe(0);
+  for (const happiness of [-1, 256, 255, 0.5])
+    expect(
+      sanitizeSavedTeam({ ...regular, team: [{ name: "zangoose", happiness }] })
+        ?.team[0]?.happiness,
+    ).toBe(happiness);
+  for (const happiness of [NaN, Infinity, "0"])
     expect(
       sanitizeSavedTeam({ ...regular, team: [{ name: "zangoose", happiness }] })
         ?.team[0]?.happiness,
     ).toBeUndefined();
+  expect(
+    sanitizeSavedTeam({
+      ...regular,
+      team: [{ name: "zangoose", shiny: false }],
+    })?.team[0]?.shiny,
+  ).toBe(false);
 });
 
 test("fresh storage defaults to Champions while existing regular Gen 9 saves keep their profile", () => {

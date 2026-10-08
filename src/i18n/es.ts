@@ -366,6 +366,8 @@ const es: Messages = {
     exportAll: "Exportar todo",
     copyAll: "Copiar todo",
     savedInBrowser: "Los equipos se guardan en este navegador.",
+    saveFailed:
+      "Tu navegador no pudo guardar tus equipos. Guarda una copia de seguridad para conservarlos.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "Abierto",
     open: "Abrir",
@@ -376,6 +378,23 @@ const es: Messages = {
     copiedAll: "Todos los equipos copiados",
     notCopiedAll: "No se han podido copiar los equipos.",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "Copias de seguridad",
+    description:
+      "Guarda todos tus equipos, incluidos sus nombres, juegos, filtros y detalles de los Pokémon.",
+    save: "Guardar copia",
+    restoreDescription:
+      "Añade equipos desde una copia de seguridad. Los equipos que ya tienes se conservarán.",
+    chooseFile: "Elegir archivo de copia",
+    restore: "Añadir equipos",
+    ready: (count: number) => `Equipos en esta copia: ${count}`,
+    error:
+      "No se pudo leer este archivo. Elige una copia de seguridad de equipos guardada desde este sitio.",
+    saveFailed: "No se pudo guardar la copia. Inténtalo de nuevo.",
+    saved: "Copia de equipos guardada",
+    alreadySaved: "Estos equipos ya están en tu colección.",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "¿Cambiar de juego o generación?",

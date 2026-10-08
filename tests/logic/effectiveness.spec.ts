@@ -87,10 +87,51 @@ test.describe("type effectiveness", () => {
     expect(typeAgainstPokemon("Fire", "toxtricity", "", "airballoon")).toBe(0);
   });
 
+  test("Iron Ball grounds Flying types and Levitate users", () => {
+    expect(typeAgainstPokemon("Ground", "tornadus", "", "ironball")).toBe(0);
+    expect(
+      typeAgainstPokemon("Ground", "bronzong", "Levitate", "ironball"),
+    ).toBe(-1);
+    expect(typeAgainstPokemon("Ground", "charizard", "", "ironball", 4)).toBe(
+      -1,
+    );
+    expect(typeAgainstPokemon("Ground", "charizard", "", "ironball", 5)).toBe(
+      0,
+    );
+    expect(
+      typeAgainstPokemon("Ground", "orthworm", "Earth Eater", "ironball"),
+    ).toBe(3);
+  });
+
+  test("Ring Target removes type immunities while leaving ability immunities", () => {
+    expect(typeAgainstPokemon("Electric", "rhyperior", "", "ringtarget")).toBe(
+      0,
+    );
+    expect(typeAgainstPokemon("Ground", "yanmega", "", "ringtarget")).toBe(1);
+    expect(
+      typeAgainstPokemon("Electric", "lanturn", "Volt Absorb", "ringtarget"),
+    ).toBe(3);
+    expect(
+      typeAgainstPokemon("Ground", "bronzong", "Levitate", "ringtarget"),
+    ).toBe(3);
+  });
+
   test("empty or unknown species have neutral effectiveness", () => {
     expect(typeAgainstPokemon("Water", "")).toBe(0);
     expect(typeAgainstPokemon("Water", "notapokemon")).toBe(0);
   });
+});
+
+test("Judgment follows a non-Z Plate, including when the holder is not Arceus", () => {
+  expect(
+    moveType("judgment", "arceusdragon", "Multitype", 7, "", "dragoniumz"),
+  ).toBe("Normal");
+  expect(
+    moveType("judgment", "arceusdragon", "Multitype", 7, "", "dracoplate"),
+  ).toBe("Dragon");
+  expect(
+    moveType("judgment", "smeargle", "Own Tempo", 7, "", "dreadplate"),
+  ).toBe("Dark");
 });
 
 test("MissingNo's Bird type leaves its Normal matchups intact", () => {

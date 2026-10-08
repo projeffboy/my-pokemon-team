@@ -33,6 +33,7 @@ import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadIcon from "@mui/icons-material/Download";
 import UploadIcon from "@mui/icons-material/Upload";
+import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { SavedTeam } from "@/types";
@@ -51,7 +52,8 @@ import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import ImportTeamForm from "./shared/ImportTeamForm";
 import TeamSettingsDialog from "./shared/TeamSettingsDialog";
-import downloadText from "./teams-dialog/download-text";
+import downloadText from "./teams-dialog/shared/download-text";
+import TeamBackupForm from "./teams-dialog/TeamBackupForm";
 import useDiceRoll from "@/app/shared/use-dice-roll";
 
 const halfWidth = { flex: "1 1 0", minWidth: 0 } as const;
@@ -87,7 +89,9 @@ const TeamsDialog = observer(function TeamsDialog() {
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
   const dialogName = store.dialog?.name;
   const isOpen = dialogName === "teams" || dialogName === "importTeam";
-  const [isImporting, setIsImporting] = useState(false);
+  const [page, setPage] = useState<"teams" | "import" | "backup">("teams");
+  const isImporting = page === "import";
+  const isSubpage = page !== "teams";
   const listRef = useRef<HTMLUListElement>(null);
   const currentTeamRef = useRef<HTMLLIElement>(null);
   const currentTeamId = store.currentTeamId;
@@ -101,15 +105,16 @@ const TeamsDialog = observer(function TeamsDialog() {
       (list.clientHeight - current.offsetHeight) / 2;
   }, []);
   useEffect(() => {
-    if (isOpen && !isImporting) scrollToCurrentTeam();
-  }, [isOpen, isImporting, currentTeamId, scrollToCurrentTeam]);
+    if (isOpen && !isSubpage) scrollToCurrentTeam();
+  }, [isOpen, isSubpage, currentTeamId, scrollToCurrentTeam]);
   // The Manage Team menu opens straight to the import page
   useEffect(() => {
-    if (dialogName === "importTeam") setIsImporting(true);
-  }, [dialogName]);
+    if (dialogName === "importTeam") setPage("import");
+    else if (!isOpen) setPage("teams");
+  }, [dialogName, isOpen]);
   const close = () => {
     store.closeDialog();
-    setIsImporting(false);
+    setPage("teams");
   };
   const menuTeam = store.teams.find(team => team.id === menu?.teamId);
 
@@ -189,18 +194,25 @@ const TeamsDialog = observer(function TeamsDialog() {
       >
         <DialogHeader
           id={titleId}
-          title={isImporting ? t.importDialog.importTitle : t.team.teams}
-          onClose={isImporting ? () => setIsImporting(false) : close}
-          closeLabel={isImporting ? t.goBack : t.close}
-          back={isImporting}
+          title={
+            isImporting ? t.importDialog.importTitle
+            : page === "backup" ?
+              t.teamBackup.title
+            : t.team.teams
+          }
+          onClose={isSubpage ? () => setPage("teams") : close}
+          closeLabel={isSubpage ? t.goBack : t.close}
+          back={isSubpage}
         />
         {isImporting ?
           <ImportTeamForm
             isImport
-            onClose={() => setIsImporting(false)}
+            onClose={() => setPage("teams")}
             // The same gap below the title bar as the team list has
             contentSx={{ pt: 2, px: { xxs: 2, sm: 3 } }}
           />
+        : page === "backup" ?
+          <TeamBackupForm onClose={() => setPage("teams")} />
         : <DialogContent
             sx={{
               display: "flex",
@@ -256,7 +268,7 @@ const TeamsDialog = observer(function TeamsDialog() {
               variant="outlined"
               fullWidth
               startIcon={<UploadIcon />}
-              onClick={() => setIsImporting(true)}
+              onClick={() => setPage("import")}
               sx={{ mb: 1, flexShrink: 0 }}
             >
               {t.teams.importTeam}
@@ -422,12 +434,25 @@ const TeamsDialog = observer(function TeamsDialog() {
                   {t.teams.exportAll}
                 </Button>
               </Stack>
+              <Button
+                fullWidth
+                variant="outlined"
+                startIcon={<SettingsBackupRestoreIcon />}
+                onClick={() => setPage("backup")}
+                sx={{ mt: 1 }}
+              >
+                {t.teamBackup.title}
+              </Button>
               <Typography
                 variant="caption"
                 component="p"
-                sx={{ mt: 2, textAlign: "center", color: "text.secondary" }}
+                sx={{
+                  mt: 2,
+                  textAlign: "center",
+                  color: store.saveFailed ? "error.main" : "text.secondary",
+                }}
               >
-                {t.teams.savedInBrowser}
+                {store.saveFailed ? t.teams.saveFailed : t.teams.savedInBrowser}
               </Typography>
             </Box>
           </DialogContent>

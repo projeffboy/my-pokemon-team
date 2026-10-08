@@ -11,6 +11,16 @@ const entries: Entry[] = [
   {
     date: "Oct 8, 2026",
     changes: [
+      "Team backups now save your complete collection, including names, games, filters, and Pokémon details, and restore it without replacing current teams.",
+      "A failed browser save now shows a message in Teams, with backups available to keep unsaved work.",
+      "Deleting a team in another tab now closes its open details editor before Reset can affect another team.",
+      "Training values can now be typed directly alongside the sliders, including EVs, SPs, and older games' Stat experience.",
+      "Pokémon stats and move power now follow the selected game, e.g. Mega Starmie in Legends: Z-A and Absorb in Let’s Go.",
+      "Weaknesses now show exact Dry Skin multipliers, such as Parasect taking five times Fire damage.",
+      "Iron Ball and Ring Target now change type matchups correctly, and Judgment follows the held Plate.",
+      "Natural Gift now counts for coverage when a berry is held, and Techno Blast and Multi-Attack follow the held item.",
+      "Distinct forms now keep their own move pools, e.g. female Indeedee no longer inherits male-only moves.",
+      "The team checklist now follows historical move rules, such as Defog not removing your hazards in Gen 4–5.",
       "Historical imports now choose the correct ability, e.g. Levitate for Gen 4 Gengar.",
       "Gen 1–2 transfers now preserve linked DVs and shared Special training, including Gen 2 shiny and gender traits.",
       "Gen 2 Hidden Power now keeps its type when transferred to newer generations.",

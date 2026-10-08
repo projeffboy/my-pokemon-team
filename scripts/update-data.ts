@@ -3,8 +3,19 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
-import type { Items, Learnsets, Moves, Pokedex } from "../src/types.ts";
+import type {
+  GameVariantData,
+  Items,
+  Learnsets,
+  Moves,
+  Pokedex,
+} from "../src/types.ts";
 import { LATEST_GENERATION } from "../src/shared/generations.ts";
+import {
+  LETS_GO,
+  LEGENDS_ARCEUS,
+  LEGENDS_ZA,
+} from "../src/shared/game-variants.ts";
 import {
   type DataTypes,
   type ModData,
@@ -15,10 +26,12 @@ import {
   nameChanges,
   projectFormats,
   projectPastGenerations,
+  projectGameVariant,
   projectTable,
   projectTypeChart,
   projectHiddenPowerSpreads,
   renderTypedData,
+  resolveMod,
   toId,
 } from "./update-data/transforms.ts";
 
@@ -68,6 +81,7 @@ async function loadModTable(mod: string, file: string, exportName: string) {
 const DATA_FILES: Partial<Record<keyof DataTypes, string>> = {
   PastGenerations: "past-generations",
   HiddenPowerSpreads: "hidden-power-spreads",
+  GameVariantData: "game-variants",
 };
 
 async function writeData<N extends keyof DataTypes>(
@@ -244,6 +258,40 @@ async function updatePastGenerations() {
   );
 }
 
+async function updateGameVariants() {
+  let pokedex = await loadShowdownTable("data/pokedex.ts", "Pokedex");
+  let moves = await loadShowdownTable("data/moves.ts", "Moves");
+  const variants = [
+    [LEGENDS_ZA, "gen9legends", 9],
+    [LEGENDS_ARCEUS, "gen8legends", 8],
+    [LETS_GO, "gen7letsgo", 7],
+  ] as const;
+  const data: GameVariantData = {};
+  for (let generation = 9; generation >= 7; generation--) {
+    if (generation < 9) {
+      pokedex = resolveMod(
+        pokedex,
+        await loadModTable(`gen${generation}`, "pokedex", "Pokedex"),
+      );
+      moves = resolveMod(
+        moves,
+        await loadModTable(`gen${generation}`, "moves", "Moves"),
+      );
+    }
+    for (const [format, mod, gen] of variants) {
+      if (gen !== generation) continue;
+      data[format] = projectGameVariant(
+        { pokedex, moves, typechart: {} },
+        {
+          pokedex: await loadModTable(mod, "pokedex", "Pokedex"),
+          moves: await loadModTable(mod, "moves", "Moves"),
+        },
+      );
+    }
+  }
+  await writeData("GameVariantData", data);
+}
+
 async function updateIconIndexes() {
   const source = await read(
     path.join(clientRoot, "play.pokemonshowdown.com/src/battle-dex-data.ts"),
@@ -348,6 +396,18 @@ const loadReportedData = async (): Promise<ReportedData> => {
   return { pokedex, moves, items };
 };
 async function updateData() {
+  if (process.argv.includes("--pokedex-only")) {
+    await updateProjectedDataset("pokedex", "Pokedex", "Pokedex");
+    return;
+  }
+  if (process.argv.includes("--items-only")) {
+    await updateProjectedDataset("items", "Items", "Items");
+    return;
+  }
+  if (process.argv.includes("--game-variants-only")) {
+    await updateGameVariants();
+    return;
+  }
   if (process.argv.includes("--past-generations-only")) {
     await updatePastGenerations();
     return;
@@ -368,6 +428,7 @@ async function updateData() {
     updateTypeChart(),
     updateHiddenPowerSpreads(),
     updatePastGenerations(),
+    updateGameVariants(),
     updateIconIndexes(),
   ]);
 

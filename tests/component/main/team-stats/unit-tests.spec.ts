@@ -7,7 +7,7 @@ test.describe("Team Stats - Unit Tests", () => {
     { width: 450, icons: true, fullNames: false },
     { width: 590, icons: true, fullNames: true },
     { width: 600, icons: false, fullNames: false },
-    { width: 850, icons: false, fullNames: false },
+    { width: 820, icons: false, fullNames: false },
     { width: 930, icons: true, fullNames: false },
     { width: 1400, icons: true, fullNames: true },
     { width: 1920, icons: true, fullNames: true },

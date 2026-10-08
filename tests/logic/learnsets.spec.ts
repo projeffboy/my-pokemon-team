@@ -50,6 +50,38 @@ test.describe("learnset inheritance", () => {
     );
   });
 
+  test("female species and their Megas do not inherit male-only moves", () => {
+    expect(canItLearn("wish", "meowstic")).toBe(true);
+    expect(canItLearn("wish", "meowsticf")).toBe(false);
+    expect(canItLearn("quickguard", "meowsticfmega")).toBe(false);
+    expect(canItLearn("earthpower", "meowsticfmega")).toBe(true);
+    expect(canItLearn("encore", "indeedee")).toBe(true);
+    expect(canItLearn("encore", "indeedeef")).toBe(false);
+    expect(canItLearn("followme", "indeedeef")).toBe(true);
+  });
+
+  test("independent Lycanroc formes retain their own moves and predecessors", () => {
+    expect(canItLearn("accelerock", "lycanroc")).toBe(true);
+    expect(canItLearn("accelerock", "lycanrocmidnight")).toBe(false);
+    expect(canItLearn("counter", "lycanrocmidnight")).toBe(true);
+    expect(canItLearn("thrash", "lycanrocdusk")).toBe(true);
+    expect(canItLearn("agility", "lycanrocdusk")).toBe(false);
+    expect(canItLearn("happyhour", "lycanrocdusk")).toBe(true);
+  });
+
+  test("freely changing Rotom formes retain base moves and their appliance move", () => {
+    expect(canItLearn("trick", "rotomfan")).toBe(true);
+    expect(canItLearn("airslash", "rotomfan")).toBe(true);
+    expect(canItLearn("overheat", "rotomfan")).toBe(false);
+  });
+
+  test("Kyurem formes keep their independent moves while Eternal Floette's Mega inherits it", () => {
+    expect(canItLearn("glaciate", "kyurem")).toBe(true);
+    expect(canItLearn("glaciate", "kyuremblack")).toBe(false);
+    expect(canItLearn("fusionbolt", "kyuremblack")).toBe(true);
+    expect(canItLearn("lightofruin", "floettemega")).toBe(true);
+  });
+
   test("a regional evolution can inherit from a nonregional predecessor", () => {
     expect(learnsets.marowakalola).not.toContain("bellydrum");
     expect(canItLearn("bellydrum", "marowakalola")).toBe(true);
