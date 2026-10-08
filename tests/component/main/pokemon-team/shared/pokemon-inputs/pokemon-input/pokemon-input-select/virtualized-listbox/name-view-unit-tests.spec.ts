@@ -181,7 +181,7 @@ test.describe("Name dropdown views - Unit Tests", () => {
       .toBe(true);
   });
 
-  test("Big Grid uses static sprites, supports selection, and remembers the view", async ({
+  test("Big Grid uses static sprites and supports keyboard selection", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 320, height: 640 });
@@ -241,6 +241,33 @@ test.describe("Name dropdown views - Unit Tests", () => {
     if (!selectedName) throw new Error("Missing Pokémon name");
     await input.press("Enter");
     await expect(input).toHaveValue(selectedName);
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            JSON.parse(localStorage.getItem("mypokemonteam") ?? "{}").nameView,
+        ),
+      )
+      .toBe("big-grid");
+  });
+
+  test("Big Grid remembers the view after reload and switches back to List", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
+    const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    await input.fill("Wooper");
+    await page.getByRole("button", { name: "Grid view", exact: true }).click();
+    const bigGrid = page.getByRole("button", {
+      name: "Big grid view",
+      exact: true,
+    });
+    await bigGrid.click();
     await expect
       .poll(() =>
         page.evaluate(
