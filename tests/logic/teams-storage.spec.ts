@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import {
   initialStoredState,
+  getBrowserStorage,
   loadStoredState,
   mergeStoredState,
   saveStoredState,
@@ -58,6 +59,26 @@ const fakeStorage = (value: string | null) => {
     } as unknown as Storage,
   };
 };
+
+test("storage access can be denied before getItem is called", () => {
+  const descriptor = Object.getOwnPropertyDescriptor(
+    globalThis,
+    "localStorage",
+  );
+  try {
+    Object.defineProperty(globalThis, "localStorage", {
+      configurable: true,
+      get() {
+        throw new DOMException("Access denied", "SecurityError");
+      },
+    });
+    expect(getBrowserStorage()).toBeUndefined();
+  } finally {
+    if (descriptor)
+      Object.defineProperty(globalThis, "localStorage", descriptor);
+    else Reflect.deleteProperty(globalThis, "localStorage");
+  }
+});
 
 test("move sorting defaults for old saves and survives new saves", () => {
   const state = initialStoredState();
@@ -187,7 +208,7 @@ test("saves the state and survives a storage that throws", () => {
     moveSort: { by: "name" as const, descending: false },
     nameView: "grid" as const,
   };
-  saveStoredState(storage, state);
+  expect(saveStoredState(storage, state)).toBe(true);
   expect(JSON.parse(items.get("mypokemonteam") ?? "")).toEqual(state);
 
   const throwing = {
@@ -195,8 +216,8 @@ test("saves the state and survives a storage that throws", () => {
       throw new Error("QuotaExceededError");
     },
   } as unknown as Storage;
-  expect(() => saveStoredState(throwing, state)).not.toThrow();
-  expect(() => saveStoredState(undefined, state)).not.toThrow();
+  expect(saveStoredState(throwing, state)).toBe(false);
+  expect(saveStoredState(undefined, state)).toBe(false);
 });
 
 test.describe("another tab's saves", () => {

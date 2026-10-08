@@ -214,6 +214,10 @@ async function updatePastGenerations() {
       loadShowdownTable(`data/${file}.ts`, exportName),
     ),
   );
+  const formats = await loadShowdownTable(
+    "data/formats-data.ts",
+    "FormatsData",
+  );
   if (!pokedex || !moves || !typechart) throw new Error("Missing base data");
   const mods = Object.fromEntries(
     await Promise.all(
@@ -222,13 +226,21 @@ async function updatePastGenerations() {
         for (const [file, exportName] of tables) {
           mod[file] = await loadModTable(`gen${gen}`, file, exportName);
         }
+        mod.formats = await loadModTable(
+          `gen${gen}`,
+          "formats-data",
+          "FormatsData",
+        );
         return [gen, mod];
       }),
     ),
   );
   await writeData(
     "PastGenerations",
-    projectPastGenerations({ pokedex, moves, typechart, abilities }, mods),
+    projectPastGenerations(
+      { pokedex, moves, typechart, abilities, formats },
+      mods,
+    ),
   );
 }
 
@@ -336,6 +348,10 @@ const loadReportedData = async (): Promise<ReportedData> => {
   return { pokedex, moves, items };
 };
 async function updateData() {
+  if (process.argv.includes("--past-generations-only")) {
+    await updatePastGenerations();
+    return;
+  }
   if (process.argv.includes("--hidden-power-only")) {
     await updateHiddenPowerSpreads();
     return;

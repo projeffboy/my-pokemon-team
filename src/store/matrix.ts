@@ -24,7 +24,8 @@ export interface MatrixCell {
 // A row per type of the generation
 export type Matrix = Partial<Record<PokemonType, (MatrixCell | null)[]>>;
 
-// Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune;
+// Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x,
+// 3 = immune, 4 = 0.125x;
 // Filter-like abilities give -1.5 = 3x and -0.5 = 1.5x
 const MULTIPLIER_BY_SCORE: Record<string, number> = {
   "-2": 4,
@@ -35,6 +36,7 @@ const MULTIPLIER_BY_SCORE: Record<string, number> = {
   "1": 0.5,
   "2": 0.25,
   "3": 0,
+  "4": 0.125,
 };
 
 export const scoreToMultiplier = (score: number) =>
@@ -49,6 +51,8 @@ export function formatMultiplier(multiplier: number) {
       return "½";
     case 0.25:
       return "¼";
+    case 0.125:
+      return "⅛";
     case 0:
       return "0";
     default:
@@ -141,7 +145,7 @@ export function coverageMatrix(
         const { name, ability } = member;
         if (!name) return null;
         const moves = MOVE_KEYS.map(key => member[key]).filter(
-          move => move && isMoveStrongEnough(move),
+          move => move && isMoveStrongEnough(move, generation),
         );
         let best: { move: string; multiplier: number } | undefined;
         for (const move of moves) {

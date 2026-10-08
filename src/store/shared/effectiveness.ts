@@ -1,11 +1,12 @@
 import type { PokemonType } from "@/types";
 import moves from "@/data/moves";
 import { pokemonTypes } from "@/shared/pokedex";
-import { moveTypeIn, typechartIn } from "@/shared/generation-data";
+import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType } from "@/types";
 
-// Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
+// Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x,
+// 3 = immune, 4 = 0.125x.
 // The generation decides the pokemon's types and the type chart.
 export function typeAgainstPokemon(
   type: PokemonType,
@@ -33,6 +34,11 @@ export function typeAgainstPokemon(
   } else if (effectiveness === 2) {
     effectiveness = 3;
   }
+
+  const halveDamage = () => {
+    if (effectiveness !== 3)
+      effectiveness = effectiveness === 2 ? 4 : effectiveness + 1;
+  };
 
   // Take into account ability for pokemon's resistances
   if (pokemonAbility) {
@@ -77,7 +83,7 @@ export function typeAgainstPokemon(
         break;
       case "Water Bubble":
         if (type === "Fire") {
-          effectiveness += 1;
+          halveDamage();
         }
         break;
       case "Wonder Guard":
@@ -88,12 +94,12 @@ export function typeAgainstPokemon(
       // Abilities that halve damage from certain types
       case "Thick Fat":
         if (type === "Fire" || type === "Ice") {
-          effectiveness += 1;
+          halveDamage();
         }
         break;
       case "Heatproof":
         if (type === "Fire") {
-          effectiveness += 1;
+          halveDamage();
         }
         break;
       // Abilities that cushion moves
@@ -120,7 +126,7 @@ export function typeAgainstPokemon(
         break;
       case "Purifying Salt":
         if (type === "Ghost") {
-          effectiveness += 1;
+          halveDamage();
         }
         break;
       default:
@@ -222,8 +228,11 @@ export function moveType(
   return moveType;
 }
 
-export function isMoveStrongEnough(move: string) {
-  const moveProperties = moves[move];
+export function isMoveStrongEnough(
+  move: string,
+  generation = LATEST_GENERATION,
+) {
+  const moveProperties = moveDataIn(move, generation);
 
   return (
     moveProperties &&
@@ -248,7 +257,7 @@ export function moveAgainstType(
   const attackType = moveType(move, pokemon, ability, generation);
   const defender = typechartIn(generation)[typeAgainst];
 
-  if (!isMoveStrongEnough(move) || !attackType) return undefined;
+  if (!isMoveStrongEnough(move, generation) || !attackType) return undefined;
   let score = defender?.[attackType];
   if (
     (ability === "Scrappy" || ability === "Mind's Eye") &&

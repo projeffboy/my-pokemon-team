@@ -194,7 +194,8 @@ export function parseTeamText(
     const abilities = Array.from({ length: 9 }, (_, i) =>
       pokemonAbilities(pokemon, (i + 1) as Generation),
     ).flat();
-    member.ability = getAutoSelectedAbility(pokemon);
+    member.ability =
+      rules.abilities ? getAutoSelectedAbility(pokemon, generation) : "";
     if (nickname) member.nickname = nickname;
     if (gender) member.gender = gender;
 

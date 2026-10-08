@@ -231,26 +231,26 @@ const VirtualizedListbox = observer(
         key: itemCount,
       });
 
-      // The list is freshly mounted each time the popup opens, so jump to the
-      // currently selected row (it may be far outside the initially rendered rows)
-      React.useEffect(() => {
-        const index = itemData.findIndex(
-          ([, option]) => option.value === selectedValue,
-        );
-        if (index === -1) return;
+      const selectedIndex = itemData.findIndex(
+        ([, option]) => option.value === selectedValue,
+      );
+      // Jump to the selected row when the popup opens or its options/view change.
+      // Cancel before a filtered list mounts so a deferred scroll never uses an
+      // index from the previous list.
+      React.useLayoutEffect(() => {
+        if (selectedIndex === -1) return;
         // react-window's imperative API object exists synchronously, but its
         // internal DOM element ref isn't attached until just after mount, so
         // scrollToRow silently no-ops if called immediately. Defer to the next
         // animation frame to ensure the underlying element is ready.
         const frame = requestAnimationFrame(() => {
           internalListRef.current?.scrollToRow({
-            index: isGrid ? Math.floor(index / columns) : index,
+            index: isGrid ? Math.floor(selectedIndex / columns) : selectedIndex,
             align: "auto",
           });
         });
         return () => cancelAnimationFrame(frame);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [isGrid, columns]);
+      }, [selectedIndex, itemCount, isGrid, columns, internalListRef]);
 
       // The view toggle takes some of the popup's room
       const toggleRef = React.useRef<HTMLDivElement>(null);

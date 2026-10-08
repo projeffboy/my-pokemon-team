@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { describeBrowser, readImages } from "../../api/feedback";
+import { describeBrowser, POST, readImages } from "../../api/feedback";
 
 test("names the browser and OS from the user agent", () => {
   const userAgents = {
@@ -31,4 +31,41 @@ test("accepts up to three JPEG images within the size limit", () => {
     undefined,
   );
   expect(readImages(jpeg(2_000_000), [jpeg(2_000_000)])).toBeUndefined();
+});
+
+test("invalid JSON bodies receive a validation response", async () => {
+  for (const body of ["null", "[]", "42", '"feedback"', "invalid JSON"]) {
+    const response = await POST(
+      new Request("https://example.com/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+      }),
+    );
+    expect(response.status).toBe(400);
+    expect(await response.text()).toBe("Invalid feedback");
+  }
+});
+
+test("a failed email connection receives a retryable response", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new TypeError("Connection failed");
+  };
+  try {
+    const response = await POST(
+      new Request("https://example.com/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-forwarded-for": "feedback-network-test",
+        },
+        body: JSON.stringify({ message: "A test message" }),
+      }),
+    );
+    expect(response.status).toBe(502);
+    expect(await response.text()).toBe("Could not send");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });

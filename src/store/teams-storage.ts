@@ -21,6 +21,14 @@ import { DEFAULT_SORT, DEFAULT_MOVE_SORT, SORT_KEYS } from "./sorting";
 
 export const STORAGE_KEY = "mypokemonteam";
 
+export function getBrowserStorage(): Storage | undefined {
+  try {
+    return typeof localStorage === "undefined" ? undefined : localStorage;
+  } catch {
+    return undefined;
+  }
+}
+
 export interface StoredState {
   teams: SavedTeam[];
   currentTeamId: string;
@@ -215,10 +223,13 @@ export function saveStoredState(
   storage: Storage | undefined,
   state: StoredState,
 ) {
+  if (!storage) return false;
   try {
-    storage?.setItem(STORAGE_KEY, JSON.stringify(state));
+    storage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
   } catch {
     // The team still lives in the page's link
+    return false;
   }
 }
 

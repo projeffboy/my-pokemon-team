@@ -1,4 +1,3 @@
-import pokedex from "@/data/pokedex";
 import viableMoves from "@/data/viable-moves";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { generationBit, generationRules } from "@/shared/generation-rules";
@@ -44,31 +43,17 @@ function buildCompleteLearnset(pokemon: string): string[] {
 
   let baseForme = getBaseForme(pokemon) ?? pokemon; // since learnsets[pokemon] requires pokemon to be at its base forme
 
-  const isRegional = REGIONS.some(region => pokemon.includes(region));
-
-  if (!isRegional) {
-    completeLearnset = [...completeLearnset, ...(learnsets[baseForme] ?? [])];
-  }
+  const region = REGIONS.find(region => pokemon.includes(region));
+  if (region) baseForme = `${baseForme}${region}`;
+  completeLearnset = [...completeLearnset, ...(learnsets[baseForme] ?? [])];
 
   while (true) {
     const prevo = previousEvolution(baseForme);
     if (!prevo) break;
     baseForme = prevo;
 
-    // Regional formes are walked from their base forme, so switch back to the regional prevo
-    // E.g. Persian-Alola => Persian => Meowth => Meowth-Alola
-    const otherFormes =
-      isRegional ? (pokedex[baseForme]?.otherFormes ?? []) : [];
-    const region =
-      REGIONS.find(region =>
-        otherFormes.some(forme => forme.toLowerCase().includes(region)),
-      ) ?? "";
-
     // Append previous evolution learnset to current learnset
-    completeLearnset = [
-      ...completeLearnset,
-      ...(learnsets[`${baseForme}${region}`] ?? []),
-    ];
+    completeLearnset = [...completeLearnset, ...(learnsets[baseForme] ?? [])];
   }
 
   // turning array to set removes duplicates then back to array

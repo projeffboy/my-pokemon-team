@@ -45,6 +45,7 @@ import { nextDuplicateName } from "./store/team-names";
 import { describeTeamChange } from "./store/team-change";
 import {
   initialStoredState,
+  getBrowserStorage,
   loadStoredState,
   mergeStoredState,
   saveStoredState,
@@ -81,15 +82,15 @@ export type DialogName =
 
 const HISTORY_LIMIT = 50;
 
-const storage = typeof localStorage === "undefined" ? undefined : localStorage;
-expireSettings(storage, Date.now());
+const browserStorage = getBrowserStorage();
+expireSettings(browserStorage, Date.now());
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
 
 const teamKey = (team: Team) => stableJson(toJS(team));
 
-class Store {
-  constructor() {
+export class Store {
+  constructor(private readonly storage = browserStorage) {
     const loaded = loadStoredState(storage);
     const stored = loaded ?? initialStoredState();
     this.teams = stored.teams;
@@ -104,16 +105,17 @@ class Store {
     if (loaded) this.openUnsavedTeam();
     this.lastSnapshot = teamKey(this.team);
 
-    makeAutoObservable<Store, "lastSnapshot" | "lastRead" | "draftSnapshot">(
-      this,
-      {
-        lastSnapshot: false,
-        lastRead: false,
-        draftSnapshot: false,
-        translationReady: false,
-        translation: observableRef,
-      },
-    );
+    makeAutoObservable<
+      Store,
+      "lastSnapshot" | "lastRead" | "draftSnapshot" | "storage"
+    >(this, {
+      lastSnapshot: false,
+      lastRead: false,
+      draftSnapshot: false,
+      storage: false,
+      translationReady: false,
+      translation: observableRef,
+    });
 
     learnsetsReady.then(
       () => {
@@ -528,11 +530,14 @@ class Store {
         this.currentTeam.generation,
         this.currentTeam.format,
       );
+      this.recordEdit();
       this.team[teamIndex] = completed;
+      this.recordEdit();
       return randomizedFieldsMessage(member, completed, this.translation);
     }
     const pokemon = randomPokemon(this.filteredPokemon, this.teamPokemon);
     if (!pokemon) return;
+    this.recordEdit();
     this.team[teamIndex] = randomSet(
       pokemon,
       generationLearnset(
@@ -544,6 +549,7 @@ class Store {
       this.currentTeam.generation,
       this.currentTeam.format,
     );
+    this.recordEdit();
     return this.translation.t.team.randomizedPokemon;
   }
 
@@ -826,9 +832,13 @@ class Store {
 
   // Takes in what other tabs saved, so that saving here does not undo it
   private readOtherTabs() {
-    const theirs = loadStoredState(storage);
+    const theirs = loadStoredState(this.storage);
     if (!theirs) return;
-    const merged = mergeStoredState(this.lastRead, this.storedState, theirs);
+    const snapshot = teamKey(this.team);
+    const { generation, format } = this.currentTeam;
+    const mine = this.storedState;
+    const selectionChanged = mine.currentTeamId !== this.lastRead.currentTeamId;
+    const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
     this.isMoreOpen = merged.isMoreOpen;
@@ -837,7 +847,17 @@ class Store {
     this.nameView = merged.nameView;
     this.chosenLocale = merged.locale;
     this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
-    this.lastRead = { ...theirs, currentTeamId: merged.currentTeamId };
+    this.lastRead = {
+      ...theirs,
+      currentTeamId:
+        selectionChanged ? theirs.currentTeamId : merged.currentTeamId,
+    };
+    if (
+      teamKey(this.team) !== snapshot ||
+      this.currentTeam.generation !== generation ||
+      this.currentTeam.format !== format
+    )
+      this.resetHistory();
   }
 
   // A tab with nothing of its own to save leaves the saving to the tab in use:
@@ -846,8 +866,7 @@ class Store {
     this.readOtherTabs();
     if (stableJson(this.storedState) === stableJson(this.lastRead)) return;
     const state = JSON.parse(JSON.stringify(this.storedState)) as StoredState;
-    saveStoredState(storage, state);
-    this.lastRead = state;
+    if (saveStoredState(this.storage, state)) this.lastRead = state;
   }
 
   private get storedState(): StoredState {

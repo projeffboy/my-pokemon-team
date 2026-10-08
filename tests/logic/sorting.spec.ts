@@ -128,6 +128,13 @@ test("sorts by format from the top tier down, with untiered formes last", () => 
   ]);
 });
 
+test("format sorting uses the selected generation's tiers", () => {
+  const ids = ["clefable", "gengar"];
+  const sort = { by: "format", descending: false } as const;
+  expect(sortPokemon(ids, sort, undefined, 1)).toEqual(["gengar", "clefable"]);
+  expect(sortPokemon(ids, sort, undefined, 9)).toEqual(["clefable", "gengar"]);
+});
+
 test("sorts by base stat total and by single stats", () => {
   const ids = ["shuckle", "arceus", "magikarp"];
   expect(sortPokemon(ids, { by: "bst", descending: false })).toEqual([

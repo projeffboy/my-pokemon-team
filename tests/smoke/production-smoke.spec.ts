@@ -70,10 +70,14 @@ test("removes the service worker left by the old build", async ({ page }) => {
   page.on("pageerror", error => pageErrors.push(error));
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
-  // Stand in for a browser that still has the Create React App worker
-  await page.evaluate(() =>
-    navigator.serviceWorker.register("/service-worker.js"),
-  );
+  // The replacement worker unregisters itself and reloads its controlled page.
+  // Returning the registration promise would race that expected navigation.
+  await Promise.all([
+    page.waitForEvent("domcontentloaded"),
+    page.evaluate(() => {
+      void navigator.serviceWorker.register("/service-worker.js");
+    }),
+  ]);
 
   await expect(async () => {
     const registrations = await page.evaluate(() =>

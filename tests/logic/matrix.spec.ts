@@ -7,7 +7,7 @@ import {
 import { createTeam } from "./shared/team";
 
 test("formats multipliers like a type chart", () => {
-  expect([4, 3, 2, 1.5, 1, 0.5, 0.25, 0].map(formatMultiplier)).toEqual([
+  expect([4, 3, 2, 1.5, 1, 0.5, 0.25, 0.125, 0].map(formatMultiplier)).toEqual([
     "×4",
     "×3",
     "×2",
@@ -15,6 +15,7 @@ test("formats multipliers like a type chart", () => {
     "",
     "½",
     "¼",
+    "⅛",
     "0",
   ]);
 });

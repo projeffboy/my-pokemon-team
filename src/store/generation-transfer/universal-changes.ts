@@ -1,4 +1,9 @@
-import { generationRules, gen2Dvs } from "@/shared/generation-rules";
+import {
+  generationRules,
+  gen2Dvs,
+  getDv,
+  isShinyInGeneration,
+} from "@/shared/generation-rules";
 import { STAT_KEYS, type ReadonlyTeam, type SavedTeam } from "@/types";
 import { getIv, MAX_IV } from "@/shared/set-details";
 import type { TransferLoss } from "../generation-transfer";
@@ -25,13 +30,19 @@ export function universalTransferChanges(
   const members = team.filter(member => member.name);
   const customIvs = members.some(member => {
     const source = from.generation === 2 ? gen2Dvs(member) : member;
-    return STAT_KEYS.some(stat => getIv(source.ivs, stat) !== MAX_IV);
+    return before.legacy ?
+        before.statKeys.some(
+          stat => stat !== "hp" && getDv(source, stat) !== 15,
+        )
+      : STAT_KEYS.some(stat => getIv(source.ivs, stat) !== MAX_IV);
   });
   const hasField = (field: UniversalField) =>
     field === "ivs" ? customIvs : (
       members.some(member => {
+        if (field === "shiny")
+          return isShinyInGeneration(member, from.generation);
         const value = member[field];
-        return value !== undefined && value !== "" && value !== false;
+        return value !== undefined && value !== "";
       })
     );
   const hasTraining = members.some(member =>

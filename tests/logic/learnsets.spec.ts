@@ -40,6 +40,16 @@ test.describe("learnset inheritance", () => {
     expect(canItLearn("earthpower", "sandslash")).toBe(true);
   });
 
+  test("a regional battle forme inherits its regional forme's moves", () => {
+    expect(learnsets.darmanitangalarzen).toBeUndefined();
+    expect(learnsets.darmanitangalar).toContain("iciclecrash");
+    expect(learnsets.darumakagalar).not.toContain("iciclecrash");
+    expect(canItLearn("iciclecrash", "darmanitangalarzen")).toBe(true);
+    expect(completeLearnset("darmanitangalarzen")).toEqual(
+      completeLearnset("darmanitangalar"),
+    );
+  });
+
   test("a regional evolution can inherit from a nonregional predecessor", () => {
     expect(learnsets.marowakalola).not.toContain("bellydrum");
     expect(canItLearn("bellydrum", "marowakalola")).toBe(true);

@@ -26,3 +26,17 @@ test("preserves numbers and copy text inside the original team name", () => {
     "Rain copy ideas copy",
   );
 });
+
+test("copy numbering stays exact when names exceed JavaScript's safe integer range", () => {
+  const { copyOf } = en.team;
+  expect(
+    nextDuplicateName(
+      "Rain copy 9007199254740991",
+      ["Rain copy 9007199254740992"],
+      copyOf,
+    ),
+  ).toBe("Rain copy 9007199254740993");
+  expect(nextDuplicateName("Rain copy 9007199254740992", [], copyOf)).toBe(
+    "Rain copy 9007199254740993",
+  );
+});

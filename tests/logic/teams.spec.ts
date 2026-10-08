@@ -357,6 +357,24 @@ test.describe("slot tools", () => {
 });
 
 test.describe("undo and redo", () => {
+  test("randomizing a slot undoes that action separately from immediately preceding manual edits", ({
+    store,
+  }) => {
+    store.selectPokemon(0, "rhyperior");
+    store.selectMove(0, "move1", "rockwrecker");
+    const original = serializeTeam(store.team);
+    store.randomizeSlot(0);
+    const randomized = serializeTeam(store.team);
+    expect(randomized).not.toBe(original);
+    store.undo();
+    expect(serializeTeam(store.team)).toBe(original);
+    store.redo();
+    expect(serializeTeam(store.team)).toBe(randomized);
+    store.undo();
+    store.undo();
+    expect(store.isTeamEmpty).toBe(true);
+  });
+
   for (const [generation, format] of [
     [7, ""],
     [9, CHAMPIONS_FORMAT],

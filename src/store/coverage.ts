@@ -64,7 +64,7 @@ export function calculateTypeCoverage(
 
     const moves = [pokemon.move1, pokemon.move2, pokemon.move3, pokemon.move4];
     for (const move of moves) {
-      if (!move || !isMoveStrongEnough(move)) continue;
+      if (!move || !isMoveStrongEnough(move, generation)) continue;
 
       const type = moveType(move, name, ability, generation);
       const isSpecialMove = move === "freezedry" || move === "flyingpress";

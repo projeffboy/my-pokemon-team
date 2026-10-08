@@ -316,6 +316,7 @@ export type GenerationData = {
   moves: ShowdownTable;
   typechart: ShowdownTable;
   abilities?: ShowdownTable;
+  formats?: ShowdownTable;
 };
 export type ModData = Partial<
   Record<keyof GenerationData, Record<string, ShowdownEntry | null>>
@@ -397,6 +398,7 @@ export function projectPastGenerations(
       moves: resolveMod(parent.moves, mod.moves),
       typechart: resolveMod(parent.typechart, mod.typechart),
       abilities: resolveMod(parent.abilities ?? {}, mod.abilities),
+      formats: resolveMod(parent.formats ?? {}, mod.formats),
     };
     const types = typesOf(resolved.typechart);
     const typechart = pastTypeChart(resolved.typechart, types);
@@ -405,6 +407,40 @@ export function projectPastGenerations(
       pokemon: changedField(latest.pokedex, resolved.pokedex, "types"),
       moves: changedField(latest.moves, resolved.moves, "type"),
     };
+    const strengthData = (move: ShowdownEntry) =>
+      pick<MoveEntry>(move, [
+        "category",
+        "basePower",
+        "multihit",
+        "basePowerCallback",
+        "onModifyMove",
+      ]);
+    const moveData = Object.fromEntries(
+      Object.entries(resolved.moves).flatMap(([id, move]) => {
+        const properties = strengthData(move);
+        return (
+            JSON.stringify(properties) ===
+              JSON.stringify(strengthData(latest.moves[id] ?? {}))
+          ) ?
+            []
+          : [[id, properties]];
+      }),
+    );
+    if (Object.keys(moveData).length) entry.moveData = moveData;
+    const formats = Object.fromEntries(
+      Object.keys(mod.formats ?? resolved.formats ?? {}).flatMap(id => {
+        const format = resolved.formats?.[id];
+        if (!format) return [];
+        const properties = projections.Formats(format);
+        return (
+            JSON.stringify(properties) ===
+              JSON.stringify(projections.Formats(latest.formats?.[id] ?? {}))
+          ) ?
+            []
+          : [[id, properties]];
+      }),
+    );
+    if (Object.keys(formats).length) entry.formats = formats;
     const resolvedSpecies = speciesFields(resolved.pokedex);
     const baseStats = changedField<BaseStats>(
       latestSpecies,

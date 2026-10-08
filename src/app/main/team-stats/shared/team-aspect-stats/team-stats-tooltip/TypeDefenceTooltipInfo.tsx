@@ -20,6 +20,7 @@ const EFFECTIVENESS: Partial<
   [1]: { multiplier: 0.5, color: "success.main" },
   [2]: { multiplier: 0.25, color: "success.main" },
   [3]: { multiplier: 0, color: "success.main" },
+  [4]: { multiplier: 0.125, color: "success.main" },
 };
 
 const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({

@@ -5,9 +5,78 @@ import { selectPokemon } from "helper";
 const SEND_TIMEOUT = 15000;
 
 test.describe("Feedback Dialog - Unit Tests", () => {
+  test("a cancelled send cannot clear a reopened feedback draft", async ({
+    page,
+  }) => {
+    let release: () => void = () => {};
+    const pending = new Promise<void>(resolve => {
+      release = resolve;
+    });
+    const requested = page.waitForRequest("**/api/feedback");
+    await page.route("/api/feedback", async route => {
+      await pending;
+      await route.fulfill({ status: 204 });
+    });
+    await page.getByRole("button", { name: "Send feedback" }).click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    await dialog.getByLabel("Your feedback").fill("Original feedback");
+    await dialog.getByLabel("Attach a screenshot of the page").uncheck();
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await requested;
+    await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await page.getByRole("button", { name: "Send feedback" }).click();
+    await dialog.getByLabel("Your feedback").fill("A new draft");
+    const responded = page.waitForResponse("**/api/feedback");
+    release();
+    await responded;
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByLabel("Your feedback")).toHaveValue("A new draft");
+  });
+
+  test("overlapping image uploads retain both files", async ({ page }) => {
+    await page.evaluate(() => {
+      const createBitmap = window.createImageBitmap.bind(window);
+      window.createImageBitmap = async (image: ImageBitmapSource) => {
+        if (image instanceof File && image.name === "first.png")
+          await new Promise(resolve => setTimeout(resolve, 500));
+        return createBitmap(image);
+      };
+    });
+    await page.getByRole("button", { name: "Send feedback" }).click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    const picker = dialog.locator("input[type=file]");
+    const buffer = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+      "base64",
+    );
+    await picker.setInputFiles({
+      name: "first.png",
+      mimeType: "image/png",
+      buffer,
+    });
+    await picker.setInputFiles({
+      name: "second.png",
+      mimeType: "image/png",
+      buffer,
+    });
+    await expect(dialog.getByText("second.png", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("first.png", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("second.png", { exact: true })).toBeVisible();
+  });
+
   test("sends the message, reply address, link, and screenshot", async ({
     page,
   }) => {
+    await page.route(/(?:\/sprites\/|\/showdown-sprites\/)/, route =>
+      route.fulfill({
+        contentType: "image/png",
+        body: Buffer.from(
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+          "base64",
+        ),
+      }),
+    );
     const requests: Record<string, unknown>[] = [];
     await page.route("/api/feedback", route => {
       requests.push(route.request().postDataJSON());

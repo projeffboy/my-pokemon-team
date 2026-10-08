@@ -151,6 +151,42 @@ test.describe("Filters Integration Tests", () => {
     }
   });
 
+  test("a pending Champions format change keeps edits made in another tab", async ({
+    page,
+    context,
+  }) => {
+    await selectPokemon(page, "Delphox");
+    await expect
+      .poll(() =>
+        page.evaluate(() => localStorage.getItem("mypokemonteam") ?? ""),
+      )
+      .toContain("delphox");
+    const otherTab = await context.newPage();
+    await otherTab.goto(page.url());
+    await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
+      "Delphox",
+    );
+
+    await openFilters(page);
+    await selectDialogOption(page, "Format", "Pokemon Champions (M-C)");
+    const transfer = page.getByRole("dialog", { name: /Switch game/ });
+    await expect(transfer).toBeVisible();
+    await selectPokemon(otherTab, "Tyrantrum");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Tyrantrum");
+    await transfer
+      .getByRole("button", { name: "Update existing team", exact: true })
+      .click();
+    await expect(transfer).toBeHidden();
+    await closeDialog(page);
+
+    await expect(
+      page.getByRole("combobox", { name: "Generation" }),
+    ).toContainText("Champions");
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Tyrantrum");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Level: 50");
+    await otherTab.close();
+  });
+
   test("format options follow generation and clear unsupported selections", async ({
     page,
   }) => {

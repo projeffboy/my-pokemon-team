@@ -90,6 +90,8 @@ export interface PastGeneration {
   types: PokemonType[];
   pokemon: Record<string, NonNullable<PokedexEntry["types"]>>;
   moves: Record<string, NonNullable<MoveEntry["type"]>>;
+  moveData?: Moves;
+  formats?: Formats;
   baseStats?: Record<string, BaseStats>;
   abilities?: Record<string, string[]>;
   typechart?: PastTypeChart;

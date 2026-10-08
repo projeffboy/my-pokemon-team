@@ -26,7 +26,7 @@ import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
 import { gameLogosFor } from "@/app/shared/game-logos";
-import type { Team, Generation } from "@/types";
+import type { Generation, GenerationTransferData } from "@/types";
 import typeIcons from "@/images/type-icons";
 
 // Narrows the Name dropdown of every slot. The format is the team's own setting.
@@ -36,17 +36,21 @@ const FiltersDialog = observer(function FiltersDialog() {
     teamId: string;
     generation: Generation;
     format: string;
-    plan: ReturnType<typeof planGenerationTransfer>;
+    data: GenerationTransferData;
   } | null>(null);
   const changeFormat = async (format: string) => {
-    const team = store.currentTeam;
-    if (format !== CHAMPIONS_FORMAT && team.format !== CHAMPIONS_FORMAT) {
-      team.format = format;
+    const teamId = store.currentTeamId;
+    if (
+      format !== CHAMPIONS_FORMAT &&
+      store.currentTeam.format !== CHAMPIONS_FORMAT
+    ) {
+      store.currentTeam.format = format;
       return;
     }
     try {
       const data = await loadGenerationTransferData();
-      if (store.currentTeamId !== team.id) return;
+      if (store.currentTeamId !== teamId) return;
+      const team = store.currentTeam;
       const generation = formatGeneration(format, team.generation);
       const plan = planGenerationTransfer(
         team.team,
@@ -57,18 +61,30 @@ const FiltersDialog = observer(function FiltersDialog() {
         store.locale,
       );
       if (plan.losses.length)
-        setPending({ teamId: team.id, generation, format, plan });
+        setPending({ teamId: team.id, generation, format, data });
       else store.transferTeamGeneration(generation, format, plan.team, false);
     } catch {
       store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
     }
   };
-  const apply = (team: Team, newTeam: boolean) => {
-    if (pending?.teamId === store.currentTeamId)
+  const target = pending?.teamId === store.currentTeamId ? pending : null;
+  const plan =
+    target ?
+      planGenerationTransfer(
+        store.team,
+        store.currentTeam,
+        target.generation,
+        target.format,
+        target.data,
+        store.locale,
+      )
+    : null;
+  const apply = (newTeam: boolean) => {
+    if (target && plan)
       store.transferTeamGeneration(
-        pending.generation,
-        pending.format,
-        team,
+        target.generation,
+        target.format,
+        plan.team,
         newTeam,
       );
     setPending(null);
@@ -231,19 +247,19 @@ const FiltersDialog = observer(function FiltersDialog() {
           <Button onClick={close}>{t.done}</Button>
         </DialogActions>
       </Dialog>
-      {pending?.teamId === store.currentTeamId && (
+      {target && plan && (
         <GenerationTransferDialog
           team={store.team}
           fromGeneration={store.currentTeam.generation}
           fromFormat={store.currentTeam.format}
-          toGeneration={pending.generation}
-          toFormat={pending.format}
-          hasCarryover={pending.plan.team.some(member => member.name)}
+          toGeneration={target.generation}
+          toFormat={target.format}
+          hasCarryover={plan.team.some(member => member.name)}
           fromLogos={gameLogosFor(
             store.currentTeam.generation,
             store.currentTeam.format,
           )}
-          toLogos={gameLogosFor(pending.generation, pending.format)}
+          toLogos={gameLogosFor(target.generation, target.format)}
           from={
             store.currentTeam.format === CHAMPIONS_FORMAT ?
               t.championsGeneration
@@ -256,19 +272,19 @@ const FiltersDialog = observer(function FiltersDialog() {
               }`
           }
           where={
-            pending.format === CHAMPIONS_FORMAT ?
+            target.format === CHAMPIONS_FORMAT ?
               t.championsGeneration
-            : t.generation(pending.generation)
+            : t.generation(target.generation)
           }
           games={
-            pending.format === CHAMPIONS_FORMAT ?
+            target.format === CHAMPIONS_FORMAT ?
               undefined
-            : GENERATION_GAMES[pending.generation]
+            : GENERATION_GAMES[target.generation]
           }
-          losses={pending.plan.losses}
+          losses={plan.losses}
           onCancel={() => setPending(null)}
-          onModify={() => apply(pending.plan.team, false)}
-          onNew={() => apply(pending.plan.team, true)}
+          onModify={() => apply(false)}
+          onNew={() => apply(true)}
         />
       )}
     </>

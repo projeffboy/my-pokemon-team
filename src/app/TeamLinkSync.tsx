@@ -29,9 +29,10 @@ const TeamLinkSync = observer(function TeamLinkSync() {
     // URL -> store: runs on initial load and whenever navigation (back/forward) changes
     // the `team` parameter to something we didn't just write ourselves.
     const syncFromUrl = () => {
+      const teamParameter = new URLSearchParams(location.search).get("team");
+      if (!learnsetsLoaded && teamParameter) return;
       const firstNavigation = initialNavigation;
       initialNavigation = false;
-      const teamParameter = new URLSearchParams(location.search).get("team");
       if (
         !firstNavigation &&
         teamParameter === lastSyncedTeamParameter &&
@@ -60,6 +61,14 @@ const TeamLinkSync = observer(function TeamLinkSync() {
     // store -> URL: keeps the URL's `team` parameter canonical for the current team.
     const disposeAutorun = autorun(() => {
       const encoded = encodeTeamForUrl();
+      // A link navigated to while learnsets load must keep its original moves.
+      if (
+        !learnsetsLoaded &&
+        (new URLSearchParams(location.search).get("team") !==
+          lastSyncedTeamParameter ||
+          context() !== lastContext)
+      )
+        return;
       lastSyncedTeamParameter = encoded || null;
 
       const url = new URL(location.href);

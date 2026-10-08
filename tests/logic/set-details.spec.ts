@@ -7,6 +7,7 @@ import {
 } from "@/store/team-text";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
+import { LEGENDS_ARCEUS, LETS_GO } from "@/shared/generation-rules";
 
 const fullSet = `Chompy (Garchomp) (F) @ Choice Scarf
 Ability: Rough Skin
@@ -25,6 +26,20 @@ IVs: 0 SpA
 `;
 
 test.describe("set details in Showdown text", () => {
+  test("auto-selected abilities follow the imported generation and game", () => {
+    expect(parseTeamText("Gengar", 4)[0].ability).toBe("Levitate");
+    expect(parseTeamText("Gengar\nAbility: Unknown", 4)[0].ability).toBe(
+      "Levitate",
+    );
+    expect(parseTeamText("Gengar", 9)[0].ability).toBe("Cursed Body");
+    expect(parseTeamText("Gengar", 2)[0].ability).toBe("");
+    expect(parseTeamText("Gengar", 8, LEGENDS_ARCEUS)[0].ability).toBe("");
+    expect(parseTeamText("Gengar", 7, LETS_GO)[0].ability).toBe("");
+    expect(
+      parseTeamsText("=== [gen4ou] Ghosts ===\n\nGengar")[0]?.team[0]?.ability,
+    ).toBe("Levitate");
+  });
+
   test("parses every detail and serializes it back unchanged", () => {
     const team = parseTeamText(fullSet);
     expect(team[0]).toEqual({

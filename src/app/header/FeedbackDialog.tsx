@@ -50,34 +50,53 @@ const FeedbackDialog = observer(function FeedbackDialog() {
   const [attachLink, setAttachLink] = useState(true);
   const [attachScreenshot, setAttachScreenshot] = useState(true);
   const [uploads, setUploads] = useState<Upload[]>([]);
+  const uploadsRef = useRef<Upload[]>([]);
+  const [pendingUploads, setPendingUploads] = useState(0);
+  const sendVersion = useRef(0);
   const [uploadError, setUploadError] = useState<string>();
   const [status, setStatus] = useState<"idle" | "sending" | "failed">("idle");
   const close = () => {
+    sendVersion.current += 1;
     setIsOpen(false);
     setStatus("idle");
+  };
+  const updateUploads = (next: Upload[]) => {
+    uploadsRef.current = next;
+    setUploads(next);
   };
 
   const addUploads = async (input: HTMLInputElement) => {
     const files = Array.from(input.files ?? []);
     // Lets the same file be picked again after it is removed
     input.value = "";
-    let added = uploads;
     let error: string | undefined;
-    for (const file of files.slice(0, MAX_UPLOADS - uploads.length)) {
-      const dataUrl = await compressImage(file).catch(() => undefined);
-      if (!dataUrl) {
-        error = t.feedback.imageUnreadable;
-      } else if (totalLength(added) + dataUrl.length > MAX_UPLOADS_LENGTH) {
-        error = t.feedback.imagesTooLarge;
-      } else {
-        added = [...added, { id: nextUploadId++, name: file.name, dataUrl }];
+    setPendingUploads(count => count + 1);
+    try {
+      for (const file of files) {
+        if (uploadsRef.current.length >= MAX_UPLOADS) break;
+        const dataUrl = await compressImage(file).catch(() => undefined);
+        const current = uploadsRef.current;
+        if (!dataUrl) {
+          error = t.feedback.imageUnreadable;
+        } else if (current.length >= MAX_UPLOADS) {
+          break;
+        } else if (totalLength(current) + dataUrl.length > MAX_UPLOADS_LENGTH) {
+          error = t.feedback.imagesTooLarge;
+        } else {
+          updateUploads([
+            ...current,
+            { id: nextUploadId++, name: file.name, dataUrl },
+          ]);
+        }
       }
+      setUploadError(error);
+    } finally {
+      setPendingUploads(count => count - 1);
     }
-    setUploads(added);
-    setUploadError(error);
   };
 
   const send = async () => {
+    const version = ++sendVersion.current;
     setStatus("sending");
     const screenshot =
       attachScreenshot &&
@@ -85,6 +104,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         dialogRef.current,
         MAX_IMAGES_LENGTH - totalLength(uploads),
       ));
+    if (version !== sendVersion.current) return;
     const response = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -99,12 +119,13 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         }),
       }),
     }).catch(() => undefined);
+    if (version !== sendVersion.current) return;
     if (!response?.ok) {
       setStatus("failed");
       return;
     }
     setMessage("");
-    setUploads([]);
+    updateUploads([]);
     setUploadError(undefined);
     close();
     store.openSnackbar(t.feedback.sent, false, "send");
@@ -138,6 +159,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             minRows={4}
             fullWidth
             value={message}
+            disabled={status === "sending"}
             onChange={event => setMessage(event.target.value)}
             slotProps={{ htmlInput: { maxLength: 5000 } }}
           />
@@ -148,6 +170,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             fullWidth
             sx={{ mt: 2 }}
             value={email}
+            disabled={status === "sending"}
             onChange={event => setEmail(event.target.value)}
             slotProps={{ htmlInput: { maxLength: 254 } }}
           />
@@ -156,6 +179,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             control={
               <Checkbox
                 checked={attachLink}
+                disabled={status === "sending"}
                 onChange={event => setAttachLink(event.target.checked)}
               />
             }
@@ -165,6 +189,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             control={
               <Checkbox
                 checked={attachScreenshot}
+                disabled={status === "sending"}
                 onChange={event => setAttachScreenshot(event.target.checked)}
               />
             }
@@ -184,7 +209,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
               variant="outlined"
               size="small"
               startIcon={<AddPhotoAlternateIcon />}
-              disabled={uploads.length >= MAX_UPLOADS}
+              disabled={uploads.length >= MAX_UPLOADS || status === "sending"}
             >
               {t.feedback.addImage}
               <input
@@ -192,6 +217,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
                 type="file"
                 accept="image/*"
                 multiple
+                disabled={status === "sending"}
                 onChange={event => addUploads(event.target)}
               />
             </Button>
@@ -199,8 +225,11 @@ const FeedbackDialog = observer(function FeedbackDialog() {
               <Chip
                 key={upload.id}
                 label={upload.name}
+                disabled={status === "sending"}
                 onDelete={() => {
-                  setUploads(uploads.filter(other => other !== upload));
+                  updateUploads(
+                    uploadsRef.current.filter(other => other !== upload),
+                  );
                   setUploadError(undefined);
                 }}
                 sx={{ maxWidth: 1 }}
@@ -223,7 +252,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         <DialogActions>
           <Button onClick={close}>{t.cancel}</Button>
           <Button
-            disabled={!message.trim()}
+            disabled={!message.trim() || pendingUploads > 0}
             loading={status === "sending"}
             onClick={send}
             startIcon={<SendIcon />}

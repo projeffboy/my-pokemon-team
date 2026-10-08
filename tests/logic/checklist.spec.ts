@@ -40,6 +40,12 @@ test("general checks count hazards, hazard removal, and recovery moves", () => {
   ]);
 });
 
+test("Ceaseless Edge counts as an entry hazard", () => {
+  expect(
+    checked(createTeam({ name: "samurotthisui", move1: "ceaselessedge" })),
+  ).toEqual(["Entry Hazard"]);
+});
+
 test("wish is reliable recovery only with a protect move on the same pokemon", () => {
   expect(
     checked(createTeam({ name: "alomomola", move1: "wish", move2: "detect" })),
@@ -85,6 +91,7 @@ test("boosting moves raise two stages in total, or are Curse", () => {
   expect(boosts("shellsmash")).toBe(true);
   expect(boosts("growth")).toBe(true);
   expect(boosts("curse")).toBe(true);
+  expect(boosts("bellydrum")).toBe(true);
   expect(boosts("howl")).toBe(false);
   expect(boosts("iciclespear")).toBe(false);
 });

@@ -1,6 +1,5 @@
 import { pokemonBaseStats } from "@/shared/pokedex";
 import pokedex from "@/data/pokedex";
-import formats from "@/data/formats";
 import {
   STAT_KEYS,
   type Generation,
@@ -9,7 +8,7 @@ import {
   type SortOrder,
 } from "@/types";
 import { baseStatTotal } from "@/shared/set-details";
-import { moveTypeIn } from "@/shared/generation-data";
+import { moveTypeIn, pokemonFormatIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonNameInverse } from "@/shared/names";
 import { english, type Translation } from "@/i18n/translation";
@@ -69,8 +68,9 @@ const TIER_RANK = [
   "LC",
 ];
 
-const tierRank = (pokemon: string) => {
-  const rank = TIER_RANK.indexOf(formats[pokemon]?.tier ?? "");
+const tierRank = (pokemon: string, generation: Generation) => {
+  const tier = pokemonFormatIn(pokemon, generation)?.tier ?? "";
+  const rank = TIER_RANK.indexOf(tier === "(OU)" ? "OU" : tier);
   return rank === -1 ? TIER_RANK.length : rank;
 };
 
@@ -86,7 +86,7 @@ function sortValue(
     case "num":
       return entry?.num ?? 0;
     case "format":
-      return tierRank(pokemon);
+      return tierRank(pokemon, generation);
     case "bst": {
       const stats = pokemonBaseStats(pokemon, generation);
       return baseStatTotal(stats) - (generation === 1 ? (stats?.spd ?? 0) : 0);

@@ -19,6 +19,54 @@ const savedState = (page: Page) =>
   );
 
 test.describe("Share Link - Integration Tests", () => {
+  test("a denied localStorage getter leaves team editing and share links usable", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", error => errors.push(error.message));
+    await page.addInitScript(() => {
+      Object.defineProperty(window, "localStorage", {
+        configurable: true,
+        get() {
+          throw new DOMException("Access denied", "SecurityError");
+        },
+      });
+    });
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await selectPokemon(page, "Lurantis");
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lurantis");
+    expect(getTeamTextFromUrl(page)).toContain("Lurantis");
+    expect(errors).toEqual([]);
+  });
+
+  test("navigation to a shared link keeps its moves while learnsets load", async ({
+    page,
+  }) => {
+    let releaseLearnsets = () => {};
+    let markRequested = () => {};
+    const requested = new Promise<void>(resolve => {
+      markRequested = resolve;
+    });
+    const released = new Promise<void>(resolve => {
+      releaseLearnsets = resolve;
+    });
+    await page.route("**/src/data/learnsets.json*", async route => {
+      markRequested();
+      await released;
+      await route.continue();
+    });
+    await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+    await requested;
+    await page.evaluate(teamParameter => {
+      history.pushState(null, "", `/?gen=9&team=${teamParameter}`);
+      dispatchEvent(new PopStateEvent("popstate"));
+    }, toBase64Url("Gyarados\n- Waterfall"));
+    releaseLearnsets();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Waterfall");
+    expect(getTeamTextFromUrl(page)).toContain("- Waterfall");
+  });
+
   test("keeps early selections when learnsets finish loading", async ({
     page,
   }) => {
@@ -171,6 +219,37 @@ test.describe("Share Link - Navigation", () => {
 });
 
 test.describe("Teams across tabs and links", () => {
+  test("an edit from another tab resets history and becomes the next edit's undo baseline", async ({
+    page,
+    context,
+  }) => {
+    await selectPokemon(page, "Bellibolt");
+    await expect(
+      page.getByRole("button", { name: "Undo", exact: true }),
+    ).toBeEnabled();
+    await expect
+      .poll(async () => (await savedState(page))?.teams[0]?.team[0]?.name)
+      .toBe("bellibolt");
+
+    const other = await context.newPage();
+    await other.goto(page.url());
+    await selectPokemon(other, "Glimmora");
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Glimmora");
+    await expect(
+      page.getByRole("button", { name: "Undo", exact: true }),
+    ).toBeDisabled();
+    await expect(
+      page.getByRole("button", { name: "Redo", exact: true }),
+    ).toBeDisabled();
+
+    await selectPokemon(page, "Revavroom");
+    await expect(
+      page.getByRole("button", { name: "Undo", exact: true }),
+    ).toBeEnabled();
+    await page.getByRole("button", { name: "Undo", exact: true }).click();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Glimmora");
+  });
+
   test("a plain new tab starts a distinct team without switching the first tab", async ({
     page,
     context,

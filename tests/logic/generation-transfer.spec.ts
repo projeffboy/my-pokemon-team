@@ -1,20 +1,218 @@
 import { test, expect } from "@playwright/test";
 import { planGenerationTransfer } from "@/store/generation-transfer";
+import { parseTeamText, serializeTeam } from "@/store/team-text";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import spreads from "@/data/hidden-power-spreads";
+import { hiddenPowerType, matchHiddenPower } from "@/shared/hidden-power";
 import { createTeam } from "./shared/team";
 import { convertTraining } from "@/store/generation-transfer/training";
 import {
   generationRules,
+  gen2Dvs,
   getDv,
   hpDv,
   isShinyDv,
+  LEGENDS_ARCEUS,
 } from "@/shared/generation-rules";
 import { evTotal, getIv } from "@/shared/set-details";
 import { STAT_KEYS } from "@/types";
 
 const data = await loadGenerationTransferData();
 const from = { generation: 9 as const, format: "" };
+
+test.describe("Gen 2 Hidden Power transfer", () => {
+  for (const type of Object.keys(spreads)) {
+    test(`${type} retains its type and source DVs in modern games`, () => {
+      const original = createTeam({
+        name: "unown",
+        move1: `hiddenpower${type}`,
+      });
+      matchHiddenPower(original[0]!, original[0]!.move1, 2);
+      expect(hiddenPowerType(original[0]!, 2)).toBe(type);
+      const before = structuredClone(original);
+      const text = serializeTeam(original);
+      for (const generation of [3, 6] as const) {
+        const plan = planGenerationTransfer(
+          original,
+          { generation: 2, format: "" },
+          generation,
+          "",
+          data,
+        );
+        const member = plan.team[0]!;
+        expect(member.move1).toBe(`hiddenpower${type}`);
+        expect(hiddenPowerType(member, generation)).toBe(type);
+        for (const stat of STAT_KEYS)
+          expect(getDv(member, stat)).toBe(getDv(original[0]!, stat));
+        const conversion = plan.losses.find(
+          loss => loss.field === "ivs",
+        )?.conversion;
+        if (type === "dark") expect(conversion).toBeUndefined();
+        else {
+          expect(conversion?.from).toBe("dvs");
+          expect(conversion?.after).toEqual(
+            Object.fromEntries(
+              STAT_KEYS.map(stat => [stat, getIv(member.ivs, stat)]),
+            ),
+          );
+        }
+      }
+      expect(original).toEqual(before);
+      expect(serializeTeam(original)).toBe(text);
+    });
+  }
+
+  test("implicit shiny DVs stay shiny while Dragon keeps its modern type", () => {
+    const original = createTeam({
+      name: "unown",
+      move1: "hiddenpowerdragon",
+      shiny: true,
+    });
+    const text = serializeTeam(original);
+    const source = gen2Dvs(original[0]!);
+    expect(hiddenPowerType(source, 2)).toBe("dragon");
+    const plan = planGenerationTransfer(
+      original,
+      { generation: 2, format: "" },
+      3,
+      "",
+      data,
+    );
+    expect(hiddenPowerType(plan.team[0]!, 3)).toBe("dragon");
+    expect(plan.team[0]?.shiny).toBe(true);
+    for (const stat of STAT_KEYS)
+      expect(getDv(plan.team[0]!, stat)).toBe(getDv(source, stat));
+    expect(original[0]?.ivs).toBeUndefined();
+    expect(serializeTeam(original)).toBe(text);
+  });
+
+  test("an invalid source label keeps its existing conversion", () => {
+    const original = createTeam({ name: "unown", move1: "hiddenpowerfire" });
+    expect(hiddenPowerType(original[0]!, 2)).toBe("dark");
+    const plan = planGenerationTransfer(
+      original,
+      { generation: 2, format: "" },
+      3,
+      "",
+      data,
+    );
+    expect(plan.team[0]?.move1).toBe("hiddenpowerfire");
+    expect(hiddenPowerType(plan.team[0]!, 3)).toBe("dark");
+    expect(plan.losses).toEqual([]);
+  });
+
+  test("destinations without IVs still remove unsupported IVs and moves", () => {
+    const original = createTeam({ name: "espeon", move1: "hiddenpowerfire" });
+    matchHiddenPower(original[0]!, original[0]!.move1, 2);
+    const before = structuredClone(original);
+    for (const [generation, format] of [
+      [8, LEGENDS_ARCEUS],
+      [9, CHAMPIONS_FORMAT],
+    ] as const) {
+      const plan = planGenerationTransfer(
+        original,
+        { generation: 2, format: "" },
+        generation,
+        format,
+        data,
+      );
+      expect(plan.team[0]?.name).toBe("espeon");
+      expect(plan.team[0]?.ivs).toBeUndefined();
+      expect(plan.team[0]?.move1).toBe("");
+      expect(plan.losses).toContainEqual({
+        index: 0,
+        pokemon: "espeon",
+        field: "ivs",
+      });
+    }
+    expect(original).toEqual(before);
+  });
+});
+
+for (const generation of [1, 2] as const) {
+  test(`Gen ${generation} imports transfer their derived HP and shared Special DVs`, () => {
+    const original = parseTeamText("Vulpix\nIVs: 0 Atk / 10 SpA", generation);
+    const before = structuredClone(original);
+    const plan = planGenerationTransfer(
+      original,
+      { generation, format: "" },
+      3,
+      "",
+      data,
+    );
+    expect(getIv(plan.team[0]?.ivs, "hp")).toBe(15);
+    expect(getIv(plan.team[0]?.ivs, "spa")).toBe(11);
+    expect(getIv(plan.team[0]?.ivs, "spd")).toBe(11);
+    expect(original).toEqual(before);
+  });
+}
+
+test("even and odd legacy IV encodings of the same DVs transfer identically", () => {
+  for (const generation of [1, 2] as const) {
+    for (const [even, odd] of [
+      ["30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe", "31 HP"],
+      ["0 Atk / 10 SpA", "1 Atk / 11 SpA"],
+    ] as const) {
+      const transfer = (ivs: string) => {
+        const original = parseTeamText(`Vulpix\nIVs: ${ivs}`, generation);
+        const text = serializeTeam(original);
+        const plan = planGenerationTransfer(
+          original,
+          { generation, format: "" },
+          3,
+          "",
+          data,
+        );
+        expect(serializeTeam(original)).toBe(text);
+        return plan;
+      };
+      const evenPlan = transfer(even);
+      const oddPlan = transfer(odd);
+      expect(evenPlan).toEqual(oddPlan);
+      if (even.startsWith("30 HP")) expect(evenPlan.losses).toEqual([]);
+    }
+  }
+});
+
+test("Gen 2 transfers preserve DV-derived shiny and gender rather than conflicting import labels", () => {
+  for (const [details, shiny, gender] of [
+    ["(F)\nIVs: 20 Def / 20 SpA / 20 Spe", true, "M"],
+    ["(M)\nShiny: Yes\nIVs: 0 Atk / 20 Def / 20 SpA / 20 Spe", false, "F"],
+  ] as const) {
+    const original = parseTeamText(`Jigglypuff ${details}`, 2);
+    const before = structuredClone(original);
+    expect(isShinyDv(original[0]!)).toBe(shiny);
+    const plan = planGenerationTransfer(
+      original,
+      { generation: 2, format: "" },
+      3,
+      "",
+      data,
+    );
+    expect(plan.team[0]?.shiny ?? false).toBe(shiny);
+    expect(plan.team[0]?.gender).toBe(gender);
+    expect(original).toEqual(before);
+  }
+});
+
+test("Gen 2 shiny DVs without a shiny label still preview its removal in Gen 1", () => {
+  const original = parseTeamText(
+    "Jigglypuff\nIVs: 20 Def / 20 SpA / 20 Spe",
+    2,
+  );
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 2, format: "" },
+    1,
+    "",
+    data,
+  );
+  expect(plan.losses.map(loss => loss.field)).toEqual(["shiny"]);
+  expect(plan.team[0]?.shiny).toBeUndefined();
+  expect(isShinyDv(plan.team[0]!)).toBe(true);
+  expect(original[0]?.shiny).toBeUndefined();
+});
 
 test("default IVs and DVs transfer without reported adjustments", () => {
   for (const [fromGeneration, generation] of [
@@ -99,6 +297,29 @@ test("modern shiny sets keep shiny Gen 2 DVs when their IVs are unset", () => {
   expect(isShinyDv(plan.team[0]!)).toBe(true);
   expect(plan.losses).toEqual([]);
   expect(original[0]?.shiny).toBe(true);
+  expect(original[0]?.ivs).toBeUndefined();
+});
+
+test("implicit Gen 2 shiny DVs survive a transfer through Gen 1", () => {
+  const original = createTeam({ name: "ponyta", shiny: true });
+  const legacy = planGenerationTransfer(
+    original,
+    { generation: 2, format: "" },
+    1,
+    "",
+    data,
+  );
+  expect(legacy.team[0]?.shiny).toBeUndefined();
+  expect(isShinyDv(legacy.team[0]!)).toBe(true);
+  expect(legacy.losses.map(loss => loss.field)).toEqual(["shiny"]);
+  const returning = planGenerationTransfer(
+    legacy.team,
+    { generation: 1, format: "" },
+    2,
+    "",
+    data,
+  );
+  expect(returning.team[0]?.shiny).toBe(true);
   expect(original[0]?.ivs).toBeUndefined();
 });
 
@@ -297,6 +518,30 @@ test("legacy training conversions preserve bonuses where possible and share Spec
     converted.losses.find(loss => loss.field === "statExperience")?.conversion
       ?.limited,
   ).toBe(true);
+});
+
+test("legacy imports share Special training when leaving the generation", () => {
+  for (const training of ["EVs: 100 SpA", "Stat Experience: 10000 SpA"]) {
+    const original = parseTeamText(`Drowzee\n${training}`, 2);
+    const before = structuredClone(original);
+    const modern = planGenerationTransfer(
+      original,
+      { generation: 2, format: "" },
+      3,
+      "",
+      data,
+    );
+    expect(modern.team[0]?.evs, training).toEqual({ spa: 100, spd: 100 });
+    expect(original).toEqual(before);
+    const legacy = planGenerationTransfer(
+      original,
+      { generation: 2, format: "" },
+      1,
+      "",
+      data,
+    );
+    expect(legacy.team[0]?.evs, training).toEqual({ spa: 100, spd: 100 });
+  }
 });
 
 test("Gen 9 includes Z-A Mega formes and their required stones", () => {

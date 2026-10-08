@@ -100,8 +100,14 @@ export function randomizeSlotLabel(
   const rules = generationRules(generation, format);
   if (!member.name || isSetComplete(member, generation, format))
     return t.team.randomizePokemon;
+  const selectedMoves = MOVE_KEYS.map(key => member[key]).filter(Boolean);
   const fields = [
-    MOVE_KEYS.some(key => !member[key]) ? t.filters.moves : "",
+    (
+      selectedMoves.length < MOVE_KEYS.length ||
+      new Set(selectedMoves.map(baseMoveId)).size < selectedMoves.length
+    ) ?
+      t.filters.moves
+    : "",
     rules.items && !member.item ? t.team.item : "",
     rules.abilities && !member.ability ? t.team.ability : "",
   ].filter(Boolean);

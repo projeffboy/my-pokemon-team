@@ -81,9 +81,13 @@ export function readImages(screenshot: unknown, images: unknown) {
 }
 
 export async function POST(request: Request) {
-  const { message, email, link, screen, screenshot, images } = await request
-    .json()
-    .catch(() => ({}) as Record<string, unknown>);
+  const body: unknown = await request.json().catch(() => undefined);
+  if (typeof body !== "object" || body === null || Array.isArray(body))
+    return new Response("Invalid feedback", { status: 400 });
+  const { message, email, link, screen, screenshot, images } = body as Record<
+    string,
+    unknown
+  >;
   if (
     !isString(message, MAX_MESSAGE_LENGTH) ||
     !message.trim() ||
@@ -126,9 +130,13 @@ export async function POST(request: Request) {
       ...(replyTo?.includes("@") && { reply_to: replyTo }),
       ...(attachments.length > 0 && { attachments }),
     }),
-  });
-  if (!response.ok) {
-    console.error("Resend failed", response.status, await response.text());
+  }).catch(() => undefined);
+  if (!response?.ok) {
+    console.error(
+      "Resend failed",
+      response?.status,
+      response ? await response.text() : "Connection failed",
+    );
     return new Response("Could not send", { status: 502 });
   }
   return new Response(null, { status: 204 });

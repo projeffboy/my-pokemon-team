@@ -108,6 +108,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       }),
     [pokemonProperty],
   );
+  const filteredOptionsRef = useRef<SelectOption[]>([]);
   // Stable while the options and value are, since a new value object makes the
   // Autocomplete reset the text being typed (e.g. when the list view changes)
   const options: SelectOption[] = useMemo(
@@ -149,7 +150,9 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     option: SelectOption | null,
   ) => {
     if (option && internalListRef.current) {
-      const index = optionValues.indexOf(option.value);
+      const index = filteredOptionsRef.current.findIndex(
+        filtered => filtered.value === option.value,
+      );
       if (index !== -1) {
         try {
           internalListRef.current.scrollToRow({
@@ -205,7 +208,11 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         onChange={(event, newValue) => onChange(newValue?.value ?? "")}
         onHighlightChange={handleHighlightChange}
         getOptionLabel={(option: SelectOption) => option.label}
-        filterOptions={filterOptions}
+        filterOptions={(options, state) => {
+          const filtered = filterOptions(options, state);
+          filteredOptionsRef.current = filtered;
+          return filtered;
+        }}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         noOptionsText={
           <Typography variant="body2" sx={{ textAlign: "center" }}>

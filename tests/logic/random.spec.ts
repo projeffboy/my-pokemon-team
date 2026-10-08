@@ -251,3 +251,17 @@ test("random tooltips describe missing fields, or a new pokemon for empty and co
     ).toBe(`Randomize ${fields}`);
   }
 });
+
+test("random tooltips identify duplicate moves that completion will replace", () => {
+  const member = createTeam({
+    name: "bellossom",
+    item: "leftovers",
+    ability: "Chlorophyll",
+    move1: "hiddenpowerice",
+    move2: "hiddenpowerfire",
+    move3: "gigadrain",
+    move4: "gigadrain",
+  })[0];
+  if (!member) throw new Error("Missing pokemon");
+  expect(randomizeSlotLabel(member, undefined, 3)).toBe("Randomize moves");
+});

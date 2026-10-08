@@ -435,6 +435,67 @@ test("past generations resolve Showdown's mods, newest first, and keep what diff
   expect(past[1]?.typechart?.Poison).not.toHaveProperty("Dark");
 });
 
+test("historical damaging move properties preserve old power and removed callbacks", () => {
+  const past = projectPastGenerations(
+    {
+      pokedex: {},
+      moves: {
+        spin: { category: "Physical", basePower: 50 },
+        variable: {
+          category: "Special",
+          basePower: 20,
+          basePowerCallback: () => 80,
+        },
+      },
+      typechart: {},
+    },
+    {
+      7: { moves: { spin: { inherit: true, basePower: 20 } } },
+      5: {
+        moves: { variable: { inherit: true, basePowerCallback: undefined } },
+      },
+    },
+  );
+  expect(past[8]?.moveData).toBeUndefined();
+  expect(past[7]?.moveData).toEqual({
+    spin: { category: "Physical", basePower: 20 },
+  });
+  expect(past[5]?.moveData?.variable).toEqual({
+    category: "Special",
+    basePower: 20,
+  });
+  expect(past[1]?.moveData).toEqual(past[5]?.moveData);
+});
+
+test("historical formats keep native singles and doubles tier differences", () => {
+  const past = projectPastGenerations(
+    {
+      pokedex: {},
+      moves: {},
+      typechart: {},
+      formats: {
+        native: { tier: "OU", doublesTier: "DOU" },
+        later: { tier: "Uber" },
+      },
+    },
+    {
+      7: {
+        formats: {
+          native: { tier: "UU", doublesTier: "(DUU)" },
+          later: { tier: "UU" },
+        },
+      },
+      6: { formats: { native: { tier: "OU" } } },
+    },
+  );
+  expect(past[8]?.formats).toBeUndefined();
+  expect(past[7]?.formats).toEqual({
+    native: { tier: "UU", doublesTier: "(DUU)" },
+    later: { tier: "UU" },
+  });
+  expect(past[6]?.formats).toEqual({ native: { tier: "OU" } });
+});
+
 test("historical stats and abilities inherit through generations and cosmetic formes", () => {
   const modernStats = { hp: 80, atk: 60, def: 70, spa: 90, spd: 100, spe: 110 };
   const oldStats = { ...modernStats, spe: 100 };

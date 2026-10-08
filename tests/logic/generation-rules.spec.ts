@@ -270,7 +270,7 @@ test("historical stats sort correctly and unsupported abilities cannot change ea
   expect(typeAgainstPokemon("Water", "gastrodon", "Storm Drain", "", 5)).toBe(
     3,
   );
-  expect(moveAgainstType("tackle", "Ghost", "kangaskhan", "Scrappy", 1)).toBe(
+  expect(moveAgainstType("bodyslam", "Ghost", "kangaskhan", "Scrappy", 1)).toBe(
     2,
   );
   expect(parseTeamText("Gengar\nAbility: Levitate")[0]?.ability).toBe(

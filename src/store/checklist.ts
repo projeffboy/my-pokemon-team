@@ -52,11 +52,12 @@ const inflictsStatus: Check = team =>
     return !!(status || (secondary?.chance === 100 && secondary.status));
   });
 
-// Curse, or moves that raise stats by two or more stages in total
+// Curse, Belly Drum, or moves that raise stats by two or more stages in total
 const boostsStats: Check = team =>
   teamMoves(team).some(
     move =>
       move === "curse" ||
+      move === "bellydrum" ||
       Object.values(moves[move]?.boosts ?? {}).reduce(
         (sum, boost) => sum + boost,
         0,
@@ -96,6 +97,7 @@ export const checklist: ChecklistGroup[] = [
           "toxicspikes",
           "stickyweb",
           "stoneaxe",
+          "ceaselessedge",
         ]),
       },
       {
