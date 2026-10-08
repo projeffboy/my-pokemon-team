@@ -137,20 +137,22 @@ test("matches the widest menu option including its game logos", async ({
   ).toBeCloseTo(widest, 0);
 });
 
-test("expands game names only when the entire label fits, including after resizing", async ({
-  page,
-}) => {
-  const generation = page.getByRole("combobox", { name: "Generation" });
-  let wideWidth: number | undefined;
-  for (const gen of [9, 8, 7, 6, 5, 4, 3, 2, 1] as const) {
+for (const gen of [9, 8, 7, 6, 5, 4, 3, 2, 1] as const) {
+  test(`Gen ${gen} expands game names only when the entire label fits, including after resizing`, async ({
+    page,
+  }) => {
+    const generation = page.getByRole("combobox", { name: "Generation" });
     await page.setViewportSize({ width: 1440, height: 1000 });
+    await expect(generation).toHaveText(`Gen 9 · ${mainGames(9, true)}`);
+    const wideWidth = await generation.evaluate(
+      el => el.getBoundingClientRect().width,
+    );
     await generation.click();
     await page.locator(`[role="option"][data-value="${gen}"]`).click();
     await expect(generation).toHaveText(`Gen ${gen} · ${mainGames(gen, true)}`);
     const width = await generation.evaluate(
       el => el.getBoundingClientRect().width,
     );
-    wideWidth ??= width;
     expect(width).toBeCloseTo(wideWidth, 0);
     await expect(generation.locator("span")).toHaveJSProperty(
       "scrollWidth",
@@ -169,8 +171,8 @@ test("expands game names only when the entire label fits, including after resizi
     );
     await page.setViewportSize({ width: 1440, height: 1000 });
     await expect(generation).toHaveText(await expectedLabel(generation, gen));
-  }
-});
+  });
+}
 
 test("abbreviates game menu labels on narrow screens without clipping", async ({
   page,

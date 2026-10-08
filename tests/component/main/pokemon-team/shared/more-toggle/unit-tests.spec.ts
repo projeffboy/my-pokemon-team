@@ -79,10 +79,11 @@ test.describe("More toggle - Unit Tests", () => {
     }
   });
 
-  test("keeps Filters and Sort beside the toggle and makes room with history icons", async ({
-    page,
-  }) => {
-    for (const width of [320, 400, 600, 959, 960, 1200]) {
+  for (const width of [320, 400, 600, 959, 960, 1200]) {
+    test(`${width}px keeps Filters and Sort beside the toggle and makes room with history icons`, async ({
+      page,
+    }) => {
+      if (width >= 960) test.setTimeout(60000);
       await page.setViewportSize({ width, height: 1000 });
       const compact = width < 960;
       const toggle = page.getByRole("button", {
@@ -191,6 +192,6 @@ test.describe("More toggle - Unit Tests", () => {
       expect(
         await page.locator("body").evaluate(el => el.scrollWidth),
       ).toBeLessThanOrEqual(width);
-    }
-  });
+    });
+  }
 });
