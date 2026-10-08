@@ -17,6 +17,7 @@ const entries: Entry[] = [
       "Training values can now be typed directly alongside the sliders, including EVs, SPs, and older games' Stat experience.",
       "Slot controls now give Random, More details, and Info separate touch targets on small screens.",
       "Feedback screenshots capture faster in Safari, and stalled image downloads no longer stay pending.",
+      "Keyboard navigation in dropdowns now reaches off-screen options reliably, including Home and End.",
       "Pokémon stats and move power now follow the selected game, e.g. Mega Starmie in Legends: Z-A and Absorb in Let’s Go.",
       "Weaknesses now show exact Dry Skin multipliers, such as Parasect taking five times Fire damage.",
       "Iron Ball and Ring Target now change type matchups correctly, and Judgment follows the held Plate.",

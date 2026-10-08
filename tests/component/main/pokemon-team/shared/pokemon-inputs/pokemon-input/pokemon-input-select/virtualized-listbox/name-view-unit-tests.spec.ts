@@ -185,7 +185,11 @@ test.describe("Name dropdown views - Unit Tests", () => {
     page,
   }) => {
     await page.setViewportSize({ width: 320, height: 640 });
-    await page.goto("/?gen=9");
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
     const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
     await input.fill("Nido");
     const bigGrid = page.getByRole("button", {
@@ -245,7 +249,7 @@ test.describe("Name dropdown views - Unit Tests", () => {
         ),
       )
       .toBe("big-grid");
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await input.fill("Wooper");
     await expect(bigGrid).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("button", { name: "List view" }).click();
