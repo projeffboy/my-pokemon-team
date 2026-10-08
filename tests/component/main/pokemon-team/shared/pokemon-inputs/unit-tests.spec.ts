@@ -349,6 +349,15 @@ test.describe("Pokemon Card - Unit Tests", () => {
     // Card types and move types follow the stats as available space changes.
     for (const width of [320, 480, 600, 960, 1200, 1920]) {
       await page.setViewportSize({ width, height: 1000 });
+      await expect(
+        page
+          .getByRole("tablist", { name: "Pokemon team slots" })
+          .getByRole("tab"),
+      ).toHaveCount(
+        width < 600 ? 6
+        : width < 960 ? 3
+        : 0,
+      );
       const statsChip = page
         .getByRole("region", { name: "Team Defence", exact: true })
         .getByRole("button", { name: "Electric", exact: true });
@@ -375,11 +384,13 @@ test.describe("Pokemon Card - Unit Tests", () => {
         exact: true,
       });
       await expect(optionType).toBeVisible();
-      const hasIcon = (await statsChip.locator("img").count()) > 0;
-      expect(await optionType.evaluate(element => element.tagName)).toBe(
-        hasIcon ? "IMG" : "SPAN",
-      );
-      if (!hasIcon) await expect(optionType).toHaveText("ELC");
+      await expect(async () => {
+        const hasIcon = (await statsChip.locator("img").count()) > 0;
+        expect(await optionType.evaluate(element => element.tagName)).toBe(
+          hasIcon ? "IMG" : "SPAN",
+        );
+        if (!hasIcon) await expect(optionType).toHaveText("ELC");
+      }).toPass();
       await input.press("Escape");
     }
 

@@ -87,6 +87,11 @@ test.describe("Name dropdown views - Unit Tests", () => {
     page,
   }) => {
     await page.setViewportSize({ width: 320, height: 640 });
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
     const input = page.getByLabel("Pokemon 1's name");
     for (const view of ["Grid view", "Big grid view"]) {
       await input.fill("rhyper");

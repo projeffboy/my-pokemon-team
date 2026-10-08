@@ -15,6 +15,8 @@ const entries: Entry[] = [
       "A failed browser save now shows a message in Teams, with backups available to keep unsaved work.",
       "Deleting a team in another tab now closes its open details editor before Reset can affect another team.",
       "Training values can now be typed directly alongside the sliders, including EVs, SPs, and older games' Stat experience.",
+      "Slot controls now give Random, More details, and Info separate touch targets on small screens.",
+      "Feedback screenshots capture faster in Safari, and stalled image downloads no longer stay pending.",
       "Pokémon stats and move power now follow the selected game, e.g. Mega Starmie in Legends: Z-A and Absorb in Let’s Go.",
       "Weaknesses now show exact Dry Skin multipliers, such as Parasect taking five times Fire damage.",
       "Iron Ball and Ring Target now change type matchups correctly, and Judgment follows the held Plate.",

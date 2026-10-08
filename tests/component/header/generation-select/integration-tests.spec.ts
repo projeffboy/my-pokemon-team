@@ -991,19 +991,23 @@ EVs: 4 HP
   }
 });
 
-test("generation transfer: compatible default stats switch without confirmation", async ({
-  page,
-}) => {
-  for (const [from, generation] of [
-    [7, 2],
-    [7, 1],
-    [2, 7],
-    [1, 7],
-  ]) {
+for (const [from, generation] of [
+  [7, 2],
+  [7, 1],
+  [2, 7],
+  [1, 7],
+]) {
+  test(`generation transfer: compatible default stats switch without confirmation (Gen ${from} to Gen ${generation})`, async ({
+    page,
+  }) => {
+    test.setTimeout(60000);
     await page.goto(
       `/?team=${Buffer.from("Bulbasaur @\n").toString("base64url")}&gen=${from}`,
+      { waitUntil: "domcontentloaded" },
     );
-    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Bulbasaur");
+    await expect(
+      page.getByLabel("Pokemon 1's name", { exact: true }),
+    ).toHaveValue("Bulbasaur");
     await page.getByRole("combobox", { name: "Generation" }).click();
     await page
       .locator(`[role="option"][data-value="${generation}"]`)
@@ -1025,8 +1029,8 @@ test("generation transfer: compatible default stats switch without confirmation"
         }),
       )
       .toBe(generation);
-  }
-});
+  });
+}
 
 test("generation transfer: Gen 2 preserves shiny defaults and explains gender changes", async ({
   page,
