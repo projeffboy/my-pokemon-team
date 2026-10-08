@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -22,14 +22,22 @@ const DeleteTeamDialog = observer(function DeleteTeamDialog({
   const team = teamId ? store.findTeam(teamId) : undefined;
   const name = team?.name || t.deleteDialog.thisTeam;
 
+  useEffect(() => {
+    if (teamId && !team) onClose();
+  }, [teamId, team, onClose]);
+
   const handleDelete = () => {
-    if (teamId) store.deleteTeam(teamId);
+    if (!teamId || !store.findTeam(teamId)) {
+      onClose();
+      return;
+    }
+    store.deleteTeam(teamId);
     store.openSnackbar(t.team.teamDeleted, false, "delete");
     onClose();
   };
 
   return (
-    <Dialog open={!!teamId} onClose={onClose} aria-labelledby={titleId}>
+    <Dialog open={!!team} onClose={onClose} aria-labelledby={titleId}>
       <DialogTitle id={titleId}>{t.deleteDialog.title(name)}</DialogTitle>
       <DialogContent>
         <DialogContentText>{t.deleteDialog.description}</DialogContentText>

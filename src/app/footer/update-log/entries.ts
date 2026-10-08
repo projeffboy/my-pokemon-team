@@ -13,7 +13,7 @@ const entries: Entry[] = [
     changes: [
       "Team backups now save your complete collection, including names, games, filters, and Pokémon details, and restore it without replacing current teams.",
       "A failed browser save now shows a message in Teams, with backups available to keep unsaved work.",
-      "Deleting a team in another tab now closes its open details editor before Reset can affect another team.",
+      "Deleting a team in another tab now closes its open details editor and deletion confirmation, preserving the remaining teams.",
       "Training values can now be typed directly alongside the sliders, including EVs, SPs, and older games' Stat experience.",
       "Slot controls now give Random, More details, and Info separate touch targets on small screens.",
       "Feedback screenshots capture faster in Safari, and stalled image downloads no longer stay pending.",
