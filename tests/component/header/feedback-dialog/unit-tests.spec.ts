@@ -170,6 +170,63 @@ test.describe("Feedback Dialog - Unit Tests", () => {
     ]);
   });
 
+  test("a stalled screenshot image does not block feedback or leave its request running", async ({
+    page,
+  }) => {
+    await page.route(/\/sprites\//, route =>
+      route.fulfill({
+        contentType: "image/png",
+        body: Buffer.from(
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+          "base64",
+        ),
+      }),
+    );
+    const requests: Record<string, unknown>[] = [];
+    await page.route("/api/feedback", route => {
+      requests.push(route.request().postDataJSON());
+      return route.fulfill({ status: 204 });
+    });
+    await page.evaluate(() => {
+      const originalFetch = window.fetch.bind(window);
+      const captureRequests = { pending: 0, aborted: 0 };
+      Reflect.set(window, "captureRequests", captureRequests);
+      window.fetch = (input, init) => {
+        if (!String(input).startsWith("/showdown-sprites/"))
+          return originalFetch(input, init);
+        captureRequests.pending += 1;
+        return new Promise<Response>((_, reject) => {
+          const abort = () => {
+            captureRequests.pending -= 1;
+            captureRequests.aborted += 1;
+            reject(new DOMException("Request aborted", "AbortError"));
+          };
+          if (init?.signal?.aborted) abort();
+          else init?.signal?.addEventListener("abort", abort, { once: true });
+        });
+      };
+    });
+    await selectPokemon(page, "Wobbuffet");
+    await page.getByRole("button", { name: "Send feedback" }).click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    await dialog.getByLabel("Your feedback").fill("The image server stalled");
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(dialog).toBeHidden({ timeout: SEND_TIMEOUT });
+    expect(requests).toEqual([
+      {
+        message: "The image server stalled",
+        link: expect.stringContaining("?team="),
+        screen: expect.any(String),
+      },
+    ]);
+    await expect
+      .poll(() => page.evaluate(() => Reflect.get(window, "captureRequests")))
+      .toEqual({ pending: 0, aborted: expect.any(Number) });
+    expect(
+      await page.evaluate(() => Reflect.get(window, "captureRequests").aborted),
+    ).toBeGreaterThan(0);
+  });
+
   test("offers the email address when sending fails", async ({ page }) => {
     await page.route("/api/feedback", route => route.fulfill({ status: 502 }));
     await page.getByRole("button", { name: "Send feedback" }).click();
