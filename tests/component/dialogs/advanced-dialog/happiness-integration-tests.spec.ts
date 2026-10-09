@@ -5,11 +5,16 @@ import {
   getTeamTextFromUrl,
   openEditPokepaste,
 } from "helper";
+import type { Page } from "@playwright/test";
 
-test("edited happiness survives links and reloads", async ({
-  page,
-  browser,
-}) => {
+// Every case opens its own game-specific team link.
+test.use({
+  autoGoToSite: async ({}, use) => {
+    await use();
+  },
+});
+
+const editHappiness = async (page: Page) => {
   const team = Buffer.from("Kangaskhan\nHappiness: 0\n- Frustration").toString(
     "base64url",
   );
@@ -24,13 +29,28 @@ test("edited happiness survives links and reloads", async ({
   await happiness.fill("70");
   await closeDialog(page);
   await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 70");
-  const url = page.url();
+};
+
+test("edited happiness survives reloads", async ({ page }) => {
+  await editHappiness(page);
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(
     page.getByLabel("Pokemon 1's name", { exact: true }),
   ).toHaveValue("Kangaskhan");
   await openAdvanced(page);
-  await expect(happiness).toHaveValue("70");
+  await expect(
+    page
+      .getByRole("dialog", { name: "More details" })
+      .getByLabel("Happiness", { exact: true }),
+  ).toHaveValue("70");
+});
+
+test("edited happiness survives a fresh shared link", async ({
+  page,
+  browser,
+}) => {
+  await editHappiness(page);
+  const url = page.url();
   const fresh = await browser.newPage();
   try {
     await fresh.goto(url, { waitUntil: "domcontentloaded" });

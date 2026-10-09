@@ -100,48 +100,75 @@ test.describe("Share Link - Integration Tests", () => {
     expect(getTeamTextFromUrl(page)).toContain("Ability: Moxie");
   });
 
-  test("fresh visits default to Champions and explicit regular Gen 9 links retain their game", async ({
-    page,
-  }) => {
-    // This sequence loads the app six times in addition to the fixture's first visit.
-    test.slow();
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const generation = page.getByRole("combobox", { name: "Generation" });
-    await expect(generation).toContainText("Champions");
-    await expect(page).toHaveURL(/game=Pokemon\+Champions/);
-    await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText("Champions");
-    await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText(/SV|Scarlet/);
-    await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText(/SV|Scarlet/);
-    await page.goto(`/?team=${toBase64Url("Lucario\n- Aura Sphere")}`, {
-      waitUntil: "domcontentloaded",
+  test.describe("Game-specific links", () => {
+    // Each scenario navigates to its own starting link.
+    test.use({
+      autoGoToSite: async ({}, use) => {
+        await use();
+      },
     });
-    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lucario");
-    await expect(generation).toContainText(/SV|Scarlet/);
-    await expect(page).not.toHaveURL(/game=/);
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText("Champions");
-  });
-  test("an empty game-specific link preserves its profile through reload", async ({
-    page,
-  }) => {
-    await page.goto("/?gen=8&game=Legends%3A%20Arceus", {
-      waitUntil: "domcontentloaded",
+
+    test("fresh visits default to Champions through reload", async ({
+      page,
+    }) => {
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText("Champions");
+      await expect(page).toHaveURL(/game=Pokemon\+Champions/);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText("Champions");
     });
-    const generation = page.getByRole("combobox", { name: "Generation" });
-    await expect(generation).toContainText(/Arceus|PLA/);
-    await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText(/Arceus|PLA/);
-    await selectPokemon(page, "Turtwig");
-    await expect(
-      page.getByLabel("Pokemon 1's item", { exact: true }),
-    ).toHaveCount(0);
-    await expect(
-      page.getByLabel("Pokemon 1's ability", { exact: true }),
-    ).toHaveCount(0);
+
+    test("explicit regular Gen 9 links override Champions and retain their game through reload", async ({
+      page,
+    }) => {
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText("Champions");
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText("Champions");
+      await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText(/SV|Scarlet/);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText(/SV|Scarlet/);
+    });
+
+    test("legacy team links use regular Gen 9 and a later fresh visit defaults to Champions", async ({
+      page,
+    }) => {
+      await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText(/SV|Scarlet/);
+      await page.goto(`/?team=${toBase64Url("Lucario\n- Aura Sphere")}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lucario");
+      await expect(generation).toContainText(/SV|Scarlet/);
+      await expect(page).not.toHaveURL(/game=/);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText("Champions");
+    });
+
+    test("an empty game-specific link preserves its profile through reload", async ({
+      page,
+    }) => {
+      await page.goto("/?gen=8&game=Legends%3A%20Arceus", {
+        waitUntil: "domcontentloaded",
+      });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText(/Arceus|PLA/);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText(/Arceus|PLA/);
+      await selectPokemon(page, "Turtwig");
+      await expect(
+        page.getByLabel("Pokemon 1's item", { exact: true }),
+      ).toHaveCount(0);
+      await expect(
+        page.getByLabel("Pokemon 1's ability", { exact: true }),
+      ).toHaveCount(0);
+    });
   });
+
   test("loads a team from the URL parameter on initial page load", async ({
     page,
   }) => {
