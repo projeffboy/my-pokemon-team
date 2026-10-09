@@ -101,6 +101,9 @@ test.describe("Share Link - Integration Tests", () => {
   });
 
   test.describe("Game-specific links", () => {
+    // Avoid overlapping app reloads against the shared development server.
+    test.describe.configure({ mode: "default" });
+
     // Each scenario navigates to its own starting link.
     test.use({
       autoGoToSite: async ({}, use) => {
@@ -122,6 +125,7 @@ test.describe("Share Link - Integration Tests", () => {
     test("explicit regular Gen 9 links override Champions and retain their game through reload", async ({
       page,
     }) => {
+      test.setTimeout(60000);
       await page.goto("/", { waitUntil: "domcontentloaded" });
       const generation = page.getByRole("combobox", { name: "Generation" });
       await expect(generation).toContainText("Champions");
