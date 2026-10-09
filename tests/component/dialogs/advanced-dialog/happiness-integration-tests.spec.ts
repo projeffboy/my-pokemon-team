@@ -6,14 +6,17 @@ import {
   openEditPokepaste,
 } from "helper";
 
-test("happiness survives links and reloads, is editable, and resets to its default", async ({
+test("edited happiness survives links and reloads", async ({
   page,
   browser,
 }) => {
   const team = Buffer.from("Kangaskhan\nHappiness: 0\n- Frustration").toString(
     "base64url",
   );
-  await page.goto(`/?gen=3&team=${team}`);
+  await page.goto(`/?gen=3&team=${team}`, { waitUntil: "domcontentloaded" });
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Kangaskhan");
   await openAdvanced(page);
   const dialog = page.getByRole("dialog", { name: "More details" });
   const happiness = dialog.getByLabel("Happiness", { exact: true });
@@ -22,12 +25,18 @@ test("happiness survives links and reloads, is editable, and resets to its defau
   await closeDialog(page);
   await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 70");
   const url = page.url();
-  await page.reload();
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Kangaskhan");
   await openAdvanced(page);
   await expect(happiness).toHaveValue("70");
   const fresh = await browser.newPage();
   try {
-    await fresh.goto(url);
+    await fresh.goto(url, { waitUntil: "domcontentloaded" });
+    await expect(
+      fresh.getByLabel("Pokemon 1's name", { exact: true }),
+    ).toHaveValue("Kangaskhan");
     await openAdvanced(fresh);
     await expect(fresh.getByLabel("Happiness", { exact: true })).toHaveValue(
       "70",
@@ -35,6 +44,22 @@ test("happiness survives links and reloads, is editable, and resets to its defau
   } finally {
     await fresh.close();
   }
+});
+
+test("happiness defaults when cleared or reset after a raw-text import", async ({
+  page,
+}) => {
+  const team = Buffer.from("Kangaskhan\nHappiness: 70\n- Frustration").toString(
+    "base64url",
+  );
+  await page.goto(`/?gen=3&team=${team}`, { waitUntil: "domcontentloaded" });
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Kangaskhan");
+  await openAdvanced(page);
+  const dialog = page.getByRole("dialog", { name: "More details" });
+  const happiness = dialog.getByLabel("Happiness", { exact: true });
+  await expect(happiness).toHaveValue("70");
   await happiness.fill("");
   await dialog.getByLabel("Nickname").focus();
   await expect(happiness).toHaveValue("255");
