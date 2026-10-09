@@ -2,9 +2,9 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Chip from "@mui/material/Chip";
-import venusaurFace from "@/images/pokemon-shuffle-faces/venusaur-shuffle-face-cropped.png";
-import charizardFace from "@/images/pokemon-shuffle-faces/charizard-shuffle-face-cropped.png";
+import Badge from "@mui/material/Badge";
+import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face.png";
+import indeedeeFace from "@/images/pokemon-shuffle-faces/indeedee-masters-face.png";
 import { fluidClamp } from "./header/fluid-clamp";
 import GenerationSelect from "./header/GenerationSelect";
 import LanguageSelect from "./header/LanguageSelect";
@@ -40,17 +40,28 @@ export default function Header() {
         >
           <Box
             component="img"
-            src={venusaurFace}
+            src={garchompFace}
             alt=""
             sx={{
               height: faceHeight,
               flexShrink: 0,
             }}
           />
-          <Stack
-            direction={{ xxs: "column", md: "row" }}
-            spacing={{ xxs: 0.25, md: 1 }}
-            sx={{ alignItems: "center" }}
+          <Badge
+            badgeContent={t.beta}
+            color="primary"
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+            sx={{
+              pt: 2,
+              "& .MuiBadge-badge": {
+                top: 0,
+                right: fluid(1.125, 16),
+                transform: "none",
+                height: 16,
+                fontSize: "0.625rem",
+                whiteSpace: "nowrap",
+              },
+            }}
           >
             <Typography
               variant="h3"
@@ -68,11 +79,10 @@ export default function Header() {
             >
               My Pokemon Team
             </Typography>
-            <Chip label={t.beta} size="small" variant="outlined" />
-          </Stack>
+          </Badge>
           <Box
             component="img"
-            src={charizardFace}
+            src={indeedeeFace}
             alt=""
             sx={{
               height: faceHeight,
