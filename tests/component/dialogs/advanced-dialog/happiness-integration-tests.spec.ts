@@ -79,14 +79,22 @@ test("happiness defaults when cleared or reset after a raw-text import", async (
   await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("Happiness:");
 });
 
-test("Gen 1 and Champions omit happiness from imported links and their editors", async ({
-  page,
-}) => {
-  const team = Buffer.from("Psyduck\nHappiness: 0\n- Water Gun").toString(
-    "base64url",
-  );
-  for (const profile of ["gen=1", "game=Pokemon+Champions+%28M-C%29"]) {
-    await page.goto(`/?${profile}&team=${team}`);
+for (const { name, profile } of [
+  { name: "Gen 1", profile: "gen=1" },
+  { name: "Champions", profile: "game=Pokemon+Champions+%28M-C%29" },
+]) {
+  test(`${name} omits happiness from imported links and its editor`, async ({
+    page,
+  }) => {
+    const team = Buffer.from("Psyduck\nHappiness: 0\n- Water Gun").toString(
+      "base64url",
+    );
+    await page.goto(`/?${profile}&team=${team}`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(
+      page.getByLabel("Pokemon 1's name", { exact: true }),
+    ).toHaveValue("Psyduck");
     await openAdvanced(page);
     await expect(
       page
@@ -105,5 +113,5 @@ test("Gen 1 and Champions omit happiness from imported links and their editors",
     await expect
       .poll(() => getTeamTextFromUrl(page))
       .not.toContain("Happiness:");
-  }
-});
+  });
+}

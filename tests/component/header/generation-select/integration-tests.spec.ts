@@ -1032,12 +1032,14 @@ for (const [from, generation] of [
   });
 }
 
-test("generation transfer: Gen 2 preserves shiny defaults and explains gender changes", async ({
-  page,
-}) => {
-  for (const shiny of [true, false]) {
+for (const shiny of [true, false]) {
+  test(`generation transfer: Gen 2 ${shiny ? "preserves shiny defaults" : "explains female gender changes"}`, async ({
+    page,
+  }) => {
     const team = shiny ? "Bulbasaur @\nShiny: Yes\n" : "Bulbasaur (F) @\n";
-    await page.goto(`/?team=${Buffer.from(team).toString("base64url")}&gen=7`);
+    await page.goto(`/?team=${Buffer.from(team).toString("base64url")}&gen=7`, {
+      waitUntil: "domcontentloaded",
+    });
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Bulbasaur");
     await page.getByRole("combobox", { name: "Generation" }).click();
     await page.locator('[role="option"][data-value="2"]').press("Enter");
@@ -1071,8 +1073,8 @@ test("generation transfer: Gen 2 preserves shiny defaults and explains gender ch
         }),
       )
       .toEqual({ generation: 2, shiny, gender: "M" });
-  }
-});
+  });
+}
 
 test("generation transfer: expands game names when the endpoint has room", async ({
   page,

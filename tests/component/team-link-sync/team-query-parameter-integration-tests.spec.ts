@@ -127,10 +127,12 @@ test.describe("Share Link - Integration Tests", () => {
   test("an empty game-specific link preserves its profile through reload", async ({
     page,
   }) => {
-    await page.goto("/?gen=8&game=Legends%3A%20Arceus");
+    await page.goto("/?gen=8&game=Legends%3A%20Arceus", {
+      waitUntil: "domcontentloaded",
+    });
     const generation = page.getByRole("combobox", { name: "Generation" });
     await expect(generation).toContainText(/Arceus|PLA/);
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(generation).toContainText(/Arceus|PLA/);
     await selectPokemon(page, "Turtwig");
     await expect(

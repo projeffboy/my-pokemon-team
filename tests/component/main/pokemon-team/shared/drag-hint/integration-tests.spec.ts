@@ -19,11 +19,11 @@ test.describe("Drag hint - Integration Tests", () => {
     test.use({ viewport: { width: 320, height: 800 } });
 
     for (const generation of [2, 3, 4]) {
-      test(`Gen ${generation} waits for all viewer sprites, including slow loads`, async ({
-        page,
-      }) => {
-        await page.clock.install();
-        for (const width of [320, 800]) {
+      for (const width of [320, 800]) {
+        test(`Gen ${generation} at ${width}px waits for all viewer sprites, including slow loads`, async ({
+          page,
+        }) => {
+          await page.clock.install();
           await page.setViewportSize({ width, height: 800 });
           let release = () => {};
           const loading = new Promise<void>(resolve => {
@@ -98,8 +98,8 @@ test.describe("Drag hint - Integration Tests", () => {
             { timeout: 7000 },
           );
           await page.unroute(pattern);
-        }
-      });
+        });
+      }
     }
   });
 

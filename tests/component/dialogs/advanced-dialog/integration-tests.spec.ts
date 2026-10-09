@@ -73,7 +73,9 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     }) => {
       const pokemon = generation === 8 ? "Unown" : "Dunsparce";
       const team = Buffer.from(`${pokemon}\n- Return\n`).toString("base64url");
-      await page.goto(`/?gen=${generation}&team=${team}`);
+      await page.goto(`/?gen=${generation}&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
       await selectMove(page, "Hidden Power Fire", 2);
       await openAdvanced(page);
       const dialog = page.getByRole("dialog", { name: "More details" });
@@ -99,7 +101,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
       }
       await closeDialog(page);
       await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
-      await page.reload();
+      await page.reload({ waitUntil: "domcontentloaded" });
       await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
         "Hidden Power Fire",
       );
