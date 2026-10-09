@@ -52,11 +52,10 @@ export default function Header() {
             color="primary"
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             sx={{
-              pt: 2,
               "& .MuiBadge-badge": {
                 top: 0,
                 right: fluid(1.125, 16),
-                transform: "none",
+                transform: "translateY(-100%)",
                 height: 16,
                 fontSize: "0.625rem",
                 whiteSpace: "nowrap",
