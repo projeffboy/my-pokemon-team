@@ -110,8 +110,26 @@ test.describe("Advanced Dialog - Integration Tests", () => {
         dialog.getByLabel(`Atk ${legacy ? "DVs" : "IVs"}`, { exact: true }),
       ).toHaveValue(legacy ? "14" : "30");
       await closeDialog(page);
+    });
+
+    test(`Gen ${generation} Hidden Power updates the IVs or DVs when its type changes after reload`, async ({
+      page,
+    }) => {
+      const pokemon = generation === 8 ? "Unown" : "Dunsparce";
+      const team = Buffer.from(`${pokemon}\n- Return\n`).toString("base64url");
+      await page.goto(`/?gen=${generation}&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await selectMove(page, "Hidden Power Fire", 2);
+      await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
+        "Hidden Power Fire",
+      );
+      const legacy = generation === 2;
       await selectMove(page, "Hidden Power Ice", 2);
       await openAdvanced(page);
+      const dialog = page.getByRole("dialog", { name: "More details" });
       await expect(
         dialog.getByLabel(`Def ${legacy ? "DVs" : "IVs"}`, { exact: true }),
       ).toHaveValue(legacy ? "13" : "30");
