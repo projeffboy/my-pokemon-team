@@ -12,6 +12,9 @@ updates:
       vite:
         patterns: ["vite", "@vitejs/*"]
         update-types: ["major"]
+      mui:
+        patterns: ["@mui/*"]
+        update-types: ["major"]
       # One PR for all minor and patch updates; other majors get their own PRs
       minor-and-patch:
         patterns: ["*"]
