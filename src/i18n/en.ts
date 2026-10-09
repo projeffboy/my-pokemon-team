@@ -460,10 +460,14 @@ const en = {
       `${pokemon} must hold ${items.join(" or ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} has ${move} twice.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon} has ${total} EVs (at most ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon} has more than ${max} EVs in one stat.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon} has ${total} ${unit} (at most ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon} has more than ${max} ${unit} in one stat.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}'s nickname must be ${max} characters or fewer.`,
     badLevel: (pokemon: string, max: number) =>

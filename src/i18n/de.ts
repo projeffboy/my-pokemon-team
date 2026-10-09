@@ -482,10 +482,14 @@ const de: Messages = {
       `${pokemon} muss ${items.join(" oder ")} tragen.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} hat ${move} zweimal.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon} hat ${total} EV (höchstens ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon} hat mehr als ${max} EV in einem Statuswert.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon} hat ${total} ${unit} (höchstens ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon} hat mehr als ${max} ${unit} in einem Statuswert.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}s Spitzname darf höchstens ${max} Zeichen haben.`,
     badLevel: (pokemon: string, max: number) =>

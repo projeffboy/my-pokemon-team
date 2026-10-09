@@ -459,10 +459,14 @@ const zhHant: Messages = {
       `${pokemon}必須攜帶${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}的${move}重複了。`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon}的努力值共 ${total}（最多 ${max}）。`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon}有一項能力的努力值超過 ${max}。`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon}的${unit}共 ${total}（最多 ${max}）。`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon}有一項能力的${unit}超過 ${max}。`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}的暱稱最多只能有${max}個字元。`,
     badLevel: (pokemon: string, max: number) =>

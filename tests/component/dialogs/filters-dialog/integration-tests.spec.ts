@@ -7,6 +7,8 @@ import {
   selectMove,
   selectPokemon,
   getTeamTextFromUrl,
+  openTeamTools,
+  clickMenuItem,
 } from "helper";
 import type { Page } from "@playwright/test";
 
@@ -77,6 +79,82 @@ test.describe("Filters Integration Tests", () => {
     await selectDialogOption(page, filterName, optionName);
     await closeDialog(page);
   };
+
+  const addPoisonTeam = async (page: Page) => {
+    await openTeamTools(page);
+    await page.getByRole("button", { name: "Teams", exact: true }).click();
+    await page.getByRole("button", { name: "New Team", exact: true }).click();
+    await expect(page.getByRole("dialog")).toBeHidden();
+    await selectPokemon(page, "Gengar");
+    await selectFilterOption(page, "Type", "Poison");
+  };
+
+  test("open filters close when browser history selects a different saved team", async ({
+    page,
+  }) => {
+    test.setTimeout(60000);
+    await selectPokemon(page, "Mawile");
+    await selectFilterOption(page, "Type", "Steel");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Mawile");
+    const firstUrl = page.url();
+    await addPoisonTeam(page);
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Gengar");
+    await page.evaluate(url => {
+      history.pushState(null, "", url);
+      dispatchEvent(new PopStateEvent("popstate"));
+    }, firstUrl);
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mawile");
+    await openFilters(page);
+    const filters = page.getByRole("dialog", { name: "Filters", exact: true });
+    await expect(filters.getByLabel("Type", { exact: true })).toContainText(
+      "Steel",
+    );
+    await page.goBack();
+    await expect(filters).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gengar");
+    await openFilters(page);
+    await expect(filters.getByLabel("Type", { exact: true })).toContainText(
+      "Poison",
+    );
+  });
+
+  test("open filters close when another tab deletes their saved team", async ({
+    page,
+    context,
+  }) => {
+    test.setTimeout(60000);
+    await selectPokemon(page, "Mawile");
+    await selectFilterOption(page, "Type", "Steel");
+    await expect
+      .poll(() =>
+        page.evaluate(() => localStorage.getItem("mypokemonteam") ?? ""),
+      )
+      .toContain("mawile");
+    const otherTab = await context.newPage();
+    await otherTab.goto(page.url(), { waitUntil: "domcontentloaded" });
+    await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue("Mawile");
+    await addPoisonTeam(otherTab);
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mawile");
+    await openFilters(page);
+    const filters = page.getByRole("dialog", { name: "Filters", exact: true });
+    await expect(filters).toBeVisible();
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: "Options for Team 1", exact: true })
+      .click();
+    await clickMenuItem(otherTab, "Delete");
+    await otherTab
+      .getByRole("dialog", { name: "Delete Team 1?" })
+      .getByRole("button", { name: "Delete", exact: true })
+      .click();
+    await expect(filters).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gengar");
+    await openFilters(page);
+    await expect(filters.getByLabel("Type", { exact: true })).toContainText(
+      "Poison",
+    );
+    await otherTab.close();
+  });
 
   test("Format Filter", async ({ page }) => {
     // 1. Select format OU

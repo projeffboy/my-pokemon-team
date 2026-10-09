@@ -478,10 +478,14 @@ const ko: Messages = {
       `${josa(pokemon, "은", "는")} ${josa(items.join(" 또는 "), "을", "를")} 지녀야 합니다.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${josa(pokemon, "은", "는")} ${josa(move, "을", "를")} 두 번 배우고 있습니다.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon}의 노력치 합계가 ${total}입니다 (최대 ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon}의 한 능력치에 노력치가 ${max}보다 많이 들어 있습니다.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon}의 ${unit} 합계가 ${total}입니다 (최대 ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon}의 한 능력치 ${unit} 값이 ${max}보다 큽니다.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}의 닉네임은 ${max}자 이하여야 합니다.`,
     badLevel: (pokemon: string, max: number) =>

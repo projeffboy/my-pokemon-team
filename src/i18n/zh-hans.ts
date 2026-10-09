@@ -455,10 +455,14 @@ const zhHans: Messages = {
       `${pokemon}必须携带${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}有两个${move}。`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon}的努力值总计 ${total}（最多 ${max}）。`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon}的单项努力值超过了 ${max}。`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon}的${unit}总计 ${total}（最多 ${max}）。`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon}的单项${unit}超过了 ${max}。`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}的昵称最多只能有${max}个字符。`,
     badLevel: (pokemon: string, max: number) =>

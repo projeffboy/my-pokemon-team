@@ -465,10 +465,14 @@ const es: Messages = {
       `${pokemon} debe llevar ${items.join(" o ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} tiene ${move} dos veces.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon} tiene ${total} EV (máximo ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon} tiene más de ${max} EV en una estadística.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon} tiene ${total} ${unit} (máximo ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon} tiene más de ${max} ${unit} en una estadística.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `El apodo de ${pokemon} debe tener como máximo ${max} caracteres.`,
     badLevel: (pokemon: string, max: number) =>

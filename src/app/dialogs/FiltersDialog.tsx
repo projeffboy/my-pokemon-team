@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useId, useLayoutEffect, useMemo, useState } from "react";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -38,7 +38,17 @@ const FiltersDialog = observer(function FiltersDialog() {
     format: string;
     data: GenerationTransferData;
   } | null>(null);
+  const { dialog, currentTeamId } = store;
+  const requested = dialog?.name === "filters";
+  const isOpen = requested && dialog.teamId === currentTeamId;
+  useLayoutEffect(() => {
+    if (requested && !isOpen) {
+      setPending(null);
+      store.closeDialog();
+    }
+  }, [requested, isOpen]);
   const changeFormat = async (format: string) => {
+    if (!isOpen || store.dialog !== dialog) return;
     const teamId = store.currentTeamId;
     if (
       format !== CHAMPIONS_FORMAT &&
@@ -49,7 +59,7 @@ const FiltersDialog = observer(function FiltersDialog() {
     }
     try {
       const data = await loadGenerationTransferData();
-      if (store.currentTeamId !== teamId) return;
+      if (store.currentTeamId !== teamId || store.dialog !== dialog) return;
       const team = store.currentTeam;
       const generation = formatGeneration(format, team.generation);
       const plan = planGenerationTransfer(
@@ -67,7 +77,8 @@ const FiltersDialog = observer(function FiltersDialog() {
       store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
     }
   };
-  const target = pending?.teamId === store.currentTeamId ? pending : null;
+  const target =
+    isOpen && pending?.teamId === store.currentTeamId ? pending : null;
   const plan =
     target ?
       planGenerationTransfer(
@@ -106,8 +117,10 @@ const FiltersDialog = observer(function FiltersDialog() {
     [names],
   );
   const titleId = useId();
-  const isOpen = store.dialog?.name === "filters";
-  const close = () => store.closeDialog();
+  const close = () => {
+    setPending(null);
+    store.closeDialog();
+  };
   const formats = formatsForGeneration(store.currentTeam.generation);
 
   // The filter values stay English; only their labels are translated

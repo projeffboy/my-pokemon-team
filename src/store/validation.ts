@@ -6,14 +6,9 @@ import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
 import { pokemonAbilities } from "@/shared/pokedex";
 import { baseMoveId } from "@/shared/moves";
 import { nicknameLimit } from "@/shared/nickname";
+import { generationRules, getStatExperience } from "@/shared/generation-rules";
 import { english, type Translation } from "@/i18n/translation";
-import {
-  evTotal,
-  getEv,
-  MAX_EV,
-  MAX_EV_TOTAL,
-  MAX_LEVEL,
-} from "@/shared/set-details";
+import { evTotal, getEv, MAX_LEVEL } from "@/shared/set-details";
 import { filterPokemon } from "./filtering";
 
 // The problems that stop a team from being legal in its format, or none
@@ -27,6 +22,8 @@ export function validateTeam(
   if (!members.length) return [t.validation.empty];
 
   const problems: string[] = [];
+  const rules = generationRules(generation, format);
+  const training = t.advanced[rules.investment];
   const allowed = new Set(
     filterPokemon({ generation, format, region: "", type: "", ability: "" }),
   );
@@ -47,7 +44,11 @@ export function validateTeam(
     if (!allowed.has(name))
       problems.push(t.validation.notAllowed(label, where));
 
-    if (ability && !pokemonAbilities(name).includes(ability))
+    if (
+      ability &&
+      (!rules.abilities ||
+        !pokemonAbilities(name, generation).includes(ability))
+    )
       problems.push(t.validation.wrongAbility(label, names.ability(ability)));
 
     const required = [
@@ -73,14 +74,23 @@ export function validateTeam(
       );
 
     const total = evTotal(member.evs);
-    if (total > MAX_EV_TOTAL)
-      problems.push(t.validation.tooManyEvs(label, total, MAX_EV_TOTAL));
+    if (rules.maxTotal !== undefined && total > rules.maxTotal)
+      problems.push(
+        t.validation.tooMuchTraining(label, total, rules.maxTotal, training),
+      );
     if (
-      [...(member.evs ? Object.keys(member.evs) : [])].some(
-        stat => getEv(member.evs, stat as never) > MAX_EV,
-      )
+      rules.statKeys.some(stat => {
+        const amount =
+          rules.legacy ? getStatExperience(member, stat)
+          : rules.investment === "effortLevels" ?
+            getEv(member.effortLevels, stat)
+          : getEv(member.evs, stat);
+        return amount > rules.maxStat;
+      })
     )
-      problems.push(t.validation.tooManyStatEvs(label, MAX_EV));
+      problems.push(
+        t.validation.tooMuchStatTraining(label, rules.maxStat, training),
+      );
 
     if (
       member.level !== undefined &&

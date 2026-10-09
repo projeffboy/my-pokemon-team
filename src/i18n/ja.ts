@@ -469,10 +469,14 @@ const ja: Messages = {
       `${pokemon}には${items.join("または")}を持たせる必要があります。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}が${move}を2回覚えています。`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon}の努力値の合計が${total}です（最大${max}）。`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon}の1つのステータスの努力値が${max}を超えています。`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon}の${unit}の合計が${total}です（最大${max}）。`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon}の1つのステータスの${unit}が${max}を超えています。`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}のニックネームは${max}文字以内にしてください。`,
     badLevel: (pokemon: string, max: number) =>

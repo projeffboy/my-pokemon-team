@@ -465,10 +465,14 @@ const ptBR: Messages = {
       `${pokemon} precisa segurar ${items.join(" ou ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} tem ${move} duas vezes.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon} tem ${total} EVs (máximo ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon} tem mais de ${max} EVs em uma estatística.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon} tem ${total} ${unit} (máximo ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon} tem mais de ${max} ${unit} em uma estatística.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `O apelido de ${pokemon} deve ter no máximo ${max} caracteres.`,
     badLevel: (pokemon: string, max: number) =>
