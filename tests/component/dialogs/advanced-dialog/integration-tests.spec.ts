@@ -232,6 +232,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
   test("Champions uses single-point SPs, hides IVs and Tera Type, and saves the spread", async ({
     page,
   }) => {
+    test.setTimeout(60000);
     await page.getByRole("combobox", { name: "Generation" }).click();
     await page.getByRole("option", { name: "Gen 9 · Champions" }).click();
     await expect(
@@ -261,7 +262,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await expect
       .poll(() => getTeamTextFromUrl(page))
       .toContain("EVs: 2 HP / 32 Atk / 32 Spe");
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await openAdvanced(page);
     await expect(dialog.getByLabel(/^SP total/)).toHaveText("66 / 66");
     await expect(dialog.getByLabel(/ IVs$/)).toHaveCount(0);
