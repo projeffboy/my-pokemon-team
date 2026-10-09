@@ -3,8 +3,8 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Chip from "@mui/material/Chip";
-import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face.png";
-import indeedeeFace from "@/images/pokemon-shuffle-faces/indeedee-masters-face.png";
+import venusaurFace from "@/images/pokemon-shuffle-faces/venusaur-shuffle-face-cropped.png";
+import charizardFace from "@/images/pokemon-shuffle-faces/charizard-shuffle-face-cropped.png";
 import { fluidClamp } from "./header/fluid-clamp";
 import GenerationSelect from "./header/GenerationSelect";
 import LanguageSelect from "./header/LanguageSelect";
@@ -40,7 +40,7 @@ export default function Header() {
         >
           <Box
             component="img"
-            src={garchompFace}
+            src={venusaurFace}
             alt=""
             sx={{
               height: faceHeight,
@@ -72,7 +72,7 @@ export default function Header() {
           </Stack>
           <Box
             component="img"
-            src={indeedeeFace}
+            src={charizardFace}
             alt=""
             sx={{
               height: faceHeight,
