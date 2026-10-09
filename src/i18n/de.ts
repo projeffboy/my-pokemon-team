@@ -19,6 +19,7 @@ const inputNames: Record<string, string> = {
 
 const de: Messages = {
   // The header
+  beta: "Beta",
   generation,
   generationGames: {
     9: "Karmesin Purpur",

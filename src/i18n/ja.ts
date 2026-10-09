@@ -15,6 +15,7 @@ const inputNames: Record<string, string> = {
 
 const ja: Messages = {
   // The header
+  beta: "ベータ版",
   generation,
   generationGames: {
     9: "スカーレット バイオレット",

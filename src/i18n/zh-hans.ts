@@ -15,6 +15,7 @@ const inputNames: Record<string, string> = {
 
 const zhHans: Messages = {
   // 页眉
+  beta: "测试版",
   generation,
   generationGames: {
     9: "朱 紫",

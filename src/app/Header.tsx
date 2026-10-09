@@ -2,13 +2,15 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import face1 from "@/images/pokemon-shuffle-faces/venusaur-shuffle-face-cropped.png";
-import face2 from "@/images/pokemon-shuffle-faces/charizard-shuffle-face-cropped.png";
+import Chip from "@mui/material/Chip";
+import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face.png";
+import indeedeeFace from "@/images/pokemon-shuffle-faces/indeedee-masters-face.png";
 import { fluidClamp } from "./header/fluid-clamp";
 import GenerationSelect from "./header/GenerationSelect";
 import LanguageSelect from "./header/LanguageSelect";
 import FeedbackDialog from "./header/FeedbackDialog";
 import { breakpointValues } from "./shared/theme";
+import { useTranslation } from "./shared/TranslationContext";
 
 // Where the title reaches its full size: the page's margins widen at sm,
 // so the title needs a little more width than that to fit
@@ -20,6 +22,7 @@ const faceHeight = fluid(31, 48);
 const faceSpacing = fluid(3.75, 8);
 
 export default function Header() {
+  const { t } = useTranslation();
   return (
     <Grid component="header" container size={12} spacing={1.5}>
       <Stack
@@ -37,32 +40,39 @@ export default function Header() {
         >
           <Box
             component="img"
-            src={face1}
+            src={garchompFace}
             alt=""
             sx={{
               height: faceHeight,
               flexShrink: 0,
             }}
           />
-          <Typography
-            variant="h3"
-            component="h1"
-            sx={theme => ({
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-              px: fluid(1.125, 16),
-              fontSize: fluid(
-                1.3,
-                Number.parseFloat(`${theme.typography.h3.fontSize}`),
-                "rem",
-              ),
-            })}
+          <Stack
+            direction={{ xxs: "column", md: "row" }}
+            spacing={{ xxs: 0.25, md: 1 }}
+            sx={{ alignItems: "center" }}
           >
-            My Pokemon Team
-          </Typography>
+            <Typography
+              variant="h3"
+              component="h1"
+              sx={theme => ({
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+                px: fluid(1.125, 16),
+                fontSize: fluid(
+                  1.3,
+                  Number.parseFloat(`${theme.typography.h3.fontSize}`),
+                  "rem",
+                ),
+              })}
+            >
+              My Pokemon Team
+            </Typography>
+            <Chip label={t.beta} size="small" variant="outlined" />
+          </Stack>
           <Box
             component="img"
-            src={face2}
+            src={indeedeeFace}
             alt=""
             sx={{
               height: faceHeight,
@@ -74,9 +84,10 @@ export default function Header() {
           direction="row"
           spacing={1}
           sx={{
-            width: "max-content",
+            width: "100%",
             maxWidth: "100%",
             alignItems: "stretch",
+            justifyContent: "space-between",
           }}
         >
           <LanguageSelect />

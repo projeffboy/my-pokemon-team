@@ -15,6 +15,7 @@ const inputNames: Record<string, string> = {
 
 const zhHant: Messages = {
   // The header
+  beta: "測試版",
   generation,
   generationGames: {
     9: "朱 紫",

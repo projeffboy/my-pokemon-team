@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const es: Messages = {
+  beta: "Beta",
   generation,
   generationGames: {
     9: "Escarlata Púrpura",

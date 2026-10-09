@@ -30,6 +30,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ko: Messages = {
+  beta: "베타",
   generation,
   generationGames: {
     9: "스칼렛 바이올렛",

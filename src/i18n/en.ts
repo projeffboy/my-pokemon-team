@@ -8,6 +8,7 @@ const generation = (generation: number) => `Gen ${generation}`;
 
 const en = {
   // The header
+  beta: "Beta",
   generation,
   generationGames: {
     9: "Scarlet Violet",
