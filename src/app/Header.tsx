@@ -3,8 +3,8 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Badge from "@mui/material/Badge";
-import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face.png";
-import indeedeeFace from "@/images/pokemon-shuffle-faces/indeedee-masters-face.png";
+import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face-cropped.svg";
+import jigglypuffFace from "@/images/pokemon-shuffle-faces/jigglypuff-shuffle-face-cropped.svg";
 import { fluidClamp } from "./header/fluid-clamp";
 import GenerationSelect from "./header/GenerationSelect";
 import LanguageSelect from "./header/LanguageSelect";
@@ -82,7 +82,7 @@ export default function Header() {
           </Badge>
           <Box
             component="img"
-            src={indeedeeFace}
+            src={jigglypuffFace}
             alt=""
             sx={{
               height: faceHeight,
