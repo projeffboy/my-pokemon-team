@@ -131,10 +131,16 @@ test.describe("Share Link - Integration Tests", () => {
       await expect(generation).toContainText("Champions");
       await page.reload({ waitUntil: "domcontentloaded" });
       await expect(generation).toContainText("Champions");
-      await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
-      await expect(generation).toContainText(/SV|Scarlet/);
-      await page.reload({ waitUntil: "domcontentloaded" });
-      await expect(generation).toContainText(/SV|Scarlet/);
+      // Retain the session's settings while releasing the old dev-module graph.
+      const regularPage = await page.context().newPage();
+      await page.close();
+      await regularPage.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+      const regularGeneration = regularPage.getByRole("combobox", {
+        name: "Generation",
+      });
+      await expect(regularGeneration).toContainText(/SV|Scarlet/);
+      await regularPage.reload({ waitUntil: "domcontentloaded" });
+      await expect(regularGeneration).toContainText(/SV|Scarlet/);
     });
 
     test("legacy team links use regular Gen 9 and a later fresh visit defaults to Champions", async ({
