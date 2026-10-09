@@ -67,77 +67,91 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await otherTab.close();
   });
 
-  for (const generation of [2, 3, 7, 8]) {
-    test(`Gen ${generation} Hidden Power updates the displayed IVs or DVs and persists them`, async ({
-      page,
-    }) => {
-      const pokemon = generation === 8 ? "Unown" : "Dunsparce";
-      const team = Buffer.from(`${pokemon}\n- Return\n`).toString("base64url");
-      await page.goto(`/?gen=${generation}&team=${team}`, {
-        waitUntil: "domcontentloaded",
-      });
-      await selectMove(page, "Hidden Power Fire", 2);
-      await openAdvanced(page);
-      const dialog = page.getByRole("dialog", { name: "More details" });
-      const legacy = generation === 2;
-      for (const [stat, value] of legacy ?
-        [
-          ["Atk", "14"],
-          ["Def", "12"],
-          ["HP", "3"],
-          ["Special", "15"],
-        ]
-      : [
-          ["Atk", "30"],
-          ["Def", "31"],
-          ["SpA", "30"],
-          ["Spe", "30"],
-        ]) {
-        await expect(
-          dialog.getByLabel(`${stat} ${legacy ? "DVs" : "IVs"}`, {
-            exact: true,
-          }),
-        ).toHaveValue(value ?? "");
-      }
-      await closeDialog(page);
-      await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
-      await page.reload({ waitUntil: "domcontentloaded" });
-      await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
-        "Hidden Power Fire",
-      );
-      await openAdvanced(page);
-      await expect(
-        dialog.getByLabel(`Atk ${legacy ? "DVs" : "IVs"}`, { exact: true }),
-      ).toHaveValue(legacy ? "14" : "30");
-      await closeDialog(page);
+  test.describe("Hidden Power", () => {
+    // These cases open their own generation-specific links.
+    test.use({
+      autoGoToSite: async ({}, use) => {
+        await use();
+      },
     });
 
-    test(`Gen ${generation} Hidden Power updates the IVs or DVs when its type changes after reload`, async ({
-      page,
-    }) => {
-      const pokemon = generation === 8 ? "Unown" : "Dunsparce";
-      const team = Buffer.from(`${pokemon}\n- Return\n`).toString("base64url");
-      await page.goto(`/?gen=${generation}&team=${team}`, {
-        waitUntil: "domcontentloaded",
+    for (const generation of [2, 3, 7, 8]) {
+      test(`Gen ${generation} Hidden Power updates the displayed IVs or DVs and persists them`, async ({
+        page,
+      }) => {
+        const pokemon = generation === 8 ? "Unown" : "Dunsparce";
+        const team = Buffer.from(`${pokemon}\n- Return\n`).toString(
+          "base64url",
+        );
+        await page.goto(`/?gen=${generation}&team=${team}`, {
+          waitUntil: "domcontentloaded",
+        });
+        await selectMove(page, "Hidden Power Fire", 2);
+        await openAdvanced(page);
+        const dialog = page.getByRole("dialog", { name: "More details" });
+        const legacy = generation === 2;
+        for (const [stat, value] of legacy ?
+          [
+            ["Atk", "14"],
+            ["Def", "12"],
+            ["HP", "3"],
+            ["Special", "15"],
+          ]
+        : [
+            ["Atk", "30"],
+            ["Def", "31"],
+            ["SpA", "30"],
+            ["Spe", "30"],
+          ]) {
+          await expect(
+            dialog.getByLabel(`${stat} ${legacy ? "DVs" : "IVs"}`, {
+              exact: true,
+            }),
+          ).toHaveValue(value ?? "");
+        }
+        await closeDialog(page);
+        await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
+          "Hidden Power Fire",
+        );
+        await openAdvanced(page);
+        await expect(
+          dialog.getByLabel(`Atk ${legacy ? "DVs" : "IVs"}`, { exact: true }),
+        ).toHaveValue(legacy ? "14" : "30");
+        await closeDialog(page);
       });
-      await selectMove(page, "Hidden Power Fire", 2);
-      await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
-      await page.reload({ waitUntil: "domcontentloaded" });
-      await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
-        "Hidden Power Fire",
-      );
-      const legacy = generation === 2;
-      await selectMove(page, "Hidden Power Ice", 2);
-      await openAdvanced(page);
-      const dialog = page.getByRole("dialog", { name: "More details" });
-      await expect(
-        dialog.getByLabel(`Def ${legacy ? "DVs" : "IVs"}`, { exact: true }),
-      ).toHaveValue(legacy ? "13" : "30");
-      await expect(
-        dialog.getByLabel(`Spe ${legacy ? "DVs" : "IVs"}`, { exact: true }),
-      ).toHaveValue(legacy ? "15" : "31");
-    });
-  }
+
+      test(`Gen ${generation} Hidden Power updates the IVs or DVs when its type changes after reload`, async ({
+        page,
+      }) => {
+        const pokemon = generation === 8 ? "Unown" : "Dunsparce";
+        const team = Buffer.from(`${pokemon}\n- Return\n`).toString(
+          "base64url",
+        );
+        await page.goto(`/?gen=${generation}&team=${team}`, {
+          waitUntil: "domcontentloaded",
+        });
+        await selectMove(page, "Hidden Power Fire", 2);
+        await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
+          "Hidden Power Fire",
+        );
+        const legacy = generation === 2;
+        await selectMove(page, "Hidden Power Ice", 2);
+        await openAdvanced(page);
+        const dialog = page.getByRole("dialog", { name: "More details" });
+        await expect(
+          dialog.getByLabel(`Def ${legacy ? "DVs" : "IVs"}`, { exact: true }),
+        ).toHaveValue(legacy ? "13" : "30");
+        await expect(
+          dialog.getByLabel(`Spe ${legacy ? "DVs" : "IVs"}`, { exact: true }),
+        ).toHaveValue(legacy ? "15" : "31");
+      });
+    }
+  });
+
   for (const { pokemon, gender, icon } of [
     { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
     { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
