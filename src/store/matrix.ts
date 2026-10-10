@@ -4,7 +4,6 @@ import {
   type PokemonType,
   type ReadonlyTeam,
 } from "@/types";
-import { pokemonTypes } from "@/shared/pokedex";
 import { typesIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { english, type Translation } from "@/i18n/translation";
@@ -13,6 +12,8 @@ import {
   moveAgainstType,
   moveType,
   typeAgainstPokemon,
+  effectivePokemonTypes,
+  isTypelessMove,
 } from "./shared/effectiveness";
 
 // How hard one attacking type hits one slot, with the reason for the Matrix Analysis tooltip
@@ -63,7 +64,7 @@ export function defenceMultiplier(
   item = "",
   generation = LATEST_GENERATION,
 ) {
-  if (ability === "Dry Skin" && type === "Fire") {
+  if (generation >= 3 && ability === "Dry Skin" && type === "Fire") {
     return (
       scoreToMultiplier(
         typeAgainstPokemon(type, pokemon, "", item, generation),
@@ -89,13 +90,12 @@ export function defenceMatrix(
         if (!name) return null;
         const multiplier = against(type, name, ability, item);
         const cause =
-          multiplier === against(type, name) ? undefined
-          : (
-            item === "airballoon" && against(type, name, ability) !== multiplier
-          ) ?
-            names.item(item)
-          : names.ability(ability);
-        const types = pokemonTypes(name, generation).map(names.type).join("/");
+          item && against(type, name, ability) !== multiplier ? names.item(item)
+          : multiplier !== against(type, name) ? names.ability(ability)
+          : undefined;
+        const types = effectivePokemonTypes(name, ability, item, generation)
+          .map(names.type)
+          .join("/");
         return {
           multiplier,
           reason: t.matrix.defenceReason(
@@ -118,8 +118,16 @@ function moveMultiplier(
   pokemon: string,
   ability: string,
   generation: Generation,
+  item: string,
 ) {
-  const score = moveAgainstType(move, target, pokemon, ability, generation);
+  const score = moveAgainstType(
+    move,
+    target,
+    pokemon,
+    ability,
+    generation,
+    item,
+  );
   if (score === undefined) return undefined;
   return scoreToMultiplier(
     move === "flyingpress" ? score
@@ -138,10 +146,11 @@ export function coverageMatrix(
     typesIn(generation).map(target => [
       target,
       team.map(member => {
-        const { name, ability } = member;
+        const { name, ability, item } = member;
         if (!name) return null;
         const moves = MOVE_KEYS.map(key => member[key]).filter(
-          move => move && isMoveStrongEnough(move),
+          move =>
+            move && isMoveStrongEnough(move, item, ability, generation, name),
         );
         let best: { move: string; multiplier: number } | undefined;
         for (const move of moves) {
@@ -151,6 +160,7 @@ export function coverageMatrix(
             name,
             ability,
             generation,
+            item,
           );
           if (multiplier !== undefined && multiplier > (best?.multiplier ?? -1))
             best = { move, multiplier };
@@ -162,9 +172,12 @@ export function coverageMatrix(
           };
         }
         const type =
-          best.move === "flyingpress" ?
-            `${names.type(moveType(best.move, name, ability, generation) ?? "")}/${names.type("Flying")}`
-          : names.type(moveType(best.move, name, ability, generation) ?? "");
+          isTypelessMove(best.move, generation) ? "???"
+          : best.move === "flyingpress" ?
+            `${names.type(moveType(best.move, name, ability, generation, item) ?? "")}/${names.type("Flying")}`
+          : names.type(
+              moveType(best.move, name, ability, generation, item) ?? "",
+            );
         return {
           multiplier: best.multiplier,
           reason: t.matrix.coverageReason(

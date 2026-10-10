@@ -1,6 +1,8 @@
 import moves from "@/data/moves";
-import { MOVE_KEYS, type ReadonlyTeam } from "@/types";
+import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
 import type { Messages } from "@/i18n/en";
+import { effectivePokemonTypes } from "./shared/effectiveness";
+import { LATEST_GENERATION } from "@/shared/generations";
 
 // The labels live in src/i18n, under these keys
 export type ChecklistGroupKey = keyof Messages["checklist"]["groups"];
@@ -8,7 +10,7 @@ export type ChecklistItemKey = keyof Messages["checklist"]["items"];
 
 export interface ChecklistItem {
   key: ChecklistItemKey;
-  check: (team: ReadonlyTeam) => boolean;
+  check: (team: ReadonlyTeam, generation?: Generation) => boolean;
 }
 
 export interface ChecklistGroup {
@@ -56,16 +58,24 @@ const inflictsStatus: Check = team =>
 const BOOSTS_ANOTHER_POKEMON = ["swagger", "decorate", "coaching"];
 
 // Curse, Belly Drum, or moves that raise the user's stats by two or more stages in total
-const boostsStats: Check = team =>
-  teamMoves(team).some(
-    move =>
-      move === "curse" ||
-      move === "bellydrum" ||
-      (!BOOSTS_ANOTHER_POKEMON.includes(move) &&
-        Object.values(moves[move]?.boosts ?? {}).reduce(
-          (sum, boost) => sum + boost,
-          0,
-        ) >= 2),
+const boostsStats: Check = (team, generation = LATEST_GENERATION) =>
+  team.some(pokemon =>
+    moveset(pokemon).some(
+      move =>
+        (move === "curse" &&
+          !effectivePokemonTypes(
+            pokemon.name,
+            pokemon.ability,
+            pokemon.item,
+            generation,
+          ).includes("Ghost")) ||
+        move === "bellydrum" ||
+        (!BOOSTS_ANOTHER_POKEMON.includes(move) &&
+          Object.values(moves[move]?.boosts ?? {}).reduce(
+            (sum, boost) => sum + boost,
+            0,
+          ) >= 2),
+    ),
   );
 
 const hasRecovery = hasAnyMove([
@@ -123,7 +133,10 @@ export const checklist: ChecklistGroup[] = [
   {
     key: "defensive",
     items: [
-      { key: "cleric", check: hasAnyMove(["aromatherapy", "healbell"]) },
+      {
+        key: "cleric",
+        check: hasAnyMove(["aromatherapy", "healbell", "sparklyswirl"]),
+      },
       { key: "status", check: inflictsStatus },
       {
         key: "phazer",
@@ -160,9 +173,15 @@ export const checklistLabel = (
   : isLgDown ? (short ?? label)
   : label;
 
-export function evaluateChecklist(team: ReadonlyTeam) {
+export function evaluateChecklist(
+  team: ReadonlyTeam,
+  generation = LATEST_GENERATION,
+) {
   return checklist.map(({ key, items }) => ({
     key,
-    items: items.map(({ key, check }) => ({ key, isChecked: check(team) })),
+    items: items.map(({ key, check }) => ({
+      key,
+      isChecked: check(team, generation),
+    })),
   }));
 }

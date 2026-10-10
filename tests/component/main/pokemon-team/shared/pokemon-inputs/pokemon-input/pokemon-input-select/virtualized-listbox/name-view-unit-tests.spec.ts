@@ -1,4 +1,7 @@
 import { test, expect } from "fixtures";
+import pokedex from "@/data/pokedex";
+import { filterPokemon } from "@/store/filtering";
+import { sortPokemon, DEFAULT_SORT } from "@/store/sorting";
 
 test.describe("Name dropdown views - Unit Tests", () => {
   test("a single filtered pokemon fits completely in Grid and Big Grid", async ({
@@ -236,4 +239,34 @@ test.describe("Name dropdown views - Unit Tests", () => {
       listbox.getByRole("option", { name: "Clodsire" }),
     ).toContainText("Clodsire");
   });
+});
+test("Home and End reach real boundaries in each virtualized Name view", async ({
+  page,
+}) => {
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.click();
+  const options = sortPokemon(
+    filterPokemon({ type: "", region: "", format: "" }),
+    DEFAULT_SORT,
+  );
+  const lastName = pokedex[options.at(-1) ?? ""]?.name ?? "";
+  const firstName = pokedex[options[0] ?? ""]?.name ?? "";
+  for (const view of ["List view", "Grid view", "Big grid view"]) {
+    await page.getByRole("button", { name: view, exact: true }).click();
+    await input.press("ArrowDown");
+    await input.press("End");
+    const last = page.getByRole("option", { name: lastName, exact: true });
+    await expect(last).toBeVisible();
+    await expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      (await last.getAttribute("id")) ?? "",
+    );
+    await input.press("Home");
+    const first = page.getByRole("option", { name: firstName, exact: true });
+    await expect(first).toBeVisible();
+    await expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      (await first.getAttribute("id")) ?? "",
+    );
+  }
 });

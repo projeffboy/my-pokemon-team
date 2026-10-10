@@ -11,6 +11,63 @@ import type { Page } from "@playwright/test";
 import ja from "@/i18n/ja";
 
 test.describe("Pokemon Card - Unit Tests", () => {
+  test("filtering before the selected-row scroll frame does not use a stale index", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", error => errors.push(error.message));
+    await selectItem(page, "Leftovers");
+    const input = page.getByLabel("Pokemon 1's item");
+    await input.press("Escape");
+    await input.press("ArrowDown");
+    await expect(
+      page.getByRole("option", { name: "Leftovers", exact: true }),
+    ).toBeVisible();
+    await input.press("Escape");
+    await page.evaluate(() => {
+      const originalFrame = window.requestAnimationFrame;
+      const originalCancel = window.cancelAnimationFrame;
+      const frames = new Map<number, FrameRequestCallback>();
+      let nextId = -1;
+      window.requestAnimationFrame = callback => {
+        const id = nextId--;
+        frames.set(id, callback);
+        return id;
+      };
+      window.cancelAnimationFrame = id => {
+        if (id < 0) frames.delete(id);
+        else originalCancel(id);
+      };
+      const frameWindow = window as typeof window & {
+        releaseFrames: () => Promise<void>;
+      };
+      frameWindow.releaseFrames = () => {
+        window.requestAnimationFrame = originalFrame;
+        window.cancelAnimationFrame = originalCancel;
+        for (const callback of frames.values()) originalFrame(callback);
+        return new Promise(resolve =>
+          originalFrame(() => originalFrame(() => resolve())),
+        );
+      };
+    });
+    await input.press("ArrowDown");
+    await expect(page.getByRole("listbox")).toBeVisible();
+    await input.fill("Pecha");
+    await expect(page.getByRole("option")).toHaveCount(1);
+    await page.evaluate(() =>
+      (
+        window as typeof window & {
+          releaseFrames: () => Promise<void>;
+        }
+      ).releaseFrames(),
+    );
+    expect(errors).toEqual([]);
+    await page
+      .getByRole("option", { name: "Pecha Berry", exact: true })
+      .click();
+    await expect(input).toHaveValue("Pecha Berry");
+  });
+
   test("imported items and abilities stay visible outside the current options", async ({
     page,
   }) => {
@@ -399,6 +456,13 @@ test.describe("Pokemon Card - Unit Tests", () => {
     // move's type is always the icon, which takes less of the move's room
     for (const width of [320, 480, 600, 960, 1200, 1920]) {
       await page.setViewportSize({ width, height: 1000 });
+      await expect(
+        page.getByRole("region", { name: /^Pokemon \d$/ }),
+      ).toHaveCount(
+        width < 600 ? 1
+        : width < 960 ? 2
+        : 6,
+      );
       const statsChip = page
         .getByRole("region", { name: "Team Defence", exact: true })
         .getByRole("button", { name: "Electric", exact: true });
@@ -426,7 +490,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
         name: "Electric",
         exact: true,
       });
-      await expect(optionType).toBeVisible();
+      await expect(optionType, `Move type icon at ${width}px`).toBeVisible();
       expect(await optionType.evaluate(element => element.tagName)).toBe("IMG");
       await input.press("Escape");
     }

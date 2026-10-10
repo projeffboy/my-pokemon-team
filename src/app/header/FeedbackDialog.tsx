@@ -50,9 +50,19 @@ const FeedbackDialog = observer(function FeedbackDialog() {
   const [attachLink, setAttachLink] = useState(true);
   const [attachScreenshot, setAttachScreenshot] = useState(true);
   const [uploads, setUploads] = useState<Upload[]>([]);
+  const uploadsRef = useRef<Upload[]>([]);
+  const submissionVersion = useRef(0);
+  const uploadsVersion = useRef(0);
+  const [pendingUploads, setPendingUploads] = useState(0);
+  const replaceUploads = (next: Upload[]) => {
+    uploadsRef.current = next;
+    setUploads(next);
+  };
   const [uploadError, setUploadError] = useState<string>();
   const [status, setStatus] = useState<"idle" | "sending" | "failed">("idle");
+  const sending = status === "sending";
   const close = () => {
+    submissionVersion.current++;
     setIsOpen(false);
     setStatus("idle");
   };
@@ -61,23 +71,35 @@ const FeedbackDialog = observer(function FeedbackDialog() {
     const files = Array.from(input.files ?? []);
     // Lets the same file be picked again after it is removed
     input.value = "";
-    let added = uploads;
+    const version = uploadsVersion.current;
     let error: string | undefined;
-    for (const file of files.slice(0, MAX_UPLOADS - uploads.length)) {
-      const dataUrl = await compressImage(file).catch(() => undefined);
-      if (!dataUrl) {
-        error = t.feedback.imageUnreadable;
-      } else if (totalLength(added) + dataUrl.length > MAX_UPLOADS_LENGTH) {
-        error = t.feedback.imagesTooLarge;
-      } else {
-        added = [...added, { id: nextUploadId++, name: file.name, dataUrl }];
+    setPendingUploads(count => count + 1);
+    try {
+      for (const file of files) {
+        const dataUrl = await compressImage(file).catch(() => undefined);
+        if (version !== uploadsVersion.current) return;
+        const current = uploadsRef.current;
+        if (!dataUrl) {
+          error = t.feedback.imageUnreadable;
+        } else if (current.length >= MAX_UPLOADS) {
+          break;
+        } else if (totalLength(current) + dataUrl.length > MAX_UPLOADS_LENGTH) {
+          error = t.feedback.imagesTooLarge;
+        } else {
+          replaceUploads([
+            ...current,
+            { id: nextUploadId++, name: file.name, dataUrl },
+          ]);
+        }
       }
+      setUploadError(error);
+    } finally {
+      setPendingUploads(count => count - 1);
     }
-    setUploads(added);
-    setUploadError(error);
   };
 
   const send = async () => {
+    const version = ++submissionVersion.current;
     setStatus("sending");
     const screenshot =
       attachScreenshot &&
@@ -85,6 +107,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         dialogRef.current,
         MAX_IMAGES_LENGTH - totalLength(uploads),
       ));
+    if (version !== submissionVersion.current) return;
     const response = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -99,12 +122,14 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         }),
       }),
     }).catch(() => undefined);
+    if (version !== submissionVersion.current) return;
     if (!response?.ok) {
       setStatus("failed");
       return;
     }
     setMessage("");
-    setUploads([]);
+    uploadsVersion.current++;
+    replaceUploads([]);
     setUploadError(undefined);
     close();
     store.openSnackbar(t.feedback.sent, false, "send");
@@ -138,6 +163,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             minRows={4}
             fullWidth
             value={message}
+            disabled={status === "sending"}
             onChange={event => setMessage(event.target.value)}
             slotProps={{ htmlInput: { maxLength: 5000 } }}
           />
@@ -148,6 +174,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             fullWidth
             sx={{ mt: 2 }}
             value={email}
+            disabled={status === "sending"}
             onChange={event => setEmail(event.target.value)}
             slotProps={{ htmlInput: { maxLength: 254 } }}
           />
@@ -156,6 +183,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             control={
               <Checkbox
                 checked={attachLink}
+                disabled={sending}
                 onChange={event => setAttachLink(event.target.checked)}
               />
             }
@@ -165,6 +193,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             control={
               <Checkbox
                 checked={attachScreenshot}
+                disabled={sending}
                 onChange={event => setAttachScreenshot(event.target.checked)}
               />
             }
@@ -184,7 +213,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
               variant="outlined"
               size="small"
               startIcon={<AddPhotoAlternateIcon />}
-              disabled={uploads.length >= MAX_UPLOADS}
+              disabled={sending || uploads.length >= MAX_UPLOADS}
             >
               {t.feedback.addImage}
               <input
@@ -199,10 +228,16 @@ const FeedbackDialog = observer(function FeedbackDialog() {
               <Chip
                 key={upload.id}
                 label={upload.name}
-                onDelete={() => {
-                  setUploads(uploads.filter(other => other !== upload));
-                  setUploadError(undefined);
-                }}
+                onDelete={
+                  sending ? undefined : (
+                    () => {
+                      replaceUploads(
+                        uploadsRef.current.filter(other => other !== upload),
+                      );
+                      setUploadError(undefined);
+                    }
+                  )
+                }
                 sx={{ maxWidth: 1 }}
               />
             ))}
@@ -223,7 +258,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         <DialogActions>
           <Button onClick={close}>{t.cancel}</Button>
           <Button
-            disabled={!message.trim()}
+            disabled={!message.trim() || pendingUploads > 0}
             loading={status === "sending"}
             onClick={send}
             startIcon={<SendIcon />}

@@ -1,7 +1,13 @@
 import spreads from "@/data/hidden-power-spreads";
 import { STAT_KEYS, type Generation, type TeamPokemon } from "@/types";
-import { generationRules, gen2Dvs, getDv, syncDvs } from "./generation-rules";
-import { getIv, setDetail } from "./set-details";
+import {
+  dvGender,
+  generationRules,
+  gen2Dvs,
+  getDv,
+  syncDvs,
+} from "./generation-rules";
+import { getIv, MAX_IV, setDetail } from "./set-details";
 
 const TYPES = [
   "fighting",
@@ -67,5 +73,56 @@ export function matchHiddenPower(
       "ivs",
       Object.keys(spread.ivs).length ? { ...spread.ivs } : undefined,
     );
+  }
+}
+
+export function matchImportedHiddenPower(
+  member: TeamPokemon,
+  move: string,
+  generation: Generation,
+  format = "",
+) {
+  if (generation !== 2 || (!member.shiny && !member.gender)) {
+    matchHiddenPower(member, move, generation, format);
+    return;
+  }
+  const type = move.slice("hiddenpower".length);
+  const spread = spreads[type];
+  if (
+    !move.startsWith("hiddenpower") ||
+    !spread ||
+    !generationRules(generation, format).ivs
+  )
+    return;
+  if (
+    hiddenPowerType(member, generation) === type &&
+    (!member.gender || dvGender(gen2Dvs(member)) === member.gender)
+  )
+    return;
+
+  for (let atk = 15; atk >= 0; atk--) {
+    const dvs = {
+      ...spread.dvs,
+      ...(member.shiny ? { def: 10, spe: 10, spa: 10 } : {}),
+      atk,
+    };
+    const candidate = {
+      ...member,
+      ivs: Object.fromEntries(
+        STAT_KEYS.map(stat => [stat, (dvs[stat] ?? 15) * 2 + 1]),
+      ),
+    };
+    syncDvs(candidate, generation);
+    if (
+      hiddenPowerType(candidate, generation) === type &&
+      (!member.shiny || candidate.shiny) &&
+      (!member.gender || candidate.gender === member.gender)
+    ) {
+      const ivs = Object.fromEntries(
+        Object.entries(candidate.ivs).filter(([, value]) => value !== MAX_IV),
+      );
+      setDetail(member, "ivs", Object.keys(ivs).length ? ivs : undefined);
+      return;
+    }
   }
 }

@@ -112,4 +112,51 @@ test.describe("team coverage", () => {
       Array(18).fill(0),
     );
   });
+
+  for (const { pokemon, delayedMove, typedMove, generations, targets } of [
+    {
+      pokemon: "xatu",
+      delayedMove: "futuresight",
+      typedMove: "psychic",
+      generations: [2, 3, 4],
+      targets: ["Fighting", "Poison"],
+    },
+    {
+      pokemon: "jirachi",
+      delayedMove: "doomdesire",
+      typedMove: "irontail",
+      generations: [3, 4],
+      targets: ["Ice", "Rock"],
+    },
+  ] as const) {
+    for (const generation of generations) {
+      test(`Gen ${generation} typeless ${delayedMove} never suppresses ${typedMove} coverage`, () => {
+        const coverage = calculateTypeCoverage(
+          createTeam({ name: pokemon, move1: typedMove }),
+          generation,
+        );
+        for (const target of targets) expect(coverage[target]).toBe(2);
+        expect(
+          Object.values(
+            calculateTypeCoverage(
+              createTeam({ name: pokemon, move1: delayedMove }),
+              generation,
+            ),
+          ),
+        ).toEqual(Array(18).fill(0));
+
+        for (const [move1, move2] of [
+          [delayedMove, typedMove],
+          [typedMove, delayedMove],
+        ]) {
+          expect(
+            calculateTypeCoverage(
+              createTeam({ name: pokemon, move1, move2 }),
+              generation,
+            ),
+          ).toEqual(coverage);
+        }
+      });
+    }
+  }
 });

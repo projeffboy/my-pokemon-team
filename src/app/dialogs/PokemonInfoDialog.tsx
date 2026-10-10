@@ -25,8 +25,7 @@ import {
   smogonDexUrl,
 } from "@/shared/dex-urls";
 import { introducedIn } from "@/store/filtering";
-import { scoreToMultiplier } from "@/store/matrix";
-import { typeAgainstPokemon } from "@/store/shared/effectiveness";
+import { defenceMultiplier } from "@/store/matrix";
 import PokemonSprite from "@/app/shared/PokemonSprite";
 import dexLogos from "@/images/dex-logos";
 import typeIcons from "@/images/type-icons";
@@ -80,14 +79,12 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
       typesIn(generation)
         .map(type => ({
           type,
-          multiplier: scoreToMultiplier(
-            typeAgainstPokemon(
-              type,
-              pokemon,
-              member.ability,
-              member.item,
-              generation,
-            ),
+          multiplier: defenceMultiplier(
+            type,
+            pokemon,
+            member.ability,
+            member.item,
+            generation,
           ),
         }))
         .filter(({ multiplier }) => multiplier > 1)

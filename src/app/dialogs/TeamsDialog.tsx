@@ -238,7 +238,9 @@ const TeamsDialog = observer(function TeamsDialog() {
                   const teamId = store.currentTeamId;
                   diceRoll.onClick(event, () => {
                     if (store.currentTeamId !== teamId) return;
+                    const filters = { ...store.filters };
                     store.openEmptyTeam();
+                    store.filters = filters;
                     store.randomizeTeam();
                     store.openSnackbar(
                       t.teams.randomTeamCreated,

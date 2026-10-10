@@ -8,6 +8,8 @@ import {
 import { autorun } from "mobx";
 import { createTeam } from "./shared/team";
 import { test, expect } from "./fixtures";
+import { hiddenPowerType } from "@/shared/hidden-power";
+import { dvGender, getDv, isShinyDv } from "@/shared/generation-rules";
 
 const reuniclusText = `Reuniclus @ Life Orb
 Ability: Magic Guard
@@ -346,4 +348,84 @@ test.describe("team URL encoding", () => {
     importTeamFromUrlParameter(oversizedParameter);
     expect(store.team[0].name).toBe("reuniclus");
   });
+});
+test("omitted abilities and Hidden Power IVs use the imported generation", async ({
+  store,
+}) => {
+  store.currentTeam.generation = 6;
+  expect(parseTeamText("Gengar", 6)[0]?.ability).toBe("Levitate");
+  expect(parseTeamText("Gengar", 2)[0]?.ability).toBe("");
+  const imported = parseTeamText("Raikou\n- Hidden Power Ice", 6)[0];
+  expect(imported?.move1).toBe("hiddenpowerice");
+  expect(hiddenPowerType(imported, 6)).toBe("ice");
+  const explicit = parseTeamText(
+    "Raikou\nIVs: 31 HP / 31 Atk\n- Hidden Power Ice",
+    6,
+  )[0];
+  expect(explicit.ivs).toBeUndefined();
+  expect(hiddenPowerType(explicit, 6)).toBe("dark");
+  expect(
+    parseTeamText("Raikou\nIVs: 0 Atk\n- Hidden Power Ice", 6)[0]?.ivs,
+  ).toEqual({ atk: 0 });
+});
+
+for (const details of [
+  { name: "Gengar", shiny: true },
+  { name: "Gengar (F)", gender: "F" },
+  { name: "Gengar (F)", shiny: true, gender: "F" },
+] as const) {
+  test(`Gen 2 omitted Hidden Power DVs preserve ${JSON.stringify(details)}`, () => {
+    const text = `${details.name}\n${"shiny" in details ? "Shiny: Yes\n" : ""}- Hidden Power Grass`;
+    const member = parseTeamText(text, 2)[0];
+    if (!member) throw new Error("Missing pokemon");
+    expect(member.shiny ?? false).toBe("shiny" in details);
+    expect(isShinyDv(member)).toBe("shiny" in details);
+    if ("gender" in details) expect(member.gender).toBe(details.gender);
+    if ("gender" in details) expect(dvGender(member)).toBe(details.gender);
+    expect(getDv(member, "atk")).toBe("gender" in details ? 6 : 14);
+    for (const stat of ["def", "spe", "spa"] as const)
+      expect(getDv(member, stat)).toBe(
+        "shiny" in details ? 10
+        : stat === "def" ? 14
+        : 15,
+      );
+    expect(hiddenPowerType(member, 2)).toBe("grass");
+    expect(parseTeamText(serializeTeam([member]), 2)[0]).toEqual(member);
+  });
+}
+
+test("incompatible Gen 2 Hidden Power constraints retain explicit imported details", () => {
+  for (const text of [
+    "Gengar\nShiny: Yes\n- Hidden Power Fire",
+    "Chikorita (F)\nShiny: Yes\n- Hidden Power Grass",
+  ]) {
+    const member = parseTeamText(text, 2)[0];
+    expect(member.shiny).toBe(true);
+    if (text.includes("(F)")) expect(member.gender).toBe("F");
+    expect(member.ivs).toBeUndefined();
+  }
+});
+
+test("compatible omitted Gen 2 shiny DVs stay implicit", () => {
+  const member = parseTeamText(
+    "Gengar\nShiny: Yes\n- Hidden Power Dragon",
+    2,
+  )[0];
+  expect(member.shiny).toBe(true);
+  expect(member.ivs).toBeUndefined();
+  expect(hiddenPowerType(member, 2)).toBe("dragon");
+});
+
+test("Gen 2 explicit IVs prevent Hidden Power inference from changing details", () => {
+  for (const ivs of ["31 HP / 31 Atk", "13 Atk / 21 Def / 21 SpA / 21 Spe"]) {
+    const member = parseTeamText(
+      `Gengar (F)\nShiny: Yes\nIVs: ${ivs}\n- Hidden Power Grass`,
+      2,
+    )[0];
+    expect(member.gender).toBe("F");
+    expect(member.shiny).toBe(true);
+    expect(member.ivs).toEqual(
+      ivs.startsWith("31") ? undefined : { atk: 13, def: 21, spa: 21, spe: 21 },
+    );
+  }
 });

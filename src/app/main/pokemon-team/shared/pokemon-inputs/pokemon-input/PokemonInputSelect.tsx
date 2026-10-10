@@ -196,6 +196,24 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   const internalListRef = useListRef(null);
   // The options the popup lists, which typing narrows down
   const listedValuesRef = useRef<readonly string[]>([]);
+  const pendingNavigation = useRef<{
+    input: HTMLInputElement;
+    key: string;
+    index: number;
+  } | null>(null);
+  const replayingNavigation = useRef(false);
+  const finishNavigation = () => {
+    const pending = pendingNavigation.current;
+    if (!pending || !document.getElementById(`${id}-option-${pending.index}`))
+      return;
+    pendingNavigation.current = null;
+    if (document.activeElement !== pending.input) return;
+    replayingNavigation.current = true;
+    pending.input.dispatchEvent(
+      new KeyboardEvent("keydown", { key: pending.key, bubbles: true }),
+    );
+    replayingNavigation.current = false;
+  };
   const isGrid = pokemonProperty === "name" && store.nameView !== "list";
   const columns = isGrid ? gridColumns(store.nameView) : 1;
   // The grid of icons spans both of the card's columns, which are 8px apart
@@ -231,6 +249,34 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       defaultMuiPrevented?: boolean;
     },
   ) => {
+    if (replayingNavigation.current) return;
+    pendingNavigation.current = null;
+    if (
+      isOpen &&
+      (event.key === "Home" || event.key === "End") &&
+      event.target instanceof HTMLInputElement
+    ) {
+      const index =
+        event.key === "Home" ? 0 : listedValuesRef.current.length - 1;
+      if (
+        index >= 0 &&
+        !document.getElementById(`${id}-option-${index}`) &&
+        internalListRef.current
+      ) {
+        event.preventDefault();
+        event.defaultMuiPrevented = true;
+        pendingNavigation.current = {
+          input: event.target,
+          key: event.key,
+          index,
+        };
+        internalListRef.current.scrollToRow({
+          index: Math.floor(index / columns),
+          align: event.key === "Home" ? "start" : "end",
+        });
+        return;
+      }
+    }
     if (event.key !== "Enter" || !isOpen || event.nativeEvent.isComposing)
       return;
     const input = event.target;
@@ -256,6 +302,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         selectedValue: value,
         internalListRef,
         listedValuesRef,
+        onRowsRendered: finishNavigation,
         popupMaxHeight,
         nameListWidth: Math.max(MIN_NAME_LIST_WIDTH, fitWidth),
       }}
@@ -270,7 +317,10 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           measureList();
           setIsOpen(true);
         }}
-        onClose={() => setIsOpen(false)}
+        onClose={() => {
+          pendingNavigation.current = null;
+          setIsOpen(false);
+        }}
         options={options}
         value={selectedOption}
         disableListWrap

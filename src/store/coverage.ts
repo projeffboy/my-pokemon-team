@@ -1,12 +1,13 @@
 import { type PokemonType, type ReadonlyTeam } from "@/types";
-import { pokemonTypes } from "@/shared/pokedex";
 import { typesIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import {
   typeAgainstPokemon,
   moveType,
   isMoveStrongEnough,
+  isTypelessMove,
   moveAgainstType,
+  effectivePokemonTypes,
 } from "./shared/effectiveness";
 
 export function createTypeScores(): Record<PokemonType, number> {
@@ -58,23 +59,32 @@ export function calculateTypeCoverage(
   if (!team.some(pokemon => pokemon.name)) return scores;
 
   for (const pokemon of team) {
-    const { name, ability } = pokemon;
+    const { name, ability, item } = pokemon;
     const typesUsed = new Set<PokemonType | undefined>();
     const specialMovesUsed = new Set<string>();
 
     const moves = [pokemon.move1, pokemon.move2, pokemon.move3, pokemon.move4];
     for (const move of moves) {
-      if (!move || !isMoveStrongEnough(move)) continue;
+      if (
+        !move ||
+        isTypelessMove(move, generation) ||
+        !isMoveStrongEnough(move, item, ability, generation, name)
+      )
+        continue;
 
-      const type = moveType(move, name, ability, generation);
+      const type = moveType(move, name, ability, generation, item);
       const isSpecialMove = move === "freezedry" || move === "flyingpress";
       if (isSpecialMove ? specialMovesUsed.has(move) : typesUsed.has(type)) {
         continue;
       }
 
-      const hasStab = type && pokemonTypes(name, generation).includes(type);
+      const hasStab =
+        type &&
+        effectivePokemonTypes(name, ability, item, generation).includes(type);
       for (const target of typesIn(generation)) {
-        if (moveAgainstType(move, target, name, ability, generation) === -1) {
+        if (
+          moveAgainstType(move, target, name, ability, generation, item) === -1
+        ) {
           scores[target] += hasStab ? 2 : 1;
         }
       }

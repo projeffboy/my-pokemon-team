@@ -77,7 +77,20 @@ export type TypeChart = Record<
   Record<PokemonType, number> & Partial<Record<TypeChartStatus, number>>
 >;
 
-export type Items = Record<string, { name?: string; spritenum?: number }>;
+export interface ItemEntry {
+  name?: string;
+  spritenum?: number;
+  onPlate?: PokemonType;
+  onDrive?: PokemonType;
+  onMemory?: PokemonType;
+  naturalGift?: { basePower: number; type: PokemonType };
+  fling?: { basePower: number };
+  ignoreKlutz?: boolean;
+  megaStone?: Record<string, string>;
+  zMove?: boolean | string;
+}
+
+export type Items = Record<string, ItemEntry>;
 
 // A past generation's type chart holds only the types that existed then
 export type PastTypeChart = Partial<

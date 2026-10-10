@@ -560,11 +560,11 @@ const de: Messages = {
     teamsAnswer:
       "Deine Teams werden in diesem Browser gespeichert. Sie sind also da, wenn du wiederkommst, aber nicht auf einem anderen Gerät. Die Schaltfläche „Teams“ listet sie auf, und über das Menü eines Teams kannst du es umbenennen, seine Generation und sein Format festlegen, es duplizieren, teilen oder löschen. „Alle exportieren“ lädt alle Teams als Showdown-Text herunter, den „Team importieren“ wieder einliest. Die Adressleiste enthält immer das aktuelle Team; du teilst es also, indem du die Adresse kopierst (oder auf „Teilen“ drückst).",
     teamsAnswer2:
-      "Die Schaltfläche „Mehr“ zeigt die Team-Werkzeuge, die Schaltflächen „Filter“ und „Sortieren“ sowie die Schaltfläche „Weitere Details“. Mit „Rückgängig“ und „Wiederholen“ gehst du die Änderungen am aktuellen Team durch; auf Smartphones und Tablets findest du beide im Menü „Verwalten“.",
+      "Die Schaltfläche „Mehr“ zeigt die Team-Werkzeuge, „Filter“, „Sortieren“ und „Weitere Details“. „Rückgängig“ und „Wiederholen“ gehen die Änderungen am aktuellen Team durch; auf Smartphones und Tablets stehen sie über den Pokémon-Platzreitern.",
     generations: "Generationen",
     generationsQuestion: "Was ändert die Generation?",
     generationsAnswer:
-      "Die oben gewählte Generation listet nur die Pokémon und Formen auf, die es in ihr gab: Megas in Gen. 6, 7 und 9, Gigadynamax-Formen in Gen. 8 und so weiter. Alles andere bleibt aktuell: Attacken, Fähigkeiten, Typentabelle und Formate stammen aus den neuesten Spielen, sodass ein Team einer alten Generation Attacken kennen kann, die es damals nicht lernen konnte.",
+      "Die oben gewählte Generation und das Spiel bestimmen die angebotenen Pokémon, Formen, Attacken, Items und Set-Details. Historische Teams verwenden Fähigkeiten, Basiswerte und Typentabelle ihrer Generation. Beim Spielwechsel werden nötige Änderungen angezeigt; du kannst abbrechen, das Team anpassen oder eine Kopie erstellen.",
     advanced: "Weitere Details",
     advancedQuestion: "Spitznamen, Level, Wesen, EV und DV",
     advancedAnswer:

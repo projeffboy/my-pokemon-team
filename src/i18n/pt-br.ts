@@ -543,11 +543,11 @@ const ptBR: Messages = {
     teamsAnswer:
       "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Exportar tudo baixa todas as equipes como texto do Showdown, que Importar equipe lê de volta. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
     teamsAnswer2:
-      "O botão Mais mostra as ferramentas da equipe, os botões Filtros e Ordenar e o botão Mais detalhes. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam no menu Gerenciar.",
+      "O botão Mais mostra as ferramentas da equipe, Filtros, Ordenar e Mais detalhes. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam acima das abas dos Pokémon.",
     generations: "Gerações",
     generationsQuestion: "O que a geração muda?",
     generationsAnswer:
-      "A geração, escolhida no topo, lista apenas os Pokémon e formas que existiam nela: megas nas Ger. 6, 7 e 9, formas Gigantamax na Ger. 8 e assim por diante. Todo o resto permanece atual: os golpes, as habilidades, a tabela de tipos e os formatos vêm dos jogos mais recentes, então uma equipe de uma geração antiga pode conhecer golpes que não podia aprender na época.",
+      "A geração e o jogo escolhidos no topo determinam os Pokémon, formas, golpes, itens e detalhes oferecidos. Equipes antigas usam as habilidades, estatísticas base e tabela de tipos da sua geração. Trocar de jogo mostra as mudanças necessárias; você pode cancelar, atualizar a equipe ou criar uma cópia.",
     advanced: "Mais detalhes",
     advancedQuestion: "Apelidos, níveis, naturezas, EVs e IVs",
     advancedAnswer:

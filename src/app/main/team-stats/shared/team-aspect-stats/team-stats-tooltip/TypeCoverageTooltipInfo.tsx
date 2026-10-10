@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { pokemonTypes } from "@/shared/pokedex";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import {
   moveAgainstType,
   moveType as getMoveType,
+  effectivePokemonTypes,
 } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import typeIcons from "@/images/type-icons";
@@ -26,17 +26,20 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   const { generation } = store.currentTeam;
   const superEffectiveMoves = store.analysisTeam.flatMap((member, i) =>
     MOVE_KEYS.flatMap(key => {
-      const { name: pokemon, ability } = member;
+      const { name: pokemon, ability, item } = member;
       const move = member[key];
       if (
         !move ||
-        moveAgainstType(move, type, pokemon, ability, generation) !== -1
+        moveAgainstType(move, type, pokemon, ability, generation, item) !== -1
       ) {
         return [];
       }
-      const moveType = getMoveType(move, pokemon, ability, generation);
+      const moveType = getMoveType(move, pokemon, ability, generation, item);
       const isStab =
-        !!moveType && pokemonTypes(pokemon, generation).includes(moveType);
+        !!moveType &&
+        effectivePokemonTypes(pokemon, ability, item, generation).includes(
+          moveType,
+        );
       return [{ key: `${i}-${key}`, move, moveType, pokemon, isStab }];
     }),
   );

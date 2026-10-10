@@ -1,9 +1,40 @@
 import type { PokemonType } from "@/types";
 import moves from "@/data/moves";
+import items from "@/data/items";
+import pokedex from "@/data/pokedex";
 import { pokemonTypes } from "@/shared/pokedex";
 import { moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType } from "@/types";
+
+const activeItem = (
+  item: string | undefined,
+  ability: string | undefined,
+  generation: number,
+) =>
+  (
+    generation < 2 ||
+    (generation >= 3 && ability === "Klutz" && !items[item ?? ""]?.ignoreKlutz)
+  ) ?
+    ""
+  : (item ?? "");
+
+export function effectivePokemonTypes(
+  pokemon: string,
+  ability = "",
+  item = "",
+  generation = LATEST_GENERATION,
+) {
+  const held = items[activeItem(item, ability, generation)];
+  if (ability === "Multitype" && pokemon.startsWith("arceus"))
+    return [held?.onPlate ?? "Normal"];
+  if (ability === "RKS System" && pokemon.startsWith("silvally"))
+    return [held?.onMemory ?? "Normal"];
+  return pokemonTypes(pokemon, generation);
+}
+
+export const isTypelessMove = (move: string, generation: number) =>
+  generation <= 4 && (move === "futuresight" || move === "doomdesire");
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
 // The generation decides the pokemon's types and the type chart.
@@ -15,15 +46,31 @@ export function typeAgainstPokemon(
   generation = LATEST_GENERATION,
 ) {
   if (generation < 3) pokemonAbility = undefined;
-  if (generation < 2) item = undefined;
+  item = activeItem(item, pokemonAbility, generation);
   const typechart = typechartIn(generation);
-  const [type1, type2] = pokemonTypes(pokemon, generation);
-  const type1Resistance = type1 ? (typechart[type1]?.[type] ?? 0) : 0;
+  const [type1, type2] = effectivePokemonTypes(
+    pokemon,
+    pokemonAbility,
+    item,
+    generation,
+  );
+  const grounded = item === "ironball" && type === "Ground";
+  const resistance = (defender: PokemonType | "Bird" | undefined) => {
+    const value =
+      defender && defender !== "Bird" ? (typechart[defender]?.[type] ?? 0) : 0;
+    return (
+        value === 2 &&
+          (item === "ringtarget" || (grounded && defender === "Flying"))
+      ) ?
+        0
+      : value;
+  };
+  const type1Resistance = resistance(type1);
 
   let effectiveness = type1Resistance;
 
   if (type2) {
-    const type2Resistance = typechart[type2]?.[type] ?? 0;
+    const type2Resistance = resistance(type2);
 
     if (type1Resistance === 2 || type2Resistance === 2) {
       effectiveness = 3;
@@ -33,6 +80,9 @@ export function typeAgainstPokemon(
   } else if (effectiveness === 2) {
     effectiveness = 3;
   }
+  // Since Gen 5, Iron Ball makes all Ground effectiveness neutral on Flying holders.
+  if (grounded && generation >= 5 && (type1 === "Flying" || type2 === "Flying"))
+    effectiveness = 0;
 
   // Take into account ability for pokemon's resistances
   if (pokemonAbility) {
@@ -61,6 +111,8 @@ export function typeAgainstPokemon(
         break;
       case "Levitate":
       case "Eelevate":
+        if (type === "Ground" && !grounded) effectiveness = 3;
+        break;
       case "Earth Eater":
         if (type === "Ground") {
           effectiveness = 3;
@@ -139,11 +191,13 @@ export function moveType(
   pokemon: string,
   ability?: string,
   generation = LATEST_GENERATION,
+  item?: string,
 ) {
   if (generation < 3) ability = undefined;
   const rawType = moveTypeIn(move, generation);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
+  const held = items[activeItem(item, ability, generation)];
 
   const abilitiesThatChangeNormalMoves: Partial<Record<string, PokemonType>> = {
     Aerilate: "Flying",
@@ -189,10 +243,14 @@ export function moveType(
     };
     moveType = types[pokemon] ?? moveType;
   } else if (move === "judgment") {
-    moveType = pokemonTypes(pokemon, generation)[0] ?? moveType;
+    moveType =
+      item === undefined ? (pokemonTypes(pokemon, generation)[0] ?? moveType)
+      : held?.zMove ? "Normal"
+      : (held?.onPlate ?? "Normal");
   } else if (move === "ivycudgel") {
     moveType = pokemonTypes(pokemon, generation).at(-1) ?? moveType;
   } else if (move === "technoblast") {
+    if (item !== undefined) return held?.onDrive ?? "Normal";
     // For Genesect
     switch (pokemon) {
       case "genesectdouse":
@@ -210,11 +268,14 @@ export function moveType(
       default:
     }
   } else if (move === "multiattack") {
+    if (item !== undefined) return held?.onMemory ?? "Normal";
     // For Silvally
     const type = pokemon.replace("silvally", "") || "normal";
     const capitalizedType = type.charAt(0).toUpperCase() + type.slice(1);
 
     if (isPokemonType(capitalizedType)) moveType = capitalizedType;
+  } else if (move === "naturalgift") {
+    moveType = held?.naturalGift?.type ?? moveType;
   } else if (ability === "Liquid Voice" && moves[move]?.flags?.sound === 1) {
     moveType = "Water";
   }
@@ -222,8 +283,33 @@ export function moveType(
   return moveType;
 }
 
-export function isMoveStrongEnough(move: string) {
+export function isMoveStrongEnough(
+  move: string,
+  item?: string,
+  ability?: string,
+  generation = LATEST_GENERATION,
+  pokemon = "",
+) {
   const moveProperties = moves[move];
+  const held = items[activeItem(item, ability, generation)];
+  if (move === "naturalgift")
+    return (
+      (held?.naturalGift?.basePower ?? 0) - (generation <= 5 ? 20 : 0) >= 40
+    );
+  if (move === "fling") {
+    const species =
+      pokedex[pokemon]?.baseSpecies ?? pokedex[pokemon]?.name ?? "";
+    const blocked =
+      held?.zMove ||
+      (generation === 4 && ability === "Multitype") ||
+      (held?.onPlate && species === "Arceus") ||
+      (held?.onMemory && species === "Silvally") ||
+      held?.megaStone?.[species] ||
+      (item === "griseousorb" &&
+        (generation === 4 || (generation <= 8 && species === "Giratina"))) ||
+      (item?.endsWith("mask") && species === "Ogerpon");
+    return !blocked && (held?.fling?.basePower ?? 0) >= 40;
+  }
 
   return (
     moveProperties &&
@@ -243,12 +329,18 @@ export function moveAgainstType(
   pokemon: string,
   ability?: string,
   generation = LATEST_GENERATION,
+  item?: string,
 ) {
   if (generation < 3) ability = undefined;
-  const attackType = moveType(move, pokemon, ability, generation);
+  const attackType = moveType(move, pokemon, ability, generation, item);
   const defender = typechartIn(generation)[typeAgainst];
 
-  if (!isMoveStrongEnough(move) || !attackType) return undefined;
+  if (
+    !isMoveStrongEnough(move, item, ability, generation, pokemon) ||
+    !attackType
+  )
+    return undefined;
+  if (isTypelessMove(move, generation)) return 0;
   let score = defender?.[attackType];
   if (
     (ability === "Scrappy" || ability === "Mind's Eye") &&

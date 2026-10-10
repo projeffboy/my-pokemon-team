@@ -540,11 +540,11 @@ const en = {
     teamsAnswer:
       "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
     teamsAnswer2:
-      "The More button shows the team tools, the Filters and Sort buttons, and the More details button. Undo and Redo step through the current team's changes; on phones and tablets they are in the Manage menu.",
+      "The More button shows the team tools, the Filters and Sort buttons, and the More details button. Undo and Redo step through the current team’s changes; on phones and tablets they are above the Pokémon slot tabs.",
     generations: "Generations",
     generationsQuestion: "What does the generation change?",
     generationsAnswer:
-      "The generation, chosen at the top, lists only the pokemon and formes that existed in it: megas in Gens 6, 7, and 9, Gigantamax formes in Gen 8, and so on. Everything else stays current: the moves, abilities, type chart, and formats come from the newest games, so an old generation's team may know moves it could not learn back then.",
+      "The generation and game chosen at the top determine the Pokémon, formes, moves, items and set details offered. Historical teams use that generation’s abilities, base stats and type chart. Changing games previews required team changes, with options to cancel, update the team or make a copy.",
     advanced: "More details",
     advancedQuestion: "Nicknames, levels, natures, EVs, and IVs",
     advancedAnswer:

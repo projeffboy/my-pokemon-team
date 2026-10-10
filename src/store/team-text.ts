@@ -40,6 +40,7 @@ import {
 import { parseShowdownFormatId, showdownFormatId } from "@/shared/formats";
 import { canItLearn, isItemAvailable } from "./learnsets";
 import { generationRules } from "@/shared/generation-rules";
+import { matchImportedHiddenPower } from "@/shared/hidden-power";
 
 const statsLine = (
   stats: Partial<BaseStats> | undefined,
@@ -101,13 +102,20 @@ export const serializeTeam = (team: ReadonlyTeam) =>
     .join("");
 
 // Every team, each under a header like Showdown's backup: === [gen9ou] Team name ===
-export const serializeTeams = (teams: readonly SavedTeam[]) =>
-  teams
-    .map(
-      ({ name, generation, format, team }) =>
-        `=== [${showdownFormatId(generation, format)}] ${name || "Team"} ===\n\n${serializeTeam(team)}`,
-    )
+const BACKUP_MARKER = "# mypokemonteam backup: preserve team names";
+
+export const serializeTeams = (teams: readonly SavedTeam[]) => {
+  const preserveNames = teams.some(({ name }) => name.includes("/"));
+  return teams
+    .map(({ name, generation, format, team }) => {
+      const sets = serializeTeam(team);
+      // Showdown ignores unknown metadata inside a set, but not before its header.
+      const text =
+        preserveNames ? sets.replace("\n", `\n${BACKUP_MARKER}\n`) : sets;
+      return `=== [${showdownFormatId(generation, format)}] ${name || "Team"} ===\n\n${text}`;
+    })
     .join("");
+};
 
 const STAT_BY_NAME = new Map<string, StatKey>(
   STAT_KEYS.map(stat => [STAT_NAMES[stat].toLowerCase(), stat]),
@@ -194,7 +202,8 @@ export function parseTeamText(
     const abilities = Array.from({ length: 9 }, (_, i) =>
       pokemonAbilities(pokemon, (i + 1) as Generation),
     ).flat();
-    member.ability = getAutoSelectedAbility(pokemon);
+    member.ability =
+      rules.abilities ? getAutoSelectedAbility(pokemon, generation) : "";
     if (nickname) member.nickname = nickname;
     if (gender) member.gender = gender;
 
@@ -286,6 +295,13 @@ export function parseTeamText(
         moveIndex++;
       }
     });
+    if (!lines.some(line => line.trim().startsWith("IVs:"))) {
+      const hiddenPower = MOVE_KEYS.map(key => member[key]).find(move =>
+        move.startsWith("hiddenpower"),
+      );
+      if (hiddenPower)
+        matchImportedHiddenPower(member, hiddenPower, generation, format);
+    }
   });
 
   return team;
@@ -303,6 +319,9 @@ export interface ParsedTeam {
 // Splits a Showdown backup with `=== [gen9ou] Folder/Name ===` headers into its
 // teams that have pokemon; text without headers is one team
 export function parseTeamsText(text: string): ParsedTeam[] {
+  const preserveNames = text
+    .split("\n")
+    .some(line => line.trim() === BACKUP_MARKER);
   const chunks: { header?: RegExpExecArray; lines: string[] }[] = [];
   for (const line of text.split("\n")) {
     const header = TEAM_HEADER.exec(line);
@@ -312,8 +331,11 @@ export function parseTeamsText(text: string): ParsedTeam[] {
   }
   const teams = chunks.map(({ header, lines }) => {
     const settings = parseShowdownFormatId(header?.[1] ?? "");
+    const rawName = header?.[2] ?? "";
+    const name =
+      preserveNames ? rawName : (rawName.split("/").pop()?.trim() ?? "");
     return {
-      name: (header?.[2] ?? "").split("/").pop()?.trim() ?? "",
+      name,
       ...settings,
       team: parseTeamText(
         lines.join("\n"),

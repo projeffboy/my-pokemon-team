@@ -563,11 +563,11 @@ const fr: Messages = {
     teamsAnswer:
       "Vos équipes sont enregistrées dans ce navigateur : elles sont donc là à votre retour, mais pas sur un autre appareil. Le bouton Équipes les liste, et le menu de chaque équipe permet de la renommer, de choisir sa génération et son format, de la dupliquer, de la partager ou de la supprimer. Tout exporter télécharge toutes les équipes en texte Showdown, qu'Importer une équipe relit ensuite. La barre d'adresse contient toujours l'équipe actuelle : copier l'adresse (ou appuyer sur Partager) la partage.",
     teamsAnswer2:
-      "Le bouton Plus affiche les outils d'équipe, les boutons Filtres et Trier, et le bouton Plus de détails. Annuler et Rétablir parcourent les modifications de l'équipe actuelle ; sur téléphone et tablette, ils se trouvent dans le menu Gérer.",
+      "Le bouton Plus affiche les outils d’équipe, Filtres, Trier et Plus de détails. Annuler et Rétablir parcourent les modifications de l’équipe actuelle ; sur téléphone et tablette, ils se trouvent au-dessus des onglets des Pokémon.",
     generations: "Générations",
     generationsQuestion: "Que change la génération ?",
     generationsAnswer:
-      "La génération, choisie en haut, ne liste que les Pokémon et les formes qui existaient à l'époque : les Méga-Évolutions dans les Gén. 6, 7 et 9, les formes Gigamax dans la Gén. 8, etc. Tout le reste reste à jour : les capacités, les talents, la table des types et les formats viennent des jeux les plus récents, donc une équipe d'une ancienne génération peut connaître des capacités qu'elle ne pouvait pas apprendre à l'époque.",
+      "La génération et le jeu choisis en haut déterminent les Pokémon, formes, capacités, objets et détails proposés. Les équipes historiques utilisent les talents, statistiques de base et table des types de leur génération. Un changement de jeu affiche les modifications nécessaires ; vous pouvez annuler, mettre à jour l’équipe ou créer une copie.",
     advanced: "Plus de détails",
     advancedQuestion: "Surnoms, niveaux, natures, EV et IV",
     advancedAnswer:

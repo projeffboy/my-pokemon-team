@@ -627,7 +627,7 @@ class Store {
   }
 
   get checklist() {
-    return evaluateChecklist(this.analysisTeam);
+    return evaluateChecklist(this.analysisTeam, this.currentTeam.generation);
   }
 
   // The Name dropdown's options

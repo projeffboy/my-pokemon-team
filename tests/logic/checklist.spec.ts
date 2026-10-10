@@ -112,3 +112,20 @@ test("offensive checks count pivot moves and choice items", () => {
     [],
   );
 });
+
+test("Curse counts only for non-Ghost users in the selected generation", () => {
+  expect(checked(createTeam({ name: "gengar", move1: "curse" }))).toEqual([]);
+  const rotom = createTeam({ name: "rotomheat", move1: "curse" });
+  const setup = (generation: 4 | 5) =>
+    evaluateChecklist(rotom, generation)
+      .flatMap(group => group.items)
+      .find(item => item.key === "boosting")?.isChecked;
+  expect(setup(4)).toBe(false);
+  expect(setup(5)).toBe(true);
+});
+
+test("Sparkly Swirl is a cleric move", () => {
+  expect(
+    checked(createTeam({ name: "eeveestarter", move1: "sparklyswirl" })),
+  ).toEqual(["Cleric"]);
+});

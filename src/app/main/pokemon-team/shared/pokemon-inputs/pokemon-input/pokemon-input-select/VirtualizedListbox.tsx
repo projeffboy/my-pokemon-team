@@ -168,6 +168,7 @@ export const VirtualizedListboxContext = React.createContext<{
   internalListRef: React.RefObject<ListImperativeAPI | null>;
   // Kept at the listed options' values, in order, and emptied when none are listed
   listedValuesRef: React.RefObject<readonly string[]>;
+  onRowsRendered: () => void;
   // The room the popup has on the screen, measured when it opens
   popupMaxHeight?: number;
   nameListWidth: number;
@@ -192,6 +193,7 @@ const VirtualizedListbox = observer(
         selectedValue,
         internalListRef,
         listedValuesRef,
+        onRowsRendered,
         popupMaxHeight,
         nameListWidth,
       } = context;
@@ -225,23 +227,20 @@ const VirtualizedListbox = observer(
       // The list is freshly mounted each time the popup opens, so jump to the
       // currently selected row (it may be far outside the initially rendered rows)
       React.useEffect(() => {
-        const index = itemData.findIndex(
-          ([, option]) => option.value === selectedValue,
-        );
-        if (index === -1) return;
         // react-window's imperative API object exists synchronously, but its
         // internal DOM element ref isn't attached until just after mount, so
         // scrollToRow silently no-ops if called immediately. Defer to the next
         // animation frame to ensure the underlying element is ready.
         const frame = requestAnimationFrame(() => {
+          const index = listedValuesRef.current.indexOf(selectedValue);
+          if (index === -1) return;
           internalListRef.current?.scrollToRow({
             index: isGrid ? Math.floor(index / columns) : index,
             align: "auto",
           });
         });
         return () => cancelAnimationFrame(frame);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      }, [isGrid, columns]);
+      }, [isGrid, columns, selectedValue, listedValuesRef, internalListRef]);
 
       // The view toggle takes some of the popup's room
       const toggleRef = React.useRef<HTMLDivElement>(null);
@@ -378,6 +377,7 @@ const VirtualizedListbox = observer(
               listRef={internalListRef}
               key={`${store.nameView}-${itemCount}`}
               rowCount={rowCount}
+              onRowsRendered={onRowsRendered}
               rowHeight={gridRowSize}
               rowComponent={GridRowComponent}
               rowProps={{ itemData, columns, large: isBigGrid }}
@@ -391,6 +391,7 @@ const VirtualizedListbox = observer(
               listRef={internalListRef}
               key={itemCount}
               rowCount={itemCount}
+              onRowsRendered={onRowsRendered}
               rowHeight={dynamicRowHeight}
               rowComponent={RowComponent}
               rowProps={{ itemData, pokemonProperty, showMoveTypes }}

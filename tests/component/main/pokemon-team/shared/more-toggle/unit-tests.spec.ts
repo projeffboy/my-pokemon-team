@@ -124,6 +124,7 @@ test.describe("More toggle - Unit Tests", () => {
         await expect(row.getByRole("button").nth(index)).toHaveAccessibleName(
           name,
         );
+      await toggle.click({ trial: true });
       const collapsed = await layout(row);
       await toggle.click();
       const expanded = page.getByRole("button", {
@@ -134,6 +135,7 @@ test.describe("More toggle - Unit Tests", () => {
         .getByRole("toolbar", { name: "Team actions" })
         .filter({ has: expanded });
       await expect(expanded).toBeVisible();
+      await expanded.click({ trial: true });
 
       // Nothing in the row moves, and only the toggle's own label changes
       const open = await layout(expandedRow);

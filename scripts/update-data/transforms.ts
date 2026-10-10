@@ -125,8 +125,36 @@ export const projections = {
     ...(isRecord(entry.flags) &&
       !!entry.flags.sound && { flags: { sound: 1 } }),
   }),
-  Items: (entry: ShowdownEntry): Items[string] =>
-    pick<Items[string]>(entry, ["name", "spritenum"]),
+  Items: (entry: ShowdownEntry): Items[string] => {
+    const defaults =
+      entry.onMemory ? 50
+      : entry.megaStone ? 80
+      : entry.onDrive ? 70
+      : entry.onPlate ? 90
+      : entry.isBerry ? 10
+      : undefined;
+    return {
+      ...pick<Items[string]>(entry, [
+        "name",
+        "spritenum",
+        "onPlate",
+        "onDrive",
+        "onMemory",
+        "naturalGift",
+        "ignoreKlutz",
+        "megaStone",
+        "zMove",
+      ]),
+      ...(defaults !== undefined ? { fling: { basePower: defaults } }
+      : isRecord(entry.fling) ?
+        {
+          fling: pick<NonNullable<Items[string]["fling"]>>(entry.fling, [
+            "basePower",
+          ]) as { basePower: number },
+        }
+      : {}),
+    };
+  },
   Formats: (entry: ShowdownEntry): Formats[string] =>
     pick<Formats[string]>(entry, ["tier", "doublesTier"]),
   Natures: (entry: ShowdownEntry): Natures[string] =>

@@ -11,6 +11,15 @@ const entries: Entry[] = [
   {
     date: "Oct 10, 2026",
     changes: [
+      "Team analysis now accounts for Iron Ball, Ring Target and Klutz, and uses held items for attacks such as Judgment and Natural Gift.",
+      "Future Sight and Doom Desire now deal neutral damage in the matrix before Gen 5.",
+      "Pokédex weaknesses now show the correct Fire damage for Dry Skin, e.g. ×5 for Parasect.",
+      "Imports now choose generation-specific abilities and matching Hidden Power IVs when those details are omitted.",
+      "The checklist no longer counts Ghost-type Curse as setup, and now counts Sparkly Swirl as a cleric move.",
+      "Home and End now reach the first and last dropdown options, and slot reordering is accessible by keyboard on phones and tablets.",
+      "Fast dropdown filtering no longer causes a stale scroll to fail.",
+      "Feedback no longer loses a new draft when an earlier request finishes, or loses images selected while another image is processing.",
+      "New random teams now keep the current filters, and team backups preserve names containing a slash.",
       "Reloading the page no longer reopens a team with a Smogon tier as an unsaved copy.",
       "Past generations no longer list Pokémon their games lack, which had no moves to choose, e.g. Greninja in Gen 8.",
       "Smeargle can now choose any move it can Sketch.",

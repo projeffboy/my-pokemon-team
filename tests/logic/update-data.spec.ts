@@ -31,6 +31,30 @@ test("Hidden Power spread generation keeps Showdown IVs and DVs, including all-d
   });
 });
 
+test("item projection keeps attack types and power, with Showdown's Fling defaults", () => {
+  expect(
+    projections.Items({
+      name: "Liechi Berry",
+      isBerry: true,
+      naturalGift: { type: "Grass", basePower: 100 },
+    }),
+  ).toEqual({
+    name: "Liechi Berry",
+    naturalGift: { type: "Grass", basePower: 100 },
+    fling: { basePower: 10 },
+  });
+  expect(projections.Items({ onPlate: "Fire" }).fling?.basePower).toBe(90);
+  expect(projections.Items({ onDrive: "Water" }).fling?.basePower).toBe(70);
+  expect(projections.Items({ onMemory: "Grass" }).fling?.basePower).toBe(50);
+  expect(
+    projections.Items({ megaStone: { Abomasnow: "Abomasnow-Mega" } }).fling
+      ?.basePower,
+  ).toBe(80);
+  expect(
+    projections.Items({ fling: { basePower: 130, status: "brn" } }).fling,
+  ).toEqual({ basePower: 130 });
+});
+
 test("pick keeps only the listed fields and marks callbacks as present", () => {
   const entry = {
     name: "Low Kick",

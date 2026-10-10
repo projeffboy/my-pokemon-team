@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { selectPokemon } from "helper";
+import { selectPokemon, selectAbility } from "helper";
 import type { Page } from "@playwright/test";
 
 async function generation(page: Page, gen: number) {
@@ -57,4 +57,13 @@ test("Pidgeot's stats and abilities follow the selected generation", async ({
   await expect(dialog.getByLabel("Speed: 101", { exact: true })).toBeVisible();
   await expect(dialog).toContainText("Total 479");
   await expect(dialog).toContainText("Keen Eye, Tangled Feet, Big Pecks");
+});
+test("Dry Skin weaknesses use the same Fire multiplier as the matrix", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Parasect");
+  await selectAbility(page, "Dry Skin");
+  await page.getByRole("button", { name: "About Parasect" }).click();
+  const dialog = page.getByRole("dialog", { name: "Parasect", exact: true });
+  await expect(dialog.getByText("Fire ×5", { exact: true })).toBeVisible();
 });

@@ -222,3 +222,44 @@ Garchomp
     });
   });
 });
+test("app backup names preserve slashes without changing external folder imports", () => {
+  for (const name of [
+    "Rain / OU",
+    "mypokemonteam:Rain / OU",
+    "雨 / OU %2F",
+    "Rain / \ud800",
+  ]) {
+    const text = serializeTeams([
+      createSavedTeam({ name, team: createTeam({ name: "kingdra" }) }),
+    ]);
+    expect(parseTeamsText(text)[0]?.name).toBe(name);
+  }
+  expect(
+    parseTeamsText("=== [gen8ou] Folder/Rain ===\n\nKingdra")[0]?.name,
+  ).toBe("Rain");
+  expect(
+    parseTeamsText("=== [gen8ou] mypokemonteam:Rain%20OU ===\n\nKingdra")[0]
+      ?.name,
+  ).toBe("mypokemonteam:Rain%20OU");
+  expect(
+    parseTeamsText("=== [gen8ou] mypokemonteam:%invalid ===\n\nKingdra")[0]
+      ?.name,
+  ).toBe("mypokemonteam:%invalid");
+  const text = serializeTeams([
+    createSavedTeam({ name: "Empty" }),
+    createSavedTeam({
+      name: "Rain / OU",
+      team: createTeam({ name: "kingdra" }),
+    }),
+    createSavedTeam({ name: "Sun", team: createTeam({ name: "torkoal" }) }),
+  ]);
+  expect(text).toMatch(
+    /^Kingdra @ *\n# mypokemonteam backup: preserve team names\n/m,
+  );
+  expect(
+    parseTeamsText(text).map(({ name, team }) => [name, team[0].name]),
+  ).toEqual([
+    ["Rain / OU", "kingdra"],
+    ["Sun", "torkoal"],
+  ]);
+});

@@ -215,3 +215,26 @@ const dragBetween = async (page: Page, source: Locator, target: Locator) => {
   });
   await page.mouse.up();
 };
+test("slot move menus work by keyboard at the narrowest phone width", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 });
+  await selectPokemon(page, "Maractus");
+  const move = page.getByRole("button", {
+    name: "Move Maractus to another slot",
+    exact: true,
+  });
+  await expect(move).toBeVisible();
+  const bounds = await move.boundingBox();
+  expect(bounds?.x).toBeGreaterThanOrEqual(0);
+  await move.focus();
+  await move.press("Enter");
+  await page
+    .getByRole("menuitem", { name: "Pokemon 2 (empty)", exact: true })
+    .press("Enter");
+  await expect(page.getByRole("menu")).toBeHidden();
+  expect(getTeamTextFromUrl(page)).toContain("Maractus");
+  await expect(page.locator("body")).toHaveJSProperty("scrollWidth", 320);
+  await showSlot(page, 1);
+  await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("Maractus");
+});

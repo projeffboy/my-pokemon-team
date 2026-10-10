@@ -12,14 +12,14 @@ import { dragHandle, useMoveSlot } from "../use-slot-drag";
 
 // A grip jutting out of the card's top left corner: dragging it moves the card
 // to the slot it is dropped on, and clicking it lists the slots instead.
-// Phones and tablets drag the slot tabs, so their cards have no grip.
+// Phones and tablets drag the slot tabs; this grip still opens the accessible move menu.
 const chip = {
   position: "absolute",
   top: -8,
-  left: -26,
+  left: { xxs: -16, md: -26 },
   zIndex: 1,
   p: 0.25,
-  width: 22,
+  width: { xxs: 18, md: 22 },
   height: 28,
   borderRadius: "4px 0 0 4px",
   color: "text.secondary",

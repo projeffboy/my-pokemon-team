@@ -336,6 +336,34 @@ const loadReportedData = async (): Promise<ReportedData> => {
   return { pokedex, moves, items };
 };
 async function updateData() {
+  if (process.argv.includes("--item-effects-only")) {
+    const before = await loadAppData<Items>("items");
+    const table = projectTable(
+      "Items",
+      await loadShowdownTable("data/items.ts", "Items"),
+    );
+    await writeData(
+      "Items",
+      Object.fromEntries(
+        Object.entries(before).map(([id, entry]) => {
+          const {
+            name: _name,
+            spritenum: _sprite,
+            ...effects
+          } = table[id] ?? {};
+          return [
+            id,
+            { name: entry.name, spritenum: entry.spritenum, ...effects },
+          ];
+        }),
+      ),
+      true,
+    );
+    console.log(
+      "Updated item effects; existing item IDs, names and icons are unchanged.",
+    );
+    return;
+  }
   if (process.argv.includes("--hidden-power-only")) {
     await updateHiddenPowerSpreads();
     return;

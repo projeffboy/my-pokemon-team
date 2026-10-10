@@ -11,6 +11,8 @@ import {
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
+import { parseTeamText } from "@/store/team-text";
+import { pokemonTypes } from "@/shared/pokedex";
 
 const openTeams = async (page: Page) => {
   await openTeamTools(page);
@@ -19,6 +21,33 @@ const openTeams = async (page: Page) => {
 };
 
 test.describe("Teams Dialog - Integration Tests", () => {
+  test("a random new team uses the active filters", async ({ page }) => {
+    await selectPokemon(page, "Shiftry");
+    await openFilters(page);
+    await selectDialogOption(page, "Type", "Grass");
+    await closeDialog(page);
+    await openTeams(page);
+    await page
+      .getByRole("button", { name: "Random team", exact: true })
+      .click();
+    await expect
+      .poll(
+        () =>
+          parseTeamText(getTeamTextFromUrl(page)).filter(member => member.name)
+            .length,
+      )
+      .toBe(6);
+    expect(
+      parseTeamText(getTeamTextFromUrl(page)).every(member =>
+        pokemonTypes(member.name).includes("Grass"),
+      ),
+    ).toBe(true);
+    await openFilters(page);
+    await expect(
+      page.getByRole("dialog").getByLabel("Type", { exact: true }),
+    ).toHaveText("Grass");
+  });
+
   test("keeps creation and import controls visible while saved teams scroll", async ({
     page,
   }) => {
