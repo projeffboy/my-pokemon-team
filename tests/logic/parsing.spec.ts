@@ -1,4 +1,4 @@
-import { parseTeamText, serializeTeamText } from "@/app/shared/team-text";
+import { parseTeamText, serializeTeam } from "@/store/team-text";
 import { fromBase64Url, toBase64Url } from "@/app/shared/base64url";
 import {
   encodeTeamForUrl,
@@ -48,7 +48,7 @@ test.describe("Showdown team text", () => {
         "thunderbolt",
       );
       expect(store.team).toBe(originalTeam);
-      expect(serializeTeamText()).toBe(`${reuniclusText}\n\n`);
+      expect(serializeTeam(store.team)).toBe(`${reuniclusText}\n\n`);
       expect(snapshots).toHaveLength(1);
     } finally {
       dispose();
@@ -103,8 +103,8 @@ test.describe("Showdown team text", () => {
   test("ignores unknown properties and moves the species cannot learn", () => {
     const team = parseTeamText(`Reuniclus @ Imaginary Item
 Ability: Imaginary Ability
-EVs: 252 HP / 252 SpA / 4 SpD
-Modest Nature
+Imaginary Property: 0
+Imaginary Nature
 - Imaginary Move
 - Spore
 - Psychic
@@ -201,7 +201,7 @@ Ampharos-Mega`);
 
     store.replaceTeam(parseTeamText(""));
     expect(store.team).toEqual(Array(6).fill(emptySlot));
-    expect(serializeTeamText()).toBe("");
+    expect(serializeTeam(store.team)).toBe("");
   });
 
   test("replacement clears omitted moves, items, abilities, and invalid species", ({
@@ -264,7 +264,7 @@ Ampharos-Mega`);
       parseTeamText(`${reuniclusText}\n\nCryogonal @ Leftovers\n- Ice Beam`),
     );
     const expectedTeam = store.team.map(pokemon => ({ ...pokemon }));
-    const serialized = serializeTeamText();
+    const serialized = serializeTeam(store.team);
     expect(serialized).toBe(
       `${reuniclusText}\n\nCryogonal @ Leftovers\nAbility: Levitate\n- Ice Beam\n-\n-\n-\n\n`,
     );

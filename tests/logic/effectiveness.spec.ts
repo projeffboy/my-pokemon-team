@@ -1,6 +1,11 @@
 import { test, expect } from "@playwright/test";
 import type { PokemonType } from "@/types";
-import { typeAgainstPokemon } from "@/store/shared/effectiveness";
+import {
+  moveAgainstType,
+  moveType,
+  typeAgainstPokemon,
+} from "@/store/shared/effectiveness";
+import { typechartIn, typesIn } from "@/shared/generation-data";
 
 // Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
 test.describe("type effectiveness", () => {
@@ -72,14 +77,43 @@ test.describe("type effectiveness", () => {
     });
   }
 
-  test("Air Balloon adds one Ground defence point without changing immunity", () => {
+  test("Air Balloon grants Ground immunity", () => {
     expect(typeAgainstPokemon("Ground", "toxtricity", "", "airballoon")).toBe(
-      -1,
+      3,
     );
     expect(
       typeAgainstPokemon("Ground", "bronzong", "Levitate", "airballoon"),
     ).toBe(3);
     expect(typeAgainstPokemon("Fire", "toxtricity", "", "airballoon")).toBe(0);
+  });
+
+  test("Iron Ball grounds Flying types and Levitate users", () => {
+    expect(typeAgainstPokemon("Ground", "tornadus", "", "ironball")).toBe(0);
+    expect(
+      typeAgainstPokemon("Ground", "bronzong", "Levitate", "ironball"),
+    ).toBe(-1);
+    expect(typeAgainstPokemon("Ground", "charizard", "", "ironball", 4)).toBe(
+      -1,
+    );
+    expect(typeAgainstPokemon("Ground", "charizard", "", "ironball", 5)).toBe(
+      0,
+    );
+    expect(
+      typeAgainstPokemon("Ground", "orthworm", "Earth Eater", "ironball"),
+    ).toBe(3);
+  });
+
+  test("Ring Target removes type immunities while leaving ability immunities", () => {
+    expect(typeAgainstPokemon("Electric", "rhyperior", "", "ringtarget")).toBe(
+      0,
+    );
+    expect(typeAgainstPokemon("Ground", "yanmega", "", "ringtarget")).toBe(1);
+    expect(
+      typeAgainstPokemon("Electric", "lanturn", "Volt Absorb", "ringtarget"),
+    ).toBe(3);
+    expect(
+      typeAgainstPokemon("Ground", "bronzong", "Levitate", "ringtarget"),
+    ).toBe(3);
   });
 
   test("empty or unknown species have neutral effectiveness", () => {
@@ -88,7 +122,76 @@ test.describe("type effectiveness", () => {
   });
 });
 
+test("Judgment follows a non-Z Plate, including when the holder is not Arceus", () => {
+  expect(
+    moveType("judgment", "arceusdragon", "Multitype", 7, "", "dragoniumz"),
+  ).toBe("Normal");
+  expect(
+    moveType("judgment", "arceusdragon", "Multitype", 7, "", "dracoplate"),
+  ).toBe("Dragon");
+  expect(
+    moveType("judgment", "smeargle", "Own Tempo", 7, "", "dreadplate"),
+  ).toBe("Dark");
+});
+
 test("MissingNo's Bird type leaves its Normal matchups intact", () => {
   expect(typeAgainstPokemon("Fighting", "missingno")).toBe(-1);
   expect(typeAgainstPokemon("Ghost", "missingno")).toBe(3);
+});
+
+test.describe("past generations", () => {
+  test("have fewer types, sharing a chart until it changed", () => {
+    expect(typesIn(1)).toHaveLength(15);
+    expect(typesIn(1)).not.toContain("Dark");
+    expect(typesIn(5)).toHaveLength(17);
+    expect(typesIn(5)).not.toContain("Fairy");
+    expect(typesIn(6)).toHaveLength(18);
+    expect(typechartIn(2)).toBe(typechartIn(5));
+    expect(typechartIn(6)).toBe(typechartIn(9));
+  });
+
+  // Gen 1 had no Dark or Steel, Psychic was immune to Ghost, Fire did not resist
+  // Ice, and Bug and Poison were weak to each other
+  const gen1Cases: [PokemonType, string, number, number][] = [
+    ["Ghost", "alakazam", 3, -1],
+    ["Ground", "magnemite", -1, -2],
+    ["Ice", "charmander", 0, 1],
+    ["Bug", "weezing", -1, 1],
+  ];
+  for (const [type, pokemon, gen1, gen9] of gen1Cases) {
+    test(`${type} against ${pokemon} scores ${gen1} in gen 1`, () => {
+      expect(typeAgainstPokemon(type, pokemon, "", "", 1)).toBe(gen1);
+      expect(typeAgainstPokemon(type, pokemon)).toBe(gen9);
+    });
+  }
+
+  test("Fairy pokemon had their old types, and Steel resisted Ghost, until gen 6", () => {
+    expect(typeAgainstPokemon("Fighting", "clefable", "", "", 5)).toBe(-1);
+    expect(typeAgainstPokemon("Fighting", "clefable", "", "", 6)).toBe(1);
+    expect(typeAgainstPokemon("Ghost", "bronzong", "", "", 5)).toBe(0);
+    expect(typeAgainstPokemon("Ghost", "bronzong")).toBe(-1);
+  });
+
+  test("Bite was a Normal move in gen 1", () => {
+    expect(moveType("bite", "arbok", "", 1)).toBe("Normal");
+    expect(moveType("bite", "arbok")).toBe("Dark");
+    expect(moveAgainstType("bite", "Ghost", "arbok", "", 1)).toBe(2);
+    expect(moveAgainstType("bite", "Ghost", "arbok")).toBe(-1);
+  });
+});
+
+test("Scrappy bypasses Ghost immunity only for damaging Normal and Fighting moves", () => {
+  expect(moveAgainstType("headbutt", "Ghost", "exploud", "Scrappy")).toBe(0);
+  expect(moveAgainstType("lowkick", "Ghost", "exploud", "Scrappy")).toBe(0);
+  expect(moveAgainstType("headbutt", "Ghost", "exploud", "Soundproof")).toBe(2);
+  expect(moveAgainstType("lowkick", "Ghost", "exploud", "Soundproof")).toBe(2);
+  expect(moveAgainstType("headbutt", "Rock", "exploud", "Scrappy")).toBe(1);
+  expect(moveAgainstType("lowkick", "Rock", "exploud", "Scrappy")).toBe(-1);
+  expect(moveAgainstType("shadowball", "Normal", "exploud", "Scrappy")).toBe(2);
+  expect(
+    moveAgainstType("growl", "Ghost", "exploud", "Scrappy"),
+  ).toBeUndefined();
+  expect(moveAgainstType("flyingpress", "Ghost", "hawlucha", "Scrappy")).toBe(
+    0,
+  );
 });

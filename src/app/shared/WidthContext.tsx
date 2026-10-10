@@ -25,6 +25,11 @@ export function useBreakpoint() {
   return useWidthContext().breakpoint;
 }
 
+// True on phones, below the 'sm' breakpoint (equivalent to theme.breakpoints.down('sm'))
+export function useIsSmDown() {
+  return useWidthContext().isSmDown;
+}
+
 // True below the 'md' breakpoint (equivalent to theme.breakpoints.down('md'))
 export function useIsMdDown() {
   return useWidthContext().isMdDown;

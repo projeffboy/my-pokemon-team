@@ -1,16 +1,24 @@
-import moves from "@/data/moves";
-import { MOVE_KEYS, type ReadonlyTeam } from "@/types";
+import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
+import { moveDataIn } from "@/shared/generation-data";
+import { LATEST_GENERATION } from "@/shared/generations";
+import { pokemonTypes } from "@/shared/pokedex";
+import type { Messages } from "@/i18n/en";
+
+// The labels live in src/i18n, under these keys
+export type ChecklistGroupKey = keyof Messages["checklist"]["groups"];
+export type ChecklistItemKey = keyof Messages["checklist"]["items"];
 
 export interface ChecklistItem {
-  label: string;
-  // Shorter labels for screens at lg and below, then shorter still at md and below
-  shortLabel?: string;
-  shorterLabel?: string;
-  check: (team: ReadonlyTeam) => boolean;
+  key: ChecklistItemKey;
+  check: (
+    team: ReadonlyTeam,
+    generation: Generation,
+    format: string,
+  ) => boolean;
 }
 
 export interface ChecklistGroup {
-  title: string;
+  key: ChecklistGroupKey;
   items: ChecklistItem[];
 }
 
@@ -44,26 +52,37 @@ const hasMovesTogether =
 
 // Moves that inflict a non-volatile status, like Toxic, or always do so as a
 // side effect, like Nuzzle
-const inflictsStatus: Check = team =>
+const inflictsStatus: Check = (team, generation, format) =>
   teamMoves(team).some(move => {
-    const { status, secondary } = moves[move] ?? {};
-    return !!(status || (secondary?.chance === 100 && secondary.status));
+    const { status, secondary } = moveDataIn(move, generation, format) ?? {};
+    return !!(
+      move === "yawn" ||
+      status ||
+      (secondary?.chance === 100 && secondary.status)
+    );
   });
 
-// Curse, or moves that raise stats by two or more stages in total
-const boostsStats: Check = team =>
-  teamMoves(team).some(
-    move =>
-      move === "curse" ||
-      Object.values(moves[move]?.boosts ?? {}).reduce(
-        (sum, boost) => sum + boost,
-        0,
-      ) >= 2,
+// Curse, Belly Drum, or moves that raise stats by two or more stages in total
+const boostsStats: Check = (team, generation, format) =>
+  team.some(member =>
+    moveset(member).some(
+      move =>
+        (move === "curse" &&
+          !pokemonTypes(member.name, generation).includes("Ghost")) ||
+        move === "bellydrum" ||
+        Object.entries(
+          moveDataIn(move, generation, format)?.boosts ?? {},
+        ).reduce(
+          // Gen 1 stores its one Special stat in both modern Special fields.
+          (sum, [stat, boost]) =>
+            sum + (generation === 1 && stat === "spd" ? 0 : boost),
+          0,
+        ) >= 2,
+    ),
   );
 
 const hasRecovery = hasAnyMove([
   "healorder",
-  "floralhealing",
   "milkdrink",
   "moonlight",
   "morningsun",
@@ -79,89 +98,102 @@ const hasRecovery = hasAnyMove([
 // Wish with a protect-like move counts as reliable recovery
 const hasWishAndProtect = hasMovesTogether([
   "wish",
-  ["protect", "detect", "banefulbunker", "spikyshield", "kingsshield"],
+  [
+    "protect",
+    "detect",
+    "banefulbunker",
+    "spikyshield",
+    "kingsshield",
+    "obstruct",
+    "silktrap",
+    "burningbulwark",
+  ],
 ]);
 
 export const checklist: ChecklistGroup[] = [
   {
-    title: "General",
+    key: "general",
     items: [
       {
-        label: "Entry Hazard",
-        shortLabel: "Hazard",
+        key: "entryHazard",
         check: hasAnyMove([
           "spikes",
           "stealthrock",
           "toxicspikes",
           "stickyweb",
           "stoneaxe",
+          "ceaselessedge",
         ]),
       },
       {
-        label: "Spinner/Defogger",
-        shortLabel: "Spinner",
-        shorterLabel: "Spin",
-        check: hasAnyMove([
-          "rapidspin",
-          "defog",
-          "courtchange",
-          "tidyup",
-          "mortalspin",
-        ]),
+        key: "spinner",
+        check: (team, generation) =>
+          teamMoves(team).some(
+            move =>
+              ["rapidspin", "courtchange", "tidyup", "mortalspin"].includes(
+                move,
+              ) ||
+              (move === "defog" && generation >= 6),
+          ),
       },
       {
-        label: "Reliable Recovery",
-        shortLabel: "Recovery",
-        shorterLabel: "Heal",
-        check: team => hasRecovery(team) || hasWishAndProtect(team),
+        key: "recovery",
+        check: (team, generation, format) =>
+          hasRecovery(team, generation, format) ||
+          hasWishAndProtect(team, generation, format),
       },
     ],
   },
   {
-    title: "Defensive",
+    key: "defensive",
     items: [
-      { label: "Cleric", check: hasAnyMove(["aromatherapy", "healbell"]) },
-      { label: "Status Move", shortLabel: "Status", check: inflictsStatus },
+      { key: "cleric", check: hasAnyMove(["aromatherapy", "healbell"]) },
+      { key: "status", check: inflictsStatus },
       {
-        label: "Phazer",
+        key: "phazer",
         check: hasAnyMove(["circlethrow", "dragontail", "roar", "whirlwind"]),
       },
     ],
   },
   {
-    title: "Offensive",
+    key: "offensive",
     items: [
-      { label: "Boosting Move", shortLabel: "Setup", check: boostsStats },
+      { key: "boosting", check: boostsStats },
       {
-        label: "Volt-turn Move",
-        shortLabel: "Volt-turn",
-        shorterLabel: "Volturn",
+        key: "voltTurn",
         check: hasAnyMove(["voltswitch", "uturn", "flipturn"]),
       },
       {
-        label: "Choice Item",
-        shortLabel: "Choice",
+        key: "choice",
         check: hasAnyItem(["choicescarf", "choiceband", "choicespecs"]),
       },
     ],
   },
 ];
 
-// The label shown at a viewport width: shorterLabel below md, shortLabel below lg
+// The label shown at a viewport width: the shorter one below md, the short one below lg
 export const checklistLabel = (
-  { label, shortLabel, shorterLabel }: Omit<ChecklistItem, "check">,
+  {
+    label,
+    short,
+    shorter,
+  }: { label: string; short?: string; shorter?: string },
   { isMdDown, isLgDown }: { isMdDown: boolean; isLgDown: boolean },
 ) =>
-  isMdDown ? (shorterLabel ?? shortLabel ?? label)
-  : isLgDown ? (shortLabel ?? label)
+  isMdDown ? (shorter ?? short ?? label)
+  : isLgDown ? (short ?? label)
   : label;
 
-export function evaluateChecklist(team: ReadonlyTeam) {
-  return checklist.map(({ title, items }) => ({
-    title,
-    items: items.map(({ check, ...item }) => ({
-      ...item,
-      isChecked: check(team),
+export function evaluateChecklist(
+  team: ReadonlyTeam,
+  generation = LATEST_GENERATION,
+  format = "",
+) {
+  return checklist.map(({ key, items }) => ({
+    key,
+    items: items.map(({ key, check }) => ({
+      key,
+      isChecked: check(team, generation, format),
     })),
   }));
 }

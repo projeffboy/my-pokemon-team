@@ -1,0 +1,9194 @@
+{
+  "2-shiny/abra": {
+    "file": "2-shiny/abra.gif",
+    "duration": 3410
+  },
+  "2-shiny/aerodactyl": {
+    "file": "2-shiny/aerodactyl.gif",
+    "duration": 3310
+  },
+  "2-shiny/aipom": {
+    "file": "2-shiny/aipom.gif",
+    "duration": 2910
+  },
+  "2-shiny/alakazam": {
+    "file": "2-shiny/alakazam.gif",
+    "duration": 3960
+  },
+  "2-shiny/ampharos": {
+    "file": "2-shiny/ampharos.gif",
+    "duration": 2840
+  },
+  "2-shiny/arbok": {
+    "file": "2-shiny/arbok.gif",
+    "duration": 3910
+  },
+  "2-shiny/arcanine": {
+    "file": "2-shiny/arcanine.gif",
+    "duration": 3760
+  },
+  "2-shiny/ariados": {
+    "file": "2-shiny/ariados.gif",
+    "duration": 3180
+  },
+  "2-shiny/articuno": {
+    "file": "2-shiny/articuno.gif",
+    "duration": 3380
+  },
+  "2-shiny/azumarill": {
+    "file": "2-shiny/azumarill.gif",
+    "duration": 2510
+  },
+  "2-shiny/bayleef": {
+    "file": "2-shiny/bayleef.gif",
+    "duration": 2340
+  },
+  "2-shiny/beedrill": {
+    "file": "2-shiny/beedrill.gif",
+    "duration": 3840
+  },
+  "2-shiny/bellossom": {
+    "file": "2-shiny/bellossom.gif",
+    "duration": 3210
+  },
+  "2-shiny/bellsprout": {
+    "file": "2-shiny/bellsprout.gif",
+    "duration": 3880
+  },
+  "2-shiny/blastoise": {
+    "file": "2-shiny/blastoise.gif",
+    "duration": 3080
+  },
+  "2-shiny/blissey": {
+    "file": "2-shiny/blissey.gif",
+    "duration": 2670
+  },
+  "2-shiny/bulbasaur": {
+    "file": "2-shiny/bulbasaur.gif",
+    "duration": 2720
+  },
+  "2-shiny/butterfree": {
+    "file": "2-shiny/butterfree.gif",
+    "duration": 3040
+  },
+  "2-shiny/caterpie": {
+    "file": "2-shiny/caterpie.gif",
+    "duration": 2840
+  },
+  "2-shiny/celebi": {
+    "file": "2-shiny/celebi.gif",
+    "duration": 3210
+  },
+  "2-shiny/chansey": {
+    "file": "2-shiny/chansey.gif",
+    "duration": 2440
+  },
+  "2-shiny/charizard": {
+    "file": "2-shiny/charizard.gif",
+    "duration": 2710
+  },
+  "2-shiny/charmander": {
+    "file": "2-shiny/charmander.gif",
+    "duration": 2940
+  },
+  "2-shiny/charmeleon": {
+    "file": "2-shiny/charmeleon.gif",
+    "duration": 3710
+  },
+  "2-shiny/chikorita": {
+    "file": "2-shiny/chikorita.gif",
+    "duration": 2910
+  },
+  "2-shiny/chinchou": {
+    "file": "2-shiny/chinchou.gif",
+    "duration": 2560
+  },
+  "2-shiny/clefable": {
+    "file": "2-shiny/clefable.gif",
+    "duration": 2570
+  },
+  "2-shiny/clefairy": {
+    "file": "2-shiny/clefairy.gif",
+    "duration": 3080
+  },
+  "2-shiny/cleffa": {
+    "file": "2-shiny/cleffa.gif",
+    "duration": 2340
+  },
+  "2-shiny/cloyster": {
+    "file": "2-shiny/cloyster.gif",
+    "duration": 2930
+  },
+  "2-shiny/corsola": {
+    "file": "2-shiny/corsola.gif",
+    "duration": 2980
+  },
+  "2-shiny/crobat": {
+    "file": "2-shiny/crobat.gif",
+    "duration": 3480
+  },
+  "2-shiny/croconaw": {
+    "file": "2-shiny/croconaw.gif",
+    "duration": 3230
+  },
+  "2-shiny/cubone": {
+    "file": "2-shiny/cubone.gif",
+    "duration": 3410
+  },
+  "2-shiny/cyndaquil": {
+    "file": "2-shiny/cyndaquil.gif",
+    "duration": 2820
+  },
+  "2-shiny/delibird": {
+    "file": "2-shiny/delibird.gif",
+    "duration": 3330
+  },
+  "2-shiny/dewgong": {
+    "file": "2-shiny/dewgong.gif",
+    "duration": 3140
+  },
+  "2-shiny/diglett": {
+    "file": "2-shiny/diglett.gif",
+    "duration": 2370
+  },
+  "2-shiny/ditto": {
+    "file": "2-shiny/ditto.gif",
+    "duration": 3180
+  },
+  "2-shiny/dodrio": {
+    "file": "2-shiny/dodrio.gif",
+    "duration": 2860
+  },
+  "2-shiny/doduo": {
+    "file": "2-shiny/doduo.gif",
+    "duration": 4080
+  },
+  "2-shiny/donphan": {
+    "file": "2-shiny/donphan.gif",
+    "duration": 2640
+  },
+  "2-shiny/dragonair": {
+    "file": "2-shiny/dragonair.gif",
+    "duration": 3110
+  },
+  "2-shiny/dragonite": {
+    "file": "2-shiny/dragonite.gif",
+    "duration": 4920
+  },
+  "2-shiny/dratini": {
+    "file": "2-shiny/dratini.gif",
+    "duration": 2410
+  },
+  "2-shiny/drowzee": {
+    "file": "2-shiny/drowzee.gif",
+    "duration": 2930
+  },
+  "2-shiny/dugtrio": {
+    "file": "2-shiny/dugtrio.gif",
+    "duration": 4630
+  },
+  "2-shiny/dunsparce": {
+    "file": "2-shiny/dunsparce.gif",
+    "duration": 2740
+  },
+  "2-shiny/eevee": {
+    "file": "2-shiny/eevee.gif",
+    "duration": 3010
+  },
+  "2-shiny/ekans": {
+    "file": "2-shiny/ekans.gif",
+    "duration": 3230
+  },
+  "2-shiny/electabuzz": {
+    "file": "2-shiny/electabuzz.gif",
+    "duration": 2440
+  },
+  "2-shiny/electrode": {
+    "file": "2-shiny/electrode.gif",
+    "duration": 2810
+  },
+  "2-shiny/elekid": {
+    "file": "2-shiny/elekid.gif",
+    "duration": 3460
+  },
+  "2-shiny/entei": {
+    "file": "2-shiny/entei.gif",
+    "duration": 2770
+  },
+  "2-shiny/espeon": {
+    "file": "2-shiny/espeon.gif",
+    "duration": 3040
+  },
+  "2-shiny/exeggcute": {
+    "file": "2-shiny/exeggcute.gif",
+    "duration": 2840
+  },
+  "2-shiny/exeggutor": {
+    "file": "2-shiny/exeggutor.gif",
+    "duration": 3060
+  },
+  "2-shiny/farfetchd": {
+    "file": "2-shiny/farfetchd.gif",
+    "duration": 2240
+  },
+  "2-shiny/fearow": {
+    "file": "2-shiny/fearow.gif",
+    "duration": 3040
+  },
+  "2-shiny/feraligatr": {
+    "file": "2-shiny/feraligatr.gif",
+    "duration": 3010
+  },
+  "2-shiny/flaaffy": {
+    "file": "2-shiny/flaaffy.gif",
+    "duration": 2510
+  },
+  "2-shiny/flareon": {
+    "file": "2-shiny/flareon.gif",
+    "duration": 2670
+  },
+  "2-shiny/forretress": {
+    "file": "2-shiny/forretress.gif",
+    "duration": 3360
+  },
+  "2-shiny/furret": {
+    "file": "2-shiny/furret.gif",
+    "duration": 2880
+  },
+  "2-shiny/gastly": {
+    "file": "2-shiny/gastly.gif",
+    "duration": 3180
+  },
+  "2-shiny/gengar": {
+    "file": "2-shiny/gengar.gif",
+    "duration": 3850
+  },
+  "2-shiny/geodude": {
+    "file": "2-shiny/geodude.gif",
+    "duration": 3210
+  },
+  "2-shiny/girafarig": {
+    "file": "2-shiny/girafarig.gif",
+    "duration": 3160
+  },
+  "2-shiny/gligar": {
+    "file": "2-shiny/gligar.gif",
+    "duration": 2470
+  },
+  "2-shiny/gloom": {
+    "file": "2-shiny/gloom.gif",
+    "duration": 3510
+  },
+  "2-shiny/golbat": {
+    "file": "2-shiny/golbat.gif",
+    "duration": 3440
+  },
+  "2-shiny/goldeen": {
+    "file": "2-shiny/goldeen.gif",
+    "duration": 4150
+  },
+  "2-shiny/golduck": {
+    "file": "2-shiny/golduck.gif",
+    "duration": 4160
+  },
+  "2-shiny/golem": {
+    "file": "2-shiny/golem.gif",
+    "duration": 2880
+  },
+  "2-shiny/granbull": {
+    "file": "2-shiny/granbull.gif",
+    "duration": 2980
+  },
+  "2-shiny/graveler": {
+    "file": "2-shiny/graveler.gif",
+    "duration": 4770
+  },
+  "2-shiny/grimer": {
+    "file": "2-shiny/grimer.gif",
+    "duration": 3040
+  },
+  "2-shiny/growlithe": {
+    "file": "2-shiny/growlithe.gif",
+    "duration": 3510
+  },
+  "2-shiny/gyarados": {
+    "file": "2-shiny/gyarados.gif",
+    "duration": 2570
+  },
+  "2-shiny/haunter": {
+    "file": "2-shiny/haunter.gif",
+    "duration": 3680
+  },
+  "2-shiny/heracross": {
+    "file": "2-shiny/heracross.gif",
+    "duration": 2570
+  },
+  "2-shiny/hitmonchan": {
+    "file": "2-shiny/hitmonchan.gif",
+    "duration": 5640
+  },
+  "2-shiny/hitmonlee": {
+    "file": "2-shiny/hitmonlee.gif",
+    "duration": 3340
+  },
+  "2-shiny/hitmontop": {
+    "file": "2-shiny/hitmontop.gif",
+    "duration": 4110
+  },
+  "2-shiny/hooh": {
+    "file": "2-shiny/hooh.gif",
+    "duration": 3440
+  },
+  "2-shiny/hoothoot": {
+    "file": "2-shiny/hoothoot.gif",
+    "duration": 3060
+  },
+  "2-shiny/hoppip": {
+    "file": "2-shiny/hoppip.gif",
+    "duration": 3310
+  },
+  "2-shiny/horsea": {
+    "file": "2-shiny/horsea.gif",
+    "duration": 2880
+  },
+  "2-shiny/houndoom": {
+    "file": "2-shiny/houndoom.gif",
+    "duration": 3160
+  },
+  "2-shiny/houndour": {
+    "file": "2-shiny/houndour.gif",
+    "duration": 2660
+  },
+  "2-shiny/hypno": {
+    "file": "2-shiny/hypno.gif",
+    "duration": 3610
+  },
+  "2-shiny/igglybuff": {
+    "file": "2-shiny/igglybuff.gif",
+    "duration": 2240
+  },
+  "2-shiny/ivysaur": {
+    "file": "2-shiny/ivysaur.gif",
+    "duration": 2670
+  },
+  "2-shiny/jigglypuff": {
+    "file": "2-shiny/jigglypuff.gif",
+    "duration": 3310
+  },
+  "2-shiny/jolteon": {
+    "file": "2-shiny/jolteon.gif",
+    "duration": 3700
+  },
+  "2-shiny/jumpluff": {
+    "file": "2-shiny/jumpluff.gif",
+    "duration": 2560
+  },
+  "2-shiny/jynx": {
+    "file": "2-shiny/jynx.gif",
+    "duration": 4050
+  },
+  "2-shiny/kabuto": {
+    "file": "2-shiny/kabuto.gif",
+    "duration": 2840
+  },
+  "2-shiny/kabutops": {
+    "file": "2-shiny/kabutops.gif",
+    "duration": 3260
+  },
+  "2-shiny/kadabra": {
+    "file": "2-shiny/kadabra.gif",
+    "duration": 3140
+  },
+  "2-shiny/kakuna": {
+    "file": "2-shiny/kakuna.gif",
+    "duration": 2370
+  },
+  "2-shiny/kangaskhan": {
+    "file": "2-shiny/kangaskhan.gif",
+    "duration": 3950
+  },
+  "2-shiny/kingdra": {
+    "file": "2-shiny/kingdra.gif",
+    "duration": 3110
+  },
+  "2-shiny/kingler": {
+    "file": "2-shiny/kingler.gif",
+    "duration": 4250
+  },
+  "2-shiny/koffing": {
+    "file": "2-shiny/koffing.gif",
+    "duration": 3040
+  },
+  "2-shiny/krabby": {
+    "file": "2-shiny/krabby.gif",
+    "duration": 2570
+  },
+  "2-shiny/lanturn": {
+    "file": "2-shiny/lanturn.gif",
+    "duration": 2640
+  },
+  "2-shiny/lapras": {
+    "file": "2-shiny/lapras.gif",
+    "duration": 3650
+  },
+  "2-shiny/larvitar": {
+    "file": "2-shiny/larvitar.gif",
+    "duration": 2710
+  },
+  "2-shiny/ledian": {
+    "file": "2-shiny/ledian.gif",
+    "duration": 2710
+  },
+  "2-shiny/ledyba": {
+    "file": "2-shiny/ledyba.gif",
+    "duration": 2790
+  },
+  "2-shiny/lickitung": {
+    "file": "2-shiny/lickitung.gif",
+    "duration": 2370
+  },
+  "2-shiny/lugia": {
+    "file": "2-shiny/lugia.gif",
+    "duration": 3900
+  },
+  "2-shiny/machamp": {
+    "file": "2-shiny/machamp.gif",
+    "duration": 3280
+  },
+  "2-shiny/machoke": {
+    "file": "2-shiny/machoke.gif",
+    "duration": 3810
+  },
+  "2-shiny/machop": {
+    "file": "2-shiny/machop.gif",
+    "duration": 3080
+  },
+  "2-shiny/magby": {
+    "file": "2-shiny/magby.gif",
+    "duration": 2880
+  },
+  "2-shiny/magcargo": {
+    "file": "2-shiny/magcargo.gif",
+    "duration": 3310
+  },
+  "2-shiny/magikarp": {
+    "file": "2-shiny/magikarp.gif",
+    "duration": 3310
+  },
+  "2-shiny/magmar": {
+    "file": "2-shiny/magmar.gif",
+    "duration": 2980
+  },
+  "2-shiny/magnemite": {
+    "file": "2-shiny/magnemite.gif",
+    "duration": 3180
+  },
+  "2-shiny/magneton": {
+    "file": "2-shiny/magneton.gif",
+    "duration": 4320
+  },
+  "2-shiny/mankey": {
+    "file": "2-shiny/mankey.gif",
+    "duration": 3110
+  },
+  "2-shiny/mantine": {
+    "file": "2-shiny/mantine.gif",
+    "duration": 3600
+  },
+  "2-shiny/mareep": {
+    "file": "2-shiny/mareep.gif",
+    "duration": 2510
+  },
+  "2-shiny/marill": {
+    "file": "2-shiny/marill.gif",
+    "duration": 4450
+  },
+  "2-shiny/marowak": {
+    "file": "2-shiny/marowak.gif",
+    "duration": 3980
+  },
+  "2-shiny/meganium": {
+    "file": "2-shiny/meganium.gif",
+    "duration": 3210
+  },
+  "2-shiny/meowth": {
+    "file": "2-shiny/meowth.gif",
+    "duration": 3180
+  },
+  "2-shiny/metapod": {
+    "file": "2-shiny/metapod.gif",
+    "duration": 2710
+  },
+  "2-shiny/mew": {
+    "file": "2-shiny/mew.gif",
+    "duration": 5050
+  },
+  "2-shiny/mewtwo": {
+    "file": "2-shiny/mewtwo.gif",
+    "duration": 2790
+  },
+  "2-shiny/miltank": {
+    "file": "2-shiny/miltank.gif",
+    "duration": 2490
+  },
+  "2-shiny/misdreavus": {
+    "file": "2-shiny/misdreavus.gif",
+    "duration": 2570
+  },
+  "2-shiny/moltres": {
+    "file": "2-shiny/moltres.gif",
+    "duration": 4150
+  },
+  "2-shiny/mrmime": {
+    "file": "2-shiny/mrmime.gif",
+    "duration": 3280
+  },
+  "2-shiny/muk": {
+    "file": "2-shiny/muk.gif",
+    "duration": 3310
+  },
+  "2-shiny/murkrow": {
+    "file": "2-shiny/murkrow.gif",
+    "duration": 2690
+  },
+  "2-shiny/natu": {
+    "file": "2-shiny/natu.gif",
+    "duration": 2810
+  },
+  "2-shiny/nidoking": {
+    "file": "2-shiny/nidoking.gif",
+    "duration": 3010
+  },
+  "2-shiny/nidoqueen": {
+    "file": "2-shiny/nidoqueen.gif",
+    "duration": 3860
+  },
+  "2-shiny/nidoranf": {
+    "file": "2-shiny/nidoranf.gif",
+    "duration": 2690
+  },
+  "2-shiny/nidoranm": {
+    "file": "2-shiny/nidoranm.gif",
+    "duration": 3080
+  },
+  "2-shiny/nidorina": {
+    "file": "2-shiny/nidorina.gif",
+    "duration": 2810
+  },
+  "2-shiny/nidorino": {
+    "file": "2-shiny/nidorino.gif",
+    "duration": 3750
+  },
+  "2-shiny/ninetales": {
+    "file": "2-shiny/ninetales.gif",
+    "duration": 3130
+  },
+  "2-shiny/noctowl": {
+    "file": "2-shiny/noctowl.gif",
+    "duration": 3580
+  },
+  "2-shiny/octillery": {
+    "file": "2-shiny/octillery.gif",
+    "duration": 2980
+  },
+  "2-shiny/oddish": {
+    "file": "2-shiny/oddish.gif",
+    "duration": 3060
+  },
+  "2-shiny/omanyte": {
+    "file": "2-shiny/omanyte.gif",
+    "duration": 2470
+  },
+  "2-shiny/omastar": {
+    "file": "2-shiny/omastar.gif",
+    "duration": 2980
+  },
+  "2-shiny/onix": {
+    "file": "2-shiny/onix.gif",
+    "duration": 4110
+  },
+  "2-shiny/paras": {
+    "file": "2-shiny/paras.gif",
+    "duration": 2980
+  },
+  "2-shiny/parasect": {
+    "file": "2-shiny/parasect.gif",
+    "duration": 4160
+  },
+  "2-shiny/persian": {
+    "file": "2-shiny/persian.gif",
+    "duration": 3280
+  },
+  "2-shiny/phanpy": {
+    "file": "2-shiny/phanpy.gif",
+    "duration": 2310
+  },
+  "2-shiny/pichu": {
+    "file": "2-shiny/pichu.gif",
+    "duration": 2440
+  },
+  "2-shiny/pidgeot": {
+    "file": "2-shiny/pidgeot.gif",
+    "duration": 3340
+  },
+  "2-shiny/pidgeotto": {
+    "file": "2-shiny/pidgeotto.gif",
+    "duration": 3230
+  },
+  "2-shiny/pidgey": {
+    "file": "2-shiny/pidgey.gif",
+    "duration": 3080
+  },
+  "2-shiny/pikachu": {
+    "file": "2-shiny/pikachu.gif",
+    "duration": 3490
+  },
+  "2-shiny/piloswine": {
+    "file": "2-shiny/piloswine.gif",
+    "duration": 2770
+  },
+  "2-shiny/pineco": {
+    "file": "2-shiny/pineco.gif",
+    "duration": 2110
+  },
+  "2-shiny/pinsir": {
+    "file": "2-shiny/pinsir.gif",
+    "duration": 3240
+  },
+  "2-shiny/politoed": {
+    "file": "2-shiny/politoed.gif",
+    "duration": 2810
+  },
+  "2-shiny/poliwag": {
+    "file": "2-shiny/poliwag.gif",
+    "duration": 3710
+  },
+  "2-shiny/poliwhirl": {
+    "file": "2-shiny/poliwhirl.gif",
+    "duration": 2770
+  },
+  "2-shiny/poliwrath": {
+    "file": "2-shiny/poliwrath.gif",
+    "duration": 2840
+  },
+  "2-shiny/ponyta": {
+    "file": "2-shiny/ponyta.gif",
+    "duration": 2670
+  },
+  "2-shiny/porygon": {
+    "file": "2-shiny/porygon.gif",
+    "duration": 2690
+  },
+  "2-shiny/porygon2": {
+    "file": "2-shiny/porygon2.gif",
+    "duration": 2470
+  },
+  "2-shiny/primeape": {
+    "file": "2-shiny/primeape.gif",
+    "duration": 4330
+  },
+  "2-shiny/psyduck": {
+    "file": "2-shiny/psyduck.gif",
+    "duration": 3510
+  },
+  "2-shiny/pupitar": {
+    "file": "2-shiny/pupitar.gif",
+    "duration": 2520
+  },
+  "2-shiny/quagsire": {
+    "file": "2-shiny/quagsire.gif",
+    "duration": 2670
+  },
+  "2-shiny/quilava": {
+    "file": "2-shiny/quilava.gif",
+    "duration": 2940
+  },
+  "2-shiny/qwilfish": {
+    "file": "2-shiny/qwilfish.gif",
+    "duration": 3330
+  },
+  "2-shiny/raichu": {
+    "file": "2-shiny/raichu.gif",
+    "duration": 2740
+  },
+  "2-shiny/raikou": {
+    "file": "2-shiny/raikou.gif",
+    "duration": 3760
+  },
+  "2-shiny/rapidash": {
+    "file": "2-shiny/rapidash.gif",
+    "duration": 4670
+  },
+  "2-shiny/raticate": {
+    "file": "2-shiny/raticate.gif",
+    "duration": 2510
+  },
+  "2-shiny/rattata": {
+    "file": "2-shiny/rattata.gif",
+    "duration": 2740
+  },
+  "2-shiny/remoraid": {
+    "file": "2-shiny/remoraid.gif",
+    "duration": 2190
+  },
+  "2-shiny/rhydon": {
+    "file": "2-shiny/rhydon.gif",
+    "duration": 3810
+  },
+  "2-shiny/rhyhorn": {
+    "file": "2-shiny/rhyhorn.gif",
+    "duration": 3580
+  },
+  "2-shiny/sandshrew": {
+    "file": "2-shiny/sandshrew.gif",
+    "duration": 3630
+  },
+  "2-shiny/sandslash": {
+    "file": "2-shiny/sandslash.gif",
+    "duration": 2910
+  },
+  "2-shiny/scizor": {
+    "file": "2-shiny/scizor.gif",
+    "duration": 3510
+  },
+  "2-shiny/scyther": {
+    "file": "2-shiny/scyther.gif",
+    "duration": 3800
+  },
+  "2-shiny/seadra": {
+    "file": "2-shiny/seadra.gif",
+    "duration": 3310
+  },
+  "2-shiny/seaking": {
+    "file": "2-shiny/seaking.gif",
+    "duration": 4620
+  },
+  "2-shiny/seel": {
+    "file": "2-shiny/seel.gif",
+    "duration": 3210
+  },
+  "2-shiny/sentret": {
+    "file": "2-shiny/sentret.gif",
+    "duration": 3010
+  },
+  "2-shiny/shellder": {
+    "file": "2-shiny/shellder.gif",
+    "duration": 2810
+  },
+  "2-shiny/shuckle": {
+    "file": "2-shiny/shuckle.gif",
+    "duration": 2520
+  },
+  "2-shiny/skarmory": {
+    "file": "2-shiny/skarmory.gif",
+    "duration": 2810
+  },
+  "2-shiny/skiploom": {
+    "file": "2-shiny/skiploom.gif",
+    "duration": 2410
+  },
+  "2-shiny/slowbro": {
+    "file": "2-shiny/slowbro.gif",
+    "duration": 4110
+  },
+  "2-shiny/slowking": {
+    "file": "2-shiny/slowking.gif",
+    "duration": 4320
+  },
+  "2-shiny/slowpoke": {
+    "file": "2-shiny/slowpoke.gif",
+    "duration": 2360
+  },
+  "2-shiny/slugma": {
+    "file": "2-shiny/slugma.gif",
+    "duration": 3240
+  },
+  "2-shiny/smeargle": {
+    "file": "2-shiny/smeargle.gif",
+    "duration": 2810
+  },
+  "2-shiny/smoochum": {
+    "file": "2-shiny/smoochum.gif",
+    "duration": 2540
+  },
+  "2-shiny/sneasel": {
+    "file": "2-shiny/sneasel.gif",
+    "duration": 2560
+  },
+  "2-shiny/snorlax": {
+    "file": "2-shiny/snorlax.gif",
+    "duration": 3880
+  },
+  "2-shiny/snubbull": {
+    "file": "2-shiny/snubbull.gif",
+    "duration": 3750
+  },
+  "2-shiny/spearow": {
+    "file": "2-shiny/spearow.gif",
+    "duration": 3810
+  },
+  "2-shiny/spinarak": {
+    "file": "2-shiny/spinarak.gif",
+    "duration": 2490
+  },
+  "2-shiny/squirtle": {
+    "file": "2-shiny/squirtle.gif",
+    "duration": 2770
+  },
+  "2-shiny/stantler": {
+    "file": "2-shiny/stantler.gif",
+    "duration": 3280
+  },
+  "2-shiny/starmie": {
+    "file": "2-shiny/starmie.gif",
+    "duration": 2810
+  },
+  "2-shiny/staryu": {
+    "file": "2-shiny/staryu.gif",
+    "duration": 2640
+  },
+  "2-shiny/steelix": {
+    "file": "2-shiny/steelix.gif",
+    "duration": 3080
+  },
+  "2-shiny/sudowoodo": {
+    "file": "2-shiny/sudowoodo.gif",
+    "duration": 3540
+  },
+  "2-shiny/suicune": {
+    "file": "2-shiny/suicune.gif",
+    "duration": 3530
+  },
+  "2-shiny/sunflora": {
+    "file": "2-shiny/sunflora.gif",
+    "duration": 2410
+  },
+  "2-shiny/sunkern": {
+    "file": "2-shiny/sunkern.gif",
+    "duration": 2510
+  },
+  "2-shiny/swinub": {
+    "file": "2-shiny/swinub.gif",
+    "duration": 2770
+  },
+  "2-shiny/tangela": {
+    "file": "2-shiny/tangela.gif",
+    "duration": 2880
+  },
+  "2-shiny/tauros": {
+    "file": "2-shiny/tauros.gif",
+    "duration": 4100
+  },
+  "2-shiny/teddiursa": {
+    "file": "2-shiny/teddiursa.gif",
+    "duration": 3910
+  },
+  "2-shiny/tentacool": {
+    "file": "2-shiny/tentacool.gif",
+    "duration": 2510
+  },
+  "2-shiny/tentacruel": {
+    "file": "2-shiny/tentacruel.gif",
+    "duration": 3750
+  },
+  "2-shiny/togepi": {
+    "file": "2-shiny/togepi.gif",
+    "duration": 2640
+  },
+  "2-shiny/togetic": {
+    "file": "2-shiny/togetic.gif",
+    "duration": 2610
+  },
+  "2-shiny/totodile": {
+    "file": "2-shiny/totodile.gif",
+    "duration": 4300
+  },
+  "2-shiny/typhlosion": {
+    "file": "2-shiny/typhlosion.gif",
+    "duration": 2940
+  },
+  "2-shiny/tyranitar": {
+    "file": "2-shiny/tyranitar.gif",
+    "duration": 3650
+  },
+  "2-shiny/tyrogue": {
+    "file": "2-shiny/tyrogue.gif",
+    "duration": 2570
+  },
+  "2-shiny/umbreon": {
+    "file": "2-shiny/umbreon.gif",
+    "duration": 3360
+  },
+  "2-shiny/unown": {
+    "file": "2-shiny/unown.gif",
+    "duration": 3580
+  },
+  "2-shiny/ursaring": {
+    "file": "2-shiny/ursaring.gif",
+    "duration": 4570
+  },
+  "2-shiny/vaporeon": {
+    "file": "2-shiny/vaporeon.gif",
+    "duration": 2980
+  },
+  "2-shiny/venomoth": {
+    "file": "2-shiny/venomoth.gif",
+    "duration": 2910
+  },
+  "2-shiny/venonat": {
+    "file": "2-shiny/venonat.gif",
+    "duration": 3580
+  },
+  "2-shiny/venusaur": {
+    "file": "2-shiny/venusaur.gif",
+    "duration": 4230
+  },
+  "2-shiny/victreebel": {
+    "file": "2-shiny/victreebel.gif",
+    "duration": 2960
+  },
+  "2-shiny/vileplume": {
+    "file": "2-shiny/vileplume.gif",
+    "duration": 3060
+  },
+  "2-shiny/voltorb": {
+    "file": "2-shiny/voltorb.gif",
+    "duration": 2510
+  },
+  "2-shiny/vulpix": {
+    "file": "2-shiny/vulpix.gif",
+    "duration": 2940
+  },
+  "2-shiny/wartortle": {
+    "file": "2-shiny/wartortle.gif",
+    "duration": 3240
+  },
+  "2-shiny/weedle": {
+    "file": "2-shiny/weedle.gif",
+    "duration": 3440
+  },
+  "2-shiny/weepinbell": {
+    "file": "2-shiny/weepinbell.gif",
+    "duration": 2470
+  },
+  "2-shiny/weezing": {
+    "file": "2-shiny/weezing.gif",
+    "duration": 3760
+  },
+  "2-shiny/wigglytuff": {
+    "file": "2-shiny/wigglytuff.gif",
+    "duration": 2840
+  },
+  "2-shiny/wobbuffet": {
+    "file": "2-shiny/wobbuffet.gif",
+    "duration": 2420
+  },
+  "2-shiny/wooper": {
+    "file": "2-shiny/wooper.gif",
+    "duration": 2510
+  },
+  "2-shiny/xatu": {
+    "file": "2-shiny/xatu.gif",
+    "duration": 4150
+  },
+  "2-shiny/yanma": {
+    "file": "2-shiny/yanma.gif",
+    "duration": 2410
+  },
+  "2-shiny/zapdos": {
+    "file": "2-shiny/zapdos.gif",
+    "duration": 3540
+  },
+  "2-shiny/zubat": {
+    "file": "2-shiny/zubat.gif",
+    "duration": 3860
+  },
+  "2/abra": {
+    "file": "2/abra.gif",
+    "duration": 3410
+  },
+  "2/aerodactyl": {
+    "file": "2/aerodactyl.gif",
+    "duration": 3310
+  },
+  "2/aipom": {
+    "file": "2/aipom.gif",
+    "duration": 2910
+  },
+  "2/alakazam": {
+    "file": "2/alakazam.gif",
+    "duration": 3960
+  },
+  "2/ampharos": {
+    "file": "2/ampharos.gif",
+    "duration": 2840
+  },
+  "2/arbok": {
+    "file": "2/arbok.gif",
+    "duration": 3910
+  },
+  "2/arcanine": {
+    "file": "2/arcanine.gif",
+    "duration": 3760
+  },
+  "2/ariados": {
+    "file": "2/ariados.gif",
+    "duration": 3180
+  },
+  "2/articuno": {
+    "file": "2/articuno.gif",
+    "duration": 3380
+  },
+  "2/azumarill": {
+    "file": "2/azumarill.gif",
+    "duration": 2510
+  },
+  "2/bayleef": {
+    "file": "2/bayleef.gif",
+    "duration": 2340
+  },
+  "2/beedrill": {
+    "file": "2/beedrill.gif",
+    "duration": 3840
+  },
+  "2/bellossom": {
+    "file": "2/bellossom.gif",
+    "duration": 3210
+  },
+  "2/bellsprout": {
+    "file": "2/bellsprout.gif",
+    "duration": 3880
+  },
+  "2/blastoise": {
+    "file": "2/blastoise.gif",
+    "duration": 3080
+  },
+  "2/blissey": {
+    "file": "2/blissey.gif",
+    "duration": 2670
+  },
+  "2/bulbasaur": {
+    "file": "2/bulbasaur.gif",
+    "duration": 2720
+  },
+  "2/butterfree": {
+    "file": "2/butterfree.gif",
+    "duration": 3040
+  },
+  "2/caterpie": {
+    "file": "2/caterpie.gif",
+    "duration": 2840
+  },
+  "2/celebi": {
+    "file": "2/celebi.gif",
+    "duration": 3210
+  },
+  "2/chansey": {
+    "file": "2/chansey.gif",
+    "duration": 2440
+  },
+  "2/charizard": {
+    "file": "2/charizard.gif",
+    "duration": 2710
+  },
+  "2/charmander": {
+    "file": "2/charmander.gif",
+    "duration": 2940
+  },
+  "2/charmeleon": {
+    "file": "2/charmeleon.gif",
+    "duration": 3710
+  },
+  "2/chikorita": {
+    "file": "2/chikorita.gif",
+    "duration": 2910
+  },
+  "2/chinchou": {
+    "file": "2/chinchou.gif",
+    "duration": 2560
+  },
+  "2/clefable": {
+    "file": "2/clefable.gif",
+    "duration": 2570
+  },
+  "2/clefairy": {
+    "file": "2/clefairy.gif",
+    "duration": 3080
+  },
+  "2/cleffa": {
+    "file": "2/cleffa.gif",
+    "duration": 2340
+  },
+  "2/cloyster": {
+    "file": "2/cloyster.gif",
+    "duration": 2930
+  },
+  "2/corsola": {
+    "file": "2/corsola.gif",
+    "duration": 2980
+  },
+  "2/crobat": {
+    "file": "2/crobat.gif",
+    "duration": 3480
+  },
+  "2/croconaw": {
+    "file": "2/croconaw.gif",
+    "duration": 3230
+  },
+  "2/cubone": {
+    "file": "2/cubone.gif",
+    "duration": 3410
+  },
+  "2/cyndaquil": {
+    "file": "2/cyndaquil.gif",
+    "duration": 2820
+  },
+  "2/delibird": {
+    "file": "2/delibird.gif",
+    "duration": 3330
+  },
+  "2/dewgong": {
+    "file": "2/dewgong.gif",
+    "duration": 3140
+  },
+  "2/diglett": {
+    "file": "2/diglett.gif",
+    "duration": 2370
+  },
+  "2/ditto": {
+    "file": "2/ditto.gif",
+    "duration": 3180
+  },
+  "2/dodrio": {
+    "file": "2/dodrio.gif",
+    "duration": 2860
+  },
+  "2/doduo": {
+    "file": "2/doduo.gif",
+    "duration": 4080
+  },
+  "2/donphan": {
+    "file": "2/donphan.gif",
+    "duration": 2640
+  },
+  "2/dragonair": {
+    "file": "2/dragonair.gif",
+    "duration": 3110
+  },
+  "2/dragonite": {
+    "file": "2/dragonite.gif",
+    "duration": 4920
+  },
+  "2/dratini": {
+    "file": "2/dratini.gif",
+    "duration": 2410
+  },
+  "2/drowzee": {
+    "file": "2/drowzee.gif",
+    "duration": 2930
+  },
+  "2/dugtrio": {
+    "file": "2/dugtrio.gif",
+    "duration": 4630
+  },
+  "2/dunsparce": {
+    "file": "2/dunsparce.gif",
+    "duration": 2740
+  },
+  "2/eevee": {
+    "file": "2/eevee.gif",
+    "duration": 3010
+  },
+  "2/ekans": {
+    "file": "2/ekans.gif",
+    "duration": 3230
+  },
+  "2/electabuzz": {
+    "file": "2/electabuzz.gif",
+    "duration": 2440
+  },
+  "2/electrode": {
+    "file": "2/electrode.gif",
+    "duration": 2810
+  },
+  "2/elekid": {
+    "file": "2/elekid.gif",
+    "duration": 3460
+  },
+  "2/entei": {
+    "file": "2/entei.gif",
+    "duration": 2770
+  },
+  "2/espeon": {
+    "file": "2/espeon.gif",
+    "duration": 3040
+  },
+  "2/exeggcute": {
+    "file": "2/exeggcute.gif",
+    "duration": 2840
+  },
+  "2/exeggutor": {
+    "file": "2/exeggutor.gif",
+    "duration": 3060
+  },
+  "2/farfetchd": {
+    "file": "2/farfetchd.gif",
+    "duration": 2240
+  },
+  "2/fearow": {
+    "file": "2/fearow.gif",
+    "duration": 3040
+  },
+  "2/feraligatr": {
+    "file": "2/feraligatr.gif",
+    "duration": 3010
+  },
+  "2/flaaffy": {
+    "file": "2/flaaffy.gif",
+    "duration": 2510
+  },
+  "2/flareon": {
+    "file": "2/flareon.gif",
+    "duration": 2670
+  },
+  "2/forretress": {
+    "file": "2/forretress.gif",
+    "duration": 3360
+  },
+  "2/furret": {
+    "file": "2/furret.gif",
+    "duration": 2880
+  },
+  "2/gastly": {
+    "file": "2/gastly.gif",
+    "duration": 3180
+  },
+  "2/gengar": {
+    "file": "2/gengar.gif",
+    "duration": 3850
+  },
+  "2/geodude": {
+    "file": "2/geodude.gif",
+    "duration": 3210
+  },
+  "2/girafarig": {
+    "file": "2/girafarig.gif",
+    "duration": 3160
+  },
+  "2/gligar": {
+    "file": "2/gligar.gif",
+    "duration": 2470
+  },
+  "2/gloom": {
+    "file": "2/gloom.gif",
+    "duration": 3510
+  },
+  "2/golbat": {
+    "file": "2/golbat.gif",
+    "duration": 3440
+  },
+  "2/goldeen": {
+    "file": "2/goldeen.gif",
+    "duration": 4150
+  },
+  "2/golduck": {
+    "file": "2/golduck.gif",
+    "duration": 4160
+  },
+  "2/golem": {
+    "file": "2/golem.gif",
+    "duration": 2880
+  },
+  "2/granbull": {
+    "file": "2/granbull.gif",
+    "duration": 2980
+  },
+  "2/graveler": {
+    "file": "2/graveler.gif",
+    "duration": 4770
+  },
+  "2/grimer": {
+    "file": "2/grimer.gif",
+    "duration": 3040
+  },
+  "2/growlithe": {
+    "file": "2/growlithe.gif",
+    "duration": 3510
+  },
+  "2/gyarados": {
+    "file": "2/gyarados.gif",
+    "duration": 2570
+  },
+  "2/haunter": {
+    "file": "2/haunter.gif",
+    "duration": 3680
+  },
+  "2/heracross": {
+    "file": "2/heracross.gif",
+    "duration": 2570
+  },
+  "2/hitmonchan": {
+    "file": "2/hitmonchan.gif",
+    "duration": 5640
+  },
+  "2/hitmonlee": {
+    "file": "2/hitmonlee.gif",
+    "duration": 3340
+  },
+  "2/hitmontop": {
+    "file": "2/hitmontop.gif",
+    "duration": 4110
+  },
+  "2/hooh": {
+    "file": "2/hooh.gif",
+    "duration": 3440
+  },
+  "2/hoothoot": {
+    "file": "2/hoothoot.gif",
+    "duration": 3060
+  },
+  "2/hoppip": {
+    "file": "2/hoppip.gif",
+    "duration": 3310
+  },
+  "2/horsea": {
+    "file": "2/horsea.gif",
+    "duration": 2880
+  },
+  "2/houndoom": {
+    "file": "2/houndoom.gif",
+    "duration": 3160
+  },
+  "2/houndour": {
+    "file": "2/houndour.gif",
+    "duration": 2660
+  },
+  "2/hypno": {
+    "file": "2/hypno.gif",
+    "duration": 3610
+  },
+  "2/igglybuff": {
+    "file": "2/igglybuff.gif",
+    "duration": 2240
+  },
+  "2/ivysaur": {
+    "file": "2/ivysaur.gif",
+    "duration": 2670
+  },
+  "2/jigglypuff": {
+    "file": "2/jigglypuff.gif",
+    "duration": 3310
+  },
+  "2/jolteon": {
+    "file": "2/jolteon.gif",
+    "duration": 3700
+  },
+  "2/jumpluff": {
+    "file": "2/jumpluff.gif",
+    "duration": 2560
+  },
+  "2/jynx": {
+    "file": "2/jynx.gif",
+    "duration": 4050
+  },
+  "2/kabuto": {
+    "file": "2/kabuto.gif",
+    "duration": 2840
+  },
+  "2/kabutops": {
+    "file": "2/kabutops.gif",
+    "duration": 3260
+  },
+  "2/kadabra": {
+    "file": "2/kadabra.gif",
+    "duration": 3140
+  },
+  "2/kakuna": {
+    "file": "2/kakuna.gif",
+    "duration": 2370
+  },
+  "2/kangaskhan": {
+    "file": "2/kangaskhan.gif",
+    "duration": 3950
+  },
+  "2/kingdra": {
+    "file": "2/kingdra.gif",
+    "duration": 3110
+  },
+  "2/kingler": {
+    "file": "2/kingler.gif",
+    "duration": 4250
+  },
+  "2/koffing": {
+    "file": "2/koffing.gif",
+    "duration": 3040
+  },
+  "2/krabby": {
+    "file": "2/krabby.gif",
+    "duration": 2570
+  },
+  "2/lanturn": {
+    "file": "2/lanturn.gif",
+    "duration": 2640
+  },
+  "2/lapras": {
+    "file": "2/lapras.gif",
+    "duration": 3650
+  },
+  "2/larvitar": {
+    "file": "2/larvitar.gif",
+    "duration": 2710
+  },
+  "2/ledian": {
+    "file": "2/ledian.gif",
+    "duration": 2710
+  },
+  "2/ledyba": {
+    "file": "2/ledyba.gif",
+    "duration": 2790
+  },
+  "2/lickitung": {
+    "file": "2/lickitung.gif",
+    "duration": 2370
+  },
+  "2/lugia": {
+    "file": "2/lugia.gif",
+    "duration": 3900
+  },
+  "2/machamp": {
+    "file": "2/machamp.gif",
+    "duration": 3280
+  },
+  "2/machoke": {
+    "file": "2/machoke.gif",
+    "duration": 3810
+  },
+  "2/machop": {
+    "file": "2/machop.gif",
+    "duration": 3080
+  },
+  "2/magby": {
+    "file": "2/magby.gif",
+    "duration": 2880
+  },
+  "2/magcargo": {
+    "file": "2/magcargo.gif",
+    "duration": 3310
+  },
+  "2/magikarp": {
+    "file": "2/magikarp.gif",
+    "duration": 3310
+  },
+  "2/magmar": {
+    "file": "2/magmar.gif",
+    "duration": 2980
+  },
+  "2/magnemite": {
+    "file": "2/magnemite.gif",
+    "duration": 3180
+  },
+  "2/magneton": {
+    "file": "2/magneton.gif",
+    "duration": 4320
+  },
+  "2/mankey": {
+    "file": "2/mankey.gif",
+    "duration": 3110
+  },
+  "2/mantine": {
+    "file": "2/mantine.gif",
+    "duration": 3600
+  },
+  "2/mareep": {
+    "file": "2/mareep.gif",
+    "duration": 2510
+  },
+  "2/marill": {
+    "file": "2/marill.gif",
+    "duration": 4450
+  },
+  "2/marowak": {
+    "file": "2/marowak.gif",
+    "duration": 3980
+  },
+  "2/meganium": {
+    "file": "2/meganium.gif",
+    "duration": 3210
+  },
+  "2/meowth": {
+    "file": "2/meowth.gif",
+    "duration": 3180
+  },
+  "2/metapod": {
+    "file": "2/metapod.gif",
+    "duration": 2710
+  },
+  "2/mew": {
+    "file": "2/mew.gif",
+    "duration": 5050
+  },
+  "2/mewtwo": {
+    "file": "2/mewtwo.gif",
+    "duration": 2790
+  },
+  "2/miltank": {
+    "file": "2/miltank.gif",
+    "duration": 2490
+  },
+  "2/misdreavus": {
+    "file": "2/misdreavus.gif",
+    "duration": 2570
+  },
+  "2/moltres": {
+    "file": "2/moltres.gif",
+    "duration": 4150
+  },
+  "2/mrmime": {
+    "file": "2/mrmime.gif",
+    "duration": 3280
+  },
+  "2/muk": {
+    "file": "2/muk.gif",
+    "duration": 3310
+  },
+  "2/murkrow": {
+    "file": "2/murkrow.gif",
+    "duration": 2690
+  },
+  "2/natu": {
+    "file": "2/natu.gif",
+    "duration": 2810
+  },
+  "2/nidoking": {
+    "file": "2/nidoking.gif",
+    "duration": 3010
+  },
+  "2/nidoqueen": {
+    "file": "2/nidoqueen.gif",
+    "duration": 3860
+  },
+  "2/nidoranf": {
+    "file": "2/nidoranf.gif",
+    "duration": 2690
+  },
+  "2/nidoranm": {
+    "file": "2/nidoranm.gif",
+    "duration": 3080
+  },
+  "2/nidorina": {
+    "file": "2/nidorina.gif",
+    "duration": 2810
+  },
+  "2/nidorino": {
+    "file": "2/nidorino.gif",
+    "duration": 3750
+  },
+  "2/ninetales": {
+    "file": "2/ninetales.gif",
+    "duration": 3130
+  },
+  "2/noctowl": {
+    "file": "2/noctowl.gif",
+    "duration": 3580
+  },
+  "2/octillery": {
+    "file": "2/octillery.gif",
+    "duration": 2980
+  },
+  "2/oddish": {
+    "file": "2/oddish.gif",
+    "duration": 3060
+  },
+  "2/omanyte": {
+    "file": "2/omanyte.gif",
+    "duration": 2470
+  },
+  "2/omastar": {
+    "file": "2/omastar.gif",
+    "duration": 2980
+  },
+  "2/onix": {
+    "file": "2/onix.gif",
+    "duration": 4110
+  },
+  "2/paras": {
+    "file": "2/paras.gif",
+    "duration": 2980
+  },
+  "2/parasect": {
+    "file": "2/parasect.gif",
+    "duration": 4160
+  },
+  "2/persian": {
+    "file": "2/persian.gif",
+    "duration": 3280
+  },
+  "2/phanpy": {
+    "file": "2/phanpy.gif",
+    "duration": 2310
+  },
+  "2/pichu": {
+    "file": "2/pichu.gif",
+    "duration": 2440
+  },
+  "2/pidgeot": {
+    "file": "2/pidgeot.gif",
+    "duration": 3340
+  },
+  "2/pidgeotto": {
+    "file": "2/pidgeotto.gif",
+    "duration": 3230
+  },
+  "2/pidgey": {
+    "file": "2/pidgey.gif",
+    "duration": 3080
+  },
+  "2/pikachu": {
+    "file": "2/pikachu.gif",
+    "duration": 3490
+  },
+  "2/piloswine": {
+    "file": "2/piloswine.gif",
+    "duration": 2770
+  },
+  "2/pineco": {
+    "file": "2/pineco.gif",
+    "duration": 2110
+  },
+  "2/pinsir": {
+    "file": "2/pinsir.gif",
+    "duration": 3240
+  },
+  "2/politoed": {
+    "file": "2/politoed.gif",
+    "duration": 2810
+  },
+  "2/poliwag": {
+    "file": "2/poliwag.gif",
+    "duration": 3710
+  },
+  "2/poliwhirl": {
+    "file": "2/poliwhirl.gif",
+    "duration": 2770
+  },
+  "2/poliwrath": {
+    "file": "2/poliwrath.gif",
+    "duration": 2840
+  },
+  "2/ponyta": {
+    "file": "2/ponyta.gif",
+    "duration": 2670
+  },
+  "2/porygon": {
+    "file": "2/porygon.gif",
+    "duration": 2690
+  },
+  "2/porygon2": {
+    "file": "2/porygon2.gif",
+    "duration": 2470
+  },
+  "2/primeape": {
+    "file": "2/primeape.gif",
+    "duration": 4330
+  },
+  "2/psyduck": {
+    "file": "2/psyduck.gif",
+    "duration": 3510
+  },
+  "2/pupitar": {
+    "file": "2/pupitar.gif",
+    "duration": 2520
+  },
+  "2/quagsire": {
+    "file": "2/quagsire.gif",
+    "duration": 2670
+  },
+  "2/quilava": {
+    "file": "2/quilava.gif",
+    "duration": 2940
+  },
+  "2/qwilfish": {
+    "file": "2/qwilfish.gif",
+    "duration": 3330
+  },
+  "2/raichu": {
+    "file": "2/raichu.gif",
+    "duration": 2740
+  },
+  "2/raikou": {
+    "file": "2/raikou.gif",
+    "duration": 3760
+  },
+  "2/rapidash": {
+    "file": "2/rapidash.gif",
+    "duration": 4670
+  },
+  "2/raticate": {
+    "file": "2/raticate.gif",
+    "duration": 2510
+  },
+  "2/rattata": {
+    "file": "2/rattata.gif",
+    "duration": 2740
+  },
+  "2/remoraid": {
+    "file": "2/remoraid.gif",
+    "duration": 2190
+  },
+  "2/rhydon": {
+    "file": "2/rhydon.gif",
+    "duration": 3810
+  },
+  "2/rhyhorn": {
+    "file": "2/rhyhorn.gif",
+    "duration": 3580
+  },
+  "2/sandshrew": {
+    "file": "2/sandshrew.gif",
+    "duration": 3630
+  },
+  "2/sandslash": {
+    "file": "2/sandslash.gif",
+    "duration": 2910
+  },
+  "2/scizor": {
+    "file": "2/scizor.gif",
+    "duration": 3510
+  },
+  "2/scyther": {
+    "file": "2/scyther.gif",
+    "duration": 3800
+  },
+  "2/seadra": {
+    "file": "2/seadra.gif",
+    "duration": 3310
+  },
+  "2/seaking": {
+    "file": "2/seaking.gif",
+    "duration": 4620
+  },
+  "2/seel": {
+    "file": "2/seel.gif",
+    "duration": 3210
+  },
+  "2/sentret": {
+    "file": "2/sentret.gif",
+    "duration": 3010
+  },
+  "2/shellder": {
+    "file": "2/shellder.gif",
+    "duration": 2810
+  },
+  "2/shuckle": {
+    "file": "2/shuckle.gif",
+    "duration": 2520
+  },
+  "2/skarmory": {
+    "file": "2/skarmory.gif",
+    "duration": 2810
+  },
+  "2/skiploom": {
+    "file": "2/skiploom.gif",
+    "duration": 2410
+  },
+  "2/slowbro": {
+    "file": "2/slowbro.gif",
+    "duration": 4110
+  },
+  "2/slowking": {
+    "file": "2/slowking.gif",
+    "duration": 4320
+  },
+  "2/slowpoke": {
+    "file": "2/slowpoke.gif",
+    "duration": 2360
+  },
+  "2/slugma": {
+    "file": "2/slugma.gif",
+    "duration": 3240
+  },
+  "2/smeargle": {
+    "file": "2/smeargle.gif",
+    "duration": 2810
+  },
+  "2/smoochum": {
+    "file": "2/smoochum.gif",
+    "duration": 2540
+  },
+  "2/sneasel": {
+    "file": "2/sneasel.gif",
+    "duration": 2560
+  },
+  "2/snorlax": {
+    "file": "2/snorlax.gif",
+    "duration": 3880
+  },
+  "2/snubbull": {
+    "file": "2/snubbull.gif",
+    "duration": 3750
+  },
+  "2/spearow": {
+    "file": "2/spearow.gif",
+    "duration": 3810
+  },
+  "2/spinarak": {
+    "file": "2/spinarak.gif",
+    "duration": 2490
+  },
+  "2/squirtle": {
+    "file": "2/squirtle.gif",
+    "duration": 2770
+  },
+  "2/stantler": {
+    "file": "2/stantler.gif",
+    "duration": 3280
+  },
+  "2/starmie": {
+    "file": "2/starmie.gif",
+    "duration": 2810
+  },
+  "2/staryu": {
+    "file": "2/staryu.gif",
+    "duration": 2640
+  },
+  "2/steelix": {
+    "file": "2/steelix.gif",
+    "duration": 3080
+  },
+  "2/sudowoodo": {
+    "file": "2/sudowoodo.gif",
+    "duration": 3540
+  },
+  "2/suicune": {
+    "file": "2/suicune.gif",
+    "duration": 3530
+  },
+  "2/sunflora": {
+    "file": "2/sunflora.gif",
+    "duration": 2410
+  },
+  "2/sunkern": {
+    "file": "2/sunkern.gif",
+    "duration": 2510
+  },
+  "2/swinub": {
+    "file": "2/swinub.gif",
+    "duration": 2770
+  },
+  "2/tangela": {
+    "file": "2/tangela.gif",
+    "duration": 2880
+  },
+  "2/tauros": {
+    "file": "2/tauros.gif",
+    "duration": 4100
+  },
+  "2/teddiursa": {
+    "file": "2/teddiursa.gif",
+    "duration": 3910
+  },
+  "2/tentacool": {
+    "file": "2/tentacool.gif",
+    "duration": 2510
+  },
+  "2/tentacruel": {
+    "file": "2/tentacruel.gif",
+    "duration": 3750
+  },
+  "2/togepi": {
+    "file": "2/togepi.gif",
+    "duration": 2640
+  },
+  "2/togetic": {
+    "file": "2/togetic.gif",
+    "duration": 2610
+  },
+  "2/totodile": {
+    "file": "2/totodile.gif",
+    "duration": 4300
+  },
+  "2/typhlosion": {
+    "file": "2/typhlosion.gif",
+    "duration": 2940
+  },
+  "2/tyranitar": {
+    "file": "2/tyranitar.gif",
+    "duration": 3650
+  },
+  "2/tyrogue": {
+    "file": "2/tyrogue.gif",
+    "duration": 2570
+  },
+  "2/umbreon": {
+    "file": "2/umbreon.gif",
+    "duration": 3360
+  },
+  "2/unown": {
+    "file": "2/unown.gif",
+    "duration": 3580
+  },
+  "2/ursaring": {
+    "file": "2/ursaring.gif",
+    "duration": 4570
+  },
+  "2/vaporeon": {
+    "file": "2/vaporeon.gif",
+    "duration": 2980
+  },
+  "2/venomoth": {
+    "file": "2/venomoth.gif",
+    "duration": 2910
+  },
+  "2/venonat": {
+    "file": "2/venonat.gif",
+    "duration": 3580
+  },
+  "2/venusaur": {
+    "file": "2/venusaur.gif",
+    "duration": 4230
+  },
+  "2/victreebel": {
+    "file": "2/victreebel.gif",
+    "duration": 2960
+  },
+  "2/vileplume": {
+    "file": "2/vileplume.gif",
+    "duration": 3060
+  },
+  "2/voltorb": {
+    "file": "2/voltorb.gif",
+    "duration": 2510
+  },
+  "2/vulpix": {
+    "file": "2/vulpix.gif",
+    "duration": 2940
+  },
+  "2/wartortle": {
+    "file": "2/wartortle.gif",
+    "duration": 3240
+  },
+  "2/weedle": {
+    "file": "2/weedle.gif",
+    "duration": 3440
+  },
+  "2/weepinbell": {
+    "file": "2/weepinbell.gif",
+    "duration": 2470
+  },
+  "2/weezing": {
+    "file": "2/weezing.gif",
+    "duration": 3760
+  },
+  "2/wigglytuff": {
+    "file": "2/wigglytuff.gif",
+    "duration": 2840
+  },
+  "2/wobbuffet": {
+    "file": "2/wobbuffet.gif",
+    "duration": 2420
+  },
+  "2/wooper": {
+    "file": "2/wooper.gif",
+    "duration": 2510
+  },
+  "2/xatu": {
+    "file": "2/xatu.gif",
+    "duration": 4150
+  },
+  "2/yanma": {
+    "file": "2/yanma.gif",
+    "duration": 2410
+  },
+  "2/zapdos": {
+    "file": "2/zapdos.gif",
+    "duration": 3540
+  },
+  "2/zubat": {
+    "file": "2/zubat.gif",
+    "duration": 3860
+  },
+  "3-shiny/abra": {
+    "file": "3-shiny/abra.png",
+    "duration": 2366
+  },
+  "3-shiny/absol": {
+    "file": "3-shiny/absol.png",
+    "duration": 2888
+  },
+  "3-shiny/aerodactyl": {
+    "file": "3-shiny/aerodactyl.png",
+    "duration": 2429
+  },
+  "3-shiny/aggron": {
+    "file": "3-shiny/aggron.png",
+    "duration": 2460
+  },
+  "3-shiny/aipom": {
+    "file": "3-shiny/aipom.png",
+    "duration": 2468
+  },
+  "3-shiny/alakazam": {
+    "file": "3-shiny/alakazam.png",
+    "duration": 2457
+  },
+  "3-shiny/altaria": {
+    "file": "3-shiny/altaria.png",
+    "duration": 2571
+  },
+  "3-shiny/ampharos": {
+    "file": "3-shiny/ampharos.png",
+    "duration": 2290
+  },
+  "3-shiny/anorith": {
+    "file": "3-shiny/anorith.png",
+    "duration": 2896
+  },
+  "3-shiny/arbok": {
+    "file": "3-shiny/arbok.png",
+    "duration": 1988
+  },
+  "3-shiny/arcanine": {
+    "file": "3-shiny/arcanine.png",
+    "duration": 2645
+  },
+  "3-shiny/ariados": {
+    "file": "3-shiny/ariados.png",
+    "duration": 1988
+  },
+  "3-shiny/armaldo": {
+    "file": "3-shiny/armaldo.png",
+    "duration": 2404
+  },
+  "3-shiny/aron": {
+    "file": "3-shiny/aron.png",
+    "duration": 3775
+  },
+  "3-shiny/articuno": {
+    "file": "3-shiny/articuno.png",
+    "duration": 2336
+  },
+  "3-shiny/azumarill": {
+    "file": "3-shiny/azumarill.png",
+    "duration": 4231
+  },
+  "3-shiny/azurill": {
+    "file": "3-shiny/azurill.png",
+    "duration": 2600
+  },
+  "3-shiny/bagon": {
+    "file": "3-shiny/bagon.png",
+    "duration": 2473
+  },
+  "3-shiny/baltoy": {
+    "file": "3-shiny/baltoy.png",
+    "duration": 3645
+  },
+  "3-shiny/banette": {
+    "file": "3-shiny/banette.png",
+    "duration": 2909
+  },
+  "3-shiny/barboach": {
+    "file": "3-shiny/barboach.png",
+    "duration": 5285
+  },
+  "3-shiny/bayleef": {
+    "file": "3-shiny/bayleef.png",
+    "duration": 2014
+  },
+  "3-shiny/beautifly": {
+    "file": "3-shiny/beautifly.png",
+    "duration": 1805
+  },
+  "3-shiny/beedrill": {
+    "file": "3-shiny/beedrill.png",
+    "duration": 2625
+  },
+  "3-shiny/beldum": {
+    "file": "3-shiny/beldum.png",
+    "duration": 1988
+  },
+  "3-shiny/bellossom": {
+    "file": "3-shiny/bellossom.png",
+    "duration": 3720
+  },
+  "3-shiny/bellsprout": {
+    "file": "3-shiny/bellsprout.png",
+    "duration": 1825
+  },
+  "3-shiny/blastoise": {
+    "file": "3-shiny/blastoise.png",
+    "duration": 3284
+  },
+  "3-shiny/blaziken": {
+    "file": "3-shiny/blaziken.png",
+    "duration": 1938
+  },
+  "3-shiny/blissey": {
+    "file": "3-shiny/blissey.png",
+    "duration": 2014
+  },
+  "3-shiny/breloom": {
+    "file": "3-shiny/breloom.png",
+    "duration": 2516
+  },
+  "3-shiny/bulbasaur": {
+    "file": "3-shiny/bulbasaur.png",
+    "duration": 2275
+  },
+  "3-shiny/butterfree": {
+    "file": "3-shiny/butterfree.png",
+    "duration": 2999
+  },
+  "3-shiny/cacnea": {
+    "file": "3-shiny/cacnea.png",
+    "duration": 4231
+  },
+  "3-shiny/cacturne": {
+    "file": "3-shiny/cacturne.png",
+    "duration": 2371
+  },
+  "3-shiny/camerupt": {
+    "file": "3-shiny/camerupt.png",
+    "duration": 2906
+  },
+  "3-shiny/carvanha": {
+    "file": "3-shiny/carvanha.png",
+    "duration": 4244
+  },
+  "3-shiny/cascoon": {
+    "file": "3-shiny/cascoon.png",
+    "duration": 2120
+  },
+  "3-shiny/castform": {
+    "file": "3-shiny/castform.png",
+    "duration": 2986
+  },
+  "3-shiny/castformrainy": {
+    "file": "3-shiny/castformrainy.png",
+    "duration": 2986
+  },
+  "3-shiny/castformsnowy": {
+    "file": "3-shiny/castformsnowy.png",
+    "duration": 2986
+  },
+  "3-shiny/castformsunny": {
+    "file": "3-shiny/castformsunny.png",
+    "duration": 2986
+  },
+  "3-shiny/caterpie": {
+    "file": "3-shiny/caterpie.png",
+    "duration": 2980
+  },
+  "3-shiny/celebi": {
+    "file": "3-shiny/celebi.png",
+    "duration": 3304
+  },
+  "3-shiny/chansey": {
+    "file": "3-shiny/chansey.png",
+    "duration": 2906
+  },
+  "3-shiny/charizard": {
+    "file": "3-shiny/charizard.png",
+    "duration": 1905
+  },
+  "3-shiny/charmander": {
+    "file": "3-shiny/charmander.png",
+    "duration": 2086
+  },
+  "3-shiny/charmeleon": {
+    "file": "3-shiny/charmeleon.png",
+    "duration": 2226
+  },
+  "3-shiny/chikorita": {
+    "file": "3-shiny/chikorita.png",
+    "duration": 2014
+  },
+  "3-shiny/chimecho": {
+    "file": "3-shiny/chimecho.png",
+    "duration": 3561
+  },
+  "3-shiny/chinchou": {
+    "file": "3-shiny/chinchou.png",
+    "duration": 2912
+  },
+  "3-shiny/clamperl": {
+    "file": "3-shiny/clamperl.png",
+    "duration": 2394
+  },
+  "3-shiny/claydol": {
+    "file": "3-shiny/claydol.png",
+    "duration": 3066
+  },
+  "3-shiny/clefable": {
+    "file": "3-shiny/clefable.png",
+    "duration": 4237
+  },
+  "3-shiny/clefairy": {
+    "file": "3-shiny/clefairy.png",
+    "duration": 2014
+  },
+  "3-shiny/cleffa": {
+    "file": "3-shiny/cleffa.png",
+    "duration": 1785
+  },
+  "3-shiny/cloyster": {
+    "file": "3-shiny/cloyster.png",
+    "duration": 2999
+  },
+  "3-shiny/combusken": {
+    "file": "3-shiny/combusken.png",
+    "duration": 2275
+  },
+  "3-shiny/corphish": {
+    "file": "3-shiny/corphish.png",
+    "duration": 3492
+  },
+  "3-shiny/corsola": {
+    "file": "3-shiny/corsola.png",
+    "duration": 2137
+  },
+  "3-shiny/cradily": {
+    "file": "3-shiny/cradily.png",
+    "duration": 2926
+  },
+  "3-shiny/crawdaunt": {
+    "file": "3-shiny/crawdaunt.png",
+    "duration": 2420
+  },
+  "3-shiny/crobat": {
+    "file": "3-shiny/crobat.png",
+    "duration": 2014
+  },
+  "3-shiny/croconaw": {
+    "file": "3-shiny/croconaw.png",
+    "duration": 1988
+  },
+  "3-shiny/cubone": {
+    "file": "3-shiny/cubone.png",
+    "duration": 2732
+  },
+  "3-shiny/cyndaquil": {
+    "file": "3-shiny/cyndaquil.png",
+    "duration": 1785
+  },
+  "3-shiny/delcatty": {
+    "file": "3-shiny/delcatty.png",
+    "duration": 2256
+  },
+  "3-shiny/delibird": {
+    "file": "3-shiny/delibird.png",
+    "duration": 1785
+  },
+  "3-shiny/deoxys": {
+    "file": "3-shiny/deoxys.png",
+    "duration": 2826
+  },
+  "3-shiny/deoxysspeed": {
+    "file": "3-shiny/deoxysspeed.png",
+    "duration": 2826
+  },
+  "3-shiny/dewgong": {
+    "file": "3-shiny/dewgong.png",
+    "duration": 2906
+  },
+  "3-shiny/diglett": {
+    "file": "3-shiny/diglett.png",
+    "duration": 2233
+  },
+  "3-shiny/ditto": {
+    "file": "3-shiny/ditto.png",
+    "duration": 2005
+  },
+  "3-shiny/dodrio": {
+    "file": "3-shiny/dodrio.png",
+    "duration": 2987
+  },
+  "3-shiny/doduo": {
+    "file": "3-shiny/doduo.png",
+    "duration": 2527
+  },
+  "3-shiny/donphan": {
+    "file": "3-shiny/donphan.png",
+    "duration": 2842
+  },
+  "3-shiny/dragonair": {
+    "file": "3-shiny/dragonair.png",
+    "duration": 1988
+  },
+  "3-shiny/dragonite": {
+    "file": "3-shiny/dragonite.png",
+    "duration": 2577
+  },
+  "3-shiny/dratini": {
+    "file": "3-shiny/dratini.png",
+    "duration": 2014
+  },
+  "3-shiny/drowzee": {
+    "file": "3-shiny/drowzee.png",
+    "duration": 2889
+  },
+  "3-shiny/dugtrio": {
+    "file": "3-shiny/dugtrio.png",
+    "duration": 3257
+  },
+  "3-shiny/dunsparce": {
+    "file": "3-shiny/dunsparce.png",
+    "duration": 2161
+  },
+  "3-shiny/dusclops": {
+    "file": "3-shiny/dusclops.png",
+    "duration": 2407
+  },
+  "3-shiny/duskull": {
+    "file": "3-shiny/duskull.png",
+    "duration": 2462
+  },
+  "3-shiny/dustox": {
+    "file": "3-shiny/dustox.png",
+    "duration": 2697
+  },
+  "3-shiny/eevee": {
+    "file": "3-shiny/eevee.png",
+    "duration": 1838
+  },
+  "3-shiny/ekans": {
+    "file": "3-shiny/ekans.png",
+    "duration": 2481
+  },
+  "3-shiny/electabuzz": {
+    "file": "3-shiny/electabuzz.png",
+    "duration": 2206
+  },
+  "3-shiny/electrike": {
+    "file": "3-shiny/electrike.png",
+    "duration": 2503
+  },
+  "3-shiny/electrode": {
+    "file": "3-shiny/electrode.png",
+    "duration": 2600
+  },
+  "3-shiny/elekid": {
+    "file": "3-shiny/elekid.png",
+    "duration": 2290
+  },
+  "3-shiny/entei": {
+    "file": "3-shiny/entei.png",
+    "duration": 1851
+  },
+  "3-shiny/espeon": {
+    "file": "3-shiny/espeon.png",
+    "duration": 2159
+  },
+  "3-shiny/exeggcute": {
+    "file": "3-shiny/exeggcute.png",
+    "duration": 2593
+  },
+  "3-shiny/exeggutor": {
+    "file": "3-shiny/exeggutor.png",
+    "duration": 2468
+  },
+  "3-shiny/exploud": {
+    "file": "3-shiny/exploud.png",
+    "duration": 2460
+  },
+  "3-shiny/farfetchd": {
+    "file": "3-shiny/farfetchd.png",
+    "duration": 2738
+  },
+  "3-shiny/fearow": {
+    "file": "3-shiny/fearow.png",
+    "duration": 2327
+  },
+  "3-shiny/feebas": {
+    "file": "3-shiny/feebas.png",
+    "duration": 4231
+  },
+  "3-shiny/feraligatr": {
+    "file": "3-shiny/feraligatr.png",
+    "duration": 2568
+  },
+  "3-shiny/flaaffy": {
+    "file": "3-shiny/flaaffy.png",
+    "duration": 1785
+  },
+  "3-shiny/flareon": {
+    "file": "3-shiny/flareon.png",
+    "duration": 2156
+  },
+  "3-shiny/flygon": {
+    "file": "3-shiny/flygon.png",
+    "duration": 3398
+  },
+  "3-shiny/forretress": {
+    "file": "3-shiny/forretress.png",
+    "duration": 1818
+  },
+  "3-shiny/furret": {
+    "file": "3-shiny/furret.png",
+    "duration": 2468
+  },
+  "3-shiny/gardevoir": {
+    "file": "3-shiny/gardevoir.png",
+    "duration": 2014
+  },
+  "3-shiny/gastly": {
+    "file": "3-shiny/gastly.png",
+    "duration": 3200
+  },
+  "3-shiny/gengar": {
+    "file": "3-shiny/gengar.png",
+    "duration": 3092
+  },
+  "3-shiny/geodude": {
+    "file": "3-shiny/geodude.png",
+    "duration": 2732
+  },
+  "3-shiny/girafarig": {
+    "file": "3-shiny/girafarig.png",
+    "duration": 2790
+  },
+  "3-shiny/glalie": {
+    "file": "3-shiny/glalie.png",
+    "duration": 2462
+  },
+  "3-shiny/gligar": {
+    "file": "3-shiny/gligar.png",
+    "duration": 2001
+  },
+  "3-shiny/gloom": {
+    "file": "3-shiny/gloom.png",
+    "duration": 2880
+  },
+  "3-shiny/golbat": {
+    "file": "3-shiny/golbat.png",
+    "duration": 2999
+  },
+  "3-shiny/goldeen": {
+    "file": "3-shiny/goldeen.png",
+    "duration": 3481
+  },
+  "3-shiny/golduck": {
+    "file": "3-shiny/golduck.png",
+    "duration": 2578
+  },
+  "3-shiny/golem": {
+    "file": "3-shiny/golem.png",
+    "duration": 2403
+  },
+  "3-shiny/gorebyss": {
+    "file": "3-shiny/gorebyss.png",
+    "duration": 2999
+  },
+  "3-shiny/granbull": {
+    "file": "3-shiny/granbull.png",
+    "duration": 2069
+  },
+  "3-shiny/graveler": {
+    "file": "3-shiny/graveler.png",
+    "duration": 2738
+  },
+  "3-shiny/grimer": {
+    "file": "3-shiny/grimer.png",
+    "duration": 2432
+  },
+  "3-shiny/groudon": {
+    "file": "3-shiny/groudon.png",
+    "duration": 2169
+  },
+  "3-shiny/grovyle": {
+    "file": "3-shiny/grovyle.png",
+    "duration": 2039
+  },
+  "3-shiny/growlithe": {
+    "file": "3-shiny/growlithe.png",
+    "duration": 2290
+  },
+  "3-shiny/grumpig": {
+    "file": "3-shiny/grumpig.png",
+    "duration": 2699
+  },
+  "3-shiny/gulpin": {
+    "file": "3-shiny/gulpin.png",
+    "duration": 2198
+  },
+  "3-shiny/gyarados": {
+    "file": "3-shiny/gyarados.png",
+    "duration": 2732
+  },
+  "3-shiny/hariyama": {
+    "file": "3-shiny/hariyama.png",
+    "duration": 2595
+  },
+  "3-shiny/haunter": {
+    "file": "3-shiny/haunter.png",
+    "duration": 2711
+  },
+  "3-shiny/heracross": {
+    "file": "3-shiny/heracross.png",
+    "duration": 2334
+  },
+  "3-shiny/hitmonchan": {
+    "file": "3-shiny/hitmonchan.png",
+    "duration": 2410
+  },
+  "3-shiny/hitmonlee": {
+    "file": "3-shiny/hitmonlee.png",
+    "duration": 1834
+  },
+  "3-shiny/hitmontop": {
+    "file": "3-shiny/hitmontop.png",
+    "duration": 1891
+  },
+  "3-shiny/hooh": {
+    "file": "3-shiny/hooh.png",
+    "duration": 1851
+  },
+  "3-shiny/hoothoot": {
+    "file": "3-shiny/hoothoot.png",
+    "duration": 2499
+  },
+  "3-shiny/hoppip": {
+    "file": "3-shiny/hoppip.png",
+    "duration": 2999
+  },
+  "3-shiny/horsea": {
+    "file": "3-shiny/horsea.png",
+    "duration": 2160
+  },
+  "3-shiny/houndoom": {
+    "file": "3-shiny/houndoom.png",
+    "duration": 2323
+  },
+  "3-shiny/houndour": {
+    "file": "3-shiny/houndour.png",
+    "duration": 1831
+  },
+  "3-shiny/huntail": {
+    "file": "3-shiny/huntail.png",
+    "duration": 2410
+  },
+  "3-shiny/hypno": {
+    "file": "3-shiny/hypno.png",
+    "duration": 2909
+  },
+  "3-shiny/igglybuff": {
+    "file": "3-shiny/igglybuff.png",
+    "duration": 2989
+  },
+  "3-shiny/illumise": {
+    "file": "3-shiny/illumise.png",
+    "duration": 2939
+  },
+  "3-shiny/ivysaur": {
+    "file": "3-shiny/ivysaur.png",
+    "duration": 1932
+  },
+  "3-shiny/jigglypuff": {
+    "file": "3-shiny/jigglypuff.png",
+    "duration": 2738
+  },
+  "3-shiny/jirachi": {
+    "file": "3-shiny/jirachi.png",
+    "duration": 2846
+  },
+  "3-shiny/jolteon": {
+    "file": "3-shiny/jolteon.png",
+    "duration": 2014
+  },
+  "3-shiny/jumpluff": {
+    "file": "3-shiny/jumpluff.png",
+    "duration": 3149
+  },
+  "3-shiny/jynx": {
+    "file": "3-shiny/jynx.png",
+    "duration": 3328
+  },
+  "3-shiny/kabuto": {
+    "file": "3-shiny/kabuto.png",
+    "duration": 2986
+  },
+  "3-shiny/kabutops": {
+    "file": "3-shiny/kabutops.png",
+    "duration": 1988
+  },
+  "3-shiny/kadabra": {
+    "file": "3-shiny/kadabra.png",
+    "duration": 2360
+  },
+  "3-shiny/kakuna": {
+    "file": "3-shiny/kakuna.png",
+    "duration": 2460
+  },
+  "3-shiny/kangaskhan": {
+    "file": "3-shiny/kangaskhan.png",
+    "duration": 1988
+  },
+  "3-shiny/kecleon": {
+    "file": "3-shiny/kecleon.png",
+    "duration": 2640
+  },
+  "3-shiny/kingdra": {
+    "file": "3-shiny/kingdra.png",
+    "duration": 2334
+  },
+  "3-shiny/kingler": {
+    "file": "3-shiny/kingler.png",
+    "duration": 2889
+  },
+  "3-shiny/kirlia": {
+    "file": "3-shiny/kirlia.png",
+    "duration": 2181
+  },
+  "3-shiny/koffing": {
+    "file": "3-shiny/koffing.png",
+    "duration": 2018
+  },
+  "3-shiny/krabby": {
+    "file": "3-shiny/krabby.png",
+    "duration": 1922
+  },
+  "3-shiny/kyogre": {
+    "file": "3-shiny/kyogre.png",
+    "duration": 2996
+  },
+  "3-shiny/lairon": {
+    "file": "3-shiny/lairon.png",
+    "duration": 2550
+  },
+  "3-shiny/lanturn": {
+    "file": "3-shiny/lanturn.png",
+    "duration": 2999
+  },
+  "3-shiny/lapras": {
+    "file": "3-shiny/lapras.png",
+    "duration": 1831
+  },
+  "3-shiny/larvitar": {
+    "file": "3-shiny/larvitar.png",
+    "duration": 1785
+  },
+  "3-shiny/latias": {
+    "file": "3-shiny/latias.png",
+    "duration": 2015
+  },
+  "3-shiny/latios": {
+    "file": "3-shiny/latios.png",
+    "duration": 1988
+  },
+  "3-shiny/ledian": {
+    "file": "3-shiny/ledian.png",
+    "duration": 2442
+  },
+  "3-shiny/ledyba": {
+    "file": "3-shiny/ledyba.png",
+    "duration": 1785
+  },
+  "3-shiny/lickitung": {
+    "file": "3-shiny/lickitung.png",
+    "duration": 2906
+  },
+  "3-shiny/lileep": {
+    "file": "3-shiny/lileep.png",
+    "duration": 2407
+  },
+  "3-shiny/linoone": {
+    "file": "3-shiny/linoone.png",
+    "duration": 2336
+  },
+  "3-shiny/lombre": {
+    "file": "3-shiny/lombre.png",
+    "duration": 2516
+  },
+  "3-shiny/lotad": {
+    "file": "3-shiny/lotad.png",
+    "duration": 2851
+  },
+  "3-shiny/loudred": {
+    "file": "3-shiny/loudred.png",
+    "duration": 4237
+  },
+  "3-shiny/ludicolo": {
+    "file": "3-shiny/ludicolo.png",
+    "duration": 4231
+  },
+  "3-shiny/lugia": {
+    "file": "3-shiny/lugia.png",
+    "duration": 3411
+  },
+  "3-shiny/lunatone": {
+    "file": "3-shiny/lunatone.png",
+    "duration": 2989
+  },
+  "3-shiny/luvdisc": {
+    "file": "3-shiny/luvdisc.png",
+    "duration": 2992
+  },
+  "3-shiny/machamp": {
+    "file": "3-shiny/machamp.png",
+    "duration": 2453
+  },
+  "3-shiny/machoke": {
+    "file": "3-shiny/machoke.png",
+    "duration": 2554
+  },
+  "3-shiny/machop": {
+    "file": "3-shiny/machop.png",
+    "duration": 2868
+  },
+  "3-shiny/magby": {
+    "file": "3-shiny/magby.png",
+    "duration": 2704
+  },
+  "3-shiny/magcargo": {
+    "file": "3-shiny/magcargo.png",
+    "duration": 1988
+  },
+  "3-shiny/magikarp": {
+    "file": "3-shiny/magikarp.png",
+    "duration": 2738
+  },
+  "3-shiny/magmar": {
+    "file": "3-shiny/magmar.png",
+    "duration": 1988
+  },
+  "3-shiny/magnemite": {
+    "file": "3-shiny/magnemite.png",
+    "duration": 3738
+  },
+  "3-shiny/magneton": {
+    "file": "3-shiny/magneton.png",
+    "duration": 2681
+  },
+  "3-shiny/makuhita": {
+    "file": "3-shiny/makuhita.png",
+    "duration": 2842
+  },
+  "3-shiny/manectric": {
+    "file": "3-shiny/manectric.png",
+    "duration": 2516
+  },
+  "3-shiny/mankey": {
+    "file": "3-shiny/mankey.png",
+    "duration": 2783
+  },
+  "3-shiny/mantine": {
+    "file": "3-shiny/mantine.png",
+    "duration": 3328
+  },
+  "3-shiny/mareep": {
+    "file": "3-shiny/mareep.png",
+    "duration": 2831
+  },
+  "3-shiny/marill": {
+    "file": "3-shiny/marill.png",
+    "duration": 3554
+  },
+  "3-shiny/marowak": {
+    "file": "3-shiny/marowak.png",
+    "duration": 2732
+  },
+  "3-shiny/marshtomp": {
+    "file": "3-shiny/marshtomp.png",
+    "duration": 1805
+  },
+  "3-shiny/masquerain": {
+    "file": "3-shiny/masquerain.png",
+    "duration": 2399
+  },
+  "3-shiny/mawile": {
+    "file": "3-shiny/mawile.png",
+    "duration": 2369
+  },
+  "3-shiny/medicham": {
+    "file": "3-shiny/medicham.png",
+    "duration": 2912
+  },
+  "3-shiny/meditite": {
+    "file": "3-shiny/meditite.png",
+    "duration": 2738
+  },
+  "3-shiny/meganium": {
+    "file": "3-shiny/meganium.png",
+    "duration": 1988
+  },
+  "3-shiny/meowth": {
+    "file": "3-shiny/meowth.png",
+    "duration": 2468
+  },
+  "3-shiny/metagross": {
+    "file": "3-shiny/metagross.png",
+    "duration": 2487
+  },
+  "3-shiny/metang": {
+    "file": "3-shiny/metang.png",
+    "duration": 1805
+  },
+  "3-shiny/metapod": {
+    "file": "3-shiny/metapod.png",
+    "duration": 2826
+  },
+  "3-shiny/mew": {
+    "file": "3-shiny/mew.png",
+    "duration": 2839
+  },
+  "3-shiny/mewtwo": {
+    "file": "3-shiny/mewtwo.png",
+    "duration": 1851
+  },
+  "3-shiny/mightyena": {
+    "file": "3-shiny/mightyena.png",
+    "duration": 2002
+  },
+  "3-shiny/milotic": {
+    "file": "3-shiny/milotic.png",
+    "duration": 2882
+  },
+  "3-shiny/miltank": {
+    "file": "3-shiny/miltank.png",
+    "duration": 2906
+  },
+  "3-shiny/minun": {
+    "file": "3-shiny/minun.png",
+    "duration": 2005
+  },
+  "3-shiny/misdreavus": {
+    "file": "3-shiny/misdreavus.png",
+    "duration": 2999
+  },
+  "3-shiny/moltres": {
+    "file": "3-shiny/moltres.png",
+    "duration": 2925
+  },
+  "3-shiny/mrmime": {
+    "file": "3-shiny/mrmime.png",
+    "duration": 2580
+  },
+  "3-shiny/mudkip": {
+    "file": "3-shiny/mudkip.png",
+    "duration": 1971
+  },
+  "3-shiny/muk": {
+    "file": "3-shiny/muk.png",
+    "duration": 3021
+  },
+  "3-shiny/murkrow": {
+    "file": "3-shiny/murkrow.png",
+    "duration": 2014
+  },
+  "3-shiny/natu": {
+    "file": "3-shiny/natu.png",
+    "duration": 2581
+  },
+  "3-shiny/nidoking": {
+    "file": "3-shiny/nidoking.png",
+    "duration": 2400
+  },
+  "3-shiny/nidoqueen": {
+    "file": "3-shiny/nidoqueen.png",
+    "duration": 1985
+  },
+  "3-shiny/nidoranf": {
+    "file": "3-shiny/nidoranf.png",
+    "duration": 2604
+  },
+  "3-shiny/nidoranm": {
+    "file": "3-shiny/nidoranm.png",
+    "duration": 1831
+  },
+  "3-shiny/nidorina": {
+    "file": "3-shiny/nidorina.png",
+    "duration": 1988
+  },
+  "3-shiny/nidorino": {
+    "file": "3-shiny/nidorino.png",
+    "duration": 2001
+  },
+  "3-shiny/nincada": {
+    "file": "3-shiny/nincada.png",
+    "duration": 2734
+  },
+  "3-shiny/ninetales": {
+    "file": "3-shiny/ninetales.png",
+    "duration": 2571
+  },
+  "3-shiny/ninjask": {
+    "file": "3-shiny/ninjask.png",
+    "duration": 2468
+  },
+  "3-shiny/noctowl": {
+    "file": "3-shiny/noctowl.png",
+    "duration": 2156
+  },
+  "3-shiny/nosepass": {
+    "file": "3-shiny/nosepass.png",
+    "duration": 4237
+  },
+  "3-shiny/numel": {
+    "file": "3-shiny/numel.png",
+    "duration": 2873
+  },
+  "3-shiny/nuzleaf": {
+    "file": "3-shiny/nuzleaf.png",
+    "duration": 2784
+  },
+  "3-shiny/octillery": {
+    "file": "3-shiny/octillery.png",
+    "duration": 2153
+  },
+  "3-shiny/oddish": {
+    "file": "3-shiny/oddish.png",
+    "duration": 2399
+  },
+  "3-shiny/omanyte": {
+    "file": "3-shiny/omanyte.png",
+    "duration": 2999
+  },
+  "3-shiny/omastar": {
+    "file": "3-shiny/omastar.png",
+    "duration": 1841
+  },
+  "3-shiny/onix": {
+    "file": "3-shiny/onix.png",
+    "duration": 3153
+  },
+  "3-shiny/paras": {
+    "file": "3-shiny/paras.png",
+    "duration": 2938
+  },
+  "3-shiny/parasect": {
+    "file": "3-shiny/parasect.png",
+    "duration": 2735
+  },
+  "3-shiny/pelipper": {
+    "file": "3-shiny/pelipper.png",
+    "duration": 2999
+  },
+  "3-shiny/persian": {
+    "file": "3-shiny/persian.png",
+    "duration": 2320
+  },
+  "3-shiny/phanpy": {
+    "file": "3-shiny/phanpy.png",
+    "duration": 2920
+  },
+  "3-shiny/pichu": {
+    "file": "3-shiny/pichu.png",
+    "duration": 2539
+  },
+  "3-shiny/pidgeot": {
+    "file": "3-shiny/pidgeot.png",
+    "duration": 2007
+  },
+  "3-shiny/pidgeotto": {
+    "file": "3-shiny/pidgeotto.png",
+    "duration": 2236
+  },
+  "3-shiny/pidgey": {
+    "file": "3-shiny/pidgey.png",
+    "duration": 2442
+  },
+  "3-shiny/pikachu": {
+    "file": "3-shiny/pikachu.png",
+    "duration": 2457
+  },
+  "3-shiny/piloswine": {
+    "file": "3-shiny/piloswine.png",
+    "duration": 1818
+  },
+  "3-shiny/pineco": {
+    "file": "3-shiny/pineco.png",
+    "duration": 2839
+  },
+  "3-shiny/pinsir": {
+    "file": "3-shiny/pinsir.png",
+    "duration": 2012
+  },
+  "3-shiny/plusle": {
+    "file": "3-shiny/plusle.png",
+    "duration": 2031
+  },
+  "3-shiny/politoed": {
+    "file": "3-shiny/politoed.png",
+    "duration": 3118
+  },
+  "3-shiny/poliwag": {
+    "file": "3-shiny/poliwag.png",
+    "duration": 2014
+  },
+  "3-shiny/poliwhirl": {
+    "file": "3-shiny/poliwhirl.png",
+    "duration": 2538
+  },
+  "3-shiny/poliwrath": {
+    "file": "3-shiny/poliwrath.png",
+    "duration": 2460
+  },
+  "3-shiny/ponyta": {
+    "file": "3-shiny/ponyta.png",
+    "duration": 2135
+  },
+  "3-shiny/poochyena": {
+    "file": "3-shiny/poochyena.png",
+    "duration": 2220
+  },
+  "3-shiny/porygon": {
+    "file": "3-shiny/porygon.png",
+    "duration": 1785
+  },
+  "3-shiny/porygon2": {
+    "file": "3-shiny/porygon2.png",
+    "duration": 2366
+  },
+  "3-shiny/primeape": {
+    "file": "3-shiny/primeape.png",
+    "duration": 2782
+  },
+  "3-shiny/psyduck": {
+    "file": "3-shiny/psyduck.png",
+    "duration": 2610
+  },
+  "3-shiny/pupitar": {
+    "file": "3-shiny/pupitar.png",
+    "duration": 1988
+  },
+  "3-shiny/quagsire": {
+    "file": "3-shiny/quagsire.png",
+    "duration": 2015
+  },
+  "3-shiny/quilava": {
+    "file": "3-shiny/quilava.png",
+    "duration": 1988
+  },
+  "3-shiny/qwilfish": {
+    "file": "3-shiny/qwilfish.png",
+    "duration": 3722
+  },
+  "3-shiny/raichu": {
+    "file": "3-shiny/raichu.png",
+    "duration": 2574
+  },
+  "3-shiny/raikou": {
+    "file": "3-shiny/raikou.png",
+    "duration": 2039
+  },
+  "3-shiny/ralts": {
+    "file": "3-shiny/ralts.png",
+    "duration": 2814
+  },
+  "3-shiny/rapidash": {
+    "file": "3-shiny/rapidash.png",
+    "duration": 2201
+  },
+  "3-shiny/raticate": {
+    "file": "3-shiny/raticate.png",
+    "duration": 2314
+  },
+  "3-shiny/rattata": {
+    "file": "3-shiny/rattata.png",
+    "duration": 2751
+  },
+  "3-shiny/rayquaza": {
+    "file": "3-shiny/rayquaza.png",
+    "duration": 2789
+  },
+  "3-shiny/regice": {
+    "file": "3-shiny/regice.png",
+    "duration": 2461
+  },
+  "3-shiny/regirock": {
+    "file": "3-shiny/regirock.png",
+    "duration": 2005
+  },
+  "3-shiny/registeel": {
+    "file": "3-shiny/registeel.png",
+    "duration": 2001
+  },
+  "3-shiny/relicanth": {
+    "file": "3-shiny/relicanth.png",
+    "duration": 2309
+  },
+  "3-shiny/remoraid": {
+    "file": "3-shiny/remoraid.png",
+    "duration": 1668
+  },
+  "3-shiny/rhydon": {
+    "file": "3-shiny/rhydon.png",
+    "duration": 2671
+  },
+  "3-shiny/rhyhorn": {
+    "file": "3-shiny/rhyhorn.png",
+    "duration": 2002
+  },
+  "3-shiny/roselia": {
+    "file": "3-shiny/roselia.png",
+    "duration": 2912
+  },
+  "3-shiny/sableye": {
+    "file": "3-shiny/sableye.png",
+    "duration": 3210
+  },
+  "3-shiny/salamence": {
+    "file": "3-shiny/salamence.png",
+    "duration": 2953
+  },
+  "3-shiny/sandshrew": {
+    "file": "3-shiny/sandshrew.png",
+    "duration": 2015
+  },
+  "3-shiny/sandslash": {
+    "file": "3-shiny/sandslash.png",
+    "duration": 1988
+  },
+  "3-shiny/sceptile": {
+    "file": "3-shiny/sceptile.png",
+    "duration": 1918
+  },
+  "3-shiny/scizor": {
+    "file": "3-shiny/scizor.png",
+    "duration": 2142
+  },
+  "3-shiny/scyther": {
+    "file": "3-shiny/scyther.png",
+    "duration": 2156
+  },
+  "3-shiny/seadra": {
+    "file": "3-shiny/seadra.png",
+    "duration": 2137
+  },
+  "3-shiny/seaking": {
+    "file": "3-shiny/seaking.png",
+    "duration": 2999
+  },
+  "3-shiny/sealeo": {
+    "file": "3-shiny/sealeo.png",
+    "duration": 2407
+  },
+  "3-shiny/seedot": {
+    "file": "3-shiny/seedot.png",
+    "duration": 2782
+  },
+  "3-shiny/seel": {
+    "file": "3-shiny/seel.png",
+    "duration": 3147
+  },
+  "3-shiny/sentret": {
+    "file": "3-shiny/sentret.png",
+    "duration": 2114
+  },
+  "3-shiny/seviper": {
+    "file": "3-shiny/seviper.png",
+    "duration": 3495
+  },
+  "3-shiny/sharpedo": {
+    "file": "3-shiny/sharpedo.png",
+    "duration": 4066
+  },
+  "3-shiny/shedinja": {
+    "file": "3-shiny/shedinja.png",
+    "duration": 3702
+  },
+  "3-shiny/shelgon": {
+    "file": "3-shiny/shelgon.png",
+    "duration": 2371
+  },
+  "3-shiny/shellder": {
+    "file": "3-shiny/shellder.png",
+    "duration": 2140
+  },
+  "3-shiny/shiftry": {
+    "file": "3-shiny/shiftry.png",
+    "duration": 2022
+  },
+  "3-shiny/shroomish": {
+    "file": "3-shiny/shroomish.png",
+    "duration": 2299
+  },
+  "3-shiny/shuckle": {
+    "file": "3-shiny/shuckle.png",
+    "duration": 3312
+  },
+  "3-shiny/shuppet": {
+    "file": "3-shiny/shuppet.png",
+    "duration": 3066
+  },
+  "3-shiny/silcoon": {
+    "file": "3-shiny/silcoon.png",
+    "duration": 2114
+  },
+  "3-shiny/skarmory": {
+    "file": "3-shiny/skarmory.png",
+    "duration": 2574
+  },
+  "3-shiny/skiploom": {
+    "file": "3-shiny/skiploom.png",
+    "duration": 3257
+  },
+  "3-shiny/skitty": {
+    "file": "3-shiny/skitty.png",
+    "duration": 2185
+  },
+  "3-shiny/slaking": {
+    "file": "3-shiny/slaking.png",
+    "duration": 3866
+  },
+  "3-shiny/slakoth": {
+    "file": "3-shiny/slakoth.png",
+    "duration": 2906
+  },
+  "3-shiny/slowbro": {
+    "file": "3-shiny/slowbro.png",
+    "duration": 2893
+  },
+  "3-shiny/slowking": {
+    "file": "3-shiny/slowking.png",
+    "duration": 2018
+  },
+  "3-shiny/slowpoke": {
+    "file": "3-shiny/slowpoke.png",
+    "duration": 2906
+  },
+  "3-shiny/slugma": {
+    "file": "3-shiny/slugma.png",
+    "duration": 1982
+  },
+  "3-shiny/smeargle": {
+    "file": "3-shiny/smeargle.png",
+    "duration": 1931
+  },
+  "3-shiny/smoochum": {
+    "file": "3-shiny/smoochum.png",
+    "duration": 2629
+  },
+  "3-shiny/sneasel": {
+    "file": "3-shiny/sneasel.png",
+    "duration": 1834
+  },
+  "3-shiny/snorlax": {
+    "file": "3-shiny/snorlax.png",
+    "duration": 2977
+  },
+  "3-shiny/snorunt": {
+    "file": "3-shiny/snorunt.png",
+    "duration": 3168
+  },
+  "3-shiny/snubbull": {
+    "file": "3-shiny/snubbull.png",
+    "duration": 2015
+  },
+  "3-shiny/solrock": {
+    "file": "3-shiny/solrock.png",
+    "duration": 3559
+  },
+  "3-shiny/spearow": {
+    "file": "3-shiny/spearow.png",
+    "duration": 2995
+  },
+  "3-shiny/spheal": {
+    "file": "3-shiny/spheal.png",
+    "duration": 4544
+  },
+  "3-shiny/spinarak": {
+    "file": "3-shiny/spinarak.png",
+    "duration": 1971
+  },
+  "3-shiny/spinda": {
+    "file": "3-shiny/spinda.png",
+    "duration": 1881
+  },
+  "3-shiny/spoink": {
+    "file": "3-shiny/spoink.png",
+    "duration": 4073
+  },
+  "3-shiny/squirtle": {
+    "file": "3-shiny/squirtle.png",
+    "duration": 2977
+  },
+  "3-shiny/stantler": {
+    "file": "3-shiny/stantler.png",
+    "duration": 2014
+  },
+  "3-shiny/starmie": {
+    "file": "3-shiny/starmie.png",
+    "duration": 2160
+  },
+  "3-shiny/staryu": {
+    "file": "3-shiny/staryu.png",
+    "duration": 3792
+  },
+  "3-shiny/steelix": {
+    "file": "3-shiny/steelix.png",
+    "duration": 2618
+  },
+  "3-shiny/sudowoodo": {
+    "file": "3-shiny/sudowoodo.png",
+    "duration": 2580
+  },
+  "3-shiny/suicune": {
+    "file": "3-shiny/suicune.png",
+    "duration": 2156
+  },
+  "3-shiny/sunflora": {
+    "file": "3-shiny/sunflora.png",
+    "duration": 2014
+  },
+  "3-shiny/sunkern": {
+    "file": "3-shiny/sunkern.png",
+    "duration": 1785
+  },
+  "3-shiny/surskit": {
+    "file": "3-shiny/surskit.png",
+    "duration": 2131
+  },
+  "3-shiny/swablu": {
+    "file": "3-shiny/swablu.png",
+    "duration": 2140
+  },
+  "3-shiny/swalot": {
+    "file": "3-shiny/swalot.png",
+    "duration": 3046
+  },
+  "3-shiny/swampert": {
+    "file": "3-shiny/swampert.png",
+    "duration": 2706
+  },
+  "3-shiny/swellow": {
+    "file": "3-shiny/swellow.png",
+    "duration": 1854
+  },
+  "3-shiny/swinub": {
+    "file": "3-shiny/swinub.png",
+    "duration": 1994
+  },
+  "3-shiny/taillow": {
+    "file": "3-shiny/taillow.png",
+    "duration": 1674
+  },
+  "3-shiny/tangela": {
+    "file": "3-shiny/tangela.png",
+    "duration": 2788
+  },
+  "3-shiny/tauros": {
+    "file": "3-shiny/tauros.png",
+    "duration": 2611
+  },
+  "3-shiny/teddiursa": {
+    "file": "3-shiny/teddiursa.png",
+    "duration": 1975
+  },
+  "3-shiny/tentacool": {
+    "file": "3-shiny/tentacool.png",
+    "duration": 2064
+  },
+  "3-shiny/tentacruel": {
+    "file": "3-shiny/tentacruel.png",
+    "duration": 2868
+  },
+  "3-shiny/togepi": {
+    "file": "3-shiny/togepi.png",
+    "duration": 2964
+  },
+  "3-shiny/togetic": {
+    "file": "3-shiny/togetic.png",
+    "duration": 2014
+  },
+  "3-shiny/torchic": {
+    "file": "3-shiny/torchic.png",
+    "duration": 1825
+  },
+  "3-shiny/torkoal": {
+    "file": "3-shiny/torkoal.png",
+    "duration": 2407
+  },
+  "3-shiny/totodile": {
+    "file": "3-shiny/totodile.png",
+    "duration": 1965
+  },
+  "3-shiny/trapinch": {
+    "file": "3-shiny/trapinch.png",
+    "duration": 2404
+  },
+  "3-shiny/treecko": {
+    "file": "3-shiny/treecko.png",
+    "duration": 2014
+  },
+  "3-shiny/tropius": {
+    "file": "3-shiny/tropius.png",
+    "duration": 2404
+  },
+  "3-shiny/typhlosion": {
+    "file": "3-shiny/typhlosion.png",
+    "duration": 2116
+  },
+  "3-shiny/tyranitar": {
+    "file": "3-shiny/tyranitar.png",
+    "duration": 1982
+  },
+  "3-shiny/tyrogue": {
+    "file": "3-shiny/tyrogue.png",
+    "duration": 2126
+  },
+  "3-shiny/umbreon": {
+    "file": "3-shiny/umbreon.png",
+    "duration": 2156
+  },
+  "3-shiny/unown": {
+    "file": "3-shiny/unown.png",
+    "duration": 2111
+  },
+  "3-shiny/ursaring": {
+    "file": "3-shiny/ursaring.png",
+    "duration": 2156
+  },
+  "3-shiny/vaporeon": {
+    "file": "3-shiny/vaporeon.png",
+    "duration": 1988
+  },
+  "3-shiny/venomoth": {
+    "file": "3-shiny/venomoth.png",
+    "duration": 2842
+  },
+  "3-shiny/venonat": {
+    "file": "3-shiny/venonat.png",
+    "duration": 2590
+  },
+  "3-shiny/venusaur": {
+    "file": "3-shiny/venusaur.png",
+    "duration": 2403
+  },
+  "3-shiny/vibrava": {
+    "file": "3-shiny/vibrava.png",
+    "duration": 3492
+  },
+  "3-shiny/victreebel": {
+    "file": "3-shiny/victreebel.png",
+    "duration": 2468
+  },
+  "3-shiny/vigoroth": {
+    "file": "3-shiny/vigoroth.png",
+    "duration": 2350
+  },
+  "3-shiny/vileplume": {
+    "file": "3-shiny/vileplume.png",
+    "duration": 4237
+  },
+  "3-shiny/volbeat": {
+    "file": "3-shiny/volbeat.png",
+    "duration": 2382
+  },
+  "3-shiny/voltorb": {
+    "file": "3-shiny/voltorb.png",
+    "duration": 2206
+  },
+  "3-shiny/vulpix": {
+    "file": "3-shiny/vulpix.png",
+    "duration": 2561
+  },
+  "3-shiny/wailmer": {
+    "file": "3-shiny/wailmer.png",
+    "duration": 3746
+  },
+  "3-shiny/wailord": {
+    "file": "3-shiny/wailord.png",
+    "duration": 3146
+  },
+  "3-shiny/walrein": {
+    "file": "3-shiny/walrein.png",
+    "duration": 2203
+  },
+  "3-shiny/wartortle": {
+    "file": "3-shiny/wartortle.png",
+    "duration": 2001
+  },
+  "3-shiny/weedle": {
+    "file": "3-shiny/weedle.png",
+    "duration": 2583
+  },
+  "3-shiny/weepinbell": {
+    "file": "3-shiny/weepinbell.png",
+    "duration": 2986
+  },
+  "3-shiny/weezing": {
+    "file": "3-shiny/weezing.png",
+    "duration": 1953
+  },
+  "3-shiny/whiscash": {
+    "file": "3-shiny/whiscash.png",
+    "duration": 4699
+  },
+  "3-shiny/whismur": {
+    "file": "3-shiny/whismur.png",
+    "duration": 3027
+  },
+  "3-shiny/wigglytuff": {
+    "file": "3-shiny/wigglytuff.png",
+    "duration": 2584
+  },
+  "3-shiny/wingull": {
+    "file": "3-shiny/wingull.png",
+    "duration": 2826
+  },
+  "3-shiny/wobbuffet": {
+    "file": "3-shiny/wobbuffet.png",
+    "duration": 2653
+  },
+  "3-shiny/wooper": {
+    "file": "3-shiny/wooper.png",
+    "duration": 2014
+  },
+  "3-shiny/wurmple": {
+    "file": "3-shiny/wurmple.png",
+    "duration": 2315
+  },
+  "3-shiny/wynaut": {
+    "file": "3-shiny/wynaut.png",
+    "duration": 2699
+  },
+  "3-shiny/xatu": {
+    "file": "3-shiny/xatu.png",
+    "duration": 3247
+  },
+  "3-shiny/yanma": {
+    "file": "3-shiny/yanma.png",
+    "duration": 2314
+  },
+  "3-shiny/zangoose": {
+    "file": "3-shiny/zangoose.png",
+    "duration": 3508
+  },
+  "3-shiny/zapdos": {
+    "file": "3-shiny/zapdos.png",
+    "duration": 2039
+  },
+  "3-shiny/zigzagoon": {
+    "file": "3-shiny/zigzagoon.png",
+    "duration": 1886
+  },
+  "3-shiny/zubat": {
+    "file": "3-shiny/zubat.png",
+    "duration": 2014
+  },
+  "3/abra": {
+    "file": "3/abra.png",
+    "duration": 2366
+  },
+  "3/absol": {
+    "file": "3/absol.png",
+    "duration": 2888
+  },
+  "3/aerodactyl": {
+    "file": "3/aerodactyl.png",
+    "duration": 2429
+  },
+  "3/aggron": {
+    "file": "3/aggron.png",
+    "duration": 2460
+  },
+  "3/aipom": {
+    "file": "3/aipom.png",
+    "duration": 2468
+  },
+  "3/alakazam": {
+    "file": "3/alakazam.png",
+    "duration": 2457
+  },
+  "3/altaria": {
+    "file": "3/altaria.png",
+    "duration": 2571
+  },
+  "3/ampharos": {
+    "file": "3/ampharos.png",
+    "duration": 2290
+  },
+  "3/anorith": {
+    "file": "3/anorith.png",
+    "duration": 2896
+  },
+  "3/arbok": {
+    "file": "3/arbok.png",
+    "duration": 1988
+  },
+  "3/arcanine": {
+    "file": "3/arcanine.png",
+    "duration": 2645
+  },
+  "3/ariados": {
+    "file": "3/ariados.png",
+    "duration": 1988
+  },
+  "3/armaldo": {
+    "file": "3/armaldo.png",
+    "duration": 2404
+  },
+  "3/aron": {
+    "file": "3/aron.png",
+    "duration": 3775
+  },
+  "3/articuno": {
+    "file": "3/articuno.png",
+    "duration": 2336
+  },
+  "3/azumarill": {
+    "file": "3/azumarill.png",
+    "duration": 4231
+  },
+  "3/azurill": {
+    "file": "3/azurill.png",
+    "duration": 2600
+  },
+  "3/bagon": {
+    "file": "3/bagon.png",
+    "duration": 2473
+  },
+  "3/baltoy": {
+    "file": "3/baltoy.png",
+    "duration": 3645
+  },
+  "3/banette": {
+    "file": "3/banette.png",
+    "duration": 2909
+  },
+  "3/barboach": {
+    "file": "3/barboach.png",
+    "duration": 5285
+  },
+  "3/bayleef": {
+    "file": "3/bayleef.png",
+    "duration": 2014
+  },
+  "3/beautifly": {
+    "file": "3/beautifly.png",
+    "duration": 1805
+  },
+  "3/beedrill": {
+    "file": "3/beedrill.png",
+    "duration": 2625
+  },
+  "3/beldum": {
+    "file": "3/beldum.png",
+    "duration": 1988
+  },
+  "3/bellossom": {
+    "file": "3/bellossom.png",
+    "duration": 3720
+  },
+  "3/bellsprout": {
+    "file": "3/bellsprout.png",
+    "duration": 1825
+  },
+  "3/blastoise": {
+    "file": "3/blastoise.png",
+    "duration": 3284
+  },
+  "3/blaziken": {
+    "file": "3/blaziken.png",
+    "duration": 1938
+  },
+  "3/blissey": {
+    "file": "3/blissey.png",
+    "duration": 2014
+  },
+  "3/breloom": {
+    "file": "3/breloom.png",
+    "duration": 2516
+  },
+  "3/bulbasaur": {
+    "file": "3/bulbasaur.png",
+    "duration": 2275
+  },
+  "3/butterfree": {
+    "file": "3/butterfree.png",
+    "duration": 2999
+  },
+  "3/cacnea": {
+    "file": "3/cacnea.png",
+    "duration": 4231
+  },
+  "3/cacturne": {
+    "file": "3/cacturne.png",
+    "duration": 2371
+  },
+  "3/camerupt": {
+    "file": "3/camerupt.png",
+    "duration": 2906
+  },
+  "3/carvanha": {
+    "file": "3/carvanha.png",
+    "duration": 4244
+  },
+  "3/cascoon": {
+    "file": "3/cascoon.png",
+    "duration": 2120
+  },
+  "3/castform": {
+    "file": "3/castform.png",
+    "duration": 2986
+  },
+  "3/castformrainy": {
+    "file": "3/castformrainy.png",
+    "duration": 2986
+  },
+  "3/castformsnowy": {
+    "file": "3/castformsnowy.png",
+    "duration": 2986
+  },
+  "3/castformsunny": {
+    "file": "3/castformsunny.png",
+    "duration": 2986
+  },
+  "3/caterpie": {
+    "file": "3/caterpie.png",
+    "duration": 2980
+  },
+  "3/celebi": {
+    "file": "3/celebi.png",
+    "duration": 3304
+  },
+  "3/chansey": {
+    "file": "3/chansey.png",
+    "duration": 2906
+  },
+  "3/charizard": {
+    "file": "3/charizard.png",
+    "duration": 1905
+  },
+  "3/charmander": {
+    "file": "3/charmander.png",
+    "duration": 2086
+  },
+  "3/charmeleon": {
+    "file": "3/charmeleon.png",
+    "duration": 2226
+  },
+  "3/chikorita": {
+    "file": "3/chikorita.png",
+    "duration": 2014
+  },
+  "3/chimecho": {
+    "file": "3/chimecho.png",
+    "duration": 3561
+  },
+  "3/chinchou": {
+    "file": "3/chinchou.png",
+    "duration": 2912
+  },
+  "3/clamperl": {
+    "file": "3/clamperl.png",
+    "duration": 2394
+  },
+  "3/claydol": {
+    "file": "3/claydol.png",
+    "duration": 3066
+  },
+  "3/clefable": {
+    "file": "3/clefable.png",
+    "duration": 4237
+  },
+  "3/clefairy": {
+    "file": "3/clefairy.png",
+    "duration": 2014
+  },
+  "3/cleffa": {
+    "file": "3/cleffa.png",
+    "duration": 1785
+  },
+  "3/cloyster": {
+    "file": "3/cloyster.png",
+    "duration": 2999
+  },
+  "3/combusken": {
+    "file": "3/combusken.png",
+    "duration": 2275
+  },
+  "3/corphish": {
+    "file": "3/corphish.png",
+    "duration": 3492
+  },
+  "3/corsola": {
+    "file": "3/corsola.png",
+    "duration": 2137
+  },
+  "3/cradily": {
+    "file": "3/cradily.png",
+    "duration": 2926
+  },
+  "3/crawdaunt": {
+    "file": "3/crawdaunt.png",
+    "duration": 2420
+  },
+  "3/crobat": {
+    "file": "3/crobat.png",
+    "duration": 2014
+  },
+  "3/croconaw": {
+    "file": "3/croconaw.png",
+    "duration": 1988
+  },
+  "3/cubone": {
+    "file": "3/cubone.png",
+    "duration": 2732
+  },
+  "3/cyndaquil": {
+    "file": "3/cyndaquil.png",
+    "duration": 1785
+  },
+  "3/delcatty": {
+    "file": "3/delcatty.png",
+    "duration": 2256
+  },
+  "3/delibird": {
+    "file": "3/delibird.png",
+    "duration": 1785
+  },
+  "3/deoxys": {
+    "file": "3/deoxys.png",
+    "duration": 2826
+  },
+  "3/deoxysspeed": {
+    "file": "3/deoxysspeed.png",
+    "duration": 2826
+  },
+  "3/dewgong": {
+    "file": "3/dewgong.png",
+    "duration": 2906
+  },
+  "3/diglett": {
+    "file": "3/diglett.png",
+    "duration": 2233
+  },
+  "3/ditto": {
+    "file": "3/ditto.png",
+    "duration": 2005
+  },
+  "3/dodrio": {
+    "file": "3/dodrio.png",
+    "duration": 2987
+  },
+  "3/doduo": {
+    "file": "3/doduo.png",
+    "duration": 2527
+  },
+  "3/donphan": {
+    "file": "3/donphan.png",
+    "duration": 2842
+  },
+  "3/dragonair": {
+    "file": "3/dragonair.png",
+    "duration": 1988
+  },
+  "3/dragonite": {
+    "file": "3/dragonite.png",
+    "duration": 2577
+  },
+  "3/dratini": {
+    "file": "3/dratini.png",
+    "duration": 2014
+  },
+  "3/drowzee": {
+    "file": "3/drowzee.png",
+    "duration": 2889
+  },
+  "3/dugtrio": {
+    "file": "3/dugtrio.png",
+    "duration": 3257
+  },
+  "3/dunsparce": {
+    "file": "3/dunsparce.png",
+    "duration": 2161
+  },
+  "3/dusclops": {
+    "file": "3/dusclops.png",
+    "duration": 2407
+  },
+  "3/duskull": {
+    "file": "3/duskull.png",
+    "duration": 2462
+  },
+  "3/dustox": {
+    "file": "3/dustox.png",
+    "duration": 2697
+  },
+  "3/eevee": {
+    "file": "3/eevee.png",
+    "duration": 1838
+  },
+  "3/ekans": {
+    "file": "3/ekans.png",
+    "duration": 2481
+  },
+  "3/electabuzz": {
+    "file": "3/electabuzz.png",
+    "duration": 2206
+  },
+  "3/electrike": {
+    "file": "3/electrike.png",
+    "duration": 2503
+  },
+  "3/electrode": {
+    "file": "3/electrode.png",
+    "duration": 2600
+  },
+  "3/elekid": {
+    "file": "3/elekid.png",
+    "duration": 2290
+  },
+  "3/entei": {
+    "file": "3/entei.png",
+    "duration": 1851
+  },
+  "3/espeon": {
+    "file": "3/espeon.png",
+    "duration": 2159
+  },
+  "3/exeggcute": {
+    "file": "3/exeggcute.png",
+    "duration": 2593
+  },
+  "3/exeggutor": {
+    "file": "3/exeggutor.png",
+    "duration": 2468
+  },
+  "3/exploud": {
+    "file": "3/exploud.png",
+    "duration": 2460
+  },
+  "3/farfetchd": {
+    "file": "3/farfetchd.png",
+    "duration": 2738
+  },
+  "3/fearow": {
+    "file": "3/fearow.png",
+    "duration": 2327
+  },
+  "3/feebas": {
+    "file": "3/feebas.png",
+    "duration": 4231
+  },
+  "3/feraligatr": {
+    "file": "3/feraligatr.png",
+    "duration": 2568
+  },
+  "3/flaaffy": {
+    "file": "3/flaaffy.png",
+    "duration": 1785
+  },
+  "3/flareon": {
+    "file": "3/flareon.png",
+    "duration": 2156
+  },
+  "3/flygon": {
+    "file": "3/flygon.png",
+    "duration": 3398
+  },
+  "3/forretress": {
+    "file": "3/forretress.png",
+    "duration": 1818
+  },
+  "3/furret": {
+    "file": "3/furret.png",
+    "duration": 2468
+  },
+  "3/gardevoir": {
+    "file": "3/gardevoir.png",
+    "duration": 2014
+  },
+  "3/gastly": {
+    "file": "3/gastly.png",
+    "duration": 3200
+  },
+  "3/gengar": {
+    "file": "3/gengar.png",
+    "duration": 3092
+  },
+  "3/geodude": {
+    "file": "3/geodude.png",
+    "duration": 2732
+  },
+  "3/girafarig": {
+    "file": "3/girafarig.png",
+    "duration": 2790
+  },
+  "3/glalie": {
+    "file": "3/glalie.png",
+    "duration": 2462
+  },
+  "3/gligar": {
+    "file": "3/gligar.png",
+    "duration": 2001
+  },
+  "3/gloom": {
+    "file": "3/gloom.png",
+    "duration": 2880
+  },
+  "3/golbat": {
+    "file": "3/golbat.png",
+    "duration": 2999
+  },
+  "3/goldeen": {
+    "file": "3/goldeen.png",
+    "duration": 3481
+  },
+  "3/golduck": {
+    "file": "3/golduck.png",
+    "duration": 2578
+  },
+  "3/golem": {
+    "file": "3/golem.png",
+    "duration": 2403
+  },
+  "3/gorebyss": {
+    "file": "3/gorebyss.png",
+    "duration": 2999
+  },
+  "3/granbull": {
+    "file": "3/granbull.png",
+    "duration": 2069
+  },
+  "3/graveler": {
+    "file": "3/graveler.png",
+    "duration": 2738
+  },
+  "3/grimer": {
+    "file": "3/grimer.png",
+    "duration": 2432
+  },
+  "3/groudon": {
+    "file": "3/groudon.png",
+    "duration": 2169
+  },
+  "3/grovyle": {
+    "file": "3/grovyle.png",
+    "duration": 2039
+  },
+  "3/growlithe": {
+    "file": "3/growlithe.png",
+    "duration": 2290
+  },
+  "3/grumpig": {
+    "file": "3/grumpig.png",
+    "duration": 2699
+  },
+  "3/gulpin": {
+    "file": "3/gulpin.png",
+    "duration": 2198
+  },
+  "3/gyarados": {
+    "file": "3/gyarados.png",
+    "duration": 2732
+  },
+  "3/hariyama": {
+    "file": "3/hariyama.png",
+    "duration": 2595
+  },
+  "3/haunter": {
+    "file": "3/haunter.png",
+    "duration": 2711
+  },
+  "3/heracross": {
+    "file": "3/heracross.png",
+    "duration": 2334
+  },
+  "3/hitmonchan": {
+    "file": "3/hitmonchan.png",
+    "duration": 2410
+  },
+  "3/hitmonlee": {
+    "file": "3/hitmonlee.png",
+    "duration": 1834
+  },
+  "3/hitmontop": {
+    "file": "3/hitmontop.png",
+    "duration": 1891
+  },
+  "3/hooh": {
+    "file": "3/hooh.png",
+    "duration": 1851
+  },
+  "3/hoothoot": {
+    "file": "3/hoothoot.png",
+    "duration": 2499
+  },
+  "3/hoppip": {
+    "file": "3/hoppip.png",
+    "duration": 2999
+  },
+  "3/horsea": {
+    "file": "3/horsea.png",
+    "duration": 2160
+  },
+  "3/houndoom": {
+    "file": "3/houndoom.png",
+    "duration": 2323
+  },
+  "3/houndour": {
+    "file": "3/houndour.png",
+    "duration": 1831
+  },
+  "3/huntail": {
+    "file": "3/huntail.png",
+    "duration": 2410
+  },
+  "3/hypno": {
+    "file": "3/hypno.png",
+    "duration": 2909
+  },
+  "3/igglybuff": {
+    "file": "3/igglybuff.png",
+    "duration": 2989
+  },
+  "3/illumise": {
+    "file": "3/illumise.png",
+    "duration": 2939
+  },
+  "3/ivysaur": {
+    "file": "3/ivysaur.png",
+    "duration": 1932
+  },
+  "3/jigglypuff": {
+    "file": "3/jigglypuff.png",
+    "duration": 2738
+  },
+  "3/jirachi": {
+    "file": "3/jirachi.png",
+    "duration": 2846
+  },
+  "3/jolteon": {
+    "file": "3/jolteon.png",
+    "duration": 2014
+  },
+  "3/jumpluff": {
+    "file": "3/jumpluff.png",
+    "duration": 3149
+  },
+  "3/jynx": {
+    "file": "3/jynx.png",
+    "duration": 3328
+  },
+  "3/kabuto": {
+    "file": "3/kabuto.png",
+    "duration": 2986
+  },
+  "3/kabutops": {
+    "file": "3/kabutops.png",
+    "duration": 1988
+  },
+  "3/kadabra": {
+    "file": "3/kadabra.png",
+    "duration": 2360
+  },
+  "3/kakuna": {
+    "file": "3/kakuna.png",
+    "duration": 2460
+  },
+  "3/kangaskhan": {
+    "file": "3/kangaskhan.png",
+    "duration": 1988
+  },
+  "3/kecleon": {
+    "file": "3/kecleon.png",
+    "duration": 2640
+  },
+  "3/kingdra": {
+    "file": "3/kingdra.png",
+    "duration": 2334
+  },
+  "3/kingler": {
+    "file": "3/kingler.png",
+    "duration": 2889
+  },
+  "3/kirlia": {
+    "file": "3/kirlia.png",
+    "duration": 2181
+  },
+  "3/koffing": {
+    "file": "3/koffing.png",
+    "duration": 2018
+  },
+  "3/krabby": {
+    "file": "3/krabby.png",
+    "duration": 1922
+  },
+  "3/kyogre": {
+    "file": "3/kyogre.png",
+    "duration": 2996
+  },
+  "3/lairon": {
+    "file": "3/lairon.png",
+    "duration": 2550
+  },
+  "3/lanturn": {
+    "file": "3/lanturn.png",
+    "duration": 2999
+  },
+  "3/lapras": {
+    "file": "3/lapras.png",
+    "duration": 1831
+  },
+  "3/larvitar": {
+    "file": "3/larvitar.png",
+    "duration": 1785
+  },
+  "3/latias": {
+    "file": "3/latias.png",
+    "duration": 2015
+  },
+  "3/latios": {
+    "file": "3/latios.png",
+    "duration": 1988
+  },
+  "3/ledian": {
+    "file": "3/ledian.png",
+    "duration": 2442
+  },
+  "3/ledyba": {
+    "file": "3/ledyba.png",
+    "duration": 1785
+  },
+  "3/lickitung": {
+    "file": "3/lickitung.png",
+    "duration": 2906
+  },
+  "3/lileep": {
+    "file": "3/lileep.png",
+    "duration": 2407
+  },
+  "3/linoone": {
+    "file": "3/linoone.png",
+    "duration": 2336
+  },
+  "3/lombre": {
+    "file": "3/lombre.png",
+    "duration": 2516
+  },
+  "3/lotad": {
+    "file": "3/lotad.png",
+    "duration": 2851
+  },
+  "3/loudred": {
+    "file": "3/loudred.png",
+    "duration": 4237
+  },
+  "3/ludicolo": {
+    "file": "3/ludicolo.png",
+    "duration": 4231
+  },
+  "3/lugia": {
+    "file": "3/lugia.png",
+    "duration": 3411
+  },
+  "3/lunatone": {
+    "file": "3/lunatone.png",
+    "duration": 2989
+  },
+  "3/luvdisc": {
+    "file": "3/luvdisc.png",
+    "duration": 2992
+  },
+  "3/machamp": {
+    "file": "3/machamp.png",
+    "duration": 2453
+  },
+  "3/machoke": {
+    "file": "3/machoke.png",
+    "duration": 2554
+  },
+  "3/machop": {
+    "file": "3/machop.png",
+    "duration": 2868
+  },
+  "3/magby": {
+    "file": "3/magby.png",
+    "duration": 2704
+  },
+  "3/magcargo": {
+    "file": "3/magcargo.png",
+    "duration": 1988
+  },
+  "3/magikarp": {
+    "file": "3/magikarp.png",
+    "duration": 2738
+  },
+  "3/magmar": {
+    "file": "3/magmar.png",
+    "duration": 1988
+  },
+  "3/magnemite": {
+    "file": "3/magnemite.png",
+    "duration": 3738
+  },
+  "3/magneton": {
+    "file": "3/magneton.png",
+    "duration": 2681
+  },
+  "3/makuhita": {
+    "file": "3/makuhita.png",
+    "duration": 2842
+  },
+  "3/manectric": {
+    "file": "3/manectric.png",
+    "duration": 2516
+  },
+  "3/mankey": {
+    "file": "3/mankey.png",
+    "duration": 2783
+  },
+  "3/mantine": {
+    "file": "3/mantine.png",
+    "duration": 3328
+  },
+  "3/mareep": {
+    "file": "3/mareep.png",
+    "duration": 2831
+  },
+  "3/marill": {
+    "file": "3/marill.png",
+    "duration": 3554
+  },
+  "3/marowak": {
+    "file": "3/marowak.png",
+    "duration": 2732
+  },
+  "3/marshtomp": {
+    "file": "3/marshtomp.png",
+    "duration": 1805
+  },
+  "3/masquerain": {
+    "file": "3/masquerain.png",
+    "duration": 2399
+  },
+  "3/mawile": {
+    "file": "3/mawile.png",
+    "duration": 2369
+  },
+  "3/medicham": {
+    "file": "3/medicham.png",
+    "duration": 2912
+  },
+  "3/meditite": {
+    "file": "3/meditite.png",
+    "duration": 2738
+  },
+  "3/meganium": {
+    "file": "3/meganium.png",
+    "duration": 1988
+  },
+  "3/meowth": {
+    "file": "3/meowth.png",
+    "duration": 2468
+  },
+  "3/metagross": {
+    "file": "3/metagross.png",
+    "duration": 2487
+  },
+  "3/metang": {
+    "file": "3/metang.png",
+    "duration": 1805
+  },
+  "3/metapod": {
+    "file": "3/metapod.png",
+    "duration": 2826
+  },
+  "3/mew": {
+    "file": "3/mew.png",
+    "duration": 2839
+  },
+  "3/mewtwo": {
+    "file": "3/mewtwo.png",
+    "duration": 1851
+  },
+  "3/mightyena": {
+    "file": "3/mightyena.png",
+    "duration": 2002
+  },
+  "3/milotic": {
+    "file": "3/milotic.png",
+    "duration": 2882
+  },
+  "3/miltank": {
+    "file": "3/miltank.png",
+    "duration": 2906
+  },
+  "3/minun": {
+    "file": "3/minun.png",
+    "duration": 2005
+  },
+  "3/misdreavus": {
+    "file": "3/misdreavus.png",
+    "duration": 2999
+  },
+  "3/moltres": {
+    "file": "3/moltres.png",
+    "duration": 2925
+  },
+  "3/mrmime": {
+    "file": "3/mrmime.png",
+    "duration": 2580
+  },
+  "3/mudkip": {
+    "file": "3/mudkip.png",
+    "duration": 1971
+  },
+  "3/muk": {
+    "file": "3/muk.png",
+    "duration": 3021
+  },
+  "3/murkrow": {
+    "file": "3/murkrow.png",
+    "duration": 2014
+  },
+  "3/natu": {
+    "file": "3/natu.png",
+    "duration": 2581
+  },
+  "3/nidoking": {
+    "file": "3/nidoking.png",
+    "duration": 2400
+  },
+  "3/nidoqueen": {
+    "file": "3/nidoqueen.png",
+    "duration": 1985
+  },
+  "3/nidoranf": {
+    "file": "3/nidoranf.png",
+    "duration": 2604
+  },
+  "3/nidoranm": {
+    "file": "3/nidoranm.png",
+    "duration": 1831
+  },
+  "3/nidorina": {
+    "file": "3/nidorina.png",
+    "duration": 1988
+  },
+  "3/nidorino": {
+    "file": "3/nidorino.png",
+    "duration": 2001
+  },
+  "3/nincada": {
+    "file": "3/nincada.png",
+    "duration": 2734
+  },
+  "3/ninetales": {
+    "file": "3/ninetales.png",
+    "duration": 2571
+  },
+  "3/ninjask": {
+    "file": "3/ninjask.png",
+    "duration": 2468
+  },
+  "3/noctowl": {
+    "file": "3/noctowl.png",
+    "duration": 2156
+  },
+  "3/nosepass": {
+    "file": "3/nosepass.png",
+    "duration": 4237
+  },
+  "3/numel": {
+    "file": "3/numel.png",
+    "duration": 2873
+  },
+  "3/nuzleaf": {
+    "file": "3/nuzleaf.png",
+    "duration": 2784
+  },
+  "3/octillery": {
+    "file": "3/octillery.png",
+    "duration": 2153
+  },
+  "3/oddish": {
+    "file": "3/oddish.png",
+    "duration": 2399
+  },
+  "3/omanyte": {
+    "file": "3/omanyte.png",
+    "duration": 2999
+  },
+  "3/omastar": {
+    "file": "3/omastar.png",
+    "duration": 1841
+  },
+  "3/onix": {
+    "file": "3/onix.png",
+    "duration": 3153
+  },
+  "3/paras": {
+    "file": "3/paras.png",
+    "duration": 2938
+  },
+  "3/parasect": {
+    "file": "3/parasect.png",
+    "duration": 2735
+  },
+  "3/pelipper": {
+    "file": "3/pelipper.png",
+    "duration": 2999
+  },
+  "3/persian": {
+    "file": "3/persian.png",
+    "duration": 2320
+  },
+  "3/phanpy": {
+    "file": "3/phanpy.png",
+    "duration": 2920
+  },
+  "3/pichu": {
+    "file": "3/pichu.png",
+    "duration": 2539
+  },
+  "3/pidgeot": {
+    "file": "3/pidgeot.png",
+    "duration": 2007
+  },
+  "3/pidgeotto": {
+    "file": "3/pidgeotto.png",
+    "duration": 2236
+  },
+  "3/pidgey": {
+    "file": "3/pidgey.png",
+    "duration": 2442
+  },
+  "3/pikachu": {
+    "file": "3/pikachu.png",
+    "duration": 2457
+  },
+  "3/piloswine": {
+    "file": "3/piloswine.png",
+    "duration": 1818
+  },
+  "3/pineco": {
+    "file": "3/pineco.png",
+    "duration": 2839
+  },
+  "3/pinsir": {
+    "file": "3/pinsir.png",
+    "duration": 2012
+  },
+  "3/plusle": {
+    "file": "3/plusle.png",
+    "duration": 2031
+  },
+  "3/politoed": {
+    "file": "3/politoed.png",
+    "duration": 3118
+  },
+  "3/poliwag": {
+    "file": "3/poliwag.png",
+    "duration": 2014
+  },
+  "3/poliwhirl": {
+    "file": "3/poliwhirl.png",
+    "duration": 2538
+  },
+  "3/poliwrath": {
+    "file": "3/poliwrath.png",
+    "duration": 2460
+  },
+  "3/ponyta": {
+    "file": "3/ponyta.png",
+    "duration": 2135
+  },
+  "3/poochyena": {
+    "file": "3/poochyena.png",
+    "duration": 2220
+  },
+  "3/porygon": {
+    "file": "3/porygon.png",
+    "duration": 1785
+  },
+  "3/porygon2": {
+    "file": "3/porygon2.png",
+    "duration": 2366
+  },
+  "3/primeape": {
+    "file": "3/primeape.png",
+    "duration": 2782
+  },
+  "3/psyduck": {
+    "file": "3/psyduck.png",
+    "duration": 2610
+  },
+  "3/pupitar": {
+    "file": "3/pupitar.png",
+    "duration": 1988
+  },
+  "3/quagsire": {
+    "file": "3/quagsire.png",
+    "duration": 2015
+  },
+  "3/quilava": {
+    "file": "3/quilava.png",
+    "duration": 1988
+  },
+  "3/qwilfish": {
+    "file": "3/qwilfish.png",
+    "duration": 3722
+  },
+  "3/raichu": {
+    "file": "3/raichu.png",
+    "duration": 2574
+  },
+  "3/raikou": {
+    "file": "3/raikou.png",
+    "duration": 2039
+  },
+  "3/ralts": {
+    "file": "3/ralts.png",
+    "duration": 2814
+  },
+  "3/rapidash": {
+    "file": "3/rapidash.png",
+    "duration": 2201
+  },
+  "3/raticate": {
+    "file": "3/raticate.png",
+    "duration": 2314
+  },
+  "3/rattata": {
+    "file": "3/rattata.png",
+    "duration": 2751
+  },
+  "3/rayquaza": {
+    "file": "3/rayquaza.png",
+    "duration": 2789
+  },
+  "3/regice": {
+    "file": "3/regice.png",
+    "duration": 2461
+  },
+  "3/regirock": {
+    "file": "3/regirock.png",
+    "duration": 2005
+  },
+  "3/registeel": {
+    "file": "3/registeel.png",
+    "duration": 2001
+  },
+  "3/relicanth": {
+    "file": "3/relicanth.png",
+    "duration": 2309
+  },
+  "3/remoraid": {
+    "file": "3/remoraid.png",
+    "duration": 1668
+  },
+  "3/rhydon": {
+    "file": "3/rhydon.png",
+    "duration": 2671
+  },
+  "3/rhyhorn": {
+    "file": "3/rhyhorn.png",
+    "duration": 2002
+  },
+  "3/roselia": {
+    "file": "3/roselia.png",
+    "duration": 2912
+  },
+  "3/sableye": {
+    "file": "3/sableye.png",
+    "duration": 3210
+  },
+  "3/salamence": {
+    "file": "3/salamence.png",
+    "duration": 2953
+  },
+  "3/sandshrew": {
+    "file": "3/sandshrew.png",
+    "duration": 2015
+  },
+  "3/sandslash": {
+    "file": "3/sandslash.png",
+    "duration": 1988
+  },
+  "3/sceptile": {
+    "file": "3/sceptile.png",
+    "duration": 1918
+  },
+  "3/scizor": {
+    "file": "3/scizor.png",
+    "duration": 2142
+  },
+  "3/scyther": {
+    "file": "3/scyther.png",
+    "duration": 2156
+  },
+  "3/seadra": {
+    "file": "3/seadra.png",
+    "duration": 2137
+  },
+  "3/seaking": {
+    "file": "3/seaking.png",
+    "duration": 2999
+  },
+  "3/sealeo": {
+    "file": "3/sealeo.png",
+    "duration": 2407
+  },
+  "3/seedot": {
+    "file": "3/seedot.png",
+    "duration": 2782
+  },
+  "3/seel": {
+    "file": "3/seel.png",
+    "duration": 3147
+  },
+  "3/sentret": {
+    "file": "3/sentret.png",
+    "duration": 2114
+  },
+  "3/seviper": {
+    "file": "3/seviper.png",
+    "duration": 3495
+  },
+  "3/sharpedo": {
+    "file": "3/sharpedo.png",
+    "duration": 4066
+  },
+  "3/shedinja": {
+    "file": "3/shedinja.png",
+    "duration": 3702
+  },
+  "3/shelgon": {
+    "file": "3/shelgon.png",
+    "duration": 2371
+  },
+  "3/shellder": {
+    "file": "3/shellder.png",
+    "duration": 2140
+  },
+  "3/shiftry": {
+    "file": "3/shiftry.png",
+    "duration": 2022
+  },
+  "3/shroomish": {
+    "file": "3/shroomish.png",
+    "duration": 2299
+  },
+  "3/shuckle": {
+    "file": "3/shuckle.png",
+    "duration": 3312
+  },
+  "3/shuppet": {
+    "file": "3/shuppet.png",
+    "duration": 3066
+  },
+  "3/silcoon": {
+    "file": "3/silcoon.png",
+    "duration": 2114
+  },
+  "3/skarmory": {
+    "file": "3/skarmory.png",
+    "duration": 2574
+  },
+  "3/skiploom": {
+    "file": "3/skiploom.png",
+    "duration": 3257
+  },
+  "3/skitty": {
+    "file": "3/skitty.png",
+    "duration": 2185
+  },
+  "3/slaking": {
+    "file": "3/slaking.png",
+    "duration": 3866
+  },
+  "3/slakoth": {
+    "file": "3/slakoth.png",
+    "duration": 2906
+  },
+  "3/slowbro": {
+    "file": "3/slowbro.png",
+    "duration": 2893
+  },
+  "3/slowking": {
+    "file": "3/slowking.png",
+    "duration": 2018
+  },
+  "3/slowpoke": {
+    "file": "3/slowpoke.png",
+    "duration": 2906
+  },
+  "3/slugma": {
+    "file": "3/slugma.png",
+    "duration": 1982
+  },
+  "3/smeargle": {
+    "file": "3/smeargle.png",
+    "duration": 1931
+  },
+  "3/smoochum": {
+    "file": "3/smoochum.png",
+    "duration": 2629
+  },
+  "3/sneasel": {
+    "file": "3/sneasel.png",
+    "duration": 1834
+  },
+  "3/snorlax": {
+    "file": "3/snorlax.png",
+    "duration": 2977
+  },
+  "3/snorunt": {
+    "file": "3/snorunt.png",
+    "duration": 3168
+  },
+  "3/snubbull": {
+    "file": "3/snubbull.png",
+    "duration": 2015
+  },
+  "3/solrock": {
+    "file": "3/solrock.png",
+    "duration": 3559
+  },
+  "3/spearow": {
+    "file": "3/spearow.png",
+    "duration": 2995
+  },
+  "3/spheal": {
+    "file": "3/spheal.png",
+    "duration": 4544
+  },
+  "3/spinarak": {
+    "file": "3/spinarak.png",
+    "duration": 1971
+  },
+  "3/spinda": {
+    "file": "3/spinda.png",
+    "duration": 1881
+  },
+  "3/spoink": {
+    "file": "3/spoink.png",
+    "duration": 4073
+  },
+  "3/squirtle": {
+    "file": "3/squirtle.png",
+    "duration": 2977
+  },
+  "3/stantler": {
+    "file": "3/stantler.png",
+    "duration": 2014
+  },
+  "3/starmie": {
+    "file": "3/starmie.png",
+    "duration": 2160
+  },
+  "3/staryu": {
+    "file": "3/staryu.png",
+    "duration": 3792
+  },
+  "3/steelix": {
+    "file": "3/steelix.png",
+    "duration": 2618
+  },
+  "3/sudowoodo": {
+    "file": "3/sudowoodo.png",
+    "duration": 2580
+  },
+  "3/suicune": {
+    "file": "3/suicune.png",
+    "duration": 2156
+  },
+  "3/sunflora": {
+    "file": "3/sunflora.png",
+    "duration": 2014
+  },
+  "3/sunkern": {
+    "file": "3/sunkern.png",
+    "duration": 1785
+  },
+  "3/surskit": {
+    "file": "3/surskit.png",
+    "duration": 2131
+  },
+  "3/swablu": {
+    "file": "3/swablu.png",
+    "duration": 2140
+  },
+  "3/swalot": {
+    "file": "3/swalot.png",
+    "duration": 3046
+  },
+  "3/swampert": {
+    "file": "3/swampert.png",
+    "duration": 2706
+  },
+  "3/swellow": {
+    "file": "3/swellow.png",
+    "duration": 1854
+  },
+  "3/swinub": {
+    "file": "3/swinub.png",
+    "duration": 1994
+  },
+  "3/taillow": {
+    "file": "3/taillow.png",
+    "duration": 1674
+  },
+  "3/tangela": {
+    "file": "3/tangela.png",
+    "duration": 2788
+  },
+  "3/tauros": {
+    "file": "3/tauros.png",
+    "duration": 2611
+  },
+  "3/teddiursa": {
+    "file": "3/teddiursa.png",
+    "duration": 1975
+  },
+  "3/tentacool": {
+    "file": "3/tentacool.png",
+    "duration": 2064
+  },
+  "3/tentacruel": {
+    "file": "3/tentacruel.png",
+    "duration": 2868
+  },
+  "3/togepi": {
+    "file": "3/togepi.png",
+    "duration": 2964
+  },
+  "3/togetic": {
+    "file": "3/togetic.png",
+    "duration": 2014
+  },
+  "3/torchic": {
+    "file": "3/torchic.png",
+    "duration": 1825
+  },
+  "3/torkoal": {
+    "file": "3/torkoal.png",
+    "duration": 2407
+  },
+  "3/totodile": {
+    "file": "3/totodile.png",
+    "duration": 1965
+  },
+  "3/trapinch": {
+    "file": "3/trapinch.png",
+    "duration": 2404
+  },
+  "3/treecko": {
+    "file": "3/treecko.png",
+    "duration": 2014
+  },
+  "3/tropius": {
+    "file": "3/tropius.png",
+    "duration": 2404
+  },
+  "3/typhlosion": {
+    "file": "3/typhlosion.png",
+    "duration": 2116
+  },
+  "3/tyranitar": {
+    "file": "3/tyranitar.png",
+    "duration": 1982
+  },
+  "3/tyrogue": {
+    "file": "3/tyrogue.png",
+    "duration": 2126
+  },
+  "3/umbreon": {
+    "file": "3/umbreon.png",
+    "duration": 2156
+  },
+  "3/unown": {
+    "file": "3/unown.png",
+    "duration": 2111
+  },
+  "3/ursaring": {
+    "file": "3/ursaring.png",
+    "duration": 2156
+  },
+  "3/vaporeon": {
+    "file": "3/vaporeon.png",
+    "duration": 1988
+  },
+  "3/venomoth": {
+    "file": "3/venomoth.png",
+    "duration": 2842
+  },
+  "3/venonat": {
+    "file": "3/venonat.png",
+    "duration": 2590
+  },
+  "3/venusaur": {
+    "file": "3/venusaur.png",
+    "duration": 2403
+  },
+  "3/vibrava": {
+    "file": "3/vibrava.png",
+    "duration": 3492
+  },
+  "3/victreebel": {
+    "file": "3/victreebel.png",
+    "duration": 2468
+  },
+  "3/vigoroth": {
+    "file": "3/vigoroth.png",
+    "duration": 2350
+  },
+  "3/vileplume": {
+    "file": "3/vileplume.png",
+    "duration": 4237
+  },
+  "3/volbeat": {
+    "file": "3/volbeat.png",
+    "duration": 2382
+  },
+  "3/voltorb": {
+    "file": "3/voltorb.png",
+    "duration": 2206
+  },
+  "3/vulpix": {
+    "file": "3/vulpix.png",
+    "duration": 2561
+  },
+  "3/wailmer": {
+    "file": "3/wailmer.png",
+    "duration": 3746
+  },
+  "3/wailord": {
+    "file": "3/wailord.png",
+    "duration": 3146
+  },
+  "3/walrein": {
+    "file": "3/walrein.png",
+    "duration": 2203
+  },
+  "3/wartortle": {
+    "file": "3/wartortle.png",
+    "duration": 2001
+  },
+  "3/weedle": {
+    "file": "3/weedle.png",
+    "duration": 2583
+  },
+  "3/weepinbell": {
+    "file": "3/weepinbell.png",
+    "duration": 2986
+  },
+  "3/weezing": {
+    "file": "3/weezing.png",
+    "duration": 1953
+  },
+  "3/whiscash": {
+    "file": "3/whiscash.png",
+    "duration": 4699
+  },
+  "3/whismur": {
+    "file": "3/whismur.png",
+    "duration": 3027
+  },
+  "3/wigglytuff": {
+    "file": "3/wigglytuff.png",
+    "duration": 2584
+  },
+  "3/wingull": {
+    "file": "3/wingull.png",
+    "duration": 2826
+  },
+  "3/wobbuffet": {
+    "file": "3/wobbuffet.png",
+    "duration": 2653
+  },
+  "3/wooper": {
+    "file": "3/wooper.png",
+    "duration": 2014
+  },
+  "3/wurmple": {
+    "file": "3/wurmple.png",
+    "duration": 2315
+  },
+  "3/wynaut": {
+    "file": "3/wynaut.png",
+    "duration": 2699
+  },
+  "3/xatu": {
+    "file": "3/xatu.png",
+    "duration": 3247
+  },
+  "3/yanma": {
+    "file": "3/yanma.png",
+    "duration": 2314
+  },
+  "3/zangoose": {
+    "file": "3/zangoose.png",
+    "duration": 3508
+  },
+  "3/zapdos": {
+    "file": "3/zapdos.png",
+    "duration": 2039
+  },
+  "3/zigzagoon": {
+    "file": "3/zigzagoon.png",
+    "duration": 1886
+  },
+  "3/zubat": {
+    "file": "3/zubat.png",
+    "duration": 2014
+  },
+  "4-shiny/abomasnow": {
+    "file": "4-shiny/abomasnow.png",
+    "duration": 3690
+  },
+  "4-shiny/abra": {
+    "file": "4-shiny/abra.png",
+    "duration": 3850
+  },
+  "4-shiny/absol": {
+    "file": "4-shiny/absol.png",
+    "duration": 3990
+  },
+  "4-shiny/aerodactyl": {
+    "file": "4-shiny/aerodactyl.png",
+    "duration": 4030
+  },
+  "4-shiny/aggron": {
+    "file": "4-shiny/aggron.png",
+    "duration": 4290
+  },
+  "4-shiny/aipom": {
+    "file": "4-shiny/aipom.png",
+    "duration": 3610
+  },
+  "4-shiny/alakazam": {
+    "file": "4-shiny/alakazam.png",
+    "duration": 3730
+  },
+  "4-shiny/altaria": {
+    "file": "4-shiny/altaria.png",
+    "duration": 4200
+  },
+  "4-shiny/ambipom": {
+    "file": "4-shiny/ambipom.png",
+    "duration": 3840
+  },
+  "4-shiny/ampharos": {
+    "file": "4-shiny/ampharos.png",
+    "duration": 3486
+  },
+  "4-shiny/anorith": {
+    "file": "4-shiny/anorith.png",
+    "duration": 3720
+  },
+  "4-shiny/arbok": {
+    "file": "4-shiny/arbok.png",
+    "duration": 3350
+  },
+  "4-shiny/arcanine": {
+    "file": "4-shiny/arcanine.png",
+    "duration": 3280
+  },
+  "4-shiny/arceus": {
+    "file": "4-shiny/arceus.png",
+    "duration": 4340
+  },
+  "4-shiny/ariados": {
+    "file": "4-shiny/ariados.png",
+    "duration": 3640
+  },
+  "4-shiny/armaldo": {
+    "file": "4-shiny/armaldo.png",
+    "duration": 3990
+  },
+  "4-shiny/aron": {
+    "file": "4-shiny/aron.png",
+    "duration": 4470
+  },
+  "4-shiny/articuno": {
+    "file": "4-shiny/articuno.png",
+    "duration": 3248
+  },
+  "4-shiny/azelf": {
+    "file": "4-shiny/azelf.png",
+    "duration": 4460
+  },
+  "4-shiny/azumarill": {
+    "file": "4-shiny/azumarill.png",
+    "duration": 3400
+  },
+  "4-shiny/azurill": {
+    "file": "4-shiny/azurill.png",
+    "duration": 3930
+  },
+  "4-shiny/bagon": {
+    "file": "4-shiny/bagon.png",
+    "duration": 3510
+  },
+  "4-shiny/baltoy": {
+    "file": "4-shiny/baltoy.png",
+    "duration": 4260
+  },
+  "4-shiny/banette": {
+    "file": "4-shiny/banette.png",
+    "duration": 4260
+  },
+  "4-shiny/barboach": {
+    "file": "4-shiny/barboach.png",
+    "duration": 5430
+  },
+  "4-shiny/bastiodon": {
+    "file": "4-shiny/bastiodon.png",
+    "duration": 4200
+  },
+  "4-shiny/bayleef": {
+    "file": "4-shiny/bayleef.png",
+    "duration": 3146
+  },
+  "4-shiny/beautifly": {
+    "file": "4-shiny/beautifly.png",
+    "duration": 4260
+  },
+  "4-shiny/beedrill": {
+    "file": "4-shiny/beedrill.png",
+    "duration": 3146
+  },
+  "4-shiny/beldum": {
+    "file": "4-shiny/beldum.png",
+    "duration": 4530
+  },
+  "4-shiny/bellossom": {
+    "file": "4-shiny/bellossom.png",
+    "duration": 3730
+  },
+  "4-shiny/bellsprout": {
+    "file": "4-shiny/bellsprout.png",
+    "duration": 3280
+  },
+  "4-shiny/bibarel": {
+    "file": "4-shiny/bibarel.png",
+    "duration": 3660
+  },
+  "4-shiny/bidoof": {
+    "file": "4-shiny/bidoof.png",
+    "duration": 3780
+  },
+  "4-shiny/blastoise": {
+    "file": "4-shiny/blastoise.png",
+    "duration": 3826
+  },
+  "4-shiny/blaziken": {
+    "file": "4-shiny/blaziken.png",
+    "duration": 3960
+  },
+  "4-shiny/blissey": {
+    "file": "4-shiny/blissey.png",
+    "duration": 3250
+  },
+  "4-shiny/bonsly": {
+    "file": "4-shiny/bonsly.png",
+    "duration": 3780
+  },
+  "4-shiny/breloom": {
+    "file": "4-shiny/breloom.png",
+    "duration": 4050
+  },
+  "4-shiny/bronzong": {
+    "file": "4-shiny/bronzong.png",
+    "duration": 4530
+  },
+  "4-shiny/bronzor": {
+    "file": "4-shiny/bronzor.png",
+    "duration": 4560
+  },
+  "4-shiny/budew": {
+    "file": "4-shiny/budew.png",
+    "duration": 3750
+  },
+  "4-shiny/buizel": {
+    "file": "4-shiny/buizel.png",
+    "duration": 3690
+  },
+  "4-shiny/bulbasaur": {
+    "file": "4-shiny/bulbasaur.png",
+    "duration": 3146
+  },
+  "4-shiny/buneary": {
+    "file": "4-shiny/buneary.png",
+    "duration": 3780
+  },
+  "4-shiny/burmy": {
+    "file": "4-shiny/burmy.png",
+    "duration": 3750
+  },
+  "4-shiny/butterfree": {
+    "file": "4-shiny/butterfree.png",
+    "duration": 4166
+  },
+  "4-shiny/cacnea": {
+    "file": "4-shiny/cacnea.png",
+    "duration": 5430
+  },
+  "4-shiny/cacturne": {
+    "file": "4-shiny/cacturne.png",
+    "duration": 3780
+  },
+  "4-shiny/camerupt": {
+    "file": "4-shiny/camerupt.png",
+    "duration": 4530
+  },
+  "4-shiny/carnivine": {
+    "file": "4-shiny/carnivine.png",
+    "duration": 4560
+  },
+  "4-shiny/carvanha": {
+    "file": "4-shiny/carvanha.png",
+    "duration": 4290
+  },
+  "4-shiny/cascoon": {
+    "file": "4-shiny/cascoon.png",
+    "duration": 3660
+  },
+  "4-shiny/castform": {
+    "file": "4-shiny/castform.png",
+    "duration": 4530
+  },
+  "4-shiny/castformrainy": {
+    "file": "4-shiny/castformrainy.png",
+    "duration": 4154
+  },
+  "4-shiny/castformsnowy": {
+    "file": "4-shiny/castformsnowy.png",
+    "duration": 4154
+  },
+  "4-shiny/castformsunny": {
+    "file": "4-shiny/castformsunny.png",
+    "duration": 4154
+  },
+  "4-shiny/caterpie": {
+    "file": "4-shiny/caterpie.png",
+    "duration": 3146
+  },
+  "4-shiny/celebi": {
+    "file": "4-shiny/celebi.png",
+    "duration": 4166
+  },
+  "4-shiny/chansey": {
+    "file": "4-shiny/chansey.png",
+    "duration": 3970
+  },
+  "4-shiny/charizard": {
+    "file": "4-shiny/charizard.png",
+    "duration": 3280
+  },
+  "4-shiny/charmander": {
+    "file": "4-shiny/charmander.png",
+    "duration": 3282
+  },
+  "4-shiny/charmeleon": {
+    "file": "4-shiny/charmeleon.png",
+    "duration": 3146
+  },
+  "4-shiny/chatot": {
+    "file": "4-shiny/chatot.png",
+    "duration": 3250
+  },
+  "4-shiny/cherrim": {
+    "file": "4-shiny/cherrim.png",
+    "duration": 3870
+  },
+  "4-shiny/cherubi": {
+    "file": "4-shiny/cherubi.png",
+    "duration": 3390
+  },
+  "4-shiny/chikorita": {
+    "file": "4-shiny/chikorita.png",
+    "duration": 3280
+  },
+  "4-shiny/chimchar": {
+    "file": "4-shiny/chimchar.png",
+    "duration": 3310
+  },
+  "4-shiny/chimecho": {
+    "file": "4-shiny/chimecho.png",
+    "duration": 4560
+  },
+  "4-shiny/chinchou": {
+    "file": "4-shiny/chinchou.png",
+    "duration": 4030
+  },
+  "4-shiny/chingling": {
+    "file": "4-shiny/chingling.png",
+    "duration": 4530
+  },
+  "4-shiny/clamperl": {
+    "file": "4-shiny/clamperl.png",
+    "duration": 4560
+  },
+  "4-shiny/claydol": {
+    "file": "4-shiny/claydol.png",
+    "duration": 4530
+  },
+  "4-shiny/clefable": {
+    "file": "4-shiny/clefable.png",
+    "duration": 3280
+  },
+  "4-shiny/clefairy": {
+    "file": "4-shiny/clefairy.png",
+    "duration": 3282
+  },
+  "4-shiny/cleffa": {
+    "file": "4-shiny/cleffa.png",
+    "duration": 3282
+  },
+  "4-shiny/cloyster": {
+    "file": "4-shiny/cloyster.png",
+    "duration": 3580
+  },
+  "4-shiny/combee": {
+    "file": "4-shiny/combee.png",
+    "duration": 4740
+  },
+  "4-shiny/combusken": {
+    "file": "4-shiny/combusken.png",
+    "duration": 4260
+  },
+  "4-shiny/corphish": {
+    "file": "4-shiny/corphish.png",
+    "duration": 4020
+  },
+  "4-shiny/corsola": {
+    "file": "4-shiny/corsola.png",
+    "duration": 3250
+  },
+  "4-shiny/cradily": {
+    "file": "4-shiny/cradily.png",
+    "duration": 3750
+  },
+  "4-shiny/cranidos": {
+    "file": "4-shiny/cranidos.png",
+    "duration": 3780
+  },
+  "4-shiny/crawdaunt": {
+    "file": "4-shiny/crawdaunt.png",
+    "duration": 3900
+  },
+  "4-shiny/cresselia": {
+    "file": "4-shiny/cresselia.png",
+    "duration": 5060
+  },
+  "4-shiny/croagunk": {
+    "file": "4-shiny/croagunk.png",
+    "duration": 3870
+  },
+  "4-shiny/crobat": {
+    "file": "4-shiny/crobat.png",
+    "duration": 4060
+  },
+  "4-shiny/croconaw": {
+    "file": "4-shiny/croconaw.png",
+    "duration": 3350
+  },
+  "4-shiny/cubone": {
+    "file": "4-shiny/cubone.png",
+    "duration": 3730
+  },
+  "4-shiny/cyndaquil": {
+    "file": "4-shiny/cyndaquil.png",
+    "duration": 3010
+  },
+  "4-shiny/darkrai": {
+    "file": "4-shiny/darkrai.png",
+    "duration": 4060
+  },
+  "4-shiny/delcatty": {
+    "file": "4-shiny/delcatty.png",
+    "duration": 3840
+  },
+  "4-shiny/delibird": {
+    "file": "4-shiny/delibird.png",
+    "duration": 3400
+  },
+  "4-shiny/deoxys": {
+    "file": "4-shiny/deoxys.png",
+    "duration": 4060
+  },
+  "4-shiny/deoxysattack": {
+    "file": "4-shiny/deoxysattack.png",
+    "duration": 4200
+  },
+  "4-shiny/deoxysdefense": {
+    "file": "4-shiny/deoxysdefense.png",
+    "duration": 4100
+  },
+  "4-shiny/deoxysspeed": {
+    "file": "4-shiny/deoxysspeed.png",
+    "duration": 4160
+  },
+  "4-shiny/dewgong": {
+    "file": "4-shiny/dewgong.png",
+    "duration": 3220
+  },
+  "4-shiny/dialga": {
+    "file": "4-shiny/dialga.png",
+    "duration": 4020
+  },
+  "4-shiny/diglett": {
+    "file": "4-shiny/diglett.png",
+    "duration": 3340
+  },
+  "4-shiny/ditto": {
+    "file": "4-shiny/ditto.png",
+    "duration": 3190
+  },
+  "4-shiny/dodrio": {
+    "file": "4-shiny/dodrio.png",
+    "duration": 3160
+  },
+  "4-shiny/doduo": {
+    "file": "4-shiny/doduo.png",
+    "duration": 3250
+  },
+  "4-shiny/donphan": {
+    "file": "4-shiny/donphan.png",
+    "duration": 3610
+  },
+  "4-shiny/dragonair": {
+    "file": "4-shiny/dragonair.png",
+    "duration": 4030
+  },
+  "4-shiny/dragonite": {
+    "file": "4-shiny/dragonite.png",
+    "duration": 3580
+  },
+  "4-shiny/drapion": {
+    "file": "4-shiny/drapion.png",
+    "duration": 3840
+  },
+  "4-shiny/dratini": {
+    "file": "4-shiny/dratini.png",
+    "duration": 3282
+  },
+  "4-shiny/drifblim": {
+    "file": "4-shiny/drifblim.png",
+    "duration": 4530
+  },
+  "4-shiny/drifloon": {
+    "file": "4-shiny/drifloon.png",
+    "duration": 4560
+  },
+  "4-shiny/drowzee": {
+    "file": "4-shiny/drowzee.png",
+    "duration": 3250
+  },
+  "4-shiny/dugtrio": {
+    "file": "4-shiny/dugtrio.png",
+    "duration": 3340
+  },
+  "4-shiny/dunsparce": {
+    "file": "4-shiny/dunsparce.png",
+    "duration": 4060
+  },
+  "4-shiny/dusclops": {
+    "file": "4-shiny/dusclops.png",
+    "duration": 4200
+  },
+  "4-shiny/dusknoir": {
+    "file": "4-shiny/dusknoir.png",
+    "duration": 4410
+  },
+  "4-shiny/duskull": {
+    "file": "4-shiny/duskull.png",
+    "duration": 4530
+  },
+  "4-shiny/dustox": {
+    "file": "4-shiny/dustox.png",
+    "duration": 4650
+  },
+  "4-shiny/eevee": {
+    "file": "4-shiny/eevee.png",
+    "duration": 3310
+  },
+  "4-shiny/ekans": {
+    "file": "4-shiny/ekans.png",
+    "duration": 3214
+  },
+  "4-shiny/electabuzz": {
+    "file": "4-shiny/electabuzz.png",
+    "duration": 3580
+  },
+  "4-shiny/electivire": {
+    "file": "4-shiny/electivire.png",
+    "duration": 4080
+  },
+  "4-shiny/electrike": {
+    "file": "4-shiny/electrike.png",
+    "duration": 4050
+  },
+  "4-shiny/electrode": {
+    "file": "4-shiny/electrode.png",
+    "duration": 3700
+  },
+  "4-shiny/elekid": {
+    "file": "4-shiny/elekid.png",
+    "duration": 3760
+  },
+  "4-shiny/empoleon": {
+    "file": "4-shiny/empoleon.png",
+    "duration": 3930
+  },
+  "4-shiny/entei": {
+    "file": "4-shiny/entei.png",
+    "duration": 3486
+  },
+  "4-shiny/espeon": {
+    "file": "4-shiny/espeon.png",
+    "duration": 3160
+  },
+  "4-shiny/exeggcute": {
+    "file": "4-shiny/exeggcute.png",
+    "duration": 3280
+  },
+  "4-shiny/exeggutor": {
+    "file": "4-shiny/exeggutor.png",
+    "duration": 3850
+  },
+  "4-shiny/exploud": {
+    "file": "4-shiny/exploud.png",
+    "duration": 3990
+  },
+  "4-shiny/farfetchd": {
+    "file": "4-shiny/farfetchd.png",
+    "duration": 3580
+  },
+  "4-shiny/fearow": {
+    "file": "4-shiny/fearow.png",
+    "duration": 3160
+  },
+  "4-shiny/feebas": {
+    "file": "4-shiny/feebas.png",
+    "duration": 4560
+  },
+  "4-shiny/feraligatr": {
+    "file": "4-shiny/feraligatr.png",
+    "duration": 3452
+  },
+  "4-shiny/finneon": {
+    "file": "4-shiny/finneon.png",
+    "duration": 4530
+  },
+  "4-shiny/flaaffy": {
+    "file": "4-shiny/flaaffy.png",
+    "duration": 3316
+  },
+  "4-shiny/flareon": {
+    "file": "4-shiny/flareon.png",
+    "duration": 3160
+  },
+  "4-shiny/floatzel": {
+    "file": "4-shiny/floatzel.png",
+    "duration": 4050
+  },
+  "4-shiny/flygon": {
+    "file": "4-shiny/flygon.png",
+    "duration": 4260
+  },
+  "4-shiny/forretress": {
+    "file": "4-shiny/forretress.png",
+    "duration": 3580
+  },
+  "4-shiny/froslass": {
+    "file": "4-shiny/froslass.png",
+    "duration": 4410
+  },
+  "4-shiny/furret": {
+    "file": "4-shiny/furret.png",
+    "duration": 3160
+  },
+  "4-shiny/gabite": {
+    "file": "4-shiny/gabite.png",
+    "duration": 3660
+  },
+  "4-shiny/gallade": {
+    "file": "4-shiny/gallade.png",
+    "duration": 4050
+  },
+  "4-shiny/garchomp": {
+    "file": "4-shiny/garchomp.png",
+    "duration": 3960
+  },
+  "4-shiny/gardevoir": {
+    "file": "4-shiny/gardevoir.png",
+    "duration": 4020
+  },
+  "4-shiny/gastly": {
+    "file": "4-shiny/gastly.png",
+    "duration": 4030
+  },
+  "4-shiny/gastrodon": {
+    "file": "4-shiny/gastrodon.png",
+    "duration": 4380
+  },
+  "4-shiny/gengar": {
+    "file": "4-shiny/gengar.png",
+    "duration": 3550
+  },
+  "4-shiny/geodude": {
+    "file": "4-shiny/geodude.png",
+    "duration": 3190
+  },
+  "4-shiny/gible": {
+    "file": "4-shiny/gible.png",
+    "duration": 3720
+  },
+  "4-shiny/girafarig": {
+    "file": "4-shiny/girafarig.png",
+    "duration": 3460
+  },
+  "4-shiny/giratina": {
+    "file": "4-shiny/giratina.png",
+    "duration": 3690
+  },
+  "4-shiny/giratinaorigin": {
+    "file": "4-shiny/giratinaorigin.png",
+    "duration": 3090
+  },
+  "4-shiny/glaceon": {
+    "file": "4-shiny/glaceon.png",
+    "duration": 3630
+  },
+  "4-shiny/glalie": {
+    "file": "4-shiny/glalie.png",
+    "duration": 4200
+  },
+  "4-shiny/glameow": {
+    "file": "4-shiny/glameow.png",
+    "duration": 3220
+  },
+  "4-shiny/gligar": {
+    "file": "4-shiny/gligar.png",
+    "duration": 3160
+  },
+  "4-shiny/gliscor": {
+    "file": "4-shiny/gliscor.png",
+    "duration": 4530
+  },
+  "4-shiny/gloom": {
+    "file": "4-shiny/gloom.png",
+    "duration": 3130
+  },
+  "4-shiny/golbat": {
+    "file": "4-shiny/golbat.png",
+    "duration": 4030
+  },
+  "4-shiny/goldeen": {
+    "file": "4-shiny/goldeen.png",
+    "duration": 4060
+  },
+  "4-shiny/golduck": {
+    "file": "4-shiny/golduck.png",
+    "duration": 3340
+  },
+  "4-shiny/golem": {
+    "file": "4-shiny/golem.png",
+    "duration": 3340
+  },
+  "4-shiny/gorebyss": {
+    "file": "4-shiny/gorebyss.png",
+    "duration": 3750
+  },
+  "4-shiny/granbull": {
+    "file": "4-shiny/granbull.png",
+    "duration": 3640
+  },
+  "4-shiny/graveler": {
+    "file": "4-shiny/graveler.png",
+    "duration": 3370
+  },
+  "4-shiny/grimer": {
+    "file": "4-shiny/grimer.png",
+    "duration": 3190
+  },
+  "4-shiny/grotle": {
+    "file": "4-shiny/grotle.png",
+    "duration": 3600
+  },
+  "4-shiny/groudon": {
+    "file": "4-shiny/groudon.png",
+    "duration": 3700
+  },
+  "4-shiny/grovyle": {
+    "file": "4-shiny/grovyle.png",
+    "duration": 3780
+  },
+  "4-shiny/growlithe": {
+    "file": "4-shiny/growlithe.png",
+    "duration": 3160
+  },
+  "4-shiny/grumpig": {
+    "file": "4-shiny/grumpig.png",
+    "duration": 4110
+  },
+  "4-shiny/gulpin": {
+    "file": "4-shiny/gulpin.png",
+    "duration": 3840
+  },
+  "4-shiny/gyarados": {
+    "file": "4-shiny/gyarados.png",
+    "duration": 3220
+  },
+  "4-shiny/happiny": {
+    "file": "4-shiny/happiny.png",
+    "duration": 3750
+  },
+  "4-shiny/hariyama": {
+    "file": "4-shiny/hariyama.png",
+    "duration": 4080
+  },
+  "4-shiny/haunter": {
+    "file": "4-shiny/haunter.png",
+    "duration": 3790
+  },
+  "4-shiny/heatran": {
+    "file": "4-shiny/heatran.png",
+    "duration": 6060
+  },
+  "4-shiny/heracross": {
+    "file": "4-shiny/heracross.png",
+    "duration": 3580
+  },
+  "4-shiny/hippopotas": {
+    "file": "4-shiny/hippopotas.png",
+    "duration": 4020
+  },
+  "4-shiny/hippowdon": {
+    "file": "4-shiny/hippowdon.png",
+    "duration": 3810
+  },
+  "4-shiny/hitmonchan": {
+    "file": "4-shiny/hitmonchan.png",
+    "duration": 3700
+  },
+  "4-shiny/hitmonlee": {
+    "file": "4-shiny/hitmonlee.png",
+    "duration": 3550
+  },
+  "4-shiny/hitmontop": {
+    "file": "4-shiny/hitmontop.png",
+    "duration": 4030
+  },
+  "4-shiny/honchkrow": {
+    "file": "4-shiny/honchkrow.png",
+    "duration": 3840
+  },
+  "4-shiny/hooh": {
+    "file": "4-shiny/hooh.png",
+    "duration": 3996
+  },
+  "4-shiny/hoothoot": {
+    "file": "4-shiny/hoothoot.png",
+    "duration": 3280
+  },
+  "4-shiny/hoppip": {
+    "file": "4-shiny/hoppip.png",
+    "duration": 4030
+  },
+  "4-shiny/horsea": {
+    "file": "4-shiny/horsea.png",
+    "duration": 3250
+  },
+  "4-shiny/houndoom": {
+    "file": "4-shiny/houndoom.png",
+    "duration": 3310
+  },
+  "4-shiny/houndour": {
+    "file": "4-shiny/houndour.png",
+    "duration": 3280
+  },
+  "4-shiny/huntail": {
+    "file": "4-shiny/huntail.png",
+    "duration": 4200
+  },
+  "4-shiny/hypno": {
+    "file": "4-shiny/hypno.png",
+    "duration": 3490
+  },
+  "4-shiny/igglybuff": {
+    "file": "4-shiny/igglybuff.png",
+    "duration": 4166
+  },
+  "4-shiny/illumise": {
+    "file": "4-shiny/illumise.png",
+    "duration": 4230
+  },
+  "4-shiny/infernape": {
+    "file": "4-shiny/infernape.png",
+    "duration": 4020
+  },
+  "4-shiny/ivysaur": {
+    "file": "4-shiny/ivysaur.png",
+    "duration": 3146
+  },
+  "4-shiny/jigglypuff": {
+    "file": "4-shiny/jigglypuff.png",
+    "duration": 4200
+  },
+  "4-shiny/jirachi": {
+    "file": "4-shiny/jirachi.png",
+    "duration": 4060
+  },
+  "4-shiny/jolteon": {
+    "file": "4-shiny/jolteon.png",
+    "duration": 3970
+  },
+  "4-shiny/jumpluff": {
+    "file": "4-shiny/jumpluff.png",
+    "duration": 4030
+  },
+  "4-shiny/jynx": {
+    "file": "4-shiny/jynx.png",
+    "duration": 4210
+  },
+  "4-shiny/kabuto": {
+    "file": "4-shiny/kabuto.png",
+    "duration": 4120
+  },
+  "4-shiny/kabutops": {
+    "file": "4-shiny/kabutops.png",
+    "duration": 3100
+  },
+  "4-shiny/kadabra": {
+    "file": "4-shiny/kadabra.png",
+    "duration": 3160
+  },
+  "4-shiny/kakuna": {
+    "file": "4-shiny/kakuna.png",
+    "duration": 3146
+  },
+  "4-shiny/kangaskhan": {
+    "file": "4-shiny/kangaskhan.png",
+    "duration": 3280
+  },
+  "4-shiny/kecleon": {
+    "file": "4-shiny/kecleon.png",
+    "duration": 3870
+  },
+  "4-shiny/kingdra": {
+    "file": "4-shiny/kingdra.png",
+    "duration": 4030
+  },
+  "4-shiny/kingler": {
+    "file": "4-shiny/kingler.png",
+    "duration": 3640
+  },
+  "4-shiny/kirlia": {
+    "file": "4-shiny/kirlia.png",
+    "duration": 3990
+  },
+  "4-shiny/koffing": {
+    "file": "4-shiny/koffing.png",
+    "duration": 4030
+  },
+  "4-shiny/krabby": {
+    "file": "4-shiny/krabby.png",
+    "duration": 3760
+  },
+  "4-shiny/kricketot": {
+    "file": "4-shiny/kricketot.png",
+    "duration": 4200
+  },
+  "4-shiny/kricketune": {
+    "file": "4-shiny/kricketune.png",
+    "duration": 4200
+  },
+  "4-shiny/kyogre": {
+    "file": "4-shiny/kyogre.png",
+    "duration": 5060
+  },
+  "4-shiny/lairon": {
+    "file": "4-shiny/lairon.png",
+    "duration": 4110
+  },
+  "4-shiny/lanturn": {
+    "file": "4-shiny/lanturn.png",
+    "duration": 4030
+  },
+  "4-shiny/lapras": {
+    "file": "4-shiny/lapras.png",
+    "duration": 4166
+  },
+  "4-shiny/larvitar": {
+    "file": "4-shiny/larvitar.png",
+    "duration": 3146
+  },
+  "4-shiny/latias": {
+    "file": "4-shiny/latias.png",
+    "duration": 5340
+  },
+  "4-shiny/latios": {
+    "file": "4-shiny/latios.png",
+    "duration": 4660
+  },
+  "4-shiny/leafeon": {
+    "file": "4-shiny/leafeon.png",
+    "duration": 3990
+  },
+  "4-shiny/ledian": {
+    "file": "4-shiny/ledian.png",
+    "duration": 3460
+  },
+  "4-shiny/ledyba": {
+    "file": "4-shiny/ledyba.png",
+    "duration": 3100
+  },
+  "4-shiny/lickilicky": {
+    "file": "4-shiny/lickilicky.png",
+    "duration": 3690
+  },
+  "4-shiny/lickitung": {
+    "file": "4-shiny/lickitung.png",
+    "duration": 3250
+  },
+  "4-shiny/lileep": {
+    "file": "4-shiny/lileep.png",
+    "duration": 3720
+  },
+  "4-shiny/linoone": {
+    "file": "4-shiny/linoone.png",
+    "duration": 3840
+  },
+  "4-shiny/lombre": {
+    "file": "4-shiny/lombre.png",
+    "duration": 3750
+  },
+  "4-shiny/lopunny": {
+    "file": "4-shiny/lopunny.png",
+    "duration": 4050
+  },
+  "4-shiny/lotad": {
+    "file": "4-shiny/lotad.png",
+    "duration": 4230
+  },
+  "4-shiny/loudred": {
+    "file": "4-shiny/loudred.png",
+    "duration": 4080
+  },
+  "4-shiny/lucario": {
+    "file": "4-shiny/lucario.png",
+    "duration": 3720
+  },
+  "4-shiny/ludicolo": {
+    "file": "4-shiny/ludicolo.png",
+    "duration": 3600
+  },
+  "4-shiny/lugia": {
+    "file": "4-shiny/lugia.png",
+    "duration": 4268
+  },
+  "4-shiny/lumineon": {
+    "file": "4-shiny/lumineon.png",
+    "duration": 4530
+  },
+  "4-shiny/lunatone": {
+    "file": "4-shiny/lunatone.png",
+    "duration": 4560
+  },
+  "4-shiny/luvdisc": {
+    "file": "4-shiny/luvdisc.png",
+    "duration": 4560
+  },
+  "4-shiny/luxio": {
+    "file": "4-shiny/luxio.png",
+    "duration": 3810
+  },
+  "4-shiny/luxray": {
+    "file": "4-shiny/luxray.png",
+    "duration": 4170
+  },
+  "4-shiny/machamp": {
+    "file": "4-shiny/machamp.png",
+    "duration": 3580
+  },
+  "4-shiny/machoke": {
+    "file": "4-shiny/machoke.png",
+    "duration": 3250
+  },
+  "4-shiny/machop": {
+    "file": "4-shiny/machop.png",
+    "duration": 3280
+  },
+  "4-shiny/magby": {
+    "file": "4-shiny/magby.png",
+    "duration": 3550
+  },
+  "4-shiny/magcargo": {
+    "file": "4-shiny/magcargo.png",
+    "duration": 3730
+  },
+  "4-shiny/magikarp": {
+    "file": "4-shiny/magikarp.png",
+    "duration": 3310
+  },
+  "4-shiny/magmar": {
+    "file": "4-shiny/magmar.png",
+    "duration": 3760
+  },
+  "4-shiny/magmortar": {
+    "file": "4-shiny/magmortar.png",
+    "duration": 3810
+  },
+  "4-shiny/magnemite": {
+    "file": "4-shiny/magnemite.png",
+    "duration": 4030
+  },
+  "4-shiny/magneton": {
+    "file": "4-shiny/magneton.png",
+    "duration": 4060
+  },
+  "4-shiny/magnezone": {
+    "file": "4-shiny/magnezone.png",
+    "duration": 4560
+  },
+  "4-shiny/makuhita": {
+    "file": "4-shiny/makuhita.png",
+    "duration": 4470
+  },
+  "4-shiny/mamoswine": {
+    "file": "4-shiny/mamoswine.png",
+    "duration": 4140
+  },
+  "4-shiny/manaphy": {
+    "file": "4-shiny/manaphy.png",
+    "duration": 4940
+  },
+  "4-shiny/manectric": {
+    "file": "4-shiny/manectric.png",
+    "duration": 4260
+  },
+  "4-shiny/mankey": {
+    "file": "4-shiny/mankey.png",
+    "duration": 3040
+  },
+  "4-shiny/mantine": {
+    "file": "4-shiny/mantine.png",
+    "duration": 4060
+  },
+  "4-shiny/mantyke": {
+    "file": "4-shiny/mantyke.png",
+    "duration": 3690
+  },
+  "4-shiny/mareep": {
+    "file": "4-shiny/mareep.png",
+    "duration": 5254
+  },
+  "4-shiny/marill": {
+    "file": "4-shiny/marill.png",
+    "duration": 3970
+  },
+  "4-shiny/marowak": {
+    "file": "4-shiny/marowak.png",
+    "duration": 3100
+  },
+  "4-shiny/marshtomp": {
+    "file": "4-shiny/marshtomp.png",
+    "duration": 4230
+  },
+  "4-shiny/masquerain": {
+    "file": "4-shiny/masquerain.png",
+    "duration": 3720
+  },
+  "4-shiny/mawile": {
+    "file": "4-shiny/mawile.png",
+    "duration": 4110
+  },
+  "4-shiny/medicham": {
+    "file": "4-shiny/medicham.png",
+    "duration": 3900
+  },
+  "4-shiny/meditite": {
+    "file": "4-shiny/meditite.png",
+    "duration": 4560
+  },
+  "4-shiny/meganium": {
+    "file": "4-shiny/meganium.png",
+    "duration": 3554
+  },
+  "4-shiny/meowth": {
+    "file": "4-shiny/meowth.png",
+    "duration": 3280
+  },
+  "4-shiny/mesprit": {
+    "file": "4-shiny/mesprit.png",
+    "duration": 4460
+  },
+  "4-shiny/metagross": {
+    "file": "4-shiny/metagross.png",
+    "duration": 4080
+  },
+  "4-shiny/metang": {
+    "file": "4-shiny/metang.png",
+    "duration": 3630
+  },
+  "4-shiny/metapod": {
+    "file": "4-shiny/metapod.png",
+    "duration": 3588
+  },
+  "4-shiny/mew": {
+    "file": "4-shiny/mew.png",
+    "duration": 4166
+  },
+  "4-shiny/mewtwo": {
+    "file": "4-shiny/mewtwo.png",
+    "duration": 3724
+  },
+  "4-shiny/mightyena": {
+    "file": "4-shiny/mightyena.png",
+    "duration": 3750
+  },
+  "4-shiny/milotic": {
+    "file": "4-shiny/milotic.png",
+    "duration": 4230
+  },
+  "4-shiny/miltank": {
+    "file": "4-shiny/miltank.png",
+    "duration": 4060
+  },
+  "4-shiny/mimejr": {
+    "file": "4-shiny/mimejr.png",
+    "duration": 4260
+  },
+  "4-shiny/minun": {
+    "file": "4-shiny/minun.png",
+    "duration": 4050
+  },
+  "4-shiny/misdreavus": {
+    "file": "4-shiny/misdreavus.png",
+    "duration": 4030
+  },
+  "4-shiny/mismagius": {
+    "file": "4-shiny/mismagius.png",
+    "duration": 4530
+  },
+  "4-shiny/moltres": {
+    "file": "4-shiny/moltres.png",
+    "duration": 4064
+  },
+  "4-shiny/monferno": {
+    "file": "4-shiny/monferno.png",
+    "duration": 4050
+  },
+  "4-shiny/mothim": {
+    "file": "4-shiny/mothim.png",
+    "duration": 4530
+  },
+  "4-shiny/mrmime": {
+    "file": "4-shiny/mrmime.png",
+    "duration": 3280
+  },
+  "4-shiny/mudkip": {
+    "file": "4-shiny/mudkip.png",
+    "duration": 4140
+  },
+  "4-shiny/muk": {
+    "file": "4-shiny/muk.png",
+    "duration": 3160
+  },
+  "4-shiny/munchlax": {
+    "file": "4-shiny/munchlax.png",
+    "duration": 3750
+  },
+  "4-shiny/murkrow": {
+    "file": "4-shiny/murkrow.png",
+    "duration": 4060
+  },
+  "4-shiny/natu": {
+    "file": "4-shiny/natu.png",
+    "duration": 3070
+  },
+  "4-shiny/nidoking": {
+    "file": "4-shiny/nidoking.png",
+    "duration": 3146
+  },
+  "4-shiny/nidoqueen": {
+    "file": "4-shiny/nidoqueen.png",
+    "duration": 3146
+  },
+  "4-shiny/nidoranf": {
+    "file": "4-shiny/nidoranf.png",
+    "duration": 3146
+  },
+  "4-shiny/nidoranm": {
+    "file": "4-shiny/nidoranm.png",
+    "duration": 3282
+  },
+  "4-shiny/nidorina": {
+    "file": "4-shiny/nidorina.png",
+    "duration": 3282
+  },
+  "4-shiny/nidorino": {
+    "file": "4-shiny/nidorino.png",
+    "duration": 3146
+  },
+  "4-shiny/nincada": {
+    "file": "4-shiny/nincada.png",
+    "duration": 4140
+  },
+  "4-shiny/ninetales": {
+    "file": "4-shiny/ninetales.png",
+    "duration": 3430
+  },
+  "4-shiny/ninjask": {
+    "file": "4-shiny/ninjask.png",
+    "duration": 3840
+  },
+  "4-shiny/noctowl": {
+    "file": "4-shiny/noctowl.png",
+    "duration": 3220
+  },
+  "4-shiny/nosepass": {
+    "file": "4-shiny/nosepass.png",
+    "duration": 3660
+  },
+  "4-shiny/numel": {
+    "file": "4-shiny/numel.png",
+    "duration": 4110
+  },
+  "4-shiny/nuzleaf": {
+    "file": "4-shiny/nuzleaf.png",
+    "duration": 3810
+  },
+  "4-shiny/octillery": {
+    "file": "4-shiny/octillery.png",
+    "duration": 4060
+  },
+  "4-shiny/oddish": {
+    "file": "4-shiny/oddish.png",
+    "duration": 2950
+  },
+  "4-shiny/omanyte": {
+    "file": "4-shiny/omanyte.png",
+    "duration": 3820
+  },
+  "4-shiny/omastar": {
+    "file": "4-shiny/omastar.png",
+    "duration": 4030
+  },
+  "4-shiny/onix": {
+    "file": "4-shiny/onix.png",
+    "duration": 3550
+  },
+  "4-shiny/pachirisu": {
+    "file": "4-shiny/pachirisu.png",
+    "duration": 3960
+  },
+  "4-shiny/palkia": {
+    "file": "4-shiny/palkia.png",
+    "duration": 3820
+  },
+  "4-shiny/paras": {
+    "file": "4-shiny/paras.png",
+    "duration": 3400
+  },
+  "4-shiny/parasect": {
+    "file": "4-shiny/parasect.png",
+    "duration": 3430
+  },
+  "4-shiny/pelipper": {
+    "file": "4-shiny/pelipper.png",
+    "duration": 4230
+  },
+  "4-shiny/persian": {
+    "file": "4-shiny/persian.png",
+    "duration": 3160
+  },
+  "4-shiny/phanpy": {
+    "file": "4-shiny/phanpy.png",
+    "duration": 3280
+  },
+  "4-shiny/phione": {
+    "file": "4-shiny/phione.png",
+    "duration": 4460
+  },
+  "4-shiny/pichu": {
+    "file": "4-shiny/pichu.png",
+    "duration": 5186
+  },
+  "4-shiny/pidgeot": {
+    "file": "4-shiny/pidgeot.png",
+    "duration": 3826
+  },
+  "4-shiny/pidgeotto": {
+    "file": "4-shiny/pidgeotto.png",
+    "duration": 3146
+  },
+  "4-shiny/pidgey": {
+    "file": "4-shiny/pidgey.png",
+    "duration": 3146
+  },
+  "4-shiny/pikachu": {
+    "file": "4-shiny/pikachu.png",
+    "duration": 3282
+  },
+  "4-shiny/piloswine": {
+    "file": "4-shiny/piloswine.png",
+    "duration": 3550
+  },
+  "4-shiny/pineco": {
+    "file": "4-shiny/pineco.png",
+    "duration": 4030
+  },
+  "4-shiny/pinsir": {
+    "file": "4-shiny/pinsir.png",
+    "duration": 3580
+  },
+  "4-shiny/piplup": {
+    "file": "4-shiny/piplup.png",
+    "duration": 3660
+  },
+  "4-shiny/plusle": {
+    "file": "4-shiny/plusle.png",
+    "duration": 3780
+  },
+  "4-shiny/politoed": {
+    "file": "4-shiny/politoed.png",
+    "duration": 3760
+  },
+  "4-shiny/poliwag": {
+    "file": "4-shiny/poliwag.png",
+    "duration": 3280
+  },
+  "4-shiny/poliwhirl": {
+    "file": "4-shiny/poliwhirl.png",
+    "duration": 3250
+  },
+  "4-shiny/poliwrath": {
+    "file": "4-shiny/poliwrath.png",
+    "duration": 3160
+  },
+  "4-shiny/ponyta": {
+    "file": "4-shiny/ponyta.png",
+    "duration": 3220
+  },
+  "4-shiny/poochyena": {
+    "file": "4-shiny/poochyena.png",
+    "duration": 4050
+  },
+  "4-shiny/porygon": {
+    "file": "4-shiny/porygon.png",
+    "duration": 3790
+  },
+  "4-shiny/porygon2": {
+    "file": "4-shiny/porygon2.png",
+    "duration": 4060
+  },
+  "4-shiny/porygonz": {
+    "file": "4-shiny/porygonz.png",
+    "duration": 4230
+  },
+  "4-shiny/primeape": {
+    "file": "4-shiny/primeape.png",
+    "duration": 3760
+  },
+  "4-shiny/prinplup": {
+    "file": "4-shiny/prinplup.png",
+    "duration": 3630
+  },
+  "4-shiny/probopass": {
+    "file": "4-shiny/probopass.png",
+    "duration": 3780
+  },
+  "4-shiny/psyduck": {
+    "file": "4-shiny/psyduck.png",
+    "duration": 3220
+  },
+  "4-shiny/pupitar": {
+    "file": "4-shiny/pupitar.png",
+    "duration": 3418
+  },
+  "4-shiny/purugly": {
+    "file": "4-shiny/purugly.png",
+    "duration": 3130
+  },
+  "4-shiny/quagsire": {
+    "file": "4-shiny/quagsire.png",
+    "duration": 3190
+  },
+  "4-shiny/quilava": {
+    "file": "4-shiny/quilava.png",
+    "duration": 3486
+  },
+  "4-shiny/qwilfish": {
+    "file": "4-shiny/qwilfish.png",
+    "duration": 3310
+  },
+  "4-shiny/raichu": {
+    "file": "4-shiny/raichu.png",
+    "duration": 3554
+  },
+  "4-shiny/raikou": {
+    "file": "4-shiny/raikou.png",
+    "duration": 3214
+  },
+  "4-shiny/ralts": {
+    "file": "4-shiny/ralts.png",
+    "duration": 4230
+  },
+  "4-shiny/rampardos": {
+    "file": "4-shiny/rampardos.png",
+    "duration": 4140
+  },
+  "4-shiny/rapidash": {
+    "file": "4-shiny/rapidash.png",
+    "duration": 3460
+  },
+  "4-shiny/raticate": {
+    "file": "4-shiny/raticate.png",
+    "duration": 3452
+  },
+  "4-shiny/rattata": {
+    "file": "4-shiny/rattata.png",
+    "duration": 2976
+  },
+  "4-shiny/rayquaza": {
+    "file": "4-shiny/rayquaza.png",
+    "duration": 3980
+  },
+  "4-shiny/regice": {
+    "file": "4-shiny/regice.png",
+    "duration": 4060
+  },
+  "4-shiny/regigigas": {
+    "file": "4-shiny/regigigas.png",
+    "duration": 3860
+  },
+  "4-shiny/regirock": {
+    "file": "4-shiny/regirock.png",
+    "duration": 3820
+  },
+  "4-shiny/registeel": {
+    "file": "4-shiny/registeel.png",
+    "duration": 3340
+  },
+  "4-shiny/relicanth": {
+    "file": "4-shiny/relicanth.png",
+    "duration": 4560
+  },
+  "4-shiny/remoraid": {
+    "file": "4-shiny/remoraid.png",
+    "duration": 4030
+  },
+  "4-shiny/rhydon": {
+    "file": "4-shiny/rhydon.png",
+    "duration": 3250
+  },
+  "4-shiny/rhyhorn": {
+    "file": "4-shiny/rhyhorn.png",
+    "duration": 3730
+  },
+  "4-shiny/rhyperior": {
+    "file": "4-shiny/rhyperior.png",
+    "duration": 3690
+  },
+  "4-shiny/riolu": {
+    "file": "4-shiny/riolu.png",
+    "duration": 4050
+  },
+  "4-shiny/roselia": {
+    "file": "4-shiny/roselia.png",
+    "duration": 4470
+  },
+  "4-shiny/roserade": {
+    "file": "4-shiny/roserade.png",
+    "duration": 4290
+  },
+  "4-shiny/rotom": {
+    "file": "4-shiny/rotom.png",
+    "duration": 4050
+  },
+  "4-shiny/rotomfan": {
+    "file": "4-shiny/rotomfan.png",
+    "duration": 4050
+  },
+  "4-shiny/rotomfrost": {
+    "file": "4-shiny/rotomfrost.png",
+    "duration": 4050
+  },
+  "4-shiny/rotomheat": {
+    "file": "4-shiny/rotomheat.png",
+    "duration": 4050
+  },
+  "4-shiny/rotommow": {
+    "file": "4-shiny/rotommow.png",
+    "duration": 4050
+  },
+  "4-shiny/rotomwash": {
+    "file": "4-shiny/rotomwash.png",
+    "duration": 4050
+  },
+  "4-shiny/sableye": {
+    "file": "4-shiny/sableye.png",
+    "duration": 4290
+  },
+  "4-shiny/salamence": {
+    "file": "4-shiny/salamence.png",
+    "duration": 4350
+  },
+  "4-shiny/sandshrew": {
+    "file": "4-shiny/sandshrew.png",
+    "duration": 2942
+  },
+  "4-shiny/sandslash": {
+    "file": "4-shiny/sandslash.png",
+    "duration": 3350
+  },
+  "4-shiny/sceptile": {
+    "file": "4-shiny/sceptile.png",
+    "duration": 4020
+  },
+  "4-shiny/scizor": {
+    "file": "4-shiny/scizor.png",
+    "duration": 3880
+  },
+  "4-shiny/scyther": {
+    "file": "4-shiny/scyther.png",
+    "duration": 3250
+  },
+  "4-shiny/seadra": {
+    "file": "4-shiny/seadra.png",
+    "duration": 4030
+  },
+  "4-shiny/seaking": {
+    "file": "4-shiny/seaking.png",
+    "duration": 4030
+  },
+  "4-shiny/sealeo": {
+    "file": "4-shiny/sealeo.png",
+    "duration": 3660
+  },
+  "4-shiny/seedot": {
+    "file": "4-shiny/seedot.png",
+    "duration": 3840
+  },
+  "4-shiny/seel": {
+    "file": "4-shiny/seel.png",
+    "duration": 3760
+  },
+  "4-shiny/sentret": {
+    "file": "4-shiny/sentret.png",
+    "duration": 3250
+  },
+  "4-shiny/seviper": {
+    "file": "4-shiny/seviper.png",
+    "duration": 3930
+  },
+  "4-shiny/sharpedo": {
+    "file": "4-shiny/sharpedo.png",
+    "duration": 4230
+  },
+  "4-shiny/shaymin": {
+    "file": "4-shiny/shaymin.png",
+    "duration": 6060
+  },
+  "4-shiny/shayminsky": {
+    "file": "4-shiny/shayminsky.png",
+    "duration": 3860
+  },
+  "4-shiny/shedinja": {
+    "file": "4-shiny/shedinja.png",
+    "duration": 4560
+  },
+  "4-shiny/shelgon": {
+    "file": "4-shiny/shelgon.png",
+    "duration": 3930
+  },
+  "4-shiny/shellder": {
+    "file": "4-shiny/shellder.png",
+    "duration": 4060
+  },
+  "4-shiny/shellos": {
+    "file": "4-shiny/shellos.png",
+    "duration": 3900
+  },
+  "4-shiny/shieldon": {
+    "file": "4-shiny/shieldon.png",
+    "duration": 3630
+  },
+  "4-shiny/shiftry": {
+    "file": "4-shiny/shiftry.png",
+    "duration": 3660
+  },
+  "4-shiny/shinx": {
+    "file": "4-shiny/shinx.png",
+    "duration": 3630
+  },
+  "4-shiny/shroomish": {
+    "file": "4-shiny/shroomish.png",
+    "duration": 4200
+  },
+  "4-shiny/shuckle": {
+    "file": "4-shiny/shuckle.png",
+    "duration": 3250
+  },
+  "4-shiny/shuppet": {
+    "file": "4-shiny/shuppet.png",
+    "duration": 4560
+  },
+  "4-shiny/silcoon": {
+    "file": "4-shiny/silcoon.png",
+    "duration": 3660
+  },
+  "4-shiny/skarmory": {
+    "file": "4-shiny/skarmory.png",
+    "duration": 3340
+  },
+  "4-shiny/skiploom": {
+    "file": "4-shiny/skiploom.png",
+    "duration": 3970
+  },
+  "4-shiny/skitty": {
+    "file": "4-shiny/skitty.png",
+    "duration": 3780
+  },
+  "4-shiny/skorupi": {
+    "file": "4-shiny/skorupi.png",
+    "duration": 4650
+  },
+  "4-shiny/skuntank": {
+    "file": "4-shiny/skuntank.png",
+    "duration": 4110
+  },
+  "4-shiny/slaking": {
+    "file": "4-shiny/slaking.png",
+    "duration": 4050
+  },
+  "4-shiny/slakoth": {
+    "file": "4-shiny/slakoth.png",
+    "duration": 3960
+  },
+  "4-shiny/slowbro": {
+    "file": "4-shiny/slowbro.png",
+    "duration": 3160
+  },
+  "4-shiny/slowking": {
+    "file": "4-shiny/slowking.png",
+    "duration": 3310
+  },
+  "4-shiny/slowpoke": {
+    "file": "4-shiny/slowpoke.png",
+    "duration": 3160
+  },
+  "4-shiny/slugma": {
+    "file": "4-shiny/slugma.png",
+    "duration": 3130
+  },
+  "4-shiny/smeargle": {
+    "file": "4-shiny/smeargle.png",
+    "duration": 3280
+  },
+  "4-shiny/smoochum": {
+    "file": "4-shiny/smoochum.png",
+    "duration": 3700
+  },
+  "4-shiny/sneasel": {
+    "file": "4-shiny/sneasel.png",
+    "duration": 3250
+  },
+  "4-shiny/snorlax": {
+    "file": "4-shiny/snorlax.png",
+    "duration": 3160
+  },
+  "4-shiny/snorunt": {
+    "file": "4-shiny/snorunt.png",
+    "duration": 4470
+  },
+  "4-shiny/snover": {
+    "file": "4-shiny/snover.png",
+    "duration": 3840
+  },
+  "4-shiny/snubbull": {
+    "file": "4-shiny/snubbull.png",
+    "duration": 3370
+  },
+  "4-shiny/solrock": {
+    "file": "4-shiny/solrock.png",
+    "duration": 4800
+  },
+  "4-shiny/spearow": {
+    "file": "4-shiny/spearow.png",
+    "duration": 2976
+  },
+  "4-shiny/spheal": {
+    "file": "4-shiny/spheal.png",
+    "duration": 4560
+  },
+  "4-shiny/spinarak": {
+    "file": "4-shiny/spinarak.png",
+    "duration": 3400
+  },
+  "4-shiny/spinda": {
+    "file": "4-shiny/spinda.png",
+    "duration": 4260
+  },
+  "4-shiny/spiritomb": {
+    "file": "4-shiny/spiritomb.png",
+    "duration": 4080
+  },
+  "4-shiny/spoink": {
+    "file": "4-shiny/spoink.png",
+    "duration": 3780
+  },
+  "4-shiny/squirtle": {
+    "file": "4-shiny/squirtle.png",
+    "duration": 3180
+  },
+  "4-shiny/stantler": {
+    "file": "4-shiny/stantler.png",
+    "duration": 3340
+  },
+  "4-shiny/staraptor": {
+    "file": "4-shiny/staraptor.png",
+    "duration": 4200
+  },
+  "4-shiny/staravia": {
+    "file": "4-shiny/staravia.png",
+    "duration": 3690
+  },
+  "4-shiny/starly": {
+    "file": "4-shiny/starly.png",
+    "duration": 3840
+  },
+  "4-shiny/starmie": {
+    "file": "4-shiny/starmie.png",
+    "duration": 4120
+  },
+  "4-shiny/staryu": {
+    "file": "4-shiny/staryu.png",
+    "duration": 3250
+  },
+  "4-shiny/steelix": {
+    "file": "4-shiny/steelix.png",
+    "duration": 3550
+  },
+  "4-shiny/stunky": {
+    "file": "4-shiny/stunky.png",
+    "duration": 3310
+  },
+  "4-shiny/sudowoodo": {
+    "file": "4-shiny/sudowoodo.png",
+    "duration": 4960
+  },
+  "4-shiny/suicune": {
+    "file": "4-shiny/suicune.png",
+    "duration": 3248
+  },
+  "4-shiny/sunflora": {
+    "file": "4-shiny/sunflora.png",
+    "duration": 3220
+  },
+  "4-shiny/sunkern": {
+    "file": "4-shiny/sunkern.png",
+    "duration": 4030
+  },
+  "4-shiny/surskit": {
+    "file": "4-shiny/surskit.png",
+    "duration": 3780
+  },
+  "4-shiny/swablu": {
+    "file": "4-shiny/swablu.png",
+    "duration": 4530
+  },
+  "4-shiny/swalot": {
+    "file": "4-shiny/swalot.png",
+    "duration": 4050
+  },
+  "4-shiny/swampert": {
+    "file": "4-shiny/swampert.png",
+    "duration": 4350
+  },
+  "4-shiny/swellow": {
+    "file": "4-shiny/swellow.png",
+    "duration": 4260
+  },
+  "4-shiny/swinub": {
+    "file": "4-shiny/swinub.png",
+    "duration": 3280
+  },
+  "4-shiny/taillow": {
+    "file": "4-shiny/taillow.png",
+    "duration": 4530
+  },
+  "4-shiny/tangela": {
+    "file": "4-shiny/tangela.png",
+    "duration": 4030
+  },
+  "4-shiny/tangrowth": {
+    "file": "4-shiny/tangrowth.png",
+    "duration": 4200
+  },
+  "4-shiny/tauros": {
+    "file": "4-shiny/tauros.png",
+    "duration": 3370
+  },
+  "4-shiny/teddiursa": {
+    "file": "4-shiny/teddiursa.png",
+    "duration": 3250
+  },
+  "4-shiny/tentacool": {
+    "file": "4-shiny/tentacool.png",
+    "duration": 3190
+  },
+  "4-shiny/tentacruel": {
+    "file": "4-shiny/tentacruel.png",
+    "duration": 4060
+  },
+  "4-shiny/togekiss": {
+    "file": "4-shiny/togekiss.png",
+    "duration": 4530
+  },
+  "4-shiny/togepi": {
+    "file": "4-shiny/togepi.png",
+    "duration": 3280
+  },
+  "4-shiny/togetic": {
+    "file": "4-shiny/togetic.png",
+    "duration": 3370
+  },
+  "4-shiny/torchic": {
+    "file": "4-shiny/torchic.png",
+    "duration": 4170
+  },
+  "4-shiny/torkoal": {
+    "file": "4-shiny/torkoal.png",
+    "duration": 4320
+  },
+  "4-shiny/torterra": {
+    "file": "4-shiny/torterra.png",
+    "duration": 3490
+  },
+  "4-shiny/totodile": {
+    "file": "4-shiny/totodile.png",
+    "duration": 3282
+  },
+  "4-shiny/toxicroak": {
+    "file": "4-shiny/toxicroak.png",
+    "duration": 4170
+  },
+  "4-shiny/trapinch": {
+    "file": "4-shiny/trapinch.png",
+    "duration": 3630
+  },
+  "4-shiny/treecko": {
+    "file": "4-shiny/treecko.png",
+    "duration": 3750
+  },
+  "4-shiny/tropius": {
+    "file": "4-shiny/tropius.png",
+    "duration": 4320
+  },
+  "4-shiny/turtwig": {
+    "file": "4-shiny/turtwig.png",
+    "duration": 3720
+  },
+  "4-shiny/typhlosion": {
+    "file": "4-shiny/typhlosion.png",
+    "duration": 3970
+  },
+  "4-shiny/tyranitar": {
+    "file": "4-shiny/tyranitar.png",
+    "duration": 3350
+  },
+  "4-shiny/tyrogue": {
+    "file": "4-shiny/tyrogue.png",
+    "duration": 3160
+  },
+  "4-shiny/umbreon": {
+    "file": "4-shiny/umbreon.png",
+    "duration": 3160
+  },
+  "4-shiny/unown": {
+    "file": "4-shiny/unown.png",
+    "duration": 4154
+  },
+  "4-shiny/ursaring": {
+    "file": "4-shiny/ursaring.png",
+    "duration": 3400
+  },
+  "4-shiny/uxie": {
+    "file": "4-shiny/uxie.png",
+    "duration": 4460
+  },
+  "4-shiny/vaporeon": {
+    "file": "4-shiny/vaporeon.png",
+    "duration": 3220
+  },
+  "4-shiny/venomoth": {
+    "file": "4-shiny/venomoth.png",
+    "duration": 4060
+  },
+  "4-shiny/venonat": {
+    "file": "4-shiny/venonat.png",
+    "duration": 3250
+  },
+  "4-shiny/venusaur": {
+    "file": "4-shiny/venusaur.png",
+    "duration": 3200
+  },
+  "4-shiny/vespiquen": {
+    "file": "4-shiny/vespiquen.png",
+    "duration": 3810
+  },
+  "4-shiny/vibrava": {
+    "file": "4-shiny/vibrava.png",
+    "duration": 4200
+  },
+  "4-shiny/victreebel": {
+    "file": "4-shiny/victreebel.png",
+    "duration": 3580
+  },
+  "4-shiny/vigoroth": {
+    "file": "4-shiny/vigoroth.png",
+    "duration": 4380
+  },
+  "4-shiny/vileplume": {
+    "file": "4-shiny/vileplume.png",
+    "duration": 3970
+  },
+  "4-shiny/volbeat": {
+    "file": "4-shiny/volbeat.png",
+    "duration": 3900
+  },
+  "4-shiny/voltorb": {
+    "file": "4-shiny/voltorb.png",
+    "duration": 4030
+  },
+  "4-shiny/vulpix": {
+    "file": "4-shiny/vulpix.png",
+    "duration": 3146
+  },
+  "4-shiny/wailmer": {
+    "file": "4-shiny/wailmer.png",
+    "duration": 3960
+  },
+  "4-shiny/wailord": {
+    "file": "4-shiny/wailord.png",
+    "duration": 4530
+  },
+  "4-shiny/walrein": {
+    "file": "4-shiny/walrein.png",
+    "duration": 4050
+  },
+  "4-shiny/wartortle": {
+    "file": "4-shiny/wartortle.png",
+    "duration": 3146
+  },
+  "4-shiny/weavile": {
+    "file": "4-shiny/weavile.png",
+    "duration": 3870
+  },
+  "4-shiny/weedle": {
+    "file": "4-shiny/weedle.png",
+    "duration": 3180
+  },
+  "4-shiny/weepinbell": {
+    "file": "4-shiny/weepinbell.png",
+    "duration": 3280
+  },
+  "4-shiny/weezing": {
+    "file": "4-shiny/weezing.png",
+    "duration": 3700
+  },
+  "4-shiny/whiscash": {
+    "file": "4-shiny/whiscash.png",
+    "duration": 5430
+  },
+  "4-shiny/whismur": {
+    "file": "4-shiny/whismur.png",
+    "duration": 4200
+  },
+  "4-shiny/wigglytuff": {
+    "file": "4-shiny/wigglytuff.png",
+    "duration": 3146
+  },
+  "4-shiny/wingull": {
+    "file": "4-shiny/wingull.png",
+    "duration": 4530
+  },
+  "4-shiny/wobbuffet": {
+    "file": "4-shiny/wobbuffet.png",
+    "duration": 3700
+  },
+  "4-shiny/wooper": {
+    "file": "4-shiny/wooper.png",
+    "duration": 3280
+  },
+  "4-shiny/wormadam": {
+    "file": "4-shiny/wormadam.png",
+    "duration": 4530
+  },
+  "4-shiny/wormadamsandy": {
+    "file": "4-shiny/wormadamsandy.png",
+    "duration": 4530
+  },
+  "4-shiny/wormadamtrash": {
+    "file": "4-shiny/wormadamtrash.png",
+    "duration": 4530
+  },
+  "4-shiny/wurmple": {
+    "file": "4-shiny/wurmple.png",
+    "duration": 3720
+  },
+  "4-shiny/wynaut": {
+    "file": "4-shiny/wynaut.png",
+    "duration": 4110
+  },
+  "4-shiny/xatu": {
+    "file": "4-shiny/xatu.png",
+    "duration": 3220
+  },
+  "4-shiny/yanma": {
+    "file": "4-shiny/yanma.png",
+    "duration": 4060
+  },
+  "4-shiny/yanmega": {
+    "file": "4-shiny/yanmega.png",
+    "duration": 4470
+  },
+  "4-shiny/zangoose": {
+    "file": "4-shiny/zangoose.png",
+    "duration": 3780
+  },
+  "4-shiny/zapdos": {
+    "file": "4-shiny/zapdos.png",
+    "duration": 4166
+  },
+  "4-shiny/zigzagoon": {
+    "file": "4-shiny/zigzagoon.png",
+    "duration": 3750
+  },
+  "4-shiny/zubat": {
+    "file": "4-shiny/zubat.png",
+    "duration": 3146
+  },
+  "4/abomasnow": {
+    "file": "4/abomasnow.png",
+    "duration": 3690
+  },
+  "4/abra": {
+    "file": "4/abra.png",
+    "duration": 3850
+  },
+  "4/absol": {
+    "file": "4/absol.png",
+    "duration": 3990
+  },
+  "4/aerodactyl": {
+    "file": "4/aerodactyl.png",
+    "duration": 4030
+  },
+  "4/aggron": {
+    "file": "4/aggron.png",
+    "duration": 4290
+  },
+  "4/aipom": {
+    "file": "4/aipom.png",
+    "duration": 3610
+  },
+  "4/alakazam": {
+    "file": "4/alakazam.png",
+    "duration": 3730
+  },
+  "4/altaria": {
+    "file": "4/altaria.png",
+    "duration": 4200
+  },
+  "4/ambipom": {
+    "file": "4/ambipom.png",
+    "duration": 3840
+  },
+  "4/ampharos": {
+    "file": "4/ampharos.png",
+    "duration": 3486
+  },
+  "4/anorith": {
+    "file": "4/anorith.png",
+    "duration": 3720
+  },
+  "4/arbok": {
+    "file": "4/arbok.png",
+    "duration": 3350
+  },
+  "4/arcanine": {
+    "file": "4/arcanine.png",
+    "duration": 3280
+  },
+  "4/arceus": {
+    "file": "4/arceus.png",
+    "duration": 4340
+  },
+  "4/ariados": {
+    "file": "4/ariados.png",
+    "duration": 3640
+  },
+  "4/armaldo": {
+    "file": "4/armaldo.png",
+    "duration": 3990
+  },
+  "4/aron": {
+    "file": "4/aron.png",
+    "duration": 4470
+  },
+  "4/articuno": {
+    "file": "4/articuno.png",
+    "duration": 3248
+  },
+  "4/azelf": {
+    "file": "4/azelf.png",
+    "duration": 4460
+  },
+  "4/azumarill": {
+    "file": "4/azumarill.png",
+    "duration": 3400
+  },
+  "4/azurill": {
+    "file": "4/azurill.png",
+    "duration": 3930
+  },
+  "4/bagon": {
+    "file": "4/bagon.png",
+    "duration": 3510
+  },
+  "4/baltoy": {
+    "file": "4/baltoy.png",
+    "duration": 4260
+  },
+  "4/banette": {
+    "file": "4/banette.png",
+    "duration": 4260
+  },
+  "4/barboach": {
+    "file": "4/barboach.png",
+    "duration": 5430
+  },
+  "4/bastiodon": {
+    "file": "4/bastiodon.png",
+    "duration": 4200
+  },
+  "4/bayleef": {
+    "file": "4/bayleef.png",
+    "duration": 3146
+  },
+  "4/beautifly": {
+    "file": "4/beautifly.png",
+    "duration": 4260
+  },
+  "4/beedrill": {
+    "file": "4/beedrill.png",
+    "duration": 3146
+  },
+  "4/beldum": {
+    "file": "4/beldum.png",
+    "duration": 4530
+  },
+  "4/bellossom": {
+    "file": "4/bellossom.png",
+    "duration": 3730
+  },
+  "4/bellsprout": {
+    "file": "4/bellsprout.png",
+    "duration": 3280
+  },
+  "4/bibarel": {
+    "file": "4/bibarel.png",
+    "duration": 3660
+  },
+  "4/bidoof": {
+    "file": "4/bidoof.png",
+    "duration": 3780
+  },
+  "4/blastoise": {
+    "file": "4/blastoise.png",
+    "duration": 3826
+  },
+  "4/blaziken": {
+    "file": "4/blaziken.png",
+    "duration": 3960
+  },
+  "4/blissey": {
+    "file": "4/blissey.png",
+    "duration": 3250
+  },
+  "4/bonsly": {
+    "file": "4/bonsly.png",
+    "duration": 3780
+  },
+  "4/breloom": {
+    "file": "4/breloom.png",
+    "duration": 4050
+  },
+  "4/bronzong": {
+    "file": "4/bronzong.png",
+    "duration": 4530
+  },
+  "4/bronzor": {
+    "file": "4/bronzor.png",
+    "duration": 4560
+  },
+  "4/budew": {
+    "file": "4/budew.png",
+    "duration": 3750
+  },
+  "4/buizel": {
+    "file": "4/buizel.png",
+    "duration": 3690
+  },
+  "4/bulbasaur": {
+    "file": "4/bulbasaur.png",
+    "duration": 3146
+  },
+  "4/buneary": {
+    "file": "4/buneary.png",
+    "duration": 3780
+  },
+  "4/burmy": {
+    "file": "4/burmy.png",
+    "duration": 3750
+  },
+  "4/butterfree": {
+    "file": "4/butterfree.png",
+    "duration": 4166
+  },
+  "4/cacnea": {
+    "file": "4/cacnea.png",
+    "duration": 5430
+  },
+  "4/cacturne": {
+    "file": "4/cacturne.png",
+    "duration": 3780
+  },
+  "4/camerupt": {
+    "file": "4/camerupt.png",
+    "duration": 4530
+  },
+  "4/carnivine": {
+    "file": "4/carnivine.png",
+    "duration": 4560
+  },
+  "4/carvanha": {
+    "file": "4/carvanha.png",
+    "duration": 4290
+  },
+  "4/cascoon": {
+    "file": "4/cascoon.png",
+    "duration": 3660
+  },
+  "4/castform": {
+    "file": "4/castform.png",
+    "duration": 4530
+  },
+  "4/castformrainy": {
+    "file": "4/castformrainy.png",
+    "duration": 4154
+  },
+  "4/castformsnowy": {
+    "file": "4/castformsnowy.png",
+    "duration": 4154
+  },
+  "4/castformsunny": {
+    "file": "4/castformsunny.png",
+    "duration": 4154
+  },
+  "4/caterpie": {
+    "file": "4/caterpie.png",
+    "duration": 3146
+  },
+  "4/celebi": {
+    "file": "4/celebi.png",
+    "duration": 4166
+  },
+  "4/chansey": {
+    "file": "4/chansey.png",
+    "duration": 3970
+  },
+  "4/charizard": {
+    "file": "4/charizard.png",
+    "duration": 3280
+  },
+  "4/charmander": {
+    "file": "4/charmander.png",
+    "duration": 3282
+  },
+  "4/charmeleon": {
+    "file": "4/charmeleon.png",
+    "duration": 3146
+  },
+  "4/chatot": {
+    "file": "4/chatot.png",
+    "duration": 3250
+  },
+  "4/cherrim": {
+    "file": "4/cherrim.png",
+    "duration": 3870
+  },
+  "4/cherubi": {
+    "file": "4/cherubi.png",
+    "duration": 3390
+  },
+  "4/chikorita": {
+    "file": "4/chikorita.png",
+    "duration": 3280
+  },
+  "4/chimchar": {
+    "file": "4/chimchar.png",
+    "duration": 3310
+  },
+  "4/chimecho": {
+    "file": "4/chimecho.png",
+    "duration": 4560
+  },
+  "4/chinchou": {
+    "file": "4/chinchou.png",
+    "duration": 4030
+  },
+  "4/chingling": {
+    "file": "4/chingling.png",
+    "duration": 4530
+  },
+  "4/clamperl": {
+    "file": "4/clamperl.png",
+    "duration": 4560
+  },
+  "4/claydol": {
+    "file": "4/claydol.png",
+    "duration": 4530
+  },
+  "4/clefable": {
+    "file": "4/clefable.png",
+    "duration": 3280
+  },
+  "4/clefairy": {
+    "file": "4/clefairy.png",
+    "duration": 3282
+  },
+  "4/cleffa": {
+    "file": "4/cleffa.png",
+    "duration": 3282
+  },
+  "4/cloyster": {
+    "file": "4/cloyster.png",
+    "duration": 3580
+  },
+  "4/combee": {
+    "file": "4/combee.png",
+    "duration": 4740
+  },
+  "4/combusken": {
+    "file": "4/combusken.png",
+    "duration": 4260
+  },
+  "4/corphish": {
+    "file": "4/corphish.png",
+    "duration": 4020
+  },
+  "4/corsola": {
+    "file": "4/corsola.png",
+    "duration": 3250
+  },
+  "4/cradily": {
+    "file": "4/cradily.png",
+    "duration": 3750
+  },
+  "4/cranidos": {
+    "file": "4/cranidos.png",
+    "duration": 3780
+  },
+  "4/crawdaunt": {
+    "file": "4/crawdaunt.png",
+    "duration": 3900
+  },
+  "4/cresselia": {
+    "file": "4/cresselia.png",
+    "duration": 5060
+  },
+  "4/croagunk": {
+    "file": "4/croagunk.png",
+    "duration": 3870
+  },
+  "4/crobat": {
+    "file": "4/crobat.png",
+    "duration": 4060
+  },
+  "4/croconaw": {
+    "file": "4/croconaw.png",
+    "duration": 3350
+  },
+  "4/cubone": {
+    "file": "4/cubone.png",
+    "duration": 3730
+  },
+  "4/cyndaquil": {
+    "file": "4/cyndaquil.png",
+    "duration": 3010
+  },
+  "4/darkrai": {
+    "file": "4/darkrai.png",
+    "duration": 4060
+  },
+  "4/delcatty": {
+    "file": "4/delcatty.png",
+    "duration": 3840
+  },
+  "4/delibird": {
+    "file": "4/delibird.png",
+    "duration": 3400
+  },
+  "4/deoxys": {
+    "file": "4/deoxys.png",
+    "duration": 4060
+  },
+  "4/deoxysattack": {
+    "file": "4/deoxysattack.png",
+    "duration": 4200
+  },
+  "4/deoxysdefense": {
+    "file": "4/deoxysdefense.png",
+    "duration": 4100
+  },
+  "4/deoxysspeed": {
+    "file": "4/deoxysspeed.png",
+    "duration": 4160
+  },
+  "4/dewgong": {
+    "file": "4/dewgong.png",
+    "duration": 3220
+  },
+  "4/dialga": {
+    "file": "4/dialga.png",
+    "duration": 4020
+  },
+  "4/diglett": {
+    "file": "4/diglett.png",
+    "duration": 3340
+  },
+  "4/ditto": {
+    "file": "4/ditto.png",
+    "duration": 3190
+  },
+  "4/dodrio": {
+    "file": "4/dodrio.png",
+    "duration": 3160
+  },
+  "4/doduo": {
+    "file": "4/doduo.png",
+    "duration": 3250
+  },
+  "4/donphan": {
+    "file": "4/donphan.png",
+    "duration": 3610
+  },
+  "4/dragonair": {
+    "file": "4/dragonair.png",
+    "duration": 4030
+  },
+  "4/dragonite": {
+    "file": "4/dragonite.png",
+    "duration": 3580
+  },
+  "4/drapion": {
+    "file": "4/drapion.png",
+    "duration": 3840
+  },
+  "4/dratini": {
+    "file": "4/dratini.png",
+    "duration": 3282
+  },
+  "4/drifblim": {
+    "file": "4/drifblim.png",
+    "duration": 4530
+  },
+  "4/drifloon": {
+    "file": "4/drifloon.png",
+    "duration": 4560
+  },
+  "4/drowzee": {
+    "file": "4/drowzee.png",
+    "duration": 3250
+  },
+  "4/dugtrio": {
+    "file": "4/dugtrio.png",
+    "duration": 3340
+  },
+  "4/dunsparce": {
+    "file": "4/dunsparce.png",
+    "duration": 4060
+  },
+  "4/dusclops": {
+    "file": "4/dusclops.png",
+    "duration": 4200
+  },
+  "4/dusknoir": {
+    "file": "4/dusknoir.png",
+    "duration": 4410
+  },
+  "4/duskull": {
+    "file": "4/duskull.png",
+    "duration": 4530
+  },
+  "4/dustox": {
+    "file": "4/dustox.png",
+    "duration": 4650
+  },
+  "4/eevee": {
+    "file": "4/eevee.png",
+    "duration": 3310
+  },
+  "4/ekans": {
+    "file": "4/ekans.png",
+    "duration": 3214
+  },
+  "4/electabuzz": {
+    "file": "4/electabuzz.png",
+    "duration": 3580
+  },
+  "4/electivire": {
+    "file": "4/electivire.png",
+    "duration": 4080
+  },
+  "4/electrike": {
+    "file": "4/electrike.png",
+    "duration": 4050
+  },
+  "4/electrode": {
+    "file": "4/electrode.png",
+    "duration": 3700
+  },
+  "4/elekid": {
+    "file": "4/elekid.png",
+    "duration": 3760
+  },
+  "4/empoleon": {
+    "file": "4/empoleon.png",
+    "duration": 3930
+  },
+  "4/entei": {
+    "file": "4/entei.png",
+    "duration": 3486
+  },
+  "4/espeon": {
+    "file": "4/espeon.png",
+    "duration": 3160
+  },
+  "4/exeggcute": {
+    "file": "4/exeggcute.png",
+    "duration": 3280
+  },
+  "4/exeggutor": {
+    "file": "4/exeggutor.png",
+    "duration": 3850
+  },
+  "4/exploud": {
+    "file": "4/exploud.png",
+    "duration": 3990
+  },
+  "4/farfetchd": {
+    "file": "4/farfetchd.png",
+    "duration": 3580
+  },
+  "4/fearow": {
+    "file": "4/fearow.png",
+    "duration": 3160
+  },
+  "4/feebas": {
+    "file": "4/feebas.png",
+    "duration": 4560
+  },
+  "4/feraligatr": {
+    "file": "4/feraligatr.png",
+    "duration": 3452
+  },
+  "4/finneon": {
+    "file": "4/finneon.png",
+    "duration": 4530
+  },
+  "4/flaaffy": {
+    "file": "4/flaaffy.png",
+    "duration": 3193
+  },
+  "4/flareon": {
+    "file": "4/flareon.png",
+    "duration": 3160
+  },
+  "4/floatzel": {
+    "file": "4/floatzel.png",
+    "duration": 4050
+  },
+  "4/flygon": {
+    "file": "4/flygon.png",
+    "duration": 4260
+  },
+  "4/forretress": {
+    "file": "4/forretress.png",
+    "duration": 3580
+  },
+  "4/froslass": {
+    "file": "4/froslass.png",
+    "duration": 4410
+  },
+  "4/furret": {
+    "file": "4/furret.png",
+    "duration": 3160
+  },
+  "4/gabite": {
+    "file": "4/gabite.png",
+    "duration": 3660
+  },
+  "4/gallade": {
+    "file": "4/gallade.png",
+    "duration": 4050
+  },
+  "4/garchomp": {
+    "file": "4/garchomp.png",
+    "duration": 3960
+  },
+  "4/gardevoir": {
+    "file": "4/gardevoir.png",
+    "duration": 4020
+  },
+  "4/gastly": {
+    "file": "4/gastly.png",
+    "duration": 4030
+  },
+  "4/gastrodon": {
+    "file": "4/gastrodon.png",
+    "duration": 4380
+  },
+  "4/gengar": {
+    "file": "4/gengar.png",
+    "duration": 3550
+  },
+  "4/geodude": {
+    "file": "4/geodude.png",
+    "duration": 3190
+  },
+  "4/gible": {
+    "file": "4/gible.png",
+    "duration": 3720
+  },
+  "4/girafarig": {
+    "file": "4/girafarig.png",
+    "duration": 3460
+  },
+  "4/giratina": {
+    "file": "4/giratina.png",
+    "duration": 3690
+  },
+  "4/giratinaorigin": {
+    "file": "4/giratinaorigin.png",
+    "duration": 3090
+  },
+  "4/glaceon": {
+    "file": "4/glaceon.png",
+    "duration": 3630
+  },
+  "4/glalie": {
+    "file": "4/glalie.png",
+    "duration": 4200
+  },
+  "4/glameow": {
+    "file": "4/glameow.png",
+    "duration": 3220
+  },
+  "4/gligar": {
+    "file": "4/gligar.png",
+    "duration": 3160
+  },
+  "4/gliscor": {
+    "file": "4/gliscor.png",
+    "duration": 4530
+  },
+  "4/gloom": {
+    "file": "4/gloom.png",
+    "duration": 3130
+  },
+  "4/golbat": {
+    "file": "4/golbat.png",
+    "duration": 4030
+  },
+  "4/goldeen": {
+    "file": "4/goldeen.png",
+    "duration": 4060
+  },
+  "4/golduck": {
+    "file": "4/golduck.png",
+    "duration": 3340
+  },
+  "4/golem": {
+    "file": "4/golem.png",
+    "duration": 3340
+  },
+  "4/gorebyss": {
+    "file": "4/gorebyss.png",
+    "duration": 3750
+  },
+  "4/granbull": {
+    "file": "4/granbull.png",
+    "duration": 3640
+  },
+  "4/graveler": {
+    "file": "4/graveler.png",
+    "duration": 3370
+  },
+  "4/grimer": {
+    "file": "4/grimer.png",
+    "duration": 3190
+  },
+  "4/grotle": {
+    "file": "4/grotle.png",
+    "duration": 3570
+  },
+  "4/groudon": {
+    "file": "4/groudon.png",
+    "duration": 3700
+  },
+  "4/grovyle": {
+    "file": "4/grovyle.png",
+    "duration": 3780
+  },
+  "4/growlithe": {
+    "file": "4/growlithe.png",
+    "duration": 3160
+  },
+  "4/grumpig": {
+    "file": "4/grumpig.png",
+    "duration": 4110
+  },
+  "4/gulpin": {
+    "file": "4/gulpin.png",
+    "duration": 3840
+  },
+  "4/gyarados": {
+    "file": "4/gyarados.png",
+    "duration": 3220
+  },
+  "4/happiny": {
+    "file": "4/happiny.png",
+    "duration": 3750
+  },
+  "4/hariyama": {
+    "file": "4/hariyama.png",
+    "duration": 4080
+  },
+  "4/haunter": {
+    "file": "4/haunter.png",
+    "duration": 3790
+  },
+  "4/heatran": {
+    "file": "4/heatran.png",
+    "duration": 6060
+  },
+  "4/heracross": {
+    "file": "4/heracross.png",
+    "duration": 3580
+  },
+  "4/hippopotas": {
+    "file": "4/hippopotas.png",
+    "duration": 4020
+  },
+  "4/hippowdon": {
+    "file": "4/hippowdon.png",
+    "duration": 3810
+  },
+  "4/hitmonchan": {
+    "file": "4/hitmonchan.png",
+    "duration": 3700
+  },
+  "4/hitmonlee": {
+    "file": "4/hitmonlee.png",
+    "duration": 3550
+  },
+  "4/hitmontop": {
+    "file": "4/hitmontop.png",
+    "duration": 4030
+  },
+  "4/honchkrow": {
+    "file": "4/honchkrow.png",
+    "duration": 3840
+  },
+  "4/hooh": {
+    "file": "4/hooh.png",
+    "duration": 3996
+  },
+  "4/hoothoot": {
+    "file": "4/hoothoot.png",
+    "duration": 3280
+  },
+  "4/hoppip": {
+    "file": "4/hoppip.png",
+    "duration": 4030
+  },
+  "4/horsea": {
+    "file": "4/horsea.png",
+    "duration": 3250
+  },
+  "4/houndoom": {
+    "file": "4/houndoom.png",
+    "duration": 3310
+  },
+  "4/houndour": {
+    "file": "4/houndour.png",
+    "duration": 3280
+  },
+  "4/huntail": {
+    "file": "4/huntail.png",
+    "duration": 4200
+  },
+  "4/hypno": {
+    "file": "4/hypno.png",
+    "duration": 3490
+  },
+  "4/igglybuff": {
+    "file": "4/igglybuff.png",
+    "duration": 4166
+  },
+  "4/illumise": {
+    "file": "4/illumise.png",
+    "duration": 4230
+  },
+  "4/infernape": {
+    "file": "4/infernape.png",
+    "duration": 4020
+  },
+  "4/ivysaur": {
+    "file": "4/ivysaur.png",
+    "duration": 3146
+  },
+  "4/jigglypuff": {
+    "file": "4/jigglypuff.png",
+    "duration": 4200
+  },
+  "4/jirachi": {
+    "file": "4/jirachi.png",
+    "duration": 4060
+  },
+  "4/jolteon": {
+    "file": "4/jolteon.png",
+    "duration": 3970
+  },
+  "4/jumpluff": {
+    "file": "4/jumpluff.png",
+    "duration": 4030
+  },
+  "4/jynx": {
+    "file": "4/jynx.png",
+    "duration": 4210
+  },
+  "4/kabuto": {
+    "file": "4/kabuto.png",
+    "duration": 4120
+  },
+  "4/kabutops": {
+    "file": "4/kabutops.png",
+    "duration": 3100
+  },
+  "4/kadabra": {
+    "file": "4/kadabra.png",
+    "duration": 3160
+  },
+  "4/kakuna": {
+    "file": "4/kakuna.png",
+    "duration": 3146
+  },
+  "4/kangaskhan": {
+    "file": "4/kangaskhan.png",
+    "duration": 3280
+  },
+  "4/kecleon": {
+    "file": "4/kecleon.png",
+    "duration": 3870
+  },
+  "4/kingdra": {
+    "file": "4/kingdra.png",
+    "duration": 4030
+  },
+  "4/kingler": {
+    "file": "4/kingler.png",
+    "duration": 3640
+  },
+  "4/kirlia": {
+    "file": "4/kirlia.png",
+    "duration": 3990
+  },
+  "4/koffing": {
+    "file": "4/koffing.png",
+    "duration": 4030
+  },
+  "4/krabby": {
+    "file": "4/krabby.png",
+    "duration": 3760
+  },
+  "4/kricketot": {
+    "file": "4/kricketot.png",
+    "duration": 4200
+  },
+  "4/kricketune": {
+    "file": "4/kricketune.png",
+    "duration": 4200
+  },
+  "4/kyogre": {
+    "file": "4/kyogre.png",
+    "duration": 5060
+  },
+  "4/lairon": {
+    "file": "4/lairon.png",
+    "duration": 4110
+  },
+  "4/lanturn": {
+    "file": "4/lanturn.png",
+    "duration": 4030
+  },
+  "4/lapras": {
+    "file": "4/lapras.png",
+    "duration": 4166
+  },
+  "4/larvitar": {
+    "file": "4/larvitar.png",
+    "duration": 3146
+  },
+  "4/latias": {
+    "file": "4/latias.png",
+    "duration": 5340
+  },
+  "4/latios": {
+    "file": "4/latios.png",
+    "duration": 4660
+  },
+  "4/leafeon": {
+    "file": "4/leafeon.png",
+    "duration": 3990
+  },
+  "4/ledian": {
+    "file": "4/ledian.png",
+    "duration": 3460
+  },
+  "4/ledyba": {
+    "file": "4/ledyba.png",
+    "duration": 3100
+  },
+  "4/lickilicky": {
+    "file": "4/lickilicky.png",
+    "duration": 3690
+  },
+  "4/lickitung": {
+    "file": "4/lickitung.png",
+    "duration": 3250
+  },
+  "4/lileep": {
+    "file": "4/lileep.png",
+    "duration": 3720
+  },
+  "4/linoone": {
+    "file": "4/linoone.png",
+    "duration": 3840
+  },
+  "4/lombre": {
+    "file": "4/lombre.png",
+    "duration": 3750
+  },
+  "4/lopunny": {
+    "file": "4/lopunny.png",
+    "duration": 4050
+  },
+  "4/lotad": {
+    "file": "4/lotad.png",
+    "duration": 4230
+  },
+  "4/loudred": {
+    "file": "4/loudred.png",
+    "duration": 4080
+  },
+  "4/lucario": {
+    "file": "4/lucario.png",
+    "duration": 3720
+  },
+  "4/ludicolo": {
+    "file": "4/ludicolo.png",
+    "duration": 3600
+  },
+  "4/lugia": {
+    "file": "4/lugia.png",
+    "duration": 4268
+  },
+  "4/lumineon": {
+    "file": "4/lumineon.png",
+    "duration": 4530
+  },
+  "4/lunatone": {
+    "file": "4/lunatone.png",
+    "duration": 4560
+  },
+  "4/luvdisc": {
+    "file": "4/luvdisc.png",
+    "duration": 4560
+  },
+  "4/luxio": {
+    "file": "4/luxio.png",
+    "duration": 3810
+  },
+  "4/luxray": {
+    "file": "4/luxray.png",
+    "duration": 4170
+  },
+  "4/machamp": {
+    "file": "4/machamp.png",
+    "duration": 3580
+  },
+  "4/machoke": {
+    "file": "4/machoke.png",
+    "duration": 3250
+  },
+  "4/machop": {
+    "file": "4/machop.png",
+    "duration": 3280
+  },
+  "4/magby": {
+    "file": "4/magby.png",
+    "duration": 3550
+  },
+  "4/magcargo": {
+    "file": "4/magcargo.png",
+    "duration": 3730
+  },
+  "4/magikarp": {
+    "file": "4/magikarp.png",
+    "duration": 3310
+  },
+  "4/magmar": {
+    "file": "4/magmar.png",
+    "duration": 3760
+  },
+  "4/magmortar": {
+    "file": "4/magmortar.png",
+    "duration": 3810
+  },
+  "4/magnemite": {
+    "file": "4/magnemite.png",
+    "duration": 4030
+  },
+  "4/magneton": {
+    "file": "4/magneton.png",
+    "duration": 4060
+  },
+  "4/magnezone": {
+    "file": "4/magnezone.png",
+    "duration": 4560
+  },
+  "4/makuhita": {
+    "file": "4/makuhita.png",
+    "duration": 4470
+  },
+  "4/mamoswine": {
+    "file": "4/mamoswine.png",
+    "duration": 4140
+  },
+  "4/manaphy": {
+    "file": "4/manaphy.png",
+    "duration": 4940
+  },
+  "4/manectric": {
+    "file": "4/manectric.png",
+    "duration": 4260
+  },
+  "4/mankey": {
+    "file": "4/mankey.png",
+    "duration": 3040
+  },
+  "4/mantine": {
+    "file": "4/mantine.png",
+    "duration": 4060
+  },
+  "4/mantyke": {
+    "file": "4/mantyke.png",
+    "duration": 3690
+  },
+  "4/mareep": {
+    "file": "4/mareep.png",
+    "duration": 5254
+  },
+  "4/marill": {
+    "file": "4/marill.png",
+    "duration": 3970
+  },
+  "4/marowak": {
+    "file": "4/marowak.png",
+    "duration": 3100
+  },
+  "4/marshtomp": {
+    "file": "4/marshtomp.png",
+    "duration": 4230
+  },
+  "4/masquerain": {
+    "file": "4/masquerain.png",
+    "duration": 3720
+  },
+  "4/mawile": {
+    "file": "4/mawile.png",
+    "duration": 4110
+  },
+  "4/medicham": {
+    "file": "4/medicham.png",
+    "duration": 3900
+  },
+  "4/meditite": {
+    "file": "4/meditite.png",
+    "duration": 4560
+  },
+  "4/meganium": {
+    "file": "4/meganium.png",
+    "duration": 3554
+  },
+  "4/meowth": {
+    "file": "4/meowth.png",
+    "duration": 3280
+  },
+  "4/mesprit": {
+    "file": "4/mesprit.png",
+    "duration": 4460
+  },
+  "4/metagross": {
+    "file": "4/metagross.png",
+    "duration": 4080
+  },
+  "4/metang": {
+    "file": "4/metang.png",
+    "duration": 3630
+  },
+  "4/metapod": {
+    "file": "4/metapod.png",
+    "duration": 3588
+  },
+  "4/mew": {
+    "file": "4/mew.png",
+    "duration": 4166
+  },
+  "4/mewtwo": {
+    "file": "4/mewtwo.png",
+    "duration": 3724
+  },
+  "4/mightyena": {
+    "file": "4/mightyena.png",
+    "duration": 3750
+  },
+  "4/milotic": {
+    "file": "4/milotic.png",
+    "duration": 4230
+  },
+  "4/miltank": {
+    "file": "4/miltank.png",
+    "duration": 4060
+  },
+  "4/mimejr": {
+    "file": "4/mimejr.png",
+    "duration": 4260
+  },
+  "4/minun": {
+    "file": "4/minun.png",
+    "duration": 4050
+  },
+  "4/misdreavus": {
+    "file": "4/misdreavus.png",
+    "duration": 4030
+  },
+  "4/mismagius": {
+    "file": "4/mismagius.png",
+    "duration": 4530
+  },
+  "4/moltres": {
+    "file": "4/moltres.png",
+    "duration": 4064
+  },
+  "4/monferno": {
+    "file": "4/monferno.png",
+    "duration": 4050
+  },
+  "4/mothim": {
+    "file": "4/mothim.png",
+    "duration": 4530
+  },
+  "4/mrmime": {
+    "file": "4/mrmime.png",
+    "duration": 3280
+  },
+  "4/mudkip": {
+    "file": "4/mudkip.png",
+    "duration": 4140
+  },
+  "4/muk": {
+    "file": "4/muk.png",
+    "duration": 3160
+  },
+  "4/munchlax": {
+    "file": "4/munchlax.png",
+    "duration": 3750
+  },
+  "4/murkrow": {
+    "file": "4/murkrow.png",
+    "duration": 4060
+  },
+  "4/natu": {
+    "file": "4/natu.png",
+    "duration": 3070
+  },
+  "4/nidoking": {
+    "file": "4/nidoking.png",
+    "duration": 3146
+  },
+  "4/nidoqueen": {
+    "file": "4/nidoqueen.png",
+    "duration": 3146
+  },
+  "4/nidoranf": {
+    "file": "4/nidoranf.png",
+    "duration": 3146
+  },
+  "4/nidoranm": {
+    "file": "4/nidoranm.png",
+    "duration": 3282
+  },
+  "4/nidorina": {
+    "file": "4/nidorina.png",
+    "duration": 3282
+  },
+  "4/nidorino": {
+    "file": "4/nidorino.png",
+    "duration": 3146
+  },
+  "4/nincada": {
+    "file": "4/nincada.png",
+    "duration": 4140
+  },
+  "4/ninetales": {
+    "file": "4/ninetales.png",
+    "duration": 3430
+  },
+  "4/ninjask": {
+    "file": "4/ninjask.png",
+    "duration": 3840
+  },
+  "4/noctowl": {
+    "file": "4/noctowl.png",
+    "duration": 3220
+  },
+  "4/nosepass": {
+    "file": "4/nosepass.png",
+    "duration": 3660
+  },
+  "4/numel": {
+    "file": "4/numel.png",
+    "duration": 4110
+  },
+  "4/nuzleaf": {
+    "file": "4/nuzleaf.png",
+    "duration": 3810
+  },
+  "4/octillery": {
+    "file": "4/octillery.png",
+    "duration": 4060
+  },
+  "4/oddish": {
+    "file": "4/oddish.png",
+    "duration": 2950
+  },
+  "4/omanyte": {
+    "file": "4/omanyte.png",
+    "duration": 3820
+  },
+  "4/omastar": {
+    "file": "4/omastar.png",
+    "duration": 4030
+  },
+  "4/onix": {
+    "file": "4/onix.png",
+    "duration": 3550
+  },
+  "4/pachirisu": {
+    "file": "4/pachirisu.png",
+    "duration": 3960
+  },
+  "4/palkia": {
+    "file": "4/palkia.png",
+    "duration": 3820
+  },
+  "4/paras": {
+    "file": "4/paras.png",
+    "duration": 3400
+  },
+  "4/parasect": {
+    "file": "4/parasect.png",
+    "duration": 3430
+  },
+  "4/pelipper": {
+    "file": "4/pelipper.png",
+    "duration": 4230
+  },
+  "4/persian": {
+    "file": "4/persian.png",
+    "duration": 3160
+  },
+  "4/phanpy": {
+    "file": "4/phanpy.png",
+    "duration": 3280
+  },
+  "4/phione": {
+    "file": "4/phione.png",
+    "duration": 4460
+  },
+  "4/pichu": {
+    "file": "4/pichu.png",
+    "duration": 5186
+  },
+  "4/pidgeot": {
+    "file": "4/pidgeot.png",
+    "duration": 3826
+  },
+  "4/pidgeotto": {
+    "file": "4/pidgeotto.png",
+    "duration": 3146
+  },
+  "4/pidgey": {
+    "file": "4/pidgey.png",
+    "duration": 3146
+  },
+  "4/pikachu": {
+    "file": "4/pikachu.png",
+    "duration": 3282
+  },
+  "4/piloswine": {
+    "file": "4/piloswine.png",
+    "duration": 3550
+  },
+  "4/pineco": {
+    "file": "4/pineco.png",
+    "duration": 4030
+  },
+  "4/pinsir": {
+    "file": "4/pinsir.png",
+    "duration": 3580
+  },
+  "4/piplup": {
+    "file": "4/piplup.png",
+    "duration": 3660
+  },
+  "4/plusle": {
+    "file": "4/plusle.png",
+    "duration": 3780
+  },
+  "4/politoed": {
+    "file": "4/politoed.png",
+    "duration": 3760
+  },
+  "4/poliwag": {
+    "file": "4/poliwag.png",
+    "duration": 3280
+  },
+  "4/poliwhirl": {
+    "file": "4/poliwhirl.png",
+    "duration": 3250
+  },
+  "4/poliwrath": {
+    "file": "4/poliwrath.png",
+    "duration": 3160
+  },
+  "4/ponyta": {
+    "file": "4/ponyta.png",
+    "duration": 3220
+  },
+  "4/poochyena": {
+    "file": "4/poochyena.png",
+    "duration": 4050
+  },
+  "4/porygon": {
+    "file": "4/porygon.png",
+    "duration": 3790
+  },
+  "4/porygon2": {
+    "file": "4/porygon2.png",
+    "duration": 4060
+  },
+  "4/porygonz": {
+    "file": "4/porygonz.png",
+    "duration": 4230
+  },
+  "4/primeape": {
+    "file": "4/primeape.png",
+    "duration": 3760
+  },
+  "4/prinplup": {
+    "file": "4/prinplup.png",
+    "duration": 3630
+  },
+  "4/probopass": {
+    "file": "4/probopass.png",
+    "duration": 3780
+  },
+  "4/psyduck": {
+    "file": "4/psyduck.png",
+    "duration": 3220
+  },
+  "4/pupitar": {
+    "file": "4/pupitar.png",
+    "duration": 3418
+  },
+  "4/purugly": {
+    "file": "4/purugly.png",
+    "duration": 3130
+  },
+  "4/quagsire": {
+    "file": "4/quagsire.png",
+    "duration": 3190
+  },
+  "4/quilava": {
+    "file": "4/quilava.png",
+    "duration": 3486
+  },
+  "4/qwilfish": {
+    "file": "4/qwilfish.png",
+    "duration": 3310
+  },
+  "4/raichu": {
+    "file": "4/raichu.png",
+    "duration": 3554
+  },
+  "4/raikou": {
+    "file": "4/raikou.png",
+    "duration": 3214
+  },
+  "4/ralts": {
+    "file": "4/ralts.png",
+    "duration": 4230
+  },
+  "4/rampardos": {
+    "file": "4/rampardos.png",
+    "duration": 4140
+  },
+  "4/rapidash": {
+    "file": "4/rapidash.png",
+    "duration": 3460
+  },
+  "4/raticate": {
+    "file": "4/raticate.png",
+    "duration": 3452
+  },
+  "4/rattata": {
+    "file": "4/rattata.png",
+    "duration": 2976
+  },
+  "4/rayquaza": {
+    "file": "4/rayquaza.png",
+    "duration": 3980
+  },
+  "4/regice": {
+    "file": "4/regice.png",
+    "duration": 4060
+  },
+  "4/regigigas": {
+    "file": "4/regigigas.png",
+    "duration": 3860
+  },
+  "4/regirock": {
+    "file": "4/regirock.png",
+    "duration": 3820
+  },
+  "4/registeel": {
+    "file": "4/registeel.png",
+    "duration": 3340
+  },
+  "4/relicanth": {
+    "file": "4/relicanth.png",
+    "duration": 4560
+  },
+  "4/remoraid": {
+    "file": "4/remoraid.png",
+    "duration": 4030
+  },
+  "4/rhydon": {
+    "file": "4/rhydon.png",
+    "duration": 3250
+  },
+  "4/rhyhorn": {
+    "file": "4/rhyhorn.png",
+    "duration": 3670
+  },
+  "4/rhyperior": {
+    "file": "4/rhyperior.png",
+    "duration": 3690
+  },
+  "4/riolu": {
+    "file": "4/riolu.png",
+    "duration": 4050
+  },
+  "4/roselia": {
+    "file": "4/roselia.png",
+    "duration": 4470
+  },
+  "4/roserade": {
+    "file": "4/roserade.png",
+    "duration": 4290
+  },
+  "4/rotom": {
+    "file": "4/rotom.png",
+    "duration": 4050
+  },
+  "4/rotomfan": {
+    "file": "4/rotomfan.png",
+    "duration": 4050
+  },
+  "4/rotomfrost": {
+    "file": "4/rotomfrost.png",
+    "duration": 4050
+  },
+  "4/rotomheat": {
+    "file": "4/rotomheat.png",
+    "duration": 4050
+  },
+  "4/rotommow": {
+    "file": "4/rotommow.png",
+    "duration": 4050
+  },
+  "4/rotomwash": {
+    "file": "4/rotomwash.png",
+    "duration": 4050
+  },
+  "4/sableye": {
+    "file": "4/sableye.png",
+    "duration": 4290
+  },
+  "4/salamence": {
+    "file": "4/salamence.png",
+    "duration": 4350
+  },
+  "4/sandshrew": {
+    "file": "4/sandshrew.png",
+    "duration": 2942
+  },
+  "4/sandslash": {
+    "file": "4/sandslash.png",
+    "duration": 3350
+  },
+  "4/sceptile": {
+    "file": "4/sceptile.png",
+    "duration": 4020
+  },
+  "4/scizor": {
+    "file": "4/scizor.png",
+    "duration": 3880
+  },
+  "4/scyther": {
+    "file": "4/scyther.png",
+    "duration": 3250
+  },
+  "4/seadra": {
+    "file": "4/seadra.png",
+    "duration": 4030
+  },
+  "4/seaking": {
+    "file": "4/seaking.png",
+    "duration": 4030
+  },
+  "4/sealeo": {
+    "file": "4/sealeo.png",
+    "duration": 3660
+  },
+  "4/seedot": {
+    "file": "4/seedot.png",
+    "duration": 3840
+  },
+  "4/seel": {
+    "file": "4/seel.png",
+    "duration": 3760
+  },
+  "4/sentret": {
+    "file": "4/sentret.png",
+    "duration": 3250
+  },
+  "4/seviper": {
+    "file": "4/seviper.png",
+    "duration": 3930
+  },
+  "4/sharpedo": {
+    "file": "4/sharpedo.png",
+    "duration": 4230
+  },
+  "4/shaymin": {
+    "file": "4/shaymin.png",
+    "duration": 4260
+  },
+  "4/shayminsky": {
+    "file": "4/shayminsky.png",
+    "duration": 3860
+  },
+  "4/shedinja": {
+    "file": "4/shedinja.png",
+    "duration": 4560
+  },
+  "4/shelgon": {
+    "file": "4/shelgon.png",
+    "duration": 3930
+  },
+  "4/shellder": {
+    "file": "4/shellder.png",
+    "duration": 4060
+  },
+  "4/shellos": {
+    "file": "4/shellos.png",
+    "duration": 3900
+  },
+  "4/shieldon": {
+    "file": "4/shieldon.png",
+    "duration": 3630
+  },
+  "4/shiftry": {
+    "file": "4/shiftry.png",
+    "duration": 3660
+  },
+  "4/shinx": {
+    "file": "4/shinx.png",
+    "duration": 3630
+  },
+  "4/shroomish": {
+    "file": "4/shroomish.png",
+    "duration": 4200
+  },
+  "4/shuckle": {
+    "file": "4/shuckle.png",
+    "duration": 3250
+  },
+  "4/shuppet": {
+    "file": "4/shuppet.png",
+    "duration": 4560
+  },
+  "4/silcoon": {
+    "file": "4/silcoon.png",
+    "duration": 3660
+  },
+  "4/skarmory": {
+    "file": "4/skarmory.png",
+    "duration": 3340
+  },
+  "4/skiploom": {
+    "file": "4/skiploom.png",
+    "duration": 3970
+  },
+  "4/skitty": {
+    "file": "4/skitty.png",
+    "duration": 3780
+  },
+  "4/skorupi": {
+    "file": "4/skorupi.png",
+    "duration": 4650
+  },
+  "4/skuntank": {
+    "file": "4/skuntank.png",
+    "duration": 3610
+  },
+  "4/slaking": {
+    "file": "4/slaking.png",
+    "duration": 4050
+  },
+  "4/slakoth": {
+    "file": "4/slakoth.png",
+    "duration": 3960
+  },
+  "4/slowbro": {
+    "file": "4/slowbro.png",
+    "duration": 3160
+  },
+  "4/slowking": {
+    "file": "4/slowking.png",
+    "duration": 3310
+  },
+  "4/slowpoke": {
+    "file": "4/slowpoke.png",
+    "duration": 3160
+  },
+  "4/slugma": {
+    "file": "4/slugma.png",
+    "duration": 3130
+  },
+  "4/smeargle": {
+    "file": "4/smeargle.png",
+    "duration": 3280
+  },
+  "4/smoochum": {
+    "file": "4/smoochum.png",
+    "duration": 3700
+  },
+  "4/sneasel": {
+    "file": "4/sneasel.png",
+    "duration": 3250
+  },
+  "4/snorlax": {
+    "file": "4/snorlax.png",
+    "duration": 3160
+  },
+  "4/snorunt": {
+    "file": "4/snorunt.png",
+    "duration": 4470
+  },
+  "4/snover": {
+    "file": "4/snover.png",
+    "duration": 3840
+  },
+  "4/snubbull": {
+    "file": "4/snubbull.png",
+    "duration": 3370
+  },
+  "4/solrock": {
+    "file": "4/solrock.png",
+    "duration": 4800
+  },
+  "4/spearow": {
+    "file": "4/spearow.png",
+    "duration": 2976
+  },
+  "4/spheal": {
+    "file": "4/spheal.png",
+    "duration": 4560
+  },
+  "4/spinarak": {
+    "file": "4/spinarak.png",
+    "duration": 3400
+  },
+  "4/spinda": {
+    "file": "4/spinda.png",
+    "duration": 4260
+  },
+  "4/spiritomb": {
+    "file": "4/spiritomb.png",
+    "duration": 4080
+  },
+  "4/spoink": {
+    "file": "4/spoink.png",
+    "duration": 3780
+  },
+  "4/squirtle": {
+    "file": "4/squirtle.png",
+    "duration": 3180
+  },
+  "4/stantler": {
+    "file": "4/stantler.png",
+    "duration": 3340
+  },
+  "4/staraptor": {
+    "file": "4/staraptor.png",
+    "duration": 4200
+  },
+  "4/staravia": {
+    "file": "4/staravia.png",
+    "duration": 3690
+  },
+  "4/starly": {
+    "file": "4/starly.png",
+    "duration": 3840
+  },
+  "4/starmie": {
+    "file": "4/starmie.png",
+    "duration": 4120
+  },
+  "4/staryu": {
+    "file": "4/staryu.png",
+    "duration": 3250
+  },
+  "4/steelix": {
+    "file": "4/steelix.png",
+    "duration": 3550
+  },
+  "4/stunky": {
+    "file": "4/stunky.png",
+    "duration": 3310
+  },
+  "4/sudowoodo": {
+    "file": "4/sudowoodo.png",
+    "duration": 4960
+  },
+  "4/suicune": {
+    "file": "4/suicune.png",
+    "duration": 3248
+  },
+  "4/sunflora": {
+    "file": "4/sunflora.png",
+    "duration": 3220
+  },
+  "4/sunkern": {
+    "file": "4/sunkern.png",
+    "duration": 4030
+  },
+  "4/surskit": {
+    "file": "4/surskit.png",
+    "duration": 3780
+  },
+  "4/swablu": {
+    "file": "4/swablu.png",
+    "duration": 4530
+  },
+  "4/swalot": {
+    "file": "4/swalot.png",
+    "duration": 4050
+  },
+  "4/swampert": {
+    "file": "4/swampert.png",
+    "duration": 4350
+  },
+  "4/swellow": {
+    "file": "4/swellow.png",
+    "duration": 4260
+  },
+  "4/swinub": {
+    "file": "4/swinub.png",
+    "duration": 3280
+  },
+  "4/taillow": {
+    "file": "4/taillow.png",
+    "duration": 4530
+  },
+  "4/tangela": {
+    "file": "4/tangela.png",
+    "duration": 4030
+  },
+  "4/tangrowth": {
+    "file": "4/tangrowth.png",
+    "duration": 4200
+  },
+  "4/tauros": {
+    "file": "4/tauros.png",
+    "duration": 3370
+  },
+  "4/teddiursa": {
+    "file": "4/teddiursa.png",
+    "duration": 3250
+  },
+  "4/tentacool": {
+    "file": "4/tentacool.png",
+    "duration": 3190
+  },
+  "4/tentacruel": {
+    "file": "4/tentacruel.png",
+    "duration": 4060
+  },
+  "4/togekiss": {
+    "file": "4/togekiss.png",
+    "duration": 4530
+  },
+  "4/togepi": {
+    "file": "4/togepi.png",
+    "duration": 3280
+  },
+  "4/togetic": {
+    "file": "4/togetic.png",
+    "duration": 3370
+  },
+  "4/torchic": {
+    "file": "4/torchic.png",
+    "duration": 4170
+  },
+  "4/torkoal": {
+    "file": "4/torkoal.png",
+    "duration": 4320
+  },
+  "4/torterra": {
+    "file": "4/torterra.png",
+    "duration": 3460
+  },
+  "4/totodile": {
+    "file": "4/totodile.png",
+    "duration": 3282
+  },
+  "4/toxicroak": {
+    "file": "4/toxicroak.png",
+    "duration": 4170
+  },
+  "4/trapinch": {
+    "file": "4/trapinch.png",
+    "duration": 3630
+  },
+  "4/treecko": {
+    "file": "4/treecko.png",
+    "duration": 3750
+  },
+  "4/tropius": {
+    "file": "4/tropius.png",
+    "duration": 4320
+  },
+  "4/turtwig": {
+    "file": "4/turtwig.png",
+    "duration": 3720
+  },
+  "4/typhlosion": {
+    "file": "4/typhlosion.png",
+    "duration": 3970
+  },
+  "4/tyranitar": {
+    "file": "4/tyranitar.png",
+    "duration": 3350
+  },
+  "4/tyrogue": {
+    "file": "4/tyrogue.png",
+    "duration": 3160
+  },
+  "4/umbreon": {
+    "file": "4/umbreon.png",
+    "duration": 3160
+  },
+  "4/unown": {
+    "file": "4/unown.png",
+    "duration": 4030
+  },
+  "4/ursaring": {
+    "file": "4/ursaring.png",
+    "duration": 3400
+  },
+  "4/uxie": {
+    "file": "4/uxie.png",
+    "duration": 4460
+  },
+  "4/vaporeon": {
+    "file": "4/vaporeon.png",
+    "duration": 3220
+  },
+  "4/venomoth": {
+    "file": "4/venomoth.png",
+    "duration": 4060
+  },
+  "4/venonat": {
+    "file": "4/venonat.png",
+    "duration": 3250
+  },
+  "4/venusaur": {
+    "file": "4/venusaur.png",
+    "duration": 3200
+  },
+  "4/vespiquen": {
+    "file": "4/vespiquen.png",
+    "duration": 3810
+  },
+  "4/vibrava": {
+    "file": "4/vibrava.png",
+    "duration": 4200
+  },
+  "4/victreebel": {
+    "file": "4/victreebel.png",
+    "duration": 3580
+  },
+  "4/vigoroth": {
+    "file": "4/vigoroth.png",
+    "duration": 4380
+  },
+  "4/vileplume": {
+    "file": "4/vileplume.png",
+    "duration": 3970
+  },
+  "4/volbeat": {
+    "file": "4/volbeat.png",
+    "duration": 3900
+  },
+  "4/voltorb": {
+    "file": "4/voltorb.png",
+    "duration": 4030
+  },
+  "4/vulpix": {
+    "file": "4/vulpix.png",
+    "duration": 3146
+  },
+  "4/wailmer": {
+    "file": "4/wailmer.png",
+    "duration": 3960
+  },
+  "4/wailord": {
+    "file": "4/wailord.png",
+    "duration": 4530
+  },
+  "4/walrein": {
+    "file": "4/walrein.png",
+    "duration": 4050
+  },
+  "4/wartortle": {
+    "file": "4/wartortle.png",
+    "duration": 3146
+  },
+  "4/weavile": {
+    "file": "4/weavile.png",
+    "duration": 3870
+  },
+  "4/weedle": {
+    "file": "4/weedle.png",
+    "duration": 3180
+  },
+  "4/weepinbell": {
+    "file": "4/weepinbell.png",
+    "duration": 3280
+  },
+  "4/weezing": {
+    "file": "4/weezing.png",
+    "duration": 3700
+  },
+  "4/whiscash": {
+    "file": "4/whiscash.png",
+    "duration": 5430
+  },
+  "4/whismur": {
+    "file": "4/whismur.png",
+    "duration": 4200
+  },
+  "4/wigglytuff": {
+    "file": "4/wigglytuff.png",
+    "duration": 3146
+  },
+  "4/wingull": {
+    "file": "4/wingull.png",
+    "duration": 4530
+  },
+  "4/wobbuffet": {
+    "file": "4/wobbuffet.png",
+    "duration": 3700
+  },
+  "4/wooper": {
+    "file": "4/wooper.png",
+    "duration": 3280
+  },
+  "4/wormadam": {
+    "file": "4/wormadam.png",
+    "duration": 4530
+  },
+  "4/wormadamsandy": {
+    "file": "4/wormadamsandy.png",
+    "duration": 4530
+  },
+  "4/wormadamtrash": {
+    "file": "4/wormadamtrash.png",
+    "duration": 4530
+  },
+  "4/wurmple": {
+    "file": "4/wurmple.png",
+    "duration": 3720
+  },
+  "4/wynaut": {
+    "file": "4/wynaut.png",
+    "duration": 4110
+  },
+  "4/xatu": {
+    "file": "4/xatu.png",
+    "duration": 3220
+  },
+  "4/yanma": {
+    "file": "4/yanma.png",
+    "duration": 4060
+  },
+  "4/yanmega": {
+    "file": "4/yanmega.png",
+    "duration": 4470
+  },
+  "4/zangoose": {
+    "file": "4/zangoose.png",
+    "duration": 3780
+  },
+  "4/zapdos": {
+    "file": "4/zapdos.png",
+    "duration": 4166
+  },
+  "4/zigzagoon": {
+    "file": "4/zigzagoon.png",
+    "duration": 3750
+  },
+  "4/zubat": {
+    "file": "4/zubat.png",
+    "duration": 3146
+  }
+}

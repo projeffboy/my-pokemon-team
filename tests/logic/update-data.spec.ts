@@ -5,11 +5,32 @@ import {
   nameChanges,
   pick,
   projectFormats,
+  projectGameVariant,
+  projectPastGenerations,
   projectTypeChart,
+  projectHiddenPowerSpreads,
   projections,
   renderTypedData,
   type MoveSearch,
 } from "../../scripts/update-data/transforms";
+
+test("Hidden Power spread generation keeps Showdown IVs and DVs, including all-default Dark", () => {
+  expect(
+    projectHiddenPowerSpreads({
+      fire: {
+        HPivs: { atk: 30, spa: 30, spe: 30 },
+        HPdvs: { atk: 14, def: 12 },
+        damageTaken: {},
+      },
+      dark: { HPivs: {} },
+      normal: { damageTaken: {} },
+      fairy: { damageTaken: {} },
+    }),
+  ).toEqual({
+    fire: { ivs: { atk: 30, spa: 30, spe: 30 }, dvs: { atk: 14, def: 12 } },
+    dark: { ivs: {}, dvs: {} },
+  });
+});
 
 test("pick keeps only the listed fields and marks callbacks as present", () => {
   const entry = {
@@ -93,6 +114,50 @@ test("moves keep their secondary status chance and sound flag only", () => {
       secondary: null,
     }),
   ).toEqual({ name: "Boomburst", flags: { sound: 1 } });
+});
+
+test("only non-Z Plates supply Judgment's type", () => {
+  expect(projections.Items({ name: "Draco Plate", onPlate: "Dragon" })).toEqual(
+    {
+      name: "Draco Plate",
+      onPlate: "Dragon",
+    },
+  );
+  expect(
+    projections.Items({
+      name: "Dragonium Z",
+      onPlate: "Dragon",
+      zMove: "Dragon",
+    }),
+  ).toEqual({ name: "Dragonium Z" });
+  expect(
+    projections.Items({
+      name: "Liechi Berry",
+      naturalGift: { type: "Grass", basePower: 100 },
+    }),
+  ).toEqual({ name: "Liechi Berry", naturalGift: { type: "Grass" } });
+});
+
+test("battle formes preserve the specific species they inherit their moves from", () => {
+  const entry = {
+    name: "Meowstic-F-Mega",
+    baseSpecies: "Meowstic",
+    forme: "F-Mega",
+    battleOnly: "Meowstic-F",
+  };
+  expect(projections.Pokedex(entry, {})).toEqual({
+    name: "Meowstic-F-Mega",
+    baseSpecies: "Meowstic",
+    forme: "F-Mega",
+    changesFrom: "Meowstic-F",
+  });
+  expect(entry).not.toHaveProperty("changesFrom");
+  expect(
+    projections.Pokedex(
+      { name: "Mega", baseSpecies: "Base", forme: "Mega" },
+      {},
+    ),
+  ).toMatchObject({ changesFrom: "Base" });
 });
 
 test("formats mark champions legality, inherited through battle-only formes", () => {
@@ -310,4 +375,259 @@ export default data;
   expect(renderTypedData("Learnsets", { unown: ["hiddenpower"] })).toContain(
     'const data: Learnsets = {\n  "unown": [\n    "hiddenpower"\n  ]\n};',
   );
+});
+
+test("pokedex entries keep their base stats and fixed gender", () => {
+  const entry = {
+    num: 445,
+    name: "Garchomp",
+    types: ["Dragon", "Ground"],
+    baseStats: { hp: 108, atk: 130, def: 95, spa: 80, spd: 85, spe: 102 },
+    abilities: { 0: "Sand Veil", H: "Rough Skin" },
+    heightm: 1.9,
+    weightkg: 95,
+    genderRatio: { M: 0.5, F: 0.5 },
+    eggGroups: ["Monster", "Dragon"],
+  };
+  expect(projections.Pokedex(entry, { garchomp: entry })).toEqual({
+    num: 445,
+    name: "Garchomp",
+    types: ["Dragon", "Ground"],
+    baseStats: { hp: 108, atk: 130, def: 95, spa: 80, spd: 85, spe: 102 },
+    abilities: { 0: "Sand Veil", H: "Rough Skin" },
+    genderRatio: { M: 0.5, F: 0.5 },
+  });
+  const genderless = { num: 81, name: "Magnemite", gender: "N", gen: 9 };
+  expect(projections.Pokedex(genderless, { magnemite: genderless })).toEqual(
+    genderless,
+  );
+});
+
+test("natures keep their name and stat changes", () => {
+  expect(
+    projections.Natures({ name: "Jolly", plus: "spe", minus: "spa" }),
+  ).toEqual({ name: "Jolly", plus: "spe", minus: "spa" });
+  expect(projections.Natures({ name: "Hardy" })).toEqual({ name: "Hardy" });
+});
+
+test("game variants keep native move and base-stat changes without copying standard data", () => {
+  const stats = { hp: 60, atk: 100, def: 105, spa: 130, spd: 105, spe: 120 };
+  const base = {
+    pokedex: {
+      starmiemega: { baseStats: stats },
+      ordinary: { baseStats: stats },
+    },
+    moves: {
+      absorb: {
+        name: "Absorb",
+        type: "Grass",
+        category: "Special",
+        basePower: 20,
+      },
+      tackle: {
+        name: "Tackle",
+        type: "Normal",
+        category: "Physical",
+        basePower: 40,
+      },
+    },
+    typechart: {},
+  };
+  const variant = projectGameVariant(base, {
+    pokedex: {
+      starmiemega: { inherit: true, baseStats: { ...stats, atk: 140 } },
+    },
+    moves: {
+      absorb: { inherit: true, basePower: 40 },
+      tackle: { inherit: true, pp: 35 },
+    },
+  });
+  expect(variant).toEqual({
+    moves: {
+      absorb: {
+        name: "Absorb",
+        type: "Grass",
+        category: "Special",
+        basePower: 40,
+      },
+    },
+    baseStats: { starmiemega: { ...stats, atk: 140 } },
+  });
+  expect(projectGameVariant(base, {})).toEqual({});
+  expect(base.pokedex.starmiemega.baseStats.atk).toBe(100);
+  expect(base.moves.absorb.basePower).toBe(20);
+});
+
+test("past generations resolve Showdown's mods, newest first, and keep what differs", () => {
+  const types = [
+    "Bug",
+    "Dark",
+    "Dragon",
+    "Electric",
+    "Fairy",
+    "Fighting",
+    "Fire",
+    "Flying",
+    "Ghost",
+    "Grass",
+    "Ground",
+    "Ice",
+    "Normal",
+    "Poison",
+    "Psychic",
+    "Rock",
+    "Steel",
+    "Water",
+  ];
+  const neutral = Object.fromEntries(types.map(type => [type, 0]));
+  const typechart = Object.fromEntries(
+    types.map(type => [
+      type.toLowerCase(),
+      { damageTaken: { ...neutral, prankster: 3 } },
+    ]),
+  );
+  const latest = {
+    pokedex: { a: { types: ["Fairy"] }, b: { types: ["Steel"] } },
+    moves: { m: { type: "Dark" } },
+    typechart,
+  };
+  const future = { inherit: true, isNonstandard: "Future" };
+  const past = projectPastGenerations(latest, {
+    5: {
+      typechart: { fairy: future },
+      pokedex: { a: { inherit: true, types: ["Normal"] } },
+    },
+    4: { pokedex: { b: null } },
+    3: { moves: { m: { inherit: true, type: "Normal" } } },
+    2: { pokedex: { c: { types: ["Bug"] } } },
+    1: {
+      typechart: {
+        dark: future,
+        steel: future,
+        poison: { damageTaken: { ...neutral, Bug: 1 } },
+      },
+    },
+  });
+  // Nothing changed in gens 6 to 8
+  expect(past[8]).toEqual({ types, pokemon: {}, moves: {} });
+  expect(past[6]).toEqual({ types, pokemon: {}, moves: {} });
+  // Gen 5 lost Fairy, so its chart differs from gen 6's; gen 4's is the same as gen 5's
+  expect(past[5]?.types).toHaveLength(17);
+  expect(past[5]?.pokemon).toEqual({ a: ["Normal"] });
+  expect(past[5]?.typechart?.Poison).toEqual(
+    Object.fromEntries(types.filter(t => t !== "Fairy").map(t => [t, 0])),
+  );
+  expect(past[5]?.typechart?.Fairy).toBeUndefined();
+  expect(past[4]?.typechart).toBeUndefined();
+  // Earlier mods inherit the later ones' changes
+  expect(past[4]?.pokemon).toEqual({ a: ["Normal"] });
+  expect(past[3]?.moves).toEqual({ m: "Normal" });
+  expect(past[2]?.pokemon).toEqual({ a: ["Normal"], c: ["Bug"] });
+  expect(past[1]?.types).toHaveLength(15);
+  expect(past[1]?.typechart?.Poison?.Bug).toBe(-1);
+  expect(past[1]?.typechart?.Poison).not.toHaveProperty("Dark");
+});
+
+test("historical damaging move properties preserve old power and removed callbacks", () => {
+  const past = projectPastGenerations(
+    {
+      pokedex: {},
+      moves: {
+        spin: { category: "Physical", basePower: 50 },
+        variable: {
+          category: "Special",
+          basePower: 20,
+          basePowerCallback: () => 80,
+        },
+      },
+      typechart: {},
+    },
+    {
+      7: { moves: { spin: { inherit: true, basePower: 20 } } },
+      5: {
+        moves: { variable: { inherit: true, basePowerCallback: undefined } },
+      },
+    },
+  );
+  expect(past[8]?.moveData).toBeUndefined();
+  expect(past[7]?.moveData).toEqual({
+    spin: { category: "Physical", basePower: 20 },
+  });
+  expect(past[5]?.moveData?.variable).toEqual({
+    category: "Special",
+    basePower: 20,
+  });
+  expect(past[1]?.moveData).toEqual(past[5]?.moveData);
+});
+
+test("historical formats keep native singles and doubles tier differences", () => {
+  const past = projectPastGenerations(
+    {
+      pokedex: {},
+      moves: {},
+      typechart: {},
+      formats: {
+        native: { tier: "OU", doublesTier: "DOU" },
+        later: { tier: "Uber" },
+      },
+    },
+    {
+      7: {
+        formats: {
+          native: { tier: "UU", doublesTier: "(DUU)" },
+          later: { tier: "UU" },
+        },
+      },
+      6: { formats: { native: { tier: "OU" } } },
+    },
+  );
+  expect(past[8]?.formats).toBeUndefined();
+  expect(past[7]?.formats).toEqual({
+    native: { tier: "UU", doublesTier: "(DUU)" },
+    later: { tier: "UU" },
+  });
+  expect(past[6]?.formats).toEqual({ native: { tier: "OU" } });
+});
+
+test("historical stats and abilities inherit through generations and cosmetic formes", () => {
+  const modernStats = { hp: 80, atk: 60, def: 70, spa: 90, spd: 100, spe: 110 };
+  const oldStats = { ...modernStats, spe: 100 };
+  const past = projectPastGenerations(
+    {
+      pokedex: {
+        bird: {
+          name: "Bird",
+          baseStats: modernStats,
+          abilities: { 0: "Modern", 1: "Second", H: "Hidden" },
+        },
+        birdblue: { baseSpecies: "Bird", isCosmeticForme: true },
+      },
+      moves: {},
+      typechart: {},
+      abilities: {
+        modern: { num: 1 },
+        original: { num: 2 },
+        second: { num: 77 },
+        hidden: { num: 124 },
+      },
+    },
+    {
+      5: {
+        pokedex: {
+          bird: {
+            inherit: true,
+            baseStats: oldStats,
+            abilities: { 0: "Original", 1: "Second", H: "Hidden" },
+          },
+        },
+      },
+    },
+  );
+  expect(past[5]?.baseStats).toEqual({ bird: oldStats, birdblue: oldStats });
+  expect(past[3]?.baseStats).toEqual(past[5]?.baseStats);
+  expect(past[6]?.baseStats).toBeUndefined();
+  expect(past[3]?.abilities?.bird).toEqual(["Original"]);
+  expect(past[3]?.abilities?.birdblue).toEqual(["Original"]);
+  expect(past[4]?.abilities?.bird).toEqual(["Original", "Second"]);
+  expect(past[5]?.abilities?.bird).toEqual(["Original", "Second", "Hidden"]);
 });

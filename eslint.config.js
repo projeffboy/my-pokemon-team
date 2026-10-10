@@ -59,7 +59,7 @@ export default tseslint.config(
     languageOptions: { globals: globals.serviceworker },
   },
   {
-    files: ["scripts/**", "*.config.{js,ts}", "tests/**"],
+    files: ["api/**", "scripts/**", "*.config.{js,ts}", "tests/**"],
     languageOptions: { globals: globals.node },
     // Playwright fixtures must destructure their first argument, even when empty
     rules: { "no-empty-pattern": "off" },

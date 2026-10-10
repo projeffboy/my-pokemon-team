@@ -1,10 +1,21 @@
 import pokedex from "@/data/pokedex";
 import formats from "@/data/formats";
 import { isPokemonType } from "@/types";
-import type { Pokedex, SearchFilters } from "@/types";
+import type {
+  Generation,
+  Pokedex,
+  PokedexEntry,
+  PokemonFilters,
+} from "@/types";
+import { CHAMPIONS_FORMAT, TIER_BY_FORMAT } from "@/shared/formats";
+import { variantGeneration } from "@/shared/game-variants";
+import { LATEST_GENERATION } from "@/shared/generations";
+import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
+import { pokemonFormatIn } from "@/shared/generation-data";
 
-type PokemonFilters = Readonly<
-  Pick<SearchFilters, "format" | "region" | "type">
+type Filters = Readonly<
+  Partial<Pick<PokemonFilters, "generation" | "ability">> &
+    Pick<PokemonFilters, "format" | "region" | "type">
 >;
 
 const REGION_NUMBER_RANGE: Record<string, [number, number]> = {
@@ -33,11 +44,69 @@ const HISUI_ORIGIN_FORMES = ["dialgaorigin", "palkiaorigin"];
 const isCap = (num: number | undefined) =>
   num !== undefined && num < 0 && num > -5000;
 
+// The generation a species or forme first appeared in, following Showdown's dex-species.ts
+export function introducedIn({
+  num = 0,
+  forme = "",
+  gen,
+}: PokedexEntry): Generation {
+  if (gen !== undefined) return Math.min(9, Math.max(1, gen)) as Generation;
+  if (num >= 906 || forme.includes("Paldea")) return 9;
+  if (num >= 810 || ["Gmax", "Galar", "Galar-Zen", "Hisui"].includes(forme))
+    return 8;
+  if (num >= 722 || forme.startsWith("Alola") || forme === "Starter") return 7;
+  if (num >= 650 || forme.includes("Mega") || forme === "Primal") return 6;
+  if (num >= 494) return 5;
+  if (num >= 387) return 4;
+  if (num >= 252) return 3;
+  if (num >= 152) return 2;
+  return 1;
+}
+
+// Megas and primals skipped gen 8, and Gigantamax formes only exist there.
+// Gen 9 covers everything, including Legends: Z-A's megas.
+export function isInGeneration(entry: PokedexEntry, generation: Generation) {
+  if (generation === LATEST_GENERATION) return true;
+  const forme = entry.forme ?? "";
+  if (forme.includes("Mega") || forme === "Primal")
+    return generation !== 8 && generation >= introducedIn(entry);
+  if (forme === "Gmax" || forme === "Eternamax") return generation === 8;
+  return introducedIn(entry) <= generation;
+}
+
 // CAP pokemon still load from share links and imports; they are only hidden from the options
-export function filterPokemon({ format, region, type }: PokemonFilters) {
+export function filterPokemon({
+  generation = LATEST_GENERATION,
+  format,
+  region,
+  type,
+  ability = "",
+}: Filters) {
   return Object.keys(
-    filterByFormat(filterByRegion(filterByType(withoutCap(pokedex)))),
+    filterByFormat(
+      filterByRegion(
+        filterByType(filterByAbility(filterByGeneration(withoutCap(pokedex)))),
+      ),
+    ),
   );
+
+  function filterByGeneration(pokedex: Pokedex): Pokedex {
+    if (generation === LATEST_GENERATION) return pokedex;
+    return Object.fromEntries(
+      Object.entries(pokedex).filter(([, entry]) =>
+        isInGeneration(entry, generation),
+      ),
+    );
+  }
+
+  function filterByAbility(pokedex: Pokedex): Pokedex {
+    if (!ability || generation < 3) return pokedex;
+    return Object.fromEntries(
+      Object.entries(pokedex).filter(([pokemon]) =>
+        pokemonAbilities(pokemon, generation).includes(ability),
+      ),
+    );
+  }
 
   function withoutCap(pokedex: Pokedex): Pokedex {
     return Object.fromEntries(
@@ -46,13 +115,13 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
   }
 
   function filterByFormat(pokedex: Pokedex) {
-    if (format === "") {
+    if (format === "" || variantGeneration(format)) {
       return pokedex;
     }
 
     const filteredPokedex: Pokedex = {};
 
-    if (format === "Pokemon Champions (M-C)") {
+    if (format === CHAMPIONS_FORMAT) {
       return Object.fromEntries(
         Object.entries(pokedex).filter(
           ([pokemon]) => formats[pokemon]?.champions,
@@ -60,23 +129,12 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       );
     }
 
-    const tierAbbreviationByFormat: Record<string, string> = {
-      Uber: "Uber",
-      "OU: Over Used": "OU",
-      "UU: Under Used": "UU",
-      "RU: Rarely Used": "RU",
-      "NU: Never Used": "NU",
-      PU: "PU",
-      ZU: "ZU",
-      "Little Cup (LC)": "LC",
-      "Doubles Uber": "DUber",
-      "Doubles OU": "DOU",
-      "Doubles UU": "DUU",
-    };
+    const tierAbbreviationByFormat = TIER_BY_FORMAT;
 
     const smogonSinglesTiers = [
       "Uber",
       "OU",
+      "(OU)",
       "UUBL",
       "UU",
       "RUBL",
@@ -85,6 +143,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
       "NU",
       "PUBL",
       "PU",
+      "ZUBL",
       "ZU",
       "(PU)",
       "NFE",
@@ -97,7 +156,10 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
     } else if (
       ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
     ) {
-      return filterByTier(["DUber", "DOU", "DUU", "(DUU)"], "doublesTier");
+      return filterByTier(
+        ["DUber", "(DUber)", "DOU", "DUU", "(DUU)"],
+        "doublesTier",
+      );
     }
 
     function filterByTier(
@@ -113,7 +175,7 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
 
           // Add all the pokemon from that tier to filteredPokedex
           for (const [pokemon, entry] of Object.entries(pokedex)) {
-            if (formats[pokemon]?.[tierType] === tier) {
+            if (pokemonFormatIn(pokemon, generation)?.[tierType] === tier) {
               filteredPokedex[pokemon] = entry;
             }
           }
@@ -167,9 +229,8 @@ export function filterPokemon({ format, region, type }: PokemonFilters) {
     if (type) {
       for (const [pokemon, pokemonProperties] of Object.entries(pokedex)) {
         if (
-          pokemonProperties.types &&
           isPokemonType(type) &&
-          pokemonProperties.types.includes(type)
+          pokemonTypes(pokemon, generation).includes(type)
         ) {
           filteredPokedex[pokemon] = pokemonProperties;
         }

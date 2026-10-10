@@ -1,6 +1,6 @@
 # Local sprite sources
 
-These 38 sprites are the 3D model renders of mega evolutions from Pokemon Legends: Z-A and its DLC. They are bundled because Pokemon Showdown hosted no sprites for these formes when they were added. `PokemonSprite.tsx` uses a local sprite before it tries any Showdown URL.
+These 38 sprites are the 3D model renders of mega evolutions from Pokemon Legends: Z-A and its DLC. They are bundled because Pokemon Showdown hosted no sprites for these formes when they were added. `PokemonSprite.tsx` uses a local sprite before it tries any Showdown URL for non-shiny Pokémon. Shiny Pokémon try Showdown's shiny sprites first, falling back to this artwork if none is available.
 
 - Added on August 28, 2026, in commit `0c9c5be`. Every file is a 192 × 192 PNG named after the pokemon's Showdown ID.
 - The site they were downloaded from was not recorded, and it is not important: they are stand-ins until Showdown hosts these formes, and many sites carry the same renders. Do not spend time tracing it.

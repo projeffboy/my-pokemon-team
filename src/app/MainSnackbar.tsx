@@ -1,24 +1,35 @@
-import Snackbar from "@mui/material/Snackbar";
+import Portal from "@mui/material/Portal";
+import Stack from "@mui/material/Stack";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import NotificationSnackbar from "./main-snackbar/NotificationSnackbar";
 
-// Snackbar is managed by MobX
-// Open it with `store.openSnackbar(message)` from `@/store`
+// Open notifications with `store.openSnackbar(message)`.
 const MainSnackbar = observer(function MainSnackbar() {
   return (
-    <Snackbar
-      open={store.isSnackbarOpen}
-      autoHideDuration={2500}
-      onClose={() => (store.isSnackbarOpen = false)}
-      anchorOrigin={{ vertical: "top", horizontal: "left" }}
-      slotProps={{
-        content: {
-          role: "alert",
-          "aria-describedby": "message-id",
-        },
-      }}
-      message={<span id="message-id">{store.snackbarMessage}</span>}
-    />
+    <Portal>
+      <Stack
+        sx={{
+          position: "fixed",
+          bottom: 116,
+          left: 0,
+          right: 0,
+          zIndex: theme => theme.zIndex.snackbar,
+          px: 1,
+          gap: 1,
+          alignItems: "center",
+          pointerEvents: "none",
+        }}
+      >
+        {store.snackbars.map((notification, index) => (
+          <NotificationSnackbar
+            key={notification.id}
+            notification={notification}
+            age={store.snackbars.length - 1 - index}
+          />
+        ))}
+      </Stack>
+    </Portal>
   );
 });
 

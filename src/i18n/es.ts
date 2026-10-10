@@ -1,0 +1,646 @@
+import type { Messages } from "./en";
+
+const generation = (generation: number) => `Gen. ${generation}`;
+
+// A slot's inputs, for their accessible names
+const inputNames: Record<string, string> = {
+  name: "Nombre",
+  move1: "Movimiento 1",
+  move2: "Movimiento 2",
+  move3: "Movimiento 3",
+  move4: "Movimiento 4",
+  item: "Objeto",
+  ability: "Habilidad",
+};
+
+const es: Messages = {
+  beta: "Beta",
+  generation,
+  generationGames: {
+    9: "Escarlata Púrpura",
+    8: "Espada Escudo / Diamante Brillante Perla Reluciente",
+    7: "Sol Luna / Ultrasol Ultraluna",
+    6: "X Y / Rubí Omega Zafiro Alfa",
+    5: "Negro Blanco / Negro 2 Blanco 2",
+    4: "Diamante Perla Platino / Oro HeartGold Plata SoulSilver",
+    3: "Rubí Zafiro Esmeralda / Rojo Fuego Verde Hoja",
+    2: "Oro Plata Cristal",
+    1: "Rojo Azul Amarillo",
+  },
+  generationSelect: "Generación",
+  comingSoon: "Próximamente",
+  championsGeneration: "Gen. 9 · Champions",
+  championsGenerationShort: "Gen. 9 (Champions)",
+  language: "Idioma",
+  languageFailed: "No se pudo cargar el idioma. Inténtalo de nuevo.",
+  feedback: {
+    button: "Enviar comentarios",
+    title: "Enviar comentarios",
+    description: "¿Has encontrado un error o tienes una idea? Cuéntamelo.",
+    label: "Tus comentarios",
+    placeholder: "p. ej. A Meganium le falta Brillo Mágico",
+    attachLink: "Adjuntar el enlace de mi equipo",
+    attachScreenshot: "Adjuntar una captura de la página",
+    addImage: "Añadir imagen",
+    imageUnreadable: "No se pudo leer esa imagen. Prueba con PNG o JPEG.",
+    imagesTooLarge:
+      "Las imágenes pesan demasiado para enviarlas juntas. Quita una primero.",
+    email: "Tu correo (opcional)",
+    emailHelper: "Solo para responderte",
+    caption: "Opinión",
+    send: "Enviar",
+    sent: "¡Gracias! Tu comentario se ha enviado.",
+    failed: "No se pudo enviar. Inténtalo de nuevo o escribe a {email}.",
+  },
+
+  cancel: "Cancelar",
+  close: "Cerrar",
+  done: "Hecho",
+  goBack: "Volver",
+  save: "Guardar",
+  reset: "Restablecer",
+  clear: "Limpiar",
+  all: "Todos",
+  any: "Cualquiera",
+  none: "Ninguno",
+  nothing: "Ninguno",
+
+  team: {
+    teams: "Equipos",
+    randomizedTeam: "Equipo aleatorizado",
+    randomizedPokemon: "Pokémon aleatorizado",
+    randomizedPokemonDetails: (details: string) =>
+      `Se aleatorizaron los siguientes datos del Pokémon: ${details.toLowerCase()}`,
+    shareTeam: "Compartir",
+    shareTeamLink: "Compartir el enlace del equipo Pokémon",
+    teamActions: "Acciones del equipo",
+    manageTeam: "Gestionar",
+    manageTeamMenu: "Gestionar equipo",
+    duplicate: "Duplicar",
+    copyText: "Copiar texto",
+    editPokepaste: "Editar Pokepaste",
+    delete: "Eliminar",
+    importTeam: "Importar equipo",
+    share: "Compartir",
+    teamEmpty: "El equipo Pokémon está vacío",
+    linkCopied: "Enlace del equipo Pokémon copiado",
+    linkNotCopied: "No se ha podido copiar el enlace.",
+    nothingToCopy: "El equipo está vacío, no hay nada que copiar.",
+    teamCopied: "Equipo copiado.",
+    teamNotCopied: "No se ha podido copiar el equipo.",
+    cannotDuplicateEmptyTeam: "No se puede duplicar un equipo vacío",
+    teamDuplicated: "Equipo duplicado",
+    teamDeleted: "Equipo eliminado",
+    slots: "Huecos del equipo Pokémon",
+    slot: (slot: number) => `Pokémon ${slot}`,
+    slotWith: (slot: number, pokemon: string | undefined) =>
+      `Pokémon ${slot} (${pokemon ?? "vacío"})`,
+    slotPair: (first: string, second: string) => `${first} y ${second}`,
+    moreTools: "Más herramientas del equipo",
+    fewerTools: "Menos herramientas del equipo",
+    advancedMode: "Avanzado",
+    more: "Más",
+    less: "Menos",
+    filters: "Filtros",
+    sort: "Ordenar",
+    random: "Aleatorio",
+    randomize: "Aleatorizar",
+    randomizePokemon: "Aleatorizar Pokémon",
+    randomizeDetails: (details: string) =>
+      `Aleatorizar ${details.toLowerCase()}`,
+    randomFor: (slot: number) => `Pokémon aleatorio para el hueco ${slot}`,
+    advanced: "Más detalles",
+    advancedFor: (slot: number) => `Más detalles del hueco ${slot}`,
+    about: (pokemon: string) => `Acerca de ${pokemon}`,
+    dragHint: "Mantén y arrastra para reordenar",
+    moveToSlot: (pokemon: string) => `Mover a ${pokemon} a otro hueco`,
+    name: "Nombre",
+    move: "Movimiento",
+    item: "Objeto",
+    ability: "Habilidad",
+    hidden: "Oculta",
+    input: (slot: number, property: string) =>
+      `${inputNames[property] ?? property} del Pokémon ${slot}`,
+    itemIcon: (item: string) => `Icono de ${item}`,
+    nothingFound: "No se ha encontrado nada",
+    noOtherMoves: "No hay más movimientos disponibles.",
+    selectPokemonFirst: "(no has seleccionado ningún Pokémon)",
+    list: "Lista",
+    grid: "Cuadrícula",
+    bigGrid: "Cuadrícula grande",
+    pokemonInSlot: (pokemon: string, slot: number) =>
+      `colocar a ${pokemon} en la posición ${slot}`,
+    removedPokemon: (pokemon: string, slot: number) =>
+      `retirar a ${pokemon} de la posición ${slot}`,
+    addedValue: (value: string, pokemon: string) =>
+      `añadir ${value} a ${pokemon}`,
+    removedValue: (value: string, pokemon: string) =>
+      `quitar ${value} de ${pokemon}`,
+    replacedValue: (previous: string, value: string, pokemon: string) =>
+      `reemplazar ${previous} por ${value} para ${pokemon}`,
+    setValue: (label: string, value: string, pokemon: string) =>
+      `establecer ${label} en ${value} para ${pokemon}`,
+    swappedSlots: (first: string, second: string) =>
+      `intercambiar a ${first} y ${second}`,
+    moreChanges: (count: number) => `${count} cambios más`,
+    undoAction: (action: string) => `Deshacer ${action}`,
+    redoAction: (action: string) => `Rehacer ${action}`,
+    randomizeTeamAction: "crear equipo aleatorio",
+    nameListView: "Vista de lista de nombres",
+    listView: "Vista de lista",
+    gridView: "Vista de cuadrícula",
+    bigGridView: "Vista de cuadrícula grande",
+    teamNumber: (number: number) => `Equipo ${number}`,
+    unnamedTeam: "Equipo",
+    copyOf: (name: string) => `Copia de ${name}`,
+    learnsetsFailed:
+      "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
+  },
+
+  undo: "Deshacer",
+  redo: "Rehacer",
+
+  stats: {
+    teamStats: "Estadísticas del equipo",
+    teamAnalysis: "Análisis del equipo",
+    teamDefence: "Defensa del equipo",
+    teamTypeCoverage: "Cobertura de tipos del equipo",
+    teamChecklist: "Lista de comprobación del equipo",
+    matrixAnalysis: "Análisis de matriz",
+    defence: "Defensa",
+    coverage: "Cobertura",
+    checklist: "Lista",
+    matrix: "Matriz",
+    score: (type: string, score: string) => `Puntuación de ${type}: ${score}`,
+    selectPokemonFirst: "Primero selecciona un Pokémon.",
+    typeDoes: "{type} hace...",
+    multiplier: (multiplier: number) => `${multiplier}x`,
+    toPokemon: (pokemon: string) => `a ${pokemon}`,
+    superEffectiveAgainst: "Supereficaz contra {type}:",
+    checked: "Marcado",
+    unchecked: "Sin marcar",
+  },
+  checklist: {
+    groups: {
+      general: "General",
+      defensive: "Defensivo",
+      offensive: "Ofensivo",
+    },
+    items: {
+      entryHazard: { label: "Trampa de entrada", short: "Trampa" },
+      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      recovery: {
+        label: "Recuperación fiable",
+        short: "Curación",
+        shorter: "Cura",
+      },
+      cleric: { label: "Cleric" },
+      status: { label: "Movimiento de estado", short: "Estado" },
+      phazer: { label: "Phazer" },
+      boosting: { label: "Movimiento de mejora", short: "Setup" },
+      voltTurn: {
+        label: "Movimiento Volt-turn",
+        short: "Volt-turn",
+        shorter: "Volturn",
+      },
+      choice: { label: "Objeto Elegido", short: "Elegido" },
+    },
+  },
+  matrix: {
+    matrix: "Matriz",
+    defenceDescription: "Cuánto daño hace cada tipo atacante a cada Pokémon.",
+    coverageDescription:
+      "Cuánto daño hace el mejor movimiento de cada Pokémon a cada tipo.",
+    tapForReason: "Toca una celda para ver el motivo.",
+    // The column that sums each row, as the Team Defence and Team Type Coverage scores do
+    teamScore: "Puntuación del equipo",
+    slot: (slot: number, pokemon: string | undefined) =>
+      `Hueco ${slot}${pokemon ? `: ${pokemon}` : ""}`,
+    weak: "Débil",
+    resists: "Resiste",
+    immune: "Inmune",
+    // The same legend for the coverage matrix, where a strong hit is the good outcome
+    superEffective: "Supereficaz",
+    resisted: "Poco eficaz",
+    noEffect: "Sin efecto",
+    defenceReason: (
+      type: string,
+      multiplier: number,
+      pokemon: string,
+      types: string,
+      cause: string | undefined,
+    ) =>
+      `${type} hace ${multiplier}x a ${pokemon} (${types})${cause ? ` con ${cause}` : ""}`,
+    coverageReason: (
+      pokemon: string,
+      move: string,
+      type: string,
+      multiplier: number,
+      target: string,
+    ) => `${move} (${type}) de ${pokemon} hace ${multiplier}x a ${target}`,
+    noDamagingMove: (pokemon: string) =>
+      `${pokemon} no tiene ningún movimiento ofensivo`,
+  },
+  typeAbbreviations: {
+    Bug: "BIC",
+    Dark: "SIN",
+    Dragon: "DRA",
+    Electric: "ELÉ",
+    Fairy: "HAD",
+    Fighting: "LUC",
+    Fire: "FUE",
+    Flying: "VOL",
+    Ghost: "FAN",
+    Grass: "PLA",
+    Ground: "TIE",
+    Ice: "HIE",
+    Normal: "NOR",
+    Poison: "VEN",
+    Psychic: "PSÍ",
+    Rock: "ROC",
+    Steel: "ACE",
+    Water: "AGU",
+  } as Record<string, string>,
+
+  statNames: {
+    hp: "PS",
+    atk: "Ata",
+    def: "Def",
+    spa: "AtE",
+    spd: "DfE",
+    spe: "Vel",
+  },
+  statFullNames: {
+    hp: "PS",
+    atk: "Ataque",
+    def: "Defensa",
+    spa: "At. Esp.",
+    spd: "Def. Esp.",
+    spe: "Velocidad",
+  },
+  genders: { M: "Macho", F: "Hembra", N: "Sin género" },
+  natureLabel: (
+    nature: string,
+    plus: string | undefined,
+    minus: string | undefined,
+  ) =>
+    plus && minus ? `${nature} (+${plus}, -${minus})` : `${nature} (neutra)`,
+  gameVariantsCompact: {
+    "Legends: Arceus": "Leyendas Arceus",
+    "Legends: Z-A": "Leyendas Z-A",
+  },
+  gameVariants: {
+    "Let’s Go": "Let’s Go, Pikachu! / Eevee!",
+    "Legends: Arceus": "Leyendas: Arceus",
+    "Legends: Z-A": "Leyendas: Z-A",
+  },
+  advanced: {
+    subtitle: (pokemon: string, slot: number) => `${pokemon}, hueco ${slot}`,
+    dvs: "DVs",
+    statExperience: "Experiencia de características",
+    effortLevels: "Niveles de esfuerzo",
+    avs: "AVs",
+    statAlignment: "Alineación de características",
+    nickname: "Mote",
+    nicknameLimit: (max: number) => `Máximo ${max} caracteres.`,
+    level: "Nivel",
+    happiness: "Felicidad",
+    gender: "Género",
+    teraType: "Teratipo",
+    nature: "Naturaleza",
+    shiny: "Variocolor",
+    sps: "SP",
+    spTotal: (total: number, max: number) => `Total de SP: ${total} de ${max}`,
+    statSps: (stat: string) => `SP de ${stat}`,
+    evs: "EV",
+    ivs: "IV",
+    evTotal: (total: number, max: number) => `Total de EV: ${total} de ${max}`,
+    statEvs: (stat: string) => `EV de ${stat}`,
+    statIvs: (stat: string) => `IV de ${stat}`,
+  },
+  info: {
+    special: "Especial",
+    abilities: "Habilidades",
+    baseStats: "Estadísticas base",
+    total: (total: number) => `Total ${total}`,
+    statValue: (stat: string, value: number) => `${stat}: ${value}`,
+    weakTo: "Débil contra",
+    smogonDex: "Dex de Smogon",
+    bulbapedia: "Bulbapedia",
+    serebii: "Serebii",
+    showdownDex: "Dex de Showdown",
+  },
+
+  filters: {
+    format: "Formato",
+    type: "Tipo",
+    region: "Región",
+    moves: "Movimientos",
+    viable: "Viable",
+    ability: "Habilidad",
+  },
+  sort: {
+    pokemon: "Pokémon",
+    sortBy: "Ordenar por",
+    order: "Orden",
+    ascending: "Ascendente",
+    descending: "Descendente",
+    name: "Nombre",
+    num: "Número de la Pokédex",
+    format: "Formato",
+    bst: "Total de estadísticas base",
+  },
+
+  teams: {
+    newTeam: "Nuevo equipo",
+    randomTeam: "Equipo aleatorio",
+    randomTeamLabels: [
+      "Aleatorizar equipo",
+      "Equipo aleatorio",
+      "Aleatorizar",
+      "Aleatorio",
+    ],
+    savedTeams: "Equipos guardados",
+    optionsFor: (team: string) => `Opciones de ${team}`,
+    load: (team: string) => `Cargar ${team}`,
+    importTeam: "Importar equipo",
+    exportAll: "Exportar todo",
+    copyAll: "Copiar todo",
+    savedInBrowser: "Los equipos se guardan en este navegador.",
+    saveFailed:
+      "Tu navegador no pudo guardar tus equipos. Guarda una copia de seguridad para conservarlos.",
+    // The chip on the team being edited, and the one on each team that a tap opens
+    current: "Abierto",
+    open: "Abrir",
+    newTeamCreated: "Nuevo equipo vacío creado",
+    emptyTeamOpened: "Equipo vacío abierto",
+    randomTeamCreated: "Equipo aleatorio creado",
+    exported: "Todos los equipos exportados",
+    copiedAll: "Todos los equipos copiados",
+    notCopiedAll: "No se han podido copiar los equipos.",
+    exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "Copias de seguridad",
+    description:
+      "Guarda todos tus equipos, incluidos sus nombres, juegos, filtros y detalles de los Pokémon.",
+    save: "Guardar copia",
+    restoreDescription:
+      "Añade equipos desde una copia de seguridad. Los equipos que ya tienes se conservarán.",
+    chooseFile: "Elegir archivo de copia",
+    restore: "Añadir equipos",
+    ready: (count: number) => `Equipos en esta copia: ${count}`,
+    error:
+      "No se pudo leer este archivo. Elige una copia de seguridad de equipos guardada desde este sitio.",
+    tooLarge:
+      "Esta copia tiene demasiados equipos para añadirlos. Prueba con un archivo de copia más pequeño.",
+    saveFailed: "No se pudo guardar la copia. Inténtalo de nuevo.",
+    saved: "Copia de equipos guardada",
+    alreadySaved: "Estos equipos ya están en tu colección.",
+    filename: "my-pokemon-teams-backup.json",
+  },
+  generationTransfer: {
+    title: "¿Cambiar de juego o generación?",
+    compactTitle: "¿Cambiar de juego?",
+    from: (where: string) => `Desde ${where}`,
+    fromLabel: "Desde",
+    toLabel: "A",
+    unavailableHeading: "Estos Pokémon no se conservarán",
+    allUnavailableHeading: "Ningún Pokémon se conservará",
+    pokemonAdjusted: (pokemon: string) => `${pokemon} necesita ajustes.`,
+    adjustedHeading: "Tus Pokémon se conservarán con cambios",
+    remainingAdjustedHeading:
+      "El resto de tus Pokémon se conservará con cambios",
+    universalChanges: "Para todos los Pokémon que se transfieren",
+    levelSet: (level: number) => `El nivel se establece en ${level}.`,
+    featuresUnused: (features: string, where: string) =>
+      `No se usa en ${where}: ${features}.`,
+    dvsConvertedToIvs: "Los DV se convierten en IV.",
+    trainingSystemChanges: (from: string, to: string) =>
+      `El entrenamiento cambia de ${from} a ${to}.`,
+    removed: {
+      item: "Objeto eliminado",
+      ability: "Habilidad eliminada",
+      moves: "Movimientos eliminados:",
+      details: "Detalles eliminados",
+    },
+    ivsUnused: (where: string) => `Los IVs no se aplican en ${where}.`,
+    ivsConvertedToDvs: "Los IVs se convierten en DVs.",
+    trainingLimited: "Se ajustarán a los límites de este juego.",
+    trainingApproximate:
+      "Conversión aproximada; las estadísticas pueden variar.",
+    counts: {
+      pokemon: (count: number) => `${count} Pokémon`,
+      move: (count: number) =>
+        `${count} ${count === 1 ? "movimiento" : "movimientos"}`,
+      item: (count: number) => `${count} ${count === 1 ? "objeto" : "objetos"}`,
+      ability: (count: number) =>
+        `${count} ${count === 1 ? "habilidad" : "habilidades"}`,
+    },
+    modify: "Actualizar equipo actual",
+    copy: "Copiar a un nuevo equipo",
+    createEmpty: "Crear equipo vacío",
+    clearExisting: "Vaciar equipo existente",
+    emptyTeamHint:
+      "Crear un equipo vacío mantiene tu equipo original sin cambios.",
+    carriedOver: "Copiar mantiene tu equipo original sin cambios.",
+    pokemonUnavailable: (where: string) => `No disponible en ${where}.`,
+    loses: "Perderá:",
+    entryLabel: (label: string, value: string) => `${label}: ${value}`,
+    entryRemoved: (value: string) => `Perderá ${value}.`,
+    loadFailed:
+      "No se pudieron cargar los datos de generaciones. Recarga la página.",
+  },
+  settings: {
+    editTeamName: "Editar nombre del equipo",
+    teamName: "Nombre del equipo",
+  },
+  validation: {
+    empty: "El equipo está vacío.",
+    notAllowed: (pokemon: string, where: string) =>
+      `${pokemon} no está permitido en ${where}.`,
+    wrongAbility: (pokemon: string, ability: string) =>
+      `${pokemon} no puede tener ${ability}.`,
+    missingItem: (pokemon: string, items: string[]) =>
+      `${pokemon} debe llevar ${items.join(" o ")}.`,
+    repeatedMove: (pokemon: string, move: string) =>
+      `${pokemon} tiene ${move} dos veces.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon} tiene ${total} ${unit} (máximo ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon} tiene más de ${max} ${unit} en una estadística.`,
+    nicknameTooLong: (pokemon: string, max: number) =>
+      `El apodo de ${pokemon} debe tener como máximo ${max} caracteres.`,
+    badLevel: (pokemon: string, max: number) =>
+      `El nivel de ${pokemon} debe estar entre 1 y ${max}.`,
+    teraType: (pokemon: string) =>
+      `${pokemon} tiene un teratipo, que solo existe en la ${generation(9)}.`,
+    speciesClause: (species: string) =>
+      `Dos Pokémon son ${species} (Cláusula de Especies).`,
+    itemClause: (item: string) =>
+      `Dos Pokémon llevan ${item} (Cláusula de Objetos).`,
+  },
+  importDialog: {
+    importTitle: "Importar equipo",
+    editTitle: "Editar Pokepaste",
+    importDescription:
+      "Pega un equipo, o una copia de seguridad completa con varios equipos, en el formato de {showdown}.",
+    editDescription:
+      "Este es el texto sin formato de tu equipo. Cámbialo aquí o pégalo en {showdown}.",
+    showdown: "Pokemon Showdown",
+    importPlaceholder: "Pega un equipo aquí",
+    editPlaceholder: "Tu equipo está vacío",
+    label: "Texto sin formato del equipo de Pokemon Showdown",
+    kept: "Se conservan los motes, niveles, géneros, variocolor, teratipos, naturalezas, EV e IV. La felicidad también se conserva si el juego seleccionado la admite.",
+    import: "Importar",
+    update: "Actualizar",
+    imported: "Equipo importado",
+    importedMany: (count: number) => `${count} equipos importados`,
+    noChanges: "No se ha hecho ningún cambio.",
+    nothingFound: "No se encontró ningún Pokémon en ese texto.",
+  },
+  deleteDialog: {
+    title: (team: string) => `¿Eliminar ${team}?`,
+    thisTeam: "este equipo",
+    description:
+      "El equipo y sus Pokémon se eliminan de este navegador. Esto no se puede deshacer.",
+  },
+
+  footer: {
+    typeChart: "Tabla de tipos",
+    manual: "Manual",
+    manualTitle: "Manual de ayuda",
+    credits: "Créditos",
+    updates: (date: string) => `Actualizaciones (${date})`,
+    updateLog: "Registro de actualizaciones",
+    privacyPolicy: "Política de privacidad",
+    colorScheme: "Tema de color",
+    systemTheme: "Usar el tema del sistema",
+    lightTheme: "Usar el tema claro",
+    darkTheme: "Usar el tema oscuro",
+    auto: "Auto",
+    light: "Claro",
+    dark: "Oscuro",
+    githubRepo: "Repositorio de GitHub",
+  },
+  typeChart: {
+    table: "Tabla",
+    list: "Lista",
+    infographic: "Infografía",
+    tableAlt: "Tabla de tipos Pokémon de Bulbapedia",
+    listAlt: "Tabla de tipos Pokémon en forma de lista",
+    infographicAlt: "Infografía de la tabla de tipos",
+    listCaption: "Fuerte contra → Tipo → Fuerte contra",
+    infographicCaption: "También válida para las Gen. 7-9",
+  },
+  credits: {
+    showdown:
+      "La gente de Pokemon Showdown es muy generosa al dejarme usar todos sus sprites, iconos y datos de Pokémon. ¡Absolutamente indispensable!",
+    alsoThanks: "Gracias también a",
+    companies: "Nintendo, The Pokémon Company, Game Freak",
+    companiesFor:
+      "Pokémon en sí, el arte de Pokémon Shuffle junto al título y los sprites de las megas de Leyendas: Z-A",
+    typeChartTable: "Tabla de tipos",
+    fromBulbapedia: "De Bulbapedia",
+    typeChartList: "Lista de tipos",
+    typeChartInfographic: "Infografía de la tabla de tipos",
+    fromRPokemon: "De r/pokemon",
+    typeColours: "Colores de los tipos",
+    typeColoursFor: "El color de cada tipo en las estadísticas del equipo",
+    stunfiskFor: "Es una buena comunidad",
+  },
+  privacy: {
+    playwire:
+      "Toda la publicidad de este sitio web o aplicación, o parte de ella, está gestionada por Playwire LLC. Si se utilizan los servicios publicitarios para editores de Playwire, Playwire LLC puede recopilar y usar ciertos datos agregados y anonimizados con fines publicitarios. Para saber más sobre los tipos de datos que se recopilan, cómo se usan y tus opciones como usuario, visita {link}.",
+    advertise: "Anúnciate en este sitio.",
+  },
+  manual: {
+    teams: "Equipos",
+    teamsQuestion: "¿Dónde se guardan mis equipos?",
+    teamsAnswer:
+      "Tus equipos se guardan en este navegador, así que están aquí cuando vuelves, pero no en otro dispositivo. El botón Equipos los lista, y el menú de cada equipo lo renombra, elige su generación y formato, lo duplica, lo comparte o lo elimina. Exportar todo descarga todos los equipos como texto de Showdown, que Importar equipo vuelve a leer. La barra de direcciones siempre contiene el equipo actual, así que copiar la dirección (o pulsar Compartir) lo comparte.",
+    teamsAnswer2:
+      "El botón Más muestra las herramientas del equipo, los botones Filtros y Ordenar, y el botón Más detalles. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están en el menú Gestionar.",
+    generations: "Generaciones",
+    generationsQuestion: "¿Qué cambia la generación?",
+    generationsAnswer:
+      "La generación, elegida arriba, lista solo los Pokémon y formas que existían en ella: las megas en las Gen. 6, 7 y 9, las formas Gigamax en la Gen. 8, etc. Todo lo demás se mantiene actual: los movimientos, las habilidades, la tabla de tipos y los formatos vienen de los juegos más recientes, así que un equipo de una generación antigua puede conocer movimientos que entonces no podía aprender.",
+    advanced: "Más detalles",
+    advancedQuestion: "Motes, niveles, naturalezas, EV e IV",
+    advancedAnswer:
+      "El botón Más detalles de cada Pokémon establece su mote, nivel, género, variocolor, teratipo, naturaleza, EV e IV, igual que en Pokemon Showdown. Viajan con el equipo en los enlaces para compartir y en el texto de Copiar texto y Editar Pokepaste.",
+    matrix: "Análisis de matriz",
+    matrixQuestion: "¿De dónde salen las puntuaciones de tipo?",
+    matrixAnswer:
+      "La matriz, en el panel de análisis, muestra cada tipo contra cada Pokémon. Defensa es cuánto daño hace cada tipo atacante a cada Pokémon, contando su habilidad y su objeto, y Cobertura es cuánto daño hace el mejor movimiento ofensivo de cada Pokémon a cada tipo. Toca una celda para ver el motivo.",
+    defence: "Defensa del equipo",
+    defenceQuestion: "¿Cómo se calcula la defensa de tipos de tu equipo?",
+    defenceAnswer:
+      "Cada Pokémon de tu equipo es débil a ciertos tipos y resistente a otros. Si un tipo no es muy eficaz contra uno de tus Pokémon, ganas puntos. Pero si es supereficaz, pierdes puntos:",
+    effectivenessHeading: "Eficacia de los tipos contra ti",
+    pointsHeading: "Puntos",
+    effectiveness: {
+      immune: "Sin efecto",
+      quarter: "Eficacia 0.25x",
+      half: "Eficacia 0.5x",
+      neutral: "Eficacia 1x",
+      double: "Supereficaz 2x",
+      quadruple: "Supereficaz 4x",
+    },
+    note: "Nota:",
+    defenceNote:
+      "Se tienen en cuenta habilidades como Levitación, Sebo, Filtro y Herbívoro. Por ejemplo, si tu Bronzong tiene Levitación, obtienes +1.5 por Tierra. Y si tiene Ignífugo, obtienes 0 por Fuego.",
+    coverage: "Cobertura de tipos del equipo",
+    coverageQuestion: "¿Cómo se calcula la cobertura de tipos de tu equipo?",
+    coverageAnswer:
+      "Primero, ¿qué es la cobertura de tipos? Se trata de contra cuántos tipos son supereficaces tus movimientos. Si uno de tus movimientos es supereficaz contra un tipo, ganas +1. Si ese movimiento además es del mismo tipo que el Pokémon que lo usa (STAB), ganas otro +1.",
+    coverageNote:
+      "Se tienen en cuenta habilidades como Piel Celeste y Piel Feérica. También movimientos como Liofilización y Plancha Voladora. Por ejemplo, Liofilización también te da +1 contra Agua.",
+    formats: "Formatos (o tiers)",
+    formatsQuestion: "¿Qué son Ubers, OU, VGC, etc.?",
+    formatsAnswer:
+      "Ubers, OU y {vgc} son formatos (o tiers) que prohíben algunos Pokémon y aplican ciertas reglas. Battle Stadium Singles/Doubles y VGC son los únicos respaldados por The Pokémon Company, mientras que los demás los mantiene {smogon}. Puedes consultar {faq} o {guide}.",
+    vgc: "VGC",
+    smogon: "Smogon",
+    faq: "las preguntas frecuentes de Smogon sobre las tiers",
+    guide: "esta guía que describe brevemente cada tier",
+    champions:
+      "El formato Pokémon Champions (M-C) solo lista los Pokémon que puedes usar en Pokémon Champions bajo la Regulation M-C, incluidas sus megaevoluciones.",
+    terms: "Términos de la lista de comprobación",
+    termsQuestion:
+      "¿Qué significan cosas como trampa de entrada, phazer y volt-turn?",
+    termsAnswer:
+      "Smogon tiene un {dictionary}, pero está algo desactualizado. Aquí tienes algunos de los términos que no cubre:",
+    dictionary: "diccionario de términos Pokémon",
+    termHeading: "Término",
+    definitionHeading: "Definición",
+    definitions: [
+      [
+        "Defogger",
+        "Un Pokémon que conoce Despejar (que elimina las trampas de entrada).",
+      ],
+      [
+        "Recuperación fiable",
+        "Movimientos que garantizan recuperar el 50 % o más de tus PS cada vez que los usas (con un clima normal). P. ej. Recuperación, Ovocuración, Batido, Relajo, Síntesis.",
+      ],
+      [
+        "Movimientos de estado",
+        "Aquí se refieren a movimientos precisos que paralizan, queman o envenenan, además de movimientos que duermen. P. ej. Tóxico, Fuego Fatuo, Onda Trueno, Canto.",
+      ],
+      [
+        "Movimiento de mejora",
+        "Movimientos que suben tus estadísticas (preferiblemente 2 o más niveles), como Danza Espada y Paz Mental.",
+      ],
+      [
+        "Objeto Elegido",
+        "Un objeto que aumenta una estadística un 50 % pero te bloquea en un solo movimiento. Hay tres: Cinta Elegida, Gafas Elegidas y Pañuelo Elegido.",
+      ],
+    ] as [string, string][],
+  },
+};
+
+export default es;

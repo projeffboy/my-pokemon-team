@@ -1,26 +1,37 @@
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import PokemonInputs from "./pokemon-team/shared/PokemonInputs";
+import SlotDragContext from "./pokemon-team/shared/SlotDragContext";
+import PokemonCard from "./pokemon-team/shared/PokemonCard";
+import TeamToolbar from "./pokemon-team/shared/TeamToolbar";
 import SmTeamViewer from "./pokemon-team/SmTeamViewer";
 import XsTeamViewer from "./pokemon-team/XsTeamViewer";
-import { useBreakpoint, useIsMdDown } from "@/app/shared/WidthContext";
+import { useIsMdDown, useIsSmDown } from "@/app/shared/WidthContext";
 
 export default function PokemonTeam() {
   const isMdDown = useIsMdDown();
-  const width = useBreakpoint();
+  const isSmDown = useIsSmDown();
+
+  if (isMdDown) return isSmDown ? <XsTeamViewer /> : <SmTeamViewer />;
 
   return (
-    isMdDown ?
-      width === "xs" ?
-        <XsTeamViewer />
-      : <SmTeamViewer />
-    : [0, 1, 2, 3, 4, 5].map(num => (
+    <SlotDragContext>
+      <Grid size={12}>
+        <Paper
+          sx={{
+            minHeight: 64,
+            display: "flex",
+            alignItems: "center",
+            "& > *": { width: "100%" },
+          }}
+        >
+          <TeamToolbar />
+        </Paper>
+      </Grid>
+      {[0, 1, 2, 3, 4, 5].map(num => (
         <Grid key={num} size={6}>
-          <Paper sx={{ p: 1 }}>
-            {/* teamIndex is the pokemon's team slot number - 1 */}
-            <PokemonInputs teamIndex={num} />
-          </Paper>
+          <PokemonCard teamIndex={num} />
         </Grid>
-      ))
+      ))}
+    </SlotDragContext>
   );
 }

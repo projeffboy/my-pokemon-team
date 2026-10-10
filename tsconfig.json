@@ -21,6 +21,7 @@
   },
   "files": ["tests/type-contracts.ts"],
   "include": [
+    "api",
     "src",
     "scripts",
     "vite.config.ts",

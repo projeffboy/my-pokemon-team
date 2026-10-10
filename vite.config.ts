@@ -11,20 +11,27 @@ const latestCommitDate = execSync(
   .toString()
   .trim();
 
-// The learnsets import carries `with { type: "json" }`, which Node needs for the logic tests.
-// Browsers then insist on real JSON with a JSON content type, but the dev server would send
-// Vite's JavaScript transform of the file, so serve the file itself. Builds bundle it instead.
-function serveLearnsetsJson(): Plugin {
-  const pathname = "/src/data/learnsets.json";
+// The learnsets and translations imports carry `with { type: "json" }`, which Node needs for
+// the logic tests. Browsers then insist on real JSON with a JSON content type, but the dev
+// server would send Vite's JavaScript transform of the file, so serve the file itself.
+// Builds bundle it instead.
+function serveDataJson(): Plugin {
+  const folder = "/src/data/";
   return {
-    name: "serve-learnsets-json",
+    name: "serve-data-json",
     apply: "serve",
     configureServer(server) {
-      const file = path.join(server.config.root, pathname);
       server.middlewares.use(async (request, response, next) => {
-        if (request.url?.split("?")[0] !== pathname) return next();
+        const pathname = request.url?.split("?")[0] ?? "";
+        // A path with ".." could leave the folder
+        if (
+          !pathname.startsWith(folder) ||
+          !pathname.endsWith(".json") ||
+          pathname.includes("..")
+        )
+          return next();
         try {
-          const json = await readFile(file);
+          const json = await readFile(path.join(server.config.root, pathname));
           response.setHeader("Content-Type", "application/json");
           response.end(json);
         } catch (error) {
@@ -73,7 +80,7 @@ function playwireAds(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [react(), serveLearnsetsJson(), playwireAds()],
+  plugins: [react(), serveDataJson(), playwireAds()],
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -82,15 +89,27 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
+    // Matches the rewrite in vercel.json, which the feedback screenshot uses
+    proxy: {
+      "/showdown-sprites": {
+        target: "https://play.pokemonshowdown.com",
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/showdown-sprites/, "/sprites"),
+      },
+    },
   },
   build: {
     rollupOptions: {
       output: {
         // Pokemon data and dependencies change less often than app code, so they cache separately
         manualChunks(id) {
-          // Learnsets stay in the chunk of their dynamic import, so they load after the app
+          // Learnsets and translations stay in the chunks of their dynamic imports, so they
+          // load after the app, and each language only when chosen
           if (id.includes("/src/data/learnsets.json")) return;
+          if (id.includes("/src/data/translations/")) return;
           if (id.includes("/src/data/")) return "data";
+          // Only sending feedback loads it
+          if (id.includes("/node_modules/modern-screenshot/")) return;
           if (id.includes("/node_modules/")) return "vendor";
         },
       },

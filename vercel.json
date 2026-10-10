@@ -7,6 +7,15 @@
       "statusCode": 301
     }
   ],
+  "rewrites": [
+    {
+      "source": "/showdown-sprites/:path*",
+      "destination": "https://play.pokemonshowdown.com/sprites/:path*",
+      "has": [
+        { "type": "header", "key": "sec-fetch-site", "value": "same-origin" }
+      ]
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",

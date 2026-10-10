@@ -1,6 +1,9 @@
 import { test, expect } from "@playwright/test";
 import type { PokemonType } from "@/types";
 import { moveType, moveAgainstType } from "@/store/shared/effectiveness";
+import { calculateTypeCoverage } from "@/store/coverage";
+import { coverageMatrix } from "@/store/matrix";
+import { createTeam } from "./shared/team";
 
 test.describe("move types", () => {
   const cases: [string, string, string, string][] = [
@@ -49,7 +52,7 @@ test.describe("move effectiveness", () => {
     ["flyingpress", "Grass", "hawlucha", -1],
     ["flyingpress", "Bug", "hawlucha", 0],
     ["flyingpress", "Rock", "hawlucha", 0],
-    ["flyingpress", "Ghost", "hawlucha", 2],
+    ["flyingpress", "Ghost", "hawlucha", 3],
     ["flyingpress", "Poison", "hawlucha", 1],
     ["machpunch", "Rock", "hitmonchan", -1],
     ["bulletseed", "Water", "cinccino", -1],
@@ -77,4 +80,40 @@ test.describe("move effectiveness", () => {
 
 test("unknown Silvally formes retain Multi-Attack's default type", () => {
   expect(moveType("multiattack", "silvallyunknown")).toBe("Normal");
+});
+
+test("copied item-dependent moves follow their holder's Drive or Memory", () => {
+  expect(
+    moveType("technoblast", "smeargle", "Own Tempo", 7, "", "chilldrive"),
+  ).toBe("Ice");
+  expect(
+    moveType("multiattack", "smeargle", "Own Tempo", 7, "", "ghostmemory"),
+  ).toBe("Ghost");
+});
+
+test("Natural Gift provides its berry's coverage and requires a usable berry", () => {
+  const team = createTeam({
+    name: "donphan",
+    item: "liechiberry",
+    move1: "naturalgift",
+  });
+  expect(calculateTypeCoverage(team, 7).Water).toBe(1);
+  expect(coverageMatrix(team, undefined, 7).Water?.[0]).toEqual({
+    multiplier: 2,
+    reason: "Donphan's Natural Gift (Grass) does 2x to Water",
+  });
+  team[0].item = "leftovers";
+  expect(calculateTypeCoverage(team, 7).Water).toBe(0);
+  expect(coverageMatrix(team, undefined, 7).Water?.[0]?.reason).toBe(
+    "Donphan has no damaging move",
+  );
+});
+
+test("Gen 4 Normalize changes Natural Gift after its berry type is resolved", () => {
+  expect(
+    moveType("naturalgift", "delcatty", "Normalize", 4, "", "liechiberry"),
+  ).toBe("Normal");
+  expect(
+    moveType("naturalgift", "delcatty", "Normalize", 5, "", "liechiberry"),
+  ).toBe("Grass");
 });

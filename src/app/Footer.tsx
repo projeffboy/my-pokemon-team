@@ -1,5 +1,6 @@
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip from "@mui/material/Tooltip";
@@ -8,7 +9,9 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useColorScheme } from "@mui/material/styles";
 import FooterDialog from "./footer/FooterDialog";
+import TypeChartDialog from "./footer/TypeChartDialog";
 import { lazy, type MouseEvent } from "react";
+import { useTranslation } from "./shared/TranslationContext";
 
 const Manual = lazy(() => import("./footer/Manual"));
 const Credits = lazy(() => import("./footer/Credits"));
@@ -18,8 +21,30 @@ const UpdateLog = lazy(() => import("./footer/UpdateLog"));
 type ColorMode = "system" | "light" | "dark";
 
 export default function Footer() {
+  const { t } = useTranslation();
   const { mode, setMode } = useColorScheme();
   const selectedMode = mode ?? "system";
+
+  const modes = [
+    {
+      value: "system",
+      label: t.footer.systemTheme,
+      caption: t.footer.auto,
+      Icon: ComputerIcon,
+    },
+    {
+      value: "light",
+      label: t.footer.lightTheme,
+      caption: t.footer.light,
+      Icon: LightModeIcon,
+    },
+    {
+      value: "dark",
+      label: t.footer.darkTheme,
+      caption: t.footer.dark,
+      Icon: DarkModeIcon,
+    },
+  ];
 
   const handleModeChange = (
     _event: MouseEvent<HTMLElement>,
@@ -36,15 +61,17 @@ export default function Footer() {
       spacing={2}
       sx={{
         width: "100%",
+        rowGap: 0.5,
         flexWrap: "wrap",
         justifyContent: "center",
         alignItems: "center",
         pb: process.env.NODE_ENV === "production" ? "230px" : 0,
       }}
     >
+      <TypeChartDialog />
       <FooterDialog
-        button="Manual"
-        title="Manual Help Guide"
+        button={t.footer.manual}
+        title={t.footer.manualTitle}
         content={Manual}
       />
       <Button
@@ -55,15 +82,19 @@ export default function Footer() {
       >
         Jeffery Tang
       </Button>
-      <FooterDialog button="Credits" title="Credits" content={Credits} />
       <FooterDialog
-        button={`Updates (${__LATEST_COMMIT_DATE__})`}
-        title="Update Log"
+        button={t.footer.credits}
+        title={t.footer.credits}
+        content={Credits}
+      />
+      <FooterDialog
+        button={t.footer.updates(__LATEST_COMMIT_DATE__)}
+        title={t.footer.updateLog}
         content={UpdateLog}
       />
       <FooterDialog
-        button="Privacy Policy"
-        title="Privacy Policy"
+        button={t.footer.privacyPolicy}
+        title={t.footer.privacyPolicy}
         content={PrivacyPolicy}
       />
       <ToggleButtonGroup
@@ -71,23 +102,34 @@ export default function Footer() {
         size="small"
         value={selectedMode}
         onChange={handleModeChange}
-        aria-label="Color scheme"
+        aria-label={t.footer.colorScheme}
       >
-        <Tooltip title="Use system theme">
-          <ToggleButton value="system" aria-label="Use system theme">
-            <ComputerIcon />
-          </ToggleButton>
-        </Tooltip>
-        <Tooltip title="Use light theme">
-          <ToggleButton value="light" aria-label="Use light theme">
-            <LightModeIcon />
-          </ToggleButton>
-        </Tooltip>
-        <Tooltip title="Use dark theme">
-          <ToggleButton value="dark" aria-label="Use dark theme">
-            <DarkModeIcon />
-          </ToggleButton>
-        </Tooltip>
+        {modes.map(({ value, label, caption, Icon }) => (
+          <Tooltip key={value} title={label}>
+            <ToggleButton
+              value={value}
+              aria-label={label}
+              sx={{
+                gap: 0.75,
+                minHeight: 48,
+                px: 1.25,
+                color: "text.secondary",
+                fontSize: 12,
+                lineHeight: 1,
+              }}
+            >
+              <Icon fontSize="small" />
+              {/* Icons alone on 320px phones; the tooltip and label still name them */}
+              <Box
+                component="span"
+                aria-hidden="true"
+                sx={{ display: { xxs: "none", xs: "inline" } }}
+              >
+                {caption}
+              </Box>
+            </ToggleButton>
+          </Tooltip>
+        ))}
       </ToggleButtonGroup>
     </Stack>
   );

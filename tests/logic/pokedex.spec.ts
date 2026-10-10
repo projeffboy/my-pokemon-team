@@ -1,5 +1,56 @@
 import { test, expect } from "@playwright/test";
 import pokedex from "@/data/pokedex";
+import {
+  isHiddenAbility,
+  pokemonAbilities,
+  pokemonBaseStats,
+} from "@/shared/pokedex";
+
+test("historical base stats follow the selected generation", () => {
+  expect(pokemonBaseStats("pidgeot", 1)?.spe).toBe(91);
+  expect(pokemonBaseStats("pidgeot", 5)?.spe).toBe(91);
+  expect(pokemonBaseStats("pidgeot", 6)?.spe).toBe(101);
+  expect(pokemonBaseStats("pidgeot")?.spe).toBe(101);
+  expect(pokemonBaseStats("charizard", 1)?.spa).toBe(85);
+  expect(pokemonBaseStats("charizard", 1)?.spd).toBe(85);
+  expect(pokemonBaseStats("charizard", 2)?.spa).toBe(109);
+  expect(pokemonBaseStats("charizard", 2)?.spd).toBe(85);
+  expect(pokemonBaseStats("missing" as string, 1)).toBeUndefined();
+});
+
+test("historical abilities exclude future and hidden abilities", () => {
+  expect(pokemonAbilities("pidgeot", 1)).toEqual([]);
+  expect(pokemonAbilities("pidgeot", 2)).toEqual([]);
+  expect(pokemonAbilities("pidgeot", 3)).toEqual(["Keen Eye"]);
+  expect(pokemonAbilities("pidgeot", 4)).toEqual(["Keen Eye", "Tangled Feet"]);
+  expect(pokemonAbilities("pidgeot", 5)).toEqual([
+    "Keen Eye",
+    "Tangled Feet",
+    "Big Pecks",
+  ]);
+  expect(pokemonAbilities("gengar", 6)).toEqual(["Levitate"]);
+  expect(pokemonAbilities("gengar", 7)).toEqual(["Cursed Body"]);
+});
+
+test("hidden ability labels follow historical names and distinguish ordinary and special abilities", () => {
+  expect(isHiddenAbility("empoleon", "Competitive", 9)).toBe(true);
+  expect(isHiddenAbility("empoleon", "Defiant", 8)).toBe(true);
+  expect(isHiddenAbility("empoleon", "Competitive", 8)).toBe(false);
+  expect(isHiddenAbility("empoleon", "Torrent", 8)).toBe(false);
+  expect(isHiddenAbility("empoleon", "Defiant", 4)).toBe(false);
+  expect(isHiddenAbility("pelipper", "Rain Dish", 5)).toBe(true);
+  expect(isHiddenAbility("pelipper", "Keen Eye", 5)).toBe(false);
+  expect(isHiddenAbility("shiftry", "Early Bird", 8)).toBe(false);
+  expect(isHiddenAbility("shiftry", "Pickpocket", 8)).toBe(true);
+  expect(isHiddenAbility("chandelure", "Shadow Tag", 5)).toBe(true);
+  expect(isHiddenAbility("greninja", "Battle Bond", 7)).toBe(false);
+  expect(isHiddenAbility("rockruff", "Own Tempo", 7)).toBe(false);
+  expect(isHiddenAbility("greninjabond", "Battle Bond", 7)).toBe(false);
+  expect(isHiddenAbility("rockruffdusk", "Own Tempo", 7)).toBe(false);
+  expect(isHiddenAbility("venusaurmega", "Thick Fat", 9)).toBe(false);
+  expect(isHiddenAbility("missing", "Competitive", 9)).toBe(false);
+  expect(isHiddenAbility("empoleon", "", 9)).toBe(false);
+});
 
 test("every Vivillon pattern has its abilities and Bug/Flying typing", () => {
   const patterns = Object.values(pokedex).filter(

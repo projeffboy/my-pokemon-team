@@ -1,18 +1,24 @@
+import { TypeIconProvider } from "./main/shared/TypeIconContext";
 import Grid from "@mui/material/Grid";
 import PokemonTeam from "./main/PokemonTeam";
 import TeamStats from "./main/TeamStats";
-import MoreInfo from "./main/MoreInfo";
 
 export default function Main() {
   return (
-    <Grid component="main" container size={12} spacing={2}>
-      <Grid container size={{ xs: 12, sm: 6, md: 7, lg: 6 }} spacing={2}>
-        <PokemonTeam />
+    <TypeIconProvider>
+      <Grid component="main" container size={12} spacing={{ xxs: 2, sm: 3 }}>
+        <Grid
+          container
+          size={{ xxs: 12, sm: 6, md: 7, lg: 6 }}
+          spacing={{ xxs: 2, sm: 3 }}
+          sx={{ alignContent: "flex-start" }}
+        >
+          <PokemonTeam />
+        </Grid>
+        <Grid size={{ xxs: 12, sm: 6, md: 5, lg: 6 }}>
+          <TeamStats />
+        </Grid>
       </Grid>
-      <Grid container size={{ xs: 12, sm: 6, md: 5, lg: 6 }} spacing={2}>
-        <TeamStats />
-        <MoreInfo />
-      </Grid>
-    </Grid>
+    </TypeIconProvider>
   );
 }
