@@ -15,7 +15,7 @@ import {
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { isPokemonType, type NameView } from "@/types";
-import { moveTypeIn } from "@/shared/generation-data";
+import { moveType } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import PokemonDexSprite from "./virtualized-listbox/PokemonDexSprite";
 import ListTools from "./shared/ListTools";
@@ -43,11 +43,20 @@ type OptionProps = React.HTMLAttributes<HTMLLIElement> & { key?: React.Key };
 // A move's type, where the dropdown shows it
 const MoveTypeIcon = observer(function MoveTypeIcon({
   move,
+  teamIndex,
 }: {
   move: string;
+  teamIndex: number;
 }) {
   const { names } = useTranslation();
-  const type = moveTypeIn(move, store.currentTeam.generation);
+  const member = store.analysisTeam[teamIndex];
+  const type = moveType(
+    move,
+    member?.name ?? "",
+    member?.ability,
+    store.currentTeam.generation,
+    member?.item,
+  );
   // A placeholder keeps the labels aligned for the few moves without a type
   if (!type || !isPokemonType(type)) {
     return <Box component="span" sx={{ width: 20, flexShrink: 0 }} />;
@@ -66,11 +75,13 @@ function RowComponent({
   index,
   itemData,
   pokemonProperty,
+  teamIndex,
   showMoveTypes,
   style,
 }: RowComponentProps & {
   itemData: ItemData;
   pokemonProperty: string;
+  teamIndex: number;
   showMoveTypes: boolean;
 }) {
   const row = itemData[index];
@@ -95,7 +106,9 @@ function RowComponent({
       {hasIcon && (
         <PokemonIcon pokemonProperty={pokemonProperty} value={option.value} />
       )}
-      {showMoveTypes && <MoveTypeIcon move={option.value} />}
+      {showMoveTypes && (
+        <MoveTypeIcon move={option.value} teamIndex={teamIndex} />
+      )}
       <Box component="span" sx={{ flex: 1, pl: showMoveTypes ? 0.75 : 0.25 }}>
         {option.label}
       </Box>
@@ -162,6 +175,7 @@ function GridRowComponent({
 // select passes what the listbox needs through this context instead
 export const VirtualizedListboxContext = React.createContext<{
   pokemonProperty: string;
+  teamIndex: number;
   // Whether the move options show their type, as the inputs do with the team tools
   showMoveTypes: boolean;
   selectedValue: string;
@@ -189,6 +203,7 @@ const VirtualizedListbox = observer(
       }
       const {
         pokemonProperty,
+        teamIndex,
         showMoveTypes,
         selectedValue,
         internalListRef,
@@ -394,7 +409,7 @@ const VirtualizedListbox = observer(
               onRowsRendered={onRowsRendered}
               rowHeight={dynamicRowHeight}
               rowComponent={RowComponent}
-              rowProps={{ itemData, pokemonProperty, showMoveTypes }}
+              rowProps={{ itemData, pokemonProperty, teamIndex, showMoveTypes }}
               // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
               style={{ height: getHeight() + 2 * LISTBOX_PADDING }}
               overscanCount={5}

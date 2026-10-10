@@ -18,6 +18,7 @@ import {
   projectTable,
   projectTypeChart,
   projectHiddenPowerSpreads,
+  projectHistoricalMoves,
   renderTypedData,
   toId,
 } from "./update-data/transforms.ts";
@@ -335,7 +336,46 @@ const loadReportedData = async (): Promise<ReportedData> => {
   ]);
   return { pokedex, moves, items };
 };
+async function updateMoveEffects() {
+  const latest = await loadShowdownTable("data/moves.ts", "Moves");
+  const before = await loadAppData<Moves>("moves");
+  const projected = projectTable("Moves", latest);
+  const moves = Object.fromEntries(
+    Object.entries(before).map(([id, entry]) => [
+      id,
+      projected[id] ? { ...projected[id], name: entry.name } : entry,
+    ]),
+  );
+  const mods = Object.fromEntries(
+    await Promise.all(
+      [1, 2, 3, 4, 5, 6, 7, 8].map(async gen => [
+        gen,
+        {
+          moves: await loadModTable(`gen${gen}`, "moves", "Moves"),
+        },
+      ]),
+    ),
+  );
+  const historical = projectHistoricalMoves(latest, mods, Object.keys(before));
+  const past =
+    await loadAppData<DataTypes["PastGenerations"]>("past-generations");
+  for (const [gen, entry] of Object.entries(past)) {
+    const properties = historical[Number(gen) as keyof typeof historical];
+    if (properties) entry.moveProperties = properties;
+    else delete entry.moveProperties;
+  }
+  await writeData("Moves", moves, true);
+  await writeData("PastGenerations", past);
+  console.log(
+    "Updated move effects and historical properties; existing move IDs and names are unchanged.",
+  );
+}
+
 async function updateData() {
+  if (process.argv.includes("--move-effects-only")) {
+    await updateMoveEffects();
+    return;
+  }
   if (process.argv.includes("--item-effects-only")) {
     const before = await loadAppData<Items>("items");
     const table = projectTable(

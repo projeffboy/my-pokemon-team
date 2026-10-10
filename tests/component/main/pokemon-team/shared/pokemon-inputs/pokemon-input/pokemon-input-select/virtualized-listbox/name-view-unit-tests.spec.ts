@@ -1,4 +1,5 @@
 import { test, expect } from "fixtures";
+import { openTeamTools, selectPokemon } from "helper";
 import pokedex from "@/data/pokedex";
 import { filterPokemon } from "@/store/filtering";
 import { sortPokemon, DEFAULT_SORT } from "@/store/sorting";
@@ -269,4 +270,90 @@ test("Home and End reach real boundaries in each virtualized Name view", async (
       (await first.getAttribute("id")) ?? "",
     );
   }
+});
+
+test("keyboard users can switch views without losing their search", async ({
+  page,
+}) => {
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("char");
+  await input.press("Tab");
+  const list = page.getByRole("button", { name: "List view", exact: true });
+  const grid = page.getByRole("button", { name: "Grid view", exact: true });
+  await expect(list).toBeFocused();
+  await page.keyboard.press("ArrowRight");
+  await expect(grid).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(grid).toHaveAttribute("aria-pressed", "true");
+  const bigGrid = page.getByRole("button", {
+    name: "Big grid view",
+    exact: true,
+  });
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("Enter");
+  await expect(bigGrid).toHaveAttribute("aria-pressed", "true");
+  await expect(input).toHaveValue("char");
+  await page.keyboard.press("Shift+Tab");
+  await expect(input).toBeFocused();
+  await input.press("ArrowDown");
+  await input.press("End");
+  const lastId = await input.getAttribute("aria-activedescendant");
+  await expect(page.locator(`[id="${lastId}"]`)).toBeVisible();
+  await input.press("Home");
+  await expect(input).toHaveAttribute(
+    "aria-activedescendant",
+    "react-select-single-0-name-option-0",
+  );
+  await input.press("Tab");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("listbox")).toBeHidden();
+  await expect(input).toBeFocused();
+  await input.fill("rhyper");
+  await input.press("Tab");
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("listbox")).toBeHidden();
+  await expect(
+    page.getByRole("button", { name: "Random pokemon for slot 1" }),
+  ).toBeFocused();
+});
+
+test("keyboard popup tools restore input focus after their dialogs close", async ({
+  page,
+}) => {
+  await openTeamTools(page);
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("no-pokemon-matches");
+  await input.press("Tab");
+  await expect(
+    page.getByRole("button", { name: "Filters", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  const filters = page.getByRole("dialog", { name: "Filters", exact: true });
+  await expect(filters).toBeVisible();
+  await filters.getByRole("button", { name: "Done" }).click();
+  await expect(input).toBeFocused();
+  await input.fill("char");
+  await input.press("Tab");
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("Tab");
+  await expect(
+    page.getByRole("button", { name: "Sort", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  const sort = page.getByRole("dialog", { name: "Sort", exact: true });
+  await expect(sort).toBeVisible();
+  await sort.getByRole("button", { name: "Done" }).click();
+  await expect(input).toBeFocused();
+});
+
+test("leaving a dropdown still restores the selected name", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Arbok");
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("unmatched search");
+  await input.press("Shift+Tab");
+  await expect(input).toHaveValue("Arbok");
+  await input.focus();
+  await expect(input).toHaveValue("Arbok");
 });

@@ -70,10 +70,16 @@ test("removes the service worker left by the old build", async ({ page }) => {
   page.on("pageerror", error => pageErrors.push(error));
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
-  // Stand in for a browser that still has the Create React App worker
-  await page.evaluate(() =>
-    navigator.serviceWorker.register("/service-worker.js"),
+  // The replacement worker reloads this document as it unregisters itself.
+  await page.evaluate(() => {
+    document.documentElement.setAttribute("data-smoke-worker", "before");
+    void navigator.serviceWorker.register("/service-worker.js");
+  });
+  await expect(page.locator("html")).not.toHaveAttribute(
+    "data-smoke-worker",
+    "before",
   );
+  await page.waitForLoadState("domcontentloaded");
 
   await expect(async () => {
     const registrations = await page.evaluate(() =>

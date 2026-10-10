@@ -2,6 +2,8 @@ import { test, expect } from "fixtures";
 import {
   closeDialog,
   openFilters,
+  openAdvanced,
+  openTeamTools,
   openSort,
   selectDialogOption,
   selectMove,
@@ -9,6 +11,7 @@ import {
   getTeamTextFromUrl,
 } from "helper";
 import type { Page } from "@playwright/test";
+import { toBase64Url } from "@/app/shared/base64url";
 
 test.describe("Filters Integration Tests", () => {
   // Pokemon Selectibility Check Helpers
@@ -360,4 +363,118 @@ test.describe("Filters Integration Tests", () => {
       await checkMoveNotSelectable(page, move);
     }
   });
+});
+
+for (const action of ["Update existing team", "Copy to new team"]) {
+  test(`format transfer ${action} keeps changes received during confirmation`, async ({
+    page,
+    context,
+  }) => {
+    const text =
+      "Garchomp\nAbility: Rough Skin\nEVs: 252 Atk / 4 SpD / 252 Spe\n- Earthquake";
+    await page.goto(`/?gen=9&team=${toBase64Url(text)}`);
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Garchomp");
+    await openAdvanced(page);
+    await page
+      .getByRole("textbox", { name: "Nickname", exact: true })
+      .fill("Original");
+    await expect
+      .poll(() => page.evaluate(() => localStorage.getItem("mypokemonteam")))
+      .toContain("Original");
+    const otherTab = await context.newPage();
+    await otherTab.goto(page.url());
+    await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
+      "Garchomp",
+    );
+    await openFilters(otherTab);
+    await selectDialogOption(otherTab, "Format", "Pokemon Champions (M-C)");
+    await expect(
+      otherTab.getByRole("button", { name: action, exact: true }),
+    ).toBeVisible();
+    await page
+      .getByRole("textbox", { name: "Nickname", exact: true })
+      .fill("FreshName");
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("FreshName (Garchomp)");
+    await otherTab.getByRole("button", { name: action, exact: true }).click();
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("FreshName (Garchomp)");
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("Level: 50");
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("EVs: 32 Atk / 1 SpD / 32 Spe");
+  });
+}
+
+test("format transfer without losses keeps edits received while game data loads", async ({
+  page,
+  context,
+}) => {
+  const game = encodeURIComponent("Pokemon Champions (M-C)");
+  await page.goto(
+    `/?game=${game}&team=${toBase64Url("Garchomp\nAbility: Rough Skin\n- Earthquake")}`,
+  );
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Garchomp");
+  await openAdvanced(page);
+  await page
+    .getByRole("textbox", { name: "Nickname", exact: true })
+    .fill("Original");
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem("mypokemonteam")))
+    .toContain("Original");
+  const teamName = await page.evaluate(() => {
+    const state = JSON.parse(
+      localStorage.getItem("mypokemonteam") ?? "null",
+    ) as { teams: { name: string; team: { nickname?: string }[] }[] };
+    return state.teams.find(team => team.team[0]?.nickname === "Original")
+      ?.name;
+  });
+  expect(teamName).toBeTruthy();
+  const otherTab = await context.newPage();
+  let release = () => {};
+  let requested = () => {};
+  const held = new Promise<void>(resolve => {
+    release = resolve;
+  });
+  const loaded = new Promise<void>(resolve => {
+    requested = resolve;
+  });
+  await otherTab.route("**/src/data/generation-transfer.json*", async route => {
+    requested();
+    await held;
+    await route.continue();
+  });
+  try {
+    await otherTab.goto(`/?game=${game}`, { waitUntil: "domcontentloaded" });
+    await loaded;
+    await openTeamTools(otherTab);
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: `Load ${teamName}`, exact: true })
+      .click();
+    await openFilters(otherTab);
+    await selectDialogOption(otherTab, "Format", "All");
+    await page
+      .getByRole("textbox", { name: "Nickname", exact: true })
+      .fill("FreshName");
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("FreshName (Garchomp)");
+    release();
+    await expect(otherTab.getByLabel("Generation")).toContainText(
+      "Scarlet Violet",
+    );
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("FreshName (Garchomp)");
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("Level: 50");
+  } finally {
+    release();
+  }
 });

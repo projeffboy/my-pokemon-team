@@ -1,4 +1,4 @@
-import moves from "@/data/moves";
+import { moveDataIn } from "@/shared/generation-data";
 import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
 import type { Messages } from "@/i18n/en";
 import { effectivePokemonTypes } from "./shared/effectiveness";
@@ -48,39 +48,54 @@ const hasMovesTogether =
 
 // Moves that inflict a non-volatile status, like Toxic, or always do so as a
 // side effect, like Nuzzle
-const inflictsStatus: Check = team =>
+const inflictsStatus: Check = (team, generation = LATEST_GENERATION) =>
   teamMoves(team).some(move => {
-    const { status, secondary } = moves[move] ?? {};
-    return !!(status || (secondary?.chance === 100 && secondary.status));
+    const { status, secondary } = moveDataIn(move, generation) ?? {};
+    return !!(
+      move === "yawn" ||
+      status ||
+      (secondary?.chance === 100 && secondary.status)
+    );
   });
 
-// The data lists a move's boosts without saying whose stats they raise
-const BOOSTS_ANOTHER_POKEMON = ["swagger", "decorate", "coaching"];
-
-// Curse, Belly Drum, or moves that raise the user's stats by two or more stages in total
+// Curse and callback-based moves need explicit self-boost effects.
 const boostsStats: Check = (team, generation = LATEST_GENERATION) =>
-  team.some(pokemon =>
-    moveset(pokemon).some(
-      move =>
-        (move === "curse" &&
+  team.some(pokemon => {
+    const contrary = generation >= 5 && pokemon.ability === "Contrary";
+    const modifier =
+      contrary ? -1
+      : generation >= 4 && pokemon.ability === "Simple" ? 2
+      : 1;
+    return moveset(pokemon).some(move => {
+      if (move === "curse")
+        return (
+          !contrary &&
           !effectivePokemonTypes(
             pokemon.name,
             pokemon.ability,
             pokemon.item,
             generation,
-          ).includes("Ghost")) ||
-        move === "bellydrum" ||
-        (!BOOSTS_ANOTHER_POKEMON.includes(move) &&
-          Object.values(moves[move]?.boosts ?? {}).reduce(
-            (sum, boost) => sum + boost,
-            0,
-          ) >= 2),
-    ),
-  );
+          ).includes("Ghost")
+        );
+      if (move === "bellydrum" || move === "acupressure") return !contrary;
+      if (move === "stockpile") return generation >= 4 && !contrary;
+      const data = moveDataIn(move, generation);
+      const boosts =
+        data?.selfBoosts ?? (data?.target === "self" ? data.boosts : undefined);
+      return (
+        Object.entries(boosts ?? {})
+          // Gen1's single Special boost is represented as both SpA and SpD.
+          .filter(
+            ([stat]) =>
+              generation !== 1 || stat !== "spd" || boosts?.spa === undefined,
+          )
+          .reduce((sum, [, boost]) => sum + boost * modifier, 0) >= 2
+      );
+    });
+  });
 
 const hasRecovery = hasAnyMove([
   "healorder",
-  "floralhealing",
   "milkdrink",
   "moonlight",
   "morningsun",
@@ -96,7 +111,16 @@ const hasRecovery = hasAnyMove([
 // Wish with a protect-like move counts as reliable recovery
 const hasWishAndProtect = hasMovesTogether([
   "wish",
-  ["protect", "detect", "banefulbunker", "spikyshield", "kingsshield"],
+  [
+    "protect",
+    "detect",
+    "banefulbunker",
+    "spikyshield",
+    "kingsshield",
+    "obstruct",
+    "silktrap",
+    "burningbulwark",
+  ],
 ]);
 
 export const checklist: ChecklistGroup[] = [
@@ -116,13 +140,11 @@ export const checklist: ChecklistGroup[] = [
       },
       {
         key: "spinner",
-        check: hasAnyMove([
-          "rapidspin",
-          "defog",
-          "courtchange",
-          "tidyup",
-          "mortalspin",
-        ]),
+        check: (team, generation = LATEST_GENERATION) =>
+          hasAnyMove(["rapidspin", "courtchange", "tidyup", "mortalspin"])(
+            team,
+          ) ||
+          (generation >= 6 && hasAnyMove(["defog"])(team)),
       },
       {
         key: "recovery",
@@ -140,7 +162,10 @@ export const checklist: ChecklistGroup[] = [
       { key: "status", check: inflictsStatus },
       {
         key: "phazer",
-        check: hasAnyMove(["circlethrow", "dragontail", "roar", "whirlwind"]),
+        check: (team, generation = LATEST_GENERATION) =>
+          teamMoves(team).some(
+            move => !!moveDataIn(move, generation)?.forceSwitch,
+          ),
       },
     ],
   },

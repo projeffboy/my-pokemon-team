@@ -13,6 +13,9 @@ import {
 export const typesIn = (generation: Generation): readonly PokemonType[] =>
   pastGenerations[generation]?.types ?? POKEMON_TYPES;
 
+export const moveDataIn = (move: string, generation = LATEST_GENERATION) =>
+  pastGenerations[generation]?.moveProperties?.[move] ?? moves[move];
+
 // E.g. 'bite' => 'Dark', or 'Normal' in gen 1
 export const moveTypeIn = (move: string, generation = LATEST_GENERATION) => {
   const past = pastGenerations[generation];

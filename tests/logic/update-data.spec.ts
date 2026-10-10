@@ -6,6 +6,7 @@ import {
   pick,
   projectFormats,
   projectPastGenerations,
+  projectHistoricalMoves,
   projectTypeChart,
   projectHiddenPowerSpreads,
   projections,
@@ -500,4 +501,86 @@ test("historical stats and abilities inherit through generations and cosmetic fo
   expect(past[3]?.abilities?.birdblue).toEqual(["Original"]);
   expect(past[4]?.abilities?.bird).toEqual(["Original", "Second"]);
   expect(past[5]?.abilities?.bird).toEqual(["Original", "Second", "Hidden"]);
+});
+
+test("move projections retain user boosts without confusing targets or random chances", () => {
+  expect(
+    projections.Moves({ boosts: { atk: 2 }, target: "normal" }).selfBoosts,
+  ).toBeUndefined();
+  expect(
+    projections.Moves({ self: { boosts: { atk: -1, def: -1 } } }).selfBoosts,
+  ).toEqual({ atk: -1, def: -1 });
+  expect(
+    projections.Moves({
+      secondary: { chance: 100, self: { boosts: { atk: 1 } } },
+    }).selfBoosts,
+  ).toEqual({ atk: 1 });
+  expect(
+    projections.Moves({
+      secondary: { chance: 50, self: { boosts: { spa: 1 } } },
+    }).selfBoosts,
+  ).toBeUndefined();
+});
+
+test("historical move projections replace removed effects and inherit old power", () => {
+  const latest = {
+    move: {
+      name: "Move",
+      type: "Normal",
+      category: "Physical",
+      basePower: 60,
+      basePowerCallback() {},
+      onModifyMove() {},
+      boosts: { atk: 2 },
+      self: { boosts: { spa: -2 } },
+      secondary: { chance: 100, status: "par" },
+      forceSwitch: true,
+    },
+    unchanged: { name: "Unchanged", type: "Water", basePower: 80 },
+  };
+  const past = projectHistoricalMoves(latest, {
+    3: {
+      moves: {
+        move: {
+          inherit: true,
+          basePower: 30,
+          basePowerCallback: undefined,
+          onModifyMove: undefined,
+          boosts: null,
+          self: null,
+          secondary: null,
+          forceSwitch: false,
+        },
+      },
+    },
+    1: { moves: { move: { inherit: true, basePower: 0 } } },
+  });
+  expect(past[4]).toBeUndefined();
+  expect(past[3]?.move).toEqual({
+    name: "Move",
+    type: "Normal",
+    category: "Physical",
+    basePower: 30,
+    forceSwitch: false,
+  });
+  expect(past[2]?.move).toEqual(past[3]?.move);
+  expect(past[1]?.move?.basePower).toBe(0);
+  expect(past[1]).not.toHaveProperty("unchanged");
+  const integrated = projectPastGenerations(
+    { pokedex: {}, moves: latest, typechart: {} },
+    { 3: { moves: { move: { inherit: true, basePower: 30 } } } },
+  );
+  expect(integrated[2]?.moveProperties?.move?.basePower).toBe(30);
+});
+
+test("move projections retain guaranteed selfBoost effects", () => {
+  expect(
+    projections.Moves({
+      selfBoost: { boosts: { atk: 1, def: 1, spa: 1, spd: 1, spe: 1 } },
+    }).selfBoosts,
+  ).toEqual({ atk: 1, def: 1, spa: 1, spd: 1, spe: 1 });
+  expect(
+    projections.Moves({ selfBoost: { boosts: { def: -1 } } }).selfBoosts,
+  ).toEqual({ def: -1 });
+  expect(projections.Moves({ selfBoost: null }).selfBoosts).toBeUndefined();
 });

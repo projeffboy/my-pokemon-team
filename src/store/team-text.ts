@@ -68,14 +68,18 @@ function serializeMember(member: Readonly<TeamPokemon>): string {
   const evs = statsLine(member.evs, value => value === 0);
   const ivs = statsLine(member.ivs, value => value === MAX_IV);
   const nature = member.nature ? natureName(member.nature) : undefined;
+  const happiness = member.happiness ?? DEFAULT_HAPPINESS;
 
   return [
     nameLine,
     `Ability: ${ability}`,
     level !== undefined && level !== DEFAULT_LEVEL ? `Level: ${level}` : "",
     shiny ? "Shiny: Yes" : "",
-    member.happiness !== undefined && member.happiness !== DEFAULT_HAPPINESS ?
-      `Happiness: ${member.happiness}`
+    (
+      happiness !== DEFAULT_HAPPINESS ||
+      MOVE_KEYS.some(key => member[key] === "frustration")
+    ) ?
+      `Happiness: ${happiness}`
     : "",
     teraType ? `Tera Type: ${teraType}` : "",
     evs ? `EVs: ${evs}` : "",
@@ -180,10 +184,14 @@ export function parseTeamText(
   text: string,
   generation: Generation = 9,
   format = "",
+  {
+    inferFrustrationHappiness = true,
+  }: { inferFrustrationHappiness?: boolean } = {},
 ): Team {
   const rules = generationRules(generation, format);
   const team = createEmptyTeam();
   const teamPokemonRawData = text
+    .replace(/^\s*---\s*$/gm, "\n")
     .split(/\n\s*\n/)
     .map(eachPokemonData => eachPokemonData.trim())
     .filter(eachPokemonData => eachPokemonData) // get rid of empty lines
@@ -219,25 +227,31 @@ export function parseTeamText(
     }
 
     let moveIndex = 0;
+    let gigantamax = false;
+    let hasHappiness = false;
 
     lines.slice(1).forEach(rawLine => {
       const line = rawLine.trim();
       const value = (prefix: string) => line.slice(prefix.length).trim();
+      const startsWith = (prefix: string) =>
+        line.toLowerCase().startsWith(prefix.toLowerCase());
 
-      if (line.startsWith("Ability:")) {
-        const ability = value("Ability:");
+      if (startsWith("Ability:") || startsWith("Trait:")) {
+        const ability = line.slice(line.indexOf(":") + 1).trim();
 
         // If legit, set ability
         if (abilities.includes(ability)) {
           member.ability = ability;
         }
-      } else if (line.startsWith("Level:")) {
+      } else if (startsWith("Gigantamax:")) {
+        gigantamax = value("Gigantamax:").toLowerCase() === "yes";
+      } else if (startsWith("Level:")) {
         const level = Math.round(Number(value("Level:")));
         if (level >= 1 && level <= MAX_LEVEL && level !== DEFAULT_LEVEL)
           member.level = level;
-      } else if (line.startsWith("Shiny:")) {
+      } else if (startsWith("Shiny:")) {
         if (value("Shiny:").toLowerCase() === "yes") member.shiny = true;
-      } else if (line.startsWith("Happiness:") && rules.happiness) {
+      } else if (startsWith("Happiness:") && rules.happiness) {
         const raw = value("Happiness:");
         const happiness = Number(raw);
         if (
@@ -246,39 +260,40 @@ export function parseTeamText(
           happiness >= 0 &&
           happiness <= MAX_HAPPINESS
         ) {
+          hasHappiness = true;
           if (happiness === DEFAULT_HAPPINESS) delete member.happiness;
           else member.happiness = happiness;
         }
-      } else if (line.startsWith("Tera Type:")) {
+      } else if (startsWith("Tera Type:")) {
         const teraType = value("Tera Type:");
         if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
-      } else if (line.startsWith("EVs:")) {
+      } else if (startsWith("EVs:")) {
         const evs = parseStats(value("EVs:"), 255, ev => ev === 0);
         if (evs) member.evs = evs;
-      } else if (line.startsWith("Stat Experience:")) {
+      } else if (startsWith("Stat Experience:")) {
         member.statExperience = parseStats(
           value("Stat Experience:"),
           65535,
           n => n === 0,
         );
-      } else if (line.startsWith("Effort Levels:")) {
+      } else if (startsWith("Effort Levels:")) {
         member.effortLevels = parseStats(
           value("Effort Levels:"),
           10,
           n => n === 0,
         );
-      } else if (line.startsWith("IVs:")) {
+      } else if (startsWith("IVs:")) {
         const ivs = parseStats(value("IVs:"), MAX_IV, iv => iv === MAX_IV);
         if (ivs) member.ivs = ivs;
-      } else if (line.endsWith(" Nature")) {
+      } else if (/ Nature$/i.test(line)) {
         const nature = natureNameInverse(
           line.slice(0, -" Nature".length).trim(),
         );
         if (nature) member.nature = nature;
-      } else if (line.startsWith("-") && moveIndex < MOVE_KEYS.length) {
+      } else if (/^(?:-|~|Move:)/i.test(line) && moveIndex < MOVE_KEYS.length) {
         // if property has to do with moves
         const moveText = line
-          .replace(/^-\s*/, "")
+          .replace(/^(?:[-~]\s*|Move:\s*)/i, "")
           .trim()
           .replace("[", "") // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
           .replace("]", "");
@@ -295,7 +310,18 @@ export function parseTeamText(
         moveIndex++;
       }
     });
-    if (!lines.some(line => line.trim().startsWith("IVs:"))) {
+    if (gigantamax) {
+      const forme = pokemonNameInverse(`${pokemonName(member.name)}-Gmax`);
+      if (forme) member.name = forme;
+    }
+    if (
+      inferFrustrationHappiness &&
+      rules.happiness &&
+      !hasHappiness &&
+      MOVE_KEYS.some(key => member[key] === "frustration")
+    )
+      member.happiness = 0;
+    if (!lines.some(line => /^IVs:/i.test(line.trim()))) {
       const hiddenPower = MOVE_KEYS.map(key => member[key]).find(move =>
         move.startsWith("hiddenpower"),
       );
@@ -329,11 +355,18 @@ export function parseTeamsText(text: string): ParsedTeam[] {
     else if (chunks.length) chunks[chunks.length - 1]?.lines.push(line);
     else chunks.push({ lines: [line] });
   }
-  const teams = chunks.map(({ header, lines }) => {
+  const isEmptyBackup = (index: number) =>
+    !!chunks[index]?.header?.[2]?.trim() &&
+    chunks[index]?.lines.every(
+      line => !line.trim() || line.trim() === BACKUP_MARKER,
+    );
+  const teams = chunks.map(({ header, lines }, index) => {
     const settings = parseShowdownFormatId(header?.[1] ?? "");
     const rawName = header?.[2] ?? "";
     const name =
-      preserveNames ? rawName : (rawName.split("/").pop()?.trim() ?? "");
+      preserveNames || isEmptyBackup(index) ? rawName : (
+        (rawName.split("/").pop()?.trim() ?? "")
+      );
     return {
       name,
       ...settings,
@@ -344,5 +377,7 @@ export function parseTeamsText(text: string): ParsedTeam[] {
       ),
     };
   });
-  return teams.filter(({ team }) => !isTeamEmpty(team));
+  return teams.filter(
+    ({ team }, index) => !isTeamEmpty(team) || isEmptyBackup(index),
+  );
 }

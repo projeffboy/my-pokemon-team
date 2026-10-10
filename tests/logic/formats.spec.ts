@@ -41,3 +41,23 @@ test("old imports still preserve their format even when no longer selectable", (
     format: "Little Cup (LC)",
   });
 });
+
+test("legacy Showdown tier IDs use their historical generation", () => {
+  expect(parseShowdownFormatId("ou")).toEqual({
+    generation: 6,
+    format: "OU: Over Used",
+  });
+  expect(parseShowdownFormatId(" UU ")).toEqual({
+    generation: 6,
+    format: "UU: Under Used",
+  });
+  expect(parseShowdownFormatId("gen7ou")).toEqual({
+    generation: 7,
+    format: "OU: Over Used",
+  });
+  expect(parseShowdownFormatId("")).toEqual({ generation: 9, format: "" });
+  expect(parseShowdownFormatId("unknown-format")).toEqual({
+    generation: 9,
+    format: "",
+  });
+});

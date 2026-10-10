@@ -38,7 +38,11 @@ test("happiness survives links and reloads, is editable, and resets to its defau
   await happiness.fill("");
   await dialog.getByLabel("Nickname").focus();
   await expect(happiness).toHaveValue("255");
-  await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("Happiness:");
+  await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 255");
+  await closeDialog(page);
+  await page.reload();
+  await openAdvanced(page);
+  await expect(happiness).toHaveValue("255");
   await closeDialog(page);
   await openEditPokepaste(page);
   await page
@@ -51,7 +55,7 @@ test("happiness survives links and reloads, is editable, and resets to its defau
   await happiness.fill("0");
   await dialog.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(happiness).toHaveValue("255");
-  await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("Happiness:");
+  await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 255");
 });
 
 test("Gen 1 and Champions omit happiness from imported links and their editors", async ({

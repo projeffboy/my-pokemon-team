@@ -1,7 +1,9 @@
 import {
+  useId,
   useRef,
   useState,
   type KeyboardEvent,
+  type MouseEvent,
   type SyntheticEvent,
 } from "react";
 import Typography from "@mui/material/Typography";
@@ -33,6 +35,8 @@ const TeamAspectStats = observer(function TeamAspectStats({
   hideTitle?: boolean;
 }) {
   const { t, names } = useTranslation();
+  const tooltipId = useId();
+  const pressedOpen = useRef<boolean | undefined>(undefined);
   const types = typesIn(store.currentTeam.generation);
   const { gridRef, hasIcon, showFullName, chipWidth } = useTypeLabelLayout(
     JSON.stringify(
@@ -73,8 +77,13 @@ const TeamAspectStats = observer(function TeamAspectStats({
 
   const handlePopoverClose = () => setPopover(null);
 
-  const handleClick = (e: SyntheticEvent<HTMLElement>, i: number) => {
-    if (popover) handlePopoverClose();
+  const handleClick = (e: MouseEvent<HTMLElement>, i: number) => {
+    const wasOpen =
+      e.detail ?
+        (pressedOpen.current ?? popover?.index === i)
+      : popover?.index === i;
+    pressedOpen.current = undefined;
+    if (wasOpen) handlePopoverClose();
     else handlePopoverOpen(e, i);
   };
 
@@ -132,9 +141,15 @@ const TeamAspectStats = observer(function TeamAspectStats({
                   },
                 }}
                 aria-describedby={
-                  popover?.index === i ? `mouse-over-popover-${i}` : undefined
+                  popover?.index === i ? `${tooltipId}-${i}` : undefined
                 }
                 aria-label={names.type(type)}
+                onPointerDown={() => {
+                  pressedOpen.current = popover?.index === i;
+                }}
+                onPointerCancel={() => {
+                  pressedOpen.current = undefined;
+                }}
                 onMouseEnter={e => handlePopoverOpen(e, i)}
                 onMouseLeave={handlePopoverClose}
                 onFocus={e => handlePopoverOpen(e, i)}
@@ -151,7 +166,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 />
               </ButtonBase>
               <Popper
-                id={`mouse-over-popover-${i}`}
+                id={`${tooltipId}-${i}`}
                 role="tooltip"
                 sx={{ pointerEvents: "none", zIndex: "tooltip" }}
                 open={popover?.index === i}

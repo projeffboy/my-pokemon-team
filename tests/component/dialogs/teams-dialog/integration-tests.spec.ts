@@ -349,3 +349,38 @@ Ability: Drizzle
     ).toHaveCount(1);
   });
 });
+
+test("Import Team restores named empty backups and rejects invalid populated bodies", async ({
+  page,
+}) => {
+  await openTeams(page);
+  await page.getByRole("button", { name: "Import Team", exact: true }).click();
+  const importing = page.getByRole("dialog", {
+    name: "Import Team",
+  });
+  await importing
+    .getByRole("textbox")
+    .fill("=== [gen2ou] Next season ===\n\nPikablu");
+  await importing.getByRole("button", { name: "Import", exact: true }).click();
+  await expect(importing).toContainText("No pokemon found in that text.");
+  await importing
+    .getByRole("textbox")
+    .fill(
+      "=== [gen2ou] Next season ===\n\n=== [gen8doublesou] Testing ===\n\n",
+    );
+  await importing.getByRole("button", { name: "Import", exact: true }).click();
+  const teams = page
+    .getByRole("dialog", { name: "Teams" })
+    .getByRole("list", { name: "Saved teams" });
+  await expect(
+    teams.getByRole("button", { name: "Load Next season", exact: true }),
+  ).toBeVisible();
+  await expect(
+    teams.getByRole("button", { name: "Load Testing", exact: true }),
+  ).toBeVisible();
+  await teams
+    .getByRole("button", { name: "Load Next season", exact: true })
+    .click();
+  await expect(page.getByLabel("Generation")).toContainText("Gen 2");
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("");
+});

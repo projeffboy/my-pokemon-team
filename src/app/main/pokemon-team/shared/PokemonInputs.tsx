@@ -12,7 +12,7 @@ import { useIsMdDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
-import { pokemonTypes } from "@/shared/pokedex";
+import { effectivePokemonTypes } from "@/store/shared/effectiveness";
 import { isShinyInGeneration } from "@/shared/generation-rules";
 import typeIcons from "@/images/type-icons";
 import type { SyntheticEvent } from "react";
@@ -45,6 +45,7 @@ const PokemonInputs = observer(function PokemonInputs({
   const hasTypeIcons = useTypeIcons();
   const showTools = store.isMoreOpen;
   const member = store.team[teamIndex];
+  const analysisMember = store.analysisTeam[teamIndex];
   const pokemon = member?.name ?? "";
   const randomTitle =
     member ?
@@ -161,7 +162,12 @@ const PokemonInputs = observer(function PokemonInputs({
                 pointerEvents: "none",
               }}
             >
-              {pokemonTypes(pokemon, store.currentTeam.generation).map(type =>
+              {effectivePokemonTypes(
+                pokemon,
+                analysisMember?.ability,
+                analysisMember?.item,
+                store.currentTeam.generation,
+              ).map(type =>
                 !hasTypeIcons ?
                   <Box
                     key={type}

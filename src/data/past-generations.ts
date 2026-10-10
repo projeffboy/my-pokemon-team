@@ -1680,6 +1680,1453 @@ const data: PastGenerations = {
         "Rock": 0,
         "Water": 1
       }
+    },
+    "moveProperties": {
+      "acid": {
+        "name": "Acid",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 33
+        }
+      },
+      "aircutter": {
+        "name": "Air Cutter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 55,
+        "target": "allAdjacentFoes"
+      },
+      "amnesia": {
+        "name": "Amnesia",
+        "type": "Psychic",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 2,
+          "spd": 2
+        },
+        "target": "self"
+      },
+      "assurance": {
+        "name": "Assurance",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "aurasphere": {
+        "name": "Aura Sphere",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "aurorabeam": {
+        "name": "Aurora Beam",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 33
+        }
+      },
+      "baddybad": {
+        "name": "Baddy Bad",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "beatup": {
+        "name": "Beat Up",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "bide": {
+        "name": "Bide",
+        "type": "???",
+        "category": "Physical",
+        "basePower": 0,
+        "target": "self"
+      },
+      "bite": {
+        "name": "Bite",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "blizzard": {
+        "name": "Blizzard",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "bouncybubble": {
+        "name": "Bouncy Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "bubble": {
+        "name": "Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 33
+        }
+      },
+      "bubblebeam": {
+        "name": "Bubble Beam",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 33
+        }
+      },
+      "bulletseed": {
+        "name": "Bullet Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "buzzybuzz": {
+        "name": "Buzzy Buzz",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "charge": {
+        "name": "Charge",
+        "type": "Electric",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "charm": {
+        "name": "Charm",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": -2
+        },
+        "target": "normal"
+      },
+      "chatter": {
+        "name": "Chatter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 60,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 31
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "constrict": {
+        "name": "Constrict",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 10,
+        "target": "normal",
+        "secondary": {
+          "chance": 33
+        }
+      },
+      "conversion": {
+        "name": "Conversion",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal"
+      },
+      "cottonspore": {
+        "name": "Cotton Spore",
+        "type": "Grass",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -2
+        },
+        "target": "normal"
+      },
+      "counter": {
+        "name": "Counter",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 1,
+        "target": "scripted"
+      },
+      "covet": {
+        "name": "Covet",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "crabhammer": {
+        "name": "Crabhammer",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "curse": {
+        "name": "Curse",
+        "type": "???",
+        "category": "Status",
+        "basePower": 0,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "diamondstorm": {
+        "name": "Diamond Storm",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "dig": {
+        "name": "Dig",
+        "type": "Ground",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "dive": {
+        "name": "Dive",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "dizzypunch": {
+        "name": "Dizzy Punch",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "doomdesire": {
+        "name": "Doom Desire",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "doubleedge": {
+        "name": "Double-Edge",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "dracometeor": {
+        "name": "Draco Meteor",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "dragonpulse": {
+        "name": "Dragon Pulse",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "dragonrage": {
+        "name": "Dragon Rage",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 1,
+        "target": "normal"
+      },
+      "drainpunch": {
+        "name": "Drain Punch",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "energyball": {
+        "name": "Energy Ball",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "explosion": {
+        "name": "Explosion",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 170,
+        "target": "normal"
+      },
+      "feint": {
+        "name": "Feint",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      },
+      "fellstinger": {
+        "name": "Fell Stinger",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 30,
+        "target": "normal"
+      },
+      "fireblast": {
+        "name": "Fire Blast",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "brn"
+        }
+      },
+      "firepledge": {
+        "name": "Fire Pledge",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "firespin": {
+        "name": "Fire Spin",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "flamethrower": {
+        "name": "Flamethrower",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "fly": {
+        "name": "Fly",
+        "type": "Flying",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "any"
+      },
+      "flyingpress": {
+        "name": "Flying Press",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "any"
+      },
+      "freezyfrost": {
+        "name": "Freezy Frost",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "frostbreath": {
+        "name": "Frost Breath",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "furycutter": {
+        "name": "Fury Cutter",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "futuresight": {
+        "name": "Future Sight",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "gigadrain": {
+        "name": "Giga Drain",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "glitzyglow": {
+        "name": "Glitzy Glow",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "grasspledge": {
+        "name": "Grass Pledge",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "growth": {
+        "name": "Growth",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 1,
+          "spd": 1
+        },
+        "target": "self"
+      },
+      "gust": {
+        "name": "Gust",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 40,
+        "target": "any"
+      },
+      "haze": {
+        "name": "Haze",
+        "type": "Ice",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "heatwave": {
+        "name": "Heat Wave",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "hex": {
+        "name": "Hex",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "hiddenpower": {
+        "name": "Hidden Power",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 0,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "hiddenpowerbug": {
+        "name": "Hidden Power Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdark": {
+        "name": "Hidden Power Dark",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdragon": {
+        "name": "Hidden Power Dragon",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerelectric": {
+        "name": "Hidden Power Electric",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfighting": {
+        "name": "Hidden Power Fighting",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfire": {
+        "name": "Hidden Power Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerflying": {
+        "name": "Hidden Power Flying",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerghost": {
+        "name": "Hidden Power Ghost",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowergrass": {
+        "name": "Hidden Power Grass",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerground": {
+        "name": "Hidden Power Ground",
+        "type": "Ground",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerice": {
+        "name": "Hidden Power Ice",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpoison": {
+        "name": "Hidden Power Poison",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpsychic": {
+        "name": "Hidden Power Psychic",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerrock": {
+        "name": "Hidden Power Rock",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowersteel": {
+        "name": "Hidden Power Steel",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerwater": {
+        "name": "Hidden Power Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "highjumpkick": {
+        "name": "High Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "howl": {
+        "name": "Howl",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": 1
+        },
+        "target": "self"
+      },
+      "hurricane": {
+        "name": "Hurricane",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "hydropump": {
+        "name": "Hydro Pump",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "icebeam": {
+        "name": "Ice Beam",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "iciclespear": {
+        "name": "Icicle Spear",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "incinerate": {
+        "name": "Incinerate",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes"
+      },
+      "jumpkick": {
+        "name": "Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "karatechop": {
+        "name": "Karate Chop",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      },
+      "knockoff": {
+        "name": "Knock Off",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lastresort": {
+        "name": "Last Resort",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "normal"
+      },
+      "leafblade": {
+        "name": "Leaf Blade",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "leafstorm": {
+        "name": "Leaf Storm",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "leechlife": {
+        "name": "Leech Life",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lick": {
+        "name": "Lick",
+        "type": "Ghost",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "lightscreen": {
+        "name": "Light Screen",
+        "type": "Psychic",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "lowkick": {
+        "name": "Low Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "lowsweep": {
+        "name": "Low Sweep",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "magmastorm": {
+        "name": "Magma Storm",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "meteormash": {
+        "name": "Meteor Mash",
+        "type": "Steel",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 20
+        }
+      },
+      "minimize": {
+        "name": "Minimize",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": 1
+        },
+        "target": "self"
+      },
+      "mirrormove": {
+        "name": "Mirror Move",
+        "type": "Flying",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "mist": {
+        "name": "Mist",
+        "type": "Ice",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "moonlight": {
+        "name": "Moonlight",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "muddywater": {
+        "name": "Muddy Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "multiattack": {
+        "name": "Multi-Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "mysticalfire": {
+        "name": "Mystical Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "naturepower": {
+        "name": "Nature Power",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "nightshade": {
+        "name": "Night Shade",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 1,
+        "target": "normal"
+      },
+      "outrage": {
+        "name": "Outrage",
+        "type": "Dragon",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "overheat": {
+        "name": "Overheat",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "paraboliccharge": {
+        "name": "Parabolic Charge",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 50,
+        "target": "allAdjacent"
+      },
+      "petaldance": {
+        "name": "Petal Dance",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "randomNormal"
+      },
+      "pinmissile": {
+        "name": "Pin Missile",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 14,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "poisonfang": {
+        "name": "Poison Fang",
+        "type": "Poison",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "tox"
+        }
+      },
+      "poisongas": {
+        "name": "Poison Gas",
+        "type": "Poison",
+        "category": "Status",
+        "basePower": 0,
+        "status": "psn",
+        "target": "normal"
+      },
+      "poisonsting": {
+        "name": "Poison Sting",
+        "type": "Poison",
+        "category": "Physical",
+        "basePower": 15,
+        "target": "normal",
+        "secondary": {
+          "chance": 20,
+          "status": "psn"
+        }
+      },
+      "powergem": {
+        "name": "Power Gem",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "psychic": {
+        "name": "Psychic",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 33
+        }
+      },
+      "psywave": {
+        "name": "Psywave",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 1,
+        "target": "normal"
+      },
+      "pursuit": {
+        "name": "Pursuit",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 40,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "rapidspin": {
+        "name": "Rapid Spin",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "razorleaf": {
+        "name": "Razor Leaf",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 55,
+        "target": "normal"
+      },
+      "razorwind": {
+        "name": "Razor Wind",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "reflect": {
+        "name": "Reflect",
+        "type": "Psychic",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "roar": {
+        "name": "Roar",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal",
+        "forceSwitch": false,
+        "flags": {
+          "sound": 1
+        }
+      },
+      "rockslide": {
+        "name": "Rock Slide",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 75,
+        "target": "normal"
+      },
+      "rocksmash": {
+        "name": "Rock Smash",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "rocktomb": {
+        "name": "Rock Tomb",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "sandattack": {
+        "name": "Sand Attack",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "accuracy": -1
+        },
+        "target": "normal"
+      },
+      "sandtomb": {
+        "name": "Sand Tomb",
+        "type": "Ground",
+        "category": "Physical",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "sappyseed": {
+        "name": "Sappy Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "seismictoss": {
+        "name": "Seismic Toss",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 1,
+        "target": "normal"
+      },
+      "selfdestruct": {
+        "name": "Self-Destruct",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "normal"
+      },
+      "sizzlyslide": {
+        "name": "Sizzly Slide",
+        "type": "Fire",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "brn"
+        }
+      },
+      "skullbash": {
+        "name": "Skull Bash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "skyattack": {
+        "name": "Sky Attack",
+        "type": "Flying",
+        "category": "Physical",
+        "basePower": 140,
+        "target": "any"
+      },
+      "sludge": {
+        "name": "Sludge",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 40,
+          "status": "psn"
+        }
+      },
+      "smellingsalts": {
+        "name": "Smelling Salts",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "smog": {
+        "name": "Smog",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 40,
+          "status": "psn"
+        }
+      },
+      "snore": {
+        "name": "Snore",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "sonicboom": {
+        "name": "Sonic Boom",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 1,
+        "target": "normal"
+      },
+      "sparklyswirl": {
+        "name": "Sparkly Swirl",
+        "type": "Fairy",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "stormthrow": {
+        "name": "Storm Throw",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "stringshot": {
+        "name": "String Shot",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "struggle": {
+        "name": "Struggle",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "randomNormal"
+      },
+      "strugglebug": {
+        "name": "Struggle Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "suckerpunch": {
+        "name": "Sucker Punch",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "superfang": {
+        "name": "Super Fang",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 1,
+        "target": "normal"
+      },
+      "surf": {
+        "name": "Surf",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes"
+      },
+      "sweetkiss": {
+        "name": "Sweet Kiss",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal"
+      },
+      "sweetscent": {
+        "name": "Sweet Scent",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "synchronoise": {
+        "name": "Synchronoise",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "allAdjacent"
+      },
+      "tackle": {
+        "name": "Tackle",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "tailglow": {
+        "name": "Tail Glow",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 2
+        },
+        "target": "self"
+      },
+      "technoblast": {
+        "name": "Techno Blast",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "thief": {
+        "name": "Thief",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "thrash": {
+        "name": "Thrash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "thunder": {
+        "name": "Thunder",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "par"
+        }
+      },
+      "thunderbolt": {
+        "name": "Thunderbolt",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "par"
+        }
+      },
+      "triattack": {
+        "name": "Tri Attack",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "triplekick": {
+        "name": "Triple Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          1,
+          3
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "uproar": {
+        "name": "Uproar",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 50,
+        "target": "randomNormal",
+        "flags": {
+          "sound": 1
+        }
+      },
+      "vinewhip": {
+        "name": "Vine Whip",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "volttackle": {
+        "name": "Volt Tackle",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "wakeupslap": {
+        "name": "Wake-Up Slap",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "waterfall": {
+        "name": "Waterfall",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "waterpledge": {
+        "name": "Water Pledge",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "watershuriken": {
+        "name": "Water Shuriken",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 15,
+        "multihit": [
+          2,
+          5
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "whirlpool": {
+        "name": "Whirlpool",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "whirlwind": {
+        "name": "Whirlwind",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal",
+        "forceSwitch": false
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "wingattack": {
+        "name": "Wing Attack",
+        "type": "Flying",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "any"
+      },
+      "zapcannon": {
+        "name": "Zap Cannon",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "zippyzap": {
+        "name": "Zippy Zap",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      }
     }
   },
   "2": {
@@ -2334,6 +3781,1162 @@ const data: PastGenerations = {
         "spa": 85,
         "spd": 125,
         "spe": 114
+      }
+    },
+    "moveProperties": {
+      "aircutter": {
+        "name": "Air Cutter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 55,
+        "target": "allAdjacentFoes"
+      },
+      "assurance": {
+        "name": "Assurance",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "aurasphere": {
+        "name": "Aura Sphere",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "baddybad": {
+        "name": "Baddy Bad",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "beatup": {
+        "name": "Beat Up",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "blizzard": {
+        "name": "Blizzard",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 120,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "bouncybubble": {
+        "name": "Bouncy Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "bubble": {
+        "name": "Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 20,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "bulletseed": {
+        "name": "Bullet Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "buzzybuzz": {
+        "name": "Buzzy Buzz",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "charge": {
+        "name": "Charge",
+        "type": "Electric",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "charm": {
+        "name": "Charm",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": -2
+        },
+        "target": "normal"
+      },
+      "chatter": {
+        "name": "Chatter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 60,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 31
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "cottonspore": {
+        "name": "Cotton Spore",
+        "type": "Grass",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -2
+        },
+        "target": "normal"
+      },
+      "covet": {
+        "name": "Covet",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "crabhammer": {
+        "name": "Crabhammer",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "curse": {
+        "name": "Curse",
+        "type": "???",
+        "category": "Status",
+        "basePower": 0,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "diamondstorm": {
+        "name": "Diamond Storm",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "dig": {
+        "name": "Dig",
+        "type": "Ground",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "dive": {
+        "name": "Dive",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "doomdesire": {
+        "name": "Doom Desire",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "dracometeor": {
+        "name": "Draco Meteor",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "dragonpulse": {
+        "name": "Dragon Pulse",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "drainpunch": {
+        "name": "Drain Punch",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "energyball": {
+        "name": "Energy Ball",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "feint": {
+        "name": "Feint",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      },
+      "fellstinger": {
+        "name": "Fell Stinger",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 30,
+        "target": "normal"
+      },
+      "fireblast": {
+        "name": "Fire Blast",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "firepledge": {
+        "name": "Fire Pledge",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "firespin": {
+        "name": "Fire Spin",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "flamethrower": {
+        "name": "Flamethrower",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "fly": {
+        "name": "Fly",
+        "type": "Flying",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "any"
+      },
+      "flyingpress": {
+        "name": "Flying Press",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "any"
+      },
+      "freezyfrost": {
+        "name": "Freezy Frost",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "frostbreath": {
+        "name": "Frost Breath",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "furycutter": {
+        "name": "Fury Cutter",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "futuresight": {
+        "name": "Future Sight",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "gigadrain": {
+        "name": "Giga Drain",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "glitzyglow": {
+        "name": "Glitzy Glow",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "grasspledge": {
+        "name": "Grass Pledge",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "growth": {
+        "name": "Growth",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 1
+        },
+        "target": "self"
+      },
+      "heatwave": {
+        "name": "Heat Wave",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "hex": {
+        "name": "Hex",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "hiddenpower": {
+        "name": "Hidden Power",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 0,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "hiddenpowerbug": {
+        "name": "Hidden Power Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdark": {
+        "name": "Hidden Power Dark",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdragon": {
+        "name": "Hidden Power Dragon",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerelectric": {
+        "name": "Hidden Power Electric",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfighting": {
+        "name": "Hidden Power Fighting",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfire": {
+        "name": "Hidden Power Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerflying": {
+        "name": "Hidden Power Flying",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerghost": {
+        "name": "Hidden Power Ghost",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowergrass": {
+        "name": "Hidden Power Grass",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerground": {
+        "name": "Hidden Power Ground",
+        "type": "Ground",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerice": {
+        "name": "Hidden Power Ice",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpoison": {
+        "name": "Hidden Power Poison",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpsychic": {
+        "name": "Hidden Power Psychic",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerrock": {
+        "name": "Hidden Power Rock",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowersteel": {
+        "name": "Hidden Power Steel",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerwater": {
+        "name": "Hidden Power Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "highjumpkick": {
+        "name": "High Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "howl": {
+        "name": "Howl",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": 1
+        },
+        "target": "self"
+      },
+      "hurricane": {
+        "name": "Hurricane",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "hydropump": {
+        "name": "Hydro Pump",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "icebeam": {
+        "name": "Ice Beam",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "iciclespear": {
+        "name": "Icicle Spear",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "incinerate": {
+        "name": "Incinerate",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes"
+      },
+      "jumpkick": {
+        "name": "Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "knockoff": {
+        "name": "Knock Off",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lastresort": {
+        "name": "Last Resort",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "normal"
+      },
+      "leafblade": {
+        "name": "Leaf Blade",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "leafstorm": {
+        "name": "Leaf Storm",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "leechlife": {
+        "name": "Leech Life",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lick": {
+        "name": "Lick",
+        "type": "Ghost",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "lowkick": {
+        "name": "Low Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "lowsweep": {
+        "name": "Low Sweep",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "magmastorm": {
+        "name": "Magma Storm",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "meteormash": {
+        "name": "Meteor Mash",
+        "type": "Steel",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 20
+        }
+      },
+      "minimize": {
+        "name": "Minimize",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": 1
+        },
+        "target": "self"
+      },
+      "mirrormove": {
+        "name": "Mirror Move",
+        "type": "Flying",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "mist": {
+        "name": "Mist",
+        "type": "Ice",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "moonlight": {
+        "name": "Moonlight",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "muddywater": {
+        "name": "Muddy Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "multiattack": {
+        "name": "Multi-Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "mysticalfire": {
+        "name": "Mystical Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "naturepower": {
+        "name": "Nature Power",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "outrage": {
+        "name": "Outrage",
+        "type": "Dragon",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "overheat": {
+        "name": "Overheat",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "paraboliccharge": {
+        "name": "Parabolic Charge",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 50,
+        "target": "allAdjacent"
+      },
+      "petaldance": {
+        "name": "Petal Dance",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "randomNormal"
+      },
+      "pinmissile": {
+        "name": "Pin Missile",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 14,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "poisonfang": {
+        "name": "Poison Fang",
+        "type": "Poison",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "tox"
+        }
+      },
+      "poisongas": {
+        "name": "Poison Gas",
+        "type": "Poison",
+        "category": "Status",
+        "basePower": 0,
+        "status": "psn",
+        "target": "normal"
+      },
+      "powergem": {
+        "name": "Power Gem",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "pursuit": {
+        "name": "Pursuit",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 40,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "rapidspin": {
+        "name": "Rapid Spin",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "rocksmash": {
+        "name": "Rock Smash",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "rocktomb": {
+        "name": "Rock Tomb",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "sandtomb": {
+        "name": "Sand Tomb",
+        "type": "Ground",
+        "category": "Physical",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "sappyseed": {
+        "name": "Sappy Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "sizzlyslide": {
+        "name": "Sizzly Slide",
+        "type": "Fire",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "brn"
+        }
+      },
+      "skullbash": {
+        "name": "Skull Bash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "skyattack": {
+        "name": "Sky Attack",
+        "type": "Flying",
+        "category": "Physical",
+        "basePower": 140,
+        "target": "any"
+      },
+      "smellingsalts": {
+        "name": "Smelling Salts",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "smog": {
+        "name": "Smog",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 40,
+          "status": "psn"
+        }
+      },
+      "snore": {
+        "name": "Snore",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "sparklyswirl": {
+        "name": "Sparkly Swirl",
+        "type": "Fairy",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "stormthrow": {
+        "name": "Storm Throw",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "stringshot": {
+        "name": "String Shot",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "strugglebug": {
+        "name": "Struggle Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "suckerpunch": {
+        "name": "Sucker Punch",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "surf": {
+        "name": "Surf",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes"
+      },
+      "sweetkiss": {
+        "name": "Sweet Kiss",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal"
+      },
+      "sweetscent": {
+        "name": "Sweet Scent",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "synchronoise": {
+        "name": "Synchronoise",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "allAdjacent"
+      },
+      "tackle": {
+        "name": "Tackle",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "tailglow": {
+        "name": "Tail Glow",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 2
+        },
+        "target": "self"
+      },
+      "technoblast": {
+        "name": "Techno Blast",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "thief": {
+        "name": "Thief",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "thrash": {
+        "name": "Thrash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "thunder": {
+        "name": "Thunder",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "thunderbolt": {
+        "name": "Thunderbolt",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "par"
+        }
+      },
+      "triplekick": {
+        "name": "Triple Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          1,
+          3
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "uproar": {
+        "name": "Uproar",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 50,
+        "target": "randomNormal",
+        "flags": {
+          "sound": 1
+        }
+      },
+      "vinewhip": {
+        "name": "Vine Whip",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "volttackle": {
+        "name": "Volt Tackle",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "wakeupslap": {
+        "name": "Wake-Up Slap",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "waterfall": {
+        "name": "Waterfall",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "waterpledge": {
+        "name": "Water Pledge",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "watershuriken": {
+        "name": "Water Shuriken",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 15,
+        "multihit": [
+          2,
+          5
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "whirlpool": {
+        "name": "Whirlpool",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "zapcannon": {
+        "name": "Zap Cannon",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "zippyzap": {
+        "name": "Zippy Zap",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
       }
     }
   },
@@ -6346,6 +8949,1115 @@ const data: PastGenerations = {
       "pokestarmt": [],
       "pokestartransport": [],
       "pokestarf002": []
+    },
+    "moveProperties": {
+      "aircutter": {
+        "name": "Air Cutter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 55,
+        "target": "allAdjacentFoes"
+      },
+      "assurance": {
+        "name": "Assurance",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "aurasphere": {
+        "name": "Aura Sphere",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "baddybad": {
+        "name": "Baddy Bad",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "beatup": {
+        "name": "Beat Up",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "blizzard": {
+        "name": "Blizzard",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 120,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "bouncybubble": {
+        "name": "Bouncy Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "bubble": {
+        "name": "Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 20,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "bulletseed": {
+        "name": "Bullet Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "buzzybuzz": {
+        "name": "Buzzy Buzz",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "charge": {
+        "name": "Charge",
+        "type": "Electric",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "charm": {
+        "name": "Charm",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": -2
+        },
+        "target": "normal"
+      },
+      "chatter": {
+        "name": "Chatter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 60,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 31
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "cottonspore": {
+        "name": "Cotton Spore",
+        "type": "Grass",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -2
+        },
+        "target": "normal"
+      },
+      "covet": {
+        "name": "Covet",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "crabhammer": {
+        "name": "Crabhammer",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "curse": {
+        "name": "Curse",
+        "type": "???",
+        "category": "Status",
+        "basePower": 0,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "diamondstorm": {
+        "name": "Diamond Storm",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "dig": {
+        "name": "Dig",
+        "type": "Ground",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "dive": {
+        "name": "Dive",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "doomdesire": {
+        "name": "Doom Desire",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "dracometeor": {
+        "name": "Draco Meteor",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "dragonpulse": {
+        "name": "Dragon Pulse",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "drainpunch": {
+        "name": "Drain Punch",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "energyball": {
+        "name": "Energy Ball",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "feint": {
+        "name": "Feint",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      },
+      "fellstinger": {
+        "name": "Fell Stinger",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 30,
+        "target": "normal"
+      },
+      "fireblast": {
+        "name": "Fire Blast",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "firepledge": {
+        "name": "Fire Pledge",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "firespin": {
+        "name": "Fire Spin",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "flamethrower": {
+        "name": "Flamethrower",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "fly": {
+        "name": "Fly",
+        "type": "Flying",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "any"
+      },
+      "flyingpress": {
+        "name": "Flying Press",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "any"
+      },
+      "freezyfrost": {
+        "name": "Freezy Frost",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "frostbreath": {
+        "name": "Frost Breath",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "furycutter": {
+        "name": "Fury Cutter",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "futuresight": {
+        "name": "Future Sight",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "gigadrain": {
+        "name": "Giga Drain",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "glitzyglow": {
+        "name": "Glitzy Glow",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "grasspledge": {
+        "name": "Grass Pledge",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "growth": {
+        "name": "Growth",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 1
+        },
+        "target": "self"
+      },
+      "heatwave": {
+        "name": "Heat Wave",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "hex": {
+        "name": "Hex",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "hiddenpower": {
+        "name": "Hidden Power",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 0,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "hiddenpowerbug": {
+        "name": "Hidden Power Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdark": {
+        "name": "Hidden Power Dark",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdragon": {
+        "name": "Hidden Power Dragon",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerelectric": {
+        "name": "Hidden Power Electric",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfighting": {
+        "name": "Hidden Power Fighting",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfire": {
+        "name": "Hidden Power Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerflying": {
+        "name": "Hidden Power Flying",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerghost": {
+        "name": "Hidden Power Ghost",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowergrass": {
+        "name": "Hidden Power Grass",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerground": {
+        "name": "Hidden Power Ground",
+        "type": "Ground",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerice": {
+        "name": "Hidden Power Ice",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpoison": {
+        "name": "Hidden Power Poison",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpsychic": {
+        "name": "Hidden Power Psychic",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerrock": {
+        "name": "Hidden Power Rock",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowersteel": {
+        "name": "Hidden Power Steel",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerwater": {
+        "name": "Hidden Power Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "highjumpkick": {
+        "name": "High Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "howl": {
+        "name": "Howl",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": 1
+        },
+        "target": "self"
+      },
+      "hurricane": {
+        "name": "Hurricane",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "hydropump": {
+        "name": "Hydro Pump",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "icebeam": {
+        "name": "Ice Beam",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "iciclespear": {
+        "name": "Icicle Spear",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "incinerate": {
+        "name": "Incinerate",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes"
+      },
+      "jumpkick": {
+        "name": "Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "knockoff": {
+        "name": "Knock Off",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lastresort": {
+        "name": "Last Resort",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "normal"
+      },
+      "leafblade": {
+        "name": "Leaf Blade",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "leafstorm": {
+        "name": "Leaf Storm",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "leechlife": {
+        "name": "Leech Life",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lick": {
+        "name": "Lick",
+        "type": "Ghost",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "lowsweep": {
+        "name": "Low Sweep",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "magmastorm": {
+        "name": "Magma Storm",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "meteormash": {
+        "name": "Meteor Mash",
+        "type": "Steel",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 20
+        }
+      },
+      "minimize": {
+        "name": "Minimize",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": 1
+        },
+        "target": "self"
+      },
+      "mirrormove": {
+        "name": "Mirror Move",
+        "type": "Flying",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "moonlight": {
+        "name": "Moonlight",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "muddywater": {
+        "name": "Muddy Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "multiattack": {
+        "name": "Multi-Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "mysticalfire": {
+        "name": "Mystical Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "naturepower": {
+        "name": "Nature Power",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "outrage": {
+        "name": "Outrage",
+        "type": "Dragon",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "overheat": {
+        "name": "Overheat",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "paraboliccharge": {
+        "name": "Parabolic Charge",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 50,
+        "target": "allAdjacent"
+      },
+      "petaldance": {
+        "name": "Petal Dance",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "randomNormal"
+      },
+      "pinmissile": {
+        "name": "Pin Missile",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 14,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "poisonfang": {
+        "name": "Poison Fang",
+        "type": "Poison",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "tox"
+        }
+      },
+      "poisongas": {
+        "name": "Poison Gas",
+        "type": "Poison",
+        "category": "Status",
+        "basePower": 0,
+        "status": "psn",
+        "target": "normal"
+      },
+      "powergem": {
+        "name": "Power Gem",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "rapidspin": {
+        "name": "Rapid Spin",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "rocksmash": {
+        "name": "Rock Smash",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "rocktomb": {
+        "name": "Rock Tomb",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "sandtomb": {
+        "name": "Sand Tomb",
+        "type": "Ground",
+        "category": "Physical",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "sappyseed": {
+        "name": "Sappy Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "sizzlyslide": {
+        "name": "Sizzly Slide",
+        "type": "Fire",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "brn"
+        }
+      },
+      "skullbash": {
+        "name": "Skull Bash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "smellingsalts": {
+        "name": "Smelling Salts",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "smog": {
+        "name": "Smog",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 40,
+          "status": "psn"
+        }
+      },
+      "snore": {
+        "name": "Snore",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "sparklyswirl": {
+        "name": "Sparkly Swirl",
+        "type": "Fairy",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "stormthrow": {
+        "name": "Storm Throw",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "stringshot": {
+        "name": "String Shot",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "strugglebug": {
+        "name": "Struggle Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "suckerpunch": {
+        "name": "Sucker Punch",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "surf": {
+        "name": "Surf",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes"
+      },
+      "sweetkiss": {
+        "name": "Sweet Kiss",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal"
+      },
+      "sweetscent": {
+        "name": "Sweet Scent",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "synchronoise": {
+        "name": "Synchronoise",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "allAdjacent"
+      },
+      "tackle": {
+        "name": "Tackle",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "tailglow": {
+        "name": "Tail Glow",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 2
+        },
+        "target": "self"
+      },
+      "technoblast": {
+        "name": "Techno Blast",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "thief": {
+        "name": "Thief",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "thrash": {
+        "name": "Thrash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "thunder": {
+        "name": "Thunder",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "thunderbolt": {
+        "name": "Thunderbolt",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "par"
+        }
+      },
+      "uproar": {
+        "name": "Uproar",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 50,
+        "target": "randomNormal",
+        "flags": {
+          "sound": 1
+        }
+      },
+      "vinewhip": {
+        "name": "Vine Whip",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "volttackle": {
+        "name": "Volt Tackle",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "wakeupslap": {
+        "name": "Wake-Up Slap",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "waterfall": {
+        "name": "Waterfall",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "waterpledge": {
+        "name": "Water Pledge",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "watershuriken": {
+        "name": "Water Shuriken",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 15,
+        "multihit": [
+          2,
+          5
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "whirlpool": {
+        "name": "Whirlpool",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "zapcannon": {
+        "name": "Zap Cannon",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "zippyzap": {
+        "name": "Zippy Zap",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      }
     }
   },
   "4": {
@@ -10744,6 +14456,1038 @@ const data: PastGenerations = {
         "Technician"
       ],
       "pokestarmt": []
+    },
+    "moveProperties": {
+      "aircutter": {
+        "name": "Air Cutter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 55,
+        "target": "allAdjacentFoes"
+      },
+      "assurance": {
+        "name": "Assurance",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "aurasphere": {
+        "name": "Aura Sphere",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "baddybad": {
+        "name": "Baddy Bad",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "beatup": {
+        "name": "Beat Up",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "blizzard": {
+        "name": "Blizzard",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "bouncybubble": {
+        "name": "Bouncy Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "bubble": {
+        "name": "Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 20,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "bulletseed": {
+        "name": "Bullet Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "buzzybuzz": {
+        "name": "Buzzy Buzz",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "charm": {
+        "name": "Charm",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": -2
+        },
+        "target": "normal"
+      },
+      "chatter": {
+        "name": "Chatter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 60,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 31
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "cottonspore": {
+        "name": "Cotton Spore",
+        "type": "Grass",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -2
+        },
+        "target": "normal"
+      },
+      "covet": {
+        "name": "Covet",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "crabhammer": {
+        "name": "Crabhammer",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "curse": {
+        "name": "Curse",
+        "type": "???",
+        "category": "Status",
+        "basePower": 0,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "diamondstorm": {
+        "name": "Diamond Storm",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "doomdesire": {
+        "name": "Doom Desire",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "dracometeor": {
+        "name": "Draco Meteor",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "dragonpulse": {
+        "name": "Dragon Pulse",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "drainpunch": {
+        "name": "Drain Punch",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "energyball": {
+        "name": "Energy Ball",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "feint": {
+        "name": "Feint",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      },
+      "fellstinger": {
+        "name": "Fell Stinger",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 30,
+        "target": "normal"
+      },
+      "fireblast": {
+        "name": "Fire Blast",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "firepledge": {
+        "name": "Fire Pledge",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "firespin": {
+        "name": "Fire Spin",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "flamethrower": {
+        "name": "Flamethrower",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "flyingpress": {
+        "name": "Flying Press",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "any"
+      },
+      "freezyfrost": {
+        "name": "Freezy Frost",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "frostbreath": {
+        "name": "Frost Breath",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "furycutter": {
+        "name": "Fury Cutter",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 10,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "futuresight": {
+        "name": "Future Sight",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "gigadrain": {
+        "name": "Giga Drain",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 60,
+        "target": "normal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "glitzyglow": {
+        "name": "Glitzy Glow",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "grasspledge": {
+        "name": "Grass Pledge",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "growth": {
+        "name": "Growth",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 1
+        },
+        "target": "self"
+      },
+      "heatwave": {
+        "name": "Heat Wave",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "hex": {
+        "name": "Hex",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "hiddenpower": {
+        "name": "Hidden Power",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 0,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "hiddenpowerbug": {
+        "name": "Hidden Power Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdark": {
+        "name": "Hidden Power Dark",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdragon": {
+        "name": "Hidden Power Dragon",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerelectric": {
+        "name": "Hidden Power Electric",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfighting": {
+        "name": "Hidden Power Fighting",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfire": {
+        "name": "Hidden Power Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerflying": {
+        "name": "Hidden Power Flying",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerghost": {
+        "name": "Hidden Power Ghost",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowergrass": {
+        "name": "Hidden Power Grass",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerground": {
+        "name": "Hidden Power Ground",
+        "type": "Ground",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerice": {
+        "name": "Hidden Power Ice",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpoison": {
+        "name": "Hidden Power Poison",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpsychic": {
+        "name": "Hidden Power Psychic",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerrock": {
+        "name": "Hidden Power Rock",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowersteel": {
+        "name": "Hidden Power Steel",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerwater": {
+        "name": "Hidden Power Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "highjumpkick": {
+        "name": "High Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "howl": {
+        "name": "Howl",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": 1
+        },
+        "target": "self"
+      },
+      "hurricane": {
+        "name": "Hurricane",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "hydropump": {
+        "name": "Hydro Pump",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "icebeam": {
+        "name": "Ice Beam",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "iciclespear": {
+        "name": "Icicle Spear",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 10,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "incinerate": {
+        "name": "Incinerate",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes"
+      },
+      "jumpkick": {
+        "name": "Jump Kick",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "knockoff": {
+        "name": "Knock Off",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lastresort": {
+        "name": "Last Resort",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "normal"
+      },
+      "leafstorm": {
+        "name": "Leaf Storm",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "leechlife": {
+        "name": "Leech Life",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lick": {
+        "name": "Lick",
+        "type": "Ghost",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "lowsweep": {
+        "name": "Low Sweep",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "magmastorm": {
+        "name": "Magma Storm",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "meteormash": {
+        "name": "Meteor Mash",
+        "type": "Steel",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 20
+        }
+      },
+      "minimize": {
+        "name": "Minimize",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": 1
+        },
+        "target": "self"
+      },
+      "mirrormove": {
+        "name": "Mirror Move",
+        "type": "Flying",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "moonlight": {
+        "name": "Moonlight",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "muddywater": {
+        "name": "Muddy Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "multiattack": {
+        "name": "Multi-Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "mysticalfire": {
+        "name": "Mystical Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "naturepower": {
+        "name": "Nature Power",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "overheat": {
+        "name": "Overheat",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "paraboliccharge": {
+        "name": "Parabolic Charge",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 50,
+        "target": "allAdjacent"
+      },
+      "petaldance": {
+        "name": "Petal Dance",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "pinmissile": {
+        "name": "Pin Missile",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 14,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "poisonfang": {
+        "name": "Poison Fang",
+        "type": "Poison",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "tox"
+        }
+      },
+      "poisongas": {
+        "name": "Poison Gas",
+        "type": "Poison",
+        "category": "Status",
+        "basePower": 0,
+        "status": "psn",
+        "target": "normal"
+      },
+      "powergem": {
+        "name": "Power Gem",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "rapidspin": {
+        "name": "Rapid Spin",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "rocktomb": {
+        "name": "Rock Tomb",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "sandtomb": {
+        "name": "Sand Tomb",
+        "type": "Ground",
+        "category": "Physical",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "sappyseed": {
+        "name": "Sappy Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "sizzlyslide": {
+        "name": "Sizzly Slide",
+        "type": "Fire",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "brn"
+        }
+      },
+      "skullbash": {
+        "name": "Skull Bash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "smellingsalts": {
+        "name": "Smelling Salts",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "smog": {
+        "name": "Smog",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 40,
+          "status": "psn"
+        }
+      },
+      "snore": {
+        "name": "Snore",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "sparklyswirl": {
+        "name": "Sparkly Swirl",
+        "type": "Fairy",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "stormthrow": {
+        "name": "Storm Throw",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "stringshot": {
+        "name": "String Shot",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "strugglebug": {
+        "name": "Struggle Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "suckerpunch": {
+        "name": "Sucker Punch",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "surf": {
+        "name": "Surf",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacent"
+      },
+      "sweetkiss": {
+        "name": "Sweet Kiss",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal"
+      },
+      "sweetscent": {
+        "name": "Sweet Scent",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "synchronoise": {
+        "name": "Synchronoise",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "allAdjacent"
+      },
+      "tackle": {
+        "name": "Tackle",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "tailglow": {
+        "name": "Tail Glow",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spa": 2
+        },
+        "target": "self"
+      },
+      "technoblast": {
+        "name": "Techno Blast",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "thief": {
+        "name": "Thief",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "thrash": {
+        "name": "Thrash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "randomNormal"
+      },
+      "thunder": {
+        "name": "Thunder",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "thunderbolt": {
+        "name": "Thunderbolt",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "par"
+        }
+      },
+      "uproar": {
+        "name": "Uproar",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 50,
+        "target": "randomNormal",
+        "flags": {
+          "sound": 1
+        }
+      },
+      "vinewhip": {
+        "name": "Vine Whip",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "wakeupslap": {
+        "name": "Wake-Up Slap",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "waterpledge": {
+        "name": "Water Pledge",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "watershuriken": {
+        "name": "Water Shuriken",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 15,
+        "multihit": [
+          2,
+          5
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "whirlpool": {
+        "name": "Whirlpool",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 15,
+        "target": "normal"
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "zippyzap": {
+        "name": "Zippy Zap",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      }
     }
   },
   "5": {
@@ -13015,6 +17759,864 @@ const data: PastGenerations = {
         "Steel": 1,
         "Water": 1
       }
+    },
+    "moveProperties": {
+      "aircutter": {
+        "name": "Air Cutter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 55,
+        "target": "allAdjacentFoes"
+      },
+      "assurance": {
+        "name": "Assurance",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "aurasphere": {
+        "name": "Aura Sphere",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "baddybad": {
+        "name": "Baddy Bad",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "blizzard": {
+        "name": "Blizzard",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "bouncybubble": {
+        "name": "Bouncy Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "bubble": {
+        "name": "Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 20,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "buzzybuzz": {
+        "name": "Buzzy Buzz",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "charm": {
+        "name": "Charm",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": -2
+        },
+        "target": "normal"
+      },
+      "chatter": {
+        "name": "Chatter",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 60,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 10
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "cottonspore": {
+        "name": "Cotton Spore",
+        "type": "Grass",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -2
+        },
+        "target": "normal"
+      },
+      "crabhammer": {
+        "name": "Crabhammer",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "diamondstorm": {
+        "name": "Diamond Storm",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "dracometeor": {
+        "name": "Draco Meteor",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "dragonpulse": {
+        "name": "Dragon Pulse",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 90,
+        "target": "any"
+      },
+      "energyball": {
+        "name": "Energy Ball",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 80,
+        "target": "normal",
+        "secondary": {
+          "chance": 10
+        }
+      },
+      "fellstinger": {
+        "name": "Fell Stinger",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 30,
+        "target": "normal"
+      },
+      "fireblast": {
+        "name": "Fire Blast",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "firepledge": {
+        "name": "Fire Pledge",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "flamethrower": {
+        "name": "Flamethrower",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "flyingpress": {
+        "name": "Flying Press",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "any"
+      },
+      "freezyfrost": {
+        "name": "Freezy Frost",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "frostbreath": {
+        "name": "Frost Breath",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "furycutter": {
+        "name": "Fury Cutter",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 20,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "futuresight": {
+        "name": "Future Sight",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "glitzyglow": {
+        "name": "Glitzy Glow",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "grasspledge": {
+        "name": "Grass Pledge",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "heatwave": {
+        "name": "Heat Wave",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 10,
+          "status": "brn"
+        }
+      },
+      "hex": {
+        "name": "Hex",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "hiddenpower": {
+        "name": "Hidden Power",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 0,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "hiddenpowerbug": {
+        "name": "Hidden Power Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdark": {
+        "name": "Hidden Power Dark",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerdragon": {
+        "name": "Hidden Power Dragon",
+        "type": "Dragon",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerelectric": {
+        "name": "Hidden Power Electric",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfighting": {
+        "name": "Hidden Power Fighting",
+        "type": "Fighting",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerfire": {
+        "name": "Hidden Power Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerflying": {
+        "name": "Hidden Power Flying",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerghost": {
+        "name": "Hidden Power Ghost",
+        "type": "Ghost",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowergrass": {
+        "name": "Hidden Power Grass",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerground": {
+        "name": "Hidden Power Ground",
+        "type": "Ground",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerice": {
+        "name": "Hidden Power Ice",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpoison": {
+        "name": "Hidden Power Poison",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerpsychic": {
+        "name": "Hidden Power Psychic",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerrock": {
+        "name": "Hidden Power Rock",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowersteel": {
+        "name": "Hidden Power Steel",
+        "type": "Steel",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "hiddenpowerwater": {
+        "name": "Hidden Power Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "howl": {
+        "name": "Howl",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": 1
+        },
+        "target": "self"
+      },
+      "hurricane": {
+        "name": "Hurricane",
+        "type": "Flying",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "any",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "hydropump": {
+        "name": "Hydro Pump",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "icebeam": {
+        "name": "Ice Beam",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "frz"
+        }
+      },
+      "incinerate": {
+        "name": "Incinerate",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes"
+      },
+      "knockoff": {
+        "name": "Knock Off",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "leafstorm": {
+        "name": "Leaf Storm",
+        "type": "Grass",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "leechlife": {
+        "name": "Leech Life",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lick": {
+        "name": "Lick",
+        "type": "Ghost",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "lowsweep": {
+        "name": "Low Sweep",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "magmastorm": {
+        "name": "Magma Storm",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 120,
+        "target": "normal"
+      },
+      "meteormash": {
+        "name": "Meteor Mash",
+        "type": "Steel",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal",
+        "secondary": {
+          "chance": 20
+        }
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "moonlight": {
+        "name": "Moonlight",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "muddywater": {
+        "name": "Muddy Water",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "multiattack": {
+        "name": "Multi-Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "mysticalfire": {
+        "name": "Mystical Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "naturepower": {
+        "name": "Nature Power",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "self"
+      },
+      "overheat": {
+        "name": "Overheat",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 140,
+        "target": "normal",
+        "selfBoosts": {
+          "spa": -2
+        }
+      },
+      "paraboliccharge": {
+        "name": "Parabolic Charge",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 50,
+        "target": "allAdjacent"
+      },
+      "pinmissile": {
+        "name": "Pin Missile",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 14,
+        "multihit": [
+          2,
+          5
+        ],
+        "target": "normal"
+      },
+      "poisonfang": {
+        "name": "Poison Fang",
+        "type": "Poison",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "tox"
+        }
+      },
+      "powergem": {
+        "name": "Power Gem",
+        "type": "Rock",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "rapidspin": {
+        "name": "Rapid Spin",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "rocktomb": {
+        "name": "Rock Tomb",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "sappyseed": {
+        "name": "Sappy Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "secretpower": {
+        "name": "Secret Power",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 70,
+        "onModifyMove": true,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        }
+      },
+      "sizzlyslide": {
+        "name": "Sizzly Slide",
+        "type": "Fire",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "brn"
+        }
+      },
+      "skullbash": {
+        "name": "Skull Bash",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "normal"
+      },
+      "smellingsalts": {
+        "name": "Smelling Salts",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "smog": {
+        "name": "Smog",
+        "type": "Poison",
+        "category": "Special",
+        "basePower": 20,
+        "target": "normal",
+        "secondary": {
+          "chance": 40,
+          "status": "psn"
+        }
+      },
+      "snore": {
+        "name": "Snore",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 40,
+        "target": "normal",
+        "secondary": {
+          "chance": 30
+        },
+        "flags": {
+          "sound": 1
+        }
+      },
+      "sparklyswirl": {
+        "name": "Sparkly Swirl",
+        "type": "Fairy",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "stormthrow": {
+        "name": "Storm Throw",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "stringshot": {
+        "name": "String Shot",
+        "type": "Bug",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "spe": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "strugglebug": {
+        "name": "Struggle Bug",
+        "type": "Bug",
+        "category": "Special",
+        "basePower": 30,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "suckerpunch": {
+        "name": "Sucker Punch",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "surf": {
+        "name": "Surf",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 95,
+        "target": "allAdjacent"
+      },
+      "sweetkiss": {
+        "name": "Sweet Kiss",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "target": "normal"
+      },
+      "sweetscent": {
+        "name": "Sweet Scent",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "evasion": -1
+        },
+        "target": "allAdjacentFoes"
+      },
+      "synchronoise": {
+        "name": "Synchronoise",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "allAdjacent"
+      },
+      "tackle": {
+        "name": "Tackle",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      },
+      "technoblast": {
+        "name": "Techno Blast",
+        "type": "Normal",
+        "category": "Special",
+        "basePower": 85,
+        "target": "normal"
+      },
+      "thief": {
+        "name": "Thief",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 40,
+        "target": "normal"
+      },
+      "thunder": {
+        "name": "Thunder",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 120,
+        "onModifyMove": true,
+        "target": "normal",
+        "secondary": {
+          "chance": 30,
+          "status": "par"
+        }
+      },
+      "thunderbolt": {
+        "name": "Thunderbolt",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 95,
+        "target": "normal",
+        "secondary": {
+          "chance": 10,
+          "status": "par"
+        }
+      },
+      "vinewhip": {
+        "name": "Vine Whip",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 35,
+        "target": "normal"
+      },
+      "wakeupslap": {
+        "name": "Wake-Up Slap",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 60,
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "waterpledge": {
+        "name": "Water Pledge",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 50,
+        "basePowerCallback": true,
+        "onModifyMove": true,
+        "target": "normal"
+      },
+      "watershuriken": {
+        "name": "Water Shuriken",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 15,
+        "multihit": [
+          2,
+          5
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "zippyzap": {
+        "name": "Zippy Zap",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      }
     }
   },
   "6": {
@@ -14289,6 +19891,218 @@ const data: PastGenerations = {
         "Early Bird",
         "Sniper"
       ]
+    },
+    "moveProperties": {
+      "baddybad": {
+        "name": "Baddy Bad",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "bouncybubble": {
+        "name": "Bouncy Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "buzzybuzz": {
+        "name": "Buzzy Buzz",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "diamondstorm": {
+        "name": "Diamond Storm",
+        "type": "Rock",
+        "category": "Physical",
+        "basePower": 100,
+        "target": "allAdjacentFoes",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "fellstinger": {
+        "name": "Fell Stinger",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 30,
+        "target": "normal"
+      },
+      "flyingpress": {
+        "name": "Flying Press",
+        "type": "Fighting",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "any"
+      },
+      "freezyfrost": {
+        "name": "Freezy Frost",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "glitzyglow": {
+        "name": "Glitzy Glow",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "howl": {
+        "name": "Howl",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": 1
+        },
+        "target": "self"
+      },
+      "leechlife": {
+        "name": "Leech Life",
+        "type": "Bug",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "multiattack": {
+        "name": "Multi-Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "mysticalfire": {
+        "name": "Mystical Fire",
+        "type": "Fire",
+        "category": "Special",
+        "basePower": 65,
+        "target": "normal",
+        "secondary": {
+          "chance": 100
+        }
+      },
+      "paraboliccharge": {
+        "name": "Parabolic Charge",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 50,
+        "target": "allAdjacent"
+      },
+      "rapidspin": {
+        "name": "Rapid Spin",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "sappyseed": {
+        "name": "Sappy Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "sizzlyslide": {
+        "name": "Sizzly Slide",
+        "type": "Fire",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "brn"
+        }
+      },
+      "sparklyswirl": {
+        "name": "Sparkly Swirl",
+        "type": "Fairy",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "suckerpunch": {
+        "name": "Sucker Punch",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "tackle": {
+        "name": "Tackle",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      },
+      "watershuriken": {
+        "name": "Water Shuriken",
+        "type": "Water",
+        "category": "Physical",
+        "basePower": 15,
+        "multihit": [
+          2,
+          5
+        ],
+        "basePowerCallback": true,
+        "target": "normal"
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "zippyzap": {
+        "name": "Zippy Zap",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      }
     }
   },
   "7": {
@@ -14973,6 +20787,144 @@ const data: PastGenerations = {
         "Early Bird",
         "Sniper"
       ]
+    },
+    "moveProperties": {
+      "baddybad": {
+        "name": "Baddy Bad",
+        "type": "Dark",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "bouncybubble": {
+        "name": "Bouncy Bubble",
+        "type": "Water",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "buzzybuzz": {
+        "name": "Buzzy Buzz",
+        "type": "Electric",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "par"
+        }
+      },
+      "freezyfrost": {
+        "name": "Freezy Frost",
+        "type": "Ice",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "glitzyglow": {
+        "name": "Glitzy Glow",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "howl": {
+        "name": "Howl",
+        "type": "Normal",
+        "category": "Status",
+        "basePower": 0,
+        "boosts": {
+          "atk": 1
+        },
+        "target": "self"
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "multiattack": {
+        "name": "Multi-Attack",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "rapidspin": {
+        "name": "Rapid Spin",
+        "type": "Normal",
+        "category": "Physical",
+        "basePower": 20,
+        "target": "normal"
+      },
+      "sappyseed": {
+        "name": "Sappy Seed",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "sizzlyslide": {
+        "name": "Sizzly Slide",
+        "type": "Fire",
+        "category": "Physical",
+        "basePower": 90,
+        "target": "normal",
+        "secondary": {
+          "chance": 100,
+          "status": "brn"
+        }
+      },
+      "sparklyswirl": {
+        "name": "Sparkly Swirl",
+        "type": "Fairy",
+        "category": "Special",
+        "basePower": 90,
+        "target": "normal"
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      },
+      "zippyzap": {
+        "name": "Zippy Zap",
+        "type": "Electric",
+        "category": "Physical",
+        "basePower": 50,
+        "target": "normal"
+      }
     }
   },
   "8": {
@@ -15365,6 +21317,57 @@ const data: PastGenerations = {
         "Early Bird",
         "Sniper"
       ]
+    },
+    "moveProperties": {
+      "curse": {
+        "name": "Curse",
+        "type": "Ghost",
+        "category": "Status",
+        "basePower": 0,
+        "onModifyMove": true,
+        "target": "randomNormal"
+      },
+      "glaciallance": {
+        "name": "Glacial Lance",
+        "type": "Ice",
+        "category": "Physical",
+        "basePower": 130,
+        "target": "allAdjacentFoes"
+      },
+      "grassyglide": {
+        "name": "Grassy Glide",
+        "type": "Grass",
+        "category": "Physical",
+        "basePower": 70,
+        "target": "normal"
+      },
+      "lusterpurge": {
+        "name": "Luster Purge",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "mistball": {
+        "name": "Mist Ball",
+        "type": "Psychic",
+        "category": "Special",
+        "basePower": 70,
+        "target": "normal",
+        "secondary": {
+          "chance": 50
+        }
+      },
+      "wickedblow": {
+        "name": "Wicked Blow",
+        "type": "Dark",
+        "category": "Physical",
+        "basePower": 80,
+        "target": "normal"
+      }
     }
   }
 };

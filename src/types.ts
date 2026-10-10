@@ -42,6 +42,9 @@ export interface MoveEntry {
   status?: string;
   secondary?: { chance?: number; status?: string };
   boosts?: Record<string, number>;
+  selfBoosts?: Record<string, number>;
+  target?: string;
+  forceSwitch?: boolean;
   basePower?: number;
   multihit?: unknown;
   basePowerCallback?: unknown;
@@ -103,6 +106,7 @@ export interface PastGeneration {
   types: PokemonType[];
   pokemon: Record<string, NonNullable<PokedexEntry["types"]>>;
   moves: Record<string, NonNullable<MoveEntry["type"]>>;
+  moveProperties?: Moves;
   baseStats?: Record<string, BaseStats>;
   abilities?: Record<string, string[]>;
   typechart?: PastTypeChart;

@@ -248,3 +248,33 @@ test("delayed attacks before Gen 5 are typeless rather than immune or resisted",
   expect(coverageMatrix(jirachi, undefined, 3).Fire?.[0]?.multiplier).toBe(1);
   expect(coverageMatrix(jirachi, undefined, 5).Fire?.[0]?.multiplier).toBe(0.5);
 });
+
+test("coverage matrix uses historical move power and Normalize exceptions", () => {
+  const weak = createTeam({ name: "aerodactyl", move1: "wingattack" });
+  expect(coverageMatrix(weak, undefined, 1).Grass?.[0]).toMatchObject({
+    multiplier: 1,
+  });
+  expect(coverageMatrix(weak, undefined, 1).Grass?.[0]?.reason).toContain(
+    "no damaging move",
+  );
+  expect(coverageMatrix(weak, undefined, 2).Grass?.[0]?.multiplier).toBe(2);
+  const gift = createTeam({
+    name: "delcatty",
+    ability: "Normalize",
+    item: "liechiberry",
+    move1: "naturalgift",
+  });
+  expect(coverageMatrix(gift, undefined, 4).Water?.[0]?.multiplier).toBe(1);
+  expect(coverageMatrix(gift, undefined, 4).Ghost?.[0]?.multiplier).toBe(0);
+  expect(coverageMatrix(gift, undefined, 4).Water?.[0]?.reason).toContain(
+    "(Normal)",
+  );
+  for (const generation of [5, 6, 7] as const) {
+    expect(
+      coverageMatrix(gift, undefined, generation).Water?.[0]?.multiplier,
+    ).toBe(2);
+    expect(
+      coverageMatrix(gift, undefined, generation).Water?.[0]?.reason,
+    ).toContain("(Grass)");
+  }
+});

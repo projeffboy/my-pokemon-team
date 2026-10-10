@@ -84,7 +84,10 @@ export function importTeamFromUrlParameter(teamParameter: string): void {
 
   const settings = generationSettingsFromUrl() ?? { generation: 9, format: "" };
   store.openTeamFromLink(
-    parseTeamText(text, settings.generation, settings.format),
+    parseTeamText(text, settings.generation, settings.format, {
+      // Existing links use the site's original default of 255.
+      inferFrustrationHappiness: false,
+    }),
     settings,
   );
 }

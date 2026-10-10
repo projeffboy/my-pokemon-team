@@ -11,6 +11,11 @@ const entries: Entry[] = [
   {
     date: "Oct 10, 2026",
     changes: [
+      "Showdown imports now preserve Gigantamax sets and older backup formats, and exported empty teams can be restored.",
+      "Format changes now keep edits made in another tab while confirmation is open.",
+      "Historical coverage now uses generation-specific move power and Normalize rules.",
+      "The checklist now respects Contrary and historical move effects, and recognises moves such as Yawn.",
+      "Type explanations now open on the first tap, and dropdown views can be changed with the keyboard.",
       "Team analysis now accounts for Iron Ball, Ring Target and Klutz, and uses held items for attacks such as Judgment and Natural Gift.",
       "Future Sight and Doom Desire now deal neutral damage in the matrix before Gen 5.",
       "Pokédex weaknesses now show the correct Fire damage for Dry Skin, e.g. ×5 for Parasect.",

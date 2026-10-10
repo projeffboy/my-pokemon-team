@@ -1,5 +1,10 @@
 import { test, expect } from "fixtures";
-import { selectPokemon, selectAbility } from "helper";
+import {
+  selectPokemon,
+  selectAbility,
+  selectItem,
+  openTeamTools,
+} from "helper";
 import type { Page } from "@playwright/test";
 
 async function generation(page: Page, gen: number) {
@@ -66,4 +71,29 @@ test("Dry Skin weaknesses use the same Fire multiplier as the matrix", async ({
   await page.getByRole("button", { name: "About Parasect" }).click();
   const dialog = page.getByRole("dialog", { name: "Parasect", exact: true });
   await expect(dialog.getByText("Fire ×5", { exact: true })).toBeVisible();
+});
+
+test("held-item typing stays consistent between the slot and its Pokédex", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Arceus");
+  await selectItem(page, "Flame Plate");
+  await openTeamTools(page);
+  const slot = page.getByRole("region", { name: "Pokemon 1", exact: true });
+  await expect(
+    slot.getByRole("img", { name: "Fire", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "About Arceus" }).click();
+  const dialog = page.getByRole("dialog", { name: "Arceus", exact: true });
+  await expect(dialog.getByText("Fire", { exact: true })).toBeVisible();
+  await expect(dialog.getByText("Normal", { exact: true })).toBeHidden();
+  await expect(dialog.getByText("Ground", { exact: true })).toBeVisible();
+  await dialog.getByRole("button", { name: "Close" }).click();
+  await selectItem(page, "Splash Plate");
+  await expect(
+    slot.getByRole("img", { name: "Water", exact: true }),
+  ).toBeVisible();
+  await expect(
+    slot.getByRole("img", { name: "Fire", exact: true }),
+  ).toBeHidden();
 });

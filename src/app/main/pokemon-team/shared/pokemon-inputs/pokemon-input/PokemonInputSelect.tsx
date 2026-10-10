@@ -21,7 +21,7 @@ import twoLineWidth, {
 } from "./pokemon-input-select/two-line-width";
 import ListTools from "./pokemon-input-select/shared/ListTools";
 import { isHiddenAbility } from "@/shared/pokedex";
-import { moveTypeIn } from "@/shared/generation-data";
+import { moveType } from "@/store/shared/effectiveness";
 import { gameFormat } from "@/shared/formats";
 import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -88,6 +88,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   const [fitWidth, setFitWidth] = useState(0);
   const [popupMaxHeight, setPopupMaxHeight] = useState<number>();
   const [isOpen, setIsOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   // The popup opens above or below the input, whichever has more room, and
   // keeps to it rather than running off the screen
   const measure = () => {
@@ -115,6 +116,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     };
   }, [isOpen]);
   const { generation, format } = store.currentTeam;
+  const analysisMember = store.analysisTeam[teamIndex];
   const isMove = pokemonProperty.startsWith("move");
   const showMoveTypes = leadingIcon && isMove;
   const measureList = useCallback(() => {
@@ -190,6 +192,14 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     [options, value, names, pokemonProperty],
   );
   const id = `react-select-single-${teamIndex}-${pokemonProperty}`;
+  const restorePopupFocus = useRef(false);
+  const dialog = store.dialog;
+  useEffect(() => {
+    if (!dialog && restorePopupFocus.current) {
+      restorePopupFocus.current = false;
+      document.getElementById(id)?.focus();
+    }
+  }, [dialog, id]);
   const missingPokemon =
     (isMove || pokemonProperty === "ability") && !store.team[teamIndex]?.name;
   const noOtherMoves = isMove && !missingPokemon && options.length === 0;
@@ -213,6 +223,51 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       new KeyboardEvent("keydown", { key: pending.key, bubbles: true }),
     );
     replayingNavigation.current = false;
+  };
+  const popupElement = () => document.getElementById(`${id}-popup`);
+  const focusInPopup = (event: React.SyntheticEvent | null) =>
+    !!event &&
+    "relatedTarget" in event &&
+    event.relatedTarget instanceof Node &&
+    !!popupElement()?.contains(event.relatedTarget);
+  const popupButtons = () =>
+    [
+      ...(popupElement()?.querySelectorAll<HTMLButtonElement>("button") ?? []),
+    ].filter(button => !button.disabled && button.tabIndex >= 0);
+  const focusOutsidePopup = () => {
+    const input = document.getElementById(id);
+    const popup = popupElement();
+    const controls = [
+      ...document.querySelectorAll<HTMLElement>(
+        "input, button, select, textarea, a[href], [tabindex]",
+      ),
+    ].filter(
+      element =>
+        element.tabIndex >= 0 &&
+        !element.matches(":disabled") &&
+        element.getClientRects().length > 0 &&
+        !popup?.contains(element),
+    );
+    const index = controls.indexOf(input as HTMLElement);
+    setIsOpen(false);
+    if (index !== -1) controls[index + 1]?.focus();
+  };
+  const handlePopupKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+    const buttons = popupButtons();
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      setIsOpen(false);
+      document.getElementById(id)?.focus();
+    } else if (event.key === "Tab") {
+      if (event.shiftKey && event.target === buttons[0]) {
+        event.preventDefault();
+        document.getElementById(id)?.focus();
+      } else if (!event.shiftKey && event.target === buttons.at(-1)) {
+        event.preventDefault();
+        focusOutsidePopup();
+      }
+    }
   };
   const isGrid = pokemonProperty === "name" && store.nameView !== "list";
   const columns = isGrid ? gridColumns(store.nameView) : 1;
@@ -250,6 +305,20 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     },
   ) => {
     if (replayingNavigation.current) return;
+    if (
+      isOpen &&
+      event.key === "Tab" &&
+      !event.shiftKey &&
+      event.target instanceof HTMLInputElement
+    ) {
+      const button = popupButtons()[0];
+      if (button) {
+        event.preventDefault();
+        event.defaultMuiPrevented = true;
+        button.focus();
+        return;
+      }
+    }
     pendingNavigation.current = null;
     if (
       isOpen &&
@@ -298,6 +367,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     <VirtualizedListboxContext
       value={{
         pokemonProperty,
+        teamIndex,
         showMoveTypes,
         selectedValue: value,
         internalListRef,
@@ -317,7 +387,18 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           measureList();
           setIsOpen(true);
         }}
-        onClose={() => {
+        inputValue={inputValue}
+        onInputChange={(event, text, reason) => {
+          if (
+            (reason === "blur" && focusInPopup(event)) ||
+            (reason === "reset" &&
+              popupElement()?.contains(document.activeElement))
+          )
+            return;
+          setInputValue(text);
+        }}
+        onClose={(event, reason) => {
+          if (reason === "blur" && focusInPopup(event)) return;
           pendingNavigation.current = null;
           setIsOpen(false);
         }}
@@ -377,6 +458,21 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         }
         slotProps={{
           popper: {
+            id: `${id}-popup`,
+            onKeyDown: handlePopupKeyDown,
+            onBlur: event => {
+              const next = event.relatedTarget;
+              if (
+                !(next instanceof Node) ||
+                (!event.currentTarget.contains(next) &&
+                  !rootRef.current?.contains(next))
+              ) {
+                restorePopupFocus.current =
+                  store.dialog?.name === "filters" ||
+                  store.dialog?.name === "sort";
+                setIsOpen(false);
+              }
+            },
             ...(popperWidth && {
               placement: "bottom-start" as const,
               // Inline, because it has to replace the width MUI sets inline from the input
@@ -437,21 +533,27 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 <PokemonIcon pokemonProperty="item" value={value} />
               </Box>
             : undefined;
-          const moveType =
+          const selectedMoveType =
             (
               isSelectionShown &&
               leadingIcon &&
               pokemonProperty.startsWith("move")
             ) ?
-              moveTypeIn(value, store.currentTeam.generation)
+              moveType(
+                value,
+                analysisMember?.name ?? "",
+                analysisMember?.ability,
+                generation,
+                analysisMember?.item,
+              )
             : undefined;
           // Always the icon: an abbreviation would take more of the move's room
           const typeIcon =
-            moveType && isPokemonType(moveType) ?
+            selectedMoveType && isPokemonType(selectedMoveType) ?
               <Box
                 component="img"
-                src={typeIcons[moveType]}
-                alt={names.type(moveType)}
+                src={typeIcons[selectedMoveType]}
+                alt={names.type(selectedMoveType)}
                 sx={{ width: 20, height: 20, mr: 0.75, flexShrink: 0 }}
               />
             : undefined;

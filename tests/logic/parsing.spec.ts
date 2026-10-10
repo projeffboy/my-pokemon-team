@@ -1,4 +1,5 @@
 import { parseTeamText, serializeTeam } from "@/store/team-text";
+import { learnsetsReady } from "@/store/learnsets";
 import { fromBase64Url, toBase64Url } from "@/app/shared/base64url";
 import {
   encodeTeamForUrl,
@@ -428,4 +429,89 @@ test("Gen 2 explicit IVs prevent Hidden Power inference from changing details", 
       ivs.startsWith("31") ? undefined : { atk: 13, def: 21, spa: 21, spe: 21 },
     );
   }
+});
+
+test("canonical Showdown Gigantamax metadata selects an existing forme", async () => {
+  await learnsetsReady;
+  for (const [species, name] of [
+    ["Charizard", "charizardgmax"],
+    ["Urshifu-Rapid-Strike", "urshifurapidstrikegmax"],
+  ]) {
+    const team = parseTeamText(`${species}\nGigantamax: Yes`, 8);
+    expect(team[0].name).toBe(name);
+    expect(parseTeamText(serializeTeam(team), 8)[0].name).toBe(name);
+  }
+  expect(parseTeamText("Rotom\nGigantamax: Yes", 8)[0].name).toBe("rotom");
+  expect(parseTeamText("Charizard\nGigantamax: No", 8)[0].name).toBe(
+    "charizard",
+  );
+});
+
+test("Frustration defaults happiness to zero without overriding explicit values", async () => {
+  await learnsetsReady;
+  const text = "Lopunny\nAbility: Cute Charm\n- Frustration";
+  expect(parseTeamText(text, 7)[0].happiness).toBe(0);
+  for (const happiness of [0, 70, 255]) {
+    for (const input of [
+      `Lopunny\nHappiness: ${happiness}\n- Frustration`,
+      `${text}\nHappiness: ${happiness}`,
+    ])
+      expect(parseTeamText(input, 7)[0].happiness).toBe(
+        happiness === 255 ? undefined : happiness,
+      );
+  }
+  expect(parseTeamText("Lopunny\n- Return", 7)[0].happiness).toBeUndefined();
+  expect(parseTeamText(text, 1)[0].happiness).toBeUndefined();
+  const team = parseTeamText(text, 7);
+  expect(parseTeamText(serializeTeam(team), 7)[0].happiness).toBe(0);
+});
+
+test("Showdown separator lines start another set without consuming a move slot", async () => {
+  await learnsetsReady;
+  for (const separator of ["\n---\n", "\n\n---\n\n", "\r\n --- \r\n"]) {
+    const team = parseTeamText(
+      `Pikachu\n- Thunderbolt${separator}Raichu\n- Surf`,
+    );
+    expect(team[0]).toMatchObject({
+      name: "pikachu",
+      move1: "thunderbolt",
+      move2: "",
+      move3: "",
+    });
+    expect(team[1]).toMatchObject({ name: "raichu", move1: "surf" });
+  }
+  expect(parseTeamText("Pikachu\n-\n- Thunderbolt")[0]).toMatchObject({
+    move1: "",
+    move2: "thunderbolt",
+  });
+});
+
+test("legacy Showdown aliases and metadata case preserve set fields", async () => {
+  await learnsetsReady;
+  const team = parseTeamText(
+    "Gyarados\nTrait: Moxie\nAdamant nature\n~ Waterfall\nMove: Earthquake",
+  );
+  expect(team[0]).toMatchObject({
+    name: "gyarados",
+    ability: "Moxie",
+    nature: "adamant",
+    move1: "waterfall",
+    move2: "earthquake",
+  });
+  expect(
+    parseTeamText("Gyarados\ntrait: Moxie\nAdamant NATURE\nmove: Waterfall")[0],
+  ).toMatchObject({ ability: "Moxie", nature: "adamant", move1: "waterfall" });
+});
+
+test("old Frustration share links keep their original default happiness", ({
+  store,
+}) => {
+  const text = "Lopunny\nAbility: Cute Charm\n- Frustration";
+  importTeamFromUrlParameter(toBase64Url(text));
+  expect(store.team[0].happiness).toBeUndefined();
+  expect(parseTeamText(text, 7)[0].happiness).toBe(0);
+  const exported = serializeTeam(store.team);
+  expect(exported).toContain("Happiness: 255");
+  expect(parseTeamText(exported, 7)[0].happiness).toBeUndefined();
+  expect(serializeTeam(parseTeamText(exported, 7))).toBe(exported);
 });

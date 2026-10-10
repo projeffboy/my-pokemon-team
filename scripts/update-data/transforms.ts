@@ -73,7 +73,7 @@ export function pick<T extends object>(
 ): Partial<T> {
   return Object.fromEntries(
     keys
-      .filter(key => entry[key] !== undefined)
+      .filter(key => entry[key] !== undefined && entry[key] !== null)
       .map(key => [key, typeof entry[key] === "function" ? true : entry[key]]),
   ) as Partial<T>;
 }
@@ -115,7 +115,23 @@ export const projections = {
       "onModifyMove",
       "status",
       "boosts",
+      "target",
+      "forceSwitch",
     ]),
+    ...(isRecord(entry.self) &&
+      isRecord(entry.self.boosts) && {
+        selfBoosts: entry.self.boosts as Record<string, number>,
+      }),
+    ...(isRecord(entry.selfBoost) &&
+      isRecord(entry.selfBoost.boosts) && {
+        selfBoosts: entry.selfBoost.boosts as Record<string, number>,
+      }),
+    ...(isRecord(entry.secondary) &&
+      entry.secondary.chance === 100 &&
+      isRecord(entry.secondary.self) &&
+      isRecord(entry.secondary.self.boosts) && {
+        selfBoosts: entry.secondary.self.boosts as Record<string, number>,
+      }),
     ...(isRecord(entry.secondary) && {
       secondary: pick<NonNullable<MoveEntry["secondary"]>>(entry.secondary, [
         "chance",
@@ -400,12 +416,39 @@ const abilityGeneration = (ability: ShowdownEntry = {}) => {
   return index < 0 ? 0 : 9 - index;
 };
 
+// Complete projections replace modern properties, including fields removed by a mod.
+export function projectHistoricalMoves(
+  latest: ShowdownTable,
+  mods: Partial<Record<number, ModData>>,
+  ids = Object.keys(latest),
+): Partial<Record<keyof PastGenerations, Moves>> {
+  const current = projectTable("Moves", latest);
+  const past: Partial<Record<keyof PastGenerations, Moves>> = {};
+  let parent = latest;
+  for (let gen = 8; gen >= 1; gen--) {
+    parent = resolveMod(parent, mods[gen]?.moves);
+    const projected = projectTable("Moves", parent);
+    const changed = Object.fromEntries(
+      ids.flatMap(id => {
+        const entry = projected[id];
+        return entry && JSON.stringify(entry) !== JSON.stringify(current[id]) ?
+            [[id, entry]]
+          : [];
+      }),
+    );
+    if (Object.keys(changed).length)
+      past[gen as keyof PastGenerations] = changed;
+  }
+  return past;
+}
+
 // Each past generation's types, from Showdown's mods, which are listed newest first
 export function projectPastGenerations(
   latest: GenerationData,
   mods: Partial<Record<number, ModData>>,
 ): PastGenerations {
   const past: PastGenerations = {};
+  const historicalMoves = projectHistoricalMoves(latest.moves, mods);
   let parent = latest;
   let nextChart = pastTypeChart(latest.typechart, typesOf(latest.typechart));
   const speciesFields = (table: ShowdownTable) =>
@@ -433,6 +476,8 @@ export function projectPastGenerations(
       pokemon: changedField(latest.pokedex, resolved.pokedex, "types"),
       moves: changedField(latest.moves, resolved.moves, "type"),
     };
+    const moveProperties = historicalMoves[gen as keyof PastGenerations];
+    if (moveProperties) entry.moveProperties = moveProperties;
     const resolvedSpecies = speciesFields(resolved.pokedex);
     const baseStats = changedField<BaseStats>(
       latestSpecies,

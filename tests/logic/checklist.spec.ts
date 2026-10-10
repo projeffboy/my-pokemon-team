@@ -129,3 +129,102 @@ test("Sparkly Swirl is a cleric move", () => {
     checked(createTeam({ name: "eeveestarter", move1: "sparklyswirl" })),
   ).toEqual(["Cleric"]);
 });
+
+test("callback-driven setup moves count, with historical Stockpile behavior", () => {
+  expect(
+    checked(createTeam({ name: "drapion", move1: "acupressure" })),
+  ).toEqual(["Boosting Move"]);
+  const team = createTeam({ name: "pelipper", move1: "stockpile" });
+  const setup = (generation: 3 | 4) =>
+    evaluateChecklist(team, generation)
+      .flatMap(group => group.items)
+      .find(item => item.key === "boosting")?.isChecked;
+  expect(setup(3)).toBe(false);
+  expect(setup(4)).toBe(true);
+});
+
+test("setup follows Contrary and Simple, without treating attacks as setup normally", () => {
+  const setup = (
+    name: string,
+    move1: string,
+    ability: string,
+    generation: 3 | 4 | 5 | 9 = 9,
+  ) =>
+    evaluateChecklist(createTeam({ name, move1, ability }), generation)
+      .flatMap(group => group.items)
+      .find(item => item.key === "boosting")?.isChecked;
+  expect(setup("malamar", "superpower", "Contrary")).toBe(true);
+  expect(setup("lurantis", "leafstorm", "Contrary")).toBe(true);
+  expect(setup("lurantis", "swordsdance", "Contrary")).toBe(false);
+  expect(setup("lurantis", "stockpile", "Contrary")).toBe(false);
+  expect(setup("malamar", "curse", "Contrary")).toBe(false);
+  expect(setup("spinda", "superpower", "Own Tempo")).toBe(false);
+  expect(setup("spinda", "superpower", "Contrary", 4)).toBe(false);
+  expect(setup("spinda", "superpower", "Contrary", 5)).toBe(true);
+  expect(setup("numel", "howl", "Simple", 3)).toBe(false);
+  expect(setup("numel", "howl", "Simple", 4)).toBe(true);
+});
+
+test("Floral Healing heals another pokemon rather than satisfying self-recovery", () => {
+  expect(
+    checked(createTeam({ name: "comfey", move1: "floralhealing" })),
+  ).toEqual([]);
+});
+
+test("Yawn counts as a sleep-causing status move", () => {
+  expect(checked(createTeam({ name: "slowbro", move1: "yawn" }))).toEqual([
+    "Status Move",
+  ]);
+});
+
+test("Wish pairs with newer protection moves on the same pokemon", () => {
+  for (const move2 of ["obstruct", "silktrap", "burningbulwark"])
+    expect(
+      checked(createTeam({ name: "smeargle", move1: "wish", move2 })),
+    ).toEqual(["Reliable Recovery"]);
+  expect(
+    checked(
+      createTeam(
+        { name: "smeargle", move1: "wish" },
+        { name: "araquanid", move1: "silktrap" },
+      ),
+    ),
+  ).toEqual([]);
+});
+
+test("historical checklist roles use that generation's move effects", () => {
+  const role = (
+    name: string,
+    move1: string,
+    key: "boosting" | "spinner" | "phazer",
+    generation: 1 | 2 | 4 | 5 | 6,
+  ) =>
+    evaluateChecklist(createTeam({ name, move1 }), generation)
+      .flatMap(group => group.items)
+      .find(item => item.key === key)?.isChecked;
+  expect(role("parasect", "growth", "boosting", 1)).toBe(false);
+  expect(role("slowbro", "amnesia", "boosting", 1)).toBe(true);
+  expect(role("parasect", "growth", "boosting", 2)).toBe(false);
+  expect(role("parasect", "growth", "boosting", 4)).toBe(false);
+  expect(role("parasect", "growth", "boosting", 5)).toBe(true);
+  expect(role("skarmory", "defog", "spinner", 4)).toBe(false);
+  expect(role("skarmory", "defog", "spinner", 5)).toBe(false);
+  expect(role("skarmory", "defog", "spinner", 6)).toBe(true);
+  expect(role("arcanine", "roar", "phazer", 1)).toBe(false);
+  expect(role("arcanine", "roar", "phazer", 2)).toBe(true);
+  expect(role("butterfree", "whirlwind", "phazer", 1)).toBe(false);
+  expect(role("butterfree", "whirlwind", "phazer", 2)).toBe(true);
+});
+
+test("guaranteed selfBoost effects count as setup and follow Contrary", () => {
+  const setup = (move1: string, ability: string) =>
+    evaluateChecklist(
+      createTeam({ name: "kommoo", item: "kommoniumz", move1, ability }),
+      7,
+    )
+      .flatMap(group => group.items)
+      .find(item => item.key === "boosting")?.isChecked;
+  expect(setup("clangoroussoulblaze", "Soundproof")).toBe(true);
+  expect(setup("clangoroussoulblaze", "Contrary")).toBe(false);
+  expect(setup("clangingscales", "Soundproof")).toBe(false);
+});

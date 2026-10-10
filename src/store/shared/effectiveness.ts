@@ -3,7 +3,7 @@ import moves from "@/data/moves";
 import items from "@/data/items";
 import pokedex from "@/data/pokedex";
 import { pokemonTypes } from "@/shared/pokedex";
-import { moveTypeIn, typechartIn } from "@/shared/generation-data";
+import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType } from "@/types";
 
@@ -227,7 +227,7 @@ export function moveType(
   } else if (
     ability === "Normalize" &&
     moveType &&
-    !preservesType &&
+    (generation <= 4 || !preservesType) &&
     (generation <= 6 || !move.startsWith("hiddenpower"))
   ) {
     moveType = "Normal";
@@ -290,7 +290,7 @@ export function isMoveStrongEnough(
   generation = LATEST_GENERATION,
   pokemon = "",
 ) {
-  const moveProperties = moves[move];
+  const moveProperties = moveDataIn(move, generation);
   const held = items[activeItem(item, ability, generation)];
   if (move === "naturalgift")
     return (
