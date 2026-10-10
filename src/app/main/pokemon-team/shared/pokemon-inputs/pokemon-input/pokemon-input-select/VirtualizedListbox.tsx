@@ -18,6 +18,7 @@ import { isPokemonType, type NameView } from "@/types";
 import { moveTypeIn } from "@/shared/generation-data";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import PokemonDexSprite from "./virtualized-listbox/PokemonDexSprite";
+import ListTools from "./shared/ListTools";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
 import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
@@ -190,6 +191,8 @@ export const VirtualizedListboxContext = React.createContext<{
   showMoveTypes: boolean;
   selectedValue: string;
   internalListRef: React.RefObject<ListImperativeAPI | null>;
+  // Kept at the listed options' values, in order, and emptied when none are listed
+  listedValuesRef: React.RefObject<readonly string[]>;
   // The room the popup has on the screen, measured when it opens
   popupMaxHeight?: number;
   nameListWidth: number;
@@ -213,17 +216,30 @@ const VirtualizedListbox = observer(
         showMoveTypes,
         selectedValue,
         internalListRef,
+        listedValuesRef,
         popupMaxHeight,
         nameListWidth,
       } = context;
       const isNameInput = pokemonProperty === "name";
       const isGrid = isNameInput && store.nameView !== "list";
       const isBigGrid = isNameInput && store.nameView === "big-grid";
+      // With the team tools, Filters and Sort sit beside the view toggle, which
+      // drops its captions to make room; the tooltips and labels still name the views
+      const showTools = isNameInput && store.isMoreOpen;
+      // The move lists have Sort alone
+      const showMoveTools =
+        pokemonProperty.startsWith("move") && store.isMoreOpen;
       const columns = gridColumns(store.nameView);
       const gridRowSize = isBigGrid ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE;
       const itemData = children as ItemData;
       const itemCount = itemData.length;
       const rowCount = isGrid ? Math.ceil(itemCount / columns) : itemCount;
+      React.useLayoutEffect(() => {
+        listedValuesRef.current = itemData.map(([, option]) => option.value);
+        return () => {
+          listedValuesRef.current = [];
+        };
+      }, [itemData, listedValuesRef]);
       // Rows with wrapped (two-line) labels measure taller than single-line rows;
       // resetting the cache (via `key`) whenever the option list changes
       const dynamicRowHeight = useDynamicRowHeight({
@@ -257,7 +273,7 @@ const VirtualizedListbox = observer(
       const [toggleHeight, setToggleHeight] = React.useState(0);
       React.useLayoutEffect(() => {
         setToggleHeight(toggleRef.current?.offsetHeight ?? 0);
-      }, [isNameInput, isGrid]);
+      }, [isNameInput, isGrid, showTools, showMoveTools]);
 
       // Uses the measured average row height (rows are shorter than ITEM_SIZE on
       // wider screens, where MUI's option minHeight is no longer forced to 48px)
@@ -268,7 +284,8 @@ const VirtualizedListbox = observer(
           isGrid ? gridRowSize : dynamicRowHeight.getAverageRowHeight();
         const rows = Math.min(isGrid ? rowCount : itemCount, 8) * rowHeight;
         if (popupMaxHeight === undefined) return rows;
-        const chrome = isNameInput ? toggleHeight + TOGGLE_MARGIN : 0;
+        const chrome =
+          isNameInput || showMoveTools ? toggleHeight + TOGGLE_MARGIN : 0;
         return Math.min(rows, Math.max(0, popupMaxHeight - chrome));
       };
 
@@ -281,63 +298,104 @@ const VirtualizedListbox = observer(
           sx={{ "& .MuiAutocomplete-listbox": { p: 0 } }}
         >
           {isNameInput && (
-            <ToggleButtonGroup
+            <Box
               ref={toggleRef}
-              exclusive
-              size="small"
-              value={store.nameView}
-              onChange={(_event, view: NameView | null) => {
-                if (view) store.nameView = view;
-              }}
               // Keeps the focus, and so the popup, in the input
               onMouseDown={event => event.preventDefault()}
-              aria-label={t.team.nameListView}
               // Keep the toggle anchored while the grid widens the dropdown
               sx={{
                 display: "flex",
-                justifyContent: "center",
+                alignItems: "center",
+                justifyContent: showTools ? "space-between" : "center",
+                boxSizing: "border-box",
                 width: isGrid ? "100%" : nameListWidth,
                 maxWidth: "100%",
                 my: 0.5,
-                "& > .MuiToggleButton-root": {
-                  gap: 0.75,
-                  px: isGrid ? 0.5 : 0.75,
-                  minWidth: 0,
-                  flex: isGrid ? 1 : undefined,
-                  flexDirection: "row",
-                  fontSize: 12,
-                  lineHeight: 1,
-                },
-                "& svg": { flexShrink: 0 },
-                "& > * > span[aria-hidden]": {
-                  minWidth: 0,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                },
+                px: showTools ? 0.5 : 0,
               }}
             >
-              <ToggleButton value="list" aria-label={t.team.listView}>
-                <ViewListIcon fontSize="small" />
-                <span aria-hidden="true" title={t.team.list}>
-                  {t.team.list}
-                </span>
-              </ToggleButton>
-              <ToggleButton value="grid" aria-label={t.team.gridView}>
-                <GridViewIcon fontSize="small" />
-                <span aria-hidden="true" title={t.team.grid}>
-                  {t.team.grid}
-                </span>
-              </ToggleButton>
-              {isGrid && (
-                <ToggleButton value="big-grid" aria-label={t.team.bigGridView}>
-                  <ViewModuleIcon fontSize="small" />
-                  <span aria-hidden="true" title={t.team.bigGrid}>
-                    {t.team.bigGrid}
-                  </span>
-                </ToggleButton>
-              )}
-            </ToggleButtonGroup>
+              <ToggleButtonGroup
+                exclusive
+                size="small"
+                value={store.nameView}
+                onChange={(_event, view: NameView | null) => {
+                  if (view) store.nameView = view;
+                }}
+                aria-label={t.team.nameListView}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  minWidth: 0,
+                  width: showTools ? undefined : "100%",
+                  "& > .MuiToggleButton-root": {
+                    gap: 0.75,
+                    px:
+                      showTools ? undefined
+                      : isGrid ? 0.5
+                      : 0.75,
+                    minWidth: 0,
+                    flex: isGrid && !showTools ? 1 : undefined,
+                    flexDirection: "row",
+                    fontSize: 12,
+                    lineHeight: 1,
+                  },
+                  "& svg": { flexShrink: 0 },
+                  "& > * > span[aria-hidden]": {
+                    minWidth: 0,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  },
+                }}
+              >
+                {(
+                  [
+                    ["list", t.team.listView, t.team.list, ViewListIcon],
+                    ["grid", t.team.gridView, t.team.grid, GridViewIcon],
+                    ...(isGrid ?
+                      ([
+                        [
+                          "big-grid",
+                          t.team.bigGridView,
+                          t.team.bigGrid,
+                          ViewModuleIcon,
+                        ],
+                      ] as const)
+                    : []),
+                  ] as const
+                ).map(([view, label, caption, Icon]) => (
+                  <ToggleButton
+                    key={view}
+                    value={view}
+                    aria-label={label}
+                    title={showTools ? caption : undefined}
+                  >
+                    <Icon fontSize="small" />
+                    {!showTools && (
+                      <span aria-hidden="true" title={caption}>
+                        {caption}
+                      </span>
+                    )}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+              {showTools && <ListTools />}
+            </Box>
+          )}
+          {showMoveTools && (
+            <Box
+              ref={toggleRef}
+              // Keeps the focus, and so the popup, in the input
+              onMouseDown={event => event.preventDefault()}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                my: 0.5,
+                px: 0.5,
+              }}
+            >
+              <ListTools moves />
+            </Box>
           )}
           {isGrid ?
             <List

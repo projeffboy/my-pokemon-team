@@ -33,6 +33,11 @@ const fr: Messages = {
   championsGenerationShort: "Gén. 9 (Champions)",
   language: "Langue",
   languageFailed: "La langue n'a pas pu être chargée. Réessayez.",
+  error: {
+    title: "Une erreur s'est produite",
+    description: "Rechargez la page pour réessayer.",
+    reload: "Recharger",
+  },
   feedback: {
     button: "Envoyer un commentaire",
     title: "Envoyer un commentaire",
@@ -531,6 +536,7 @@ const fr: Messages = {
     infographicCaption: "Valable aussi pour les Gén. 7 à 9",
   },
   credits: {
+    madeBy: "Créé par {name}",
     showdown:
       "L'équipe de Pokemon Showdown a la générosité de me laisser utiliser tous ses sprites, icônes et données Pokémon. Absolument indispensable !",
     alsoThanks: "Merci aussi à",

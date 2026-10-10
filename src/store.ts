@@ -19,15 +19,18 @@ import type {
   SnackbarKind,
 } from "./types";
 import { generationRules, variantGeneration } from "./shared/generation-rules";
-import { formatForGeneration } from "./shared/formats";
+import { formatForGeneration, gameFormat } from "./shared/formats";
 import { allItemIds } from "./shared/names";
 import { MOVE_KEYS } from "./types";
 import {
   generationLearnset,
+  generationMoves,
   availableItems,
   availablePokemon,
   getTeamLearnsets,
+  isItemAvailable,
   learnsetsReady,
+  obtainablePokemon,
 } from "./store/learnsets";
 import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
@@ -40,7 +43,7 @@ import {
   randomSet,
   randomizedFieldsMessage,
 } from "./store/random";
-import { serializeTeam } from "./store/team-text";
+import { parseTeamText, serializeTeam } from "./store/team-text";
 import { nextDuplicateName } from "./store/team-names";
 import { describeTeamChange } from "./store/team-change";
 import {
@@ -64,6 +67,7 @@ import { canSelectMove } from "./shared/moves";
 import { matchHiddenPower } from "./shared/hidden-power";
 import { pokemonAbilities } from "./shared/pokedex";
 import { typesIn } from "./shared/generation-data";
+import { LATEST_GENERATION } from "./shared/generations";
 import { detectLocale, type Locale } from "./i18n/locales";
 import { english, loadTranslation, type Translation } from "./i18n/translation";
 
@@ -81,7 +85,14 @@ export type DialogName =
 
 const HISTORY_LIMIT = 50;
 
-const storage = typeof localStorage === "undefined" ? undefined : localStorage;
+// Reading localStorage throws when the browser blocks site data
+const storage = (() => {
+  try {
+    return typeof localStorage === "undefined" ? undefined : localStorage;
+  } catch {
+    return undefined;
+  }
+})();
 expireSettings(storage, Date.now());
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
@@ -331,7 +342,9 @@ class Store {
     if (team) team.name = name;
   }
 
-  // Link text matches saved teams even when the text leaves out empty slots.
+  // Link text matches saved teams even when the text leaves out empty slots, or
+  // reads back differently than the team was saved, such as an ability filled in.
+  // A link carries a game but no tier, so a saved team's tier does not count.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
@@ -341,11 +354,21 @@ class Store {
     const text = serializeTeam(team);
     const preferredId =
       this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId;
+    const reads = (saved: SavedTeam) => {
+      const savedText = serializeTeam(saved.team);
+      return (
+        savedText === text ||
+        serializeTeam(
+          parseTeamText(savedText, saved.generation, saved.format),
+        ) === text
+      );
+    };
     const matches = (saved: SavedTeam) =>
-      serializeTeam(saved.team) === text &&
       (!settings ||
         (saved.generation === settings.generation &&
-          (settings.format === undefined || saved.format === settings.format)));
+          (settings.format === undefined ||
+            gameFormat(saved.format) === settings.format))) &&
+      reads(saved);
     const saved =
       this.teams.find(saved => saved.id === preferredId && matches(saved)) ??
       this.teams.find(matches);
@@ -393,10 +416,9 @@ class Store {
     const species = filterPokemon({ generation, format, type: "", region: "" });
     return [
       ...new Set(
-        (variantGeneration(format) ?
-          availablePokemon(species, generation, format)
-        : species
-        ).flatMap(name => pokemonAbilities(name, generation)),
+        this.inGame(species).flatMap(name =>
+          pokemonAbilities(name, generation),
+        ),
       ),
     ];
   }
@@ -444,7 +466,16 @@ class Store {
 
     if (!member) return;
     member.name = name;
-    member.item = this.rules.items ? getAutoSelectedItem(name, "") : "";
+    member.item =
+      this.rules.items ?
+        getAutoSelectedItem(name, "", item =>
+          isItemAvailable(
+            item,
+            this.currentTeam.generation,
+            this.currentTeam.format,
+          ),
+        )
+      : "";
     member.ability =
       this.rules.abilities ?
         getAutoSelectedAbility(name, this.currentTeam.generation)
@@ -527,6 +558,9 @@ class Store {
         Math.random,
         this.currentTeam.generation,
         this.currentTeam.format,
+        this.team
+          .filter((_, index) => index !== teamIndex)
+          .map(({ item }) => item),
       );
       this.team[teamIndex] = completed;
       return randomizedFieldsMessage(member, completed, this.translation);
@@ -543,6 +577,9 @@ class Store {
       Math.random,
       this.currentTeam.generation,
       this.currentTeam.format,
+      this.team
+        .filter((_, index) => index !== teamIndex)
+        .map(({ item }) => item),
     );
     return this.translation.t.team.randomizedPokemon;
   }
@@ -567,6 +604,7 @@ class Store {
         Math.random,
         this.currentTeam.generation,
         this.currentTeam.format,
+        this.team.slice(0, i).map(({ item }) => item),
       );
     }
     this.recordEdit(teamKey(this.team), true);
@@ -618,18 +656,40 @@ class Store {
     };
   }
 
+  // A game variant lists only its own pokemon, and a past generation leaves out
+  // those its games lack. The regular latest generation is National Dex.
+  private inGame(pokemon: readonly string[]) {
+    const { generation, format } = this.currentTeam;
+    if (!this.learnsetsLoaded) return variantGeneration(format) ? [] : pokemon;
+    if (variantGeneration(format))
+      return availablePokemon(pokemon, generation, format);
+    return generation === LATEST_GENERATION ? pokemon : (
+        obtainablePokemon(pokemon, generation, format)
+      );
+  }
+
+  // Every pokemon and move the current game's dropdowns can list, whatever the filters
+  get gamePokemon() {
+    const { generation, format } = this.currentTeam;
+    return this.inGame(
+      filterPokemon({
+        generation,
+        format: gameFormat(format),
+        type: "",
+        region: "",
+      }),
+    );
+  }
+
+  get gameMoves() {
+    if (!this.learnsetsLoaded) return [];
+    const { generation, format } = this.currentTeam;
+    return generationMoves(this.gamePokemon, generation, format);
+  }
+
   get filteredPokemon() {
-    if (variantGeneration(this.currentTeam.format) && !this.learnsetsLoaded)
-      return [];
-    const pokemon = filterPokemon(this.searchFilters);
     return sortPokemon(
-      variantGeneration(this.currentTeam.format) ?
-        availablePokemon(
-          pokemon,
-          this.currentTeam.generation,
-          this.currentTeam.format,
-        )
-      : pokemon,
+      this.inGame(filterPokemon(this.searchFilters)),
       this.sort,
       this.translation,
       this.currentTeam.generation,
@@ -767,13 +827,23 @@ class Store {
   nameView: NameView;
 
   // The open dialog, with the team slot or saved team it is about
-  dialog: { name: DialogName; teamIndex: number; teamId: string } | null = null;
+  dialog: {
+    name: DialogName;
+    teamIndex: number;
+    teamId: string;
+    // The Sort dialog's tab
+    sortTab: "pokemon" | "moves";
+  } | null = null;
 
   openDialog(
     name: DialogName,
-    { teamIndex = 0, teamId = this.currentTeamId } = {},
+    {
+      teamIndex = 0,
+      teamId = this.currentTeamId,
+      sortTab = "pokemon" as "pokemon" | "moves",
+    } = {},
   ) {
-    this.dialog = { name, teamIndex, teamId };
+    this.dialog = { name, teamIndex, teamId, sortTab };
   }
 
   closeDialog() {

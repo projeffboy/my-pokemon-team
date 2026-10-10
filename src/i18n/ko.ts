@@ -48,6 +48,11 @@ const ko: Messages = {
   championsGenerationShort: "9세대 (Champions)",
   language: "언어",
   languageFailed: "언어를 불러오지 못했습니다. 다시 시도해 주세요.",
+  error: {
+    title: "문제가 발생했습니다",
+    description: "페이지를 새로고침해 다시 시도하세요.",
+    reload: "새로고침",
+  },
   feedback: {
     button: "피드백 보내기",
     title: "피드백 보내기",
@@ -525,6 +530,7 @@ const ko: Messages = {
     infographicCaption: "7~9세대에도 적용됩니다",
   },
   credits: {
+    madeBy: "제작: {name}",
     showdown:
       "Pokemon Showdown 여러분이 스프라이트, 아이콘, 포켓몬 데이터를 모두 사용하도록 너그럽게 허락해 주셨습니다. 정말 없어서는 안 될 존재입니다!",
     alsoThanks: "다음 분들께도 감사드립니다",

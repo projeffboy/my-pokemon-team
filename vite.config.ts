@@ -6,7 +6,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 const latestCommitDate = execSync(
-  "git log -1 --format=%cd --date=format:'%b %-d, %Y'",
+  "git log -1 --format=%cd --date=format:%Y-%m-%d",
 )
   .toString()
   .trim();
@@ -103,9 +103,10 @@ export default defineConfig({
       output: {
         // Pokemon data and dependencies change less often than app code, so they cache separately
         manualChunks(id) {
-          // Learnsets and translations stay in the chunks of their dynamic imports, so they
-          // load after the app, and each language only when chosen
+          // Learnsets, generation availability, and translations stay in the chunks of their
+          // dynamic imports, so they load after the app, and each language only when chosen
           if (id.includes("/src/data/learnsets.json")) return;
+          if (id.includes("/src/data/generation-transfer.json")) return;
           if (id.includes("/src/data/translations/")) return;
           if (id.includes("/src/data/")) return "data";
           // Only sending feedback loads it

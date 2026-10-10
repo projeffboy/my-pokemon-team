@@ -42,7 +42,8 @@ export const showSlot = async (page: Page, slotIndex: number) => {
   await expect(input).toBeVisible();
 };
 
-// Shows the filters, sort, and advanced buttons, and the team toolbar on phones and tablets
+// Shows the advanced buttons, Filters and Sort in the Name dropdown, and the team toolbar
+// on phones and tablets
 export const openTeamTools = async (page: Page) => {
   const more = page.getByRole("button", {
     name: /^(More team tools|Advanced)$/,
@@ -78,10 +79,26 @@ const openSlotDialog = async (page: Page, button: RegExp, dialog: string) => {
   await expect(page.getByRole("dialog", { name: dialog })).toBeVisible();
 };
 
-export const openFilters = (page: Page) =>
-  openSlotDialog(page, /^Filters$/, "Filters");
+// Filters and Sort are in the Name dropdown, beside its view toggle, and the move
+// dropdowns have a Sort of their own that opens on the Moves tab
+const openListDialog = async (
+  page: Page,
+  name: "Filters" | "Sort",
+  list: "name" | "move1" = "name",
+) => {
+  await openTeamTools(page);
+  await page
+    .getByRole("combobox", { name: new RegExp(`^Pokemon \\d's ${list}$`) })
+    .first()
+    .click();
+  await page.getByRole("button", { name, exact: true }).click();
+  await expect(page.getByRole("dialog", { name })).toBeVisible();
+};
 
-export const openSort = (page: Page) => openSlotDialog(page, /^Sort$/, "Sort");
+export const openFilters = (page: Page) => openListDialog(page, "Filters");
+
+export const openSort = (page: Page, list: "pokemon" | "moves" = "pokemon") =>
+  openListDialog(page, "Sort", list === "moves" ? "move1" : "name");
 
 export const openAdvanced = (page: Page) =>
   openSlotDialog(page, /^More details for slot/, "More details");

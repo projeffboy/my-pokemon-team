@@ -125,11 +125,10 @@ test.describe("Slot tools - Integration Tests", () => {
     );
   });
 
-  test("moves a pokemon to the slot picked from its sprite's menu", async ({
+  test("moves a pokemon to the slot picked from its chip's menu", async ({
     page,
   }) => {
-    // Phones and tablets drag the slot tabs instead
-    test.skip(isMdDown(page), "The slot chip is on the desktop cards");
+    test.skip(isMdDown(page), "Phones and tablets drag the slot tabs instead");
     await selectPokemon(page, "Quagsire");
     await page
       .getByRole("button", { name: "Move Quagsire to another slot" })

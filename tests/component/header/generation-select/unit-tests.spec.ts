@@ -108,28 +108,36 @@ test("matches the widest menu option including its game logos", async ({
         ),
     )
     .toBe(true);
-  const widest = await page
-    .locator('header [aria-hidden="true"] > .MuiListItemText-root')
-    .evaluateAll(options =>
-      Math.max(
-        ...options.map(option => {
-          const logos = [...option.querySelectorAll("img")];
-          const first = logos[0]?.getBoundingClientRect();
-          const last = logos.at(-1)?.getBoundingClientRect();
-          const logoWidth = first && last ? last.right - first.left : 0;
-          const label = option.querySelector(".MuiListItemText-primary");
-          const range = document.createRange();
-          if (label) range.selectNodeContents(label);
-          const labelWidth = label ? range.getBoundingClientRect().width : 0;
-          const style = getComputedStyle(option.parentElement ?? option);
-          return (
-            Math.max(logoWidth, labelWidth) +
-            parseFloat(style.paddingLeft) +
-            parseFloat(style.paddingRight)
-          );
-        }),
-      ),
-    );
+  // The sizing copies hold a placeholder for each logo, so the logos load with the menu
+  const sizers = page.locator(
+    'header [aria-hidden="true"] > .MuiListItemText-root',
+  );
+  await expect(sizers.locator("img")).toHaveCount(0);
+  const widths = (elements: Element[]) =>
+    elements.map(element => Math.round(element.getBoundingClientRect().width));
+  expect(await sizers.locator("span:empty").evaluateAll(widths)).toEqual(
+    await options.locator("img").evaluateAll(widths),
+  );
+  const widest = await sizers.evaluateAll(options =>
+    Math.max(
+      ...options.map(option => {
+        const logos = [...option.querySelectorAll("span:empty")];
+        const first = logos[0]?.getBoundingClientRect();
+        const last = logos.at(-1)?.getBoundingClientRect();
+        const logoWidth = first && last ? last.right - first.left : 0;
+        const label = option.querySelector(".MuiListItemText-primary");
+        const range = document.createRange();
+        if (label) range.selectNodeContents(label);
+        const labelWidth = label ? range.getBoundingClientRect().width : 0;
+        const style = getComputedStyle(option.parentElement ?? option);
+        return (
+          Math.max(logoWidth, labelWidth) +
+          parseFloat(style.paddingLeft) +
+          parseFloat(style.paddingRight)
+        );
+      }),
+    ),
+  );
   await page.keyboard.press("Escape");
   await expect(page.locator(".MuiMenu-paper")).toBeHidden();
   expect(

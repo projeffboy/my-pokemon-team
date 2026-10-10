@@ -1,3 +1,4 @@
+import type { Locator } from "@playwright/test";
 import { test, expect } from "fixtures";
 import { createViewport, SMALL_VIEWPORT_WIDTH } from "helper";
 
@@ -15,13 +16,21 @@ test.describe("More toggle - Unit Tests", () => {
           includeHidden: true,
         }),
       });
-    const filters = page.getByRole("button", { name: "Filters" });
+    const nameInput = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    const filters = page.getByRole("button", { name: "Filters", exact: true });
     await expect(toolbar).toBeHidden();
-    await expect(filters).toBeHidden();
+    await nameInput.click();
+    await expect(
+      page.getByRole("button", { name: "Grid view", exact: true }),
+    ).toBeVisible();
+    await expect(filters).toHaveCount(0);
+    await nameInput.press("Escape");
 
     await page.getByRole("button", { name: "More team tools" }).click();
     await expect(toolbar).toBeVisible();
+    await nameInput.click();
     await expect(filters).toBeVisible();
+    await nameInput.press("Escape");
     await expect(
       page.getByRole("button", { name: "More details for slot 1" }),
     ).toBeVisible();
@@ -37,6 +46,9 @@ test.describe("More toggle - Unit Tests", () => {
   test("keeps Advanced from md, with a colored toggle when on", async ({
     page,
   }) => {
+    const moreDetails = page.getByRole("button", {
+      name: "More details for slot 1",
+    });
     for (const width of [599, 600, 959, 960, 1200]) {
       await page.setViewportSize({ width, height: 1000 });
       const compact = width < 960;
@@ -55,9 +67,7 @@ test.describe("More toggle - Unit Tests", () => {
       if (!compact)
         await expect(expand).toHaveAttribute("aria-pressed", "false");
       await expand.click();
-      await expect(
-        page.getByRole("button", { name: "Filters" }).first(),
-      ).toBeVisible();
+      await expect(moreDetails).toBeVisible();
       const collapse = page.getByRole("button", {
         name: compact ? "Fewer team tools" : "Advanced",
         exact: true,
@@ -73,15 +83,21 @@ test.describe("More toggle - Unit Tests", () => {
         await expect(onIcon).not.toHaveCSS("color", offColor);
       }
       await collapse.click();
-      await expect(
-        page.getByRole("button", { name: "Filters" }).first(),
-      ).toBeHidden();
+      await expect(moreDetails).toBeHidden();
     }
   });
 
-  test("keeps Filters and Sort beside the toggle and makes room with history icons", async ({
+  test("keeps the toggle's row in place and puts Filters and Sort in the Name dropdown", async ({
     page,
   }) => {
+    const nameInput = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    const layout = (row: Locator) =>
+      row.getByRole("button").evaluateAll(buttons =>
+        buttons.map(button => {
+          const { left, right } = button.getBoundingClientRect();
+          return { text: button.textContent, left, right };
+        }),
+      );
     for (const width of [320, 400, 600, 959, 960, 1200]) {
       await page.setViewportSize({ width, height: 1000 });
       const compact = width < 960;
@@ -92,29 +108,9 @@ test.describe("More toggle - Unit Tests", () => {
       const row = page
         .getByRole("toolbar", { name: "Team actions" })
         .filter({ has: toggle });
-      const undo = row.getByRole("button", { name: "Undo", exact: true });
-      const redo = row.getByRole("button", { name: "Redo", exact: true });
-      await expect(
-        page.getByRole("button", { name: "Filters", exact: true }),
-      ).toHaveCount(0);
-      await toggle.click();
-      const filters = page.getByRole("button", {
-        name: "Filters",
-        exact: true,
-      });
-      const sort = page.getByRole("button", { name: "Sort", exact: true });
-      await expect(filters).toHaveCount(1);
-      await expect(sort).toHaveCount(1);
-      const expanded = page.getByRole("button", {
-        name: compact ? "Fewer team tools" : "Advanced",
-        exact: true,
-      });
-      const expandedRow = page
-        .getByRole("toolbar", { name: "Team actions" })
-        .filter({ has: expanded });
       const names =
         compact ?
-          ["Undo", "Redo", "Filters", "Sort", "Fewer team tools"]
+          ["Undo", "Redo"]
         : [
             "Teams",
             "Randomize team",
@@ -122,72 +118,48 @@ test.describe("More toggle - Unit Tests", () => {
             "Undo",
             "Redo",
             "Manage team",
-            "Filters",
-            "Sort",
-            "Advanced",
           ];
-      await expect(expandedRow.getByRole("button")).toHaveCount(names.length);
+      await expect(row.getByRole("button")).toHaveCount(names.length + 1);
       for (const [index, name] of names.entries())
-        await expect(
-          expandedRow.getByRole("button").nth(index),
-        ).toHaveAccessibleName(name);
+        await expect(row.getByRole("button").nth(index)).toHaveAccessibleName(
+          name,
+        );
+      const collapsed = await layout(row);
+      await toggle.click();
+      const expanded = page.getByRole("button", {
+        name: compact ? "Fewer team tools" : "Advanced",
+        exact: true,
+      });
+      const expandedRow = page
+        .getByRole("toolbar", { name: "Team actions" })
+        .filter({ has: expanded });
+      await expect(expanded).toBeVisible();
+
+      // Nothing in the row moves, and only the toggle's own label changes
+      const open = await layout(expandedRow);
+      expect(open).toHaveLength(collapsed.length);
+      for (const [index, button] of open.entries()) {
+        expect(button.left).toBeCloseTo(collapsed[index]?.left ?? NaN, 0);
+        expect(button.right).toBeCloseTo(collapsed[index]?.right ?? NaN, 0);
+        if (index < names.length)
+          expect(button.text).toBe(collapsed[index]?.text);
+      }
       await expect(
         page
-          .getByRole("region", { name: /^Pokemon \d$/ })
+          .getByRole("toolbar")
           .getByRole("button", { name: /^(Filters|Sort)$/ }),
       ).toHaveCount(0);
-      if (width === 320 || width === 600) {
-        await expect(
-          expandedRow
-            .getByRole("button", { name: "Undo", exact: true })
-            .locator(".history-label"),
-        ).toBeHidden();
-        await expect(
-          expandedRow
-            .getByRole("button", { name: "Redo", exact: true })
-            .locator(".history-label"),
-        ).toBeHidden();
+
+      for (const name of ["Filters", "Sort"]) {
+        await nameInput.click();
+        await page.getByRole("button", { name, exact: true }).click();
+        const dialog = page.getByRole("dialog", { name, exact: true });
+        await expect(dialog).toBeVisible();
+        await page.getByRole("button", { name: "Done", exact: true }).click();
+        await expect(dialog).toBeHidden();
       }
-      if (width === 400 || width === 959) {
-        await expect(
-          expandedRow
-            .getByRole("button", { name: "Undo", exact: true })
-            .locator(".history-label"),
-        ).toBeVisible();
-      }
-      const bounds = await expandedRow
-        .getByRole("button")
-        .evaluateAll(buttons =>
-          buttons.map(button => {
-            const { left, right } = button.getBoundingClientRect();
-            return { left, right };
-          }),
-        );
-      for (let i = 1; i < bounds.length; i++)
-        expect(bounds[i]?.left).toBeGreaterThanOrEqual(
-          (bounds[i - 1]?.right ?? 0) - 0.5,
-        );
-      await filters.click();
-      await expect(
-        page.getByRole("dialog", { name: "Filters", exact: true }),
-      ).toBeVisible();
-      await page.getByRole("button", { name: "Done", exact: true }).click();
-      await expect(
-        page.getByRole("dialog", { name: "Filters", exact: true }),
-      ).toBeHidden();
-      await sort.click();
-      await expect(
-        page.getByRole("dialog", { name: "Sort", exact: true }),
-      ).toBeVisible();
-      await page.getByRole("button", { name: "Done", exact: true }).click();
-      await expect(
-        page.getByRole("dialog", { name: "Sort", exact: true }),
-      ).toBeHidden();
       await expanded.click();
-      if (compact) {
-        await expect(undo.locator(".history-label")).toBeVisible();
-        await expect(redo.locator(".history-label")).toBeVisible();
-      }
+      await expect(toggle).toBeVisible();
       expect(
         await page.locator("body").evaluate(el => el.scrollWidth),
       ).toBeLessThanOrEqual(width);

@@ -33,6 +33,11 @@ const it: Messages = {
   championsGenerationShort: "Gen. 9 (Champions)",
   language: "Lingua",
   languageFailed: "Impossibile caricare la lingua. Riprova.",
+  error: {
+    title: "Qualcosa è andato storto",
+    description: "Ricarica la pagina per riprovare.",
+    reload: "Ricarica",
+  },
   feedback: {
     button: "Invia feedback",
     title: "Invia feedback",
@@ -518,6 +523,7 @@ const it: Messages = {
     infographicCaption: "Vale anche per le Gen. 7-9",
   },
   credits: {
+    madeBy: "Creato da {name}",
     showdown:
       "Le persone di Pokemon Showdown sono molto generose a lasciarmi usare tutti i loro sprite, le icone e i dati sui Pokémon. Assolutamente indispensabili!",
     alsoThanks: "Grazie anche a",

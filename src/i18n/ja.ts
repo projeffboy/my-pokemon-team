@@ -33,6 +33,11 @@ const ja: Messages = {
   championsGenerationShort: "第9世代（Champions）",
   language: "言語",
   languageFailed: "言語を読み込めませんでした。もう一度お試しください。",
+  error: {
+    title: "問題が発生しました",
+    description: "ページを再読み込みして、もう一度お試しください。",
+    reload: "再読み込み",
+  },
   feedback: {
     button: "フィードバックを送る",
     title: "フィードバックを送る",
@@ -516,6 +521,7 @@ const ja: Messages = {
     infographicCaption: "第7〜9世代にも当てはまります",
   },
   credits: {
+    madeBy: "制作：{name}",
     showdown:
       "Pokemon Showdownの皆さんは、スプライト、アイコン、ポケモンデータのすべてを快く使わせてくれています。本当に欠かせない存在です！",
     alsoThanks: "また、次の方々にも感謝します",

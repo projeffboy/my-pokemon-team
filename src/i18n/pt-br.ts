@@ -35,6 +35,11 @@ const ptBR: Messages = {
   championsGenerationShort: "Ger. 9 (Champions)",
   language: "Idioma",
   languageFailed: "Não foi possível carregar o idioma. Tente de novo.",
+  error: {
+    title: "Algo deu errado",
+    description: "Recarregue a página para tentar de novo.",
+    reload: "Recarregar",
+  },
   feedback: {
     button: "Enviar feedback",
     title: "Enviar feedback",
@@ -511,6 +516,7 @@ const ptBR: Messages = {
     infographicCaption: "Também vale para as Ger. 7-9",
   },
   credits: {
+    madeBy: "Feito por {name}",
     showdown:
       "O pessoal do Pokemon Showdown é muito generoso por me deixar usar todos os seus sprites, ícones e dados de Pokémon. Absolutamente indispensável!",
     alsoThanks: "Agradecimentos também a",

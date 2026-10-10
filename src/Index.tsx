@@ -8,9 +8,11 @@ import "@fontsource/roboto/latin-400.css";
 import "@fontsource/roboto/latin-500.css";
 
 // A deploy replaces the hashed chunk files, so a tab opened before it cannot load a lazy chunk;
-// reloading picks up the new build. The timer stops a reload loop when the chunk is truly unreachable.
+// reloading picks up the new build. The timer stops a reload loop when the chunk is truly unreachable,
+// and an offline tab keeps its page, where a reload would lose it.
 window.addEventListener("vite:preloadError", event => {
   const key = "lastPreloadErrorReload";
+  if (!navigator.onLine) return;
   if (Date.now() - Number(sessionStorage.getItem(key)) < 60_000) return;
   sessionStorage.setItem(key, String(Date.now()));
   event.preventDefault();

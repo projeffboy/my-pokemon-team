@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -33,6 +33,11 @@ const SortDialog = observer(function SortDialog() {
   const { t } = useTranslation();
   const titleId = useId();
   const [tab, setTab] = useState<"pokemon" | "moves">("pokemon");
+  // Opens on the tab of the dropdown it was opened from
+  const openedTab = store.dialog?.name === "sort" && store.dialog.sortTab;
+  useEffect(() => {
+    if (openedTab) setTab(openedTab);
+  }, [openedTab]);
   const sort = tab === "moves" ? store.moveSort : store.sort;
   const label = (key: SortKey) =>
     isStat(key) ?

@@ -9,6 +9,19 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 10, 2026",
+    changes: [
+      "Reloading the page no longer reopens a team with a Smogon tier as an unsaved copy.",
+      "Past generations no longer list Pokémon their games lack, which had no moves to choose, e.g. Greninja in Gen 8.",
+      "Smeargle can now choose any move it can Sketch.",
+      "Formes based on another forme now learn that forme's moves, e.g. Icicle Crash for Darmanitan-Galar-Zen.",
+      "Giratina-Origin now holds the Griseous Orb before Gen 9.",
+      "Random teams no longer repeat a species or an item.",
+      "The team checklist now counts Ceaseless Edge as an entry hazard and Belly Drum as a boosting move, but not Swagger, which boosts the foe.",
+      "Arrow keys now keep the highlighted option in view while typing narrows a dropdown, and Enter picks the top match.",
+    ],
+  },
+  {
     date: "Oct 8, 2026",
     changes: [
       "Switching generations no longer opens an empty confirmation for Pokémon with default stats.",

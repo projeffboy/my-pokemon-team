@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, {
   autocompleteClasses,
   createFilterOptions,
@@ -6,6 +6,7 @@ import Autocomplete, {
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 import { useListRef } from "react-window";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
@@ -15,8 +16,14 @@ import VirtualizedListbox, {
 } from "./pokemon-input-select/VirtualizedListbox";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import HiddenAbilityLabel from "./pokemon-input-select/HiddenAbilityLabel";
+import twoLineWidth, {
+  scrollbarWidth,
+  widestText,
+} from "./pokemon-input-select/two-line-width";
+import ListTools from "./pokemon-input-select/shared/ListTools";
 import { isHiddenAbility } from "@/shared/pokedex";
-import { moveTypeIn } from "@/shared/generation-data";
+import { moveTypeIn, typesIn } from "@/shared/generation-data";
+import { gameFormat } from "@/shared/formats";
 import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
@@ -25,12 +32,19 @@ import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { isPokemonType } from "@/types";
 
 const ITEM_ICON_CLASS = "item-icon";
-// The Name list fits Venusaur-Gmax on one line: 4px of padding, a 40px icon,
-// 2px, the name at 16px Roboto (114px), 4px, and 4px of slack for font
-// rendering; longer names wrap
 // Space kept between the popup and the edge of the screen
 const POPUP_MARGIN = 8;
-const NAME_LIST_WIDTH = 168;
+// The Name list fits Venusaur-Gmax on one line: 4px of padding, a 40px icon,
+// 2px, the name at 16px Roboto (114px), 4px, and 4px of slack for font
+// rendering. It widens until the longest name in the language and game takes two lines.
+const MIN_NAME_LIST_WIDTH = 168;
+// What a row holds beside its text: the Name list's padding (4px each side), 40px icon,
+// and 2px; an item's padding, 24px icon, and 2px; a move's padding (8px each side)
+// and the 6px after its type
+const NAME_ROW_CHROME = 50;
+const ITEM_ROW_CHROME = 34;
+const MOVE_ROW_CHROME = 16;
+const MOVE_TYPE_GAP = 6;
 // At a 400px viewport: 32px page padding, 16px card padding, and an 8px column gap.
 const SMALL_PHONE_LIST_WIDTH = (400 - 32 - 16 - 8) / 2;
 const MIN_TEXT_LIST_WIDTH = (360 - 32 - 16 - 8) / 2;
@@ -68,10 +82,14 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   // item's icon after it
   leadingIcon?: boolean;
 }) {
-  const { t, names } = useTranslation();
+  const { t, names, locale } = useTranslation();
+  const { typography } = useTheme();
   const hasTypeIcons = useTypeIcons();
   const rootRef = useRef<HTMLDivElement>(null);
   const [rootWidth, setRootWidth] = useState<number>();
+  // The narrowest list in which no name, move, or item of the language and game
+  // takes more than two lines
+  const [fitWidth, setFitWidth] = useState(0);
   const [popupMaxHeight, setPopupMaxHeight] = useState<number>();
   const [isOpen, setIsOpen] = useState(false);
   // The popup opens above or below the input, whichever has more room, and
@@ -100,6 +118,65 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       window.removeEventListener("resize", measure);
     };
   }, [isOpen]);
+  const { generation, format } = store.currentTeam;
+  const isMove = pokemonProperty.startsWith("move");
+  const showMoveTypes = leadingIcon && isMove;
+  const measureList = useCallback(() => {
+    if (pokemonProperty === "ability") return;
+    const game = `${locale}|${generation}|${gameFormat(format)}`;
+    const [kind, labels, chrome] =
+      pokemonProperty === "name" ?
+        ([
+          "name",
+          () => store.gamePokemon.map(names.pokemon),
+          NAME_ROW_CHROME,
+        ] as const)
+      : pokemonProperty === "item" ?
+        ([
+          "item",
+          () => store.teamItems.map(names.item),
+          ITEM_ROW_CHROME,
+        ] as const)
+      : ([
+          "move",
+          () => store.gameMoves.map(names.move),
+          MOVE_ROW_CHROME +
+            (!showMoveTypes ? 2
+            : hasTypeIcons ? 20 + MOVE_TYPE_GAP
+            : widestText(
+                typesIn(generation).map(
+                  type => t.typeAbbreviations[type] ?? "",
+                ),
+                `500 10px ${typography.fontFamily}`,
+              ) +
+              8 +
+              MOVE_TYPE_GAP),
+        ] as const);
+    setFitWidth(
+      twoLineWidth(`${kind}|${game}`, labels, typography.body1, 80) +
+        chrome +
+        scrollbarWidth(),
+    );
+  }, [
+    pokemonProperty,
+    locale,
+    names,
+    t,
+    typography,
+    generation,
+    format,
+    showMoveTypes,
+    hasTypeIcons,
+  ]);
+  // A list opened before Roboto loaded is measured again once it has
+  useEffect(() => {
+    if (!isOpen) return;
+    let active = true;
+    document.fonts.ready.then(() => active && measureList());
+    return () => {
+      active = false;
+    };
+  }, [isOpen, measureList]);
   const filterOptions = useMemo(
     () =>
       createFilterOptions<SelectOption>({
@@ -129,18 +206,19 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     [options, value, names, pokemonProperty],
   );
   const id = `react-select-single-${teamIndex}-${pokemonProperty}`;
-  const isMove = pokemonProperty.startsWith("move");
   const missingPokemon =
     (isMove || pokemonProperty === "ability") && !store.team[teamIndex]?.name;
   const noOtherMoves = isMove && !missingPokemon && options.length === 0;
   const internalListRef = useListRef(null);
+  // The options the popup lists, which typing narrows down
+  const listedValuesRef = useRef<readonly string[]>([]);
   const isGrid = pokemonProperty === "name" && store.nameView !== "list";
   const columns = isGrid ? gridColumns(store.nameView) : 1;
   // The grid of icons spans both of the card's columns, which are 8px apart
   const popperWidth =
     pokemonProperty !== "name" ? undefined
     : isGrid ? rootWidth && 2 * rootWidth + 8
-    : NAME_LIST_WIDTH;
+    : Math.max(MIN_NAME_LIST_WIDTH, fitWidth);
 
   // Scrolls the virtualized list to keep the keyboard-highlighted option in view
   // (guarded because the list may be closed/stale, e.g. after an auto-selected value)
@@ -149,7 +227,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     option: SelectOption | null,
   ) => {
     if (option && internalListRef.current) {
-      const index = optionValues.indexOf(option.value);
+      const index = listedValuesRef.current.indexOf(option.value);
       if (index !== -1) {
         try {
           internalListRef.current.scrollToRow({
@@ -163,28 +241,58 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     }
   };
 
+  // Enter picks the top match of the typed text when no option is highlighted
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLDivElement> & {
+      defaultMuiPrevented?: boolean;
+    },
+  ) => {
+    if (event.key !== "Enter" || !isOpen || event.nativeEvent.isComposing)
+      return;
+    const input = event.target;
+    if (
+      !(input instanceof HTMLInputElement) ||
+      !input.value ||
+      input.getAttribute("aria-activedescendant")
+    )
+      return;
+    const [topMatch] = listedValuesRef.current;
+    if (!topMatch) return;
+    event.preventDefault();
+    event.defaultMuiPrevented = true;
+    onChange(topMatch);
+    setIsOpen(false);
+  };
+
   return (
     <VirtualizedListboxContext
       value={{
         pokemonProperty,
-        showMoveTypes: leadingIcon && pokemonProperty.startsWith("move"),
+        showMoveTypes,
         selectedValue: value,
         internalListRef,
+        listedValuesRef,
         popupMaxHeight,
-        nameListWidth: NAME_LIST_WIDTH,
+        nameListWidth: Math.max(MIN_NAME_LIST_WIDTH, fitWidth),
       }}
     >
       <Autocomplete
         id={id}
         ref={rootRef}
+        open={isOpen}
+        onKeyDown={handleKeyDown}
         onOpen={() => {
           measure();
+          measureList();
           setIsOpen(true);
         }}
         onClose={() => setIsOpen(false)}
         options={options}
         value={selectedOption}
         disableListWrap
+        clearText={t.clear}
+        openText={t.teams.open}
+        closeText={t.close}
         sx={{
           // Stops a wide item icon row from widening its grid column
           ...(pokemonProperty === "item" && { minWidth: 0 }),
@@ -208,16 +316,24 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         filterOptions={filterOptions}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         noOptionsText={
-          <Typography variant="body2" sx={{ textAlign: "center" }}>
-            {noOtherMoves ? t.team.noOtherMoves : t.team.nothingFound}
-            {missingPokemon && (
-              <>
-                {" "}
-                <br />
-                {t.team.selectPokemonFirst}
-              </>
+          <>
+            {/* Filters that leave no pokemon can still be changed from here */}
+            {pokemonProperty === "name" && store.isMoreOpen && (
+              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <ListTools />
+              </Box>
             )}
-          </Typography>
+            <Typography variant="body2" sx={{ textAlign: "center" }}>
+              {noOtherMoves ? t.team.noOtherMoves : t.team.nothingFound}
+              {missingPokemon && (
+                <>
+                  {" "}
+                  <br />
+                  {t.team.selectPokemonFirst}
+                </>
+              )}
+            </Typography>
+          </>
         }
         // Hands each option to VirtualizedListbox as a [props, option] tuple, which
         // renders only the visible rows. MUI types the return as a ReactNode, so
@@ -233,16 +349,22 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
               style: { width: popperWidth },
             }),
             sx: {
+              maxWidth: `calc(100vw - ${2 * POPUP_MARGIN}px)`,
               // Assuming 4px inline padding (defined in VirtualizedListbox)
               // and 2px left padding on non-icon part of the dropdown row:
               // Minimum width to fit Aerodactylite row in one line
               ...(pokemonProperty !== "name" && {
                 minWidth: {
-                  xxs:
+                  xxs: Math.max(
+                    fitWidth,
                     store.isMoreOpen || pokemonProperty === "item" ?
                       SMALL_PHONE_LIST_WIDTH
                     : MIN_TEXT_LIST_WIDTH,
-                  xs: pokemonProperty === "item" ? 130 : MIN_TEXT_LIST_WIDTH,
+                  ),
+                  xs: Math.max(
+                    fitWidth,
+                    pokemonProperty === "item" ? 130 : MIN_TEXT_LIST_WIDTH,
+                  ),
                 },
               }),
               [`& .${autocompleteClasses.noOptions}`]: {
@@ -359,7 +481,9 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 },
                 htmlInput: {
                   ...params.slotProps.htmlInput,
-                  name: id,
+                  // "search" stops iOS Safari offering to autofill a contact,
+                  // which it does for any input it reads as a name field
+                  name: `search-${id}`,
                   "aria-label": t.team.input(teamIndex + 1, pokemonProperty),
                 },
               }}

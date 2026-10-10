@@ -211,6 +211,9 @@ const FiltersDialog = observer(function FiltersDialog() {
                 getOptionLabel={names.ability}
                 filterOptions={filterAbilities}
                 value={store.filters.ability || null}
+                clearText={t.clear}
+                openText={t.teams.open}
+                closeText={t.close}
                 onChange={(_event, value) =>
                   (store.filters.ability = value ?? "")
                 }

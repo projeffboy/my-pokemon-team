@@ -7,6 +7,7 @@ import RedoIcon from "@mui/icons-material/Redo";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
+import { teamUrl } from "@/app/shared/team-link";
 import { redoEdit, undoEdit } from "@/app/shared/history-actions";
 import { useIsMdDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -16,7 +17,6 @@ import useFittingLabel from "@/app/shared/use-fitting-label";
 import useDiceRoll from "@/app/shared/use-dice-roll";
 import useTeamToolsToggle from "./use-team-tools-toggle";
 import type { SyntheticEvent } from "react";
-import TeamSearchTools from "./TeamSearchTools";
 import useCompactHistory from "./use-compact-history";
 
 export const shareTeamLink = () => {
@@ -24,7 +24,7 @@ export const shareTeamLink = () => {
   if (store.isTeamEmpty) store.openSnackbar(team.teamEmpty, false, "warning");
   else
     copyToClipboard(
-      window.location.href,
+      teamUrl(store.team),
       team.linkCopied,
       team.linkNotCopied,
       "link",
@@ -45,9 +45,7 @@ const TeamToolbar = observer(function TeamToolbar() {
     pressed: modePressed,
   } = useTeamToolsToggle();
   const randomLabels = t.teams.randomTeamLabels;
-  const history = useCompactHistory(
-    `${isMoreOpen}-${t.undo}-${t.redo}-${t.team.filters}-${t.team.sort}-${modeLabel}`,
-  );
+  const history = useCompactHistory(`${t.undo}-${t.redo}-${modeLabel}`);
   const random = useFittingLabel(randomLabels);
   const diceRoll = useDiceRoll();
   const handleRandomize = (event: SyntheticEvent<HTMLElement>) => {
@@ -121,7 +119,6 @@ const TeamToolbar = observer(function TeamToolbar() {
             {t.redo}
           </ToolbarButton>
           <ManageTeamMenu />
-          <TeamSearchTools stacked />
           {/* Phones and tablets have the More toggle above the slot tabs instead */}
           <ToolbarButton
             icon={<ModeIcon sx={{ color: modeIconColor }} />}

@@ -80,10 +80,26 @@ export function readImages(screenshot: unknown, images: unknown) {
     : undefined;
 }
 
+// The site posts JSON from its own page. Another site's page cannot send JSON here,
+// which keeps it from making its visitors send feedback.
+function isFromSite(request: Request) {
+  const contentType = request.headers.get("content-type") ?? "";
+  const fetchSite = request.headers.get("sec-fetch-site");
+  return (
+    contentType.split(";")[0]?.trim().toLowerCase() === "application/json" &&
+    (fetchSite === null || fetchSite === "same-origin")
+  );
+}
+
 export async function POST(request: Request) {
-  const { message, email, link, screen, screenshot, images } = await request
-    .json()
-    .catch(() => ({}) as Record<string, unknown>);
+  if (!isFromSite(request)) {
+    return new Response("Not from the site", { status: 403 });
+  }
+  const body: unknown = await request.json().catch(() => undefined);
+  const { message, email, link, screen, screenshot, images } = (
+    typeof body === "object" && body !== null ?
+      body
+    : {}) as Record<string, unknown>;
   if (
     !isString(message, MAX_MESSAGE_LENGTH) ||
     !message.trim() ||

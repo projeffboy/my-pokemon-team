@@ -130,3 +130,35 @@ test("Pokemon options recompute after each filter and filter replacement", ({
     dispose();
   }
 });
+
+test("a past generation leaves out pokemon its games lack, and the latest lists every pokemon", ({
+  store,
+}) => {
+  // Greninja was not in Sword and Shield, so it would have no moves there
+  expect(store.filteredPokemon).toContain("greninja");
+  store.currentTeam.generation = 8;
+  expect(store.filteredPokemon).not.toContain("greninja");
+  expect(store.filteredPokemon).toContain("corviknight");
+  expect(store.filterAbilities).not.toContain("Battle Bond");
+  store.currentTeam.generation = 7;
+  expect(store.filteredPokemon).toContain("greninja");
+  expect(store.filterAbilities).toContain("Battle Bond");
+});
+
+test("a past generation keeps the pokemon that learn no moves in any game", ({
+  store,
+}) => {
+  store.currentTeam.generation = 5;
+  expect(store.filteredPokemon).toContain("pokestarufo");
+});
+
+test("choosing Giratina-Origin fills in the item its generation has", ({
+  store,
+}) => {
+  store.currentTeam.generation = 4;
+  store.selectPokemon(0, "giratinaorigin");
+  expect(store.team[0].item).toBe("griseousorb");
+  store.currentTeam.generation = 9;
+  store.selectPokemon(0, "giratinaorigin");
+  expect(store.team[0].item).toBe("griseouscore");
+});

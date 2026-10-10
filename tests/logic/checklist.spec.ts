@@ -77,7 +77,13 @@ test("defensive checks count clerics and phazers", () => {
   ).toEqual(["Cleric", "Phazer"]);
 });
 
-test("boosting moves raise two stages in total, or are Curse", () => {
+test("Ceaseless Edge sets an entry hazard, as Stone Axe does", () => {
+  expect(
+    checked(createTeam({ name: "samurotthisui", move1: "ceaselessedge" })),
+  ).toEqual(["Entry Hazard"]);
+});
+
+test("boosting moves raise the user two stages in total, or are Curse or Belly Drum", () => {
   const boosts = (move: string) =>
     checked(createTeam({ name: "cloyster", move1: move })).includes(
       "Boosting Move",
@@ -85,8 +91,12 @@ test("boosting moves raise two stages in total, or are Curse", () => {
   expect(boosts("shellsmash")).toBe(true);
   expect(boosts("growth")).toBe(true);
   expect(boosts("curse")).toBe(true);
+  expect(boosts("bellydrum")).toBe(true);
   expect(boosts("howl")).toBe(false);
   expect(boosts("iciclespear")).toBe(false);
+  // These raise a foe's or an ally's stats
+  for (const move of ["swagger", "decorate", "coaching"])
+    expect(boosts(move)).toBe(false);
 });
 
 test("offensive checks count pivot moves and choice items", () => {

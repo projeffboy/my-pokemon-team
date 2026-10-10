@@ -57,15 +57,25 @@ export function createSavedTeam(
   };
 }
 
-// E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric
+// What a required item replaced: Giratina-Origin held the Griseous Orb before Gen 9
+const EARLIER_REQUIRED_ITEMS: Record<string, string> = {
+  griseouscore: "griseousorb",
+};
+
+// E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric.
+// Given the team's game, it is the first of them that game has.
 export function getAutoSelectedItem(
   pokemon: string,
   pokemonItem: string,
+  isAvailable?: (item: string) => boolean,
 ): string {
-  const { requiredItem, requiredItems } = pokedex[pokemon] ?? {};
-  const itemName = requiredItem ?? requiredItems?.[0];
+  const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
+  const items = [requiredItem, ...requiredItems]
+    .map(name => (name && itemNameInverse(name)) || "")
+    .flatMap(item => [item, EARLIER_REQUIRED_ITEMS[item] ?? ""])
+    .filter(item => item);
 
-  return (itemName && itemNameInverse(itemName)) || pokemonItem;
+  return (isAvailable && items.find(isAvailable)) || items[0] || pokemonItem;
 }
 
 // E.g. Thick Fat for Venusaur-Mega, its only ability

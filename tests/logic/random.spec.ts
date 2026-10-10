@@ -78,6 +78,34 @@ test("prefers pokemon that are not on the team yet", () => {
   expect(randomPokemon([], [], () => 0)).toBe("");
 });
 
+test("prefers a species that is not on the team yet, then another forme", () => {
+  const options = ["tyranitar", "tyranitarmega", "volcarona"];
+  for (const random of [() => 0, () => 0.99]) {
+    expect(randomPokemon(options, ["tyranitarmega"], random)).toBe("volcarona");
+    expect(randomPokemon(options, ["tyranitar"], random)).toBe("volcarona");
+  }
+  expect(randomPokemon(options, ["tyranitar", "volcarona"], () => 0)).toBe(
+    "tyranitarmega",
+  );
+});
+
+test("a random item is one no teammate holds, while any remain", () => {
+  const taken = RANDOM_ITEMS.slice(1);
+  for (const random of [() => 0, () => 0.5, () => 0.99]) {
+    expect(
+      randomSet("lapras", completeLearnset("lapras"), random, 9, "", taken)
+        .item,
+    ).toBe(RANDOM_ITEMS[0]);
+  }
+  expect(
+    RANDOM_ITEMS.includes(
+      randomSet("lapras", completeLearnset("lapras"), () => 0, 9, "", [
+        ...RANDOM_ITEMS,
+      ]).item,
+    ),
+  ).toBe(true);
+});
+
 test("skips pokemon that learn no moves while others remain", () => {
   expect(completeLearnset("pokestarufo")).toEqual([]);
   for (const random of [() => 0, () => 0.99]) {

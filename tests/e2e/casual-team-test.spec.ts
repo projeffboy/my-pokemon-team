@@ -77,8 +77,9 @@ test.describe("Casual Team", () => {
       await addPokemon(page, i, pokemon);
     }
 
-    // The URL's `team` parameter should reflect the fully built team
-    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Pikachu");
+    // The URL's `team` parameter should reflect the fully built team. After this
+    // many quick edits it follows within a moment, so wait for the last one.
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("- Attract");
     const teamText = getTeamTextFromUrl(page);
     for (const pokemon of team) {
       expect(teamText).toContain(pokemon.name);

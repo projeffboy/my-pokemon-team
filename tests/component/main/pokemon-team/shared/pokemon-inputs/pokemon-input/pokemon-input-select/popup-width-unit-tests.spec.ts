@@ -61,3 +61,42 @@ test("collapsed move and ability lists are at least their 360px viewport width",
   await page.getByRole("combobox", { name: "Pokemon 1's item" }).click();
   await expect.poll(async () => (await popup.boundingBox())?.width).toBe(172);
 });
+
+test("the Name list fits its longest names within two lines", async ({
+  page,
+}) => {
+  const popup = page.locator(".MuiAutocomplete-popper");
+  for (const width of [320, 1200]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.evaluate(() => document.fonts.ready);
+    const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    const option = page.getByRole("option", {
+      name: "Ogerpon-Hearthflame-Tera",
+      exact: true,
+    });
+    // Resizing can swap the team viewer, which remounts the input and drops its text
+    await expect(async () => {
+      await input.fill("Ogerpon");
+      await expect(option).toBeVisible({ timeout: 1000 });
+    }).toPass();
+    await expect
+      .poll(() =>
+        option
+          .locator("span")
+          .last()
+          .evaluate(label => {
+            const lineHeight = parseFloat(getComputedStyle(label).lineHeight);
+            return Math.round(
+              label.getBoundingClientRect().height / lineHeight,
+            );
+          }),
+      )
+      .toBe(2);
+    const bounds = await popup.boundingBox();
+    expect(bounds?.width).toBeGreaterThanOrEqual(168);
+    expect(bounds && bounds.x >= 0 && bounds.x + bounds.width <= width).toBe(
+      true,
+    );
+    await input.press("Escape");
+  }
+});

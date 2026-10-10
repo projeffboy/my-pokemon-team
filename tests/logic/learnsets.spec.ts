@@ -45,6 +45,33 @@ test.describe("learnset inheritance", () => {
     expect(canItLearn("bellydrum", "marowakalola")).toBe(true);
   });
 
+  test("a forme of a forme learns what that forme does", () => {
+    expect(learnsets.darmanitangalarzen).toBeUndefined();
+    expect(learnsets.darmanitangalar).toContain("iciclecrash");
+    expect(canItLearn("iciclecrash", "darmanitangalarzen")).toBe(true);
+    // Darmanitan's own moves stay with the Unovan forme
+    expect(learnsets.darmanitan).toContain("flareblitz");
+    expect(canItLearn("flareblitz", "darmanitangalarzen")).toBe(
+      canItLearn("flareblitz", "darmanitangalar"),
+    );
+    expect(canItLearn("surgingstrikes", "urshifurapidstrikegmax")).toBe(true);
+  });
+
+  test("a regional evolution of a pokemon with a cap forme of that region inherits the pokemon's moves", () => {
+    // Pikachu-Alola is a cap, not the Pikachu that Raichu-Alola evolves from
+    expect(learnsets.pikachu).toContain("extremespeed");
+    expect(learnsets.pikachualola).not.toContain("extremespeed");
+    expect(canItLearn("extremespeed", "raichualola")).toBe(true);
+  });
+
+  test("Smeargle sketches the moves of other pokemon, but no Z-Moves", () => {
+    expect(learnsets.smeargle).not.toContain("fakeout");
+    for (const move of ["spore", "fakeout", "followme", "wideguard"])
+      expect(canItLearn(move, "smeargle")).toBe(true);
+    expect(canItLearn("aciddownpour", "smeargle")).toBe(false);
+    expect(canItLearn("catastropika", "smeargle")).toBe(false);
+  });
+
   test("mrrime resolves punctuation in its predecessor's name", () => {
     expect(learnsets.mrrime).not.toContain("healingwish");
     expect(canItLearn("healingwish", "mrrime")).toBe(true);

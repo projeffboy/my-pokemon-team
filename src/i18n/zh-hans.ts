@@ -33,6 +33,11 @@ const zhHans: Messages = {
   championsGenerationShort: "第9世代（Champions）",
   language: "语言",
   languageFailed: "无法加载语言，请重试。",
+  error: {
+    title: "出了点问题",
+    description: "请重新加载页面重试。",
+    reload: "重新加载",
+  },
   feedback: {
     button: "发送反馈",
     title: "发送反馈",
@@ -506,6 +511,7 @@ const zhHans: Messages = {
     infographicCaption: "同样适用于第7至9世代",
   },
   credits: {
+    madeBy: "制作：{name}",
     showdown:
       "感谢 Pokemon Showdown 的各位慷慨地允许我使用他们全部的宝可梦图像、图标和数据。绝对不可或缺！",
     alsoThanks: "同时感谢",

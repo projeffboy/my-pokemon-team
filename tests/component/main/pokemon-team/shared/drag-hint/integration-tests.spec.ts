@@ -43,8 +43,8 @@ test.describe("Drag hint - Integration Tests", () => {
             name: "Pokemon team slots",
           });
           const wiggle = viewer.locator(".slot-lift").first();
-          const first = viewer.locator('img[alt="dunsparce"]');
-          const second = viewer.locator('img[alt="qwilfish"]');
+          const first = viewer.locator('img[alt="Dunsparce"]');
+          const second = viewer.locator('img[alt="Qwilfish"]');
           await expect(second).toHaveAttribute("data-selection-animating", "");
           await expect
             .poll(() =>

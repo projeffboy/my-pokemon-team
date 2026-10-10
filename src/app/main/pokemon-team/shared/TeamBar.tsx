@@ -11,13 +11,12 @@ import { redoEdit, undoEdit } from "@/app/shared/history-actions";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import MoreToggle from "./MoreToggle";
 import TeamToolbar from "./TeamToolbar";
-import TeamSearchTools from "./TeamSearchTools";
 import useCompactHistory from "./use-compact-history";
 
 const TeamBar = observer(function TeamBar({ tabs }: { tabs: ReactNode }) {
   const { t } = useTranslation();
   const history = useCompactHistory(
-    `${store.isMoreOpen}-${t.undo}-${t.redo}-${t.team.filters}-${t.team.sort}-${t.team.less}-${t.team.more}`,
+    `${t.undo}-${t.redo}-${t.team.less}-${t.team.more}`,
   );
 
   return (
@@ -33,7 +32,8 @@ const TeamBar = observer(function TeamBar({ tabs }: { tabs: ReactNode }) {
           boxSizing: "border-box",
           mb: 1,
           "& .MuiButton-root": {
-            flex: "1 1 auto",
+            // Equal columns, so the toggle's changing label moves nothing
+            flex: "1 1 0",
             minWidth: 0,
             minHeight: 0,
             px: 0.5,
@@ -73,7 +73,6 @@ const TeamBar = observer(function TeamBar({ tabs }: { tabs: ReactNode }) {
         >
           <span className="history-label">{t.redo}</span>
         </Button>
-        <TeamSearchTools />
         <MoreToggle />
       </Paper>
       <Collapse in={store.isMoreOpen}>

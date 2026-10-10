@@ -11,7 +11,8 @@ import getPokemonLabel from "../get-pokemon-label";
 import { dragHandle, useMoveSlot } from "../use-slot-drag";
 
 // A grip jutting out of the card's top left corner: dragging it moves the card
-// to the slot it is dropped on, and clicking it lists the slots instead
+// to the slot it is dropped on, and clicking it lists the slots instead.
+// Phones and tablets drag the slot tabs, so their cards have no grip.
 const chip = {
   position: "absolute",
   top: -8,
@@ -33,7 +34,7 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
 }: {
   teamIndex: number;
   setGripRef: (node: HTMLElement | null) => void;
-  listeners: Record<string, unknown> | undefined;
+  listeners?: Record<string, unknown>;
 }) {
   const translation = useTranslation();
   const moveSlot = useMoveSlot();

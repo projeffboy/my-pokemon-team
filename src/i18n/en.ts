@@ -26,6 +26,12 @@ const en = {
   championsGenerationShort: "Gen 9 (Champions)",
   language: "Language",
   languageFailed: "That language could not be loaded. Try again.",
+  // Shown in place of a part of the page that failed to load or crashed
+  error: {
+    title: "Something went wrong",
+    description: "Reload the page to try again.",
+    reload: "Reload",
+  },
   feedback: {
     button: "Send feedback",
     title: "Send Feedback",
@@ -507,6 +513,7 @@ const en = {
     infographicCaption: "Also applies for Gen 7-9",
   },
   credits: {
+    madeBy: "Made by {name}",
     showdown:
       "The folks at Pokemon Showdown are very generous to let me use all of their sprites, icons, and pokemon data. Absolutely indispensable!",
     alsoThanks: "Also thanks to",

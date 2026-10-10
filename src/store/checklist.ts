@@ -52,15 +52,20 @@ const inflictsStatus: Check = team =>
     return !!(status || (secondary?.chance === 100 && secondary.status));
   });
 
-// Curse, or moves that raise stats by two or more stages in total
+// The data lists a move's boosts without saying whose stats they raise
+const BOOSTS_ANOTHER_POKEMON = ["swagger", "decorate", "coaching"];
+
+// Curse, Belly Drum, or moves that raise the user's stats by two or more stages in total
 const boostsStats: Check = team =>
   teamMoves(team).some(
     move =>
       move === "curse" ||
-      Object.values(moves[move]?.boosts ?? {}).reduce(
-        (sum, boost) => sum + boost,
-        0,
-      ) >= 2,
+      move === "bellydrum" ||
+      (!BOOSTS_ANOTHER_POKEMON.includes(move) &&
+        Object.values(moves[move]?.boosts ?? {}).reduce(
+          (sum, boost) => sum + boost,
+          0,
+        ) >= 2),
   );
 
 const hasRecovery = hasAnyMove([
@@ -96,6 +101,7 @@ export const checklist: ChecklistGroup[] = [
           "toxicspikes",
           "stickyweb",
           "stoneaxe",
+          "ceaselessedge",
         ]),
       },
       {

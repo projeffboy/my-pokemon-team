@@ -38,7 +38,7 @@ import {
   TERA_TYPES,
 } from "@/shared/set-details";
 import { parseShowdownFormatId, showdownFormatId } from "@/shared/formats";
-import { canItLearn } from "./learnsets";
+import { canItLearn, isItemAvailable } from "./learnsets";
 import { generationRules } from "@/shared/generation-rules";
 
 const statsLine = (
@@ -202,7 +202,11 @@ export function parseTeamText(
     if (itemText) {
       // Check if item is legit
       const item = itemNameInverse(itemText);
-      member.item = item || getAutoSelectedItem(pokemon, "");
+      member.item =
+        item ||
+        getAutoSelectedItem(pokemon, "", item =>
+          isItemAvailable(item, generation, format),
+        );
     }
 
     let moveIndex = 0;

@@ -11,6 +11,7 @@ export default function GenerationOption({
   compact,
   logos,
   nowrap = false,
+  placeholders = false,
   status,
 }: {
   label: string;
@@ -18,6 +19,7 @@ export default function GenerationOption({
   compact?: string;
   logos: GameLogo[];
   nowrap?: boolean;
+  placeholders?: boolean;
   status?: string;
 }) {
   const { ref, label: fittingLabel } = useFittingLabel<HTMLSpanElement>([
@@ -33,7 +35,11 @@ export default function GenerationOption({
           component="span"
           sx={{ display: "flex", alignItems: "center", gap: 1 }}
         >
-          <GameLogos logos={logos} nowrap={nowrap} />
+          <GameLogos
+            logos={logos}
+            nowrap={nowrap}
+            placeholders={placeholders}
+          />
           {status && (
             <Typography
               component="span"

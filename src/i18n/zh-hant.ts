@@ -33,6 +33,11 @@ const zhHant: Messages = {
   championsGenerationShort: "第9世代（Champions）",
   language: "語言",
   languageFailed: "無法載入語言，請再試一次。",
+  error: {
+    title: "發生了一些問題",
+    description: "請重新載入頁面再試一次。",
+    reload: "重新載入",
+  },
   feedback: {
     button: "意見回饋",
     title: "意見回饋",
@@ -509,6 +514,7 @@ const zhHant: Messages = {
     infographicCaption: "同樣適用於第7至9世代",
   },
   credits: {
+    madeBy: "製作：{name}",
     showdown:
       "感謝 Pokemon Showdown 的各位慷慨提供所有精靈圖、圖示與寶可夢資料。不可或缺！",
     alsoThanks: "同時感謝",

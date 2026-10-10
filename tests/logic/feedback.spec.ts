@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { describeBrowser, readImages } from "../../api/feedback";
+import { describeBrowser, POST, readImages } from "../../api/feedback";
 
 test("names the browser and OS from the user agent", () => {
   const userAgents = {
@@ -31,4 +31,41 @@ test("accepts up to three JPEG images within the size limit", () => {
     undefined,
   );
   expect(readImages(jpeg(2_000_000), [jpeg(2_000_000)])).toBeUndefined();
+});
+
+test("refuses feedback that the site's own page did not post", async () => {
+  const post = (headers: Record<string, string>, body: string) =>
+    POST(
+      new Request("https://mypokemonteam.com/api/feedback", {
+        method: "POST",
+        headers,
+        body,
+      }),
+    );
+  const feedback = JSON.stringify({ message: "Nice site" });
+  // A form on another site posts without a JSON content type
+  expect((await post({ "Content-Type": "text/plain" }, feedback)).status).toBe(
+    403,
+  );
+  expect(
+    (
+      await post(
+        { "Content-Type": "application/json", "Sec-Fetch-Site": "cross-site" },
+        feedback,
+      )
+    ).status,
+  ).toBe(403);
+  // Its own page's posts are read: these have nothing to send
+  for (const body of ["null", "[]", "{}", "not JSON"])
+    expect(
+      (
+        await post(
+          {
+            "Content-Type": "application/json; charset=utf-8",
+            "Sec-Fetch-Site": "same-origin",
+          },
+          body,
+        )
+      ).status,
+    ).toBe(400);
 });

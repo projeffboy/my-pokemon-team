@@ -17,6 +17,10 @@ export const formatGeneration = (format: string, generation: Generation) =>
     (variantGeneration(format) ?? generation)
   );
 
+// The format when it is a game, which share links carry, and "" for a tier or none
+export const gameFormat = (format: string) =>
+  format === CHAMPIONS_FORMAT || variantGeneration(format) ? format : "";
+
 // The Format options listed in the Filters dialog
 export const FORMATS: readonly string[] = [
   CHAMPIONS_FORMAT,

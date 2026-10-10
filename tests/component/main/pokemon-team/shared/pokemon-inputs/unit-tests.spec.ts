@@ -145,6 +145,55 @@ test.describe("Pokemon Card - Unit Tests", () => {
     await expect(empty).toHaveValue("Thunderbolt");
   });
 
+  test("arrow keys keep the highlighted option in view while typing narrows the list", async ({
+    page,
+  }) => {
+    const input = page.getByLabel("Pokemon 1's name");
+    await input.click();
+    await input.fill("ee");
+    const options = page.getByRole("option");
+    await expect(options.first()).toBeVisible();
+    for (let press = 1; press <= 14; press++) {
+      await input.press("ArrowDown");
+      const highlighted = page.locator(
+        `[id="${await input.getAttribute("aria-activedescendant")}"]`,
+      );
+      await expect(highlighted).toHaveAttribute(
+        "data-option-index",
+        String(press - 1),
+      );
+      await expect(highlighted).toBeInViewport({ ratio: 0.9 });
+    }
+  });
+
+  test("Enter picks the top match of the typed text, and a highlighted option when there is one", async ({
+    page,
+  }) => {
+    const input = page.getByLabel("Pokemon 1's name");
+    await input.click();
+    await input.fill("Stonjour");
+    await expect(page.getByRole("option")).toHaveCount(1);
+    await input.press("Enter");
+    await expect(input).toHaveValue("Stonjourner");
+    await expect(page.getByRole("listbox")).toBeHidden();
+
+    const move = page.getByLabel("Pokemon 1's move1");
+    await move.click();
+    await move.fill("Rock");
+    await expect(page.getByRole("option").first()).toBeVisible();
+    await move.press("ArrowDown");
+    await move.press("ArrowDown");
+    const second = await page.getByRole("option").nth(1).textContent();
+    await move.press("Enter");
+    await expect(move).toHaveValue(second ?? "");
+
+    // Enter in an untouched input picks nothing
+    const empty = page.getByLabel("Pokemon 1's item");
+    await empty.click();
+    await empty.press("Enter");
+    await expect(empty).toHaveValue("");
+  });
+
   test("Ditto's empty move slots explain that no other moves are available", async ({
     page,
   }) => {
@@ -239,7 +288,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
   test("should have question mark sprite by default", async ({ page }) => {
     for (const i of [1, 2, 5]) {
       const card = await ensureCardVisible(page, i);
-      const questionMark = card.getByRole("img", { name: "question-mark" });
+      const questionMark = card.locator('img[alt=""]');
       await expect(questionMark).toBeVisible();
     }
   });
@@ -258,13 +307,13 @@ test.describe("Pokemon Card - Unit Tests", () => {
     for (const tools of [false, true]) {
       if (tools) await openTeamTools(page);
       await selectPokemon(page, "Chimecho");
-      const small = card.getByRole("img", { name: "chimecho", exact: true });
+      const small = card.getByRole("img", { name: "Chimecho", exact: true });
       await expect(small).toHaveJSProperty("naturalHeight", 64);
       const before = await card.boundingBox();
 
       await selectPokemon(page, "Exeggutor-Alola");
       const sprite = card.getByRole("img", {
-        name: "exeggutor-alola",
+        name: "Exeggutor-Alola",
         exact: true,
       });
       await expect(sprite).toHaveJSProperty("naturalHeight", 180);

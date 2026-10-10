@@ -38,6 +38,11 @@ const de: Messages = {
   language: "Sprache",
   languageFailed:
     "Die Sprache konnte nicht geladen werden. Versuche es erneut.",
+  error: {
+    title: "Etwas ist schiefgelaufen",
+    description: "Lade die Seite neu, um es noch einmal zu versuchen.",
+    reload: "Neu laden",
+  },
   feedback: {
     button: "Feedback senden",
     title: "Feedback senden",
@@ -528,6 +533,7 @@ const de: Messages = {
     infographicCaption: "Gilt auch für Gen. 7–9",
   },
   credits: {
+    madeBy: "Erstellt von {name}",
     showdown:
       "Die Leute von Pokemon Showdown sind so großzügig, mich all ihre Sprites, Symbole und Pokémon-Daten verwenden zu lassen. Absolut unverzichtbar!",
     alsoThanks: "Außerdem danke an",

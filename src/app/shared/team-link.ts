@@ -2,7 +2,7 @@
 import store from "@/store";
 import { isGeneration } from "@/shared/generations";
 import { GAME_VARIANTS, variantGeneration } from "@/shared/game-variants";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, gameFormat } from "@/shared/formats";
 import { DEFAULT_TEAM_SETTINGS } from "@/shared/team";
 import type { SavedTeam, ReadonlyTeam } from "@/types";
 import { toBase64Url, fromBase64Url } from "./base64url";
@@ -22,19 +22,11 @@ export function syncGenerationToUrl(
   url: URL,
   settings: Pick<SavedTeam, "generation" | "format">,
 ) {
-  if (
-    settings.generation !== 9 ||
-    (!url.searchParams.has("team") &&
-      settings.format !== CHAMPIONS_FORMAT &&
-      !variantGeneration(settings.format))
-  )
+  const game = gameFormat(settings.format);
+  if (settings.generation !== 9 || (!url.searchParams.has("team") && !game))
     url.searchParams.set("gen", String(settings.generation));
   else url.searchParams.delete("gen");
-  if (
-    settings.format === CHAMPIONS_FORMAT ||
-    variantGeneration(settings.format)
-  )
-    url.searchParams.set("game", settings.format);
+  if (game) url.searchParams.set("game", game);
   else url.searchParams.delete("game");
 }
 

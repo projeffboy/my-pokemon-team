@@ -185,6 +185,7 @@ const GenerationSelect = observer(function GenerationSelect() {
               logos={option.logos}
               status={option.disabled ? t.comingSoon : undefined}
               nowrap
+              placeholders
             />
           </Box>
         ))}
