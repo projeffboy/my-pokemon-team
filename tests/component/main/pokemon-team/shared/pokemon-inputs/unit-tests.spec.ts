@@ -395,7 +395,8 @@ test.describe("Pokemon Card - Unit Tests", () => {
     ]);
     expect(iconBox!.x + iconBox!.width).toBeLessThanOrEqual(inputBox!.x);
 
-    // Card types and move types follow the stats as available space changes.
+    // The card's own types follow the stats as available space changes, but a
+    // move's type is always the icon, which takes less of the move's room
     for (const width of [320, 480, 600, 960, 1200, 1920]) {
       await page.setViewportSize({ width, height: 1000 });
       const statsChip = page
@@ -407,12 +408,14 @@ test.describe("Pokemon Card - Unit Tests", () => {
         const card = page.getByRole("region", { name: "Pokemon 1" });
         const types = card.getByRole("img", { name: "Electric", exact: true });
         await expect(types).toHaveCount(2);
-        for (const chip of await types.all()) {
-          expect(await chip.evaluate(element => element.tagName)).toBe(
-            hasIcon ? "IMG" : "SPAN",
-          );
-          if (!hasIcon) await expect(chip).toHaveText("ELC");
-        }
+        const cardType = types.first();
+        expect(await cardType.evaluate(element => element.tagName)).toBe(
+          hasIcon ? "IMG" : "SPAN",
+        );
+        if (!hasIcon) await expect(cardType).toHaveText("ELC");
+        expect(await electricIcon.evaluate(element => element.tagName)).toBe(
+          "IMG",
+        );
       }).toPass();
 
       await input.press("ArrowDown");
@@ -424,11 +427,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
         exact: true,
       });
       await expect(optionType).toBeVisible();
-      const hasIcon = (await statsChip.locator("img").count()) > 0;
-      expect(await optionType.evaluate(element => element.tagName)).toBe(
-        hasIcon ? "IMG" : "SPAN",
-      );
-      if (!hasIcon) await expect(optionType).toHaveText("ELC");
+      expect(await optionType.evaluate(element => element.tagName)).toBe("IMG");
       await input.press("Escape");
     }
 

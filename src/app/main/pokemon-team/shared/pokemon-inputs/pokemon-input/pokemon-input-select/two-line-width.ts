@@ -21,16 +21,6 @@ export const scrollbarWidth = () => {
   return width;
 };
 
-// The widest of some short labels on one line, such as the type abbreviations
-export const widestText = (labels: readonly string[], font: string) => {
-  const context = document.createElement("canvas").getContext("2d");
-  if (!context) return 0;
-  context.font = font;
-  return Math.ceil(
-    Math.max(0, ...labels.map(label => context.measureText(label).width)),
-  );
-};
-
 // The narrowest text column, no narrower than `minWidth`, in which none of a dropdown's
 // labels takes more than two lines. `key` names the list: its kind, language, and game.
 // Measured in the browser, since the width of a name depends on the fonts the device has,

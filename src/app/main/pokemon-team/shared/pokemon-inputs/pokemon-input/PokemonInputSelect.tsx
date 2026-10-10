@@ -18,17 +18,14 @@ import PokemonIcon from "@/app/shared/PokemonIcon";
 import HiddenAbilityLabel from "./pokemon-input-select/HiddenAbilityLabel";
 import twoLineWidth, {
   scrollbarWidth,
-  widestText,
 } from "./pokemon-input-select/two-line-width";
 import ListTools from "./pokemon-input-select/shared/ListTools";
 import { isHiddenAbility } from "@/shared/pokedex";
-import { moveTypeIn, typesIn } from "@/shared/generation-data";
+import { moveTypeIn } from "@/shared/generation-data";
 import { gameFormat } from "@/shared/formats";
 import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
-import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
-import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { isPokemonType } from "@/types";
 
 const ITEM_ICON_CLASS = "item-icon";
@@ -40,11 +37,11 @@ const POPUP_MARGIN = 8;
 const MIN_NAME_LIST_WIDTH = 168;
 // What a row holds beside its text: the Name list's padding (4px each side), 40px icon,
 // and 2px; an item's padding, 24px icon, and 2px; a move's padding (8px each side)
-// and the 6px after its type
+// and, with its type, the 20px icon and the 6px after it
 const NAME_ROW_CHROME = 50;
 const ITEM_ROW_CHROME = 34;
 const MOVE_ROW_CHROME = 16;
-const MOVE_TYPE_GAP = 6;
+const MOVE_TYPE_ICON = 26;
 // At a 400px viewport: 32px page padding, 16px card padding, and an 8px column gap.
 const SMALL_PHONE_LIST_WIDTH = (400 - 32 - 16 - 8) / 2;
 const MIN_TEXT_LIST_WIDTH = (360 - 32 - 16 - 8) / 2;
@@ -84,7 +81,6 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
 }) {
   const { t, names, locale } = useTranslation();
   const { typography } = useTheme();
-  const hasTypeIcons = useTypeIcons();
   const rootRef = useRef<HTMLDivElement>(null);
   const [rootWidth, setRootWidth] = useState<number>();
   // The narrowest list in which no name, move, or item of the language and game
@@ -140,17 +136,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       : ([
           "move",
           () => store.gameMoves.map(names.move),
-          MOVE_ROW_CHROME +
-            (!showMoveTypes ? 2
-            : hasTypeIcons ? 20 + MOVE_TYPE_GAP
-            : widestText(
-                typesIn(generation).map(
-                  type => t.typeAbbreviations[type] ?? "",
-                ),
-                `500 10px ${typography.fontFamily}`,
-              ) +
-              8 +
-              MOVE_TYPE_GAP),
+          MOVE_ROW_CHROME + (showMoveTypes ? MOVE_TYPE_ICON : 2),
         ] as const);
     setFitWidth(
       twoLineWidth(`${kind}|${game}`, labels, typography.body1, 80) +
@@ -161,12 +147,10 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     pokemonProperty,
     locale,
     names,
-    t,
     typography,
     generation,
     format,
     showMoveTypes,
-    hasTypeIcons,
   ]);
   // A list opened before Roboto loaded is measured again once it has
   useEffect(() => {
@@ -411,34 +395,15 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
             ) ?
               moveTypeIn(value, store.currentTeam.generation)
             : undefined;
-          // Match the team stats' measured icon layout
+          // Always the icon: an abbreviation would take more of the move's room
           const typeIcon =
             moveType && isPokemonType(moveType) ?
-              !hasTypeIcons ?
-                <Box
-                  component="span"
-                  role="img"
-                  aria-label={names.type(moveType)}
-                  sx={{
-                    flexShrink: 0,
-                    mr: 0.75,
-                    px: 0.5,
-                    borderRadius: 0.5,
-                    fontSize: 10,
-                    fontWeight: 500,
-                    lineHeight: "16px",
-                    bgcolor: TYPE_COLORS[moveType],
-                    color: TYPE_TEXT_COLORS[moveType],
-                  }}
-                >
-                  {t.typeAbbreviations[moveType]}
-                </Box>
-              : <Box
-                  component="img"
-                  src={typeIcons[moveType]}
-                  alt={names.type(moveType)}
-                  sx={{ width: 20, height: 20, mr: 0.75, flexShrink: 0 }}
-                />
+              <Box
+                component="img"
+                src={typeIcons[moveType]}
+                alt={names.type(moveType)}
+                sx={{ width: 20, height: 20, mr: 0.75, flexShrink: 0 }}
+              />
             : undefined;
           const hiddenAbility =
             isSelectionShown &&

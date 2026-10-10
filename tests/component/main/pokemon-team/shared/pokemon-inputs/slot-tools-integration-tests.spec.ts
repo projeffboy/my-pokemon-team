@@ -9,42 +9,61 @@ import {
   showSlot,
 } from "helper";
 
+// The sprite's size once it has stopped changing: it is remounted when a resize swaps
+// the team viewer, and it animates in when its pokemon is picked
+const settledSize = async (sprite: Locator) => {
+  let size = { width: 0, height: 0 };
+  await expect(async () => {
+    const first = await sprite.boundingBox();
+    await sprite.page().waitForTimeout(150);
+    const second = await sprite.boundingBox();
+    expect(first).not.toBeNull();
+    expect(second).toEqual(first);
+    if (second) size = { width: second.width, height: second.height };
+  }).toPass();
+  return size;
+};
+
 test.describe("Slot tools - Integration Tests", () => {
-  test("adds slot action icons and labels in priority order as room grows", async ({
+  test("the tools add More details under the info button without shrinking the sprite", async ({
     page,
   }) => {
     await selectPokemon(page, "Cufant");
-    await openTeamTools(page);
+    const card = page.getByRole("region", { name: "Pokemon 1", exact: true });
+    const sprite = card.getByRole("img", { name: "Cufant", exact: true });
     const random = page.getByRole("button", {
       name: "Random pokemon for slot 1",
     });
     const details = page.getByRole("button", {
       name: "More details for slot 1",
     });
-    for (const { width, edit, label } of [
-      { width: 600, edit: false, label: "" },
-      { width: 320, edit: true, label: "" },
-      { width: 420, edit: true, label: "Random" },
-      { width: 480, edit: true, label: "Randomize" },
-    ]) {
+    const info = page.getByRole("button", { name: "About Cufant" });
+    for (const width of [320, 600, 1200]) {
       await page.setViewportSize({ width, height: 1000 });
-      await expect(details).toHaveText("More details");
+      // Resizing can swap the team viewer, which remounts the sprite
+      await expect(sprite).toHaveJSProperty("complete", true);
+      await expect(details).toBeHidden();
+      const plain = await settledSize(sprite);
+
+      await openTeamTools(page);
+      await expect(details.getByTestId("EditOutlinedIcon")).toBeVisible();
+      await expect(details).toHaveText("");
       await expect(random.getByTestId("CasinoIcon")).toBeVisible();
-      await expect(details.getByTestId("EditOutlinedIcon"))[
-        edit ? "toBeVisible" : "toBeHidden"
-      ]();
-      await expect(random.getByText("Random", { exact: true }))[
-        label === "Random" ? "toBeVisible" : "toBeHidden"
-      ]();
-      await expect(random.getByText("Randomize", { exact: true }))[
-        label === "Randomize" ? "toBeVisible" : "toBeHidden"
-      ]();
-      expect(
-        await details.evaluate(
-          button => button.scrollWidth > button.clientWidth,
-        ),
-      ).toBe(false);
+      await expect(random).toHaveText("");
+      expect(await settledSize(sprite)).toEqual(plain);
+      const [infoBox, detailsBox] = await Promise.all([
+        info.boundingBox(),
+        details.boundingBox(),
+      ]);
+      expect(detailsBox?.x).toBe(infoBox?.x);
+      expect(detailsBox?.y).toBeGreaterThanOrEqual(
+        (infoBox?.y ?? 0) + (infoBox?.height ?? 0),
+      );
+      await page
+        .getByRole("button", { name: /^(Fewer team tools|Advanced)$/ })
+        .click();
     }
+    await openTeamTools(page);
     await details.click();
     await expect(
       page.getByRole("dialog", { name: "More details" }),
