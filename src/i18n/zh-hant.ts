@@ -73,6 +73,7 @@ const zhHant: Messages = {
   // The team column
   team: {
     teams: "隊伍列表",
+    noMatchingPokemon: "沒有符合目前篩選條件的寶可夢。請變更篩選條件後重試。",
     randomizedTeam: "已隨機組隊",
     randomizedPokemon: "已隨機選擇寶可夢",
     randomizedPokemonDetails: (details: string) =>

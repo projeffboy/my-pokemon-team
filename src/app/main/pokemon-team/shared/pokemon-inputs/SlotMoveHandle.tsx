@@ -52,6 +52,7 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
     <>
       <Tooltip title={title}>
         <ButtonBase
+          id={`team-slot-move-${teamIndex}`}
           ref={setGripRef}
           {...listeners}
           aria-label={title}
@@ -65,7 +66,11 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
       <Menu
         anchorEl={anchor}
         open={Boolean(anchor)}
-        onClose={() => setAnchor(null)}
+        disableRestoreFocus
+        onClose={() => {
+          setAnchor(null);
+          requestAnimationFrame(() => anchor?.focus());
+        }}
       >
         {store.team.map(
           (_member, otherIndex) =>
@@ -75,6 +80,11 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
                 onClick={() => {
                   setAnchor(null);
                   moveSlot(teamIndex, otherIndex);
+                  requestAnimationFrame(() => {
+                    document
+                      .getElementById(`team-slot-move-${otherIndex}`)
+                      ?.focus();
+                  });
                 }}
               >
                 {getPokemonLabel(otherIndex, translation)}

@@ -68,6 +68,8 @@ const en = {
   // The team column
   team: {
     teams: "Teams",
+    noMatchingPokemon:
+      "No Pokémon match the current filters. Change the filters and try again.",
     randomizedTeam: "Randomized team",
     randomizedPokemon: "Randomized pokemon",
     randomizedPokemonDetails: (details: string) =>

@@ -71,6 +71,8 @@ const es: Messages = {
 
   team: {
     teams: "Equipos",
+    noMatchingPokemon:
+      "Ningún Pokémon coincide con los filtros actuales. Cambia los filtros e inténtalo de nuevo.",
     randomizedTeam: "Equipo aleatorizado",
     randomizedPokemon: "Pokémon aleatorizado",
     randomizedPokemonDetails: (details: string) =>

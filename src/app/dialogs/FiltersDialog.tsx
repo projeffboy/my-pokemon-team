@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -38,7 +38,10 @@ const FiltersDialog = observer(function FiltersDialog() {
     format: string;
     data: GenerationTransferData;
   } | null>(null);
+  const formatRequest = useRef(0);
   const changeFormat = async (format: string) => {
+    const request = ++formatRequest.current;
+    setPending(null);
     const teamId = store.currentTeamId;
     if (
       format !== CHAMPIONS_FORMAT &&
@@ -49,7 +52,8 @@ const FiltersDialog = observer(function FiltersDialog() {
     }
     try {
       const data = await loadGenerationTransferData();
-      if (store.currentTeamId !== teamId) return;
+      if (store.currentTeamId !== teamId || request !== formatRequest.current)
+        return;
       const team = store.currentTeam;
       const generation = formatGeneration(format, team.generation);
       const plan = planGenerationTransfer(
@@ -64,6 +68,8 @@ const FiltersDialog = observer(function FiltersDialog() {
         setPending({ teamId: team.id, generation, format, data });
       else store.transferTeamGeneration(generation, format, plan.team, false);
     } catch {
+      if (request !== formatRequest.current || store.currentTeamId !== teamId)
+        return;
       store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
     }
   };

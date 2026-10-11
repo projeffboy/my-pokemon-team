@@ -24,7 +24,9 @@ export function convertTraining(
   const before = Object.fromEntries(
     STAT_KEYS.map(stat => [
       stat,
-      from.legacy ? getStatExperience(member, stat) : getEv(member.evs, stat),
+      from.legacy ?
+        getStatExperience(member, stat === "spd" ? "spa" : stat)
+      : getEv(member.evs, stat),
     ]),
   ) as BaseStats;
   const values = Object.fromEntries(

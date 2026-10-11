@@ -17,6 +17,12 @@ import {
 import { pokemonAbilities } from "@/shared/pokedex";
 import { createTeam } from "./shared/team";
 import { loadTranslation } from "@/i18n/translation";
+import { hiddenPowerType } from "@/shared/hidden-power";
+import {
+  dvGender,
+  gen2Dvs,
+  isShinyInGeneration,
+} from "@/shared/generation-rules";
 import { baseMoveId } from "@/shared/moves";
 
 test("random notifications name only the moves, item and ability that changed", () => {
@@ -278,4 +284,71 @@ test("random tooltips describe missing fields, or a new pokemon for empty and co
       }),
     ).toBe(`Randomize ${fields}`);
   }
+});
+
+test("Gen 2 random completion keeps shiny and gender when choosing Hidden Power", () => {
+  const member = createTeam({
+    name: "gyarados",
+    shiny: true,
+    item: "leftovers",
+    move1: "surf",
+    move2: "return",
+    move3: "rest",
+  })[0]!;
+  for (const roll of [0, 0.5, 0.96]) {
+    const set = completeSet(
+      member,
+      generationLearnset(member.name, 2),
+      () => roll,
+      2,
+    );
+    expect(set.shiny).toBe(true);
+    expect(isShinyInGeneration(set, 2)).toBe(true);
+    expect(dvGender(gen2Dvs(set))).toBe(dvGender(gen2Dvs(member)));
+    expect(set).toMatchObject({
+      item: "leftovers",
+      move1: "surf",
+      move2: "return",
+      move3: "rest",
+    });
+    if (set.move4.startsWith("hiddenpower"))
+      expect(set.move4).toBe(`hiddenpower${hiddenPowerType(set, 2)}`);
+  }
+  const incompatible = completeSet(member, ["hiddenpowerwater"], () => 0, 2);
+  expect(incompatible.move4).toBe("");
+  expect(incompatible.shiny).toBe(true);
+});
+
+test("random completion preserves explicit IVs and avoids incompatible Hidden Power", () => {
+  const member = createTeam({
+    name: "ampharos",
+    item: "leftovers",
+    ability: "Static",
+    ivs: { atk: 0, def: 30 },
+    move1: "thunderbolt",
+    move2: "thunderwave",
+    move3: "rest",
+  })[0]!;
+  const type = hiddenPowerType(member, 3);
+  const set = completeSet(
+    member,
+    [`hiddenpower${type}`, "hiddenpowerfire", "hiddenpowerwater"],
+    () => 0.99,
+    3,
+  );
+  expect(set.ivs).toEqual(member.ivs);
+  expect(set.move4).toBe(`hiddenpower${type}`);
+  expect(member.ivs).toEqual({ atk: 0, def: 30 });
+});
+
+test("random completion prefers historically viable moves before its whole-learnset fallback", () => {
+  const set = randomSet(
+    "scizor",
+    ["hiddenpowerbug", "swordsdance", "agility", "batonpass", "falseswipe"],
+    () => 0.99,
+    3,
+  );
+  const moves = [set.move1, set.move2, set.move3, set.move4];
+  expect(moves).toContain("hiddenpowerbug");
+  expect(moves).not.toContain("falseswipe");
 });

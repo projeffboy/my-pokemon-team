@@ -73,6 +73,7 @@ const zhHans: Messages = {
   // 队伍栏
   team: {
     teams: "队伍",
+    noMatchingPokemon: "没有符合当前筛选条件的宝可梦。请更改筛选条件后重试。",
     randomizedTeam: "已随机组队",
     randomizedPokemon: "已随机选择宝可梦",
     randomizedPokemonDetails: (details: string) =>

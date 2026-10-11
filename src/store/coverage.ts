@@ -60,7 +60,7 @@ export function calculateTypeCoverage(
 
   for (const pokemon of team) {
     const { name, ability, item } = pokemon;
-    const typesUsed = new Set<PokemonType | undefined>();
+    const typesUsed = new Map<PokemonType | undefined, Set<PokemonType>>();
     const specialMovesUsed = new Set<string>();
 
     const moves = [pokemon.move1, pokemon.move2, pokemon.move3, pokemon.move4];
@@ -68,31 +68,47 @@ export function calculateTypeCoverage(
       if (
         !move ||
         isTypelessMove(move, generation) ||
-        !isMoveStrongEnough(move, item, ability, generation, name)
+        !isMoveStrongEnough(
+          move,
+          item,
+          ability,
+          generation,
+          name,
+          pokemon.happiness,
+        )
       )
         continue;
 
       const type = moveType(move, name, ability, generation, item);
       const isSpecialMove = move === "freezedry" || move === "flyingpress";
-      if (isSpecialMove ? specialMovesUsed.has(move) : typesUsed.has(type)) {
-        continue;
-      }
+      if (isSpecialMove && specialMovesUsed.has(move)) continue;
+      const targetsUsed = typesUsed.get(type) ?? new Set<PokemonType>();
 
       const hasStab =
         type &&
         effectivePokemonTypes(name, ability, item, generation).includes(type);
       for (const target of typesIn(generation)) {
         if (
-          moveAgainstType(move, target, name, ability, generation, item) === -1
+          moveAgainstType(
+            move,
+            target,
+            name,
+            ability,
+            generation,
+            item,
+            pokemon.happiness,
+          ) === -1
         ) {
-          scores[target] += hasStab ? 2 : 1;
+          if (isSpecialMove || !targetsUsed.has(target))
+            scores[target] += hasStab ? 2 : 1;
+          if (!isSpecialMove) targetsUsed.add(target);
         }
       }
 
       if (isSpecialMove) {
         specialMovesUsed.add(move);
       } else {
-        typesUsed.add(type);
+        typesUsed.set(type, targetsUsed);
       }
     }
   }

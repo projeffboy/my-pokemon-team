@@ -2,6 +2,8 @@
 import {
   POKEMON_TYPES,
   type Formats,
+  type GenerationTransferData,
+  type Generation,
   type BaseStats,
   type HiddenPowerSpreads,
   type Items,
@@ -166,7 +168,8 @@ export const projections = {
         {
           fling: pick<NonNullable<Items[string]["fling"]>>(entry.fling, [
             "basePower",
-          ]) as { basePower: number },
+            "status",
+          ]) as NonNullable<Items[string]["fling"]>,
         }
       : {}),
     };
@@ -251,6 +254,51 @@ export interface MoveSearch {
     moves: string[],
     set: { ability: unknown; item: unknown; moves: string[] },
   ): boolean;
+}
+
+export function historicalViableInputs(
+  generation: Generation,
+  pokedex: ShowdownTable,
+  learnsets: Learnsets,
+  availability: GenerationTransferData,
+  past: PastGeneration | undefined,
+) {
+  const bit = 1 << (generation - 1);
+  const species = Object.fromEntries(
+    Object.entries(pokedex).flatMap(([id, entry]) => {
+      if (!((availability.pokemon[id]?.generations ?? 0) & bit)) return [];
+      const abilities = generation < 3 ? [""] : past?.abilities?.[id];
+      return [
+        [
+          id,
+          {
+            ...pokedex[toId(entry.baseSpecies)],
+            ...entry,
+            ...(past?.pokemon[id] && { types: past.pokemon[id] }),
+            ...(past?.baseStats?.[id] && { baseStats: past.baseStats[id] }),
+            ...(abilities && {
+              abilities: Object.fromEntries(
+                abilities.map((ability, i) => [i, ability]),
+              ),
+            }),
+          },
+        ],
+      ];
+    }),
+  );
+  const learnableMoves = new Set(Object.values(learnsets).flat());
+  const historicalLearnsets = Object.fromEntries(
+    Object.entries(learnsets).map(([id, moves]) => [
+      id,
+      (moves.includes("sketch") ?
+        Object.keys(availability.pokemon[id]?.moves ?? {}).filter(move =>
+          learnableMoves.has(move),
+        )
+      : moves
+      ).filter(move => !!((availability.pokemon[id]?.moves[move] ?? 0) & bit)),
+    ]),
+  );
+  return { pokedex: species, learnsets: historicalLearnsets };
 }
 
 // A move is viable if any pokemon that learns it, with any of its abilities and required

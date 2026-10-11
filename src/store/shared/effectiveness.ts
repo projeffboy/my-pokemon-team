@@ -1,4 +1,4 @@
-import type { PokemonType } from "@/types";
+import type { Generation, PokemonType } from "@/types";
 import moves from "@/data/moves";
 import items from "@/data/items";
 import pokedex from "@/data/pokedex";
@@ -7,7 +7,7 @@ import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType } from "@/types";
 
-const activeItem = (
+export const activeItem = (
   item: string | undefined,
   ability: string | undefined,
   generation: number,
@@ -286,33 +286,77 @@ export function moveType(
   return moveType;
 }
 
+export function flingItem(
+  item: string | undefined,
+  ability: string | undefined,
+  generation: number,
+  pokemon: string,
+) {
+  if (generation < 4 || (generation >= 5 && ability === "Klutz"))
+    return undefined;
+  const held = items[item ?? ""];
+  const species = pokedex[pokemon]?.baseSpecies ?? pokedex[pokemon]?.name ?? "";
+  const blocked =
+    held?.zMove ||
+    (generation === 4 && ability === "Multitype") ||
+    (held?.onPlate && species === "Arceus") ||
+    (held?.onMemory && species === "Silvally") ||
+    held?.megaStone?.[species] ||
+    (item === "griseousorb" &&
+      (generation === 4 || (generation <= 8 && species === "Giratina"))) ||
+    (item?.endsWith("mask") && species === "Ogerpon");
+  return blocked ? undefined : held?.fling;
+}
+
+export function isMoveUsable(
+  move: string,
+  pokemon: string,
+  item: string | undefined,
+  ability: string | undefined,
+  generation: Generation,
+) {
+  if (
+    generation >= 6 &&
+    activeItem(item, ability, generation) === "assaultvest" &&
+    moveDataIn(move, generation)?.category === "Status" &&
+    move !== "mefirst"
+  )
+    return false;
+  const types = effectivePokemonTypes(pokemon, ability, item, generation);
+  if (move === "burnup") return types.includes("Fire");
+  if (move === "doubleshock") return types.includes("Electric");
+  if (move === "fling") return !!flingItem(item, ability, generation, pokemon);
+  return true;
+}
+
 export function isMoveStrongEnough(
   move: string,
   item?: string,
   ability?: string,
   generation = LATEST_GENERATION,
   pokemon = "",
+  happiness = 255,
 ) {
+  if (!isMoveUsable(move, pokemon, item, ability, generation)) return false;
+  if (move === "return" || move === "frustration")
+    return (
+      Math.max(
+        1,
+        Math.floor(
+          ((move === "return" ? happiness : 255 - happiness) * 10) / 25,
+        ),
+      ) >= 40
+    );
   const moveProperties = moveDataIn(move, generation);
   const held = items[activeItem(item, ability, generation)];
   if (move === "naturalgift")
     return (
       (held?.naturalGift?.basePower ?? 0) - (generation <= 5 ? 20 : 0) >= 40
     );
-  if (move === "fling") {
-    const species =
-      pokedex[pokemon]?.baseSpecies ?? pokedex[pokemon]?.name ?? "";
-    const blocked =
-      held?.zMove ||
-      (generation === 4 && ability === "Multitype") ||
-      (held?.onPlate && species === "Arceus") ||
-      (held?.onMemory && species === "Silvally") ||
-      held?.megaStone?.[species] ||
-      (item === "griseousorb" &&
-        (generation === 4 || (generation <= 8 && species === "Giratina"))) ||
-      (item?.endsWith("mask") && species === "Ogerpon");
-    return !blocked && (held?.fling?.basePower ?? 0) >= 40;
-  }
+  if (move === "fling")
+    return (
+      (flingItem(item, ability, generation, pokemon)?.basePower ?? 0) >= 40
+    );
 
   return (
     moveProperties &&
@@ -333,17 +377,26 @@ export function moveAgainstType(
   ability?: string,
   generation = LATEST_GENERATION,
   item?: string,
+  happiness = 255,
 ) {
   if (generation < 3) ability = undefined;
   const attackType = moveType(move, pokemon, ability, generation, item);
   const defender = typechartIn(generation)[typeAgainst];
 
   if (
-    !isMoveStrongEnough(move, item, ability, generation, pokemon) ||
+    !isMoveStrongEnough(move, item, ability, generation, pokemon, happiness) ||
     !attackType
   )
     return undefined;
   if (isTypelessMove(move, generation)) return 0;
+  if (move === "skydrop" && typeAgainst === "Flying") return IMMUNE_SCORE;
+  if (
+    move === "synchronoise" &&
+    !effectivePokemonTypes(pokemon, ability, item, generation).includes(
+      typeAgainst,
+    )
+  )
+    return IMMUNE_SCORE;
   let score = defender?.[attackType];
   if (
     (ability === "Scrappy" || ability === "Mind's Eye") &&

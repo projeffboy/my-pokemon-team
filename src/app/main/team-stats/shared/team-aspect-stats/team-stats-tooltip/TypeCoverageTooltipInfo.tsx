@@ -30,7 +30,15 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
       const move = member[key];
       if (
         !move ||
-        moveAgainstType(move, type, pokemon, ability, generation, item) !== -1
+        moveAgainstType(
+          move,
+          type,
+          pokemon,
+          ability,
+          generation,
+          item,
+          member.happiness,
+        ) !== -1
       ) {
         return [];
       }

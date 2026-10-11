@@ -1,3 +1,4 @@
+import { viableMovesIn } from "@/data/viable-moves";
 import learnsetsJson from "@/data/learnsets.json" with { type: "json" };
 import { test, expect } from "@playwright/test";
 import {
@@ -163,4 +164,23 @@ test.describe("learnset inheritance", () => {
 
     expect(viable).toContain("technoblast");
   });
+});
+
+test("Viable filtering follows historical Showdown usefulness rules", () => {
+  const team = createTeam({ name: "scizor" });
+  expect(getTeamLearnsets(team, true, undefined, 3).values[0]).toEqual(
+    expect.arrayContaining(["hiddenpowerbug", "hiddenpowerflying"]),
+  );
+  expect(getTeamLearnsets(team, true, undefined, 7).values[0]).not.toContain(
+    "hiddenpowerbug",
+  );
+  expect(getTeamLearnsets(team, true, undefined, 7).values[0]).not.toContain(
+    "hiddenpowerflying",
+  );
+});
+
+test("historical viability excludes usefulness from future abilities", () => {
+  expect(viableMovesIn(3).has("bulletseed")).toBe(false);
+  expect(viableMovesIn(4).has("bulletseed")).toBe(true);
+  expect(viableMovesIn(1).has("wrap")).toBe(true);
 });

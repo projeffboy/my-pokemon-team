@@ -1,7 +1,7 @@
-import viableMoves from "@/data/viable-moves";
+import { viableMovesIn } from "@/data/viable-moves";
 import { generationRules } from "@/shared/generation-rules";
 import { baseMoveId } from "@/shared/moves";
-import { matchHiddenPower } from "@/shared/hidden-power";
+import { matchHiddenPowerPreservingDetails } from "@/shared/hidden-power";
 import {
   availableItems,
   generationLearnset,
@@ -159,8 +159,15 @@ export function completeSet(
     }
     return groups;
   };
-  const viable = groupMoves(learnset.filter(move => viableMoves.has(move)));
-  const groups = viable.size >= 4 ? viable : groupMoves(learnset);
+  const compatible = learnset.filter(move =>
+    matchHiddenPowerPreservingDetails({ ...set }, move, generation, format, {
+      preserveIvs: !!member.ivs,
+    }),
+  );
+  const viable = groupMoves(
+    compatible.filter(move => viableMovesIn(generation).has(move)),
+  );
+  const groups = viable.size >= 4 ? viable : groupMoves(compatible);
   const pool = [...groups].filter(([id]) => !chosen.has(id));
   for (const key of MOVE_KEYS) {
     if (set[key] || !pool.length) continue;
@@ -173,7 +180,9 @@ export function completeSet(
       id === "hiddenpower" ?
         (pickRandom(typed.length ? typed : variants, random) ?? "")
       : (variants[0] ?? "");
-    matchHiddenPower(set, set[key], generation, format);
+    matchHiddenPowerPreservingDetails(set, set[key], generation, format, {
+      preserveIvs: !!member.ivs,
+    });
   }
   if (!rules.items) set.item = "";
   else if (!set.item) {

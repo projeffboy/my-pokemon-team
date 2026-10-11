@@ -74,6 +74,8 @@ const it: Messages = {
   // The team column
   team: {
     teams: "Squadre",
+    noMatchingPokemon:
+      "Nessun Pokémon corrisponde ai filtri attuali. Cambia i filtri e riprova.",
     randomizedTeam: "Squadra randomizzata",
     randomizedPokemon: "Pokémon randomizzato",
     randomizedPokemonDetails: (details: string) =>

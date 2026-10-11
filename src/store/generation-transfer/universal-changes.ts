@@ -73,6 +73,8 @@ export function universalTransferChanges(
   const isUniversal = (loss: TransferLoss) =>
     unsupported.some(field => field === loss.field) ||
     (loss.field === "level" && fixedLevel !== undefined) ||
-    (loss.field === "ivs" && convertsIvs);
+    (loss.field === "ivs" &&
+      convertsIvs &&
+      (!loss.conversion || loss.conversion.from !== loss.conversion.to));
   return { fixedLevel, removed, ivsConversion, training, isUniversal };
 }

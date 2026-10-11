@@ -17,8 +17,14 @@ import {
   syncDvs,
   setLegacyShiny,
   gen2Dvs,
+  dvGender,
+  isShinyDv,
 } from "@/shared/generation-rules";
-import { DEFAULT_LEVEL, getIv, MAX_IV } from "@/shared/set-details";
+import { DEFAULT_LEVEL, getIv, MAX_IV, setDetail } from "@/shared/set-details";
+import {
+  hiddenPowerType,
+  matchHiddenPowerPreservingDetails,
+} from "@/shared/hidden-power";
 import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import pokedex from "@/data/pokedex";
 import { pokemonNameInverse } from "@/shared/names";
@@ -151,6 +157,11 @@ export function planGenerationTransfer(
         member[key] = "";
       }
     }
+    if (from.generation === 2 && !rules.legacy) {
+      const source = gen2Dvs(original);
+      setDetail(member, "shiny", isShinyDv(source));
+      member.gender = dvGender(source);
+    }
     const removeDetail = (
       key: keyof TeamPokemonDetails,
       unsupported: boolean,
@@ -234,6 +245,69 @@ export function planGenerationTransfer(
         getDv(member, "hp") !== hpDv(member))
     )
       syncDvs(member, generation);
+    const convertedIvs = member.ivs;
+    let matchedHiddenPower = false;
+    for (const key of MOVE_KEYS) {
+      const move = member[key];
+      if (
+        !move.startsWith("hiddenpower") ||
+        move === "hiddenpower" ||
+        !rules.ivs
+      )
+        continue;
+      if (
+        matchedHiddenPower ||
+        (!matchHiddenPowerPreservingDetails(member, move, generation, format, {
+          gender: generation === 2 ? original.gender : undefined,
+        }) &&
+          !matchHiddenPowerPreservingDetails(member, move, generation, format))
+      ) {
+        const type = hiddenPowerType(member, generation);
+        if (type && move !== `hiddenpower${type}`) {
+          member[key] = `hiddenpower${type}`;
+          losses.push({
+            index,
+            pokemon: original.name,
+            field: "move",
+            value: move,
+            replacement: member[key],
+          });
+        }
+      }
+      matchedHiddenPower = true;
+    }
+    if (
+      STAT_KEYS.some(
+        stat => getIv(convertedIvs, stat) !== getIv(member.ivs, stat),
+      )
+    ) {
+      const after = Object.fromEntries(
+        STAT_KEYS.map(stat => [
+          stat,
+          rules.legacy ? getDv(member, stat) : getIv(member.ivs, stat),
+        ]),
+      );
+      losses.push({
+        index,
+        pokemon: original.name,
+        field: "ivs",
+        conversion: {
+          from: rules.legacy ? "dvs" : "ivs",
+          to: rules.legacy ? "dvs" : "ivs",
+          before: Object.fromEntries(
+            STAT_KEYS.map(stat => [
+              stat,
+              rules.legacy ?
+                Math.floor(getIv(convertedIvs, stat) / 2)
+              : getIv(convertedIvs, stat),
+            ]),
+          ),
+          after,
+          limited: false,
+          approximate: false,
+        },
+      });
+    }
     if (generation === 2) {
       if (member.shiny) setLegacyShiny(member, true);
       else syncDvs(member, generation);

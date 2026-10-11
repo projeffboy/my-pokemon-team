@@ -76,6 +76,8 @@ const ja: Messages = {
   // The team column
   team: {
     teams: "チーム一覧",
+    noMatchingPokemon:
+      "現在のフィルターに一致するポケモンがいません。フィルターを変更して、もう一度お試しください。",
     randomizedTeam: "ランダム編成しました",
     randomizedPokemon: "ポケモンをランダムに選びました",
     randomizedPokemonDetails: (details: string) =>

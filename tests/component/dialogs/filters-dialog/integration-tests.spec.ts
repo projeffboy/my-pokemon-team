@@ -478,3 +478,44 @@ test("format transfer without losses keeps edits received while game data loads"
     release();
   }
 });
+
+test("a newer ordinary format selection cancels a pending Champions request", async ({
+  page,
+}) => {
+  let release = () => {};
+  let requested = () => {};
+  const held = new Promise<void>(resolve => {
+    release = resolve;
+  });
+  const loaded = new Promise<void>(resolve => {
+    requested = resolve;
+  });
+  await page.route("**/src/data/generation-transfer.json*", async route => {
+    requested();
+    await held;
+    await route.continue();
+  });
+  try {
+    await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+    await loaded;
+    await openFilters(page);
+    await selectDialogOption(page, "Format", "Pokemon Champions (M-C)");
+    await selectDialogOption(page, "Format", "OU: Over Used");
+    await expect(
+      page.getByRole("combobox", { name: "Format", exact: true }),
+    ).toContainText("OU: Over Used");
+    release();
+    await page.waitForResponse(response =>
+      response.url().includes("generation-transfer.json"),
+    );
+    await expect(
+      page.getByRole("combobox", { name: "Format", exact: true }),
+    ).toContainText("OU: Over Used");
+    await expect(page.getByLabel("Generation")).toContainText("Scarlet Violet");
+    await expect(
+      page.getByRole("button", { name: "Update existing team", exact: true }),
+    ).toBeHidden();
+  } finally {
+    release();
+  }
+});

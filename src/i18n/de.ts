@@ -79,6 +79,8 @@ const de: Messages = {
   // The team column
   team: {
     teams: "Teams",
+    noMatchingPokemon:
+      "Keine Pokémon entsprechen den aktuellen Filtern. Ändere die Filter und versuche es erneut.",
     randomizedTeam: "Team zufällig gefüllt",
     randomizedPokemon: "Pokémon zufällig gewählt",
     randomizedPokemonDetails: (details: string) =>

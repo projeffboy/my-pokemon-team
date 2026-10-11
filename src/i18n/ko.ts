@@ -88,6 +88,8 @@ const ko: Messages = {
 
   team: {
     teams: "팀 목록",
+    noMatchingPokemon:
+      "현재 필터와 일치하는 포켓몬이 없습니다. 필터를 변경하고 다시 시도하세요.",
     randomizedTeam: "팀을 랜덤으로 채웠습니다",
     randomizedPokemon: "포켓몬을 랜덤으로 골랐습니다",
     randomizedPokemonDetails: (details: string) =>

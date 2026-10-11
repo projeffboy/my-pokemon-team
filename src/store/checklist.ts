@@ -1,7 +1,12 @@
 import { moveDataIn } from "@/shared/generation-data";
 import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
 import type { Messages } from "@/i18n/en";
-import { effectivePokemonTypes } from "./shared/effectiveness";
+import {
+  activeItem,
+  effectivePokemonTypes,
+  flingItem,
+  isMoveUsable,
+} from "./shared/effectiveness";
 import { LATEST_GENERATION } from "@/shared/generations";
 
 // The labels live in src/i18n, under these keys
@@ -20,27 +25,35 @@ export interface ChecklistGroup {
 
 type Check = ChecklistItem["check"];
 
-const moveset = (pokemon: ReadonlyTeam[number]) =>
-  MOVE_KEYS.map(key => pokemon[key]);
+const moveset = (
+  pokemon: ReadonlyTeam[number],
+  generation = LATEST_GENERATION,
+) =>
+  MOVE_KEYS.map(key => pokemon[key]).filter(move =>
+    isMoveUsable(move, pokemon.name, pokemon.item, pokemon.ability, generation),
+  );
 
-const teamMoves = (team: ReadonlyTeam) => team.flatMap(moveset);
+const teamMoves = (team: ReadonlyTeam, generation = LATEST_GENERATION) =>
+  team.flatMap(pokemon => moveset(pokemon, generation));
 
 const hasAnyMove =
   (names: string[]): Check =>
-  team =>
-    teamMoves(team).some(move => names.includes(move));
+  (team, generation = LATEST_GENERATION) =>
+    teamMoves(team, generation).some(move => names.includes(move));
 
 const hasAnyItem =
   (names: string[]): Check =>
-  team =>
-    team.some(({ item }) => names.includes(item));
+  (team, generation = LATEST_GENERATION) =>
+    team.some(({ item, ability }) =>
+      names.includes(activeItem(item, ability, generation)),
+    );
 
 // Does one pokemon have all of these moves? An entry may list alternatives.
 const hasMovesTogether =
   (required: (string | string[])[]): Check =>
-  team =>
+  (team, generation = LATEST_GENERATION) =>
     team.some(pokemon => {
-      const pokemonMoves = moveset(pokemon);
+      const pokemonMoves = moveset(pokemon, generation);
       return required.every(move =>
         [move].flat().some(alt => pokemonMoves.includes(alt)),
       );
@@ -49,14 +62,19 @@ const hasMovesTogether =
 // Moves that inflict a non-volatile status, like Toxic, or always do so as a
 // side effect, like Nuzzle
 const inflictsStatus: Check = (team, generation = LATEST_GENERATION) =>
-  teamMoves(team).some(move => {
-    const { status, secondary } = moveDataIn(move, generation) ?? {};
-    return !!(
-      move === "yawn" ||
-      status ||
-      (secondary?.chance === 100 && secondary.status)
-    );
-  });
+  team.some(pokemon =>
+    moveset(pokemon, generation).some(move => {
+      const { status, secondary } = moveDataIn(move, generation) ?? {};
+      return !!(
+        move === "yawn" ||
+        status ||
+        (move === "fling" &&
+          flingItem(pokemon.item, pokemon.ability, generation, pokemon.name)
+            ?.status) ||
+        (secondary?.chance === 100 && secondary.status)
+      );
+    }),
+  );
 
 // Curse and callback-based moves need explicit self-boost effects.
 const boostsStats: Check = (team, generation = LATEST_GENERATION) =>
@@ -66,7 +84,7 @@ const boostsStats: Check = (team, generation = LATEST_GENERATION) =>
       contrary ? -1
       : generation >= 4 && pokemon.ability === "Simple" ? 2
       : 1;
-    return moveset(pokemon).some(move => {
+    return moveset(pokemon, generation).some(move => {
       if (move === "curse")
         return (
           !contrary &&
@@ -143,12 +161,14 @@ export const checklist: ChecklistGroup[] = [
         check: (team, generation = LATEST_GENERATION) =>
           hasAnyMove(["rapidspin", "courtchange", "tidyup", "mortalspin"])(
             team,
+            generation,
           ) ||
-          (generation >= 6 && hasAnyMove(["defog"])(team)),
+          (generation >= 6 && hasAnyMove(["defog"])(team, generation)),
       },
       {
         key: "recovery",
-        check: team => hasRecovery(team) || hasWishAndProtect(team),
+        check: (team, generation = LATEST_GENERATION) =>
+          hasRecovery(team, generation) || hasWishAndProtect(team, generation),
       },
     ],
   },
@@ -163,7 +183,7 @@ export const checklist: ChecklistGroup[] = [
       {
         key: "phazer",
         check: (team, generation = LATEST_GENERATION) =>
-          teamMoves(team).some(
+          teamMoves(team, generation).some(
             move => !!moveDataIn(move, generation)?.forceSwitch,
           ),
       },

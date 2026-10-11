@@ -1,5 +1,5 @@
 import pokedex from "@/data/pokedex";
-import viableMoves from "@/data/viable-moves";
+import { viableMovesIn } from "@/data/viable-moves";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { generationBit, generationRules } from "@/shared/generation-rules";
 import type {
@@ -158,7 +158,7 @@ export function getTeamLearnsets(
         : completeLearnset(name)
       : [];
     return viableOnly ?
-        learnset.filter(move => viableMoves.has(move))
+        learnset.filter(move => viableMovesIn(generation).has(move))
       : learnset;
   });
 

@@ -11,6 +11,13 @@ const entries: Entry[] = [
   {
     date: "Oct 10, 2026",
     changes: [
+      "Reloading after rapid edits now keeps the latest saved set and the selected team.",
+      "Newer format choices are no longer overwritten by an earlier pending selection.",
+      "Generation changes now preserve DV-derived shiny and gender, shared Special training, and consistent Hidden Power types.",
+      "Random move completion now preserves existing shiny settings and custom IVs.",
+      "Coverage now respects happiness for Return and Frustration, and restrictions such as Sky Drop’s Flying immunity.",
+      "The checklist now respects Assault Vest and Klutz, and Fling’s held-item status effects.",
+      "The Viable move filter now uses each generation’s usefulness rules, e.g. Hidden Power Bug for Gen 3 Scizor.",
       "Thick Fat now correctly gives Dewgong ⅛ Ice damage rather than immunity.",
       "An open team deletion confirmation now closes if another tab deletes that team.",
       "Showdown imports now preserve Gigantamax sets and older backup formats, and exported empty teams can be restored.",

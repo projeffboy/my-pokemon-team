@@ -87,7 +87,7 @@ export interface ItemEntry {
   onDrive?: PokemonType;
   onMemory?: PokemonType;
   naturalGift?: { basePower: number; type: PokemonType };
-  fling?: { basePower: number };
+  fling?: { basePower: number; status?: string };
   ignoreKlutz?: boolean;
   megaStone?: Record<string, string>;
   zMove?: boolean | string;

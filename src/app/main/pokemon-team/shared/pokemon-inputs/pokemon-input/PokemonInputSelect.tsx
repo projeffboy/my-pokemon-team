@@ -181,15 +181,10 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       })),
     [optionValues, optionLabels],
   );
+  const selectedLabel = optionName(names, pokemonProperty, value);
   const selectedOption = useMemo(
-    () =>
-      value ?
-        (options.find(option => option.value === value) ?? {
-          value,
-          label: optionName(names, pokemonProperty, value),
-        })
-      : null,
-    [options, value, names, pokemonProperty],
+    () => (value ? { value, label: selectedLabel } : null),
+    [value, selectedLabel],
   );
   const id = `react-select-single-${teamIndex}-${pokemonProperty}`;
   const restorePopupFocus = useRef(false);

@@ -114,6 +114,7 @@ function moveMultiplier(
   ability: string,
   generation: Generation,
   item: string,
+  happiness?: number,
 ) {
   const score = moveAgainstType(
     move,
@@ -122,6 +123,7 @@ function moveMultiplier(
     ability,
     generation,
     item,
+    happiness,
   );
   if (score === undefined) return undefined;
   return scoreToMultiplier(
@@ -145,7 +147,15 @@ export function coverageMatrix(
         if (!name) return null;
         const moves = MOVE_KEYS.map(key => member[key]).filter(
           move =>
-            move && isMoveStrongEnough(move, item, ability, generation, name),
+            move &&
+            isMoveStrongEnough(
+              move,
+              item,
+              ability,
+              generation,
+              name,
+              member.happiness,
+            ),
         );
         let best: { move: string; multiplier: number } | undefined;
         for (const move of moves) {
@@ -156,6 +166,7 @@ export function coverageMatrix(
             ability,
             generation,
             item,
+            member.happiness,
           );
           if (multiplier !== undefined && multiplier > (best?.multiplier ?? -1))
             best = { move, multiplier };

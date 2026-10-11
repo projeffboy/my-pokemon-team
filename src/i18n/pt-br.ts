@@ -74,6 +74,8 @@ const ptBR: Messages = {
 
   team: {
     teams: "Equipes",
+    noMatchingPokemon:
+      "Nenhum Pokémon corresponde aos filtros atuais. Altere os filtros e tente novamente.",
     randomizedTeam: "Equipe aleatorizada",
     randomizedPokemon: "Pokémon aleatorizado",
     randomizedPokemonDetails: (details: string) =>

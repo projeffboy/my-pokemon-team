@@ -52,8 +52,9 @@ const TeamToolbar = observer(function TeamToolbar() {
     const teamId = store.currentTeamId;
     diceRoll.onClick(event, () => {
       if (store.currentTeamId !== teamId) return;
-      store.randomizeTeam();
-      store.openSnackbar(t.team.randomizedTeam, true, "random");
+      if (store.randomizeTeam())
+        store.openSnackbar(t.team.randomizedTeam, true, "random");
+      else store.openSnackbar(t.team.noMatchingPokemon, false, "warning");
     });
   };
 

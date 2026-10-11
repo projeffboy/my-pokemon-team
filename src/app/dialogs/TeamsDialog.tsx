@@ -241,6 +241,14 @@ const TeamsDialog = observer(function TeamsDialog() {
                   const teamId = store.currentTeamId;
                   diceRoll.onClick(event, () => {
                     if (store.currentTeamId !== teamId) return;
+                    if (!store.filteredPokemon.length) {
+                      store.openSnackbar(
+                        t.team.noMatchingPokemon,
+                        false,
+                        "warning",
+                      );
+                      return;
+                    }
                     const filters = { ...store.filters };
                     store.openEmptyTeam();
                     store.filters = filters;

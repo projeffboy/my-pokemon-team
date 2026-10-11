@@ -107,7 +107,7 @@ test("ordinary and untyped moves, Gen 1 and formats without IVs leave details al
   }
 });
 
-test("random Hidden Power always has matching IVs or DVs without changing the original set", () => {
+test("random Hidden Power matches new sets and respects existing custom IVs", () => {
   for (const generation of [2, 3, 5, 6, 7, 8] satisfies Generation[]) {
     for (const type of Object.keys(spreads)) {
       const move = `hiddenpower${type}`;
@@ -122,7 +122,10 @@ test("random Hidden Power always has matching IVs or DVs without changing the or
       if (!member) throw new Error("Missing pokemon");
       const before = structuredClone(member);
       const completed = completeSet(member, [move], () => 0, generation);
-      expect(hiddenPowerType(completed, generation)).toBe(type);
+      const currentType = hiddenPowerType(member, generation);
+      expect(completed.move1).toBe(currentType === type ? move : "");
+      expect(hiddenPowerType(completed, generation)).toBe(currentType);
+      expect(completed.ivs).toEqual(member.ivs);
       expect(completed.nickname).toBe("Letter");
       expect(member).toEqual(before);
     }

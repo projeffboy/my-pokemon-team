@@ -228,3 +228,92 @@ test("guaranteed selfBoost effects count as setup and follow Contrary", () => {
   expect(setup("clangoroussoulblaze", "Contrary")).toBe(false);
   expect(setup("clangingscales", "Soundproof")).toBe(false);
 });
+
+test("Assault Vest blocks status moves in every checklist role", () => {
+  for (const move of [
+    "spikes",
+    "defog",
+    "slackoff",
+    "healbell",
+    "toxic",
+    "roar",
+    "calmmind",
+  ]) {
+    const team = createTeam({
+      name: "smeargle",
+      item: "assaultvest",
+      ability: "Own Tempo",
+      move1: move,
+    });
+    expect(checked(team)).toEqual([]);
+    team[0].item = "";
+    expect(checked(team).length).toBeGreaterThan(0);
+    team[0].item = "assaultvest";
+    team[0].ability = "Klutz";
+    expect(checked(team).length).toBeGreaterThan(0);
+  }
+  expect(
+    checked(
+      createTeam({
+        name: "smeargle",
+        item: "assaultvest",
+        move1: "wish",
+        move2: "protect",
+      }),
+    ),
+  ).toEqual([]);
+  expect(
+    checked(
+      createTeam({ name: "pachirisu", item: "assaultvest", move1: "nuzzle" }),
+    ),
+  ).toEqual(["Status Move"]);
+  expect(
+    checked(
+      createTeam({ name: "kleavor", item: "assaultvest", move1: "stoneaxe" }),
+    ),
+  ).toEqual(["Entry Hazard"]);
+  expect(
+    checked(
+      createTeam({ name: "drampa", item: "assaultvest", move1: "dragontail" }),
+    ),
+  ).toEqual(["Phazer"]);
+});
+
+test("Klutz suppresses Choice roles without removing the item", () => {
+  for (const item of ["choicescarf", "choiceband", "choicespecs"]) {
+    const team = createTeam({ name: "lopunny", item, ability: "Klutz" });
+    expect(checked(team)).toEqual([]);
+    expect(team[0].item).toBe(item);
+    team[0].ability = "Limber";
+    expect(checked(team)).toEqual(["Choice Item"]);
+  }
+});
+
+test("Fling counts the selected item's guaranteed status only when usable", () => {
+  const team = createTeam({
+    name: "lopunny",
+    ability: "Limber",
+    move1: "fling",
+  });
+  const status = (generation: 4 | 7) =>
+    evaluateChecklist(team, generation)
+      .flatMap(group => group.items)
+      .find(item => item.key === "status")?.isChecked;
+  for (const item of ["flameorb", "toxicorb", "poisonbarb"]) {
+    team[0].item = item;
+    expect(status(7)).toBe(true);
+    team[0].ability = "Klutz";
+    expect(status(7)).toBe(false);
+    expect(status(4)).toBe(true);
+    team[0].ability = "Limber";
+  }
+  for (const item of ["ironball", "", "lightball"]) {
+    team[0].item = item;
+    expect(status(7)).toBe(item === "lightball");
+  }
+  team[0].name = "arceus";
+  team[0].ability = "Multitype";
+  team[0].item = "flameorb";
+  expect(status(4)).toBe(false);
+  expect(status(7)).toBe(true);
+});

@@ -238,3 +238,51 @@ test("slot move menus work by keyboard at the narrowest phone width", async ({
   await showSlot(page, 1);
   await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("Maractus");
 });
+
+test("tablet keyboard focus follows the Pokemon moved to another pair", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 800, height: 900 });
+  await page.goto(
+    `/?team=${Buffer.from("Bulbasaur\n\nCharmander\n\nSquirtle\n\nCaterpie").toString("base64url")}`,
+  );
+  const grip = page.getByRole("button", {
+    name: "Move Bulbasaur to another slot",
+    exact: true,
+  });
+  await grip.focus();
+  await grip.press("Enter");
+  const destination = page.getByRole("menuitem", {
+    name: "Pokemon 4 (Caterpie)",
+    exact: true,
+  });
+  await destination.focus();
+  await destination.press("Enter");
+  await expect(page.getByLabel("Pokemon 4's name")).toHaveValue("Bulbasaur");
+  await expect(grip).toBeFocused();
+  await grip.press("Enter");
+  await expect(
+    page.getByRole("menuitem", { name: "Pokemon 1 (Caterpie)", exact: true }),
+  ).toBeVisible();
+});
+
+for (const width of [400, 800, 1200]) {
+  test(`canceling a keyboard slot move restores focus at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(
+      `/?gen=9&team=${Buffer.from("Surskit").toString("base64url")}`,
+    );
+    const grip = page.getByRole("button", {
+      name: "Move Surskit to another slot",
+      exact: true,
+    });
+    await expect(grip).toBeVisible();
+    await grip.focus();
+    await grip.press("Enter");
+    await expect(page.getByRole("menu")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(grip).toBeFocused();
+  });
+}

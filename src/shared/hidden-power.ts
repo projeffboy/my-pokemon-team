@@ -1,10 +1,16 @@
 import spreads from "@/data/hidden-power-spreads";
-import { STAT_KEYS, type Generation, type TeamPokemon } from "@/types";
+import {
+  STAT_KEYS,
+  type Gender,
+  type Generation,
+  type TeamPokemon,
+} from "@/types";
 import {
   dvGender,
   generationRules,
   gen2Dvs,
   getDv,
+  isShinyDv,
   syncDvs,
 } from "./generation-rules";
 import { getIv, MAX_IV, setDetail } from "./set-details";
@@ -125,4 +131,37 @@ export function matchImportedHiddenPower(
       return;
     }
   }
+}
+
+// Match a new move without changing the set's Gen 2 shiny or gender choices.
+export function matchHiddenPowerPreservingDetails(
+  member: TeamPokemon,
+  move: string,
+  generation: Generation,
+  format = "",
+  options: { preserveIvs?: boolean; gender?: Gender } = {},
+) {
+  if (!move.startsWith("hiddenpower") || move === "hiddenpower") return true;
+  const candidate = { ...member };
+  const legacy = generation === 2 ? gen2Dvs(member) : undefined;
+  const gender = options.gender ?? (legacy && dvGender(legacy));
+  if (legacy) {
+    candidate.gender = gender;
+    candidate.shiny = isShinyDv(legacy);
+  }
+  matchImportedHiddenPower(candidate, move, generation, format);
+  if (
+    hiddenPowerType(candidate, generation) !==
+      move.slice("hiddenpower".length) ||
+    (legacy &&
+      (dvGender(gen2Dvs(candidate)) !== gender ||
+        isShinyDv(gen2Dvs(candidate)) !== isShinyDv(legacy))) ||
+    (options.preserveIvs &&
+      STAT_KEYS.some(
+        stat => getIv(candidate.ivs, stat) !== getIv(member.ivs, stat),
+      ))
+  )
+    return false;
+  setDetail(member, "ivs", candidate.ivs);
+  return true;
 }

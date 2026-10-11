@@ -587,8 +587,9 @@ class Store {
   // Six fresh picks: only the ones made so far count as taken, so the pokemon
   // being replaced do not force a repeat when the filters leave six options
   randomizeTeam() {
-    this.recordEdit();
     const options = this.filteredPokemon;
+    if (!options.length) return false;
+    this.recordEdit();
     const chosen: string[] = [];
     for (let i = 0; i < this.team.length; i++) {
       const pokemon = randomPokemon(options, chosen);
@@ -608,6 +609,7 @@ class Store {
       );
     }
     this.recordEdit(teamKey(this.team), true);
+    return true;
   }
 
   resetDetails(teamIndex: number) {
@@ -660,7 +662,10 @@ class Store {
   // those its games lack. The regular latest generation is National Dex.
   private inGame(pokemon: readonly string[]) {
     const { generation, format } = this.currentTeam;
-    if (!this.learnsetsLoaded) return variantGeneration(format) ? [] : pokemon;
+    if (!this.learnsetsLoaded)
+      return variantGeneration(format) || generation !== LATEST_GENERATION ?
+          []
+        : pokemon;
     if (variantGeneration(format))
       return availablePokemon(pokemon, generation, format);
     return generation === LATEST_GENERATION ? pokemon : (
@@ -898,6 +903,8 @@ class Store {
   private readOtherTabs() {
     const theirs = loadStoredState(storage);
     if (!theirs) return;
+    const selectionChanged =
+      this.storedState.currentTeamId !== this.lastRead.currentTeamId;
     const merged = mergeStoredState(this.lastRead, this.storedState, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
@@ -907,7 +914,11 @@ class Store {
     this.nameView = merged.nameView;
     this.chosenLocale = merged.locale;
     this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
-    this.lastRead = { ...theirs, currentTeamId: merged.currentTeamId };
+    this.lastRead = {
+      ...theirs,
+      currentTeamId:
+        selectionChanged ? theirs.currentTeamId : merged.currentTeamId,
+    };
   }
 
   // A tab with nothing of its own to save leaves the saving to the tab in use:

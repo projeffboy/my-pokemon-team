@@ -53,7 +53,7 @@ test("item projection keeps attack types and power, with Showdown's Fling defaul
   ).toBe(80);
   expect(
     projections.Items({ fling: { basePower: 130, status: "brn" } }).fling,
-  ).toEqual({ basePower: 130 });
+  ).toEqual({ basePower: 130, status: "brn" });
 });
 
 test("pick keeps only the listed fields and marks callbacks as present", () => {

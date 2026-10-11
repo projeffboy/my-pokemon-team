@@ -295,3 +295,90 @@ test("Thick Fat's third Ice resistance stays distinct from immunity", () => {
   );
   expect(defenceMultiplier("Ice", "dewgong", "Thick Fat", "", 2)).toBe(0.25);
 });
+
+test("happiness power uses the same threshold for scores and matrix", () => {
+  const team = createTeam({
+    name: "sylveon",
+    ability: "Pixilate",
+    move1: "return",
+    happiness: 0,
+  });
+  for (const [move, weak, strong] of [
+    ["return", 99, 100],
+    ["frustration", 156, 155],
+  ] as const) {
+    team[0].move1 = move;
+    team[0].happiness = weak;
+    expect(calculateTypeCoverage(team, 7).Dragon).toBe(0);
+    expect(coverageMatrix(team, undefined, 7).Dragon?.[0]?.reason).toContain(
+      "no damaging move",
+    );
+    team[0].happiness = strong;
+    expect(calculateTypeCoverage(team, 7).Dragon).toBe(2);
+    expect(coverageMatrix(team, undefined, 7).Dragon?.[0]?.multiplier).toBe(2);
+  }
+});
+
+test("static move requirements and monotype target restrictions affect coverage", () => {
+  const hawlucha = createTeam({ name: "hawlucha", move1: "skydrop" });
+  expect(coverageMatrix(hawlucha, undefined, 7).Flying?.[0]?.multiplier).toBe(
+    0,
+  );
+  expect(coverageMatrix(hawlucha, undefined, 7).Grass?.[0]?.multiplier).toBe(2);
+  const espeon = createTeam({ name: "espeon", move1: "synchronoise" });
+  expect(coverageMatrix(espeon, undefined, 7).Fighting?.[0]?.multiplier).toBe(
+    0,
+  );
+  expect(coverageMatrix(espeon, undefined, 7).Psychic?.[0]?.multiplier).toBe(
+    0.5,
+  );
+  expect(calculateTypeCoverage(espeon, 7).Fighting).toBe(0);
+  espeon[0].move2 = "psychic";
+  expect(calculateTypeCoverage(espeon, 7).Fighting).toBe(2);
+  [espeon[0].move1, espeon[0].move2] = [espeon[0].move2, espeon[0].move1];
+  expect(calculateTypeCoverage(espeon, 7).Fighting).toBe(2);
+  const dual = createTeam({ name: "gardevoir", move1: "synchronoise" });
+  expect(coverageMatrix(dual, undefined, 7).Fairy?.[0]?.multiplier).toBe(1);
+  for (const [move1, name, target, generation] of [
+    ["burnup", "arcanine", "Grass", 7],
+    ["doubleshock", "pawmot", "Water", 9],
+  ] as const) {
+    const team = createTeam({ name: "smeargle", move1 });
+    expect(calculateTypeCoverage(team, generation)[target]).toBe(0);
+    expect(
+      coverageMatrix(team, undefined, generation)[target]?.[0]?.reason,
+    ).toContain("no damaging move");
+    team[0].name = name;
+    expect(calculateTypeCoverage(team, generation)[target]).toBe(2);
+  }
+});
+
+test("Fling uses its own generation-specific Klutz suppression", () => {
+  const team = createTeam({
+    name: "lopunny",
+    ability: "Klutz",
+    item: "machobrace",
+    move1: "fling",
+  });
+  for (const item of ["machobrace", "hardstone"]) {
+    team[0].item = item;
+    expect(coverageMatrix(team, undefined, 4).Psychic?.[0]?.multiplier).toBe(2);
+    expect(calculateTypeCoverage(team, 4).Psychic).toBe(1);
+    expect(coverageMatrix(team, undefined, 5).Psychic?.[0]?.reason).toContain(
+      "no damaging move",
+    );
+    expect(calculateTypeCoverage(team, 5).Psychic).toBe(0);
+  }
+});
+
+test("restricted attacks and ordinary attacks never double-count one attacking type", () => {
+  for (const [name, first, second, target] of [
+    ["hawlucha", "skydrop", "fly", "Fighting"],
+    ["gallade", "synchronoise", "psychic", "Fighting"],
+  ] as const) {
+    const team = createTeam({ name, move1: first, move2: second });
+    expect(calculateTypeCoverage(team, 7)[target]).toBe(2);
+    [team[0].move1, team[0].move2] = [team[0].move2, team[0].move1];
+    expect(calculateTypeCoverage(team, 7)[target]).toBe(2);
+  }
+});
