@@ -1,6 +1,10 @@
 import { test, expect } from "@playwright/test";
 import type { PokemonType } from "@/types";
-import { moveType, moveAgainstType } from "@/store/shared/effectiveness";
+import {
+  IMMUNE_SCORE,
+  moveType,
+  moveAgainstType,
+} from "@/store/shared/effectiveness";
 
 test.describe("move types", () => {
   const cases: [string, string, string, string][] = [
@@ -49,7 +53,7 @@ test.describe("move effectiveness", () => {
     ["flyingpress", "Grass", "hawlucha", -1],
     ["flyingpress", "Bug", "hawlucha", 0],
     ["flyingpress", "Rock", "hawlucha", 0],
-    ["flyingpress", "Ghost", "hawlucha", 3],
+    ["flyingpress", "Ghost", "hawlucha", IMMUNE_SCORE],
     ["flyingpress", "Poison", "hawlucha", 1],
     ["machpunch", "Rock", "hitmonchan", -1],
     ["bulletseed", "Water", "cinccino", -1],

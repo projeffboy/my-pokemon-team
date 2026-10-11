@@ -14,6 +14,7 @@ import {
   typeAgainstPokemon,
   effectivePokemonTypes,
   isTypelessMove,
+  IMMUNE_SCORE,
 } from "./shared/effectiveness";
 
 // How hard one attacking type hits one slot, with the reason for the Matrix Analysis tooltip
@@ -25,23 +26,15 @@ export interface MatrixCell {
 // A row per type of the generation
 export type Matrix = Partial<Record<PokemonType, (MatrixCell | null)[]>>;
 
-// Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune;
-// Filter-like abilities give -1.5 = 3x and -0.5 = 1.5x
-const MULTIPLIER_BY_SCORE: Record<string, number> = {
-  "-2": 4,
-  "-1.5": 3,
-  "-1": 2,
-  "-0.5": 1.5,
-  "0": 1,
-  "1": 0.5,
-  "2": 0.25,
-  "3": 0,
-};
+// Filter-like abilities use half-step scores for their 25% damage reduction.
+export function scoreToMultiplier(score: number) {
+  if (score === IMMUNE_SCORE) return 0;
+  if (score === -1.5) return 3;
+  if (score === -0.5) return 1.5;
+  return 2 ** -score;
+}
 
-export const scoreToMultiplier = (score: number) =>
-  MULTIPLIER_BY_SCORE[`${score}`] ?? 1;
-
-// E.g. ×4, ×2, ½, ¼, 0, or "" for neutral
+// E.g. ×4, ×2, ½, ¼, ⅛, 0, or "" for neutral
 export function formatMultiplier(multiplier: number) {
   switch (multiplier) {
     case 1:
@@ -50,6 +43,8 @@ export function formatMultiplier(multiplier: number) {
       return "½";
     case 0.25:
       return "¼";
+    case 0.125:
+      return "⅛";
     case 0:
       return "0";
     default:
@@ -131,7 +126,7 @@ function moveMultiplier(
   if (score === undefined) return undefined;
   return scoreToMultiplier(
     move === "flyingpress" ? score
-    : score === 2 ? 3
+    : score === 2 ? IMMUNE_SCORE
     : score,
   );
 }

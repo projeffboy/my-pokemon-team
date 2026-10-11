@@ -1,25 +1,26 @@
 import { test, expect } from "@playwright/test";
 import type { PokemonType } from "@/types";
 import {
+  IMMUNE_SCORE,
   moveAgainstType,
   moveType,
   typeAgainstPokemon,
 } from "@/store/shared/effectiveness";
 import { typechartIn, typesIn } from "@/shared/generation-data";
 
-// Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
+// Finite defence scores count halvings; immunity uses IMMUNE_SCORE.
 test.describe("type effectiveness", () => {
   const cases: [PokemonType, string, number][] = [
     ["Water", "mudsdale", -1],
     ["Rock", "mudsdale", 1],
     ["Fire", "mudsdale", 0],
-    ["Electric", "mudsdale", 3],
+    ["Electric", "mudsdale", IMMUNE_SCORE],
     ["Fire", "frosmoth", -2],
     ["Grass", "frosmoth", 1],
     ["Grass", "leavanny", 2],
     ["Fighting", "frosmoth", 0],
-    ["Ground", "emolga", 3],
-    ["Poison", "mawile", 3],
+    ["Ground", "emolga", IMMUNE_SCORE],
+    ["Poison", "mawile", IMMUNE_SCORE],
   ];
 
   for (const [type, pokemon, score] of cases) {
@@ -44,8 +45,8 @@ test.describe("type effectiveness", () => {
 
   for (const [type, pokemon, ability] of immunityCases) {
     test(`${ability} grants ${type} immunity`, () => {
-      expect(typeAgainstPokemon(type, pokemon)).not.toBe(3);
-      expect(typeAgainstPokemon(type, pokemon, ability)).toBe(3);
+      expect(typeAgainstPokemon(type, pokemon)).not.toBe(IMMUNE_SCORE);
+      expect(typeAgainstPokemon(type, pokemon, ability)).toBe(IMMUNE_SCORE);
       expect(typeAgainstPokemon("Normal", pokemon, ability)).toBe(
         typeAgainstPokemon("Normal", pokemon),
       );
@@ -59,15 +60,15 @@ test.describe("type effectiveness", () => {
     ["Fire", "bronzong", "Heatproof", 0],
     ["Fire", "dubwool", "Fluffy", -1],
     ["Fire", "parasect", "Dry Skin", -3],
-    ["Water", "parasect", "Dry Skin", 3],
+    ["Water", "parasect", "Dry Skin", IMMUNE_SCORE],
     ["Ghost", "garganacl", "Purifying Salt", 1],
     ["Rock", "camerupt", "Solid Rock", 0],
     ["Ground", "camerupt", "Solid Rock", -0.5],
     ["Water", "camerupt", "Solid Rock", -1.5],
     ["Fighting", "aggronmega", "Filter", -0.5],
     ["Ground", "necrozmaduskmane", "Prism Armor", -0.5],
-    ["Water", "shedinja", "Wonder Guard", 3],
-    ["Grass", "shedinja", "Wonder Guard", 3],
+    ["Water", "shedinja", "Wonder Guard", IMMUNE_SCORE],
+    ["Grass", "shedinja", "Wonder Guard", IMMUNE_SCORE],
     ["Fire", "shedinja", "Wonder Guard", -1],
   ];
 
@@ -79,11 +80,11 @@ test.describe("type effectiveness", () => {
 
   test("Air Balloon grants Ground immunity", () => {
     expect(typeAgainstPokemon("Ground", "toxtricity", "", "airballoon")).toBe(
-      3,
+      IMMUNE_SCORE,
     );
     expect(
       typeAgainstPokemon("Ground", "bronzong", "Levitate", "airballoon"),
-    ).toBe(3);
+    ).toBe(IMMUNE_SCORE);
     expect(typeAgainstPokemon("Fire", "toxtricity", "", "airballoon")).toBe(0);
   });
 
@@ -95,7 +96,7 @@ test.describe("type effectiveness", () => {
 
 test("MissingNo's Bird type leaves its Normal matchups intact", () => {
   expect(typeAgainstPokemon("Fighting", "missingno")).toBe(-1);
-  expect(typeAgainstPokemon("Ghost", "missingno")).toBe(3);
+  expect(typeAgainstPokemon("Ghost", "missingno")).toBe(IMMUNE_SCORE);
 });
 
 test.describe("past generations", () => {
@@ -112,7 +113,7 @@ test.describe("past generations", () => {
   // Gen 1 had no Dark or Steel, Psychic was immune to Ghost, Fire did not resist
   // Ice, and Bug and Poison were weak to each other
   const gen1Cases: [PokemonType, string, number, number][] = [
-    ["Ghost", "alakazam", 3, -1],
+    ["Ghost", "alakazam", IMMUNE_SCORE, -1],
     ["Ground", "magnemite", -1, -2],
     ["Ice", "charmander", 0, 1],
     ["Bug", "weezing", -1, 1],
@@ -152,5 +153,19 @@ test("Scrappy bypasses Ghost immunity only for damaging Normal and Fighting move
   ).toBeUndefined();
   expect(moveAgainstType("flyingpress", "Ghost", "hawlucha", "Scrappy")).toBe(
     0,
+  );
+});
+
+test("Thick Fat adds a third resistance without granting Ice immunity", () => {
+  for (const pokemon of ["dewgong", "walrein"]) {
+    expect(typeAgainstPokemon("Ice", pokemon)).toBe(2);
+    expect(typeAgainstPokemon("Ice", pokemon, "Thick Fat")).toBe(3);
+  }
+  expect(typeAgainstPokemon("Ice", "dewgong", "Thick Fat", "", 2)).toBe(2);
+});
+
+test("damage-halving abilities preserve an existing type immunity", () => {
+  expect(typeAgainstPokemon("Ghost", "maushold", "Purifying Salt")).toBe(
+    IMMUNE_SCORE,
   );
 });

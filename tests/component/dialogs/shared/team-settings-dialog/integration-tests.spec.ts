@@ -44,6 +44,8 @@ test("the team-name editor saves and cancels names without generation or format 
     exact: true,
   });
   await expect(dialog.getByRole("combobox")).toHaveCount(0);
+  await expect(page.locator(".MuiMenu-paper")).toBeHidden();
+  await expect(dialog.getByLabel("Team name")).toBeFocused();
   await dialog.getByLabel("Team name").fill("My team");
   await dialog.getByRole("button", { name: "Save", exact: true }).click();
   await expect(dialog).toBeHidden();
@@ -117,4 +119,63 @@ test("Teams can rename another team without changing either team's generation", 
   await expect(
     page.getByRole("combobox", { name: "Generation" }),
   ).toContainText("Gen 3");
+});
+
+test("keyboard rename keeps textbox focus and restores the team's Options button", async ({
+  page,
+}) => {
+  await openTeams(page);
+  const options = page.getByRole("button", {
+    name: "Options for Team 1",
+    exact: true,
+  });
+  await options.focus();
+  await page.keyboard.press("Enter");
+  await page
+    .getByRole("menuitem", { name: "Edit team name", exact: true })
+    .focus();
+  await page.keyboard.press("Enter");
+  const dialog = page.getByRole("dialog", {
+    name: "Edit team name",
+    exact: true,
+  });
+  const name = dialog.getByRole("textbox", { name: "Team name", exact: true });
+  // Match the reported delay before typing, without waiting for autofocus.
+  await page.waitForTimeout(350);
+  await page.keyboard.press("ControlOrMeta+A");
+  await page.keyboard.type("Keyboard team");
+  await expect(name).toHaveValue("Keyboard team");
+  await expect(name).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(
+    dialog.getByRole("button", { name: "Cancel", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(
+    dialog.getByRole("button", { name: "Save", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(dialog).toBeHidden();
+  const renamedOptions = page.getByRole("button", {
+    name: "Options for Keyboard team",
+    exact: true,
+  });
+  await expect(renamedOptions).toBeFocused();
+  await page.keyboard.press("Enter");
+  await page
+    .getByRole("menuitem", { name: "Edit team name", exact: true })
+    .focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".MuiMenu-paper")).toBeHidden();
+  await expect(name).toBeFocused();
+  await page.keyboard.press("ControlOrMeta+A");
+  await page.keyboard.type("Cancelled name");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(renamedOptions).toBeFocused();
+  await page.keyboard.press("Enter");
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".MuiMenu-paper")).toBeHidden();
+  await expect(renamedOptions).toBeFocused();
+  await expect(dialog).toBeHidden();
 });

@@ -36,7 +36,10 @@ export function effectivePokemonTypes(
 export const isTypelessMove = (move: string, generation: number) =>
   generation <= 4 && (move === "futuresight" || move === "doomdesire");
 
-// Defence scores: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x, 2 = 0.25x, 3 = immune.
+export const IMMUNE_SCORE = Infinity;
+
+// Defence scores count halvings: -2 = 4x, -1 = 2x, 0 = 1x, 1 = 0.5x,
+// 2 = 0.25x, 3 = 0.125x. Immunity stays separate from finite resistances.
 // The generation decides the pokemon's types and the type chart.
 export function typeAgainstPokemon(
   type: PokemonType,
@@ -73,12 +76,12 @@ export function typeAgainstPokemon(
     const type2Resistance = resistance(type2);
 
     if (type1Resistance === 2 || type2Resistance === 2) {
-      effectiveness = 3;
+      effectiveness = IMMUNE_SCORE;
     } else {
       effectiveness += type2Resistance;
     }
   } else if (effectiveness === 2) {
-    effectiveness = 3;
+    effectiveness = IMMUNE_SCORE;
   }
   // Since Gen 5, Iron Ball makes all Ground effectiveness neutral on Flying holders.
   if (grounded && generation >= 5 && (type1 === "Flying" || type2 === "Flying"))
@@ -95,27 +98,27 @@ export function typeAgainstPokemon(
           type === "Electric" &&
           (pokemonAbility !== "Lightning Rod" || generation >= 5)
         ) {
-          effectiveness = 3;
+          effectiveness = IMMUNE_SCORE;
         }
         break;
       case "Flash Fire":
       case "Well-Baked Body":
         if (type === "Fire") {
-          effectiveness = 3;
+          effectiveness = IMMUNE_SCORE;
         }
         break;
       case "Sap Sipper":
         if (type === "Grass") {
-          effectiveness = 3;
+          effectiveness = IMMUNE_SCORE;
         }
         break;
       case "Levitate":
       case "Eelevate":
-        if (type === "Ground" && !grounded) effectiveness = 3;
+        if (type === "Ground" && !grounded) effectiveness = IMMUNE_SCORE;
         break;
       case "Earth Eater":
         if (type === "Ground") {
-          effectiveness = 3;
+          effectiveness = IMMUNE_SCORE;
         }
         break;
       case "Water Absorb":
@@ -124,7 +127,7 @@ export function typeAgainstPokemon(
           type === "Water" &&
           (pokemonAbility !== "Storm Drain" || generation >= 5)
         ) {
-          effectiveness = 3;
+          effectiveness = IMMUNE_SCORE;
         }
         break;
       case "Water Bubble":
@@ -134,7 +137,7 @@ export function typeAgainstPokemon(
         break;
       case "Wonder Guard":
         if (effectiveness >= 0) {
-          effectiveness = 3;
+          effectiveness = IMMUNE_SCORE;
         }
         break;
       // Abilities that halve damage from certain types
@@ -167,7 +170,7 @@ export function typeAgainstPokemon(
         if (type === "Fire") {
           effectiveness -= 1;
         } else if (type === "Water") {
-          effectiveness = 3;
+          effectiveness = IMMUNE_SCORE;
         }
         break;
       case "Purifying Salt":
@@ -179,7 +182,7 @@ export function typeAgainstPokemon(
     }
   }
 
-  if (item === "airballoon" && type === "Ground") effectiveness = 3;
+  if (item === "airballoon" && type === "Ground") effectiveness = IMMUNE_SCORE;
 
   return effectiveness;
 }
@@ -357,7 +360,7 @@ export function moveAgainstType(
   if (move === "freezedry" && attackType === "Ice" && typeAgainst === "Water")
     return -1;
   if (move === "flyingpress") {
-    if (score === 2) return 3;
+    if (score === 2) return IMMUNE_SCORE;
     return (score ?? 0) + (defender?.Flying ?? 0);
   }
   return score;

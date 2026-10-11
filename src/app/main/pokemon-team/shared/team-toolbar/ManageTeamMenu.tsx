@@ -30,7 +30,7 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
   const { t } = useTranslation();
   const manage = useFittingLabel([t.team.manageTeamMenu, t.team.manageTeam]);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
   const close = () => setAnchorEl(null);
   const teamId = store.currentTeamId;
 
@@ -41,7 +41,11 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
       Icon: EditNoteIcon,
       act: () => store.openDialog("editTeam"),
     },
-    { label: t.clear, Icon: DeleteIcon, act: () => setIsDeleting(true) },
+    {
+      label: t.clear,
+      Icon: DeleteIcon,
+      act: () => setDeletingTeamId(teamId),
+    },
     "divider" as const,
     {
       label: t.team.importTeam,
@@ -84,8 +88,8 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
         )}
       </Menu>
       <DeleteTeamDialog
-        teamId={isDeleting ? teamId : null}
-        onClose={() => setIsDeleting(false)}
+        teamId={deletingTeamId}
+        onClose={() => setDeletingTeamId(null)}
       />
     </>
   );

@@ -2,13 +2,14 @@ import { test, expect } from "@playwright/test";
 import {
   coverageMatrix,
   defenceMatrix,
+  defenceMultiplier,
   formatMultiplier,
 } from "@/store/matrix";
 import { createTeam } from "./shared/team";
 import { calculateTypeCoverage } from "@/store/coverage";
 
 test("formats multipliers like a type chart", () => {
-  expect([4, 3, 2, 1.5, 1, 0.5, 0.25, 0].map(formatMultiplier)).toEqual([
+  expect([4, 3, 2, 1.5, 1, 0.5, 0.25, 0.125, 0].map(formatMultiplier)).toEqual([
     "×4",
     "×3",
     "×2",
@@ -16,6 +17,7 @@ test("formats multipliers like a type chart", () => {
     "",
     "½",
     "¼",
+    "⅛",
     "0",
   ]);
 });
@@ -277,4 +279,19 @@ test("coverage matrix uses historical move power and Normalize exceptions", () =
       coverageMatrix(gift, undefined, generation).Water?.[0]?.reason,
     ).toContain("(Grass)");
   }
+});
+
+test("Thick Fat's third Ice resistance stays distinct from immunity", () => {
+  const team = createTeam(
+    { name: "dewgong", ability: "Thick Fat" },
+    { name: "walrein", ability: "Thick Fat" },
+    { name: "shedinja", ability: "Wonder Guard" },
+  );
+  expect(defenceMatrix(team).Ice?.map(cell => cell?.multiplier)).toEqual([
+    0.125, 0.125, 0,
+  ]);
+  expect(defenceMatrix(team).Ice?.[0]?.reason).toBe(
+    "Ice does 0.125x to Dewgong (Water/Ice) with Thick Fat",
+  );
+  expect(defenceMultiplier("Ice", "dewgong", "Thick Fat", "", 2)).toBe(0.25);
 });

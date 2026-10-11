@@ -11,6 +11,8 @@ const entries: Entry[] = [
   {
     date: "Oct 10, 2026",
     changes: [
+      "Thick Fat now correctly gives Dewgong ⅛ Ice damage rather than immunity.",
+      "An open team deletion confirmation now closes if another tab deletes that team.",
       "Showdown imports now preserve Gigantamax sets and older backup formats, and exported empty teams can be restored.",
       "Format changes now keep edits made in another tab while confirmation is open.",
       "Historical coverage now uses generation-specific move power and Normalize rules.",

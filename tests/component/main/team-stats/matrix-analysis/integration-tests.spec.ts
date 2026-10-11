@@ -9,6 +9,44 @@ import {
 } from "helper";
 
 test.describe("Matrix Analysis - Integration Tests", () => {
+  test("Thick Fat shows one-eighth Ice damage using the quarter-resistance colour", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Dewgong");
+    await openAnalysis(page, "Matrix Analysis");
+    const matrix = page.getByRole("region", { name: "Matrix Analysis" });
+    const quarter = matrix.getByRole("cell", {
+      name: "Ice does 0.25x to Dewgong (Water/Ice)",
+      exact: true,
+    });
+    await expect(quarter).toHaveText("¼");
+    const resistanceColour = await quarter.evaluate(
+      cell => getComputedStyle(cell).backgroundColor,
+    );
+
+    await selectAbility(page, "Thick Fat");
+    const eighth = matrix.getByRole("cell", {
+      name: "Ice does 0.125x to Dewgong (Water/Ice) with Thick Fat",
+      exact: true,
+    });
+    await expect(eighth).toHaveText("⅛");
+    await expect(eighth).toHaveCSS("background-color", resistanceColour);
+    await eighth.click();
+    await expect(
+      page
+        .getByRole("tooltip")
+        .filter({ hasText: "Ice does 0.125x to Dewgong" }),
+    ).toBeVisible();
+
+    await selectItem(page, "Air Balloon");
+    const immune = matrix.getByRole("cell", {
+      name: "Ground does 0x to Dewgong (Water/Ice) with Air Balloon",
+      exact: true,
+    });
+    await expect(immune).toHaveText("0");
+    await expect(immune).not.toHaveCSS("background-color", resistanceColour);
+  });
+
   test("the defence matrix reflects Air Balloon and Dry Skin", async ({
     page,
   }) => {

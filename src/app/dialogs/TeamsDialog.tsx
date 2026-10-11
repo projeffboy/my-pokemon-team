@@ -84,6 +84,7 @@ const TeamsDialog = observer(function TeamsDialog() {
     anchorEl: HTMLElement;
   } | null>(null);
   const [settingsTeamId, setSettingsTeamId] = useState<string | null>(null);
+  const pendingSettingsTeamId = useRef<string | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
   const dialogName = store.dialog?.name;
   const isOpen = dialogName === "teams" || dialogName === "importTeam";
@@ -122,7 +123,9 @@ const TeamsDialog = observer(function TeamsDialog() {
     {
       label: t.settings.editTeamName,
       Icon: EditIcon,
-      act: () => setSettingsTeamId(team.id),
+      act: () => {
+        pendingSettingsTeamId.current = team.id;
+      },
     },
     {
       label: t.team.share,
@@ -439,6 +442,16 @@ const TeamsDialog = observer(function TeamsDialog() {
         anchorEl={menu?.anchorEl}
         open={!!menu}
         onClose={() => setMenu(null)}
+        slotProps={{
+          transition: {
+            onExited: () => {
+              const teamId = pendingSettingsTeamId.current;
+              pendingSettingsTeamId.current = null;
+              // Let the menu restore focus before the editor takes it.
+              if (isOpen && teamId) setSettingsTeamId(teamId);
+            },
+          },
+        }}
       >
         {menuTeam &&
           menuItems(menuTeam).map(({ label, Icon, act }) => (

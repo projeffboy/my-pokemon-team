@@ -23,13 +23,15 @@ const DeleteTeamDialog = observer(function DeleteTeamDialog({
   const name = team?.name || t.deleteDialog.thisTeam;
 
   const handleDelete = () => {
-    if (teamId) store.deleteTeam(teamId);
-    store.openSnackbar(t.team.teamDeleted, false, "delete");
+    if (teamId && store.findTeam(teamId)) {
+      store.deleteTeam(teamId);
+      store.openSnackbar(t.team.teamDeleted, false, "delete");
+    }
     onClose();
   };
 
   return (
-    <Dialog open={!!teamId} onClose={onClose} aria-labelledby={titleId}>
+    <Dialog open={!!team} onClose={onClose} aria-labelledby={titleId}>
       <DialogTitle id={titleId}>{t.deleteDialog.title(name)}</DialogTitle>
       <DialogContent>
         <DialogContentText>{t.deleteDialog.description}</DialogContentText>
