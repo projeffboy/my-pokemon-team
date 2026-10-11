@@ -1,4 +1,4 @@
-import type { Generation, PokemonType } from "@/types";
+import type { Generation, PokemonType, TeamPokemon } from "@/types";
 import moves from "@/data/moves";
 import items from "@/data/items";
 import pokedex from "@/data/pokedex";
@@ -6,6 +6,7 @@ import { pokemonTypes } from "@/shared/pokedex";
 import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType } from "@/types";
+import { hiddenPowerPower } from "@/shared/hidden-power";
 
 export const activeItem = (
   item: string | undefined,
@@ -336,8 +337,11 @@ export function isMoveStrongEnough(
   generation = LATEST_GENERATION,
   pokemon = "",
   happiness = 255,
+  member?: Readonly<TeamPokemon>,
 ) {
   if (!isMoveUsable(move, pokemon, item, ability, generation)) return false;
+  if (moves[move] && move.startsWith("hiddenpower") && member)
+    return hiddenPowerPower(member, generation) >= 40;
   if (move === "return" || move === "frustration")
     return (
       Math.max(
@@ -378,13 +382,22 @@ export function moveAgainstType(
   generation = LATEST_GENERATION,
   item?: string,
   happiness = 255,
+  member?: Readonly<TeamPokemon>,
 ) {
   if (generation < 3) ability = undefined;
   const attackType = moveType(move, pokemon, ability, generation, item);
   const defender = typechartIn(generation)[typeAgainst];
 
   if (
-    !isMoveStrongEnough(move, item, ability, generation, pokemon, happiness) ||
+    !isMoveStrongEnough(
+      move,
+      item,
+      ability,
+      generation,
+      pokemon,
+      happiness,
+      member,
+    ) ||
     !attackType
   )
     return undefined;

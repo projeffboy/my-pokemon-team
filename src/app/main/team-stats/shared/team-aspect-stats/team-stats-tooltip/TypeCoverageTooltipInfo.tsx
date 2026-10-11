@@ -38,6 +38,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
           generation,
           item,
           member.happiness,
+          member,
         ) !== -1
       ) {
         return [];

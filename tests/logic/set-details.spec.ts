@@ -57,7 +57,7 @@ test.describe("set details in Showdown text", () => {
       gender: "M",
     });
     expect(serializeTeam(team)).toBe(
-      "Garchomp (M) @ \nAbility: \n- Earthquake\n-\n-\n-\n\n",
+      "Garchomp (M) @ \nAbility: No Ability\n- Earthquake\n-\n-\n-\n\n",
     );
   });
 
@@ -219,7 +219,7 @@ Garchomp
       createSavedTeam({ team: createTeam({ name: "torkoal" }) }),
     ]);
     expect(text).toBe(
-      "=== [gen8ou] Rain ===\n\nKingdra @ \nAbility: \n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal @ \nAbility: \n-\n-\n-\n-\n\n",
+      "=== [gen8ou] Rain ===\n\nKingdra @ \nAbility: No Ability\n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal @ \nAbility: No Ability\n-\n-\n-\n-\n\n",
     );
     expect(parseTeamsText(text)).toHaveLength(2);
     expect(parseTeamsText(text)[1]).toMatchObject({

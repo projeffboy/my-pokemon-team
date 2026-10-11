@@ -147,7 +147,7 @@ const TeamsDialog = observer(function TeamsDialog() {
         isTeamEmpty(team.team) ?
           store.openSnackbar(t.team.nothingToCopy, false, "warning")
         : copyToClipboard(
-            serializeTeam(team.team),
+            serializeTeam(team.team, team.generation, team.format),
             t.team.teamCopied,
             t.team.teamNotCopied,
           ),

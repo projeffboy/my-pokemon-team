@@ -75,6 +75,7 @@ export function calculateTypeCoverage(
           generation,
           name,
           pokemon.happiness,
+          pokemon,
         )
       )
         continue;
@@ -97,6 +98,7 @@ export function calculateTypeCoverage(
             generation,
             item,
             pokemon.happiness,
+            pokemon,
           ) === -1
         ) {
           if (isSpecialMove || !targetsUsed.has(target))

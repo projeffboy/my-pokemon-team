@@ -45,6 +45,7 @@ const en = {
     imagesTooLarge:
       "The images are too large to send together. Remove one first.",
     email: "Your email (optional)",
+    emailInvalid: "Enter a valid email address, or leave it empty.",
     emailHelper: "Only if you want a reply",
     caption: "Feedback",
     send: "Send",

@@ -14,7 +14,9 @@ test.describe("Advanced Dialog - Integration Tests", () => {
       page,
     }) => {
       const pokemon = generation === 8 ? "Unown" : "Dunsparce";
-      const team = Buffer.from(`${pokemon}\n- Return\n`).toString("base64url");
+      const team = Buffer.from(
+        `${pokemon}\n${generation >= 7 ? "Level: 99\n" : ""}- Return\n`,
+      ).toString("base64url");
       await page.goto(`/?gen=${generation}&team=${team}`);
       await selectMove(page, "Hidden Power Fire", 2);
       await openAdvanced(page);

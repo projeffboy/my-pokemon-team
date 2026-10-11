@@ -307,7 +307,7 @@ const AdvancedDialog = observer(function AdvancedDialog() {
   const close = () => store.closeDialog();
   const form = isOpen && member && (
     <AdvancedForm
-      key={teamIndex}
+      key={`${store.currentTeamId}:${teamIndex}:${member.name}:${store.currentTeam.generation}:${store.currentTeam.format}`}
       member={member}
       teamIndex={teamIndex}
       titleId={titleId}

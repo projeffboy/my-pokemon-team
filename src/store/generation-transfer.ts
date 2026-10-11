@@ -203,17 +203,21 @@ export function planGenerationTransfer(
     removeDetail("ivs", !rules.ivs);
     if (rules.ivs && previousRules.legacy !== rules.legacy) {
       const source = from.generation === 2 ? gen2Dvs(original) : original;
+      const sourceStat = (stat: (typeof STAT_KEYS)[number]) =>
+        from.generation === 1 && stat === "spd" ? "spa" : stat;
       const before = Object.fromEntries(
         STAT_KEYS.map(stat => [
           stat,
-          previousRules.legacy ? getDv(source, stat) : getIv(source.ivs, stat),
+          previousRules.legacy ?
+            getDv(source, sourceStat(stat))
+          : getIv(source.ivs, stat),
         ]),
       );
       member.ivs = Object.fromEntries(
         STAT_KEYS.map(stat => [
           stat,
           previousRules.legacy ?
-            getIv(source.ivs, stat)
+            getIv(source.ivs, sourceStat(stat))
           : Math.floor(getIv(source.ivs, stat) / 2) * 2 + 1,
         ]),
       );
@@ -246,7 +250,7 @@ export function planGenerationTransfer(
     )
       syncDvs(member, generation);
     const convertedIvs = member.ivs;
-    let matchedHiddenPower = false;
+    let matchedHiddenPowerType: string | undefined;
     for (const key of MOVE_KEYS) {
       const move = member[key];
       if (
@@ -256,13 +260,14 @@ export function planGenerationTransfer(
       )
         continue;
       if (
-        matchedHiddenPower ||
+        matchedHiddenPowerType ||
         (!matchHiddenPowerPreservingDetails(member, move, generation, format, {
           gender: generation === 2 ? original.gender : undefined,
         }) &&
           !matchHiddenPowerPreservingDetails(member, move, generation, format))
       ) {
-        const type = hiddenPowerType(member, generation);
+        const type =
+          matchedHiddenPowerType ?? hiddenPowerType(member, generation);
         if (type && move !== `hiddenpower${type}`) {
           member[key] = `hiddenpower${type}`;
           losses.push({
@@ -274,7 +279,7 @@ export function planGenerationTransfer(
           });
         }
       }
-      matchedHiddenPower = true;
+      matchedHiddenPowerType = member[key].slice("hiddenpower".length);
     }
     if (
       STAT_KEYS.some(

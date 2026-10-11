@@ -32,7 +32,14 @@ const ImportTeamForm = observer(function ImportTeamForm({
 }) {
   const { t } = useTranslation();
   const { importDialog } = t;
-  const initialText = isImport ? "" : serializeTeam(store.team);
+  const initialText =
+    isImport ? "" : (
+      serializeTeam(
+        store.team,
+        store.currentTeam.generation,
+        store.currentTeam.format,
+      )
+    );
   const [text, setText] = useState(initialText);
   const [isNothingFound, setIsNothingFound] = useState(false);
 

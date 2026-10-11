@@ -56,6 +56,8 @@ const de: Messages = {
       "Das Bild konnte nicht gelesen werden. Versuch es mit PNG oder JPEG.",
     imagesTooLarge: "Die Bilder sind zusammen zu groß. Entferne zuerst eines.",
     email: "Deine E-Mail (optional)",
+    emailInvalid:
+      "Gib eine gültige E-Mail-Adresse ein oder lass das Feld leer.",
     emailHelper: "Nur für eine Antwort",
     caption: "Feedback",
     send: "Senden",

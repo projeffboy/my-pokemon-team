@@ -44,9 +44,11 @@ const FeedbackDialog = observer(function FeedbackDialog() {
   const { t } = useTranslation();
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [attachLink, setAttachLink] = useState(true);
   const [attachScreenshot, setAttachScreenshot] = useState(true);
   const [uploads, setUploads] = useState<Upload[]>([]);
@@ -99,6 +101,11 @@ const FeedbackDialog = observer(function FeedbackDialog() {
   };
 
   const send = async () => {
+    if (emailRef.current && !emailRef.current.checkValidity()) {
+      setEmailError(true);
+      emailRef.current.focus();
+      return;
+    }
     const version = ++submissionVersion.current;
     setStatus("sending");
     const screenshot =
@@ -114,7 +121,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
       body: JSON.stringify({
         message,
         screen: describeScreen(),
-        ...(email.trim() && { email }),
+        ...(email.trim() && { email: email.trim() }),
         ...(attachLink && { link: location.href }),
         ...(screenshot && { screenshot }),
         ...(uploads.length > 0 && {
@@ -169,13 +176,20 @@ const FeedbackDialog = observer(function FeedbackDialog() {
           />
           <TextField
             label={t.feedback.email}
-            helperText={t.feedback.emailHelper}
+            helperText={
+              emailError ? t.feedback.emailInvalid : t.feedback.emailHelper
+            }
+            error={emailError}
+            inputRef={emailRef}
             type="email"
             fullWidth
             sx={{ mt: 2 }}
             value={email}
             disabled={status === "sending"}
-            onChange={event => setEmail(event.target.value)}
+            onChange={event => {
+              setEmail(event.target.value);
+              setEmailError(false);
+            }}
             slotProps={{ htmlInput: { maxLength: 254 } }}
           />
           <FormControlLabel

@@ -20,7 +20,11 @@ import useFittingLabel from "@/app/shared/use-fitting-label";
 
 export const copyTeamText = () => {
   const { team } = store.translation.t;
-  const text = serializeTeam(store.team);
+  const text = serializeTeam(
+    store.team,
+    store.currentTeam.generation,
+    store.currentTeam.format,
+  );
   if (text === "") store.openSnackbar(team.nothingToCopy, false, "warning");
   else copyToClipboard(text, team.teamCopied, team.teamNotCopied);
 };

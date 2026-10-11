@@ -76,3 +76,50 @@ test.describe("Language Select - Integration Tests", () => {
     expect(getTeamTextFromUrl(page)).toContain("Clodsire");
   });
 });
+
+test("ignores obsolete language request failures after returning to English", async ({
+  page,
+}) => {
+  let release!: () => void;
+  let started!: () => void;
+  const pending = new Promise<void>(resolve => {
+    release = resolve;
+  });
+  const requested = new Promise<void>(resolve => {
+    started = resolve;
+  });
+  await page.route("**/src/i18n/fr.ts*", async route => {
+    started();
+    await pending;
+    await route.abort("failed");
+  });
+  await openLanguageMenu(page);
+  await page.getByRole("menuitem", { name: "Français", exact: true }).click();
+  await requested;
+  await openLanguageMenu(page);
+  await page.getByRole("menuitem", { name: "English", exact: true }).click();
+  const failed = page.waitForEvent("requestfailed", {
+    predicate: request => request.url().includes("/src/i18n/fr.ts"),
+  });
+  release();
+  await failed;
+  await page.evaluate(
+    () =>
+      new Promise<void>(resolve =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  );
+  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+  await expect(page.getByRole("alert")).toBeHidden();
+});
+
+test("reports a failed language request when it is still selected", async ({
+  page,
+}) => {
+  await page.route("**/src/i18n/fr.ts*", route => route.abort("failed"));
+  await openLanguageMenu(page);
+  await page.getByRole("menuitem", { name: "Français", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText(
+    "That language could not be loaded. Try again.",
+  );
+});

@@ -3,6 +3,7 @@ import {
   type Generation,
   type PokemonType,
   type ReadonlyTeam,
+  type TeamPokemon,
 } from "@/types";
 import { typesIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
@@ -115,6 +116,7 @@ function moveMultiplier(
   generation: Generation,
   item: string,
   happiness?: number,
+  member?: Readonly<TeamPokemon>,
 ) {
   const score = moveAgainstType(
     move,
@@ -124,6 +126,7 @@ function moveMultiplier(
     generation,
     item,
     happiness,
+    member,
   );
   if (score === undefined) return undefined;
   return scoreToMultiplier(
@@ -155,6 +158,7 @@ export function coverageMatrix(
               generation,
               name,
               member.happiness,
+              member,
             ),
         );
         let best: { move: string; multiplier: number } | undefined;
@@ -167,6 +171,7 @@ export function coverageMatrix(
             generation,
             item,
             member.happiness,
+            member,
           );
           if (multiplier !== undefined && multiplier > (best?.multiplier ?? -1))
             best = { move, multiplier };

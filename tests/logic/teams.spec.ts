@@ -344,15 +344,14 @@ test.describe("slot tools", () => {
     expect(store.currentTeamId).not.toBe(first);
   });
 
-  test("a link to the current team opens no new team when its text reads back with an ability filled in", ({
+  test("a generation-aware link to a legacy team opens its existing saved copy", ({
     store,
   }) => {
-    // Gen 1 has no abilities, but reading the text fills in Haunter's only one
     store.currentTeam.generation = 1;
     store.selectPokemon(0, "haunter");
     expect(store.team[0].ability).toBe("");
     const first = store.currentTeamId;
-    store.openTeamFromLink(parseTeamText(serializeTeam(store.team), 1), {
+    store.openTeamFromLink(parseTeamText(serializeTeam(store.team, 1), 1), {
       generation: 1,
       format: "",
     });

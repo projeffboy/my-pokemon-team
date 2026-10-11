@@ -53,6 +53,7 @@ const ptBR: Messages = {
     imagesTooLarge:
       "As imagens são grandes demais para enviar juntas. Remova uma primeiro.",
     email: "Seu e-mail (opcional)",
+    emailInvalid: "Digite um endereço de e-mail válido ou deixe o campo vazio.",
     emailHelper: "Só se quiser resposta",
     caption: "Feedback",
     send: "Enviar",

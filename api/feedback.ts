@@ -6,6 +6,9 @@ const MAX_MESSAGE_LENGTH = 5000;
 // The most base64 the screenshot and uploaded images may total, as in capture-page.ts
 const MAX_IMAGES_LENGTH = 4_000_000;
 const MAX_UPLOADS = 3;
+// Matches the syntax accepted by the feedback form's native email input.
+const EMAIL_PATTERN =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const JPEG_PREFIX = "data:image/jpeg;base64,";
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 10 * 60 * 1000;
@@ -104,6 +107,9 @@ export async function POST(request: Request) {
     !isString(message, MAX_MESSAGE_LENGTH) ||
     !message.trim() ||
     !isOptionalString(email, 254) ||
+    (typeof email === "string" &&
+      !!email.trim() &&
+      !EMAIL_PATTERN.test(email.trim())) ||
     !isOptionalString(link, 4000) ||
     !isOptionalString(screen, 200)
   ) {
@@ -139,7 +145,7 @@ export async function POST(request: Request) {
       to: [TO],
       subject: "My Pokemon Team feedback",
       text: `${message}\n\n---\n${details.join("\n")}`,
-      ...(replyTo?.includes("@") && { reply_to: replyTo }),
+      ...(replyTo && { reply_to: replyTo }),
       ...(attachments.length > 0 && { attachments }),
     }),
   });

@@ -40,7 +40,7 @@ import {
 import { parseShowdownFormatId, showdownFormatId } from "@/shared/formats";
 import { canItLearn, isItemAvailable } from "./learnsets";
 import { generationRules } from "@/shared/generation-rules";
-import { matchImportedHiddenPower } from "@/shared/hidden-power";
+import { canHyperTrain, matchImportedHiddenPower } from "@/shared/hidden-power";
 
 const statsLine = (
   stats: Partial<BaseStats> | undefined,
@@ -53,7 +53,11 @@ const statsLine = (
     .join(" / ");
 
 // One pokemon in Showdown's export format; details at their defaults are left out
-function serializeMember(member: Readonly<TeamPokemon>): string {
+function serializeMember(
+  member: Readonly<TeamPokemon>,
+  generation: Generation,
+  format: string,
+): string {
   const { name, item, ability, gender, level, shiny, teraType } = member;
   // The Advanced dialog keeps a space being typed, which the text leaves out
   const nickname = member.nickname?.trim();
@@ -65,14 +69,24 @@ function serializeMember(member: Readonly<TeamPokemon>): string {
   ]
     .filter(part => part)
     .join(" ");
-  const evs = statsLine(member.evs, value => value === 0);
-  const ivs = statsLine(member.ivs, value => value === MAX_IV);
+  const evs =
+    statsLine(member.evs, value => value === 0) ||
+    (generation <= 2 ? "0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe" : "");
+  const ivs =
+    statsLine(member.ivs, value => value === MAX_IV) ||
+    ((
+      generationRules(generation, format).ivs &&
+      canHyperTrain(member, generation) &&
+      MOVE_KEYS.some(key => member[key].startsWith("hiddenpower"))
+    ) ?
+      "31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe"
+    : "");
   const nature = member.nature ? natureName(member.nature) : undefined;
   const happiness = member.happiness ?? DEFAULT_HAPPINESS;
 
   return [
     nameLine,
-    `Ability: ${ability}`,
+    `Ability: ${ability || "No Ability"}`,
     level !== undefined && level !== DEFAULT_LEVEL ? `Level: ${level}` : "",
     shiny ? "Shiny: Yes" : "",
     (
@@ -100,9 +114,15 @@ function serializeMember(member: Readonly<TeamPokemon>): string {
     .join("\n");
 }
 
-export const serializeTeam = (team: ReadonlyTeam) =>
+export const serializeTeam = (
+  team: ReadonlyTeam,
+  generation: Generation = 9,
+  format = "",
+) =>
   team
-    .map(member => (member.name ? `${serializeMember(member)}\n\n` : ""))
+    .map(member =>
+      member.name ? `${serializeMember(member, generation, format)}\n\n` : "",
+    )
     .join("");
 
 // Every team, each under a header like Showdown's backup: === [gen9ou] Team name ===
@@ -112,7 +132,7 @@ export const serializeTeams = (teams: readonly SavedTeam[]) => {
   const preserveNames = teams.some(({ name }) => name.includes("/"));
   return teams
     .map(({ name, generation, format, team }) => {
-      const sets = serializeTeam(team);
+      const sets = serializeTeam(team, generation, format);
       // Showdown ignores unknown metadata inside a set, but not before its header.
       const text =
         preserveNames ? sets.replace("\n", `\n${BACKUP_MARKER}\n`) : sets;
@@ -178,6 +198,14 @@ function parseFirstLine(line: string) {
   return name && { ...name, itemText: undefined };
 }
 
+// Original links omitted zero training and interpreted blank abilities as auto-selection.
+export const LEGACY_LINK_PARSING_OPTIONS = {
+  inferFrustrationHappiness: false,
+  inferLegacyTraining: false,
+  preserveBlankAbilityDefault: true,
+  allowHyperTraining: false,
+} as const;
+
 // Parses Pokemon Showdown team text into a fresh six-slot team.
 // Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected).
 export function parseTeamText(
@@ -186,7 +214,15 @@ export function parseTeamText(
   format = "",
   {
     inferFrustrationHappiness = true,
-  }: { inferFrustrationHappiness?: boolean } = {},
+    inferLegacyTraining = true,
+    preserveBlankAbilityDefault = false,
+    allowHyperTraining = true,
+  }: {
+    inferFrustrationHappiness?: boolean;
+    inferLegacyTraining?: boolean;
+    preserveBlankAbilityDefault?: boolean;
+    allowHyperTraining?: boolean;
+  } = {},
 ): Team {
   const rules = generationRules(generation, format);
   const team = createEmptyTeam();
@@ -239,8 +275,12 @@ export function parseTeamText(
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
 
-        // If legit, set ability
-        if (abilities.includes(ability)) {
+        if (
+          ability === "No Ability" ||
+          (!ability && !preserveBlankAbilityDefault)
+        )
+          member.ability = "";
+        else if (abilities.includes(ability)) {
           member.ability = ability;
         }
       } else if (startsWith("Gigantamax:")) {
@@ -310,6 +350,15 @@ export function parseTeamText(
         moveIndex++;
       }
     });
+    // Old Gen 1/2 site exports wrote a blank Ability line and omitted zero EVs.
+    if (
+      rules.legacy &&
+      inferLegacyTraining &&
+      !lines.some(line =>
+        /^(?:Ability:\s*$|EVs:|Stat Experience:)/i.test(line.trim()),
+      )
+    )
+      member.evs = Object.fromEntries(STAT_KEYS.map(stat => [stat, 252]));
     if (gigantamax) {
       const forme = pokemonNameInverse(`${pokemonName(member.name)}-Gmax`);
       if (forme) member.name = forme;
@@ -326,7 +375,9 @@ export function parseTeamText(
         move.startsWith("hiddenpower"),
       );
       if (hiddenPower)
-        matchImportedHiddenPower(member, hiddenPower, generation, format);
+        matchImportedHiddenPower(member, hiddenPower, generation, format, {
+          allowHyperTraining,
+        });
     }
   });
 

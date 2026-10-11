@@ -93,3 +93,27 @@ test.describe("Sort Dialog - Integration Tests", () => {
     await expect(firstOption).toHaveText("Bulbasaur");
   });
 });
+
+test("Gen 1 represents a saved Special Defense sort as Special", async ({
+  page,
+}) => {
+  await openSort(page);
+  await page.getByRole("radio", { name: "Sp. Def", exact: true }).check();
+  await page.getByRole("button", { name: "Descending", exact: true }).click();
+  await closeDialog(page);
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  await page.getByRole("option", { name: /^Gen 1 / }).click();
+  await openSort(page);
+  await expect(
+    page.getByRole("radio", { name: "Special", exact: true }),
+  ).toBeChecked();
+  await expect(
+    page.getByRole("button", { name: "Descending", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await closeDialog(page);
+  await page.reload();
+  await openSort(page);
+  await expect(
+    page.getByRole("radio", { name: "Special", exact: true }),
+  ).toBeChecked();
+});

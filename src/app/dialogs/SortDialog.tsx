@@ -88,7 +88,15 @@ const SortDialog = observer(function SortDialog() {
             <FormLabel id={`${titleId}-by`}>{t.sort.sortBy}</FormLabel>
             <RadioGroup
               aria-labelledby={`${titleId}-by`}
-              value={sort.by}
+              value={
+                (
+                  tab === "pokemon" &&
+                  store.currentTeam.generation === 1 &&
+                  sort.by === "spd"
+                ) ?
+                  "spa"
+                : sort.by
+              }
               onChange={event => {
                 if (tab === "moves")
                   store.moveSort.by = event.target.value as MoveSortOrder["by"];

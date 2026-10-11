@@ -50,6 +50,7 @@ const zhHans: Messages = {
     imageUnreadable: "无法读取该图片。请尝试 PNG 或 JPEG。",
     imagesTooLarge: "图片总大小超出限制，请先删除一张。",
     email: "你的邮箱（可选）",
+    emailInvalid: "请输入有效的电子邮箱地址，或留空。",
     emailHelper: "仅在需要回复时填写",
     caption: "反馈",
     send: "发送",

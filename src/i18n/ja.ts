@@ -52,6 +52,7 @@ const ja: Messages = {
       "この画像は読み込めませんでした。PNG または JPEG をお試しください。",
     imagesTooLarge: "画像の合計サイズが大きすぎます。先に1枚削除してください。",
     email: "メールアドレス（任意）",
+    emailInvalid: "有効なメールアドレスを入力するか、空欄にしてください。",
     emailHelper: "返信が必要な場合のみ",
     caption: "意見",
     send: "送信",

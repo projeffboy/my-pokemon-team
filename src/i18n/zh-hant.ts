@@ -50,6 +50,7 @@ const zhHant: Messages = {
     imageUnreadable: "無法讀取這張圖片。請試試 PNG 或 JPEG。",
     imagesTooLarge: "圖片總大小超出限制，請先刪除一張。",
     email: "你的電子郵件（選填）",
+    emailInvalid: "請輸入有效的電子郵件地址，或留空。",
     emailHelper: "僅在需要回覆時填寫",
     caption: "意見",
     send: "傳送",

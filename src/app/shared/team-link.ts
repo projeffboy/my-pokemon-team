@@ -6,7 +6,11 @@ import { CHAMPIONS_FORMAT, gameFormat } from "@/shared/formats";
 import { DEFAULT_TEAM_SETTINGS } from "@/shared/team";
 import type { SavedTeam, ReadonlyTeam } from "@/types";
 import { toBase64Url, fromBase64Url } from "./base64url";
-import { parseTeamText, serializeTeam } from "@/store/team-text";
+import {
+  LEGACY_LINK_PARSING_OPTIONS,
+  parseTeamText,
+  serializeTeam,
+} from "@/store/team-text";
 
 // Limit applies to the raw (still-encoded) URL parameter, before any decoding is attempted
 export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
@@ -14,7 +18,13 @@ export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
 // Returns the `team` URL parameter value for the store's current team, or "" if the team is empty
 export function encodeTeamForUrl(): string {
   if (store.isTeamEmpty) return "";
-  return toBase64Url(serializeTeam(store.team));
+  return toBase64Url(
+    serializeTeam(
+      store.team,
+      store.currentTeam.generation,
+      store.currentTeam.format,
+    ),
+  );
 }
 
 // The share link of any team, as the address bar shows the current one
@@ -36,7 +46,10 @@ export function teamUrl(
 ): string {
   const url = new URL(location.href);
   url.search = "";
-  url.searchParams.set("team", toBase64Url(serializeTeam(team)));
+  url.searchParams.set(
+    "team",
+    toBase64Url(serializeTeam(team, settings.generation, settings.format)),
+  );
   syncGenerationToUrl(url, settings);
   return url.href;
 }
@@ -84,10 +97,12 @@ export function importTeamFromUrlParameter(teamParameter: string): void {
 
   const settings = generationSettingsFromUrl() ?? { generation: 9, format: "" };
   store.openTeamFromLink(
-    parseTeamText(text, settings.generation, settings.format, {
-      // Existing links use the site's original default of 255.
-      inferFrustrationHappiness: false,
-    }),
+    parseTeamText(
+      text,
+      settings.generation,
+      settings.format,
+      LEGACY_LINK_PARSING_OPTIONS,
+    ),
     settings,
   );
 }

@@ -43,7 +43,11 @@ import {
   randomSet,
   randomizedFieldsMessage,
 } from "./store/random";
-import { parseTeamText, serializeTeam } from "./store/team-text";
+import {
+  LEGACY_LINK_PARSING_OPTIONS,
+  parseTeamText,
+  serializeTeam,
+} from "./store/team-text";
 import { nextDuplicateName } from "./store/team-names";
 import { describeTeamChange } from "./store/team-change";
 import {
@@ -351,15 +355,34 @@ class Store {
       Partial<Pick<SavedTeam, "format">>,
   ) {
     if (isTeamEmpty(team)) return;
-    const text = serializeTeam(team);
+    const generation = settings?.generation ?? this.currentTeam.generation;
+    const format = settings?.format ?? this.currentTeam.format;
+    const text = serializeTeam(team, generation, format);
     const preferredId =
       this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId;
     const reads = (saved: SavedTeam) => {
-      const savedText = serializeTeam(saved.team);
+      const savedText = serializeTeam(
+        saved.team,
+        saved.generation,
+        saved.format,
+      );
+      // Preserve the normalization used by links made before explicit default exports.
       return (
         savedText === text ||
         serializeTeam(
-          parseTeamText(savedText, saved.generation, saved.format),
+          parseTeamText(
+            savedText
+              .replace(/^Ability: No Ability$/gm, "Ability: ")
+              .replace(
+                /^IVs: 31 HP \/ 31 Atk \/ 31 Def \/ 31 SpA \/ 31 SpD \/ 31 Spe\n/gm,
+                "",
+              ),
+            saved.generation,
+            saved.format,
+            LEGACY_LINK_PARSING_OPTIONS,
+          ),
+          saved.generation,
+          saved.format,
         ) === text
       );
     };
@@ -820,8 +843,10 @@ class Store {
         if (typeof document !== "undefined")
           document.documentElement.lang = locale;
       },
-      () =>
-        this.openSnackbar(this.translation.t.languageFailed, false, "error"),
+      () => {
+        if (locale === this.locale)
+          this.openSnackbar(this.translation.t.languageFailed, false, "error");
+      },
     );
   }
 

@@ -247,3 +247,64 @@ test.describe("Feedback Dialog - Unit Tests", () => {
     await expect(dialog.getByLabel("Your feedback")).toHaveValue("Hello");
   });
 });
+
+for (const address of ["trainer.example.com", "trainer@"]) {
+  test(`blocks invalid reply address ${address} and allows its correction`, async ({
+    page,
+  }) => {
+    const requests: Record<string, unknown>[] = [];
+    await page.route("/api/feedback", async route => {
+      requests.push(route.request().postDataJSON());
+      await route.fulfill({ status: 204 });
+    });
+    await page
+      .getByRole("button", { name: "Send feedback", exact: true })
+      .click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    await dialog
+      .getByLabel("Your feedback", { exact: true })
+      .fill("Please reply about my team");
+    await dialog.getByLabel("Attach a screenshot of the page").uncheck();
+    const email = dialog.getByLabel("Your email (optional)", { exact: true });
+    await email.fill(address);
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(email).toBeFocused();
+    await expect(email).toHaveAttribute("aria-invalid", "true");
+    await expect(
+      dialog.getByText("Enter a valid email address, or leave it empty."),
+    ).toBeVisible();
+    expect(requests).toHaveLength(0);
+    await email.fill("trainer+team@example.com");
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    expect(requests).toHaveLength(1);
+    expect(requests[0]?.email).toBe("trainer+team@example.com");
+  });
+}
+
+for (const address of ["", "   "]) {
+  test(`feedback accepts an ${address ? "whitespace-only" : "empty"} optional reply address`, async ({
+    page,
+  }) => {
+    const requests: Record<string, unknown>[] = [];
+    await page.route("/api/feedback", async route => {
+      requests.push(route.request().postDataJSON());
+      await route.fulfill({ status: 204 });
+    });
+    await page
+      .getByRole("button", { name: "Send feedback", exact: true })
+      .click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    await dialog
+      .getByLabel("Your feedback", { exact: true })
+      .fill("Feedback without a reply");
+    await dialog
+      .getByLabel("Your email (optional)", { exact: true })
+      .fill(address);
+    await dialog.getByLabel("Attach a screenshot of the page").uncheck();
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    expect(requests).toHaveLength(1);
+    expect(requests[0]).not.toHaveProperty("email");
+  });
+}

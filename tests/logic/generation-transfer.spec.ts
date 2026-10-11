@@ -734,3 +734,59 @@ test("Gen 2 Hidden Power matching retains an explicit gender when compatible", (
   expect(hiddenPowerType(plan.team[0]!, 2)).toBe("ice");
   expect(plan.losses.filter(loss => loss.field === "gender")).toEqual([]);
 });
+
+test("Gen 1 shared Special DVs become equal modern Special IVs without inflating SpD", () => {
+  const original = parseTeamText("Hypno\nIVs: 29 HP / 1 SpA\n- Psychic", 1);
+  expect(getDv(original[0], "spa")).toBe(0);
+  expect(original[0].ivs?.spd).toBeUndefined();
+  const snapshot = structuredClone(original);
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 1, format: "" },
+    3,
+    "",
+    data,
+  );
+  expect(getIv(plan.team[0]?.ivs, "spa")).toBe(1);
+  expect(getIv(plan.team[0]?.ivs, "spd")).toBe(1);
+  expect(plan.losses).toContainEqual(
+    expect.objectContaining({
+      field: "ivs",
+      conversion: expect.objectContaining({
+        before: expect.objectContaining({ spa: 0, spd: 0 }),
+        after: expect.objectContaining({ spa: 1, spd: 1 }),
+      }),
+    }),
+  );
+  expect(original).toEqual(snapshot);
+});
+
+test("capped Hidden Power retains its declared type across duplicate and conflicting slots", () => {
+  const team = createTeam({
+    name: "raikou",
+    ability: "Pressure",
+    move1: "hiddenpowerice",
+    move2: "hiddenpowerice",
+    move3: "hiddenpowerfire",
+  });
+  const plan = planGenerationTransfer(
+    team,
+    { generation: 7, format: "" },
+    7,
+    "",
+    data,
+  );
+  expect(plan.team[0]).toMatchObject({
+    move1: "hiddenpowerice",
+    move2: "hiddenpowerice",
+    move3: "hiddenpowerice",
+  });
+  expect(plan.team[0]?.ivs).toBeUndefined();
+  expect(plan.losses).toEqual([
+    expect.objectContaining({
+      field: "move",
+      value: "hiddenpowerfire",
+      replacement: "hiddenpowerice",
+    }),
+  ]);
+});

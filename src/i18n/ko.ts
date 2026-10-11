@@ -66,6 +66,7 @@ const ko: Messages = {
     imagesTooLarge:
       "이미지가 너무 커서 함께 보낼 수 없습니다. 먼저 하나를 삭제하세요.",
     email: "이메일 (선택)",
+    emailInvalid: "올바른 이메일 주소를 입력하거나 비워 두세요.",
     emailHelper: "답장을 원할 때만",
     caption: "피드백",
     send: "보내기",

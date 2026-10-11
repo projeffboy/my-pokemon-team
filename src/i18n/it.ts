@@ -51,6 +51,8 @@ const it: Messages = {
     imagesTooLarge:
       "Le immagini sono troppo grandi per inviarle insieme. Rimuovine una.",
     email: "La tua email (facoltativa)",
+    emailInvalid:
+      "Inserisci un indirizzo email valido o lascia il campo vuoto.",
     emailHelper: "Solo per risponderti",
     caption: "Feedback",
     send: "Invia",
