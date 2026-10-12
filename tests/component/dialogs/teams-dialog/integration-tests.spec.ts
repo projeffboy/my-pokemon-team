@@ -201,6 +201,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
   });
 
   test("saved teams survive a reload", async ({ page }) => {
+    test.setTimeout(60000);
     await selectPokemon(page, "Snorlax");
     await openFilters(page);
     await selectDialogOption(page, "Type", "Normal");

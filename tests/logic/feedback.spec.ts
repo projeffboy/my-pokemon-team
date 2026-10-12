@@ -123,3 +123,40 @@ test("validates optional reply addresses before contacting the email provider", 
     globalThis.fetch = originalFetch;
   }
 });
+
+test("invalid JSON bodies receive a validation response", async () => {
+  for (const body of ["null", "[]", "42", '"feedback"', "invalid JSON"]) {
+    const response = await POST(
+      new Request("https://example.com/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body,
+      }),
+    );
+    expect(response.status).toBe(400);
+    expect(await response.text()).toBe("Invalid feedback");
+  }
+});
+
+test("a failed email connection receives a retryable response", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new TypeError("Connection failed");
+  };
+  try {
+    const response = await POST(
+      new Request("https://example.com/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-forwarded-for": "feedback-network-test",
+        },
+        body: JSON.stringify({ message: "A test message" }),
+      }),
+    );
+    expect(response.status).toBe(502);
+    expect(await response.text()).toBe("Could not send");
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});

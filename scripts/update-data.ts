@@ -6,12 +6,18 @@ import ts from "typescript";
 import type {
   Generation,
   GenerationTransferData,
+  GameVariantData,
   Items,
   Learnsets,
   Moves,
   Pokedex,
 } from "../src/types.ts";
 import { LATEST_GENERATION } from "../src/shared/generations.ts";
+import {
+  LETS_GO,
+  LEGENDS_ARCEUS,
+  LEGENDS_ZA,
+} from "../src/shared/game-variants.ts";
 import {
   type DataTypes,
   type ModData,
@@ -23,6 +29,7 @@ import {
   nameChanges,
   projectFormats,
   projectPastGenerations,
+  projectGameVariant,
   projectTable,
   projectTypeChart,
   projectHiddenPowerSpreads,
@@ -78,6 +85,7 @@ async function loadModTable(mod: string, file: string, exportName: string) {
 const DATA_FILES: Partial<Record<keyof DataTypes, string>> = {
   PastGenerations: "past-generations",
   HiddenPowerSpreads: "hidden-power-spreads",
+  GameVariantData: "game-variants",
 };
 
 async function writeData<N extends keyof DataTypes>(
@@ -284,6 +292,10 @@ async function updatePastGenerations() {
       loadShowdownTable(`data/${file}.ts`, exportName),
     ),
   );
+  const formats = await loadShowdownTable(
+    "data/formats-data.ts",
+    "FormatsData",
+  );
   if (!pokedex || !moves || !typechart) throw new Error("Missing base data");
   const mods = Object.fromEntries(
     await Promise.all(
@@ -292,14 +304,56 @@ async function updatePastGenerations() {
         for (const [file, exportName] of tables) {
           mod[file] = await loadModTable(`gen${gen}`, file, exportName);
         }
+        mod.formats = await loadModTable(
+          `gen${gen}`,
+          "formats-data",
+          "FormatsData",
+        );
         return [gen, mod];
       }),
     ),
   );
   await writeData(
     "PastGenerations",
-    projectPastGenerations({ pokedex, moves, typechart, abilities }, mods),
+    projectPastGenerations(
+      { pokedex, moves, typechart, abilities, formats },
+      mods,
+    ),
   );
+}
+
+async function updateGameVariants() {
+  let pokedex = await loadShowdownTable("data/pokedex.ts", "Pokedex");
+  let moves = await loadShowdownTable("data/moves.ts", "Moves");
+  const variants = [
+    [LEGENDS_ZA, "gen9legends", 9],
+    [LEGENDS_ARCEUS, "gen8legends", 8],
+    [LETS_GO, "gen7letsgo", 7],
+  ] as const;
+  const data: GameVariantData = {};
+  for (let generation = 9; generation >= 7; generation--) {
+    if (generation < 9) {
+      pokedex = resolveMod(
+        pokedex,
+        await loadModTable(`gen${generation}`, "pokedex", "Pokedex"),
+      );
+      moves = resolveMod(
+        moves,
+        await loadModTable(`gen${generation}`, "moves", "Moves"),
+      );
+    }
+    for (const [format, mod, gen] of variants) {
+      if (gen !== generation) continue;
+      data[format] = projectGameVariant(
+        { pokedex, moves, typechart: {} },
+        {
+          pokedex: await loadModTable(mod, "pokedex", "Pokedex"),
+          moves: await loadModTable(mod, "moves", "Moves"),
+        },
+      );
+    }
+  }
+  await writeData("GameVariantData", data);
 }
 
 async function updateIconIndexes() {
@@ -430,8 +484,8 @@ async function updateMoveEffects() {
     await loadAppData<DataTypes["PastGenerations"]>("past-generations");
   for (const [gen, entry] of Object.entries(past)) {
     const properties = historical[Number(gen) as keyof typeof historical];
-    if (properties) entry.moveProperties = properties;
-    else delete entry.moveProperties;
+    if (properties) entry.moveData = properties;
+    else delete entry.moveData;
   }
   await writeData("Moves", moves, true);
   await writeData("PastGenerations", past);
@@ -480,6 +534,22 @@ async function updateData() {
     );
     return;
   }
+  if (process.argv.includes("--pokedex-only")) {
+    await updateProjectedDataset("pokedex", "Pokedex", "Pokedex");
+    return;
+  }
+  if (process.argv.includes("--items-only")) {
+    await updateProjectedDataset("items", "Items", "Items");
+    return;
+  }
+  if (process.argv.includes("--game-variants-only")) {
+    await updateGameVariants();
+    return;
+  }
+  if (process.argv.includes("--past-generations-only")) {
+    await updatePastGenerations();
+    return;
+  }
   if (process.argv.includes("--hidden-power-only")) {
     await updateHiddenPowerSpreads();
     return;
@@ -496,6 +566,7 @@ async function updateData() {
     updateTypeChart(),
     updateHiddenPowerSpreads(),
     updatePastGenerations(),
+    updateGameVariants(),
     updateIconIndexes(),
   ]);
 

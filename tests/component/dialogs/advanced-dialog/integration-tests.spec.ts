@@ -2,75 +2,166 @@ import { test, expect } from "fixtures";
 import {
   getTeamTextFromUrl,
   closeDialog,
+  clickMenuItem,
   openAdvanced,
+  openTeamTools,
   selectDialogOption,
   selectPokemon,
   selectMove,
 } from "helper";
 
 test.describe("Advanced Dialog - Integration Tests", () => {
-  for (const generation of [2, 3, 7, 8]) {
-    test(`Gen ${generation} Hidden Power updates the displayed IVs or DVs and persists them`, async ({
+  test("deleting the detailed team in another tab preserves the remaining team's details", async ({
+    page,
+    context,
+  }) => {
+    test.slow();
+    await selectPokemon(page, "Magcargo");
+    await openAdvanced(page);
+    const details = page.getByRole("dialog", { name: "More details" });
+    await details.getByLabel("Level", { exact: true }).fill("50");
+    await closeDialog(page);
+    await expect
+      .poll(() => page.evaluate(() => localStorage.getItem("mypokemonteam")))
+      .toContain('"level":50');
+
+    const otherTab = await context.newPage();
+    await otherTab.goto(page.url());
+    await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
+      "Magcargo",
+    );
+    await openTeamTools(otherTab);
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: "New Team", exact: true })
+      .click();
+    await selectPokemon(otherTab, "Haxorus");
+    await openAdvanced(otherTab);
+    await otherTab
+      .getByRole("dialog", { name: "More details" })
+      .getByLabel("Level", { exact: true })
+      .fill("60");
+    await closeDialog(otherTab);
+    await expect
+      .poll(() => getTeamTextFromUrl(otherTab))
+      .toContain("Level: 60");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Magcargo");
+    await openAdvanced(page);
+
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: "Options for Team 1", exact: true })
+      .click();
+    await clickMenuItem(otherTab, "Delete");
+    await otherTab
+      .getByRole("dialog", { name: "Delete Team 1?" })
+      .getByRole("button", { name: "Delete", exact: true })
+      .click();
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Haxorus");
+    if (await details.isVisible())
+      await details.getByRole("button", { name: "Reset", exact: true }).click();
+
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Level: 60");
+    await expect(details).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Haxorus");
+    await otherTab.close();
+  });
+
+  test.describe("Hidden Power", () => {
+    // These cases open their own generation-specific links.
+    test.use({
+      autoGoToSite: async ({}, use) => {
+        await use();
+      },
+    });
+
+    for (const generation of [2, 3, 7, 8]) {
+      test(`Gen ${generation} Hidden Power updates the displayed IVs or DVs and persists them`, async ({
+        page,
+      }) => {
+        const pokemon = generation === 8 ? "Unown" : "Dunsparce";
+        const team = Buffer.from(
+          `${pokemon}\n${generation >= 7 ? "Level: 99\n" : ""}- Return\n`,
+        ).toString("base64url");
+        await page.goto(`/?gen=${generation}&team=${team}`, {
+          waitUntil: "domcontentloaded",
+        });
+        await selectMove(page, "Hidden Power Fire", 2);
+        await openAdvanced(page);
+        const dialog = page.getByRole("dialog", { name: "More details" });
+        const legacy = generation === 2;
+        for (const [stat, value] of legacy ?
+          [
+            ["Atk", "14"],
+            ["Def", "12"],
+            ["HP", "3"],
+            ["Special", "15"],
+          ]
+        : [
+            ["Atk", "30"],
+            ["Def", "31"],
+            ["SpA", "30"],
+            ["Spe", "30"],
+          ]) {
+          await expect(
+            dialog.getByLabel(`${stat} ${legacy ? "DVs" : "IVs"}`, {
+              exact: true,
+            }),
+          ).toHaveValue(value ?? "");
+        }
+        await closeDialog(page);
+        await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
+          "Hidden Power Fire",
+        );
+        await openAdvanced(page);
+        await expect(
+          dialog.getByLabel(`Atk ${legacy ? "DVs" : "IVs"}`, { exact: true }),
+        ).toHaveValue(legacy ? "14" : "30");
+        await closeDialog(page);
+      });
+
+      test(`Gen ${generation} Hidden Power updates the IVs or DVs when its type changes after reload`, async ({
+        page,
+      }) => {
+        const pokemon = generation === 8 ? "Unown" : "Dunsparce";
+        const team = Buffer.from(
+          `${pokemon}\n${generation >= 7 ? "Level: 99\n" : ""}- Return\n`,
+        ).toString("base64url");
+        await page.goto(`/?gen=${generation}&team=${team}`, {
+          waitUntil: "domcontentloaded",
+        });
+        await selectMove(page, "Hidden Power Fire", 2);
+        await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
+        await page.reload({ waitUntil: "domcontentloaded" });
+        await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
+          "Hidden Power Fire",
+        );
+        const legacy = generation === 2;
+        await selectMove(page, "Hidden Power Ice", 2);
+        await openAdvanced(page);
+        const dialog = page.getByRole("dialog", { name: "More details" });
+        await expect(
+          dialog.getByLabel(`Def ${legacy ? "DVs" : "IVs"}`, { exact: true }),
+        ).toHaveValue(legacy ? "13" : "30");
+        await expect(
+          dialog.getByLabel(`Spe ${legacy ? "DVs" : "IVs"}`, { exact: true }),
+        ).toHaveValue(legacy ? "15" : "31");
+      });
+    }
+  });
+
+  for (const { pokemon, gender, icon } of [
+    { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
+    { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
+    { pokemon: "Carbink", gender: "Genderless", icon: undefined },
+    { pokemon: "Swablu", gender: "Any", icon: undefined },
+  ]) {
+    test(`${pokemon}'s default gender and symbol survive Reset and reload`, async ({
       page,
     }) => {
-      const pokemon = generation === 8 ? "Unown" : "Dunsparce";
-      const team = Buffer.from(
-        `${pokemon}\n${generation >= 7 ? "Level: 99\n" : ""}- Return\n`,
-      ).toString("base64url");
-      await page.goto(`/?gen=${generation}&team=${team}`);
-      await selectMove(page, "Hidden Power Fire", 2);
-      await openAdvanced(page);
-      const dialog = page.getByRole("dialog", { name: "More details" });
-      const legacy = generation === 2;
-      for (const [stat, value] of legacy ?
-        [
-          ["Atk", "14"],
-          ["Def", "12"],
-          ["HP", "3"],
-          ["Special", "15"],
-        ]
-      : [
-          ["Atk", "30"],
-          ["Def", "31"],
-          ["SpA", "30"],
-          ["Spe", "30"],
-        ]) {
-        await expect(
-          dialog.getByLabel(`${stat} ${legacy ? "DVs" : "IVs"}`, {
-            exact: true,
-          }),
-        ).toHaveValue(value ?? "");
-      }
-      await closeDialog(page);
-      await expect.poll(() => getTeamTextFromUrl(page)).toContain("IVs:");
-      await page.reload();
-      await expect(page.getByLabel("Pokemon 1's move2")).toHaveValue(
-        "Hidden Power Fire",
-      );
-      await openAdvanced(page);
-      await expect(
-        dialog.getByLabel(`Atk ${legacy ? "DVs" : "IVs"}`, { exact: true }),
-      ).toHaveValue(legacy ? "14" : "30");
-      await closeDialog(page);
-      await selectMove(page, "Hidden Power Ice", 2);
-      await openAdvanced(page);
-      await expect(
-        dialog.getByLabel(`Def ${legacy ? "DVs" : "IVs"}`, { exact: true }),
-      ).toHaveValue(legacy ? "13" : "30");
-      await expect(
-        dialog.getByLabel(`Spe ${legacy ? "DVs" : "IVs"}`, { exact: true }),
-      ).toHaveValue(legacy ? "15" : "31");
-    });
-  }
-  test("gender defaults to the only available option and shows its symbol", async ({
-    page,
-  }) => {
-    for (const { pokemon, gender, icon } of [
-      { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
-      { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
-      { pokemon: "Carbink", gender: "Genderless", icon: undefined },
-      { pokemon: "Swablu", gender: "Any", icon: undefined },
-    ]) {
+      test.setTimeout(60000);
       await selectPokemon(page, pokemon);
       await openAdvanced(page);
       const dialog = page.getByRole("dialog", { name: "More details" });
@@ -87,13 +178,23 @@ test.describe("Advanced Dialog - Integration Tests", () => {
         gender,
       );
       await closeDialog(page);
-      await page.reload();
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(
+        page.getByLabel("Pokemon 1's name", { exact: true }),
+      ).toHaveValue(pokemon);
       await openAdvanced(page);
       await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
         gender,
       );
       await closeDialog(page);
-    }
+    });
+  }
+
+  test("Swablu's gender can be chosen as Male, Female or Any", async ({
+    page,
+  }) => {
+    test.setTimeout(60000);
+    await selectPokemon(page, "Swablu");
     await openAdvanced(page);
     const dialog = page.getByRole("dialog", { name: "More details" });
     await selectDialogOption(page, "Gender", "Male");
@@ -131,6 +232,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
   test("Champions uses single-point SPs, hides IVs and Tera Type, and saves the spread", async ({
     page,
   }) => {
+    test.setTimeout(60000);
     await page.getByRole("combobox", { name: "Generation" }).click();
     await page.getByRole("option", { name: "Gen 9 · Champions" }).click();
     await expect(
@@ -160,7 +262,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await expect
       .poll(() => getTeamTextFromUrl(page))
       .toContain("EVs: 2 HP / 32 Atk / 32 Spe");
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await openAdvanced(page);
     await expect(dialog.getByLabel(/^SP total/)).toHaveText("66 / 66");
     await expect(dialog.getByLabel(/ IVs$/)).toHaveCount(0);
@@ -188,7 +290,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await selectDialogOption(page, "Tera Type", "Steel");
     await selectDialogOption(page, "Nature", "Adamant (+Atk, -SpA)");
     await dialog.getByLabel("Shiny").check();
-    await dialog.getByLabel("Atk EVs").focus();
+    await dialog.getByRole("slider", { name: "Atk EVs" }).focus();
     await page.keyboard.press("End");
     await dialog.getByLabel("SpA IVs").fill("0");
     await expect(dialog.getByLabel(/^EV total/)).toContainText("252 / 510");
@@ -238,4 +340,49 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await expect(speed).toHaveValue("31");
     await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("IVs:");
   });
+});
+
+test("gender defaults to the only available option and shows its symbol", async ({
+  page,
+}) => {
+  for (const { pokemon, gender, icon } of [
+    { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
+    { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
+    { pokemon: "Carbink", gender: "Genderless", icon: undefined },
+    { pokemon: "Swablu", gender: "Any", icon: undefined },
+  ]) {
+    await selectPokemon(page, pokemon);
+    await openAdvanced(page);
+    const dialog = page.getByRole("dialog", { name: "More details" });
+    await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
+      gender,
+    );
+    if (icon) await expect(dialog.getByTestId(icon)).toBeVisible();
+    else {
+      await expect(dialog.getByTestId("MaleIcon")).toHaveCount(0);
+      await expect(dialog.getByTestId("FemaleIcon")).toHaveCount(0);
+    }
+    await dialog.getByRole("button", { name: "Reset", exact: true }).click();
+    await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
+      gender,
+    );
+    await closeDialog(page);
+    await page.reload();
+    await openAdvanced(page);
+    await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
+      gender,
+    );
+    await closeDialog(page);
+  }
+  await openAdvanced(page);
+  const dialog = page.getByRole("dialog", { name: "More details" });
+  await selectDialogOption(page, "Gender", "Male");
+  await expect(dialog.getByTestId("MaleIcon")).toBeVisible();
+  await expect(dialog.getByTestId("FemaleIcon")).toHaveCount(0);
+  await selectDialogOption(page, "Gender", "Female");
+  await expect(dialog.getByTestId("FemaleIcon")).toBeVisible();
+  await expect(dialog.getByTestId("MaleIcon")).toHaveCount(0);
+  await selectDialogOption(page, "Gender", "Any");
+  await expect(dialog.getByTestId("MaleIcon")).toHaveCount(0);
+  await expect(dialog.getByTestId("FemaleIcon")).toHaveCount(0);
 });

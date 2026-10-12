@@ -4,6 +4,8 @@ import {
   type Formats,
   type GenerationTransferData,
   type Generation,
+  type GameData,
+  type GameVariantData,
   type BaseStats,
   type HiddenPowerSpreads,
   type Items,
@@ -33,6 +35,7 @@ export type DataTypes = {
   TypeChart: TypeChart;
   Natures: Natures;
   PastGenerations: PastGenerations;
+  GameVariantData: GameVariantData;
   HiddenPowerSpreads: HiddenPowerSpreads;
 };
 
@@ -89,11 +92,22 @@ export const projections = {
         otherFormes: undefined,
       };
     }
+    const forme = String(entry.forme ?? "");
+    const battleOnly =
+      entry.battleOnly ??
+      (forme.includes("Mega") || forme === "Primal" ?
+        entry.baseSpecies
+      : undefined);
+    const changesFrom =
+      entry.changesFrom ??
+      (Array.isArray(battleOnly) ? battleOnly[0] : battleOnly);
+    if (typeof changesFrom === "string") entry = { ...entry, changesFrom };
     return pick<PokedexEntry>(entry, [
       "num",
       "name",
       "types",
       "baseSpecies",
+      "changesFrom",
       "forme",
       "otherFormes",
       "prevo",
@@ -408,10 +422,37 @@ export type GenerationData = {
   moves: ShowdownTable;
   typechart: ShowdownTable;
   abilities?: ShowdownTable;
+  formats?: ShowdownTable;
 };
 export type ModData = Partial<
   Record<keyof GenerationData, Record<string, ShowdownEntry | null>>
 >;
+
+export function projectGameVariant(
+  base: GenerationData,
+  mod: ModData,
+): GameData {
+  const moves = Object.fromEntries(
+    Object.entries(resolveMod(base.moves, mod.moves)).flatMap(([id, entry]) => {
+      const properties = projections.Moves(entry);
+      return (
+          JSON.stringify(properties) ===
+            JSON.stringify(projections.Moves(base.moves[id] ?? {}))
+        ) ?
+          []
+        : [[id, properties]];
+    }),
+  );
+  const baseStats = changedField<BaseStats>(
+    base.pokedex,
+    resolveMod(base.pokedex, mod.pokedex),
+    "baseStats",
+  );
+  return {
+    ...(Object.keys(moves).length && { moves }),
+    ...(Object.keys(baseStats).length && { baseStats }),
+  };
+}
 
 // A generation's types are the chart's entries that are not marked as future
 const typesOf = (typechart: ShowdownTable) =>
@@ -496,7 +537,6 @@ export function projectPastGenerations(
   mods: Partial<Record<number, ModData>>,
 ): PastGenerations {
   const past: PastGenerations = {};
-  const historicalMoves = projectHistoricalMoves(latest.moves, mods);
   let parent = latest;
   let nextChart = pastTypeChart(latest.typechart, typesOf(latest.typechart));
   const speciesFields = (table: ShowdownTable) =>
@@ -516,6 +556,7 @@ export function projectPastGenerations(
       moves: resolveMod(parent.moves, mod.moves),
       typechart: resolveMod(parent.typechart, mod.typechart),
       abilities: resolveMod(parent.abilities ?? {}, mod.abilities),
+      formats: resolveMod(parent.formats ?? {}, mod.formats),
     };
     const types = typesOf(resolved.typechart);
     const typechart = pastTypeChart(resolved.typechart, types);
@@ -524,8 +565,32 @@ export function projectPastGenerations(
       pokemon: changedField(latest.pokedex, resolved.pokedex, "types"),
       moves: changedField(latest.moves, resolved.moves, "type"),
     };
-    const moveProperties = historicalMoves[gen as keyof PastGenerations];
-    if (moveProperties) entry.moveProperties = moveProperties;
+    const moveData = Object.fromEntries(
+      Object.entries(resolved.moves).flatMap(([id, move]) => {
+        const properties = projections.Moves(move);
+        return (
+            JSON.stringify(properties) ===
+              JSON.stringify(projections.Moves(latest.moves[id] ?? {}))
+          ) ?
+            []
+          : [[id, properties]];
+      }),
+    );
+    if (Object.keys(moveData).length) entry.moveData = moveData;
+    const formats = Object.fromEntries(
+      Object.keys(mod.formats ?? resolved.formats ?? {}).flatMap(id => {
+        const format = resolved.formats?.[id];
+        if (!format) return [];
+        const properties = projections.Formats(format);
+        return (
+            JSON.stringify(properties) ===
+              JSON.stringify(projections.Formats(latest.formats?.[id] ?? {}))
+          ) ?
+            []
+          : [[id, properties]];
+      }),
+    );
+    if (Object.keys(formats).length) entry.formats = formats;
     const resolvedSpecies = speciesFields(resolved.pokedex);
     const baseStats = changedField<BaseStats>(
       latestSpecies,

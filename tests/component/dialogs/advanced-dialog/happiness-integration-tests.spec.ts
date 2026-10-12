@@ -5,15 +5,23 @@ import {
   getTeamTextFromUrl,
   openEditPokepaste,
 } from "helper";
+import type { Page } from "@playwright/test";
 
-test("happiness survives links and reloads, is editable, and resets to its default", async ({
-  page,
-  browser,
-}) => {
+// Every case opens its own game-specific team link.
+test.use({
+  autoGoToSite: async ({}, use) => {
+    await use();
+  },
+});
+
+const editHappiness = async (page: Page) => {
   const team = Buffer.from("Kangaskhan\nHappiness: 0\n- Frustration").toString(
     "base64url",
   );
-  await page.goto(`/?gen=3&team=${team}`);
+  await page.goto(`/?gen=3&team=${team}`, { waitUntil: "domcontentloaded" });
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Kangaskhan");
   await openAdvanced(page);
   const dialog = page.getByRole("dialog", { name: "More details" });
   const happiness = dialog.getByLabel("Happiness", { exact: true });
@@ -21,13 +29,34 @@ test("happiness survives links and reloads, is editable, and resets to its defau
   await happiness.fill("70");
   await closeDialog(page);
   await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 70");
-  const url = page.url();
-  await page.reload();
+};
+
+test("edited happiness survives reloads", async ({ page }) => {
+  await editHappiness(page);
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Kangaskhan");
   await openAdvanced(page);
-  await expect(happiness).toHaveValue("70");
+  await expect(
+    page
+      .getByRole("dialog", { name: "More details" })
+      .getByLabel("Happiness", { exact: true }),
+  ).toHaveValue("70");
+});
+
+test("edited happiness survives a fresh shared link", async ({
+  page,
+  browser,
+}) => {
+  await editHappiness(page);
+  const url = page.url();
   const fresh = await browser.newPage();
   try {
-    await fresh.goto(url);
+    await fresh.goto(url, { waitUntil: "domcontentloaded" });
+    await expect(
+      fresh.getByLabel("Pokemon 1's name", { exact: true }),
+    ).toHaveValue("Kangaskhan");
     await openAdvanced(fresh);
     await expect(fresh.getByLabel("Happiness", { exact: true })).toHaveValue(
       "70",
@@ -35,6 +64,22 @@ test("happiness survives links and reloads, is editable, and resets to its defau
   } finally {
     await fresh.close();
   }
+});
+
+test("happiness defaults when cleared or reset after a raw-text import", async ({
+  page,
+}) => {
+  const team = Buffer.from("Kangaskhan\nHappiness: 70\n- Frustration").toString(
+    "base64url",
+  );
+  await page.goto(`/?gen=3&team=${team}`, { waitUntil: "domcontentloaded" });
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Kangaskhan");
+  await openAdvanced(page);
+  const dialog = page.getByRole("dialog", { name: "More details" });
+  const happiness = dialog.getByLabel("Happiness", { exact: true });
+  await expect(happiness).toHaveValue("70");
   await happiness.fill("");
   await dialog.getByLabel("Nickname").focus();
   await expect(happiness).toHaveValue("255");
@@ -58,14 +103,22 @@ test("happiness survives links and reloads, is editable, and resets to its defau
   await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 255");
 });
 
-test("Gen 1 and Champions omit happiness from imported links and their editors", async ({
-  page,
-}) => {
-  const team = Buffer.from("Psyduck\nHappiness: 0\n- Water Gun").toString(
-    "base64url",
-  );
-  for (const profile of ["gen=1", "game=Pokemon+Champions+%28M-C%29"]) {
-    await page.goto(`/?${profile}&team=${team}`);
+for (const { name, profile } of [
+  { name: "Gen 1", profile: "gen=1" },
+  { name: "Champions", profile: "game=Pokemon+Champions+%28M-C%29" },
+]) {
+  test(`${name} omits happiness from imported links and its editor`, async ({
+    page,
+  }) => {
+    const team = Buffer.from("Psyduck\nHappiness: 0\n- Water Gun").toString(
+      "base64url",
+    );
+    await page.goto(`/?${profile}&team=${team}`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(
+      page.getByLabel("Pokemon 1's name", { exact: true }),
+    ).toHaveValue("Psyduck");
     await openAdvanced(page);
     await expect(
       page
@@ -84,5 +137,5 @@ test("Gen 1 and Champions omit happiness from imported links and their editors",
     await expect
       .poll(() => getTeamTextFromUrl(page))
       .not.toContain("Happiness:");
-  }
-});
+  });
+}

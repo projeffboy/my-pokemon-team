@@ -49,9 +49,15 @@ import {
   serializeTeam,
 } from "./store/team-text";
 import { nextDuplicateName } from "./store/team-names";
+import {
+  mergeTeamBackup,
+  parseTeamBackup,
+  serializeTeamBackup,
+} from "./store/team-backup";
 import { describeTeamChange } from "./store/team-change";
 import {
   initialStoredState,
+  getBrowserStorage,
   loadStoredState,
   mergeStoredState,
   saveStoredState,
@@ -89,22 +95,15 @@ export type DialogName =
 
 const HISTORY_LIMIT = 50;
 
-// Reading localStorage throws when the browser blocks site data
-const storage = (() => {
-  try {
-    return typeof localStorage === "undefined" ? undefined : localStorage;
-  } catch {
-    return undefined;
-  }
-})();
-expireSettings(storage, Date.now());
+const browserStorage = getBrowserStorage();
+expireSettings(browserStorage, Date.now());
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
 
 const teamKey = (team: Team) => stableJson(toJS(team));
 
-class Store {
-  constructor() {
+export class Store {
+  constructor(private readonly storage = browserStorage) {
     const loaded = loadStoredState(storage);
     const stored = loaded ?? initialStoredState();
     this.teams = stored.teams;
@@ -119,16 +118,17 @@ class Store {
     if (loaded) this.openUnsavedTeam();
     this.lastSnapshot = teamKey(this.team);
 
-    makeAutoObservable<Store, "lastSnapshot" | "lastRead" | "draftSnapshot">(
-      this,
-      {
-        lastSnapshot: false,
-        lastRead: false,
-        draftSnapshot: false,
-        translationReady: false,
-        translation: observableRef,
-      },
-    );
+    makeAutoObservable<
+      Store,
+      "lastSnapshot" | "lastRead" | "draftSnapshot" | "storage"
+    >(this, {
+      lastSnapshot: false,
+      lastRead: false,
+      draftSnapshot: false,
+      storage: false,
+      translationReady: false,
+      translation: observableRef,
+    });
 
     learnsetsReady.then(
       () => {
@@ -198,6 +198,7 @@ class Store {
 
   teams: SavedTeam[];
   currentTeamId: string;
+  saveFailed = false;
   private draftTeam: SavedTeam | null = null;
   private draftSnapshot = "";
 
@@ -266,6 +267,37 @@ class Store {
     this.teams.push(team);
     this.currentTeamId = team.id;
     return team;
+  }
+
+  exportTeamBackup() {
+    this.readOtherTabs();
+    return serializeTeamBackup({
+      teams: toJS(this.teams),
+      currentTeamId: this.currentTeamId,
+      ...(this.draftTeam && { draftTeam: toJS(this.draftTeam) }),
+    });
+  }
+
+  restoreTeamBackup(text: string) {
+    const backup = parseTeamBackup(text);
+    if (!backup) return undefined;
+    this.readOtherTabs();
+    const existing =
+      this.draftTeam ? [...this.teams, this.draftTeam] : this.teams;
+    const { added, skipped } = mergeTeamBackup(existing, backup);
+    try {
+      serializeTeamBackup({
+        teams: [...toJS(this.teams), ...added],
+        currentTeamId: this.currentTeamId,
+        ...(this.draftTeam && { draftTeam: toJS(this.draftTeam) }),
+      });
+    } catch (error) {
+      return error instanceof RangeError ?
+          { error: "tooLarge" as const }
+        : undefined;
+    }
+    this.teams.push(...added);
+    return { added: added.length, skipped };
   }
 
   // Switches to an empty team of the current generation and format, adding one if needed
@@ -585,11 +617,14 @@ class Store {
           .filter((_, index) => index !== teamIndex)
           .map(({ item }) => item),
       );
+      this.recordEdit();
       this.team[teamIndex] = completed;
+      this.recordEdit();
       return randomizedFieldsMessage(member, completed, this.translation);
     }
     const pokemon = randomPokemon(this.filteredPokemon, this.teamPokemon);
     if (!pokemon) return;
+    this.recordEdit();
     this.team[teamIndex] = randomSet(
       pokemon,
       generationLearnset(
@@ -604,6 +639,7 @@ class Store {
         .filter((_, index) => index !== teamIndex)
         .map(({ item }) => item),
     );
+    this.recordEdit();
     return this.translation.t.team.randomizedPokemon;
   }
 
@@ -648,11 +684,16 @@ class Store {
     return calculateTypeCoverage(
       this.analysisTeam,
       this.currentTeam.generation,
+      this.currentTeam.format,
     );
   }
 
   get checklist() {
-    return evaluateChecklist(this.analysisTeam, this.currentTeam.generation);
+    return evaluateChecklist(
+      this.analysisTeam,
+      this.currentTeam.generation,
+      this.currentTeam.format,
+    );
   }
 
   // The Name dropdown's options
@@ -721,6 +762,7 @@ class Store {
       this.sort,
       this.translation,
       this.currentTeam.generation,
+      this.currentTeam.format,
     );
   }
 
@@ -926,11 +968,13 @@ class Store {
 
   // Takes in what other tabs saved, so that saving here does not undo it
   private readOtherTabs() {
-    const theirs = loadStoredState(storage);
+    const theirs = loadStoredState(this.storage);
     if (!theirs) return;
-    const selectionChanged =
-      this.storedState.currentTeamId !== this.lastRead.currentTeamId;
-    const merged = mergeStoredState(this.lastRead, this.storedState, theirs);
+    const snapshot = teamKey(this.team);
+    const { generation, format } = this.currentTeam;
+    const mine = this.storedState;
+    const selectionChanged = mine.currentTeamId !== this.lastRead.currentTeamId;
+    const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
     this.isMoreOpen = merged.isMoreOpen;
@@ -944,16 +988,31 @@ class Store {
       currentTeamId:
         selectionChanged ? theirs.currentTeamId : merged.currentTeamId,
     };
+    if (
+      teamKey(this.team) !== snapshot ||
+      this.currentTeam.generation !== generation ||
+      this.currentTeam.format !== format
+    )
+      this.resetHistory();
+    if (
+      this.saveFailed &&
+      stableJson(this.storedState) === stableJson(this.lastRead)
+    )
+      this.saveFailed = false;
   }
 
   // A tab with nothing of its own to save leaves the saving to the tab in use:
   // were it to save what it just read, it could undo a newer save
   private save() {
     this.readOtherTabs();
-    if (stableJson(this.storedState) === stableJson(this.lastRead)) return;
+    if (stableJson(this.storedState) === stableJson(this.lastRead)) {
+      this.saveFailed = false;
+      return;
+    }
     const state = JSON.parse(JSON.stringify(this.storedState)) as StoredState;
-    saveStoredState(storage, state);
-    this.lastRead = state;
+    const saved = saveStoredState(this.storage, state);
+    this.saveFailed = !saved;
+    if (saved) this.lastRead = state;
   }
 
   private get storedState(): StoredState {

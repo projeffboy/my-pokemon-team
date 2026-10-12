@@ -58,13 +58,14 @@ export function typeAgainstPokemon(
     item,
     generation,
   );
-  const grounded = item === "ironball" && type === "Ground";
+  const grounded = item === "ironball" && generation >= 4 && type === "Ground";
   const resistance = (defender: PokemonType | "Bird" | undefined) => {
     const value =
       defender && defender !== "Bird" ? (typechart[defender]?.[type] ?? 0) : 0;
     return (
         value === 2 &&
-          (item === "ringtarget" || (grounded && defender === "Flying"))
+          ((item === "ringtarget" && generation >= 5) ||
+            (grounded && defender === "Flying"))
       ) ?
         0
       : value;
@@ -196,9 +197,10 @@ export function moveType(
   ability?: string,
   generation = LATEST_GENERATION,
   item?: string,
+  format = "",
 ) {
   if (generation < 3) ability = undefined;
-  const rawType = moveTypeIn(move, generation);
+  const rawType = moveTypeIn(move, generation, format);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
   const held = items[activeItem(item, ability, generation)];
@@ -315,11 +317,12 @@ export function isMoveUsable(
   item: string | undefined,
   ability: string | undefined,
   generation: Generation,
+  format = "",
 ) {
   if (
     generation >= 6 &&
     activeItem(item, ability, generation) === "assaultvest" &&
-    moveDataIn(move, generation)?.category === "Status" &&
+    moveDataIn(move, generation, format)?.category === "Status" &&
     move !== "mefirst"
   )
     return false;
@@ -338,8 +341,10 @@ export function isMoveStrongEnough(
   pokemon = "",
   happiness = 255,
   member?: Readonly<TeamPokemon>,
+  format = "",
 ) {
-  if (!isMoveUsable(move, pokemon, item, ability, generation)) return false;
+  if (!isMoveUsable(move, pokemon, item, ability, generation, format))
+    return false;
   if (moves[move] && move.startsWith("hiddenpower") && member)
     return hiddenPowerPower(member, generation) >= 40;
   if (move === "return" || move === "frustration")
@@ -351,7 +356,7 @@ export function isMoveStrongEnough(
         ),
       ) >= 40
     );
-  const moveProperties = moveDataIn(move, generation);
+  const moveProperties = moveDataIn(move, generation, format);
   const held = items[activeItem(item, ability, generation)];
   if (move === "naturalgift")
     return (
@@ -383,9 +388,10 @@ export function moveAgainstType(
   item?: string,
   happiness = 255,
   member?: Readonly<TeamPokemon>,
+  format = "",
 ) {
   if (generation < 3) ability = undefined;
-  const attackType = moveType(move, pokemon, ability, generation, item);
+  const attackType = moveType(move, pokemon, ability, generation, item, format);
   const defender = typechartIn(generation)[typeAgainst];
 
   if (
@@ -397,6 +403,7 @@ export function moveAgainstType(
       pokemon,
       happiness,
       member,
+      format,
     ) ||
     !attackType
   )

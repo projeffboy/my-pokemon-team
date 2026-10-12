@@ -1,6 +1,5 @@
 import { pokemonBaseStats } from "@/shared/pokedex";
 import pokedex from "@/data/pokedex";
-import formats from "@/data/formats";
 import {
   STAT_KEYS,
   type Generation,
@@ -9,7 +8,7 @@ import {
   type SortOrder,
 } from "@/types";
 import { baseStatTotal } from "@/shared/set-details";
-import { moveTypeIn } from "@/shared/generation-data";
+import { moveTypeIn, pokemonFormatIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonNameInverse } from "@/shared/names";
 import { english, type Translation } from "@/i18n/translation";
@@ -69,8 +68,9 @@ const TIER_RANK = [
   "LC",
 ];
 
-const tierRank = (pokemon: string) => {
-  const rank = TIER_RANK.indexOf(formats[pokemon]?.tier ?? "");
+const tierRank = (pokemon: string, generation: Generation) => {
+  const tier = pokemonFormatIn(pokemon, generation)?.tier ?? "";
+  const rank = TIER_RANK.indexOf(tier === "(OU)" ? "OU" : tier);
   return rank === -1 ? TIER_RANK.length : rank;
 };
 
@@ -78,6 +78,7 @@ function sortValue(
   pokemon: string,
   by: SortKey,
   generation: Generation,
+  format: string,
 ): number {
   const entry = pokedex[pokemon];
   switch (by) {
@@ -86,14 +87,14 @@ function sortValue(
     case "num":
       return entry?.num ?? 0;
     case "format":
-      return tierRank(pokemon);
+      return tierRank(pokemon, generation);
     case "bst": {
-      const stats = pokemonBaseStats(pokemon, generation);
+      const stats = pokemonBaseStats(pokemon, generation, format);
       return baseStatTotal(stats) - (generation === 1 ? (stats?.spd ?? 0) : 0);
     }
     default:
       return (
-        pokemonBaseStats(pokemon, generation)?.[
+        pokemonBaseStats(pokemon, generation, format)?.[
           generation === 1 && by === "spd" ? "spa" : by
         ] ?? 0
       );
@@ -112,6 +113,7 @@ export function sortPokemon(
   { by, descending }: SortOrder,
   { locale, names }: Translation = english,
   generation: Generation = LATEST_GENERATION,
+  format = "",
 ): string[] {
   const species = (id: string) => {
     const base = pokedex[id]?.baseSpecies;
@@ -126,7 +128,8 @@ export function sortPokemon(
     (a, b) =>
       (by === "name" ? 0 : Number(isOddball(a)) - Number(isOddball(b))) ||
       direction *
-        (sortValue(a, by, generation) - sortValue(b, by, generation)) ||
+        (sortValue(a, by, generation, format) -
+          sortValue(b, by, generation, format)) ||
       (by === "name" ? direction : 1) * byName(a, b),
   );
 }

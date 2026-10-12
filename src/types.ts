@@ -16,6 +16,7 @@ export interface PokedexEntry {
   types?: (PokemonType | "Bird")[];
   name?: string;
   baseSpecies?: string;
+  changesFrom?: string;
   otherFormes?: string[];
   prevo?: string;
   forme?: string;
@@ -106,13 +107,21 @@ export interface PastGeneration {
   types: PokemonType[];
   pokemon: Record<string, NonNullable<PokedexEntry["types"]>>;
   moves: Record<string, NonNullable<MoveEntry["type"]>>;
-  moveProperties?: Moves;
+  moveData?: Moves;
+  formats?: Formats;
   baseStats?: Record<string, BaseStats>;
   abilities?: Record<string, string[]>;
   typechart?: PastTypeChart;
 }
 
 export type PastGenerations = Partial<Record<Generation, PastGeneration>>;
+
+export interface GameData {
+  moves?: Moves;
+  baseStats?: Record<string, BaseStats>;
+}
+
+export type GameVariantData = Record<string, GameData>;
 
 export type Natures = Record<
   string,

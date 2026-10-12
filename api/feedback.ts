@@ -99,10 +99,12 @@ export async function POST(request: Request) {
     return new Response("Not from the site", { status: 403 });
   }
   const body: unknown = await request.json().catch(() => undefined);
-  const { message, email, link, screen, screenshot, images } = (
-    typeof body === "object" && body !== null ?
-      body
-    : {}) as Record<string, unknown>;
+  if (typeof body !== "object" || body === null || Array.isArray(body))
+    return new Response("Invalid feedback", { status: 400 });
+  const { message, email, link, screen, screenshot, images } = body as Record<
+    string,
+    unknown
+  >;
   if (
     !isString(message, MAX_MESSAGE_LENGTH) ||
     !message.trim() ||
@@ -148,9 +150,13 @@ export async function POST(request: Request) {
       ...(replyTo && { reply_to: replyTo }),
       ...(attachments.length > 0 && { attachments }),
     }),
-  });
-  if (!response.ok) {
-    console.error("Resend failed", response.status, await response.text());
+  }).catch(() => undefined);
+  if (!response?.ok) {
+    console.error(
+      "Resend failed",
+      response?.status,
+      response ? await response.text() : "Connection failed",
+    );
     return new Response("Could not send", { status: 502 });
   }
   return new Response(null, { status: 204 });

@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import {
   initialStoredState,
+  getBrowserStorage,
   loadStoredState,
   mergeStoredState,
   saveStoredState,
@@ -11,7 +12,7 @@ import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 
-test("saved happiness survives a reload and is omitted for unsupported profiles", () => {
+test("saved set details survive reload even when unsupported or outside a game's limits", () => {
   const regular = createSavedTeam({
     generation: 3,
     team: createTeam({ name: "zangoose", happiness: 0 }),
@@ -20,16 +21,27 @@ test("saved happiness survives a reload and is omitted for unsupported profiles"
   expect(saved?.team[0]?.happiness).toBe(0);
   expect(
     sanitizeSavedTeam({ ...regular, generation: 1 })?.team[0]?.happiness,
-  ).toBeUndefined();
+  ).toBe(0);
   expect(
     sanitizeSavedTeam({ ...regular, generation: 9, format: CHAMPIONS_FORMAT })
       ?.team[0]?.happiness,
-  ).toBeUndefined();
-  for (const happiness of [-1, 256, NaN, Infinity, "0"])
+  ).toBe(0);
+  for (const happiness of [-1, 256, 255, 0.5])
+    expect(
+      sanitizeSavedTeam({ ...regular, team: [{ name: "zangoose", happiness }] })
+        ?.team[0]?.happiness,
+    ).toBe(happiness);
+  for (const happiness of [NaN, Infinity, "0"])
     expect(
       sanitizeSavedTeam({ ...regular, team: [{ name: "zangoose", happiness }] })
         ?.team[0]?.happiness,
     ).toBeUndefined();
+  expect(
+    sanitizeSavedTeam({
+      ...regular,
+      team: [{ name: "zangoose", shiny: false }],
+    })?.team[0]?.shiny,
+  ).toBe(false);
 });
 
 test("fresh storage defaults to Champions while existing regular Gen 9 saves keep their profile", () => {
@@ -58,6 +70,26 @@ const fakeStorage = (value: string | null) => {
     } as unknown as Storage,
   };
 };
+
+test("storage access can be denied before getItem is called", () => {
+  const descriptor = Object.getOwnPropertyDescriptor(
+    globalThis,
+    "localStorage",
+  );
+  try {
+    Object.defineProperty(globalThis, "localStorage", {
+      configurable: true,
+      get() {
+        throw new DOMException("Access denied", "SecurityError");
+      },
+    });
+    expect(getBrowserStorage()).toBeUndefined();
+  } finally {
+    if (descriptor)
+      Object.defineProperty(globalThis, "localStorage", descriptor);
+    else Reflect.deleteProperty(globalThis, "localStorage");
+  }
+});
 
 test("move sorting defaults for old saves and survives new saves", () => {
   const state = initialStoredState();
@@ -187,7 +219,7 @@ test("saves the state and survives a storage that throws", () => {
     moveSort: { by: "name" as const, descending: false },
     nameView: "grid" as const,
   };
-  saveStoredState(storage, state);
+  expect(saveStoredState(storage, state)).toBe(true);
   expect(JSON.parse(items.get("mypokemonteam") ?? "")).toEqual(state);
 
   const throwing = {
@@ -195,8 +227,8 @@ test("saves the state and survives a storage that throws", () => {
       throw new Error("QuotaExceededError");
     },
   } as unknown as Storage;
-  expect(() => saveStoredState(throwing, state)).not.toThrow();
-  expect(() => saveStoredState(undefined, state)).not.toThrow();
+  expect(saveStoredState(throwing, state)).toBe(false);
+  expect(saveStoredState(undefined, state)).toBe(false);
 });
 
 test.describe("another tab's saves", () => {

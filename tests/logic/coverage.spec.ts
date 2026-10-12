@@ -44,6 +44,18 @@ test("team defence sums contributions after capping each at 1.5", () => {
 });
 
 test.describe("team coverage", () => {
+  test("Judgment coverage changes with a Plate versus a Z-Crystal", () => {
+    const team = createTeam({
+      name: "arceusdragon",
+      ability: "Multitype",
+      item: "dragoniumz",
+      move1: "judgment",
+    });
+    expect(calculateTypeCoverage(team, 7).Dragon).toBe(0);
+    team[0].item = "dracoplate";
+    expect(calculateTypeCoverage(team, 7).Dragon).toBe(2);
+  });
+
   test("counts each ordinary move type once per Pokemon and awards STAB", () => {
     const team = createTeam();
     expect(Object.values(calculateTypeCoverage(team))).toEqual(

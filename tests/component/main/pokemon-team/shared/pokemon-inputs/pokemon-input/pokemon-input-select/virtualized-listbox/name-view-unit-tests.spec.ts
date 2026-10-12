@@ -5,10 +5,96 @@ import { filterPokemon } from "@/store/filtering";
 import { sortPokemon, DEFAULT_SORT } from "@/store/sorting";
 
 test.describe("Name dropdown views - Unit Tests", () => {
+  test("keyboard navigation keeps filtered options in view", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
+    const input = page.getByLabel("Pokemon 1's name");
+    await input.fill("a");
+    for (let index = 0; index < 25; index++) {
+      await input.press("ArrowDown");
+      const activeId = `react-select-single-0-name-option-${index}`;
+      await expect(input).toHaveAttribute("aria-activedescendant", activeId);
+      const active = page.locator(`[id="${activeId}"]`);
+      await expect(active).toBeVisible();
+      await expect
+        .poll(() =>
+          active.evaluate(element => {
+            const viewport = element.closest("ul")?.getBoundingClientRect();
+            const bounds = element.getBoundingClientRect();
+            return (
+              viewport !== undefined &&
+              bounds.top >= viewport.top - 1 &&
+              bounds.bottom <= viewport.bottom + 1
+            );
+          }),
+        )
+        .toBe(true);
+    }
+  });
+
+  test("filtering before the selected row scrolls does not raise a list error", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", error => errors.push(error.message));
+    await selectPokemon(page, "Rhyperior");
+    const input = page.getByLabel("Pokemon 1's name");
+    await page.evaluate(() => {
+      const request = window.requestAnimationFrame;
+      const cancel = window.cancelAnimationFrame;
+      const pending = new Map<number, FrameRequestCallback>();
+      let nextId = -1;
+      window.requestAnimationFrame = callback => {
+        const id = nextId--;
+        pending.set(id, callback);
+        return id;
+      };
+      window.cancelAnimationFrame = id => {
+        if (!pending.delete(id)) cancel(id);
+      };
+      (
+        window as typeof window & { releaseListFrames: () => void }
+      ).releaseListFrames = () => {
+        window.requestAnimationFrame = request;
+        window.cancelAnimationFrame = cancel;
+        for (const callback of pending.values()) request(callback);
+        pending.clear();
+      };
+    });
+    await input.click();
+    await input.fill("Bulbasaur");
+    await expect(
+      page.getByRole("option", { name: "Bulbasaur", exact: true }),
+    ).toBeVisible();
+    await page.evaluate(async () => {
+      (
+        window as typeof window & { releaseListFrames: () => void }
+      ).releaseListFrames();
+      await new Promise<void>(resolve =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      );
+    });
+    expect(errors).toEqual([]);
+    await input.press("ArrowDown");
+    await input.press("Enter");
+    await expect(input).toHaveValue("Bulbasaur");
+  });
+
   test("a single filtered pokemon fits completely in Grid and Big Grid", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 320, height: 640 });
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
     const input = page.getByLabel("Pokemon 1's name");
     for (const view of ["Grid view", "Big grid view"]) {
       await input.fill("rhyper");
@@ -98,11 +184,15 @@ test.describe("Name dropdown views - Unit Tests", () => {
       .toBe(true);
   });
 
-  test("Big Grid uses static sprites, supports selection, and remembers the view", async ({
+  test("Big Grid uses static sprites and supports keyboard selection", async ({
     page,
   }) => {
     await page.setViewportSize({ width: 320, height: 640 });
-    await page.goto("/?gen=9");
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
     const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
     await input.fill("Nido");
     const bigGrid = page.getByRole("button", {
@@ -162,7 +252,34 @@ test.describe("Name dropdown views - Unit Tests", () => {
         ),
       )
       .toBe("big-grid");
-    await page.reload();
+  });
+
+  test("Big Grid remembers the view after reload and switches back to List", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
+    const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    await input.fill("Wooper");
+    await page.getByRole("button", { name: "Grid view", exact: true }).click();
+    const bigGrid = page.getByRole("button", {
+      name: "Big grid view",
+      exact: true,
+    });
+    await bigGrid.click();
+    await expect
+      .poll(() =>
+        page.evaluate(
+          () =>
+            JSON.parse(localStorage.getItem("mypokemonteam") ?? "{}").nameView,
+        ),
+      )
+      .toBe("big-grid");
+    await page.reload({ waitUntil: "domcontentloaded" });
     await input.fill("Wooper");
     await expect(bigGrid).toHaveAttribute("aria-pressed", "true");
     await page.getByRole("button", { name: "List view" }).click();

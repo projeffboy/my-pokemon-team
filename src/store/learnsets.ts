@@ -1,5 +1,6 @@
-import pokedex from "@/data/pokedex";
 import { viableMovesIn } from "@/data/viable-moves";
+import pokedex from "@/data/pokedex";
+import { pokemonNameInverse } from "@/shared/names";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { generationBit, generationRules } from "@/shared/generation-rules";
 import type {
@@ -9,10 +10,8 @@ import type {
   ReadonlyTeam,
 } from "@/types";
 import { englishNames, type Names } from "@/i18n/names";
-import { baseForme as getBaseForme, previousEvolution } from "./shared/pokemon";
-import { pokemonNameInverse } from "@/shared/names";
+import { previousEvolution } from "./shared/pokemon";
 
-const REGIONS = ["alola", "galar", "hisui", "paldea"];
 const completeLearnsets = new Map<string, readonly string[]>();
 
 // The learnsets are most of the bundled data, so they load after the app instead of blocking it.
@@ -42,52 +41,15 @@ export function completeLearnset(pokemon: string): readonly string[] {
   return learnset;
 }
 
-// The forme that a forme of a forme is based on, e.g. Darmanitan-Galar for
-// Darmanitan-Galar-Zen, and Urshifu-Rapid-Strike for its Gigantamax
-function parentForme(pokemon: string) {
-  const { baseSpecies, forme } = pokedex[pokemon] ?? {};
-  if (!baseSpecies || !forme) return undefined;
-  const parts = forme.split("-");
-  while (parts.length > 1) {
-    parts.pop();
-    const parent = pokemonNameInverse(`${baseSpecies}-${parts.join("-")}`);
-    if (parent) return parent;
-  }
-  return undefined;
-}
-
-// The pokemon whose learnsets `pokemon` inherits, itself first
-function learnsetSources(pokemon: string, isPrevo = false): string[] {
-  const parent = parentForme(pokemon);
-  if (parent) return [pokemon, ...learnsetSources(parent)];
-
-  const baseForme = getBaseForme(pokemon);
-  const isRegional = REGIONS.some(region => pokemon.includes(region));
-  // Other formes also learn their base forme's moves. A regional forme does not:
-  // its line is its own, e.g. Pikachu for Raichu-Alola and Meowth-Alola for Persian-Alola.
-  // Nor does a forme that something evolves from, e.g. Basculegion's White-Striped Basculin.
-  if (baseForme && !isRegional && !isPrevo)
-    return [pokemon, ...learnsetSources(baseForme)];
-
-  let prevo = previousEvolution(pokemon);
-  // A forme without a line of its own follows its base forme's, in its region where there is one
-  const basePrevo =
-    prevo || !baseForme ? undefined : previousEvolution(baseForme);
-  if (basePrevo) {
-    const otherFormes = pokedex[basePrevo]?.otherFormes ?? [];
-    const region =
-      REGIONS.find(region =>
-        otherFormes.some(forme => forme.toLowerCase().includes(region)),
-      ) ?? "";
-    prevo = `${basePrevo}${region}`;
-  }
-  return [pokemon, ...(prevo ? learnsetSources(prevo, true) : [])];
-}
-
 function buildCompleteLearnset(pokemon: string): string[] {
-  let completeLearnset = learnsetSources(pokemon).flatMap(
-    source => learnsets[source] ?? [],
-  );
+  let completeLearnset: string[] = [];
+  const checked = new Set<string>();
+  let parent: string | undefined = pokemon;
+  while (parent && !checked.has(parent)) {
+    checked.add(parent);
+    completeLearnset.push(...(learnsets[parent] ?? []));
+    parent = learnsetParent(parent);
+  }
 
   // Sketch copies nearly every move, which the per-game data lists for Smeargle.
   // That data counts Z-Moves, which no pokemon learns, so they are left out.
@@ -136,6 +98,27 @@ function buildCompleteLearnset(pokemon: string): string[] {
   }
 
   return completeLearnset;
+}
+
+function learnsetParent(pokemon: string): string | undefined {
+  const entry = pokedex[pokemon];
+  if (!entry) return undefined;
+  if (!learnsets[pokemon] && entry.forme) {
+    return pokemonNameInverse(entry.changesFrom ?? entry.baseSpecies ?? "");
+  }
+  if (entry.prevo) return previousEvolution(pokemon);
+  if (entry.changesFrom && entry.baseSpecies !== "Kyurem")
+    return pokemonNameInverse(entry.changesFrom);
+
+  // Formes such as cap Pikachu can inherit their base species' egg moves.
+  let base = pokemonNameInverse(entry.baseSpecies ?? "");
+  let prevo = base && previousEvolution(base);
+  if (!prevo) return undefined;
+  while (prevo) {
+    base = prevo;
+    prevo = previousEvolution(base);
+  }
+  return base;
 }
 
 // Can `pokemon` learn `move`?

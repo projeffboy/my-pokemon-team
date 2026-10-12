@@ -53,6 +53,7 @@ function restorePendingReload() {
 const TeamLinkSync = observer(function TeamLinkSync() {
   const { learnsetsLoaded } = store;
   const restoredReload = useRef(false);
+  const pendingNavigation = useRef(false);
 
   useLayoutEffect(() => {
     // Team text needs learnsets; empty visits must initialize before the first edit.
@@ -77,9 +78,14 @@ const TeamLinkSync = observer(function TeamLinkSync() {
     const syncFromUrl = () => {
       clearTimeout(pendingWrite);
       pendingWrite = undefined;
+      const teamParameter = new URLSearchParams(location.search).get("team");
+      if (!learnsetsLoaded && teamParameter) {
+        pendingNavigation.current = true;
+        return;
+      }
+      pendingNavigation.current = false;
       const firstNavigation = initialNavigation;
       initialNavigation = false;
-      const teamParameter = new URLSearchParams(location.search).get("team");
       if (
         !firstNavigation &&
         teamParameter === lastSyncedTeamParameter &&
@@ -108,7 +114,7 @@ const TeamLinkSync = observer(function TeamLinkSync() {
         } else store.openUnsavedTeam(undefined, settings);
       }
     };
-    if (initializes) syncFromUrl();
+    if (initializes || pendingNavigation.current) syncFromUrl();
     addEventListener("popstate", syncFromUrl);
 
     // store -> URL: keeps the URL's `team` parameter canonical for the current team.
@@ -143,6 +149,8 @@ const TeamLinkSync = observer(function TeamLinkSync() {
     };
     const disposeAutorun = autorun(() => {
       const encoded = encodeTeamForUrl();
+      if (pendingNavigation.current) return;
+
       const url = new URL(location.href);
       if (encoded) url.searchParams.set("team", encoded);
       else url.searchParams.delete("team");

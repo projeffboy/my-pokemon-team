@@ -19,6 +19,54 @@ const savedState = (page: Page) =>
   );
 
 test.describe("Share Link - Integration Tests", () => {
+  test("a denied localStorage getter leaves team editing and share links usable", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", error => errors.push(error.message));
+    await page.addInitScript(() => {
+      Object.defineProperty(window, "localStorage", {
+        configurable: true,
+        get() {
+          throw new DOMException("Access denied", "SecurityError");
+        },
+      });
+    });
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await selectPokemon(page, "Lurantis");
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lurantis");
+    expect(getTeamTextFromUrl(page)).toContain("Lurantis");
+    expect(errors).toEqual([]);
+  });
+
+  test("navigation to a shared link keeps its moves while learnsets load", async ({
+    page,
+  }) => {
+    let releaseLearnsets = () => {};
+    let markRequested = () => {};
+    const requested = new Promise<void>(resolve => {
+      markRequested = resolve;
+    });
+    const released = new Promise<void>(resolve => {
+      releaseLearnsets = resolve;
+    });
+    await page.route("**/src/data/learnsets.json*", async route => {
+      markRequested();
+      await released;
+      await route.continue();
+    });
+    await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+    await requested;
+    await page.evaluate(teamParameter => {
+      history.pushState(null, "", `/?gen=9&team=${teamParameter}`);
+      dispatchEvent(new PopStateEvent("popstate"));
+    }, toBase64Url("Gyarados\n- Waterfall"));
+    releaseLearnsets();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Waterfall");
+    expect(getTeamTextFromUrl(page)).toContain("- Waterfall");
+  });
+
   test("keeps early selections when learnsets finish loading", async ({
     page,
   }) => {
@@ -52,46 +100,85 @@ test.describe("Share Link - Integration Tests", () => {
     expect(getTeamTextFromUrl(page)).toContain("Ability: Moxie");
   });
 
-  test("fresh visits default to Champions and explicit regular Gen 9 links retain their game", async ({
-    page,
-  }) => {
-    // This sequence loads the app six times in addition to the fixture's first visit.
-    test.slow();
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    const generation = page.getByRole("combobox", { name: "Generation" });
-    await expect(generation).toContainText("Champions");
-    await expect(page).toHaveURL(/game=Pokemon\+Champions/);
-    await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText("Champions");
-    await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText(/SV|Scarlet/);
-    await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText(/SV|Scarlet/);
-    await page.goto(`/?team=${toBase64Url("Lucario\n- Aura Sphere")}`, {
-      waitUntil: "domcontentloaded",
+  test.describe("Game-specific links", () => {
+    // Avoid overlapping app reloads against the shared development server.
+    test.describe.configure({ mode: "default" });
+
+    // Each scenario navigates to its own starting link.
+    test.use({
+      autoGoToSite: async ({}, use) => {
+        await use();
+      },
     });
-    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lucario");
-    await expect(generation).toContainText(/SV|Scarlet/);
-    await expect(page).not.toHaveURL(/game=/);
-    await page.goto("/", { waitUntil: "domcontentloaded" });
-    await expect(generation).toContainText("Champions");
+
+    test("fresh visits default to Champions through reload", async ({
+      page,
+    }) => {
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText("Champions");
+      await expect(page).toHaveURL(/game=Pokemon\+Champions/);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText("Champions");
+    });
+
+    test("explicit regular Gen 9 links override Champions and retain their game through reload", async ({
+      page,
+    }) => {
+      test.setTimeout(60000);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText("Champions");
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText("Champions");
+      // Retain the session's settings while releasing the old dev-module graph.
+      const regularPage = await page.context().newPage();
+      await page.close();
+      await regularPage.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+      const regularGeneration = regularPage.getByRole("combobox", {
+        name: "Generation",
+      });
+      await expect(regularGeneration).toContainText(/SV|Scarlet/);
+      await regularPage.reload({ waitUntil: "domcontentloaded" });
+      await expect(regularGeneration).toContainText(/SV|Scarlet/);
+    });
+
+    test("legacy team links use regular Gen 9 and a later fresh visit defaults to Champions", async ({
+      page,
+    }) => {
+      await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText(/SV|Scarlet/);
+      await page.goto(`/?team=${toBase64Url("Lucario\n- Aura Sphere")}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lucario");
+      await expect(generation).toContainText(/SV|Scarlet/);
+      await expect(page).not.toHaveURL(/game=/);
+      await page.goto("/", { waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText("Champions");
+    });
+
+    test("an empty game-specific link preserves its profile through reload", async ({
+      page,
+    }) => {
+      await page.goto("/?gen=8&game=Legends%3A%20Arceus", {
+        waitUntil: "domcontentloaded",
+      });
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText(/Arceus|PLA/);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText(/Arceus|PLA/);
+      await selectPokemon(page, "Turtwig");
+      await expect(
+        page.getByLabel("Pokemon 1's item", { exact: true }),
+      ).toHaveCount(0);
+      await expect(
+        page.getByLabel("Pokemon 1's ability", { exact: true }),
+      ).toHaveCount(0);
+    });
   });
-  test("an empty game-specific link preserves its profile through reload", async ({
-    page,
-  }) => {
-    await page.goto("/?gen=8&game=Legends%3A%20Arceus");
-    const generation = page.getByRole("combobox", { name: "Generation" });
-    await expect(generation).toContainText(/Arceus|PLA/);
-    await page.reload();
-    await expect(generation).toContainText(/Arceus|PLA/);
-    await selectPokemon(page, "Turtwig");
-    await expect(
-      page.getByLabel("Pokemon 1's item", { exact: true }),
-    ).toHaveCount(0);
-    await expect(
-      page.getByLabel("Pokemon 1's ability", { exact: true }),
-    ).toHaveCount(0);
-  });
+
   test("loads a team from the URL parameter on initial page load", async ({
     page,
   }) => {
@@ -171,6 +258,37 @@ test.describe("Share Link - Navigation", () => {
 });
 
 test.describe("Teams across tabs and links", () => {
+  test("an edit from another tab resets history and becomes the next edit's undo baseline", async ({
+    page,
+    context,
+  }) => {
+    await selectPokemon(page, "Bellibolt");
+    await expect(
+      page.getByRole("button", { name: "Undo", exact: true }),
+    ).toBeEnabled();
+    await expect
+      .poll(async () => (await savedState(page))?.teams[0]?.team[0]?.name)
+      .toBe("bellibolt");
+
+    const other = await context.newPage();
+    await other.goto(page.url());
+    await selectPokemon(other, "Glimmora");
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Glimmora");
+    await expect(
+      page.getByRole("button", { name: "Undo", exact: true }),
+    ).toBeDisabled();
+    await expect(
+      page.getByRole("button", { name: "Redo", exact: true }),
+    ).toBeDisabled();
+
+    await selectPokemon(page, "Revavroom");
+    await expect(
+      page.getByRole("button", { name: "Undo", exact: true }),
+    ).toBeEnabled();
+    await page.getByRole("button", { name: "Undo", exact: true }).click();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Glimmora");
+  });
+
   test("a plain new tab starts a distinct team without switching the first tab", async ({
     page,
     context,

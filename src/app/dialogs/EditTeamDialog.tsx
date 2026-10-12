@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useLayoutEffect } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
@@ -10,7 +10,12 @@ import ImportTeamForm from "./shared/ImportTeamForm";
 const EditTeamDialog = observer(function EditTeamDialog() {
   const { t } = useTranslation();
   const titleId = useId();
-  const isOpen = store.dialog?.name === "editTeam";
+  const { dialog, currentTeamId } = store;
+  const requested = dialog?.name === "editTeam";
+  const isOpen = requested && dialog.teamId === currentTeamId;
+  useLayoutEffect(() => {
+    if (requested && !isOpen) store.closeDialog();
+  }, [requested, isOpen]);
   const close = () => store.closeDialog();
 
   return (

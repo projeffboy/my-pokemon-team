@@ -5,14 +5,13 @@ export function nextDuplicateName(
 ) {
   const [prefix = "", suffix = ""] = copyOf("{name}").split("{name}");
   const numbered = /^(.*) (\d+)$/.exec(name);
-  let number = 1;
+  let number = 1n;
   let base = name;
   if (numbered) {
-    const value = Number(numbered[2]);
+    const value = BigInt(numbered[2] ?? "0");
     const unnumbered = numbered[1] ?? "";
     if (
-      Number.isSafeInteger(value) &&
-      value >= 2 &&
+      value >= 2n &&
       unnumbered.startsWith(prefix) &&
       unnumbered.endsWith(suffix)
     ) {
@@ -29,7 +28,7 @@ export function nextDuplicateName(
     number++;
   }
   const copied = copyOf(base);
-  let candidate = number === 1 ? copied : `${copied} ${number}`;
+  let candidate = number === 1n ? copied : `${copied} ${number}`;
   while (existingNames.includes(candidate)) {
     candidate = `${copied} ${++number}`;
   }

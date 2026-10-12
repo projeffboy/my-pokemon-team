@@ -55,6 +55,13 @@ const entries: Entry[] = [
     ],
   },
   {
+    date: "Oct 9, 2026",
+    changes: [
+      "Team validation now follows each game's abilities and training limits, e.g. Levitate for Gen 6 Gengar and 66 total SPs in Champions.",
+      "Open filters now close when browser history or another tab changes the current team, preserving the replacement team's settings.",
+    ],
+  },
+  {
     date: "Oct 8, 2026",
     changes: [
       "Switching generations no longer opens an empty confirmation for Pokémon with default stats.",

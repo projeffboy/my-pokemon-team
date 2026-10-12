@@ -54,6 +54,7 @@ export function calculateTypeDefence(
 export function calculateTypeCoverage(
   team: ReadonlyTeam,
   generation = LATEST_GENERATION,
+  format = "",
 ) {
   const scores = createTypeScores();
   if (!team.some(pokemon => pokemon.name)) return scores;
@@ -76,11 +77,12 @@ export function calculateTypeCoverage(
           name,
           pokemon.happiness,
           pokemon,
+          format,
         )
       )
         continue;
 
-      const type = moveType(move, name, ability, generation, item);
+      const type = moveType(move, name, ability, generation, item, format);
       const isSpecialMove = move === "freezedry" || move === "flyingpress";
       if (isSpecialMove && specialMovesUsed.has(move)) continue;
       const targetsUsed = typesUsed.get(type) ?? new Set<PokemonType>();
@@ -99,6 +101,7 @@ export function calculateTypeCoverage(
             item,
             pokemon.happiness,
             pokemon,
+            format,
           ) === -1
         ) {
           if (isSpecialMove || !targetsUsed.has(target))

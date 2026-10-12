@@ -15,6 +15,7 @@ const inputNames: Record<string, string> = {
 
 const it: Messages = {
   // The header
+  beta: "Beta",
   generation,
   generationGames: {
     9: "Scarlatto Violetto",
@@ -389,6 +390,8 @@ const it: Messages = {
     exportAll: "Esporta tutte",
     copyAll: "Copia tutte",
     savedInBrowser: "Le squadre sono salvate in questo browser.",
+    saveFailed:
+      "Il browser non è riuscito a salvare le tue squadre. Salva un backup per conservarle.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "Aperta",
     open: "Apri",
@@ -399,6 +402,25 @@ const it: Messages = {
     copiedAll: "Tutte le squadre copiate",
     notCopiedAll: "Impossibile copiare le squadre.",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "Backup delle squadre",
+    description:
+      "Salva tutte le tue squadre, inclusi nomi, giochi, filtri e dettagli dei Pokémon.",
+    save: "Salva backup",
+    restoreDescription:
+      "Aggiungi squadre da un file di backup. Le squadre che hai già verranno conservate.",
+    chooseFile: "Scegli file di backup",
+    restore: "Aggiungi squadre",
+    ready: (count: number) => `Squadre in questo backup: ${count}`,
+    error:
+      "Impossibile leggere il file. Scegli un backup delle squadre salvato da questo sito.",
+    tooLarge:
+      "Questo backup contiene troppe squadre da aggiungere. Prova con un file di backup più piccolo.",
+    saveFailed: "Impossibile salvare il backup. Riprova.",
+    saved: "Backup delle squadre salvato",
+    alreadySaved: "Queste squadre sono già nella tua raccolta.",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "Cambiare gioco o generazione?",
@@ -465,10 +487,14 @@ const it: Messages = {
       `${pokemon} deve tenere ${items.join(" o ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} ha ${move} due volte.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon} ha ${total} EV (massimo ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon} ha più di ${max} EV in una statistica.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon} ha ${total} ${unit} (massimo ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon} ha più di ${max} ${unit} in una statistica.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `Il soprannome di ${pokemon} deve avere al massimo ${max} caratteri.`,
     badLevel: (pokemon: string, max: number) =>

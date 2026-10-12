@@ -23,7 +23,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   hasIcon: boolean;
 }) {
   const { t, names } = useTranslation();
-  const { generation } = store.currentTeam;
+  const { generation, format } = store.currentTeam;
   const superEffectiveMoves = store.analysisTeam.flatMap((member, i) =>
     MOVE_KEYS.flatMap(key => {
       const { name: pokemon, ability, item } = member;
@@ -39,11 +39,19 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
           item,
           member.happiness,
           member,
+          format,
         ) !== -1
       ) {
         return [];
       }
-      const moveType = getMoveType(move, pokemon, ability, generation, item);
+      const moveType = getMoveType(
+        move,
+        pokemon,
+        ability,
+        generation,
+        item,
+        format,
+      );
       const isStab =
         !!moveType &&
         effectivePokemonTypes(pokemon, ability, item, generation).includes(

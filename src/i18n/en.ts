@@ -8,6 +8,7 @@ const generation = (generation: number) => `Gen ${generation}`;
 
 const en = {
   // The header
+  beta: "Beta",
   generation,
   generationGames: {
     9: "Scarlet Violet",
@@ -380,6 +381,8 @@ const en = {
     exportAll: "Export All",
     copyAll: "Copy All",
     savedInBrowser: "Teams are saved in this browser.",
+    saveFailed:
+      "Your browser couldn’t save your teams. Save a backup to keep them.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "Current",
     open: "Open",
@@ -390,6 +393,25 @@ const en = {
     copiedAll: "Copied all teams",
     notCopiedAll: "Could not copy the teams.",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "Team backups",
+    description:
+      "Save all your teams, including their names, games, filters, and Pokémon details.",
+    save: "Save backup",
+    restoreDescription:
+      "Add teams from a backup file. The teams you already have will stay.",
+    chooseFile: "Choose backup file",
+    restore: "Add teams",
+    ready: (count: number) => `Teams in this backup: ${count}`,
+    error:
+      "This file couldn't be read. Choose a team backup saved by this site.",
+    tooLarge:
+      "This backup has too many teams to add. Try a smaller backup file.",
+    saveFailed: "Could not save the backup. Please try again.",
+    saved: "Team backup saved",
+    alreadySaved: "These teams are already in your collection.",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "Switch game or generation?",
@@ -454,10 +476,14 @@ const en = {
       `${pokemon} must hold ${items.join(" or ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} has ${move} twice.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon} has ${total} EVs (at most ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon} has more than ${max} EVs in one stat.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon} has ${total} ${unit} (at most ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon} has more than ${max} ${unit} in one stat.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}'s nickname must be ${max} characters or fewer.`,
     badLevel: (pokemon: string, max: number) =>

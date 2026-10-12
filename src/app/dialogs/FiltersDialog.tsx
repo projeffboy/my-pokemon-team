@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef, useState } from "react";
+import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -39,7 +39,18 @@ const FiltersDialog = observer(function FiltersDialog() {
     data: GenerationTransferData;
   } | null>(null);
   const formatRequest = useRef(0);
+  const { dialog, currentTeamId } = store;
+  const requested = dialog?.name === "filters";
+  const isOpen = requested && dialog.teamId === currentTeamId;
+  useLayoutEffect(() => {
+    if (requested && !isOpen) {
+      formatRequest.current++;
+      setPending(null);
+      store.closeDialog();
+    }
+  }, [requested, isOpen]);
   const changeFormat = async (format: string) => {
+    if (!isOpen || store.dialog !== dialog) return;
     const request = ++formatRequest.current;
     setPending(null);
     const teamId = store.currentTeamId;
@@ -52,7 +63,11 @@ const FiltersDialog = observer(function FiltersDialog() {
     }
     try {
       const data = await loadGenerationTransferData();
-      if (store.currentTeamId !== teamId || request !== formatRequest.current)
+      if (
+        store.currentTeamId !== teamId ||
+        store.dialog !== dialog ||
+        request !== formatRequest.current
+      )
         return;
       const team = store.currentTeam;
       const generation = formatGeneration(format, team.generation);
@@ -68,12 +83,17 @@ const FiltersDialog = observer(function FiltersDialog() {
         setPending({ teamId: team.id, generation, format, data });
       else store.transferTeamGeneration(generation, format, plan.team, false);
     } catch {
-      if (request !== formatRequest.current || store.currentTeamId !== teamId)
+      if (
+        request !== formatRequest.current ||
+        store.currentTeamId !== teamId ||
+        store.dialog !== dialog
+      )
         return;
       store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
     }
   };
-  const target = pending?.teamId === store.currentTeamId ? pending : null;
+  const target =
+    isOpen && pending?.teamId === store.currentTeamId ? pending : null;
   const plan =
     target ?
       planGenerationTransfer(
@@ -112,8 +132,10 @@ const FiltersDialog = observer(function FiltersDialog() {
     [names],
   );
   const titleId = useId();
-  const isOpen = store.dialog?.name === "filters";
-  const close = () => store.closeDialog();
+  const close = () => {
+    setPending(null);
+    store.closeDialog();
+  };
   const formats = formatsForGeneration(store.currentTeam.generation);
 
   // The filter values stay English; only their labels are translated

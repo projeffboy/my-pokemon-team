@@ -41,19 +41,15 @@ test.describe("Header Tests", () => {
         expect(bounds.x).toBeGreaterThanOrEqual(0);
         expect(bounds.x + bounds.width).toBeLessThanOrEqual(width);
       }
-      const [venusaur, charizard, language, feedback] = await Promise.all(
-        [
-          images.nth(0),
-          images.nth(1),
-          page.getByRole("button", { name: "Language", exact: true }),
-          page.getByRole("button", { name: "Send feedback", exact: true }),
-        ].map(element => element.boundingBox()),
+      const [leftFace, rightFace] = await Promise.all(
+        [images.nth(0), images.nth(1)].map(element => element.boundingBox()),
       );
-      expect(venusaur && charizard && language && feedback).toBeTruthy();
-      if (venusaur && charizard && language && feedback) {
-        expect(venusaur.x).toBeCloseTo(language.x, 0);
-        expect(charizard.x + charizard.width).toBeCloseTo(
-          feedback.x + feedback.width,
+      expect(leftFace && rightFace).toBeTruthy();
+      if (leftFace && rightFace && bounds) {
+        expect(leftFace.x + leftFace.width).toBeLessThanOrEqual(bounds.x);
+        expect(rightFace.x).toBeGreaterThanOrEqual(bounds.x + bounds.width);
+        expect((leftFace.x + rightFace.x + rightFace.width) / 2).toBeCloseTo(
+          width / 2,
           0,
         );
       }

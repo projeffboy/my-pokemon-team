@@ -11,6 +11,7 @@ import { CHAMPIONS_FORMAT, TIER_BY_FORMAT } from "@/shared/formats";
 import { variantGeneration } from "@/shared/game-variants";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
+import { pokemonFormatIn } from "@/shared/generation-data";
 
 type Filters = Readonly<
   Partial<Pick<PokemonFilters, "generation" | "ability">> &
@@ -133,6 +134,7 @@ export function filterPokemon({
     const smogonSinglesTiers = [
       "Uber",
       "OU",
+      "(OU)",
       "UUBL",
       "UU",
       "RUBL",
@@ -154,7 +156,10 @@ export function filterPokemon({
     } else if (
       ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
     ) {
-      return filterByTier(["DUber", "DOU", "DUU", "(DUU)"], "doublesTier");
+      return filterByTier(
+        ["DUber", "(DUber)", "DOU", "DUU", "(DUU)"],
+        "doublesTier",
+      );
     }
 
     function filterByTier(
@@ -170,7 +175,7 @@ export function filterPokemon({
 
           // Add all the pokemon from that tier to filteredPokedex
           for (const [pokemon, entry] of Object.entries(pokedex)) {
-            if (formats[pokemon]?.[tierType] === tier) {
+            if (pokemonFormatIn(pokemon, generation)?.[tierType] === tier) {
               filteredPokedex[pokemon] = entry;
             }
           }

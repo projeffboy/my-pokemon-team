@@ -36,7 +36,6 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
   const close = () => setAnchorEl(null);
-  const teamId = store.currentTeamId;
 
   const items = [
     { label: t.team.copyText, Icon: ContentCopyIcon, act: copyTeamText },
@@ -48,7 +47,7 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
     {
       label: t.clear,
       Icon: DeleteIcon,
-      act: () => setDeletingTeamId(teamId),
+      act: () => setDeletingTeamId(store.currentTeamId),
     },
     "divider" as const,
     {

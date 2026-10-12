@@ -94,7 +94,7 @@ test("universal messages describe system changes rather than rules already share
     { generation: 1, format: "" },
     configured,
   );
-  expect(older.removed).toEqual(["item", "gender", "shiny", "happiness"]);
+  expect(older.removed).toEqual(["item", "gender", "happiness"]);
   expect(older.ivsConversion).toBeUndefined();
   expect(older.training).toBeUndefined();
 });
@@ -155,6 +155,21 @@ test("default IV and DV conversions are omitted in either direction", () => {
   }
 });
 
+test("Showdown's even encoding of default legacy DVs needs no conversion message", () => {
+  for (const generation of [1, 2] as const) {
+    const changes = universalTransferChanges(
+      { generation, format: "" },
+      { generation: 3, format: "" },
+      createTeam({
+        name: "bulbasaur",
+        ivs: { hp: 30, atk: 30, def: 30, spa: 30, spd: 30, spe: 30 },
+      }),
+    );
+    expect(changes.ivsConversion).toBeUndefined();
+    expect(changes.removed).toEqual([]);
+  }
+});
+
 test("Gen 2 shiny imports describe their implicit nondefault DVs", () => {
   const team = createTeam({ name: "bulbasaur", shiny: true });
   const changes = universalTransferChanges(
@@ -167,4 +182,19 @@ test("Gen 2 shiny imports describe their implicit nondefault DVs", () => {
     changes.isUniversal({ index: 0, pokemon: "bulbasaur", field: "ivs" }),
   ).toBe(true);
   expect(team[0]?.ivs).toBeUndefined();
+});
+
+test("Gen 2 shiny removal summaries follow DVs when an import label disagrees", () => {
+  for (const [shiny, ivs, removed] of [
+    [undefined, { def: 20, spa: 20, spe: 20 }, ["shiny"]],
+    [true, { atk: 0, def: 20, spa: 20, spe: 20 }, []],
+  ] as const) {
+    const team = createTeam({ name: "jigglypuff", shiny, ivs });
+    const changes = universalTransferChanges(
+      { generation: 2, format: "" },
+      { generation: 1, format: "" },
+      team,
+    );
+    expect(changes.removed).toEqual(removed);
+  }
 });

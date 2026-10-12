@@ -15,7 +15,11 @@ export type ChecklistItemKey = keyof Messages["checklist"]["items"];
 
 export interface ChecklistItem {
   key: ChecklistItemKey;
-  check: (team: ReadonlyTeam, generation?: Generation) => boolean;
+  check: (
+    team: ReadonlyTeam,
+    generation?: Generation,
+    format?: string,
+  ) => boolean;
 }
 
 export interface ChecklistGroup {
@@ -28,18 +32,29 @@ type Check = ChecklistItem["check"];
 const moveset = (
   pokemon: ReadonlyTeam[number],
   generation = LATEST_GENERATION,
+  format = "",
 ) =>
   MOVE_KEYS.map(key => pokemon[key]).filter(move =>
-    isMoveUsable(move, pokemon.name, pokemon.item, pokemon.ability, generation),
+    isMoveUsable(
+      move,
+      pokemon.name,
+      pokemon.item,
+      pokemon.ability,
+      generation,
+      format,
+    ),
   );
 
-const teamMoves = (team: ReadonlyTeam, generation = LATEST_GENERATION) =>
-  team.flatMap(pokemon => moveset(pokemon, generation));
+const teamMoves = (
+  team: ReadonlyTeam,
+  generation = LATEST_GENERATION,
+  format = "",
+) => team.flatMap(pokemon => moveset(pokemon, generation, format));
 
 const hasAnyMove =
   (names: string[]): Check =>
-  (team, generation = LATEST_GENERATION) =>
-    teamMoves(team, generation).some(move => names.includes(move));
+  (team, generation = LATEST_GENERATION, format = "") =>
+    teamMoves(team, generation, format).some(move => names.includes(move));
 
 const hasAnyItem =
   (names: string[]): Check =>
@@ -51,9 +66,9 @@ const hasAnyItem =
 // Does one pokemon have all of these moves? An entry may list alternatives.
 const hasMovesTogether =
   (required: (string | string[])[]): Check =>
-  (team, generation = LATEST_GENERATION) =>
+  (team, generation = LATEST_GENERATION, format = "") =>
     team.some(pokemon => {
-      const pokemonMoves = moveset(pokemon, generation);
+      const pokemonMoves = moveset(pokemon, generation, format);
       return required.every(move =>
         [move].flat().some(alt => pokemonMoves.includes(alt)),
       );
@@ -61,10 +76,14 @@ const hasMovesTogether =
 
 // Moves that inflict a non-volatile status, like Toxic, or always do so as a
 // side effect, like Nuzzle
-const inflictsStatus: Check = (team, generation = LATEST_GENERATION) =>
+const inflictsStatus: Check = (
+  team,
+  generation = LATEST_GENERATION,
+  format = "",
+) =>
   team.some(pokemon =>
-    moveset(pokemon, generation).some(move => {
-      const { status, secondary } = moveDataIn(move, generation) ?? {};
+    moveset(pokemon, generation, format).some(move => {
+      const { status, secondary } = moveDataIn(move, generation, format) ?? {};
       return !!(
         move === "yawn" ||
         status ||
@@ -77,14 +96,18 @@ const inflictsStatus: Check = (team, generation = LATEST_GENERATION) =>
   );
 
 // Curse and callback-based moves need explicit self-boost effects.
-const boostsStats: Check = (team, generation = LATEST_GENERATION) =>
+const boostsStats: Check = (
+  team,
+  generation = LATEST_GENERATION,
+  format = "",
+) =>
   team.some(pokemon => {
     const contrary = generation >= 5 && pokemon.ability === "Contrary";
     const modifier =
       contrary ? -1
       : generation >= 4 && pokemon.ability === "Simple" ? 2
       : 1;
-    return moveset(pokemon, generation).some(move => {
+    return moveset(pokemon, generation, format).some(move => {
       if (move === "curse")
         return (
           !contrary &&
@@ -97,7 +120,7 @@ const boostsStats: Check = (team, generation = LATEST_GENERATION) =>
         );
       if (move === "bellydrum" || move === "acupressure") return !contrary;
       if (move === "stockpile") return generation >= 4 && !contrary;
-      const data = moveDataIn(move, generation);
+      const data = moveDataIn(move, generation, format);
       const boosts =
         data?.selfBoosts ?? (data?.target === "self" ? data.boosts : undefined);
       return (
@@ -158,17 +181,19 @@ export const checklist: ChecklistGroup[] = [
       },
       {
         key: "spinner",
-        check: (team, generation = LATEST_GENERATION) =>
+        check: (team, generation = LATEST_GENERATION, format = "") =>
           hasAnyMove(["rapidspin", "courtchange", "tidyup", "mortalspin"])(
             team,
             generation,
+            format,
           ) ||
-          (generation >= 6 && hasAnyMove(["defog"])(team, generation)),
+          (generation >= 6 && hasAnyMove(["defog"])(team, generation, format)),
       },
       {
         key: "recovery",
-        check: (team, generation = LATEST_GENERATION) =>
-          hasRecovery(team, generation) || hasWishAndProtect(team, generation),
+        check: (team, generation = LATEST_GENERATION, format = "") =>
+          hasRecovery(team, generation, format) ||
+          hasWishAndProtect(team, generation, format),
       },
     ],
   },
@@ -182,9 +207,9 @@ export const checklist: ChecklistGroup[] = [
       { key: "status", check: inflictsStatus },
       {
         key: "phazer",
-        check: (team, generation = LATEST_GENERATION) =>
-          teamMoves(team, generation).some(
-            move => !!moveDataIn(move, generation)?.forceSwitch,
+        check: (team, generation = LATEST_GENERATION, format = "") =>
+          teamMoves(team, generation, format).some(
+            move => !!moveDataIn(move, generation, format)?.forceSwitch,
           ),
       },
     ],
@@ -221,12 +246,13 @@ export const checklistLabel = (
 export function evaluateChecklist(
   team: ReadonlyTeam,
   generation = LATEST_GENERATION,
+  format = "",
 ) {
   return checklist.map(({ key, items }) => ({
     key,
     items: items.map(({ key, check }) => ({
       key,
-      isChecked: check(team, generation),
+      isChecked: check(team, generation, format),
     })),
   }));
 }

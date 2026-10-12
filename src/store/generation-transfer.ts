@@ -20,13 +20,20 @@ import {
   dvGender,
   isShinyDv,
 } from "@/shared/generation-rules";
-import { DEFAULT_LEVEL, getIv, MAX_IV, setDetail } from "@/shared/set-details";
+import {
+  DEFAULT_LEVEL,
+  getIv,
+  MAX_IV,
+  setDetail,
+  setStat,
+} from "@/shared/set-details";
 import {
   hiddenPowerType,
   matchHiddenPowerPreservingDetails,
 } from "@/shared/hidden-power";
 import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import pokedex from "@/data/pokedex";
+import hiddenPowerSpreads from "@/data/hidden-power-spreads";
 import { pokemonNameInverse } from "@/shared/names";
 import type { Locale } from "@/i18n/locales";
 import {
@@ -60,12 +67,24 @@ export function planGenerationTransfer(
   const has = (mask: number | undefined) => !!((mask ?? 0) & bit);
   const losses: TransferLoss[] = [];
   const result = team.map((original, index) => {
+    const source = {
+      ...(from.generation === 2 ? gen2Dvs(original) : original),
+    };
+    if (previousRules.legacy) {
+      for (const stat of STAT_KEYS)
+        setStat(source, "ivs", stat, getDv(source, stat) * 2 + 1);
+      syncDvs(source, from.generation);
+    }
     const member = {
       ...original,
       ...(original.evs && { evs: { ...original.evs } }),
-      ...(original.ivs && { ivs: { ...original.ivs } }),
+      ...(source.ivs && { ivs: { ...source.ivs } }),
     };
     if (!member.name) return member;
+    if (from.generation === 2) {
+      setDetail(member, "shiny", source.shiny);
+      if (rules.gender) setDetail(member, "gender", source.gender);
+    }
     let entry = data.pokemon[member.name];
     const loss = (field: TransferField, value?: string) =>
       losses.push({
@@ -202,7 +221,6 @@ export function planGenerationTransfer(
     removeDetail("effortLevels", rules.investment !== "effortLevels");
     removeDetail("ivs", !rules.ivs);
     if (rules.ivs && previousRules.legacy !== rules.legacy) {
-      const source = from.generation === 2 ? gen2Dvs(original) : original;
       const sourceStat = (stat: (typeof STAT_KEYS)[number]) =>
         from.generation === 1 && stat === "spd" ? "spa" : stat;
       const before = Object.fromEntries(
@@ -223,6 +241,21 @@ export function planGenerationTransfer(
       );
       if (generation === 2 && original.shiny) setLegacyShiny(member, true);
       else if (rules.legacy) syncDvs(member, generation);
+      if (from.generation === 2) {
+        const type = hiddenPowerType(source, 2);
+        const spread =
+          type && MOVE_KEYS.some(key => member[key] === `hiddenpower${type}`) ?
+            hiddenPowerSpreads[type]
+          : undefined;
+        if (spread)
+          for (const stat of STAT_KEYS)
+            setStat(
+              member,
+              "ivs",
+              stat,
+              getDv(source, stat) * 2 + (getIv(spread.ivs, stat) % 2),
+            );
+      }
       const after = Object.fromEntries(
         STAT_KEYS.map(stat => [
           stat,

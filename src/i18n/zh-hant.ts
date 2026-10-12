@@ -15,6 +15,7 @@ const inputNames: Record<string, string> = {
 
 const zhHant: Messages = {
   // The header
+  beta: "測試版",
   generation,
   generationGames: {
     9: "朱 紫",
@@ -385,6 +386,7 @@ const zhHant: Messages = {
     exportAll: "全部匯出",
     copyAll: "全部複製",
     savedInBrowser: "隊伍儲存在這個瀏覽器中。",
+    saveFailed: "瀏覽器無法儲存你的隊伍。請儲存備份以保留隊伍。",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "使用中",
     open: "開啟",
@@ -395,6 +397,21 @@ const zhHant: Messages = {
     copiedAll: "已複製所有隊伍",
     notCopiedAll: "無法複製隊伍。",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "隊伍備份",
+    description: "儲存所有隊伍，包括名稱、遊戲、篩選條件和寶可夢的詳細資訊。",
+    save: "儲存備份",
+    restoreDescription: "從備份檔案中新增隊伍。你已有的隊伍會保留。",
+    chooseFile: "選擇備份檔案",
+    restore: "新增隊伍",
+    ready: (count: number) => `此備份中的隊伍數：${count}`,
+    error: "無法讀取此檔案。請選擇在本網站儲存的隊伍備份。",
+    tooLarge: "此備份中的隊伍太多，無法新增。請嘗試隊伍較少的備份檔案。",
+    saveFailed: "無法儲存備份。請再試一次。",
+    saved: "已儲存隊伍備份",
+    alreadySaved: "這些隊伍已在你的隊伍列表中。",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "切換遊戲或世代？",
@@ -456,10 +473,14 @@ const zhHant: Messages = {
       `${pokemon}必須攜帶${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}的${move}重複了。`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon}的努力值共 ${total}（最多 ${max}）。`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon}有一項能力的努力值超過 ${max}。`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon}的${unit}共 ${total}（最多 ${max}）。`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon}有一項能力的${unit}超過 ${max}。`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}的暱稱最多只能有${max}個字元。`,
     badLevel: (pokemon: string, max: number) =>

@@ -29,7 +29,7 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
       <Button
         variant="contained"
         onClick={handleSwitch}
-        sx={{ alignSelf: "center" }}
+        sx={{ whiteSpace: "nowrap" }}
       >
         {t.siteVersion.button}
       </Button>

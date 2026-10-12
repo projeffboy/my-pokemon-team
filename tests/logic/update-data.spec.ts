@@ -5,6 +5,7 @@ import {
   nameChanges,
   pick,
   projectFormats,
+  projectGameVariant,
   projectPastGenerations,
   projectHistoricalMoves,
   projectTypeChart,
@@ -138,6 +139,59 @@ test("moves keep their secondary status chance and sound flag only", () => {
       secondary: null,
     }),
   ).toEqual({ name: "Boomburst", flags: { sound: 1 } });
+});
+
+test("items retain Plate, Z-Move, Natural Gift, and Fling metadata", () => {
+  expect(projections.Items({ name: "Draco Plate", onPlate: "Dragon" })).toEqual(
+    {
+      name: "Draco Plate",
+      onPlate: "Dragon",
+      fling: { basePower: 90 },
+    },
+  );
+  expect(
+    projections.Items({
+      name: "Dragonium Z",
+      onPlate: "Dragon",
+      zMove: "Dragon",
+    }),
+  ).toEqual({
+    name: "Dragonium Z",
+    onPlate: "Dragon",
+    zMove: "Dragon",
+    fling: { basePower: 90 },
+  });
+  expect(
+    projections.Items({
+      name: "Liechi Berry",
+      naturalGift: { type: "Grass", basePower: 100 },
+    }),
+  ).toEqual({
+    name: "Liechi Berry",
+    naturalGift: { type: "Grass", basePower: 100 },
+  });
+});
+
+test("battle formes preserve the specific species they inherit their moves from", () => {
+  const entry = {
+    name: "Meowstic-F-Mega",
+    baseSpecies: "Meowstic",
+    forme: "F-Mega",
+    battleOnly: "Meowstic-F",
+  };
+  expect(projections.Pokedex(entry, {})).toEqual({
+    name: "Meowstic-F-Mega",
+    baseSpecies: "Meowstic",
+    forme: "F-Mega",
+    changesFrom: "Meowstic-F",
+  });
+  expect(entry).not.toHaveProperty("changesFrom");
+  expect(
+    projections.Pokedex(
+      { name: "Mega", baseSpecies: "Base", forme: "Mega" },
+      {},
+    ),
+  ).toMatchObject({ changesFrom: "Base" });
 });
 
 test("formats mark champions legality, inherited through battle-only formes", () => {
@@ -390,6 +444,54 @@ test("natures keep their name and stat changes", () => {
   expect(projections.Natures({ name: "Hardy" })).toEqual({ name: "Hardy" });
 });
 
+test("game variants keep native move and base-stat changes without copying standard data", () => {
+  const stats = { hp: 60, atk: 100, def: 105, spa: 130, spd: 105, spe: 120 };
+  const base = {
+    pokedex: {
+      starmiemega: { baseStats: stats },
+      ordinary: { baseStats: stats },
+    },
+    moves: {
+      absorb: {
+        name: "Absorb",
+        type: "Grass",
+        category: "Special",
+        basePower: 20,
+      },
+      tackle: {
+        name: "Tackle",
+        type: "Normal",
+        category: "Physical",
+        basePower: 40,
+      },
+    },
+    typechart: {},
+  };
+  const variant = projectGameVariant(base, {
+    pokedex: {
+      starmiemega: { inherit: true, baseStats: { ...stats, atk: 140 } },
+    },
+    moves: {
+      absorb: { inherit: true, basePower: 40 },
+      tackle: { inherit: true, pp: 35 },
+    },
+  });
+  expect(variant).toEqual({
+    moves: {
+      absorb: {
+        name: "Absorb",
+        type: "Grass",
+        category: "Special",
+        basePower: 40,
+      },
+    },
+    baseStats: { starmiemega: { ...stats, atk: 140 } },
+  });
+  expect(projectGameVariant(base, {})).toEqual({});
+  expect(base.pokedex.starmiemega.baseStats.atk).toBe(100);
+  expect(base.moves.absorb.basePower).toBe(20);
+});
+
 test("past generations resolve Showdown's mods, newest first, and keep what differs", () => {
   const types = [
     "Bug",
@@ -458,6 +560,67 @@ test("past generations resolve Showdown's mods, newest first, and keep what diff
   expect(past[1]?.types).toHaveLength(15);
   expect(past[1]?.typechart?.Poison?.Bug).toBe(-1);
   expect(past[1]?.typechart?.Poison).not.toHaveProperty("Dark");
+});
+
+test("historical damaging move properties preserve old power and removed callbacks", () => {
+  const past = projectPastGenerations(
+    {
+      pokedex: {},
+      moves: {
+        spin: { category: "Physical", basePower: 50 },
+        variable: {
+          category: "Special",
+          basePower: 20,
+          basePowerCallback: () => 80,
+        },
+      },
+      typechart: {},
+    },
+    {
+      7: { moves: { spin: { inherit: true, basePower: 20 } } },
+      5: {
+        moves: { variable: { inherit: true, basePowerCallback: undefined } },
+      },
+    },
+  );
+  expect(past[8]?.moveData).toBeUndefined();
+  expect(past[7]?.moveData).toEqual({
+    spin: { category: "Physical", basePower: 20 },
+  });
+  expect(past[5]?.moveData?.variable).toEqual({
+    category: "Special",
+    basePower: 20,
+  });
+  expect(past[1]?.moveData).toEqual(past[5]?.moveData);
+});
+
+test("historical formats keep native singles and doubles tier differences", () => {
+  const past = projectPastGenerations(
+    {
+      pokedex: {},
+      moves: {},
+      typechart: {},
+      formats: {
+        native: { tier: "OU", doublesTier: "DOU" },
+        later: { tier: "Uber" },
+      },
+    },
+    {
+      7: {
+        formats: {
+          native: { tier: "UU", doublesTier: "(DUU)" },
+          later: { tier: "UU" },
+        },
+      },
+      6: { formats: { native: { tier: "OU" } } },
+    },
+  );
+  expect(past[8]?.formats).toBeUndefined();
+  expect(past[7]?.formats).toEqual({
+    native: { tier: "UU", doublesTier: "(DUU)" },
+    later: { tier: "UU" },
+  });
+  expect(past[6]?.formats).toEqual({ native: { tier: "OU" } });
 });
 
 test("historical stats and abilities inherit through generations and cosmetic formes", () => {
@@ -570,7 +733,7 @@ test("historical move projections replace removed effects and inherit old power"
     { pokedex: {}, moves: latest, typechart: {} },
     { 3: { moves: { move: { inherit: true, basePower: 30 } } } },
   );
-  expect(integrated[2]?.moveProperties?.move?.basePower).toBe(30);
+  expect(integrated[2]?.moveData?.move?.basePower).toBe(30);
 });
 
 test("move projections retain guaranteed selfBoost effects", () => {

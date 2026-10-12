@@ -1,5 +1,6 @@
 import pokedex from "@/data/pokedex";
 import pastGenerations from "@/data/past-generations";
+import gameVariants from "@/data/game-variants";
 import { LATEST_GENERATION } from "./generations";
 import { isPokemonType } from "@/types";
 
@@ -43,6 +44,8 @@ export function isHiddenAbility(
 export const pokemonBaseStats = (
   pokemon: string,
   generation = LATEST_GENERATION,
+  format = "",
 ) =>
+  gameVariants[format]?.baseStats?.[pokemon] ??
   pastGenerations[generation]?.baseStats?.[pokemon] ??
   pokedex[pokemon]?.baseStats;

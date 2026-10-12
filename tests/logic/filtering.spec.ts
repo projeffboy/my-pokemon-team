@@ -104,6 +104,35 @@ test("singles formats include lower tiers in tier order", () => {
   expect(result.indexOf("milotic")).toBeLessThan(result.indexOf("dreepy"));
 });
 
+test("format filters use each generation's tiers, including old Mega evolutions", () => {
+  const gen1UU = filterPokemon({
+    ...all,
+    generation: 1,
+    format: "UU: Under Used",
+  });
+  expect(gen1UU).toContain("clefable");
+  expect(gen1UU).not.toContain("gengar");
+  expect(
+    filterPokemon({ ...all, generation: 9, format: "UU: Under Used" }),
+  ).not.toContain("clefable");
+  const gen6OU = filterPokemon({
+    ...all,
+    generation: 6,
+    format: "OU: Over Used",
+  });
+  expect(gen6OU).toContain("charizardmegax");
+  expect(gen6OU).not.toContain("gengarmega");
+  const gen4OU = filterPokemon({
+    ...all,
+    generation: 4,
+    format: "OU: Over Used",
+  });
+  expect(gen4OU).toContain("tentacruel");
+  expect(
+    filterPokemon({ ...all, generation: 4, format: "UU: Under Used" }),
+  ).not.toContain("tentacruel");
+});
+
 test("doubles formats use doubles tiers, including untiered DUU species", () => {
   const result = filterPokemon({ ...all, format: "Doubles UU" });
   expect(result).toContain("regieleki");

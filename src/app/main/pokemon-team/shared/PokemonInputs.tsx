@@ -8,7 +8,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { useIsMdDown } from "@/app/shared/WidthContext";
+import { useIsMdDown, useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
@@ -26,8 +26,30 @@ import { randomizeSlotLabel } from "@/store/random";
 
 const SLOT_INFO_CLASS = "slot-info";
 
-// As tall as one of the inputs beside it
-const smallButton = { minWidth: 0, height: 28, px: 0.75 } as const;
+// The buttons' font, for measuring their labels
+const BUTTON_FONT = "500 12px Roboto, Helvetica, Arial, sans-serif";
+let canvas: CanvasRenderingContext2D | null | undefined;
+const textWidth = (text: string) => {
+  canvas ??= document.createElement("canvas").getContext("2d");
+  if (!canvas) return 7 * text.length;
+  canvas.font = BUTTON_FONT;
+  return canvas.measureText(text).width;
+};
+
+// Two of these share a card's left column, so they are as compact as a labelled button gets
+const buttonRow = { display: "flex", gap: 0.5, containerType: "inline-size" };
+const smallButton = {
+  flex: "1 1 0",
+  minWidth: { xxs: 44, sm: 0 },
+  // With the row's 4px of padding, as tall as one of the inputs beside it
+  height: { xxs: 44, sm: 28 },
+  px: 0.5,
+  fontSize: 12,
+  letterSpacing: 0,
+  textTransform: "none",
+  whiteSpace: "nowrap",
+  "& .MuiButton-startIcon": { mr: 0.5, ml: 0, "& > svg": { fontSize: 16 } },
+} as const;
 
 // One team slot: the name, sprite, and slot tools on the left, and the moves,
 // item, and ability on the right. Another slot's card can be dropped on it, and
@@ -42,6 +64,7 @@ const PokemonInputs = observer(function PokemonInputs({
   const translation = useTranslation();
   const { t, names } = translation;
   const isMdDown = useIsMdDown();
+  const isSmDown = useIsSmDown();
   const hasTypeIcons = useTypeIcons();
   const showTools = store.isMoreOpen;
   const member = store.team[teamIndex];
@@ -59,6 +82,14 @@ const PokemonInputs = observer(function PokemonInputs({
   const label = names.pokemon(pokemon);
   const { setCardRef, setGripRef, listeners, isDragged, isTarget } =
     useSlotDrag(teamIndex, isDragOverlay);
+  const compactDetailsIconAt = Math.ceil(textWidth(t.team.advanced)) + 60;
+  const detailsIconAt = compactDetailsIconAt + (isSmDown ? 18 : 0);
+  const randomAt =
+    compactDetailsIconAt + Math.ceil(textWidth(t.team.random)) + 4;
+  const randomizeAt = Math.max(
+    randomAt + 1,
+    compactDetailsIconAt + Math.ceil(textWidth(t.team.randomize)) + 4,
+  );
   const diceRoll = useDiceRoll();
   const randomize = (event: SyntheticEvent<HTMLElement>) => {
     const teamId = store.currentTeamId;
@@ -97,11 +128,14 @@ const PokemonInputs = observer(function PokemonInputs({
       role="region"
       aria-label={t.team.slot(teamIndex + 1)}
     >
-      <SlotMoveHandle
-        teamIndex={teamIndex}
-        setGripRef={setGripRef}
-        listeners={isMdDown ? undefined : listeners}
-      />
+      {/* On phones and tablets the slot tabs are what drags */}
+      {!isMdDown && (
+        <SlotMoveHandle
+          teamIndex={teamIndex}
+          setGripRef={setGripRef}
+          listeners={listeners}
+        />
+      )}
       <Box
         sx={{
           position: "relative",
@@ -142,7 +176,7 @@ const PokemonInputs = observer(function PokemonInputs({
               teamIndex={teamIndex}
               forceFullSize
               fitContainer
-              maxHeight={184}
+              maxHeight={showTools ? undefined : 184}
             />
           </Box>
           {/* With the tools, the pokemon's types straddle the card's left edge at
@@ -214,49 +248,106 @@ const PokemonInputs = observer(function PokemonInputs({
                 className={SLOT_INFO_CLASS}
                 aria-label={t.team.about(label)}
                 onClick={() => store.openDialog("info", { teamIndex })}
-                sx={{ position: "absolute", top: 0, right: -8 }}
+                sx={{
+                  position: "absolute",
+                  top: 0,
+                  right: -8,
+                  width: { xxs: 44, sm: 36 },
+                  height: { xxs: 44, sm: 36 },
+                }}
               >
                 <InfoOutlinedIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           )}
-          {/* Under the info button, or in its place while the slot is empty */}
-          {showTools && (
-            <Tooltip title={t.team.advanced}>
-              {/* Wrapped so the tooltip still works while the button is disabled */}
-              <Box
-                component="span"
-                sx={{ position: "absolute", top: pokemon ? 36 : 0, right: -8 }}
-              >
-                <IconButton
-                  disabled={!pokemon}
-                  aria-label={t.team.advancedFor(teamIndex + 1)}
-                  onClick={() => store.openDialog("advanced", { teamIndex })}
+        </Box>
+        <Box
+          sx={
+            showTools ?
+              { ...buttonRow, pb: 0.5 }
+            : { position: "absolute", bottom: 4, left: 0, display: "flex" }
+          }
+        >
+          {showTools ?
+            <Tooltip title={randomTitle}>
+              {/* The span is the row's flex item, so the tooltip works while
+                  the button is disabled and the button still sizes with the row */}
+              <Box component="span" sx={{ display: "flex", flex: "0 0 auto" }}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  sx={[smallButton, { flex: "0 0 auto", gap: 0.5 }]}
+                  disabled={!store.learnsetsLoaded}
+                  aria-label={t.team.randomFor(teamIndex + 1)}
+                  {...diceRoll}
+                  onClick={randomize}
                 >
-                  <EditOutlinedIcon fontSize="small" />
-                </IconButton>
+                  <CasinoIcon sx={{ fontSize: 16 }} />
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "none",
+                      [`@container (min-width: ${randomAt}px) and (max-width: ${randomizeAt - 1}px)`]:
+                        { display: "inline" },
+                    }}
+                  >
+                    {t.team.random}
+                  </Box>
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "none",
+                      [`@container (min-width: ${randomizeAt}px)`]: {
+                        display: "inline",
+                      },
+                    }}
+                  >
+                    {t.team.randomize}
+                  </Box>
+                </Button>
               </Box>
             </Tooltip>
+          : <Tooltip title={randomTitle}>
+              {/* Wrapped so the tooltip still works while the button is disabled */}
+              <Box component="span" sx={{ display: "flex" }}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  sx={[smallButton, { flex: "0 0 auto", px: 0.75 }]}
+                  disabled={!store.learnsetsLoaded}
+                  aria-label={t.team.randomFor(teamIndex + 1)}
+                  {...diceRoll}
+                  onClick={randomize}
+                >
+                  <CasinoIcon sx={{ fontSize: 16 }} />
+                </Button>
+              </Box>
+            </Tooltip>
+          }
+          {showTools && (
+            <Button
+              size="small"
+              variant="outlined"
+              startIcon={<EditOutlinedIcon />}
+              sx={[
+                smallButton,
+                {
+                  flex: "1 1 auto",
+                  "& .MuiButton-startIcon": {
+                    display: "none",
+                    [`@container (min-width: ${detailsIconAt}px)`]: {
+                      display: "inline-flex",
+                    },
+                  },
+                },
+              ]}
+              disabled={!pokemon}
+              aria-label={t.team.advancedFor(teamIndex + 1)}
+              onClick={() => store.openDialog("advanced", { teamIndex })}
+            >
+              {t.team.advanced}
+            </Button>
           )}
-        </Box>
-        {/* Over the sprite area's bottom left corner, so the sprite keeps its room */}
-        <Box sx={{ position: "absolute", bottom: 4, left: 0, display: "flex" }}>
-          <Tooltip title={randomTitle}>
-            {/* Wrapped so the tooltip still works while the button is disabled */}
-            <Box component="span" sx={{ display: "flex" }}>
-              <Button
-                size="small"
-                variant="outlined"
-                sx={smallButton}
-                disabled={!store.learnsetsLoaded}
-                aria-label={t.team.randomFor(teamIndex + 1)}
-                {...diceRoll}
-                onClick={randomize}
-              >
-                <CasinoIcon sx={{ fontSize: 16 }} />
-              </Button>
-            </Box>
-          </Tooltip>
         </Box>
       </Box>
       <Box

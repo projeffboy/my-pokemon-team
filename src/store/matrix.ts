@@ -117,6 +117,7 @@ function moveMultiplier(
   item: string,
   happiness?: number,
   member?: Readonly<TeamPokemon>,
+  format = "",
 ) {
   const score = moveAgainstType(
     move,
@@ -127,6 +128,7 @@ function moveMultiplier(
     item,
     happiness,
     member,
+    format,
   );
   if (score === undefined) return undefined;
   return scoreToMultiplier(
@@ -141,6 +143,7 @@ export function coverageMatrix(
   team: ReadonlyTeam,
   { t, names }: Translation = english,
   generation: Generation = LATEST_GENERATION,
+  format = "",
 ): Matrix {
   return Object.fromEntries(
     typesIn(generation).map(target => [
@@ -159,6 +162,7 @@ export function coverageMatrix(
               name,
               member.happiness,
               member,
+              format,
             ),
         );
         let best: { move: string; multiplier: number } | undefined;
@@ -172,6 +176,7 @@ export function coverageMatrix(
             item,
             member.happiness,
             member,
+            format,
           );
           if (multiplier !== undefined && multiplier > (best?.multiplier ?? -1))
             best = { move, multiplier };
@@ -185,9 +190,10 @@ export function coverageMatrix(
         const type =
           isTypelessMove(best.move, generation) ? "???"
           : best.move === "flyingpress" ?
-            `${names.type(moveType(best.move, name, ability, generation, item) ?? "")}/${names.type("Flying")}`
+            `${names.type(moveType(best.move, name, ability, generation, item, format) ?? "")}/${names.type("Flying")}`
           : names.type(
-              moveType(best.move, name, ability, generation, item) ?? "",
+              moveType(best.move, name, ability, generation, item, format) ??
+                "",
             );
         return {
           multiplier: best.multiplier,

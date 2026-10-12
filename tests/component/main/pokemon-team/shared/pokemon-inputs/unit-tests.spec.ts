@@ -457,11 +457,13 @@ test.describe("Pokemon Card - Unit Tests", () => {
     for (const width of [320, 480, 600, 960, 1200, 1920]) {
       await page.setViewportSize({ width, height: 1000 });
       await expect(
-        page.getByRole("region", { name: /^Pokemon \d$/ }),
+        page
+          .getByRole("tablist", { name: "Pokemon team slots" })
+          .getByRole("tab"),
       ).toHaveCount(
-        width < 600 ? 1
-        : width < 960 ? 2
-        : 6,
+        width < 600 ? 6
+        : width < 960 ? 3
+        : 0,
       );
       const statsChip = page
         .getByRole("region", { name: "Team Defence", exact: true })

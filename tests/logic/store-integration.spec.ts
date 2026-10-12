@@ -1,5 +1,6 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
+import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
 
 test("move selection rejects duplicates but permits changing its own Hidden Power type", ({
   store,
@@ -79,6 +80,40 @@ test("coverage recomputes after nested move, ability, and species edits", ({
   } finally {
     dispose();
   }
+});
+
+test("native game coverage and base-stat sorting follow the team's format", ({
+  store,
+}) => {
+  store.currentTeam.generation = 7;
+  store.selectPokemon(0, "oddish");
+  store.team[0].move1 = "absorb";
+  expect(store.typeCoverage.Water).toBe(0);
+  store.currentTeam.format = LETS_GO;
+  expect(store.typeCoverage.Water).toBe(2);
+  store.currentTeam.generation = 9;
+  store.currentTeam.format = LEGENDS_ZA;
+  store.sort = { by: "atk", descending: true };
+  expect(store.filteredPokemon.indexOf("mawilemega")).toBeLessThan(
+    store.filteredPokemon.indexOf("dragonite"),
+  );
+  store.currentTeam.format = "";
+  expect(store.filteredPokemon.indexOf("dragonite")).toBeLessThan(
+    store.filteredPokemon.indexOf("mawilemega"),
+  );
+});
+
+test("coverage recomputes when Arceus changes between a Plate and a Z-Crystal", ({
+  store,
+}) => {
+  store.currentTeam.generation = 7;
+  store.selectPokemon(0, "arceusdragon");
+  store.team[0].move1 = "judgment";
+  expect(store.typeCoverage.Dragon).toBe(2);
+  store.team[0].item = "dragoniumz";
+  expect(store.typeCoverage.Dragon).toBe(0);
+  store.team[0].item = "dracoplate";
+  expect(store.typeCoverage.Dragon).toBe(2);
 });
 
 test("learnsets recompute after species and move filter edits", ({ store }) => {

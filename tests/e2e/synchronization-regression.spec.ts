@@ -4,6 +4,7 @@ import {
   selectMove,
   openTeamTools,
   getTeamTextFromUrl,
+  openAdvanced,
 } from "helper";
 import { createSavedTeam, createSearchFilters } from "@/shared/team";
 import { initialStoredState } from "@/store/teams-storage";
@@ -168,9 +169,13 @@ test("Back and Forward override a pending address-bar write", async ({
   const forwardHp = parseTeamText(getTeamTextFromUrl(page))[0]?.evs?.hp ?? 0;
   expect(forwardHp).toBeGreaterThan(0);
   await page.goBack();
-  await expect(slider).toHaveAttribute("aria-valuenow", "0");
+  await expect(page.getByRole("dialog", { name: "More details" })).toBeHidden();
   expect(getTeamTextFromUrl(page)).not.toContain("EVs:");
+  await openAdvanced(page);
+  await expect(slider).toHaveAttribute("aria-valuenow", "0");
   await page.goForward();
+  await expect(page.getByRole("dialog", { name: "More details" })).toBeHidden();
+  await openAdvanced(page);
   await expect(slider).toHaveAttribute("aria-valuenow", String(forwardHp));
 });
 

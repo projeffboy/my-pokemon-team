@@ -352,3 +352,17 @@ test("random completion prefers historically viable moves before its whole-learn
   expect(moves).toContain("hiddenpowerbug");
   expect(moves).not.toContain("falseswipe");
 });
+
+test("random tooltips identify duplicate moves that completion will replace", () => {
+  const member = createTeam({
+    name: "bellossom",
+    item: "leftovers",
+    ability: "Chlorophyll",
+    move1: "hiddenpowerice",
+    move2: "hiddenpowerfire",
+    move3: "gigadrain",
+    move4: "gigadrain",
+  })[0];
+  if (!member) throw new Error("Missing pokemon");
+  expect(randomizeSlotLabel(member, undefined, 3)).toBe("Randomize moves");
+});

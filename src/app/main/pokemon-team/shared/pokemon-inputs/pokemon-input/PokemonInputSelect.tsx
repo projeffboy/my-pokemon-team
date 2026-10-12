@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import Autocomplete, {
   autocompleteClasses,
   createFilterOptions,
@@ -272,6 +273,49 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     : isGrid ? rootWidth && 2 * rootWidth + 8
     : Math.max(MIN_NAME_LIST_WIDTH, fitWidth);
 
+  const scrollForNavigation = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const list = internalListRef.current;
+    const element = list?.element;
+    const lastIndex = listedValuesRef.current.length - 1;
+    if (!isOpen || !list || !element || lastIndex < 0) return;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- Match MUI's legacy IME guard.
+    if (event.which === 229 || event.nativeEvent.isComposing) return;
+    const activeId = rootRef.current
+      ?.querySelector("input")
+      ?.getAttribute("aria-activedescendant");
+    const prefix = `${id}-option-`;
+    const index =
+      activeId?.startsWith(prefix) ? Number(activeId.slice(prefix.length)) : -1;
+    const target =
+      event.key === "Home" ? 0
+      : event.key === "End" ? lastIndex
+      : event.key === "ArrowDown" ? index + 1
+      : event.key === "ArrowUp" ?
+        index === -1 ?
+          lastIndex
+        : index - 1
+      : event.key === "PageDown" ? index + 5
+      : event.key === "PageUp" ? index - 5
+      : undefined;
+    if (target === undefined) return;
+    const nextIndex = Math.min(lastIndex, Math.max(0, target));
+    if (element.querySelector(`[data-option-index="${nextIndex}"]`)) return;
+    try {
+      // MUI skips unmounted options. Publish react-window's scroll range before
+      // MUI handles this key, rather than waiting for the browser's scroll event.
+      flushSync(() => {
+        list.scrollToRow({
+          index: Math.floor(nextIndex / columns),
+          align: "auto",
+          behavior: "instant",
+        });
+        list.element?.dispatchEvent(new Event("scroll"));
+      });
+    } catch {
+      // The options may have changed before the virtualized list remounts.
+    }
+  };
+
   // Scrolls the virtualized list to keep the keyboard-highlighted option in view
   // (guarded because the list may be closed/stale, e.g. after an auto-selected value)
   const handleHighlightChange = (
@@ -300,6 +344,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     },
   ) => {
     if (replayingNavigation.current) return;
+    scrollForNavigation(event);
     if (
       isOpen &&
       event.key === "Tab" &&
@@ -540,6 +585,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 analysisMember?.ability,
                 generation,
                 analysisMember?.item,
+                format,
               )
             : undefined;
           // Always the icon: an abbreviation would take more of the move's room

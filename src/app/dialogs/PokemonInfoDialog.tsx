@@ -40,9 +40,9 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
   const teamIndex = dialog?.teamIndex ?? 0;
   const member = store.analysisTeam[teamIndex];
   const pokemon = member?.name ?? "";
-  const { generation } = store.currentTeam;
+  const { generation, format } = store.currentTeam;
   const entry = pokedex[pokemon];
-  const stats = pokemonBaseStats(pokemon, generation);
+  const stats = pokemonBaseStats(pokemon, generation, format);
   const statKeys = STAT_KEYS.filter(stat => generation !== 1 || stat !== "spd");
   const statName = (stat: (typeof STAT_KEYS)[number]) =>
     generation === 1 && stat === "spa" ? t.info.special : t.statFullNames[stat];
@@ -238,7 +238,7 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
               <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
                 {weaknesses.length ?
                   weaknesses.map(({ type, multiplier }) =>
-                    typeChip(type, multiplier > 2 ? ` ×${multiplier}` : ""),
+                    typeChip(type, multiplier === 2 ? "" : ` ×${multiplier}`),
                   )
                 : <Typography variant="body2">{t.nothing}</Typography>}
               </Box>

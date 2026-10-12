@@ -30,6 +30,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ko: Messages = {
+  beta: "베타",
   generation,
   generationGames: {
     9: "스칼렛 바이올렛",
@@ -399,6 +400,8 @@ const ko: Messages = {
     exportAll: "전체 내보내기",
     copyAll: "전체 복사",
     savedInBrowser: "팀은 이 브라우저에 저장됩니다.",
+    saveFailed:
+      "브라우저에 팀을 저장하지 못했습니다. 팀을 보관하려면 백업을 저장하세요.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "열림",
     open: "열기",
@@ -409,6 +412,25 @@ const ko: Messages = {
     copiedAll: "모든 팀을 복사했습니다",
     notCopiedAll: "팀을 복사하지 못했습니다.",
     exportFilename: "my-pokemon-teams.txt",
+  },
+  teamBackup: {
+    title: "팀 백업",
+    description:
+      "이름, 게임, 필터, 포켓몬의 상세 정보를 포함한 모든 팀을 저장합니다.",
+    save: "백업 저장",
+    restoreDescription:
+      "백업 파일에서 팀을 추가합니다. 기존 팀은 그대로 유지됩니다.",
+    chooseFile: "백업 파일 선택",
+    restore: "팀 추가",
+    ready: (count: number) => `이 백업의 팀 수: ${count}`,
+    error:
+      "이 파일을 읽을 수 없습니다. 이 사이트에서 저장한 팀 백업을 선택하세요.",
+    tooLarge:
+      "이 백업은 팀이 너무 많아 추가할 수 없습니다. 팀이 더 적은 백업 파일을 선택하세요.",
+    saveFailed: "백업을 저장할 수 없습니다. 다시 시도하세요.",
+    saved: "팀 백업을 저장했습니다",
+    alreadySaved: "이미 컬렉션에 있는 팀입니다.",
+    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "게임 또는 세대를 변경할까요?",
@@ -471,10 +493,14 @@ const ko: Messages = {
       `${josa(pokemon, "은", "는")} ${josa(items.join(" 또는 "), "을", "를")} 지녀야 합니다.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${josa(pokemon, "은", "는")} ${josa(move, "을", "를")} 두 번 배우고 있습니다.`,
-    tooManyEvs: (pokemon: string, total: number, max: number) =>
-      `${pokemon}의 노력치 합계가 ${total}입니다 (최대 ${max}).`,
-    tooManyStatEvs: (pokemon: string, max: number) =>
-      `${pokemon}의 한 능력치에 노력치가 ${max}보다 많이 들어 있습니다.`,
+    tooMuchTraining: (
+      pokemon: string,
+      total: number,
+      max: number,
+      unit: string,
+    ) => `${pokemon}의 ${unit} 합계가 ${total}입니다 (최대 ${max}).`,
+    tooMuchStatTraining: (pokemon: string, max: number, unit: string) =>
+      `${pokemon}의 한 능력치 ${unit} 값이 ${max}보다 큽니다.`,
     nicknameTooLong: (pokemon: string, max: number) =>
       `${pokemon}의 닉네임은 ${max}자 이하여야 합니다.`,
     badLevel: (pokemon: string, max: number) =>

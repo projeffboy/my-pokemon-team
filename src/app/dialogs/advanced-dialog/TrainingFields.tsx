@@ -47,6 +47,24 @@ export default observer(function TrainingFields({
     rules.legacy ? getStatExperience(member, stat)
     : rules.investment === "effortLevels" ? (member.effortLevels?.[stat] ?? 0)
     : getEv(member.evs, stat);
+  const setAmount = (stat: (typeof rules.statKeys)[number], value = 0) => {
+    const n = clamp(value, rules.maxStat);
+    if (rules.legacy) setStatExperience(member, stat, n);
+    else if (rules.investment === "effortLevels")
+      setDetail(member, "effortLevels", { ...member.effortLevels, [stat]: n });
+    else
+      setStat(
+        member,
+        "evs",
+        stat,
+        Math.min(
+          n,
+          rules.maxTotal === undefined ?
+            n
+          : Math.max(0, rules.maxTotal - total + getEv(member.evs, stat)),
+        ),
+      );
+  };
   return (
     <>
       <Box>
@@ -86,48 +104,35 @@ export default observer(function TrainingFields({
                 {statLabel(stat)}
               </Typography>
               <Slider
-                id={id}
+                id={`${id}-slider`}
                 size="small"
                 min={0}
                 max={rules.maxStat}
                 step={1}
                 value={Math.min(rules.maxStat, amount(stat))}
-                onChange={(_event, value) => {
-                  const n = clamp(value, rules.maxStat);
-                  if (rules.legacy) setStatExperience(member, stat, n);
-                  else if (rules.investment === "effortLevels")
-                    setDetail(member, "effortLevels", {
-                      ...member.effortLevels,
-                      [stat]: n,
-                    });
-                  else
-                    setStat(
-                      member,
-                      "evs",
-                      stat,
-                      Math.min(
-                        n,
-                        rules.maxTotal === undefined ?
-                          n
-                        : Math.max(
-                            0,
-                            rules.maxTotal - total + getEv(member.evs, stat),
-                          ),
-                      ),
-                    );
-                }}
+                onChange={(_event, value) => setAmount(stat, value)}
                 aria-label={`${statLabel(stat)} ${heading}`}
               />
-              <Typography
-                variant="body2"
-                sx={{
-                  width: rules.legacy ? 44 : 28,
-                  textAlign: "right",
-                  flexShrink: 0,
+              <NumberField
+                id={id}
+                size="small"
+                value={amount(stat)}
+                onChange={value => setAmount(stat, value)}
+                slotProps={{
+                  htmlInput: {
+                    min: 0,
+                    max: rules.maxStat,
+                    step: 1,
+                    inputMode: "numeric",
+                    "aria-label": `${statLabel(stat)} ${heading}`,
+                  },
                 }}
-              >
-                {amount(stat)}
-              </Typography>
+                sx={{
+                  width: rules.legacy ? 96 : 72,
+                  flexShrink: 0,
+                  "& input": { textAlign: "right" },
+                }}
+              />
             </Box>
           );
         })}

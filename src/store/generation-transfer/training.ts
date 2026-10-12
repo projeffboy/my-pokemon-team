@@ -29,6 +29,7 @@ export function convertTraining(
       : getEv(member.evs, stat),
     ]),
   ) as BaseStats;
+  if (from.legacy) before.spa = before.spd = Math.max(before.spa, before.spd);
   const values = Object.fromEntries(
     STAT_KEYS.map(stat => {
       const ev =

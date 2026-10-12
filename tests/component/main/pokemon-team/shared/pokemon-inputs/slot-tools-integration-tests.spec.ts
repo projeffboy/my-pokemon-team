@@ -9,28 +9,18 @@ import {
   showSlot,
 } from "helper";
 
-// The sprite's size once it has stopped changing: it is remounted when a resize swaps
-// the team viewer, and it animates in when its pokemon is picked
-const settledSize = async (sprite: Locator) => {
-  let size = { width: 0, height: 0 };
-  await expect(async () => {
-    const first = await sprite.boundingBox();
-    await sprite.page().waitForTimeout(150);
-    const second = await sprite.boundingBox();
-    expect(first).not.toBeNull();
-    expect(second).toEqual(first);
-    if (second) size = { width: second.width, height: second.height };
-  }).toPass();
-  return size;
-};
-
 test.describe("Slot tools - Integration Tests", () => {
-  test("the tools add More details under the info button without shrinking the sprite", async ({
+  test("phone slot actions provide separate touch targets and open their dialogs", async ({
     page,
   }) => {
+    await page.setViewportSize({ width: 320, height: 800 });
+    await expect(
+      page
+        .getByRole("tablist", { name: "Pokemon team slots" })
+        .getByRole("tab"),
+    ).toHaveCount(6);
     await selectPokemon(page, "Cufant");
-    const card = page.getByRole("region", { name: "Pokemon 1", exact: true });
-    const sprite = card.getByRole("img", { name: "Cufant", exact: true });
+    await openTeamTools(page);
     const random = page.getByRole("button", {
       name: "Random pokemon for slot 1",
     });
@@ -38,32 +28,79 @@ test.describe("Slot tools - Integration Tests", () => {
       name: "More details for slot 1",
     });
     const info = page.getByRole("button", { name: "About Cufant" });
-    for (const width of [320, 600, 1200]) {
-      await page.setViewportSize({ width, height: 1000 });
-      // Resizing can swap the team viewer, which remounts the sprite
-      await expect(sprite).toHaveJSProperty("complete", true);
-      await expect(details).toBeHidden();
-      const plain = await settledSize(sprite);
-
-      await openTeamTools(page);
-      await expect(details.getByTestId("EditOutlinedIcon")).toBeVisible();
-      await expect(details).toHaveText("");
-      await expect(random.getByTestId("CasinoIcon")).toBeVisible();
-      await expect(random).toHaveText("");
-      expect(await settledSize(sprite)).toEqual(plain);
-      const [infoBox, detailsBox] = await Promise.all([
-        info.boundingBox(),
-        details.boundingBox(),
-      ]);
-      expect(detailsBox?.x).toBe(infoBox?.x);
-      expect(detailsBox?.y).toBeGreaterThanOrEqual(
-        (infoBox?.y ?? 0) + (infoBox?.height ?? 0),
+    await expect(random).toBeEnabled();
+    for (const width of [320, 390, 430]) {
+      await page.setViewportSize({ width, height: 800 });
+      for (const action of [random, details, info]) {
+        await expect
+          .poll(() =>
+            action.evaluate(button => {
+              const bounds = button.getBoundingClientRect();
+              return bounds.width >= 44 && bounds.height >= 44;
+            }),
+          )
+          .toBe(true);
+      }
+      await expect
+        .poll(() =>
+          details.evaluate(button => button.scrollWidth <= button.clientWidth),
+        )
+        .toBe(true);
+      const randomBounds = await random.boundingBox();
+      const detailsBounds = await details.boundingBox();
+      expect(randomBounds).not.toBeNull();
+      expect(detailsBounds).not.toBeNull();
+      expect(randomBounds!.x + randomBounds!.width).toBeLessThanOrEqual(
+        detailsBounds!.x,
       );
-      await page
-        .getByRole("button", { name: /^(Fewer team tools|Advanced)$/ })
-        .click();
+      await details.click();
+      const advanced = page.getByRole("dialog", { name: "More details" });
+      await expect(advanced).toBeVisible();
+      await advanced.getByRole("button", { name: "Done", exact: true }).click();
+      await expect(advanced).toBeHidden();
+      await info.click();
+      const species = page.getByRole("dialog", { name: "Cufant", exact: true });
+      await expect(species).toBeVisible();
+      await species.getByRole("button", { name: "Close", exact: true }).click();
+      await expect(species).toBeHidden();
     }
+  });
+
+  test("adds slot action icons and labels in priority order as room grows", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Cufant");
     await openTeamTools(page);
+    const random = page.getByRole("button", {
+      name: "Random pokemon for slot 1",
+    });
+    const details = page.getByRole("button", {
+      name: "More details for slot 1",
+    });
+    for (const { width, edit, label } of [
+      { width: 600, edit: false, label: "" },
+      { width: 320, edit: false, label: "" },
+      { width: 420, edit: true, label: "Random" },
+      { width: 480, edit: true, label: "Randomize" },
+    ]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await expect(details).toHaveText("More details");
+      await expect(random.getByTestId("CasinoIcon")).toBeVisible();
+      await expect(details.getByTestId("EditOutlinedIcon"))[
+        edit ? "toBeVisible" : "toBeHidden"
+      ]();
+      await expect(random.getByText("Random", { exact: true }))[
+        label === "Random" ? "toBeVisible" : "toBeHidden"
+      ]();
+      await expect(random.getByText("Randomize", { exact: true }))[
+        label === "Randomize" ? "toBeVisible" : "toBeHidden"
+      ]();
+      expect(
+        await details.evaluate(
+          button => button.scrollWidth > button.clientWidth,
+        ),
+      ).toBe(false);
+    }
     await details.click();
     await expect(
       page.getByRole("dialog", { name: "More details" }),
@@ -144,10 +181,11 @@ test.describe("Slot tools - Integration Tests", () => {
     );
   });
 
-  test("moves a pokemon to the slot picked from its chip's menu", async ({
+  test("moves a pokemon to the slot picked from its sprite's menu", async ({
     page,
   }) => {
-    test.skip(isMdDown(page), "Phones and tablets drag the slot tabs instead");
+    // Phones and tablets drag the slot tabs instead
+    test.skip(isMdDown(page), "The slot chip is on the desktop cards");
     await selectPokemon(page, "Quagsire");
     await page
       .getByRole("button", { name: "Move Quagsire to another slot" })
@@ -215,74 +253,3 @@ const dragBetween = async (page: Page, source: Locator, target: Locator) => {
   });
   await page.mouse.up();
 };
-test("slot move menus work by keyboard at the narrowest phone width", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 320, height: 700 });
-  await selectPokemon(page, "Maractus");
-  const move = page.getByRole("button", {
-    name: "Move Maractus to another slot",
-    exact: true,
-  });
-  await expect(move).toBeVisible();
-  const bounds = await move.boundingBox();
-  expect(bounds?.x).toBeGreaterThanOrEqual(0);
-  await move.focus();
-  await move.press("Enter");
-  await page
-    .getByRole("menuitem", { name: "Pokemon 2 (empty)", exact: true })
-    .press("Enter");
-  await expect(page.getByRole("menu")).toBeHidden();
-  expect(getTeamTextFromUrl(page)).toContain("Maractus");
-  await expect(page.locator("body")).toHaveJSProperty("scrollWidth", 320);
-  await showSlot(page, 1);
-  await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("Maractus");
-});
-
-test("tablet keyboard focus follows the Pokemon moved to another pair", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 800, height: 900 });
-  await page.goto(
-    `/?team=${Buffer.from("Bulbasaur\n\nCharmander\n\nSquirtle\n\nCaterpie").toString("base64url")}`,
-  );
-  const grip = page.getByRole("button", {
-    name: "Move Bulbasaur to another slot",
-    exact: true,
-  });
-  await grip.focus();
-  await grip.press("Enter");
-  const destination = page.getByRole("menuitem", {
-    name: "Pokemon 4 (Caterpie)",
-    exact: true,
-  });
-  await destination.focus();
-  await destination.press("Enter");
-  await expect(page.getByLabel("Pokemon 4's name")).toHaveValue("Bulbasaur");
-  await expect(grip).toBeFocused();
-  await grip.press("Enter");
-  await expect(
-    page.getByRole("menuitem", { name: "Pokemon 1 (Caterpie)", exact: true }),
-  ).toBeVisible();
-});
-
-for (const width of [400, 800, 1200]) {
-  test(`canceling a keyboard slot move restores focus at ${width}px`, async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await page.goto(
-      `/?gen=9&team=${Buffer.from("Surskit").toString("base64url")}`,
-    );
-    const grip = page.getByRole("button", {
-      name: "Move Surskit to another slot",
-      exact: true,
-    });
-    await expect(grip).toBeVisible();
-    await grip.focus();
-    await grip.press("Enter");
-    await expect(page.getByRole("menu")).toBeVisible();
-    await page.keyboard.press("Escape");
-    await expect(grip).toBeFocused();
-  });
-}

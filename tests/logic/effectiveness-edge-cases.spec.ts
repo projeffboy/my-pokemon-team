@@ -1,5 +1,11 @@
+import { IMMUNE_SCORE } from "@/store/shared/effectiveness";
 import { test, expect } from "@playwright/test";
-import { moveAgainstType, moveType } from "@/store/shared/effectiveness";
+import {
+  isMoveStrongEnough,
+  moveAgainstType,
+  moveType,
+  typeAgainstPokemon,
+} from "@/store/shared/effectiveness";
 import { coverageMatrix, defenceMatrix } from "@/store/matrix";
 import { calculateTypeCoverage } from "@/store/coverage";
 import { createTeam } from "./shared/team";
@@ -70,6 +76,63 @@ test("Air Balloon's immunity and Dry Skin's Fire penalty use accurate matrix mul
   expect(matrix.Water?.[1]?.multiplier).toBe(0);
 });
 
+test("Klutz prevents held items from changing defensive immunities", () => {
+  expect(typeAgainstPokemon("Ground", "swoobat", "Klutz", "ironball")).toBe(
+    IMMUNE_SCORE,
+  );
+  expect(typeAgainstPokemon("Ghost", "lopunny", "Klutz", "ringtarget")).toBe(
+    IMMUNE_SCORE,
+  );
+  expect(typeAgainstPokemon("Ground", "lopunny", "Klutz", "airballoon")).toBe(
+    0,
+  );
+  expect(
+    defenceMatrix(
+      createTeam({ name: "swoobat", ability: "Klutz", item: "ironball" }),
+    ).Ground?.[0]?.reason,
+  ).toBe("Ground does 0x to Swoobat (Psychic/Flying)");
+});
+
+test("Klutz prevents Natural Gift from providing damaging berry coverage", () => {
+  const team = createTeam({
+    name: "lopunny",
+    ability: "Klutz",
+    item: "cheriberry",
+    move1: "naturalgift",
+  });
+  expect(calculateTypeCoverage(team, 4).Grass).toBe(0);
+  expect(coverageMatrix(team, undefined, 4).Grass?.[0]?.reason).toBe(
+    "Lopunny has no damaging move",
+  );
+  team[0].ability = "Cute Charm";
+  expect(calculateTypeCoverage(team, 4).Grass).toBe(1);
+});
+
+test("Klutz leaves item-dependent attack types Normal while other attacks retain their type", () => {
+  for (const [move, item] of [
+    ["judgment", "dracoplate"],
+    ["technoblast", "chilldrive"],
+    ["multiattack", "ghostmemory"],
+  ]) {
+    expect(moveType(move, "smeargle", "Klutz", 7, item, "")).toBe("Normal");
+  }
+  expect(moveType("icebeam", "lopunny", "Klutz", 7, "cheriberry", "")).toBe(
+    "Ice",
+  );
+});
+
+test("Thick Fat preserves an eighth-damage resistance in the defence matrix", () => {
+  const matrix = defenceMatrix(
+    createTeam(
+      { name: "walrein", ability: "Thick Fat" },
+      { name: "dewgong", ability: "Thick Fat" },
+    ),
+  );
+  expect(matrix.Ice?.[0]?.multiplier).toBe(0.125);
+  expect(matrix.Ice?.[1]?.multiplier).toBe(0.125);
+  expect(matrix.Fire?.[0]?.multiplier).toBe(0.5);
+});
+
 test("special moves keep their coverage when ordinary moves of the same type precede them", () => {
   const team = createTeam({
     name: "oricoriosensu",
@@ -87,6 +150,115 @@ test("Normalize's Hidden Power exception starts in generation 7", () => {
   expect(moveType("hiddenpowerice", "delcatty", "Normalize", 6)).toBe("Normal");
   expect(moveType("hiddenpowerice", "delcatty", "Normalize", 7)).toBe("Ice");
   expect(moveType("notamove", "delcatty", "Normalize")).toBeUndefined();
+});
+
+test("coverage uses the damaging move's power in its generation", () => {
+  expect(
+    isMoveStrongEnough(
+      "leechlife",
+      undefined,
+      undefined,
+      6,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "leechlife",
+      undefined,
+      undefined,
+      7,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
+  expect(
+    isMoveStrongEnough(
+      "rapidspin",
+      undefined,
+      undefined,
+      7,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "rapidspin",
+      undefined,
+      undefined,
+      8,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
+  expect(
+    isMoveStrongEnough(
+      "bubble",
+      undefined,
+      undefined,
+      5,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "bubble",
+      undefined,
+      undefined,
+      6,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
+  expect(
+    isMoveStrongEnough(
+      "rocksmash",
+      undefined,
+      undefined,
+      3,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "rocksmash",
+      undefined,
+      undefined,
+      4,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
+  const team = createTeam({ name: "parasect", move1: "leechlife" });
+  expect(calculateTypeCoverage(team, 6).Psychic).toBe(0);
+  expect(calculateTypeCoverage(team, 7).Psychic).toBe(2);
+  expect(coverageMatrix(team, undefined, 6).Psychic?.[0]?.reason).toBe(
+    "Parasect has no damaging move",
+  );
+  expect(coverageMatrix(team, undefined, 7).Psychic?.[0]?.multiplier).toBe(2);
+  expect(
+    moveAgainstType("leechlife", "Psychic", "parasect", "", 6),
+  ).toBeUndefined();
 });
 
 test("Flying Press explains its converted Normal/Flying type", () => {

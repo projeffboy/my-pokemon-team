@@ -1,5 +1,11 @@
 import { test, expect } from "fixtures";
-import { getTeamTextFromUrl, openEditPokepaste } from "helper";
+import {
+  clickMenuItem,
+  getTeamTextFromUrl,
+  openEditPokepaste,
+  openTeamTools,
+  selectPokemon,
+} from "helper";
 import type { Page } from "@playwright/test";
 
 interface VerifyPokemonPropertyOptions {
@@ -59,6 +65,78 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
     // The URL's `team` parameter should stay in sync with the store
     await expect(page).toHaveURL(/[?&]team=/);
     expect(getTeamTextFromUrl(page)).toContain("Gigalith");
+  });
+
+  test("updating unchanged text preserves edits made in another tab", async ({
+    page,
+    context,
+  }) => {
+    await importTeam(page, "Magcargo");
+    await expect
+      .poll(() =>
+        page.evaluate(() => localStorage.getItem("mypokemonteam") ?? ""),
+      )
+      .toContain("magcargo");
+    const otherTab = await context.newPage();
+    await otherTab.goto(page.url());
+    await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
+      "Magcargo",
+    );
+
+    await openEditPokepaste(page);
+    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    const text = dialog.getByRole("textbox");
+    await expect(text).toHaveValue(/Magcargo/);
+    await selectPokemon(otherTab, "Froslass");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Froslass");
+    await expect(text).toHaveValue(/Magcargo/);
+    await dialog.getByRole("button", { name: "Update", exact: true }).click();
+
+    await expect(dialog).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Froslass");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Froslass");
+    await otherTab.close();
+  });
+
+  test("deleting the edited team in another tab cannot overwrite the remaining team", async ({
+    page,
+    context,
+  }) => {
+    await importTeam(page, "Houndoom");
+    await expect
+      .poll(() => page.evaluate(() => localStorage.getItem("mypokemonteam")))
+      .toContain("houndoom");
+    const otherTab = await context.newPage();
+    await otherTab.goto(page.url());
+    await openTeamTools(otherTab);
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: "New Team", exact: true })
+      .click();
+    await selectPokemon(otherTab, "Haxorus");
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Houndoom");
+
+    await openEditPokepaste(page);
+    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await dialog.getByRole("textbox").fill("Alakazam");
+    await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
+    await otherTab
+      .getByRole("button", { name: "Options for Team 1", exact: true })
+      .click();
+    await clickMenuItem(otherTab, "Delete");
+    await otherTab
+      .getByRole("dialog", { name: "Delete Team 1?" })
+      .getByRole("button", { name: "Delete", exact: true })
+      .click();
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Haxorus");
+    if (await dialog.isVisible())
+      await dialog.getByRole("button", { name: "Update", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Haxorus");
+    await openEditPokepaste(page);
+    await expect(dialog.getByRole("textbox")).toHaveValue(/Haxorus/);
+    await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+    await otherTab.close();
   });
 
   test("Paste in a pokemon's details", async ({ page }) => {
