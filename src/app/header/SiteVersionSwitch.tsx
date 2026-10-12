@@ -1,5 +1,6 @@
 import { useId, useRef, useState } from "react";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -7,6 +8,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+
+import versionFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face-cropped.svg";
 
 const SITE_URL = "https://mypokemonteam.com/";
 
@@ -26,10 +29,18 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
     <>
       <Button
         variant="contained"
+        endIcon={
+          <Box
+            component="img"
+            src={versionFace}
+            alt=""
+            sx={{ width: 24, height: 24, objectFit: "contain" }}
+          />
+        }
         onClick={handleSwitch}
-        sx={{ alignSelf: "center" }}
+        sx={{ alignSelf: "center", whiteSpace: "nowrap", minHeight: 48 }}
       >
-        New site
+        New website
       </Button>
       <Dialog
         open={open}
@@ -40,10 +51,10 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
           transition: { onEntered: () => cancelButton.current?.focus() },
         }}
       >
-        <DialogTitle id={titleId}>Switch to the new site?</DialogTitle>
+        <DialogTitle id={titleId}>Switch to the new website?</DialogTitle>
         <DialogContent>
           <DialogContentText id={descriptionId}>
-            Your current team won’t transfer to the new site. Save its share
+            Your current team won’t transfer to the new website. Save its share
             link first if you want to keep it.
           </DialogContentText>
         </DialogContent>
@@ -51,7 +62,7 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
           <Button ref={cancelButton} autoFocus onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={goToSite}>Go to new site</Button>
+          <Button onClick={goToSite}>Go to new website</Button>
         </DialogActions>
       </Dialog>
     </>

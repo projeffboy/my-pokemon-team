@@ -1,18 +1,18 @@
 import { test, expect } from "fixtures";
 
-test("shows the new site switch near the title on a 320px phone", async ({
+test("shows the new website switch near the title on a 320px phone", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   const button = page
     .getByRole("banner")
-    .getByRole("button", { name: "New site", exact: true });
+    .getByRole("button", { name: "New website", exact: true });
   await expect(button).toBeVisible();
   await expect(button).toBeInViewport();
   await expect(
     page
       .getByRole("contentinfo")
-      .getByRole("button", { name: "New site", exact: true }),
+      .getByRole("button", { name: "New website", exact: true }),
   ).toHaveCount(0);
   const fits = await button.evaluate(element => {
     const bounds = element.getBoundingClientRect();

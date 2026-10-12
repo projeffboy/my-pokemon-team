@@ -9,7 +9,7 @@ test("an empty team switches sites immediately without transferring URL paramete
   await page.route(destination, route =>
     route.fulfill({ contentType: "text/html", body: "<h1>Other site</h1>" }),
   );
-  await page.getByRole("button", { name: "New site", exact: true }).click();
+  await page.getByRole("button", { name: "New website", exact: true }).click();
   await expect(page).toHaveURL(destination);
   await expect(page.getByRole("heading", { name: "Other site" })).toBeVisible();
 });
@@ -20,9 +20,11 @@ test("Cancel and Escape keep a nonempty team on the current site", async ({
   await selectPokemon(page, "Lanturn");
   await expect(page).toHaveURL(/[?&]team=/);
   const currentUrl = page.url();
-  const button = page.getByRole("button", { name: "New site", exact: true });
+  const button = page.getByRole("button", { name: "New website", exact: true });
   await button.click();
-  const dialog = page.getByRole("dialog", { name: "Switch to the new site?" });
+  const dialog = page.getByRole("dialog", {
+    name: "Switch to the new website?",
+  });
   await expect(dialog).toBeVisible();
   await expect(dialog).toContainText("Your current team won’t transfer");
   await expect(
@@ -47,11 +49,13 @@ test("a nonempty team switches only after confirmation and does not transfer its
   await page.route(destination, route =>
     route.fulfill({ contentType: "text/html", body: "<h1>Other site</h1>" }),
   );
-  await page.getByRole("button", { name: "New site", exact: true }).click();
-  const dialog = page.getByRole("dialog", { name: "Switch to the new site?" });
+  await page.getByRole("button", { name: "New website", exact: true }).click();
+  const dialog = page.getByRole("dialog", {
+    name: "Switch to the new website?",
+  });
   await expect(dialog).toBeVisible();
   await dialog
-    .getByRole("button", { name: "Go to new site", exact: true })
+    .getByRole("button", { name: "Go to new website", exact: true })
     .click();
   await expect(page).toHaveURL(destination);
 });

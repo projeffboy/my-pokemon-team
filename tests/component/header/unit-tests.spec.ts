@@ -9,7 +9,7 @@ test.describe("Header Tests", () => {
     });
     await expect(title).toBeVisible();
 
-    const images = page.locator("header img");
+    const images = page.locator("header img:not(button img)");
     await expect(images).toHaveCount(2);
 
     await expectImageToBeLoaded(images.nth(0));

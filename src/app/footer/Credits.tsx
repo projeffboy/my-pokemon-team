@@ -29,7 +29,13 @@ const credits: Credit[] = [
     icon: <BusinessIcon />,
     label: "Nintendo, The Pokemon Company, Game Freak",
     secondary:
-      "Pokemon itself, the Pokemon Shuffle art beside the title, and the Legends: Z-A mega sprites",
+      "Pokemon itself, the Landorus Pokemon Shuffle art beside the title, and the Legends: Z-A mega sprites",
+  },
+  {
+    icon: <ImageIcon />,
+    label: "JormXDOS",
+    secondary:
+      "Ogerpon Teal Mask Pokemon Shuffle-style fan art beside the title",
   },
   {
     icon: <TableChart />,
