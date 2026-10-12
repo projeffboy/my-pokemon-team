@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import face1 from "@/images/pokemon-shuffle-faces/venusaur-shuffle-face-cropped.png";
 import face2 from "@/images/pokemon-shuffle-faces/charizard-shuffle-face-cropped.png";
 import { fluidClamp } from "./header/fluid-clamp";
+import SiteVersionSwitch from "./header/SiteVersionSwitch";
 import {
   breakpointValues,
   MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
@@ -57,6 +58,12 @@ export default function Header() {
           }}
         />
       </Stack>
+      <Grid
+        size={12}
+        sx={{ display: "flex", justifyContent: "center", mt: 1.5, mb: 1 }}
+      >
+        <SiteVersionSwitch />
+      </Grid>
       <Grid size={12}>
         <Typography
           variant="subtitle1"

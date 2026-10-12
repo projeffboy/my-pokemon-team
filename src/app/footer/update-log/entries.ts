@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 11, 2026",
+    changes: [
+      "The header’s New site button opens the new version after warning that your current team will not transfer.",
+    ],
+  },
+  {
     date: "Sep 22, 2026",
     changes: [
       "Fixed some returning visitors seeing the August version of the site.",
