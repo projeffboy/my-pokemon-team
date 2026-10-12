@@ -501,6 +501,7 @@ const es: Messages = {
     updates: (date: string) => `Actualizaciones (${date})`,
     updateLog: "Registro de actualizaciones",
     privacyPolicy: "Política de privacidad",
+    oldVersion: "Versión anterior",
     colorScheme: "Tema de color",
     systemTheme: "Usar el tema del sistema",
     lightTheme: "Usar el tema claro",

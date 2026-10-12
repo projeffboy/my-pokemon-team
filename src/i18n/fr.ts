@@ -520,6 +520,7 @@ const fr: Messages = {
     updates: (date: string) => `Mises à jour (${date})`,
     updateLog: "Journal des mises à jour",
     privacyPolicy: "Politique de confidentialité",
+    oldVersion: "Ancienne version",
     colorScheme: "Thème de couleurs",
     systemTheme: "Utiliser le thème du système",
     lightTheme: "Utiliser le thème clair",

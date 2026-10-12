@@ -493,6 +493,7 @@ const zhHans: Messages = {
     updates: (date: string) => `更新（${date}）`,
     updateLog: "更新日志",
     privacyPolicy: "隐私政策",
+    oldVersion: "旧版",
     colorScheme: "配色方案",
     systemTheme: "跟随系统主题",
     lightTheme: "使用浅色主题",

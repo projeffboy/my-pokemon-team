@@ -517,6 +517,7 @@ const de: Messages = {
     updates: (date: string) => `Updates (${date})`,
     updateLog: "Update-Log",
     privacyPolicy: "Datenschutzerklärung",
+    oldVersion: "Alte Version",
     colorScheme: "Farbschema",
     systemTheme: "Systemdesign verwenden",
     lightTheme: "Helles Design verwenden",

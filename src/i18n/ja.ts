@@ -504,6 +504,7 @@ const ja: Messages = {
     updates: (date: string) => `更新情報（${date}）`,
     updateLog: "更新履歴",
     privacyPolicy: "プライバシーポリシー",
+    oldVersion: "旧バージョン",
     colorScheme: "配色",
     systemTheme: "システムのテーマを使用",
     lightTheme: "ライトテーマを使用",

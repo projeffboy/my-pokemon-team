@@ -513,6 +513,7 @@ const ko: Messages = {
     updates: (date: string) => `업데이트 (${date})`,
     updateLog: "업데이트 기록",
     privacyPolicy: "개인정보 처리방침",
+    oldVersion: "이전 버전",
     colorScheme: "색상 테마",
     systemTheme: "시스템 테마 사용",
     lightTheme: "라이트 테마 사용",

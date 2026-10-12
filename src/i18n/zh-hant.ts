@@ -496,6 +496,7 @@ const zhHant: Messages = {
     updates: (date: string) => `更新紀錄（${date}）`,
     updateLog: "更新紀錄",
     privacyPolicy: "隱私權政策",
+    oldVersion: "舊版",
     colorScheme: "配色",
     systemTheme: "跟隨系統主題",
     lightTheme: "使用淺色主題",

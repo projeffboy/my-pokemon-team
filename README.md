@@ -50,6 +50,12 @@ npm run preview
 
 Vite preview uses port 4173 by default. It serves the existing build, so rebuild after making changes.
 
+## Old Version
+
+The footer's Old version button opens the production snapshot from [commit ca23d6b](https://github.com/projeffboy/my-pokemon-team/commit/ca23d6b55ea96d9bf37022c094f6945d8e6420d3), deployed on October 4, 2026. Its URL is pinned in `src/app/footer/OldVersionButton.tsx`, so new production releases do not change the destination. The current team travels in the existing `?team=` share-link format; saved teams and settings stay on their original browser origin.
+
+The snapshot currently uses its immutable Vercel deployment URL. Before replacing production, retain that deployment through a permanent legacy domain or separate legacy project so deployment retention cannot remove it. Keep any legacy domain independent of the domains automatically assigned to new production releases.
+
 ## Updating Pokemon Data
 
 Refresh the Pokemon Showdown data in `src/data` with:

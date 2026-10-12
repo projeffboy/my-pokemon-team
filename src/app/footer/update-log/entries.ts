@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 11, 2026",
     changes: [
+      "The Old version button opens the previous site with your current team.",
       "Shared teams now preserve cleared abilities and Gen 7 Hyper Trained Hidden Power IVs.",
       "Generation changes now carry Gen 1’s shared Special DV into both modern special stats.",
       "Gen 1–2 team text now preserves zero training and Showdown’s default training values.",

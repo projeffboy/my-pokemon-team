@@ -499,6 +499,7 @@ const ptBR: Messages = {
     updates: (date: string) => `Atualizações (${date})`,
     updateLog: "Registro de atualizações",
     privacyPolicy: "Política de privacidade",
+    oldVersion: "Versão antiga",
     colorScheme: "Esquema de cores",
     systemTheme: "Usar o tema do sistema",
     lightTheme: "Usar o tema claro",

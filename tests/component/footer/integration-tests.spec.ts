@@ -1,6 +1,38 @@
 import { test, expect } from "fixtures";
+import { selectPokemon, selectItem, getTeamTextFromUrl } from "helper";
 
 test.describe("Footer - Integration Tests", () => {
+  test("should open the old version with the latest current team", async ({
+    page,
+  }) => {
+    const oldVersion = page.getByRole("link", { name: "Old version" });
+    await selectPokemon(page, "Azumarill");
+    await selectItem(page, "Sitrus Berry");
+
+    await expect
+      .poll(async () => {
+        const href = await oldVersion.getAttribute("href");
+        return new URL(href ?? "").searchParams.get("team");
+      })
+      .toBe(new URL(page.url()).searchParams.get("team"));
+
+    const teamText = getTeamTextFromUrl(page);
+    expect(teamText).toContain("Azumarill @ Sitrus Berry");
+    await page.route(
+      "https://my-pokemon-team-9tnxdj5hn-jeffery-tangs-projects.vercel.app/**",
+      route =>
+        route.fulfill({
+          contentType: "text/html",
+          body: "<h1>Old version</h1>",
+        }),
+    );
+    await oldVersion.click();
+    await expect(
+      page.getByRole("heading", { name: "Old version" }),
+    ).toBeVisible();
+    expect(getTeamTextFromUrl(page)).toBe(teamText);
+  });
+
   test("should select system, light, and dark themes", async ({ page }) => {
     const systemButton = page.getByRole("button", { name: "Use system theme" });
     const lightButton = page.getByRole("button", { name: "Use light theme" });

@@ -496,6 +496,7 @@ const en = {
     updates: (date: string) => `Updates (${date})`,
     updateLog: "Update Log",
     privacyPolicy: "Privacy Policy",
+    oldVersion: "Old version",
     colorScheme: "Color scheme",
     systemTheme: "Use system theme",
     lightTheme: "Use light theme",
