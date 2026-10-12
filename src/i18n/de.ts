@@ -43,6 +43,13 @@ const de: Messages = {
     description: "Lade die Seite neu, um es noch einmal zu versuchen.",
     reload: "Neu laden",
   },
+  siteVersion: {
+    button: "Alte Website",
+    title: "Zur alten Website wechseln?",
+    description:
+      "Dein aktuelles Team wird nicht auf die alte Website übertragen. Bereits hier gespeicherte Teams bleiben in dieser Version.",
+    go: "Zur alten Website",
+  },
   feedback: {
     button: "Feedback senden",
     title: "Feedback senden",
@@ -517,7 +524,6 @@ const de: Messages = {
     updates: (date: string) => `Updates (${date})`,
     updateLog: "Update-Log",
     privacyPolicy: "Datenschutzerklärung",
-    oldVersion: "Alte Version",
     colorScheme: "Farbschema",
     systemTheme: "Systemdesign verwenden",
     lightTheme: "Helles Design verwenden",

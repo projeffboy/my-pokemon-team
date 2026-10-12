@@ -9,7 +9,6 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import { useColorScheme } from "@mui/material/styles";
 import FooterDialog from "./footer/FooterDialog";
 import TypeChartDialog from "./footer/TypeChartDialog";
-import OldVersionButton from "./footer/OldVersionButton";
 import { lazy, type MouseEvent } from "react";
 import { useTranslation } from "./shared/TranslationContext";
 
@@ -94,7 +93,6 @@ export default function Footer() {
         title={t.footer.privacyPolicy}
         content={PrivacyPolicy}
       />
-      <OldVersionButton />
       <ToggleButtonGroup
         exclusive
         size="small"

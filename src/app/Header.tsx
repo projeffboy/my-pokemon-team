@@ -8,6 +8,7 @@ import { fluidClamp } from "./header/fluid-clamp";
 import GenerationSelect from "./header/GenerationSelect";
 import LanguageSelect from "./header/LanguageSelect";
 import FeedbackDialog from "./header/FeedbackDialog";
+import SiteVersionSwitch from "./header/SiteVersionSwitch";
 import { breakpointValues } from "./shared/theme";
 
 // Where the title reaches its full size: the page's margins widen at sm,
@@ -70,6 +71,7 @@ export default function Header() {
             }}
           />
         </Stack>
+        <SiteVersionSwitch />
         <Stack
           direction="row"
           spacing={1}

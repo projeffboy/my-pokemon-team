@@ -53,6 +53,13 @@ const ko: Messages = {
     description: "페이지를 새로고침해 다시 시도하세요.",
     reload: "새로고침",
   },
+  siteVersion: {
+    button: "이전 사이트",
+    title: "이전 사이트로 이동할까요?",
+    description:
+      "현재 팀은 이전 사이트로 옮겨지지 않습니다. 여기에 이미 저장한 팀은 이 버전에 그대로 남습니다.",
+    go: "이전 사이트로 이동",
+  },
   feedback: {
     button: "피드백 보내기",
     title: "피드백 보내기",
@@ -513,7 +520,6 @@ const ko: Messages = {
     updates: (date: string) => `업데이트 (${date})`,
     updateLog: "업데이트 기록",
     privacyPolicy: "개인정보 처리방침",
-    oldVersion: "이전 버전",
     colorScheme: "색상 테마",
     systemTheme: "시스템 테마 사용",
     lightTheme: "라이트 테마 사용",

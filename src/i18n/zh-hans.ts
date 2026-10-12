@@ -38,6 +38,13 @@ const zhHans: Messages = {
     description: "请重新加载页面重试。",
     reload: "重新加载",
   },
+  siteVersion: {
+    button: "旧版网站",
+    title: "切换到旧版网站？",
+    description:
+      "当前队伍不会转移到旧版网站。已在此保存的队伍将保留在这个版本中。",
+    go: "前往旧版网站",
+  },
   feedback: {
     button: "发送反馈",
     title: "发送反馈",
@@ -493,7 +500,6 @@ const zhHans: Messages = {
     updates: (date: string) => `更新（${date}）`,
     updateLog: "更新日志",
     privacyPolicy: "隐私政策",
-    oldVersion: "旧版",
     colorScheme: "配色方案",
     systemTheme: "跟随系统主题",
     lightTheme: "使用浅色主题",

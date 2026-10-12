@@ -38,6 +38,13 @@ const it: Messages = {
     description: "Ricarica la pagina per riprovare.",
     reload: "Ricarica",
   },
+  siteVersion: {
+    button: "Vecchio sito",
+    title: "Passare al vecchio sito?",
+    description:
+      "La tua squadra attuale non verrà trasferita al vecchio sito. Le squadre già salvate qui rimarranno in questa versione.",
+    go: "Vai al vecchio sito",
+  },
   feedback: {
     button: "Invia feedback",
     title: "Invia feedback",
@@ -507,7 +514,6 @@ const it: Messages = {
     updates: (date: string) => `Aggiornamenti (${date})`,
     updateLog: "Registro aggiornamenti",
     privacyPolicy: "Informativa sulla privacy",
-    oldVersion: "Versione precedente",
     colorScheme: "Schema colori",
     systemTheme: "Usa il tema di sistema",
     lightTheme: "Usa il tema chiaro",

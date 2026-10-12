@@ -37,6 +37,13 @@ const es: Messages = {
     description: "Recarga la página para intentarlo de nuevo.",
     reload: "Recargar",
   },
+  siteVersion: {
+    button: "Sitio anterior",
+    title: "¿Cambiar al sitio anterior?",
+    description:
+      "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",
+    go: "Ir al sitio anterior",
+  },
   feedback: {
     button: "Enviar comentarios",
     title: "Enviar comentarios",
@@ -501,7 +508,6 @@ const es: Messages = {
     updates: (date: string) => `Actualizaciones (${date})`,
     updateLog: "Registro de actualizaciones",
     privacyPolicy: "Política de privacidad",
-    oldVersion: "Versión anterior",
     colorScheme: "Tema de color",
     systemTheme: "Usar el tema del sistema",
     lightTheme: "Usar el tema claro",

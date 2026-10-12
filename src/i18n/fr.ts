@@ -38,6 +38,13 @@ const fr: Messages = {
     description: "Rechargez la page pour réessayer.",
     reload: "Recharger",
   },
+  siteVersion: {
+    button: "Ancien site",
+    title: "Passer à l’ancien site ?",
+    description:
+      "Votre équipe actuelle ne sera pas transférée vers l’ancien site. Les équipes déjà enregistrées ici resteront sur cette version.",
+    go: "Aller à l’ancien site",
+  },
   feedback: {
     button: "Envoyer un commentaire",
     title: "Envoyer un commentaire",
@@ -520,7 +527,6 @@ const fr: Messages = {
     updates: (date: string) => `Mises à jour (${date})`,
     updateLog: "Journal des mises à jour",
     privacyPolicy: "Politique de confidentialité",
-    oldVersion: "Ancienne version",
     colorScheme: "Thème de couleurs",
     systemTheme: "Utiliser le thème du système",
     lightTheme: "Utiliser le thème clair",

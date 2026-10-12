@@ -38,6 +38,13 @@ const ja: Messages = {
     description: "ページを再読み込みして、もう一度お試しください。",
     reload: "再読み込み",
   },
+  siteVersion: {
+    button: "旧サイト",
+    title: "旧サイトに移動しますか？",
+    description:
+      "現在のチームは旧サイトに引き継がれません。ここで保存済みのチームは、このバージョンに残ります。",
+    go: "旧サイトへ移動",
+  },
   feedback: {
     button: "フィードバックを送る",
     title: "フィードバックを送る",
@@ -504,7 +511,6 @@ const ja: Messages = {
     updates: (date: string) => `更新情報（${date}）`,
     updateLog: "更新履歴",
     privacyPolicy: "プライバシーポリシー",
-    oldVersion: "旧バージョン",
     colorScheme: "配色",
     systemTheme: "システムのテーマを使用",
     lightTheme: "ライトテーマを使用",

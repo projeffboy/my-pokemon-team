@@ -38,6 +38,13 @@ const zhHant: Messages = {
     description: "請重新載入頁面再試一次。",
     reload: "重新載入",
   },
+  siteVersion: {
+    button: "舊版網站",
+    title: "切換到舊版網站？",
+    description:
+      "目前的隊伍不會轉移到舊版網站。已在此儲存的隊伍將保留在這個版本中。",
+    go: "前往舊版網站",
+  },
   feedback: {
     button: "意見回饋",
     title: "意見回饋",
@@ -496,7 +503,6 @@ const zhHant: Messages = {
     updates: (date: string) => `更新紀錄（${date}）`,
     updateLog: "更新紀錄",
     privacyPolicy: "隱私權政策",
-    oldVersion: "舊版",
     colorScheme: "配色",
     systemTheme: "跟隨系統主題",
     lightTheme: "使用淺色主題",

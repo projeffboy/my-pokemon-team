@@ -32,6 +32,13 @@ const en = {
     description: "Reload the page to try again.",
     reload: "Reload",
   },
+  siteVersion: {
+    button: "Old site",
+    title: "Switch to the old site?",
+    description:
+      "Your current team won’t transfer to the old site. Teams already saved here will remain on this version.",
+    go: "Go to old site",
+  },
   feedback: {
     button: "Send feedback",
     title: "Send Feedback",
@@ -496,7 +503,6 @@ const en = {
     updates: (date: string) => `Updates (${date})`,
     updateLog: "Update Log",
     privacyPolicy: "Privacy Policy",
-    oldVersion: "Old version",
     colorScheme: "Color scheme",
     systemTheme: "Use system theme",
     lightTheme: "Use light theme",

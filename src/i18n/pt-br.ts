@@ -40,6 +40,13 @@ const ptBR: Messages = {
     description: "Recarregue a página para tentar de novo.",
     reload: "Recarregar",
   },
+  siteVersion: {
+    button: "Site antigo",
+    title: "Ir para o site antigo?",
+    description:
+      "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",
+    go: "Ir para o site antigo",
+  },
   feedback: {
     button: "Enviar feedback",
     title: "Enviar feedback",
@@ -499,7 +506,6 @@ const ptBR: Messages = {
     updates: (date: string) => `Atualizações (${date})`,
     updateLog: "Registro de atualizações",
     privacyPolicy: "Política de privacidade",
-    oldVersion: "Versão antiga",
     colorScheme: "Esquema de cores",
     systemTheme: "Usar o tema do sistema",
     lightTheme: "Usar o tema claro",

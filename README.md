@@ -50,11 +50,11 @@ npm run preview
 
 Vite preview uses port 4173 by default. It serves the existing build, so rebuild after making changes.
 
-## Old Version
+## Site Versions
 
-The footer's Old version button opens the production snapshot from [commit ca23d6b](https://github.com/projeffboy/my-pokemon-team/commit/ca23d6b55ea96d9bf37022c094f6945d8e6420d3), deployed on October 4, 2026. Its URL is pinned in `src/app/footer/OldVersionButton.tsx`, so new production releases do not change the destination. The current team travels in the existing `?team=` share-link format; saved teams and settings stay on their original browser origin.
+The header's Old site button opens the legacy site at [old.mypokemonteam.com](https://old.mypokemonteam.com/). The legacy site is based on [commit ca23d6b](https://github.com/projeffboy/my-pokemon-team/commit/ca23d6b55ea96d9bf37022c094f6945d8e6420d3), with a New site button returning to [mypokemonteam.com](https://mypokemonteam.com/). Its separate Vercel project deploys the legacy branch independently of `master`.
 
-The snapshot currently uses its immutable Vercel deployment URL. Before replacing production, retain that deployment through a permanent legacy domain or separate legacy project so deployment retention cannot remove it. Keep any legacy domain independent of the domains automatically assigned to new production releases.
+Switching does not transfer the current team or URL parameters. A nonempty team triggers a confirmation; Cancel and Escape keep the user on the current site. Saved teams and settings stay on their original browser origin. The legacy site does not persist team collections, so its confirmation advises saving the current share link before leaving. Team transfer is deferred in [issue #111](https://github.com/projeffboy/my-pokemon-team/issues/111).
 
 ## Updating Pokemon Data
 
