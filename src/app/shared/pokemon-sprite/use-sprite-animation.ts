@@ -30,7 +30,7 @@ export function useSpriteAnimation(
     return () => {
       unmounted = true;
     };
-  }, [eligible]);
+  }, [pokemon, generation, shiny, eligible]);
 
   return eligible ?
       animations?.getSpriteAnimation(pokemon, generation, shiny)

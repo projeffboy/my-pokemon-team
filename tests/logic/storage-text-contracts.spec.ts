@@ -136,13 +136,13 @@ for (const generation of [1, 2] as const) {
   });
 }
 
-test("Gen 7 old omitted-IV links keep the original inferred spread, while new capped sets write explicit IVs", ({
+test("Gen 7 old omitted-IV links keep default IVs, while new capped sets write explicit IVs", ({
   store,
 }) => {
   const text = "Raikou\nAbility: Pressure\n- Hidden Power Ice";
   withGenerationUrl(7, () => {
     importTeamFromUrlParameter(toBase64Url(text));
-    expect(store.team[0].ivs).toEqual({ atk: 30, def: 30 });
+    expect(store.team[0].ivs).toBeUndefined();
     expect(parseTeamText(text, 7)[0].ivs).toBeUndefined();
     store.currentTeam.generation = 7;
     store.replaceTeam(
@@ -163,7 +163,7 @@ test("Gen 7 old omitted-IV links keep the original inferred spread, while new ca
   });
   expect(
     parseTeamText(text, 7, "", LEGACY_LINK_PARSING_OPTIONS)[0].ivs,
-  ).toEqual({ atk: 30, def: 30 });
+  ).toBeUndefined();
 });
 
 test("new explicitly cleared links do not select a saved team with an auto-selected ability", ({
@@ -219,3 +219,22 @@ test("old omitted-IV links still select the saved capped set they previously mat
   expect(store.team[0].ivs).toBeUndefined();
   expect(store.teams).toHaveLength(1);
 });
+
+for (const generation of [2, 3, 6] as const) {
+  test(`Gen ${generation} old Hidden Power links preserve omitted IVs while external imports infer them`, ({
+    store,
+  }) => {
+    const text = "Raikou\n- Hidden Power Ice";
+    withGenerationUrl(generation, () => {
+      importTeamFromUrlParameter(toBase64Url(text));
+      expect(store.team[0].ivs).toBeUndefined();
+      expect(store.team[0].move1).toBe("hiddenpowerice");
+    });
+    expect(parseTeamText(text, generation)[0].ivs).toBeDefined();
+    const explicit = "Raikou\nIVs: 0 Atk / 30 Def\n- Hidden Power Ice";
+    expect(
+      parseTeamText(explicit, generation, "", LEGACY_LINK_PARSING_OPTIONS)[0]
+        .ivs,
+    ).toEqual({ atk: 0, def: 30 });
+  });
+}

@@ -45,6 +45,7 @@ const zhHans: Messages = {
     description:
       "当前队伍不会转移到旧版网站。已在此保存的队伍将保留在这个版本中。",
     go: "前往旧版网站",
+    goLong: "前往旧版网站",
   },
   feedback: {
     button: "发送反馈",

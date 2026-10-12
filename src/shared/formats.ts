@@ -112,8 +112,7 @@ export function parseShowdownFormatId(id: string): {
 } {
   const raw = id.trim().toLowerCase();
   const legacy =
-    !raw.startsWith("gen") &&
-    Object.values(SHOWDOWN_FORMAT_IDS).some(format => raw.startsWith(format));
+    !raw.startsWith("gen") && Object.values(SHOWDOWN_FORMAT_IDS).includes(raw);
   const formatId = legacy ? `gen6${raw}` : raw;
   const match = /^gen(\d)(.*)$/.exec(formatId);
   const generation = Number(match?.[1]);

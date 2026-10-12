@@ -47,6 +47,7 @@ const ptBR: Messages = {
     description:
       "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",
     go: "Ir para o site antigo",
+    goLong: "Ir para o site antigo",
   },
   feedback: {
     button: "Enviar feedback",

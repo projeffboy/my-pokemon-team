@@ -1,18 +1,18 @@
 import { test, expect } from "fixtures";
 
-test("shows the old site switch near the title on a 320px phone", async ({
+test("shows the old website switch near the title on a 320px phone", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 640 });
   const button = page
     .getByRole("banner")
-    .getByRole("button", { name: "Old site", exact: true });
+    .getByRole("button", { name: "Old website", exact: true });
   await expect(button).toBeVisible();
   await expect(button).toBeInViewport();
   await expect(
     page
       .getByRole("contentinfo")
-      .getByRole("button", { name: "Old site", exact: true }),
+      .getByRole("button", { name: "Old website", exact: true }),
   ).toHaveCount(0);
   const fits = await button.evaluate(element => {
     const bounds = element.getBoundingClientRect();
@@ -21,14 +21,17 @@ test("shows the old site switch near the title on a 320px phone", async ({
   expect(fits).toBe(true);
 });
 
-for (const width of [320, 600, 1200]) {
+for (const width of [320, 400, 599, 600, 640, 680, 960, 1200]) {
   test(`${width}px places the version switch alongside language and feedback`, async ({
     page,
   }) => {
     await page.setViewportSize({ width, height: 800 });
     const header = page.getByRole("banner");
     const oldSite = header.getByRole("button", {
-      name: "Old site",
+      name:
+        width >= 680 ? "Go to the old website"
+        : (width >= 400 && width < 600) || width === 640 ? "Go to old website"
+        : "Old website",
       exact: true,
     });
     const language = header.getByRole("button", {
@@ -56,7 +59,7 @@ for (const width of [320, 600, 1200]) {
     expect(middle(oldBounds)).toBeCloseTo(middle(feedbackBounds), 0);
     expect(oldBounds.x + oldBounds.width).toBeLessThanOrEqual(languageBounds.x);
     expect(feedbackBounds.x + feedbackBounds.width).toBeLessThanOrEqual(width);
-    if (width >= 960) {
+    if (width >= 600) {
       const generation = await header
         .getByRole("combobox", { name: "Generation", exact: true })
         .boundingBox();

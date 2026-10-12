@@ -174,7 +174,7 @@ export const selectAbility = async (
   slotIndex = 0,
 ) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s ability`);
-  await input.click({ force: true });
+  await input.click();
   await input.fill(ability);
   await page.getByRole("listbox").getByText(ability, { exact: true }).click();
 };

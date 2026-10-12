@@ -44,6 +44,7 @@ const es: Messages = {
     description:
       "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",
     go: "Ir al sitio anterior",
+    goLong: "Ir al sitio anterior",
   },
   feedback: {
     button: "Enviar comentarios",

@@ -92,3 +92,34 @@ test("removes the service worker left by the old build", async ({ page }) => {
   ).toBeVisible();
   expect(pageErrors).toEqual([]);
 });
+
+test("an offline lazy-load failure keeps the page and uses the dialog fallback", async ({
+  page,
+  context,
+}) => {
+  const errors: Error[] = [];
+  page.on("pageerror", error => errors.push(error));
+  await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+  await selectPokemon(page, "Pelipper");
+  await expect(page).toHaveURL(/[?&]team=/);
+  const url = page.url();
+  await page.evaluate(() => {
+    addEventListener("vite:preloadError", event => {
+      document.documentElement.dataset.offlinePreloadCancelled = String(
+        event.defaultPrevented,
+      );
+    });
+  });
+  await context.setOffline(true);
+  await page.getByRole("button", { name: "Credits", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Credits", exact: true });
+  await expect(dialog.getByRole("alert")).toContainText("Something went wrong");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-offline-preload-cancelled",
+    "true",
+  );
+  await expect(page).toHaveURL(url);
+  await dialog.getByRole("button", { name: "Go Back", exact: true }).click();
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Pelipper");
+  expect(errors).toEqual([]);
+});

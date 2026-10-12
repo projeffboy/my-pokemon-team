@@ -202,6 +202,7 @@ function parseFirstLine(line: string) {
 export const LEGACY_LINK_PARSING_OPTIONS = {
   inferFrustrationHappiness: false,
   inferLegacyTraining: false,
+  inferHiddenPowerIvs: false,
   preserveBlankAbilityDefault: true,
   allowHyperTraining: false,
 } as const;
@@ -215,11 +216,13 @@ export function parseTeamText(
   {
     inferFrustrationHappiness = true,
     inferLegacyTraining = true,
+    inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
   }: {
     inferFrustrationHappiness?: boolean;
     inferLegacyTraining?: boolean;
+    inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
   } = {},
@@ -370,7 +373,10 @@ export function parseTeamText(
       MOVE_KEYS.some(key => member[key] === "frustration")
     )
       member.happiness = 0;
-    if (!lines.some(line => /^IVs:/i.test(line.trim()))) {
+    if (
+      inferHiddenPowerIvs &&
+      !lines.some(line => /^IVs:/i.test(line.trim()))
+    ) {
       const hiddenPower = MOVE_KEYS.map(key => member[key]).find(move =>
         move.startsWith("hiddenpower"),
       );

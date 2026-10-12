@@ -9,9 +9,15 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 12, 2026",
+    changes: [
+      "Older Hidden Power team links now keep their original IVs when none were specified.",
+    ],
+  },
+  {
     date: "Oct 11, 2026",
     changes: [
-      "The header’s Old site button switches versions after warning that your current team will not transfer.",
+      "The header’s Old website button switches versions after warning that your current team will not transfer.",
       "Shared teams now preserve cleared abilities and Gen 7 Hyper Trained Hidden Power IVs.",
       "Generation changes now carry Gen 1’s shared Special DV into both modern special stats.",
       "Gen 1–2 team text now preserves zero training and Showdown’s default training values.",

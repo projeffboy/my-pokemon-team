@@ -28,15 +28,15 @@ export default function useFittingLabel<
         element.clientWidth -
         parseFloat(style.paddingLeft) -
         parseFloat(style.paddingRight);
+      const fits = (line: string) => {
+        const rendered =
+          style.textTransform === "uppercase" ? line.toUpperCase() : line;
+        return (
+          textWidth(rendered, font) + rendered.length * letterSpacing <= room
+        );
+      };
       setLabel(
-        labels.find(text =>
-          text
-            .split("\n")
-            .every(
-              line =>
-                textWidth(line, font) + line.length * letterSpacing <= room,
-            ),
-        ) ??
+        labels.find(text => text.split("\n").every(fits)) ??
           labels[labels.length - 1] ??
           "",
       );

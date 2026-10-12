@@ -53,7 +53,7 @@ export default function Header() {
             anchorOrigin={{ vertical: "top", horizontal: "right" }}
             sx={{
               "& .MuiBadge-badge": {
-                top: 0,
+                top: 4,
                 right: fluid(1.125, 16),
                 transform: "translateY(-100%)",
                 height: 16,
@@ -92,19 +92,34 @@ export default function Header() {
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xxs: "1fr 1fr", md: "1fr auto 1fr" },
+            width: "max-content",
+            maxWidth: "100%",
+            mx: "auto",
+            gridTemplateColumns: {
+              xxs: "auto auto",
+              sm: "minmax(0, auto) minmax(240px, 1fr) auto",
+              md: "auto minmax(0, 1fr) auto",
+            },
             alignItems: "center",
             gap: 1,
+            rowGap: { xxs: 2, sm: 1 },
           }}
         >
-          <Box sx={{ justifySelf: { xxs: "end", md: "start" } }}>
+          <Box
+            sx={{
+              justifySelf: { xxs: "end", sm: "start" },
+              minWidth: { sm: 0, md: "auto" },
+              maxWidth: { sm: "100%", md: "none" },
+            }}
+          >
             <SiteVersionSwitch />
           </Box>
           <Box
             sx={{
-              gridColumn: { xxs: "1 / -1", md: 2 },
-              gridRow: { xxs: 2, md: 1 },
+              gridColumn: { xxs: "1 / -1", sm: 2 },
+              gridRow: { xxs: 2, sm: 1 },
               justifySelf: "center",
+              minWidth: 0,
               maxWidth: "100%",
             }}
           >
@@ -114,9 +129,9 @@ export default function Header() {
             direction="row"
             spacing={1}
             sx={{
-              gridColumn: { xxs: 2, md: 3 },
+              gridColumn: { xxs: 2, sm: 3 },
               gridRow: 1,
-              justifySelf: { xxs: "start", md: "end" },
+              justifySelf: { xxs: "start", sm: "end" },
               alignItems: "stretch",
             }}
           >

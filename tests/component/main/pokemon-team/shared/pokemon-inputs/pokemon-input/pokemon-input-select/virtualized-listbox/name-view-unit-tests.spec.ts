@@ -159,10 +159,10 @@ test.describe("Name dropdown views - Unit Tests", () => {
           .last()
           .evaluate(label => {
             const lineHeight = parseFloat(getComputedStyle(label).lineHeight);
-            return label.getBoundingClientRect().height / lineHeight;
+            return label.getBoundingClientRect().height - 2 * lineHeight;
           }),
       )
-      .toBeLessThanOrEqual(2);
+      .toBeLessThanOrEqual(1);
     await expect
       .poll(() =>
         option

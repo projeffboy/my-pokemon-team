@@ -25,6 +25,7 @@ export default function CaptionButton({
       {...aria}
       sx={{
         minWidth: 48,
+        minHeight: 48,
         px: 0.5,
         py: 0,
         flexShrink: 0,

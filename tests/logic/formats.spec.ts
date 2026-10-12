@@ -61,3 +61,13 @@ test("legacy Showdown tier IDs use their historical generation", () => {
     format: "",
   });
 });
+
+test("unknown IDs beginning with a legacy tier keep the latest-generation default", () => {
+  for (const id of [
+    "outside",
+    "outline",
+    "double's unknown",
+    "doublesoucustom",
+  ])
+    expect(parseShowdownFormatId(id)).toEqual({ generation: 9, format: "" });
+});

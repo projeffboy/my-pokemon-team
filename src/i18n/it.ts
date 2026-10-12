@@ -45,6 +45,7 @@ const it: Messages = {
     description:
       "La tua squadra attuale non verrà trasferita al vecchio sito. Le squadre già salvate qui rimarranno in questa versione.",
     go: "Vai al vecchio sito",
+    goLong: "Vai al vecchio sito",
   },
   feedback: {
     button: "Invia feedback",

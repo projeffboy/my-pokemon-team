@@ -12,7 +12,10 @@ import "@fontsource/roboto/latin-500.css";
 // and an offline tab keeps its page, where a reload would lose it.
 window.addEventListener("vite:preloadError", event => {
   const key = "lastPreloadErrorReload";
-  if (!navigator.onLine) return;
+  if (!navigator.onLine) {
+    event.preventDefault();
+    return;
+  }
   if (Date.now() - Number(sessionStorage.getItem(key)) < 60_000) return;
   sessionStorage.setItem(key, String(Date.now()));
   event.preventDefault();

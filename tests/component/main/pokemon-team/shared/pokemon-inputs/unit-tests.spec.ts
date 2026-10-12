@@ -91,6 +91,10 @@ test.describe("Pokemon Card - Unit Tests", () => {
     );
     await page.getByRole("button", { name: ja.language, exact: true }).click();
     await page.getByRole("menuitem", { name: "English", exact: true }).click();
+    await expect(page.getByRole("menu")).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
+      "Levitate",
+    );
 
     await selectAbility(page, "Cursed Body");
     await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(

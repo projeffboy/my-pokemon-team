@@ -45,6 +45,7 @@ const fr: Messages = {
     description:
       "Votre équipe actuelle ne sera pas transférée vers l’ancien site. Les équipes déjà enregistrées ici resteront sur cette version.",
     go: "Aller à l’ancien site",
+    goLong: "Aller à l’ancien site",
   },
   feedback: {
     button: "Envoyer un commentaire",

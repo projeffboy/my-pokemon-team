@@ -45,6 +45,7 @@ const zhHant: Messages = {
     description:
       "目前的隊伍不會轉移到舊版網站。已在此儲存的隊伍將保留在這個版本中。",
     go: "前往舊版網站",
+    goLong: "前往舊版網站",
   },
   feedback: {
     button: "意見回饋",

@@ -45,6 +45,7 @@ const ja: Messages = {
     description:
       "現在のチームは旧サイトに引き継がれません。ここで保存済みのチームは、このバージョンに残ります。",
     go: "旧サイトへ移動",
+    goLong: "旧サイトへ移動",
   },
   feedback: {
     button: "フィードバックを送る",

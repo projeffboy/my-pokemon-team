@@ -50,6 +50,7 @@ const de: Messages = {
     description:
       "Dein aktuelles Team wird nicht auf die alte Website übertragen. Bereits hier gespeicherte Teams bleiben in dieser Version.",
     go: "Zur alten Website",
+    goLong: "Zur alten Website",
   },
   feedback: {
     button: "Feedback senden",
