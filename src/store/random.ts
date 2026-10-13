@@ -8,7 +8,7 @@ import {
   isItemAvailable,
 } from "./learnsets";
 import { MOVE_KEYS, type Generation, type TeamPokemon } from "@/types";
-import { pokemonAbilities } from "@/shared/pokedex";
+import { hasNoAbility, pokemonAbilities } from "@/shared/pokedex";
 import { getAutoSelectedItem } from "@/shared/team";
 import { completeLearnset } from "./learnsets";
 import { baseForme } from "./shared/pokemon";
@@ -100,7 +100,9 @@ export function isSetComplete(
   return (
     !!member.name &&
     (!rules.items || !!member.item) &&
-    (!rules.abilities || !!member.ability) &&
+    (!rules.abilities ||
+      hasNoAbility(member.name, generation, format) ||
+      !!member.ability) &&
     uniqueCount === selected.length &&
     uniqueCount >= moveCount
   );
@@ -124,7 +126,13 @@ export function randomizeSlotLabel(
       t.filters.moves
     : "",
     rules.items && !member.item ? t.team.item : "",
-    rules.abilities && !member.ability ? t.team.ability : "",
+    (
+      rules.abilities &&
+      !hasNoAbility(member.name, generation, format) &&
+      !member.ability
+    ) ?
+      t.team.ability
+    : "",
   ].filter(Boolean);
   return t.team.randomizeDetails(
     new Intl.ListFormat(locale, { style: "long", type: "conjunction" }).format(
@@ -202,7 +210,8 @@ export function completeSet(
   }
   if (!rules.abilities) set.ability = "";
   else if (!set.ability)
-    set.ability = pickRandom(pokemonAbilities(name, generation), random) ?? "";
+    set.ability =
+      pickRandom(pokemonAbilities(name, generation, format), random) ?? "";
   return set;
 }
 

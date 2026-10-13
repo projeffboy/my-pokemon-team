@@ -1,5 +1,9 @@
 import pokedex from "@/data/pokedex";
 import {
+  COMBINED_GENERATIONS_FORMAT,
+  COMBINED_GENERATIONS_MASK,
+} from "./generation-profile";
+import {
   STAT_KEYS,
   type Generation,
   type StatKey,
@@ -150,7 +154,8 @@ export function setStatExperience(
 }
 
 export const generationBit = (generation: Generation, format = "") =>
-  format === CHAMPIONS_FORMAT ? 512
+  format === COMBINED_GENERATIONS_FORMAT ? COMBINED_GENERATIONS_MASK
+  : format === CHAMPIONS_FORMAT ? 512
   : format === LEGENDS_ARCEUS ? 1024
   : format === LEGENDS_ZA ? 2048
   : format === LETS_GO ? 4096

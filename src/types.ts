@@ -244,6 +244,7 @@ export interface SavedTeam {
   id: string;
   name: string;
   generation: Generation;
+  generationProfile?: "6-9";
   format: string;
   filters: SearchFilters;
   team: Team;
@@ -256,6 +257,7 @@ export type SearchFilters = Record<SearchFilterKey, string>;
 
 export interface PokemonFilters extends SearchFilters {
   generation: Generation;
+  generationProfile?: SavedTeam["generationProfile"];
   format: string;
 }
 
@@ -282,7 +284,7 @@ export type NameTranslations = Record<
   Record<string, string>
 >;
 
-// Bits 0–8 represent Gen 1–9; bit 9 represents Champions.
+// Bits 0–8 represent Gen 1–9; bits 9–12 represent Champions, Arceus, Z-A, and Let’s Go.
 export interface GenerationTransferData {
   pokemon: Record<
     string,

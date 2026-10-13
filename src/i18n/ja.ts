@@ -30,6 +30,11 @@ const ja: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "近日公開",
+  combinedGenerations: {
+    label: "第6～9世代",
+    short: "第6～9世代",
+    description: "第6〜9世代の全ゲームの選択肢を統合",
+  },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "言語",

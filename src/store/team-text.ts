@@ -27,7 +27,7 @@ import {
   itemNameInverse,
   moveNameInverse,
 } from "@/shared/names";
-import { pokemonAbilities } from "@/shared/pokedex";
+import { hasNoAbility, pokemonAbilities } from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
   DEFAULT_HAPPINESS,
@@ -37,7 +37,15 @@ import {
   STAT_NAMES,
   TERA_TYPES,
 } from "@/shared/set-details";
-import { parseShowdownFormatId, showdownFormatId } from "@/shared/formats";
+import {
+  gameFormat,
+  parseShowdownFormatId,
+  showdownFormatId,
+} from "@/shared/formats";
+import {
+  COMBINED_GENERATIONS_PROFILE,
+  teamDataFormat,
+} from "@/shared/generation-profile";
 import { canItLearn, isItemAvailable } from "./learnsets";
 import { generationRules } from "@/shared/generation-rules";
 import { canHyperTrain, matchImportedHiddenPower } from "@/shared/hidden-power";
@@ -127,15 +135,26 @@ export const serializeTeam = (
 
 // Every team, each under a header like Showdown's backup: === [gen9ou] Team name ===
 const BACKUP_MARKER = "# mypokemonteam backup: preserve team names";
+const GENERATION_PROFILE_MARKER = `# mypokemonteam generation profile: ${COMBINED_GENERATIONS_PROFILE}`;
 
 export const serializeTeams = (teams: readonly SavedTeam[]) => {
   const preserveNames = teams.some(({ name }) => name.includes("/"));
   return teams
-    .map(({ name, generation, format, team }) => {
+    .map(({ name, generation, format, generationProfile, team }) => {
       const sets = serializeTeam(team, generation, format);
-      // Showdown ignores unknown metadata inside a set, but not before its header.
+      const combined = generationProfile === COMBINED_GENERATIONS_PROFILE;
+      const metadata = [
+        ...(preserveNames ? [BACKUP_MARKER] : []),
+        ...(combined ? [GENERATION_PROFILE_MARKER] : []),
+      ];
+      // Populated teams keep metadata inside their first set for Showdown imports.
       const text =
-        preserveNames ? sets.replace("\n", `\n${BACKUP_MARKER}\n`) : sets;
+        sets ?
+          metadata.length ?
+            sets.replace("\n", `\n${metadata.join("\n")}\n`)
+          : sets
+        : combined ? `${GENERATION_PROFILE_MARKER}\n\n`
+        : "";
       return `=== [${showdownFormatId(generation, format)}] ${name || "Team"} ===\n\n${text}`;
     })
     .join("");
@@ -250,7 +269,9 @@ export function parseTeamText(
       pokemonAbilities(pokemon, (i + 1) as Generation),
     ).flat();
     member.ability =
-      rules.abilities ? getAutoSelectedAbility(pokemon, generation) : "";
+      rules.abilities ?
+        getAutoSelectedAbility(pokemon, generation, format)
+      : "";
     if (nickname) member.nickname = nickname;
     if (gender) member.gender = gender;
 
@@ -282,7 +303,8 @@ export function parseTeamText(
           ability === "No Ability" ||
           (!ability && !preserveBlankAbilityDefault)
         )
-          member.ability = "";
+          member.ability =
+            hasNoAbility(pokemon, generation, format) ? "No Ability" : "";
         else if (abilities.includes(ability)) {
           member.ability = ability;
         }
@@ -345,7 +367,8 @@ export function parseTeamText(
         // Otherwise, set it blank
         const move = moveNameInverse(moveText);
 
-        const validMove = canItLearn(move, pokemon) && move ? move : "";
+        const validMove =
+          canItLearn(move, pokemon, generation, format) && move ? move : "";
 
         const moveKey = MOVE_KEYS[moveIndex];
         if (moveKey) member[moveKey] = validMove;
@@ -395,13 +418,20 @@ const TEAM_HEADER = /^===\s*(?:\[([^\]]*)\])?\s*(.*?)\s*===\s*$/;
 export interface ParsedTeam {
   name: string;
   generation: Generation;
+  generationProfile?: SavedTeam["generationProfile"];
   format: string;
   team: Team;
 }
 
 // Splits a Showdown backup with `=== [gen9ou] Folder/Name ===` headers into its
 // teams that have pokemon; text without headers is one team
-export function parseTeamsText(text: string): ParsedTeam[] {
+export function parseTeamsText(
+  text: string,
+  defaults: Pick<SavedTeam, "generation" | "format" | "generationProfile"> = {
+    generation: 9,
+    format: "",
+  },
+): ParsedTeam[] {
   const preserveNames = text
     .split("\n")
     .some(line => line.trim() === BACKUP_MARKER);
@@ -415,10 +445,29 @@ export function parseTeamsText(text: string): ParsedTeam[] {
   const isEmptyBackup = (index: number) =>
     !!chunks[index]?.header?.[2]?.trim() &&
     chunks[index]?.lines.every(
-      line => !line.trim() || line.trim() === BACKUP_MARKER,
+      line =>
+        !line.trim() ||
+        line.trim() === BACKUP_MARKER ||
+        line.trim() === GENERATION_PROFILE_MARKER,
     );
-  const teams = chunks.map(({ header, lines }, index) => {
-    const settings = parseShowdownFormatId(header?.[1] ?? "");
+  const teams = chunks.map(({ header, lines }, index): ParsedTeam => {
+    const hasFormat = header?.[1] !== undefined;
+    const hasCombinedMetadata =
+      !!header && lines.some(line => line.trim() === GENERATION_PROFILE_MARKER);
+    const settings =
+      hasFormat || hasCombinedMetadata ?
+        parseShowdownFormatId(header?.[1] ?? "")
+      : { generation: defaults.generation, format: defaults.format };
+    const generationProfile =
+      (
+        settings.generation === 9 &&
+        !gameFormat(settings.format) &&
+        (hasCombinedMetadata ||
+          (!hasFormat &&
+            defaults.generationProfile === COMBINED_GENERATIONS_PROFILE))
+      ) ?
+        COMBINED_GENERATIONS_PROFILE
+      : undefined;
     const rawName = header?.[2] ?? "";
     const name =
       preserveNames || isEmptyBackup(index) ? rawName : (
@@ -427,10 +476,13 @@ export function parseTeamsText(text: string): ParsedTeam[] {
     return {
       name,
       ...settings,
+      ...(generationProfile && { generationProfile }),
       team: parseTeamText(
-        lines.join("\n"),
+        lines
+          .filter(line => line.trim() !== GENERATION_PROFILE_MARKER)
+          .join("\n"),
         settings.generation,
-        settings.format,
+        teamDataFormat({ format: settings.format, generationProfile }),
       ),
     };
   });

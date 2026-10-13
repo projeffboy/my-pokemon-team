@@ -44,15 +44,16 @@ test("saved set details survive reload even when unsupported or outside a game's
   ).toBe(false);
 });
 
-test("fresh storage defaults to Champions while existing regular Gen 9 saves keep their profile", () => {
+test("fresh storage defaults to combined generations while existing regular Gen 9 saves keep their profile", () => {
   const initial = initialStoredState();
   expect(initial.teams[0]).toMatchObject({
     generation: 9,
-    format: CHAMPIONS_FORMAT,
+    format: "",
+    generationProfile: "6-9",
   });
   const legacy = {
     ...initial,
-    teams: [{ ...initial.teams[0], format: "" }],
+    teams: [{ ...initial.teams[0], format: "", generationProfile: undefined }],
   };
   expect(
     loadStoredState(fakeStorage(JSON.stringify(legacy)).storage)?.teams[0],

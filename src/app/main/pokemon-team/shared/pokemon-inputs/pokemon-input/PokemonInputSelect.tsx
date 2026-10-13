@@ -116,13 +116,14 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       window.removeEventListener("resize", measure);
     };
   }, [isOpen]);
-  const { generation, format } = store.currentTeam;
+  const { generation } = store.currentTeam;
+  const format = store.dataFormat;
   const analysisMember = store.analysisTeam[teamIndex];
   const isMove = pokemonProperty.startsWith("move");
   const showMoveTypes = leadingIcon && isMove;
   const measureList = useCallback(() => {
     if (pokemonProperty === "ability") return;
-    const game = `${locale}|${generation}|${gameFormat(format)}`;
+    const game = `${locale}|${generation}|${gameFormat(format)}|${store.currentTeam.generationProfile ?? ""}`;
     const [kind, labels, chrome] =
       pokemonProperty === "name" ?
         ([
@@ -610,6 +611,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
               store.team[teamIndex]?.name ?? "",
               value,
               store.currentTeam.generation,
+              store.dataFormat,
             );
 
           return (

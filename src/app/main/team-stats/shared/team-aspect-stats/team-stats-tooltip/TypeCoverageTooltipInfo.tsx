@@ -21,7 +21,8 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   type: PokemonType;
 }) {
   const { t, names } = useTranslation();
-  const { generation, format } = store.currentTeam;
+  const { generation } = store.currentTeam;
+  const format = store.dataFormat;
   const superEffectiveMoves = store.analysisTeam.flatMap((member, i) =>
     MOVE_KEYS.flatMap(key => {
       const { name: pokemon, ability, item } = member;

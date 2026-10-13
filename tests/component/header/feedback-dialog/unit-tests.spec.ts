@@ -164,7 +164,7 @@ test.describe("Feedback Dialog - Unit Tests", () => {
       {
         message: "Wobbuffet is missing Counter",
         email: "trainer@example.com",
-        link: expect.stringContaining("?team="),
+        link: expect.stringMatching(/[?&]team=/),
         screen: expect.stringMatching(/^\d+×\d+ window, /),
         screenshot: expect.stringMatching(/^data:image\/jpeg;base64,/),
       },
@@ -414,7 +414,7 @@ test("a stalled screenshot image does not block feedback or leave its request ru
   expect(requests).toEqual([
     {
       message: "The image server stalled",
-      link: expect.stringContaining("?team="),
+      link: expect.stringMatching(/[?&]team=/),
       screen: expect.any(String),
     },
   ]);

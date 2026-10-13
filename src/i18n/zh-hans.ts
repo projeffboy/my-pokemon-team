@@ -30,6 +30,11 @@ const zhHans: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即将推出",
+  combinedGenerations: {
+    label: "第6–9世代",
+    short: "第6–9世代",
+    description: "合并第6–9世代所有游戏的选项",
+  },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "语言",

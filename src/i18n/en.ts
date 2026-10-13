@@ -23,6 +23,11 @@ const en = {
   },
   generationSelect: "Generation",
   comingSoon: "Coming soon",
+  combinedGenerations: {
+    label: "Generations 6–9",
+    short: "Gens 6–9",
+    description: "Combines options from all Gen 6–9 games",
+  },
   championsGeneration: "Gen 9 · Champions",
   championsGenerationShort: "Gen 9 (Champions)",
   language: "Language",

@@ -9,8 +9,17 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 13, 2026",
+    changes: [
+      "Showdown imports and text exports now preserve each team’s generation setting.",
+      "Generations 6–9 now combines options from all games in that range, including both Levitate and Cursed Body for Gengar.",
+      "Union moves such as Fancy Vivillon’s Weather Ball now survive shared links and text imports.",
+    ],
+  },
+  {
     date: "Oct 12, 2026",
     changes: [
+      "Generations 6–9 combines the old website’s Pokémon and move pools and is now the default for new visits.",
       "Older Hidden Power team links now keep their original IVs when none were specified.",
     ],
   },

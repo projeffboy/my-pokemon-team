@@ -8,6 +8,10 @@ import {
   type Team,
   type TeamPokemonDetails,
 } from "@/types";
+import {
+  COMBINED_GENERATIONS_FORMAT,
+  teamDataFormat,
+} from "@/shared/generation-profile";
 import { createEmptyTeam } from "@/shared/team";
 import {
   generationRules,
@@ -55,7 +59,7 @@ export interface TransferLoss {
 // Adapt a copy of the team; no format tiers or user search filters affect transferability.
 export function planGenerationTransfer(
   team: ReadonlyTeam,
-  from: Pick<SavedTeam, "generation" | "format">,
+  from: Pick<SavedTeam, "generation" | "format" | "generationProfile">,
   generation: Generation,
   format: string,
   data: GenerationTransferData,
@@ -63,7 +67,8 @@ export function planGenerationTransfer(
 ): { team: Team; losses: TransferLoss[] } {
   const bit = generationBit(generation, format);
   const rules = generationRules(generation, format);
-  const previousRules = generationRules(from.generation, from.format);
+  const previousRules = generationRules(from.generation, teamDataFormat(from));
+  const combined = format === COMBINED_GENERATIONS_FORMAT;
   const has = (mask: number | undefined) => !!((mask ?? 0) & bit);
   const losses: TransferLoss[] = [];
   const result = team.map((original, index) => {
@@ -146,17 +151,21 @@ export function planGenerationTransfer(
       loss("item", member.item);
       member.item = "";
     }
-    if (
-      member.ability &&
-      (!rules.abilities || !has(entry?.abilities[member.ability]))
-    ) {
-      const abilities =
-        member.name !== original.name && rules.abilities ?
-          Object.entries(entry?.abilities ?? {})
-            .filter(([, mask]) => has(mask))
-            .map(([ability]) => ability)
-        : [];
-      const replacement = abilities.length === 1 ? abilities[0] : undefined;
+    const abilities =
+      !rules.abilities ?
+        []
+      : Object.entries(entry?.abilities ?? {})
+          .filter(([, mask]) => has(mask))
+          .map(([ability]) => ability)
+          .filter(
+            (ability, _, available) =>
+              !combined || ability !== "No Ability" || available.length === 1,
+          );
+    if (member.ability && !abilities.includes(member.ability)) {
+      const replacement =
+        (combined || member.name !== original.name) && abilities.length === 1 ?
+          abilities[0]
+        : undefined;
       if (replacement)
         losses.push({
           index,

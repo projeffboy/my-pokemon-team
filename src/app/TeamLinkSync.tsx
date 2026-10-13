@@ -108,9 +108,13 @@ const TeamLinkSync = observer(function TeamLinkSync() {
           const { generation, format } = store.currentTeam;
           if (
             generation !== settings.generation ||
-            gameFormat(format) !== settings.format
+            gameFormat(format) !== settings.format ||
+            store.currentTeam.generationProfile !== settings.generationProfile
           )
-            Object.assign(store.currentTeam, settings);
+            Object.assign(store.currentTeam, {
+              ...settings,
+              generationProfile: settings.generationProfile,
+            });
         } else store.openUnsavedTeam(undefined, settings);
       }
     };

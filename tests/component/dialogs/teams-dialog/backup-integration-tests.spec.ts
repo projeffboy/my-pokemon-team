@@ -53,9 +53,18 @@ test.describe("Team backups", () => {
         const { teams, currentTeamId } = JSON.parse(
           localStorage.getItem("mypokemonteam")!,
         );
+        // Normal saves can reorder keys without changing the backup's content.
         const digest = await crypto.subtle.digest(
           "SHA-256",
-          new TextEncoder().encode(JSON.stringify({ teams, currentTeamId })),
+          new TextEncoder().encode(
+            JSON.stringify({ teams, currentTeamId }, (_, value: unknown) =>
+              value && typeof value === "object" && !Array.isArray(value) ?
+                Object.fromEntries(
+                  Object.entries(value).sort(([a], [b]) => a.localeCompare(b)),
+                )
+              : value,
+            ),
+          ),
         );
         return Array.from(new Uint8Array(digest), byte =>
           byte.toString(16).padStart(2, "0"),

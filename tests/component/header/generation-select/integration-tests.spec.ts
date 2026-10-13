@@ -162,7 +162,7 @@ for (const incompatible of [false, true]) {
   }) => {
     if (incompatible) {
       await page.goto(
-        `/?team=${Buffer.from(transferText).toString("base64url")}`,
+        `/?gen=9&team=${Buffer.from(transferText).toString("base64url")}`,
       );
       await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Slowbro");
     } else {
@@ -214,7 +214,7 @@ for (const incompatible of [false, true]) {
 for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
   test(`generation transfer: ${action}`, async ({ page }) => {
     await page.goto(
-      `/?team=${Buffer.from(transferText).toString("base64url")}`,
+      `/?gen=9&team=${Buffer.from(transferText).toString("base64url")}`,
       { waitUntil: "domcontentloaded" },
     );
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Slowbro");

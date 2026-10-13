@@ -42,6 +42,7 @@ import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { GENERATION_GAMES } from "@/shared/generations";
 import { isTeamEmpty } from "@/shared/team";
 import { serializeTeam, serializeTeams } from "@/store/team-text";
+import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
 import { teamUrl } from "@/app/shared/team-link";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import PokemonIcon from "@/app/shared/PokemonIcon";
@@ -74,8 +75,14 @@ const iconSlot = {
 const TeamsDialog = observer(function TeamsDialog() {
   const { t } = useTranslation();
   const titleId = useId();
-  const teamSubtitle = ({ generation, format }: SavedTeam) =>
-    format === CHAMPIONS_FORMAT ? t.championsGeneration
+  const teamSubtitle = ({
+    generation,
+    format,
+    generationProfile,
+  }: SavedTeam) =>
+    generationProfile === COMBINED_GENERATIONS_PROFILE ?
+      t.combinedGenerations.label
+    : format === CHAMPIONS_FORMAT ? t.championsGeneration
     : variantGeneration(format) ?
       t.gameVariants[format as keyof typeof t.gameVariants]
     : `${t.generation(generation)} (${GENERATION_GAMES[generation]})`;

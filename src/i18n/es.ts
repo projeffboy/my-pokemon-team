@@ -29,6 +29,11 @@ const es: Messages = {
   },
   generationSelect: "Generación",
   comingSoon: "Próximamente",
+  combinedGenerations: {
+    label: "Generaciones 6–9",
+    short: "Gens. 6–9",
+    description: "Combina opciones de todos los juegos de las generaciones 6–9",
+  },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
   language: "Idioma",

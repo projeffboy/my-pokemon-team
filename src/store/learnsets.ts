@@ -1,3 +1,4 @@
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import { viableMovesIn } from "@/data/viable-moves";
 import pokedex from "@/data/pokedex";
 import { pokemonNameInverse } from "@/shared/names";
@@ -20,7 +21,10 @@ let learnsets: Learnsets = {};
 let availability: GenerationTransferData | undefined;
 let learnableMoves: Set<string> | undefined;
 export const learnsetsReady: Promise<void> = Promise.all([
-  loadGenerationTransferData(),
+  loadGenerationTransferData().then(data => {
+    availability = data;
+    return data;
+  }),
   import("@/data/learnsets.json", {
     with: { type: "json" },
   }),
@@ -121,11 +125,17 @@ function learnsetParent(pokemon: string): string | undefined {
   return base;
 }
 
-// Can `pokemon` learn `move`?
+// Preserve legacy move acceptance; union-only additions apply just to the combined mode.
 export const canItLearn = (
   move: string | undefined,
   pokemon: string,
-): boolean => (move ? completeLearnset(pokemon).includes(move) : false);
+  generation: Generation = 9,
+  format = "",
+): boolean =>
+  !!move &&
+  (completeLearnset(pokemon).includes(move) ||
+    (format === COMBINED_GENERATIONS_FORMAT &&
+      generationLearnset(pokemon, generation, format).includes(move)));
 
 export function getTeamLearnsets(
   team: ReadonlyTeam,
@@ -205,7 +215,19 @@ export function generationLearnset(
   // The regular latest-generation editor is National Dex; game variants use their native pools.
   if (generation === 9 && !format) return complete;
   const bit = generationBit(generation, format);
-  return complete.filter(
+  let pool = complete;
+  if (format === COMBINED_GENERATIONS_FORMAT) {
+    learnableMoves ??= new Set(Object.values(learnsets).flat());
+    pool = [
+      ...new Set([
+        ...complete,
+        ...Object.keys(availability?.pokemon[pokemon]?.moves ?? {}).filter(
+          move => learnableMoves?.has(move),
+        ),
+      ]),
+    ];
+  }
+  return pool.filter(
     move =>
       !!(
         (availability?.pokemon[pokemon]?.moves[

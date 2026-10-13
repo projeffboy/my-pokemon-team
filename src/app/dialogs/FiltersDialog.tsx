@@ -282,7 +282,7 @@ const FiltersDialog = observer(function FiltersDialog() {
         <GenerationTransferDialog
           team={store.team}
           fromGeneration={store.currentTeam.generation}
-          fromFormat={store.currentTeam.format}
+          fromFormat={store.dataFormat}
           toGeneration={target.generation}
           toFormat={target.format}
           hasCarryover={plan.team.some(member => member.name)}

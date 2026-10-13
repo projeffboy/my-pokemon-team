@@ -13,7 +13,7 @@ import store from "@/store";
 import pokedex from "@/data/pokedex";
 import { STAT_KEYS } from "@/types";
 import { typesIn } from "@/shared/generation-data";
-import { pokemonAbilities, pokemonBaseStats } from "@/shared/pokedex";
+import { pokemonBaseStats } from "@/shared/pokedex";
 import {
   bulbapediaUrl,
   serebiiDexUrl,
@@ -40,7 +40,8 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
   const teamIndex = dialog?.teamIndex ?? 0;
   const member = store.analysisTeam[teamIndex];
   const pokemon = member?.name ?? "";
-  const { generation, format } = store.currentTeam;
+  const { generation } = store.currentTeam;
+  const format = store.dataFormat;
   const entry = pokedex[pokemon];
   const stats = pokemonBaseStats(pokemon, generation, format);
   const statKeys = STAT_KEYS.filter(stat => generation !== 1 || stat !== "spd");
@@ -166,7 +167,7 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
                   {t.info.abilities}
                 </Typography>
                 <Typography>
-                  {pokemonAbilities(pokemon, generation)
+                  {(store.teamAbilities[teamIndex] ?? [])
                     .map(names.ability)
                     .join(", ")}
                 </Typography>

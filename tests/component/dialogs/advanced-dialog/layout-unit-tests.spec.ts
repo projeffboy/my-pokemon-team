@@ -8,7 +8,7 @@ for (const game of [
   { query: "gen=3", level: true, gender: true, nature: true, tera: false },
   { query: "gen=9", level: true, gender: true, nature: true, tera: true },
   {
-    query: "game=Pokemon+Champions+%28M-C%29",
+    query: "game=champions",
     level: false,
     gender: true,
     nature: true,

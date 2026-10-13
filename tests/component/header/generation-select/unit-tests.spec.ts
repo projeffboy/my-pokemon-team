@@ -3,7 +3,7 @@ import { GENERATION_GAMES, GENERATIONS } from "@/shared/generations";
 import en from "@/i18n/en";
 import type { Locator } from "@playwright/test";
 
-test("Legends options are disabled with Coming soon beside their logos", async ({
+test("Let’s Go and Legends options are disabled with Coming soon beside their logos", async ({
   page,
 }) => {
   const generation = page.getByRole("combobox", { name: "Generation" });
@@ -12,14 +12,14 @@ test("Legends options are disabled with Coming soon beside their logos", async (
     await page.setViewportSize({ width, height: 1000 });
     const before = await generationInput.inputValue();
     await generation.click();
-    for (const value of ["Legends: Arceus", "Legends: Z-A"]) {
+    for (const value of ["Let’s Go", "Legends: Arceus", "Legends: Z-A"]) {
       const option = page.locator(`[role="option"][data-value="${value}"]`);
       await expect(option).toHaveAttribute("aria-disabled", "true");
       await option.scrollIntoViewIfNeeded();
       const status = option.getByText("Coming soon", { exact: true });
       await expect(status).toBeVisible();
       await expect(status).toHaveCSS("font-size", "12px");
-      const logoBounds = await option.locator("img").boundingBox();
+      const logoBounds = await option.locator("img").last().boundingBox();
       const statusBounds = await status.boundingBox();
       expect(logoBounds).not.toBeNull();
       expect(statusBounds).not.toBeNull();
@@ -38,6 +38,7 @@ test("Legends options are disabled with Coming soon beside their logos", async (
     await page.keyboard.press("Home");
     await page.keyboard.press("ArrowDown");
     await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowDown");
     await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
       "data-value",
       "8",
@@ -46,6 +47,11 @@ test("Legends options are disabled with Coming soon beside their logos", async (
     await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
       "data-value",
       "7",
+    );
+    await page.keyboard.press("ArrowDown");
+    await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
+      "data-value",
+      "6",
     );
     await page.keyboard.press("Escape");
   }
@@ -171,9 +177,9 @@ for (const gen of [9, 8, 7, 6, 5, 4, 3, 2, 1] as const) {
     await expect(generation).toHaveCSS("overflow", "hidden");
     await expect(generation).toHaveCSS("text-overflow", "clip");
     await expect(generation.locator("span")).toHaveCSS("overflow", "visible");
-    expect(
-      await page.locator("body").evaluate(el => el.scrollWidth),
-    ).toBeLessThanOrEqual(320);
+    await expect
+      .poll(() => page.locator("body").evaluate(el => el.scrollWidth))
+      .toBeLessThanOrEqual(320);
     await expect(generation).toHaveText(await expectedLabel(generation, gen));
     await page.setViewportSize({ width: 1440, height: 1000 });
     await expect(generation).toHaveText(await expectedLabel(generation, gen));
