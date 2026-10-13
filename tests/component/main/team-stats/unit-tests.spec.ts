@@ -17,9 +17,20 @@ test.describe("Team Stats - Unit Tests", () => {
 
       test("expand all type names together when they fit", async ({ page }) => {
         const panel = page.getByRole("region", { name: "Team Defence" });
-        await expect(panel.locator("[data-type-label] img")).toHaveCount(
-          icons ? 18 : 0,
+        // Icons that do not fit beside the text sit above it
+        await expect(panel.locator("[data-type-label] img")).toHaveCount(18);
+        await expect(panel.locator("[data-icon-above]")).toHaveCount(
+          icons ? 0 : 18,
         );
+        const [icon, text] = await Promise.all(
+          [
+            panel.locator("[data-type-label] img").first(),
+            panel.locator("[data-type-label] span:visible").first(),
+          ].map(part => part.boundingBox()),
+        );
+        if (!icon || !text) throw new Error("Missing type label");
+        if (icons) expect(icon.x + icon.width).toBeLessThanOrEqual(text.x + 1);
+        else expect(icon.y + icon.height).toBeLessThanOrEqual(text.y + 1);
         await expect(panel.locator("[data-type-name]:visible")).toHaveCount(
           fullNames ? 18 : 0,
         );

@@ -2,13 +2,11 @@ import { test, expect } from "fixtures";
 import { openAnalysis } from "helper";
 
 for (const analysis of ["Team Defence", "Team Type Coverage"]) {
-  test(`${analysis}: tooltip heading follows its chip's type icon as space changes`, async ({
+  test(`${analysis}: tooltip heading shows its chip's type icon as space changes`, async ({
     page,
   }) => {
     const team = Buffer.from("Rhyperior\n- Stone Edge\n").toString("base64url");
     await page.goto(`/?gen=9&team=${team}`);
-    let sawIcon = false;
-    let sawTextOnly = false;
     for (const width of [320, 480, 600, 1366]) {
       await page.setViewportSize({ width, height: 900 });
       await openAnalysis(page, analysis);
@@ -18,22 +16,13 @@ for (const analysis of ["Team Defence", "Team Type Coverage"]) {
       await chip.focus();
       const heading = page.getByRole("tooltip").locator("p").first();
       await expect(heading).toContainText("Bug");
-      await expect(async () => {
-        const hasIcon = (await chip.locator("img").count()) > 0;
-        await expect(heading.locator("img")).toHaveCount(hasIcon ? 1 : 0);
-        if (hasIcon) {
-          await expect(heading.locator("img")).toHaveAttribute(
-            "src",
-            (await chip.locator("img").getAttribute("src")) ?? "",
-          );
-          sawIcon = true;
-        } else sawTextOnly = true;
-      }).toPass();
+      await expect(heading.locator("img")).toHaveAttribute(
+        "src",
+        (await chip.locator("img").getAttribute("src")) ?? "",
+      );
       await chip.press("Escape");
       await chip.evaluate(element => element.blur());
     }
-    expect(sawIcon).toBe(true);
-    expect(sawTextOnly).toBe(true);
   });
 }
 

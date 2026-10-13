@@ -10,8 +10,6 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { useIsMdDown, useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
-import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import { effectivePokemonTypes } from "@/store/shared/effectiveness";
 import { isShinyInGeneration } from "@/shared/generation-rules";
 import typeIcons from "@/images/type-icons";
@@ -65,7 +63,6 @@ const PokemonInputs = observer(function PokemonInputs({
   const { t, names } = translation;
   const isMdDown = useIsMdDown();
   const isSmDown = useIsSmDown();
-  const hasTypeIcons = useTypeIcons();
   const showTools = store.isMoreOpen;
   const member = store.team[teamIndex];
   const analysisMember = store.analysisTeam[teamIndex];
@@ -201,33 +198,15 @@ const PokemonInputs = observer(function PokemonInputs({
                 analysisMember?.ability,
                 analysisMember?.item,
                 store.currentTeam.generation,
-              ).map(type =>
-                !hasTypeIcons ?
-                  <Box
-                    key={type}
-                    component="span"
-                    role="img"
-                    aria-label={names.type(type)}
-                    sx={{
-                      bgcolor: TYPE_COLORS[type],
-                      color: TYPE_TEXT_COLORS[type],
-                      fontSize: 10,
-                      fontWeight: 500,
-                      lineHeight: "16px",
-                      px: 0.5,
-                      borderRadius: 0.5,
-                    }}
-                  >
-                    {t.typeAbbreviations[type]}
-                  </Box>
-                : <Box
-                    key={type}
-                    component="img"
-                    src={typeIcons[type]}
-                    alt={names.type(type)}
-                    sx={{ width: 20, height: 20 }}
-                  />,
-              )}
+              ).map(type => (
+                <Box
+                  key={type}
+                  component="img"
+                  src={typeIcons[type]}
+                  alt={names.type(type)}
+                  sx={{ width: 20, height: 20 }}
+                />
+              ))}
               {member &&
                 isShinyInGeneration(member, store.currentTeam.generation) && (
                   <AutoAwesomeIcon

@@ -473,20 +473,11 @@ test.describe("Pokemon Card - Unit Tests", () => {
         .getByRole("region", { name: "Team Defence", exact: true })
         .getByRole("button", { name: "Electric", exact: true });
       await expect(statsChip).toBeVisible();
-      await expect(async () => {
-        const hasIcon = (await statsChip.locator("img").count()) > 0;
-        const card = page.getByRole("region", { name: "Pokemon 1" });
-        const types = card.getByRole("img", { name: "Electric", exact: true });
-        await expect(types).toHaveCount(2);
-        const cardType = types.first();
-        expect(await cardType.evaluate(element => element.tagName)).toBe(
-          hasIcon ? "IMG" : "SPAN",
-        );
-        if (!hasIcon) await expect(cardType).toHaveText("ELC");
-        expect(await electricIcon.evaluate(element => element.tagName)).toBe(
-          "IMG",
-        );
-      }).toPass();
+      const card = page.getByRole("region", { name: "Pokemon 1" });
+      const types = card.getByRole("img", { name: "Electric", exact: true });
+      await expect(types).toHaveCount(2);
+      for (const type of [types.first(), electricIcon])
+        expect(await type.evaluate(element => element.tagName)).toBe("IMG");
 
       await input.press("ArrowDown");
       const option = page

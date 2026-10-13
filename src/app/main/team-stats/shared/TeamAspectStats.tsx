@@ -158,6 +158,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 onClick={e => handleClick(e, i)}
               >
                 <TypeLabel
+                  iconAbove
                   hasIcon={hasIcon}
                   showFullName={showFullName}
                   type={type}
@@ -179,7 +180,7 @@ const TeamAspectStats = observer(function TeamAspectStats({
                       <TeamStatsTooltip
                         type={type}
                         typeColor={TYPE_COLORS[type]}
-                        hasIcon={hasIcon}
+                        hasIcon
                         teamStatType={teamStatType}
                       />
                     </Paper>
