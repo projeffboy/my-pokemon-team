@@ -26,7 +26,8 @@ const LISTBOX_PADDING = 0; // px
 const ITEM_SIZE = 48;
 export const gridColumns = (view: NameView) => (view === "big-grid" ? 3 : 5);
 const GRID_ROW_SIZE = 40;
-const BIG_GRID_ROW_SIZE = 96;
+// A 72px sprite above three lines of its name
+const BIG_GRID_ROW_SIZE = 122;
 // The view toggle's top and bottom margins
 const TOGGLE_MARGIN = 8;
 
@@ -117,7 +118,8 @@ function RowComponent({
   );
 }
 
-// A row of the grid view: icons only, named for screen readers and the tooltip
+// A row of the grid view. The small grid is icons only, named for screen readers and
+// the tooltip; the big grid has room for each name under its sprite.
 function GridRowComponent({
   index,
   itemData,
@@ -154,6 +156,7 @@ function GridRowComponent({
             title={option.label}
             sx={{
               display: "flex",
+              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               height: large ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE,
@@ -163,7 +166,28 @@ function GridRowComponent({
             }}
           >
             {large ?
-              <PokemonDexSprite pokemon={option.value} />
+              <>
+                <PokemonDexSprite pokemon={option.value} />
+                <Box
+                  component="span"
+                  sx={{
+                    // Three lines at most, which fits the longest forme names on a small phone
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: 3,
+                    overflow: "hidden",
+                    width: "100%",
+                    px: 0.25,
+                    boxSizing: "border-box",
+                    fontSize: 12,
+                    lineHeight: "14px",
+                    textAlign: "center",
+                    overflowWrap: "anywhere",
+                  }}
+                >
+                  {option.label}
+                </Box>
+              </>
             : <PokemonIcon pokemonProperty="name" value={option.value} />}
           </Box>
         );
@@ -177,7 +201,7 @@ function GridRowComponent({
 export const VirtualizedListboxContext = React.createContext<{
   pokemonProperty: string;
   teamIndex: number;
-  // Whether the move options show their type, as the inputs do with the team tools
+  // Whether the move options show their type, as the inputs do with Show move types on
   showMoveTypes: boolean;
   selectedValue: string;
   internalListRef: React.RefObject<ListImperativeAPI | null>;
@@ -216,7 +240,7 @@ const VirtualizedListbox = observer(
       const isNameInput = pokemonProperty === "name";
       const isGrid = isNameInput && store.nameView !== "list";
       const isBigGrid = isNameInput && store.nameView === "big-grid";
-      // With the team tools, Filters and Sort sit beside the view toggle, which
+      // In Advanced mode, Filters and Sort sit beside the view toggle, which
       // drops its captions to make room; the tooltips and labels still name the views
       const showTools = isNameInput && store.isMoreOpen;
       // The move lists have Sort alone

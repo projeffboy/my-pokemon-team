@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { openTeamTools, selectPokemon } from "helper";
+import { turnOnAdvanced, selectPokemon } from "helper";
 import pokedex from "@/data/pokedex";
 import { filterPokemon } from "@/store/filtering";
 import { sortPokemon, DEFAULT_SORT } from "@/store/sorting";
@@ -437,7 +437,7 @@ test("keyboard users can switch views without losing their search", async ({
 test("keyboard popup tools restore input focus after their dialogs close", async ({
   page,
 }) => {
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   const input = page.getByLabel("Pokemon 1's name");
   await input.fill("no-pokemon-matches");
   await input.press("Tab");
@@ -473,4 +473,30 @@ test("leaving a dropdown still restores the selected name", async ({
   await expect(input).toHaveValue("Arbok");
   await input.focus();
   await expect(input).toHaveValue("Arbok");
+});
+
+test("the big grid names each pokemon under its sprite, and the small grid does not", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("Wooper");
+  await page.getByRole("button", { name: "Grid view", exact: true }).click();
+  const option = page.getByRole("option", { name: "Wooper", exact: true });
+  const name = option.getByText("Wooper", { exact: true });
+  await expect(option).toBeVisible();
+  await expect(name).toHaveCount(0);
+
+  await page
+    .getByRole("button", { name: "Big grid view", exact: true })
+    .click();
+  await expect(name).toBeVisible();
+  const [sprite, text, cell] = await Promise.all(
+    [option.locator("img"), name, option].map(part => part.boundingBox()),
+  );
+  if (!sprite || !text || !cell) throw new Error("Missing big grid cell");
+  expect(sprite.y + sprite.height).toBeLessThanOrEqual(text.y + 0.5);
+  expect(text.y + text.height).toBeLessThanOrEqual(cell.y + cell.height + 0.5);
+  expect(text.x).toBeGreaterThanOrEqual(cell.x - 0.5);
+  expect(text.x + text.width).toBeLessThanOrEqual(cell.x + cell.width + 0.5);
 });
