@@ -3,6 +3,9 @@ import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Badge from "@mui/material/Badge";
+import { observer } from "mobx-react-lite";
+import store from "@/store";
+import { LOCALE_CODES, LOCALE_NAMES } from "@/i18n/locales";
 import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face-cropped.svg";
 import jigglypuffFace from "@/images/pokemon-shuffle-faces/jigglypuff-shuffle-face-cropped.svg";
 import { fluidClamp } from "./header/fluid-clamp";
@@ -12,6 +15,7 @@ import FeedbackDialog from "./header/FeedbackDialog";
 import SiteVersionSwitch from "./header/SiteVersionSwitch";
 import { breakpointValues } from "./shared/theme";
 import { useTranslation } from "./shared/TranslationContext";
+import useFittingLabel from "./shared/use-fitting-label";
 
 // Where the title reaches its full size: the page's margins widen at sm,
 // so the title needs a little more width than that to fit
@@ -21,9 +25,22 @@ const fluid = (min: number, max: number, unit?: "px" | "rem") =>
   fluidClamp(min, max, minimumTitleWidth, fullSizeWidth, unit);
 const faceHeight = fluid(31, 48);
 const faceSpacing = fluid(3.75, 8);
+// With its icon beside the caption, a caption button is this much wider than its text
+const rowButtonExtra = 56;
+// What the generation keeps before the caption buttons take a row: enough for most game names
+const rowGenerationWidth = 240;
 
-export default function Header() {
+const Header = observer(function Header() {
   const { t } = useTranslation();
+  // The probe is as wide as the room the two captions would have in a row. The row comes
+  // first, with the language's code, and then its name.
+  const named = LOCALE_NAMES[store.locale] + t.feedback.caption;
+  const { ref: rowRoom, label: rowCaptions } = useFittingLabel<HTMLDivElement>([
+    named,
+    LOCALE_CODES[store.locale] + t.feedback.caption,
+    "",
+  ]);
+  const row = !!rowCaptions;
   return (
     <Grid component="header" container size={12} spacing={1.5}>
       <Stack spacing={1.5} useFlexGap sx={{ width: "100%", maxWidth: "100%" }}>
@@ -95,51 +112,70 @@ export default function Header() {
             width: "max-content",
             maxWidth: "100%",
             mx: "auto",
+            // The version switch takes what the other buttons leave, up to its full label.
+            // On phones the outer columns centre that row above the generation.
             gridTemplateColumns: {
-              xxs: "auto auto",
-              sm: "minmax(0, auto) minmax(240px, 1fr) auto",
-              md: "auto minmax(0, 1fr) auto",
+              xxs: "1fr minmax(0, auto) auto 1fr",
+              sm: "minmax(0, auto) minmax(min-content, 1fr)",
             },
             alignItems: "center",
-            gap: 1,
+            columnGap: { xxs: 0, sm: 1 },
             rowGap: { xxs: 2, sm: 1 },
           }}
         >
-          <Box
-            sx={{
-              justifySelf: { xxs: "end", sm: "start" },
-              minWidth: { sm: 0, md: "auto" },
-              maxWidth: { sm: "100%", md: "none" },
-            }}
-          >
+          <Box sx={{ gridColumn: { xxs: 2, sm: 1 }, minWidth: 0 }}>
             <SiteVersionSwitch />
           </Box>
+          {/* From sm up these share the second column, so the version switch gets its full
+              label before the generation grows. 184px is the narrowest that fits
+              "Gen 9 · Champions". */}
           <Box
             sx={{
-              gridColumn: { xxs: "1 / -1", sm: 2 },
-              gridRow: { xxs: 2, sm: 1 },
-              justifySelf: "center",
-              minWidth: 0,
-              maxWidth: "100%",
+              display: { xxs: "contents", sm: "grid" },
+              position: "relative",
+              gridTemplateColumns: "minmax(184px, 1fr) auto",
+              alignItems: "center",
+              gap: 1,
             }}
           >
-            <GenerationSelect />
+            <Box
+              ref={rowRoom}
+              sx={{
+                display: { xxs: "none", sm: "block" },
+                position: "absolute",
+                insetInline: 0,
+                pr: `${rowGenerationWidth + 2 * (8 + rowButtonExtra)}px`,
+                typography: "button",
+              }}
+            />
+            <Box
+              sx={{
+                gridColumn: { xxs: "1 / -1", sm: 1 },
+                gridRow: { xxs: 2, sm: 1 },
+                justifySelf: "center",
+                minWidth: 0,
+                maxWidth: "100%",
+              }}
+            >
+              <GenerationSelect />
+            </Box>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                gridColumn: { xxs: 3, sm: 2 },
+                gridRow: 1,
+                ml: { xxs: 1, sm: 0 },
+              }}
+            >
+              <LanguageSelect row={row} named={rowCaptions === named} />
+              <FeedbackDialog row={row} />
+            </Stack>
           </Box>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{
-              gridColumn: { xxs: 2, sm: 3 },
-              gridRow: 1,
-              justifySelf: { xxs: "start", sm: "end" },
-              alignItems: "stretch",
-            }}
-          >
-            <LanguageSelect />
-            <FeedbackDialog />
-          </Stack>
         </Box>
       </Stack>
     </Grid>
   );
-}
+});
+
+export default Header;

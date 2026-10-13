@@ -56,6 +56,7 @@ const ko: Messages = {
   },
   siteVersion: {
     button: "이전 사이트",
+    short: "이전 사이트",
     title: "이전 사이트로 이동할까요?",
     description:
       "현재 팀은 이전 사이트로 옮겨지지 않습니다. 여기에 이미 저장한 팀은 이 버전에 그대로 남습니다.",

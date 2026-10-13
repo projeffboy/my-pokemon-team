@@ -41,6 +41,7 @@ const zhHant: Messages = {
   },
   siteVersion: {
     button: "舊版網站",
+    short: "舊版網站",
     title: "切換到舊版網站？",
     description:
       "目前的隊伍不會轉移到舊版網站。已在此儲存的隊伍將保留在這個版本中。",

@@ -9,23 +9,36 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import { useBreakpoint } from "@/app/shared/WidthContext";
 import useFittingLabel from "@/app/shared/use-fitting-label";
 
-import versionFace from "@/images/pokemon-shuffle-faces/landorus-face.png";
+import landorusFace from "@/images/pokemon-shuffle-faces/landorus-face.png";
+import ogerponFace from "@/images/pokemon-shuffle-faces/ogerpon-teal-mask-by-jormxdos.png";
 
 const SITE_URL = "https://old.mypokemonteam.com/";
+// A face's width plus its margin from the label
+const faceSpace = 28;
+
+const face = (src: string) => (
+  <Box
+    component="img"
+    src={src}
+    alt=""
+    sx={{ width: 24, height: 24, objectFit: "contain" }}
+  />
+);
 
 const SiteVersionSwitch = observer(function SiteVersionSwitch() {
   const { t } = useTranslation();
-  const breakpoint = useBreakpoint();
-  const labels =
-    breakpoint === "sm" ?
-      [t.siteVersion.goLong, t.siteVersion.go, t.siteVersion.button]
-    : breakpoint === "xs" ? [t.siteVersion.go]
-    : breakpoint === "xxs" ? [t.siteVersion.button]
-    : [t.siteVersion.goLong];
-  const { ref: labelRef, label } = useFittingLabel<HTMLSpanElement>(labels);
+  // The longest label that fits between the old website's two faces. Where even the shortest
+  // does not, it keeps Landorus alone.
+  const { ref: facesRoom, label: fitting } = useFittingLabel<HTMLSpanElement>([
+    t.siteVersion.goLong,
+    t.siteVersion.go,
+    t.siteVersion.button,
+    t.siteVersion.short,
+    "",
+  ]);
+  const bothFaces = !!fitting;
   const [open, setOpen] = useState(false);
   const cancelButton = useRef<HTMLButtonElement>(null);
   const titleId = useId();
@@ -41,47 +54,39 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
     <>
       <Button
         variant="contained"
-        endIcon={
-          <Box
-            component="img"
-            src={versionFace}
-            alt=""
-            sx={{ width: 24, height: 24, objectFit: "contain" }}
-          />
-        }
+        startIcon={bothFaces ? face(landorusFace) : undefined}
+        endIcon={face(bothFaces ? ogerponFace : landorusFace)}
         onClick={handleSwitch}
-        sx={{
-          whiteSpace: "nowrap",
-          minHeight: 48,
-          minWidth: { sm: 0, md: 64 },
-          maxWidth: { sm: "100%", md: "none" },
-          width: { xxs: "auto", sm: "100%", md: "auto" },
-        }}
+        sx={{ whiteSpace: "nowrap", minHeight: 48, minWidth: 0, width: "100%" }}
       >
-        {breakpoint === "sm" ?
-          <Box sx={{ display: "grid", flex: "1 1 auto", minWidth: 0 }}>
-            <Box
-              component="span"
-              aria-hidden="true"
-              sx={{
-                gridArea: "1 / 1",
-                visibility: "hidden",
-                height: 0,
-                overflow: "hidden",
-                pr: 0.125,
-              }}
-            >
-              {t.siteVersion.goLong}
-            </Box>
-            <Box
-              component="span"
-              ref={labelRef}
-              sx={{ gridArea: "1 / 1", minWidth: 0 }}
-            >
-              {label}
-            </Box>
+        <Box
+          component="span"
+          ref={facesRoom}
+          sx={{
+            position: "absolute",
+            insetInline: 0,
+            px: `${16 + faceSpace}px`,
+          }}
+        />
+        <Box sx={{ display: "grid", flex: "1 1 auto", minWidth: 0 }}>
+          {/* The button's column grows to fit the full label and both faces */}
+          <Box
+            component="span"
+            aria-hidden="true"
+            sx={{
+              gridArea: "1 / 1",
+              visibility: "hidden",
+              height: 0,
+              overflow: "hidden",
+              pr: `${1 + (bothFaces ? 0 : faceSpace)}px`,
+            }}
+          >
+            {t.siteVersion.goLong}
           </Box>
-        : labels[0]}
+          <Box component="span" sx={{ gridArea: "1 / 1", minWidth: 0 }}>
+            {fitting || t.siteVersion.short}
+          </Box>
+        </Box>
       </Button>
       <Dialog
         open={open}

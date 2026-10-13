@@ -62,4 +62,51 @@ test.describe("Header Tests", () => {
       page.getByRole("button", { name: "Send feedback" }),
     ).toBeVisible();
   });
+
+  test("puts the language and feedback icons beside their captions where there is room", async ({
+    page,
+  }) => {
+    const header = page.getByRole("banner");
+    const buttons = ["Language", "Send feedback"].map(name =>
+      header.getByRole("button", { name, exact: true }),
+    );
+    // How far right of the button's middle its icon's middle is
+    const iconOffsets = () =>
+      Promise.all(
+        buttons.map(button =>
+          button.evaluate(element => {
+            const middle = (box: DOMRect) => box.x + box.width / 2;
+            const icon = element.querySelector("svg");
+            if (!icon) throw new Error("Missing icon");
+            return Math.round(
+              middle(icon.getBoundingClientRect()) -
+                middle(element.getBoundingClientRect()),
+            );
+          }),
+        ),
+      );
+
+    for (const width of [320, 600, 760]) {
+      await page.setViewportSize({ width, height: 800 });
+      await expect
+        .poll(async () => (await iconOffsets()).every(offset => !offset))
+        .toBe(true);
+    }
+    // The icons move beside the captions before the language is named in full
+    for (const [width, language] of [
+      [790, "EN"],
+      [840, "ENGLISH"],
+      [1200, "ENGLISH"],
+    ] as const) {
+      await page.setViewportSize({ width, height: 800 });
+      await expect
+        .poll(async () => (await iconOffsets()).every(offset => offset < -5))
+        .toBe(true);
+      await expect(buttons[0]!).toHaveText(language, { useInnerText: true });
+      await expect(buttons[1]!).toHaveText("FEEDBACK", { useInnerText: true });
+      await expect(
+        header.getByRole("button", { name: "Go to the old website" }),
+      ).toBeVisible();
+    }
+  });
 });

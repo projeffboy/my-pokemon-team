@@ -41,6 +41,7 @@ const ja: Messages = {
   },
   siteVersion: {
     button: "旧サイト",
+    short: "旧サイト",
     title: "旧サイトに移動しますか？",
     description:
       "現在のチームは旧サイトに引き継がれません。ここで保存済みのチームは、このバージョンに残ります。",

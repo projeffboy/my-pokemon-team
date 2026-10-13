@@ -11,7 +11,7 @@ test("an empty team switches sites immediately without transferring URL paramete
   );
   await page
     .getByRole("banner")
-    .getByRole("button", { name: /^(Go to (the )?)?old website$/i })
+    .getByRole("button", { name: /^(Go to (the )?)?old (web)?site$/i })
     .click();
   await expect(page).toHaveURL(destination);
   await expect(page.getByRole("heading", { name: "Other site" })).toBeVisible();
@@ -26,7 +26,7 @@ test("Cancel and Escape keep a nonempty team on the current site", async ({
   const currentUrl = page.url();
   const button = page
     .getByRole("banner")
-    .getByRole("button", { name: /^(Go to (the )?)?old website$/i });
+    .getByRole("button", { name: /^(Go to (the )?)?old (web)?site$/i });
   await button.click();
   const dialog = page.getByRole("dialog", {
     name: "Switch to the old website?",
@@ -58,7 +58,7 @@ test("a nonempty team switches only after confirmation and does not transfer its
   );
   await page
     .getByRole("banner")
-    .getByRole("button", { name: /^(Go to (the )?)?old website$/i })
+    .getByRole("button", { name: /^(Go to (the )?)?old (web)?site$/i })
     .click();
   const dialog = page.getByRole("dialog", {
     name: "Switch to the old website?",
@@ -68,4 +68,34 @@ test("a nonempty team switches only after confirmation and does not transfer its
     .getByRole("button", { name: "Go to old website", exact: true })
     .click();
   await expect(page).toHaveURL(destination);
+});
+
+test("Japanese keeps its full label and both faces where they fit", async ({
+  page,
+}) => {
+  await page.getByRole("button", { name: "Language", exact: true }).click();
+  await page.getByRole("menuitem", { name: "日本語" }).click();
+  for (const width of [360, 600, 760]) {
+    await page.setViewportSize({ width, height: 800 });
+    const button = page
+      .getByRole("banner")
+      .getByRole("button", { name: "旧サイトへ移動", exact: true });
+    await expect(button).toBeVisible();
+    await expect(button.locator("img")).toHaveCount(2);
+  }
+});
+
+test("Spanish keeps one face where its shortest label needs the room", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1200, height: 800 });
+  await page.getByRole("button", { name: "Language", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Español" }).click();
+  const button = page
+    .getByRole("banner")
+    .getByRole("button", { name: "Sitio anterior", exact: true });
+  await page.setViewportSize({ width: 320, height: 800 });
+  await expect(button.locator("img")).toHaveCount(1);
+  await page.setViewportSize({ width: 360, height: 800 });
+  await expect(button.locator("img")).toHaveCount(2);
 });

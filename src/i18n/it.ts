@@ -41,6 +41,7 @@ const it: Messages = {
   },
   siteVersion: {
     button: "Vecchio sito",
+    short: "Vecchio sito",
     title: "Passare al vecchio sito?",
     description:
       "La tua squadra attuale non verrà trasferita al vecchio sito. Le squadre già salvate qui rimarranno in questa versione.",

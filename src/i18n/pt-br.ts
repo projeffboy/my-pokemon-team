@@ -43,6 +43,7 @@ const ptBR: Messages = {
   },
   siteVersion: {
     button: "Site antigo",
+    short: "Site antigo",
     title: "Ir para o site antigo?",
     description:
       "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",

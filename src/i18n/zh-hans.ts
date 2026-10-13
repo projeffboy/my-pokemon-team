@@ -41,6 +41,7 @@ const zhHans: Messages = {
   },
   siteVersion: {
     button: "旧版网站",
+    short: "旧版网站",
     title: "切换到旧版网站？",
     description:
       "当前队伍不会转移到旧版网站。已在此保存的队伍将保留在这个版本中。",

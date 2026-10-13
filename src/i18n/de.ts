@@ -46,6 +46,7 @@ const de: Messages = {
   },
   siteVersion: {
     button: "Alte Website",
+    short: "Alte Seite",
     title: "Zur alten Website wechseln?",
     description:
       "Dein aktuelles Team wird nicht auf die alte Website übertragen. Bereits hier gespeicherte Teams bleiben in dieser Version.",

@@ -40,6 +40,7 @@ const es: Messages = {
   },
   siteVersion: {
     button: "Sitio anterior",
+    short: "Sitio anterior",
     title: "¿Cambiar al sitio anterior?",
     description:
       "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",

@@ -10,4 +10,7 @@ These are official Pokémon game images. The source pages identify them as copyr
 
 The download sources for the older Venusaur and Charizard face images in this directory were not recorded.
 
-`landorus-face.png`, used on the Old website button, is restored byte for byte from `src/landorus-face.png` in [commit 2d2bff3](https://github.com/projeffboy/my-pokemon-team/commit/2d2bff34afc852e7413c979ed4d10ee1f2af7f03). It is the original Pokemon Shuffle artwork used by this site.
+The Old website button shows the old website's two header faces, restored byte for byte from [commit 2d2bff3](https://github.com/projeffboy/my-pokemon-team/commit/2d2bff34afc852e7413c979ed4d10ee1f2af7f03):
+
+- `landorus-face.png`: the original `src/landorus-face.png`, Pokemon Shuffle artwork.
+- `ogerpon-teal-mask-by-jormxdos.png`: the original `src/ogerpon-teal-mask-by-jormxdos.png`, Shuffle-style fan art of Teal Mask Ogerpon by JormXDOS.

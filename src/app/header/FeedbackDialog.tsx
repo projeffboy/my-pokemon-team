@@ -40,7 +40,11 @@ const totalLength = (uploads: Upload[]) =>
 
 // Posts the feedback to the api/feedback.ts function, which emails it along with the
 // screen size, any images the visitor adds, and, if they agree, the page link and a screenshot
-const FeedbackDialog = observer(function FeedbackDialog() {
+const FeedbackDialog = observer(function FeedbackDialog({
+  row,
+}: {
+  row: boolean;
+}) {
   const { t } = useTranslation();
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -148,6 +152,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         icon={<FeedbackIcon />}
         caption={t.feedback.caption}
         label={t.feedback.button}
+        row={row}
         onClick={() => setIsOpen(true)}
       />
       <Dialog

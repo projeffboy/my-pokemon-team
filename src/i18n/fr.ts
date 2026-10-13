@@ -41,6 +41,7 @@ const fr: Messages = {
   },
   siteVersion: {
     button: "Ancien site",
+    short: "Ancien site",
     title: "Passer à l’ancien site ?",
     description:
       "Votre équipe actuelle ne sera pas transférée vers l’ancien site. Les équipes déjà enregistrées ici resteront sur cette version.",

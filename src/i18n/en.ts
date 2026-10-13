@@ -35,6 +35,8 @@ const en = {
   },
   siteVersion: {
     button: "Old website",
+    // The narrowest label, for small phones
+    short: "Old site",
     title: "Switch to the old website?",
     description:
       "Your current team won’t transfer to the old website. Teams already saved here will remain on this version.",

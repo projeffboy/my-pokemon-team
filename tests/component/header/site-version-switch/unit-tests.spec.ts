@@ -6,13 +6,13 @@ test("shows the old website switch near the title on a 320px phone", async ({
   await page.setViewportSize({ width: 320, height: 640 });
   const button = page
     .getByRole("banner")
-    .getByRole("button", { name: "Old website", exact: true });
+    .getByRole("button", { name: "Old site", exact: true });
   await expect(button).toBeVisible();
   await expect(button).toBeInViewport();
   await expect(
     page
       .getByRole("contentinfo")
-      .getByRole("button", { name: "Old website", exact: true }),
+      .getByRole("button", { name: "Old site", exact: true }),
   ).toHaveCount(0);
   const fits = await button.evaluate(element => {
     const bounds = element.getBoundingClientRect();
@@ -29,9 +29,9 @@ for (const width of [320, 400, 599, 600, 640, 680, 960, 1200]) {
     const header = page.getByRole("banner");
     const oldSite = header.getByRole("button", {
       name:
-        width >= 680 ? "Go to the old website"
-        : (width >= 400 && width < 600) || width === 640 ? "Go to old website"
-        : "Old website",
+        width === 320 ? "Old site"
+        : width === 400 || width === 600 ? "Go to old website"
+        : "Go to the old website",
       exact: true,
     });
     const language = header.getByRole("button", {
@@ -70,3 +70,27 @@ for (const width of [320, 400, 599, 600, 640, 680, 960, 1200]) {
     }
   });
 }
+
+test("lengthens the label between both faces as the header widens", async ({
+  page,
+}) => {
+  const header = page.getByRole("banner");
+  for (const [width, name] of [
+    [320, "Old site"],
+    [360, "Old website"],
+    [400, "Go to old website"],
+    [440, "Go to the old website"],
+  ] as const) {
+    await page.setViewportSize({ width, height: 800 });
+    const button = header.getByRole("button", { name, exact: true });
+    await expect(button).toBeVisible();
+    await expect(button.locator("img").first()).toHaveAttribute(
+      "src",
+      /landorus/,
+    );
+    await expect(button.locator("img").last()).toHaveAttribute(
+      "src",
+      /ogerpon/,
+    );
+  }
+});
