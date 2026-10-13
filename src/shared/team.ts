@@ -9,12 +9,14 @@ import type {
 import { itemNameInverse } from "./names";
 import { pokemonAbilities } from "./pokedex";
 import { LATEST_GENERATION } from "./generations";
-import { CHAMPIONS_FORMAT, CHAMPIONS_GENERATION } from "./formats";
+import { gameFormat } from "./formats";
+import { COMBINED_GENERATIONS_PROFILE } from "./generation-profile";
 
 export const DEFAULT_TEAM_SETTINGS = {
-  generation: CHAMPIONS_GENERATION,
-  format: CHAMPIONS_FORMAT,
-};
+  generation: 9 as const,
+  generationProfile: COMBINED_GENERATIONS_PROFILE,
+  format: "",
+} as const;
 
 export function createEmptyTeam(): Team {
   return Array.from({ length: 6 }, (): TeamPokemon => ({
@@ -46,7 +48,7 @@ export const createSearchFilters = (): SearchFilters => ({
 export function createSavedTeam(
   settings: Partial<Omit<SavedTeam, "id">> = {},
 ): SavedTeam {
-  return {
+  const team = {
     id: newTeamId(),
     name: "",
     generation: LATEST_GENERATION as Generation,
@@ -55,6 +57,9 @@ export function createSavedTeam(
     ...settings,
     filters: { ...createSearchFilters(), ...settings.filters },
   };
+  if (team.generation !== 9 || gameFormat(team.format))
+    delete team.generationProfile;
+  return team;
 }
 
 // What a required item replaced: Giratina-Origin held the Griseous Orb before Gen 9
@@ -82,7 +87,8 @@ export function getAutoSelectedItem(
 export function getAutoSelectedAbility(
   pokemon: string,
   generation: Generation = LATEST_GENERATION,
+  format = "",
 ): string {
-  const abilities = pokemonAbilities(pokemon, generation);
+  const abilities = pokemonAbilities(pokemon, generation, format);
   return abilities.length === 1 ? (abilities[0] ?? "") : "";
 }

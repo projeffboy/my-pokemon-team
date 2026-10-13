@@ -527,7 +527,7 @@ test("format transfer without losses keeps edits received while game data loads"
   page,
   context,
 }) => {
-  const game = encodeURIComponent("Pokemon Champions (M-C)");
+  const game = "champions";
   await page.goto(
     `/?game=${game}&team=${toBase64Url("Garchomp\nAbility: Rough Skin\n- Earthquake")}`,
   );

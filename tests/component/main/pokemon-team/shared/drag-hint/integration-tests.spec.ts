@@ -31,7 +31,8 @@ test.describe("Drag hint - Integration Tests", () => {
           });
           const pattern = `**/sprite-animations/${generation}/qwilfish.*`;
           await page.route(pattern, async route => {
-            if (route.request().resourceType() === "image") await loading;
+            if (new URL(route.request().url()).searchParams.has("selection"))
+              await loading;
             await route.continue();
           });
           const team = "Dunsparce @\n-\n\nQwilfish @\n-\n";

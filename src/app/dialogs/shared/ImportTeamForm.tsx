@@ -34,25 +34,20 @@ const ImportTeamForm = observer(function ImportTeamForm({
   const { importDialog } = t;
   const [initialText] = useState(() =>
     isImport ? "" : (
-      serializeTeam(
-        store.team,
-        store.currentTeam.generation,
-        store.currentTeam.format,
-      )
+      serializeTeam(store.team, store.currentTeam.generation, store.dataFormat)
     ),
   );
   const [text, setText] = useState(initialText);
   const [isNothingFound, setIsNothingFound] = useState(false);
 
   const handleImport = () => {
-    const teams = parseTeamsText(text);
+    const teams = parseTeamsText(text, store.currentTeam);
     if (!teams.length) {
       setIsNothingFound(true);
       return;
     }
-    for (const { name, generation, format, team } of teams) {
-      store.addTeam({ ...(name && { name }), generation, format, team });
-    }
+    for (const { name, ...settings } of teams)
+      store.addTeam({ ...settings, ...(name && { name }) });
     store.openSnackbar(
       teams.length === 1 ?
         importDialog.imported
@@ -66,11 +61,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
   const handleUpdate = () => {
     if (text !== initialText)
       store.replaceTeam(
-        parseTeamText(
-          text,
-          store.currentTeam.generation,
-          store.currentTeam.format,
-        ),
+        parseTeamText(text, store.currentTeam.generation, store.dataFormat),
       );
     else store.openSnackbar(importDialog.noChanges);
     onDone();

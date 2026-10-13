@@ -4,7 +4,11 @@ import GenerationOption from "./generation-select/GenerationOption";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
-import type { Generation, GenerationTransferData } from "@/types";
+import {
+  COMBINED_GENERATIONS_PROFILE,
+  COMBINED_GENERATIONS_FORMAT,
+} from "@/shared/generation-profile";
+import type { SavedTeam, Generation, GenerationTransferData } from "@/types";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -24,12 +28,7 @@ import { useTranslation } from "@/app/shared/TranslationContext";
 import type { GameLogo } from "@/images/game-logos";
 import { gameLogosFor } from "@/app/shared/game-logos";
 
-import {
-  GAME_VARIANTS,
-  LEGENDS_ARCEUS,
-  LEGENDS_ZA,
-  variantGeneration,
-} from "@/shared/game-variants";
+import { GAME_VARIANTS, variantGeneration } from "@/shared/game-variants";
 
 const CHAMPIONS = "champions";
 
@@ -41,6 +40,7 @@ type GenerationSelectOption = {
   compact?: string;
   logos: GameLogo[];
   disabled?: boolean;
+  description?: string;
 };
 
 // The current team's generation, with the Pokemon Champions format as a generation of its own
@@ -51,16 +51,27 @@ const GenerationSelect = observer(function GenerationSelect() {
     teamId: string;
     generation: Generation;
     format: string;
+    generationProfile?: SavedTeam["generationProfile"];
     data: GenerationTransferData;
   } | null>(null);
   const { generation, format } = store.currentTeam;
   const value =
-    format === CHAMPIONS_FORMAT ? CHAMPIONS
+    store.currentTeam.generationProfile === COMBINED_GENERATIONS_PROFILE ?
+      COMBINED_GENERATIONS_PROFILE
+    : format === CHAMPIONS_FORMAT ? CHAMPIONS
     : variantGeneration(format) ? format
     : `${generation}`;
 
-  // Gen 9 · Champions first, as its own generation, then Gen 9 down to Gen 1
+  // Combined generations first, then Champions and the individual games.
   const options: GenerationSelectOption[] = [
+    {
+      value: COMBINED_GENERATIONS_PROFILE,
+      label: t.combinedGenerations.label,
+      full: t.combinedGenerations.label,
+      short: t.combinedGenerations.short,
+      description: t.combinedGenerations.description,
+      logos: [],
+    },
     {
       value: CHAMPIONS,
       label: t.championsGeneration,
@@ -80,7 +91,7 @@ const GenerationSelect = observer(function GenerationSelect() {
         variant => variantGeneration(variant) === generation,
       ).map(variant => ({
         value: variant,
-        disabled: variant === LEGENDS_ARCEUS || variant === LEGENDS_ZA,
+        disabled: true,
         compact:
           variant === "Let’s Go" ? undefined : (
             `${t.generation(generation)} · ${t.gameVariantsCompact[variant]}`
@@ -102,9 +113,9 @@ const GenerationSelect = observer(function GenerationSelect() {
     if (options.some(option => option.value === value && option.disabled))
       return;
     const generation =
-      value === CHAMPIONS ? CHAMPIONS_GENERATION : (
-        (variantGeneration(value) ?? Number(value))
-      );
+      value === CHAMPIONS || value === COMBINED_GENERATIONS_PROFILE ?
+        CHAMPIONS_GENERATION
+      : (variantGeneration(value) ?? Number(value));
     if (!isGeneration(generation)) return;
     const teamId = store.currentTeamId;
     setLoading(true);
@@ -112,8 +123,19 @@ const GenerationSelect = observer(function GenerationSelect() {
       const data = await loadGenerationTransferData();
       if (teamId !== store.currentTeamId) return;
       const team = store.currentTeam;
+      const generationProfile =
+        value === COMBINED_GENERATIONS_PROFILE ?
+          COMBINED_GENERATIONS_PROFILE
+        : undefined;
       const format =
-        value === CHAMPIONS ? CHAMPIONS_FORMAT
+        value === COMBINED_GENERATIONS_PROFILE ?
+          formatForGeneration(
+            team.format === CHAMPIONS_FORMAT || variantGeneration(team.format) ?
+              ""
+            : team.format,
+            9,
+          )
+        : value === CHAMPIONS ? CHAMPIONS_FORMAT
         : variantGeneration(value) ? value
         : formatForGeneration(
             team.format === CHAMPIONS_FORMAT || variantGeneration(team.format) ?
@@ -125,13 +147,26 @@ const GenerationSelect = observer(function GenerationSelect() {
         team.team,
         team,
         generation,
-        format,
+        generationProfile ? COMBINED_GENERATIONS_FORMAT : format,
         data,
         store.locale,
       );
       if (plan.losses.length)
-        setPending({ teamId: team.id, generation, format, data });
-      else store.transferTeamGeneration(generation, format, plan.team, false);
+        setPending({
+          teamId: team.id,
+          generation,
+          format,
+          generationProfile,
+          data,
+        });
+      else
+        store.transferTeamGeneration(
+          generation,
+          format,
+          plan.team,
+          false,
+          generationProfile,
+        );
     } catch {
       store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
     } finally {
@@ -145,7 +180,7 @@ const GenerationSelect = observer(function GenerationSelect() {
         store.team,
         store.currentTeam,
         target.generation,
-        target.format,
+        target.generationProfile ? COMBINED_GENERATIONS_FORMAT : target.format,
         target.data,
         store.locale,
       )
@@ -157,6 +192,7 @@ const GenerationSelect = observer(function GenerationSelect() {
         target.format,
         plan.team,
         newTeam,
+        target.generationProfile,
       );
     setPending(null);
   };
@@ -183,7 +219,7 @@ const GenerationSelect = observer(function GenerationSelect() {
             <GenerationOption
               label={option.label}
               logos={option.logos}
-              status={option.disabled ? t.comingSoon : undefined}
+              status={option.disabled ? t.comingSoon : option.description}
               nowrap
               placeholders
             />
@@ -228,17 +264,27 @@ const GenerationSelect = observer(function GenerationSelect() {
             htmlInput: { "aria-label": t.generationSelect },
           }}
         >
-          {options.map(({ value, label, compact, short, logos, disabled }) => (
-            <MenuItem key={value} value={value} disabled={disabled}>
-              <GenerationOption
-                label={label}
-                compact={compact}
-                short={short}
-                logos={logos}
-                status={disabled ? t.comingSoon : undefined}
-              />
-            </MenuItem>
-          ))}
+          {options.map(
+            ({
+              value,
+              label,
+              compact,
+              short,
+              logos,
+              disabled,
+              description,
+            }) => (
+              <MenuItem key={value} value={value} disabled={disabled}>
+                <GenerationOption
+                  label={label}
+                  compact={compact}
+                  short={short}
+                  logos={logos}
+                  status={disabled ? t.comingSoon : description}
+                />
+              </MenuItem>
+            ),
+          )}
         </TextField>
       </Box>
       {target && plan && (
@@ -250,16 +296,27 @@ const GenerationSelect = observer(function GenerationSelect() {
           toFormat={target.format}
           hasCarryover={plan.team.some(member => member.name)}
           from={source?.compact ?? source?.short ?? t.generation(generation)}
-          fromLogos={gameLogosFor(generation, format)}
-          toLogos={gameLogosFor(target.generation, target.format)}
+          fromLogos={
+            store.currentTeam.generationProfile ?
+              []
+            : gameLogosFor(generation, format)
+          }
+          toLogos={
+            target.generationProfile ?
+              []
+            : gameLogosFor(target.generation, target.format)
+          }
           where={
-            target.format === CHAMPIONS_FORMAT ? t.championsGeneration
+            target.generationProfile ? t.combinedGenerations.label
+            : target.format === CHAMPIONS_FORMAT ?
+              t.championsGeneration
             : variantGeneration(target.format) ?
               `${t.generation(target.generation)} · ${t.gameVariantsCompact[target.format as keyof typeof t.gameVariantsCompact] ?? t.gameVariants[target.format as keyof typeof t.gameVariants]}`
             : t.generation(target.generation)
           }
           games={
             (
+              target.generationProfile ||
               target.format === CHAMPIONS_FORMAT ||
               variantGeneration(target.format)
             ) ?

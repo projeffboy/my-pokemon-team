@@ -19,6 +19,7 @@ import type {
   SnackbarKind,
 } from "./types";
 import { generationRules, variantGeneration } from "./shared/generation-rules";
+import { teamDataFormat } from "./shared/generation-profile";
 import { formatForGeneration, gameFormat } from "./shared/formats";
 import { allItemIds } from "./shared/names";
 import { MOVE_KEYS } from "./types";
@@ -76,6 +77,7 @@ import { clearDetails } from "./shared/set-details";
 import { canSelectMove } from "./shared/moves";
 import { matchHiddenPower } from "./shared/hidden-power";
 import { pokemonAbilities } from "./shared/pokedex";
+import { loadGenerationTransferData } from "./shared/generation-transfer-data";
 import { typesIn } from "./shared/generation-data";
 import { LATEST_GENERATION } from "./shared/generations";
 import { detectLocale, type Locale } from "./i18n/locales";
@@ -129,6 +131,13 @@ export class Store {
       translationReady: false,
       translation: observableRef,
     });
+
+    loadGenerationTransferData().then(
+      () => {
+        this.generationDataLoaded = true;
+      },
+      () => {},
+    );
 
     learnsetsReady.then(
       () => {
@@ -193,6 +202,7 @@ export class Store {
   }
 
   learnsetsLoaded = false;
+  private generationDataLoaded = false;
 
   // Saved teams, of which one is being edited
 
@@ -239,7 +249,7 @@ export class Store {
   openUnsavedTeam(
     team?: Team,
     settings?: Pick<SavedTeam, "generation"> &
-      Partial<Pick<SavedTeam, "format">>,
+      Partial<Pick<SavedTeam, "format" | "generationProfile">>,
   ) {
     const { generation, format } = this.currentTeam;
     const draft = createSavedTeam({
@@ -248,6 +258,10 @@ export class Store {
       format:
         settings ? formatForGeneration(format, settings.generation) : format,
       ...settings,
+      generationProfile:
+        settings ?
+          settings.generationProfile
+        : this.currentTeam.generationProfile,
       ...(team && { team }),
     });
     this.draftSnapshot = stableJson(draft);
@@ -262,6 +276,10 @@ export class Store {
       name: this.nextTeamName(),
       generation,
       format,
+      generationProfile:
+        settings.generation === undefined ?
+          this.currentTeam.generationProfile
+        : settings.generationProfile,
       ...settings,
     });
     this.teams.push(team);
@@ -302,11 +320,12 @@ export class Store {
 
   // Switches to an empty team of the current generation and format, adding one if needed
   openEmptyTeam() {
-    const { generation, format } = this.currentTeam;
+    const { generation, format, generationProfile } = this.currentTeam;
     const existing = [this.currentTeam, ...this.teams].find(
       team =>
         team.generation === generation &&
         team.format === format &&
+        team.generationProfile === generationProfile &&
         isTeamEmpty(team.team),
     );
     if (!existing) return { team: this.addTeam(), isNew: true };
@@ -325,10 +344,13 @@ export class Store {
     }
     const index = this.teams.findIndex(team => team.id === id);
     if (index === -1) return;
-    const { generation, format } = this.teams.splice(index, 1)[0] ?? {};
+    const { generation, format, generationProfile } =
+      this.teams.splice(index, 1)[0] ?? {};
     if (!this.teams.length) {
       const name = this.translation.t.team.teamNumber(1);
-      this.teams.push(createSavedTeam({ name, generation, format }));
+      this.teams.push(
+        createSavedTeam({ name, generation, format, generationProfile }),
+      );
     }
     if (this.currentTeamId === id) {
       const neighbour = this.teams[Math.min(index, this.teams.length - 1)];
@@ -360,15 +382,27 @@ export class Store {
     format: string,
     team: Team,
     newTeam: boolean,
+    generationProfile?: SavedTeam["generationProfile"],
   ) {
     if (newTeam) {
       if (this.draftTeam?.id === this.currentTeamId) {
         this.teams.push(this.draftTeam);
         this.draftTeam = null;
       }
-      this.addTeam({ generation, format, team, filters: toJS(this.filters) });
+      this.addTeam({
+        generation,
+        format,
+        generationProfile,
+        team,
+        filters: toJS(this.filters),
+      });
     } else {
-      Object.assign(this.currentTeam, { generation, format, team });
+      Object.assign(this.currentTeam, {
+        generation,
+        format,
+        generationProfile,
+        team,
+      });
     }
     this.resetHistory();
   }
@@ -384,7 +418,7 @@ export class Store {
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
-      Partial<Pick<SavedTeam, "format">>,
+      Partial<Pick<SavedTeam, "format" | "generationProfile">>,
   ) {
     if (isTeamEmpty(team)) return;
     const generation = settings?.generation ?? this.currentTeam.generation;
@@ -410,7 +444,7 @@ export class Store {
                 "",
               ),
             saved.generation,
-            saved.format,
+            teamDataFormat(saved),
             LEGACY_LINK_PARSING_OPTIONS,
           ),
           saved.generation,
@@ -421,6 +455,7 @@ export class Store {
     const matches = (saved: SavedTeam) =>
       (!settings ||
         (saved.generation === settings.generation &&
+          saved.generationProfile === settings.generationProfile &&
           (settings.format === undefined ||
             gameFormat(saved.format) === settings.format))) &&
       reads(saved);
@@ -441,11 +476,12 @@ export class Store {
     return isTeamEmpty(this.team);
   }
 
+  get dataFormat() {
+    return teamDataFormat(this.currentTeam);
+  }
+
   get rules() {
-    return generationRules(
-      this.currentTeam.generation,
-      this.currentTeam.format,
-    );
+    return generationRules(this.currentTeam.generation, this.dataFormat);
   }
 
   get teamItems() {
@@ -453,7 +489,7 @@ export class Store {
     return availableItems(
       allItemIds,
       this.currentTeam.generation,
-      this.currentTeam.format,
+      this.dataFormat,
     );
   }
 
@@ -472,16 +508,18 @@ export class Store {
     return [
       ...new Set(
         this.inGame(species).flatMap(name =>
-          pokemonAbilities(name, generation),
+          pokemonAbilities(name, generation, this.dataFormat),
         ),
       ),
     ];
   }
 
   get teamAbilities() {
+    const ready =
+      this.currentTeam.generationProfile !== "6-9" || this.generationDataLoaded;
     return this.team.map(({ name }) =>
-      this.rules.abilities ?
-        pokemonAbilities(name, this.currentTeam.generation)
+      this.rules.abilities && ready ?
+        pokemonAbilities(name, this.currentTeam.generation, this.dataFormat)
       : [],
     );
   }
@@ -498,7 +536,7 @@ export class Store {
       this.viableMovesOnly,
       this.translation.names,
       this.currentTeam.generation,
-      this.currentTeam.format,
+      this.dataFormat,
     );
     const values = learnsets.values.map(moves =>
       sortMoves(
@@ -524,16 +562,16 @@ export class Store {
     member.item =
       this.rules.items ?
         getAutoSelectedItem(name, "", item =>
-          isItemAvailable(
-            item,
-            this.currentTeam.generation,
-            this.currentTeam.format,
-          ),
+          isItemAvailable(item, this.currentTeam.generation, this.dataFormat),
         )
       : "";
     member.ability =
       this.rules.abilities ?
-        getAutoSelectedAbility(name, this.currentTeam.generation)
+        getAutoSelectedAbility(
+          name,
+          this.currentTeam.generation,
+          this.dataFormat,
+        )
       : "";
     for (const key of MOVE_KEYS) member[key] = "";
     clearDetails(member);
@@ -552,7 +590,7 @@ export class Store {
       member,
       move,
       this.currentTeam.generation,
-      this.currentTeam.format,
+      this.dataFormat,
     );
   }
 
@@ -597,22 +635,18 @@ export class Store {
     if (!member) return;
     if (
       member.name &&
-      !isSetComplete(
-        member,
-        this.currentTeam.generation,
-        this.currentTeam.format,
-      )
+      !isSetComplete(member, this.currentTeam.generation, this.dataFormat)
     ) {
       const completed = completeSet(
         member,
         generationLearnset(
           member.name,
           this.currentTeam.generation,
-          this.currentTeam.format,
+          this.dataFormat,
         ),
         Math.random,
         this.currentTeam.generation,
-        this.currentTeam.format,
+        this.dataFormat,
         this.team
           .filter((_, index) => index !== teamIndex)
           .map(({ item }) => item),
@@ -627,14 +661,10 @@ export class Store {
     this.recordEdit();
     this.team[teamIndex] = randomSet(
       pokemon,
-      generationLearnset(
-        pokemon,
-        this.currentTeam.generation,
-        this.currentTeam.format,
-      ),
+      generationLearnset(pokemon, this.currentTeam.generation, this.dataFormat),
       Math.random,
       this.currentTeam.generation,
-      this.currentTeam.format,
+      this.dataFormat,
       this.team
         .filter((_, index) => index !== teamIndex)
         .map(({ item }) => item),
@@ -659,11 +689,11 @@ export class Store {
         generationLearnset(
           pokemon,
           this.currentTeam.generation,
-          this.currentTeam.format,
+          this.dataFormat,
         ),
         Math.random,
         this.currentTeam.generation,
-        this.currentTeam.format,
+        this.dataFormat,
         this.team.slice(0, i).map(({ item }) => item),
       );
     }
@@ -684,7 +714,7 @@ export class Store {
     return calculateTypeCoverage(
       this.analysisTeam,
       this.currentTeam.generation,
-      this.currentTeam.format,
+      this.dataFormat,
     );
   }
 
@@ -692,7 +722,7 @@ export class Store {
     return evaluateChecklist(
       this.analysisTeam,
       this.currentTeam.generation,
-      this.currentTeam.format,
+      this.dataFormat,
     );
   }
 
@@ -719,6 +749,7 @@ export class Store {
       type: typesIn(generation).some(known => known === type) ? type : "",
       generation,
       format,
+      generationProfile: this.currentTeam.generationProfile,
     };
   }
 
@@ -726,6 +757,10 @@ export class Store {
   // those its games lack. The regular latest generation is National Dex.
   private inGame(pokemon: readonly string[]) {
     const { generation, format } = this.currentTeam;
+    if (this.currentTeam.generationProfile === "6-9")
+      return this.generationDataLoaded ?
+          availablePokemon(pokemon, generation, this.dataFormat)
+        : [];
     if (!this.learnsetsLoaded)
       return variantGeneration(format) || generation !== LATEST_GENERATION ?
           []
@@ -752,8 +787,11 @@ export class Store {
 
   get gameMoves() {
     if (!this.learnsetsLoaded) return [];
-    const { generation, format } = this.currentTeam;
-    return generationMoves(this.gamePokemon, generation, format);
+    return generationMoves(
+      this.gamePokemon,
+      this.currentTeam.generation,
+      this.dataFormat,
+    );
   }
 
   get filteredPokemon() {
@@ -971,7 +1009,7 @@ export class Store {
     const theirs = loadStoredState(this.storage);
     if (!theirs) return;
     const snapshot = teamKey(this.team);
-    const { generation, format } = this.currentTeam;
+    const { generation, format, generationProfile } = this.currentTeam;
     const mine = this.storedState;
     const selectionChanged = mine.currentTeamId !== this.lastRead.currentTeamId;
     const merged = mergeStoredState(this.lastRead, mine, theirs);
@@ -991,7 +1029,8 @@ export class Store {
     if (
       teamKey(this.team) !== snapshot ||
       this.currentTeam.generation !== generation ||
-      this.currentTeam.format !== format
+      this.currentTeam.format !== format ||
+      this.currentTeam.generationProfile !== generationProfile
     )
       this.resetHistory();
     if (

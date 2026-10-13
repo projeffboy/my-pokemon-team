@@ -76,7 +76,7 @@ const PokemonInputs = observer(function PokemonInputs({
         member,
         translation,
         store.currentTeam.generation,
-        store.currentTeam.format,
+        store.dataFormat,
       )
     : t.team.randomizePokemon;
   const label = names.pokemon(pokemon);

@@ -56,7 +56,7 @@ const MoveTypeIcon = observer(function MoveTypeIcon({
     member?.ability,
     store.currentTeam.generation,
     member?.item,
-    store.currentTeam.format,
+    store.dataFormat,
   );
   // A placeholder keeps the labels aligned for the few moves without a type
   if (!type || !isPokemonType(type)) {

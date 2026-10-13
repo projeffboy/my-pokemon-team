@@ -35,11 +35,13 @@ export default function GenerationOption({
           component="span"
           sx={{ display: "flex", alignItems: "center", gap: 1 }}
         >
-          <GameLogos
-            logos={logos}
-            nowrap={nowrap}
-            placeholders={placeholders}
-          />
+          {logos.length > 0 && (
+            <GameLogos
+              logos={logos}
+              nowrap={nowrap}
+              placeholders={placeholders}
+            />
+          )}
           {status && (
             <Typography
               component="span"

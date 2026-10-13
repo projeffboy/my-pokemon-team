@@ -33,7 +33,7 @@ test("preserves selections after reloading", async ({ page }) => {
 
   await expect(
     page.getByRole("combobox", { name: "Generation" }),
-  ).toContainText("Champions");
+  ).toContainText("Generations 6–9");
   await selectPokemon(page, "Gyarados");
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
   await selectAbility(page, "Moxie");

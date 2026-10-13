@@ -105,7 +105,7 @@ test("happiness defaults when cleared or reset after a raw-text import", async (
 
 for (const { name, profile } of [
   { name: "Gen 1", profile: "gen=1" },
-  { name: "Champions", profile: "game=Pokemon+Champions+%28M-C%29" },
+  { name: "Champions", profile: "game=champions" },
 ]) {
   test(`${name} omits happiness from imported links and its editor`, async ({
     page,

@@ -8,6 +8,8 @@ import type {
   TeamPokemon,
 } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "@/shared/generations";
+import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
+import { gameFormat } from "@/shared/formats";
 import { isLocale, type Locale } from "@/i18n/locales";
 import {
   createEmptyTeam,
@@ -96,6 +98,11 @@ export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
     name: string(value.name),
     generation,
     format,
+    ...(generation === 9 &&
+      !gameFormat(format) &&
+      value.generationProfile === COMBINED_GENERATIONS_PROFILE && {
+        generationProfile: COMBINED_GENERATIONS_PROFILE,
+      }),
     filters: Object.fromEntries(
       Object.entries(createSearchFilters()).map(([key, fallback]) => [
         key,
