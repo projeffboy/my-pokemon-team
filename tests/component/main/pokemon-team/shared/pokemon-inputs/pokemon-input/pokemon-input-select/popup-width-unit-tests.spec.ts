@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { turnOnAdvanced, selectPokemon } from "helper";
+import { turnOnAdvanced, selectPokemon, resizeTeamViewport } from "helper";
 
 test("expanded small phone move, item, and ability lists keep their 400px viewport width", async ({
   page,
@@ -74,7 +74,7 @@ test("the Name list fits its longest names within two lines", async ({
 }) => {
   const popup = page.locator(".MuiAutocomplete-popper");
   for (const width of [320, 1200]) {
-    await page.setViewportSize({ width, height: 900 });
+    await resizeTeamViewport(page, width, 900);
     await page.evaluate(() => document.fonts.ready);
     const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
     const option = page.getByRole("option", {
@@ -99,11 +99,13 @@ test("the Name list fits its longest names within two lines", async ({
           }),
       )
       .toBe(2);
-    const bounds = await popup.boundingBox();
-    expect(bounds?.width).toBeGreaterThanOrEqual(168);
-    expect(bounds && bounds.x >= 0 && bounds.x + bounds.width <= width).toBe(
-      true,
-    );
+    await expect(async () => {
+      const bounds = await popup.boundingBox();
+      expect(bounds?.width).toBeGreaterThanOrEqual(168);
+      expect(bounds && bounds.x >= 0 && bounds.x + bounds.width <= width).toBe(
+        true,
+      );
+    }).toPass({ timeout: 5000 });
     await input.press("Escape");
   }
 });

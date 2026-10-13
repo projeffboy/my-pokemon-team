@@ -1,4 +1,5 @@
 import { test, expect } from "fixtures";
+import { resizeTeamViewport } from "helper";
 
 test("shows the old website switch near the title on a 320px phone", async ({
   page,
@@ -25,7 +26,7 @@ for (const width of [320, 400, 599, 600, 640, 680, 960, 1200]) {
   test(`${width}px places the version switch alongside language and feedback`, async ({
     page,
   }) => {
-    await page.setViewportSize({ width, height: 800 });
+    await resizeTeamViewport(page, width, 800);
     const header = page.getByRole("banner");
     const oldSite = header.getByRole("button", {
       name:
@@ -42,32 +43,38 @@ for (const width of [320, 400, 599, 600, 640, 680, 960, 1200]) {
       name: "Send feedback",
       exact: true,
     });
-    const boxes = await Promise.all(
-      [oldSite, language, feedback].map(async button => {
-        await expect(button).toBeVisible();
-        return button.boundingBox();
-      }),
-    );
-    const [oldBounds, languageBounds, feedbackBounds] = boxes;
-    expect(oldBounds).not.toBeNull();
-    expect(languageBounds).not.toBeNull();
-    expect(feedbackBounds).not.toBeNull();
-    if (!oldBounds || !languageBounds || !feedbackBounds)
-      throw new Error("Missing header controls");
-    const middle = (box: typeof oldBounds) => box.y + box.height / 2;
-    expect(middle(oldBounds)).toBeCloseTo(middle(languageBounds), 0);
-    expect(middle(oldBounds)).toBeCloseTo(middle(feedbackBounds), 0);
-    expect(oldBounds.x + oldBounds.width).toBeLessThanOrEqual(languageBounds.x);
-    expect(feedbackBounds.x + feedbackBounds.width).toBeLessThanOrEqual(width);
-    if (width >= 600) {
-      const generation = await header
-        .getByRole("combobox", { name: "Generation", exact: true })
-        .boundingBox();
-      expect(generation).not.toBeNull();
-      if (!generation) throw new Error("Missing generation selector");
-      expect(oldBounds.x + oldBounds.width).toBeLessThan(generation.x);
-      expect(generation.x + generation.width).toBeLessThan(languageBounds.x);
-    }
+    await expect(async () => {
+      const boxes = await Promise.all(
+        [oldSite, language, feedback].map(async button => {
+          await expect(button).toBeVisible();
+          return button.boundingBox();
+        }),
+      );
+      const [oldBounds, languageBounds, feedbackBounds] = boxes;
+      expect(oldBounds).not.toBeNull();
+      expect(languageBounds).not.toBeNull();
+      expect(feedbackBounds).not.toBeNull();
+      if (!oldBounds || !languageBounds || !feedbackBounds)
+        throw new Error("Missing header controls");
+      const middle = (box: typeof oldBounds) => box.y + box.height / 2;
+      expect(middle(oldBounds)).toBeCloseTo(middle(languageBounds), 0);
+      expect(middle(oldBounds)).toBeCloseTo(middle(feedbackBounds), 0);
+      expect(oldBounds.x + oldBounds.width).toBeLessThanOrEqual(
+        languageBounds.x,
+      );
+      expect(feedbackBounds.x + feedbackBounds.width).toBeLessThanOrEqual(
+        width,
+      );
+      if (width >= 600) {
+        const generation = await header
+          .getByRole("combobox", { name: "Generation", exact: true })
+          .boundingBox();
+        expect(generation).not.toBeNull();
+        if (!generation) throw new Error("Missing generation selector");
+        expect(oldBounds.x + oldBounds.width).toBeLessThan(generation.x);
+        expect(generation.x + generation.width).toBeLessThan(languageBounds.x);
+      }
+    }).toPass({ timeout: 5000 });
   });
 }
 
@@ -81,7 +88,7 @@ test("lengthens the label between both faces as the header widens", async ({
     [400, "Go to old website"],
     [440, "Go to the old website"],
   ] as const) {
-    await page.setViewportSize({ width, height: 800 });
+    await resizeTeamViewport(page, width, 800);
     const button = header.getByRole("button", { name, exact: true });
     await expect(button).toBeVisible();
     await expect(button.locator("img").first()).toHaveAttribute(

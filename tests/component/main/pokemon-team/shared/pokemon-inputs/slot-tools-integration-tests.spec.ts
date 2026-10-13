@@ -3,6 +3,7 @@ import type { Locator, Page } from "@playwright/test";
 import {
   getTeamTextFromUrl,
   isMdDown,
+  resizeTeamViewport,
   turnOnAdvanced,
   selectMove,
   selectPokemon,
@@ -90,7 +91,7 @@ test.describe("Slot tools - Integration Tests", () => {
       [1200, "Details"],
       [1920, "More details"],
     ] as const) {
-      await page.setViewportSize({ width, height: 1000 });
+      await resizeTeamViewport(page, width, 1000);
       await expect(details).toHaveText(label);
       await expect(random.getByTestId("CasinoIcon")).toBeVisible();
       await expect(details.getByTestId("TuneIcon")).toBeVisible();
@@ -99,24 +100,26 @@ test.describe("Slot tools - Integration Tests", () => {
           button => button.scrollWidth > button.clientWidth,
         ),
       ).toBe(false);
-      const [randomBox, detailsBox, card, move] = await Promise.all(
-        [
-          random,
-          details,
-          sprite,
-          page.getByRole("combobox", { name: "Pokemon 1's move1" }),
-        ].map(part => part.boundingBox()),
-      );
-      if (!randomBox || !detailsBox || !card || !move)
-        throw new Error("Missing slot controls");
-      // Side by side, in the card's left column
-      expect(randomBox.x).toBeGreaterThanOrEqual(card.x);
-      expect(randomBox.x + randomBox.width).toBeLessThanOrEqual(detailsBox.x);
-      expect(detailsBox.x + detailsBox.width).toBeLessThanOrEqual(move.x);
-      expect(randomBox.y + randomBox.height).toBeCloseTo(
-        detailsBox.y + detailsBox.height,
-        0,
-      );
+      await expect(async () => {
+        const [randomBox, detailsBox, card, move] = await Promise.all(
+          [
+            random,
+            details,
+            sprite,
+            page.getByRole("combobox", { name: "Pokemon 1's move1" }),
+          ].map(part => part.boundingBox()),
+        );
+        if (!randomBox || !detailsBox || !card || !move)
+          throw new Error("Missing slot controls");
+        // Side by side, in the card's left column
+        expect(randomBox.x).toBeGreaterThanOrEqual(card.x);
+        expect(randomBox.x + randomBox.width).toBeLessThanOrEqual(detailsBox.x);
+        expect(detailsBox.x + detailsBox.width).toBeLessThanOrEqual(move.x);
+        expect(randomBox.y + randomBox.height).toBeCloseTo(
+          detailsBox.y + detailsBox.height,
+          0,
+        );
+      }).toPass({ timeout: 5000 });
     }
     await details.click();
     await expect(

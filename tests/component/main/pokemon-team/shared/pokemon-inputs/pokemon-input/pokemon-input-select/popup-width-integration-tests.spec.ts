@@ -1,5 +1,6 @@
 import type { Page } from "@playwright/test";
 import { test, expect } from "fixtures";
+import { resizeTeamViewport } from "helper";
 import fr from "@/i18n/fr";
 
 // The Name popup's width, and the most lines any of its listed names takes
@@ -25,7 +26,11 @@ const measureNameList = async (
       ),
     ),
   );
-  const bounds = await page.locator(".MuiAutocomplete-popper").boundingBox();
+  const popup = page.locator(".MuiAutocomplete-popper");
+  await expect
+    .poll(async () => (await popup.boundingBox())?.width ?? 0)
+    .toBeGreaterThanOrEqual(168);
+  const bounds = await popup.boundingBox();
   await input.press("Escape");
   return { lines, width: bounds?.width ?? 0 };
 };
@@ -33,7 +38,7 @@ const measureNameList = async (
 test("the Name list is as wide as each language's longest name needs", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 320, height: 900 });
+  await resizeTeamViewport(page, 320, 900);
   await page.evaluate(() => document.fonts.ready);
   const english = await measureNameList(page, "Pokemon 1's name");
   expect(english.lines).toBeLessThanOrEqual(2);
@@ -51,7 +56,7 @@ test("the Name list is as wide as each language's longest name needs", async ({
 test("the Name list is only as wide as the generation's names need", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 320, height: 900 });
+  await resizeTeamViewport(page, 320, 900);
   await page.evaluate(() => document.fonts.ready);
   // Gen 9 has Ogerpon-Hearthflame-Tera; Gen 1's names all fit the narrowest list
   const latest = await measureNameList(page, "Pokemon 1's name", "Ogerpon");

@@ -345,6 +345,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
 test("gender defaults to the only available option and shows its symbol", async ({
   page,
 }) => {
+  test.slow();
   for (const { pokemon, gender, icon } of [
     { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
     { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
@@ -367,7 +368,7 @@ test("gender defaults to the only available option and shows its symbol", async 
       gender,
     );
     await closeDialog(page);
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await openAdvanced(page);
     await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
       gender,

@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { turnOnAdvanced, selectPokemon } from "helper";
+import { turnOnAdvanced, selectPokemon, resizeTeamViewport } from "helper";
 import pokedex from "@/data/pokedex";
 import { filterPokemon } from "@/store/filtering";
 import { sortPokemon, DEFAULT_SORT } from "@/store/sorting";
@@ -478,7 +478,7 @@ test("leaving a dropdown still restores the selected name", async ({
 test("the big grid names each pokemon under its sprite, and the small grid does not", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 375, height: 800 });
+  await resizeTeamViewport(page, 375, 800);
   const input = page.getByLabel("Pokemon 1's name");
   await input.fill("Wooper");
   await page.getByRole("button", { name: "Grid view", exact: true }).click();

@@ -167,7 +167,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
         .getByRole("region", { name: "Pokemon 1", exact: true })
         .getByRole("img", { name: "Corsola", exact: true }),
     ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/gen2/corsola.png`);
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(
       page
         .getByRole("region", { name: "Pokemon 1", exact: true })

@@ -32,6 +32,23 @@ export const isMdDown = (page: Page) =>
 export const isXs = (page: Page) =>
   (page.viewportSize()?.width ?? Infinity) < breakpointValues.sm;
 
+// A resize can replace the team viewer after the browser has resized its viewport.
+export const resizeTeamViewport = async (
+  page: Page,
+  width: number,
+  height: number,
+) => {
+  await page.setViewportSize({ width, height });
+  const tabs = page
+    .getByRole("tablist", { name: "Pokemon team slots" })
+    .getByRole("tab");
+  await expect(tabs).toHaveCount(
+    width < breakpointValues.sm ? 6
+    : width < breakpointValues.md ? 3
+    : 0,
+  );
+};
+
 // Brings a slot's card on screen: the tabbed viewers show one slot or one pair at a time
 export const showSlot = async (page: Page, slotIndex: number) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s name`);
