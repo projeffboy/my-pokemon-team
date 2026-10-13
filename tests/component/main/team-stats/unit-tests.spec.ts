@@ -71,7 +71,8 @@ test.describe("Team Stats - Unit Tests", () => {
     });
   }
 
-  for (const width of [600, 960, 1200, 1920]) {
+  // Gen 9's team column leaves room for the checklist under the stats at these widths
+  for (const width of [960, 1200, 1920]) {
     test.describe(`${width}px combined analysis`, () => {
       test.use({ viewport: createViewport(width) });
 
@@ -86,20 +87,22 @@ test.describe("Team Stats - Unit Tests", () => {
         ];
         for (const name of regions)
           await expect(panel.getByRole("region", { name })).toBeVisible();
-        const teamContent =
-          width < 960 ?
-            page.getByRole("tablist", { name: "Pokemon team slots" })
-          : page
-              .getByRole("region", { name: "Pokemon 1", exact: true })
-              .locator("..");
-        const defence = panel.getByRole("region", { name: "Team Defence" });
-        await expect(async () => {
-          const leftBox = await teamContent.boundingBox();
-          const rightBox = await defence.boundingBox();
-          expect(leftBox).not.toBeNull();
-          expect(rightBox).not.toBeNull();
-          expect(Math.abs(leftBox!.y - rightBox!.y)).toBeLessThanOrEqual(1);
-        }).toPass();
+        // The shorter column is centred against the taller one
+        await expect
+          .poll(() =>
+            page.evaluate(() => {
+              const [team, analysis] = [
+                document.querySelector("main > *"),
+                document.querySelector("main section"),
+              ].map(column => column?.getBoundingClientRect());
+              return Math.abs(
+                (team?.top ?? 0) +
+                  (team?.height ?? 0) / 2 -
+                  ((analysis?.top ?? 0) + (analysis?.height ?? 0) / 2),
+              );
+            }),
+          )
+          .toBeLessThanOrEqual(1);
         const checklist = panel.getByRole("region", { name: "Team Checklist" });
         const panelBox = await panel.boundingBox();
         const checklistBox = await checklist.boundingBox();
@@ -139,6 +142,122 @@ test.describe("Team Stats - Unit Tests", () => {
         for (const name of regions)
           await expect(panel.getByRole("region", { name })).toBeVisible();
       });
+    });
+  }
+
+  test("the panel's title outranks its analyses' headings and sits just above their cards, with no space over it", async ({
+    page,
+  }) => {
+    const panel = page.getByRole("region", { name: "Team analysis" });
+    const size = (level: number) =>
+      panel
+        .getByRole("heading", { level })
+        .first()
+        .evaluate(heading => parseFloat(getComputedStyle(heading).fontSize));
+    for (const width of [600, 700, 960, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect
+        .poll(async () => (await size(2)) > (await size(3)))
+        .toBe(true);
+      await expect
+        .poll(() =>
+          page.evaluate(() => {
+            const analysis = document.querySelector("main section");
+            const title = analysis
+              ?.querySelector("h2")
+              ?.getBoundingClientRect();
+            const card = analysis
+              ?.querySelector(".MuiPaper-root")
+              ?.getBoundingClientRect();
+            const top = analysis?.getBoundingClientRect().top ?? NaN;
+            return {
+              above: (title?.top ?? NaN) - top < 12,
+              below: (card?.top ?? NaN) - (title?.bottom ?? NaN) < 20,
+            };
+          }),
+        )
+        .toEqual({ above: true, below: true });
+    }
+  });
+
+  test("Gen 1 on a wide screen keeps the checklist under the stats, a little past the team", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/?gen=1");
+    const panel = page.getByRole("region", { name: "Team analysis" });
+    await expect(
+      panel.getByRole("region", { name: "Team Checklist" }),
+    ).toBeVisible();
+    await expect(
+      panel.getByRole("button", { name: "Team Checklist" }),
+    ).toHaveCount(0);
+    const [team, analysis] = await page.evaluate(() =>
+      [
+        document.querySelector("main > *"),
+        document.querySelector("main section"),
+      ].map(column => column?.getBoundingClientRect().height ?? 0),
+    );
+    // Showing it is worth running this far past the team column, and no further
+    expect((analysis ?? 0) - (team ?? 0)).toBeGreaterThan(0);
+    expect((analysis ?? 0) - (team ?? 0)).toBeLessThanOrEqual(120);
+  });
+
+  // The checklist leaves the stats' view when they alone come close to the team column's
+  // height: on tablets, and where an early generation's cards are short
+  for (const { width, generation } of [
+    { width: 700, generation: 9 },
+    { width: 800, generation: 2 },
+    { width: 700, generation: 1 },
+    { width: 959, generation: 1 },
+  ]) {
+    test(`Gen ${generation} at ${width}px gives the checklist a view of its own to keep the columns level`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`/?gen=${generation}`);
+      const panel = page.getByRole("region", { name: "Team analysis" });
+      const checklist = panel.getByRole("region", { name: "Team Checklist" });
+      const defence = panel.getByRole("region", { name: "Team Defence" });
+      const own = panel.getByRole("button", { name: "Team Checklist" });
+      await expect(own).toBeVisible();
+      await expect(defence).toBeVisible();
+      await expect(checklist).toBeHidden();
+
+      // Without the checklist the panel ends within reach of the team beside it
+      const heights = await page.evaluate(() => {
+        const [team, analysis] = [...document.querySelectorAll("main > *")];
+        return [team, analysis?.querySelector("section")].map(
+          column => column?.getBoundingClientRect().height ?? 0,
+        );
+      });
+      expect(Math.abs((heights[0] ?? 0) - (heights[1] ?? 0))).toBeLessThan(110);
+
+      await own.click();
+      await expect(own).toHaveAttribute("aria-pressed", "true");
+      await expect(checklist).toBeVisible();
+      await expect(defence).toBeHidden();
+      await expect(
+        panel.getByRole("heading", { name: "Team Checklist", level: 2 }),
+      ).toBeVisible();
+      // The matrix keeps the switch
+      await panel.getByRole("button", { name: "Matrix Analysis" }).click();
+      await expect(own).toBeVisible();
+      await panel
+        .getByRole("button", { name: "Team Stats", exact: true })
+        .click();
+      await expect(defence).toBeVisible();
+      await expect(checklist).toBeHidden();
+
+      // Widening Gen 9 gives the checklist its place under the stats back, even from
+      // its own view
+      if (generation === 9) {
+        await own.click();
+        await page.setViewportSize({ width: 1200, height: 900 });
+        await expect(own).toHaveCount(0);
+        await expect(checklist).toBeVisible();
+        await expect(defence).toBeVisible();
+      }
     });
   }
 

@@ -11,20 +11,16 @@ import TypeBadge from "./shared/TypeBadge";
 const TypeDefenceTooltipInfo = observer(function TypeDefenceTooltipInfo({
   typeColor,
   type,
-  hasIcon,
 }: {
   typeColor: string;
   type: PokemonType;
-  hasIcon: boolean;
 }) {
   const { t, names } = useTranslation();
   return (
     <>
       <p>
         {fill(t.stats.typeDoes, {
-          type: (
-            <TypeBadge type={type} typeColor={typeColor} hasIcon={hasIcon} />
-          ),
+          type: <TypeBadge type={type} typeColor={typeColor} />,
         })}
       </p>
       <Box component="ul" sx={{ listStyle: "none", p: 0 }}>

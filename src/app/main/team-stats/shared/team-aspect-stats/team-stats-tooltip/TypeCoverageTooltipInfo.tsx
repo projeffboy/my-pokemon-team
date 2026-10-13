@@ -16,11 +16,9 @@ import TypeBadge from "./shared/TypeBadge";
 const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   typeColor,
   type,
-  hasIcon,
 }: {
   typeColor: string;
   type: PokemonType;
-  hasIcon: boolean;
 }) {
   const { t, names } = useTranslation();
   const { generation, format } = store.currentTeam;
@@ -65,9 +63,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
     <>
       <p>
         {fill(t.stats.superEffectiveAgainst, {
-          type: (
-            <TypeBadge type={type} typeColor={typeColor} hasIcon={hasIcon} />
-          ),
+          type: <TypeBadge type={type} typeColor={typeColor} />,
         })}
       </p>
       <Box component="ul" sx={{ listStyle: "none", p: 0 }}>

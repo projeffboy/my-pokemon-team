@@ -180,7 +180,6 @@ const TeamAspectStats = observer(function TeamAspectStats({
                       <TeamStatsTooltip
                         type={type}
                         typeColor={TYPE_COLORS[type]}
-                        hasIcon
                         teamStatType={teamStatType}
                       />
                     </Paper>
