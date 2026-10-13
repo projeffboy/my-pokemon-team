@@ -11,8 +11,8 @@ import store from "@/store";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import useFittingLabel from "@/app/shared/use-fitting-label";
 
-import landorusFace from "@/images/pokemon-shuffle-faces/landorus-face.png";
-import ogerponFace from "@/images/pokemon-shuffle-faces/ogerpon-teal-mask-by-jormxdos.png";
+import landorusFace from "@/images/pokemon-shuffle-faces/landorus-face-96.png";
+import ogerponFace from "@/images/pokemon-shuffle-faces/ogerpon-teal-mask-by-jormxdos-96.png";
 
 const SITE_URL = "https://old.mypokemonteam.com/";
 // A face's width plus its margin from the label

@@ -2,6 +2,10 @@ import { useLayoutEffect, useRef, useState } from "react";
 
 // Measured widths by font, language, and text, until a font arriving changes them
 const cache = new Map<string, number>();
+// The fonts' ready promise the cache was last cleared for: a new one means fonts have loaded
+let clearedFor: Promise<unknown> | undefined;
+// A font that starts loading after a label was measured, such as a weight first used then,
+// would otherwise leave that label's width cached in the fallback font
 if (typeof document !== "undefined")
   document.fonts?.addEventListener("loadingdone", () => cache.clear());
 
@@ -69,8 +73,12 @@ export default function useFittingLabel<
     };
     pick();
     // The web font arriving changes the text widths but not the element's size
-    document.fonts?.ready.then(() => {
-      cache.clear();
+    const ready = document.fonts?.ready;
+    void ready?.then(() => {
+      if (clearedFor !== ready) {
+        clearedFor = ready;
+        cache.clear();
+      }
       pick();
     });
     const observer = new ResizeObserver(pick);
