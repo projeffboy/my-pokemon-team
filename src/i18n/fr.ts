@@ -118,21 +118,17 @@ const fr: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vide"})`,
     slotPair: (first: string, second: string) => `${first} et ${second}`,
-    moreTools: "Plus d'outils d'équipe",
-    fewerTools: "Moins d'outils d'équipe",
     advancedMode: "Avancé",
-    more: "Plus",
-    less: "Moins",
     filters: "Filtres",
     sort: "Trier",
-    random: "Aléatoire",
-    randomize: "Randomiser",
     randomizePokemon: "Randomiser le Pokémon",
     randomizeDetails: (details: string) =>
       `Randomiser ${details.toLowerCase()}`,
     randomFor: (slot: number) => `Pokémon aléatoire pour l'emplacement ${slot}`,
     advanced: "Plus de détails",
     advancedFor: (slot: number) => `Plus de détails pour l'emplacement ${slot}`,
+    details: "Détails",
+    showMoveTypes: "Afficher les types des capacités",
     about: (pokemon: string) => `À propos de ${pokemon}`,
     dragHint: "Maintenez et glissez pour réordonner",
     moveToSlot: (pokemon: string) =>

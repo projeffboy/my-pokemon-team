@@ -7,7 +7,7 @@ import {
   getTeamTextFromUrl,
   goToSite,
   openManageTeamMenu,
-  openTeamTools,
+  turnOnAdvanced,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
@@ -15,7 +15,7 @@ import { parseTeamText } from "@/store/team-text";
 import { pokemonTypes } from "@/shared/pokedex";
 
 const openTeams = async (page: Page) => {
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   await page.getByRole("button", { name: "Teams", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Teams" })).toBeVisible();
 };

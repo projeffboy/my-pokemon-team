@@ -160,6 +160,8 @@ test("fills in defaults and drops malformed fields", () => {
   const state = loadStoredState(storage);
   expect(state?.currentTeamId).toBe("a");
   expect(state?.isMoreOpen).toBe(false);
+  // States saved before the setting existed keep the move type icons
+  expect(state?.showMoveTypes).toBe(true);
   expect(state?.sort).toEqual({ by: "num", descending: true });
   expect(state?.nameView).toBe("list");
   storage.setItem(
@@ -215,6 +217,7 @@ test("saves the state and survives a storage that throws", () => {
     teams: [],
     currentTeamId: "",
     isMoreOpen: true,
+    showMoveTypes: false,
     sort: { by: "name" as const, descending: false },
     moveSort: { by: "name" as const, descending: false },
     nameView: "grid" as const,

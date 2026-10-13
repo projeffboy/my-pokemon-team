@@ -1,12 +1,12 @@
 import { test, expect } from "fixtures";
-import { openTeamTools, selectPokemon } from "helper";
+import { turnOnAdvanced, selectPokemon } from "helper";
 
 test("expanded small phone move, item, and ability lists keep their 400px viewport width", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 400, height: 900 });
   await selectPokemon(page, "Eldegoss");
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   const popup = page.locator(".MuiAutocomplete-popper");
   for (const property of ["move1", "item", "ability"]) {
     const input = page.getByRole("combobox", {
@@ -34,7 +34,7 @@ test("expanded small phone move, item, and ability lists keep their 400px viewpo
   }
 });
 
-test("collapsed move and ability lists are at least their 360px viewport width", async ({
+test("move and ability lists without Advanced are at least their 360px viewport width", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 900 });
@@ -53,7 +53,14 @@ test("collapsed move and ability lists are at least their 360px viewport width",
       await expect(popup).toBeVisible();
       await expect
         .poll(async () => (await popup.boundingBox())?.width)
-        .toBeCloseTo(Math.max(152, (await field.boundingBox())?.width ?? 0), 0);
+        .toBeCloseTo(
+          Math.max(
+            // Small phones leave room for the move list's type icons
+            property === "move1" && width < 400 ? 172 : 152,
+            (await field.boundingBox())?.width ?? 0,
+          ),
+          0,
+        );
       await input.press("Escape");
     }
   }

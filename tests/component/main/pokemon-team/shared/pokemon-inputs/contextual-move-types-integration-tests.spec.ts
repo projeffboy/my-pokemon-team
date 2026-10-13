@@ -4,14 +4,14 @@ import {
   selectItem,
   selectMove,
   selectAbility,
-  openTeamTools,
+  turnOnAdvanced,
 } from "helper";
 
 test("Judgment's input and options follow its plate", async ({ page }) => {
   await selectPokemon(page, "Arceus");
   await selectItem(page, "Flame Plate");
   await selectMove(page, "Judgment");
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   const input = page.getByLabel("Pokemon 1's move1");
   await expect(
     input.locator("..").getByRole("img", { name: "Fire", exact: true }),
@@ -39,7 +39,7 @@ test("move icons update when an ability changes their type", async ({
 }) => {
   await selectPokemon(page, "Sylveon");
   await selectMove(page, "Hyper Voice");
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   const input = page.getByLabel("Pokemon 1's move1");
   await expect(
     input.locator("..").getByRole("img", { name: "Normal", exact: true }),

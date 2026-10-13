@@ -4,7 +4,7 @@ import {
   selectPokemon,
   selectAbility,
   selectItem,
-  openTeamTools,
+  turnOnAdvanced,
 } from "helper";
 import type { Page } from "@playwright/test";
 
@@ -122,7 +122,7 @@ test("held-item typing stays consistent between the slot and its Pokédex", asyn
 }) => {
   await selectPokemon(page, "Arceus");
   await selectItem(page, "Flame Plate");
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   const slot = page.getByRole("region", { name: "Pokemon 1", exact: true });
   await expect(
     slot.getByRole("img", { name: "Fire", exact: true }),

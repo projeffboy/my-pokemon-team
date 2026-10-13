@@ -3,7 +3,7 @@ import type { Locator, Page } from "@playwright/test";
 import {
   getTeamTextFromUrl,
   isMdDown,
-  openTeamTools,
+  turnOnAdvanced,
   selectMove,
   selectPokemon,
   showSlot,
@@ -20,7 +20,7 @@ test.describe("Slot tools - Integration Tests", () => {
         .getByRole("tab"),
     ).toHaveCount(6);
     await selectPokemon(page, "Cufant");
-    await openTeamTools(page);
+    await turnOnAdvanced(page);
     const random = page.getByRole("button", {
       name: "Random pokemon for slot 1",
     });
@@ -31,16 +31,19 @@ test.describe("Slot tools - Integration Tests", () => {
     await expect(random).toBeEnabled();
     for (const width of [320, 390, 430]) {
       await page.setViewportSize({ width, height: 800 });
-      for (const action of [random, details, info]) {
+      await expect
+        .poll(() =>
+          info.evaluate(button => {
+            const bounds = button.getBoundingClientRect();
+            return bounds.width >= 44 && bounds.height >= 44;
+          }),
+        )
+        .toBe(true);
+      // Random and Details are the size they are on wider screens
+      for (const action of [random, details])
         await expect
-          .poll(() =>
-            action.evaluate(button => {
-              const bounds = button.getBoundingClientRect();
-              return bounds.width >= 44 && bounds.height >= 44;
-            }),
-          )
-          .toBe(true);
-      }
+          .poll(async () => (await action.boundingBox())?.height)
+          .toBe(28);
       await expect
         .poll(() =>
           details.evaluate(button => button.scrollWidth <= button.clientWidth),
@@ -66,40 +69,54 @@ test.describe("Slot tools - Integration Tests", () => {
     }
   });
 
-  test("adds slot action icons and labels in priority order as room grows", async ({
+  test("keeps Random and Details in the sprite area's bottom corners", async ({
     page,
   }) => {
-    await selectPokemon(page, "Cufant");
-    await openTeamTools(page);
     const random = page.getByRole("button", {
       name: "Random pokemon for slot 1",
     });
     const details = page.getByRole("button", {
       name: "More details for slot 1",
     });
-    for (const { width, edit, label } of [
-      { width: 600, edit: false, label: "" },
-      { width: 320, edit: false, label: "" },
-      { width: 420, edit: true, label: "Random" },
-      { width: 480, edit: true, label: "Randomize" },
-    ]) {
+    // An empty slot has no details to open
+    await expect(details).toHaveCount(0);
+    await selectPokemon(page, "Cufant");
+    const sprite = page.getByRole("region", { name: "Pokemon 1" }).first();
+    // The label grows with the card: the longer one where it fits beside Random
+    for (const [width, label] of [
+      [320, "Details"],
+      [414, "More details"],
+      [600, "Details"],
+      [1200, "Details"],
+      [1920, "More details"],
+    ] as const) {
       await page.setViewportSize({ width, height: 1000 });
-      await expect(details).toHaveText("More details");
+      await expect(details).toHaveText(label);
       await expect(random.getByTestId("CasinoIcon")).toBeVisible();
-      await expect(details.getByTestId("EditOutlinedIcon"))[
-        edit ? "toBeVisible" : "toBeHidden"
-      ]();
-      await expect(random.getByText("Random", { exact: true }))[
-        label === "Random" ? "toBeVisible" : "toBeHidden"
-      ]();
-      await expect(random.getByText("Randomize", { exact: true }))[
-        label === "Randomize" ? "toBeVisible" : "toBeHidden"
-      ]();
+      await expect(details.getByTestId("TuneIcon")).toBeVisible();
       expect(
         await details.evaluate(
           button => button.scrollWidth > button.clientWidth,
         ),
       ).toBe(false);
+      const [randomBox, detailsBox, card, move] = await Promise.all(
+        [
+          random,
+          details,
+          sprite,
+          page.getByRole("combobox", { name: "Pokemon 1's move1" }),
+        ].map(part => part.boundingBox()),
+      );
+      if (!randomBox || !detailsBox || !card || !move)
+        throw new Error("Missing slot controls");
+      // Side by side, in the card's left column
+      expect(randomBox.x).toBeGreaterThanOrEqual(card.x);
+      expect(randomBox.x + randomBox.width).toBeLessThanOrEqual(detailsBox.x);
+      expect(detailsBox.x + detailsBox.width).toBeLessThanOrEqual(move.x);
+      expect(randomBox.y + randomBox.height).toBeCloseTo(
+        detailsBox.y + detailsBox.height,
+        0,
+      );
     }
     await details.click();
     await expect(

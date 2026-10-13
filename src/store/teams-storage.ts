@@ -31,6 +31,7 @@ export interface StoredState {
   teams: SavedTeam[];
   currentTeamId: string;
   isMoreOpen: boolean;
+  showMoveTypes: boolean;
   sort: SortOrder;
   moveSort: MoveSortOrder;
   nameView: NameView;
@@ -145,6 +146,8 @@ export function loadStoredState(
         (teams[0]?.id ?? "")
       ),
     isMoreOpen: raw.isMoreOpen === true,
+    // On unless it was turned off, so states saved before the setting keep the icons
+    showMoveTypes: raw.showMoveTypes !== false,
     sort: sanitizeSort(raw.sort),
     moveSort: sanitizeMoveSort(raw.moveSort),
     nameView:
@@ -198,6 +201,11 @@ export function mergeStoredState(
     teams,
     currentTeamId: currentTeam?.id ?? mine.currentTeamId,
     isMoreOpen: pick(base.isMoreOpen, mine.isMoreOpen, theirs.isMoreOpen),
+    showMoveTypes: pick(
+      base.showMoveTypes,
+      mine.showMoveTypes,
+      theirs.showMoveTypes,
+    ),
     sort: pick(base.sort, mine.sort, theirs.sort),
     moveSort: pick(base.moveSort, mine.moveSort, theirs.moveSort),
     nameView: pick(base.nameView, mine.nameView, theirs.nameView),
@@ -229,6 +237,7 @@ export const initialStoredState = (): StoredState => {
     teams: [team],
     currentTeamId: team.id,
     isMoreOpen: false,
+    showMoveTypes: true,
     sort: DEFAULT_SORT,
     moveSort: DEFAULT_MOVE_SORT,
     nameView: "list",

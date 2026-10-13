@@ -2,7 +2,7 @@ import { test, expect } from "fixtures";
 import {
   selectPokemon,
   selectMove,
-  openTeamTools,
+  turnOnAdvanced,
   getTeamTextFromUrl,
   openAdvanced,
 } from "helper";
@@ -58,7 +58,7 @@ test("reload retains final rapid EV edits while a new shared link takes preceden
   await page.setViewportSize({ width: 1200, height: 900 });
   await selectPokemon(page, "Tentacruel");
   await selectMove(page, "Surf", 1);
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   await page
     .getByRole("button", { name: "More details for slot 1", exact: true })
     .click();
@@ -125,7 +125,7 @@ test("opening the displayed shared URL during a pending write respects that link
   await page.setViewportSize({ width: 1200, height: 900 });
   await selectPokemon(page, "Tentacool");
   await selectMove(page, "Surf");
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   await page
     .getByRole("button", { name: "More details for slot 1", exact: true })
     .click();
@@ -159,7 +159,7 @@ test("Back and Forward override a pending address-bar write", async ({
   await page.goto(`/?team=${toBase64Url("Seadra\n- Surf")}`);
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Seadra");
   await page.evaluate(() => history.pushState(null, "", location.href));
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   await page
     .getByRole("button", { name: "More details for slot 1", exact: true })
     .click();
@@ -193,7 +193,7 @@ test("pending early edits survive URL sync restarting when availability finishes
   });
   await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
   await selectPokemon(page, "Tentacruel");
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   await page
     .getByRole("button", { name: "More details for slot 1", exact: true })
     .click();

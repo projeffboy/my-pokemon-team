@@ -3,7 +3,7 @@ import { toBase64Url } from "@/app/shared/base64url";
 import {
   clickMenuItem,
   getTeamTextFromUrl,
-  openTeamTools,
+  turnOnAdvanced,
   selectAbility,
   selectPokemon,
 } from "helper";
@@ -89,8 +89,11 @@ test.describe("Share Link - Integration Tests", () => {
     await selectAbility(page, "Moxie");
     releaseLearnsets();
     await page.getByLabel("Pokemon 1's move1").fill("Waterfall");
+    // The option is also named by its type icon
     await expect(
-      page.getByRole("option", { name: "Waterfall", exact: true }),
+      page
+        .getByRole("option")
+        .filter({ has: page.getByText("Waterfall", { exact: true }) }),
     ).toBeVisible();
     await page.getByLabel("Pokemon 1's move1").press("Escape");
 
@@ -344,7 +347,7 @@ test.describe("Teams across tabs and links", () => {
     context,
   }) => {
     await selectPokemon(page, "Tropius");
-    await openTeamTools(page);
+    await turnOnAdvanced(page);
     await page.getByRole("button", { name: "Teams", exact: true }).click();
     await page
       .getByRole("button", { name: "Options for Team 1", exact: true })

@@ -3,7 +3,6 @@ import {
   clickMenuItem,
   getTeamTextFromUrl,
   openEditPokepaste,
-  openTeamTools,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
@@ -108,11 +107,12 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
       .toContain("houndoom");
     const otherTab = await context.newPage();
     await otherTab.goto(page.url());
-    await openTeamTools(otherTab);
     await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
     await otherTab
       .getByRole("button", { name: "New Team", exact: true })
       .click();
+    // The slot inputs are tapped by force, so the closing dialog must be out of the way
+    await expect(otherTab.getByRole("dialog")).toBeHidden();
     await selectPokemon(otherTab, "Haxorus");
     await expect.poll(() => getTeamTextFromUrl(page)).toContain("Houndoom");
 

@@ -4,7 +4,6 @@ import {
   closeDialog,
   clickMenuItem,
   openAdvanced,
-  openTeamTools,
   selectDialogOption,
   selectPokemon,
   selectMove,
@@ -30,11 +29,12 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
       "Magcargo",
     );
-    await openTeamTools(otherTab);
     await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
     await otherTab
       .getByRole("button", { name: "New Team", exact: true })
       .click();
+    // The slot inputs are tapped by force, so the closing dialog must be out of the way
+    await expect(otherTab.getByRole("dialog")).toBeHidden();
     await selectPokemon(otherTab, "Haxorus");
     await openAdvanced(otherTab);
     await otherTab

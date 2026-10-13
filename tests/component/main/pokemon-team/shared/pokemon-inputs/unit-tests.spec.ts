@@ -1,7 +1,7 @@
 import { test, expect } from "fixtures";
 import {
   getTeamTextFromUrl,
-  openTeamTools,
+  turnOnAdvanced,
   selectAbility,
   selectItem,
   selectMove,
@@ -115,7 +115,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     const field = ability.locator("..");
     const hidden = field.getByText("Hidden", { exact: true });
     await expect(hidden).toHaveCount(0);
-    await openTeamTools(page);
+    await turnOnAdvanced(page);
 
     for (const { width, visible } of [
       { width: 480, visible: true },
@@ -160,7 +160,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     );
     await page.goto(`/?gen=8&team=${team}`);
     await page.setViewportSize({ width: 480, height: 1000 });
-    await openTeamTools(page);
+    await turnOnAdvanced(page);
     const ability = page.getByLabel("Pokemon 1's ability");
     await expect(ability.locator("..").getByText("Hidden")).toBeVisible();
     await page.getByRole("button", { name: "Language", exact: true }).click();
@@ -169,7 +169,11 @@ test.describe("Pokemon Card - Unit Tests", () => {
     await expect(
       translated.locator("..").getByText(ja.team.hidden),
     ).toBeVisible();
-    await page.getByRole("button", { name: ja.team.fewerTools }).click();
+    await page.getByRole("button", { name: ja.team.manageTeamMenu }).click();
+    await page
+      .getByRole("menuitemcheckbox", { name: ja.team.advancedMode })
+      .click();
+    await page.keyboard.press("Escape");
     await expect(
       translated.locator("..").getByText(ja.team.hidden),
     ).toHaveCount(0);
@@ -366,7 +370,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     });
     const card = page.getByRole("region", { name: "Pokemon 1", exact: true });
     for (const tools of [false, true]) {
-      if (tools) await openTeamTools(page);
+      if (tools) await turnOnAdvanced(page);
       await selectPokemon(page, "Chimecho");
       const small = card.getByRole("img", { name: "Chimecho", exact: true });
       await expect(small).toHaveJSProperty("naturalHeight", 64);
@@ -434,9 +438,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     await expect(rockyHelmetIcon).toBeHidden();
   });
 
-  test("should show a move's type icon before it once the team tools are shown", async ({
-    page,
-  }) => {
+  test("should show a move's type icon before it", async ({ page }) => {
     // The card also shows the pokemon's own types, so look inside the input
     const input = page.getByLabel("Pokemon 1's move1");
     const field = input.locator("..");
@@ -444,9 +446,6 @@ test.describe("Pokemon Card - Unit Tests", () => {
 
     await selectPokemon(page, "Dracozolt");
     await selectMove(page, "Bolt Beak");
-    // Hidden with the rest of the tools, until More is pressed
-    await expect(electricIcon).toBeHidden();
-    await openTeamTools(page);
     await expect(electricIcon).toBeVisible();
 
     // The icon comes before the name

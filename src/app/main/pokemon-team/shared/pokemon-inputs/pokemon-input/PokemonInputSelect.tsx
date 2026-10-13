@@ -527,7 +527,11 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 minWidth: {
                   xxs: Math.max(
                     fitWidth,
-                    store.isMoreOpen || pokemonProperty === "item" ?
+                    (
+                      store.isMoreOpen ||
+                        leadingIcon ||
+                        pokemonProperty === "item"
+                    ) ?
                       SMALL_PHONE_LIST_WIDTH
                     : MIN_TEXT_LIST_WIDTH,
                   ),

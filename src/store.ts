@@ -109,6 +109,7 @@ export class Store {
     this.teams = stored.teams;
     this.currentTeamId = stored.currentTeamId;
     this.isMoreOpen = stored.isMoreOpen;
+    this.showMoveTypes = stored.showMoveTypes;
     this.sort = stored.sort;
     this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
@@ -892,8 +893,12 @@ export class Store {
     );
   }
 
-  // "More" shows the slot tools: filters, sort, and advanced sets, plus the team toolbar on phones and tablets
+  // Advanced mode: Filters and Sort in the dropdowns, and hidden abilities marked. Named for
+  // the More toggle it began as, which the saved state still calls it.
   isMoreOpen: boolean;
+
+  // Each chosen move's type icon before its name, with the item's icon leading to match
+  showMoveTypes: boolean;
 
   // How the Name dropdown lists its options
   nameView: NameView;
@@ -978,6 +983,7 @@ export class Store {
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
     this.isMoreOpen = merged.isMoreOpen;
+    this.showMoveTypes = merged.showMoveTypes;
     this.sort = merged.sort;
     this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
@@ -1021,6 +1027,7 @@ export class Store {
       currentTeamId:
         this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId,
       isMoreOpen: this.isMoreOpen,
+      showMoveTypes: this.showMoveTypes,
       sort: this.sort,
       moveSort: this.moveSort,
       nameView: this.nameView,

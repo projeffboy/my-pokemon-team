@@ -8,7 +8,7 @@ import {
   selectMove,
   selectPokemon,
   getTeamTextFromUrl,
-  openTeamTools,
+  turnOnAdvanced,
   clickMenuItem,
 } from "helper";
 import type { Page } from "@playwright/test";
@@ -83,7 +83,7 @@ test.describe("Filters Integration Tests", () => {
   };
 
   const addPoisonTeam = async (page: Page) => {
-    await openTeamTools(page);
+    await turnOnAdvanced(page);
     await page.getByRole("button", { name: "Teams", exact: true }).click();
     await page.getByRole("button", { name: "New Team", exact: true }).click();
     await expect(page.getByRole("dialog")).toBeHidden();
@@ -564,7 +564,7 @@ test("format transfer without losses keeps edits received while game data loads"
   try {
     await otherTab.goto(`/?game=${game}`, { waitUntil: "domcontentloaded" });
     await loaded;
-    await openTeamTools(otherTab);
+    await turnOnAdvanced(otherTab);
     await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
     await otherTab
       .getByRole("button", { name: `Load ${teamName}`, exact: true })
