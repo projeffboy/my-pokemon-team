@@ -9,9 +9,19 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 
-import versionFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face-cropped.svg";
+import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face-cropped.svg";
+import jigglypuffFace from "@/images/pokemon-shuffle-faces/jigglypuff-shuffle-face-cropped.svg";
 
 const SITE_URL = "https://mypokemonteam.com/";
+
+const face = (src: string) => (
+  <Box
+    component="img"
+    src={src}
+    alt=""
+    sx={{ width: 24, height: 24, objectFit: "contain" }}
+  />
+);
 
 const SiteVersionSwitch = observer(function SiteVersionSwitch() {
   const [open, setOpen] = useState(false);
@@ -29,14 +39,8 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
     <>
       <Button
         variant="contained"
-        endIcon={
-          <Box
-            component="img"
-            src={versionFace}
-            alt=""
-            sx={{ width: 24, height: 24, objectFit: "contain" }}
-          />
-        }
+        startIcon={face(garchompFace)}
+        endIcon={face(jigglypuffFace)}
         onClick={handleSwitch}
         sx={{ alignSelf: "center", whiteSpace: "nowrap", minHeight: 48 }}
       >

@@ -9,4 +9,7 @@ The old website restores these original files byte for byte from
 
 Landorus is on the left of the title and Teal Mask Ogerpon is on the right, matching the original header.
 
-The New website button uses `garchomp-shuffle-face-cropped.svg`, copied unchanged from the main website. Its SVG wrapper embeds the original Pokemon Shuffle PNG from [Bulbagarden Archives: Shuffle445.png](https://archives.bulbagarden.net/wiki/File:Shuffle445.png), with transparent margins trimmed by its view box.
+The New website button shows the new website's two header faces, Garchomp on the left and Jigglypuff on the right, copied unchanged from the main website. Each SVG wrapper embeds the original Pokemon Shuffle PNG, with transparent margins trimmed by its view box:
+
+- `garchomp-shuffle-face-cropped.svg`: from [Bulbagarden Archives: Shuffle445.png](https://archives.bulbagarden.net/wiki/File:Shuffle445.png).
+- `jigglypuff-shuffle-face-cropped.svg`: from [Bulbagarden Archives: Shuffle039.png](https://archives.bulbagarden.net/wiki/File:Shuffle039.png).
