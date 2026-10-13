@@ -1,6 +1,6 @@
 import { test, expect } from "fixtures";
 import type { Locator } from "@playwright/test";
-import { openAdvanced, closeDialog } from "helper";
+import { openAdvanced, closeDialog, resizeTeamViewport } from "helper";
 
 for (const game of [
   { query: "gen=1", level: true, gender: false, nature: false, tera: false },
@@ -20,7 +20,7 @@ for (const game of [
     const team = Buffer.from("Golduck (F)\n").toString("base64url");
     await page.goto(`/?${game.query}&team=${team}`);
     for (const width of [320, 400, 600, 960, 1920]) {
-      await page.setViewportSize({ width, height: 900 });
+      await resizeTeamViewport(page, width, 900);
       await openAdvanced(page);
       const dialog = page.getByRole("dialog", { name: "More details" });
       const title = dialog.locator(".MuiDialogTitle-root");
