@@ -32,6 +32,23 @@ export const isMdDown = (page: Page) =>
 export const isXs = (page: Page) =>
   (page.viewportSize()?.width ?? Infinity) < breakpointValues.sm;
 
+// A resize can replace the team viewer after the browser has resized its viewport.
+export const resizeTeamViewport = async (
+  page: Page,
+  width: number,
+  height: number,
+) => {
+  await page.setViewportSize({ width, height });
+  const tabs = page
+    .getByRole("tablist", { name: "Pokemon team slots" })
+    .getByRole("tab");
+  await expect(tabs).toHaveCount(
+    width < breakpointValues.sm ? 6
+    : width < breakpointValues.md ? 3
+    : 0,
+  );
+};
+
 // Brings a slot's card on screen: the tabbed viewers show one slot or one pair at a time
 export const showSlot = async (page: Page, slotIndex: number) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s name`);
@@ -42,19 +59,25 @@ export const showSlot = async (page: Page, slotIndex: number) => {
   await expect(input).toBeVisible();
 };
 
-// Shows the filters, sort, and advanced buttons, and the team toolbar on phones and tablets
-export const openTeamTools = async (page: Page) => {
-  const more = page.getByRole("button", {
-    name: /^(More team tools|Advanced)$/,
-    expanded: false,
-  });
-  if (await more.isVisible()) await more.click();
-};
-
 export const openManageTeamMenu = async (page: Page) => {
-  await openTeamTools(page);
   await page.getByRole("button", { name: "Manage team" }).click();
   await expect(page.getByRole("menu")).toBeVisible();
+};
+
+// Turns on Advanced, which puts Filters and Sort in the dropdowns. Its switch is in the
+// toolbar from md, and in the Manage team menu on phones and tablets.
+export const turnOnAdvanced = async (page: Page) => {
+  if (!isMdDown(page)) {
+    const toggle = page.getByRole("button", { name: "Advanced", exact: true });
+    if ((await toggle.getAttribute("aria-pressed")) !== "true")
+      await toggle.click();
+    return;
+  }
+  await openManageTeamMenu(page);
+  const item = page.getByRole("menuitemcheckbox", { name: "Advanced" });
+  if ((await item.getAttribute("aria-checked")) !== "true") await item.click();
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("menu")).toBeHidden();
 };
 
 export const clickMenuItem = async (page: Page, name: string) => {
@@ -71,17 +94,32 @@ export const openEditPokepaste = async (page: Page) => {
   ).toBeVisible();
 };
 
-// Opens a team or slot tool's dialog after revealing the tools
+// Opens a team or slot button's dialog
 const openSlotDialog = async (page: Page, button: RegExp, dialog: string) => {
-  await openTeamTools(page);
   await page.getByRole("button", { name: button }).first().click();
   await expect(page.getByRole("dialog", { name: dialog })).toBeVisible();
 };
 
-export const openFilters = (page: Page) =>
-  openSlotDialog(page, /^Filters$/, "Filters");
+// Filters and Sort are in the Name dropdown, beside its view toggle, and the move
+// dropdowns have a Sort of their own that opens on the Moves tab
+const openListDialog = async (
+  page: Page,
+  name: "Filters" | "Sort",
+  list: "name" | "move1" = "name",
+) => {
+  await turnOnAdvanced(page);
+  await page
+    .getByRole("combobox", { name: new RegExp(`^Pokemon \\d's ${list}$`) })
+    .first()
+    .click();
+  await page.getByRole("button", { name, exact: true }).click();
+  await expect(page.getByRole("dialog", { name })).toBeVisible();
+};
 
-export const openSort = (page: Page) => openSlotDialog(page, /^Sort$/, "Sort");
+export const openFilters = (page: Page) => openListDialog(page, "Filters");
+
+export const openSort = (page: Page, list: "pokemon" | "moves" = "pokemon") =>
+  openListDialog(page, "Sort", list === "moves" ? "move1" : "name");
 
 export const openAdvanced = (page: Page) =>
   openSlotDialog(page, /^More details for slot/, "More details");
@@ -111,19 +149,25 @@ const ANALYSIS_TABS: Record<string, string> = {
 // Shows one of the analysis panel's views: on phones each has a tab, and from
 // tablets up a switch in the panel's header shows the matrix
 export const openAnalysis = async (page: Page, name: string) => {
+  const region = page.getByRole("region", { name });
   if (isXs(page)) {
     await page
       .getByRole("tablist", { name: "Team analysis" })
       .getByRole("tab", { name: ANALYSIS_TABS[name] })
       .click();
+  } else if (name === "Matrix Analysis") {
+    await page.getByRole("button", { name }).click();
   } else {
-    // From tablets up, the stats and checklist share the same view
-    const stats = name !== "Matrix Analysis";
-    await page
-      .getByRole("button", { name: stats ? "Team Stats" : name })
-      .click();
+    await page.getByRole("button", { name: "Team Stats", exact: true }).click();
+    // The checklist shares the stats' view while that keeps the two columns level, and
+    // otherwise has a switch of its own
+    if (name === "Team Checklist") {
+      const own = page.getByRole("button", { name, exact: true });
+      await expect(region.or(own)).toBeVisible();
+      if (await own.isVisible()) await own.click();
+    }
   }
-  await expect(page.getByRole("region", { name })).toBeVisible();
+  await expect(region).toBeVisible();
 };
 
 // Decodes the `team` URL parameter (see src/app/shared/team-link.ts) into Pokemon Showdown team
@@ -157,7 +201,7 @@ export const selectAbility = async (
   slotIndex = 0,
 ) => {
   const input = page.getByLabel(`Pokemon ${slotIndex + 1}'s ability`);
-  await input.click({ force: true });
+  await input.click();
   await input.fill(ability);
   await page.getByRole("listbox").getByText(ability, { exact: true }).click();
 };

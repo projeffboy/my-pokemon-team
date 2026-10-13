@@ -30,10 +30,29 @@ const zhHant: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即將推出",
+  combinedGenerations: {
+    label: "第6–9世代",
+    short: "第6–9世代",
+    description: "合併第6–9世代所有遊戲的選項",
+  },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "語言",
   languageFailed: "無法載入語言，請再試一次。",
+  error: {
+    title: "發生了一些問題",
+    description: "請重新載入頁面再試一次。",
+    reload: "重新載入",
+  },
+  siteVersion: {
+    button: "舊版網站",
+    short: "舊版網站",
+    title: "切換到舊版網站？",
+    description:
+      "目前的隊伍不會轉移到舊版網站。已在此儲存的隊伍將保留在這個版本中。",
+    go: "前往舊版網站",
+    goLong: "前往舊版網站",
+  },
   feedback: {
     button: "意見回饋",
     title: "意見回饋",
@@ -46,6 +65,7 @@ const zhHant: Messages = {
     imageUnreadable: "無法讀取這張圖片。請試試 PNG 或 JPEG。",
     imagesTooLarge: "圖片總大小超出限制，請先刪除一張。",
     email: "你的電子郵件（選填）",
+    emailInvalid: "請輸入有效的電子郵件地址，或留空。",
     emailHelper: "僅在需要回覆時填寫",
     caption: "意見",
     send: "傳送",
@@ -69,6 +89,7 @@ const zhHant: Messages = {
   // The team column
   team: {
     teams: "隊伍列表",
+    noMatchingPokemon: "沒有符合目前篩選條件的寶可夢。請變更篩選條件後重試。",
     randomizedTeam: "已隨機組隊",
     randomizedPokemon: "已隨機選擇寶可夢",
     randomizedPokemonDetails: (details: string) =>
@@ -98,20 +119,16 @@ const zhHant: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `寶可夢 ${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first} 與 ${second}`,
-    moreTools: "更多隊伍工具",
-    fewerTools: "收起隊伍工具",
     advancedMode: "進階",
-    more: "更多",
-    less: "收起",
     filters: "篩選",
     sort: "排序",
-    random: "隨機",
-    randomize: "隨機產生",
     randomizePokemon: "隨機選擇寶可夢",
     randomizeDetails: (details: string) => `隨機選擇${details}`,
     randomFor: (slot: number) => `為第 ${slot} 格隨機選擇寶可夢`,
     advanced: "更多詳情",
     advancedFor: (slot: number) => `第 ${slot} 格的更多詳情`,
+    details: "詳情",
+    showMoveTypes: "顯示招式屬性",
     about: (pokemon: string) => `關於${pokemon}`,
     dragHint: "長按拖曳即可調整順序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他格`,
@@ -530,6 +547,7 @@ const zhHant: Messages = {
     infographicCaption: "同樣適用於第7至9世代",
   },
   credits: {
+    madeBy: "製作：{name}",
     showdown:
       "感謝 Pokemon Showdown 的各位慷慨提供所有精靈圖、圖示與寶可夢資料。不可或缺！",
     alsoThanks: "同時感謝",
@@ -556,11 +574,11 @@ const zhHant: Messages = {
     teamsAnswer:
       "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「全部匯出」會把每支隊伍以 Showdown 文字下載，「匯入隊伍」則能把它們讀回來。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
     teamsAnswer2:
-      "「更多」按鈕會顯示隊伍工具、「篩選」與「排序」按鈕，以及「更多詳情」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於「管理隊伍」選單中。",
+      "「更多」按鈕會顯示隊伍工具、「篩選」、「排序」與「更多詳情」。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於寶可夢欄位分頁的上方。",
     generations: "世代",
     generationsQuestion: "世代會改變什麼？",
     generationsAnswer:
-      "在頂端選擇的世代只會列出該世代存在的寶可夢與形態：第6、7、9世代的超級進化、第8世代的超極巨化形態等等。其他一切維持最新：招式、特性、屬性相剋表與格式都來自最新的遊戲，所以舊世代的隊伍可能會學到當時學不了的招式。",
+      "頂端選擇的世代和遊戲決定提供的寶可夢、形態、招式、道具與個體詳情。舊世代隊伍使用該世代的特性、種族值和屬性相剋表。切換遊戲會預覽必要的隊伍變更，你可以取消、更新隊伍或建立副本。",
     advanced: "更多詳情",
     advancedQuestion: "暱稱、等級、性格、努力值與個體值",
     advancedAnswer:

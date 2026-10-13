@@ -33,7 +33,7 @@ test("preserves selections after reloading", async ({ page }) => {
 
   await expect(
     page.getByRole("combobox", { name: "Generation" }),
-  ).toContainText("Champions");
+  ).toContainText("Generations 6–9");
   await selectPokemon(page, "Gyarados");
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
   await selectAbility(page, "Moxie");
@@ -70,14 +70,16 @@ test("removes the service worker left by the old build", async ({ page }) => {
   page.on("pageerror", error => pageErrors.push(error));
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
-  // The replacement worker unregisters itself and reloads its controlled page.
-  // Returning the registration promise would race that expected navigation.
-  await Promise.all([
-    page.waitForEvent("domcontentloaded"),
-    page.evaluate(() => {
-      void navigator.serviceWorker.register("/service-worker.js");
-    }),
-  ]);
+  // The replacement worker reloads this document as it unregisters itself.
+  await page.evaluate(() => {
+    document.documentElement.setAttribute("data-smoke-worker", "before");
+    void navigator.serviceWorker.register("/service-worker.js");
+  });
+  await expect(page.locator("html")).not.toHaveAttribute(
+    "data-smoke-worker",
+    "before",
+  );
+  await page.waitForLoadState("domcontentloaded");
 
   await expect(async () => {
     const registrations = await page.evaluate(() =>
@@ -89,4 +91,35 @@ test("removes the service worker left by the old build", async ({ page }) => {
     page.getByRole("heading", { name: "My Pokemon Team", level: 1 }),
   ).toBeVisible();
   expect(pageErrors).toEqual([]);
+});
+
+test("an offline lazy-load failure keeps the page and uses the dialog fallback", async ({
+  page,
+  context,
+}) => {
+  const errors: Error[] = [];
+  page.on("pageerror", error => errors.push(error));
+  await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+  await selectPokemon(page, "Pelipper");
+  await expect(page).toHaveURL(/[?&]team=/);
+  const url = page.url();
+  await page.evaluate(() => {
+    addEventListener("vite:preloadError", event => {
+      document.documentElement.dataset.offlinePreloadCancelled = String(
+        event.defaultPrevented,
+      );
+    });
+  });
+  await context.setOffline(true);
+  await page.getByRole("button", { name: "Credits", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Credits", exact: true });
+  await expect(dialog.getByRole("alert")).toContainText("Something went wrong");
+  await expect(page.locator("html")).toHaveAttribute(
+    "data-offline-preload-cancelled",
+    "true",
+  );
+  await expect(page).toHaveURL(url);
+  await dialog.getByRole("button", { name: "Go Back", exact: true }).click();
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Pelipper");
+  expect(errors).toEqual([]);
 });

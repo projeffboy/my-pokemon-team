@@ -11,7 +11,14 @@ import { useTranslation } from "@/app/shared/TranslationContext";
 import CaptionButton from "./shared/CaptionButton";
 
 // The site's language, listed in each language's own name
-const LanguageSelect = observer(function LanguageSelect() {
+const LanguageSelect = observer(function LanguageSelect({
+  row,
+  named,
+}: {
+  // The icon goes before the caption, which names the language in full if `named`
+  row: boolean;
+  named: boolean;
+}) {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const close = () => setAnchorEl(null);
@@ -20,8 +27,9 @@ const LanguageSelect = observer(function LanguageSelect() {
     <>
       <CaptionButton
         icon={<LanguageIcon />}
-        caption={LOCALE_CODES[store.locale]}
+        caption={(named ? LOCALE_NAMES : LOCALE_CODES)[store.locale]}
         label={t.language}
+        row={row}
         onClick={(event: MouseEvent<HTMLElement>) =>
           setAnchorEl(event.currentTarget)
         }

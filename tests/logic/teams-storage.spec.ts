@@ -44,15 +44,16 @@ test("saved set details survive reload even when unsupported or outside a game's
   ).toBe(false);
 });
 
-test("fresh storage defaults to Champions while existing regular Gen 9 saves keep their profile", () => {
+test("fresh storage defaults to combined generations while existing regular Gen 9 saves keep their profile", () => {
   const initial = initialStoredState();
   expect(initial.teams[0]).toMatchObject({
     generation: 9,
-    format: CHAMPIONS_FORMAT,
+    format: "",
+    generationProfile: "6-9",
   });
   const legacy = {
     ...initial,
-    teams: [{ ...initial.teams[0], format: "" }],
+    teams: [{ ...initial.teams[0], format: "", generationProfile: undefined }],
   };
   expect(
     loadStoredState(fakeStorage(JSON.stringify(legacy)).storage)?.teams[0],
@@ -160,6 +161,8 @@ test("fills in defaults and drops malformed fields", () => {
   const state = loadStoredState(storage);
   expect(state?.currentTeamId).toBe("a");
   expect(state?.isMoreOpen).toBe(false);
+  // States saved before the setting existed keep the move type icons
+  expect(state?.showMoveTypes).toBe(true);
   expect(state?.sort).toEqual({ by: "num", descending: true });
   expect(state?.nameView).toBe("list");
   storage.setItem(
@@ -215,6 +218,7 @@ test("saves the state and survives a storage that throws", () => {
     teams: [],
     currentTeamId: "",
     isMoreOpen: true,
+    showMoveTypes: false,
     sort: { by: "name" as const, descending: false },
     moveSort: { by: "name" as const, descending: false },
     nameView: "grid" as const,

@@ -1,5 +1,8 @@
 import { test, expect } from "fixtures";
-import { selectPokemon } from "helper";
+import { turnOnAdvanced, selectPokemon, resizeTeamViewport } from "helper";
+import pokedex from "@/data/pokedex";
+import { filterPokemon } from "@/store/filtering";
+import { sortPokemon, DEFAULT_SORT } from "@/store/sorting";
 
 test.describe("Name dropdown views - Unit Tests", () => {
   test("keyboard navigation keeps filtered options in view", async ({
@@ -156,10 +159,10 @@ test.describe("Name dropdown views - Unit Tests", () => {
           .last()
           .evaluate(label => {
             const lineHeight = parseFloat(getComputedStyle(label).lineHeight);
-            return label.getBoundingClientRect().height / lineHeight;
+            return label.getBoundingClientRect().height - 2 * lineHeight;
           }),
       )
-      .toBeLessThanOrEqual(2);
+      .toBeLessThanOrEqual(1);
     await expect
       .poll(() =>
         option
@@ -354,4 +357,146 @@ test.describe("Name dropdown views - Unit Tests", () => {
       listbox.getByRole("option", { name: "Clodsire" }),
     ).toContainText("Clodsire");
   });
+});
+test("Home and End reach real boundaries in each virtualized Name view", async ({
+  page,
+}) => {
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.click();
+  const options = sortPokemon(
+    filterPokemon({ type: "", region: "", format: "" }),
+    DEFAULT_SORT,
+  );
+  const lastName = pokedex[options.at(-1) ?? ""]?.name ?? "";
+  const firstName = pokedex[options[0] ?? ""]?.name ?? "";
+  for (const view of ["List view", "Grid view", "Big grid view"]) {
+    await page.getByRole("button", { name: view, exact: true }).click();
+    await input.press("ArrowDown");
+    await input.press("End");
+    const last = page.getByRole("option", { name: lastName, exact: true });
+    await expect(last).toBeVisible();
+    await expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      (await last.getAttribute("id")) ?? "",
+    );
+    await input.press("Home");
+    const first = page.getByRole("option", { name: firstName, exact: true });
+    await expect(first).toBeVisible();
+    await expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      (await first.getAttribute("id")) ?? "",
+    );
+  }
+});
+
+test("keyboard users can switch views without losing their search", async ({
+  page,
+}) => {
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("char");
+  await input.press("Tab");
+  const list = page.getByRole("button", { name: "List view", exact: true });
+  const grid = page.getByRole("button", { name: "Grid view", exact: true });
+  await expect(list).toBeFocused();
+  await page.keyboard.press("ArrowRight");
+  await expect(grid).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(grid).toHaveAttribute("aria-pressed", "true");
+  const bigGrid = page.getByRole("button", {
+    name: "Big grid view",
+    exact: true,
+  });
+  await page.keyboard.press("ArrowRight");
+  await page.keyboard.press("Enter");
+  await expect(bigGrid).toHaveAttribute("aria-pressed", "true");
+  await expect(input).toHaveValue("char");
+  await page.keyboard.press("Shift+Tab");
+  await expect(input).toBeFocused();
+  await input.press("ArrowDown");
+  await input.press("End");
+  const lastId = await input.getAttribute("aria-activedescendant");
+  await expect(page.locator(`[id="${lastId}"]`)).toBeVisible();
+  await input.press("Home");
+  await expect(input).toHaveAttribute(
+    "aria-activedescendant",
+    "react-select-single-0-name-option-0",
+  );
+  await input.press("Tab");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("listbox")).toBeHidden();
+  await expect(input).toBeFocused();
+  await input.fill("rhyper");
+  await input.press("Tab");
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("listbox")).toBeHidden();
+  await expect(
+    page.getByRole("button", { name: "Random pokemon for slot 1" }),
+  ).toBeFocused();
+});
+
+test("keyboard popup tools restore input focus after their dialogs close", async ({
+  page,
+}) => {
+  await turnOnAdvanced(page);
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("no-pokemon-matches");
+  await input.press("Tab");
+  await expect(
+    page.getByRole("button", { name: "Filters", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  const filters = page.getByRole("dialog", { name: "Filters", exact: true });
+  await expect(filters).toBeVisible();
+  await filters.getByRole("button", { name: "Done" }).click();
+  await expect(input).toBeFocused();
+  await input.fill("char");
+  await input.press("Tab");
+  await page.keyboard.press("Tab");
+  await page.keyboard.press("Tab");
+  await expect(
+    page.getByRole("button", { name: "Sort", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  const sort = page.getByRole("dialog", { name: "Sort", exact: true });
+  await expect(sort).toBeVisible();
+  await sort.getByRole("button", { name: "Done" }).click();
+  await expect(input).toBeFocused();
+});
+
+test("leaving a dropdown still restores the selected name", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Arbok");
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("unmatched search");
+  await input.press("Shift+Tab");
+  await expect(input).toHaveValue("Arbok");
+  await input.focus();
+  await expect(input).toHaveValue("Arbok");
+});
+
+test("the big grid names each pokemon under its sprite, and the small grid does not", async ({
+  page,
+}) => {
+  await resizeTeamViewport(page, 375, 800);
+  const input = page.getByLabel("Pokemon 1's name");
+  await input.fill("Wooper");
+  await page.getByRole("button", { name: "Grid view", exact: true }).click();
+  const option = page.getByRole("option", { name: "Wooper", exact: true });
+  const name = option.getByText("Wooper", { exact: true });
+  await expect(option).toBeVisible();
+  await expect(name).toHaveCount(0);
+
+  await page
+    .getByRole("button", { name: "Big grid view", exact: true })
+    .click();
+  await expect(name).toBeVisible();
+  const [sprite, text, cell] = await Promise.all(
+    [option.locator("img"), name, option].map(part => part.boundingBox()),
+  );
+  if (!sprite || !text || !cell) throw new Error("Missing big grid cell");
+  expect(sprite.y + sprite.height).toBeLessThanOrEqual(text.y + 0.5);
+  expect(text.y + text.height).toBeLessThanOrEqual(cell.y + cell.height + 0.5);
+  expect(text.x).toBeGreaterThanOrEqual(cell.x - 0.5);
+  expect(text.x + text.width).toBeLessThanOrEqual(cell.x + cell.width + 0.5);
 });

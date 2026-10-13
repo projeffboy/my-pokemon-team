@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -21,6 +21,10 @@ function TeamNameForm({
 }) {
   const { t } = useTranslation();
   const [name, setName] = useState(team.name);
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
   const handleSave = () => {
     store.renameTeam(team.id, name.trim());
     onClose();
@@ -31,6 +35,7 @@ function TeamNameForm({
       <DialogContent>
         <TextField
           autoFocus
+          inputRef={inputRef}
           label={t.settings.teamName}
           value={name}
           onChange={event => setName(event.target.value)}

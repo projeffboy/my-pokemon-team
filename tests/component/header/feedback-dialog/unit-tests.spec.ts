@@ -4,79 +4,140 @@ import { selectPokemon } from "helper";
 // Sending waits for the page screenshot, which takes WebKit several seconds
 const SEND_TIMEOUT = 15000;
 
+type CompressionControls = {
+  auditCompressions: Record<string, (data: string) => void>;
+};
+
 test.describe("Feedback Dialog - Unit Tests", () => {
-  test("a cancelled send cannot clear a reopened feedback draft", async ({
+  for (const status of [204, 502]) {
+    test(`ignores a ${status} response after cancelling and reopening`, async ({
+      page,
+    }) => {
+      let finish!: () => void;
+      const pending = new Promise<void>(resolve => {
+        finish = resolve;
+      });
+      let started!: () => void;
+      const requested = new Promise<void>(resolve => {
+        started = resolve;
+      });
+      await page.route("/api/feedback", async route => {
+        started();
+        await pending;
+        await route.fulfill({ status });
+      });
+      await page.getByRole("button", { name: "Send feedback" }).click();
+      const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+      await dialog.getByLabel("Your feedback").fill("First draft");
+      await dialog.getByLabel("Attach a screenshot of the page").uncheck();
+      await dialog.getByRole("button", { name: "Send", exact: true }).click();
+      await requested;
+      await expect(dialog.getByLabel("Your feedback")).toBeDisabled();
+      await expect(dialog.getByLabel("Your email (optional)")).toBeDisabled();
+      await expect(dialog.getByLabel("Attach my team link")).toBeDisabled();
+      await expect(
+        dialog.getByLabel("Attach a screenshot of the page"),
+      ).toBeDisabled();
+      await expect(
+        dialog.getByRole("button", { name: "Add image" }),
+      ).toBeDisabled();
+      await dialog.getByRole("button", { name: "Cancel" }).click();
+      await page.getByRole("button", { name: "Send feedback" }).click();
+      await dialog.getByLabel("Your feedback").fill("New draft");
+      const responded = page.waitForResponse("/api/feedback");
+      finish();
+      await responded;
+      await expect(dialog.getByLabel("Your feedback")).toHaveValue("New draft");
+      await expect(dialog.getByRole("alert")).toBeHidden();
+      await expect(
+        page.getByText("Thanks! Your feedback was sent."),
+      ).toBeHidden();
+    });
+  }
+
+  test("merges concurrent image selections without restoring deleted attachments", async ({
     page,
   }) => {
-    let release: () => void = () => {};
+    await page.route("**/feedback-dialog/compress-image.ts*", route =>
+      route.fulfill({
+        contentType: "application/javascript",
+        body: "export function compressImage(file) { return new Promise(resolve => { (window.auditCompressions ??= {})[file.name] = resolve; }); }",
+      }),
+    );
+    await page.reload();
+    await page.getByRole("button", { name: "Send feedback" }).click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    const send = dialog.getByRole("button", { name: "Send", exact: true });
+    await dialog.getByLabel("Your feedback").fill("Attachments");
+    const select = async (name: string) => {
+      await dialog.locator("input[type=file]").setInputFiles({
+        name,
+        mimeType: "image/png",
+        buffer: Buffer.from("mocked image"),
+      });
+      await expect
+        .poll(() =>
+          page.evaluate(
+            name =>
+              Boolean(
+                (window as unknown as CompressionControls).auditCompressions?.[
+                  name
+                ],
+              ),
+            name,
+          ),
+        )
+        .toBe(true);
+    };
+    const finish = (name: string) =>
+      page.evaluate(
+        name =>
+          (window as unknown as CompressionControls).auditCompressions[name](
+            "data:image/jpeg;base64,aW1hZ2U=",
+          ),
+        name,
+      );
+    await select("first.png");
+    await select("second.png");
+    await expect(send).toBeDisabled();
+    await finish("first.png");
+    await expect(dialog.getByText("first.png")).toBeVisible();
+    await expect(send).toBeDisabled();
+    await finish("second.png");
+    await expect(dialog.getByText("second.png")).toBeVisible();
+    await expect(send).toBeEnabled();
+    await select("third.png");
+    await dialog
+      .getByText("first.png")
+      .locator("..")
+      .getByTestId("CancelIcon")
+      .click();
+    await finish("third.png");
+    await expect(dialog.getByText("first.png")).toBeHidden();
+    await expect(dialog.getByText("second.png")).toBeVisible();
+    await expect(dialog.getByText("third.png")).toBeVisible();
+    await expect(send).toBeEnabled();
+    let finishSend!: () => void;
     const pending = new Promise<void>(resolve => {
-      release = resolve;
+      finishSend = resolve;
     });
-    const requested = page.waitForRequest("**/api/feedback");
     await page.route("/api/feedback", async route => {
       await pending;
       await route.fulfill({ status: 204 });
     });
-    await page.getByRole("button", { name: "Send feedback" }).click();
-    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
-    await dialog.getByLabel("Your feedback").fill("Original feedback");
     await dialog.getByLabel("Attach a screenshot of the page").uncheck();
-    await dialog.getByRole("button", { name: "Send", exact: true }).click();
-    await requested;
-    await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+    await send.click();
+    await expect(dialog.getByTestId("CancelIcon")).toHaveCount(0);
+    finishSend();
     await expect(dialog).toBeHidden();
     await page.getByRole("button", { name: "Send feedback" }).click();
-    await dialog.getByLabel("Your feedback").fill("A new draft");
-    const responded = page.waitForResponse("**/api/feedback");
-    release();
-    await responded;
-    await expect(dialog).toBeVisible();
-    await expect(dialog.getByLabel("Your feedback")).toHaveValue("A new draft");
-  });
-
-  test("overlapping image uploads retain both files", async ({ page }) => {
-    await page.evaluate(() => {
-      const createBitmap = window.createImageBitmap.bind(window);
-      window.createImageBitmap = async (image: ImageBitmapSource) => {
-        if (image instanceof File && image.name === "first.png")
-          await new Promise(resolve => setTimeout(resolve, 500));
-        return createBitmap(image);
-      };
-    });
-    await page.getByRole("button", { name: "Send feedback" }).click();
-    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
-    const picker = dialog.locator("input[type=file]");
-    const buffer = Buffer.from(
-      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
-      "base64",
-    );
-    await picker.setInputFiles({
-      name: "first.png",
-      mimeType: "image/png",
-      buffer,
-    });
-    await picker.setInputFiles({
-      name: "second.png",
-      mimeType: "image/png",
-      buffer,
-    });
-    await expect(dialog.getByText("second.png", { exact: true })).toBeVisible();
-    await expect(dialog.getByText("first.png", { exact: true })).toBeVisible();
-    await expect(dialog.getByText("second.png", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("second.png")).toBeHidden();
+    await expect(dialog.getByText("third.png")).toBeHidden();
   });
 
   test("sends the message, reply address, link, and screenshot", async ({
     page,
   }) => {
-    await page.route(/(?:\/sprites\/|\/showdown-sprites\/)/, route =>
-      route.fulfill({
-        contentType: "image/png",
-        body: Buffer.from(
-          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
-          "base64",
-        ),
-      }),
-    );
     const requests: Record<string, unknown>[] = [];
     await page.route("/api/feedback", route => {
       requests.push(route.request().postDataJSON());
@@ -103,7 +164,7 @@ test.describe("Feedback Dialog - Unit Tests", () => {
       {
         message: "Wobbuffet is missing Counter",
         email: "trainer@example.com",
-        link: expect.stringContaining("?team="),
+        link: expect.stringMatching(/[?&]team=/),
         screen: expect.stringMatching(/^\d+×\d+ window, /),
         screenshot: expect.stringMatching(/^data:image\/jpeg;base64,/),
       },
@@ -170,63 +231,6 @@ test.describe("Feedback Dialog - Unit Tests", () => {
     ]);
   });
 
-  test("a stalled screenshot image does not block feedback or leave its request running", async ({
-    page,
-  }) => {
-    await page.route(/\/sprites\//, route =>
-      route.fulfill({
-        contentType: "image/png",
-        body: Buffer.from(
-          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
-          "base64",
-        ),
-      }),
-    );
-    const requests: Record<string, unknown>[] = [];
-    await page.route("/api/feedback", route => {
-      requests.push(route.request().postDataJSON());
-      return route.fulfill({ status: 204 });
-    });
-    await page.evaluate(() => {
-      const originalFetch = window.fetch.bind(window);
-      const captureRequests = { pending: 0, aborted: 0 };
-      Reflect.set(window, "captureRequests", captureRequests);
-      window.fetch = (input, init) => {
-        if (!String(input).startsWith("/showdown-sprites/"))
-          return originalFetch(input, init);
-        captureRequests.pending += 1;
-        return new Promise<Response>((_, reject) => {
-          const abort = () => {
-            captureRequests.pending -= 1;
-            captureRequests.aborted += 1;
-            reject(new DOMException("Request aborted", "AbortError"));
-          };
-          if (init?.signal?.aborted) abort();
-          else init?.signal?.addEventListener("abort", abort, { once: true });
-        });
-      };
-    });
-    await selectPokemon(page, "Wobbuffet");
-    await page.getByRole("button", { name: "Send feedback" }).click();
-    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
-    await dialog.getByLabel("Your feedback").fill("The image server stalled");
-    await dialog.getByRole("button", { name: "Send", exact: true }).click();
-    await expect(dialog).toBeHidden({ timeout: SEND_TIMEOUT });
-    expect(requests).toEqual([
-      {
-        message: "The image server stalled",
-        link: expect.stringContaining("?team="),
-        screen: expect.any(String),
-      },
-    ]);
-    await expect
-      .poll(() => page.evaluate(() => Reflect.get(window, "captureRequests")))
-      .toEqual({ pending: 0, aborted: expect.any(Number) });
-    expect(
-      await page.evaluate(() => Reflect.get(window, "captureRequests").aborted),
-    ).toBeGreaterThan(0);
-  });
-
   test("offers the email address when sending fails", async ({ page }) => {
     await page.route("/api/feedback", route => route.fulfill({ status: 502 }));
     await page.getByRole("button", { name: "Send feedback" }).click();
@@ -242,4 +246,182 @@ test.describe("Feedback Dialog - Unit Tests", () => {
     ).toHaveAttribute("href", "mailto:jeffery124@gmail.com");
     await expect(dialog.getByLabel("Your feedback")).toHaveValue("Hello");
   });
+});
+
+for (const address of ["trainer.example.com", "trainer@"]) {
+  test(`blocks invalid reply address ${address} and allows its correction`, async ({
+    page,
+  }) => {
+    const requests: Record<string, unknown>[] = [];
+    await page.route("/api/feedback", async route => {
+      requests.push(route.request().postDataJSON());
+      await route.fulfill({ status: 204 });
+    });
+    await page
+      .getByRole("button", { name: "Send feedback", exact: true })
+      .click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    await dialog
+      .getByLabel("Your feedback", { exact: true })
+      .fill("Please reply about my team");
+    await dialog.getByLabel("Attach a screenshot of the page").uncheck();
+    const email = dialog.getByLabel("Your email (optional)", { exact: true });
+    await email.fill(address);
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(email).toBeFocused();
+    await expect(email).toHaveAttribute("aria-invalid", "true");
+    await expect(
+      dialog.getByText("Enter a valid email address, or leave it empty."),
+    ).toBeVisible();
+    expect(requests).toHaveLength(0);
+    await email.fill("trainer+team@example.com");
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    expect(requests).toHaveLength(1);
+    expect(requests[0]?.email).toBe("trainer+team@example.com");
+  });
+}
+
+for (const address of ["", "   "]) {
+  test(`feedback accepts an ${address ? "whitespace-only" : "empty"} optional reply address`, async ({
+    page,
+  }) => {
+    const requests: Record<string, unknown>[] = [];
+    await page.route("/api/feedback", async route => {
+      requests.push(route.request().postDataJSON());
+      await route.fulfill({ status: 204 });
+    });
+    await page
+      .getByRole("button", { name: "Send feedback", exact: true })
+      .click();
+    const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+    await dialog
+      .getByLabel("Your feedback", { exact: true })
+      .fill("Feedback without a reply");
+    await dialog
+      .getByLabel("Your email (optional)", { exact: true })
+      .fill(address);
+    await dialog.getByLabel("Attach a screenshot of the page").uncheck();
+    await dialog.getByRole("button", { name: "Send", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    expect(requests).toHaveLength(1);
+    expect(requests[0]).not.toHaveProperty("email");
+  });
+}
+
+test("a cancelled send cannot clear a reopened feedback draft", async ({
+  page,
+}) => {
+  let release: () => void = () => {};
+  const pending = new Promise<void>(resolve => {
+    release = resolve;
+  });
+  const requested = page.waitForRequest("**/api/feedback");
+  await page.route("/api/feedback", async route => {
+    await pending;
+    await route.fulfill({ status: 204 });
+  });
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+  await dialog.getByLabel("Your feedback").fill("Original feedback");
+  await dialog.getByLabel("Attach a screenshot of the page").uncheck();
+  await dialog.getByRole("button", { name: "Send", exact: true }).click();
+  await requested;
+  await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  await dialog.getByLabel("Your feedback").fill("A new draft");
+  const responded = page.waitForResponse("**/api/feedback");
+  release();
+  await responded;
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByLabel("Your feedback")).toHaveValue("A new draft");
+});
+
+test("overlapping image uploads retain both files", async ({ page }) => {
+  await page.evaluate(() => {
+    const createBitmap = window.createImageBitmap.bind(window);
+    window.createImageBitmap = async (image: ImageBitmapSource) => {
+      if (image instanceof File && image.name === "first.png")
+        await new Promise(resolve => setTimeout(resolve, 500));
+      return createBitmap(image);
+    };
+  });
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+  const picker = dialog.locator("input[type=file]");
+  const buffer = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+    "base64",
+  );
+  await picker.setInputFiles({
+    name: "first.png",
+    mimeType: "image/png",
+    buffer,
+  });
+  await picker.setInputFiles({
+    name: "second.png",
+    mimeType: "image/png",
+    buffer,
+  });
+  await expect(dialog.getByText("second.png", { exact: true })).toBeVisible();
+  await expect(dialog.getByText("first.png", { exact: true })).toBeVisible();
+  await expect(dialog.getByText("second.png", { exact: true })).toBeVisible();
+});
+
+test("a stalled screenshot image does not block feedback or leave its request running", async ({
+  page,
+}) => {
+  await page.route(/\/sprites\//, route =>
+    route.fulfill({
+      contentType: "image/png",
+      body: Buffer.from(
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+        "base64",
+      ),
+    }),
+  );
+  const requests: Record<string, unknown>[] = [];
+  await page.route("/api/feedback", route => {
+    requests.push(route.request().postDataJSON());
+    return route.fulfill({ status: 204 });
+  });
+  await page.evaluate(() => {
+    const originalFetch = window.fetch.bind(window);
+    const captureRequests = { pending: 0, aborted: 0 };
+    Reflect.set(window, "captureRequests", captureRequests);
+    window.fetch = (input, init) => {
+      if (!String(input).startsWith("/showdown-sprites/"))
+        return originalFetch(input, init);
+      captureRequests.pending += 1;
+      return new Promise<Response>((_, reject) => {
+        const abort = () => {
+          captureRequests.pending -= 1;
+          captureRequests.aborted += 1;
+          reject(new DOMException("Request aborted", "AbortError"));
+        };
+        if (init?.signal?.aborted) abort();
+        else init?.signal?.addEventListener("abort", abort, { once: true });
+      });
+    };
+  });
+  await selectPokemon(page, "Wobbuffet");
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+  await dialog.getByLabel("Your feedback").fill("The image server stalled");
+  await dialog.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(dialog).toBeHidden({ timeout: SEND_TIMEOUT });
+  expect(requests).toEqual([
+    {
+      message: "The image server stalled",
+      link: expect.stringMatching(/[?&]team=/),
+      screen: expect.any(String),
+    },
+  ]);
+  await expect
+    .poll(() => page.evaluate(() => Reflect.get(window, "captureRequests")))
+    .toEqual({ pending: 0, aborted: expect.any(Number) });
+  expect(
+    await page.evaluate(() => Reflect.get(window, "captureRequests").aborted),
+  ).toBeGreaterThan(0);
 });

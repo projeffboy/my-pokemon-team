@@ -60,6 +60,16 @@ npm run preview
 
 Vite preview uses port 4173 by default. It serves the existing build, so rebuild after making changes.
 
+Fresh visits default to **Generations 6–9**, a union of the Pokémon, abilities, moves, and held items available in any Gen 6–9 game, including Champions, Let’s Go, and the Legends games, using Gen 9 mechanics and latest stats. Individual generations and Pokémon Champions remain available; Let’s Go and the Legends games are marked Coming soon. The combined profile is saved with each team and shared as `gen=6-9`. Old website links containing only `team` also use this combined profile. Individual generations are explicit (for example, `gen=9`), and game-specific links use `game` without a redundant `gen`. The only supported game value is `champions`, independent of its display name.
+
+Showdown text exports preserve the combined setting with a `# mypokemonteam generation profile: 6-9` metadata line. Imports with explicit generation headers use their declared settings; new teams inherit the current selection.
+
+## Site Versions
+
+The header's Old website button opens the legacy site at [old.mypokemonteam.com](https://old.mypokemonteam.com/). The legacy site is based on [commit ca23d6b](https://github.com/projeffboy/my-pokemon-team/commit/ca23d6b55ea96d9bf37022c094f6945d8e6420d3), with a New website button returning to [mypokemonteam.com](https://mypokemonteam.com/). Its separate Vercel project hosts the `old-website` branch independently of `master`.
+
+Switching does not transfer the current team or URL parameters. A nonempty team triggers a confirmation; Cancel and Escape keep the user on the current site. Saved teams and settings stay on their original browser origin. The legacy site does not persist team collections, so its confirmation advises saving the current share link before leaving. Team transfer is deferred in [issue #111](https://github.com/projeffboy/my-pokemon-team/issues/111).
+
 ## Updating Pokemon Data
 
 Refresh the Pokemon Showdown data in `src/data` with:

@@ -1,3 +1,4 @@
+import { viableMovesIn } from "@/data/viable-moves";
 import learnsetsJson from "@/data/learnsets.json" with { type: "json" };
 import { test, expect } from "@playwright/test";
 import {
@@ -85,6 +86,33 @@ test.describe("learnset inheritance", () => {
   test("a regional evolution can inherit from a nonregional predecessor", () => {
     expect(learnsets.marowakalola).not.toContain("bellydrum");
     expect(canItLearn("bellydrum", "marowakalola")).toBe(true);
+  });
+
+  test("a forme of a forme learns what that forme does", () => {
+    expect(learnsets.darmanitangalarzen).toBeUndefined();
+    expect(learnsets.darmanitangalar).toContain("iciclecrash");
+    expect(canItLearn("iciclecrash", "darmanitangalarzen")).toBe(true);
+    // Darmanitan's own moves stay with the Unovan forme
+    expect(learnsets.darmanitan).toContain("flareblitz");
+    expect(canItLearn("flareblitz", "darmanitangalarzen")).toBe(
+      canItLearn("flareblitz", "darmanitangalar"),
+    );
+    expect(canItLearn("surgingstrikes", "urshifurapidstrikegmax")).toBe(true);
+  });
+
+  test("a regional evolution of a pokemon with a cap forme of that region inherits the pokemon's moves", () => {
+    // Pikachu-Alola is a cap, not the Pikachu that Raichu-Alola evolves from
+    expect(learnsets.pikachu).toContain("extremespeed");
+    expect(learnsets.pikachualola).not.toContain("extremespeed");
+    expect(canItLearn("extremespeed", "raichualola")).toBe(true);
+  });
+
+  test("Smeargle sketches the moves of other pokemon, but no Z-Moves", () => {
+    expect(learnsets.smeargle).not.toContain("fakeout");
+    for (const move of ["spore", "fakeout", "followme", "wideguard"])
+      expect(canItLearn(move, "smeargle")).toBe(true);
+    expect(canItLearn("aciddownpour", "smeargle")).toBe(false);
+    expect(canItLearn("catastropika", "smeargle")).toBe(false);
   });
 
   test("mrrime resolves punctuation in its predecessor's name", () => {
@@ -178,4 +206,23 @@ test.describe("learnset inheritance", () => {
 
     expect(viable).toContain("technoblast");
   });
+});
+
+test("Viable filtering follows historical Showdown usefulness rules", () => {
+  const team = createTeam({ name: "scizor" });
+  expect(getTeamLearnsets(team, true, undefined, 3).values[0]).toEqual(
+    expect.arrayContaining(["hiddenpowerbug", "hiddenpowerflying"]),
+  );
+  expect(getTeamLearnsets(team, true, undefined, 7).values[0]).not.toContain(
+    "hiddenpowerbug",
+  );
+  expect(getTeamLearnsets(team, true, undefined, 7).values[0]).not.toContain(
+    "hiddenpowerflying",
+  );
+});
+
+test("historical viability excludes usefulness from future abilities", () => {
+  expect(viableMovesIn(3).has("bulletseed")).toBe(false);
+  expect(viableMovesIn(4).has("bulletseed")).toBe(true);
+  expect(viableMovesIn(1).has("wrap")).toBe(true);
 });

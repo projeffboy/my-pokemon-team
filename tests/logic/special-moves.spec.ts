@@ -1,6 +1,10 @@
 import { test, expect } from "@playwright/test";
 import type { PokemonType } from "@/types";
-import { moveType, moveAgainstType } from "@/store/shared/effectiveness";
+import {
+  IMMUNE_SCORE,
+  moveType,
+  moveAgainstType,
+} from "@/store/shared/effectiveness";
 import { calculateTypeCoverage } from "@/store/coverage";
 import { coverageMatrix } from "@/store/matrix";
 import { createTeam } from "./shared/team";
@@ -52,7 +56,7 @@ test.describe("move effectiveness", () => {
     ["flyingpress", "Grass", "hawlucha", -1],
     ["flyingpress", "Bug", "hawlucha", 0],
     ["flyingpress", "Rock", "hawlucha", 0],
-    ["flyingpress", "Ghost", "hawlucha", 3],
+    ["flyingpress", "Ghost", "hawlucha", IMMUNE_SCORE],
     ["flyingpress", "Poison", "hawlucha", 1],
     ["machpunch", "Rock", "hitmonchan", -1],
     ["bulletseed", "Water", "cinccino", -1],
@@ -84,10 +88,10 @@ test("unknown Silvally formes retain Multi-Attack's default type", () => {
 
 test("copied item-dependent moves follow their holder's Drive or Memory", () => {
   expect(
-    moveType("technoblast", "smeargle", "Own Tempo", 7, "", "chilldrive"),
+    moveType("technoblast", "smeargle", "Own Tempo", 7, "chilldrive", ""),
   ).toBe("Ice");
   expect(
-    moveType("multiattack", "smeargle", "Own Tempo", 7, "", "ghostmemory"),
+    moveType("multiattack", "smeargle", "Own Tempo", 7, "ghostmemory", ""),
   ).toBe("Ghost");
 });
 
@@ -111,9 +115,9 @@ test("Natural Gift provides its berry's coverage and requires a usable berry", (
 
 test("Gen 4 Normalize changes Natural Gift after its berry type is resolved", () => {
   expect(
-    moveType("naturalgift", "delcatty", "Normalize", 4, "", "liechiberry"),
+    moveType("naturalgift", "delcatty", "Normalize", 4, "liechiberry", ""),
   ).toBe("Normal");
   expect(
-    moveType("naturalgift", "delcatty", "Normalize", 5, "", "liechiberry"),
+    moveType("naturalgift", "delcatty", "Normalize", 5, "liechiberry", ""),
   ).toBe("Grass");
 });

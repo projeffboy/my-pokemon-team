@@ -156,3 +156,29 @@ Ability: Blaze
     expect(names).not.toContain("DefinitelyNotAPokemon");
   });
 });
+
+test("a shared link navigated to while learnsets load is imported after loading", async ({
+  page,
+}) => {
+  let release = () => {};
+  const held = new Promise<void>(resolve => {
+    release = resolve;
+  });
+  await page.route("**/src/data/generation-transfer.json*", async route => {
+    await held;
+    await route.continue();
+  });
+  await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
+  await expect(page.getByLabel("Pokemon 1's name")).toBeVisible();
+  const team = toBase64Url("Carvanha\n- Crunch");
+  await page.evaluate(team => {
+    history.pushState(null, "", `/?gen=4&team=${team}`);
+    dispatchEvent(new PopStateEvent("popstate"));
+  }, team);
+  const loaded = page.waitForResponse("**/src/data/generation-transfer.json*");
+  release();
+  await loaded;
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Carvanha");
+  await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Crunch");
+  await expect.poll(() => getTeamTextFromUrl(page)).toContain("Carvanha");
+});

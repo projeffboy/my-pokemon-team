@@ -26,6 +26,8 @@ export default function AdjustmentDetails({
             t.team.ability,
             `${names.ability(change.value ?? "")} → ${names.ability(change.replacement)}`,
           )
+        : change.field === "move" && change.replacement ?
+          `${names.move(change.value ?? "")} → ${names.move(change.replacement)}`
         : conversion?.from === "ivs" && conversion.to === "dvs" ?
           text.ivsConvertedToDvs
         : conversion ?

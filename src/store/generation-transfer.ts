@@ -8,6 +8,10 @@ import {
   type Team,
   type TeamPokemonDetails,
 } from "@/types";
+import {
+  COMBINED_GENERATIONS_FORMAT,
+  teamDataFormat,
+} from "@/shared/generation-profile";
 import { createEmptyTeam } from "@/shared/team";
 import {
   generationRules,
@@ -17,6 +21,8 @@ import {
   syncDvs,
   setLegacyShiny,
   gen2Dvs,
+  dvGender,
+  isShinyDv,
 } from "@/shared/generation-rules";
 import {
   DEFAULT_LEVEL,
@@ -25,10 +31,13 @@ import {
   setDetail,
   setStat,
 } from "@/shared/set-details";
+import {
+  hiddenPowerType,
+  matchHiddenPowerPreservingDetails,
+} from "@/shared/hidden-power";
 import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import pokedex from "@/data/pokedex";
 import hiddenPowerSpreads from "@/data/hidden-power-spreads";
-import { hiddenPowerType } from "@/shared/hidden-power";
 import { pokemonNameInverse } from "@/shared/names";
 import type { Locale } from "@/i18n/locales";
 import {
@@ -50,7 +59,7 @@ export interface TransferLoss {
 // Adapt a copy of the team; no format tiers or user search filters affect transferability.
 export function planGenerationTransfer(
   team: ReadonlyTeam,
-  from: Pick<SavedTeam, "generation" | "format">,
+  from: Pick<SavedTeam, "generation" | "format" | "generationProfile">,
   generation: Generation,
   format: string,
   data: GenerationTransferData,
@@ -58,7 +67,8 @@ export function planGenerationTransfer(
 ): { team: Team; losses: TransferLoss[] } {
   const bit = generationBit(generation, format);
   const rules = generationRules(generation, format);
-  const previousRules = generationRules(from.generation, from.format);
+  const previousRules = generationRules(from.generation, teamDataFormat(from));
+  const combined = format === COMBINED_GENERATIONS_FORMAT;
   const has = (mask: number | undefined) => !!((mask ?? 0) & bit);
   const losses: TransferLoss[] = [];
   const result = team.map((original, index) => {
@@ -141,17 +151,21 @@ export function planGenerationTransfer(
       loss("item", member.item);
       member.item = "";
     }
-    if (
-      member.ability &&
-      (!rules.abilities || !has(entry?.abilities[member.ability]))
-    ) {
-      const abilities =
-        member.name !== original.name && rules.abilities ?
-          Object.entries(entry?.abilities ?? {})
-            .filter(([, mask]) => has(mask))
-            .map(([ability]) => ability)
-        : [];
-      const replacement = abilities.length === 1 ? abilities[0] : undefined;
+    const abilities =
+      !rules.abilities ?
+        []
+      : Object.entries(entry?.abilities ?? {})
+          .filter(([, mask]) => has(mask))
+          .map(([ability]) => ability)
+          .filter(
+            (ability, _, available) =>
+              !combined || ability !== "No Ability" || available.length === 1,
+          );
+    if (member.ability && !abilities.includes(member.ability)) {
+      const replacement =
+        (combined || member.name !== original.name) && abilities.length === 1 ?
+          abilities[0]
+        : undefined;
       if (replacement)
         losses.push({
           index,
@@ -170,6 +184,11 @@ export function planGenerationTransfer(
         loss("move", move);
         member[key] = "";
       }
+    }
+    if (from.generation === 2 && !rules.legacy) {
+      const source = gen2Dvs(original);
+      setDetail(member, "shiny", isShinyDv(source));
+      member.gender = dvGender(source);
     }
     const removeDetail = (
       key: keyof TeamPokemonDetails,
@@ -211,17 +230,21 @@ export function planGenerationTransfer(
     removeDetail("effortLevels", rules.investment !== "effortLevels");
     removeDetail("ivs", !rules.ivs);
     if (rules.ivs && previousRules.legacy !== rules.legacy) {
+      const sourceStat = (stat: (typeof STAT_KEYS)[number]) =>
+        from.generation === 1 && stat === "spd" ? "spa" : stat;
       const before = Object.fromEntries(
         STAT_KEYS.map(stat => [
           stat,
-          previousRules.legacy ? getDv(source, stat) : getIv(source.ivs, stat),
+          previousRules.legacy ?
+            getDv(source, sourceStat(stat))
+          : getIv(source.ivs, stat),
         ]),
       );
       member.ivs = Object.fromEntries(
         STAT_KEYS.map(stat => [
           stat,
           previousRules.legacy ?
-            getIv(source.ivs, stat)
+            getIv(source.ivs, sourceStat(stat))
           : Math.floor(getIv(source.ivs, stat) / 2) * 2 + 1,
         ]),
       );
@@ -268,6 +291,70 @@ export function planGenerationTransfer(
         getDv(member, "hp") !== hpDv(member))
     )
       syncDvs(member, generation);
+    const convertedIvs = member.ivs;
+    let matchedHiddenPowerType: string | undefined;
+    for (const key of MOVE_KEYS) {
+      const move = member[key];
+      if (
+        !move.startsWith("hiddenpower") ||
+        move === "hiddenpower" ||
+        !rules.ivs
+      )
+        continue;
+      if (
+        matchedHiddenPowerType ||
+        (!matchHiddenPowerPreservingDetails(member, move, generation, format, {
+          gender: generation === 2 ? original.gender : undefined,
+        }) &&
+          !matchHiddenPowerPreservingDetails(member, move, generation, format))
+      ) {
+        const type =
+          matchedHiddenPowerType ?? hiddenPowerType(member, generation);
+        if (type && move !== `hiddenpower${type}`) {
+          member[key] = `hiddenpower${type}`;
+          losses.push({
+            index,
+            pokemon: original.name,
+            field: "move",
+            value: move,
+            replacement: member[key],
+          });
+        }
+      }
+      matchedHiddenPowerType = member[key].slice("hiddenpower".length);
+    }
+    if (
+      STAT_KEYS.some(
+        stat => getIv(convertedIvs, stat) !== getIv(member.ivs, stat),
+      )
+    ) {
+      const after = Object.fromEntries(
+        STAT_KEYS.map(stat => [
+          stat,
+          rules.legacy ? getDv(member, stat) : getIv(member.ivs, stat),
+        ]),
+      );
+      losses.push({
+        index,
+        pokemon: original.name,
+        field: "ivs",
+        conversion: {
+          from: rules.legacy ? "dvs" : "ivs",
+          to: rules.legacy ? "dvs" : "ivs",
+          before: Object.fromEntries(
+            STAT_KEYS.map(stat => [
+              stat,
+              rules.legacy ?
+                Math.floor(getIv(convertedIvs, stat) / 2)
+              : getIv(convertedIvs, stat),
+            ]),
+          ),
+          after,
+          limited: false,
+          approximate: false,
+        },
+      });
+    }
     if (generation === 2) {
       if (member.shiny) setLegacyShiny(member, true);
       else syncDvs(member, generation);

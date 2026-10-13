@@ -7,18 +7,47 @@ import {
   getTeamTextFromUrl,
   goToSite,
   openManageTeamMenu,
-  openTeamTools,
+  turnOnAdvanced,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
+import { parseTeamText } from "@/store/team-text";
+import { pokemonTypes } from "@/shared/pokedex";
 
 const openTeams = async (page: Page) => {
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   await page.getByRole("button", { name: "Teams", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Teams" })).toBeVisible();
 };
 
 test.describe("Teams Dialog - Integration Tests", () => {
+  test("a random new team uses the active filters", async ({ page }) => {
+    await selectPokemon(page, "Shiftry");
+    await openFilters(page);
+    await selectDialogOption(page, "Type", "Grass");
+    await closeDialog(page);
+    await openTeams(page);
+    await page
+      .getByRole("button", { name: "Random team", exact: true })
+      .click();
+    await expect
+      .poll(
+        () =>
+          parseTeamText(getTeamTextFromUrl(page)).filter(member => member.name)
+            .length,
+      )
+      .toBe(6);
+    expect(
+      parseTeamText(getTeamTextFromUrl(page)).every(member =>
+        pokemonTypes(member.name).includes("Grass"),
+      ),
+    ).toBe(true);
+    await openFilters(page);
+    await expect(
+      page.getByRole("dialog").getByLabel("Type", { exact: true }),
+    ).toHaveText("Grass");
+  });
+
   test("keeps creation and import controls visible while saved teams scroll", async ({
     page,
   }) => {
@@ -320,4 +349,144 @@ Ability: Drizzle
         .getByRole("button", { name: /^Load/ }),
     ).toHaveCount(1);
   });
+});
+
+test("Import Team restores named empty backups and rejects invalid populated bodies", async ({
+  page,
+}) => {
+  await openTeams(page);
+  await page.getByRole("button", { name: "Import Team", exact: true }).click();
+  const importing = page.getByRole("dialog", {
+    name: "Import Team",
+  });
+  await importing
+    .getByRole("textbox")
+    .fill("=== [gen2ou] Next season ===\n\nPikablu");
+  await importing.getByRole("button", { name: "Import", exact: true }).click();
+  await expect(importing).toContainText("No pokemon found in that text.");
+  await importing
+    .getByRole("textbox")
+    .fill(
+      "=== [gen2ou] Next season ===\n\n=== [gen8doublesou] Testing ===\n\n",
+    );
+  await importing.getByRole("button", { name: "Import", exact: true }).click();
+  const teams = page
+    .getByRole("dialog", { name: "Teams" })
+    .getByRole("list", { name: "Saved teams" });
+  await expect(
+    teams.getByRole("button", { name: "Load Next season", exact: true }),
+  ).toBeVisible();
+  await expect(
+    teams.getByRole("button", { name: "Load Testing", exact: true }),
+  ).toBeVisible();
+  await teams
+    .getByRole("button", { name: "Load Next season", exact: true })
+    .click();
+  await expect(page.getByLabel("Generation")).toContainText("Gen 2");
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("");
+});
+
+test("zero-candidate random actions leave the saved team unchanged and explain why", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1200, height: 900 });
+  await selectPokemon(page, "Beartic");
+  await openFilters(page);
+  await selectDialogOption(page, "Type", "Dragon");
+  const filters = page.getByRole("dialog", { name: "Filters", exact: true });
+  await filters
+    .getByRole("combobox", { name: "Ability", exact: true })
+    .fill("Wonder Guard");
+  await page.getByRole("option", { name: "Wonder Guard", exact: true }).click();
+  await closeDialog(page);
+  const state = () =>
+    page.evaluate(() => localStorage.getItem("mypokemonteam"));
+  await expect.poll(state).toContain("Wonder Guard");
+  const before = await state();
+  await page
+    .getByRole("button", { name: "Randomize team", exact: true })
+    .click();
+  await expect(page.getByRole("alert")).toContainText(
+    "No Pokémon match the current filters",
+  );
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Beartic");
+  await openTeams(page);
+  await page.getByRole("button", { name: "Random team", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Teams" })).toBeVisible();
+  await expect(
+    page.getByRole("alert", { includeHidden: true }).last(),
+  ).toContainText("No Pokémon match the current filters");
+  expect(await state()).toBe(before);
+});
+
+test("fallback Copy All selects its textarea inside the active modal and restores focus", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Gothorita");
+  await openTeams(page);
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: undefined,
+    });
+    document.execCommand = () => {
+      const active = document.activeElement;
+      if (
+        !(active instanceof HTMLTextAreaElement) ||
+        !active.closest('[role="dialog"]') ||
+        active.selectionEnd !== active.value.length
+      )
+        return false;
+      document.documentElement.dataset.copiedText = active.value;
+      return true;
+    };
+  });
+  const copy = page.getByRole("button", { name: "Copy All", exact: true });
+  await copy.focus();
+  await copy.press("Enter");
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.dataset.copiedText),
+    )
+    .toContain("Gothorita");
+  await expect(copy).toBeFocused();
+  await page.evaluate(() => {
+    document.execCommand = () => false;
+  });
+  await copy.press("Enter");
+  await expect(
+    page.getByRole("alert", { includeHidden: true }).last(),
+  ).toContainText("Could not copy");
+});
+
+test("fallback copying from the Teams row menu stays inside its focus trap", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Lombre");
+  await openTeams(page);
+  await page.evaluate(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: undefined,
+    });
+    document.execCommand = () => {
+      const active = document.activeElement;
+      if (
+        !(active instanceof HTMLTextAreaElement) ||
+        !active.closest('[role="menu"]')
+      )
+        return false;
+      document.documentElement.dataset.copiedText = active.value;
+      return true;
+    };
+  });
+  await page
+    .getByRole("button", { name: "Options for Team 1", exact: true })
+    .click();
+  await page.getByRole("menuitem", { name: "Copy text", exact: true }).click();
+  await expect
+    .poll(() =>
+      page.evaluate(() => document.documentElement.dataset.copiedText),
+    )
+    .toContain("Lombre");
 });

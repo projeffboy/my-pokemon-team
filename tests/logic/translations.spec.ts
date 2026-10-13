@@ -28,6 +28,17 @@ test("the browser's first supported language wins, and Chinese picks its script"
   expect(detectLocale([])).toBe("en");
 });
 
+test("explicit Chinese scripts take precedence over regional defaults", () => {
+  for (const region of ["HK", "TW", "MO", "CN", "SG"]) {
+    expect(detectLocale([`zh-Hans-${region}`, "en"])).toBe("zh-Hans");
+    expect(detectLocale([`zh-Hant-${region}`, "en"])).toBe("zh-Hant");
+  }
+  expect(detectLocale(["ZH-hAnS-hk"])).toBe("zh-Hans");
+  for (const region of ["HK", "TW", "MO"])
+    expect(detectLocale([`zh-${region}`])).toBe("zh-Hant");
+  expect(detectLocale(["en", "zh-Hans-HK"])).toBe("en");
+});
+
 test("English names are the data's own, and IDs pass through", () => {
   expect(englishNames.pokemon("mrmime")).toBe("Mr. Mime");
   expect(englishNames.move("hiddenpowerfire")).toBe("Hidden Power Fire");

@@ -12,6 +12,7 @@ import { theme } from "./app/shared/theme";
 import { cookieStorageManager } from "./app/color-scheme-storage";
 import { WidthProvider } from "./app/shared/WidthContext";
 import { TranslationProvider } from "./app/shared/TranslationContext";
+import ErrorBoundary from "./app/shared/ErrorBoundary";
 
 export default function App() {
   // Playwire looks for the element it inserts the banner above only once, when it handles
@@ -35,25 +36,27 @@ export default function App() {
         <TranslationProvider>
           <WidthProvider>
             {/* Playwire inserts the top banner above `#root > div > div:nth-child(1)` */}
-            <div>
-              <Grid
-                container
-                spacing={{ xxs: 2, sm: 3 }}
-                sx={{
-                  minHeight: "100dvh",
-                  alignContent: "flex-start",
-                  maxWidth: 1920,
-                  mx: "auto",
-                  p: { xxs: 2, sm: 3 },
-                }}
-              >
-                <Header />
-                <Main />
-                <Footer />
-              </Grid>
-            </div>
-            <MainSnackbar />
-            <Dialogs />
+            <ErrorBoundary>
+              <div>
+                <Grid
+                  container
+                  spacing={{ xxs: 2, sm: 3 }}
+                  sx={{
+                    minHeight: "100dvh",
+                    alignContent: "flex-start",
+                    maxWidth: 1920,
+                    mx: "auto",
+                    p: { xxs: 2, sm: 3 },
+                  }}
+                >
+                  <Header />
+                  <Main />
+                  <Footer />
+                </Grid>
+              </div>
+              <MainSnackbar />
+              <Dialogs />
+            </ErrorBoundary>
           </WidthProvider>
         </TranslationProvider>
       </ThemeProvider>

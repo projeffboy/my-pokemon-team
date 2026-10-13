@@ -71,7 +71,7 @@ const SmTeamViewer = observer(function SmTeamViewer() {
           const teamIndex = 2 * tabIndex + offset;
 
           return (
-            <Grid key={offset} size={12}>
+            <Grid key={teamIndex} size={12}>
               <PokemonCard teamIndex={teamIndex} />
             </Grid>
           );

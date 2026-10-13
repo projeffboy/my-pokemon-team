@@ -13,11 +13,7 @@ import store from "@/store";
 import pokedex from "@/data/pokedex";
 import { STAT_KEYS } from "@/types";
 import { typesIn } from "@/shared/generation-data";
-import {
-  pokemonAbilities,
-  pokemonBaseStats,
-  pokemonTypes,
-} from "@/shared/pokedex";
+import { pokemonBaseStats } from "@/shared/pokedex";
 import {
   bulbapediaUrl,
   serebiiDexUrl,
@@ -26,6 +22,7 @@ import {
 } from "@/shared/dex-urls";
 import { introducedIn } from "@/store/filtering";
 import { defenceMultiplier } from "@/store/matrix";
+import { effectivePokemonTypes } from "@/store/shared/effectiveness";
 import PokemonSprite from "@/app/shared/PokemonSprite";
 import dexLogos from "@/images/dex-logos";
 import typeIcons from "@/images/type-icons";
@@ -43,7 +40,8 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
   const teamIndex = dialog?.teamIndex ?? 0;
   const member = store.analysisTeam[teamIndex];
   const pokemon = member?.name ?? "";
-  const { generation, format } = store.currentTeam;
+  const { generation } = store.currentTeam;
+  const format = store.dataFormat;
   const entry = pokedex[pokemon];
   const stats = pokemonBaseStats(pokemon, generation, format);
   const statKeys = STAT_KEYS.filter(stat => generation !== 1 || stat !== "spd");
@@ -145,9 +143,12 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
               </Box>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
                 <Box sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}>
-                  {pokemonTypes(pokemon, generation).map(type =>
-                    typeChip(type),
-                  )}
+                  {effectivePokemonTypes(
+                    pokemon,
+                    member?.ability,
+                    member?.item,
+                    generation,
+                  ).map(type => typeChip(type))}
                 </Box>
                 <Typography
                   variant="body2"
@@ -166,7 +167,7 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
                   {t.info.abilities}
                 </Typography>
                 <Typography>
-                  {pokemonAbilities(pokemon, generation)
+                  {(store.teamAbilities[teamIndex] ?? [])
                     .map(names.ability)
                     .join(", ")}
                 </Typography>

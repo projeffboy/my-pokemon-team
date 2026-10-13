@@ -46,6 +46,7 @@ export default function ScrollContent({ children }: { children: ReactNode }) {
     >
       <DialogContent
         ref={viewportRef}
+        tabIndex={0}
         sx={{ minHeight: 0, py: 0, px: { xxs: 2, sm: 3 } }}
       >
         <Box ref={contentRef} sx={{ display: "flow-root", pb: 2 }}>

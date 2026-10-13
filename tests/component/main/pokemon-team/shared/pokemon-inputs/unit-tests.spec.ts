@@ -1,7 +1,7 @@
 import { test, expect } from "fixtures";
 import {
   getTeamTextFromUrl,
-  openTeamTools,
+  turnOnAdvanced,
   selectAbility,
   selectItem,
   selectMove,
@@ -11,6 +11,63 @@ import type { Page } from "@playwright/test";
 import ja from "@/i18n/ja";
 
 test.describe("Pokemon Card - Unit Tests", () => {
+  test("filtering before the selected-row scroll frame does not use a stale index", async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on("pageerror", error => errors.push(error.message));
+    await selectItem(page, "Leftovers");
+    const input = page.getByLabel("Pokemon 1's item");
+    await input.press("Escape");
+    await input.press("ArrowDown");
+    await expect(
+      page.getByRole("option", { name: "Leftovers", exact: true }),
+    ).toBeVisible();
+    await input.press("Escape");
+    await page.evaluate(() => {
+      const originalFrame = window.requestAnimationFrame;
+      const originalCancel = window.cancelAnimationFrame;
+      const frames = new Map<number, FrameRequestCallback>();
+      let nextId = -1;
+      window.requestAnimationFrame = callback => {
+        const id = nextId--;
+        frames.set(id, callback);
+        return id;
+      };
+      window.cancelAnimationFrame = id => {
+        if (id < 0) frames.delete(id);
+        else originalCancel(id);
+      };
+      const frameWindow = window as typeof window & {
+        releaseFrames: () => Promise<void>;
+      };
+      frameWindow.releaseFrames = () => {
+        window.requestAnimationFrame = originalFrame;
+        window.cancelAnimationFrame = originalCancel;
+        for (const callback of frames.values()) originalFrame(callback);
+        return new Promise(resolve =>
+          originalFrame(() => originalFrame(() => resolve())),
+        );
+      };
+    });
+    await input.press("ArrowDown");
+    await expect(page.getByRole("listbox")).toBeVisible();
+    await input.fill("Pecha");
+    await expect(page.getByRole("option")).toHaveCount(1);
+    await page.evaluate(() =>
+      (
+        window as typeof window & {
+          releaseFrames: () => Promise<void>;
+        }
+      ).releaseFrames(),
+    );
+    expect(errors).toEqual([]);
+    await page
+      .getByRole("option", { name: "Pecha Berry", exact: true })
+      .click();
+    await expect(input).toHaveValue("Pecha Berry");
+  });
+
   test("imported items and abilities stay visible outside the current options", async ({
     page,
   }) => {
@@ -34,6 +91,10 @@ test.describe("Pokemon Card - Unit Tests", () => {
     );
     await page.getByRole("button", { name: ja.language, exact: true }).click();
     await page.getByRole("menuitem", { name: "English", exact: true }).click();
+    await expect(page.getByRole("menu")).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
+      "Levitate",
+    );
 
     await selectAbility(page, "Cursed Body");
     await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue(
@@ -54,7 +115,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     const field = ability.locator("..");
     const hidden = field.getByText("Hidden", { exact: true });
     await expect(hidden).toHaveCount(0);
-    await openTeamTools(page);
+    await turnOnAdvanced(page);
 
     for (const { width, visible } of [
       { width: 480, visible: true },
@@ -99,7 +160,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     );
     await page.goto(`/?gen=8&team=${team}`);
     await page.setViewportSize({ width: 480, height: 1000 });
-    await openTeamTools(page);
+    await turnOnAdvanced(page);
     const ability = page.getByLabel("Pokemon 1's ability");
     await expect(ability.locator("..").getByText("Hidden")).toBeVisible();
     await page.getByRole("button", { name: "Language", exact: true }).click();
@@ -108,7 +169,11 @@ test.describe("Pokemon Card - Unit Tests", () => {
     await expect(
       translated.locator("..").getByText(ja.team.hidden),
     ).toBeVisible();
-    await page.getByRole("button", { name: ja.team.fewerTools }).click();
+    await page.getByRole("button", { name: ja.team.manageTeamMenu }).click();
+    await page
+      .getByRole("menuitemcheckbox", { name: ja.team.advancedMode })
+      .click();
+    await page.keyboard.press("Escape");
     await expect(
       translated.locator("..").getByText(ja.team.hidden),
     ).toHaveCount(0);
@@ -143,6 +208,55 @@ test.describe("Pokemon Card - Unit Tests", () => {
     );
     await selectMove(page, "Thunderbolt", 3);
     await expect(empty).toHaveValue("Thunderbolt");
+  });
+
+  test("arrow keys keep the highlighted option in view while typing narrows the list", async ({
+    page,
+  }) => {
+    const input = page.getByLabel("Pokemon 1's name");
+    await input.click();
+    await input.fill("ee");
+    const options = page.getByRole("option");
+    await expect(options.first()).toBeVisible();
+    for (let press = 1; press <= 14; press++) {
+      await input.press("ArrowDown");
+      const highlighted = page.locator(
+        `[id="${await input.getAttribute("aria-activedescendant")}"]`,
+      );
+      await expect(highlighted).toHaveAttribute(
+        "data-option-index",
+        String(press - 1),
+      );
+      await expect(highlighted).toBeInViewport({ ratio: 0.9 });
+    }
+  });
+
+  test("Enter picks the top match of the typed text, and a highlighted option when there is one", async ({
+    page,
+  }) => {
+    const input = page.getByLabel("Pokemon 1's name");
+    await input.click();
+    await input.fill("Stonjour");
+    await expect(page.getByRole("option")).toHaveCount(1);
+    await input.press("Enter");
+    await expect(input).toHaveValue("Stonjourner");
+    await expect(page.getByRole("listbox")).toBeHidden();
+
+    const move = page.getByLabel("Pokemon 1's move1");
+    await move.click();
+    await move.fill("Rock");
+    await expect(page.getByRole("option").first()).toBeVisible();
+    await move.press("ArrowDown");
+    await move.press("ArrowDown");
+    const second = await page.getByRole("option").nth(1).textContent();
+    await move.press("Enter");
+    await expect(move).toHaveValue(second ?? "");
+
+    // Enter in an untouched input picks nothing
+    const empty = page.getByLabel("Pokemon 1's item");
+    await empty.click();
+    await empty.press("Enter");
+    await expect(empty).toHaveValue("");
   });
 
   test("Ditto's empty move slots explain that no other moves are available", async ({
@@ -239,7 +353,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
   test("should have question mark sprite by default", async ({ page }) => {
     for (const i of [1, 2, 5]) {
       const card = await ensureCardVisible(page, i);
-      const questionMark = card.getByRole("img", { name: "question-mark" });
+      const questionMark = card.locator('img[alt=""]');
       await expect(questionMark).toBeVisible();
     }
   });
@@ -256,15 +370,15 @@ test.describe("Pokemon Card - Unit Tests", () => {
     });
     const card = page.getByRole("region", { name: "Pokemon 1", exact: true });
     for (const tools of [false, true]) {
-      if (tools) await openTeamTools(page);
+      if (tools) await turnOnAdvanced(page);
       await selectPokemon(page, "Chimecho");
-      const small = card.getByRole("img", { name: "chimecho", exact: true });
+      const small = card.getByRole("img", { name: "Chimecho", exact: true });
       await expect(small).toHaveJSProperty("naturalHeight", 64);
       const before = await card.boundingBox();
 
       await selectPokemon(page, "Exeggutor-Alola");
       const sprite = card.getByRole("img", {
-        name: "exeggutor-alola",
+        name: "Exeggutor-Alola",
         exact: true,
       });
       await expect(sprite).toHaveJSProperty("naturalHeight", 180);
@@ -324,9 +438,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     await expect(rockyHelmetIcon).toBeHidden();
   });
 
-  test("should show a move's type icon before it once the team tools are shown", async ({
-    page,
-  }) => {
+  test("should show a move's type icon before it", async ({ page }) => {
     // The card also shows the pokemon's own types, so look inside the input
     const input = page.getByLabel("Pokemon 1's move1");
     const field = input.locator("..");
@@ -334,9 +446,6 @@ test.describe("Pokemon Card - Unit Tests", () => {
 
     await selectPokemon(page, "Dracozolt");
     await selectMove(page, "Bolt Beak");
-    // Hidden with the rest of the tools, until More is pressed
-    await expect(electricIcon).toBeHidden();
-    await openTeamTools(page);
     await expect(electricIcon).toBeVisible();
 
     // The icon comes before the name
@@ -346,7 +455,8 @@ test.describe("Pokemon Card - Unit Tests", () => {
     ]);
     expect(iconBox!.x + iconBox!.width).toBeLessThanOrEqual(inputBox!.x);
 
-    // Card types and move types follow the stats as available space changes.
+    // The card's own types follow the stats as available space changes, but a
+    // move's type is always the icon, which takes less of the move's room
     for (const width of [320, 480, 600, 960, 1200, 1920]) {
       await page.setViewportSize({ width, height: 1000 });
       await expect(
@@ -362,18 +472,11 @@ test.describe("Pokemon Card - Unit Tests", () => {
         .getByRole("region", { name: "Team Defence", exact: true })
         .getByRole("button", { name: "Electric", exact: true });
       await expect(statsChip).toBeVisible();
-      await expect(async () => {
-        const hasIcon = (await statsChip.locator("img").count()) > 0;
-        const card = page.getByRole("region", { name: "Pokemon 1" });
-        const types = card.getByRole("img", { name: "Electric", exact: true });
-        await expect(types).toHaveCount(2);
-        for (const chip of await types.all()) {
-          expect(await chip.evaluate(element => element.tagName)).toBe(
-            hasIcon ? "IMG" : "SPAN",
-          );
-          if (!hasIcon) await expect(chip).toHaveText("ELC");
-        }
-      }).toPass();
+      const card = page.getByRole("region", { name: "Pokemon 1" });
+      const types = card.getByRole("img", { name: "Electric", exact: true });
+      await expect(types).toHaveCount(2);
+      for (const type of [types.first(), electricIcon])
+        expect(await type.evaluate(element => element.tagName)).toBe("IMG");
 
       await input.press("ArrowDown");
       const option = page
@@ -383,14 +486,8 @@ test.describe("Pokemon Card - Unit Tests", () => {
         name: "Electric",
         exact: true,
       });
-      await expect(optionType).toBeVisible();
-      await expect(async () => {
-        const hasIcon = (await statsChip.locator("img").count()) > 0;
-        expect(await optionType.evaluate(element => element.tagName)).toBe(
-          hasIcon ? "IMG" : "SPAN",
-        );
-        if (!hasIcon) await expect(optionType).toHaveText("ELC");
-      }).toPass();
+      await expect(optionType, `Move type icon at ${width}px`).toBeVisible();
+      expect(await optionType.evaluate(element => element.tagName)).toBe("IMG");
       await input.press("Escape");
     }
 

@@ -1,6 +1,5 @@
 import { test, expect } from "@playwright/test";
 import { planGenerationTransfer } from "@/store/generation-transfer";
-import { parseTeamText, serializeTeam } from "@/store/team-text";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import spreads from "@/data/hidden-power-spreads";
@@ -16,6 +15,8 @@ import {
   LEGENDS_ARCEUS,
 } from "@/shared/generation-rules";
 import { evTotal, getIv } from "@/shared/set-details";
+import { universalTransferChanges } from "@/store/generation-transfer/universal-changes";
+import { parseTeamText, serializeTeam } from "@/store/team-text";
 import { STAT_KEYS } from "@/types";
 
 const data = await loadGenerationTransferData();
@@ -87,7 +88,7 @@ test.describe("Gen 2 Hidden Power transfer", () => {
     expect(serializeTeam(original)).toBe(text);
   });
 
-  test("an invalid source label keeps its existing conversion", () => {
+  test("an invalid source label gets matching IVs and reports their conversion", () => {
     const original = createTeam({ name: "unown", move1: "hiddenpowerfire" });
     expect(hiddenPowerType(original[0]!, 2)).toBe("dark");
     const plan = planGenerationTransfer(
@@ -98,8 +99,9 @@ test.describe("Gen 2 Hidden Power transfer", () => {
       data,
     );
     expect(plan.team[0]?.move1).toBe("hiddenpowerfire");
-    expect(hiddenPowerType(plan.team[0]!, 3)).toBe("dark");
-    expect(plan.losses).toEqual([]);
+    expect(hiddenPowerType(plan.team[0]!, 3)).toBe("fire");
+    expect(plan.losses).toEqual([expect.objectContaining({ field: "ivs" })]);
+    expect(original[0]?.ivs).toBeUndefined();
   });
 
   test("destinations without IVs still remove unsupported IVs and moves", () => {
@@ -170,7 +172,10 @@ test("even and odd legacy IV encodings of the same DVs transfer identically", ()
       const evenPlan = transfer(even);
       const oddPlan = transfer(odd);
       expect(evenPlan).toEqual(oddPlan);
-      if (even.startsWith("30 HP")) expect(evenPlan.losses).toEqual([]);
+      if (even.startsWith("30 HP"))
+        expect(evenPlan.losses.filter(loss => loss.field === "ivs")).toEqual(
+          [],
+        );
     }
   }
 });
@@ -834,4 +839,201 @@ test("Champions sets surviving Pokemon to level 50 and reports adjustments witho
   );
   expect(returning.team[0]!.level).toBe(50);
   expect(returning.losses).toEqual([]);
+});
+
+test("Gen 2 DV-derived shiny and gender survive modern transfer and export", () => {
+  const original = createTeam({
+    name: "butterfree",
+    ivs: { hp: 1, atk: 5, def: 21, spa: 21, spd: 21, spe: 21 },
+    move1: "gust",
+  });
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 2, format: "" },
+    3,
+    "",
+    data,
+  );
+  expect(plan.team[0]).toMatchObject({ shiny: true, gender: "F" });
+  expect(serializeTeam(plan.team)).toContain("Shiny: Yes");
+  expect(serializeTeam(plan.team)).toContain("(F)");
+  expect(original[0]?.shiny).toBeUndefined();
+  expect(original[0]?.gender).toBeUndefined();
+});
+
+test("typed Hidden Power matches destination IVs and DVs in both transfer directions", () => {
+  const source = createTeam({
+    name: "raikou",
+    ivs: { atk: 30, def: 30 },
+    move1: "hiddenpowerice",
+  });
+  const legacy = planGenerationTransfer(
+    source,
+    { generation: 3, format: "" },
+    2,
+    "",
+    data,
+  );
+  expect(legacy.team[0]?.move1).toBe("hiddenpowerice");
+  expect(hiddenPowerType(legacy.team[0]!, 2)).toBe("ice");
+  expect(legacy.team[0]?.gender).toBe("N");
+  const modern = planGenerationTransfer(
+    legacy.team,
+    { generation: 2, format: "" },
+    3,
+    "",
+    data,
+  );
+  expect(modern.team[0]?.move1).toBe("hiddenpowerice");
+  expect(hiddenPowerType(modern.team[0]!, 3)).toBe("ice");
+  expect(source[0]?.ivs).toEqual({ atk: 30, def: 30 });
+});
+
+test("impossible Gen 2 Hidden Power types change visibly while keeping shiny", () => {
+  const original = createTeam({
+    name: "gyarados",
+    shiny: true,
+    move1: "hiddenpowerice",
+  });
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 3, format: "" },
+    2,
+    "",
+    data,
+  );
+  expect(plan.team[0]?.shiny).toBe(true);
+  expect(isShinyDv(plan.team[0]!)).toBe(true);
+  expect(plan.team[0]?.move1).toBe(
+    `hiddenpower${hiddenPowerType(plan.team[0]!, 2)}`,
+  );
+  expect(plan.losses).toContainEqual({
+    index: 0,
+    pokemon: "gyarados",
+    field: "move",
+    value: "hiddenpowerice",
+    replacement: plan.team[0]?.move1,
+  });
+});
+
+test("transfer keeps duplicate Hidden Power variants consistent and explains IV adjustments", () => {
+  const original = createTeam({
+    name: "unown",
+    move1: "hiddenpowerfire",
+    move2: "hiddenpowerice",
+  });
+  const from = { generation: 3 as const, format: "" };
+  const to = { generation: 2 as const, format: "" };
+  const plan = planGenerationTransfer(
+    original,
+    from,
+    to.generation,
+    to.format,
+    data,
+  );
+  expect(plan.team[0]?.move1).toBe("hiddenpowerfire");
+  expect(plan.team[0]?.move2).toBe("hiddenpowerfire");
+  expect(hiddenPowerType(plan.team[0]!, 2)).toBe("fire");
+  const ivs = plan.losses.find(loss => loss.field === "ivs");
+  expect(ivs).toBeDefined();
+  expect(universalTransferChanges(from, to, original).isUniversal(ivs!)).toBe(
+    false,
+  );
+});
+
+for (const text of [
+  "Hypno\nEVs: 120 SpA\n- Psychic",
+  "Hypno\nStat Experience: 14400 SpA\n- Psychic",
+]) {
+  test(`imported Gen 1 Special training becomes both modern Special stats: ${text.split("\n")[1]}`, () => {
+    const source = parseTeamText(text);
+    const plan = planGenerationTransfer(
+      source,
+      { generation: 1, format: "" },
+      3,
+      "",
+      data,
+    );
+    expect(plan.team[0]?.evs).toEqual({ spa: 120, spd: 120 });
+    expect(
+      plan.losses.find(loss => loss.field === "statExperience")?.conversion
+        ?.before,
+    ).toMatchObject({ spa: 14400, spd: 14400 });
+    expect(source[0]?.evs?.spd).toBeUndefined();
+  });
+}
+
+test("Gen 2 Hidden Power matching retains an explicit gender when compatible", () => {
+  const original = createTeam({
+    name: "butterfree",
+    gender: "F",
+    move1: "hiddenpowerice",
+    ivs: { atk: 30, def: 30 },
+  });
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 3, format: "" },
+    2,
+    "",
+    data,
+  );
+  expect(plan.team[0]?.gender).toBe("F");
+  expect(hiddenPowerType(plan.team[0]!, 2)).toBe("ice");
+  expect(plan.losses.filter(loss => loss.field === "gender")).toEqual([]);
+});
+
+test("Gen 1 shared Special DVs become equal modern Special IVs without inflating SpD", () => {
+  const original = parseTeamText("Hypno\nIVs: 29 HP / 1 SpA\n- Psychic", 1);
+  expect(getDv(original[0], "spa")).toBe(0);
+  expect(original[0].ivs?.spd).toBeUndefined();
+  const snapshot = structuredClone(original);
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 1, format: "" },
+    3,
+    "",
+    data,
+  );
+  expect(getIv(plan.team[0]?.ivs, "spa")).toBe(1);
+  expect(getIv(plan.team[0]?.ivs, "spd")).toBe(1);
+  expect(plan.losses).toContainEqual(
+    expect.objectContaining({
+      field: "ivs",
+      conversion: expect.objectContaining({
+        before: expect.objectContaining({ spa: 0, spd: 0 }),
+        after: expect.objectContaining({ spa: 1, spd: 1 }),
+      }),
+    }),
+  );
+  expect(original).toEqual(snapshot);
+});
+
+test("capped Hidden Power retains its declared type across duplicate and conflicting slots", () => {
+  const team = createTeam({
+    name: "raikou",
+    ability: "Pressure",
+    move1: "hiddenpowerice",
+    move2: "hiddenpowerice",
+    move3: "hiddenpowerfire",
+  });
+  const plan = planGenerationTransfer(
+    team,
+    { generation: 7, format: "" },
+    7,
+    "",
+    data,
+  );
+  expect(plan.team[0]).toMatchObject({
+    move1: "hiddenpowerice",
+    move2: "hiddenpowerice",
+    move3: "hiddenpowerice",
+  });
+  expect(plan.team[0]?.ivs).toBeUndefined();
+  expect(plan.losses).toEqual([
+    expect.objectContaining({
+      field: "move",
+      value: "hiddenpowerfire",
+      replacement: "hiddenpowerice",
+    }),
+  ]);
 });

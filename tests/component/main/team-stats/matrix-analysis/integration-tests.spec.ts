@@ -1,5 +1,4 @@
 import { test, expect } from "fixtures";
-import { LETS_GO } from "@/shared/game-variants";
 import {
   isXs,
   openAnalysis,
@@ -10,21 +9,42 @@ import {
 } from "helper";
 
 test.describe("Matrix Analysis - Integration Tests", () => {
-  test("Let's Go Absorb contributes its native coverage to the matrix", async ({
+  test("Thick Fat shows one-eighth Ice damage using the quarter-resistance colour", async ({
     page,
   }) => {
-    const team = Buffer.from("Oddish\n- Absorb").toString("base64url");
-    await page.goto(`/?game=${encodeURIComponent(LETS_GO)}&team=${team}`);
-    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Absorb");
+    await selectPokemon(page, "Dewgong");
     await openAnalysis(page, "Matrix Analysis");
     const matrix = page.getByRole("region", { name: "Matrix Analysis" });
-    await matrix.getByRole("button", { name: "Coverage", exact: true }).click();
+    const quarter = matrix.getByRole("cell", {
+      name: "Ice does 0.25x to Dewgong (Water/Ice)",
+      exact: true,
+    });
+    await expect(quarter).toHaveText("¼");
+    const resistanceColour = await quarter.evaluate(
+      cell => getComputedStyle(cell).backgroundColor,
+    );
+
+    await selectAbility(page, "Thick Fat");
+    const eighth = matrix.getByRole("cell", {
+      name: "Ice does 0.125x to Dewgong (Water/Ice) with Thick Fat",
+      exact: true,
+    });
+    await expect(eighth).toHaveText("⅛");
+    await expect(eighth).toHaveCSS("background-color", resistanceColour);
+    await eighth.click();
     await expect(
-      matrix.getByRole("cell", {
-        name: "Oddish's Absorb (Grass) does 2x to Water",
-        exact: true,
-      }),
-    ).toHaveText("×2");
+      page
+        .getByRole("tooltip")
+        .filter({ hasText: "Ice does 0.125x to Dewgong" }),
+    ).toBeVisible();
+
+    await selectItem(page, "Air Balloon");
+    const immune = matrix.getByRole("cell", {
+      name: "Ground does 0x to Dewgong (Water/Ice) with Air Balloon",
+      exact: true,
+    });
+    await expect(immune).toHaveText("0");
+    await expect(immune).not.toHaveCSS("background-color", resistanceColour);
   });
 
   test("the defence matrix reflects Air Balloon and Dry Skin", async ({
@@ -168,4 +188,21 @@ test.describe("Matrix Analysis - Integration Tests", () => {
     await openAnalysis(page, "Matrix Analysis");
     await expect(strongCell).toBeVisible();
   });
+});
+
+test.fixme("Let's Go Absorb contributes its native coverage to the matrix", async ({
+  page,
+}) => {
+  const team = Buffer.from("Oddish\n- Absorb").toString("base64url");
+  await page.goto(`/?game=lets-go&team=${team}`);
+  await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Absorb");
+  await openAnalysis(page, "Matrix Analysis");
+  const matrix = page.getByRole("region", { name: "Matrix Analysis" });
+  await matrix.getByRole("button", { name: "Coverage", exact: true }).click();
+  await expect(
+    matrix.getByRole("cell", {
+      name: "Oddish's Absorb (Grass) does 2x to Water",
+      exact: true,
+    }),
+  ).toHaveText("×2");
 });

@@ -6,6 +6,16 @@ import {
 } from "helper";
 
 test.describe("Team Defence - Integration Tests", () => {
+  test("Thick Fat's third Ice resistance stays one-eighth in the team defence tooltip", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Dewgong");
+    await selectAbility(page, "Thick Fat");
+    await checkTypeDefenceScoreAndPopover(page, "Ice", "+1.5", [
+      "0.125x to Dewgong",
+    ]);
+  });
+
   test("Score of a Pokemon with an ability that helps it resist a type", async ({
     page,
   }) => {
