@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 500" width="980" height="500" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Mock-up M4: notice of entries dropped from a link">
+<title>Mock-up M4: notice of entries dropped from a link</title>
+<rect width="980" height="500" fill="#fff"/>
+<text x="20" y="30" font-size="18" fill="#222" font-weight="bold" text-anchor="start">M4  Notice of entries dropped from a link or a saved team (P7)</text>
+<text x="20" y="52" font-size="13" fill="#666" font-weight="normal" text-anchor="start">Shown when a share link or saved team names something the team&#x27;s game no longer has.</text>
+<rect x="20" y="76" width="940" height="150" rx="6" fill="#f3f3f3" stroke="#999" stroke-width="1.5"/>
+<text x="40" y="104" font-size="13" fill="#666" font-weight="normal" text-anchor="start" font-style="italic">(the team, opened from the link, with the entries below left out)</text>
+<rect x="40" y="120" width="140" height="90" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="110" y="170" font-size="12" fill="#666" font-weight="normal" text-anchor="middle">Pokemon 1</text>
+<rect x="192" y="120" width="140" height="90" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="262" y="170" font-size="12" fill="#666" font-weight="normal" text-anchor="middle">Pokemon 2</text>
+<rect x="344" y="120" width="140" height="90" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="414" y="170" font-size="12" fill="#666" font-weight="normal" text-anchor="middle">Pokemon 3</text>
+<rect x="496" y="120" width="140" height="90" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="566" y="170" font-size="12" fill="#666" font-weight="normal" text-anchor="middle">Pokemon 4</text>
+<rect x="648" y="120" width="140" height="90" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="718" y="170" font-size="12" fill="#666" font-weight="normal" text-anchor="middle">Pokemon 5</text>
+<rect x="800" y="120" width="140" height="90" rx="4" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="870" y="170" font-size="12" fill="#666" font-weight="normal" text-anchor="middle">Pokemon 6</text>
+<rect x="170" y="250" width="640" height="124" rx="6" fill="#e3f0fc" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<circle cx="196" cy="280" r="11" fill="#b26a00" stroke="#b26a00" stroke-width="1.5"/>
+<text x="196" y="285" font-size="14" fill="#fff" font-weight="bold" text-anchor="middle">!</text>
+<text x="218" y="285" font-size="14" fill="#222" font-weight="bold" text-anchor="start">2 entries from this link are not in Generations 6–9 and were left out:</text>
+<text x="218" y="310" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Pokemon 3&#x27;s move ‹move name›   ·   Pokemon 5&#x27;s item ‹item name›</text>
+<rect x="628" y="330" width="80" height="30" rx="4" fill="#fff" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="668.0" y="350.0" font-size="13" fill="#222" font-weight="bold" text-anchor="middle">Details</text>
+<rect x="718" y="330" width="76" height="30" rx="4" fill="#fff" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="756.0" y="350.0" font-size="13" fill="#222" font-weight="bold" text-anchor="middle">Dismiss</text>
+<circle cx="158" cy="262" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="158" y="267" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">1</text>
+<circle cx="606" cy="345" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="606" y="350" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">2</text>
+<circle cx="32" cy="414" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="32" y="419" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">1</text>
+<text x="52" y="419" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Names each pokemon, move, item, and ability that was left out, and the slot it was in (REQ-INFO-8).</text>
+<text x="52" y="437" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Today these are dropped without a word.</text>
+<circle cx="32" cy="464" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="32" y="469" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">2</text>
+<text x="52" y="469" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Details shows the link&#x27;s original text, so the Player can copy what was lost.</text>
+</svg>
