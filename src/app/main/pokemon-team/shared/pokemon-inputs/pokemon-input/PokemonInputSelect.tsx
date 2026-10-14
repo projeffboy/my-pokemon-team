@@ -474,7 +474,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
         noOptionsText={
           <>
             {/* Filters that leave no pokemon can still be changed from here */}
-            {pokemonProperty === "name" && store.isMoreOpen && (
+            {pokemonProperty === "name" && (
               <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
                 <ListTools />
               </Box>
@@ -526,16 +526,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
               // Minimum width to fit Aerodactylite row in one line
               ...(pokemonProperty !== "name" && {
                 minWidth: {
-                  xxs: Math.max(
-                    fitWidth,
-                    (
-                      store.isMoreOpen ||
-                        leadingIcon ||
-                        pokemonProperty === "item"
-                    ) ?
-                      SMALL_PHONE_LIST_WIDTH
-                    : MIN_TEXT_LIST_WIDTH,
-                  ),
+                  xxs: Math.max(fitWidth, SMALL_PHONE_LIST_WIDTH),
                   xs: Math.max(
                     fitWidth,
                     pokemonProperty === "item" ? 130 : MIN_TEXT_LIST_WIDTH,
@@ -606,7 +597,6 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           const hiddenAbility =
             isSelectionShown &&
             pokemonProperty === "ability" &&
-            store.isMoreOpen &&
             isHiddenAbility(
               store.team[teamIndex]?.name ?? "",
               value,

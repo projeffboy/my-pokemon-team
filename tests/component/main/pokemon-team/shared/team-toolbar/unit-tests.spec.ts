@@ -53,9 +53,8 @@ test("every team action keeps its label, on two rows where one cannot hold them"
     { width: 1200, rows: 1 },
   ]) {
     await page.setViewportSize({ width, height: 900 });
-    const names = width < 960 ? ACTIONS : [...ACTIONS, "Advanced"];
-    await expect(buttons).toHaveCount(names.length);
-    for (const [index, name] of names.entries())
+    await expect(buttons).toHaveCount(ACTIONS.length);
+    for (const [index, name] of ACTIONS.entries())
       await expect(buttons.nth(index)).toHaveAccessibleName(name);
     await expect
       .poll(
@@ -83,31 +82,9 @@ test("every team action keeps its label, on two rows where one cannot hold them"
     // On two rows the team's actions sit above its history and settings
     if (rows === 2)
       expect(boxes.map(box => box.top === boxes[0]?.top)).toEqual(
-        names.map((_, index) => index < 3),
+        ACTIONS.map((_, index) => index < 3),
       );
   }
-});
-
-test("from md the toolbar holds the Advanced switch, colored when on", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 1200, height: 900 });
-  const advanced = page
-    .getByRole("toolbar", { name: "Team actions" })
-    .getByRole("button", { name: "Advanced", exact: true });
-  await expect(advanced).toHaveAttribute("aria-pressed", "false");
-  const offColor = await advanced
-    .getByTestId("ToggleOffOutlinedIcon")
-    .evaluate(icon => getComputedStyle(icon).color);
-  await advanced.click();
-  await expect(advanced).toHaveAttribute("aria-pressed", "true");
-  const onIcon = advanced.getByTestId("ToggleOnOutlinedIcon");
-  await expect(onIcon).toBeVisible();
-  expect(await onIcon.evaluate(icon => getComputedStyle(icon).color)).not.toBe(
-    offColor,
-  );
-  await advanced.click();
-  await expect(advanced).toHaveAttribute("aria-pressed", "false");
 });
 
 test("a language with longer labels wraps onto two rows instead of dropping them", async ({

@@ -119,7 +119,6 @@ const zhHans: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `宝可梦 ${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first}和${second}`,
-    advancedMode: "高级",
     filters: "筛选",
     sort: "排序",
     randomizePokemon: "随机选择宝可梦",
@@ -571,7 +570,7 @@ const zhHans: Messages = {
     teamsAnswer:
       "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
     teamsAnswer2:
-      "“更多”按钮会显示队伍工具、“筛选”、“排序”和“更多详情”。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
+      "名称列表中有“筛选”和“排序”按钮，招式列表中有“排序”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
     generations: "世代",
     generationsQuestion: "世代会改变什么？",
     generationsAnswer:

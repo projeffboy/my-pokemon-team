@@ -127,7 +127,6 @@ const de: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "leer"})`,
     slotPair: (first: string, second: string) => `${first} und ${second}`,
-    advancedMode: "Erweitert",
     filters: "Filter",
     sort: "Sortieren",
     randomizePokemon: "Pokémon zufällig wählen",
@@ -601,7 +600,7 @@ const de: Messages = {
     teamsAnswer:
       "Deine Teams werden in diesem Browser gespeichert. Sie sind also da, wenn du wiederkommst, aber nicht auf einem anderen Gerät. Die Schaltfläche „Teams“ listet sie auf, und über das Menü eines Teams kannst du es umbenennen, seine Generation und sein Format festlegen, es duplizieren, teilen oder löschen. „Alle exportieren“ lädt alle Teams als Showdown-Text herunter, den „Team importieren“ wieder einliest. Die Adressleiste enthält immer das aktuelle Team; du teilst es also, indem du die Adresse kopierst (oder auf „Teilen“ drückst).",
     teamsAnswer2:
-      "Die Schaltfläche „Mehr“ zeigt die Team-Werkzeuge, „Filter“, „Sortieren“ und „Weitere Details“. „Rückgängig“ und „Wiederholen“ gehen die Änderungen am aktuellen Team durch; auf Smartphones und Tablets stehen sie über den Pokémon-Platzreitern.",
+      "Die Namensliste hat die Schaltflächen „Filter“ und „Sortieren“, die Attackenlisten haben „Sortieren“. „Rückgängig“ und „Wiederholen“ gehen die Änderungen am aktuellen Team durch; auf Smartphones und Tablets stehen sie über den Pokémon-Platzreitern.",
     generations: "Generationen",
     generationsQuestion: "Was ändert die Generation?",
     generationsAnswer:

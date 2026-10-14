@@ -32,7 +32,6 @@ export function getBrowserStorage(): Storage | undefined {
 export interface StoredState {
   teams: SavedTeam[];
   currentTeamId: string;
-  isMoreOpen: boolean;
   showMoveTypes: boolean;
   sort: SortOrder;
   moveSort: MoveSortOrder;
@@ -152,7 +151,6 @@ export function loadStoredState(
       teams.some(team => team.id === currentTeamId) ? currentTeamId : (
         (teams[0]?.id ?? "")
       ),
-    isMoreOpen: raw.isMoreOpen === true,
     // On unless it was turned off, so states saved before the setting keep the icons
     showMoveTypes: raw.showMoveTypes !== false,
     sort: sanitizeSort(raw.sort),
@@ -207,7 +205,6 @@ export function mergeStoredState(
   return {
     teams,
     currentTeamId: currentTeam?.id ?? mine.currentTeamId,
-    isMoreOpen: pick(base.isMoreOpen, mine.isMoreOpen, theirs.isMoreOpen),
     showMoveTypes: pick(
       base.showMoveTypes,
       mine.showMoveTypes,
@@ -243,7 +240,6 @@ export const initialStoredState = (): StoredState => {
   return {
     teams: [team],
     currentTeamId: team.id,
-    isMoreOpen: false,
     showMoveTypes: true,
     sort: DEFAULT_SORT,
     moveSort: DEFAULT_MOVE_SORT,

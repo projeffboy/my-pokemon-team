@@ -116,7 +116,6 @@ const en = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokemon ${slot} (${pokemon ?? "empty"})`,
     slotPair: (first: string, second: string) => `${first} and ${second}`,
-    advancedMode: "Advanced",
     filters: "Filters",
     sort: "Sort",
     randomizePokemon: "Randomize pokemon",
@@ -581,7 +580,7 @@ const en = {
     teamsAnswer:
       "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
     teamsAnswer2:
-      "The More button shows the team tools, the Filters and Sort buttons, and the More details button. Undo and Redo step through the current team’s changes; on phones and tablets they are above the Pokémon slot tabs.",
+      "The Name dropdown has the Filters and Sort buttons, and the move dropdowns have Sort. Undo and Redo step through the current team’s changes; on phones and tablets they are above the Pokémon slot tabs.",
     generations: "Generations",
     generationsQuestion: "What does the generation change?",
     generationsAnswer:

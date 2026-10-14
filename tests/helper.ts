@@ -64,22 +64,6 @@ export const openManageTeamMenu = async (page: Page) => {
   await expect(page.getByRole("menu")).toBeVisible();
 };
 
-// Turns on Advanced, which puts Filters and Sort in the dropdowns. Its switch is in the
-// toolbar from md, and in the Manage team menu on phones and tablets.
-export const turnOnAdvanced = async (page: Page) => {
-  if (!isMdDown(page)) {
-    const toggle = page.getByRole("button", { name: "Advanced", exact: true });
-    if ((await toggle.getAttribute("aria-pressed")) !== "true")
-      await toggle.click();
-    return;
-  }
-  await openManageTeamMenu(page);
-  const item = page.getByRole("menuitemcheckbox", { name: "Advanced" });
-  if ((await item.getAttribute("aria-checked")) !== "true") await item.click();
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("menu")).toBeHidden();
-};
-
 export const clickMenuItem = async (page: Page, name: string) => {
   await page.getByRole("menuitem", { name, exact: true }).click();
   await expect(page.getByRole("menu")).toBeHidden();
@@ -107,7 +91,6 @@ const openListDialog = async (
   name: "Filters" | "Sort",
   list: "name" | "move1" = "name",
 ) => {
-  await turnOnAdvanced(page);
   await page
     .getByRole("combobox", { name: new RegExp(`^Pokemon \\d's ${list}$`) })
     .first()

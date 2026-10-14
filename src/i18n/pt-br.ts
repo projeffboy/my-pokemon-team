@@ -121,7 +121,6 @@ const ptBR: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vazio"})`,
     slotPair: (first: string, second: string) => `${first} e ${second}`,
-    advancedMode: "Avançado",
     filters: "Filtros",
     sort: "Ordenar",
     randomizePokemon: "Sortear Pokémon",
@@ -582,7 +581,7 @@ const ptBR: Messages = {
     teamsAnswer:
       "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Exportar tudo baixa todas as equipes como texto do Showdown, que Importar equipe lê de volta. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
     teamsAnswer2:
-      "O botão Mais mostra as ferramentas da equipe, Filtros, Ordenar e Mais detalhes. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam acima das abas dos Pokémon.",
+      "A lista de nomes tem os botões Filtros e Ordenar, e as listas de golpes têm Ordenar. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam acima das abas dos Pokémon.",
     generations: "Gerações",
     generationsQuestion: "O que a geração muda?",
     generationsAnswer:
