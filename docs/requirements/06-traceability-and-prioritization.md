@@ -63,6 +63,23 @@ Change management, sized for one maintainer:
 4. An approved change updates the requirement, its user story's acceptance criteria, and its tests in the same pull request as the code, so the documents cannot fall behind the site.
 5. A change that players will notice gets an update log entry (REQ-MAINT-5).
 
+### Changes of 14 October 2026: what, not how
+
+A review against the course's rule that a requirement states what the system does, not how, changed the requirements below. Rewritten requirements keep their identifiers; a requirement replaced by one with another meaning is deleted, and its identifier is not reused.
+
+| Requirements                                                        | Change                                                                                                                                   |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-INTF-1, 2, 5, REQ-FEED-8, 9, REQ-OPS-2, REQ-TEXT-10, REQ-USE-12 | Rewritten to state the outcome in place of the mechanism.                                                                                |
+| REQ-PERF-4                                                          | Rewritten as a time to an editable team; the 600 kB script limit is kept as its design budget.                                           |
+| REQ-TEXT-11                                                         | Now says that the generation profile is part of the team read back, which REQ-TEXT-10 used to ensure.                                    |
+| REQ-INTF-6, REQ-USE-13                                              | Deleted: merged into REQ-INTF-5 and REQ-USE-12.                                                                                          |
+| REQ-INTF-9, 15, REQ-PERF-5, REQ-INFO-5, REQ-MAINT-2                 | Deleted: REQ-FEED-1 to 5, REQ-PERF-4, REQ-COLL-11, and REQ-LANG-1 already state their outcome.                                           |
+| REQ-INTF-16, REQ-OPS-3                                              | Deleted: replaced by REQ-FEED-10 and REQ-PERF-9.                                                                                         |
+| REQ-USE-8, 11, REQ-INTF-7, 10, 17, REQ-PERF-8                       | Moved to the design constraints, Section 3.14.1 of the SyRS.                                                                             |
+| REQ-OPS-1, REQ-POL-4, 5, REQ-REL-1 to 3, REQ-MAINT-1, 3 to 5        | Moved to the development constraints, Section 3.14.2.                                                                                    |
+| REQ-OPS-4, 5                                                        | Moved to the constraints on the old website, Section 3.14.3; REQ-OPS-5 no longer relies on "absolutely necessary".                       |
+| REQ-USE-1, 2, 9                                                     | Deleted: they cannot be verified without sessions or a survey with players, so they are now indicators in Section 3.7 of the goal model. |
+
 ## 6.4 Traceability
 
 ### Traceability information model
@@ -166,7 +183,7 @@ An X means the requirements of the row help achieve the business requirement of 
 | US15       | P-1 Maya                  | UC15 Look Up Reference               | REQ-REF-1 to 6               |
 | US16       | P-3 Sofía, P-4 Kenji      | UC16 Change Language                 | REQ-LANG-1 to 8              |
 | US17       | P-1 Maya                  | UC17 Change Colour Scheme            | REQ-THEME-1, 2               |
-| US18       | P-2 Daniel                | UC18 Send Feedback                   | REQ-FEED-1 to 9              |
+| US18       | P-2 Daniel                | UC18 Send Feedback                   | REQ-FEED-1 to 10             |
 | US19       | P-4 Kenji                 | UC19 Switch Site Version             | REQ-SITE-1, 2                |
 | US20       | Maintainer (SH-2)         | UC20 Update Game Data                | REQ-DATA-1 to 7, 10 to 12    |
 | US21       | Maintainer (SH-2)         | UC21 Update Translations             | REQ-DATA-8, 9                |
@@ -222,7 +239,7 @@ Wiegers' method, as the course teaches it, first turns each rating into a percen
 | Keyboard operation and contrast (REQ-USE-4, 6)                 | 5       | 4       | 14    | L    | 5    | 3    | 2.15     | P2          |
 | PF2 Team transfer to the old website (REQ-SITE-3, 5)           | 5       | 4       | 14    | L    | 5    | 5    | 1.87     | P3          |
 | Browsers by usage share (REQ-INTF-13)                          | 3       | 3       | 9     | M    | 4    | 2    | 1.80     | P3          |
-| Measure the speed targets (REQ-PERF-1 to 3)                    | 3       | 3       | 9     | M    | 4    | 2    | 1.80     | P3          |
+| Measure the speed targets (REQ-PERF-1 to 4, 9)                 | 3       | 3       | 9     | M    | 4    | 2    | 1.80     | P3          |
 | Unrecognised generation or game in a link (REQ-LINK-11)        | 2       | 2       | 6     | S    | 3    | 1    | 1.71     | P3          |
 | Check which requirements have tests (Implemented requirements) | 3       | 3       | 9     | L    | 5    | 1    | 1.64     | P3          |
 | Recheck the dex links on a schedule (REQ-REF-2)                | 2       | 2       | 6     | S    | 3    | 2    | 1.50     | P3          |
@@ -264,7 +281,7 @@ Work to do is kept in the project's GitHub issues, not in these documents. An is
 | Keyboard operation, accessible names, contrast   | REQ-USE-4 to 6                            | [77](https://github.com/projeffboy/my-pokemon-team/issues/77)   | P2          |
 | PF2 Team transfer to the old website             | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | P3          |
 | Browsers by usage share                          | REQ-INTF-13                               | [121](https://github.com/projeffboy/my-pokemon-team/issues/121) | P3          |
-| Measure the speed targets                        | REQ-PERF-1 to 3                           | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | P3          |
+| Measure the speed targets                        | REQ-PERF-1 to 4, 9                        | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | P3          |
 | Unrecognised generation or game in a link        | REQ-LINK-11                               | [113](https://github.com/projeffboy/my-pokemon-team/issues/113) | P3          |
 | Check which requirements have tests              | Every requirement with status Implemented | [120](https://github.com/projeffboy/my-pokemon-team/issues/120) | P3          |
 | Recheck the dex links on a schedule              | REQ-REF-2                                 | [47](https://github.com/projeffboy/my-pokemon-team/issues/47)   | P3          |
@@ -282,4 +299,4 @@ Issues with no requirement yet, because the feature is not planned:
 | Quick type, such as "hpfire" for Hidden Power Fire | [40](https://github.com/projeffboy/my-pokemon-team/issues/40) | Low priority                                   |
 | CAP pokemon                                        | [39](https://github.com/projeffboy/my-pokemon-team/issues/39) | Undecided                                      |
 
-Work that has no issue because it recurs: running the data and translation updates after each Pokemon Showdown change (BR-3), and reviewing the weekly dependency update (REQ-MAINT-3). Two pieces of requirements work are deferred and have no issue: usability sessions and surveys of players (REQ-USE-1, 2, 9), which the Site Owner set aside on 13 October 2026 as useful later for gauging the audience.
+Work that has no issue because it recurs: running the data and translation updates after each Pokemon Showdown change (BR-3), and reviewing the weekly dependency update (REQ-MAINT-3). Two pieces of requirements work are deferred and have no issue: usability sessions and surveys of players (the indicators of Section 3.7 of the [goal model](03-goal-model.md), formerly REQ-USE-1, 2, and 9), which the Site Owner set aside on 13 October 2026 as useful later for gauging the audience.

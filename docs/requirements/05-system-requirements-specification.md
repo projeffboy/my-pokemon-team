@@ -12,7 +12,7 @@ My Pokemon Team lets a Pokemon player plan a team of six and see, as the team is
 
 ### 1.2) System scope
 
-The system is the My Pokemon Team website at `mypokemonteam.com` as a browser runs it, together with the feedback function that emails a player's message to the site owner and the scripts that refresh its game data and translations. This document calls all of it "the site".
+The system is the My Pokemon Team website at `mypokemonteam.com` as a browser runs it, together with the feedback function that emails a player's message to the site owner and the scripts that refresh its game data and translations. This document calls all of it "the site". A requirement that concerns only one part names that part: the data update tooling, the translation update tooling, or the feedback function.
 
 The site shall do the following (business requirements, from [01-vision-and-scope.md](01-vision-and-scope.md)):
 
@@ -933,8 +933,8 @@ Postcondition (for fail case): The saved teams and the current team are unchange
 | REQ-TEXT-7  | The site shall provide all saved teams as one team text, as a file and as a copy to the clipboard.                                                                    | C    | Implemented |
 | REQ-TEXT-8  | The site shall write team text in Pokemon Showdown's export format with English names, in every site language.                                                        | E    | Implemented |
 | REQ-TEXT-9  | The site shall write in team text only the set details that differ from their defaults.                                                                               | C    | Implemented |
-| REQ-TEXT-10 | The site shall record a team's Generations 6 to 9 combined profile in its team text, in a line that Pokemon Showdown ignores.                                         | C    | Implemented |
-| REQ-TEXT-11 | The site shall read back from team text that it wrote a team equal to the team it wrote.                                                                              | E    | Implemented |
+| REQ-TEXT-10 | The site shall write team text that Pokemon Showdown's importer accepts without error.                                                                                | C    | Implemented |
+| REQ-TEXT-11 | The site shall read back from team text that it wrote a team equal to the team it wrote, generation profile included.                                                 | E    | Implemented |
 
 #### 3.1.15) UC15 Look Up Reference
 
@@ -1051,17 +1051,18 @@ Postcondition (for fail case): No message has been sent.
 
 **Requirements**
 
-| ID         | Requirement                                                                                                                                     | Imp. | Status      |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-FEED-1 | The site shall send to the Site Owner by email a message of up to 5000 characters that a Player submits as feedback.                            | E    | Implemented |
-| REQ-FEED-2 | The site shall attach to feedback the current team's share link and a picture of the page, each of which the Player can decline.                | C    | Implemented |
-| REQ-FEED-3 | The site shall accept with feedback up to three images provided by the Player.                                                                  | O    | Implemented |
-| REQ-FEED-4 | The site shall accept with feedback an optional reply address, refusing an address that is not a valid email address.                           | C    | Implemented |
-| REQ-FEED-5 | The site shall include with feedback the Player's browser name and version, operating system, and screen size.                                  | C    | Implemented |
-| REQ-FEED-6 | The site shall inform the Player whether the feedback was sent, giving an email address to write to after a failure.                            | E    | Implemented |
-| REQ-FEED-7 | The site shall keep the Player's message in the feedback form after a failure to send.                                                          | C    | Implemented |
-| REQ-FEED-8 | The site shall reduce the picture of the page and the Player's images so that together they do not exceed 4 000 000 characters of encoded data. | C    | Implemented |
-| REQ-FEED-9 | The site shall send feedback from an address on the site's own domain, so that the Site Owner's reply reaches the Player's reply address.       | C    | Proposed    |
+| ID          | Requirement                                                                                                                      | Imp. | Status      |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-FEED-1  | The site shall send to the Site Owner by email a message of up to 5000 characters that a Player submits as feedback.             | E    | Implemented |
+| REQ-FEED-2  | The site shall attach to feedback the current team's share link and a picture of the page, each of which the Player can decline. | C    | Implemented |
+| REQ-FEED-3  | The site shall accept with feedback up to three images provided by the Player.                                                   | O    | Implemented |
+| REQ-FEED-4  | The site shall accept with feedback an optional reply address, refusing an address that is not a valid email address.            | C    | Implemented |
+| REQ-FEED-5  | The site shall include with feedback the Player's browser name and version, operating system, and screen size.                   | C    | Implemented |
+| REQ-FEED-6  | The site shall inform the Player whether the feedback was sent, giving an email address to write to after a failure.             | E    | Implemented |
+| REQ-FEED-7  | The site shall keep the Player's message in the feedback form after a failure to send.                                           | C    | Implemented |
+| REQ-FEED-8  | The site shall deliver feedback that carries a picture of the page and three screenshots taken on a phone.                       | C    | Implemented |
+| REQ-FEED-9  | The site shall deliver the Site Owner's reply to a feedback message to the reply address that the Player gave.                   | C    | Proposed    |
+| REQ-FEED-10 | The site shall include in the picture of the page each pokemon sprite shown on the page.                                         | C    | Implemented |
 
 #### 3.1.18) UC19 Switch Site Version
 
@@ -1200,44 +1201,26 @@ The rules of REQ-ANLY-19 are already computed by the site and covered by tests; 
 
 ### 3.2) Usability requirements
 
-The Site Owner rates speed as paramount: a visitor who waits, or who has to work before seeing a result, leaves. REQ-USE-10 is the Site Owner's own answer to that, the random team. A fit criterion quantifies each quality. Where three values are given they are outstanding, target, and minimum; the requirement states the minimum. Values marked **[A-16]** are proposed and have not been measured or agreed.
+The Site Owner rates speed as paramount: a visitor who waits, or who has to work before seeing a result, leaves. REQ-USE-10 is the Site Owner's own answer to that, the random team. Measures that need sessions or a survey with players, such as the time a first-time player takes to analyse a team, are kept as indicators in Section 3.7 of the [goal model](03-goal-model.md) until players can be asked. A fit criterion quantifies each quality. Where three values are given they are outstanding, target, and minimum; the requirement states the minimum. Values marked **[A-16]** are proposed and have not been measured or agreed.
 
 | ID         | Requirement                                                                                                                                                                                       | Imp. | Status      |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-USE-1  | The site shall enable at least 80% of first-time players to place six pokemon and name the type their team is weakest to within 5 minutes, without any training **[A-16]**.                       | E    | Proposed    |
-| REQ-USE-2  | The site shall enable at least 80% of Pokemon Showdown users to import a team from Showdown and copy it back within 2 minutes, without any training **[A-16]**.                                   | C    | Proposed    |
 | REQ-USE-3  | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page and without cutting off any control or its label.                    | E    | Approved    |
 | REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                                                | C    | Proposed    |
 | REQ-USE-5  | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                                             | C    | Implemented |
 | REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**.                      | C    | Proposed    |
 | REQ-USE-7  | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                                       | C    | Implemented |
-| REQ-USE-8  | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                                                           | C    | Implemented |
-| REQ-USE-9  | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                                         | O    | Proposed    |
 | REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                                     | E    | Implemented |
-| REQ-USE-11 | The site shall show a text label beside the icon of every button, other than the icon-only buttons listed in Table 3.2-1.                                                                         | E    | Approved    |
-| REQ-USE-12 | The site shall present each slot's Random pokemon button no wider than a quarter of the width of the area that the slot's sprite is presented in.                                                 | E    | Approved    |
-| REQ-USE-13 | The site shall present each slot's More details button no wider than a quarter of the width of the area that the slot's sprite is presented in.                                                   | E    | Approved    |
+| REQ-USE-12 | The site shall present each slot's pokemon sprite with no part covered by another element of the slot.                                                                                            | E    | Approved    |
 | REQ-USE-14 | The site shall offer in the current team's toolbar only actions that act on the current team, a Teams button that leads to every action on the other saved teams, and the accessibility settings. | C    | Approved    |
 | REQ-USE-15 | The site shall present the toolbar's More menu in two sections, Manage team with the actions on the current team, and Accessibility with the display settings.                                    | C    | Approved    |
 | REQ-USE-16 | The site shall present still sprites in place of animated ones to a Player who has asked for sprites not to be animated.                                                                          | C    | Approved    |
 | REQ-USE-17 | The site shall present every function to every Player, without a mode that the Player has to turn on.                                                                                             | C    | Approved    |
 | REQ-USE-18 | The site shall present Clear as its own toolbar button at the widths where the toolbar fits on one row, and in the More menu's Manage team section at other widths.                               | C    | Approved    |
 
-| Quality (requirement)                      | Outstanding | Target    | Minimum   |
-| ------------------------------------------ | ----------- | --------- | --------- |
-| Time to a first analysed team (REQ-USE-1)  | 1 minute    | 2 minutes | 5 minutes |
-| Time for a Showdown round trip (REQ-USE-2) | 30 seconds  | 1 minute  | 2 minutes |
-| Narrowest supported width (REQ-USE-3)      | 280 px      | 320 px    | 320 px    |
-
-REQ-USE-11 lets a button show its icon alone only where a label would get in the way, and each such button and its reason is listed below. A button joins the list only with a reason recorded here, and one that is icon-only at some widths only says which; every icon-only button still has an accessible name (REQ-USE-5).
-
-Table 3.2-1: Icon-only buttons
-
-| Button               | Where                                       | Reason                                                                                                                                       |
-| -------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Random pokemon (die) | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it.                                                                                          |
-| About (info)         | Each slot's card, at the sprite's top right | A label would cover the animated sprite.                                                                                                     |
-| More details         | Each slot's card, beside the sprite         | Only at the widths where its label would cover the sprite or make the button wider than REQ-USE-13 allows; it shows its label at the others. |
+| Quality (requirement)                 | Outstanding | Target | Minimum |
+| ------------------------------------- | ----------- | ------ | ------- |
+| Narrowest supported width (REQ-USE-3) | 280 px      | 320 px | 320 px  |
 
 REQ-USE-14 keeps the toolbar about the team on screen, with the Teams button as the one way to the other saved teams. Importing team text adds new teams rather than changing the current one, so it is offered behind the Teams button and not in the toolbar's Manage menu; editing the current team's text stays there.
 
@@ -1249,69 +1232,56 @@ REQ-USE-17 removes the Advanced switch. What it turned on, such as Filters and S
 
 The Site Owner gave no figures but rated every one of these as critical, so the values below remain proposals to measure against. Only response time and capacity are specified. Throughput is not: the site is served as static files, so the number of requests it handles per second is the hosting platform's, and the traffic figures the Site Owner holds do not call for a target **[A-17]**.
 
-Measurement takes place on a mid-range phone released within the last four years, over a 4G connection, with an empty browser cache for REQ-PERF-3 and a warm one otherwise. Excluded are the advertising script and the sprites served by Pokemon Showdown. All values are proposed **[A-16]** except REQ-PERF-4's baseline, which was measured.
+Measurement takes place on a mid-range phone released within the last four years, over a 4G connection, with an empty browser cache for REQ-PERF-3 and REQ-PERF-4 and a warm one otherwise. Lighthouse's mobile profile emulates such a phone and connection, and is the measure for REQ-PERF-4. Excluded are the advertising script and the sprites served by Pokemon Showdown. All values are proposed **[A-16]**.
 
 | ID         | Requirement                                                                                                                                                            | Imp. | Status      |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
 | REQ-PERF-1 | In 95% of all cases, the site shall have a maximal response time of 100 ms between a change to the current team and the presentation of the updated analysis.          | E    | Proposed    |
 | REQ-PERF-2 | In 95% of all cases, the site shall have a maximal response time of 200 ms between a request to list the pokemon for a slot and the presentation of the first options. | E    | Proposed    |
 | REQ-PERF-3 | In 95% of all cases, the site shall have a maximal response time of 3 s between the opening of a share link and the presentation of the team's pokemon and analysis.   | E    | Proposed    |
-| REQ-PERF-4 | The site shall require a maximum of 600 kB of compressed script to be downloaded before a team can be edited.                                                          | E    | Implemented |
-| REQ-PERF-5 | The site shall download the move lists, the generation transfer data, each language, and each footer dialog only on first need.                                        | C    | Implemented |
+| REQ-PERF-4 | The site shall let a first-time visitor edit a team within 3 s of opening the site **[A-16]**.                                                                         | E    | Proposed    |
 | REQ-PERF-6 | The site shall save a change to a team to the Player's browser within 1 s of the change, and before the page is hidden.                                                | E    | Implemented |
 | REQ-PERF-7 | The site shall be able to store a minimum of 500 saved teams in a browser that grants 5 megabytes of site storage **[A-16]**.                                          | C    | Proposed    |
-| REQ-PERF-8 | The site shall write the page's address a maximum of 100 times in any 30 seconds, the limit above which Safari stops accepting the writes.                             | E    | Implemented |
+| REQ-PERF-9 | The site shall download at most 20 kB on a repeat visit when nothing has been released since the visitor's last visit **[A-16]**.                                      | C    | Proposed    |
 
-| Quality (requirement)                         | Outstanding | Target | Minimum |
-| --------------------------------------------- | ----------- | ------ | ------- |
-| Analysis response time (REQ-PERF-1)           | 16 ms       | 50 ms  | 100 ms  |
-| Option list response time (REQ-PERF-2)        | 50 ms       | 100 ms | 200 ms  |
-| Share link to team shown (REQ-PERF-3)         | 1 s         | 2 s    | 3 s     |
-| Compressed script before editing (REQ-PERF-4) | 400 kB      | 520 kB | 600 kB  |
+| Quality (requirement)                        | Outstanding | Target | Minimum |
+| -------------------------------------------- | ----------- | ------ | ------- |
+| Analysis response time (REQ-PERF-1)          | 16 ms       | 50 ms  | 100 ms  |
+| Option list response time (REQ-PERF-2)       | 50 ms       | 100 ms | 200 ms  |
+| Share link to team shown (REQ-PERF-3)        | 1 s         | 2 s    | 3 s     |
+| First visit to an editable team (REQ-PERF-4) | 1 s         | 2 s    | 3 s     |
 
-Baseline for REQ-PERF-4: the production build of 13 October 2026 downloads about 520 kB of gzip-compressed script before editing (application 123 kB, libraries 231 kB, game data 165 kB). It defers the move lists (123 kB), the generation transfer data (287 kB), the sprite animation table (58 kB), and each language (about 45 kB).
+Design budget for REQ-PERF-4: at most 600 kB of gzip-compressed script before a team can be edited, with 520 kB as the target and 400 kB as outstanding. The production build of 13 October 2026, measured, downloads about 520 kB before editing (application 123 kB, libraries 231 kB, game data 165 kB). It defers the move lists (123 kB), the generation transfer data (287 kB), the sprite animation table (58 kB), and each language (about 45 kB).
 
 ### 3.4) Interface requirements
 
 #### 3.4.1) External interface requirements
 
-| ID          | Requirement                                                                                                                                                                                           | Imp. | Status      |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-INTF-1  | The site shall load pokemon sprites from Pokemon Showdown's sprite server, preferring a sprite bundled with the site for each forme that has one.                                                     | E    | Implemented |
-| REQ-INTF-2  | The site shall bundle its pokemon and item icon sheets and a sprite for each forme that Pokemon Showdown has no usable sprite for, so that these match the site's own data.                           | E    | Implemented |
-| REQ-INTF-3  | The site shall write the share link's team as the `team` parameter of the address, holding the base64url encoding of the team's text.                                                                 | E    | Implemented |
-| REQ-INTF-4  | The site shall write the share link's generation profile as the `gen` parameter (a generation number, or `6-9`), and Pokemon Champions as `game=champions` with no `gen`.                             | E    | Implemented |
-| REQ-INTF-5  | The site shall keep the page's main container as the first child of a plain container directly under the page's root element, the place the ad platform's configuration inserts the top banner above. | E    | Implemented |
-| REQ-INTF-6  | The site shall notify the ad platform of a new page once, after the page's first rendering.                                                                                                           | E    | Implemented |
-| REQ-INTF-7  | The site shall include the ad platform's script in production builds only.                                                                                                                            | E    | Implemented |
-| REQ-INTF-8  | The site shall redirect requests for `ads.txt` to the ad platform's copy, and shall allow the ad platform's crawler in `robots.txt`.                                                                  | E    | Implemented |
-| REQ-INTF-9  | The feedback function shall submit each feedback message to the email delivery service's API, authenticated by a key held in the hosting environment.                                                 | E    | Implemented |
-| REQ-INTF-10 | The site shall keep its saved state in the browser's local storage under the key `mypokemonteam`.                                                                                                     | E    | Implemented |
-| REQ-INTF-11 | The site shall write a backup file as JSON that identifies its format as `mypokemonteam` and its version as 1.                                                                                        | E    | Implemented |
-| REQ-INTF-12 | The site shall operate in the current versions of Chrome and Safari on desktop, Chrome on Android, and Safari on iOS.                                                                                 | E    | Implemented |
-| REQ-INTF-13 | The site shall operate in the current version of each browser that its maker still updates and that has at least 2% of browser usage **[A-18]**.                                                      | C    | Proposed    |
-| REQ-INTF-14 | The site shall provide, for link previews, a title, a description, and a screenshot at an address that does not change.                                                                               | C    | Implemented |
-| REQ-INTF-18 | The site shall present pokemon sprites to a visitor whose network blocks Pokemon Showdown's servers.                                                                                                  | E    | Proposed    |
+| ID          | Requirement                                                                                                                                                               | Imp. | Status      |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-INTF-1  | The site shall present, wherever it shows a picture of a pokemon, a picture of that same pokemon.                                                                         | E    | Implemented |
+| REQ-INTF-2  | The site shall present, wherever it shows a picture of an item, a picture of that same item.                                                                              | E    | Implemented |
+| REQ-INTF-3  | The site shall write the share link's team as the `team` parameter of the address, holding the base64url encoding of the team's text.                                     | E    | Implemented |
+| REQ-INTF-4  | The site shall write the share link's generation profile as the `gen` parameter (a generation number, or `6-9`), and Pokemon Champions as `game=champions` with no `gen`. | E    | Implemented |
+| REQ-INTF-5  | The site shall present the ad platform's top banner above the page content in production.                                                                                 | E    | Implemented |
+| REQ-INTF-8  | The site shall redirect requests for `ads.txt` to the ad platform's copy, and shall allow the ad platform's crawler in `robots.txt`.                                      | E    | Implemented |
+| REQ-INTF-11 | The site shall write a backup file as JSON that identifies its format as `mypokemonteam` and its version as 1.                                                            | E    | Implemented |
+| REQ-INTF-12 | The site shall operate in the current versions of Chrome and Safari on desktop, Chrome on Android, and Safari on iOS.                                                     | E    | Implemented |
+| REQ-INTF-13 | The site shall operate in the current version of each browser that its maker still updates and that has at least 2% of browser usage **[A-18]**.                          | C    | Proposed    |
+| REQ-INTF-14 | The site shall provide, for link previews, a title, a description, and a screenshot at an address that does not change.                                                   | C    | Implemented |
+| REQ-INTF-18 | The site shall present pokemon sprites to a visitor whose network blocks Pokemon Showdown's servers.                                                                      | E    | Proposed    |
 
 REQ-INTF-18 comes from issue 76: schools often block Pokemon Showdown and not this site, so the sprites fail there, and missing pictures are the second most common complaint in the feedback. It is numbered after the internal interface requirements because it was added later.
 
 #### 3.4.2) Internal interface requirements
 
-| ID          | Requirement                                                                                                                                                  | Imp. | Status      |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
-| REQ-INTF-15 | The feedback function shall accept feedback as a JSON object with the fields `message`, `email`, `link`, `screen`, `screenshot`, and `images`.               | E    | Implemented |
-| REQ-INTF-16 | The site shall obtain the sprites for the feedback picture through its own address, which the hosting platform forwards to Pokemon Showdown's sprite server. | C    | Implemented |
-| REQ-INTF-17 | The rules of analysis, filtering, sorting, validation, and team text shall be computable from explicit inputs alone, without the page or its saved state.    | C    | Implemented |
+None. The site's parts exchange data in ways chosen in design, such as the fields of the feedback request in `api/feedback.ts`.
 
 ### 3.5) System operations
 
-| ID        | Requirement                                                                                                                                      | Imp. | Status      |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
-| REQ-OPS-1 | The site shall be deployed to production from the `master` branch only after every automated check has passed for the commit deployed.           | E    | Implemented |
-| REQ-OPS-2 | The site shall serve its page so that browsers revalidate it on every visit, and its scripts and images so that browsers keep them for one year. | C    | Implemented |
-| REQ-OPS-3 | The site shall give a replaced image at a fixed address a new file name.                                                                         | C    | Implemented |
-| REQ-OPS-4 | The old website shall remain available at its own address, deployed independently of the redesigned site.                                        | C    | Implemented |
-| REQ-OPS-5 | The old website shall receive corrections only, and no new feature that is not judged absolutely necessary.                                      | C    | Approved    |
+| ID        | Requirement                                                                                                              | Imp. | Status      |
+| --------- | ------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
+| REQ-OPS-2 | The site shall present its newest release, images included, to a returning visitor on the first visit after the release. | C    | Implemented |
 
 ### 3.6) System modes and states
 
@@ -1369,7 +1339,6 @@ Players keep teams and links for months or years. These requirements protect the
 | REQ-INFO-2 | The site shall load every saved state that any released version of the site has written to the browser.                                        | E    | Implemented |
 | REQ-INFO-3 | The site shall load every backup file that any released version of the site has written.                                                       | E    | Implemented |
 | REQ-INFO-4 | The site shall keep whatever part of a saved team is well formed, discarding only the parts that are not.                                      | E    | Implemented |
-| REQ-INFO-5 | The site shall write to the browser's storage only from a tab that has a change of its own to save.                                            | C    | Implemented |
 | REQ-INFO-6 | The site shall forget the Player's dismissal of the slot reordering hint 91 days after the Player's last visit.                                | O    | Implemented |
 | REQ-INFO-7 | The site shall keep the Player's sort order, option view, move type display, and language in the browser for later visits.                     | C    | Implemented |
 | REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Approved    |
@@ -1383,63 +1352,106 @@ Known limit: share links and saved teams hold display names. A pokemon, move, or
 | REQ-POL-1 | The site shall present a privacy policy that names the ad platform, states that it may collect aggregated and anonymized data for advertising, and links to the ad platform's own policy. | E    | Implemented |
 | REQ-POL-2 | The site shall collect from a Player only what the Player submits as feedback.                                                                                                            | E    | Implemented |
 | REQ-POL-3 | The site shall credit Pokemon Showdown, PokeAPI, the rights holders, and the source of each downloaded image.                                                                             | E    | Implemented |
-| REQ-POL-4 | The site's game data shall be changed only by regenerating it from Pokemon Showdown's data.                                                                                               | E    | Implemented |
-| REQ-POL-5 | The repository shall record, beside each downloaded image, where the image came from.                                                                                                     | C    | Implemented |
 
 ### 3.12) System life cycle sustainment requirements
 
-The goal model shows that each generation, language, and game added lowers the Maintainer's satisfaction. These requirements keep one maintainer able to sustain the site.
+The goal model shows that each generation, language, and game added lowers the Maintainer's satisfaction. The constraints that keep one maintainer able to sustain the site are in Section 3.14.2.
 
-| ID          | Requirement                                                                                                                                                             | Imp. | Status      |
-| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-REL-1   | Every rule of type effectiveness, learnsets, filtering, sorting, validation, and team text shall have an automated test that runs without a browser.                    | E    | Implemented |
-| REQ-REL-2   | The site's essential flows shall have automated tests that run against the production build with external requests blocked and that fail on any uncaught browser error. | E    | Implemented |
-| REQ-REL-3   | The site's browser tests shall run in four browser profiles: desktop Chrome, desktop Safari, an Android phone, and an iPhone.                                           | E    | Implemented |
-| REQ-REL-4   | The site shall meet or exceed 99.9% uptime in each calendar month **[A-16]**.                                                                                           | C    | Proposed    |
-| REQ-MAINT-1 | Every change shall pass type checking, linting, the rule tests, the production smoke tests, and the browser tests before it reaches production.                         | E    | Implemented |
-| REQ-MAINT-2 | Every text the site shows shall exist in every site language, a missing text failing the type check.                                                                    | E    | Implemented |
-| REQ-MAINT-3 | The site's dependencies shall be offered for update once a week by an automated change that passes the same checks as any other.                                        | C    | Implemented |
-| REQ-MAINT-4 | A change to the advertising integration shall be recorded apart from every other change, so that it can be reverted alone.                                              | C    | Implemented |
-| REQ-MAINT-5 | Each change to pokemon data, each new feature, and each corrected serious defect shall have an entry in the update log.                                                 | C    | Implemented |
-
-Design constraints, recorded here so that they are not mistaken for requirements on behaviour: the site is built with React, Material UI, MobX, Vite, and TypeScript, hosted on Vercel, and tested with Playwright (`AGENTS.md`, `README.md`).
+| ID        | Requirement                                                                   | Imp. | Status   |
+| --------- | ----------------------------------------------------------------------------- | ---- | -------- |
+| REQ-REL-4 | The site shall meet or exceed 99.9% uptime in each calendar month **[A-16]**. | C    | Proposed |
 
 ### 3.13) Packaging, handling, shipping and transportation requirements
 
 Not applicable.
 
+### 3.14) Design and development constraints
+
+A constraint limits how the site is built or developed, not what it does for the Player, so it is kept apart from the requirements on behaviour. The SyRS outline has no section for constraints; this one follows the Design constraints section of the SRS outline of the same standard. Each constraint keeps the identifier it had as a requirement.
+
+#### 3.14.1) Design constraints
+
+The site is built with React, Material UI, MobX, Vite, and TypeScript, hosted on Vercel, and tested with Playwright (`AGENTS.md`, `README.md`). The ad platform inserts its top banner above the page's first container and looks for that container once, when told of a new page; `AGENTS.md` records how the page meets REQ-INTF-5.
+
+| ID          | Requirement                                                                                                                                               | Imp. | Status      |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-USE-8   | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                   | C    | Implemented |
+| REQ-USE-11  | The site shall show a text label beside the icon of every button, other than the icon-only buttons listed in Table 3.14-1.                                | E    | Approved    |
+| REQ-INTF-7  | The site shall include the ad platform's script in production builds only.                                                                                | E    | Implemented |
+| REQ-INTF-10 | The site shall keep its saved state in the browser's local storage under the key `mypokemonteam`.                                                         | E    | Implemented |
+| REQ-INTF-17 | The rules of analysis, filtering, sorting, validation, and team text shall be computable from explicit inputs alone, without the page or its saved state. | C    | Implemented |
+| REQ-PERF-8  | The site shall write the page's address a maximum of 100 times in any 30 seconds, the limit above which Safari stops accepting the writes.                | E    | Implemented |
+
+REQ-USE-11 lets a button show its icon alone only where a label would get in the way, and each such button and its reason is listed below. A button joins the list only with a reason recorded here, and one that is icon-only at some widths only says which; every icon-only button still has an accessible name (REQ-USE-5).
+
+Table 3.14-1: Icon-only buttons
+
+| Button               | Where                                       | Reason                                                                                       |
+| -------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Random pokemon (die) | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it.                                          |
+| About (info)         | Each slot's card, at the sprite's top right | A label would cover the animated sprite.                                                     |
+| More details         | Each slot's card, beside the sprite         | Only at the widths where its label would cover the sprite; it shows its label at the others. |
+
+#### 3.14.2) Development constraints
+
+These constrain how a change is made, tested, and released.
+
+| ID          | Requirement                                                                                                                                                             | Imp. | Status      |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-OPS-1   | The site shall be deployed to production from the `master` branch only after every automated check has passed for the commit deployed.                                  | E    | Implemented |
+| REQ-POL-4   | The site's game data shall be changed only by regenerating it from Pokemon Showdown's data.                                                                             | E    | Implemented |
+| REQ-POL-5   | The repository shall record, beside each downloaded image, where the image came from.                                                                                   | C    | Implemented |
+| REQ-REL-1   | Every rule of type effectiveness, learnsets, filtering, sorting, validation, and team text shall have an automated test that runs without a browser.                    | E    | Implemented |
+| REQ-REL-2   | The site's essential flows shall have automated tests that run against the production build with external requests blocked and that fail on any uncaught browser error. | E    | Implemented |
+| REQ-REL-3   | The site's browser tests shall run in four browser profiles: desktop Chrome, desktop Safari, an Android phone, and an iPhone.                                           | E    | Implemented |
+| REQ-MAINT-1 | Every change shall pass type checking, linting, the rule tests, the production smoke tests, and the browser tests before it reaches production.                         | E    | Implemented |
+| REQ-MAINT-3 | The site's dependencies shall be offered for update once a week by an automated change that passes the same checks as any other.                                        | C    | Implemented |
+| REQ-MAINT-4 | A change to the advertising integration shall be recorded apart from every other change, so that it can be reverted alone.                                              | C    | Implemented |
+| REQ-MAINT-5 | Each change to pokemon data, each new feature, and each corrected serious defect shall have an entry in the update log.                                                 | C    | Implemented |
+
+#### 3.14.3) Constraints on the old website
+
+The old website is a separate system. These record what this project commits to for it.
+
+| ID        | Requirement                                                                                               | Imp. | Status      |
+| --------- | --------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-OPS-4 | The old website shall remain available at its own address, deployed independently of the redesigned site. | C    | Implemented |
+| REQ-OPS-5 | The old website shall receive no new feature without the Site Owner's approval.                           | C    | Approved    |
+
 ## 4) Verification
 
 Verification methods follow the requirement groups of Section 3. The test suites were matched to requirement groups by their names and folders, not by reading each test, so a listed suite shows where verification belongs and is not proof that every requirement in the group is tested.
 
-| Requirements                     | Method               | Where                                                                                                                                                                                      |
-| -------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| REQ-TEAM                         | Test                 | `tests/component/main/pokemon-team/`, `tests/logic/learnsets.spec.ts`, `tests/logic/select-pokemon.spec.ts`                                                                                |
-| REQ-DET                          | Test                 | `tests/component/dialogs/advanced-dialog/`, `tests/logic/set-details.spec.ts`, `tests/logic/nickname.spec.ts`                                                                              |
-| REQ-RAND                         | Test                 | `tests/logic/random.spec.ts`, `tests/component/shared/use-dice-roll/`                                                                                                                      |
-| REQ-UNDO                         | Test                 | `tests/component/main/pokemon-team/shared/team-toolbar/history-integration-tests.spec.ts`, `tests/logic/team-change.spec.ts`                                                               |
-| REQ-FIND                         | Test                 | `tests/logic/filtering.spec.ts`, `tests/logic/sorting.spec.ts`, `tests/logic/formats.spec.ts`, `tests/component/dialogs/filters-dialog/`, `tests/component/dialogs/sort-dialog/`           |
-| REQ-ANLY-1 to 11                 | Test                 | `tests/logic/effectiveness.spec.ts`, `tests/logic/coverage.spec.ts`, `tests/logic/matrix.spec.ts`, `tests/logic/checklist.spec.ts`, `tests/component/main/team-stats/`                     |
-| REQ-ANLY-12 to 19                | Test                 | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                 |
-| REQ-GEN                          | Test                 | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                 |
-| REQ-COLL                         | Test                 | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts` |
-| REQ-BKUP                         | Test                 | `tests/logic/team-backup.spec.ts`, `tests/component/dialogs/teams-dialog/backup-integration-tests.spec.ts`                                                                                 |
-| REQ-LINK, REQ-INTF-3, REQ-INTF-4 | Test                 | `tests/component/team-link-sync/`, `tests/logic/team-link-game-values.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/share-link-*.spec.ts`                               |
-| REQ-TEXT                         | Test                 | `tests/logic/parsing.spec.ts`, `tests/logic/storage-text-contracts.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/manage-team-menu/`                                     |
-| REQ-REF                          | Test, Inspection     | `tests/component/footer/`, `tests/component/dialogs/pokemon-info-dialog/`, `tests/links/dex-links.spec.ts` (run by hand)                                                                   |
-| REQ-LANG, REQ-THEME              | Test                 | `tests/logic/translations.spec.ts`, `tests/component/header/language-select/`, `tests/component/shared/theme/`                                                                             |
-| REQ-FEED, REQ-SEC-1 to 3         | Test, Demonstration  | `tests/logic/feedback.spec.ts`, `tests/component/header/feedback-dialog/`; sending is demonstrated on a preview deployment                                                                 |
-| REQ-SITE                         | Test                 | `tests/component/header/site-version-switch/`                                                                                                                                              |
-| REQ-DATA                         | Test, Inspection     | `tests/logic/update-data.spec.ts`, `tests/logic/update-translations.spec.ts`; the update reports are inspected by the Maintainer                                                           |
-| REQ-USE-1, 2, 9                  | Demonstration        | Usability sessions and a survey with players; none held yet.                                                                                                                               |
-| REQ-USE-3 to 8                   | Test, Inspection     | Layout tests in `tests/component/`; an accessibility review for REQ-USE-4 and REQ-USE-6                                                                                                    |
-| REQ-PERF                         | Test, Analysis       | Timing measurements to be added; build output for REQ-PERF-4 and REQ-PERF-5                                                                                                                |
-| REQ-INTF-5 to 8                  | Inspection           | Review of `App.tsx`, `vite.config.ts`, `vercel.json`, and `public/robots.txt` against the ad platform's documentation                                                                      |
-| REQ-MODE                         | Test                 | `tests/smoke/production-smoke.spec.ts`, `tests/logic/teams-storage.spec.ts`                                                                                                                |
-| REQ-SEC-4 to 7                   | Inspection, Test     | Review of `vercel.json` and of the repository for secrets; `tests/logic/storage-text-contracts.spec.ts` for REQ-SEC-5                                                                      |
-| REQ-INFO                         | Test                 | `tests/logic/storage-text-contracts.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/settings-expiry.spec.ts`                                                                   |
-| REQ-POL                          | Inspection           | Review of the privacy policy, the credits, and the `*-sources.md` files                                                                                                                    |
-| REQ-REL, REQ-MAINT, REQ-OPS      | Inspection, Analysis | The CI workflow, `tests/type-contracts.ts`, the Dependabot configuration, and the hosting platform's deployment settings                                                                   |
+| Requirements                     | Method              | Where                                                                                                                                                                                                                                                 |
+| -------------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-TEAM                         | Test                | `tests/component/main/pokemon-team/`, `tests/logic/learnsets.spec.ts`, `tests/logic/select-pokemon.spec.ts`                                                                                                                                           |
+| REQ-DET                          | Test                | `tests/component/dialogs/advanced-dialog/`, `tests/logic/set-details.spec.ts`, `tests/logic/nickname.spec.ts`                                                                                                                                         |
+| REQ-RAND                         | Test                | `tests/logic/random.spec.ts`, `tests/component/shared/use-dice-roll/`                                                                                                                                                                                 |
+| REQ-UNDO                         | Test                | `tests/component/main/pokemon-team/shared/team-toolbar/history-integration-tests.spec.ts`, `tests/logic/team-change.spec.ts`                                                                                                                          |
+| REQ-FIND                         | Test                | `tests/logic/filtering.spec.ts`, `tests/logic/sorting.spec.ts`, `tests/logic/formats.spec.ts`, `tests/component/dialogs/filters-dialog/`, `tests/component/dialogs/sort-dialog/`                                                                      |
+| REQ-ANLY-1 to 11                 | Test                | `tests/logic/effectiveness.spec.ts`, `tests/logic/coverage.spec.ts`, `tests/logic/matrix.spec.ts`, `tests/logic/checklist.spec.ts`, `tests/component/main/team-stats/`                                                                                |
+| REQ-ANLY-12 to 19                | Test                | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                                                                            |
+| REQ-GEN                          | Test                | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                                                                            |
+| REQ-COLL                         | Test                | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts`                                                            |
+| REQ-BKUP                         | Test                | `tests/logic/team-backup.spec.ts`, `tests/component/dialogs/teams-dialog/backup-integration-tests.spec.ts`                                                                                                                                            |
+| REQ-LINK, REQ-INTF-3, REQ-INTF-4 | Test                | `tests/component/team-link-sync/`, `tests/logic/team-link-game-values.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/share-link-*.spec.ts`                                                                                          |
+| REQ-TEXT                         | Test                | `tests/logic/parsing.spec.ts`, `tests/logic/storage-text-contracts.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/manage-team-menu/`; for REQ-TEXT-10, a test that reads the text with Pokemon Showdown's own parser, to be written |
+| REQ-REF                          | Test, Inspection    | `tests/component/footer/`, `tests/component/dialogs/pokemon-info-dialog/`, `tests/links/dex-links.spec.ts` (run by hand)                                                                                                                              |
+| REQ-LANG, REQ-THEME              | Test                | `tests/logic/translations.spec.ts`, `tests/component/header/language-select/`, `tests/component/shared/theme/`; for REQ-LANG-1, the type check fails on a text missing from a language                                                                |
+| REQ-FEED, REQ-SEC-1 to 3         | Test, Demonstration | `tests/logic/feedback.spec.ts`, `tests/component/header/feedback-dialog/`; sending is demonstrated on a preview deployment                                                                                                                            |
+| REQ-SITE                         | Test                | `tests/component/header/site-version-switch/`                                                                                                                                                                                                         |
+| REQ-DATA                         | Test, Inspection    | `tests/logic/update-data.spec.ts`, `tests/logic/update-translations.spec.ts`; the update reports are inspected by the Maintainer                                                                                                                      |
+| REQ-USE-3 to 7, 12               | Test, Inspection    | Layout tests in `tests/component/`; for REQ-USE-12, a test that no element of a slot overlaps its sprite, to be written; an accessibility review for REQ-USE-4 and REQ-USE-6                                                                          |
+| REQ-PERF                         | Test, Analysis      | Timing measurements to be added, with Lighthouse's mobile profile for REQ-PERF-4 and a deployment for REQ-PERF-9; build output for the script budget of REQ-PERF-4                                                                                    |
+| REQ-INTF-1, 2                    | Test, Inspection    | To be written: a test that every pokemon and item in the site's data has a picture of its own; the pictures are inspected after each data update                                                                                                      |
+| REQ-INTF-5, 8                    | Inspection          | The production site for REQ-INTF-5; `vercel.json` and `public/robots.txt` against the ad platform's documentation for REQ-INTF-8                                                                                                                      |
+| REQ-MODE                         | Test                | `tests/smoke/production-smoke.spec.ts`, `tests/logic/teams-storage.spec.ts`                                                                                                                                                                           |
+| REQ-SEC-4 to 7                   | Inspection, Test    | Review of `vercel.json` and of the repository for secrets; `tests/logic/storage-text-contracts.spec.ts` for REQ-SEC-5                                                                                                                                 |
+| REQ-INFO                         | Test                | `tests/logic/storage-text-contracts.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/settings-expiry.spec.ts`                                                                                                                              |
+| REQ-POL                          | Inspection          | Review of the privacy policy, the credits, and the `*-sources.md` files                                                                                                                                                                               |
+| REQ-OPS-2                        | Demonstration       | A visit with a warm cache after a release                                                                                                                                                                                                             |
+| REQ-REL-4                        | Analysis            | The hosting platform's uptime reports                                                                                                                                                                                                                 |
+| Section 3.14                     | Inspection          | The CI workflow, `tests/type-contracts.ts`, the Dependabot configuration, the hosting platform's deployment settings, and a review of the code against each design constraint                                                                         |
 
 ## 5) Appendices
 
@@ -1451,7 +1463,7 @@ Dependencies:
 
 - Pokemon Showdown continues to publish its data in the layout the update tooling reads, and continues to serve sprites to pages of other sites.
 - PokeAPI continues to publish its name tables.
-- The ad platform continues to insert its banner at the place REQ-INTF-5 keeps.
+- The ad platform continues to insert its top banner where its configuration places it today (REQ-INTF-5).
 - The hosting platform continues to deploy `master` after CI, to forward the sprite address, and to run the feedback function.
 - Browsers continue to keep site storage for sites a visitor returns to.
 
