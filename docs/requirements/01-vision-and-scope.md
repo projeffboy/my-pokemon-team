@@ -93,7 +93,7 @@ The Site Owner wants these, for a release after Brock, and with one constraint o
 
 - Pokemon sprites load from Pokemon Showdown's servers. When those are unreachable, pokemon show without sprites.
 - Pokemon, move, item, and ability names in languages other than English come from PokeAPI. A name PokeAPI lacks appears in English. PokeAPI has no Portuguese names until the games do (2027).
-- The feedback function sends from a shared Resend address until a domain is verified, so it can reach only the owner's own address.
+- The feedback function sends from Resend's shared address, which can deliver only to the owner's own address. That is enough: feedback goes only to the owner, and the owner's reply goes from the owner's own mail to the player's reply address.
 - Saved teams depend on the browser keeping its site storage. Clearing it, or a full disk, loses teams that were not backed up.
 
 ## 1.6 Context diagram

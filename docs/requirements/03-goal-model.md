@@ -59,7 +59,7 @@ The system's goal "Support team planning" is AND-decomposed into the mandatory f
 | Search by Name       | F3.1                                               | Responsive Layout    | F8.3                               |
 | Filters              | F3.2                                               | Feedback             | F9                                 |
 | Sort                 | F3.3                                               | Feedback Attachments | F9.1, F9.2, F9.3                   |
-| Grid Views           | F3.4 Grid, Big Grid                                | Verified Sender      | F9.5 (PF5)                         |
+| Grid Views           | F3.4 Grid, Big Grid                                |                      |                                    |
 | Randomize            | F1.3                                               | Switch Version       | F10.1                              |
 | Undo                 | F1.4                                               | Version Transfer     | F10.2 (PF2)                        |
 | Set Details          | F1.2                                               | Advertising          | F11                                |
@@ -136,12 +136,10 @@ Site Owner
     <- 10   Update Log (task)
     <- 10   Privacy Policy (task)
     <- 10   Switch Version (task)
-    <- 10   Verified Sender (task)
     <- -10  Advertising (task)
   OW4 Learn what players need (softgoal)
     <- 60   Feedback (task)
     <- 20   Feedback Attachments (task)
-    <- 20   Verified Sender (task)
 
 Maintainer
   MA1 Low maintenance effort (softgoal)
@@ -219,7 +217,7 @@ A strategy sets the initial satisfaction of the tasks: 100 for a selected featur
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | "R0 Old website" | Team Defence, Coverage, Explanations, Checklist, Combined Generations, Data Update, Search by Name, Filters, Share Link, Showdown Text, Update Log, Privacy Policy, Colour Scheme, Responsive Layout, Advertising                                                                         |
 | "Ash"            | Those of "R0 Old website", and Matrix, Single Generations, Generation Transfer, Translation Update, Sort, Grid Views, Randomize, Undo, Set Details, Saved Teams, Tab Sync, Backups, Export All, Pokemon Info, Languages, Translated Names, Feedback, Feedback Attachments, Switch Version |
-| "Brock"          | Those of "Ash", and Legality Warnings, Battle Format, More Games, Verified Sender, Version Transfer                                                                                                                                                                                       |
+| "Brock"          | Those of "Ash", and Legality Warnings, Battle Format, More Games, Version Transfer                                                                                                                                                                                                        |
 
 ## 3.5 Evaluation
 
@@ -236,9 +234,9 @@ Propagation follows the course's standard rules: a softgoal's value is the sum o
 | **Player**                                       | **48**           | **92** | **97**  |
 | OW1 Cover running costs and my time              | 76               | 90     | 95      |
 | OW2 Grow and keep the audience                   | 20               | 85     | 100     |
-| OW3 Keep players' trust                          | 30               | 80     | 90      |
-| OW4 Learn what players need                      | 0                | 80     | 100     |
-| **Site Owner**                                   | **37**           | **84** | **95**  |
+| OW3 Keep players' trust                          | 30               | 80     | 80      |
+| OW4 Learn what players need                      | 0                | 80     | 80      |
+| **Site Owner**                                   | **37**           | **84** | **89**  |
 | MA1 Low maintenance effort                       | 40               | 25     | 10      |
 | MA2 Keep game data current                       | 70               | 100    | 100     |
 | **Maintainer**                                   | **52**           | **55** | **47**  |
@@ -250,7 +248,7 @@ Worked example, OW1 under "Ash": `(100 x 60 + 85 x 30 + 100 x 10 + 100 x -5) / 1
 - **The redesign is an improvement for the Player and the Site Owner.** The Player's largest gains are in keeping teams (15 to 100) and in using the site in their own language (20 to 80); the old website kept nothing between visits and was in English only. The Site Owner's gain comes mostly from the audience softgoal, which the new generations, languages, and saved teams all feed.
 - **The Maintainer pays for it.** Low maintenance effort falls from 40 to 25 with the redesign and to 10 with the next release, because every generation, language, and game added is more data and more rules to keep correct. The Maintainer's total holds at 55 for the redesign only because the translation script and feedback improve data currency. This is the main conflict in the model, and the reason the maintainability and testability requirements (REQ-MAINT, REQ-REL) are rated essential.
 - **Advertising is the second conflict.** It is the largest contribution to covering costs and the owner's time (60) and a negative one for the Player's device experience (-15) and for trust (-10). The requirements resolve it by constraint, not by removal: REQ-INTF-5 fixes where the banner goes, and REQ-PERF-4 limits how long the page takes to become usable.
-- **PF3 (more games) is the costliest planned feature for the Maintainer** and the only planned feature whose benefit is to one softgoal alone (audience, 10). PF1, PF2, PF5, and PF6 are cheaper for what they return. The risk rating of its issue in the prioritization (Section 6.5 of [06](06-traceability-and-prioritization.md)) reflects this.
+- **PF3 (more games) is the costliest planned feature for the Maintainer** and the only planned feature whose benefit is to one softgoal alone (audience, 10). PF1, PF2, and PF6 are cheaper for what they return. The risk rating of its issue in the prioritization (Section 6.5 of [06](06-traceability-and-prioritization.md)) reflects this.
 - **OW1 was widened after the interview.** The Site Owner's financial goal is to cover the running costs and to be paid for the time spent on the site, not only to break even. The softgoal was renamed; its contribution values and results were not estimated again, so the 90 and 95 above overstate how well advertising alone meets the wider goal.
 - **How the Site Owner settles the first conflict.** Asked which wins when a feature helps players and burdens maintenance, the Site Owner put players first, with one exception: where the burden is of a kind that would stop the site being improved at all, such as a backend to run. So the Maintainer's falling score is accepted for generations, languages, and games, and is a veto only for that kind of cost.
 - **What the model does not show.** It treats a feature as fully present or absent, so it cannot show that the old website's filters were fewer than the redesign's, or that an analysis is more or less accurate. It also leaves out the rights holders and the ad platform as actors with softgoals of their own.

@@ -1073,9 +1073,9 @@ Postcondition (for fail case): No message has been sent.
 | REQ-FEED-8  | The site shall deliver feedback that carries a picture of the page and three screenshots taken on a phone.                       | C    | Implemented |
 | REQ-FEED-9  | The site shall deliver the Site Owner's reply to a feedback message to the reply address that the Player gave.                   | C    | Implemented |
 | REQ-FEED-10 | The site shall include in the picture of the page each pokemon sprite shown on the page.                                         | C    | Implemented |
-| REQ-FEED-11 | The site shall tell the Player, before sending feedback without a reply address, that the Site Owner cannot reply without one.   | C    | Approved    |
+| REQ-FEED-11 | The site shall tell the Player, before sending feedback without a reply address, that the Site Owner cannot reply without one.   | C    | Implemented |
 
-REQ-FEED-9 has held since the feedback form was launched: the feedback function gives the email the Player's reply address as its reply-to, so the Site Owner's reply reaches that address whatever address the feedback is sent from. REQ-FEED-11 closes the gap seen on the form's first use, when two players left the address empty.
+REQ-FEED-9 has held since the feedback form was launched: the feedback function gives the email the Player's reply address as its reply-to, so the Site Owner's reply reaches that address whatever address the feedback is sent from. REQ-FEED-11 is met by the form's "Only if you want a reply" beside the optional email field; leaving the field empty is how a Player stays anonymous.
 
 #### 3.1.18) UC19 Switch Site Version
 
