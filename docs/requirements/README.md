@@ -4,7 +4,7 @@ The goals, stakeholders, requirements, and specification for [mypokemonteam.com]
 
 - **Baseline**: 0.1 (draft), describing branch `major-added-features` at commit `629b75f`, 13 October 2026.
 - **Scope**: the site as it is at that commit, and the work planned after it.
-- **State**: drafted from the repository, then corrected with the Site Owner's answers to seventeen of the nineteen interview questions, an analysis of competing products, and an analysis of player feedback. Every statement still marked **[A-n]** is an assumption. See [08-assumptions-and-interview.md](08-assumptions-and-interview.md).
+- **State**: drafted from the repository, then corrected with the Site Owner's answers to sixteen of the nineteen interview questions and part of a seventeenth, an analysis of competing products, and an analysis of player feedback. Every statement still marked **[A-n]** is an assumption. See [08-assumptions-and-interview.md](08-assumptions-and-interview.md).
 
 ## Documents
 
@@ -13,7 +13,7 @@ Read them in order: each refines the one before it.
 | Document                                                                                              | Requirement level | What it holds                                                                                                                                                                    |
 | ----------------------------------------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [01 Vision and scope](01-vision-and-scope.md)                                                         | Business          | Business opportunity, problem statement, business requirements and rules, vision statement, scope, context diagram, business risks.                                              |
-| [02 Stakeholders and personas](02-stakeholders-and-personas.md)                                       | Business, user    | Stakeholders in the onion model with their values, user classes, four personas.                                                                                                  |
+| [02 Stakeholders and personas](02-stakeholders-and-personas.md)                                       | Business, user    | Stakeholders in the onion model with their values, user classes, five personas.                                                                                                  |
 | [03 Goal model](03-goal-model.md)                                                                     | Business, user    | Stakeholders' softgoals, the features' contributions to them, dependencies, and the evaluation of the old website, the redesign, and the next release.                           |
 | [04 Feature model](04-feature-model.md)                                                               | User              | The feature tree with its constraints, the planned features, and four configurations.                                                                                            |
 | [05 System requirements specification](05-system-requirements-specification.md)                       | System            | Use case model, domain model, state machine; for each use case a user story, acceptance criteria, the use case, and its requirements; non-functional requirements; verification. |
@@ -37,7 +37,7 @@ flowchart TB
   UC --> REQ["System requirements (05)"]
   BR --> REQ
   REQ --> V["Verification: tests (05, section 4)"]
-  REQ --> T["GitHub issues (06, section 6.6)"]
+  REQ --> T["GitHub issues"]
 ```
 
 ## Conventions
@@ -51,7 +51,7 @@ flowchart TB
 
 ## Where the work is tracked
 
-Work to do is in the project's GitHub issues, each naming the requirements it covers. Section 6.6 of [06](06-traceability-and-prioritization.md) lists them from the requirements' side. There is no task list in these documents.
+Work to do is only in the project's GitHub issues and on its project board, each issue naming the requirements it covers. These documents hold no task list and no ranking of tasks; Sections 6.5 and 6.6 of [06](06-traceability-and-prioritization.md) give the method and the rules.
 
 ## What is not in this repository
 

@@ -2,7 +2,7 @@
 
 Requirement level: system. This document follows the System Requirements Specification outline of ISO/IEC/IEEE 29148:2018. Functional requirements are organized by use case: each use case is preceded by a user story with acceptance criteria and followed by the requirements derived from it. The domain model, the state machine, and the use case model are placed in Section 3.1.
 
-Baseline: branch `major-added-features` at commit `629b75f`, 13 October 2026. A requirement with status Implemented describes what that baseline does. A requirement with status Proposed describes planned work.
+Baseline: branch `major-added-features` at commit `629b75f`, 13 October 2026. A requirement with status Implemented describes what that baseline does. A requirement with status Approved describes planned work, and one with status Proposed describes work suggested but not yet agreed.
 
 ## 1) Introduction
 
@@ -24,6 +24,7 @@ The site shall do the following (business requirements, from [01-vision-and-scop
 - Run without a backend beyond hosting and feedback email, unless survival or an extremely important feature needs one (BR-6).
 - Correct reported analysis errors within 7 days (BR-7).
 - Respect its data and advertising providers' terms (BR-8).
+- Become the teambuilder that non-competitive players reach for (BR-9).
 
 The site is not intended to simulate battles, calculate damage, hold player accounts, or store teams on a server. These are not part of the plan; Section 1.5 of the vision and scope document gives the reasons. Suggesting pokemon to fix a weakness is open for a later release.
 
@@ -119,7 +120,7 @@ flowchart LR
     UC20("UC20 Update Game Data")
     UC21("UC21 Update Translations")
     UC22("UC22 Set Battle Format (planned)")
-    UC23("UC23 Transfer Teams Between Versions (planned)")
+    UC23("UC23 Transfer Team to Old Website (planned)")
     UC24("UC24 Check Team Legality (planned)")
   end
   Showdown["Pokemon Showdown"]
@@ -151,7 +152,7 @@ The concepts of the application domain, their attributes, and their relationship
 classDiagram
   direction LR
   class TeamCollection
-  class SavedTeam {
+  class Team {
     name : String
   }
   class Slot {
@@ -243,12 +244,13 @@ classDiagram
     Special
     Status
   }
-  TeamCollection "1" *-- "1..*" SavedTeam : savedTeams
-  TeamCollection "0..1" --> "1" SavedTeam : currentTeam
-  SavedTeam "1" *-- "6" Slot : slots
-  SavedTeam "*" --> "1" GenerationProfile : generationProfile
-  SavedTeam "*" --> "0..1" Format : format
-  SavedTeam "1" *-- "1" SearchFilters : filters
+  TeamCollection "1" *-- "1..*" Team : savedTeams
+  TeamCollection "1" *-- "0..1" Team : draft
+  TeamCollection "0..1" --> "1" Team : currentTeam
+  Team "1" *-- "6" Slot : slots
+  Team "*" --> "1" GenerationProfile : generationProfile
+  Team "*" --> "0..1" Format : format
+  Team "1" *-- "1" SearchFilters : filters
   Slot "*" --> "0..1" Pokemon : pokemon
   Slot "*" --> "0..4" Move : moves
   Slot "*" --> "0..1" Item : heldItem
@@ -280,18 +282,19 @@ classDiagram
 
 Constraints that the diagram cannot show:
 
-1. The `position` of the six `slots` of a SavedTeam are the integers 1 to 6, each used once.
+1. The `position` of the six `slots` of a Team are the integers 1 to 6, each used once.
 2. A Slot with no `pokemon` has no `moves`, no `heldItem`, no `ability`, and no `details`.
-3. The `pokemon` of a Slot is one of the `availablePokemon` of its SavedTeam's `generationProfile`; the same holds for `moves`, `heldItem`, and `ability`.
+3. The `pokemon` of a Slot is one of the `availablePokemon` of its Team's `generationProfile`; the same holds for `moves`, `heldItem`, and `ability`.
 4. Each of a Slot's `moves` is one of its `pokemon`'s `learnableMoves` in that generation profile, and no move appears twice in one Slot.
 5. A Slot's `ability` is one of its `pokemon`'s `possibleAbilities` in that generation profile.
-6. The `format` of a SavedTeam is one of the `formats` of its `generationProfile`.
-7. The `kind` of every TrainingValue of a SetDetails belongs to the training system of the SavedTeam's `generationProfile` (business rule RULE-5).
+6. The `format` of a Team is one of the `formats` of its `generationProfile`.
+7. The `kind` of every TrainingValue of a SetDetails belongs to the training system of the Team's `generationProfile` (business rule RULE-5).
 8. The `teraType` of a SetDetails is set only in a generation profile that includes Generation 9.
 9. A GenerationProfile's `typeChart` has exactly one TypeMatchup for each pair of an attacking type and a defending type that exist in that profile.
-10. `Preferences` is a single object for the browser and is not part of any SavedTeam.
+10. `Preferences` is a single object for the browser and is not part of any Team.
+11. The `currentTeam` is the `draft` when there is one, and otherwise one of the `savedTeams`. A `draft` exists only while it is the current team (Section 3.1.3).
 
-The team's analysis (defence scores, coverage scores, checklist marks, and matrix cells) is derived from a SavedTeam and its GenerationProfile, so it is not modelled as stored concepts.
+The team's analysis (defence scores, coverage scores, checklist marks, and matrix cells) is derived from a Team and its GenerationProfile, so it is not modelled as stored concepts.
 
 #### 3.1.3) State machine: lifecycle of a team
 
@@ -642,6 +645,11 @@ Alternatives/Exceptions:
 2b: System could not obtain the availability data for the new generation profile:
 2b.1: System informs Player that the generation data could not be loaded; use case ends in
       failure.
+2c: No pokemon of the current team is available in the new generation profile:
+2c.1: System presents the unavailable pokemon and offers to clear the current team or to
+      create an empty team in the new generation profile.
+2c.2: Player requests one of them; System clears the team or creates the empty team, and
+      records the new generation profile; use case continues at step 5.
 3a: Player requests System to copy the team to a new team:
 3a.1: System creates a saved team in the new generation profile holding the parts of the
       current team that carry over, makes it the current team, and leaves the original team
@@ -655,19 +663,20 @@ Postcondition (for fail case): The current team and its generation profile are u
 
 **Requirements**
 
-| ID         | Requirement                                                                                                                                                                               | Imp. | Status      |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-GEN-1  | The site shall allow the Player to set a team's generation profile to Generations 6 to 9 combined, one of Generations 1 to 9, or Pokemon Champions.                                       | E    | Implemented |
-| REQ-GEN-2  | The site shall give a new visitor's first team the generation profile Generations 6 to 9 combined.                                                                                        | C    | Implemented |
-| REQ-GEN-3  | The site shall offer in Generations 6 to 9 combined every pokemon, ability, move, and held item available in any game of those generations, with the mechanics and stats of Generation 9. | E    | Implemented |
-| REQ-GEN-4  | The site shall apply to a team in one of Generations 1 to 8 the abilities, base stats, type chart, and move rules of that generation.                                                     | E    | Implemented |
-| REQ-GEN-5  | The site shall present, before changing the generation profile of a team, each pokemon unavailable in the new profile and each move, item, ability, and set detail that would be removed. | E    | Implemented |
-| REQ-GEN-6  | The site shall change a team's generation profile only after the Player confirms the changes presented under REQ-GEN-5.                                                                   | E    | Implemented |
-| REQ-GEN-7  | The site shall offer the Player, in place of changing the team, a copy of the team in the new generation profile that leaves the original team unchanged.                                 | C    | Implemented |
-| REQ-GEN-8  | The site shall convert a team's training values to the training system of its new generation profile, telling the Player which conversions are approximate.                               | C    | Implemented |
-| REQ-GEN-9  | The site shall clear the format of a team whose new generation has no such format.                                                                                                        | E    | Implemented |
-| REQ-GEN-10 | The site shall list games that are not yet supported as coming soon, without allowing their selection.                                                                                    | O    | Implemented |
-| REQ-GEN-11 | The site shall allow the Player to set a team's generation profile to Let's Go, Pikachu! and Let's Go, Eevee!, to Legends: Arceus, and to Legends: Z-A.                                   | O    | Proposed    |
+| ID         | Requirement                                                                                                                                                                                                                                             | Imp. | Status      |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-GEN-1  | The site shall allow the Player to set a team's generation profile to Generations 6 to 9 combined, one of Generations 1 to 9, or Pokemon Champions.                                                                                                     | E    | Implemented |
+| REQ-GEN-2  | The site shall give a new visitor's first team the generation profile Generations 6 to 9 combined.                                                                                                                                                      | C    | Implemented |
+| REQ-GEN-3  | The site shall offer in Generations 6 to 9 combined every pokemon, ability, move, and held item available in any game of those generations, with the mechanics and stats of Generation 9.                                                               | E    | Implemented |
+| REQ-GEN-4  | The site shall apply to a team in one of Generations 1 to 8 the abilities, base stats, type chart, and move rules of that generation.                                                                                                                   | E    | Implemented |
+| REQ-GEN-5  | The site shall present, before changing the generation profile of a team that would lose or have converted any part of it, each pokemon unavailable in the new profile and each move, item, ability, and set detail that would be removed or converted. | E    | Implemented |
+| REQ-GEN-6  | The site shall change the generation profile of a team that would lose or have converted any part of it only after the Player confirms the changes presented under REQ-GEN-5.                                                                           | E    | Implemented |
+| REQ-GEN-7  | The site shall offer the Player, in place of changing the team, a copy of the team in the new generation profile that leaves the original team unchanged.                                                                                               | C    | Implemented |
+| REQ-GEN-8  | The site shall convert a team's training values to the training system of its new generation profile, telling the Player which conversions are approximate.                                                                                             | C    | Implemented |
+| REQ-GEN-9  | The site shall clear the format of a team whose new generation has no such format.                                                                                                                                                                      | E    | Implemented |
+| REQ-GEN-10 | The site shall list games that are not yet supported as coming soon, without allowing their selection.                                                                                                                                                  | O    | Implemented |
+| REQ-GEN-11 | The site shall allow the Player to set a team's generation profile to Let's Go, Pikachu! and Let's Go, Eevee!, to Legends: Arceus, and to Legends: Z-A.                                                                                                 | O    | Approved    |
+| REQ-GEN-12 | The site shall offer, for a team none of whose pokemon are available in the new generation profile, to clear the team or to create an empty team in the new profile, in place of updating or copying it.                                                | C    | Implemented |
 
 #### 3.1.11) UC8 Manage Saved Teams
 
@@ -990,7 +999,7 @@ US17. As a player, I want to choose a light or dark colour scheme, or follow my 
 | REQ-LANG-5  | The site shall keep the Player's chosen language for later visits.                                                                                                                      | C    | Implemented |
 | REQ-LANG-6  | The site shall keep its previous language, informing the Player, after a failure to load the language the Player chose.                                                                 | E    | Implemented |
 | REQ-LANG-7  | The site shall keep teams, share links, and team text in English names in every site language.                                                                                          | E    | Implemented |
-| REQ-LANG-8  | The site shall present the names of pokemon, moves, items, and abilities in Brazilian Portuguese.                                                                                       | O    | Proposed    |
+| REQ-LANG-8  | The site shall present the names of pokemon, moves, items, abilities, natures, types, and regions in Brazilian Portuguese.                                                              | O    | Proposed    |
 | REQ-THEME-1 | The site shall present itself in a light or a dark colour scheme, following the device's setting until the Player sets one.                                                             | C    | Implemented |
 | REQ-THEME-2 | The site shall keep the Player's light or dark choice for 91 days after the Player's last visit.                                                                                        | O    | Implemented |
 
@@ -1009,6 +1018,7 @@ US18. As a player who found something wrong or has an idea, I want to tell the s
 - e) The Player is told whether the feedback was sent, and on failure is given an address to write to.
 - f) The message stays in the form after a failure.
 - g) The owner receives the message, the reply address, the link, the screen size, and the browser and system.
+- h) Before sending without an email address, the Player is told that the owner cannot reply.
 
 **Use case**
 
@@ -1050,17 +1060,20 @@ Postcondition (for fail case): No message has been sent.
 
 **Requirements**
 
-| ID         | Requirement                                                                                                                                     | Imp. | Status      |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-FEED-1 | The site shall send to the Site Owner by email a message of up to 5000 characters that a Player submits as feedback.                            | E    | Implemented |
-| REQ-FEED-2 | The site shall attach to feedback the current team's share link and a picture of the page, each of which the Player can decline.                | C    | Implemented |
-| REQ-FEED-3 | The site shall accept with feedback up to three images provided by the Player.                                                                  | O    | Implemented |
-| REQ-FEED-4 | The site shall accept with feedback an optional reply address, refusing an address that is not a valid email address.                           | C    | Implemented |
-| REQ-FEED-5 | The site shall include with feedback the Player's browser name and version, operating system, and screen size.                                  | C    | Implemented |
-| REQ-FEED-6 | The site shall inform the Player whether the feedback was sent, giving an email address to write to after a failure.                            | E    | Implemented |
-| REQ-FEED-7 | The site shall keep the Player's message in the feedback form after a failure to send.                                                          | C    | Implemented |
-| REQ-FEED-8 | The site shall reduce the picture of the page and the Player's images so that together they do not exceed 4 000 000 characters of encoded data. | C    | Implemented |
-| REQ-FEED-9 | The site shall send feedback from an address on the site's own domain, so that the Site Owner's reply reaches the Player's reply address.       | C    | Proposed    |
+| ID          | Requirement                                                                                                                                     | Imp. | Status      |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-FEED-1  | The site shall send to the Site Owner by email a message of up to 5000 characters that a Player submits as feedback.                            | E    | Implemented |
+| REQ-FEED-2  | The site shall attach to feedback the current team's share link and a picture of the page, each of which the Player can decline.                | C    | Implemented |
+| REQ-FEED-3  | The site shall accept with feedback up to three images provided by the Player.                                                                  | O    | Implemented |
+| REQ-FEED-4  | The site shall accept with feedback an optional reply address, refusing an address that is not a valid email address.                           | C    | Implemented |
+| REQ-FEED-5  | The site shall include with feedback the Player's browser name and version, operating system, and screen size.                                  | C    | Implemented |
+| REQ-FEED-6  | The site shall inform the Player whether the feedback was sent, giving an email address to write to after a failure.                            | E    | Implemented |
+| REQ-FEED-7  | The site shall keep the Player's message in the feedback form after a failure to send.                                                          | C    | Implemented |
+| REQ-FEED-8  | The site shall reduce the picture of the page and the Player's images so that together they do not exceed 4 000 000 characters of encoded data. | C    | Implemented |
+| REQ-FEED-9  | The site shall send feedback from an address on the site's own domain.                                                                          | C    | Approved    |
+| REQ-FEED-10 | The site shall tell the Player, before sending feedback without a reply address, that the Site Owner cannot reply without one.                  | C    | Approved    |
+
+The Site Owner's reply reaches the Player through the reply address (REQ-FEED-4), whatever address the feedback is sent from. REQ-FEED-10 closes the gap seen on the form's first use, when two players left it empty. REQ-FEED-9 is needed before the site can send to anyone but the Site Owner, because the shared sender can deliver only to the Site Owner's own address.
 
 #### 3.1.18) UC19 Switch Site Version
 
@@ -1081,11 +1094,11 @@ US19. As a player who knew the old website, I want a way back to it from the red
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
 | REQ-SITE-1 | The site shall provide, from its header, a link to the old website.                                                                                                      | C    | Implemented |
 | REQ-SITE-2 | The site shall open the old website for a Player whose current team has pokemon only after the Player confirms a prompt stating that the current team will not transfer. | E    | Implemented |
-| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                                    | C    | Proposed    |
+| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                                    | C    | Approved    |
 | REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                                    | O    | Rejected    |
-| REQ-SITE-5 | The site shall name, before opening the other site version with the Player's current team, each pokemon of the team that the other version cannot hold **[A-22]**.       | C    | Proposed    |
+| REQ-SITE-5 | The site shall name, before opening the old website with the Player's current team, each pokemon and set detail of the team that the old website cannot hold **[A-22]**. | C    | Approved    |
 
-REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site either. REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Teams Between Versions (planned, PF2).
+REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site either. REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Team to Old Website (planned, PF2).
 
 US23. As a player moving between the old website and the redesigned site, I want my current team to come with me, so that switching does not mean building it again.
 
@@ -1121,7 +1134,7 @@ US21. As the maintainer, I want one command to refresh the translated names and 
 | REQ-DATA-9  | The translation update tooling shall report, for each language, each name that it left in English.                                                                                                                                  | C    | Implemented |
 | REQ-DATA-10 | The data update tooling shall generate the site's data for a newly released game from a source other than Pokemon Showdown, for a game whose data Pokemon Showdown has not published within 7 days of the game's release **[A-3]**. | C    | Proposed    |
 | REQ-DATA-11 | The data update tooling shall replace data taken from another source with Pokemon Showdown's data once Pokemon Showdown publishes it.                                                                                               | C    | Proposed    |
-| REQ-DATA-12 | The data update tooling shall notify the Maintainer within 1 day of Pokemon Showdown publishing a change to data the site uses **[A-21]**.                                                                                          | C    | Proposed    |
+| REQ-DATA-12 | The data update tooling shall notify the Maintainer within 1 day of Pokemon Showdown publishing a change to data the site uses **[A-21]**.                                                                                          | C    | Approved    |
 
 REQ-DATA-10 to REQ-DATA-12 come from the 2-day target of BR-3. REQ-DATA-10 conflicts with REQ-POL-4 as it stands, which allows Pokemon Showdown as the only source; approving it means rewording REQ-POL-4 to allow the fallback source for a new game, while still forbidding edits by hand.
 
@@ -1167,12 +1180,12 @@ the team.
 
 | ID          | Requirement                                                                                                                                    | Imp. | Status      |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-ANLY-12 | The site shall allow the Player to set a team's battle format to singles, to doubles, or to unspecified.                                       | C    | Proposed    |
-| REQ-ANLY-13 | The site shall keep a team's battle format with the saved team and in the team's share link.                                                   | C    | Proposed    |
-| REQ-ANLY-14 | The site shall count Defog as filling the spinner or defogger role of a Generation 4 or 5 team only for a team whose battle format is doubles. | C    | Proposed    |
+| REQ-ANLY-12 | The site shall allow the Player to set a team's battle format to singles, to doubles, or to unspecified.                                       | C    | Approved    |
+| REQ-ANLY-13 | The site shall keep a team's battle format with the saved team and in the team's share link.                                                   | C    | Approved    |
+| REQ-ANLY-14 | The site shall count Defog as filling the spinner or defogger role of a Generation 4 or 5 team only for a team whose battle format is doubles. | C    | Approved    |
 | REQ-ANLY-15 | The site shall count Defog as filling the spinner or defogger role of a team of Generation 6 or later in every battle format.                  | E    | Implemented |
-| REQ-ANLY-16 | The site shall identify, for a team whose battle format is unspecified, each checklist role whose result differs between singles and doubles.  | C    | Proposed    |
-| REQ-ANLY-17 | The site shall treat every saved team and share link that records no battle format as having an unspecified battle format.                     | E    | Proposed    |
+| REQ-ANLY-16 | The site shall identify, for a team whose battle format is unspecified, each checklist role whose result differs between singles and doubles.  | C    | Approved    |
+| REQ-ANLY-17 | The site shall treat every saved team and share link that records no battle format as having an unspecified battle format.                     | E    | Approved    |
 
 Known defect that these requirements correct: the checklist excludes Defog from hazard removal before Generation 6 in every battle format, which is wrong for doubles (issue 118).
 
@@ -1187,13 +1200,14 @@ US24. As a competitive player, I want to be told which parts of my team break th
 - a) Each problem is stated with the pokemon it concerns: a pokemon not allowed in the format, an ability the pokemon cannot have, a missing required item, a repeated move, training values over the limit, a nickname or level out of range, a tera type outside Generation 9, two pokemon of one species, two pokemon holding the same item.
 - b) A team with no problems is reported as having none.
 - c) The messages are in the site's language.
+- d) A marker on a pokemon's slot shows that a problem concerns it.
 
 **Requirements**
 
-| ID          | Requirement                                                                                                                                                                                            | Imp. | Status   |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | -------- |
-| REQ-ANLY-18 | The site shall present to the Player each rule of the current team's generation profile and format that the team breaks, naming the pokemon concerned.                                                 | O    | Approved |
-| REQ-ANLY-19 | The site shall check a team against the species clause and the item clause, and each pokemon against its format's allowed pokemon, its possible abilities, its required item, and its training limits. | O    | Approved |
+| ID          | Requirement                                                                                                                                                                                                                                                             | Imp. | Status   |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | -------- |
+| REQ-ANLY-18 | The site shall present to the Player each rule of the current team's generation profile and format that the team breaks, naming the pokemon concerned and marking its slot.                                                                                             | O    | Approved |
+| REQ-ANLY-19 | The site shall check a team against the species clause and the item clause, and each pokemon against its format's allowed pokemon, its possible abilities, its required item, repeated moves, its training limits, its nickname's length, its level, and its tera type. | O    | Approved |
 
 The rules of REQ-ANLY-19 are already computed by the site and covered by tests; no part of the page presents them.
 
@@ -1206,9 +1220,9 @@ The Site Owner rates speed as paramount: a visitor who waits, or who has to work
 | REQ-USE-1  | The site shall enable at least 80% of first-time players to place six pokemon and name the type their team is weakest to within 5 minutes, without any training **[A-16]**.  | E    | Proposed    |
 | REQ-USE-2  | The site shall enable at least 80% of Pokemon Showdown users to import a team from Showdown and copy it back within 2 minutes, without any training **[A-16]**.              | C    | Proposed    |
 | REQ-USE-3  | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page.                                                | E    | Implemented |
-| REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                           | C    | Proposed    |
+| REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                           | C    | Approved    |
 | REQ-USE-5  | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                        | C    | Implemented |
-| REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**. | C    | Proposed    |
+| REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**. | C    | Approved    |
 | REQ-USE-7  | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                  | C    | Implemented |
 | REQ-USE-8  | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                                      | C    | Implemented |
 | REQ-USE-9  | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                    | O    | Proposed    |
@@ -1241,9 +1255,9 @@ Measurement takes place on a mid-range phone released within the last four years
 
 | ID         | Requirement                                                                                                                                                            | Imp. | Status      |
 | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-PERF-1 | In 95% of all cases, the site shall have a maximal response time of 100 ms between a change to the current team and the presentation of the updated analysis.          | E    | Proposed    |
-| REQ-PERF-2 | In 95% of all cases, the site shall have a maximal response time of 200 ms between a request to list the pokemon for a slot and the presentation of the first options. | E    | Proposed    |
-| REQ-PERF-3 | In 95% of all cases, the site shall have a maximal response time of 3 s between the opening of a share link and the presentation of the team's pokemon and analysis.   | E    | Proposed    |
+| REQ-PERF-1 | In 95% of all cases, the site shall have a maximal response time of 100 ms between a change to the current team and the presentation of the updated analysis.          | E    | Approved    |
+| REQ-PERF-2 | In 95% of all cases, the site shall have a maximal response time of 200 ms between a request to list the pokemon for a slot and the presentation of the first options. | E    | Approved    |
+| REQ-PERF-3 | In 95% of all cases, the site shall have a maximal response time of 3 s between the opening of a share link and the presentation of the team's pokemon and analysis.   | E    | Approved    |
 | REQ-PERF-4 | The site shall require a maximum of 600 kB of compressed script to be downloaded before a team can be edited.                                                          | E    | Implemented |
 | REQ-PERF-5 | The site shall download the move lists, the generation transfer data, each language, and each footer dialog only on first need.                                        | C    | Implemented |
 | REQ-PERF-6 | The site shall save a change to a team to the Player's browser within 1 s of the change, and before the page is hidden.                                                | E    | Implemented |
@@ -1279,7 +1293,7 @@ Baseline for REQ-PERF-4: the production build of 13 October 2026 downloads about
 | REQ-INTF-12 | The site shall operate in the current versions of Chrome and Safari on desktop, Chrome on Android, and Safari on iOS.                                                                                 | E    | Implemented |
 | REQ-INTF-13 | The site shall operate in the current version of each browser that its maker still updates and that has at least 2% of browser usage **[A-18]**.                                                      | C    | Proposed    |
 | REQ-INTF-14 | The site shall provide, for link previews, a title, a description, and a screenshot at an address that does not change.                                                                               | C    | Implemented |
-| REQ-INTF-18 | The site shall present pokemon sprites to a visitor whose network blocks Pokemon Showdown's servers.                                                                                                  | E    | Proposed    |
+| REQ-INTF-18 | The site shall present pokemon sprites to a visitor whose network blocks Pokemon Showdown's servers.                                                                                                  | E    | Approved    |
 
 REQ-INTF-18 comes from issue 76: schools often block Pokemon Showdown and not this site, so the sprites fail there, and missing pictures are the second most common complaint in the feedback. It is numbered after the internal interface requirements because it was added later.
 
@@ -1407,7 +1421,7 @@ Verification methods follow the requirement groups of Section 3. The test suites
 | REQ-RAND                         | Test                 | `tests/logic/random.spec.ts`, `tests/component/shared/use-dice-roll/`                                                                                                                      |
 | REQ-UNDO                         | Test                 | `tests/component/main/pokemon-team/shared/team-toolbar/history-integration-tests.spec.ts`, `tests/logic/team-change.spec.ts`                                                               |
 | REQ-FIND                         | Test                 | `tests/logic/filtering.spec.ts`, `tests/logic/sorting.spec.ts`, `tests/logic/formats.spec.ts`, `tests/component/dialogs/filters-dialog/`, `tests/component/dialogs/sort-dialog/`           |
-| REQ-ANLY-1 to 11                 | Test                 | `tests/logic/effectiveness.spec.ts`, `tests/logic/coverage.spec.ts`, `tests/logic/matrix.spec.ts`, `tests/logic/checklist.spec.ts`, `tests/component/main/team-stats/`                     |
+| REQ-ANLY-1 to 11, 20             | Test                 | `tests/logic/effectiveness.spec.ts`, `tests/logic/coverage.spec.ts`, `tests/logic/matrix.spec.ts`, `tests/logic/checklist.spec.ts`, `tests/component/main/team-stats/`                     |
 | REQ-ANLY-12 to 19                | Test                 | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                 |
 | REQ-GEN                          | Test                 | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                 |
 | REQ-COLL                         | Test                 | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts` |
@@ -1420,7 +1434,7 @@ Verification methods follow the requirement groups of Section 3. The test suites
 | REQ-SITE                         | Test                 | `tests/component/header/site-version-switch/`                                                                                                                                              |
 | REQ-DATA                         | Test, Inspection     | `tests/logic/update-data.spec.ts`, `tests/logic/update-translations.spec.ts`; the update reports are inspected by the Maintainer                                                           |
 | REQ-USE-1, 2, 9                  | Demonstration        | Usability sessions and a survey with players; none held yet.                                                                                                                               |
-| REQ-USE-3 to 8                   | Test, Inspection     | Layout tests in `tests/component/`; an accessibility review for REQ-USE-4 and REQ-USE-6                                                                                                    |
+| REQ-USE-3 to 8, 10 to 13         | Test, Inspection     | Layout tests in `tests/component/`; an accessibility review for REQ-USE-4 and REQ-USE-6; a review of every button against Table 3.2-1 for REQ-USE-11                                       |
 | REQ-PERF                         | Test, Analysis       | Timing measurements to be added; build output for REQ-PERF-4 and REQ-PERF-5                                                                                                                |
 | REQ-INTF-5 to 8                  | Inspection           | Review of `App.tsx`, `vite.config.ts`, `vercel.json`, and `public/robots.txt` against the ad platform's documentation                                                                      |
 | REQ-MODE                         | Test                 | `tests/smoke/production-smoke.spec.ts`, `tests/logic/teams-storage.spec.ts`                                                                                                                |

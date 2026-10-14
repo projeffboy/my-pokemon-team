@@ -102,7 +102,7 @@ Damage calculation, speed tiers, battles, and accounts are what the competitive 
 
 ### Candidates for the Site Owner
 
-Nothing below is a requirement. Each is a feature a competitor has, that the site lacks, and that fits what the site is for. They are listed for a decision, and none has been added to the feature model or the task list.
+Nothing below is a requirement. Each is a feature a competitor has, that the site lacks, and that fits what the site is for. They are listed for a decision, and none has been added to the feature model or the GitHub issues.
 
 | Candidate                                       | Seen in | Fits which goal                                |
 | ----------------------------------------------- | ------- | ---------------------------------------------- |

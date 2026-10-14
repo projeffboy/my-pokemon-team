@@ -138,8 +138,8 @@ s.note(2,32,464,["Details shows the link's original text, so the Player can copy
 s.save("m4-dropped-entries-notice.svg")
 
 # ---------- M5: version transfer
-s=Svg(980,520,"Mock-up M5: taking the current team to the other site version")
-s.text(20,30,"M5  Taking the current team to the other site version (PF2)",18,INK,"bold")
+s=Svg(980,520,"Mock-up M5: taking the current team to the old website")
+s.text(20,30,"M5  Taking the current team to the old website (PF2)",18,INK,"bold")
 s.text(20,52,"The confirmation shown before leaving for the old website: today, and as planned.",13,MUTED)
 for x,title,body,btn,new in [(20,"Today",["Your current team won’t transfer to the old","website. Teams already saved here will remain","on this version."],"Go to old website",False),
                              (500,"Planned",["Your current team will open on the old website.","Teams saved here will remain on this version."],"Go with my team",True)]:

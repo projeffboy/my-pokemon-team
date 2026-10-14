@@ -146,6 +146,8 @@ flowchart TD
   M --> Analyse --> finish
 ```
 
+When no pokemon of the team is available in the new profile, the two choices are named for what they do: Clear existing team (the update) and Create empty team (the copy).
+
 ## 9.5 Sequence: send feedback
 
 Covers UC18 Send Feedback and the security requirements REQ-SEC-1 to REQ-SEC-3. The participants are the two actors, the two parts of the site that the context diagram already separates (the page in the browser and the feedback function on the hosting platform), and the email delivery service.
@@ -275,42 +277,36 @@ flowchart TD
 
 The three decisions below the first are new. Mock-ups M1 and M2 in [10-mockups.md](10-mockups.md) show two places the battle format could be set.
 
-## 9.9 Activity (planned): take the current team to the other site version
+## 9.9 Activity (planned): take the current team to the old website
 
-Covers UC19 Switch Site Version and UC23 Transfer Teams Between Versions (PF2). It assumes the team crosses as a share link (A-14), because the two versions are at different addresses and neither can read the other's saved teams.
+Covers UC19 Switch Site Version and UC23 Transfer Team to Old Website (PF2). It assumes the team crosses as a share link (A-14), because the two versions are at different addresses and neither can read the other's saved teams.
 
 ```mermaid
 flowchart TD
   subgraph Player
-    start((start)) --> Ask[Request the other site version]
+    start((start)) --> Ask[Request the old website]
     Confirm{decision}
   end
-  subgraph Here["Site version the Player is on"]
+  subgraph Here["Redesigned site"]
     Empty{decision}
-    Work["Work out what the other version cannot hold (planned)"]
+    Work["Work out which pokemon and set details the old website cannot hold (planned)"]
     Warn["Present what will carry over and what will not (planned)"]
-    Go["Open the other version with the current team's share link (planned)"]
-    Plain[Open the other version without a team]
+    Go["Open the old website with the current team's share link (planned)"]
+    Plain[Open the old website without a team]
   end
-  subgraph There["The other site version"]
+  subgraph There["Old website"]
     Read[Read the team from the link]
-    Match{decision}
-    Saved[Make the matching saved team the current team]
-    Draft[Make the team the current team, as a draft]
-    Show[Present the team and its analysis]
+    Show[Present the team and its analysis as its one unsaved team]
   end
   finish((end))
   Ask --> Empty
   Empty -- "[current team has no pokemon]" --> Plain --> finish
   Empty -- "[current team has pokemon]" --> Work --> Warn --> Confirm
   Confirm -- "[cancel]" --> finish
-  Confirm -- "[go with my team]" --> Go --> Read --> Match
-  Match -- "[equals a saved team there]" --> Saved --> Show
-  Match -- "[equals no saved team there]" --> Draft --> Show
-  Show --> finish
+  Confirm -- "[go with my team]" --> Go --> Read --> Show --> finish
 ```
 
-The flow runs from the redesigned site to the old website only: the old website is in maintenance and is not changed (REQ-OPS-5), so the way back carries no team. The old website's part is UC12 Open Shared Team, which it already does. What is new is on the leaving side. The old website holds one unsaved team and covers Generations 6 to 9 only, so its Match decision always takes the draft branch, and a team from another generation cannot arrive whole. Mock-up M5 shows the confirmation.
+The flow runs from the redesigned site to the old website only: the old website is in maintenance and is not changed (REQ-OPS-5), so the way back carries no team. The old website's part is UC12 Open Shared Team, which it already does, so what is new is on the leaving side. The old website holds one unsaved team and covers Generations 6 to 9 only, so a team from another generation, or with set details the old website does not read, cannot arrive whole. Mock-up M5 shows the confirmation.
 
 ## 9.10 Planned features without a flow diagram
 
@@ -321,13 +317,13 @@ The flow runs from the redesigned site to the old website only: the old website 
 
 ## 9.11 Scenarios and use cases
 
-| Diagram                                                  | Use cases     | Requirements shown most directly                              |
-| -------------------------------------------------------- | ------------- | ------------------------------------------------------------- |
-| 9.2 Build a team and read its analysis                   | UC1, UC5, UC6 | REQ-TEAM-2, REQ-TEAM-14, REQ-ANLY-5, REQ-COLL-1, REQ-LINK-1   |
-| 9.3 Share a team and open the link                       | UC11, UC12    | REQ-LINK-2, REQ-LINK-4 to REQ-LINK-8                          |
-| 9.4 Change a team's generation                           | UC7           | REQ-GEN-5 to REQ-GEN-8                                        |
-| 9.5 Send feedback                                        | UC18          | REQ-FEED-1, REQ-FEED-6, REQ-FEED-7, REQ-SEC-1 to REQ-SEC-3    |
-| 9.6 Two tabs keep the same saved teams                   | UC8           | REQ-COLL-11, REQ-INFO-5                                       |
-| 9.7 Update game data                                     | UC20, UC21    | REQ-DATA-1, REQ-DATA-6 to REQ-DATA-12, REQ-MAINT-1, REQ-OPS-1 |
-| 9.8 Judge the Spinner/Defogger role (planned)            | UC22          | REQ-ANLY-14 to REQ-ANLY-16                                    |
-| 9.9 Take the current team to the other version (planned) | UC19, UC23    | REQ-SITE-2, REQ-SITE-3                                        |
+| Diagram                                                | Use cases     | Requirements shown most directly                              |
+| ------------------------------------------------------ | ------------- | ------------------------------------------------------------- |
+| 9.2 Build a team and read its analysis                 | UC1, UC5, UC6 | REQ-TEAM-2, REQ-TEAM-14, REQ-ANLY-5, REQ-COLL-1, REQ-LINK-1   |
+| 9.3 Share a team and open the link                     | UC11, UC12    | REQ-LINK-2, REQ-LINK-4 to REQ-LINK-8, REQ-LINK-10, REQ-INFO-8 |
+| 9.4 Change a team's generation                         | UC7           | REQ-GEN-5 to REQ-GEN-8                                        |
+| 9.5 Send feedback                                      | UC18          | REQ-FEED-1, REQ-FEED-6, REQ-FEED-7, REQ-SEC-1 to REQ-SEC-3    |
+| 9.6 Two tabs keep the same saved teams                 | UC8           | REQ-COLL-11, REQ-INFO-5                                       |
+| 9.7 Update game data                                   | UC20, UC21    | REQ-DATA-1, REQ-DATA-6 to REQ-DATA-12, REQ-MAINT-1, REQ-OPS-1 |
+| 9.8 Judge the Spinner/Defogger role (planned)          | UC22          | REQ-ANLY-14 to REQ-ANLY-16                                    |
+| 9.9 Take the current team to the old website (planned) | UC19, UC23    | REQ-SITE-2, REQ-SITE-3, REQ-SITE-5                            |

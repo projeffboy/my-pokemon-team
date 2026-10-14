@@ -39,7 +39,7 @@ Smaller themes, one to three threads each:
 
 **Data being current and complete is what players care about most.** Nearly half of all player threads are about something missing. The messages cluster after each release: the Hisuian pokemon in 2022, Generation 9 in late 2022, and the Legends: Z-A mega evolutions in the first half of 2026, where at least eight players asked when they would be added. This supports BR-3 as written after the interview (2 days for major data) and explains why the Site Owner set it that tight.
 
-**Players do report wrong results, and they are specific.** About fifteen threads name a pokemon, a move or ability, and what the score should be. This is the behaviour BR-7 relies on. Two problems reported by mail more than once, the Dry Skin ability and Smeargle's move list, are also open GitHub issues (63 and 64).
+**Players do report wrong results, and they are specific.** About fifteen threads name a pokemon, a move or ability, and what the score should be. This is the behaviour BR-7 relies on. Two problems reported by mail more than once, the Dry Skin ability and Smeargle's move list, were also filed as GitHub issues 63 and 64, both since fixed.
 
 **Missing pictures are the second most common complaint about the site itself.** A pokemon without a sprite or an icon reads to players as a broken site, not as a small gap. This raises the importance of REQ-INTF-1, REQ-INTF-2, and REQ-MODE-3, and it is the subject of issue 76, about not depending on Pokemon Showdown for images, now REQ-INTF-18.
 
@@ -49,7 +49,7 @@ Smaller themes, one to three threads each:
 
 **The redesign's first day produced the clearest single finding.** Within hours of the redesign going live on 10 October 2026, two players wrote that choosing one generation or game stopped them from building the team they wanted: one mixes pokemon from every generation, and one plays a fan-made game that combines two generations. The Site Owner put the old website back the same day, and two days later made the combined Generations 6 to 9 profile the default (REQ-GEN-2, REQ-GEN-3). The lesson for the requirements is that a restriction which is correct for a competitive player is a barrier for a non-competitive one, and the default has to serve the second.
 
-**Replies to feedback sent through the site do not reach the player.** Both of those messages came through the new feedback form with no reply address. The Site Owner's answers went to the form's sending address, which no player reads. This is the gap that PF5 (verified sender domain) and the optional reply address (REQ-FEED-4) are meant to close, and it happened on the form's first real use.
+**Replies to feedback sent without a reply address reach nobody.** Both of those messages came through the new feedback form with no reply address, so the Site Owner's answers went to the form's sending address, which no player reads. A reply address, which the form asks for but does not require (REQ-FEED-4), would have carried the answer: the feedback function sets it as the email's reply-to. This is the gap REQ-FEED-10 closes, by telling the player before sending that a reply needs an address. It happened on the form's first real use.
 
 ## 12.4 Effect on the personas
 

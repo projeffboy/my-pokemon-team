@@ -52,11 +52,11 @@ Application-domain requirements that the later documents must respect. They come
 
 ### Releases
 
-| Release        | Contents                                                                                                                                                                          | State                  |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| R0 Old website | Generations 6 to 9, one unsaved team, type defence and coverage, checklist, filters by format, type, and region, Showdown import and export, share link. English only.            | Live at `old.` host    |
-| Ash            | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, backups, generation transfer, ten languages, feedback, site version switch.   | `major-added-features` |
-| Brock          | Planned features PF1 to PF7 in [04-feature-model.md](04-feature-model.md): battle format for the checklist, team transfer between site versions, the remaining games, and others. | Proposed               |
+| Release        | Contents                                                                                                                                                                                                                                                 | State                  |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| R0 Old website | Generations 6 to 9, one unsaved team, type defence and coverage, checklist, filters by format, type, and region, Showdown import and export, share link. English only.                                                                                   | Live at `old.` host    |
+| Ash            | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, backups, generation transfer, ten languages, feedback, site version switch.                                                                          | `major-added-features` |
+| Brock          | The GitHub milestone "Brock": the planned features PF1 to PF7 in [04-feature-model.md](04-feature-model.md) (battle format for the checklist, team transfer to the old website, the remaining games, and others) and the other work scheduled with them. | Proposed               |
 
 ### In scope for Ash
 

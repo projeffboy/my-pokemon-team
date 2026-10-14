@@ -2,7 +2,7 @@
 
 Requirement level: business and user. This document names everyone with a stake in My Pokemon Team, what each one values, how the users differ, and five personas that stand in for the users who cannot all be interviewed.
 
-No stakeholder has been interviewed yet. Everything here is drawn from the repository, so the values, the user classes, and the personas are assumptions **[A-11]** until the interview in [08-assumptions-and-interview.md](08-assumptions-and-interview.md) and the site's feedback emails confirm or correct them.
+This was first drawn from the repository alone. The Site Owner was then interviewed ([08-assumptions-and-interview.md](08-assumptions-and-interview.md)) and about 105 player emails were analysed ([12-feedback-analysis.md](12-feedback-analysis.md)); no other stakeholder has been consulted. What those sources do not support, including personas P-2 to P-4, remains an assumption **[A-11]**.
 
 ## 2.1 Stakeholders
 
