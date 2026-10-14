@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" width="980" height="560" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Mock-up M1: battle format set on the Team Checklist">
+<title>Mock-up M1: battle format set on the Team Checklist</title>
+<rect width="980" height="560" fill="#fff"/>
+<text x="20" y="30" font-size="18" fill="#222" font-weight="bold" text-anchor="start">M1  Battle format on the Team Checklist (option A)</text>
+<text x="20" y="52" font-size="13" fill="#666" font-weight="normal" text-anchor="start">Generation 4 team with a pokemon that knows Defog. Blue dashed parts are new.</text>
+<text x="20" y="84" font-size="14" fill="#666" font-weight="bold" text-anchor="start">Battle format not set</text>
+<rect x="20" y="96" width="460" height="250" rx="6" fill="#f3f3f3" stroke="#999" stroke-width="1.5"/>
+<text x="250.0" y="122" font-size="16" fill="#222" font-weight="bold" text-anchor="middle">Team Checklist</text>
+<rect x="120" y="136" width="260" height="30" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="163.33333333333334" y="156" font-size="13" fill="#222" font-weight="bold" text-anchor="middle">Singles</text>
+<text x="250.00000000000003" y="156" font-size="13" fill="#222" font-weight="bold" text-anchor="middle">Doubles</text>
+<rect x="295.33333333333337" y="138" width="82.66666666666667" height="26" rx="3" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="336.6666666666667" y="156" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">Not set</text>
+<text x="50.0" y="200" font-size="14" fill="#222" font-weight="bold" text-anchor="start">General</text>
+<circle cx="59.0" cy="223" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="59.0" y="228" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="76.0" y="228" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Entry Hazard</text>
+<circle cx="59.0" cy="249" r="9" fill="#fff" stroke="#1565c0" stroke-width="1.5"/>
+<text x="59.0" y="254" font-size="12" fill="#1565c0" font-weight="bold" text-anchor="middle">?</text>
+<text x="76.0" y="254" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Spinner/Defogger</text>
+<circle cx="59.0" cy="275" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="59.0" y="280" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="76.0" y="280" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Reliable Recovery</text>
+<text x="196.66666666666666" y="200" font-size="14" fill="#222" font-weight="bold" text-anchor="start">Defensive</text>
+<circle cx="205.66666666666666" cy="223" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="205.66666666666666" y="228" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="222.66666666666666" y="228" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Cleric</text>
+<circle cx="205.66666666666666" cy="249" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="205.66666666666666" y="254" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="222.66666666666666" y="254" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Status Move</text>
+<circle cx="205.66666666666666" cy="275" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="205.66666666666666" y="280" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="222.66666666666666" y="280" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Phazer</text>
+<text x="343.3333333333333" y="200" font-size="14" fill="#222" font-weight="bold" text-anchor="start">Offensive</text>
+<circle cx="352.3333333333333" cy="223" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="352.3333333333333" y="228" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="369.3333333333333" y="228" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Boosting Move</text>
+<circle cx="352.3333333333333" cy="249" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="352.3333333333333" y="254" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="369.3333333333333" y="254" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Volt-turn Move</text>
+<circle cx="352.3333333333333" cy="275" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="352.3333333333333" y="280" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="369.3333333333333" y="280" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Choice Item</text>
+<circle cx="102" cy="151" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="102" y="156" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">1</text>
+<circle cx="34" cy="249" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="34" y="254" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">2</text>
+<text x="500" y="84" font-size="14" fill="#666" font-weight="bold" text-anchor="start">Player picks Doubles</text>
+<rect x="500" y="96" width="460" height="250" rx="6" fill="#f3f3f3" stroke="#999" stroke-width="1.5"/>
+<text x="730.0" y="122" font-size="16" fill="#222" font-weight="bold" text-anchor="middle">Team Checklist</text>
+<rect x="600" y="136" width="260" height="30" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="643.3333333333334" y="156" font-size="13" fill="#222" font-weight="bold" text-anchor="middle">Singles</text>
+<rect x="688.6666666666666" y="138" width="82.66666666666667" height="26" rx="3" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="730.0" y="156" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">Doubles</text>
+<text x="816.6666666666667" y="156" font-size="13" fill="#222" font-weight="bold" text-anchor="middle">Not set</text>
+<text x="530.0" y="200" font-size="14" fill="#222" font-weight="bold" text-anchor="start">General</text>
+<circle cx="539.0" cy="223" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="539.0" y="228" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="556.0" y="228" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Entry Hazard</text>
+<circle cx="539.0" cy="249" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="539.0" y="254" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="556.0" y="254" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Spinner/Defogger</text>
+<circle cx="539.0" cy="275" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="539.0" y="280" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="556.0" y="280" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Reliable Recovery</text>
+<text x="676.6666666666666" y="200" font-size="14" fill="#222" font-weight="bold" text-anchor="start">Defensive</text>
+<circle cx="685.6666666666666" cy="223" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="685.6666666666666" y="228" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="702.6666666666666" y="228" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Cleric</text>
+<circle cx="685.6666666666666" cy="249" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="685.6666666666666" y="254" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="702.6666666666666" y="254" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Status Move</text>
+<circle cx="685.6666666666666" cy="275" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="685.6666666666666" y="280" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="702.6666666666666" y="280" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Phazer</text>
+<text x="823.3333333333333" y="200" font-size="14" fill="#222" font-weight="bold" text-anchor="start">Offensive</text>
+<circle cx="832.3333333333333" cy="223" r="9" fill="#2e7d32" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="832.3333333333333" y="228" font-size="12" fill="#fff" font-weight="bold" text-anchor="middle">✓</text>
+<text x="849.3333333333333" y="228" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Boosting Move</text>
+<circle cx="832.3333333333333" cy="249" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="832.3333333333333" y="254" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="849.3333333333333" y="254" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Volt-turn Move</text>
+<circle cx="832.3333333333333" cy="275" r="9" fill="#fff" stroke="#666" stroke-width="1.5"/>
+<text x="832.3333333333333" y="280" font-size="12" fill="#666" font-weight="bold" text-anchor="middle">✕</text>
+<text x="849.3333333333333" y="280" font-size="14" fill="#222" font-weight="normal" text-anchor="start">Choice Item</text>
+<circle cx="582" cy="151" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="582" y="156" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">1</text>
+<circle cx="514" cy="249" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="514" y="254" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">3</text>
+<rect x="20" y="300" width="460" height="36" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="32" y="315" font-size="12" fill="#222" font-weight="normal" text-anchor="start">Spinner/Defogger depends on the battle format: in Generations 4 and 5,</text>
+<text x="32" y="330" font-size="12" fill="#222" font-weight="normal" text-anchor="start">Defog clears your own side&#x27;s hazards only in doubles.</text>
+<circle cx="32" cy="390" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="32" y="395" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">1</text>
+<text x="52" y="395" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Singles, Doubles, or Not set, kept with the team and in its share link</text>
+<text x="52" y="413" font-size="13" fill="#222" font-weight="normal" text-anchor="start">(REQ-ANLY-12, REQ-ANLY-13). Teams and links made before this are Not set (REQ-ANLY-17).</text>
+<circle cx="32" cy="444" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="32" y="449" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">2</text>
+<text x="52" y="449" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Not set: a role whose result differs between singles and doubles shows a question</text>
+<text x="52" y="467" font-size="13" fill="#222" font-weight="normal" text-anchor="start">mark and says why (REQ-ANLY-16).</text>
+<circle cx="32" cy="498" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
+<text x="32" y="503" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">3</text>
+<text x="52" y="503" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Doubles: Defog counts as hazard removal in Generations 4 and 5 (REQ-ANLY-14).</text>
+<text x="52" y="521" font-size="13" fill="#222" font-weight="normal" text-anchor="start">From Generation 6 it counts in both formats, as today (REQ-ANLY-15).</text>
+</svg>
