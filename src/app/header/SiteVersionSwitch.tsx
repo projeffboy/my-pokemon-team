@@ -8,11 +8,15 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import useFittingLabel from "./site-version-switch/use-fitting-label";
 
 import garchompFace from "@/images/pokemon-shuffle-faces/garchomp-shuffle-face-cropped.svg";
 import jigglypuffFace from "@/images/pokemon-shuffle-faces/jigglypuff-shuffle-face-cropped.svg";
 
 const SITE_URL = "https://mypokemonteam.com/";
+
+// A face takes its 24px plus the icon's 8px gap less its -4px outer margin
+const faceSpace = 28;
 
 const face = (src: string) => (
   <Box
@@ -24,6 +28,13 @@ const face = (src: string) => (
 );
 
 const SiteVersionSwitch = observer(function SiteVersionSwitch() {
+  // The longest label that fits the header's width with both faces. Where the button sits
+  // beside the header's text, from 600px, every label fits.
+  const { ref: labelRoom, label } = useFittingLabel<HTMLSpanElement>([
+    "Go to the new website",
+    "Go to new website",
+    "New website",
+  ]);
   const [open, setOpen] = useState(false);
   const cancelButton = useRef<HTMLButtonElement>(null);
   const titleId = useId();
@@ -37,15 +48,37 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
 
   return (
     <>
-      <Button
-        variant="contained"
-        startIcon={face(garchompFace)}
-        endIcon={face(jigglypuffFace)}
-        onClick={handleSwitch}
-        sx={{ alignSelf: "center", whiteSpace: "nowrap", minHeight: 48 }}
+      <Box
+        sx={{
+          // Beside the header's text, the label measures the header's whole row instead
+          position: { xs: "relative", sm: "static" },
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+        }}
       >
-        New website
-      </Button>
+        {/* Measures the room a label has: the header's width less the button's padding and faces */}
+        <Box
+          component="span"
+          ref={labelRoom}
+          sx={theme => ({
+            ...theme.typography.button,
+            position: "absolute",
+            insetInline: 0,
+            px: `${16 + faceSpace}px`,
+            visibility: "hidden",
+          })}
+        />
+        <Button
+          variant="contained"
+          startIcon={face(garchompFace)}
+          endIcon={face(jigglypuffFace)}
+          onClick={handleSwitch}
+          sx={{ whiteSpace: "nowrap", minHeight: 48, maxWidth: "100%" }}
+        >
+          {label}
+        </Button>
+      </Box>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}

@@ -58,39 +58,47 @@ export default function Header() {
           }}
         />
       </Stack>
+      {/* The switch sits beside the two lines where there is room, and below them otherwise */}
       <Grid
         size={12}
-        sx={{ display: "flex", justifyContent: "center", mt: 1.5, mb: 1 }}
+        sx={{
+          position: "relative",
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          alignItems: "center",
+          justifyContent: "center",
+          columnGap: 3,
+          mb: 1,
+        }}
       >
-        <SiteVersionSwitch />
-      </Grid>
-      <Grid size={12}>
-        <Typography
-          variant="subtitle1"
-          component="p"
-          sx={theme => ({
-            textAlign: "center",
-            fontSize: fluidClamp(
-              0.75,
-              Number.parseFloat(`${theme.typography.subtitle1.fontSize}`),
-              MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
-              sm,
-              "rem",
-            ),
-          })}
-        >
-          For Generations 6-9 (ZA/Champions)
-        </Typography>
-      </Grid>
-      <Grid size={12} sx={{ textAlign: "center" }}>
-        <Typography
-          variant="caption"
-          component="a"
-          href="mailto:jeffery124@gmail.com"
-          sx={{ color: "inherit", fontSize: "0.625rem" }}
-        >
-          Report Bugs to jeffery124@gmail.com
-        </Typography>
+        <Box sx={{ textAlign: "center" }}>
+          <Typography
+            variant="subtitle1"
+            component="p"
+            sx={theme => ({
+              fontSize: fluidClamp(
+                0.75,
+                Number.parseFloat(`${theme.typography.subtitle1.fontSize}`),
+                MIN_SUPPORTED_MOBILE_VIEWPORT_WIDTH,
+                sm,
+                "rem",
+              ),
+            })}
+          >
+            For Generations 6-9 (ZA/Champions)
+          </Typography>
+          <Typography
+            variant="caption"
+            component="a"
+            href="mailto:jeffery124@gmail.com"
+            sx={{ color: "inherit", fontSize: "0.625rem" }}
+          >
+            Report Bugs to jeffery124@gmail.com
+          </Typography>
+        </Box>
+        <Box sx={{ mt: { xs: 1.5, sm: 0 }, width: { xs: "100%", sm: "auto" } }}>
+          <SiteVersionSwitch />
+        </Box>
       </Grid>
     </Grid>
   );
