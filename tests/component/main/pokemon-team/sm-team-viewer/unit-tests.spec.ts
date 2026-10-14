@@ -25,7 +25,7 @@ test.describe("Sm Team Viewer - Unit Tests", () => {
       await expect(slot).toBeVisible();
 
       // Each slot pair should have 2 question mark images
-      const questionMarkImgs = slot.locator('img[alt="question-mark"]');
+      const questionMarkImgs = slot.locator('img[alt=""]');
       await expect(questionMarkImgs).toHaveCount(2);
     }
   });

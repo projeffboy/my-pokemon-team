@@ -1,5 +1,6 @@
 import { test, expect } from "./fixtures";
 import { createTeam } from "./shared/team";
+import pokedex from "@/data/pokedex";
 import { completeLearnset } from "@/store/learnsets";
 import { pokemonTypes } from "@/shared/pokedex";
 import { setDetail, setStat } from "@/shared/set-details";
@@ -317,6 +318,60 @@ test.describe("slot tools", () => {
     store.openTeamFromLink(parseTeamText(serializeTeam(store.team)));
     expect(store.teams).toHaveLength(1);
     expect(store.teamPokemon.slice(0, 2)).toEqual(["", "magnezone"]);
+  });
+
+  test("a link to the current team opens no new team when the team has a tier format, which links leave out", ({
+    store,
+  }) => {
+    store.currentTeam.generation = 8;
+    store.currentTeam.format = "OU: Over Used";
+    store.selectPokemon(0, "corviknight");
+    const first = store.currentTeamId;
+    // As a reload does: the address bar holds the generation but no tier
+    store.openTeamFromLink(parseTeamText(serializeTeam(store.team), 8), {
+      generation: 8,
+      format: "",
+    });
+    expect(store.currentTeamId).toBe(first);
+    expect(store.teams).toHaveLength(1);
+    expect(store.currentTeam.format).toBe("OU: Over Used");
+
+    // Another game is another team
+    store.openTeamFromLink(parseTeamText(serializeTeam(store.team), 9), {
+      generation: 9,
+      format: CHAMPIONS_FORMAT,
+    });
+    expect(store.currentTeamId).not.toBe(first);
+  });
+
+  test("a generation-aware link to a legacy team opens its existing saved copy", ({
+    store,
+  }) => {
+    store.currentTeam.generation = 1;
+    store.selectPokemon(0, "haunter");
+    expect(store.team[0].ability).toBe("");
+    const first = store.currentTeamId;
+    store.openTeamFromLink(parseTeamText(serializeTeam(store.team, 1), 1), {
+      generation: 1,
+      format: "",
+    });
+    expect(store.currentTeamId).toBe(first);
+    expect(store.teams).toHaveLength(1);
+  });
+
+  test("a random Champions team repeats no species and no item", ({
+    store,
+  }) => {
+    store.currentTeam.format = CHAMPIONS_FORMAT;
+    for (let i = 0; i < 20; i++) {
+      store.randomizeTeam();
+      const species = store.team.map(
+        ({ name }) => pokedex[name]?.baseSpecies ?? pokedex[name]?.name,
+      );
+      expect(new Set(species).size).toBe(6);
+      const items = store.team.map(({ item }) => item);
+      expect(new Set(items).size).toBe(6);
+    }
   });
 
   test("randomizing the whole team repeats nobody when six options remain", ({

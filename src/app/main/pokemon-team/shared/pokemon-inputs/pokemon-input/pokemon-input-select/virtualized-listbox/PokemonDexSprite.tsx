@@ -37,7 +37,13 @@ export default function PokemonDexSprite({ pokemon }: { pokemon: string }) {
           sources[sources.indexOf(image.getAttribute("src") ?? "") + 1];
         if (next) image.src = next;
       }}
-      sx={{ width: 88, height: 88, maxWidth: "100%", objectFit: "contain" }}
+      sx={{
+        width: 72,
+        height: 72,
+        maxWidth: "100%",
+        flexShrink: 0,
+        objectFit: "contain",
+      }}
     />
   );
 }

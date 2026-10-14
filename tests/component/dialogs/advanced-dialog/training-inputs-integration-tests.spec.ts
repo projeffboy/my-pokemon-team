@@ -45,19 +45,19 @@ for (const variant of [
     amount: 43210,
   },
   {
-    query: "game=Pokemon+Champions+%28M-C%29",
+    query: "game=champions",
     pokemon: "Escavalier",
     training: "SPs",
     amount: 17,
   },
   {
-    query: "game=Legends%3A+Arceus",
+    query: "game=legends-arceus",
     pokemon: "Shinx",
     training: "Effort Levels",
     amount: 7,
   },
   {
-    query: "game=Let%E2%80%99s+Go",
+    query: "game=lets-go",
     pokemon: "Pikachu",
     training: "AVs",
     amount: 134,
@@ -66,6 +66,10 @@ for (const variant of [
   test(`exact ${variant.training} amounts can be typed on a narrow phone in ${variant.query}`, async ({
     page,
   }) => {
+    test.fixme(
+      ["game=legends-arceus", "game=lets-go"].includes(variant.query),
+      "These game options are Coming soon",
+    );
     test.slow();
     await page.setViewportSize({ width: 320, height: 640 });
     const team = Buffer.from(`${variant.pokemon}\n`).toString("base64url");

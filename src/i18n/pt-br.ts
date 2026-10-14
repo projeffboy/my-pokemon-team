@@ -32,10 +32,29 @@ const ptBR: Messages = {
   },
   generationSelect: "Geração",
   comingSoon: "Em breve",
+  combinedGenerations: {
+    label: "Gerações 6–9",
+    short: "Gerações 6–9",
+    description: "Combina opções de todos os jogos das gerações 6–9",
+  },
   championsGeneration: "Ger. 9 · Champions",
   championsGenerationShort: "Ger. 9 (Champions)",
   language: "Idioma",
   languageFailed: "Não foi possível carregar o idioma. Tente de novo.",
+  error: {
+    title: "Algo deu errado",
+    description: "Recarregue a página para tentar de novo.",
+    reload: "Recarregar",
+  },
+  siteVersion: {
+    button: "Site antigo",
+    short: "Site antigo",
+    title: "Ir para o site antigo?",
+    description:
+      "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",
+    go: "Ir para o site antigo",
+    goLong: "Ir para o site antigo",
+  },
   feedback: {
     button: "Enviar feedback",
     title: "Enviar feedback",
@@ -49,6 +68,7 @@ const ptBR: Messages = {
     imagesTooLarge:
       "As imagens são grandes demais para enviar juntas. Remova uma primeiro.",
     email: "Seu e-mail (opcional)",
+    emailInvalid: "Digite um endereço de e-mail válido ou deixe o campo vazio.",
     emailHelper: "Só se quiser resposta",
     caption: "Feedback",
     send: "Enviar",
@@ -70,6 +90,8 @@ const ptBR: Messages = {
 
   team: {
     teams: "Equipes",
+    noMatchingPokemon:
+      "Nenhum Pokémon corresponde aos filtros atuais. Altere os filtros e tente novamente.",
     randomizedTeam: "Equipe aleatorizada",
     randomizedPokemon: "Pokémon aleatorizado",
     randomizedPokemonDetails: (details: string) =>
@@ -99,20 +121,16 @@ const ptBR: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vazio"})`,
     slotPair: (first: string, second: string) => `${first} e ${second}`,
-    moreTools: "Mais ferramentas da equipe",
-    fewerTools: "Menos ferramentas da equipe",
     advancedMode: "Avançado",
-    more: "Mais",
-    less: "Menos",
     filters: "Filtros",
     sort: "Ordenar",
-    random: "Aleatório",
-    randomize: "Randomizar",
     randomizePokemon: "Sortear Pokémon",
     randomizeDetails: (details: string) => `Sortear ${details.toLowerCase()}`,
     randomFor: (slot: number) => `Pokémon aleatório para o slot ${slot}`,
     advanced: "Mais detalhes",
     advancedFor: (slot: number) => `Mais detalhes do slot ${slot}`,
+    details: "Detalhes",
+    showMoveTypes: "Mostrar tipos dos golpes",
     about: (pokemon: string) => `Sobre ${pokemon}`,
     dragHint: "Segure e arraste para reordenar",
     moveToSlot: (pokemon: string) => `Mover ${pokemon} para outro slot`,
@@ -537,6 +555,7 @@ const ptBR: Messages = {
     infographicCaption: "Também vale para as Ger. 7-9",
   },
   credits: {
+    madeBy: "Feito por {name}",
     showdown:
       "O pessoal do Pokemon Showdown é muito generoso por me deixar usar todos os seus sprites, ícones e dados de Pokémon. Absolutamente indispensável!",
     alsoThanks: "Agradecimentos também a",
@@ -563,11 +582,11 @@ const ptBR: Messages = {
     teamsAnswer:
       "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Exportar tudo baixa todas as equipes como texto do Showdown, que Importar equipe lê de volta. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
     teamsAnswer2:
-      "O botão Mais mostra as ferramentas da equipe, os botões Filtros e Ordenar e o botão Mais detalhes. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam no menu Gerenciar.",
+      "O botão Mais mostra as ferramentas da equipe, Filtros, Ordenar e Mais detalhes. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam acima das abas dos Pokémon.",
     generations: "Gerações",
     generationsQuestion: "O que a geração muda?",
     generationsAnswer:
-      "A geração, escolhida no topo, lista apenas os Pokémon e formas que existiam nela: megas nas Ger. 6, 7 e 9, formas Gigantamax na Ger. 8 e assim por diante. Todo o resto permanece atual: os golpes, as habilidades, a tabela de tipos e os formatos vêm dos jogos mais recentes, então uma equipe de uma geração antiga pode conhecer golpes que não podia aprender na época.",
+      "A geração e o jogo escolhidos no topo determinam os Pokémon, formas, golpes, itens e detalhes oferecidos. Equipes antigas usam as habilidades, estatísticas base e tabela de tipos da sua geração. Trocar de jogo mostra as mudanças necessárias; você pode cancelar, atualizar a equipe ou criar uma cópia.",
     advanced: "Mais detalhes",
     advancedQuestion: "Apelidos, níveis, naturezas, EVs e IVs",
     advancedAnswer:

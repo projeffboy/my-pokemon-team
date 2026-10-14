@@ -1,4 +1,4 @@
-import { useState, type SyntheticEvent } from "react";
+import { useState, type RefObject, type SyntheticEvent } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Tab from "@mui/material/Tab";
@@ -15,6 +15,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import TeamAspectStats from "./team-stats/shared/TeamAspectStats";
 import TeamChecklist from "./team-stats/TeamChecklist";
 import MatrixAnalysis, { type MatrixKind } from "./team-stats/MatrixAnalysis";
+import useChecklistTab from "./team-stats/use-checklist-tab";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import type { TeamStatType } from "@/types";
@@ -36,12 +37,24 @@ const statSection = (stat: TeamStatType, hideTitle = false) => {
 };
 
 // The analysis panel. On phones it shows one analysis at a time, with a tab for
-// each; from tablets up the stats and checklist share a view, with a switch
-// for the matrix. Each view grows to its full height.
-export default function TeamStats() {
+// each; from tablets up the stats share a view, with a switch for the matrix.
+// The checklist joins the stats while that leaves the panel about as tall as
+// the team beside it, and otherwise has a view of its own. Each view grows to
+// its full height.
+export default function TeamStats({
+  teamColumn,
+}: {
+  teamColumn: RefObject<HTMLElement | null>;
+}) {
   const { t } = useTranslation();
   const isSmDown = useIsSmDown();
   const [view, setView] = useState<View>("defence");
+  const checklistTab = useChecklistTab(teamColumn, !isSmDown);
+  // From tablets up, the views there are a switch for
+  const shown =
+    view === "matrix" ? "matrix"
+    : view === "checklist" && checklistTab.ownTab ? "checklist"
+    : "defence";
   // Kept here so that the matrix returns to the view it was left on
   const [matrixKind, setMatrixKind] = useState<MatrixKind>("defence");
 
@@ -54,9 +67,20 @@ export default function TeamStats() {
   const switches: { view: View; label: string; Icon: typeof ShieldIcon }[] = [
     { view: "defence", label: t.stats.teamStats, Icon: BarChartIcon },
     { view: "matrix", label: t.stats.matrixAnalysis, Icon: GridOnIcon },
+    ...(checklistTab.ownTab ?
+      [
+        {
+          view: "checklist" as const,
+          label: t.stats.teamChecklist,
+          Icon: ChecklistIcon,
+        },
+      ]
+    : []),
   ];
   const title =
-    !isSmDown && view === "matrix" ? t.stats.matrixAnalysis : t.stats.teamStats;
+    isSmDown || shown === "defence" ? t.stats.teamStats
+    : shown === "matrix" ? t.stats.matrixAnalysis
+    : t.stats.teamChecklist;
 
   const matrix = (
     <Box role="region" aria-label={t.stats.matrixAnalysis}>
@@ -73,25 +97,27 @@ export default function TeamStats() {
     <Box
       sx={{
         display: "flex",
+        // A long title on a tablet's narrow column goes above the switch
+        flexWrap: "wrap",
         justifyContent: "center",
         alignItems: "center",
-        gap: 1.5,
+        columnGap: 1.5,
         px: 1,
         py: 0.5,
         flexShrink: 0,
-        minHeight: { sm: 48, md: 64 },
-        boxSizing: "border-box",
-        mb: { sm: 1, md: 3 },
+        // No taller than its title, so it sits close to the cards under it
+        mb: { sm: 1 },
       }}
     >
-      <Typography variant="h6" component="h2">
+      {/* A size above the analyses' own headings, where they show under it */}
+      <Typography variant={isSmDown ? "h6" : "h5"} component="h2">
         {title}
       </Typography>
       {!isSmDown && (
         <ToggleButtonGroup
           exclusive
           size="small"
-          value={view === "matrix" ? "matrix" : "defence"}
+          value={shown}
           onChange={(_event, value: View | null) => {
             if (value) setView(value);
           }}
@@ -155,6 +181,7 @@ export default function TeamStats() {
 
   return (
     <Box
+      ref={checklistTab.panel}
       component="section"
       aria-label={t.stats.teamAnalysis}
       sx={{
@@ -165,28 +192,43 @@ export default function TeamStats() {
       {header}
       <Box
         sx={{
+          position: "relative",
           display: "flex",
           flexDirection: "column",
           gap: 3,
         }}
       >
-        {view === "matrix" ?
-          <Paper>{matrix}</Paper>
-        : <>
-            <Paper sx={{ pb: 1 }}>{statSection("typeDefence")}</Paper>
-            <Paper sx={{ pb: 1 }}>{statSection("typeCoverage")}</Paper>
-            <Paper sx={{ p: 1 }}>
-              <Typography
-                variant="h6"
-                component="h3"
-                sx={{ textAlign: "center" }}
-              >
-                {t.stats.teamChecklist}
-              </Typography>
-              {checklist}
-            </Paper>
-          </>
-        }
+        {shown === "matrix" && <Paper>{matrix}</Paper>}
+        {shown === "checklist" && <Paper sx={{ p: 1 }}>{checklist}</Paper>}
+        {/* On the other views the stats stay laid out, unseen, where they would be: their
+            height decides whether the checklist has a view of its own */}
+        <Box
+          ref={checklistTab.stats}
+          sx={[
+            { display: "flex", flexDirection: "column", gap: 3 },
+            shown !== "defence" && {
+              position: "absolute",
+              top: 0,
+              insetInline: 0,
+              visibility: "hidden",
+            },
+          ]}
+        >
+          <Paper sx={{ pb: 1 }}>{statSection("typeDefence")}</Paper>
+          <Paper sx={{ pb: 1 }}>{statSection("typeCoverage")}</Paper>
+        </Box>
+        {shown === "defence" && !checklistTab.ownTab && (
+          <Paper sx={{ p: 1 }}>
+            <Typography
+              variant="h6"
+              component="h3"
+              sx={{ textAlign: "center" }}
+            >
+              {t.stats.teamChecklist}
+            </Typography>
+            {checklist}
+          </Paper>
+        )}
       </Box>
     </Box>
   );

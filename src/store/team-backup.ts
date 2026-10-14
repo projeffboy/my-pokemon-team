@@ -1,3 +1,5 @@
+import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
+import { gameFormat } from "@/shared/formats";
 import {
   MOVE_KEYS,
   STAT_KEYS,
@@ -80,19 +82,20 @@ function isSavedTeam(value: unknown): value is SavedTeam {
   const filters = ["type", "region", "ability", "moves"];
   return (
     isRecord(value) &&
-    hasFields(value, [
-      "id",
-      "name",
-      "generation",
-      "format",
-      "filters",
-      "team",
-    ]) &&
+    hasFields(
+      value,
+      ["id", "name", "generation", "format", "filters", "team"],
+      ["generationProfile"],
+    ) &&
     typeof value.id === "string" &&
     value.id.length > 0 &&
     typeof value.name === "string" &&
     isGeneration(value.generation) &&
     typeof value.format === "string" &&
+    (value.generationProfile === undefined ||
+      (value.generationProfile === COMBINED_GENERATIONS_PROFILE &&
+        value.generation === 9 &&
+        !gameFormat(value.format))) &&
     isRecord(value.filters) &&
     hasFields(value.filters, filters) &&
     filters.every(

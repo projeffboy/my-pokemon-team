@@ -1,4 +1,5 @@
 import { parseTeamText, serializeTeam } from "@/store/team-text";
+import { learnsetsReady } from "@/store/learnsets";
 import { fromBase64Url, toBase64Url } from "@/app/shared/base64url";
 import {
   encodeTeamForUrl,
@@ -8,6 +9,8 @@ import {
 import { autorun } from "mobx";
 import { createTeam } from "./shared/team";
 import { test, expect } from "./fixtures";
+import { hiddenPowerType } from "@/shared/hidden-power";
+import { dvGender, getDv, isShinyDv } from "@/shared/generation-rules";
 
 const reuniclusText = `Reuniclus @ Life Orb
 Ability: Magic Guard
@@ -346,4 +349,169 @@ test.describe("team URL encoding", () => {
     importTeamFromUrlParameter(oversizedParameter);
     expect(store.team[0].name).toBe("reuniclus");
   });
+});
+test("omitted abilities and Hidden Power IVs use the imported generation", async ({
+  store,
+}) => {
+  store.currentTeam.generation = 6;
+  expect(parseTeamText("Gengar", 6)[0]?.ability).toBe("Levitate");
+  expect(parseTeamText("Gengar", 2)[0]?.ability).toBe("");
+  const imported = parseTeamText("Raikou\n- Hidden Power Ice", 6)[0];
+  expect(imported?.move1).toBe("hiddenpowerice");
+  expect(hiddenPowerType(imported, 6)).toBe("ice");
+  const explicit = parseTeamText(
+    "Raikou\nIVs: 31 HP / 31 Atk\n- Hidden Power Ice",
+    6,
+  )[0];
+  expect(explicit.ivs).toBeUndefined();
+  expect(hiddenPowerType(explicit, 6)).toBe("dark");
+  expect(
+    parseTeamText("Raikou\nIVs: 0 Atk\n- Hidden Power Ice", 6)[0]?.ivs,
+  ).toEqual({ atk: 0 });
+});
+
+for (const details of [
+  { name: "Gengar", shiny: true },
+  { name: "Gengar (F)", gender: "F" },
+  { name: "Gengar (F)", shiny: true, gender: "F" },
+] as const) {
+  test(`Gen 2 omitted Hidden Power DVs preserve ${JSON.stringify(details)}`, () => {
+    const text = `${details.name}\n${"shiny" in details ? "Shiny: Yes\n" : ""}- Hidden Power Grass`;
+    const member = parseTeamText(text, 2)[0];
+    if (!member) throw new Error("Missing pokemon");
+    expect(member.shiny ?? false).toBe("shiny" in details);
+    expect(isShinyDv(member)).toBe("shiny" in details);
+    if ("gender" in details) expect(member.gender).toBe(details.gender);
+    if ("gender" in details) expect(dvGender(member)).toBe(details.gender);
+    expect(getDv(member, "atk")).toBe("gender" in details ? 6 : 14);
+    for (const stat of ["def", "spe", "spa"] as const)
+      expect(getDv(member, stat)).toBe(
+        "shiny" in details ? 10
+        : stat === "def" ? 14
+        : 15,
+      );
+    expect(hiddenPowerType(member, 2)).toBe("grass");
+    expect(parseTeamText(serializeTeam([member]), 2)[0]).toEqual(member);
+  });
+}
+
+test("incompatible Gen 2 Hidden Power constraints retain explicit imported details", () => {
+  for (const text of [
+    "Gengar\nShiny: Yes\n- Hidden Power Fire",
+    "Chikorita (F)\nShiny: Yes\n- Hidden Power Grass",
+  ]) {
+    const member = parseTeamText(text, 2)[0];
+    expect(member.shiny).toBe(true);
+    if (text.includes("(F)")) expect(member.gender).toBe("F");
+    expect(member.ivs).toBeUndefined();
+  }
+});
+
+test("compatible omitted Gen 2 shiny DVs stay implicit", () => {
+  const member = parseTeamText(
+    "Gengar\nShiny: Yes\n- Hidden Power Dragon",
+    2,
+  )[0];
+  expect(member.shiny).toBe(true);
+  expect(member.ivs).toBeUndefined();
+  expect(hiddenPowerType(member, 2)).toBe("dragon");
+});
+
+test("Gen 2 explicit IVs prevent Hidden Power inference from changing details", () => {
+  for (const ivs of ["31 HP / 31 Atk", "13 Atk / 21 Def / 21 SpA / 21 Spe"]) {
+    const member = parseTeamText(
+      `Gengar (F)\nShiny: Yes\nIVs: ${ivs}\n- Hidden Power Grass`,
+      2,
+    )[0];
+    expect(member.gender).toBe("F");
+    expect(member.shiny).toBe(true);
+    expect(member.ivs).toEqual(
+      ivs.startsWith("31") ? undefined : { atk: 13, def: 21, spa: 21, spe: 21 },
+    );
+  }
+});
+
+test("canonical Showdown Gigantamax metadata selects an existing forme", async () => {
+  await learnsetsReady;
+  for (const [species, name] of [
+    ["Charizard", "charizardgmax"],
+    ["Urshifu-Rapid-Strike", "urshifurapidstrikegmax"],
+  ]) {
+    const team = parseTeamText(`${species}\nGigantamax: Yes`, 8);
+    expect(team[0].name).toBe(name);
+    expect(parseTeamText(serializeTeam(team), 8)[0].name).toBe(name);
+  }
+  expect(parseTeamText("Rotom\nGigantamax: Yes", 8)[0].name).toBe("rotom");
+  expect(parseTeamText("Charizard\nGigantamax: No", 8)[0].name).toBe(
+    "charizard",
+  );
+});
+
+test("Frustration defaults happiness to zero without overriding explicit values", async () => {
+  await learnsetsReady;
+  const text = "Lopunny\nAbility: Cute Charm\n- Frustration";
+  expect(parseTeamText(text, 7)[0].happiness).toBe(0);
+  for (const happiness of [0, 70, 255]) {
+    for (const input of [
+      `Lopunny\nHappiness: ${happiness}\n- Frustration`,
+      `${text}\nHappiness: ${happiness}`,
+    ])
+      expect(parseTeamText(input, 7)[0].happiness).toBe(
+        happiness === 255 ? undefined : happiness,
+      );
+  }
+  expect(parseTeamText("Lopunny\n- Return", 7)[0].happiness).toBeUndefined();
+  expect(parseTeamText(text, 1)[0].happiness).toBeUndefined();
+  const team = parseTeamText(text, 7);
+  expect(parseTeamText(serializeTeam(team), 7)[0].happiness).toBe(0);
+});
+
+test("Showdown separator lines start another set without consuming a move slot", async () => {
+  await learnsetsReady;
+  for (const separator of ["\n---\n", "\n\n---\n\n", "\r\n --- \r\n"]) {
+    const team = parseTeamText(
+      `Pikachu\n- Thunderbolt${separator}Raichu\n- Surf`,
+    );
+    expect(team[0]).toMatchObject({
+      name: "pikachu",
+      move1: "thunderbolt",
+      move2: "",
+      move3: "",
+    });
+    expect(team[1]).toMatchObject({ name: "raichu", move1: "surf" });
+  }
+  expect(parseTeamText("Pikachu\n-\n- Thunderbolt")[0]).toMatchObject({
+    move1: "",
+    move2: "thunderbolt",
+  });
+});
+
+test("legacy Showdown aliases and metadata case preserve set fields", async () => {
+  await learnsetsReady;
+  const team = parseTeamText(
+    "Gyarados\nTrait: Moxie\nAdamant nature\n~ Waterfall\nMove: Earthquake",
+  );
+  expect(team[0]).toMatchObject({
+    name: "gyarados",
+    ability: "Moxie",
+    nature: "adamant",
+    move1: "waterfall",
+    move2: "earthquake",
+  });
+  expect(
+    parseTeamText("Gyarados\ntrait: Moxie\nAdamant NATURE\nmove: Waterfall")[0],
+  ).toMatchObject({ ability: "Moxie", nature: "adamant", move1: "waterfall" });
+});
+
+test("old Frustration share links keep their original default happiness", ({
+  store,
+}) => {
+  const text = "Lopunny\nAbility: Cute Charm\n- Frustration";
+  importTeamFromUrlParameter(toBase64Url(text));
+  expect(store.team[0].happiness).toBeUndefined();
+  expect(parseTeamText(text, 7)[0].happiness).toBe(0);
+  const exported = serializeTeam(store.team);
+  expect(exported).toContain("Happiness: 255");
+  expect(parseTeamText(exported, 7)[0].happiness).toBeUndefined();
+  expect(serializeTeam(parseTeamText(exported, 7))).toBe(exported);
 });

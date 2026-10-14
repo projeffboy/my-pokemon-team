@@ -109,7 +109,7 @@ test("nickname entry follows the selected language without renaming an existing 
 
 for (const game of [
   { query: "gen=3", max: 10 },
-  { query: "game=Pokemon+Champions+%28M-C%29", max: 12 },
+  { query: "game=champions", max: 12 },
 ]) {
   test(`exceeding the nickname limit notifies the player for ${game.query}`, async ({
     page,

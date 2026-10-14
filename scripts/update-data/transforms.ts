@@ -2,6 +2,8 @@
 import {
   POKEMON_TYPES,
   type Formats,
+  type GenerationTransferData,
+  type Generation,
   type GameData,
   type GameVariantData,
   type BaseStats,
@@ -76,7 +78,7 @@ export function pick<T extends object>(
 ): Partial<T> {
   return Object.fromEntries(
     keys
-      .filter(key => entry[key] !== undefined)
+      .filter(key => entry[key] !== undefined && entry[key] !== null)
       .map(key => [key, typeof entry[key] === "function" ? true : entry[key]]),
   ) as Partial<T>;
 }
@@ -129,7 +131,23 @@ export const projections = {
       "onModifyMove",
       "status",
       "boosts",
+      "target",
+      "forceSwitch",
     ]),
+    ...(isRecord(entry.self) &&
+      isRecord(entry.self.boosts) && {
+        selfBoosts: entry.self.boosts as Record<string, number>,
+      }),
+    ...(isRecord(entry.selfBoost) &&
+      isRecord(entry.selfBoost.boosts) && {
+        selfBoosts: entry.selfBoost.boosts as Record<string, number>,
+      }),
+    ...(isRecord(entry.secondary) &&
+      entry.secondary.chance === 100 &&
+      isRecord(entry.secondary.self) &&
+      isRecord(entry.secondary.self.boosts) && {
+        selfBoosts: entry.secondary.self.boosts as Record<string, number>,
+      }),
     ...(isRecord(entry.secondary) && {
       secondary: pick<NonNullable<MoveEntry["secondary"]>>(entry.secondary, [
         "chance",
@@ -139,16 +157,37 @@ export const projections = {
     ...(isRecord(entry.flags) &&
       !!entry.flags.sound && { flags: { sound: 1 } }),
   }),
-  Items: (entry: ShowdownEntry): Items[string] => ({
-    ...pick<Items[string]>(entry, ["name", "spritenum", "onDrive", "onMemory"]),
-    ...(!entry.zMove && pick<Items[string]>(entry, ["onPlate"])),
-    ...(isRecord(entry.naturalGift) && {
-      naturalGift: pick<NonNullable<Items[string]["naturalGift"]>>(
-        entry.naturalGift,
-        ["type"],
-      ),
-    }),
-  }),
+  Items: (entry: ShowdownEntry): Items[string] => {
+    const defaults =
+      entry.onMemory ? 50
+      : entry.megaStone ? 80
+      : entry.onDrive ? 70
+      : entry.onPlate ? 90
+      : entry.isBerry ? 10
+      : undefined;
+    return {
+      ...pick<Items[string]>(entry, [
+        "name",
+        "spritenum",
+        "onPlate",
+        "onDrive",
+        "onMemory",
+        "naturalGift",
+        "ignoreKlutz",
+        "megaStone",
+        "zMove",
+      ]),
+      ...(defaults !== undefined ? { fling: { basePower: defaults } }
+      : isRecord(entry.fling) ?
+        {
+          fling: pick<NonNullable<Items[string]["fling"]>>(entry.fling, [
+            "basePower",
+            "status",
+          ]) as NonNullable<Items[string]["fling"]>,
+        }
+      : {}),
+    };
+  },
   Formats: (entry: ShowdownEntry): Formats[string] =>
     pick<Formats[string]>(entry, ["tier", "doublesTier"]),
   Natures: (entry: ShowdownEntry): Natures[string] =>
@@ -229,6 +268,51 @@ export interface MoveSearch {
     moves: string[],
     set: { ability: unknown; item: unknown; moves: string[] },
   ): boolean;
+}
+
+export function historicalViableInputs(
+  generation: Generation,
+  pokedex: ShowdownTable,
+  learnsets: Learnsets,
+  availability: GenerationTransferData,
+  past: PastGeneration | undefined,
+) {
+  const bit = 1 << (generation - 1);
+  const species = Object.fromEntries(
+    Object.entries(pokedex).flatMap(([id, entry]) => {
+      if (!((availability.pokemon[id]?.generations ?? 0) & bit)) return [];
+      const abilities = generation < 3 ? [""] : past?.abilities?.[id];
+      return [
+        [
+          id,
+          {
+            ...pokedex[toId(entry.baseSpecies)],
+            ...entry,
+            ...(past?.pokemon[id] && { types: past.pokemon[id] }),
+            ...(past?.baseStats?.[id] && { baseStats: past.baseStats[id] }),
+            ...(abilities && {
+              abilities: Object.fromEntries(
+                abilities.map((ability, i) => [i, ability]),
+              ),
+            }),
+          },
+        ],
+      ];
+    }),
+  );
+  const learnableMoves = new Set(Object.values(learnsets).flat());
+  const historicalLearnsets = Object.fromEntries(
+    Object.entries(learnsets).map(([id, moves]) => [
+      id,
+      (moves.includes("sketch") ?
+        Object.keys(availability.pokemon[id]?.moves ?? {}).filter(move =>
+          learnableMoves.has(move),
+        )
+      : moves
+      ).filter(move => !!((availability.pokemon[id]?.moves[move] ?? 0) & bit)),
+    ]),
+  );
+  return { pokedex: species, learnsets: historicalLearnsets };
 }
 
 // A move is viable if any pokemon that learns it, with any of its abilities and required
@@ -420,6 +504,32 @@ const abilityGeneration = (ability: ShowdownEntry = {}) => {
   );
   return index < 0 ? 0 : 9 - index;
 };
+
+// Complete projections replace modern properties, including fields removed by a mod.
+export function projectHistoricalMoves(
+  latest: ShowdownTable,
+  mods: Partial<Record<number, ModData>>,
+  ids = Object.keys(latest),
+): Partial<Record<keyof PastGenerations, Moves>> {
+  const current = projectTable("Moves", latest);
+  const past: Partial<Record<keyof PastGenerations, Moves>> = {};
+  let parent = latest;
+  for (let gen = 8; gen >= 1; gen--) {
+    parent = resolveMod(parent, mods[gen]?.moves);
+    const projected = projectTable("Moves", parent);
+    const changed = Object.fromEntries(
+      ids.flatMap(id => {
+        const entry = projected[id];
+        return entry && JSON.stringify(entry) !== JSON.stringify(current[id]) ?
+            [[id, entry]]
+          : [];
+      }),
+    );
+    if (Object.keys(changed).length)
+      past[gen as keyof PastGenerations] = changed;
+  }
+  return past;
+}
 
 // Each past generation's types, from Showdown's mods, which are listed newest first
 export function projectPastGenerations(

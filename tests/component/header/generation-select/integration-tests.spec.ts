@@ -162,7 +162,7 @@ for (const incompatible of [false, true]) {
   }) => {
     if (incompatible) {
       await page.goto(
-        `/?team=${Buffer.from(transferText).toString("base64url")}`,
+        `/?gen=9&team=${Buffer.from(transferText).toString("base64url")}`,
       );
       await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Slowbro");
     } else {
@@ -214,7 +214,7 @@ for (const incompatible of [false, true]) {
 for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
   test(`generation transfer: ${action}`, async ({ page }) => {
     await page.goto(
-      `/?team=${Buffer.from(transferText).toString("base64url")}`,
+      `/?gen=9&team=${Buffer.from(transferText).toString("base64url")}`,
       { waitUntil: "domcontentloaded" },
     );
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Slowbro");
@@ -1126,4 +1126,93 @@ test("generation transfer: expands game names when the endpoint has room", async
     content: ".MuiDialog-root p[title] { font-size: 20px; }",
   });
   await expect(target).toHaveText("GSC");
+});
+
+test("generation transfer explains an impossible shiny Hidden Power type before applying it", async ({
+  page,
+}) => {
+  const text = "Gyarados\nShiny: Yes\nIVs: 30 Atk / 30 Def\n- Hidden Power Ice";
+  await page.goto(`/?gen=3&team=${Buffer.from(text).toString("base64url")}`);
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  await page.locator('[role="option"][data-value="2"]').press("Enter");
+  const dialog = page.getByRole("dialog");
+  await expect(
+    dialog.getByRole("group", { name: "Gyarados", exact: true }),
+  ).toContainText("Hidden Power Ice → Hidden Power Dragon");
+  await dialog
+    .getByRole("button", { name: "Update existing team", exact: true })
+    .click();
+  await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
+    "Hidden Power Dragon",
+  );
+  await expect
+    .poll(() =>
+      Buffer.from(
+        new URL(page.url()).searchParams.get("team") ?? "",
+        "base64url",
+      ).toString(),
+    )
+    .toContain("Shiny: Yes");
+});
+
+test("generation transfer displays extra Hidden Power DV adjustments", async ({
+  page,
+}) => {
+  await page.goto(
+    `/?gen=3&team=${Buffer.from("Unown\n- Hidden Power Fire").toString("base64url")}`,
+  );
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Unown");
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  await page.locator('[role="option"][data-value="2"]').press("Enter");
+  const dialog = page.getByRole("dialog");
+  const adjustments = dialog.getByRole("group", { name: "Unown", exact: true });
+  await expect(adjustments).toContainText("Atk: 15 DVs → 14 DVs");
+  await expect(adjustments).toContainText("Def: 15 DVs → 12 DVs");
+  await dialog
+    .getByRole("button", { name: "Update existing team", exact: true })
+    .click();
+  await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
+    "Hidden Power Fire",
+  );
+});
+
+test("keyboard users can scroll the complete generation-transfer warning", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 800, height: 600 });
+  const text = [
+    "Rhydon",
+    "Dragonite",
+    "Scizor",
+    "Umbreon",
+    "Smeargle",
+    "Porygon2",
+  ]
+    .map(
+      name =>
+        `${name} @ Assault Vest\nAbility: Pressure\nTera Type: Fairy\nEVs: 252 HP / 252 Atk / 4 Spe\nAdamant Nature\n- Tera Blast\n- Trailblaze\n- Body Press\n- Knock Off`,
+    )
+    .join("\n\n");
+  await page.goto(`/?team=${Buffer.from(text).toString("base64url")}`);
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Rhydon");
+  await page.getByRole("combobox", { name: "Generation", exact: true }).click();
+  await page
+    .getByRole("option")
+    .filter({ hasText: "Gen 2 · Gold Silver Crystal" })
+    .click();
+  const area = page.getByRole("dialog").locator(".MuiDialogContent-root");
+  await expect(area).toHaveAttribute("tabindex", "0");
+  for (
+    let i = 0;
+    i < 5 &&
+    !(await area.evaluate(element => element === document.activeElement));
+    i++
+  )
+    await page.keyboard.press("Tab");
+  await expect(area).toBeFocused();
+  await page.keyboard.press("PageDown");
+  await expect
+    .poll(() => area.evaluate(element => element.scrollTop))
+    .toBeGreaterThan(0);
 });

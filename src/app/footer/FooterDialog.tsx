@@ -11,6 +11,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import ErrorBoundary from "@/app/shared/ErrorBoundary";
 
 // A footer button that opens a dialog with the given content and a Go Back action.
 // The content is a lazy component, so its code loads the first time the dialog opens.
@@ -41,9 +42,11 @@ export default function FooterDialog({
       >
         <DialogTitle id={titleId}>{title}</DialogTitle>
         <DialogContent>
-          <Suspense>
-            <Content />
-          </Suspense>
+          <ErrorBoundary>
+            <Suspense>
+              <Content />
+            </Suspense>
+          </ErrorBoundary>
         </DialogContent>
         <DialogActions>
           <Button onClick={toggle}>{t.goBack}</Button>

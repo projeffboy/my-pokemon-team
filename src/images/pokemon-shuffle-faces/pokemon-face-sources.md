@@ -9,3 +9,10 @@ Downloaded on October 9, 2026. The original PNG files retain their artwork, dime
 These are official Pokémon game images. The source pages identify them as copyrighted game imagery and label their use as fair use; they are not freely licensed artwork. Pokémon © Nintendo, Creatures Inc., and GAME FREAK inc.
 
 The download sources for the older Venusaur and Charizard face images in this directory were not recorded.
+
+The Old website button shows the old website's two header faces, restored byte for byte from [commit 2d2bff3](https://github.com/projeffboy/my-pokemon-team/commit/2d2bff34afc852e7413c979ed4d10ee1f2af7f03):
+
+- `landorus-face.png`: the original `src/landorus-face.png`, Pokemon Shuffle artwork.
+- `ogerpon-teal-mask-by-jormxdos.png`: the original `src/ogerpon-teal-mask-by-jormxdos.png`, Shuffle-style fan art of Teal Mask Ogerpon by JormXDOS.
+
+The button draws each face 24px tall, so it imports `landorus-face-96.png` and `ogerpon-teal-mask-by-jormxdos-96.png`: the same artwork scaled to fit 96px with `sips -Z 96`, four times the drawn size, which stays sharp on high-density screens at about a tenth of the originals' size. The originals stay here unshipped, as nothing imports them. Remake the copies from them if the button's faces ever grow.

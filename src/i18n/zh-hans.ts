@@ -30,10 +30,29 @@ const zhHans: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即将推出",
+  combinedGenerations: {
+    label: "第6–9世代",
+    short: "第6–9世代",
+    description: "合并第6–9世代所有游戏的选项",
+  },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "语言",
   languageFailed: "无法加载语言，请重试。",
+  error: {
+    title: "出了点问题",
+    description: "请重新加载页面重试。",
+    reload: "重新加载",
+  },
+  siteVersion: {
+    button: "旧版网站",
+    short: "旧版网站",
+    title: "切换到旧版网站？",
+    description:
+      "当前队伍不会转移到旧版网站。已在此保存的队伍将保留在这个版本中。",
+    go: "前往旧版网站",
+    goLong: "前往旧版网站",
+  },
   feedback: {
     button: "发送反馈",
     title: "发送反馈",
@@ -46,6 +65,7 @@ const zhHans: Messages = {
     imageUnreadable: "无法读取该图片。请尝试 PNG 或 JPEG。",
     imagesTooLarge: "图片总大小超出限制，请先删除一张。",
     email: "你的邮箱（可选）",
+    emailInvalid: "请输入有效的电子邮箱地址，或留空。",
     emailHelper: "仅在需要回复时填写",
     caption: "反馈",
     send: "发送",
@@ -69,6 +89,7 @@ const zhHans: Messages = {
   // 队伍栏
   team: {
     teams: "队伍",
+    noMatchingPokemon: "没有符合当前筛选条件的宝可梦。请更改筛选条件后重试。",
     randomizedTeam: "已随机组队",
     randomizedPokemon: "已随机选择宝可梦",
     randomizedPokemonDetails: (details: string) =>
@@ -98,20 +119,16 @@ const zhHans: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `宝可梦 ${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first}和${second}`,
-    moreTools: "更多队伍工具",
-    fewerTools: "收起队伍工具",
     advancedMode: "高级",
-    more: "更多",
-    less: "收起",
     filters: "筛选",
     sort: "排序",
-    random: "随机",
-    randomize: "随机生成",
     randomizePokemon: "随机选择宝可梦",
     randomizeDetails: (details: string) => `随机选择${details}`,
     randomFor: (slot: number) => `为栏位 ${slot} 随机选择宝可梦`,
     advanced: "更多详情",
     advancedFor: (slot: number) => `栏位 ${slot} 的更多详情`,
+    details: "详情",
+    showMoveTypes: "显示招式属性",
     about: (pokemon: string) => `关于${pokemon}`,
     dragHint: "长按拖动即可调整顺序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他栏位`,
@@ -527,6 +544,7 @@ const zhHans: Messages = {
     infographicCaption: "同样适用于第7至9世代",
   },
   credits: {
+    madeBy: "制作：{name}",
     showdown:
       "感谢 Pokemon Showdown 的各位慷慨地允许我使用他们全部的宝可梦图像、图标和数据。绝对不可或缺！",
     alsoThanks: "同时感谢",
@@ -553,11 +571,11 @@ const zhHans: Messages = {
     teamsAnswer:
       "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
     teamsAnswer2:
-      "“更多”按钮会显示队伍工具、“筛选”和“排序”按钮以及“更多详情”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于“管理队伍”菜单中。",
+      "“更多”按钮会显示队伍工具、“筛选”、“排序”和“更多详情”。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
     generations: "世代",
     generationsQuestion: "世代会改变什么？",
     generationsAnswer:
-      "顶部选择的世代只会列出该世代中存在的宝可梦和形态：超级进化只在第6、7、9世代，超极巨化形态只在第8世代，以此类推。其他一切保持最新：招式、特性、属性相克表和格式都来自最新的游戏，所以旧世代的队伍可能会学会当时学不了的招式。",
+      "顶部选择的世代和游戏决定所提供的宝可梦、形态、招式、道具和个体详情。旧世代队伍使用该世代的特性、种族值和属性相克表。切换游戏会预览所需的队伍改动，你可以取消、更新队伍或创建副本。",
     advanced: "更多详情",
     advancedQuestion: "昵称、等级、性格、努力值和个体值",
     advancedAnswer:

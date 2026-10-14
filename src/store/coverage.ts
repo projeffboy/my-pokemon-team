@@ -1,12 +1,13 @@
 import { type PokemonType, type ReadonlyTeam } from "@/types";
-import { pokemonTypes } from "@/shared/pokedex";
 import { typesIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import {
   typeAgainstPokemon,
   moveType,
   isMoveStrongEnough,
+  isTypelessMove,
   moveAgainstType,
+  effectivePokemonTypes,
 } from "./shared/effectiveness";
 
 export function createTypeScores(): Record<PokemonType, number> {
@@ -60,21 +61,35 @@ export function calculateTypeCoverage(
 
   for (const pokemon of team) {
     const { name, ability, item } = pokemon;
-    const typesUsed = new Set<PokemonType | undefined>();
+    const typesUsed = new Map<PokemonType | undefined, Set<PokemonType>>();
     const specialMovesUsed = new Set<string>();
 
     const moves = [pokemon.move1, pokemon.move2, pokemon.move3, pokemon.move4];
     for (const move of moves) {
-      if (!move || !isMoveStrongEnough(move, generation, format, item, ability))
+      if (
+        !move ||
+        isTypelessMove(move, generation) ||
+        !isMoveStrongEnough(
+          move,
+          item,
+          ability,
+          generation,
+          name,
+          pokemon.happiness,
+          pokemon,
+          format,
+        )
+      )
         continue;
 
-      const type = moveType(move, name, ability, generation, format, item);
+      const type = moveType(move, name, ability, generation, item, format);
       const isSpecialMove = move === "freezedry" || move === "flyingpress";
-      if (isSpecialMove ? specialMovesUsed.has(move) : typesUsed.has(type)) {
-        continue;
-      }
+      if (isSpecialMove && specialMovesUsed.has(move)) continue;
+      const targetsUsed = typesUsed.get(type) ?? new Set<PokemonType>();
 
-      const hasStab = type && pokemonTypes(name, generation).includes(type);
+      const hasStab =
+        type &&
+        effectivePokemonTypes(name, ability, item, generation).includes(type);
       for (const target of typesIn(generation)) {
         if (
           moveAgainstType(
@@ -83,18 +98,22 @@ export function calculateTypeCoverage(
             name,
             ability,
             generation,
-            format,
             item,
+            pokemon.happiness,
+            pokemon,
+            format,
           ) === -1
         ) {
-          scores[target] += hasStab ? 2 : 1;
+          if (isSpecialMove || !targetsUsed.has(target))
+            scores[target] += hasStab ? 2 : 1;
+          if (!isSpecialMove) targetsUsed.add(target);
         }
       }
 
       if (isSpecialMove) {
         specialMovesUsed.add(move);
       } else {
-        typesUsed.add(type);
+        typesUsed.set(type, targetsUsed);
       }
     }
   }

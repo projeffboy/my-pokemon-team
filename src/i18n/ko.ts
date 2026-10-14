@@ -45,10 +45,29 @@ const ko: Messages = {
   },
   generationSelect: "세대",
   comingSoon: "출시 예정",
+  combinedGenerations: {
+    label: "6–9세대",
+    short: "6–9세대",
+    description: "6–9세대 모든 게임의 선택지를 통합",
+  },
   championsGeneration: "9세대 · Champions",
   championsGenerationShort: "9세대 (Champions)",
   language: "언어",
   languageFailed: "언어를 불러오지 못했습니다. 다시 시도해 주세요.",
+  error: {
+    title: "문제가 발생했습니다",
+    description: "페이지를 새로고침해 다시 시도하세요.",
+    reload: "새로고침",
+  },
+  siteVersion: {
+    button: "이전 사이트",
+    short: "이전 사이트",
+    title: "이전 사이트로 이동할까요?",
+    description:
+      "현재 팀은 이전 사이트로 옮겨지지 않습니다. 여기에 이미 저장한 팀은 이 버전에 그대로 남습니다.",
+    go: "이전 사이트로 이동",
+    goLong: "이전 사이트로 이동",
+  },
   feedback: {
     button: "피드백 보내기",
     title: "피드백 보내기",
@@ -62,6 +81,7 @@ const ko: Messages = {
     imagesTooLarge:
       "이미지가 너무 커서 함께 보낼 수 없습니다. 먼저 하나를 삭제하세요.",
     email: "이메일 (선택)",
+    emailInvalid: "올바른 이메일 주소를 입력하거나 비워 두세요.",
     emailHelper: "답장을 원할 때만",
     caption: "피드백",
     send: "보내기",
@@ -84,6 +104,8 @@ const ko: Messages = {
 
   team: {
     teams: "팀 목록",
+    noMatchingPokemon:
+      "현재 필터와 일치하는 포켓몬이 없습니다. 필터를 변경하고 다시 시도하세요.",
     randomizedTeam: "팀을 랜덤으로 채웠습니다",
     randomizedPokemon: "포켓몬을 랜덤으로 골랐습니다",
     randomizedPokemonDetails: (details: string) =>
@@ -114,20 +136,16 @@ const ko: Messages = {
       `포켓몬 ${slot} (${pokemon ?? "비어 있음"})`,
     slotPair: (first: string, second: string) =>
       `${josa(first, "과", "와")} ${second}`,
-    moreTools: "팀 도구 더 보기",
-    fewerTools: "팀 도구 접기",
     advancedMode: "고급",
-    more: "더 보기",
-    less: "접기",
     filters: "필터",
     sort: "정렬",
-    random: "랜덤",
-    randomize: "무작위 선택",
     randomizePokemon: "포켓몬 무작위 선택",
     randomizeDetails: (details: string) => `${details} 무작위 선택`,
     randomFor: (slot: number) => `슬롯 ${slot}에 랜덤 포켓몬 넣기`,
     advanced: "추가 세부 정보",
     advancedFor: (slot: number) => `슬롯 ${slot}의 추가 세부 정보`,
+    details: "상세",
+    showMoveTypes: "기술 타입 표시",
     about: (pokemon: string) => `${pokemon} 정보`,
     dragHint: "길게 눌러 끌어서 순서 변경",
     moveToSlot: (pokemon: string) => `${pokemon}을(를) 다른 슬롯으로 이동`,
@@ -551,6 +569,7 @@ const ko: Messages = {
     infographicCaption: "7~9세대에도 적용됩니다",
   },
   credits: {
+    madeBy: "제작: {name}",
     showdown:
       "Pokemon Showdown 여러분이 스프라이트, 아이콘, 포켓몬 데이터를 모두 사용하도록 너그럽게 허락해 주셨습니다. 정말 없어서는 안 될 존재입니다!",
     alsoThanks: "다음 분들께도 감사드립니다",
@@ -577,11 +596,11 @@ const ko: Messages = {
     teamsAnswer:
       "팀은 이 브라우저에 저장되므로 다시 방문해도 그대로 있지만, 다른 기기에서는 볼 수 없습니다. 팀 목록 버튼이 팀을 나열하며, 각 팀의 메뉴에서 이름 변경, 세대와 포맷 설정, 복제, 공유, 삭제를 할 수 있습니다. 전체 내보내기는 모든 팀을 Showdown 텍스트로 내려받고, 팀 가져오기가 그 파일을 다시 읽어 들입니다. 주소창에는 항상 현재 팀이 들어 있으므로, 주소를 복사하거나 팀 공유 버튼을 누르면 팀을 공유할 수 있습니다.",
     teamsAnswer2:
-      "더 보기 버튼을 누르면 팀 도구, 필터와 정렬 버튼, 추가 세부 정보 버튼이 나타납니다. 실행 취소와 다시 실행으로 현재 팀의 변경 내역을 오갈 수 있으며, 휴대폰과 태블릿에서는 팀 관리 메뉴에 있습니다.",
+      "더 보기 버튼은 팀 도구, 필터, 정렬, 추가 세부 정보를 표시합니다. 실행 취소와 다시 실행으로 현재 팀의 변경 내역을 오갈 수 있으며, 휴대폰과 태블릿에서는 포켓몬 슬롯 탭 위에 있습니다.",
     generations: "세대",
     generationsQuestion: "세대를 바꾸면 무엇이 달라지나요?",
     generationsAnswer:
-      "상단에서 고른 세대에 존재했던 포켓몬과 폼만 목록에 나타납니다. 메가진화는 6, 7, 9세대에, 거다이맥스 폼은 8세대에 나오는 식입니다. 그 밖의 모든 것은 최신 기준입니다. 기술, 특성, 타입 상성표, 포맷은 최신 게임을 따르므로, 옛 세대의 팀이 당시에는 배울 수 없던 기술을 알고 있을 수도 있습니다.",
+      "상단에서 선택한 세대와 게임에 따라 제공되는 포켓몬, 폼, 기술, 도구와 세부 정보가 달라집니다. 과거 세대의 팀에는 해당 세대의 특성, 종족값과 타입 상성표가 적용됩니다. 게임을 바꾸면 필요한 변경 사항이 표시되며, 취소하거나 팀을 수정하거나 복사본을 만들 수 있습니다.",
     advanced: "추가 세부 정보",
     advancedQuestion: "닉네임, 레벨, 성격, 노력치, 개체값",
     advancedAnswer:

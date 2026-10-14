@@ -5,11 +5,12 @@ import pokedex from "@/data/pokedex";
 import questionMark from "@/images/question-mark.png";
 import altSpriteNum from "@/data/altSpriteNum";
 import localSprites from "@/images/local-sprites";
-import { getSpriteAnimation } from "@/images/sprite-animations";
 import { isShinyInGeneration } from "@/shared/generation-rules";
 import { useIsMdDown } from "./WidthContext";
+import { useTranslation } from "./TranslationContext";
 import { spriteUrls } from "./pokemon-sprite/sprite-urls";
 import { useSelectionAnimation } from "./pokemon-sprite/use-selection-animation";
+import { useSpriteAnimation } from "./pokemon-sprite/use-sprite-animation";
 
 const localSpritesMap = localSprites as Record<string, string>;
 
@@ -26,11 +27,18 @@ const PokemonSprite = observer(function PokemonSprite({
 }) {
   // Below 960px the team viewers show dex sprites, except in a slot's card
   const isSmall = useIsMdDown() && !forceFullSize;
+  const { names } = useTranslation();
   const member = store.team[teamIndex];
   const pokemon = member?.name ?? ""; // unhyphenated name
   const generation = store.currentTeam.generation;
   const classicSprite = !!pokemon && generation >= 2 && generation <= 4;
   const shiny = !!member && isShinyInGeneration(member, generation);
+  const animation = useSpriteAnimation(
+    pokemon,
+    generation,
+    shiny,
+    classicSprite,
+  );
   const selection = store.pokemonSelection;
   const imageRef = useSelectionAnimation(
     (
@@ -40,7 +48,7 @@ const PokemonSprite = observer(function PokemonSprite({
       selection.sequence
     : undefined,
     classicSprite,
-    getSpriteAnimation(pokemon, generation, shiny),
+    animation,
   );
   const sprite =
     pokemon ?
@@ -91,7 +99,8 @@ const PokemonSprite = observer(function PokemonSprite({
         key={sources[0]}
         component="img"
         ref={imageRef}
-        alt={sprite?.filename ?? "question-mark"}
+        // The slot's tab or name input already says when it is empty
+        alt={pokemon ? names.pokemon(pokemon) : ""}
         src={sources[0]}
         onError={e => {
           const image = e.currentTarget;

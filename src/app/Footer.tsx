@@ -1,5 +1,4 @@
 import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -21,7 +20,7 @@ const UpdateLog = lazy(() => import("./footer/UpdateLog"));
 type ColorMode = "system" | "light" | "dark";
 
 export default function Footer() {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const { mode, setMode } = useColorScheme();
   const selectedMode = mode ?? "system";
 
@@ -74,21 +73,18 @@ export default function Footer() {
         title={t.footer.manualTitle}
         content={Manual}
       />
-      <Button
-        variant="footer"
-        href="https://jefferytang.com"
-        target="_blank"
-        rel="noopener"
-      >
-        Jeffery Tang
-      </Button>
       <FooterDialog
         button={t.footer.credits}
         title={t.footer.credits}
         content={Credits}
       />
       <FooterDialog
-        button={t.footer.updates(__LATEST_COMMIT_DATE__)}
+        button={t.footer.updates(
+          new Intl.DateTimeFormat(locale, {
+            dateStyle: "medium",
+            timeZone: "UTC",
+          }).format(new Date(__LATEST_COMMIT_DATE__)),
+        )}
         title={t.footer.updateLog}
         content={UpdateLog}
       />

@@ -72,7 +72,7 @@ test.describe("set details in Showdown text", () => {
       gender: "M",
     });
     expect(serializeTeam(team)).toBe(
-      "Garchomp (M) @ \nAbility: \n- Earthquake\n-\n-\n-\n\n",
+      "Garchomp (M) @ \nAbility: No Ability\n- Earthquake\n-\n-\n-\n\n",
     );
   });
 
@@ -202,7 +202,7 @@ Garchomp
     });
   });
 
-  test("treats text without headers as one team, and skips empty teams", () => {
+  test("keeps named empty backup teams without importing empty or invalid text", () => {
     const teams = parseTeamsText("Kingdra\n- Surf");
     expect(teams).toHaveLength(1);
     expect(teams[0]).toMatchObject({ name: "", generation: 9, format: "" });
@@ -211,7 +211,14 @@ Garchomp
     const withEmpty = parseTeamsText(
       "=== [gen9ou] Empty ===\n\n=== [gen9uu] Full ===\n\nKingdra\n",
     );
-    expect(withEmpty.map(({ name }) => name)).toEqual(["Full"]);
+    expect(withEmpty.map(({ name }) => name)).toEqual(["Empty", "Full"]);
+    expect(withEmpty[0]).toMatchObject({
+      generation: 9,
+      format: "OU: Over Used",
+      team: createTeam(),
+    });
+    expect(parseTeamsText("=== [gen9] Invalid ===\n\nPikablu")).toEqual([]);
+    expect(parseTeamsText("=== [gen9] ===\n\n")).toEqual([]);
     expect(parseTeamsText("")).toEqual([]);
     expect(parseTeamsText("Not a pokemon @ Leftovers")).toEqual([]);
   });
@@ -227,7 +234,7 @@ Garchomp
       createSavedTeam({ team: createTeam({ name: "torkoal" }) }),
     ]);
     expect(text).toBe(
-      "=== [gen8ou] Rain ===\n\nKingdra @ \nAbility: \n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal @ \nAbility: \n-\n-\n-\n-\n\n",
+      "=== [gen8ou] Rain ===\n\nKingdra @ \nAbility: No Ability\n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal @ \nAbility: No Ability\n-\n-\n-\n-\n\n",
     );
     expect(parseTeamsText(text)).toHaveLength(2);
     expect(parseTeamsText(text)[1]).toMatchObject({
@@ -236,4 +243,106 @@ Garchomp
       format: "",
     });
   });
+});
+test("app backup names preserve slashes without changing external folder imports", () => {
+  for (const name of [
+    "Rain / OU",
+    "mypokemonteam:Rain / OU",
+    "雨 / OU %2F",
+    "Rain / \ud800",
+  ]) {
+    const text = serializeTeams([
+      createSavedTeam({ name, team: createTeam({ name: "kingdra" }) }),
+    ]);
+    expect(parseTeamsText(text)[0]?.name).toBe(name);
+  }
+  expect(
+    parseTeamsText("=== [gen8ou] Folder/Rain ===\n\nKingdra")[0]?.name,
+  ).toBe("Rain");
+  expect(
+    parseTeamsText("=== [gen8ou] mypokemonteam:Rain%20OU ===\n\nKingdra")[0]
+      ?.name,
+  ).toBe("mypokemonteam:Rain%20OU");
+  expect(
+    parseTeamsText("=== [gen8ou] mypokemonteam:%invalid ===\n\nKingdra")[0]
+      ?.name,
+  ).toBe("mypokemonteam:%invalid");
+  const text = serializeTeams([
+    createSavedTeam({ name: "Empty" }),
+    createSavedTeam({
+      name: "Rain / OU",
+      team: createTeam({ name: "kingdra" }),
+    }),
+    createSavedTeam({ name: "Sun", team: createTeam({ name: "torkoal" }) }),
+  ]);
+  expect(text).toMatch(
+    /^Kingdra @ *\n# mypokemonteam backup: preserve team names\n/m,
+  );
+  expect(
+    parseTeamsText(text).map(({ name, team }) => [name, team[0].name]),
+  ).toEqual([
+    ["Empty", ""],
+    ["Rain / OU", "kingdra"],
+    ["Sun", "torkoal"],
+  ]);
+});
+
+test("Export All restores a backup containing only named empty teams", () => {
+  const original = [
+    createSavedTeam({
+      name: "Next season",
+      generation: 2,
+      format: "OU: Over Used",
+    }),
+    createSavedTeam({ name: "Testing", generation: 8, format: "Doubles OU" }),
+  ];
+  expect(parseTeamsText(serializeTeams(original))).toEqual(
+    original.map(({ name, generation, format, team }) => ({
+      name,
+      generation,
+      format,
+      team,
+    })),
+  );
+  expect(parseTeamsText("\n\n")).toEqual([]);
+  expect(
+    parseTeamsText(
+      "=== [gen8ou] Empty ===\n\n# mypokemonteam backup: preserve team names\n",
+    ),
+  ).toHaveLength(1);
+});
+
+test("legacy Showdown backups without a generation retain Gen 6 tier rules", () => {
+  expect(
+    parseTeamsText("=== [ou] Old OU ===\n\nGyarados\n- Waterfall\n")[0],
+  ).toMatchObject({ name: "Old OU", generation: 6, format: "OU: Over Used" });
+});
+
+test("empty backup names preserve slashes while populated external folders still unwrap", () => {
+  const original = [
+    createSavedTeam({ name: "Rain / OU", generation: 8 }),
+    createSavedTeam({
+      name: "Folder/Draft",
+      generation: 2,
+      format: "OU: Over Used",
+    }),
+  ];
+  expect(
+    parseTeamsText(serializeTeams(original)).map(({ name }) => name),
+  ).toEqual(original.map(({ name }) => name));
+  const mixed = parseTeamsText(
+    "=== [gen8ou] Folder/Draft ===\n\n=== [gen8ou] Folder/Rain ===\n\nKingdra",
+  );
+  expect(mixed.map(({ name }) => name)).toEqual(["Folder/Draft", "Rain"]);
+  expect(
+    parseTeamsText(
+      serializeTeams([
+        ...original,
+        createSavedTeam({
+          name: "Populated",
+          team: createTeam({ name: "torkoal" }),
+        }),
+      ]),
+    ).map(({ name }) => name),
+  ).toEqual(["Rain / OU", "Folder/Draft", "Populated"]);
 });

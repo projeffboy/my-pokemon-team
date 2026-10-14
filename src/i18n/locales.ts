@@ -53,15 +53,17 @@ export const isLocale = (value: unknown): value is Locale =>
   LOCALES.includes(value as Locale);
 
 // The first supported language of the browser's preferences, e.g. ["zh-TW", "en-US"] => zh-Hant.
-// Chinese picks the script from the region or script subtag, and defaults to Simplified.
+// Chinese uses an explicit script before a regional default, and defaults to Simplified.
 // Every other language ignores the region, so Portugal's Portuguese gets Brazil's.
 export function detectLocale(languages: readonly string[]): Locale {
   for (const language of languages) {
     const [primary = "", ...subtags] = language.toLowerCase().split("-");
     if (primary === "zh") {
-      const traditional = subtags.some(tag =>
-        ["hant", "tw", "hk", "mo"].includes(tag),
-      );
+      const script = subtags.find(tag => tag === "hans" || tag === "hant");
+      const traditional =
+        script ?
+          script === "hant"
+        : subtags.some(tag => ["tw", "hk", "mo"].includes(tag));
       return traditional ? "zh-Hant" : "zh-Hans";
     }
     const locale = LOCALES.find(

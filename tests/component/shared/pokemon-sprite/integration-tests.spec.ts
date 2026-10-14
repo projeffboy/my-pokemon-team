@@ -44,7 +44,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
         await page.goto(
           `/?team=${Buffer.from(team).toString("base64url")}&gen=${generation}`,
         );
-        const sprites = page.locator('img[alt="qwilfish"]');
+        const sprites = page.locator('img[alt="Qwilfish"]');
         await expect(sprites.first()).toHaveAttribute("src", /selection=/);
         await expect
           .poll(() =>
@@ -101,7 +101,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       await selectPokemon(page, "Dunsparce");
       const sprite = page
         .getByRole("region", { name: "Pokemon 1", exact: true })
-        .getByRole("img", { name: "dunsparce", exact: true });
+        .getByRole("img", { name: "Dunsparce", exact: true });
       const extension = generation === 2 ? "gif" : "png";
       await expect(sprite).toHaveAttribute(
         "src",
@@ -129,7 +129,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       await selectPokemon(page, "Qwilfish");
       const qwilfish = page
         .getByRole("region", { name: "Pokemon 1", exact: true })
-        .getByRole("img", { name: "qwilfish", exact: true });
+        .getByRole("img", { name: "Qwilfish", exact: true });
       await expect(qwilfish).toHaveAttribute(
         "src",
         new RegExp(
@@ -165,13 +165,13 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     await expect(
       page
         .getByRole("region", { name: "Pokemon 1", exact: true })
-        .getByRole("img", { name: "corsola", exact: true }),
+        .getByRole("img", { name: "Corsola", exact: true }),
     ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/gen2/corsola.png`);
-    await page.reload();
+    await page.reload({ waitUntil: "domcontentloaded" });
     await expect(
       page
         .getByRole("region", { name: "Pokemon 1", exact: true })
-        .getByRole("img", { name: "corsola", exact: true }),
+        .getByRole("img", { name: "Corsola", exact: true }),
     ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/gen2/corsola.png`);
   });
 
@@ -181,7 +181,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     await selectPokemon(page, "Purugly");
     const cardSprite = page
       .getByRole("region", { name: "Pokemon 1", exact: true })
-      .getByRole("img", { name: "purugly", exact: true });
+      .getByRole("img", { name: "Purugly", exact: true });
     await openAdvanced(page);
     await page.getByRole("dialog").getByLabel("Shiny").check();
     await closeDialog(page);
@@ -191,7 +191,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     );
     const viewerSprite = page
       .getByRole("tablist", { name: "Pokemon team slots" })
-      .locator('img[alt="purugly"]');
+      .locator('img[alt="Purugly"]');
     if (await viewerSprite.count())
       await expect(viewerSprite).toHaveAttribute(
         "src",
@@ -224,7 +224,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     await expect(
       page
         .getByRole("region", { name: "Pokemon 1", exact: true })
-        .getByRole("img", { name: "bergmite", exact: true }),
+        .getByRole("img", { name: "Bergmite", exact: true }),
     ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/gen5-shiny/bergmite.png`);
   });
 
@@ -237,7 +237,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     await closeDialog(page);
     const sprite = page
       .getByRole("region", { name: "Pokemon 1", exact: true })
-      .getByRole("img", { name: "zeraora-mega", exact: true });
+      .getByRole("img", { name: "Zeraora-Mega", exact: true });
     await expect(sprite).toHaveAttribute(
       "src",
       `${SHOWDOWN_SPRITES}/gen5-shiny/zeraora-mega.png`,
@@ -258,7 +258,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       await selectPokemon(page, "Starmie-Mega");
 
       await expect(
-        page.getByRole("img", { name: "starmie-mega" }),
+        page.getByRole("img", { name: "Starmie-Mega" }),
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/starmie-mega.gif`);
     });
 
@@ -266,7 +266,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       await selectPokemon(page, "Vivillon-Icy Snow");
 
       await expect(
-        page.getByRole("img", { name: "vivillon-icysnow" }),
+        page.getByRole("img", { name: "Vivillon-Icy Snow" }),
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/vivillon-icysnow.gif`);
     });
 
@@ -275,7 +275,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     }) => {
       await selectPokemon(page, "Rockruff-Dusk");
 
-      await expect(page.getByRole("img", { name: "rockruff" })).toHaveAttribute(
+      await expect(page.getByRole("img", { name: "Rockruff" })).toHaveAttribute(
         "src",
         `${SHOWDOWN_SPRITES}/ani/rockruff.gif`,
       );
@@ -286,7 +286,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     }) => {
       await selectPokemon(page, "Zeraora-Mega");
 
-      const sprite = page.getByRole("img", { name: "zeraora-mega" });
+      const sprite = page.getByRole("img", { name: "Zeraora-Mega" });
       await expect(sprite).toHaveAttribute("src", /zeraoramega.*\.png/);
       await expect(sprite).not.toHaveAttribute("src", /pokemonshowdown/);
     });
@@ -301,7 +301,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       await expect(
         page
           .getByRole("tablist", { name: "Pokemon team slots" })
-          .locator('img[alt="froslass-mega"]'),
+          .locator('img[alt="Froslass-Mega"]'),
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/dex/froslass-mega.png`);
     });
 
@@ -311,7 +311,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       await expect(
         page
           .getByRole("tablist", { name: "Pokemon team slots" })
-          .locator('img[alt="salazzle"]'),
+          .locator('img[alt="Salazzle-Totem"]'),
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/dex/salazzle.png`);
     });
   });

@@ -7,11 +7,9 @@ import type { PokemonType } from "@/types";
 export default function TypeBadge({
   type,
   typeColor,
-  hasIcon,
 }: {
   type: PokemonType;
   typeColor: string;
-  hasIcon: boolean;
 }) {
   const { names } = useTranslation();
   return (
@@ -28,14 +26,12 @@ export default function TypeBadge({
         borderRadius: 0.5,
       }}
     >
-      {hasIcon && (
-        <Box
-          component="img"
-          src={typeIcons[type]}
-          alt=""
-          sx={{ width: 14, height: 14, flexShrink: 0 }}
-        />
-      )}
+      <Box
+        component="img"
+        src={typeIcons[type]}
+        alt=""
+        sx={{ width: 14, height: 14, flexShrink: 0 }}
+      />
       {names.type(type)}
     </Box>
   );

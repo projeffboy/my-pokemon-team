@@ -39,75 +39,85 @@ import x from "./x.png";
 import y from "./y.png";
 import yellow from "./yellow.png";
 
+// The files' height in pixels: a wordmark's, and a box front's
+const LOGO_HEIGHT = 56;
+const BOX_FRONT_HEIGHT = 112;
+
 export interface GameLogo {
   src: string;
+  // The file's width in pixels, which gives the logo's room before the file has loaded
+  width: number;
   name: string;
   // A box front with the game's mascot, shown at twice a wordmark's height
   isBoxFront?: true;
 }
 
+export const logoAspectRatio = ({ width, isBoxFront }: GameLogo) =>
+  width / (isBoxFront ? BOX_FRONT_HEIGHT : LOGO_HEIGHT);
+
 // See game-logos-sources.md
 export const CHAMPIONS_LOGO: GameLogo = {
   src: champions,
+  width: 109,
   name: "Pokémon Champions",
 };
 
 // Each generation's games, in release order
 export const GAME_LOGOS: Record<Generation, GameLogo[]> = {
   1: [
-    { src: red, name: "Pokémon Red", isBoxFront: true },
-    { src: blue, name: "Pokémon Blue", isBoxFront: true },
-    { src: yellow, name: "Pokémon Yellow", isBoxFront: true },
+    { src: red, width: 99, name: "Pokémon Red", isBoxFront: true },
+    { src: blue, width: 99, name: "Pokémon Blue", isBoxFront: true },
+    { src: yellow, width: 99, name: "Pokémon Yellow", isBoxFront: true },
   ],
   2: [
-    { src: gold, name: "Pokémon Gold", isBoxFront: true },
-    { src: silver, name: "Pokémon Silver", isBoxFront: true },
-    { src: crystal, name: "Pokémon Crystal", isBoxFront: true },
+    { src: gold, width: 99, name: "Pokémon Gold", isBoxFront: true },
+    { src: silver, width: 99, name: "Pokémon Silver", isBoxFront: true },
+    { src: crystal, width: 99, name: "Pokémon Crystal", isBoxFront: true },
   ],
   3: [
-    { src: ruby, name: "Pokémon Ruby" },
-    { src: sapphire, name: "Pokémon Sapphire" },
-    { src: emerald, name: "Pokémon Emerald" },
-    { src: firered, name: "Pokémon FireRed" },
-    { src: leafgreen, name: "Pokémon LeafGreen" },
+    { src: ruby, width: 105, name: "Pokémon Ruby" },
+    { src: sapphire, width: 107, name: "Pokémon Sapphire" },
+    { src: emerald, width: 104, name: "Pokémon Emerald" },
+    { src: firered, width: 94, name: "Pokémon FireRed" },
+    { src: leafgreen, width: 94, name: "Pokémon LeafGreen" },
   ],
   4: [
-    { src: diamond, name: "Pokémon Diamond" },
-    { src: pearl, name: "Pokémon Pearl" },
-    { src: platinum, name: "Pokémon Platinum" },
-    { src: heartgold, name: "Pokémon HeartGold" },
-    { src: soulsilver, name: "Pokémon SoulSilver" },
+    { src: diamond, width: 107, name: "Pokémon Diamond" },
+    { src: pearl, width: 107, name: "Pokémon Pearl" },
+    { src: platinum, width: 104, name: "Pokémon Platinum" },
+    { src: heartgold, width: 106, name: "Pokémon HeartGold" },
+    { src: soulsilver, width: 103, name: "Pokémon SoulSilver" },
   ],
   5: [
-    { src: black, name: "Pokémon Black" },
-    { src: white, name: "Pokémon White" },
-    { src: black2, name: "Pokémon Black 2" },
-    { src: white2, name: "Pokémon White 2" },
+    { src: black, width: 92, name: "Pokémon Black" },
+    { src: white, width: 92, name: "Pokémon White" },
+    { src: black2, width: 100, name: "Pokémon Black 2" },
+    { src: white2, width: 99, name: "Pokémon White 2" },
   ],
   6: [
-    { src: x, name: "Pokémon X" },
-    { src: y, name: "Pokémon Y" },
-    { src: omegaruby, name: "Pokémon Omega Ruby" },
-    { src: alphasapphire, name: "Pokémon Alpha Sapphire" },
+    { src: x, width: 144, name: "Pokémon X" },
+    { src: y, width: 126, name: "Pokémon Y" },
+    { src: omegaruby, width: 89, name: "Pokémon Omega Ruby" },
+    { src: alphasapphire, width: 98, name: "Pokémon Alpha Sapphire" },
   ],
   7: [
-    { src: sun, name: "Pokémon Sun" },
-    { src: moon, name: "Pokémon Moon" },
-    { src: ultrasun, name: "Pokémon Ultra Sun" },
-    { src: ultramoon, name: "Pokémon Ultra Moon" },
-    { src: letsgopikachu, name: "Pokémon: Let's Go, Pikachu!" },
-    { src: letsgoeevee, name: "Pokémon: Let's Go, Eevee!" },
+    { src: sun, width: 106, name: "Pokémon Sun" },
+    { src: moon, width: 121, name: "Pokémon Moon" },
+    { src: ultrasun, width: 109, name: "Pokémon Ultra Sun" },
+    { src: ultramoon, width: 120, name: "Pokémon Ultra Moon" },
+    { src: letsgopikachu, width: 128, name: "Pokémon: Let's Go, Pikachu!" },
+    { src: letsgoeevee, width: 114, name: "Pokémon: Let's Go, Eevee!" },
   ],
   8: [
-    { src: sword, name: "Pokémon Sword" },
-    { src: shield, name: "Pokémon Shield" },
-    { src: brilliantdiamond, name: "Pokémon Brilliant Diamond" },
-    { src: shiningpearl, name: "Pokémon Shining Pearl" },
-    { src: legendsarceus, name: "Pokémon Legends: Arceus" },
+    { src: sword, width: 56, name: "Pokémon Sword" },
+    { src: shield, width: 50, name: "Pokémon Shield" },
+    { src: brilliantdiamond, width: 90, name: "Pokémon Brilliant Diamond" },
+    { src: shiningpearl, width: 92, name: "Pokémon Shining Pearl" },
+    { src: legendsarceus, width: 76, name: "Pokémon Legends: Arceus" },
   ],
   9: [
-    { src: scarlet, name: "Pokémon Scarlet" },
-    { src: violet, name: "Pokémon Violet" },
-    { src: legendsza, name: "Pokémon Legends: Z-A" },
+    { src: scarlet, width: 94, name: "Pokémon Scarlet" },
+    { src: violet, width: 96, name: "Pokémon Violet" },
+    { src: legendsza, width: 121, name: "Pokémon Legends: Z-A" },
   ],
 };

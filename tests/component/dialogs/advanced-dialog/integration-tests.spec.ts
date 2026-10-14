@@ -4,7 +4,6 @@ import {
   closeDialog,
   clickMenuItem,
   openAdvanced,
-  openTeamTools,
   selectDialogOption,
   selectPokemon,
   selectMove,
@@ -30,11 +29,12 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await expect(otherTab.getByLabel("Pokemon 1's name")).toHaveValue(
       "Magcargo",
     );
-    await openTeamTools(otherTab);
     await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
     await otherTab
       .getByRole("button", { name: "New Team", exact: true })
       .click();
+    // The slot inputs are tapped by force, so the closing dialog must be out of the way
+    await expect(otherTab.getByRole("dialog")).toBeHidden();
     await selectPokemon(otherTab, "Haxorus");
     await openAdvanced(otherTab);
     await otherTab
@@ -80,9 +80,9 @@ test.describe("Advanced Dialog - Integration Tests", () => {
         page,
       }) => {
         const pokemon = generation === 8 ? "Unown" : "Dunsparce";
-        const team = Buffer.from(`${pokemon}\n- Return\n`).toString(
-          "base64url",
-        );
+        const team = Buffer.from(
+          `${pokemon}\n${generation >= 7 ? "Level: 99\n" : ""}- Return\n`,
+        ).toString("base64url");
         await page.goto(`/?gen=${generation}&team=${team}`, {
           waitUntil: "domcontentloaded",
         });
@@ -126,9 +126,9 @@ test.describe("Advanced Dialog - Integration Tests", () => {
         page,
       }) => {
         const pokemon = generation === 8 ? "Unown" : "Dunsparce";
-        const team = Buffer.from(`${pokemon}\n- Return\n`).toString(
-          "base64url",
-        );
+        const team = Buffer.from(
+          `${pokemon}\n${generation >= 7 ? "Level: 99\n" : ""}- Return\n`,
+        ).toString("base64url");
         await page.goto(`/?gen=${generation}&team=${team}`, {
           waitUntil: "domcontentloaded",
         });
@@ -340,4 +340,50 @@ test.describe("Advanced Dialog - Integration Tests", () => {
     await expect(speed).toHaveValue("31");
     await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("IVs:");
   });
+});
+
+test("gender defaults to the only available option and shows its symbol", async ({
+  page,
+}) => {
+  test.slow();
+  for (const { pokemon, gender, icon } of [
+    { pokemon: "Mothim", gender: "Male", icon: "MaleIcon" },
+    { pokemon: "Vespiquen", gender: "Female", icon: "FemaleIcon" },
+    { pokemon: "Carbink", gender: "Genderless", icon: undefined },
+    { pokemon: "Swablu", gender: "Any", icon: undefined },
+  ]) {
+    await selectPokemon(page, pokemon);
+    await openAdvanced(page);
+    const dialog = page.getByRole("dialog", { name: "More details" });
+    await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
+      gender,
+    );
+    if (icon) await expect(dialog.getByTestId(icon)).toBeVisible();
+    else {
+      await expect(dialog.getByTestId("MaleIcon")).toHaveCount(0);
+      await expect(dialog.getByTestId("FemaleIcon")).toHaveCount(0);
+    }
+    await dialog.getByRole("button", { name: "Reset", exact: true }).click();
+    await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
+      gender,
+    );
+    await closeDialog(page);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await openAdvanced(page);
+    await expect(dialog.getByLabel("Gender", { exact: true })).toHaveText(
+      gender,
+    );
+    await closeDialog(page);
+  }
+  await openAdvanced(page);
+  const dialog = page.getByRole("dialog", { name: "More details" });
+  await selectDialogOption(page, "Gender", "Male");
+  await expect(dialog.getByTestId("MaleIcon")).toBeVisible();
+  await expect(dialog.getByTestId("FemaleIcon")).toHaveCount(0);
+  await selectDialogOption(page, "Gender", "Female");
+  await expect(dialog.getByTestId("FemaleIcon")).toBeVisible();
+  await expect(dialog.getByTestId("MaleIcon")).toHaveCount(0);
+  await selectDialogOption(page, "Gender", "Any");
+  await expect(dialog.getByTestId("MaleIcon")).toHaveCount(0);
+  await expect(dialog.getByTestId("FemaleIcon")).toHaveCount(0);
 });

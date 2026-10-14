@@ -17,6 +17,7 @@ import Layers from "@mui/icons-material/Layers";
 import CloudIcon from "@mui/icons-material/Cloud";
 import pokemonShowdownLogo from "@/images/pokemon-showdown-logo.png";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import fill from "@/app/shared/fill";
 
 interface Credit {
   icon: ReactElement;
@@ -74,6 +75,11 @@ export default function Credits() {
 
   return (
     <>
+      <Typography sx={{ mb: 2 }}>
+        {fill(t.credits.madeBy, {
+          name: <Link href="https://jefferytang.com">Jeffery Tang</Link>,
+        })}
+      </Typography>
       <Link href="https://pokemonshowdown.com">
         <Box
           component="img"

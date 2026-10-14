@@ -4,6 +4,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import type {
+  Generation,
+  GenerationTransferData,
   GameVariantData,
   Items,
   Learnsets,
@@ -22,6 +24,7 @@ import {
   type MoveSearch,
   type ShowdownTable,
   collectViableMoves,
+  historicalViableInputs,
   flattenLearnsets,
   nameChanges,
   projectFormats,
@@ -30,6 +33,7 @@ import {
   projectTable,
   projectTypeChart,
   projectHiddenPowerSpreads,
+  projectHistoricalMoves,
   renderTypedData,
   resolveMod,
   toId,
@@ -174,26 +178,86 @@ async function updateViableMoves(learnsets: Learnsets) {
   const { BattleMoveSearch } = await importTypeScript(
     `const toID = ${toId};\nexport class BattleMoveSearch {\n${match[1]}}`,
   );
-  const dex = {
-    gen: 9,
-    moves: {
-      get: (id: string) => ({ exists: id in moves, flags: {}, ...moves[id] }),
-    },
-  };
-  const searches: MoveSearch[] = [
-    { formatType: null, isDoubles: false },
-    { formatType: "doubles", isDoubles: true },
-  ].map(format => Object.assign(new BattleMoveSearch(), { dex, ...format }));
-  const hiddenPowers = Object.keys(moves).filter(
-    id => id.startsWith("hiddenpower") && id !== "hiddenpower",
+  const availability: GenerationTransferData = JSON.parse(
+    await read(path.join(dataRoot, "generation-transfer.json")),
   );
-  const viable = collectViableMoves(pokedex, learnsets, hiddenPowers, searches);
+  const past =
+    await loadAppData<DataTypes["PastGenerations"]>("past-generations");
+  let generationMoves = moves;
+  const generations: Record<number, string[]> = {};
+  for (let generation = 9; generation >= 1; generation--) {
+    if (generation < 9)
+      generationMoves = resolveMod(
+        generationMoves,
+        await loadModTable(`gen${generation}`, "moves", "Moves"),
+      );
+    const dex = {
+      gen: generation,
+      moves: {
+        get: (id: string) => ({
+          exists: id in generationMoves,
+          flags: {},
+          ...generationMoves[id],
+        }),
+      },
+    };
+    const searches: MoveSearch[] = [
+      { formatType: null, isDoubles: false },
+      { formatType: "doubles", isDoubles: true },
+    ].map(format => Object.assign(new BattleMoveSearch(), { dex, ...format }));
+    const hiddenPowers = Object.keys(moves).filter(
+      id => id.startsWith("hiddenpower") && id !== "hiddenpower",
+    );
+    const inputs =
+      generation === 9 ?
+        { pokedex, learnsets }
+      : historicalViableInputs(
+          generation as Generation,
+          pokedex,
+          learnsets,
+          availability,
+          past[generation as Generation],
+        );
+    generations[generation] = collectViableMoves(
+      inputs.pokedex,
+      inputs.learnsets,
+      hiddenPowers,
+      searches,
+    );
+  }
 
+  const latest = generations[9] ?? [];
+  const changes = Object.fromEntries(
+    Object.entries(generations)
+      .filter(([gen]) => gen !== "9")
+      .map(([gen, viable]) => [
+        gen,
+        {
+          add: viable.filter(move => !latest.includes(move)),
+          remove: latest.filter(move => !viable.includes(move)),
+        },
+      ]),
+  );
   await fs.writeFile(
     path.join(dataRoot, "viable-moves.ts"),
     [
       "// Moves that Pokemon Showdown's teambuilder lists as usually useful for at least one pokemon",
-      `const data: ReadonlySet<string> = new Set(${JSON.stringify(viable, null, 2)});`,
+      `import type { Generation } from "../types";`,
+      `import { LATEST_GENERATION } from "../shared/generations";`,
+      "",
+      `const data: ReadonlySet<string> = new Set(${JSON.stringify(latest, null, 2)});`,
+      `const changes: Partial<Record<Generation, { add: string[]; remove: string[] }>> = ${JSON.stringify(changes, null, 2)};`,
+      "const cache = new Map<Generation, ReadonlySet<string>>();",
+      "export function viableMovesIn(generation: Generation = LATEST_GENERATION): ReadonlySet<string> {",
+      "  const change = changes[generation];",
+      "  if (!change) return data;",
+      "  let viable = cache.get(generation);",
+      "  if (!viable) {",
+      "    viable = new Set([...data].filter(move => !change.remove.includes(move)).concat(change.add));",
+      "    cache.set(generation, viable);",
+      "  }",
+      "  return viable;",
+      "}",
       "",
       "export default data;",
       "",
@@ -395,7 +459,81 @@ const loadReportedData = async (): Promise<ReportedData> => {
   ]);
   return { pokedex, moves, items };
 };
+async function updateMoveEffects() {
+  const latest = await loadShowdownTable("data/moves.ts", "Moves");
+  const before = await loadAppData<Moves>("moves");
+  const projected = projectTable("Moves", latest);
+  const moves = Object.fromEntries(
+    Object.entries(before).map(([id, entry]) => [
+      id,
+      projected[id] ? { ...projected[id], name: entry.name } : entry,
+    ]),
+  );
+  const mods = Object.fromEntries(
+    await Promise.all(
+      [1, 2, 3, 4, 5, 6, 7, 8].map(async gen => [
+        gen,
+        {
+          moves: await loadModTable(`gen${gen}`, "moves", "Moves"),
+        },
+      ]),
+    ),
+  );
+  const historical = projectHistoricalMoves(latest, mods, Object.keys(before));
+  const past =
+    await loadAppData<DataTypes["PastGenerations"]>("past-generations");
+  for (const [gen, entry] of Object.entries(past)) {
+    const properties = historical[Number(gen) as keyof typeof historical];
+    if (properties) entry.moveData = properties;
+    else delete entry.moveData;
+  }
+  await writeData("Moves", moves, true);
+  await writeData("PastGenerations", past);
+  console.log(
+    "Updated move effects and historical properties; existing move IDs and names are unchanged.",
+  );
+}
+
 async function updateData() {
+  if (process.argv.includes("--viable-moves-only")) {
+    const learnsets = JSON.parse(
+      await read(path.join(dataRoot, "learnsets.json")),
+    ) as Learnsets;
+    await updateViableMoves(learnsets);
+    return;
+  }
+  if (process.argv.includes("--move-effects-only")) {
+    await updateMoveEffects();
+    return;
+  }
+  if (process.argv.includes("--item-effects-only")) {
+    const before = await loadAppData<Items>("items");
+    const table = projectTable(
+      "Items",
+      await loadShowdownTable("data/items.ts", "Items"),
+    );
+    await writeData(
+      "Items",
+      Object.fromEntries(
+        Object.entries(before).map(([id, entry]) => {
+          const {
+            name: _name,
+            spritenum: _sprite,
+            ...effects
+          } = table[id] ?? {};
+          return [
+            id,
+            { name: entry.name, spritenum: entry.spritenum, ...effects },
+          ];
+        }),
+      ),
+      true,
+    );
+    console.log(
+      "Updated item effects; existing item IDs, names and icons are unchanged.",
+    );
+    return;
+  }
   if (process.argv.includes("--pokedex-only")) {
     await updateProjectedDataset("pokedex", "Pokedex", "Pokedex");
     return;
@@ -424,7 +562,7 @@ async function updateData() {
     updateProjectedDataset("items", "Items", "Items"),
     updateProjectedDataset("natures", "Natures", "Natures"),
     updateFormats(),
-    updateLearnsets().then(updateViableMoves),
+    updateLearnsets(),
     updateTypeChart(),
     updateHiddenPowerSpreads(),
     updatePastGenerations(),
@@ -454,6 +592,10 @@ async function updateData() {
   await fs.writeFile(
     path.join(dataRoot, "generation-transfer.json"),
     `${JSON.stringify(transferData, null, 2)}\n`,
+  );
+
+  await updateViableMoves(
+    JSON.parse(await read(path.join(dataRoot, "learnsets.json"))) as Learnsets,
   );
 
   const after = await loadReportedData();

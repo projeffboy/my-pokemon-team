@@ -4,6 +4,8 @@ The logos in the Generation menu: the English logo of each generation's games, a
 
 Downloaded on October 3, 2026. Each was trimmed, resized to twice its display height (56px for a wordmark, 112px for a box front), and reduced to 256 colours with Pillow.
 
+`index.ts` records each file's width, which sizes the Generation menu before the logos load. Update it when adding or replacing a logo.
+
 From [Bulbagarden Archives](https://archives.bulbagarden.net), where they are filed as fair-use logos and box art. The Gen 1 and 2 games have no standalone English logo with their mascot, so theirs are the front panel of the English box art, cropped to leave out the console strip and the Nintendo band:
 
 - `champions.png`: [Pokémon Champions logo.png](https://archives.bulbagarden.net/wiki/File:Pok%C3%A9mon_Champions_logo.png), 1920 × 1152

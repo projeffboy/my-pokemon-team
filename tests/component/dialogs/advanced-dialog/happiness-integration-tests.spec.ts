@@ -83,7 +83,11 @@ test("happiness defaults when cleared or reset after a raw-text import", async (
   await happiness.fill("");
   await dialog.getByLabel("Nickname").focus();
   await expect(happiness).toHaveValue("255");
-  await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("Happiness:");
+  await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 255");
+  await closeDialog(page);
+  await page.reload();
+  await openAdvanced(page);
+  await expect(happiness).toHaveValue("255");
   await closeDialog(page);
   await openEditPokepaste(page);
   await page
@@ -96,12 +100,12 @@ test("happiness defaults when cleared or reset after a raw-text import", async (
   await happiness.fill("0");
   await dialog.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(happiness).toHaveValue("255");
-  await expect.poll(() => getTeamTextFromUrl(page)).not.toContain("Happiness:");
+  await expect.poll(() => getTeamTextFromUrl(page)).toContain("Happiness: 255");
 });
 
 for (const { name, profile } of [
   { name: "Gen 1", profile: "gen=1" },
-  { name: "Champions", profile: "game=Pokemon+Champions+%28M-C%29" },
+  { name: "Champions", profile: "game=champions" },
 ]) {
   test(`${name} omits happiness from imported links and its editor`, async ({
     page,

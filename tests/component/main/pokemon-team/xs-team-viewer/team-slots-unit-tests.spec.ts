@@ -10,7 +10,7 @@ test.describe("Xs Team Viewer - Unit Tests", () => {
     // Verify there are exactly 6 question mark sprites in the team viewer
     const questionMarkSprites = page
       .getByRole("tablist", { name: "Pokemon team slots" })
-      .locator('img[alt="question-mark"]');
+      .locator('img[alt=""]');
     await expect(questionMarkSprites).toHaveCount(6);
   });
 

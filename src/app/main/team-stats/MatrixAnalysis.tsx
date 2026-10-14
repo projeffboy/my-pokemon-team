@@ -78,7 +78,8 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
   const translation = useTranslation();
   const { t, names } = translation;
   const isDefence = kind === "defence";
-  const { generation, format } = store.currentTeam;
+  const { generation } = store.currentTeam;
+  const format = store.dataFormat;
   const matrix =
     isDefence ?
       defenceMatrix(store.analysisTeam, translation, generation)

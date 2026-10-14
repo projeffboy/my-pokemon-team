@@ -15,19 +15,19 @@ import {
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { isPokemonType, type NameView } from "@/types";
-import { moveTypeIn } from "@/shared/generation-data";
+import { moveType } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import PokemonDexSprite from "./virtualized-listbox/PokemonDexSprite";
+import ListTools from "./shared/ListTools";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
-import { useTypeIcons } from "@/app/main/shared/TypeIconContext";
-import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 
 const LISTBOX_PADDING = 0; // px
 const ITEM_SIZE = 48;
 export const gridColumns = (view: NameView) => (view === "big-grid" ? 3 : 5);
 const GRID_ROW_SIZE = 40;
-const BIG_GRID_ROW_SIZE = 96;
+// A 72px sprite above three lines of its name
+const BIG_GRID_ROW_SIZE = 122;
 // The view toggle's top and bottom margins
 const TOGGLE_MARGIN = 8;
 
@@ -44,37 +44,24 @@ type OptionProps = React.HTMLAttributes<HTMLLIElement> & { key?: React.Key };
 // A move's type, where the dropdown shows it
 const MoveTypeIcon = observer(function MoveTypeIcon({
   move,
+  teamIndex,
 }: {
   move: string;
+  teamIndex: number;
 }) {
-  const { t, names } = useTranslation();
-  const hasTypeIcons = useTypeIcons();
-  const type = moveTypeIn(move, store.currentTeam.generation);
+  const { names } = useTranslation();
+  const member = store.analysisTeam[teamIndex];
+  const type = moveType(
+    move,
+    member?.name ?? "",
+    member?.ability,
+    store.currentTeam.generation,
+    member?.item,
+    store.dataFormat,
+  );
   // A placeholder keeps the labels aligned for the few moves without a type
   if (!type || !isPokemonType(type)) {
     return <Box component="span" sx={{ width: 20, flexShrink: 0 }} />;
-  }
-  if (!hasTypeIcons) {
-    return (
-      <Box
-        component="span"
-        role="img"
-        aria-label={names.type(type)}
-        sx={{
-          flexShrink: 0,
-          mt: 0.25,
-          px: 0.5,
-          borderRadius: 0.5,
-          fontSize: 10,
-          fontWeight: 500,
-          lineHeight: "16px",
-          bgcolor: TYPE_COLORS[type],
-          color: TYPE_TEXT_COLORS[type],
-        }}
-      >
-        {t.typeAbbreviations[type]}
-      </Box>
-    );
   }
   return (
     <Box
@@ -90,11 +77,13 @@ function RowComponent({
   index,
   itemData,
   pokemonProperty,
+  teamIndex,
   showMoveTypes,
   style,
 }: RowComponentProps & {
   itemData: ItemData;
   pokemonProperty: string;
+  teamIndex: number;
   showMoveTypes: boolean;
 }) {
   const row = itemData[index];
@@ -119,7 +108,9 @@ function RowComponent({
       {hasIcon && (
         <PokemonIcon pokemonProperty={pokemonProperty} value={option.value} />
       )}
-      {showMoveTypes && <MoveTypeIcon move={option.value} />}
+      {showMoveTypes && (
+        <MoveTypeIcon move={option.value} teamIndex={teamIndex} />
+      )}
       <Box component="span" sx={{ flex: 1, pl: showMoveTypes ? 0.75 : 0.25 }}>
         {option.label}
       </Box>
@@ -127,7 +118,8 @@ function RowComponent({
   );
 }
 
-// A row of the grid view: icons only, named for screen readers and the tooltip
+// A row of the grid view. The small grid is icons only, named for screen readers and
+// the tooltip; the big grid has room for each name under its sprite.
 function GridRowComponent({
   index,
   itemData,
@@ -164,6 +156,7 @@ function GridRowComponent({
             title={option.label}
             sx={{
               display: "flex",
+              flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               height: large ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE,
@@ -173,7 +166,28 @@ function GridRowComponent({
             }}
           >
             {large ?
-              <PokemonDexSprite pokemon={option.value} />
+              <>
+                <PokemonDexSprite pokemon={option.value} />
+                <Box
+                  component="span"
+                  sx={{
+                    // Three lines at most, which fits the longest forme names on a small phone
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: 3,
+                    overflow: "hidden",
+                    width: "100%",
+                    px: 0.25,
+                    boxSizing: "border-box",
+                    fontSize: 12,
+                    lineHeight: "14px",
+                    textAlign: "center",
+                    overflowWrap: "anywhere",
+                  }}
+                >
+                  {option.label}
+                </Box>
+              </>
             : <PokemonIcon pokemonProperty="name" value={option.value} />}
           </Box>
         );
@@ -186,10 +200,14 @@ function GridRowComponent({
 // select passes what the listbox needs through this context instead
 export const VirtualizedListboxContext = React.createContext<{
   pokemonProperty: string;
-  // Whether the move options show their type, as the inputs do with the team tools
+  teamIndex: number;
+  // Whether the move options show their type, as the inputs do with Show move types on
   showMoveTypes: boolean;
   selectedValue: string;
   internalListRef: React.RefObject<ListImperativeAPI | null>;
+  // Kept at the listed options' values, in order, and emptied when none are listed
+  listedValuesRef: React.RefObject<readonly string[]>;
+  onRowsRendered: () => void;
   // The room the popup has on the screen, measured when it opens
   popupMaxHeight?: number;
   nameListWidth: number;
@@ -210,20 +228,35 @@ const VirtualizedListbox = observer(
       }
       const {
         pokemonProperty,
+        teamIndex,
         showMoveTypes,
         selectedValue,
         internalListRef,
+        listedValuesRef,
+        onRowsRendered,
         popupMaxHeight,
         nameListWidth,
       } = context;
       const isNameInput = pokemonProperty === "name";
       const isGrid = isNameInput && store.nameView !== "list";
       const isBigGrid = isNameInput && store.nameView === "big-grid";
+      // In Advanced mode, Filters and Sort sit beside the view toggle, which
+      // drops its captions to make room; the tooltips and labels still name the views
+      const showTools = isNameInput && store.isMoreOpen;
+      // The move lists have Sort alone
+      const showMoveTools =
+        pokemonProperty.startsWith("move") && store.isMoreOpen;
       const columns = gridColumns(store.nameView);
       const gridRowSize = isBigGrid ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE;
       const itemData = children as ItemData;
       const itemCount = itemData.length;
       const rowCount = isGrid ? Math.ceil(itemCount / columns) : itemCount;
+      React.useLayoutEffect(() => {
+        listedValuesRef.current = itemData.map(([, option]) => option.value);
+        return () => {
+          listedValuesRef.current = [];
+        };
+      }, [itemData, listedValuesRef]);
       // Rows with wrapped (two-line) labels measure taller than single-line rows;
       // resetting the cache (via `key`) whenever the option list changes
       const dynamicRowHeight = useDynamicRowHeight({
@@ -257,7 +290,7 @@ const VirtualizedListbox = observer(
       const [toggleHeight, setToggleHeight] = React.useState(0);
       React.useLayoutEffect(() => {
         setToggleHeight(toggleRef.current?.offsetHeight ?? 0);
-      }, [isNameInput, isGrid]);
+      }, [isNameInput, isGrid, showTools, showMoveTools]);
 
       // Uses the measured average row height (rows are shorter than ITEM_SIZE on
       // wider screens, where MUI's option minHeight is no longer forced to 48px)
@@ -268,7 +301,8 @@ const VirtualizedListbox = observer(
           isGrid ? gridRowSize : dynamicRowHeight.getAverageRowHeight();
         const rows = Math.min(isGrid ? rowCount : itemCount, 8) * rowHeight;
         if (popupMaxHeight === undefined) return rows;
-        const chrome = isNameInput ? toggleHeight + TOGGLE_MARGIN : 0;
+        const chrome =
+          isNameInput || showMoveTools ? toggleHeight + TOGGLE_MARGIN : 0;
         return Math.min(rows, Math.max(0, popupMaxHeight - chrome));
       };
 
@@ -281,63 +315,104 @@ const VirtualizedListbox = observer(
           sx={{ "& .MuiAutocomplete-listbox": { p: 0 } }}
         >
           {isNameInput && (
-            <ToggleButtonGroup
+            <Box
               ref={toggleRef}
-              exclusive
-              size="small"
-              value={store.nameView}
-              onChange={(_event, view: NameView | null) => {
-                if (view) store.nameView = view;
-              }}
               // Keeps the focus, and so the popup, in the input
               onMouseDown={event => event.preventDefault()}
-              aria-label={t.team.nameListView}
               // Keep the toggle anchored while the grid widens the dropdown
               sx={{
                 display: "flex",
-                justifyContent: "center",
+                alignItems: "center",
+                justifyContent: showTools ? "space-between" : "center",
+                boxSizing: "border-box",
                 width: isGrid ? "100%" : nameListWidth,
                 maxWidth: "100%",
                 my: 0.5,
-                "& > .MuiToggleButton-root": {
-                  gap: 0.75,
-                  px: isGrid ? 0.5 : 0.75,
-                  minWidth: 0,
-                  flex: isGrid ? 1 : undefined,
-                  flexDirection: "row",
-                  fontSize: 12,
-                  lineHeight: 1,
-                },
-                "& svg": { flexShrink: 0 },
-                "& > * > span[aria-hidden]": {
-                  minWidth: 0,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                },
+                px: showTools ? 0.5 : 0,
               }}
             >
-              <ToggleButton value="list" aria-label={t.team.listView}>
-                <ViewListIcon fontSize="small" />
-                <span aria-hidden="true" title={t.team.list}>
-                  {t.team.list}
-                </span>
-              </ToggleButton>
-              <ToggleButton value="grid" aria-label={t.team.gridView}>
-                <GridViewIcon fontSize="small" />
-                <span aria-hidden="true" title={t.team.grid}>
-                  {t.team.grid}
-                </span>
-              </ToggleButton>
-              {isGrid && (
-                <ToggleButton value="big-grid" aria-label={t.team.bigGridView}>
-                  <ViewModuleIcon fontSize="small" />
-                  <span aria-hidden="true" title={t.team.bigGrid}>
-                    {t.team.bigGrid}
-                  </span>
-                </ToggleButton>
-              )}
-            </ToggleButtonGroup>
+              <ToggleButtonGroup
+                exclusive
+                size="small"
+                value={store.nameView}
+                onChange={(_event, view: NameView | null) => {
+                  if (view) store.nameView = view;
+                }}
+                aria-label={t.team.nameListView}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  minWidth: 0,
+                  width: showTools ? undefined : "100%",
+                  "& > .MuiToggleButton-root": {
+                    gap: 0.75,
+                    px:
+                      showTools ? undefined
+                      : isGrid ? 0.5
+                      : 0.75,
+                    minWidth: 0,
+                    flex: isGrid && !showTools ? 1 : undefined,
+                    flexDirection: "row",
+                    fontSize: 12,
+                    lineHeight: 1,
+                  },
+                  "& svg": { flexShrink: 0 },
+                  "& > * > span[aria-hidden]": {
+                    minWidth: 0,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  },
+                }}
+              >
+                {(
+                  [
+                    ["list", t.team.listView, t.team.list, ViewListIcon],
+                    ["grid", t.team.gridView, t.team.grid, GridViewIcon],
+                    ...(isGrid ?
+                      ([
+                        [
+                          "big-grid",
+                          t.team.bigGridView,
+                          t.team.bigGrid,
+                          ViewModuleIcon,
+                        ],
+                      ] as const)
+                    : []),
+                  ] as const
+                ).map(([view, label, caption, Icon]) => (
+                  <ToggleButton
+                    key={view}
+                    value={view}
+                    aria-label={label}
+                    title={showTools ? caption : undefined}
+                  >
+                    <Icon fontSize="small" />
+                    {!showTools && (
+                      <span aria-hidden="true" title={caption}>
+                        {caption}
+                      </span>
+                    )}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+              {showTools && <ListTools />}
+            </Box>
+          )}
+          {showMoveTools && (
+            <Box
+              ref={toggleRef}
+              // Keeps the focus, and so the popup, in the input
+              onMouseDown={event => event.preventDefault()}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                my: 0.5,
+                px: 0.5,
+              }}
+            >
+              <ListTools moves />
+            </Box>
           )}
           {isGrid ?
             <List
@@ -345,6 +420,7 @@ const VirtualizedListbox = observer(
               listRef={internalListRef}
               key={`${store.nameView}-${itemCount}`}
               rowCount={rowCount}
+              onRowsRendered={onRowsRendered}
               rowHeight={gridRowSize}
               rowComponent={GridRowComponent}
               rowProps={{ itemData, columns, large: isBigGrid }}
@@ -358,9 +434,10 @@ const VirtualizedListbox = observer(
               listRef={internalListRef}
               key={itemCount}
               rowCount={itemCount}
+              onRowsRendered={onRowsRendered}
               rowHeight={dynamicRowHeight}
               rowComponent={RowComponent}
-              rowProps={{ itemData, pokemonProperty, showMoveTypes }}
+              rowProps={{ itemData, pokemonProperty, teamIndex, showMoveTypes }}
               // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
               style={{ height: getHeight() + 2 * LISTBOX_PADDING }}
               overscanCount={5}

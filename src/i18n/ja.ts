@@ -30,10 +30,29 @@ const ja: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "近日公開",
+  combinedGenerations: {
+    label: "第6～9世代",
+    short: "第6～9世代",
+    description: "第6〜9世代の全ゲームの選択肢を統合",
+  },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
   language: "言語",
   languageFailed: "言語を読み込めませんでした。もう一度お試しください。",
+  error: {
+    title: "問題が発生しました",
+    description: "ページを再読み込みして、もう一度お試しください。",
+    reload: "再読み込み",
+  },
+  siteVersion: {
+    button: "旧サイト",
+    short: "旧サイト",
+    title: "旧サイトに移動しますか？",
+    description:
+      "現在のチームは旧サイトに引き継がれません。ここで保存済みのチームは、このバージョンに残ります。",
+    go: "旧サイトへ移動",
+    goLong: "旧サイトへ移動",
+  },
   feedback: {
     button: "フィードバックを送る",
     title: "フィードバックを送る",
@@ -48,6 +67,7 @@ const ja: Messages = {
       "この画像は読み込めませんでした。PNG または JPEG をお試しください。",
     imagesTooLarge: "画像の合計サイズが大きすぎます。先に1枚削除してください。",
     email: "メールアドレス（任意）",
+    emailInvalid: "有効なメールアドレスを入力するか、空欄にしてください。",
     emailHelper: "返信が必要な場合のみ",
     caption: "意見",
     send: "送信",
@@ -72,6 +92,8 @@ const ja: Messages = {
   // The team column
   team: {
     teams: "チーム一覧",
+    noMatchingPokemon:
+      "現在のフィルターに一致するポケモンがいません。フィルターを変更して、もう一度お試しください。",
     randomizedTeam: "ランダム編成しました",
     randomizedPokemon: "ポケモンをランダムに選びました",
     randomizedPokemonDetails: (details: string) =>
@@ -101,20 +123,16 @@ const ja: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `ポケモン${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first}と${second}`,
-    moreTools: "その他のチームツールを表示",
-    fewerTools: "その他のチームツールを隠す",
     advancedMode: "詳細",
-    more: "その他",
-    less: "隠す",
     filters: "絞り込み",
     sort: "並べ替え",
-    random: "ランダム",
-    randomize: "ランダム化",
     randomizePokemon: "ポケモンをランダムに選ぶ",
     randomizeDetails: (details: string) => `${details}をランダムに選ぶ`,
     randomFor: (slot: number) => `スロット${slot}にランダムなポケモン`,
     advanced: "その他の詳細",
     advancedFor: (slot: number) => `スロット${slot}のその他の詳細`,
+    details: "詳細",
+    showMoveTypes: "技のタイプを表示",
     about: (pokemon: string) => `${pokemon}について`,
     dragHint: "長押しドラッグで並べ替え",
     moveToSlot: (pokemon: string) => `${pokemon}を別のスロットへ移動`,
@@ -542,6 +560,7 @@ const ja: Messages = {
     infographicCaption: "第7〜9世代にも当てはまります",
   },
   credits: {
+    madeBy: "制作：{name}",
     showdown:
       "Pokemon Showdownの皆さんは、スプライト、アイコン、ポケモンデータのすべてを快く使わせてくれています。本当に欠かせない存在です！",
     alsoThanks: "また、次の方々にも感謝します",
@@ -568,11 +587,11 @@ const ja: Messages = {
     teamsAnswer:
       "チームはこのブラウザに保存されるので、次に来たときもここにありますが、別の端末には引き継がれません。「チーム一覧」ボタンで一覧が表示され、各チームのメニューから名前の変更、世代とフォーマットの設定、複製、共有、削除ができます。「すべてエクスポート」はすべてのチームをShowdownのテキストとしてダウンロードし、「チームをインポート」でそれを読み戻せます。アドレスバーには常に現在のチームが入っているので、アドレスをコピーする（または「共有」を押す）とチームを共有できます。",
     teamsAnswer2:
-      "「その他」ボタンでチームツール、「絞り込み」と「並べ替え」のボタン、「その他の詳細」ボタンが表示されます。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは「管理」メニューにあります。",
+      "「その他」ボタンでチームツール、「絞り込み」、「並べ替え」、「その他の詳細」が表示されます。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは、ポケモンの枠のタブの上にあります。",
     generations: "世代",
     generationsQuestion: "世代を変えると何が変わりますか？",
     generationsAnswer:
-      "上部で選んだ世代に存在したポケモンとフォルムだけが一覧に表示されます。メガシンカは第6・7・9世代、キョダイマックスのすがたは第8世代、といった具合です。それ以外はすべて最新のままです。技、特性、タイプ相性表、フォーマットは最新の作品に基づくので、古い世代のチームが当時は覚えられなかった技を覚えていることがあります。",
+      "上部で選んだ世代とゲームによって、表示されるポケモン、フォルム、技、道具、個体の詳細が決まります。過去の世代のチームには、その世代の特性、種族値、タイプ相性表が適用されます。ゲームを変更すると必要な修正が表示され、キャンセル、チームの更新、コピーの作成を選べます。",
     advanced: "その他の詳細",
     advancedQuestion: "ニックネーム、レベル、性格、努力値、個体値",
     advancedAnswer:
