@@ -50,8 +50,8 @@ Users are Pokemon players of any age who can read one of the site's ten language
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ability            | A passive trait of a pokemon that can change type matchups, such as Levitate.                                                                                   |
 | Backup file        | A JSON file of every saved team, `my-pokemon-teams-backup.json`, written by the Team backups action of released versions of the site.                           |
-| Collection export  | A Showdown text file from Export All holding every saved team with its name, generation profile, format, and pokemon details.                                   |
 | Checklist          | The list of roles a competitive team usually fills, such as an entry hazard or reliable recovery, each marked as present or absent for the team.                |
+| Collection export  | A Showdown text file from Export All holding every saved team with its name, generation profile, format, and pokemon details.                                   |
 | Coverage           | How hard a team's damaging moves hit each type. A type is covered by a move that is super effective against it.                                                 |
 | Current team       | The team the Player is editing.                                                                                                                                 |
 | Defence            | How hard each attacking type hits the pokemon of a team.                                                                                                        |
@@ -330,10 +330,9 @@ stateDiagram-v2
 
 - **Draft**: the team is the current team and is not kept. Nothing is written to the browser for it until its first edit.
 - **Saved**: the team is one of the saved teams and is written to the browser after each change. Its substate is **Current** while it is the team being edited and **Stored** otherwise.
+- **Deleted**: the team has been removed from the saved teams. Deleting the last saved team creates a new empty saved team, so the collection is never empty.
 
 A new team request matches an empty team with the current team's generation profile and format. Where the current team is such a team, whether a draft or saved, it stays the current team.
-
-- **Deleted**: the team has been removed from the saved teams. Deleting the last saved team creates a new empty saved team, so the collection is never empty.
 
 #### 3.1.4) UC1 Build Team
 
