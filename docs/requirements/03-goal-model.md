@@ -41,28 +41,28 @@ The model has three stakeholder actors, each holding softgoals, and one system a
 
 The system's goal "Support team planning" is AND-decomposed into the mandatory features F1 Team Building, F2 Game Data, F3 Pokemon Search, F4 Team Analysis, F6 Team Exchange, and F8 Presentation. The tasks below are those features and the optional ones, at the level of detail the contributions need.
 
-| Task                 | Feature                                           | Task                 | Feature                            |
-| -------------------- | ------------------------------------------------- | -------------------- | ---------------------------------- |
-| Team Defence         | F4.1                                              | Saved Teams          | F5.1                               |
-| Coverage             | F4.2                                              | Tab Sync             | F5.2                               |
-| Explanations         | F4.3                                              | Backups              | F5.3                               |
-| Checklist            | F4.4                                              | Share Link           | F6 Share Link                      |
-| Matrix               | F4.5                                              | Showdown Text        | F6 Showdown Text                   |
-| Legality Warnings    | F4.6 (P6)                                         | Export All           | F6 Export All                      |
-| Battle Format        | F4.4.1 (P1)                                       | Pokemon Info         | F7 Pokemon Info, F7.1              |
-| Combined Generations | F2.1 Generations 6-9 Combined                     | Update Log           | F7 Update Log                      |
-| Single Generations   | F2.1 Single Generation, Pokemon Champions         | Privacy Policy       | F7 Privacy Policy                  |
-| More Games           | F2.1 Let's Go, Legends: Arceus, Legends: Z-A (P3) | Languages            | F8.1, languages other than English |
-| Generation Transfer  | F2.2                                              | Translated Names     | F8.1.1                             |
-| Data Update          | F2.3.1                                            | Portuguese Names     | P4                                 |
-| Translation Update   | F2.3.2                                            | Colour Scheme        | F8.2                               |
-| Search by Name       | F3.1                                              | Responsive Layout    | F8.3                               |
-| Filters              | F3.2                                              | Feedback             | F9                                 |
-| Sort                 | F3.3                                              | Feedback Attachments | F9.1, F9.2, F9.3                   |
-| Grid Views           | F3.4 Grid, Big Grid                               | Verified Sender      | F9.5 (P5)                          |
-| Randomize            | F1.3                                              | Switch Version       | F10.1                              |
-| Undo                 | F1.4                                              | Version Transfer     | F10.2 (P2)                         |
-| Set Details          | F1.2                                              | Advertising          | F11                                |
+| Task                 | Feature                                            | Task                 | Feature                            |
+| -------------------- | -------------------------------------------------- | -------------------- | ---------------------------------- |
+| Team Defence         | F4.1                                               | Saved Teams          | F5.1                               |
+| Coverage             | F4.2                                               | Tab Sync             | F5.2                               |
+| Explanations         | F4.3                                               | Backups              | F5.3                               |
+| Checklist            | F4.4                                               | Share Link           | F6 Share Link                      |
+| Matrix               | F4.5                                               | Showdown Text        | F6 Showdown Text                   |
+| Legality Warnings    | F4.6 (PF6)                                         | Export All           | F6 Export All                      |
+| Battle Format        | F4.4.1 (PF1)                                       | Pokemon Info         | F7 Pokemon Info, F7.1              |
+| Combined Generations | F2.1 Generations 6-9 Combined                      | Update Log           | F7 Update Log                      |
+| Single Generations   | F2.1 Single Generation, Pokemon Champions          | Privacy Policy       | F7 Privacy Policy                  |
+| More Games           | F2.1 Let's Go, Legends: Arceus, Legends: Z-A (PF3) | Languages            | F8.1, languages other than English |
+| Generation Transfer  | F2.2                                               | Translated Names     | F8.1.1                             |
+| Data Update          | F2.3.1                                             | Portuguese Names     | PF4                                |
+| Translation Update   | F2.3.2                                             | Colour Scheme        | F8.2                               |
+| Search by Name       | F3.1                                               | Responsive Layout    | F8.3                               |
+| Filters              | F3.2                                               | Feedback             | F9                                 |
+| Sort                 | F3.3                                               | Feedback Attachments | F9.1, F9.2, F9.3                   |
+| Grid Views           | F3.4 Grid, Big Grid                                | Verified Sender      | F9.5 (PF5)                         |
+| Randomize            | F1.3                                               | Switch Version       | F10.1                              |
+| Undo                 | F1.4                                               | Version Transfer     | F10.2 (PF2)                        |
+| Set Details          | F1.2                                               | Advertising          | F11                                |
 
 ## 3.2 Contributions
 
@@ -250,7 +250,7 @@ Worked example, OW1 under "R1 Redesign": `(100 x 60 + 85 x 30 + 100 x 10 + 100 x
 - **The redesign is an improvement for the Player and the Site Owner.** The Player's largest gains are in keeping teams (15 to 100) and in using the site in their own language (20 to 80); the old website kept nothing between visits and was in English only. The Site Owner's gain comes mostly from the audience softgoal, which the new generations, languages, and saved teams all feed.
 - **The Maintainer pays for it.** Low maintenance effort falls from 40 to 25 with the redesign and to 10 with the next release, because every generation, language, and game added is more data and more rules to keep correct. The Maintainer's total holds at 55 for the redesign only because the translation script and feedback improve data currency. This is the main conflict in the model, and the reason the maintainability and testability requirements (REQ-MAINT, REQ-REL) are rated essential.
 - **Advertising is the second conflict.** It is the largest contribution to covering costs and the owner's time (60) and a negative one for the Player's device experience (-15) and for trust (-10). The requirements resolve it by constraint, not by removal: REQ-INTF-5 fixes where the banner goes, and REQ-PERF-4 limits what the page costs to load.
-- **P3 (more games) is the costliest planned feature for the Maintainer** and the only planned feature whose benefit is to one softgoal alone (audience, 10). P1, P2, P5, and P6 are cheaper for what they return. The prioritization in [06-traceability-and-prioritization.md](06-traceability-and-prioritization.md) uses this.
+- **PF3 (more games) is the costliest planned feature for the Maintainer** and the only planned feature whose benefit is to one softgoal alone (audience, 10). PF1, PF2, PF5, and PF6 are cheaper for what they return. The prioritization in [06-traceability-and-prioritization.md](06-traceability-and-prioritization.md) uses this.
 - **OW1 was widened after the interview.** The Site Owner's financial goal is to cover the running costs and to be paid for the time spent on the site, not only to break even. The softgoal was renamed; its contribution values and results were not estimated again, so the 90 and 95 above overstate how well advertising alone meets the wider goal.
 - **How the Site Owner settles the first conflict.** Asked which wins when a feature helps players and burdens maintenance, the Site Owner put players first, with one exception: where the burden is of a kind that would stop the site being improved at all, such as a backend to run. So the Maintainer's falling score is accepted for generations, languages, and games, and is a veto only for that kind of cost.
 - **What the model does not show.** It treats a feature as fully present or absent, so it cannot show that the old website's filters were fewer than the redesign's, or that an analysis is more or less accurate. It also leaves out the rights holders and the ad platform as actors with softgoals of their own.

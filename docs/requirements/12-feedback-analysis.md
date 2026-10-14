@@ -49,7 +49,7 @@ Smaller themes, one to three threads each:
 
 **The redesign's first day produced the clearest single finding.** Within hours of the redesign going live on 10 October 2026, two players wrote that choosing one generation or game stopped them from building the team they wanted: one mixes pokemon from every generation, and one plays a fan-made game that combines two generations. The Site Owner put the old website back the same day, and two days later made the combined Generations 6 to 9 profile the default (REQ-GEN-2, REQ-GEN-3). The lesson for the requirements is that a restriction which is correct for a competitive player is a barrier for a non-competitive one, and the default has to serve the second.
 
-**Replies to feedback sent through the site do not reach the player.** Both of those messages came through the new feedback form with no reply address. The Site Owner's answers went to the form's sending address, which no player reads. This is the gap that P5 (verified sender domain) and the optional reply address (REQ-FEED-4) are meant to close, and it happened on the form's first real use.
+**Replies to feedback sent through the site do not reach the player.** Both of those messages came through the new feedback form with no reply address. The Site Owner's answers went to the form's sending address, which no player reads. This is the gap that PF5 (verified sender domain) and the optional reply address (REQ-FEED-4) are meant to close, and it happened on the form's first real use.
 
 ## 12.4 Effect on the personas
 

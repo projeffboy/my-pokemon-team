@@ -103,7 +103,7 @@ def main():
         f'<text x="{PAD}" y="28" font-size="18" font-weight="bold" fill="{INK}">Feature tree of My Pokemon Team</text>',
     ]
     x = PAD
-    for kind, label in [("mandatory", "mandatory"), ("optional", "optional"), ("XOR", "XOR group: exactly one"), ("OR", "OR group: at least one"), ("planned", "planned (P1 to P7)"), ("tag", "R1: new in the redesign")]:
+    for kind, label in [("mandatory", "mandatory"), ("optional", "optional"), ("XOR", "XOR group: exactly one"), ("OR", "OR group: at least one"), ("planned", "planned (PF1 to PF7)"), ("tag", "R1: new in the redesign")]:
         if kind in ("mandatory", "optional"):
             out.append(f'<circle cx="{x + 5}" cy="52" r="4.5" fill="{INK if kind == "mandatory" else "#fff"}" stroke="{INK}"/>')
         elif kind in ("XOR", "OR"):

@@ -13,7 +13,7 @@ The course built feature models in the jUCMNav tool. This one is written as text
 - `XOR group`: exactly one of the children is selected when the parent is.
 - `OR group`: at least one of the children is selected when the parent is.
 - `[R0]`, `[R1]`, `[R2]`: the first release that has the feature (the old website, the redesign, the next release). A feature with no mark has been there since R0.
-- `[P1]` to `[P7]`: planned features, all proposed for R2.
+- `[PF1]` to `[PF7]`: planned features, all proposed for R2.
 
 ## 4.2 Feature tree
 
@@ -30,15 +30,15 @@ My Pokemon Team
 |   +-- F1.2 Set Details                          (optional)   [R1]
 |   |   +-- F1.2.1 Training Values                (mandatory)
 |   |         XOR group: DVs and Stat Experience | IVs and EVs | Stat Points
-|   |                    | Awakening Values [P3] | Effort Levels [P3]
+|   |                    | Awakening Values [PF3] | Effort Levels [PF3]
 |   +-- F1.3 Randomize                            (optional)   [R1]
 |   |     OR group: Random Team | Random Pokemon | Random Details
 |   +-- F1.4 Undo and Redo                        (optional)   [R1]
 +-- F2 Game Data                                  (mandatory)
 |   +-- F2.1 Generation Profile                   (mandatory)
 |   |     XOR group: Generations 6-9 Combined | Single Generation [R1]
-|   |                | Pokemon Champions [R1] | Let's Go [P3]
-|   |                | Legends: Arceus [P3] | Legends: Z-A [P3]
+|   |                | Pokemon Champions [R1] | Let's Go [PF3]
+|   |                | Legends: Arceus [PF3] | Legends: Z-A [PF3]
 |   +-- F2.2 Generation Transfer                  (optional)   [R1]
 |   +-- F2.3 Data Update Tooling                  (mandatory)
 |       +-- F2.3.1 Game Data Update               (mandatory)
@@ -56,17 +56,17 @@ My Pokemon Team
 |   +-- F4.2 Team Type Coverage                   (mandatory)
 |   +-- F4.3 Score Explanations                   (optional)
 |   +-- F4.4 Team Checklist                       (optional)
-|   |   +-- F4.4.1 Battle Format Context          (optional)   [P1]
+|   |   +-- F4.4.1 Battle Format Context          (optional)   [PF1]
 |   |         XOR group: Singles | Doubles
 |   +-- F4.5 Matrix Analysis                      (optional)   [R1]
-|   +-- F4.6 Team Legality Warnings               (optional)   [P6]
+|   +-- F4.6 Team Legality Warnings               (optional)   [PF6]
 +-- F5 Team Collection                            (optional)   [R1]
 |   +-- F5.1 Saved Teams                          (mandatory)
 |   +-- F5.2 Synchronization Between Tabs         (mandatory)
 |   +-- F5.3 Team Backups                         (optional)
 +-- F6 Team Exchange                              (mandatory)
 |   |  OR group: Share Link | Showdown Text | Export All [R1]
-|   +-- F6.1 Notice of Dropped Entries            (optional)   [P7]
+|   +-- F6.1 Notice of Dropped Entries            (optional)   [PF7]
 +-- F7 Reference                                  (optional)
 |   |  OR group: Type Chart | Manual | Update Log | Credits | Privacy Policy
 |   |            | Pokemon Info [R1]
@@ -87,10 +87,10 @@ My Pokemon Team
 |   +-- F9.2 Attach Screenshot                    (optional)
 |   +-- F9.3 Attach Images                        (optional)
 |   +-- F9.4 Reply Address                        (optional)
-|   +-- F9.5 Verified Sender Domain               (optional)   [P5]
+|   +-- F9.5 Verified Sender Domain               (optional)   [PF5]
 +-- F10 Site Versions                             (optional)   [R1]
 |   +-- F10.1 Switch to Other Version             (mandatory)
-|   +-- F10.2 Team Transfer Between Versions      (optional)   [P2]
+|   +-- F10.2 Team Transfer Between Versions      (optional)   [PF2]
 +-- F11 Advertising                               (optional)
 ```
 
@@ -114,13 +114,13 @@ What each top-level feature means:
 
 | ID  | Feature                              | Source                                                                               | Notes                                                                                                              |
 | --- | ------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
-| P1  | F4.4.1 Battle Format Context         | Issue 118; deferred during bug fixing on 2026-10-11                                  | Lets the checklist judge Defog correctly in Generations 4 and 5 singles and doubles.                               |
-| P2  | F10.2 Team Transfer Between Versions | `README.md`, issue 111                                                               | Today the current team and saved teams stay on the site version they were made on.                                 |
-| P3  | Let's Go and the Legends games       | The generation menu lists them as "Coming soon"; issue 122                           | Brings Awakening Values and Effort Levels with them.                                                               |
-| P4  | Portuguese data names                | `AGENTS.md`, Languages; issue 124                                                    | Blocked until PokeAPI has Portuguese names (the games gain the language in 2027). Removes the constraint C4 below. |
-| P5  | F9.5 Verified Sender Domain          | `AGENTS.md`, Feedback; issue 115                                                     | Until then the feedback function can reach only the owner's own address.                                           |
-| P6  | F4.6 Team Legality Warnings          | `src/store/validation.ts` holds the rules; no part of the page shows them; issue 117 | The Site Owner wants them shown (interview, Q10). Where they appear is still to be decided.                        |
-| P7  | F6.1 Notice of Dropped Entries       | `AGENTS.md`, Share Links: old links silently lose renamed entries; issue 119         | Proposed by the analyst; the Site Owner agreed (interview, Q10).                                                   |
+| PF1 | F4.4.1 Battle Format Context         | Issue 118; deferred during bug fixing on 2026-10-11                                  | Lets the checklist judge Defog correctly in Generations 4 and 5 singles and doubles.                               |
+| PF2 | F10.2 Team Transfer Between Versions | `README.md`, issue 111                                                               | Today the current team and saved teams stay on the site version they were made on.                                 |
+| PF3 | Let's Go and the Legends games       | The generation menu lists them as "Coming soon"; issue 122                           | Brings Awakening Values and Effort Levels with them.                                                               |
+| PF4 | Portuguese data names                | `AGENTS.md`, Languages; issue 124                                                    | Blocked until PokeAPI has Portuguese names (the games gain the language in 2027). Removes the constraint C4 below. |
+| PF5 | F9.5 Verified Sender Domain          | `AGENTS.md`, Feedback; issue 115                                                     | Until then the feedback function can reach only the owner's own address.                                           |
+| PF6 | F4.6 Team Legality Warnings          | `src/store/validation.ts` holds the rules; no part of the page shows them; issue 117 | The Site Owner wants them shown (interview, Q10). Where they appear is still to be decided.                        |
+| PF7 | F6.1 Notice of Dropped Entries       | `AGENTS.md`, Share Links: old links silently lose renamed entries; issue 119         | Proposed by the analyst; the Site Owner agreed (interview, Q10).                                                   |
 
 ## 4.4 Cross-tree constraints
 
@@ -150,7 +150,7 @@ Not selected: F1.1.1, F1.2, F1.3, F1.4, F2.2, F2.3.2, F3.3, F3.5, F4.5, F5, F7.1
 
 Selected: every feature without a `[P]` mark. Example run-time choices: Generation Profile: Generations 6-9 Combined; Training Values: IVs and EVs; Option Views: List; Language: Spanish with F8.1.1 Translated Data Names; Colour Scheme: Auto.
 
-Not selected: P1 to P7.
+Not selected: PF1 to PF7.
 
 ### Configuration "R1 Redesign, local development"
 
@@ -158,33 +158,33 @@ As "R1 Redesign, production" without F9 Feedback and its children, and without F
 
 ### Configuration "R2 Next"
 
-As "R1 Redesign, production" with F4.4.1 Battle Format Context (example choice: Doubles), F10.2 Team Transfer Between Versions, F9.5 Verified Sender Domain, F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. P3 adds three choices to the Generation Profile group and two to the Training Values group. P4 removes constraint C4.
+As "R1 Redesign, production" with F4.4.1 Battle Format Context (example choice: Doubles), F10.2 Team Transfer Between Versions, F9.5 Verified Sender Domain, F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. PF3 adds three choices to the Generation Profile group and two to the Training Values group. PF4 removes constraint C4.
 
 ## 4.6 Features and use cases
 
 A use case often relates to a feature. The table gives the relation used by the use case model in [05-system-requirements-specification.md](05-system-requirements-specification.md).
 
-| Feature                                   | Use cases                                                                                          |
-| ----------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| F1.1 Pokemon Slots, F3.1, F3.4, F3.5      | UC1 Build Team                                                                                     |
-| F1.2 Set Details                          | UC2 Set Pokemon Details                                                                            |
-| F1.3 Randomize                            | UC3 Randomize Team                                                                                 |
-| F1.4 Undo and Redo                        | UC4 Undo Change                                                                                    |
-| F3.2 Filters, F3.3 Sort                   | UC5 Narrow Pokemon Choices                                                                         |
-| F4.1, F4.2, F4.3, F4.4, F4.5              | UC6 Analyze Team                                                                                   |
-| F2.1 Generation Profile, F2.2             | UC7 Change Generation                                                                              |
-| F5.1 Saved Teams, F5.2                    | UC8 Manage Saved Teams                                                                             |
-| F5.3 Team Backups                         | UC9 Back Up Teams, UC10 Restore Teams                                                              |
-| F6 Share Link                             | UC11 Share Team by Link, UC12 Open Shared Team                                                     |
-| F6 Showdown Text, Export All              | UC13 Import Team Text, UC14 Export Team Text                                                       |
-| F7 Reference                              | UC15 Look Up Reference                                                                             |
-| F8.1 Language                             | UC16 Change Language                                                                               |
-| F8.2 Colour Scheme                        | UC17 Change Colour Scheme                                                                          |
-| F9 Feedback                               | UC18 Send Feedback                                                                                 |
-| F10.1 Switch to Other Version             | UC19 Switch Site Version                                                                           |
-| F2.3 Data Update Tooling                  | UC20 Update Game Data, UC21 Update Translations                                                    |
-| F4.4.1 Battle Format Context (P1)         | UC22 Set Battle Format                                                                             |
-| F10.2 Team Transfer Between Versions (P2) | UC23 Transfer Teams Between Versions                                                               |
-| F4.6 Team Legality Warnings (P6)          | UC24 Check Team Legality                                                                           |
-| F6.1 Notice of Dropped Entries (P7)       | UC12 Open Shared Team (alternative 2c)                                                             |
-| F8.3, F8.4, F11                           | None: these are qualities and constraints, specified as non-functional and interface requirements. |
+| Feature                                    | Use cases                                                                                          |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+| F1.1 Pokemon Slots, F3.1, F3.4, F3.5       | UC1 Build Team                                                                                     |
+| F1.2 Set Details                           | UC2 Set Pokemon Details                                                                            |
+| F1.3 Randomize                             | UC3 Randomize Team                                                                                 |
+| F1.4 Undo and Redo                         | UC4 Undo Change                                                                                    |
+| F3.2 Filters, F3.3 Sort                    | UC5 Narrow Pokemon Choices                                                                         |
+| F4.1, F4.2, F4.3, F4.4, F4.5               | UC6 Analyze Team                                                                                   |
+| F2.1 Generation Profile, F2.2              | UC7 Change Generation                                                                              |
+| F5.1 Saved Teams, F5.2                     | UC8 Manage Saved Teams                                                                             |
+| F5.3 Team Backups                          | UC9 Back Up Teams, UC10 Restore Teams                                                              |
+| F6 Share Link                              | UC11 Share Team by Link, UC12 Open Shared Team                                                     |
+| F6 Showdown Text, Export All               | UC13 Import Team Text, UC14 Export Team Text                                                       |
+| F7 Reference                               | UC15 Look Up Reference                                                                             |
+| F8.1 Language                              | UC16 Change Language                                                                               |
+| F8.2 Colour Scheme                         | UC17 Change Colour Scheme                                                                          |
+| F9 Feedback                                | UC18 Send Feedback                                                                                 |
+| F10.1 Switch to Other Version              | UC19 Switch Site Version                                                                           |
+| F2.3 Data Update Tooling                   | UC20 Update Game Data, UC21 Update Translations                                                    |
+| F4.4.1 Battle Format Context (PF1)         | UC22 Set Battle Format                                                                             |
+| F10.2 Team Transfer Between Versions (PF2) | UC23 Transfer Teams Between Versions                                                               |
+| F4.6 Team Legality Warnings (PF6)          | UC24 Check Team Legality                                                                           |
+| F6.1 Notice of Dropped Entries (PF7)       | UC12 Open Shared Team (alternative 2c)                                                             |
+| F8.3, F8.4, F11                            | None: these are qualities and constraints, specified as non-functional and interface requirements. |

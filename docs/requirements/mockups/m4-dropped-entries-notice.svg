@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 500" width="980" height="500" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="Mock-up M4: notice of entries dropped from a link">
 <title>Mock-up M4: notice of entries dropped from a link</title>
 <rect width="980" height="500" fill="#fff"/>
-<text x="20" y="30" font-size="18" fill="#222" font-weight="bold" text-anchor="start">M4  Notice of entries dropped from a link or a saved team (P7)</text>
+<text x="20" y="30" font-size="18" fill="#222" font-weight="bold" text-anchor="start">M4  Notice of entries dropped from a link or a saved team (PF7)</text>
 <text x="20" y="52" font-size="13" fill="#666" font-weight="normal" text-anchor="start">Shown when a share link or saved team names something the team&#x27;s game no longer has.</text>
 <rect x="20" y="76" width="940" height="150" rx="6" fill="#f3f3f3" stroke="#999" stroke-width="1.5"/>
 <text x="40" y="104" font-size="13" fill="#666" font-weight="normal" text-anchor="start" font-style="italic">(the team, opened from the link, with the entries below left out)</text>

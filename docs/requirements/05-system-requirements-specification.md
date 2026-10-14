@@ -1082,7 +1082,7 @@ US19. As a player who knew the old website, I want a way back to it from the red
 | REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                                    | O    | Rejected    |
 | REQ-SITE-5 | The site shall name, before opening the other site version with the Player's current team, each pokemon of the team that the other version cannot hold **[A-22]**.       | C    | Proposed    |
 
-REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site either. REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Teams Between Versions (planned, P2).
+REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site either. REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Teams Between Versions (planned, PF2).
 
 US23. As a player moving between the old website and the redesigned site, I want my current team to come with me, so that switching does not mean building it again.
 
@@ -1122,7 +1122,7 @@ US21. As the maintainer, I want one command to refresh the translated names and 
 
 REQ-DATA-10 to REQ-DATA-12 come from the 2-day target of BR-3. REQ-DATA-10 conflicts with REQ-POL-4 as it stands, which allows Pokemon Showdown as the only source; approving it means rewording REQ-POL-4 to allow the fallback source for a new game, while still forbidding edits by hand.
 
-#### 3.1.20) UC22 Set Battle Format (planned, P1)
+#### 3.1.20) UC22 Set Battle Format (planned, PF1)
 
 **User story**
 
@@ -1173,7 +1173,7 @@ the team.
 
 Known defect that these requirements correct: the checklist excludes Defog from hazard removal before Generation 6 in every battle format, which is wrong for doubles (issue 118).
 
-#### 3.1.21) UC24 Check Team Legality (planned, P6)
+#### 3.1.21) UC24 Check Team Legality (planned, PF6)
 
 **User story**
 
@@ -1346,7 +1346,7 @@ Players keep teams and links for months or years. These requirements protect the
 | REQ-INFO-7 | The site shall keep the Player's sort order, option view, move type display, and language in the browser for later visits.                     | C    | Implemented |
 | REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Approved    |
 
-Known limit: share links and saved teams hold display names. A pokemon, move, or item that a data update renames or removes is dropped from old links and teams without a message. REQ-DATA-6 makes the Maintainer aware of each such name before release; nothing yet tells the Player, which REQ-INFO-8 (planned, P7) would correct.
+Known limit: share links and saved teams hold display names. A pokemon, move, or item that a data update renames or removes is dropped from old links and teams without a message. REQ-DATA-6 makes the Maintainer aware of each such name before release; nothing yet tells the Player, which REQ-INFO-8 (planned, PF7) would correct.
 
 ### 3.11) Policy and regulation requirements
 

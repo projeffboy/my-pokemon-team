@@ -94,7 +94,7 @@ s.save("m2-battle-format-in-team-settings.svg")
 
 # ---------- M3: legality warnings
 s=Svg(980,560,"Mock-up M3: team legality warnings")
-s.text(20,30,"M3  Team legality warnings (P6)",18,INK,"bold")
+s.text(20,30,"M3  Team legality warnings (PF6)",18,INK,"bold")
 s.text(20,52,"A Generation 9 team with the OU format. The rules are already computed; only the display is new.",13,MUTED)
 # slot card
 s.card(20,76,300,190)
@@ -122,7 +122,7 @@ s.save("m3-legality-warnings.svg")
 
 # ---------- M4: dropped entries notice
 s=Svg(980,500,"Mock-up M4: notice of entries dropped from a link")
-s.text(20,30,"M4  Notice of entries dropped from a link or a saved team (P7)",18,INK,"bold")
+s.text(20,30,"M4  Notice of entries dropped from a link or a saved team (PF7)",18,INK,"bold")
 s.text(20,52,"Shown when a share link or saved team names something the team's game no longer has.",13,MUTED)
 s.rect(20,76,940,150,fill=FILL,stroke=LINE,r=6)
 s.text(40,104,"(the team, opened from the link, with the entries below left out)",13,MUTED,style="italic")
@@ -139,7 +139,7 @@ s.save("m4-dropped-entries-notice.svg")
 
 # ---------- M5: version transfer
 s=Svg(980,520,"Mock-up M5: taking the current team to the other site version")
-s.text(20,30,"M5  Taking the current team to the other site version (P2)",18,INK,"bold")
+s.text(20,30,"M5  Taking the current team to the other site version (PF2)",18,INK,"bold")
 s.text(20,52,"The confirmation shown before leaving for the old website: today, and as planned.",13,MUTED)
 for x,title,body,btn,new in [(20,"Today",["Your current team won’t transfer to the old","website. Teams already saved here will remain","on this version."],"Go to old website",False),
                              (500,"Planned",["Your current team will open on the old website.","Teams saved here will remain on this version."],"Go with my team",True)]:

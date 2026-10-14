@@ -15,7 +15,7 @@ Every item has a symbolic identifier: a prefix for its kind and area, then a num
 | P- (P-1 to P-5) | Persona                         | [02](02-stakeholders-and-personas.md)                 |
 | PL, OW, MA      | Softgoal of a stakeholder actor | [03](03-goal-model.md)                                |
 | F, C            | Feature, cross-tree constraint  | [04](04-feature-model.md)                             |
-| P (P1 to P7)    | Planned feature                 | [04](04-feature-model.md)                             |
+| P (PF1 to PF7)  | Planned feature                 | [04](04-feature-model.md)                             |
 | UC, US          | Use case, user story            | [05](05-system-requirements-specification.md)         |
 | REQ-_AREA_-     | System requirement              | [05](05-system-requirements-specification.md)         |
 | Issue number    | Work to do                      | GitHub issues; Section 6.6 links them to requirements |
@@ -188,13 +188,13 @@ Importance is on every requirement. Urgency is added here for the planned work.
 
 | Planned work                                           | Importance  | Urgency | Reason for the urgency                                                                                       |
 | ------------------------------------------------------ | ----------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| P1 Battle format for the checklist                     | Conditional | Medium  | Corrects a known wrong result, but only for Generations 4 and 5.                                             |
-| P2 Team transfer between versions                      | Conditional | Medium  | Matters most while players are moving from the old website.                                                  |
-| P3 Let's Go and the Legends games                      | Optional    | Low     | Already announced as coming soon; large.                                                                     |
-| P4 Portuguese data names                               | Optional    | Low     | Cannot start until PokeAPI has the names.                                                                    |
-| P5 Verified sender domain                              | Conditional | High    | Until it is done the feedback function can reach only the owner's own address.                               |
-| P6 Team legality warnings                              | Optional    | Medium  | The rules are already written and tested.                                                                    |
-| P7 Notice of entries dropped from a link               | Conditional | Medium  | Every data update can silently change old links.                                                             |
+| PF1 Battle format for the checklist                    | Conditional | Medium  | Corrects a known wrong result, but only for Generations 4 and 5.                                             |
+| PF2 Team transfer between versions                     | Conditional | Medium  | Matters most while players are moving from the old website.                                                  |
+| PF3 Let's Go and the Legends games                     | Optional    | Low     | Already announced as coming soon; large.                                                                     |
+| PF4 Portuguese data names                              | Optional    | Low     | Cannot start until PokeAPI has the names.                                                                    |
+| PF5 Verified sender domain                             | Conditional | High    | Until it is done the feedback function can reach only the owner's own address.                               |
+| PF6 Team legality warnings                             | Optional    | Medium  | The rules are already written and tested.                                                                    |
+| PF7 Notice of entries dropped from a link              | Conditional | Medium  | Every data update can silently change old links.                                                             |
 | Keyboard operation and contrast (REQ-USE-4, REQ-USE-6) | Conditional | Medium  | Needs a review before its size is known.                                                                     |
 | Browsers by usage share (REQ-INTF-13)                  | Conditional | Low     | Which browsers qualify is not yet known; no failure has been reported.                                       |
 | Notice of Showdown data changes (REQ-DATA-12)          | Conditional | High    | Without it the 2-day target of BR-3 depends on the Maintainer noticing a change by chance.                   |
@@ -204,30 +204,30 @@ Importance is on every requirement. Urgency is added here for the planned work.
 
 Each item is rated from 1 to 9 for the benefit of having it, the penalty of not having it, its cost, and its risk. The weights are 2 for benefit, 1 for penalty, 1 for cost, and 0.5 for risk. Priority is `value % / (cost % x cost weight + risk % x risk weight)`. The ratings are the analyst's estimates **[A-20]** and are meant to be replaced by the Site Owner's.
 
-| Feature                                                | Relative benefit | Relative penalty | Total value | Value % | Relative cost | Cost % | Relative risk | Risk % | Priority |
-| ------------------------------------------------------ | ---------------- | ---------------- | ----------- | ------- | ------------- | ------ | ------------- | ------ | -------- |
-| Relative weights:                                      | 2                | 1                |             |         | 1             |        | 0.5           |        |          |
-| P5 Verified sender domain (REQ-FEED-9)                 | 3                | 5                | 11          | 7.9     | 1             | 2.3    | 1             | 2.7    | 2.168    |
-| Notice of Showdown data changes (REQ-DATA-12)          | 5                | 6                | 16          | 11.4    | 2             | 4.5    | 2             | 5.4    | 1.577    |
-| P4 Portuguese data names (REQ-LANG-8)                  | 3                | 1                | 7           | 5.0     | 1             | 2.3    | 1             | 2.7    | 1.380    |
-| P6 Team legality warnings (REQ-ANLY-18, 19)            | 6                | 2                | 14          | 10.0    | 3             | 6.8    | 2             | 5.4    | 1.050    |
-| Browsers by usage share (REQ-INTF-13)                  | 3                | 3                | 9           | 6.4     | 2             | 4.5    | 2             | 5.4    | 0.887    |
-| P1 Battle format for the checklist (REQ-ANLY-12 to 17) | 4                | 6                | 14          | 10.0    | 4             | 9.1    | 3             | 8.1    | 0.761    |
-| P7 Notice of entries dropped from a link (REQ-INFO-8)  | 4                | 5                | 13          | 9.3     | 4             | 9.1    | 3             | 8.1    | 0.706    |
-| Keyboard operation and contrast (REQ-USE-4, 6)         | 5                | 4                | 14          | 10.0    | 5             | 11.4   | 3             | 8.1    | 0.649    |
-| P2 Team transfer between versions (REQ-SITE-3 to 5)    | 5                | 4                | 14          | 10.0    | 5             | 11.4   | 5             | 13.5   | 0.552    |
-| P3 Let's Go and the Legends games (REQ-GEN-11)         | 6                | 3                | 15          | 10.7    | 9             | 20.5   | 7             | 18.9   | 0.358    |
-| Fallback data source for a new game (REQ-DATA-10, 11)  | 5                | 3                | 13          | 9.3     | 8             | 18.2   | 8             | 21.6   | 0.320    |
-| Totals                                                 | 49               | 42               | 140         | 100     | 44            | 100    | 37            | 100    |          |
+| Feature                                                 | Relative benefit | Relative penalty | Total value | Value % | Relative cost | Cost % | Relative risk | Risk % | Priority |
+| ------------------------------------------------------- | ---------------- | ---------------- | ----------- | ------- | ------------- | ------ | ------------- | ------ | -------- |
+| Relative weights:                                       | 2                | 1                |             |         | 1             |        | 0.5           |        |          |
+| PF5 Verified sender domain (REQ-FEED-9)                 | 3                | 5                | 11          | 7.9     | 1             | 2.3    | 1             | 2.7    | 2.168    |
+| Notice of Showdown data changes (REQ-DATA-12)           | 5                | 6                | 16          | 11.4    | 2             | 4.5    | 2             | 5.4    | 1.577    |
+| PF4 Portuguese data names (REQ-LANG-8)                  | 3                | 1                | 7           | 5.0     | 1             | 2.3    | 1             | 2.7    | 1.380    |
+| PF6 Team legality warnings (REQ-ANLY-18, 19)            | 6                | 2                | 14          | 10.0    | 3             | 6.8    | 2             | 5.4    | 1.050    |
+| Browsers by usage share (REQ-INTF-13)                   | 3                | 3                | 9           | 6.4     | 2             | 4.5    | 2             | 5.4    | 0.887    |
+| PF1 Battle format for the checklist (REQ-ANLY-12 to 17) | 4                | 6                | 14          | 10.0    | 4             | 9.1    | 3             | 8.1    | 0.761    |
+| PF7 Notice of entries dropped from a link (REQ-INFO-8)  | 4                | 5                | 13          | 9.3     | 4             | 9.1    | 3             | 8.1    | 0.706    |
+| Keyboard operation and contrast (REQ-USE-4, 6)          | 5                | 4                | 14          | 10.0    | 5             | 11.4   | 3             | 8.1    | 0.649    |
+| PF2 Team transfer between versions (REQ-SITE-3 to 5)    | 5                | 4                | 14          | 10.0    | 5             | 11.4   | 5             | 13.5   | 0.552    |
+| PF3 Let's Go and the Legends games (REQ-GEN-11)         | 6                | 3                | 15          | 10.7    | 9             | 20.5   | 7             | 18.9   | 0.358    |
+| Fallback data source for a new game (REQ-DATA-10, 11)   | 5                | 3                | 13          | 9.3     | 8             | 18.2   | 8             | 21.6   | 0.320    |
+| Totals                                                  | 49               | 42               | 140         | 100     | 44            | 100    | 37            | 100    |          |
 
 ### Reading the result
 
 - **The Site Owner's decision (interview, Q16) is to follow this ranking.** The ratings behind it are still the analyst's, so a rating the Site Owner disagrees with changes the order.
-- **P5 first.** It is the cheapest item and removes a limit on a feature that is already live.
+- **PF5 first.** It is the cheapest item and removes a limit on a feature that is already live.
 - **The notice of Showdown data changes second.** It was added after the interview set a 2-day target for major data: it is cheap, and the target cannot be met reliably without it.
-- **P4 ranks third by arithmetic only.** It is cheap, but it is blocked until 2027 and cannot be scheduled.
-- **P6 before P1.** Legality warnings rank above the battle format because their rules already exist, although the battle format corrects a known defect. Both are small. The Site Owner has confirmed that the warnings are wanted.
-- **P3 and the fallback data source last.** Each has a cost and a risk several times most other items'. The goal model reaches the same conclusion about P3 from the Maintainer's side. The fallback source ranks last although the Site Owner asked for it, because nobody yet knows which sources would serve; its first step, choosing them, is cheap and should be done before the next new game, not after ten other items.
+- **PF4 ranks third by arithmetic only.** It is cheap, but it is blocked until 2027 and cannot be scheduled.
+- **PF6 before PF1.** Legality warnings rank above the battle format because their rules already exist, although the battle format corrects a known defect. Both are small. The Site Owner has confirmed that the warnings are wanted.
+- **PF3 and the fallback data source last.** Each has a cost and a risk several times most other items'. The goal model reaches the same conclusion about PF3 from the Maintainer's side. The fallback source ranks last although the Site Owner asked for it, because nobody yet knows which sources would serve; its first step, choosing them, is cheap and should be done before the next new game, not after ten other items.
 - The two verification items (keyboard and contrast, browsers by usage share) are investigations before they are features. Their cost ratings are the most uncertain in the table.
 
 ### Calibration
@@ -238,26 +238,26 @@ Other techniques the course teaches would add to this once players can be asked:
 
 ## 6.6 Requirements and GitHub issues
 
-Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. The planned work is in the order of Section 6.5. Priority is a label on the issue, and the milestone "R2" holds the next release.
+Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. The planned work is in the order of Section 6.5. Priority is the Priority field of the project board "My Pokemon Team Development" (P0 highest to P3 lowest), and the milestone "R2" holds the next release. Planned features are named PF1 to PF7 so that they are not mistaken for those priorities.
 
-| Work                                           | Requirements                              | Issue                                                           | Priority     |
-| ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------- | ------------ |
-| P5 Verified sender domain                      | REQ-FEED-9                                | [115](https://github.com/projeffboy/my-pokemon-team/issues/115) | High         |
-| Notice of Showdown data changes                | REQ-DATA-12                               | [116](https://github.com/projeffboy/my-pokemon-team/issues/116) | High         |
-| Sprites where Pokemon Showdown is blocked      | REQ-INTF-18                               | [76](https://github.com/projeffboy/my-pokemon-team/issues/76)   | High         |
-| Measure the speed targets                      | REQ-PERF-1 to 3                           | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | High         |
-| P6 Team legality warnings                      | REQ-ANLY-18, 19                           | [117](https://github.com/projeffboy/my-pokemon-team/issues/117) | Medium       |
-| P1 Battle format for the checklist             | REQ-ANLY-12 to 17                         | [118](https://github.com/projeffboy/my-pokemon-team/issues/118) | Medium       |
-| P7 Notice of entries dropped from a link       | REQ-INFO-8                                | [119](https://github.com/projeffboy/my-pokemon-team/issues/119) | Medium       |
-| Keyboard operation, accessible names, contrast | REQ-USE-4 to 6                            | [77](https://github.com/projeffboy/my-pokemon-team/issues/77)   | Medium       |
-| Check which requirements have tests            | Every requirement with status Implemented | [120](https://github.com/projeffboy/my-pokemon-team/issues/120) | Medium       |
-| Browsers by usage share                        | REQ-INTF-13                               | [121](https://github.com/projeffboy/my-pokemon-team/issues/121) | Low          |
-| P2 Team transfer to the old website            | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | Low          |
-| P3 Let's Go and the Legends games              | REQ-GEN-11                                | [122](https://github.com/projeffboy/my-pokemon-team/issues/122) | Low          |
-| Fallback data source for a new game            | REQ-DATA-10, 11                           | [123](https://github.com/projeffboy/my-pokemon-team/issues/123) | Low          |
-| P4 Portuguese data names                       | REQ-LANG-8                                | [124](https://github.com/projeffboy/my-pokemon-team/issues/124) | Low, blocked |
-| Unrecognised generation or game in a link      | REQ-LINK-11                               | [113](https://github.com/projeffboy/my-pokemon-team/issues/113) | Low          |
-| Recheck the dex links on a schedule            | REQ-REF-2                                 | [47](https://github.com/projeffboy/my-pokemon-team/issues/47)   | Low          |
+| Work                                           | Requirements                              | Issue                                                           | Priority                                                               |
+| ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| PF5 Verified sender domain                     | REQ-FEED-9                                | [115](https://github.com/projeffboy/my-pokemon-team/issues/115) | P1                                                                     |
+| Notice of Showdown data changes                | REQ-DATA-12                               | [116](https://github.com/projeffboy/my-pokemon-team/issues/116) | P1                                                                     |
+| Sprites where Pokemon Showdown is blocked      | REQ-INTF-18                               | [76](https://github.com/projeffboy/my-pokemon-team/issues/76)   | P1                                                                     |
+| Measure the speed targets                      | REQ-PERF-1 to 3                           | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | P3 on the board; P1 suggested, as the Site Owner rated speed paramount |
+| PF6 Team legality warnings                     | REQ-ANLY-18, 19                           | [117](https://github.com/projeffboy/my-pokemon-team/issues/117) | P2                                                                     |
+| PF1 Battle format for the checklist            | REQ-ANLY-12 to 17                         | [118](https://github.com/projeffboy/my-pokemon-team/issues/118) | P2                                                                     |
+| PF7 Notice of entries dropped from a link      | REQ-INFO-8                                | [119](https://github.com/projeffboy/my-pokemon-team/issues/119) | P2                                                                     |
+| Keyboard operation, accessible names, contrast | REQ-USE-4 to 6                            | [77](https://github.com/projeffboy/my-pokemon-team/issues/77)   | P2                                                                     |
+| Check which requirements have tests            | Every requirement with status Implemented | [120](https://github.com/projeffboy/my-pokemon-team/issues/120) | P2                                                                     |
+| Browsers by usage share                        | REQ-INTF-13                               | [121](https://github.com/projeffboy/my-pokemon-team/issues/121) | P3                                                                     |
+| PF2 Team transfer to the old website           | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | P3                                                                     |
+| PF3 Let's Go and the Legends games             | REQ-GEN-11                                | [122](https://github.com/projeffboy/my-pokemon-team/issues/122) | P3                                                                     |
+| Fallback data source for a new game            | REQ-DATA-10, 11                           | [123](https://github.com/projeffboy/my-pokemon-team/issues/123) | P3                                                                     |
+| PF4 Portuguese data names                      | REQ-LANG-8                                | [124](https://github.com/projeffboy/my-pokemon-team/issues/124) | P3, blocked                                                            |
+| Unrecognised generation or game in a link      | REQ-LINK-11                               | [113](https://github.com/projeffboy/my-pokemon-team/issues/113) | P3                                                                     |
+| Recheck the dex links on a schedule            | REQ-REF-2                                 | [47](https://github.com/projeffboy/my-pokemon-team/issues/47)   | P3                                                                     |
 
 Issues with no requirement yet, because the feature is not planned:
 

@@ -110,7 +110,7 @@ flowchart TD
   Edit -- "[changes a draft]" --> ChangeIt --> Add --> finish
 ```
 
-A change to a team that was already saved is kept as any other change is; only a draft is added to the saved teams by its first change. The action marked "(planned)" is REQ-INFO-8 (P7); today the entries are left out without a word. Mock-up M4 in [10-mockups.md](10-mockups.md) shows the notice.
+A change to a team that was already saved is kept as any other change is; only a draft is added to the saved teams by its first change. The action marked "(planned)" is REQ-INFO-8 (PF7); today the entries are left out without a word. Mock-up M4 in [10-mockups.md](10-mockups.md) shows the notice.
 
 ## 9.4 Activity: change a team's generation
 
@@ -254,7 +254,7 @@ From Publish to Deploy the flow has 2 days for a major change and 7 days for a m
 
 ## 9.8 Activity (planned): judge the Spinner/Defogger role
 
-Covers UC22 Set Battle Format (P1) and REQ-ANLY-14 to REQ-ANLY-16. This is the rule the battle format exists for, drawn as the decisions the site makes for one team. Today the site stops at the generation: before Generation 6 it never counts Defog, which is wrong for doubles.
+Covers UC22 Set Battle Format (PF1) and REQ-ANLY-14 to REQ-ANLY-16. This is the rule the battle format exists for, drawn as the decisions the site makes for one team. Today the site stops at the generation: before Generation 6 it never counts Defog, which is wrong for doubles.
 
 ```mermaid
 flowchart TD
@@ -277,7 +277,7 @@ The three decisions below the first are new. Mock-ups M1 and M2 in [10-mockups.m
 
 ## 9.9 Activity (planned): take the current team to the other site version
 
-Covers UC19 Switch Site Version and UC23 Transfer Teams Between Versions (P2). It assumes the team crosses as a share link (A-14), because the two versions are at different addresses and neither can read the other's saved teams.
+Covers UC19 Switch Site Version and UC23 Transfer Teams Between Versions (PF2). It assumes the team crosses as a share link (A-14), because the two versions are at different addresses and neither can read the other's saved teams.
 
 ```mermaid
 flowchart TD
@@ -314,9 +314,9 @@ The flow runs from the redesigned site to the old website only: the old website 
 
 ## 9.10 Planned features without a flow diagram
 
-- **P6 Team legality warnings**: the site already computes the rules; the feature is a display of them, shown in mock-up M3. There is no new flow.
-- **P5 Verified sender domain** and **P4 Portuguese data names**: neither changes a flow. P5 changes the address in the "message for the Site Owner" step of 9.5; P4 changes the data that the translation step of 9.7 produces.
-- **P3 More games**: each game adds choices to the generation profile, and its flow is 9.4.
+- **PF6 Team legality warnings**: the site already computes the rules; the feature is a display of them, shown in mock-up M3. There is no new flow.
+- **PF5 Verified sender domain** and **PF4 Portuguese data names**: neither changes a flow. PF5 changes the address in the "message for the Site Owner" step of 9.5; PF4 changes the data that the translation step of 9.7 produces.
+- **PF3 More games**: each game adds choices to the generation profile, and its flow is 9.4.
 - **The notice of Showdown data changes and the fallback data source**: both are in 9.7.
 
 ## 9.11 Scenarios and use cases

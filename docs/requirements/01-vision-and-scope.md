@@ -52,11 +52,11 @@ Application-domain requirements that the later documents must respect. They come
 
 ### Releases
 
-| Release        | Contents                                                                                                                                                                        | State                  |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| R0 Old website | Generations 6 to 9, one unsaved team, type defence and coverage, checklist, filters by format, type, and region, Showdown import and export, share link. English only.          | Live at `old.` host    |
-| R1 Redesign    | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, backups, generation transfer, ten languages, feedback, site version switch. | `major-added-features` |
-| R2 Next        | Planned features P1 to P7 in [04-feature-model.md](04-feature-model.md): battle format for the checklist, team transfer between site versions, the remaining games, and others. | Proposed               |
+| Release        | Contents                                                                                                                                                                          | State                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| R0 Old website | Generations 6 to 9, one unsaved team, type defence and coverage, checklist, filters by format, type, and region, Showdown import and export, share link. English only.            | Live at `old.` host    |
+| R1 Redesign    | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, backups, generation transfer, ten languages, feedback, site version switch.   | `major-added-features` |
+| R2 Next        | Planned features PF1 to PF7 in [04-feature-model.md](04-feature-model.md): battle format for the checklist, team transfer between site versions, the remaining games, and others. | Proposed               |
 
 ### In scope for R1
 
@@ -159,5 +159,5 @@ Exposure is probability times impact, each on a scale of 1 (low) to 5 (high). Th
 | RISK-6  | A wrong analysis result goes unreported and players stop trusting the scores.                                                                                                                        | 2   | 4   | 8        | REQ-FEED-1 (feedback), REQ-REL-1 (rule tests), REQ-ANLY-7 (reasons shown)                                      |
 | RISK-7  | The feedback function or sprite rewrite is abused to send spam or to proxy other sites' requests.                                                                                                    | 3   | 2   | 6        | REQ-SEC-1 to REQ-SEC-4                                                                                         |
 | RISK-8  | The rights holders object to the use of Pokemon names and artwork and have the site taken down. This is the Site Owner's one real worry; the rights holders have not acted against comparable sites. | 1   | 5   | 5        | REQ-POL-3 (credits), no bundled artwork beyond icon sheets and the local sprites recorded with their source    |
-| RISK-9  | Players of the old website do not find the features they used and leave.                                                                                                                             | 2   | 2   | 4        | REQ-SITE-1 (switch to the old website), P2 (team transfer)                                                     |
+| RISK-9  | Players of the old website do not find the features they used and leave.                                                                                                                             | 2   | 2   | 4        | REQ-SITE-1 (switch to the old website), PF2 (team transfer)                                                    |
 | RISK-10 | Data taken from another source for a new game is wrong, or differs from Pokemon Showdown's when that arrives, and teams built on it change.                                                          | 3   | 3   | 9        | REQ-DATA-10 and REQ-DATA-11 (fallback source, replaced by Showdown's data, planned), REQ-FEED-1                |

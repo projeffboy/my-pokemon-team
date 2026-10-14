@@ -11,9 +11,9 @@
 <rect x="428.4" y="43" width="8" height="18" rx="4" fill="#222" stroke="#222"/>
 <text x="445.4" y="56" font-size="12" fill="#222">OR group: at least one</text>
 <rect x="620.5999999999999" y="44" width="14" height="16" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="640.5999999999999" y="56" font-size="12" fill="#222">planned (P1 to P7)</text>
-<text x="789.3999999999999" y="56" font-size="10" fill="#888">R1</text>
-<text x="809.3999999999999" y="56" font-size="12" fill="#222">R1: new in the redesign</text>
+<text x="640.5999999999999" y="56" font-size="12" fill="#222">planned (PF1 to PF7)</text>
+<text x="802.5999999999999" y="56" font-size="10" fill="#888">R1</text>
+<text x="822.5999999999999" y="56" font-size="12" fill="#222">R1: new in the redesign</text>
 <path d="M126.0 972.75 H248 V205.5 H265" fill="none" stroke="#888"/>
 <circle cx="265" cy="205.5" r="4.5" fill="#222" stroke="#222"/>
 <path d="M126.0 972.75 H248 V442.0 H265" fill="none" stroke="#888"/>
@@ -77,10 +77,10 @@
 <text x="1028" y="160" font-size="12" fill="#222">IVs and EVs</text>
 <rect x="1020" y="169" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="1028" y="182" font-size="12" fill="#222">Stat Points</text>
-<rect x="1020" y="191" width="136.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="1028" y="204" font-size="12" fill="#222">Awakening Values<tspan fill="#1565c0" font-size="10">  P3</tspan></text>
-<rect x="1020" y="213" width="118.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="1028" y="226" font-size="12" fill="#222">Effort Levels<tspan fill="#1565c0" font-size="10">  P3</tspan></text>
+<rect x="1020" y="191" width="142.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="1028" y="204" font-size="12" fill="#222">Awakening Values<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
+<rect x="1020" y="213" width="124.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="1028" y="226" font-size="12" fill="#222">Effort Levels<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
 <path d="M644.0 266.0 H748 V244 H765" fill="none" stroke="#888"/>
 <path d="M644.0 266.0 H748 V266 H765" fill="none" stroke="#888"/>
 <path d="M644.0 266.0 H748 V288 H765" fill="none" stroke="#888"/>
@@ -120,12 +120,12 @@
 <text x="778" y="358" font-size="12" fill="#222">Single Generation<tspan fill="#888" font-size="10">  R1</tspan></text>
 <rect x="770" y="367" width="142.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="380" font-size="12" fill="#222">Pokemon Champions<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="389" width="88.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="778" y="402" font-size="12" fill="#222">Let&#x27;s Go<tspan fill="#1565c0" font-size="10">  P3</tspan></text>
-<rect x="770" y="411" width="130.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="778" y="424" font-size="12" fill="#222">Legends: Arceus<tspan fill="#1565c0" font-size="10">  P3</tspan></text>
-<rect x="770" y="433" width="112.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="778" y="446" font-size="12" fill="#222">Legends: Z-A<tspan fill="#1565c0" font-size="10">  P3</tspan></text>
+<rect x="770" y="389" width="94.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="778" y="402" font-size="12" fill="#222">Let&#x27;s Go<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
+<rect x="770" y="411" width="136.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="778" y="424" font-size="12" fill="#222">Legends: Arceus<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
+<rect x="770" y="433" width="118.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="778" y="446" font-size="12" fill="#222">Legends: Z-A<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
 <rect x="520" y="455" width="184.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="468" font-size="12" fill="#222">F2.2 Generation Transfer<tspan fill="#888" font-size="10">  R1</tspan></text>
 <path d="M680.0 497.0 H748 V486 H765" fill="none" stroke="#888"/>
@@ -212,20 +212,20 @@
 <circle cx="765" cy="849.0" r="4.5" fill="#fff" stroke="#222"/>
 <rect x="520" y="840.0" width="130.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="853.0" font-size="12" fill="#222">F4.4 Team Checklist</text>
-<path d="M978.0 849.0 H998 V838 H1015" fill="none" stroke="#888"/>
-<path d="M978.0 849.0 H998 V860 H1015" fill="none" stroke="#888"/>
+<path d="M984.0 849.0 H998 V838 H1015" fill="none" stroke="#888"/>
+<path d="M984.0 849.0 H998 V860 H1015" fill="none" stroke="#888"/>
 <rect x="994" y="834" width="8" height="30" rx="4" fill="#fff" stroke="#222"/>
 <text x="990" y="830" font-size="10" text-anchor="end" fill="#222" font-weight="bold">XOR</text>
-<rect x="770" y="840.0" width="208.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="778" y="853.0" font-size="12" fill="#222">F4.4.1 Battle Format Context<tspan fill="#1565c0" font-size="10">  P1</tspan></text>
+<rect x="770" y="840.0" width="214.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="778" y="853.0" font-size="12" fill="#222">F4.4.1 Battle Format Context<tspan fill="#1565c0" font-size="10">  PF1</tspan></text>
 <rect x="1020" y="829" width="58.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="1028" y="842" font-size="12" fill="#222">Singles</text>
 <rect x="1020" y="851" width="58.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="1028" y="864" font-size="12" fill="#222">Doubles</text>
 <rect x="520" y="873" width="160.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="886" font-size="12" fill="#222">F4.5 Matrix Analysis<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="520" y="895" width="202.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="528" y="908" font-size="12" fill="#222">F4.6 Team Legality Warnings<tspan fill="#1565c0" font-size="10">  P6</tspan></text>
+<rect x="520" y="895" width="208.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="528" y="908" font-size="12" fill="#222">F4.6 Team Legality Warnings<tspan fill="#1565c0" font-size="10">  PF6</tspan></text>
 <path d="M418.0 948.0 H498 V926 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="926" r="4.5" fill="#222" stroke="#222"/>
 <path d="M418.0 948.0 H498 V948 H515" fill="none" stroke="#888"/>
@@ -255,8 +255,8 @@
 <text x="528" y="1018" font-size="12" fill="#222">Showdown Text</text>
 <rect x="520" y="1027" width="100.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="528" y="1040" font-size="12" fill="#222">Export All<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="520" y="1049" width="220.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="528" y="1062" font-size="12" fill="#222">F6.1 Notice of Dropped Entries<tspan fill="#1565c0" font-size="10">  P7</tspan></text>
+<rect x="520" y="1049" width="226.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="528" y="1062" font-size="12" fill="#222">F6.1 Notice of Dropped Entries<tspan fill="#1565c0" font-size="10">  PF7</tspan></text>
 <path d="M358.0 1146.0 H498 V1080 H515" fill="none" stroke="#888"/>
 <path d="M358.0 1146.0 H498 V1102 H515" fill="none" stroke="#888"/>
 <path d="M358.0 1146.0 H498 V1124 H515" fill="none" stroke="#888"/>
@@ -368,8 +368,8 @@
 <text x="528" y="1634" font-size="12" fill="#222">F9.3 Attach Images</text>
 <rect x="520" y="1643" width="124.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="1656" font-size="12" fill="#222">F9.4 Reply Address</text>
-<rect x="520" y="1665" width="202.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="528" y="1678" font-size="12" fill="#222">F9.5 Verified Sender Domain<tspan fill="#1565c0" font-size="10">  P5</tspan></text>
+<rect x="520" y="1665" width="208.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="528" y="1678" font-size="12" fill="#222">F9.5 Verified Sender Domain<tspan fill="#1565c0" font-size="10">  PF5</tspan></text>
 <path d="M412.0 1707.0 H498 V1696 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1696" r="4.5" fill="#222" stroke="#222"/>
 <path d="M412.0 1707.0 H498 V1718 H515" fill="none" stroke="#888"/>
@@ -378,8 +378,8 @@
 <text x="278" y="1711.0" font-size="12" fill="#222" font-weight="bold">F10 Site Versions<tspan fill="#888" font-size="10">  R1</tspan></text>
 <rect x="520" y="1687" width="190.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="1700" font-size="12" fill="#222">F10.1 Switch to Other Version</text>
-<rect x="520" y="1709" width="256.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
-<text x="528" y="1722" font-size="12" fill="#222">F10.2 Team Transfer Between Versions<tspan fill="#1565c0" font-size="10">  P2</tspan></text>
+<rect x="520" y="1709" width="262.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
+<text x="528" y="1722" font-size="12" fill="#222">F10.2 Team Transfer Between Versions<tspan fill="#1565c0" font-size="10">  PF2</tspan></text>
 <rect x="270" y="1731" width="106.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="278" y="1744" font-size="12" fill="#222" font-weight="bold">F11 Advertising</text>
 </svg>
