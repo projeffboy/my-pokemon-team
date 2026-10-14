@@ -1213,12 +1213,21 @@ The Site Owner rates speed as paramount: a visitor who waits, or who has to work
 | REQ-USE-8  | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                                      | C    | Implemented |
 | REQ-USE-9  | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                    | O    | Proposed    |
 | REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                | E    | Implemented |
+| REQ-USE-11 | The site shall show a text label beside the icon of every button, other than the icon-only buttons listed in Table 3.2-1.                                                    | E    | Approved    |
 
 | Quality (requirement)                      | Outstanding | Target    | Minimum   |
 | ------------------------------------------ | ----------- | --------- | --------- |
 | Time to a first analysed team (REQ-USE-1)  | 1 minute    | 2 minutes | 5 minutes |
 | Time for a Showdown round trip (REQ-USE-2) | 30 seconds  | 1 minute  | 2 minutes |
 | Narrowest supported width (REQ-USE-3)      | 280 px      | 320 px    | 320 px    |
+
+REQ-USE-11 lets a button show its icon alone only where a label would get in the way, and each such button and its reason is listed below. A button joins the list only with a reason recorded here; every icon-only button still has an accessible name (REQ-USE-5).
+
+Table 3.2-1: Icon-only buttons
+
+| Button               | Where                               | Reason                                              |
+| -------------------- | ----------------------------------- | --------------------------------------------------- |
+| Random pokemon (die) | Each slot's card, beside the sprite | A label would cover the animated sprite next to it. |
 
 ### 3.3) Performance requirements
 
