@@ -15,7 +15,7 @@ The Oct 14, 2026 consolidation of Team backups into Team Exchange is an approved
 - `XOR group`: exactly one of the children is selected when the parent is.
 - `OR group`: at least one of the children is selected when the parent is.
 - `[R0]`, `[Ash]`, `[Brock]`: the first release that has the feature (the old website, the redesign, the next release). A feature with no mark has been there since R0.
-- `[PF1]` to `[PF7]`: planned features, all proposed for Brock except PF4, which waits for PokeAPI's Portuguese names and is not scheduled, and PF5, which was dropped. PF4 has no mark, because it adds no feature: it removes constraint C4.
+- `[PF1]` to `[PF7]`: planned features, all planned for Brock except PF4, which waits for PokeAPI's Portuguese names and is not scheduled, and PF5, which was dropped. PF4 has no mark, because it adds no feature: it removes constraint C4.
 
 ## 4.2 Feature tree
 

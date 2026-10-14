@@ -1,6 +1,6 @@
 # 6. Requirements Management, Traceability, and Prioritization
 
-This document says how the requirements are identified, changed, and traced, and in what order the planned ones should be done.
+This document says how the requirements are identified, changed, and traced, and how the planned work is prioritized.
 
 ## 6.1 Identification
 
@@ -15,7 +15,7 @@ Every item has a symbolic identifier: a prefix for its kind and area, then a num
 | P- (P-1 to P-5) | Persona                         | [02](02-stakeholders-and-personas.md)             |
 | PL, OW, MA      | Softgoal of a stakeholder actor | [03](03-goal-model.md)                            |
 | F, C            | Feature, cross-tree constraint  | [04](04-feature-model.md)                         |
-| P (PF1 to PF7)  | Planned feature                 | [04](04-feature-model.md)                         |
+| PF (PF1 to PF7) | Planned feature                 | [04](04-feature-model.md)                         |
 | UC, US          | Use case, user story            | [05](05-system-requirements-specification.md)     |
 | REQ-_AREA_-     | System requirement              | [05](05-system-requirements-specification.md)     |
 | Issue number    | Work to do                      | GitHub issues, each naming its requirements (6.6) |
@@ -44,7 +44,7 @@ Statuses:
 
 - **Proposed**: suggested by a stakeholder or by the analyst, not yet agreed.
 - **Approved**: agreed by the Site Owner and part of the baseline; committed to be implemented. Putting a requirement's issue in a release milestone, such as "Brock", approves it.
-- **Implemented**: designed and built. Every requirement that describes the baseline `629b75f` has this status.
+- **Implemented**: designed and built. Every requirement that describes the baseline `629b75f` has this status, as do REQ-FIND-12 and REQ-USE-17, which commit `8139648` of 14 October 2026 implemented by removing the Advanced switch.
 - **Verified**: the tests named for it have been read and have passed. No requirement has this status yet, because the tests in Section 4 of the SyRS were matched by name only.
 - **Rejected**: evaluated and declined, with the reason kept.
 - **Deleted**: removed from the list; the identifier is not reused.
@@ -54,19 +54,19 @@ Statuses:
 - **Baseline 0.1 (draft)**: these documents as first written, describing commit `629b75f` of `major-added-features`, 13 October 2026. It is a draft until the Site Owner has answered the interview in [08](08-assumptions-and-interview.md) and the assumptions have been corrected.
 - **Baseline 1.0**: the documents after that review. From then on a change goes through the steps below.
 
-**Oct 14, 2026 change request:** consolidate Team backups into Export All and Import Team, omit filters and unsaved drafts from exports, and skip duplicate imports. Requirements are updated; implementation and verification are pending. Matching details remain open in A-25. The Site Owner explicitly limited this work to requirements.
+The Oct 14, 2026 changes below changed only the requirements; the implementation and verification of the requirements they approve are pending.
 
-**Oct 14, 2026 mobile autofill request:** REQ-USE-19 is approved and applies to editable fields throughout the site, including dialogs. Personal-data autofill must be suppressed while the site's own option lists remain usable. Implementation and native mobile verification are pending; this change updates requirements only.
+**Oct 14, 2026 change request:** consolidate Team backups into Export All and Import Team, omit filters and unsaved drafts from exports, and skip duplicate imports. Matching details remain open in A-25, and how backup files saved before the change are loaded in A-26.
 
-**Oct 14, 2026 dropdown keyboard request:** REQ-USE-20 is approved. Closing a dropdown on mobile must also dismiss the keyboard it opened, without an extra tap. Selection, dismissal, dialog closure, and transfer to another editable field are covered by the acceptance criteria. Implementation and native mobile verification are pending; this change updates requirements only.
+**Oct 14, 2026 mobile autofill request:** REQ-USE-19 is approved and applies to editable fields throughout the site, including dialogs. Personal-data autofill must be suppressed while the site's own option lists remain usable, as checked on native mobile browsers.
 
-**Oct 14, 2026 shared editing requirements:** REQ-USE-21 and REQ-USE-22 apply to team-data entry throughout the site, including UC13 Import Team Text and the team-text editor. REQ-USE-23 applies to all site dialogs. These requirements are approved; implementation and verification are pending. The proposal to disable saving without edits was withdrawn and is not a requirement. Editor-specific wording and layout proposals remain unapproved.
+**Oct 14, 2026 dropdown keyboard request:** REQ-USE-20 is approved. Closing a dropdown on mobile must also dismiss the keyboard it opened, without an extra tap. Selection, dismissal, dialog closure, and transfer to another editable field are covered by the acceptance criteria.
 
-**Oct 14, 2026 editor parsing decision:** parsing reports are advisory. REQ-TEXT-12 and REQ-TEXT-13 are approved: explain parsing problems and their resulting omissions or fallbacks, while permitting an update without correction or an additional confirmation. REQ-TEXT-14 records the existing invalid-move-to-empty-slot behavior. The proposed blocking validation flow is rejected; the behavior model and acceptance criteria in Section 3.1.14 of [05](05-system-requirements-specification.md) now show the approved flow. Diagnostic reporting and its verification remain pending. No application code changes.
+**Oct 14, 2026 shared editing requirements:** REQ-USE-21 and REQ-USE-22 apply to team-data entry throughout the site, including UC13 Import Team Text and the team-text editor. REQ-USE-23 applies to all site dialogs. These requirements are approved. The proposal to disable saving without edits was withdrawn and is not a requirement. Editor-specific wording and layout proposals remain unapproved.
 
-**Oct 14, 2026 advisory location correction:** the Site Owner rejected line-number references because the editor does not display line numbers. REQ-TEXT-12, its acceptance criteria, and the behavior model now identify problems by pokemon and field, including a move-slot number for move problems and a team-slot number for an unrecognized pokemon. No code changes.
+**Oct 14, 2026 editor parsing decision:** parsing reports are advisory. REQ-TEXT-12 and REQ-TEXT-13 are approved: explain parsing problems and their resulting omissions or fallbacks, while permitting an update without correction or an additional confirmation. REQ-TEXT-14 records the existing invalid-move-to-empty-slot behavior. The proposed blocking validation flow is rejected; the behavior model and acceptance criteria in Section 3.1.14 of [05](05-system-requirements-specification.md) now show the approved flow.
 
-The pull from the requirements spec branch on Oct 14, 2026 brought existing REQ-USE-14 to 17 and a deleted REQ-USE-18. To preserve those identifiers, this worktree’s five uncommitted requirements were renumbered: mobile autofill 14 → 19, dropdown keyboard dismissal 15 → 20, spellcheck suppression 16 → 21, automatic text correction/capitalization 17 → 22, and visible dialog actions 18 → 23. Their content and approval status are unchanged.
+**Oct 14, 2026 advisory location correction:** the Site Owner rejected line-number references because the editor does not display line numbers. REQ-TEXT-12, its acceptance criteria, and the behavior model now identify problems by pokemon and field, including a move-slot number for move problems and a team-slot number for an unrecognized pokemon.
 
 Change management, sized for one maintainer:
 
@@ -123,7 +123,7 @@ classDiagram
   SystemRequirement "*" --> "0..1" UseCase : derived from
   SystemRequirement "*" --> "1..*" BusinessRequirement : helps achieve
   Test "*" --> "1..*" SystemRequirement : tests
-  Issue "*" --> "1..*" SystemRequirement : implements or verifies
+  Issue "*" --> "0..*" SystemRequirement : implements or verifies
 ```
 
 Links are created by whoever has the information: the analyst links requirements upward, and the developer links tests to requirements when writing them. Links are kept at the level of requirement groups, not single requirements, because single-requirement links for more than two hundred requirements would not be maintained.
@@ -179,32 +179,32 @@ An X means the requirements of the row help achieve the business requirement of 
 
 ### Personas, user stories, use cases, and requirements
 
-| User story | Persona who tells it most | Use case                           | Requirements                 |
-| ---------- | ------------------------- | ---------------------------------- | ---------------------------- |
-| US1        | P-1 Maya, P-5 Leo         | UC1 Build Team                     | REQ-TEAM-1 to 15             |
-| US2        | P-2 Daniel                | UC2 Set Pokemon Details            | REQ-DET-1 to 8               |
-| US3        | P-1 Maya, P-5 Leo         | UC3 Randomize Team                 | REQ-RAND-1 to 5              |
-| US4        | P-1 Maya, P-2 Daniel      | UC4 Undo Change                    | REQ-UNDO-1 to 5              |
-| US5        | P-2 Daniel, P-3 Sofía     | UC5 Narrow Pokemon Choices         | REQ-FIND-1 to 12             |
-| US6        | P-1 Maya, P-2 Daniel      | UC6 Analyze Team                   | REQ-ANLY-1 to 11, 20         |
-| US7        | P-4 Kenji                 | UC7 Change Generation              | REQ-GEN-1 to 12              |
-| US8        | P-3 Sofía                 | UC8 Manage Saved Teams             | REQ-COLL-1 to 13             |
-| US9        | P-3 Sofía                 | UC9 Back Up Teams                  | REQ-BKUP-1, 6, 8, 9          |
-| US10       | P-3 Sofía                 | UC10 Restore Teams                 | REQ-BKUP-2, 3                |
-| US11       | P-2 Daniel, P-3 Sofía     | UC11 Share Team by Link            | REQ-LINK-1 to 3              |
-| US12       | P-4 Kenji                 | UC12 Open Shared Team              | REQ-LINK-4 to 11, REQ-INFO-8 |
-| US13       | P-2 Daniel                | UC13 Import Team Text              | REQ-TEXT-1 to 4              |
-| US14       | P-2 Daniel                | UC14 Export Team Text              | REQ-TEXT-5 to 14             |
-| US15       | P-1 Maya                  | UC15 Look Up Reference             | REQ-REF-1 to 6               |
-| US16       | P-3 Sofía, P-4 Kenji      | UC16 Change Language               | REQ-LANG-1 to 8              |
-| US17       | P-1 Maya                  | UC17 Change Colour Scheme          | REQ-THEME-1, 2               |
-| US18       | P-2 Daniel                | UC18 Send Feedback                 | REQ-FEED-1 to 11             |
-| US19       | P-4 Kenji                 | UC19 Switch Site Version           | REQ-SITE-1, 2                |
-| US20       | Maintainer (SH-2)         | UC20 Update Game Data              | REQ-DATA-1 to 7, 10 to 12    |
-| US21       | Maintainer (SH-2)         | UC21 Update Translations           | REQ-DATA-8, 9                |
-| US22       | P-3 Sofía, P-4 Kenji      | UC22 Set Battle Format (planned)   | REQ-ANLY-12 to 17            |
-| US23       | P-4 Kenji                 | UC23 Transfer Team to Old Website  | REQ-SITE-3, 5                |
-| US24       | P-2 Daniel                | UC24 Check Team Legality (planned) | REQ-ANLY-18, 19              |
+| User story | Persona who tells it most | Use case                                    | Requirements                 |
+| ---------- | ------------------------- | ------------------------------------------- | ---------------------------- |
+| US1        | P-1 Maya, P-5 Leo         | UC1 Build Team                              | REQ-TEAM-1 to 15             |
+| US2        | P-2 Daniel                | UC2 Set Pokemon Details                     | REQ-DET-1 to 8               |
+| US3        | P-1 Maya, P-5 Leo         | UC3 Randomize Team                          | REQ-RAND-1 to 5              |
+| US4        | P-1 Maya, P-2 Daniel      | UC4 Undo Change                             | REQ-UNDO-1 to 5              |
+| US5        | P-2 Daniel, P-3 Sofía     | UC5 Narrow Pokemon Choices                  | REQ-FIND-1 to 12             |
+| US6        | P-1 Maya, P-2 Daniel      | UC6 Analyze Team                            | REQ-ANLY-1 to 11, 20         |
+| US7        | P-4 Kenji                 | UC7 Change Generation                       | REQ-GEN-1 to 12              |
+| US8        | P-3 Sofía                 | UC8 Manage Saved Teams                      | REQ-COLL-1 to 13             |
+| US9        | P-3 Sofía                 | UC9 Back Up Teams                           | REQ-BKUP-1, 6, 8, 9          |
+| US10       | P-3 Sofía                 | UC10 Restore Teams                          | REQ-BKUP-2, 3, 10            |
+| US11       | P-2 Daniel, P-3 Sofía     | UC11 Share Team by Link                     | REQ-LINK-1 to 3              |
+| US12       | P-4 Kenji                 | UC12 Open Shared Team                       | REQ-LINK-4 to 11, REQ-INFO-8 |
+| US13       | P-2 Daniel                | UC13 Import Team Text                       | REQ-TEXT-1 to 4              |
+| US14       | P-2 Daniel                | UC14 Export Team Text                       | REQ-TEXT-5 to 14             |
+| US15       | P-1 Maya                  | UC15 Look Up Reference                      | REQ-REF-1 to 6               |
+| US16       | P-3 Sofía, P-4 Kenji      | UC16 Change Language                        | REQ-LANG-1 to 8              |
+| US17       | P-1 Maya                  | UC17 Change Colour Scheme                   | REQ-THEME-1, 2               |
+| US18       | P-2 Daniel                | UC18 Send Feedback                          | REQ-FEED-1 to 11             |
+| US19       | P-4 Kenji                 | UC19 Switch Site Version                    | REQ-SITE-1, 2                |
+| US20       | Maintainer (SH-2)         | UC20 Update Game Data                       | REQ-DATA-1 to 7, 10 to 12    |
+| US21       | Maintainer (SH-2)         | UC21 Update Translations                    | REQ-DATA-8, 9                |
+| US22       | P-3 Sofía, P-4 Kenji      | UC22 Set Battle Format (planned)            | REQ-ANLY-12 to 17            |
+| US23       | P-4 Kenji                 | UC23 Transfer Team to Old Website (planned) | REQ-SITE-3, 5                |
+| US24       | P-2 Daniel                | UC24 Check Team Legality (planned)          | REQ-ANLY-18, 19              |
 
 The non-functional requirements are not derived from one use case. REQ-USE, REQ-PERF, REQ-MODE, and REQ-INFO relate to every use case; REQ-SEC-1 to 3 relate to UC18, and REQ-SEC-5 to UC10, UC12, and UC13.
 

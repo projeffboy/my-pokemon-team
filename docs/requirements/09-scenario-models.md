@@ -275,7 +275,7 @@ flowchart TD
   Depends --> finish
 ```
 
-The three decisions below the first are new. Mock-ups M1 and M2 in [10-mockups.md](10-mockups.md) show two places the battle format could be set.
+Only the last decision, on the battle format, and its "depends" outcome are new. Mock-ups M1 and M2 in [10-mockups.md](10-mockups.md) show two places the battle format could be set.
 
 ## 9.9 Activity (planned): take the current team to the old website
 

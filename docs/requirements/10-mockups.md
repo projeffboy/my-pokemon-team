@@ -57,10 +57,11 @@ Requirements: REQ-SITE-3, REQ-SITE-5 (REQ-SITE-4 was rejected). Use cases: UC19 
 
 ![M5: taking the current team to the old website](mockups/m5-version-transfer.svg)
 
-The warning in the planned dialog is REQ-SITE-5, which the analyst proposed while drawing this mock-up **[A-22]**: the old website covers Generations 6 to 9 only, so a team from another generation cannot arrive whole, and a player should hear that before leaving. Open decisions (issue 111):
+The warning in the planned dialog is REQ-SITE-5, which the analyst proposed while drawing this mock-up **[A-22]**: the old website covers Generations 6 to 9 only, so a team from another generation cannot arrive whole, and a player should hear that before leaving. Decided in the interview: the old website is in maintenance and is not changed, so the team crosses to the old website only, and saved teams do not cross at all.
+
+Open decision (issue 111):
 
 - How the team crosses. The mock-up assumes a share link (A-14), which both versions can already read.
-- Decided in the interview: the old website is in maintenance and is not changed, so the team crosses to the old website only, and saved teams do not cross at all.
 
 ## Mock-ups and requirements
 
