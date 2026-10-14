@@ -6,6 +6,8 @@ My Pokemon Team is one product, not a product line. The model is still useful be
 
 The course built feature models in the jUCMNav tool. This one is written as text, in the form the course material uses for its own figures, so that it can be reviewed and versioned with the code. It has not been evaluated by a tool; the configurations below were checked by hand against the constraints.
 
+The Oct 14, 2026 consolidation of Team backups into Team Exchange is an approved requirements change awaiting implementation. The current application still has the separate backups action.
+
 ## 4.1 Notation
 
 - `(mandatory)`: a child that every configuration containing the parent must select.
@@ -63,7 +65,6 @@ My Pokemon Team
 +-- F5 Team Collection                            (optional)   [Ash]
 |   +-- F5.1 Saved Teams                          (mandatory)
 |   +-- F5.2 Synchronization Between Tabs         (mandatory)
-|   +-- F5.3 Team Backups                         (optional)
 +-- F6 Team Exchange                              (mandatory)
 |   |  OR group: Share Link | Showdown Text | Export All [Ash]
 |   +-- F6.1 Notice of Dropped Entries            (optional)   [PF7]
@@ -101,7 +102,7 @@ What each top-level feature means:
 | F2  | Game Data       | The pokemon, moves, items, abilities, and rules of the chosen generation or game, the conversion of a team between them, and the scripts that refresh the data. |
 | F3  | Pokemon Search  | Finding a pokemon, move, item, or ability to place in a slot: by typing, by filters, in a chosen order and view.                                                |
 | F4  | Team Analysis   | The type defence and coverage scores, their explanations, the checklist, and the matrix.                                                                        |
-| F5  | Team Collection | Several named teams kept in the browser and kept consistent between tabs, with backup files.                                                                    |
+| F5  | Team Collection | Several named teams kept in the browser and kept consistent between tabs, with collection exports and imports through F6.                                       |
 | F6  | Team Exchange   | Moving one team or all teams out of and into the site as a link or as Showdown text.                                                                            |
 | F7  | Reference       | Material the player reads rather than edits.                                                                                                                    |
 | F8  | Presentation    | Language, colour scheme, layout for the screen width, and sprites.                                                                                              |
@@ -173,9 +174,8 @@ A use case often relates to a feature. The table gives the relation used by the 
 | F4.1, F4.2, F4.3, F4.4, F4.5             | UC6 Analyze Team                                                                                   |
 | F2.1 Generation Profile, F2.2            | UC7 Change Generation                                                                              |
 | F5.1 Saved Teams, F5.2                   | UC8 Manage Saved Teams                                                                             |
-| F5.3 Team Backups                        | UC9 Back Up Teams, UC10 Restore Teams                                                              |
 | F6 Share Link                            | UC11 Share Team by Link, UC12 Open Shared Team                                                     |
-| F6 Showdown Text, Export All             | UC13 Import Team Text, UC14 Export Team Text                                                       |
+| F6 Showdown Text, Export All             | UC9 Back Up Teams, UC10 Restore Teams, UC13 Import Team Text, UC14 Export Team Text                |
 | F7 Reference                             | UC15 Look Up Reference                                                                             |
 | F8.1 Language                            | UC16 Change Language                                                                               |
 | F8.2 Colour Scheme                       | UC17 Change Colour Scheme                                                                          |

@@ -4,6 +4,8 @@ Requirement level: business. This document states why My Pokemon Team exists, wh
 
 Statements marked **[A-n]** are assumptions made from the repository alone. They are listed with the question that would settle each one in [08-assumptions-and-interview.md](08-assumptions-and-interview.md).
 
+The collection export/import scope reflects the approved Oct 14, 2026 requirements change. Implementation is pending; this update does not change application code.
+
 ## 1.1 Business opportunity
 
 Pokemon players plan a team of six before they play: in the main games, on Pokemon Showdown, and in official formats such as VGC and Pokemon Champions. The planning question is always the same: which types hit this team hard, and which types can this team hit hard? Answering it by hand means reading an 18 by 18 type chart for six pokemon and up to 24 moves, then correcting for abilities, items, and moves that break the chart.
@@ -55,7 +57,7 @@ Application-domain requirements that the later documents must respect. They come
 | Release        | Contents                                                                                                                                                                                                                                                                                                       | State                  |
 | -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | R0 Old website | Generations 6 to 9, one unsaved team, type defence and coverage, checklist, filters by format, type, and region, Showdown import and export, share link. English only.                                                                                                                                         | Live at `old.` host    |
-| Ash            | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, backups, generation transfer, ten languages, feedback, site version switch.                                                                                                                                | `major-added-features` |
+| Ash            | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, collection exports, generation transfer, ten languages, feedback, site version switch.                                                                                                                     | `major-added-features` |
 | Brock          | The GitHub milestone "Brock": the planned features in [04-feature-model.md](04-feature-model.md), except PF4, which waits for PokeAPI, and PF5, which was dropped (battle format for the checklist, team transfer to the old website, the remaining games, and others) and the other work scheduled with them. | Proposed               |
 
 ### In scope for Ash
@@ -66,7 +68,7 @@ The work the system does itself:
 - Offering only the pokemon, moves, items, and abilities that exist in that generation or game, narrowed by the player's filters and ordered by the player's sort.
 - Scoring the team's type defence and type coverage, checking the team checklist, and showing the matrix of every type against every pokemon, with the reason for each cell.
 - Keeping any number of named teams in the browser, each with its generation, format, and filters.
-- Exchanging teams as Pokemon Showdown text, as a share link, and as a backup file.
+- Exchanging teams as Pokemon Showdown text, as a share link, and as an export of every saved team.
 - Previewing and applying the changes a team needs when its generation or game changes.
 - Presenting the site in ten languages, in a light or dark colour scheme, on screens from 320 pixels wide.
 - Sending a player's feedback to the site owner by email.
@@ -77,7 +79,7 @@ The work the system does itself:
 Not intended for Ash or Brock. None of these is ruled out for good; each would first need a business requirement of its own.
 
 - Battling, damage calculation, and speed tiers. Pokemon Showdown and its damage calculator do these.
-- Player accounts and server-side storage of teams. Teams stay in the browser; a backup file moves them between devices.
+- Player accounts and server-side storage of teams. Teams stay in the browser; Showdown text exports move them between devices.
 - Editing or hosting game data. Pokemon Showdown is the source, and the site ships a projection of it.
 - Moderating or hosting shared teams. A share link holds the whole team; nothing is stored on a server.
 
@@ -103,8 +105,8 @@ The ellipse is the work: the site as served to a browser, together with its feed
 ```mermaid
 flowchart LR
   MPT(["My Pokemon Team"])
-  Player["Player"] -- "Team edits, filters, team text, backup file, feedback" --> MPT
-  MPT -- "Team analysis, share link, team text, backup file" --> Player
+  Player["Player"] -- "Team edits, filters, team text, feedback" --> MPT
+  MPT -- "Team analysis, share link, team text" --> Player
   Recipient["Link Recipient"] -- "Share link" --> MPT
   MPT -- "Shared team and its analysis" --> Recipient
   Owner["Site Owner / Maintainer"] -- "Data update request, update log entries" --> MPT
@@ -125,18 +127,18 @@ flowchart LR
   MPT -- "Page metadata, link preview" --> Crawler
 ```
 
-| External entity         | Flow into My Pokemon Team                             | Flow out of My Pokemon Team                       |
-| ----------------------- | ----------------------------------------------------- | ------------------------------------------------- |
-| Player                  | Team edits, filters, team text, backup file, feedback | Team analysis, share link, team text, backup file |
-| Link Recipient          | Share link                                            | Shared team and its analysis                      |
-| Site Owner / Maintainer | Data update request, update log entries               | Feedback email, data update report                |
-| Pokemon Showdown        | Game data, sprites, icon sheets                       | Sprite requests                                   |
-| PokeAPI                 | Translated names                                      | Name table requests                               |
-| Playwire Ad Platform    | Advertisements                                        | Page view, ad placements                          |
-| Email Delivery Service  | Delivery result                                       | Feedback message                                  |
-| Dex Sites               | (none)                                                | Links to a pokemon's page                         |
-| Old Website             | Link back to the redesigned site                      | Link to the old website                           |
-| Web Crawlers            | Page request                                          | Page metadata, link preview                       |
+| External entity         | Flow into My Pokemon Team                | Flow out of My Pokemon Team          |
+| ----------------------- | ---------------------------------------- | ------------------------------------ |
+| Player                  | Team edits, filters, team text, feedback | Team analysis, share link, team text |
+| Link Recipient          | Share link                               | Shared team and its analysis         |
+| Site Owner / Maintainer | Data update request, update log entries  | Feedback email, data update report   |
+| Pokemon Showdown        | Game data, sprites, icon sheets          | Sprite requests                      |
+| PokeAPI                 | Translated names                         | Name table requests                  |
+| Playwire Ad Platform    | Advertisements                           | Page view, ad placements             |
+| Email Delivery Service  | Delivery result                          | Feedback message                     |
+| Dex Sites               | (none)                                   | Links to a pokemon's page            |
+| Old Website             | Link back to the redesigned site         | Link to the old website              |
+| Web Crawlers            | Page request                             | Page metadata, link preview          |
 
 Notes on the boundary:
 
@@ -152,7 +154,7 @@ Exposure is probability times impact, each on a scale of 1 (low) to 5 (high). Th
 | ID      | Risk                                                                                                                                                                                                 | P   | I   | Exposure | Mitigation in the requirements                                                                                 |
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- | -------- | -------------------------------------------------------------------------------------------------------------- |
 | RISK-1  | A data update renames or removes a pokemon, move, or item, and old share links silently lose that entry.                                                                                             | 4   | 3   | 12       | REQ-DATA-6 (update report), REQ-INFO-1 (link compatibility), REQ-INFO-8 (notice to the visitor, planned)       |
-| RISK-2  | A player's browser clears site storage and the saved teams are lost.                                                                                                                                 | 3   | 4   | 12       | REQ-BKUP-1 to REQ-BKUP-5 (backups), REQ-COLL-9 (save failure notice)                                           |
+| RISK-2  | A player's browser clears site storage and the saved teams are lost.                                                                                                                                 | 3   | 4   | 12       | REQ-BKUP-1 to REQ-BKUP-3 (export and import), REQ-COLL-9 (save failure notice)                                 |
 | RISK-3  | Pokemon Showdown stops serving sprites to other sites, or changes its data layout.                                                                                                                   | 2   | 5   | 10       | REQ-INTF-1 and REQ-INTF-2 (pictures that match the site's data), REQ-DATA-5 (projection script)                |
 | RISK-4  | A page structure change removes the top ad banner and revenue drops unnoticed.                                                                                                                       | 2   | 5   | 10       | REQ-INTF-5 (banner above the content)                                                                          |
 | RISK-5  | The single maintainer is unavailable, or does not hear of it, when a new game or regulation is released, and the 2-day target of BR-3 is missed.                                                     | 3   | 4   | 12       | REQ-MAINT-1 to REQ-MAINT-3 (scripted updates, automated checks), REQ-DATA-12 (notice of data changes, planned) |

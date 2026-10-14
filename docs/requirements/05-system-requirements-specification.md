@@ -49,7 +49,7 @@ Users are Pokemon players of any age who can read one of the site's ten language
 | Term               | Definition                                                                                                                                                      |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ability            | A passive trait of a pokemon that can change type matchups, such as Levitate.                                                                                   |
-| Backup file        | A file the site writes that holds every saved team, the unsaved draft, and each team's settings.                                                                |
+| Backup file        | A Showdown text file from Export All holding every saved team, its name, generation setting, format, and pokemon details.                                       |
 | Checklist          | The list of roles a competitive team usually fills, such as an entry hazard or reliable recovery, each marked as present or absent for the team.                |
 | Coverage           | How hard a team's damaging moves hit each type. A type is covered by a move that is super effective against it.                                                 |
 | Current team       | The team the Player is editing.                                                                                                                                 |
@@ -304,7 +304,7 @@ A team is the artefact a Player creates, keeps, and discards. The state machine 
 ```mermaid
 stateDiagram-v2
   [*] --> Draft : site opened / shared link opened [no saved team matches]
-  [*] --> Saved : new team requested / team text imported / backup restored / team duplicated / team copied to another generation
+  [*] --> Saved : new team requested / team text imported / team duplicated / team copied to another generation
   Draft --> Saved : team edited
   Draft --> [*] : another team opened / draft deleted
   state Saved {
@@ -695,7 +695,7 @@ US8. As a player with several teams in progress, I want each one kept in my brow
 - f) There is always at least one saved team.
 - g) An empty team cannot be duplicated.
 - h) Teams changed in one tab appear in the site's other tabs, and neither tab undoes the other's changes.
-- i) The Player is told when the browser could not save, and is pointed to a backup.
+- i) The Player is told when the browser could not save, and is pointed to Export All.
 
 **Use case**
 
@@ -731,7 +731,7 @@ Alternatives/Exceptions:
 3c.1a.1: System informs Player that an empty team cannot be duplicated; use case continues
          at step 2.
 1-5a: System could not keep the saved teams in the Player's browser:
-1-5a.1: System informs Player that the teams could not be saved and that a backup will keep
+1-5a.1: System informs Player that the teams could not be saved and that Export All will keep
         them; use case continues at the step that was interrupted.
 Postcondition: The saved teams are those the Player created and did not delete, and at least
 one saved team exists.
@@ -749,13 +749,15 @@ one saved team exists.
 | REQ-COLL-6  | The site shall allow the Player to rename any saved team.                                                                                                             | C    | Implemented |
 | REQ-COLL-7  | The site shall create, on the Player's request, a copy of a saved team that has at least one pokemon, under a name no other saved team has.                           | C    | Implemented |
 | REQ-COLL-8  | The site shall delete a saved team only after the Player confirms a prompt stating that the deletion cannot be undone.                                                | E    | Implemented |
-| REQ-COLL-9  | The site shall inform the Player that the browser could not save the teams, and that a backup will keep them, after a failed attempt to save.                         | E    | Implemented |
+| REQ-COLL-9  | The site shall inform the Player that the browser could not save the teams, and that Export All will keep them, after a failed attempt to save.                       | E    | Approved    |
 | REQ-COLL-10 | The site shall hold at least one saved team at all times, creating an empty one after the deletion of the last.                                                       | E    | Implemented |
 | REQ-COLL-11 | The site shall take into each open tab the teams that the site's other tabs in the same browser save, merging team by team so that no tab discards another's changes. | E    | Implemented |
 | REQ-COLL-12 | The site shall keep saved teams without an expiry date.                                                                                                               | E    | Implemented |
 | REQ-COLL-13 | The site shall restore, after a reload of the page, the team that was the current team before the reload.                                                             | C    | Implemented |
 
 #### 3.1.12) UC9 Back Up Teams and UC10 Restore Teams
+
+**Requirements change, Oct 14, 2026 — implementation pending.** The Site Owner wants collection backups consolidated into Export All and Import Team. The current implementation has not been changed. Filters and unsaved drafts are excluded from future exports, and imports must skip duplicates. Criterion e is a proposed matching rule **[A-25]**.
 
 **User stories**
 
@@ -765,54 +767,51 @@ US10. As a player with two devices, I want to add the teams from a backup file t
 
 **Acceptance criteria (Verify that...)**
 
-- a) A backup file holds every saved team and the unsaved draft, with each team's name, generation profile, format, filters, and every pokemon's details.
-- b) Restoring a backup adds its teams and leaves the existing teams and the current team unchanged.
-- c) Restoring the same backup twice adds nothing the second time, and the Player is told the teams are already there.
-- d) Before restoring, the Player is told how many teams the file holds.
-- e) A file that is not a backup written by the site is refused with a message saying so.
-- f) The backup file is read on the Player's device and is not sent anywhere.
-- g) A backup keeps a pokemon's values even where they are not legal in its game.
+- a) Export All writes every saved team as Showdown text, including names, generations, games, formats, empty teams, and supported pokemon details; filters and unsaved drafts are excluded.
+- b) Import Team adds new teams without changing or removing existing teams and opens the last newly imported team.
+- c) Importing the same export twice adds nothing the second time, keeps the current team open, and tells the Player the teams are already there.
+- d) Duplicates within the same pasted text are added only once.
+- e) Named teams match by name, generation setting, format, and the pokemon details that survive text export and import. Different filters do not make a team different; text without a team name matches by the remaining fields. **[A-25]**
+- f) Imports are read on the Player's device and are not sent anywhere.
+- g) Export All includes teams saved by other tabs up to the request.
+- h) The separate Team backups action is absent; collection exports and restores use Export All and Import Team.
+- i) Collection exports preserve stored pokemon set values, including values not legal in the selected game. Legacy backup compatibility remains governed by REQ-INFO-3; the replacement import mechanism is not yet specified.
 
 **Use case**
 
 ```
 Title: Restore Teams
 Actors: Player
-Intention: The intention of the Player is to add the teams held in a backup file to the
-saved teams, without losing any team already saved.
-Precondition: Player has a backup file.
+Intention: The intention of the Player is to add exported teams to the saved teams,
+without losing any team already saved.
+Precondition: Player has a Showdown text export.
 Main Scenario:
-1: Player provides System with a backup file.
-2: System validates the file and informs Player of the number of teams it holds.
-3: Player requests System to add the teams.
-4: System adds to the saved teams each team of the file that is not already among them, and
-   informs Player that the teams were added.
+1: Player provides System with the exported team text and requests an import.
+2: System reads the teams and omits duplicates.
+3: System adds the new teams, opens the last one, and informs Player how many were added.
 Alternatives/Exceptions:
-2a: The file is not a backup written by the site, or exceeds the size the System accepts:
-2a.1: System informs Player that the file could not be read; use case continues at step 1.
-4a: Every team of the file is already among the saved teams:
-4a.1: System informs Player that the teams are already in the collection; use case ends in
-      success.
-4b: The saved teams with the added teams would exceed the size the System can keep:
-4b.1: System informs Player that the backup has too many teams to add; use case ends in
-      failure.
+2a: The text contains no recognizable teams:
+2a.1: System informs Player that no pokemon were found; use case continues at step 1.
+2b: Every team is already among the saved teams:
+2b.1: System informs Player that the teams are already in the collection; use case ends in
+      success without changing the current team.
 Postcondition (for success case): The saved teams are those saved before, followed by the
-teams of the file that were not among them. The current team is unchanged.
+new teams. The last added team is current, or the current team is unchanged when none is added.
 Postcondition (for fail case): The saved teams and the current team are unchanged.
 ```
 
 **Requirements**
 
-| ID         | Requirement                                                                                                                                                       | Imp. | Status      |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-BKUP-1 | The site shall write, on the Player's request, a backup file holding every saved team and the draft, each with its name, generation profile, format, and filters. | E    | Implemented |
-| REQ-BKUP-2 | The site shall add the teams of a backup file to the saved teams without changing or removing any saved team or the current team.                                 | E    | Implemented |
-| REQ-BKUP-3 | The site shall add no team from a backup file that equals a team already among the saved teams.                                                                   | E    | Implemented |
-| REQ-BKUP-4 | The site shall refuse a file that is not a backup written by the site, informing the Player that the file could not be read.                                      | E    | Implemented |
-| REQ-BKUP-5 | The site shall inform the Player of the number of teams in a backup file before adding them.                                                                      | C    | Implemented |
-| REQ-BKUP-6 | The site shall keep in a backup file every set value of every pokemon, including values that are not legal in the team's game.                                    | C    | Implemented |
-| REQ-BKUP-7 | The site shall accept a backup file of up to 10 megabytes.                                                                                                        | C    | Implemented |
-| REQ-BKUP-8 | The site shall include in a backup file the teams that the site's other tabs in the same browser have saved up to the moment of the request.                      | C    | Implemented |
+| ID         | Requirement                                                                                                                                                   | Imp. | Status   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | -------- |
+| REQ-BKUP-1 | The site shall export every saved team as Showdown text, preserving each team's name, generation setting, format, empty teams, and supported pokemon details. | E    | Approved |
+| REQ-BKUP-2 | The site shall add imported teams without changing or removing existing saved teams.                                                                          | E    | Approved |
+| REQ-BKUP-3 | The site shall skip imported teams matching the saved collection or an earlier team in the same import according to criterion e.                              | E    | Approved |
+| REQ-BKUP-6 | The site shall keep in a collection export every stored pokemon set value, including values not legal in the team’s game.                                     | C    | Approved |
+| REQ-BKUP-8 | The site shall include in Export All the teams that other tabs in the same browser have saved up to the request.                                              | C    | Approved |
+| REQ-BKUP-9 | The site shall provide collection backup and restore through Export All and Import Team without a separate Team backups action.                               | E    | Approved |
+
+REQ-BKUP-4, REQ-BKUP-5, REQ-BKUP-7, and REQ-INTF-11 are deleted from the revised requirements: a separate JSON export, file selection screen, restore preview, and backup-specific size limit are no longer required. These identifiers will not be reused. This is a requirements decision; the existing implementation is unchanged. REQ-BKUP-6 and REQ-INFO-3 are retained because the Site Owner has not withdrawn set-value preservation or compatibility with existing backups.
 
 #### 3.1.13) UC11 Share Team by Link and UC12 Open Shared Team
 
@@ -890,14 +889,40 @@ US14. As a Pokemon Showdown user, I want my team as text in Showdown's format, s
 
 **Acceptance criteria (Verify that...)**
 
-- a) Pasted text of one team becomes a new saved team; pasted text of several teams becomes as many saved teams, named as in the text.
+- a) Pasted team text adds one saved team per new team, named as in the text, skipping duplicates by the collection criteria in UC9/UC10. This change is approved and awaiting implementation.
 - b) Nicknames, levels, genders, shiny flags, tera types, natures, EVs, and IVs in the text are kept; happiness is kept where the game has it.
 - c) A team whose text names a generation or format is given that generation and format; otherwise it takes the current team's.
-- d) Text with no pokemon in it is refused with a message, and nothing changes.
+- d) Imported text with no pokemon in it is refused with a message, and nothing changes.
 - e) The current team's text can be copied, and edited in place.
 - f) All saved teams can be downloaded or copied as one text.
 - g) Text exported by the site and imported again gives the same team.
 - h) The text is always in English, whatever the site's language.
+- i) The team-text editor reports parsing problems before an update, identifying the affected pokemon and field, supplied value, reason, and resulting omission or fallback. An unrecognized pokemon is identified by its team-slot number. A move problem identifies its move-slot number, for example "Ho-Oh, move 4"; the message contains no line number. These reports are advisory; the Player can update without correcting them or confirming a second time.
+- j) Updating text containing `- Iron Hed` leaves that move slot empty, keeps later valid moves in their respective slots, and applies other valid edits. The same result applies to a recognized move that the pokemon cannot learn under the selected generation profile and format, with that restriction reported as the reason.
+- k) A bare `-` is an intentional empty move slot and produces no parsing error. A team with fewer than four moves per pokemon can be updated.
+- l) Editing text or receiving an advisory report changes no team until the Player requests an update. Cancelling leaves the current team unchanged. Unrecognized names are not automatically corrected; other parsing fallbacks retain their existing behavior.
+
+Shared text-entry requirements REQ-USE-21 and REQ-USE-22 apply to both Import Team and the team-text editor. Their dialogs also follow REQ-USE-23.
+
+**Team-text editor behavior**
+
+The Site Owner approved advisory parsing reports on Oct 14, 2026 and rejected the proposed validation gate. Updating applies the existing parser's result even with reported problems. REQ-TEXT-12 and REQ-TEXT-13 are approved and awaiting implementation; invalid moves becoming empty slots is existing behavior recorded in REQ-TEXT-14. This editor decision does not change Import Team's no-pokemon exception or legacy share-link parsing.
+
+```mermaid
+flowchart TD
+  Open[Open current team text] --> Edit[Edit or paste text]
+  Edit --> Read[Read text using existing parsing rules]
+  Read --> Problems{Parsing problems found?}
+  Problems -->|Yes| Report[Report pokemon and field, reason, and parsing result]
+  Problems -->|No| Ready[Update remains available]
+  Report --> Ready
+  Ready -->|Correct text| Edit
+  Ready -->|Update| Apply[Apply parsed team; invalid moves become empty slots]
+  Apply --> Analyze[Analyze updated team]
+  Analyze --> Close[Close editor]
+  Ready -->|Cancel| Keep[Keep current team unchanged]
+  Keep --> Close
+```
 
 **Use case**
 
@@ -911,8 +936,8 @@ Main Scenario:
 1: Player provides System with team text.
 2: System reads the teams in the text, each with its name, generation profile, format,
    pokemon, moves, items, abilities, and set details.
-3: System adds each team to the saved teams, makes the last one the current team, and
-   informs Player of the number of teams imported.
+3: System adds each new team to the saved teams, makes the last added team the current team,
+   and informs Player of the number of teams added. Duplicate teams are skipped.
 4: Analyze Team.
 Alternatives/Exceptions:
 2a: The text holds no pokemon:
@@ -924,26 +949,33 @@ Alternatives/Exceptions:
 2c: A pokemon, move, item, or ability named in the text does not exist in the team's
     generation profile:
 2c.1: System leaves that entry out of the team; use case continues at step 3.
-Postcondition (for success case): The saved teams include one team for each team of the
-text. The teams saved before are unchanged.
+3a: All teams in the text are duplicates:
+3a.1: System informs Player that the teams are already saved, keeps the current team
+      unchanged, and ends in success.
+Postcondition (for success case): The saved teams include each new team from the text.
+The teams saved before are unchanged. An import containing only duplicates keeps the
+current team unchanged and reports that the teams are already saved.
 Postcondition (for fail case): The saved teams and the current team are unchanged.
 ```
 
 **Requirements**
 
-| ID          | Requirement                                                                                                                                                           | Imp. | Status      |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-TEXT-1  | The site shall create one saved team for each team in team text that the Player provides for import.                                                                  | E    | Implemented |
-| REQ-TEXT-2  | The site shall read from team text each pokemon's name, nickname, gender, item, ability, level, shiny flag, happiness, tera type, training values, nature, and moves. | E    | Implemented |
-| REQ-TEXT-3  | The site shall give an imported team the generation profile and format that its text names, and those of the current team for text that names none.                   | C    | Implemented |
-| REQ-TEXT-4  | The site shall inform the Player that no pokemon were found, changing no team, for text that holds no pokemon.                                                        | E    | Implemented |
-| REQ-TEXT-5  | The site shall provide the current team as team text that the Player can copy.                                                                                        | E    | Implemented |
-| REQ-TEXT-6  | The site shall replace the current team with the team in text that the Player has edited in place.                                                                    | C    | Implemented |
-| REQ-TEXT-7  | The site shall provide all saved teams as one team text, as a file and as a copy to the clipboard.                                                                    | C    | Implemented |
-| REQ-TEXT-8  | The site shall write team text in Pokemon Showdown's export format with English names, in every site language.                                                        | E    | Implemented |
-| REQ-TEXT-9  | The site shall write in team text only the set details that differ from their defaults.                                                                               | C    | Implemented |
-| REQ-TEXT-10 | The site shall write team text that Pokemon Showdown's importer accepts without error.                                                                                | C    | Implemented |
-| REQ-TEXT-11 | The site shall read back from team text that it wrote a team equal to the team it wrote, generation profile included.                                                 | E    | Implemented |
+| ID          | Requirement                                                                                                                                                                                                                       | Imp. | Status      |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-TEXT-1  | The site shall create one saved team for each new team in imported text, skipping duplicates according to UC9/UC10.                                                                                                               | E    | Approved    |
+| REQ-TEXT-2  | The site shall read from team text each pokemon's name, nickname, gender, item, ability, level, shiny flag, happiness, tera type, training values, nature, and moves.                                                             | E    | Implemented |
+| REQ-TEXT-3  | The site shall give an imported team the generation profile and format that its text names, and those of the current team for text that names none.                                                                               | C    | Implemented |
+| REQ-TEXT-4  | The site shall inform the Player that no pokemon were found, changing no team, for imported text that holds no pokemon.                                                                                                           | E    | Implemented |
+| REQ-TEXT-5  | The site shall provide the current team as team text that the Player can copy.                                                                                                                                                    | E    | Implemented |
+| REQ-TEXT-6  | The site shall replace the current team with the team in text that the Player has edited in place.                                                                                                                                | C    | Implemented |
+| REQ-TEXT-7  | The site shall provide all saved teams as one team text, as a file and as a copy to the clipboard.                                                                                                                                | C    | Implemented |
+| REQ-TEXT-8  | The site shall write team text in Pokemon Showdown's export format with English names, in every site language.                                                                                                                    | E    | Implemented |
+| REQ-TEXT-9  | The site shall write in team text only the set details that differ from their defaults.                                                                                                                                           | C    | Implemented |
+| REQ-TEXT-10 | The site shall write team text that Pokemon Showdown's importer accepts without error.                                                                                                                                            | C    | Implemented |
+| REQ-TEXT-11 | The site shall read back from team text that it wrote a team equal to the team it wrote, generation profile included.                                                                                                             | E    | Implemented |
+| REQ-TEXT-12 | The site shall report each parsing problem in edited team text before an update, identifying the affected pokemon (team-slot number for an unrecognized name), field, supplied value, reason, and resulting omission or fallback. | C    | Approved    |
+| REQ-TEXT-13 | The site shall apply the parsed result of edited team text upon the Player's update request despite reported parsing problems, without requiring an additional confirmation.                                                      | C    | Approved    |
+| REQ-TEXT-14 | The site shall leave an edited team's move slot empty for a supplied move that is unrecognized or cannot be learned under the team's generation profile and format.                                                               | C    | Implemented |
 
 #### 3.1.15) UC15 Look Up Reference
 
@@ -1217,25 +1249,58 @@ The rules of REQ-ANLY-19 are already computed by the site and covered by tests; 
 
 The Site Owner rates speed as paramount: a visitor who waits, or who has to work before seeing a result, leaves. REQ-USE-10 is the Site Owner's own answer to that, the random team. Measures that need sessions or a survey with players, such as the time a first-time player takes to analyse a team, are kept as indicators in Section 3.7 of the [goal model](03-goal-model.md) until players can be asked. A fit criterion quantifies each quality. Where three values are given they are outstanding, target, and minimum; the requirement states the minimum. Values marked **[A-16]** are proposed and have not been measured or agreed.
 
-| ID         | Requirement                                                                                                                                                                    | Imp. | Status      |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
-| REQ-USE-3  | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page and without cutting off any control or its label. | E    | Approved    |
-| REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                             | C    | Approved    |
-| REQ-USE-5  | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                          | C    | Implemented |
-| REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**.   | C    | Approved    |
-| REQ-USE-7  | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                    | C    | Implemented |
-| REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                  | E    | Implemented |
-| REQ-USE-12 | The site shall present each slot's pokemon sprite with no part covered by another element of the slot.                                                                         | E    | Approved    |
-| REQ-USE-14 | The site shall offer the actions on the current team apart from the actions on the other saved teams.                                                                          | C    | Approved    |
-| REQ-USE-15 | The site shall present the accessibility settings apart from the actions on the current team.                                                                                  | C    | Approved    |
-| REQ-USE-16 | The site shall present still sprites in place of animated ones to a Player who has asked for sprites not to be animated.                                                       | C    | Approved    |
-| REQ-USE-17 | The site shall present every function to every Player, without a mode that the Player has to turn on.                                                                          | C    | Approved    |
+| ID         | Requirement                                                                                                                                                                                                             | Imp. | Status      |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-USE-3  | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page and without cutting off any control or its label.                                          | E    | Approved    |
+| REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                                                                      | C    | Approved    |
+| REQ-USE-5  | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                                                                   | C    | Implemented |
+| REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**.                                            | C    | Approved    |
+| REQ-USE-7  | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                                                             | C    | Implemented |
+| REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                                                           | E    | Implemented |
+| REQ-USE-12 | The site shall present each slot's pokemon sprite with no part covered by another element of the slot.                                                                                                                  | E    | Approved    |
+| REQ-USE-14 | The site shall offer the actions on the current team apart from the actions on the other saved teams.                                                                                                                   | C    | Approved    |
+| REQ-USE-15 | The site shall present the accessibility settings apart from the actions on the current team.                                                                                                                           | C    | Approved    |
+| REQ-USE-16 | The site shall present still sprites in place of animated ones to a Player who has asked for sprites not to be animated.                                                                                                | C    | Approved    |
+| REQ-USE-17 | The site shall present every function to every Player, without a mode that the Player has to turn on.                                                                                                                   | C    | Approved    |
+| REQ-USE-19 | The site shall suppress browser and operating-system autofill suggestions for saved passwords, payment details, address or location records, and contact records whenever a mobile user focuses an editable form field. | E    | Approved    |
+| REQ-USE-20 | The site shall dismiss the on-screen keyboard when a mobile user closes a dropdown that opened it.                                                                                                                      | E    | Approved    |
+| REQ-USE-21 | The site shall suppress spellcheck markings in all fields used to enter team data or Showdown text.                                                                                                                     | E    | Approved    |
+| REQ-USE-22 | The site shall preserve entered text in team-data and Showdown-text fields without automatic correction or capitalization.                                                                                              | E    | Approved    |
+| REQ-USE-23 | The site shall keep a dialog's action buttons visible while its content scrolls.                                                                                                                                        | E    | Approved    |
 
 | Quality (requirement)                 | Outstanding | Target | Minimum |
 | ------------------------------------- | ----------- | ------ | ------- |
 | Narrowest supported width (REQ-USE-3) | 280 px      | 320 px | 320 px  |
 
 REQ-USE-14 keeps the toolbar about the team on screen, with the Teams button as the one way to the other saved teams. Importing team text adds new teams rather than changing the current one, so it is offered behind the Teams button and not in the toolbar's Manage menu; editing the current team's text stays there.
+
+**REQ-USE-19 acceptance criteria (Verify that...); implementation and verification pending:**
+
+- a) On Safari for iOS and Chrome for Android, tapping or moving keyboard focus into any editable field does not open personal-data autofill suggestions, pickers, or prompts for the categories in REQ-USE-19.
+- b) The scope includes every slot's pokemon, move, item, ability, and set-detail inputs, search and filter fields, team-name fields, import/edit text, and feedback fields, including those in dialogs.
+- c) The site's own pokemon, move, item, ability, and filter option lists remain available; disabling personal-data autofill does not prevent typing, selecting options, or pasting team text.
+- d) The native mobile check uses browser profiles with saved entries in each listed category and covers first focus, refocus, and moving between fields. A check with no saved autofill data is insufficient.
+
+**REQ-USE-20 acceptance criteria (Verify that...); implementation and verification pending:**
+
+- a) Selecting an option or dismissing a dropdown while its on-screen keyboard is visible closes both the dropdown and the keyboard through the same interaction, without another tap to dismiss the keyboard.
+- b) Dismissal covers tapping a non-editable area outside the dropdown, using its close/toggle control, and closing a dialog that contains it, wherever those actions are supported.
+- c) The selected option is applied normally; dismissing without selecting preserves the field's value according to its existing editing behavior.
+- d) Reopening a field still allows typing. Moving directly to another editable field gives that field typing focus; the closed dropdown does not reclaim focus.
+- e) Verification covers searchable dropdowns for pokemon, moves, items, abilities, and filters, including dropdowns in dialogs, on native Safari for iOS and Chrome for Android with the on-screen keyboard open.
+
+**REQ-USE-21 and REQ-USE-22 acceptance criteria (Verify that...); implementation and verification pending:**
+
+- a) Neither spelling underlines nor spelling-error highlighting appears in fields for pokemon, moves, items, abilities, set details, team names, or search/filter queries, or in Import Team and the team-text editor.
+- b) Typing or pasting pokemon names, Showdown lines, and intentionally mixed-case text does not invoke automatic spelling replacement or capitalization.
+- c) The site's option lists remain available. Explicit option selection and import parsing continue to follow their existing rules; these requirements govern text entry, not a new parsing policy.
+- d) Verification covers both Import Team and the team-text editor, other team-data inputs and dialogs, and the supported desktop and mobile browsers. Native mobile checks use keyboards with autocorrect and automatic capitalization enabled.
+
+**REQ-USE-23 acceptance criteria (Verify that...); implementation and verification pending:**
+
+- a) Scrolling each of the site's dialogs from the beginning to the end of its content leaves its action buttons visible and operable without scrolling back.
+- b) Long team text in Import Team and the team-text editor does not push the action buttons out of view.
+- c) Verification covers supported widths from 320 CSS pixels, both colour schemes, and mobile browsers with the on-screen keyboard open.
 
 In the design chosen on 14 October 2026, the Manage button becomes a More button with two sections, Manage team and Accessibility, which meets REQ-USE-15. Accessibility holds two switches: still sprites (REQ-USE-16) and hidden types (REQ-TEAM-13). Where the toolbar fits on one row, Clear leaves the menu for a button of its own.
 
@@ -1278,7 +1343,6 @@ Design budget for REQ-PERF-4: at most 600 kB of gzip-compressed script before a 
 | REQ-INTF-4  | The site shall write the share link's generation profile as the `gen` parameter (a generation number, or `6-9`), and Pokemon Champions as `game=champions` with no `gen`. | E    | Implemented |
 | REQ-INTF-5  | The site shall present the ad platform's top banner above the page content in production.                                                                                 | E    | Implemented |
 | REQ-INTF-8  | The site shall redirect requests for `ads.txt` to the ad platform's copy, and shall allow the ad platform's crawler in `robots.txt`.                                      | E    | Implemented |
-| REQ-INTF-11 | The site shall write a backup file as JSON that identifies its format as `mypokemonteam` and its version as 1.                                                            | E    | Implemented |
 | REQ-INTF-12 | The site shall operate in the current versions of Chrome and Safari on desktop, Chrome on Android, and Safari on iOS.                                                     | E    | Implemented |
 | REQ-INTF-13 | The site shall operate in the current version of each browser that its maker still updates and that has at least 2% of browser usage **[A-18]**.                          | C    | Proposed    |
 | REQ-INTF-14 | The site shall provide, for link previews, a title, a description, and a screenshot at an address that does not change.                                                   | C    | Implemented |
@@ -1435,37 +1499,42 @@ The old website is a separate system. These record what this project commits to 
 
 Verification methods follow the requirement groups of Section 3. The test suites were matched to requirement groups by their names and folders, not by reading each test, so a listed suite shows where verification belongs and is not proof that every requirement in the group is tested.
 
-| Requirements                     | Method              | Where                                                                                                                                                                                                                                                 |
-| -------------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| REQ-TEAM                         | Test                | `tests/component/main/pokemon-team/`, `tests/logic/learnsets.spec.ts`, `tests/logic/select-pokemon.spec.ts`                                                                                                                                           |
-| REQ-DET                          | Test                | `tests/component/dialogs/advanced-dialog/`, `tests/logic/set-details.spec.ts`, `tests/logic/nickname.spec.ts`                                                                                                                                         |
-| REQ-RAND                         | Test                | `tests/logic/random.spec.ts`, `tests/component/shared/use-dice-roll/`                                                                                                                                                                                 |
-| REQ-UNDO                         | Test                | `tests/component/main/pokemon-team/shared/team-toolbar/history-integration-tests.spec.ts`, `tests/logic/team-change.spec.ts`                                                                                                                          |
-| REQ-FIND                         | Test                | `tests/logic/filtering.spec.ts`, `tests/logic/sorting.spec.ts`, `tests/logic/formats.spec.ts`, `tests/component/dialogs/filters-dialog/`, `tests/component/dialogs/sort-dialog/`                                                                      |
-| REQ-ANLY-1 to 11, 20             | Test                | `tests/logic/effectiveness.spec.ts`, `tests/logic/coverage.spec.ts`, `tests/logic/matrix.spec.ts`, `tests/logic/checklist.spec.ts`, `tests/component/main/team-stats/`                                                                                |
-| REQ-ANLY-12 to 19                | Test                | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                                                                            |
-| REQ-GEN                          | Test                | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                                                                            |
-| REQ-COLL                         | Test                | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts`                                                            |
-| REQ-BKUP                         | Test                | `tests/logic/team-backup.spec.ts`, `tests/component/dialogs/teams-dialog/backup-integration-tests.spec.ts`                                                                                                                                            |
-| REQ-LINK, REQ-INTF-3, REQ-INTF-4 | Test                | `tests/component/team-link-sync/`, `tests/logic/team-link-game-values.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/share-link-*.spec.ts`                                                                                          |
-| REQ-TEXT                         | Test                | `tests/logic/parsing.spec.ts`, `tests/logic/storage-text-contracts.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/manage-team-menu/`; for REQ-TEXT-10, a test that reads the text with Pokemon Showdown's own parser, to be written |
-| REQ-REF                          | Test, Inspection    | `tests/component/footer/`, `tests/component/dialogs/pokemon-info-dialog/`, `tests/links/dex-links.spec.ts` (run by hand)                                                                                                                              |
-| REQ-LANG, REQ-THEME              | Test                | `tests/logic/translations.spec.ts`, `tests/component/header/language-select/`, `tests/component/shared/theme/`; for REQ-LANG-1, the type check fails on a text missing from a language                                                                |
-| REQ-FEED, REQ-SEC-1 to 3         | Test, Demonstration | `tests/logic/feedback.spec.ts`, `tests/component/header/feedback-dialog/`; sending is demonstrated on a preview deployment                                                                                                                            |
-| REQ-SITE                         | Test                | `tests/component/header/site-version-switch/`                                                                                                                                                                                                         |
-| REQ-DATA                         | Test, Inspection    | `tests/logic/update-data.spec.ts`, `tests/logic/update-translations.spec.ts`; the update reports are inspected by the Maintainer                                                                                                                      |
-| REQ-USE-3 to 7, 12               | Test, Inspection    | Layout tests in `tests/component/`; for REQ-USE-12, a test that no element of a slot overlaps its sprite, to be written; an accessibility review for REQ-USE-4 and REQ-USE-6                                                                          |
-| REQ-USE-14 to 17                 | Test                | To be written with the features                                                                                                                                                                                                                       |
-| REQ-PERF                         | Test, Analysis      | Timing measurements to be added, with Lighthouse's mobile profile for REQ-PERF-4 and a deployment for REQ-PERF-9; build output for the script budget of REQ-PERF-4                                                                                    |
-| REQ-INTF-1, 2                    | Test, Inspection    | To be written: a test that every pokemon and item in the site's data has a picture of its own; the pictures are inspected after each data update                                                                                                      |
-| REQ-INTF-5, 8                    | Inspection          | The production site for REQ-INTF-5; `vercel.json` and `public/robots.txt` against the ad platform's documentation for REQ-INTF-8                                                                                                                      |
-| REQ-MODE                         | Test                | `tests/smoke/production-smoke.spec.ts`, `tests/logic/teams-storage.spec.ts`                                                                                                                                                                           |
-| REQ-SEC-4 to 7                   | Inspection, Test    | Review of `vercel.json` and of the repository for secrets; `tests/logic/storage-text-contracts.spec.ts` for REQ-SEC-5                                                                                                                                 |
-| REQ-INFO                         | Test                | `tests/logic/storage-text-contracts.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/settings-expiry.spec.ts`                                                                                                                              |
-| REQ-POL                          | Inspection          | Review of the privacy policy, the credits, and the `*-sources.md` files                                                                                                                                                                               |
-| REQ-OPS-2                        | Demonstration       | A visit with a warm cache after a release                                                                                                                                                                                                             |
-| REQ-REL-4                        | Analysis            | The hosting platform's uptime reports                                                                                                                                                                                                                 |
-| Section 3.14                     | Inspection          | The CI workflow, `tests/type-contracts.ts`, the Dependabot configuration, the hosting platform's deployment settings, and a review of the code against each design constraint                                                                         |
+| Requirements                     | Method                    | Where                                                                                                                                                                                                                                                          |
+| -------------------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-TEAM                         | Test                      | `tests/component/main/pokemon-team/`, `tests/logic/learnsets.spec.ts`, `tests/logic/select-pokemon.spec.ts`                                                                                                                                                    |
+| REQ-DET                          | Test                      | `tests/component/dialogs/advanced-dialog/`, `tests/logic/set-details.spec.ts`, `tests/logic/nickname.spec.ts`                                                                                                                                                  |
+| REQ-RAND                         | Test                      | `tests/logic/random.spec.ts`, `tests/component/shared/use-dice-roll/`                                                                                                                                                                                          |
+| REQ-UNDO                         | Test                      | `tests/component/main/pokemon-team/shared/team-toolbar/history-integration-tests.spec.ts`, `tests/logic/team-change.spec.ts`                                                                                                                                   |
+| REQ-FIND                         | Test                      | `tests/logic/filtering.spec.ts`, `tests/logic/sorting.spec.ts`, `tests/logic/formats.spec.ts`, `tests/component/dialogs/filters-dialog/`, `tests/component/dialogs/sort-dialog/`                                                                               |
+| REQ-ANLY-1 to 11, 20             | Test                      | `tests/logic/effectiveness.spec.ts`, `tests/logic/coverage.spec.ts`, `tests/logic/matrix.spec.ts`, `tests/logic/checklist.spec.ts`, `tests/component/main/team-stats/`                                                                                         |
+| REQ-ANLY-12 to 19                | Test                      | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                                                                                     |
+| REQ-GEN                          | Test                      | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                                                                                     |
+| REQ-COLL                         | Test                      | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts`                                                                     |
+| REQ-BKUP                         | Test                      | `tests/logic/set-details.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/integration-tests.spec.ts` (extend for duplicate imports and consolidation; pending)                                                                 |
+| REQ-LINK, REQ-INTF-3, REQ-INTF-4 | Test                      | `tests/component/team-link-sync/`, `tests/logic/team-link-game-values.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/share-link-*.spec.ts`                                                                                                   |
+| REQ-TEXT-1 to 11                 | Test                      | `tests/logic/parsing.spec.ts`, `tests/logic/storage-text-contracts.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/manage-team-menu/`; for REQ-TEXT-10, a test that reads the text with Pokemon Showdown's own parser, to be written          |
+| REQ-TEXT-12 to 14                | Test, Demonstration       | Extend parsing and team-text editor checks for advisory reports, updating despite problems without confirmation, invalid and unlearnable moves becoming empty slots, valid later moves retaining their positions, and cancellation; diagnostic checks pending. |
+| REQ-REF                          | Test, Inspection          | `tests/component/footer/`, `tests/component/dialogs/pokemon-info-dialog/`, `tests/links/dex-links.spec.ts` (run by hand)                                                                                                                                       |
+| REQ-LANG, REQ-THEME              | Test                      | `tests/logic/translations.spec.ts`, `tests/component/header/language-select/`, `tests/component/shared/theme/`; for REQ-LANG-1, the type check fails on a text missing from a language                                                                         |
+| REQ-FEED, REQ-SEC-1 to 3         | Test, Demonstration       | `tests/logic/feedback.spec.ts`, `tests/component/header/feedback-dialog/`; sending is demonstrated on a preview deployment                                                                                                                                     |
+| REQ-SITE                         | Test                      | `tests/component/header/site-version-switch/`                                                                                                                                                                                                                  |
+| REQ-DATA                         | Test, Inspection          | `tests/logic/update-data.spec.ts`, `tests/logic/update-translations.spec.ts`; the update reports are inspected by the Maintainer                                                                                                                               |
+| REQ-USE-3 to 7, 12               | Test, Inspection          | Layout tests in `tests/component/`; for REQ-USE-12, a test that no element of a slot overlaps its sprite, to be written; an accessibility review for REQ-USE-4 and REQ-USE-6                                                                                   |
+| REQ-USE-14 to 17                 | Test                      | To be written with the features                                                                                                                                                                                                                                |
+| REQ-USE-19                       | Inspection, Demonstration | Inspect form-field autofill behavior and demonstrate all acceptance criteria on native Safari for iOS and Chrome for Android with saved autofill entries; pending.                                                                                             |
+| REQ-USE-20                       | Demonstration             | Demonstrate dropdown selection, dismissal, dialog closure, and focus transfer with the on-screen keyboard open on native Safari for iOS and Chrome for Android; pending.                                                                                       |
+| REQ-USE-21, REQ-USE-22           | Inspection, Demonstration | Inspect text-entry settings and demonstrate team-data fields, Import Team, and the team-text editor on supported browsers, including native mobile keyboards with automatic correction enabled; pending.                                                       |
+| REQ-USE-23                       | Test, Demonstration       | Verify dialog action visibility while scrolling long content at supported widths and with a native mobile keyboard open; pending.                                                                                                                              |
+| REQ-PERF                         | Test, Analysis            | Timing measurements to be added, with Lighthouse's mobile profile for REQ-PERF-4 and a deployment for REQ-PERF-9; build output for the script budget of REQ-PERF-4                                                                                             |
+| REQ-INTF-1, 2                    | Test, Inspection          | To be written: a test that every pokemon and item in the site's data has a picture of its own; the pictures are inspected after each data update                                                                                                               |
+| REQ-INTF-5, 8                    | Inspection                | The production site for REQ-INTF-5; `vercel.json` and `public/robots.txt` against the ad platform's documentation for REQ-INTF-8                                                                                                                               |
+| REQ-MODE                         | Test                      | `tests/smoke/production-smoke.spec.ts`, `tests/logic/teams-storage.spec.ts`                                                                                                                                                                                    |
+| REQ-SEC-4 to 7                   | Inspection, Test          | Review of `vercel.json` and of the repository for secrets; `tests/logic/storage-text-contracts.spec.ts` for REQ-SEC-5                                                                                                                                          |
+| REQ-INFO                         | Test                      | `tests/logic/storage-text-contracts.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/settings-expiry.spec.ts`                                                                                                                                       |
+| REQ-POL                          | Inspection                | Review of the privacy policy, the credits, and the `*-sources.md` files                                                                                                                                                                                        |
+| REQ-OPS-2                        | Demonstration             | A visit with a warm cache after a release                                                                                                                                                                                                                      |
+| REQ-REL-4                        | Analysis                  | The hosting platform's uptime reports                                                                                                                                                                                                                          |
+| Section 3.14                     | Inspection                | The CI workflow, `tests/type-contracts.ts`, the Dependabot configuration, the hosting platform's deployment settings, and a review of the code against each design constraint                                                                                  |
 
 ## 5) Appendices
 

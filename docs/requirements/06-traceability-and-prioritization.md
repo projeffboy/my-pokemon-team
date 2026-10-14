@@ -54,6 +54,20 @@ Statuses:
 - **Baseline 0.1 (draft)**: these documents as first written, describing commit `629b75f` of `major-added-features`, 13 October 2026. It is a draft until the Site Owner has answered the interview in [08](08-assumptions-and-interview.md) and the assumptions have been corrected.
 - **Baseline 1.0**: the documents after that review. From then on a change goes through the steps below.
 
+**Oct 14, 2026 change request:** consolidate Team backups into Export All and Import Team, omit filters and unsaved drafts from exports, and skip duplicate imports. Requirements are updated; implementation and verification are pending. Matching details remain open in A-25. The Site Owner explicitly limited this work to requirements.
+
+**Oct 14, 2026 mobile autofill request:** REQ-USE-19 is approved and applies to editable fields throughout the site, including dialogs. Personal-data autofill must be suppressed while the site's own option lists remain usable. Implementation and native mobile verification are pending; this change updates requirements only.
+
+**Oct 14, 2026 dropdown keyboard request:** REQ-USE-20 is approved. Closing a dropdown on mobile must also dismiss the keyboard it opened, without an extra tap. Selection, dismissal, dialog closure, and transfer to another editable field are covered by the acceptance criteria. Implementation and native mobile verification are pending; this change updates requirements only.
+
+**Oct 14, 2026 shared editing requirements:** REQ-USE-21 and REQ-USE-22 apply to team-data entry throughout the site, including UC13 Import Team Text and the team-text editor. REQ-USE-23 applies to all site dialogs. These requirements are approved; implementation and verification are pending. The proposal to disable saving without edits was withdrawn and is not a requirement. Editor-specific wording and layout proposals remain unapproved.
+
+**Oct 14, 2026 editor parsing decision:** parsing reports are advisory. REQ-TEXT-12 and REQ-TEXT-13 are approved: explain parsing problems and their resulting omissions or fallbacks, while permitting an update without correction or an additional confirmation. REQ-TEXT-14 records the existing invalid-move-to-empty-slot behavior. The proposed blocking validation flow is rejected; the behavior model and acceptance criteria in Section 3.1.14 of [05](05-system-requirements-specification.md) now show the approved flow. Diagnostic reporting and its verification remain pending. No application code changes.
+
+**Oct 14, 2026 advisory location correction:** the Site Owner rejected line-number references because the editor does not display line numbers. REQ-TEXT-12, its acceptance criteria, and the behavior model now identify problems by pokemon and field, including a move-slot number for move problems and a team-slot number for an unrecognized pokemon. No code changes.
+
+The pull from the requirements spec branch on Oct 14, 2026 brought existing REQ-USE-14 to 17 and a deleted REQ-USE-18. To preserve those identifiers, this worktree’s five uncommitted requirements were renumbered: mobile autofill 14 → 19, dropdown keyboard dismissal 15 → 20, spellcheck suppression 16 → 21, automatic text correction/capitalization 17 → 22, and visible dialog actions 18 → 23. Their content and approval status are unchanged.
+
 Change management, sized for one maintainer:
 
 1. A change request is a GitHub issue or a feedback email. It states what should change and why.
@@ -175,12 +189,12 @@ An X means the requirements of the row help achieve the business requirement of 
 | US6        | P-1 Maya, P-2 Daniel      | UC6 Analyze Team                   | REQ-ANLY-1 to 11, 20         |
 | US7        | P-4 Kenji                 | UC7 Change Generation              | REQ-GEN-1 to 12              |
 | US8        | P-3 Sofía                 | UC8 Manage Saved Teams             | REQ-COLL-1 to 13             |
-| US9        | P-3 Sofía                 | UC9 Back Up Teams                  | REQ-BKUP-1, 6, 8             |
-| US10       | P-3 Sofía                 | UC10 Restore Teams                 | REQ-BKUP-2 to 5, 7           |
+| US9        | P-3 Sofía                 | UC9 Back Up Teams                  | REQ-BKUP-1, 6, 8, 9          |
+| US10       | P-3 Sofía                 | UC10 Restore Teams                 | REQ-BKUP-2, 3                |
 | US11       | P-2 Daniel, P-3 Sofía     | UC11 Share Team by Link            | REQ-LINK-1 to 3              |
 | US12       | P-4 Kenji                 | UC12 Open Shared Team              | REQ-LINK-4 to 11, REQ-INFO-8 |
 | US13       | P-2 Daniel                | UC13 Import Team Text              | REQ-TEXT-1 to 4              |
-| US14       | P-2 Daniel                | UC14 Export Team Text              | REQ-TEXT-5 to 11             |
+| US14       | P-2 Daniel                | UC14 Export Team Text              | REQ-TEXT-5 to 14             |
 | US15       | P-1 Maya                  | UC15 Look Up Reference             | REQ-REF-1 to 6               |
 | US16       | P-3 Sofía, P-4 Kenji      | UC16 Change Language               | REQ-LANG-1 to 8              |
 | US17       | P-1 Maya                  | UC17 Change Colour Scheme          | REQ-THEME-1, 2               |
