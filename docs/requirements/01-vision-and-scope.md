@@ -55,10 +55,10 @@ Application-domain requirements that the later documents must respect. They come
 | Release        | Contents                                                                                                                                                                          | State                  |
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
 | R0 Old website | Generations 6 to 9, one unsaved team, type defence and coverage, checklist, filters by format, type, and region, Showdown import and export, share link. English only.            | Live at `old.` host    |
-| R1 Redesign    | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, backups, generation transfer, ten languages, feedback, site version switch.   | `major-added-features` |
-| R2 Next        | Planned features PF1 to PF7 in [04-feature-model.md](04-feature-model.md): battle format for the checklist, team transfer between site versions, the remaining games, and others. | Proposed               |
+| Ash            | Everything in the feature model marked as-is: Generations 1 to 9, saved teams, set details, matrix, backups, generation transfer, ten languages, feedback, site version switch.   | `major-added-features` |
+| Brock          | Planned features PF1 to PF7 in [04-feature-model.md](04-feature-model.md): battle format for the checklist, team transfer between site versions, the remaining games, and others. | Proposed               |
 
-### In scope for R1
+### In scope for Ash
 
 The work the system does itself:
 
@@ -74,7 +74,7 @@ The work the system does itself:
 
 ### Not part of the plan
 
-Not intended for R1 or R2. None of these is ruled out for good; each would first need a business requirement of its own.
+Not intended for Ash or Brock. None of these is ruled out for good; each would first need a business requirement of its own.
 
 - Battling, damage calculation, and speed tiers. Pokemon Showdown and its damage calculator do these.
 - Player accounts and server-side storage of teams. Teams stay in the browser; a backup file moves them between devices.
@@ -83,7 +83,7 @@ Not intended for R1 or R2. None of these is ruled out for good; each would first
 
 ### Open for a later release
 
-The Site Owner wants these, for a release after R2, and with one constraint on all three: many players are children and teenagers **[A-24]**, so the site should stay simple and not try to be too clever.
+The Site Owner wants these, for a release after Brock, and with one constraint on all three: many players are children and teenagers **[A-24]**, so the site should stay simple and not try to be too clever.
 
 - Suggesting teammates, moves, items, or abilities to fix a weakness (issue 37). Today the site shows the weakness and leaves the choice to the player.
 - Analysis that looks beyond types, such as how a team fares against commonly used pokemon (issue 44).

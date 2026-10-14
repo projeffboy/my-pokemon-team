@@ -12,8 +12,8 @@
 <text x="445.4" y="56" font-size="12" fill="#222">OR group: at least one</text>
 <rect x="620.5999999999999" y="44" width="14" height="16" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="640.5999999999999" y="56" font-size="12" fill="#222">planned (PF1 to PF7)</text>
-<text x="802.5999999999999" y="56" font-size="10" fill="#888">R1</text>
-<text x="822.5999999999999" y="56" font-size="12" fill="#222">R1: new in the redesign</text>
+<text x="802.5999999999999" y="56" font-size="10" fill="#888">Ash</text>
+<text x="822.5999999999999" y="56" font-size="12" fill="#222">new in the redesign</text>
 <path d="M126.0 972.75 H248 V205.5 H265" fill="none" stroke="#888"/>
 <circle cx="265" cy="205.5" r="4.5" fill="#222" stroke="#222"/>
 <path d="M126.0 972.75 H248 V442.0 H265" fill="none" stroke="#888"/>
@@ -54,14 +54,14 @@
 <circle cx="765" cy="112" r="4.5" fill="#fff" stroke="#222"/>
 <rect x="520" y="92.0" width="124.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="105.0" font-size="12" fill="#222">F1.1 Pokemon Slots</text>
-<rect x="770" y="81" width="172.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="778" y="94" font-size="12" fill="#222">F1.1.1 Slot Reordering<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="770" y="81" width="178.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="778" y="94" font-size="12" fill="#222">F1.1.1 Slot Reordering<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="770" y="103" width="214.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="778" y="116" font-size="12" fill="#222">F1.1.2 Automatic Item and Ability</text>
-<path d="M656.0 178.0 H748 V178.0 H765" fill="none" stroke="#888"/>
+<path d="M662.0 178.0 H748 V178.0 H765" fill="none" stroke="#888"/>
 <circle cx="765" cy="178.0" r="4.5" fill="#222" stroke="#222"/>
-<rect x="520" y="169.0" width="136.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="182.0" font-size="12" fill="#222">F1.2 Set Details<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="520" y="169.0" width="142.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="182.0" font-size="12" fill="#222">F1.2 Set Details<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M918.0 178.0 H998 V134 H1015" fill="none" stroke="#888"/>
 <path d="M918.0 178.0 H998 V156 H1015" fill="none" stroke="#888"/>
 <path d="M918.0 178.0 H998 V178 H1015" fill="none" stroke="#888"/>
@@ -81,21 +81,21 @@
 <text x="1028" y="204" font-size="12" fill="#222">Awakening Values<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
 <rect x="1020" y="213" width="124.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="1028" y="226" font-size="12" fill="#222">Effort Levels<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
-<path d="M644.0 266.0 H748 V244 H765" fill="none" stroke="#888"/>
-<path d="M644.0 266.0 H748 V266 H765" fill="none" stroke="#888"/>
-<path d="M644.0 266.0 H748 V288 H765" fill="none" stroke="#888"/>
+<path d="M650.0 266.0 H748 V244 H765" fill="none" stroke="#888"/>
+<path d="M650.0 266.0 H748 V266 H765" fill="none" stroke="#888"/>
+<path d="M650.0 266.0 H748 V288 H765" fill="none" stroke="#888"/>
 <rect x="744" y="240" width="8" height="52" rx="4" fill="#222" stroke="#222"/>
 <text x="740" y="236" font-size="10" text-anchor="end" fill="#222" font-weight="bold">OR</text>
-<rect x="520" y="257.0" width="124.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="270.0" font-size="12" fill="#222">F1.3 Randomize<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="520" y="257.0" width="130.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="270.0" font-size="12" fill="#222">F1.3 Randomize<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="770" y="235" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="248" font-size="12" fill="#222">Random Team</text>
 <rect x="770" y="257" width="100.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="270" font-size="12" fill="#222">Random Pokemon</text>
 <rect x="770" y="279" width="100.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="292" font-size="12" fill="#222">Random Details</text>
-<rect x="520" y="301" width="148.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="314" font-size="12" fill="#222">F1.4 Undo and Redo<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="520" y="301" width="154.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="314" font-size="12" fill="#222">F1.4 Undo and Redo<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M358.0 442.0 H498 V387.0 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="387.0" r="4.5" fill="#222" stroke="#222"/>
 <path d="M358.0 442.0 H498 V464 H515" fill="none" stroke="#888"/>
@@ -116,18 +116,18 @@
 <text x="528" y="391.0" font-size="12" fill="#222">F2.1 Generation Profile</text>
 <rect x="770" y="323" width="160.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="336" font-size="12" fill="#222">Generations 6-9 Combined</text>
-<rect x="770" y="345" width="142.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="358" font-size="12" fill="#222">Single Generation<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="367" width="142.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="380" font-size="12" fill="#222">Pokemon Champions<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="770" y="345" width="148.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="358" font-size="12" fill="#222">Single Generation<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="367" width="148.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="380" font-size="12" fill="#222">Pokemon Champions<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="770" y="389" width="94.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="778" y="402" font-size="12" fill="#222">Let&#x27;s Go<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
 <rect x="770" y="411" width="136.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="778" y="424" font-size="12" fill="#222">Legends: Arceus<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
 <rect x="770" y="433" width="118.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="778" y="446" font-size="12" fill="#222">Legends: Z-A<tspan fill="#1565c0" font-size="10">  PF3</tspan></text>
-<rect x="520" y="455" width="184.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="468" font-size="12" fill="#222">F2.2 Generation Transfer<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="520" y="455" width="190.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="468" font-size="12" fill="#222">F2.2 Generation Transfer<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M680.0 497.0 H748 V486 H765" fill="none" stroke="#888"/>
 <circle cx="765" cy="486" r="4.5" fill="#222" stroke="#222"/>
 <path d="M680.0 497.0 H748 V508 H765" fill="none" stroke="#888"/>
@@ -136,8 +136,8 @@
 <text x="528" y="501.0" font-size="12" fill="#222">F2.3 Data Update Tooling</text>
 <rect x="770" y="477" width="154.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="778" y="490" font-size="12" fill="#222">F2.3.1 Game Data Update</text>
-<rect x="770" y="499" width="190.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="778" y="512" font-size="12" fill="#222">F2.3.2 Translation Update<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="770" y="499" width="196.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="778" y="512" font-size="12" fill="#222">F2.3.2 Translation Update<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M388.0 640.0 H498 V530 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="530" r="4.5" fill="#222" stroke="#222"/>
 <path d="M388.0 640.0 H498 V596.0 H515" fill="none" stroke="#888"/>
@@ -169,10 +169,10 @@
 <text x="778" y="600" font-size="12" fill="#222">Region</text>
 <rect x="770" y="609" width="118.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="622" font-size="12" fill="#222">Viable Moves Only</text>
-<rect x="770" y="631" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="644" font-size="12" fill="#222">Ability<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="520" y="653" width="94.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="666" font-size="12" fill="#222">F3.3 Sort<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="770" y="631" width="88.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="644" font-size="12" fill="#222">Ability<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="520" y="653" width="100.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="666" font-size="12" fill="#222">F3.3 Sort<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M638.0 706.0 H748 V684 H765" fill="none" stroke="#888"/>
 <path d="M638.0 706.0 H748 V706 H765" fill="none" stroke="#888"/>
 <path d="M638.0 706.0 H748 V728 H765" fill="none" stroke="#888"/>
@@ -182,12 +182,12 @@
 <text x="528" y="710.0" font-size="12" fill="#222">F3.4 Option Views</text>
 <rect x="770" y="675" width="40.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="688" font-size="12" fill="#222">List</text>
-<rect x="770" y="697" width="64.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="710" font-size="12" fill="#222">Grid<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="719" width="88.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="732" font-size="12" fill="#222">Big Grid<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="520" y="741" width="178.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="754" font-size="12" fill="#222">F3.5 Move Types Display<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="770" y="697" width="70.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="710" font-size="12" fill="#222">Grid<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="719" width="94.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="732" font-size="12" fill="#222">Big Grid<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="520" y="741" width="184.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="754" font-size="12" fill="#222">F3.5 Move Types Display<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M382.0 838.0 H498 V772 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="772" r="4.5" fill="#222" stroke="#222"/>
 <path d="M382.0 838.0 H498 V794 H515" fill="none" stroke="#888"/>
@@ -222,18 +222,18 @@
 <text x="1028" y="842" font-size="12" fill="#222">Singles</text>
 <rect x="1020" y="851" width="58.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="1028" y="864" font-size="12" fill="#222">Doubles</text>
-<rect x="520" y="873" width="160.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="886" font-size="12" fill="#222">F4.5 Matrix Analysis<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="520" y="873" width="166.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="886" font-size="12" fill="#222">F4.5 Matrix Analysis<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="520" y="895" width="208.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="528" y="908" font-size="12" fill="#222">F4.6 Team Legality Warnings<tspan fill="#1565c0" font-size="10">  PF6</tspan></text>
-<path d="M418.0 948.0 H498 V926 H515" fill="none" stroke="#888"/>
+<path d="M424.0 948.0 H498 V926 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="926" r="4.5" fill="#222" stroke="#222"/>
-<path d="M418.0 948.0 H498 V948 H515" fill="none" stroke="#888"/>
+<path d="M424.0 948.0 H498 V948 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="948" r="4.5" fill="#222" stroke="#222"/>
-<path d="M418.0 948.0 H498 V970 H515" fill="none" stroke="#888"/>
+<path d="M424.0 948.0 H498 V970 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="970" r="4.5" fill="#fff" stroke="#222"/>
-<rect x="270" y="939.0" width="148.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="278" y="952.0" font-size="12" fill="#222" font-weight="bold">F5 Team Collection<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="270" y="939.0" width="154.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="278" y="952.0" font-size="12" fill="#222" font-weight="bold">F5 Team Collection<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="520" y="917" width="112.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="930" font-size="12" fill="#222">F5.1 Saved Teams</text>
 <rect x="520" y="939" width="214.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
@@ -253,8 +253,8 @@
 <text x="528" y="996" font-size="12" fill="#222">Share Link</text>
 <rect x="520" y="1005" width="94.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="528" y="1018" font-size="12" fill="#222">Showdown Text</text>
-<rect x="520" y="1027" width="100.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="528" y="1040" font-size="12" fill="#222">Export All<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="520" y="1027" width="106.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="528" y="1040" font-size="12" fill="#222">Export All<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="520" y="1049" width="226.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="528" y="1062" font-size="12" fill="#222">F6.1 Notice of Dropped Entries<tspan fill="#1565c0" font-size="10">  PF7</tspan></text>
 <path d="M358.0 1146.0 H498 V1080 H515" fill="none" stroke="#888"/>
@@ -279,10 +279,10 @@
 <text x="528" y="1150" font-size="12" fill="#222">Credits</text>
 <rect x="520" y="1159" width="100.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="528" y="1172" font-size="12" fill="#222">Privacy Policy</text>
-<rect x="520" y="1181" width="112.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="528" y="1194" font-size="12" fill="#222">Pokemon Info<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="520" y="1203" width="124.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="1216" font-size="12" fill="#222">F7.1 Dex Links<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="520" y="1181" width="118.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="528" y="1194" font-size="12" fill="#222">Pokemon Info<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="520" y="1203" width="130.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="528" y="1216" font-size="12" fill="#222">F7.1 Dex Links<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M376.0 1454.0 H498 V1344.0 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1344.0" r="4.5" fill="#222" stroke="#222"/>
 <path d="M376.0 1454.0 H498 V1498.0 H515" fill="none" stroke="#888"/>
@@ -311,26 +311,26 @@
 <text x="528" y="1348.0" font-size="12" fill="#222">F8.1 Language</text>
 <rect x="770" y="1225" width="58.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="1238" font-size="12" fill="#222">English</text>
-<rect x="770" y="1247" width="88.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1260" font-size="12" fill="#222">Japanese<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1269" width="76.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1282" font-size="12" fill="#222">Korean<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1291" width="148.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1304" font-size="12" fill="#222">Simplified Chinese<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1313" width="154.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1326" font-size="12" fill="#222">Traditional Chinese<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1335" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1348" font-size="12" fill="#222">Spanish<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1357" width="76.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1370" font-size="12" fill="#222">French<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1379" width="76.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1392" font-size="12" fill="#222">German<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1401" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1414" font-size="12" fill="#222">Italian<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1423" width="160.0" height="18" rx="4" fill="#fff" stroke="#888"/>
-<text x="778" y="1436" font-size="12" fill="#222">Brazilian Portuguese<tspan fill="#888" font-size="10">  R1</tspan></text>
-<rect x="770" y="1445" width="208.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="778" y="1458" font-size="12" fill="#222">F8.1.1 Translated Data Names<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="770" y="1247" width="94.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1260" font-size="12" fill="#222">Japanese<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1269" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1282" font-size="12" fill="#222">Korean<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1291" width="154.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1304" font-size="12" fill="#222">Simplified Chinese<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1313" width="160.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1326" font-size="12" fill="#222">Traditional Chinese<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1335" width="88.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1348" font-size="12" fill="#222">Spanish<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1357" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1370" font-size="12" fill="#222">French<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1379" width="82.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1392" font-size="12" fill="#222">German<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1401" width="88.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1414" font-size="12" fill="#222">Italian<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1423" width="166.0" height="18" rx="4" fill="#fff" stroke="#888"/>
+<text x="778" y="1436" font-size="12" fill="#222">Brazilian Portuguese<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<rect x="770" y="1445" width="214.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="778" y="1458" font-size="12" fill="#222">F8.1.1 Translated Data Names<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M644.0 1498.0 H748 V1476 H765" fill="none" stroke="#888"/>
 <path d="M644.0 1498.0 H748 V1498 H765" fill="none" stroke="#888"/>
 <path d="M644.0 1498.0 H748 V1520 H765" fill="none" stroke="#888"/>
@@ -348,18 +348,18 @@
 <text x="528" y="1546" font-size="12" fill="#222">F8.3 Responsive Layout</text>
 <rect x="520" y="1555" width="142.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="1568" font-size="12" fill="#222">F8.4 Animated Sprites</text>
-<path d="M376.0 1630.0 H498 V1586 H515" fill="none" stroke="#888"/>
+<path d="M382.0 1630.0 H498 V1586 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1586" r="4.5" fill="#fff" stroke="#222"/>
-<path d="M376.0 1630.0 H498 V1608 H515" fill="none" stroke="#888"/>
+<path d="M382.0 1630.0 H498 V1608 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1608" r="4.5" fill="#fff" stroke="#222"/>
-<path d="M376.0 1630.0 H498 V1630 H515" fill="none" stroke="#888"/>
+<path d="M382.0 1630.0 H498 V1630 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1630" r="4.5" fill="#fff" stroke="#222"/>
-<path d="M376.0 1630.0 H498 V1652 H515" fill="none" stroke="#888"/>
+<path d="M382.0 1630.0 H498 V1652 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1652" r="4.5" fill="#fff" stroke="#222"/>
-<path d="M376.0 1630.0 H498 V1674 H515" fill="none" stroke="#888"/>
+<path d="M382.0 1630.0 H498 V1674 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1674" r="4.5" fill="#fff" stroke="#222"/>
-<rect x="270" y="1621.0" width="106.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="278" y="1634.0" font-size="12" fill="#222" font-weight="bold">F9 Feedback<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="270" y="1621.0" width="112.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="278" y="1634.0" font-size="12" fill="#222" font-weight="bold">F9 Feedback<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="520" y="1577" width="142.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="1590" font-size="12" fill="#222">F9.1 Attach Team Link</text>
 <rect x="520" y="1599" width="148.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
@@ -370,12 +370,12 @@
 <text x="528" y="1656" font-size="12" fill="#222">F9.4 Reply Address</text>
 <rect x="520" y="1665" width="208.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>
 <text x="528" y="1678" font-size="12" fill="#222">F9.5 Verified Sender Domain<tspan fill="#1565c0" font-size="10">  PF5</tspan></text>
-<path d="M412.0 1707.0 H498 V1696 H515" fill="none" stroke="#888"/>
+<path d="M418.0 1707.0 H498 V1696 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1696" r="4.5" fill="#222" stroke="#222"/>
-<path d="M412.0 1707.0 H498 V1718 H515" fill="none" stroke="#888"/>
+<path d="M418.0 1707.0 H498 V1718 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="1718" r="4.5" fill="#fff" stroke="#222"/>
-<rect x="270" y="1698.0" width="142.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="278" y="1711.0" font-size="12" fill="#222" font-weight="bold">F10 Site Versions<tspan fill="#888" font-size="10">  R1</tspan></text>
+<rect x="270" y="1698.0" width="148.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
+<text x="278" y="1711.0" font-size="12" fill="#222" font-weight="bold">F10 Site Versions<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="520" y="1687" width="190.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
 <text x="528" y="1700" font-size="12" fill="#222">F10.1 Switch to Other Version</text>
 <rect x="520" y="1709" width="262.0" height="18" rx="4" fill="#e3f0fc" stroke="#1565c0" stroke-dasharray="5 3"/>

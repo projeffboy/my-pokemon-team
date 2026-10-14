@@ -12,8 +12,8 @@ The course built feature models in the jUCMNav tool. This one is written as text
 - `(optional)`: a child that a configuration containing the parent may select.
 - `XOR group`: exactly one of the children is selected when the parent is.
 - `OR group`: at least one of the children is selected when the parent is.
-- `[R0]`, `[R1]`, `[R2]`: the first release that has the feature (the old website, the redesign, the next release). A feature with no mark has been there since R0.
-- `[PF1]` to `[PF7]`: planned features, all proposed for R2.
+- `[R0]`, `[Ash]`, `[Brock]`: the first release that has the feature (the old website, the redesign, the next release). A feature with no mark has been there since R0.
+- `[PF1]` to `[PF7]`: planned features, all proposed for Brock.
 
 ## 4.2 Feature tree
 
@@ -25,32 +25,32 @@ The picture is drawn from the text tree below by [`figures/generate-feature-tree
 My Pokemon Team
 +-- F1 Team Building                              (mandatory)
 |   +-- F1.1 Pokemon Slots                        (mandatory)
-|   |   +-- F1.1.1 Slot Reordering                (optional)   [R1]
+|   |   +-- F1.1.1 Slot Reordering                (optional)   [Ash]
 |   |   +-- F1.1.2 Automatic Item and Ability     (optional)
-|   +-- F1.2 Set Details                          (optional)   [R1]
+|   +-- F1.2 Set Details                          (optional)   [Ash]
 |   |   +-- F1.2.1 Training Values                (mandatory)
 |   |         XOR group: DVs and Stat Experience | IVs and EVs | Stat Points
 |   |                    | Awakening Values [PF3] | Effort Levels [PF3]
-|   +-- F1.3 Randomize                            (optional)   [R1]
+|   +-- F1.3 Randomize                            (optional)   [Ash]
 |   |     OR group: Random Team | Random Pokemon | Random Details
-|   +-- F1.4 Undo and Redo                        (optional)   [R1]
+|   +-- F1.4 Undo and Redo                        (optional)   [Ash]
 +-- F2 Game Data                                  (mandatory)
 |   +-- F2.1 Generation Profile                   (mandatory)
-|   |     XOR group: Generations 6-9 Combined | Single Generation [R1]
-|   |                | Pokemon Champions [R1] | Let's Go [PF3]
+|   |     XOR group: Generations 6-9 Combined | Single Generation [Ash]
+|   |                | Pokemon Champions [Ash] | Let's Go [PF3]
 |   |                | Legends: Arceus [PF3] | Legends: Z-A [PF3]
-|   +-- F2.2 Generation Transfer                  (optional)   [R1]
+|   +-- F2.2 Generation Transfer                  (optional)   [Ash]
 |   +-- F2.3 Data Update Tooling                  (mandatory)
 |       +-- F2.3.1 Game Data Update               (mandatory)
-|       +-- F2.3.2 Translation Update             (optional)   [R1]
+|       +-- F2.3.2 Translation Update             (optional)   [Ash]
 +-- F3 Pokemon Search                             (mandatory)
 |   +-- F3.1 Search by Name                       (mandatory)
 |   +-- F3.2 Filters                              (optional)
-|   |     OR group: Format | Type | Region | Viable Moves Only | Ability [R1]
-|   +-- F3.3 Sort                                 (optional)   [R1]
+|   |     OR group: Format | Type | Region | Viable Moves Only | Ability [Ash]
+|   +-- F3.3 Sort                                 (optional)   [Ash]
 |   +-- F3.4 Option Views                         (mandatory)
-|   |     XOR group: List | Grid [R1] | Big Grid [R1]
-|   +-- F3.5 Move Types Display                   (optional)   [R1]
+|   |     XOR group: List | Grid [Ash] | Big Grid [Ash]
+|   +-- F3.5 Move Types Display                   (optional)   [Ash]
 +-- F4 Team Analysis                              (mandatory)
 |   +-- F4.1 Team Defence                         (mandatory)
 |   +-- F4.2 Team Type Coverage                   (mandatory)
@@ -58,37 +58,37 @@ My Pokemon Team
 |   +-- F4.4 Team Checklist                       (optional)
 |   |   +-- F4.4.1 Battle Format Context          (optional)   [PF1]
 |   |         XOR group: Singles | Doubles
-|   +-- F4.5 Matrix Analysis                      (optional)   [R1]
+|   +-- F4.5 Matrix Analysis                      (optional)   [Ash]
 |   +-- F4.6 Team Legality Warnings               (optional)   [PF6]
-+-- F5 Team Collection                            (optional)   [R1]
++-- F5 Team Collection                            (optional)   [Ash]
 |   +-- F5.1 Saved Teams                          (mandatory)
 |   +-- F5.2 Synchronization Between Tabs         (mandatory)
 |   +-- F5.3 Team Backups                         (optional)
 +-- F6 Team Exchange                              (mandatory)
-|   |  OR group: Share Link | Showdown Text | Export All [R1]
+|   |  OR group: Share Link | Showdown Text | Export All [Ash]
 |   +-- F6.1 Notice of Dropped Entries            (optional)   [PF7]
 +-- F7 Reference                                  (optional)
 |   |  OR group: Type Chart | Manual | Update Log | Credits | Privacy Policy
-|   |            | Pokemon Info [R1]
-|   +-- F7.1 Dex Links                            (optional)   [R1]
+|   |            | Pokemon Info [Ash]
+|   +-- F7.1 Dex Links                            (optional)   [Ash]
 +-- F8 Presentation                               (mandatory)
 |   +-- F8.1 Language                             (mandatory)
-|   |   |  XOR group: English | Japanese [R1] | Korean [R1]
-|   |   |             | Simplified Chinese [R1] | Traditional Chinese [R1]
-|   |   |             | Spanish [R1] | French [R1] | German [R1] | Italian [R1]
-|   |   |             | Brazilian Portuguese [R1]
-|   |   +-- F8.1.1 Translated Data Names          (optional)   [R1]
+|   |   |  XOR group: English | Japanese [Ash] | Korean [Ash]
+|   |   |             | Simplified Chinese [Ash] | Traditional Chinese [Ash]
+|   |   |             | Spanish [Ash] | French [Ash] | German [Ash] | Italian [Ash]
+|   |   |             | Brazilian Portuguese [Ash]
+|   |   +-- F8.1.1 Translated Data Names          (optional)   [Ash]
 |   +-- F8.2 Colour Scheme                        (mandatory)
 |   |     XOR group: Auto | Light | Dark
 |   +-- F8.3 Responsive Layout                    (mandatory)
 |   +-- F8.4 Animated Sprites                     (optional)
-+-- F9 Feedback                                   (optional)   [R1]
++-- F9 Feedback                                   (optional)   [Ash]
 |   +-- F9.1 Attach Team Link                     (optional)
 |   +-- F9.2 Attach Screenshot                    (optional)
 |   +-- F9.3 Attach Images                        (optional)
 |   +-- F9.4 Reply Address                        (optional)
 |   +-- F9.5 Verified Sender Domain               (optional)   [PF5]
-+-- F10 Site Versions                             (optional)   [R1]
++-- F10 Site Versions                             (optional)   [Ash]
 |   +-- F10.1 Switch to Other Version             (mandatory)
 |   +-- F10.2 Team Transfer Between Versions      (optional)   [PF2]
 +-- F11 Advertising                               (optional)
@@ -146,19 +146,19 @@ Selected: F1 Team Building (F1.1 Pokemon Slots, F1.1.2 Automatic Item and Abilit
 
 Not selected: F1.1.1, F1.2, F1.3, F1.4, F2.2, F2.3.2, F3.3, F3.5, F4.5, F5, F7.1, F8.1.1, F9, F10, and every planned feature.
 
-### Configuration "R1 Redesign, production"
+### Configuration "Ash, production"
 
 Selected: every feature without a `[P]` mark. Example run-time choices: Generation Profile: Generations 6-9 Combined; Training Values: IVs and EVs; Option Views: List; Language: Spanish with F8.1.1 Translated Data Names; Colour Scheme: Auto.
 
 Not selected: PF1 to PF7.
 
-### Configuration "R1 Redesign, local development"
+### Configuration "Ash, local development"
 
-As "R1 Redesign, production" without F9 Feedback and its children, and without F11 Advertising. The development server does not run the feedback function, and the ad script is added to production builds only.
+As "Ash, production" without F9 Feedback and its children, and without F11 Advertising. The development server does not run the feedback function, and the ad script is added to production builds only.
 
-### Configuration "R2 Next"
+### Configuration "Brock"
 
-As "R1 Redesign, production" with F4.4.1 Battle Format Context (example choice: Doubles), F10.2 Team Transfer Between Versions, F9.5 Verified Sender Domain, F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. PF3 adds three choices to the Generation Profile group and two to the Training Values group. PF4 removes constraint C4.
+As "Ash, production" with F4.4.1 Battle Format Context (example choice: Doubles), F10.2 Team Transfer Between Versions, F9.5 Verified Sender Domain, F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. PF3 adds three choices to the Generation Profile group and two to the Training Values group. PF4 removes constraint C4.
 
 ## 4.6 Features and use cases
 

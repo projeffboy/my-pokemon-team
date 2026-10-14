@@ -218,32 +218,32 @@ A strategy sets the initial satisfaction of the tasks: 100 for a selected featur
 | Strategy         | Tasks set to 100                                                                                                                                                                                                                                                                          |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | "R0 Old website" | Team Defence, Coverage, Explanations, Checklist, Combined Generations, Data Update, Search by Name, Filters, Share Link, Showdown Text, Update Log, Privacy Policy, Colour Scheme, Responsive Layout, Advertising                                                                         |
-| "R1 Redesign"    | Those of "R0 Old website", and Matrix, Single Generations, Generation Transfer, Translation Update, Sort, Grid Views, Randomize, Undo, Set Details, Saved Teams, Tab Sync, Backups, Export All, Pokemon Info, Languages, Translated Names, Feedback, Feedback Attachments, Switch Version |
-| "R2 Next"        | Those of "R1 Redesign", and Legality Warnings, Battle Format, More Games, Portuguese Names, Verified Sender, Version Transfer                                                                                                                                                             |
+| "Ash"            | Those of "R0 Old website", and Matrix, Single Generations, Generation Transfer, Translation Update, Sort, Grid Views, Randomize, Undo, Set Details, Saved Teams, Tab Sync, Backups, Export All, Pokemon Info, Languages, Translated Names, Feedback, Feedback Attachments, Switch Version |
+| "Brock"          | Those of "Ash", and Legality Warnings, Battle Format, More Games, Portuguese Names, Verified Sender, Version Transfer                                                                                                                                                                     |
 
 ## 3.5 Evaluation
 
 Propagation follows the course's standard rules: a softgoal's value is the sum of each contributor's value times its contribution, divided by 100, limited to the range -100 to 100, with the fraction dropped. An actor's value is the importance-weighted average of its softgoals, with the fraction dropped.
 
-| Element                                          | "R0 Old website" | "R1 Redesign" | "R2 Next" |
-| ------------------------------------------------ | ---------------- | ------------- | --------- |
-| PL1 Know my team's weaknesses                    | 80               | 95            | 100       |
-| PL2 Trust the results                            | 45               | 85            | 100       |
-| PL3 Find suitable pokemon quickly                | 55               | 100           | 100       |
-| PL4 Keep my teams                                | 15               | 100           | 100       |
-| PL5 Move teams between tools and people          | 60               | 90            | 100       |
-| PL6 Use the site in my language and on my device | 20               | 80            | 85        |
-| **Player**                                       | **48**           | **92**        | **98**    |
-| OW1 Cover running costs and my time              | 76               | 90            | 95        |
-| OW2 Grow and keep the audience                   | 20               | 85            | 100       |
-| OW3 Keep players' trust                          | 30               | 80            | 90        |
-| OW4 Learn what players need                      | 0                | 80            | 100       |
-| **Site Owner**                                   | **37**           | **84**        | **95**    |
-| MA1 Low maintenance effort                       | 40               | 25            | 10        |
-| MA2 Keep game data current                       | 70               | 100           | 100       |
-| **Maintainer**                                   | **52**           | **55**        | **47**    |
+| Element                                          | "R0 Old website" | "Ash"  | "Brock" |
+| ------------------------------------------------ | ---------------- | ------ | ------- |
+| PL1 Know my team's weaknesses                    | 80               | 95     | 100     |
+| PL2 Trust the results                            | 45               | 85     | 100     |
+| PL3 Find suitable pokemon quickly                | 55               | 100    | 100     |
+| PL4 Keep my teams                                | 15               | 100    | 100     |
+| PL5 Move teams between tools and people          | 60               | 90     | 100     |
+| PL6 Use the site in my language and on my device | 20               | 80     | 85      |
+| **Player**                                       | **48**           | **92** | **98**  |
+| OW1 Cover running costs and my time              | 76               | 90     | 95      |
+| OW2 Grow and keep the audience                   | 20               | 85     | 100     |
+| OW3 Keep players' trust                          | 30               | 80     | 90      |
+| OW4 Learn what players need                      | 0                | 80     | 100     |
+| **Site Owner**                                   | **37**           | **84** | **95**  |
+| MA1 Low maintenance effort                       | 40               | 25     | 10      |
+| MA2 Keep game data current                       | 70               | 100    | 100     |
+| **Maintainer**                                   | **52**           | **55** | **47**  |
 
-Worked example, OW1 under "R1 Redesign": `(100 x 60 + 85 x 30 + 100 x 10 + 100 x -5) / 100 = 90.5`, shown as 90.
+Worked example, OW1 under "Ash": `(100 x 60 + 85 x 30 + 100 x 10 + 100 x -5) / 100 = 90.5`, shown as 90.
 
 ## 3.6 Discussion
 
