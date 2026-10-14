@@ -50,7 +50,7 @@ My Pokemon Team
 |   +-- F3.3 Sort                                 (optional)   [Ash]
 |   +-- F3.4 Option Views                         (mandatory)
 |   |     XOR group: List | Grid [Ash] | Big Grid [Ash]
-|   +-- F3.5 Move Types Display                   (optional)   [Ash]
+|   +-- F3.5 Types Display                        (optional)   [Ash]
 +-- F4 Team Analysis                              (mandatory)
 |   +-- F4.1 Team Defence                         (mandatory)
 |   +-- F4.2 Team Type Coverage                   (mandatory)

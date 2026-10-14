@@ -212,7 +212,8 @@ classDiagram
     language : Language
     colourScheme : ColourScheme
     optionView : OptionView
-    showMoveTypes : Boolean
+    showTypes : Boolean
+    animateSprites : Boolean
   }
   class Gender {
     <<enumeration>>
@@ -389,7 +390,7 @@ Postcondition (for fail case): The current team holds the selections made before
 | REQ-TEAM-10 | The site shall reject the selection of a move that the same pokemon already has.                                                                              | E    | Implemented |
 | REQ-TEAM-11 | The site shall allow the Player to move a pokemon, with its moves, item, ability, and set details, to any other slot.                                         | C    | Implemented |
 | REQ-TEAM-12 | The site shall present the pokemon options as a list, a grid of sprites, or a grid of large sprites with names, as last chosen by the Player.                 | C    | Implemented |
-| REQ-TEAM-13 | The site shall show the type of each selected move for a Player who has asked for move types to be shown.                                                     | O    | Implemented |
+| REQ-TEAM-13 | The site shall show the types of each pokemon and of each selected move, unless the Player has asked for types to be hidden.                                  | C    | Approved    |
 | REQ-TEAM-14 | The site shall inform the Player that no pokemon match the current filters on a request that yields no pokemon option.                                        | E    | Implemented |
 | REQ-TEAM-15 | The site shall inform the Player that the move lists could not be loaded, and how to try again, after a failure to load them.                                 | E    | Implemented |
 
@@ -1201,21 +1202,26 @@ The rules of REQ-ANLY-19 are already computed by the site and covered by tests; 
 
 The Site Owner rates speed as paramount: a visitor who waits, or who has to work before seeing a result, leaves. REQ-USE-10 is the Site Owner's own answer to that, the random team. A fit criterion quantifies each quality. Where three values are given they are outstanding, target, and minimum; the requirement states the minimum. Values marked **[A-16]** are proposed and have not been measured or agreed.
 
-| ID         | Requirement                                                                                                                                                                  | Imp. | Status      |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-USE-1  | The site shall enable at least 80% of first-time players to place six pokemon and name the type their team is weakest to within 5 minutes, without any training **[A-16]**.  | E    | Proposed    |
-| REQ-USE-2  | The site shall enable at least 80% of Pokemon Showdown users to import a team from Showdown and copy it back within 2 minutes, without any training **[A-16]**.              | C    | Proposed    |
-| REQ-USE-3  | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page.                                                | E    | Implemented |
-| REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                           | C    | Proposed    |
-| REQ-USE-5  | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                        | C    | Implemented |
-| REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**. | C    | Proposed    |
-| REQ-USE-7  | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                  | C    | Implemented |
-| REQ-USE-8  | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                                      | C    | Implemented |
-| REQ-USE-9  | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                    | O    | Proposed    |
-| REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                | E    | Implemented |
-| REQ-USE-11 | The site shall show a text label beside the icon of every button, other than the icon-only buttons listed in Table 3.2-1.                                                    | E    | Approved    |
-| REQ-USE-12 | The site shall present each slot's Random pokemon button no wider than a quarter of the width of the area that the slot's sprite is presented in.                            | E    | Approved    |
-| REQ-USE-13 | The site shall present each slot's More details button no wider than a quarter of the width of the area that the slot's sprite is presented in.                              | E    | Approved    |
+| ID         | Requirement                                                                                                                                                                                       | Imp. | Status      |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-USE-1  | The site shall enable at least 80% of first-time players to place six pokemon and name the type their team is weakest to within 5 minutes, without any training **[A-16]**.                       | E    | Proposed    |
+| REQ-USE-2  | The site shall enable at least 80% of Pokemon Showdown users to import a team from Showdown and copy it back within 2 minutes, without any training **[A-16]**.                                   | C    | Proposed    |
+| REQ-USE-3  | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page and without cutting off any control or its label.                    | E    | Approved    |
+| REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                                                | C    | Proposed    |
+| REQ-USE-5  | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                                             | C    | Implemented |
+| REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**.                      | C    | Proposed    |
+| REQ-USE-7  | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                                       | C    | Implemented |
+| REQ-USE-8  | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                                                           | C    | Implemented |
+| REQ-USE-9  | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                                         | O    | Proposed    |
+| REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                                     | E    | Implemented |
+| REQ-USE-11 | The site shall show a text label beside the icon of every button, other than the icon-only buttons listed in Table 3.2-1.                                                                         | E    | Approved    |
+| REQ-USE-12 | The site shall present each slot's Random pokemon button no wider than a quarter of the width of the area that the slot's sprite is presented in.                                                 | E    | Approved    |
+| REQ-USE-13 | The site shall present each slot's More details button no wider than a quarter of the width of the area that the slot's sprite is presented in.                                                   | E    | Approved    |
+| REQ-USE-14 | The site shall offer in the current team's toolbar only actions that act on the current team, a Teams button that leads to every action on the other saved teams, and the accessibility settings. | C    | Approved    |
+| REQ-USE-15 | The site shall present the toolbar's More menu in two sections, Manage team with the actions on the current team, and Accessibility with the display settings.                                    | C    | Approved    |
+| REQ-USE-16 | The site shall present still sprites in place of animated ones to a Player who has asked for sprites not to be animated.                                                                          | C    | Approved    |
+| REQ-USE-17 | The site shall present every function to every Player, without a mode that the Player has to turn on.                                                                                             | C    | Approved    |
+| REQ-USE-18 | The site shall present Clear as its own toolbar button at the widths where the toolbar fits on one row, and in the More menu's Manage team section at other widths.                               | C    | Approved    |
 
 | Quality (requirement)                      | Outstanding | Target    | Minimum   |
 | ------------------------------------------ | ----------- | --------- | --------- |
@@ -1223,15 +1229,21 @@ The Site Owner rates speed as paramount: a visitor who waits, or who has to work
 | Time for a Showdown round trip (REQ-USE-2) | 30 seconds  | 1 minute  | 2 minutes |
 | Narrowest supported width (REQ-USE-3)      | 280 px      | 320 px    | 320 px    |
 
-REQ-USE-11 lets a button show its icon alone only where a label would get in the way, and each such button and its reason is listed below. A button joins the list only with a reason recorded here; every icon-only button still has an accessible name (REQ-USE-5).
+REQ-USE-11 lets a button show its icon alone only where a label would get in the way, and each such button and its reason is listed below. A button joins the list only with a reason recorded here, and one that is icon-only at some widths only says which; every icon-only button still has an accessible name (REQ-USE-5).
 
 Table 3.2-1: Icon-only buttons
 
-| Button               | Where                                       | Reason                                                                                                      |
-| -------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| Random pokemon (die) | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it.                                                         |
-| About (info)         | Each slot's card, at the sprite's top right | A label would cover the animated sprite.                                                                    |
-| More details         | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it, and would make the button wider than REQ-USE-13 allows. |
+| Button               | Where                                       | Reason                                                                                                                                       |
+| -------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| Random pokemon (die) | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it.                                                                                          |
+| About (info)         | Each slot's card, at the sprite's top right | A label would cover the animated sprite.                                                                                                     |
+| More details         | Each slot's card, beside the sprite         | Only at the widths where its label would cover the sprite or make the button wider than REQ-USE-13 allows; it shows its label at the others. |
+
+REQ-USE-14 keeps the toolbar about the team on screen, with the Teams button as the one way to the other saved teams. Importing team text adds new teams rather than changing the current one, so it is offered behind the Teams button and not in the toolbar's Manage menu; editing the current team's text stays there.
+
+REQ-USE-15 replaces the Manage button with a More button for now. Its Accessibility section holds two switches: still sprites (REQ-USE-16) and hidden types (REQ-TEAM-13). Where the toolbar fits on one row, Clear leaves the menu for a button of its own (REQ-USE-18).
+
+REQ-USE-17 removes the Advanced switch. What it turned on, such as Filters and Sort inside the pokemon and move lists and the hidden ability marker, is always shown.
 
 ### 3.3) Performance requirements
 

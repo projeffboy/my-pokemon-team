@@ -202,31 +202,32 @@ Importance is on every requirement. Urgency is added here for the planned work.
 
 ### Wiegers' prioritization
 
-Each item is an issue of Section 6.6. Its benefit, the penalty of not having it, and its risk are rated from 1 to 9. Its cost is the issue's Size on the project board, a relative estimate of how long it will take, on the same scale: XXS 1, XS 2, S 3, M 4, L 5, XL 6, XXL 7, 3XL 9. The weights are 2 for benefit, 1 for penalty, 1 for cost, and 0.5 for risk. Priority is `value % / (cost % x cost weight + risk % x risk weight)`. The ratings and sizes are the analyst's estimates **[A-20]** and are meant to be replaced by the Site Owner's.
+Each item is an issue of Section 6.6. Its benefit, the penalty of not having it, and its risk are rated from 1 to 9. Its cost is the issue's Size on the project board, a relative estimate of how long it will take, on the same scale: XXS 1, XS 2, S 3, M 4, L 5, XL 6, XXL 7, 3XL 9. The weights are 2 for benefit, 1 for penalty, 1 for cost, and 0.5 for risk. Value is `benefit x 2 + penalty`, and priority is `value / (cost x cost weight + risk x risk weight)`. The ratings and sizes are the analyst's estimates **[A-20]** and are meant to be replaced by the Site Owner's.
 
-The priority value sets the issue's Priority on the board: P1 from 1.2, P2 from 0.6, and P3 below 0.6. P0 is kept for outages. A blocked issue is P3 until it is unblocked. Each percentage is a share of its column, so adding or removing an item shifts every value; the levels are checked again whenever the table changes.
+The priority value sets the issue's Priority on the board: P1 from 3.5, P2 from 2.0, and P3 below 2.0. P0 is kept for outages. A blocked issue is P3 until it is unblocked.
 
-| Item                                                           | Relative benefit | Relative penalty | Total value | Value % | Size | Relative cost | Cost % | Relative risk | Risk % | Priority | Level       |
-| -------------------------------------------------------------- | ---------------- | ---------------- | ----------- | ------- | ---- | ------------- | ------ | ------------- | ------ | -------- | ----------- |
-| Relative weights:                                              | 2                | 1                |             |         |      | 1             |        | 0.5           |        |          |             |
-| PF5 Verified sender domain (REQ-FEED-9)                        | 3                | 5                | 11          | 5.6     | XS   | 2             | 2.9    | 1             | 2.1    | 1.431    | P1          |
-| Notice of Showdown data changes (REQ-DATA-12)                  | 5                | 6                | 16          | 8.2     | S    | 3             | 4.3    | 2             | 4.3    | 1.273    | P1          |
-| Sprites where Pokemon Showdown is blocked (REQ-INTF-18)        | 6                | 6                | 18          | 9.2     | M    | 4             | 5.7    | 3             | 6.4    | 1.031    | P2          |
-| PF4 Portuguese data names (REQ-LANG-8)                         | 3                | 1                | 7           | 3.6     | XS   | 2             | 2.9    | 1             | 2.1    | 0.911    | P3, blocked |
-| PF6 Team legality warnings (REQ-ANLY-18, 19)                   | 6                | 2                | 14          | 7.1     | M    | 4             | 5.7    | 2             | 4.3    | 0.911    | P2          |
-| Wish with Protect or Detect as reliable recovery (REQ-ANLY-20) | 3                | 2                | 8           | 4.1     | S    | 3             | 4.3    | 1             | 2.1    | 0.763    | P2          |
-| PF7 Notice of entries dropped from a link (REQ-INFO-8)         | 4                | 5                | 13          | 6.6     | M    | 4             | 5.7    | 3             | 6.4    | 0.745    | P2          |
-| PF1 Battle format for the checklist (REQ-ANLY-12 to 17)        | 4                | 6                | 14          | 7.1     | L    | 5             | 7.1    | 3             | 6.4    | 0.691    | P2          |
-| Keyboard operation and contrast (REQ-USE-4, 6)                 | 5                | 4                | 14          | 7.1     | L    | 5             | 7.1    | 3             | 6.4    | 0.691    | P2          |
-| Browsers by usage share (REQ-INTF-13)                          | 3                | 3                | 9           | 4.6     | M    | 4             | 5.7    | 2             | 4.3    | 0.586    | P3          |
-| Measure the speed targets (REQ-PERF-1 to 3)                    | 3                | 3                | 9           | 4.6     | M    | 4             | 5.7    | 2             | 4.3    | 0.586    | P3          |
-| PF2 Team transfer to the old website (REQ-SITE-3, 5)           | 5                | 4                | 14          | 7.1     | L    | 5             | 7.1    | 5             | 10.6   | 0.573    | P3          |
-| Unrecognised generation or game in a link (REQ-LINK-11)        | 2                | 2                | 6           | 3.1     | S    | 3             | 4.3    | 1             | 2.1    | 0.572    | P3          |
-| Check which requirements have tests (Implemented requirements) | 3                | 3                | 9           | 4.6     | L    | 5             | 7.1    | 1             | 2.1    | 0.560    | P3          |
-| Recheck the dex links on a schedule (REQ-REF-2)                | 2                | 2                | 6           | 3.1     | S    | 3             | 4.3    | 2             | 4.3    | 0.477    | P3          |
-| PF3 Let's Go and the Legends games (REQ-GEN-11)                | 6                | 3                | 15          | 7.7     | XXL  | 7             | 10.0   | 7             | 14.9   | 0.439    | P3          |
-| Fallback data source for a new game (REQ-DATA-10, 11)          | 5                | 3                | 13          | 6.6     | XXL  | 7             | 10.0   | 8             | 17.0   | 0.358    | P3          |
-| Totals                                                         | 68               | 60               | 196         | 100     |      | 70            | 100    | 47            | 100    |          |             |
+Wiegers' method, as the course teaches it, first turns each rating into a percentage of its column's total. This table leaves that step out: every column already uses the same 1 to 9 scale, and with percentages a new item changed every other item's value and could move it to another level. Here an item's priority depends only on its own ratings, so a new item is rated once and nothing else changes. The order is almost the same either way (decision of 14 October 2026).
+
+| Item                                                           | Benefit | Penalty | Value | Size | Cost | Risk | Priority | Level       |
+| -------------------------------------------------------------- | ------- | ------- | ----- | ---- | ---- | ---- | -------- | ----------- |
+| Weights:                                                       | 2       | 1       |       |      | 1    | 0.5  |          |             |
+| PF5 Verified sender domain (REQ-FEED-9)                        | 3       | 5       | 11    | XS   | 2    | 1    | 4.40     | P1          |
+| Notice of Showdown data changes (REQ-DATA-12)                  | 5       | 6       | 16    | S    | 3    | 2    | 4.00     | P1          |
+| Sprites where Pokemon Showdown is blocked (REQ-INTF-18)        | 6       | 6       | 18    | M    | 4    | 3    | 3.27     | P2          |
+| PF4 Portuguese data names (REQ-LANG-8)                         | 3       | 1       | 7     | XS   | 2    | 1    | 2.80     | P3, blocked |
+| PF6 Team legality warnings (REQ-ANLY-18, 19)                   | 6       | 2       | 14    | M    | 4    | 2    | 2.80     | P2          |
+| PF7 Notice of entries dropped from a link (REQ-INFO-8)         | 4       | 5       | 13    | M    | 4    | 3    | 2.36     | P2          |
+| Wish with Protect or Detect as reliable recovery (REQ-ANLY-20) | 3       | 2       | 8     | S    | 3    | 1    | 2.29     | P2          |
+| PF1 Battle format for the checklist (REQ-ANLY-12 to 17)        | 4       | 6       | 14    | L    | 5    | 3    | 2.15     | P2          |
+| Keyboard operation and contrast (REQ-USE-4, 6)                 | 5       | 4       | 14    | L    | 5    | 3    | 2.15     | P2          |
+| PF2 Team transfer to the old website (REQ-SITE-3, 5)           | 5       | 4       | 14    | L    | 5    | 5    | 1.87     | P3          |
+| Browsers by usage share (REQ-INTF-13)                          | 3       | 3       | 9     | M    | 4    | 2    | 1.80     | P3          |
+| Measure the speed targets (REQ-PERF-1 to 3)                    | 3       | 3       | 9     | M    | 4    | 2    | 1.80     | P3          |
+| Unrecognised generation or game in a link (REQ-LINK-11)        | 2       | 2       | 6     | S    | 3    | 1    | 1.71     | P3          |
+| Check which requirements have tests (Implemented requirements) | 3       | 3       | 9     | L    | 5    | 1    | 1.64     | P3          |
+| Recheck the dex links on a schedule (REQ-REF-2)                | 2       | 2       | 6     | S    | 3    | 2    | 1.50     | P3          |
+| PF3 Let's Go and the Legends games (REQ-GEN-11)                | 6       | 3       | 15    | XXL  | 7    | 7    | 1.43     | P3          |
+| Fallback data source for a new game (REQ-DATA-10, 11)          | 5       | 3       | 13    | XXL  | 7    | 8    | 1.18     | P3          |
 
 ### Reading the result
 
@@ -236,13 +237,13 @@ The priority value sets the issue's Priority on the board: P1 from 1.2, P2 from 
 - **Sprites where Pokemon Showdown is blocked third.** Players at schools that block Pokemon Showdown see no sprites at all, so both its benefit and its penalty are high.
 - **PF4 ranks fourth by arithmetic only.** It is cheap, but it is blocked until 2027 and cannot be scheduled, so it stays P3.
 - **PF6 before PF1.** Legality warnings rank above the battle format because their rules already exist and they are the smaller task, although the battle format corrects a known defect. The Site Owner has confirmed that the warnings are wanted.
-- **Measuring the speed targets and browsers by usage share sit just under the P2 cutoff.** A small change to a rating would move them to P2.
+- **PF2, measuring the speed targets, and browsers by usage share sit just under the P2 cutoff.** A small change to a rating would move them to P2.
 - **PF3 and the fallback data source last.** Each has a cost and a risk several times most other items'. The goal model reaches the same conclusion about PF3 from the Maintainer's side. The fallback source ranks last although the Site Owner asked for it, because nobody yet knows which sources would serve; its first step, choosing them, is cheap and should be done before the next new game, not after the other items.
 - The verification items (keyboard and contrast, browsers by usage share, the speed targets, and which requirements have tests) are investigations before they are features. Their sizes are the most uncertain in the table.
 
 ### Calibration
 
-The weights are the ones in the course's example and are meant to be calibrated. The Site Owner has noted (13 October 2026) that cost may deserve less weight, because coding agents do much of the implementation, and that the cost weight could be halved from 1 to 0.5 if the ranking proves unsatisfying. It has not been changed. With today's ratings, halving it raises every priority value, which would put most items above the P1 cutoff, so the cutoffs would have to be set again. It would also move two items up: checking which requirements have tests from 14th to 10th, and the notice of an unrecognised generation or game from 13th to 11th, because their risk is low and their cost would count for less.
+The weights are the ones in the course's example and are meant to be calibrated. The Site Owner has noted (13 October 2026) that cost may deserve less weight, because coding agents do much of the implementation, and that the cost weight could be halved from 1 to 0.5 if the ranking proves unsatisfying. It has not been changed. With today's ratings, halving it raises every priority value, which would put most items above the P1 cutoff, so the cutoffs would have to be set again. It would also move three items: checking which requirements have tests and the notice of an unrecognised generation or game would rise from 14th and 13th to share 10th place, because their risk is low and their cost would count for less, while PF2 would fall from 10th to 14th, because its risk is high.
 
 Other techniques the course teaches would add to this once players can be asked: a Kano survey would show which planned features players take for granted and which would delight them, and a 100-dollar test would let the Site Owner and a few players each spread 100 points over the list.
 
@@ -257,13 +258,13 @@ Work to do is kept in the project's GitHub issues, not in these documents. An is
 | Sprites where Pokemon Showdown is blocked        | REQ-INTF-18                               | [76](https://github.com/projeffboy/my-pokemon-team/issues/76)   | P2          |
 | PF4 Portuguese data names                        | REQ-LANG-8                                | [124](https://github.com/projeffboy/my-pokemon-team/issues/124) | P3, blocked |
 | PF6 Team legality warnings                       | REQ-ANLY-18, 19                           | [117](https://github.com/projeffboy/my-pokemon-team/issues/117) | P2          |
-| Wish with Protect or Detect as reliable recovery | REQ-ANLY-20                               | [141](https://github.com/projeffboy/my-pokemon-team/issues/141) | P2          |
 | PF7 Notice of entries dropped from a link        | REQ-INFO-8                                | [119](https://github.com/projeffboy/my-pokemon-team/issues/119) | P2          |
+| Wish with Protect or Detect as reliable recovery | REQ-ANLY-20                               | [141](https://github.com/projeffboy/my-pokemon-team/issues/141) | P2          |
 | PF1 Battle format for the checklist              | REQ-ANLY-12 to 17                         | [118](https://github.com/projeffboy/my-pokemon-team/issues/118) | P2          |
 | Keyboard operation, accessible names, contrast   | REQ-USE-4 to 6                            | [77](https://github.com/projeffboy/my-pokemon-team/issues/77)   | P2          |
+| PF2 Team transfer to the old website             | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | P3          |
 | Browsers by usage share                          | REQ-INTF-13                               | [121](https://github.com/projeffboy/my-pokemon-team/issues/121) | P3          |
 | Measure the speed targets                        | REQ-PERF-1 to 3                           | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | P3          |
-| PF2 Team transfer to the old website             | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | P3          |
 | Unrecognised generation or game in a link        | REQ-LINK-11                               | [113](https://github.com/projeffboy/my-pokemon-team/issues/113) | P3          |
 | Check which requirements have tests              | Every requirement with status Implemented | [120](https://github.com/projeffboy/my-pokemon-team/issues/120) | P3          |
 | Recheck the dex links on a schedule              | REQ-REF-2                                 | [47](https://github.com/projeffboy/my-pokemon-team/issues/47)   | P3          |
