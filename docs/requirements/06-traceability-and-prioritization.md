@@ -6,22 +6,22 @@ This document says how the requirements are identified, changed, and traced, and
 
 Every item has a symbolic identifier: a prefix for its kind and area, then a number. The numbers carry no order of importance, and an identifier is never reused once assigned, so a deleted requirement leaves a gap.
 
-| Prefix          | Kind                            | Defined in                                    |
-| --------------- | ------------------------------- | --------------------------------------------- |
-| BR-             | Business requirement            | [01](01-vision-and-scope.md)                  |
-| RULE-           | Business rule                   | [01](01-vision-and-scope.md)                  |
-| RISK-           | Business risk                   | [01](01-vision-and-scope.md)                  |
-| SH-             | Stakeholder                     | [02](02-stakeholders-and-personas.md)         |
-| P- (P-1 to P-4) | Persona                         | [02](02-stakeholders-and-personas.md)         |
-| PL, OW, MA      | Softgoal of a stakeholder actor | [03](03-goal-model.md)                        |
-| F, C            | Feature, cross-tree constraint  | [04](04-feature-model.md)                     |
-| P (P1 to P7)    | Planned feature                 | [04](04-feature-model.md)                     |
-| UC, US          | Use case, user story            | [05](05-system-requirements-specification.md) |
-| REQ-_AREA_-     | System requirement              | [05](05-system-requirements-specification.md) |
-| T-              | Task                            | [07](07-tasks.md)                             |
-| M (M1 to M5)    | Mock-up                         | [10](10-mockups.md)                           |
-| M (M1 to M5)    | Mock-up                         | [10](10-mockups.md)                           |
-| A-              | Assumption                      | [08](08-assumptions-and-interview.md)         |
+| Prefix          | Kind                            | Defined in                                            |
+| --------------- | ------------------------------- | ----------------------------------------------------- |
+| BR-             | Business requirement            | [01](01-vision-and-scope.md)                          |
+| RULE-           | Business rule                   | [01](01-vision-and-scope.md)                          |
+| RISK-           | Business risk                   | [01](01-vision-and-scope.md)                          |
+| SH-             | Stakeholder                     | [02](02-stakeholders-and-personas.md)                 |
+| P- (P-1 to P-5) | Persona                         | [02](02-stakeholders-and-personas.md)                 |
+| PL, OW, MA      | Softgoal of a stakeholder actor | [03](03-goal-model.md)                                |
+| F, C            | Feature, cross-tree constraint  | [04](04-feature-model.md)                             |
+| P (P1 to P7)    | Planned feature                 | [04](04-feature-model.md)                             |
+| UC, US          | Use case, user story            | [05](05-system-requirements-specification.md)         |
+| REQ-_AREA_-     | System requirement              | [05](05-system-requirements-specification.md)         |
+| Issue number    | Work to do                      | GitHub issues; Section 6.6 links them to requirements |
+| M (M1 to M5)    | Mock-up                         | [10](10-mockups.md)                                   |
+| M (M1 to M5)    | Mock-up                         | [10](10-mockups.md)                                   |
+| A-              | Assumption                      | [08](08-assumptions-and-interview.md)                 |
 
 Requirement areas: TEAM, DET, RAND, UNDO, FIND, ANLY, GEN, COLL, BKUP, LINK, TEXT, REF, LANG, THEME, FEED, SITE, DATA (functional); USE, PERF, INTF, OPS, MODE, SEC, INFO, POL, REL, MAINT (non-functional and interface).
 
@@ -57,7 +57,7 @@ Statuses:
 
 Change management, sized for one maintainer:
 
-1. A change request is a GitHub issue, a feedback email, or an entry in `TODO.md`. It states what should change and why.
+1. A change request is a GitHub issue or a feedback email. It states what should change and why.
 2. Impact analysis: find the requirement in the SyRS, then follow the matrices in 6.4 upward to the business requirement it serves and across to the use case, the feature, and the tests it touches.
 3. Decision by the Site Owner: approve, defer (it stays Proposed), or reject (status Rejected, with the reason).
 4. An approved change updates the requirement, its user story's acceptance criteria, and its tests in the same pull request as the code, so the documents cannot fall behind the site.
@@ -81,7 +81,7 @@ classDiagram
   class UseCase
   class SystemRequirement
   class Test
-  class Task
+  class Issue
   Softgoal "*" --> "1" Stakeholder : held by
   Persona "*" --> "1" Stakeholder : represents
   Feature "*" --> "*" Softgoal : contributes to
@@ -91,7 +91,7 @@ classDiagram
   SystemRequirement "*" --> "0..1" UseCase : derived from
   SystemRequirement "*" --> "1..*" BusinessRequirement : helps achieve
   Test "*" --> "1..*" SystemRequirement : tests
-  Task "*" --> "1..*" SystemRequirement : implements or verifies
+  Issue "*" --> "1..*" SystemRequirement : implements or verifies
 ```
 
 Links are created by whoever has the information: the analyst links requirements upward, and the developer links tests to requirements when writing them. Links are kept at the level of requirement groups, not single requirements, because single-requirement links for more than two hundred requirements would not be maintained.
@@ -100,36 +100,36 @@ Links are created by whoever has the information: the analyst links requirements
 
 An X means the requirements of the row help achieve the business requirement of the column. Every row has at least one X, so no group of requirements is without a business reason, and every column has at least one, so no business requirement is without requirements.
 
-| Requirements                   | BR-1 Revenue | BR-2 Links and teams keep loading | BR-3 Data within 2 or 7 days | BR-4 Ten languages | BR-5 Replace old website | BR-6 No backend | BR-7 Errors fixed in 7 days | BR-8 Providers' terms |
-| ------------------------------ | :----------: | :-------------------------------: | :--------------------------: | :----------------: | :----------------------: | :-------------: | :-------------------------: | :-------------------: |
-| REQ-TEAM (UC1)                 |              |                                   |                              |         X          |            X             |                 |                             |                       |
-| REQ-DET (UC2)                  |              |                                   |                              |                    |            X             |                 |                             |                       |
-| REQ-RAND (UC3)                 |              |                                   |                              |                    |            X             |                 |                             |                       |
-| REQ-UNDO (UC4)                 |              |                                   |                              |                    |            X             |                 |                             |                       |
-| REQ-FIND (UC5)                 |              |                                   |                              |                    |            X             |                 |                             |           X           |
-| REQ-ANLY-1 to 11 (UC6)         |              |                                   |                              |                    |            X             |                 |              X              |                       |
-| REQ-ANLY-12 to 19 (UC22, UC24) |              |                                   |                              |                    |            X             |                 |              X              |                       |
-| REQ-GEN (UC7)                  |              |                                   |              X               |                    |            X             |                 |                             |                       |
-| REQ-COLL (UC8)                 |              |                 X                 |                              |                    |            X             |        X        |                             |                       |
-| REQ-BKUP (UC9, UC10)           |              |                 X                 |                              |                    |                          |        X        |                             |                       |
-| REQ-LINK (UC11, UC12)          |              |                 X                 |                              |                    |            X             |                 |                             |                       |
-| REQ-TEXT (UC13, UC14)          |              |                 X                 |                              |                    |                          |                 |                             |           X           |
-| REQ-REF (UC15)                 |              |                                   |                              |                    |            X             |                 |                             |           X           |
-| REQ-LANG (UC16)                |              |                                   |                              |         X          |                          |                 |                             |                       |
-| REQ-THEME (UC17)               |              |                                   |                              |                    |            X             |                 |                             |                       |
-| REQ-FEED (UC18)                |              |                                   |                              |                    |            X             |                 |              X              |                       |
-| REQ-SITE (UC19, UC23)          |              |                                   |                              |                    |            X             |                 |                             |                       |
-| REQ-DATA (UC20, UC21)          |              |                                   |              X               |         X          |                          |        X        |                             |           X           |
-| REQ-USE                        |              |                                   |                              |                    |            X             |                 |                             |                       |
-| REQ-PERF                       |      X       |                                   |                              |                    |            X             |                 |                             |                       |
-| REQ-INTF                       |      X       |                 X                 |                              |                    |                          |                 |                             |           X           |
-| REQ-OPS                        |              |                                   |              X               |                    |                          |        X        |              X              |                       |
-| REQ-MODE                       |      X       |                                   |                              |                    |                          |        X        |                             |                       |
-| REQ-SEC                        |              |                 X                 |                              |                    |                          |        X        |                             |           X           |
-| REQ-INFO                       |              |                 X                 |                              |                    |            X             |                 |                             |                       |
-| REQ-POL                        |      X       |                                   |                              |                    |                          |                 |                             |           X           |
-| REQ-REL                        |              |                                   |              X               |                    |            X             |        X        |              X              |                       |
-| REQ-MAINT                      |      X       |                                   |              X               |         X          |                          |        X        |              X              |                       |
+| Requirements                   | BR-1 Revenue | BR-2 Links and teams keep loading | BR-3 Data within 2 or 7 days | BR-4 Ten languages | BR-5 Replace old website | BR-6 No backend | BR-7 Errors fixed in 7 days | BR-8 Providers' terms | BR-9 Non-competitive reach |
+| ------------------------------ | :----------: | :-------------------------------: | :--------------------------: | :----------------: | :----------------------: | :-------------: | :-------------------------: | :-------------------: | :------------------------: |
+| REQ-TEAM (UC1)                 |              |                                   |                              |         X          |            X             |                 |                             |                       |             X              |
+| REQ-DET (UC2)                  |              |                                   |                              |                    |            X             |                 |                             |                       |                            |
+| REQ-RAND (UC3)                 |              |                                   |                              |                    |            X             |                 |                             |                       |             X              |
+| REQ-UNDO (UC4)                 |              |                                   |                              |                    |            X             |                 |                             |                       |                            |
+| REQ-FIND (UC5)                 |              |                                   |                              |                    |            X             |                 |                             |           X           |             X              |
+| REQ-ANLY-1 to 11 (UC6)         |              |                                   |                              |                    |            X             |                 |              X              |                       |             X              |
+| REQ-ANLY-12 to 19 (UC22, UC24) |              |                                   |                              |                    |            X             |                 |              X              |                       |                            |
+| REQ-GEN (UC7)                  |              |                                   |              X               |                    |            X             |                 |                             |                       |             X              |
+| REQ-COLL (UC8)                 |              |                 X                 |                              |                    |            X             |        X        |                             |                       |             X              |
+| REQ-BKUP (UC9, UC10)           |              |                 X                 |                              |                    |                          |        X        |                             |                       |                            |
+| REQ-LINK (UC11, UC12)          |              |                 X                 |                              |                    |            X             |                 |                             |                       |                            |
+| REQ-TEXT (UC13, UC14)          |              |                 X                 |                              |                    |                          |                 |                             |           X           |                            |
+| REQ-REF (UC15)                 |              |                                   |                              |                    |            X             |                 |                             |           X           |             X              |
+| REQ-LANG (UC16)                |              |                                   |                              |         X          |                          |                 |                             |                       |             X              |
+| REQ-THEME (UC17)               |              |                                   |                              |                    |            X             |                 |                             |                       |                            |
+| REQ-FEED (UC18)                |              |                                   |                              |                    |            X             |                 |              X              |                       |                            |
+| REQ-SITE (UC19, UC23)          |              |                                   |                              |                    |            X             |                 |                             |                       |                            |
+| REQ-DATA (UC20, UC21)          |              |                                   |              X               |         X          |                          |        X        |                             |           X           |                            |
+| REQ-USE                        |              |                                   |                              |                    |            X             |                 |                             |                       |             X              |
+| REQ-PERF                       |      X       |                                   |                              |                    |            X             |                 |                             |                       |             X              |
+| REQ-INTF                       |      X       |                 X                 |                              |                    |                          |                 |                             |           X           |             X              |
+| REQ-OPS                        |              |                                   |              X               |                    |                          |        X        |              X              |                       |                            |
+| REQ-MODE                       |      X       |                                   |                              |                    |                          |        X        |                             |                       |             X              |
+| REQ-SEC                        |              |                 X                 |                              |                    |                          |        X        |                             |           X           |                            |
+| REQ-INFO                       |              |                 X                 |                              |                    |            X             |                 |                             |                       |                            |
+| REQ-POL                        |      X       |                                   |                              |                    |                          |                 |                             |           X           |                            |
+| REQ-REL                        |              |                                   |              X               |                    |            X             |        X        |              X              |                       |                            |
+| REQ-MAINT                      |      X       |                                   |              X               |         X          |                          |        X        |              X              |                       |                            |
 
 ### Business requirements to softgoals
 
@@ -143,14 +143,15 @@ An X means the requirements of the row help achieve the business requirement of 
 | BR-6 No backend by preference, one maintainer  | MA1 Low maintenance effort, OW1                         |
 | BR-7 Reported errors fixed in 7 days           | PL2 Trust the results, OW3, OW4 Learn what players need |
 | BR-8 Providers' terms                          | OW1 (through its dependency on the ad platform), MA2    |
+| BR-9 Non-competitive reach                     | OW2 Grow and keep the audience, PL3, PL6                |
 
 ### Personas, user stories, use cases, and requirements
 
 | User story | Persona who tells it most | Use case                             | Requirements                 |
 | ---------- | ------------------------- | ------------------------------------ | ---------------------------- |
-| US1        | P-1 Maya                  | UC1 Build Team                       | REQ-TEAM-1 to 15             |
+| US1        | P-1 Maya, P-5 Leo         | UC1 Build Team                       | REQ-TEAM-1 to 15             |
 | US2        | P-2 Daniel                | UC2 Set Pokemon Details              | REQ-DET-1 to 8               |
-| US3        | P-1 Maya                  | UC3 Randomize Team                   | REQ-RAND-1 to 5              |
+| US3        | P-1 Maya, P-5 Leo         | UC3 Randomize Team                   | REQ-RAND-1 to 5              |
 | US4        | P-1 Maya, P-2 Daniel      | UC4 Undo Change                      | REQ-UNDO-1 to 5              |
 | US5        | P-2 Daniel, P-3 Sofía     | UC5 Narrow Pokemon Choices           | REQ-FIND-1 to 11             |
 | US6        | P-1 Maya, P-2 Daniel      | UC6 Analyze Team                     | REQ-ANLY-1 to 11             |
@@ -234,3 +235,39 @@ Each item is rated from 1 to 9 for the benefit of having it, the penalty of not 
 The weights are the ones in the course's example and are meant to be calibrated. The Site Owner has noted (13 October 2026) that cost may deserve less weight, because coding agents do much of the implementation, and that the cost weight could be halved from 1 to 0.5 if the ranking proves unsatisfying. It has not been changed. With today's ratings, halving it raises every priority value and leaves the order of the eleven items the same, because the items that cost the most are also the riskiest. The order would change only with different ratings, or with a lower risk weight as well.
 
 Other techniques the course teaches would add to this once players can be asked: a Kano survey would show which planned features players take for granted and which would delight them, and a 100-dollar test would let the Site Owner and a few players each spread 100 points over the list.
+
+## 6.6 Requirements and GitHub issues
+
+Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. The planned work is in the order of Section 6.5. Priority is a label on the issue, and the milestone "R2" holds the next release.
+
+| Work                                           | Requirements                              | Issue                                                           | Priority     |
+| ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------- | ------------ |
+| P5 Verified sender domain                      | REQ-FEED-9                                | [115](https://github.com/projeffboy/my-pokemon-team/issues/115) | High         |
+| Notice of Showdown data changes                | REQ-DATA-12                               | [116](https://github.com/projeffboy/my-pokemon-team/issues/116) | High         |
+| Sprites where Pokemon Showdown is blocked      | REQ-INTF-18                               | [76](https://github.com/projeffboy/my-pokemon-team/issues/76)   | High         |
+| Measure the speed targets                      | REQ-PERF-1 to 3                           | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | High         |
+| P6 Team legality warnings                      | REQ-ANLY-18, 19                           | [117](https://github.com/projeffboy/my-pokemon-team/issues/117) | Medium       |
+| P1 Battle format for the checklist             | REQ-ANLY-12 to 17                         | [118](https://github.com/projeffboy/my-pokemon-team/issues/118) | Medium       |
+| P7 Notice of entries dropped from a link       | REQ-INFO-8                                | [119](https://github.com/projeffboy/my-pokemon-team/issues/119) | Medium       |
+| Keyboard operation, accessible names, contrast | REQ-USE-4 to 6                            | [77](https://github.com/projeffboy/my-pokemon-team/issues/77)   | Medium       |
+| Check which requirements have tests            | Every requirement with status Implemented | [120](https://github.com/projeffboy/my-pokemon-team/issues/120) | Medium       |
+| Browsers by usage share                        | REQ-INTF-13                               | [121](https://github.com/projeffboy/my-pokemon-team/issues/121) | Low          |
+| P2 Team transfer to the old website            | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | Low          |
+| P3 Let's Go and the Legends games              | REQ-GEN-11                                | [122](https://github.com/projeffboy/my-pokemon-team/issues/122) | Low          |
+| Fallback data source for a new game            | REQ-DATA-10, 11                           | [123](https://github.com/projeffboy/my-pokemon-team/issues/123) | Low          |
+| P4 Portuguese data names                       | REQ-LANG-8                                | [124](https://github.com/projeffboy/my-pokemon-team/issues/124) | Low, blocked |
+| Unrecognised generation or game in a link      | REQ-LINK-11                               | [113](https://github.com/projeffboy/my-pokemon-team/issues/113) | Low          |
+| Recheck the dex links on a schedule            | REQ-REF-2                                 | [47](https://github.com/projeffboy/my-pokemon-team/issues/47)   | Low          |
+
+Issues with no requirement yet, because the feature is not planned:
+
+| Idea                                               | Issue                                                         | State                                          |
+| -------------------------------------------------- | ------------------------------------------------------------- | ---------------------------------------------- |
+| Suggestions of teammates, moves, and items         | [37](https://github.com/projeffboy/my-pokemon-team/issues/37) | Wanted for a later release (milestone "Later") |
+| Analysis beyond types                              | [44](https://github.com/projeffboy/my-pokemon-team/issues/44) | Wanted for a later release                     |
+| Usage chart                                        | [36](https://github.com/projeffboy/my-pokemon-team/issues/36) | Wanted for a later release                     |
+| Filter for viable items                            | [43](https://github.com/projeffboy/my-pokemon-team/issues/43) | Low priority; may be closed                    |
+| Quick type, such as "hpfire" for Hidden Power Fire | [40](https://github.com/projeffboy/my-pokemon-team/issues/40) | Low priority                                   |
+| CAP pokemon                                        | [39](https://github.com/projeffboy/my-pokemon-team/issues/39) | Undecided                                      |
+
+Work that has no issue because it recurs: running the data and translation updates after each Pokemon Showdown change (BR-3), and reviewing the weekly dependency update (REQ-MAINT-3). Two pieces of requirements work are deferred and have no issue: usability sessions and surveys of players (REQ-USE-1, 2, 9), which the Site Owner set aside on 13 October 2026 as useful later for gauging the audience.

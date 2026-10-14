@@ -16,7 +16,7 @@ Six products were examined on 13 October 2026 by loading each one in a browser a
 Limits of this analysis:
 
 - One short session per product. A feature that was not found may still exist.
-- Popularity was not measured, so the choice of products rests on web search results and on which tools a player would plausibly use instead of the site.
+- Popularity was not measured. As a check, the first page of a Google search for "pokemon teambuilder" (13 October 2026, English, United States) listed, in order: richi3f, My Pokemon Team, Pokemon Showdown, Marriland, pokemon-team-builder.org, PokéBase, PokeSynergy, Pokéos, and Pokemon Zone. Four of the six products examined are on that page. Pikalytics and PKMN.help are not, and four products on it were not examined: pokemon-team-builder.org, PokéBase, Pokéos, and Pokemon Zone. Search results vary by place and person.
 - Phone use was checked only as "no sideways scrolling at a width of 375 pixels" on the first screen.
 - Whether held items change a product's defensive totals was not tested in any of them.
 - Three further Pokemon Champions tools appeared in search and were not examined: PokeTools, ChampTeams, and Champions Lab.
@@ -26,7 +26,7 @@ Limits of this analysis:
 
 **Pokemon Showdown teambuilder** (Smogon and the Pokemon Showdown project, `play.pokemonshowdown.com/teambuilder`). The set editor of the battle simulator. Players build format-legal competitive sets in it and battle with them in the same application. It validates a team against a format, keeps teams in the browser or in an account, and backs them all up. It has no team-level type analysis of any kind (observed).
 
-**Marriland Team Builder** (Marriland, a fan site, `marriland.com/tools/team-builder/`). A weakness and resistance table for up to six pokemon, for Generations 1 to 9 and Legends: Z-A. Each pokemon is a column and each type a row, with totals. Abilities change the result: Bronzong's Ground cell went from 2x to immune with Levitate (observed). An "Advanced Mode" checks the team's moves against up to six opposing pokemon the player enters (stated). It has no set details beyond a tera or custom type, and no Showdown text.
+**Marriland Team Builder** (Marriland, a fan site, `marriland.com/tools/team-builder/`). A weakness and resistance table for up to six pokemon, for Generations 1 to 9 and Legends: Z-A. Each pokemon is a column and each type a row, with totals. Abilities change the result: Bronzong's Ground cell went from 2x to immune with Levitate, and Heatran's Fire cell showed immune with Flash Fire (both observed). The two tests found no inaccuracy; a wider test of its accuracy was not made. An "Advanced Mode" checks the team's moves against up to six opposing pokemon the player enters (stated). It has no set details beyond a tera or custom type, and no Showdown text.
 
 **richi3f Pokemon Team Planner** (richi3f, open source, `richi3f.github.io/pokemon-team-planner/`). The player picks a game from twenty-two, including spin-offs, Legends: Z-A, and Pokemon Champions, and then picks six pokemon from that game's own list. It tallies type weaknesses per slot. It is meant for planning an in-game run. By its own FAQ, abilities are not factored in and coverage uses the pokemon's types, not its moves (observed). The whole team is in the page's address.
 
@@ -92,7 +92,7 @@ The vision statement first said that, unlike type-only planners and Showdown's t
 - **Legality validation.** Showdown checks a team against its format. The site computes the same kind of rules and shows nothing, which is the planned feature P6. It can be done better than Showdown's does it, by showing the problems as the team is built, without a separate request (mock-up M3).
 - **Suggestions.** PokeSynergy's suggestion names what it covers, which makes it an explanation as well as advice. The Site Owner left suggestions open for a later release, and this is the strongest evidence that players are offered them elsewhere. A version for this site could be more modest and still fit its character: say which types would close the team's worst gaps, and let the type filter show the pokemon.
 - **Per-game pokemon lists.** richi3f's twenty-two games, with filters for version exclusives and evolutions, serve the in-game player (persona P-1) better than a generation does. The planned games (P3) go part of the way.
-- **Search filters.** richi3f can exclude a type; PokeSynergy searches by move. The site's Moves filter only limits the moves offered and does not find pokemon by a move they learn (T-23).
+- **Search filters.** richi3f can exclude a type; PokeSynergy searches by move. The site's Moves filter only limits the moves offered and does not find pokemon by a move they learn, although the project's README describes it as narrowing the pokemon.
 - **Share links.** Marriland's link is short. This site's link holds the whole team, which keeps it working with no server and makes it long. A share image, as Pikalytics has, would suit the places teams are posted.
 - **Languages and advertising.** PKMN.help has twice the languages and no advertisements. The site's advertising is how it pays for itself (BR-1), so this is a difference to be aware of, not one to close.
 

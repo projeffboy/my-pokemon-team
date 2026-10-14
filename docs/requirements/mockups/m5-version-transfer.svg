@@ -35,12 +35,12 @@
 <text x="952" y="318" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">3</text>
 <circle cx="32" cy="390" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
 <text x="32" y="395" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">1</text>
-<text x="52" y="395" font-size="13" fill="#222" font-weight="normal" text-anchor="start">The current team goes with the Player, in both directions (REQ-SITE-3).</text>
+<text x="52" y="395" font-size="13" fill="#222" font-weight="normal" text-anchor="start">The current team goes with the Player to the old website (REQ-SITE-3). The way back carries nothing.</text>
 <circle cx="32" cy="426" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
 <text x="32" y="431" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">2</text>
 <text x="52" y="431" font-size="13" fill="#222" font-weight="normal" text-anchor="start">What will not carry over is said before leaving. The old website covers Generations 6–9, so a team</text>
 <text x="52" y="449" font-size="13" fill="#222" font-weight="normal" text-anchor="start">from another generation cannot arrive whole (REQ-SITE-5, proposed by the analyst).</text>
 <circle cx="32" cy="482" r="12" fill="#1565c0" stroke="#1565c0" stroke-width="1.5"/>
 <text x="32" y="487" font-size="13" fill="#fff" font-weight="bold" text-anchor="middle">3</text>
-<text x="52" y="487" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Saved teams still stay where they were made; bringing them across is REQ-SITE-4, rated optional.</text>
+<text x="52" y="487" font-size="13" fill="#222" font-weight="normal" text-anchor="start">Saved teams stay where they were made. Bringing them across (REQ-SITE-4) was rejected in the interview.</text>
 </svg>

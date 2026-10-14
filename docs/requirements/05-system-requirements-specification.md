@@ -41,7 +41,7 @@ The site's functions are the features F1 to F11 of [04-feature-model.md](04-feat
 
 #### 1.3.3) User characteristics
 
-Users are Pokemon players of any age who can read one of the site's ten languages. They range from in-game players with no competitive vocabulary to tournament players who will notice a single wrong matchup. They use phones from 320 pixels wide, tablets, and desktops, with touch, mouse, or keyboard. No training is provided or assumed. The user classes and the personas P-1 to P-4 are in [02-stakeholders-and-personas.md](02-stakeholders-and-personas.md).
+Users are Pokemon players of any age who can read one of the site's ten languages. They range from in-game players with no competitive vocabulary to tournament players who will notice a single wrong matchup. They use phones from 320 pixels wide, tablets, and desktops, with touch, mouse, or keyboard. No training is provided or assumed. Most are not competitive players. The user classes and the personas P-1 to P-5 are in [02-stakeholders-and-personas.md](02-stakeholders-and-personas.md).
 
 ### 1.4) Definitions
 
@@ -71,7 +71,7 @@ Users are Pokemon players of any age who can read one of the site's ten language
 - ISO/IEC/IEEE 29148:2018, Systems and software engineering, Life cycle processes, Requirements engineering. Used for this document's outline.
 - [01-vision-and-scope.md](01-vision-and-scope.md), [02-stakeholders-and-personas.md](02-stakeholders-and-personas.md), [03-goal-model.md](03-goal-model.md), [04-feature-model.md](04-feature-model.md): the higher-level requirements this document refines.
 - [`AGENTS.md`](../../AGENTS.md) and [`README.md`](../../README.md): the project's conventions and constraints, from which many of the non-functional requirements are taken.
-- [`TODO.md`](../../TODO.md): deferred work, the source of the battle format requirements.
+- The project's GitHub issues, which hold the work still to do. [Issue 118](https://github.com/projeffboy/my-pokemon-team/issues/118) is the source of the battle format requirements.
 - Pokemon Showdown's team export format and data files, at `github.com/smogon/pokemon-showdown`.
 - Material Design 2, at `m2.material.io`.
 - Web Content Accessibility Guidelines (WCAG) 2.1.
@@ -439,8 +439,8 @@ US3. As a player looking for ideas, I want the site to fill my team, or one slot
 
 | ID         | Requirement                                                                                                                                                  | Imp. | Status      |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
-| REQ-RAND-1 | The site shall fill all six slots of the current team, on the Player's request, with six different pokemon chosen at random from those matching the filters. | O    | Implemented |
-| REQ-RAND-2 | The site shall give each randomly chosen pokemon moves it can learn, an ability it can have, and an item no earlier slot of the team holds.                  | O    | Implemented |
+| REQ-RAND-1 | The site shall fill all six slots of the current team, on the Player's request, with six different pokemon chosen at random from those matching the filters. | C    | Implemented |
+| REQ-RAND-2 | The site shall give each randomly chosen pokemon moves it can learn, an ability it can have, and an item no earlier slot of the team holds.                  | C    | Implemented |
 | REQ-RAND-3 | The site shall complete the missing moves, item, ability, and details of a slot whose set is incomplete, on the Player's request to randomize that slot.     | O    | Implemented |
 | REQ-RAND-4 | The site shall replace an empty or complete slot with a random pokemon and set, on the Player's request to randomize that slot.                              | O    | Implemented |
 | REQ-RAND-5 | The site shall tell the Player what a randomization changed.                                                                                                 | O    | Implemented |
@@ -865,6 +865,7 @@ Postcondition (for fail case): The current team and the saved teams are unchange
 | REQ-LINK-8  | The site shall ignore the team of a share link that it cannot read or that is longer than 16 kilobytes, presenting the visitor's own current team in its place. | E    | Implemented |
 | REQ-LINK-9  | The site shall present the team that the address held, after the Player moves back or forward in the browser's history.                                         | C    | Implemented |
 | REQ-LINK-10 | The site shall leave out of a team opened from a share link each pokemon, move, item, and ability that does not exist in the link's generation profile.         | E    | Implemented |
+| REQ-LINK-11 | The site shall inform a visitor that a share link names a generation or game the site does not recognise, naming the generation profile used in its place.      | O    | Proposed    |
 
 #### 3.1.14) UC13 Import Team Text and UC14 Export Team Text
 
@@ -1077,11 +1078,11 @@ US19. As a player who knew the old website, I want a way back to it from the red
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
 | REQ-SITE-1 | The site shall provide, from its header, a link to the old website.                                                                                                      | C    | Implemented |
 | REQ-SITE-2 | The site shall open the old website for a Player whose current team has pokemon only after the Player confirms a prompt stating that the current team will not transfer. | E    | Implemented |
-| REQ-SITE-3 | The site shall open the other site version with the Player's current team as that version's current team.                                                                | C    | Proposed    |
-| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                                    | O    | Proposed    |
+| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                                    | C    | Proposed    |
+| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                                    | O    | Rejected    |
 | REQ-SITE-5 | The site shall name, before opening the other site version with the Player's current team, each pokemon of the team that the other version cannot hold **[A-22]**.       | C    | Proposed    |
 
-REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Teams Between Versions (planned, P2).
+REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site either. REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Teams Between Versions (planned, P2).
 
 US23. As a player moving between the old website and the redesigned site, I want my current team to come with me, so that switching does not mean building it again.
 
@@ -1170,7 +1171,7 @@ the team.
 | REQ-ANLY-16 | The site shall identify, for a team whose battle format is unspecified, each checklist role whose result differs between singles and doubles.  | C    | Proposed    |
 | REQ-ANLY-17 | The site shall treat every saved team and share link that records no battle format as having an unspecified battle format.                     | E    | Proposed    |
 
-Known defect that these requirements correct: the checklist excludes Defog from hazard removal before Generation 6 in every battle format, which is wrong for doubles (`TODO.md`).
+Known defect that these requirements correct: the checklist excludes Defog from hazard removal before Generation 6 in every battle format, which is wrong for doubles (issue 118).
 
 #### 3.1.21) UC24 Check Team Legality (planned, P6)
 
@@ -1195,29 +1196,30 @@ The rules of REQ-ANLY-19 are already computed by the site and covered by tests; 
 
 ### 3.2) Usability requirements
 
-A fit criterion quantifies each quality. Where three values are given they are outstanding, target, and minimum; the requirement states the minimum. Values marked **[A-16]** are proposed and have not been measured or agreed.
+The Site Owner rates speed as paramount: a visitor who waits, or who has to work before seeing a result, leaves. REQ-USE-10 is the Site Owner's own answer to that, the random team. A fit criterion quantifies each quality. Where three values are given they are outstanding, target, and minimum; the requirement states the minimum. Values marked **[A-16]** are proposed and have not been measured or agreed.
 
-| ID        | Requirement                                                                                                                                                                  | Imp. | Status      |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-USE-1 | The site shall enable at least 80% of first-time players to place six pokemon and name the type their team is weakest to within 5 minutes, without any training **[A-16]**.  | E    | Proposed    |
-| REQ-USE-2 | The site shall enable at least 80% of Pokemon Showdown users to import a team from Showdown and copy it back within 2 minutes, without any training **[A-16]**.              | C    | Proposed    |
-| REQ-USE-3 | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page.                                                | E    | Implemented |
-| REQ-USE-4 | The site shall make every function operable with a keyboard alone.                                                                                                           | C    | Proposed    |
-| REQ-USE-5 | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                        | C    | Implemented |
-| REQ-USE-6 | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**. | C    | Proposed    |
-| REQ-USE-7 | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                  | C    | Implemented |
-| REQ-USE-8 | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                                      | C    | Implemented |
-| REQ-USE-9 | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                    | O    | Proposed    |
+| ID         | Requirement                                                                                                                                                                  | Imp. | Status      |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-USE-1  | The site shall enable at least 80% of first-time players to place six pokemon and name the type their team is weakest to within 5 minutes, without any training **[A-16]**.  | E    | Proposed    |
+| REQ-USE-2  | The site shall enable at least 80% of Pokemon Showdown users to import a team from Showdown and copy it back within 2 minutes, without any training **[A-16]**.              | C    | Proposed    |
+| REQ-USE-3  | The site shall present every function at viewport widths from 320 CSS pixels upward without horizontal scrolling of the page.                                                | E    | Implemented |
+| REQ-USE-4  | The site shall make every function operable with a keyboard alone.                                                                                                           | C    | Proposed    |
+| REQ-USE-5  | The site shall give every input and every button an accessible name that states its slot and its purpose, such as "Pokemon 1's item".                                        | C    | Implemented |
+| REQ-USE-6  | The site shall present text and controls at a contrast ratio of at least 4.5 to 1 against their background in both colour schemes, as WCAG 2.1 level AA requires **[A-16]**. | C    | Proposed    |
+| REQ-USE-7  | The site shall state, in every message that reports a failure, what the Player can do next.                                                                                  | C    | Implemented |
+| REQ-USE-8  | The site shall follow the component, spacing, and size guidelines of Material Design 2.                                                                                      | C    | Implemented |
+| REQ-USE-9  | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                    | O    | Proposed    |
+| REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                | E    | Implemented |
 
 | Quality (requirement)                      | Outstanding | Target    | Minimum   |
 | ------------------------------------------ | ----------- | --------- | --------- |
-| Time to a first analysed team (REQ-USE-1)  | 2 minutes   | 3 minutes | 5 minutes |
+| Time to a first analysed team (REQ-USE-1)  | 1 minute    | 2 minutes | 5 minutes |
 | Time for a Showdown round trip (REQ-USE-2) | 30 seconds  | 1 minute  | 2 minutes |
 | Narrowest supported width (REQ-USE-3)      | 280 px      | 320 px    | 320 px    |
 
 ### 3.3) Performance requirements
 
-Only response time and capacity are specified. Throughput is not: the site is served as static files, so the number of requests it handles per second is the hosting platform's, and no traffic figures are available to set a target from **[A-17]**.
+The Site Owner gave no figures but rated every one of these as critical, so the values below remain proposals to measure against. Only response time and capacity are specified. Throughput is not: the site is served as static files, so the number of requests it handles per second is the hosting platform's, and the traffic figures the Site Owner holds do not call for a target **[A-17]**.
 
 Measurement takes place on a mid-range phone released within the last four years, over a 4G connection, with an empty browser cache for REQ-PERF-3 and a warm one otherwise. Excluded are the advertising script and the sprites served by Pokemon Showdown. All values are proposed **[A-16]** except REQ-PERF-4's baseline, which was measured.
 
@@ -1226,7 +1228,7 @@ Measurement takes place on a mid-range phone released within the last four years
 | REQ-PERF-1 | In 95% of all cases, the site shall have a maximal response time of 100 ms between a change to the current team and the presentation of the updated analysis.          | E    | Proposed    |
 | REQ-PERF-2 | In 95% of all cases, the site shall have a maximal response time of 200 ms between a request to list the pokemon for a slot and the presentation of the first options. | E    | Proposed    |
 | REQ-PERF-3 | In 95% of all cases, the site shall have a maximal response time of 3 s between the opening of a share link and the presentation of the team's pokemon and analysis.   | E    | Proposed    |
-| REQ-PERF-4 | The site shall require a maximum of 600 kB of compressed script to be downloaded before a team can be edited.                                                          | C    | Implemented |
+| REQ-PERF-4 | The site shall require a maximum of 600 kB of compressed script to be downloaded before a team can be edited.                                                          | E    | Implemented |
 | REQ-PERF-5 | The site shall download the move lists, the generation transfer data, each language, and each footer dialog only on first need.                                        | C    | Implemented |
 | REQ-PERF-6 | The site shall save a change to a team to the Player's browser within 1 s of the change, and before the page is hidden.                                                | E    | Implemented |
 | REQ-PERF-7 | The site shall be able to store a minimum of 500 saved teams in a browser that grants 5 megabytes of site storage **[A-16]**.                                          | C    | Proposed    |
@@ -1261,6 +1263,9 @@ Baseline for REQ-PERF-4: the production build of 13 October 2026 downloads about
 | REQ-INTF-12 | The site shall operate in the current versions of Chrome and Safari on desktop, Chrome on Android, and Safari on iOS.                                                                                 | E    | Implemented |
 | REQ-INTF-13 | The site shall operate in the current version of each browser that its maker still updates and that has at least 2% of browser usage **[A-18]**.                                                      | C    | Proposed    |
 | REQ-INTF-14 | The site shall provide, for link previews, a title, a description, and a screenshot at an address that does not change.                                                                               | C    | Implemented |
+| REQ-INTF-18 | The site shall present pokemon sprites to a visitor whose network blocks Pokemon Showdown's servers.                                                                                                  | E    | Proposed    |
+
+REQ-INTF-18 comes from issue 76: schools often block Pokemon Showdown and not this site, so the sprites fail there, and missing pictures are the second most common complaint in the feedback. It is numbered after the internal interface requirements because it was added later.
 
 #### 3.4.2) Internal interface requirements
 
@@ -1278,6 +1283,7 @@ Baseline for REQ-PERF-4: the production build of 13 October 2026 downloads about
 | REQ-OPS-2 | The site shall serve its page so that browsers revalidate it on every visit, and its scripts and images so that browsers keep them for one year. | C    | Implemented |
 | REQ-OPS-3 | The site shall give a replaced image at a fixed address a new file name.                                                                         | C    | Implemented |
 | REQ-OPS-4 | The old website shall remain available at its own address, deployed independently of the redesigned site.                                        | C    | Implemented |
+| REQ-OPS-5 | The old website shall receive corrections only, and no new feature that is not judged absolutely necessary.                                      | C    | Approved    |
 
 ### 3.6) System modes and states
 

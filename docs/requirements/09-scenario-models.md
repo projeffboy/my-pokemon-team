@@ -310,7 +310,7 @@ flowchart TD
   Show --> finish
 ```
 
-The other version's part is UC12 Open Shared Team, which both versions already do. What is new is on the leaving side. The old website holds one unsaved team and covers Generations 6 to 9 only, so its Match decision always takes the draft branch, and a team from another generation cannot arrive whole. Mock-up M5 shows the confirmation.
+The flow runs from the redesigned site to the old website only: the old website is in maintenance and is not changed (REQ-OPS-5), so the way back carries no team. The old website's part is UC12 Open Shared Team, which it already does. What is new is on the leaving side. The old website holds one unsaved team and covers Generations 6 to 9 only, so its Match decision always takes the draft branch, and a team from another generation cannot arrive whole. Mock-up M5 shows the confirmation.
 
 ## 9.10 Planned features without a flow diagram
 

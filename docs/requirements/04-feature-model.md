@@ -112,15 +112,15 @@ What each top-level feature means:
 
 ## 4.3 Planned features
 
-| ID  | Feature                              | Source                                                                    | Notes                                                                                                              |
-| --- | ------------------------------------ | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| P1  | F4.4.1 Battle Format Context         | `TODO.md`, deferred on 2026-10-11                                         | Lets the checklist judge Defog correctly in Generations 4 and 5 singles and doubles.                               |
-| P2  | F10.2 Team Transfer Between Versions | `README.md`, issue 111                                                    | Today the current team and saved teams stay on the site version they were made on.                                 |
-| P3  | Let's Go and the Legends games       | The generation menu lists them as "Coming soon"                           | Brings Awakening Values and Effort Levels with them.                                                               |
-| P4  | Portuguese data names                | `AGENTS.md`, Languages                                                    | Blocked until PokeAPI has Portuguese names (the games gain the language in 2027). Removes the constraint C4 below. |
-| P5  | F9.5 Verified Sender Domain          | `AGENTS.md`, Feedback                                                     | Until then the feedback function can reach only the owner's own address.                                           |
-| P6  | F4.6 Team Legality Warnings          | `src/store/validation.ts` holds the rules; no part of the page shows them | The Site Owner wants them shown (interview, Q10). Where they appear is still to be decided.                        |
-| P7  | F6.1 Notice of Dropped Entries       | `AGENTS.md`, Share Links: old links silently lose renamed entries         | Proposed by the analyst; the Site Owner agreed (interview, Q10).                                                   |
+| ID  | Feature                              | Source                                                                               | Notes                                                                                                              |
+| --- | ------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| P1  | F4.4.1 Battle Format Context         | Issue 118; deferred during bug fixing on 2026-10-11                                  | Lets the checklist judge Defog correctly in Generations 4 and 5 singles and doubles.                               |
+| P2  | F10.2 Team Transfer Between Versions | `README.md`, issue 111                                                               | Today the current team and saved teams stay on the site version they were made on.                                 |
+| P3  | Let's Go and the Legends games       | The generation menu lists them as "Coming soon"; issue 122                           | Brings Awakening Values and Effort Levels with them.                                                               |
+| P4  | Portuguese data names                | `AGENTS.md`, Languages; issue 124                                                    | Blocked until PokeAPI has Portuguese names (the games gain the language in 2027). Removes the constraint C4 below. |
+| P5  | F9.5 Verified Sender Domain          | `AGENTS.md`, Feedback; issue 115                                                     | Until then the feedback function can reach only the owner's own address.                                           |
+| P6  | F4.6 Team Legality Warnings          | `src/store/validation.ts` holds the rules; no part of the page shows them; issue 117 | The Site Owner wants them shown (interview, Q10). Where they appear is still to be decided.                        |
+| P7  | F6.1 Notice of Dropped Entries       | `AGENTS.md`, Share Links: old links silently lose renamed entries; issue 119         | Proposed by the analyst; the Site Owner agreed (interview, Q10).                                                   |
 
 ## 4.4 Cross-tree constraints
 

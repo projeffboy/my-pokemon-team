@@ -1,6 +1,6 @@
 # 2. Stakeholders and Personas
 
-Requirement level: business and user. This document names everyone with a stake in My Pokemon Team, what each one values, how the users differ, and four personas that stand in for the users who cannot all be interviewed.
+Requirement level: business and user. This document names everyone with a stake in My Pokemon Team, what each one values, how the users differ, and five personas that stand in for the users who cannot all be interviewed.
 
 No stakeholder has been interviewed yet. Everything here is drawn from the repository, so the values, the user classes, and the personas are assumptions **[A-11]** until the interview in [08-assumptions-and-interview.md](08-assumptions-and-interview.md) and the site's feedback emails confirm or correct them.
 
@@ -59,7 +59,7 @@ Each stakeholder's values are particular human values from two or three of Schwa
 
 ### The containing business
 
-- **SH-6 Site Owner (client, sponsor, and financial beneficiary).** Jeffery Tang, who made the site, pays for it, and receives its advertising revenue. The owner has the last say on what the product does. Values: Creativity (Self-direction), Helpful (Benevolence), Social recognition (Power) **[A-12]**.
+- **SH-6 Site Owner (client, sponsor, and financial beneficiary).** Jeffery Tang, who made the site in 2019 because good teambuilders were lacking, runs it alone, pays for it, and receives its advertising revenue. The owner has the last say on what the product does, puts what helps players first, and wants the site complete and widely used by non-competitive players. Values: Creativity (Self-direction), Helpful (Benevolence), Successful (Achievement).
 - **SH-7 Link Recipient (functional beneficiary).** A friend, teammate, or forum reader who opens a share link someone else made. They may never have seen the site, and they judge it by whether the link shows the team at once. Values: True friendship (Benevolence), Curious (Self-direction).
 - **SH-8 Player communities (functional beneficiary, special interest groups).** Communities where teams are posted and discussed, such as r/stunfisk, Smogon's forums, and Discord servers. They spread the site by word of mouth and expect its terms and results to match the community's. Values: Sense of belonging (Security), Wisdom (Universalism), Helpful (Benevolence).
 - **SH-9 Open-source contributors.** Readers of the public GitHub repository who report issues or send changes. Values: Helpful (Benevolence), Freedom (Self-direction).
@@ -87,6 +87,7 @@ Users of the site differ in ways that change which requirements matter to them.
 | Frequency of use               | First-time visitors from a share link or a search; occasional visitors before a playthrough; regular visitors who return to saved teams.                     |
 | Platform                       | Phones from 320 pixels wide (touch, small screen); tablets; laptops and desktops (keyboard, wide screen).                                                    |
 | Language                       | English, Japanese, Korean, Simplified Chinese, Traditional Chinese, Spanish, French, German, Italian, Brazilian Portuguese.                                  |
+| Age                            | Children and teenagers, who the Site Owner believes are a large part of the audience **[A-24]**; adults.                                                     |
 | Generation played              | Current games (Generation 9, Pokemon Champions); older generations with different rules (Generations 1 to 5); several at once (Generations 6 to 9 combined). |
 | Site version history           | Players new to the site; players of the old website with bookmarked links and habits from it.                                                                |
 | Direct or indirect interaction | Players and Link Recipients interact directly. Readers of a pasted team text or a posted screenshot benefit indirectly.                                      |
@@ -96,7 +97,7 @@ Users of the site differ in ways that change which requirements matter to them.
 
 ## 2.3 Personas
 
-Each persona is a fictitious but probable user, one per important user class. They have no photographs, because no real users have been observed yet; a persona should be rebuilt from real encounters, such as feedback emails, when those exist.
+Each persona is a fictitious but probable user, one per important user class. P-1 and P-5 are supported by the feedback players have sent ([12-feedback-analysis.md](12-feedback-analysis.md)); P-2, P-3, and P-4 are still assumed **[A-11]**. They have no photographs, because no real users have been observed yet; a persona should be rebuilt from real encounters, such as feedback emails, when those exist.
 
 ### P-1 Maya / planning her next playthrough on the bus
 
@@ -242,14 +243,52 @@ Pain points:
 - Modern rules applied to old games.
 - Not knowing what changed, or whether his links are safe.
 
+### P-5 Leo / building a dream team for a game that is not on the list
+
+> "Eu só quero juntar os meus favoritos. Por que o site não deixa?"
+
+Leo is 14 and in his first year of secondary school in Curitiba. He plays a fan-made Pokemon game on the family computer, one that is built on an older generation and adds pokemon from newer ones, and he also makes teams for characters he invents with his friends. He has never played a ranked battle and does not know what a tier is. He picks pokemon because he likes them, from any game, and he wants to see them: a pokemon with no picture looks broken to him. He reads English slowly and uses the site in Portuguese. When something is missing or a list will not let him pick what he wants, he either writes to the owner or leaves.
+
+| Trait               | Rating |
+| ------------------- | ------ |
+| Domain knowledge    | 4 / 10 |
+| Technical knowledge | 5 / 10 |
+| Experience          | 3 / 10 |
+
+Typical activities:
+
+- Putting his favourite pokemon from several generations into one team.
+- Building a team for a fan-made game whose pokemon list matches no official game.
+- Checking that the newest pokemon and mega evolutions are there, and what they look like.
+- Tapping the random button to see what comes up.
+
+Drivers:
+
+- Playing with pokemon he likes, without rules he did not ask for.
+- Showing a team to friends.
+
+Goals:
+
+- Any pokemon, whatever game it is from, in the same team.
+- A picture for every pokemon and forme.
+- New pokemon and formes on the site as soon as they exist.
+
+Pain points:
+
+- A game or generation choice that hides the pokemon he wants.
+- Missing sprites and icons.
+- Waiting weeks for new mega evolutions to be added.
+
+This persona comes from the feedback analysis in [12-feedback-analysis.md](12-feedback-analysis.md), not from assumption.
+
 ## 2.4 Stakeholder availability and proxies
 
-| Stakeholder                        | How their requirements are obtained                                                                     |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Site Owner, Maintainer, Developer  | Interview ([08-assumptions-and-interview.md](08-assumptions-and-interview.md)); `AGENTS.md`; `TODO.md`. |
-| Player, Link Recipient             | Feedback emails; personas P-1 to P-4 as proxies; the old website's behaviour as the existing system.    |
-| Player communities                 | Their published terms (Smogon's tiers and dictionary), which the manual cites.                          |
-| Pokemon Showdown, PokeAPI          | Their published data formats and repositories, read by the update scripts.                              |
-| Playwire                           | Its help-centre documentation, kept locally in `playwire-docs/` when present.                           |
-| Rights holders, privacy regulators | Their published terms and laws; no direct contact.                                                      |
-| Abusive clients                    | Misuse scenarios, considered in the security requirements.                                              |
+| Stakeholder                        | How their requirements are obtained                                                                             |
+| ---------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Site Owner, Maintainer, Developer  | Interview ([08-assumptions-and-interview.md](08-assumptions-and-interview.md)); `AGENTS.md`; the GitHub issues. |
+| Player, Link Recipient             | Feedback emails; personas P-1 to P-5 as proxies; the old website's behaviour as the existing system.            |
+| Player communities                 | Their published terms (Smogon's tiers and dictionary), which the manual cites.                                  |
+| Pokemon Showdown, PokeAPI          | Their published data formats and repositories, read by the update scripts.                                      |
+| Playwire                           | Its help-centre documentation, kept locally in `playwire-docs/` when present.                                   |
+| Rights holders, privacy regulators | Their published terms and laws; no direct contact.                                                              |
+| Abusive clients                    | Misuse scenarios, considered in the security requirements.                                                      |

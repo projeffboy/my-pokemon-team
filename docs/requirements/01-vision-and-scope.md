@@ -10,7 +10,7 @@ Pokemon players plan a team of six before they play: in the main games, on Pokem
 
 The tools a player can turn to fall into two groups ([11-existing-systems-analysis.md](11-existing-systems-analysis.md)). Competitive builders such as Pokemon Showdown's hold full sets and read Showdown's team text, but give little type analysis, or none. Type planners total a team's weaknesses, most of them counting abilities, but hold no full sets and read no team text. None of the six examined explains where a total comes from, checks a team against the roles a competitive team needs, or carries a team from one generation to another **[A-1]**. My Pokemon Team does both jobs in one place and adds those three.
 
-The site is free to use. Advertising managed by Playwire is meant to pay for its hosting and for the time its owner spends building and maintaining it.
+The Site Owner made the site in 2019 because good teambuilders were lacking. The site is free to use. Advertising managed by Playwire is meant to pay for its hosting and for the time its owner spends building and maintaining it.
 
 ## 1.2 Problem statement
 
@@ -30,6 +30,7 @@ Business objectives are written to be measured. Where the target value is an ass
 | BR-6 | The site shall run without a backend service other than hosting and feedback email, a constraint the Site Owner lifts only for the site's survival or for a feature the Site Owner rates extremely important. It shall need no more than one maintainer **[A-5]**.                                                                                                                                                                            | Nonfinancial |
 | BR-7 | A wrong analysis result reported through feedback shall be corrected in production within 7 days of the report.                                                                                                                                                                                                                                                                                                                               | Nonfinancial |
 | BR-8 | The site shall comply with the terms of its data and advertising providers: Pokemon Showdown (data, sprites), PokeAPI (names), and Playwire (ad placement, `ads.txt`, crawlers).                                                                                                                                                                                                                                                              | Nonfinancial |
+| BR-9 | The site shall be the teambuilder that non-competitive players reach for: players who plan a team for a playthrough, a fan-made game, or for fun. The Site Owner would be proud of the site, a year from now, with team, language, and full generation support complete and a large share of that community using it. No measure of that share is set yet **[A-23]**.                                                                         | Nonfinancial |
 
 ### Business rules
 
@@ -45,7 +46,7 @@ Application-domain requirements that the later documents must respect. They come
 
 ## 1.4 Vision statement
 
-> **For** Pokemon players **who** want to know how well a team of six covers and resists the eighteen types before they commit to it, **the** My Pokemon Team website **is** a free teambuilder **that** scores a team's type defence and type coverage as it is built, for any generation from 1 to 9 and for Pokemon Champions. It checks the team against a checklist of competitive roles, narrows the choice of pokemon by format, type, region, and ability, keeps several teams in the browser, and exchanges them with Pokemon Showdown as text and with other players as a link, in ten languages. **Unlike** Pokemon Showdown's own teambuilder, which gives no team analysis, and other team planners, which give totals without saying where they come from, **our product** explains each score, checks the team against a checklist of competitive roles, and carries a team from one generation to another, while counting the abilities, items, and moves that change type matchups, such as Levitate, Thick Fat, and Freeze-Dry.
+> **For** Pokemon players, most of them not competitive, **who** want to know how well a team of six covers and resists the eighteen types before they commit to it, **the** My Pokemon Team website **is** a free teambuilder **that** scores a team's type defence and type coverage as it is built, for any generation from 1 to 9 and for Pokemon Champions. It checks the team against a checklist of competitive roles, narrows the choice of pokemon by format, type, region, and ability, keeps several teams in the browser, and exchanges them with Pokemon Showdown as text and with other players as a link, in ten languages. **Unlike** Pokemon Showdown's own teambuilder, which gives no team analysis, and other team planners, which give totals without saying where they come from, **our product** explains each score, checks the team against a checklist of competitive roles, and carries a team from one generation to another, while counting the abilities, items, and moves that change type matchups, such as Levitate, Thick Fat, and Freeze-Dry.
 
 ## 1.5 Scope
 
@@ -75,14 +76,18 @@ The work the system does itself:
 
 Not intended for R1 or R2. None of these is ruled out for good; each would first need a business requirement of its own.
 
-- Battling, damage calculation, speed tiers, and usage statistics. Pokemon Showdown and its damage calculator do these.
+- Battling, damage calculation, and speed tiers. Pokemon Showdown and its damage calculator do these.
 - Player accounts and server-side storage of teams. Teams stay in the browser; a backup file moves them between devices.
 - Editing or hosting game data. Pokemon Showdown is the source, and the site ships a projection of it.
 - Moderating or hosting shared teams. A share link holds the whole team; nothing is stored on a server.
 
 ### Open for a later release
 
-- Suggesting pokemon or moves to fix a weakness. Today the site shows the weakness and leaves the choice to the player. The Site Owner has not placed this outside the plan, and it has no requirements yet.
+The Site Owner wants these, for a release after R2, and with one constraint on all three: many players are children and teenagers **[A-24]**, so the site should stay simple and not try to be too clever.
+
+- Suggesting teammates, moves, items, or abilities to fix a weakness (issue 37). Today the site shows the weakness and leaves the choice to the player.
+- Analysis that looks beyond types, such as how a team fares against commonly used pokemon (issue 44).
+- A chart of how often each pokemon is used (issue 36). It needs usage statistics the site does not have.
 
 ### Limitations and dependencies
 
@@ -144,15 +149,15 @@ Notes on the boundary:
 
 Exposure is probability times impact, each on a scale of 1 (low) to 5 (high). The values are the analyst's estimates **[A-10]**.
 
-| ID      | Risk                                                                                                                                             | P   | I   | Exposure | Mitigation in the requirements                                                                                 |
-| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --- | --- | -------- | -------------------------------------------------------------------------------------------------------------- |
-| RISK-1  | A data update renames or removes a pokemon, move, or item, and old share links silently lose that entry.                                         | 4   | 3   | 12       | REQ-DATA-6 (update report), REQ-INFO-1 (link compatibility), REQ-INFO-8 (notice to the visitor, planned)       |
-| RISK-2  | A player's browser clears site storage and the saved teams are lost.                                                                             | 3   | 4   | 12       | REQ-BKUP-1 to REQ-BKUP-5 (backups), REQ-COLL-9 (save failure notice)                                           |
-| RISK-3  | Pokemon Showdown stops serving sprites to other sites, or changes its data layout.                                                               | 2   | 5   | 10       | REQ-INTF-2 (bundled icon sheets and local sprites), REQ-DATA-5 (projection script)                             |
-| RISK-4  | A page structure change removes the top ad banner and revenue drops unnoticed.                                                                   | 2   | 5   | 10       | REQ-INTF-5 (ad container contract)                                                                             |
-| RISK-5  | The single maintainer is unavailable, or does not hear of it, when a new game or regulation is released, and the 2-day target of BR-3 is missed. | 3   | 4   | 12       | REQ-MAINT-1 to REQ-MAINT-3 (scripted updates, automated checks), REQ-DATA-12 (notice of data changes, planned) |
-| RISK-6  | A wrong analysis result goes unreported and players stop trusting the scores.                                                                    | 2   | 4   | 8        | REQ-FEED-1 (feedback), REQ-REL-1 (rule tests), REQ-ANLY-7 (reasons shown)                                      |
-| RISK-7  | The feedback function or sprite rewrite is abused to send spam or to proxy other sites' requests.                                                | 3   | 2   | 6        | REQ-SEC-1 to REQ-SEC-4                                                                                         |
-| RISK-8  | The rights holders object to the use of Pokemon names and artwork.                                                                               | 1   | 5   | 5        | REQ-POL-3 (credits), no bundled artwork beyond icon sheets and the local sprites recorded with their source    |
-| RISK-9  | Players of the old website do not find the features they used and leave.                                                                         | 2   | 2   | 4        | REQ-SITE-1 (switch to the old website), P2 (team transfer)                                                     |
-| RISK-10 | Data taken from another source for a new game is wrong, or differs from Pokemon Showdown's when that arrives, and teams built on it change.      | 3   | 3   | 9        | REQ-DATA-10 and REQ-DATA-11 (fallback source, replaced by Showdown's data, planned), REQ-FEED-1                |
+| ID      | Risk                                                                                                                                                                                                 | P   | I   | Exposure | Mitigation in the requirements                                                                                 |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| RISK-1  | A data update renames or removes a pokemon, move, or item, and old share links silently lose that entry.                                                                                             | 4   | 3   | 12       | REQ-DATA-6 (update report), REQ-INFO-1 (link compatibility), REQ-INFO-8 (notice to the visitor, planned)       |
+| RISK-2  | A player's browser clears site storage and the saved teams are lost.                                                                                                                                 | 3   | 4   | 12       | REQ-BKUP-1 to REQ-BKUP-5 (backups), REQ-COLL-9 (save failure notice)                                           |
+| RISK-3  | Pokemon Showdown stops serving sprites to other sites, or changes its data layout.                                                                                                                   | 2   | 5   | 10       | REQ-INTF-2 (bundled icon sheets and local sprites), REQ-DATA-5 (projection script)                             |
+| RISK-4  | A page structure change removes the top ad banner and revenue drops unnoticed.                                                                                                                       | 2   | 5   | 10       | REQ-INTF-5 (ad container contract)                                                                             |
+| RISK-5  | The single maintainer is unavailable, or does not hear of it, when a new game or regulation is released, and the 2-day target of BR-3 is missed.                                                     | 3   | 4   | 12       | REQ-MAINT-1 to REQ-MAINT-3 (scripted updates, automated checks), REQ-DATA-12 (notice of data changes, planned) |
+| RISK-6  | A wrong analysis result goes unreported and players stop trusting the scores.                                                                                                                        | 2   | 4   | 8        | REQ-FEED-1 (feedback), REQ-REL-1 (rule tests), REQ-ANLY-7 (reasons shown)                                      |
+| RISK-7  | The feedback function or sprite rewrite is abused to send spam or to proxy other sites' requests.                                                                                                    | 3   | 2   | 6        | REQ-SEC-1 to REQ-SEC-4                                                                                         |
+| RISK-8  | The rights holders object to the use of Pokemon names and artwork and have the site taken down. This is the Site Owner's one real worry; the rights holders have not acted against comparable sites. | 1   | 5   | 5        | REQ-POL-3 (credits), no bundled artwork beyond icon sheets and the local sprites recorded with their source    |
+| RISK-9  | Players of the old website do not find the features they used and leave.                                                                                                                             | 2   | 2   | 4        | REQ-SITE-1 (switch to the old website), P2 (team transfer)                                                     |
+| RISK-10 | Data taken from another source for a new game is wrong, or differs from Pokemon Showdown's when that arrives, and teams built on it change.                                                          | 3   | 3   | 9        | REQ-DATA-10 and REQ-DATA-11 (fallback source, replaced by Showdown's data, planned), REQ-FEED-1                |
