@@ -596,6 +596,7 @@ Postcondition: The current team is unchanged.
 | REQ-ANLY-9  | The site shall present, on the Player's request for a matrix cell, the type, pokemon, multiplier, and the ability, item, or move that determine the cell.                                                                        | C    | Implemented |
 | REQ-ANLY-10 | The site shall inform the Player that a pokemon must be selected first, in place of the scores of a team with no pokemon.                                                                                                        | C    | Implemented |
 | REQ-ANLY-11 | The site shall judge a checklist role from the moves a pokemon can use with its held item and ability, so that a move blocked by Assault Vest is not counted.                                                                    | C    | Implemented |
+| REQ-ANLY-20 | The site shall mark the reliable recovery role as filled for a team with a pokemon that has Wish together with Protect or Detect.                                                                                                | C    | Proposed    |
 
 #### 3.1.10) UC7 Change Generation
 
