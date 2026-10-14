@@ -294,6 +294,9 @@ const GenerationSelect = observer(function GenerationSelect() {
                       // when the screen allows, so a field near the bottom opens the menu over it.
                       // Percentages of the screen keep it fitting when the screen is resized or turned.
                       maxHeight: `max(calc(100% - ${fieldBottom + 16}px), min(400px, calc(100% - 32px)))`,
+                      // Scrolls an option that keyboard focus moves to below the sticky group heading,
+                      // whose height this is (sx does not scale scroll padding by the spacing unit)
+                      scrollPaddingTop: "48px",
                     },
                   },
                 },

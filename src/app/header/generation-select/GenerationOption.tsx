@@ -42,7 +42,12 @@ export default function GenerationOption({
             <Typography
               component="span"
               variant="caption"
-              sx={{ mt: 0.5, whiteSpace: "nowrap" }}
+              // In the menu a long description wraps, in even lines, rather than run past the check mark
+              sx={{
+                mt: 0.5,
+                whiteSpace: nowrap ? "nowrap" : "normal",
+                textWrapStyle: "balance",
+              }}
             >
               {status}
             </Typography>

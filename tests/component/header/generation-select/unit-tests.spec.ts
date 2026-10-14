@@ -373,6 +373,29 @@ test("the menu reaches down to the screen's edge, even after the screen shrinks"
   await expect.poll(bottom).toBeLessThanOrEqual(500 - 16 + 1);
 });
 
+test("an option reached with the keyboard scrolls clear of the sticky group heading", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  const paper = page.locator(".MuiMenu-paper");
+  await expect(paper).toHaveCSS("transform", "none");
+  await page.keyboard.press("End");
+  for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowUp");
+  const focused = page.locator('[role="option"]:focus');
+  await expect(focused).toHaveAttribute("data-value", "4");
+  const heading = await page
+    .getByRole("listbox")
+    .getByText("Main series", { exact: true })
+    .boundingBox();
+  const label = await focused.locator(".MuiListItemText-primary").boundingBox();
+  // The heading is stuck to the menu's top, over the options scrolled past
+  expect(heading?.y).toBeCloseTo((await paper.boundingBox())?.y ?? 0, 0);
+  expect(label?.y).toBeGreaterThanOrEqual(
+    (heading?.y ?? 0) + (heading?.height ?? 0),
+  );
+});
+
 test("keeps each option's logos on one line on a small phone", async ({
   page,
 }) => {
