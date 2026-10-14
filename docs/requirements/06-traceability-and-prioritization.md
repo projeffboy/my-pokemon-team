@@ -238,7 +238,7 @@ Other techniques the course teaches would add to this once players can be asked:
 
 ## 6.6 Requirements and GitHub issues
 
-Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. The planned work is in the order of Section 6.5. Priority is the Priority field of the project board "My Pokemon Team Development" (P0 highest to P3 lowest), the milestone "Ash" holds the tasks left before the redesign is released, and "Brock" holds the release after it. Planned features are named PF1 to PF7 so that they are not mistaken for those priorities.
+Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. An issue tied to no requirement carries the label `no requirement` and is not in this table. The planned work is in the order of Section 6.5. Priority is the Priority field of the project board "My Pokemon Team Development" (P0 highest to P3 lowest), the milestone "Ash" holds the tasks left before the redesign is released, and "Brock" holds the release after it. Planned features are named PF1 to PF7 so that they are not mistaken for those priorities.
 
 | Work                                           | Requirements                              | Issue                                                           | Priority    |
 | ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------- | ----------- |
