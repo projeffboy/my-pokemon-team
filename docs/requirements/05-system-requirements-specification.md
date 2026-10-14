@@ -1214,6 +1214,8 @@ The Site Owner rates speed as paramount: a visitor who waits, or who has to work
 | REQ-USE-9  | The site shall reach a satisfaction rating of "good" or better from at least 80% of the players who answer a survey after three months of use **[A-16]**.                    | O    | Proposed    |
 | REQ-USE-10 | The site shall present an analysed team of six to a visitor after a single request, without the visitor choosing any pokemon.                                                | E    | Implemented |
 | REQ-USE-11 | The site shall show a text label beside the icon of every button, other than the icon-only buttons listed in Table 3.2-1.                                                    | E    | Approved    |
+| REQ-USE-12 | The site shall present each slot's Random pokemon button no wider than a quarter of the width of the area that the slot's sprite is presented in.                            | E    | Approved    |
+| REQ-USE-13 | The site shall present each slot's More details button no wider than a quarter of the width of the area that the slot's sprite is presented in.                              | E    | Approved    |
 
 | Quality (requirement)                      | Outstanding | Target    | Minimum   |
 | ------------------------------------------ | ----------- | --------- | --------- |
@@ -1225,11 +1227,11 @@ REQ-USE-11 lets a button show its icon alone only where a label would get in the
 
 Table 3.2-1: Icon-only buttons
 
-| Button                                     | Where                                       | Reason                                              |
-| ------------------------------------------ | ------------------------------------------- | --------------------------------------------------- |
-| Random pokemon (die)                       | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it. |
-| About (info)                               | Each slot's card, at the sprite's top right | A label would cover the animated sprite.            |
-| More details, where its label does not fit | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it. |
+| Button               | Where                                       | Reason                                                                                                      |
+| -------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Random pokemon (die) | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it.                                                         |
+| About (info)         | Each slot's card, at the sprite's top right | A label would cover the animated sprite.                                                                    |
+| More details         | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it, and would make the button wider than REQ-USE-13 allows. |
 
 ### 3.3) Performance requirements
 
