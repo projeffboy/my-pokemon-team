@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import GenerationValue from "./generation-select/GenerationValue";
 import GenerationOption from "./generation-select/GenerationOption";
 import GenerationGroupHeader from "./generation-select/GenerationGroupHeader";
@@ -50,7 +50,8 @@ const GenerationSelect = observer(function GenerationSelect() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const fieldRef = useRef<HTMLDivElement>(null);
-  const [menuHeight, setMenuHeight] = useState(400);
+  const [fieldBottom, setFieldBottom] = useState(0);
+  const groupId = useId();
   const [pending, setPending] = useState<{
     teamId: string;
     generation: Generation;
@@ -278,22 +279,24 @@ const GenerationSelect = observer(function GenerationSelect() {
                   )
                 );
               },
-              // Down to the screen's edge, less the menu's 16px margin, but at least 400px when
-              // the screen allows, so a field near the bottom opens the menu over it
-              onOpen: () => {
-                const bottom = fieldRef.current?.getBoundingClientRect().bottom;
-                setMenuHeight(
-                  Math.max(
-                    window.innerHeight - (bottom ?? 0) - 16,
-                    Math.min(400, window.innerHeight - 32),
-                  ),
-                );
-              },
+              onOpen: () =>
+                setFieldBottom(
+                  fieldRef.current?.getBoundingClientRect().bottom ?? 0,
+                ),
               MenuProps: {
                 // The check mark makes the menu a little wider than the field, so it grows rightwards
                 anchorOrigin: { vertical: "bottom", horizontal: "left" },
                 transformOrigin: { vertical: "top", horizontal: "left" },
-                slotProps: { paper: { sx: { maxHeight: menuHeight } } },
+                slotProps: {
+                  paper: {
+                    sx: {
+                      // Down to the screen's edge, less the menu's 16px margin, but at least 400px
+                      // when the screen allows, so a field near the bottom opens the menu over it.
+                      // Percentages of the screen keep it fitting when the screen is resized or turned.
+                      maxHeight: `max(calc(100% - ${fieldBottom + 16}px), min(400px, calc(100% - 32px)))`,
+                    },
+                  },
+                },
               },
             },
             htmlInput: { "aria-label": t.generationSelect },
@@ -302,6 +305,7 @@ const GenerationSelect = observer(function GenerationSelect() {
           {groups.flatMap(({ title, options }, index) => [
             <GenerationGroupHeader
               key={title}
+              id={`${groupId}-${index}`}
               title={title}
               first={index === 0}
             />,
@@ -310,6 +314,8 @@ const GenerationSelect = observer(function GenerationSelect() {
                 key={option.value}
                 value={option.value}
                 disabled={option.disabled}
+                // Screen readers say an option's group after its name
+                aria-describedby={`${groupId}-${index}`}
               >
                 <GenerationOption
                   label={option.label}

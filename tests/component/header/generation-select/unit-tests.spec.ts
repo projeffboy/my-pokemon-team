@@ -319,6 +319,13 @@ test("groups the options under headings, with the coming-soon games last", async
     "Legends: Arceus",
     "Let’s Go",
   ]);
+  // Screen readers say each option's group after its name
+  await expect(
+    listbox.locator('[role="option"][data-value="9"]'),
+  ).toHaveAccessibleDescription("Main series");
+  await expect(
+    listbox.locator('[role="option"][data-value="Legends: Z-A"]'),
+  ).toHaveAccessibleDescription("Coming soon");
   // A heading stays put when clicked, rather than choosing a generation
   const before = await page
     .locator("header .MuiSelect-nativeInput")
@@ -349,13 +356,21 @@ test("checks only the selected option", async ({ page }) => {
   }
 });
 
-test("the menu reaches down to the screen's edge", async ({ page }) => {
+test("the menu reaches down to the screen's edge, even after the screen shrinks", async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.getByRole("combobox", { name: "Generation" }).click();
   const paper = page.locator(".MuiMenu-paper");
   await expect(paper).toHaveCSS("transform", "none");
-  const bounds = await paper.boundingBox();
-  expect(bounds && bounds.y + bounds.height).toBeCloseTo(900 - 16, 0);
+  const bottom = async () => {
+    const bounds = await paper.boundingBox();
+    return bounds && bounds.y + bounds.height;
+  };
+  expect(await bottom()).toBeCloseTo(900 - 16, 0);
+  // As when a phone is turned while the menu is open
+  await page.setViewportSize({ width: 1440, height: 500 });
+  await expect.poll(bottom).toBeLessThanOrEqual(500 - 16 + 1);
 });
 
 test("keeps each option's logos on one line on a small phone", async ({
