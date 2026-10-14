@@ -153,7 +153,7 @@ An X means the requirements of the row help achieve the business requirement of 
 | US2        | P-2 Daniel                | UC2 Set Pokemon Details              | REQ-DET-1 to 8               |
 | US3        | P-1 Maya, P-5 Leo         | UC3 Randomize Team                   | REQ-RAND-1 to 5              |
 | US4        | P-1 Maya, P-2 Daniel      | UC4 Undo Change                      | REQ-UNDO-1 to 5              |
-| US5        | P-2 Daniel, P-3 Sofía     | UC5 Narrow Pokemon Choices           | REQ-FIND-1 to 11             |
+| US5        | P-2 Daniel, P-3 Sofía     | UC5 Narrow Pokemon Choices           | REQ-FIND-1 to 12             |
 | US6        | P-1 Maya, P-2 Daniel      | UC6 Analyze Team                     | REQ-ANLY-1 to 11             |
 | US7        | P-4 Kenji                 | UC7 Change Generation                | REQ-GEN-1 to 11              |
 | US8        | P-3 Sofía                 | UC8 Manage Saved Teams               | REQ-COLL-1 to 13             |

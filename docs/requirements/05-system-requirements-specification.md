@@ -484,6 +484,7 @@ US5. As a player choosing a pokemon, I want to limit the pokemon offered by form
 - e) The moves offered for a pokemon can be ordered by name or by type.
 - f) The filters are kept with the team, and the sort order is kept for the browser.
 - g) All filters can be cleared in one action.
+- h) The filters and the sort order can be reached from the list of pokemon for a slot, and the move order from the list of moves, without turning on a setting first.
 
 **Use case**
 
@@ -531,6 +532,7 @@ Postcondition: The current team's filters and the Player's sort order are those 
 | REQ-FIND-9  | The site shall order the moves offered by name or by type, in ascending or descending order, as the Player sets.                                                   | O    | Implemented |
 | REQ-FIND-10 | The site shall keep each saved team's filters with that team.                                                                                                      | C    | Implemented |
 | REQ-FIND-11 | The site shall remove all of the current team's filters on a single request from the Player.                                                                       | C    | Implemented |
+| REQ-FIND-12 | The site shall offer the filters and the pokemon sort order in the list of pokemon for a slot, and the move sort order in the list of moves, without a setting.    | C    | Implemented |
 
 #### 3.1.9) UC6 Analyze Team
 
