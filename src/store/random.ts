@@ -1,12 +1,17 @@
-import viableMoves from "@/data/viable-moves";
+import { viableMovesIn } from "@/data/viable-moves";
 import { generationRules } from "@/shared/generation-rules";
 import { baseMoveId } from "@/shared/moves";
-import { matchHiddenPower } from "@/shared/hidden-power";
-import { availableItems, generationLearnset } from "./learnsets";
+import { matchHiddenPowerPreservingDetails } from "@/shared/hidden-power";
+import {
+  availableItems,
+  generationLearnset,
+  isItemAvailable,
+} from "./learnsets";
 import { MOVE_KEYS, type Generation, type TeamPokemon } from "@/types";
-import { pokemonAbilities } from "@/shared/pokedex";
+import { hasNoAbility, pokemonAbilities } from "@/shared/pokedex";
 import { getAutoSelectedItem } from "@/shared/team";
 import { completeLearnset } from "./learnsets";
+import { baseForme } from "./shared/pokemon";
 import { english, type Translation } from "@/i18n/translation";
 
 export function randomizedFieldsMessage(
@@ -36,7 +41,10 @@ export function pickRandom<T>(
   return options[Math.floor(random() * options.length)];
 }
 
-// A random pokemon from the options, preferring ones not already on the team.
+const species = (pokemon: string) => baseForme(pokemon) ?? pokemon;
+
+// A random pokemon from the options, preferring a species not already on the team,
+// as the Species Clause asks, and then a forme not already on it.
 // Pokemon that learn no moves, such as the Pokestars, are left out while any
 // others remain, so a random set has moves.
 export function randomPokemon(
@@ -46,7 +54,14 @@ export function randomPokemon(
 ) {
   const movable = options.filter(pokemon => completeLearnset(pokemon).length);
   if (movable.length) options = movable;
-  const fresh = options.filter(pokemon => !taken.includes(pokemon));
+  const takenSpecies = new Set(taken.filter(Boolean).map(species));
+  const newSpecies = options.filter(
+    pokemon => !takenSpecies.has(species(pokemon)),
+  );
+  const fresh =
+    newSpecies.length ? newSpecies : (
+      options.filter(pokemon => !taken.includes(pokemon))
+    );
   return pickRandom(fresh.length ? fresh : options, random) ?? "";
 }
 
@@ -85,7 +100,9 @@ export function isSetComplete(
   return (
     !!member.name &&
     (!rules.items || !!member.item) &&
-    (!rules.abilities || !!member.ability) &&
+    (!rules.abilities ||
+      hasNoAbility(member.name, generation, format) ||
+      !!member.ability) &&
     uniqueCount === selected.length &&
     uniqueCount >= moveCount
   );
@@ -109,7 +126,13 @@ export function randomizeSlotLabel(
       t.filters.moves
     : "",
     rules.items && !member.item ? t.team.item : "",
-    rules.abilities && !member.ability ? t.team.ability : "",
+    (
+      rules.abilities &&
+      !hasNoAbility(member.name, generation, format) &&
+      !member.ability
+    ) ?
+      t.team.ability
+    : "",
   ].filter(Boolean);
   return t.team.randomizeDetails(
     new Intl.ListFormat(locale, { style: "long", type: "conjunction" }).format(
@@ -119,14 +142,15 @@ export function randomizeSlotLabel(
 }
 
 // Fills in what the set lacks: one of its abilities, its required item or else
-// a random one, and different moves, drawn from its viable moves when it has
-// enough of them
+// a random one that no teammate holds, as the Item Clause asks, and different
+// moves, drawn from its viable moves when it has enough of them
 export function completeSet(
   member: Readonly<TeamPokemon>,
   learnset: readonly string[],
   random: Random = Math.random,
   generation: Generation = 9,
   format = "",
+  takenItems: readonly string[] = [],
 ): TeamPokemon {
   const rules = generationRules(generation, format);
   const { name } = member;
@@ -149,8 +173,15 @@ export function completeSet(
     }
     return groups;
   };
-  const viable = groupMoves(learnset.filter(move => viableMoves.has(move)));
-  const groups = viable.size >= 4 ? viable : groupMoves(learnset);
+  const compatible = learnset.filter(move =>
+    matchHiddenPowerPreservingDetails({ ...set }, move, generation, format, {
+      preserveIvs: !!member.ivs,
+    }),
+  );
+  const viable = groupMoves(
+    compatible.filter(move => viableMovesIn(generation).has(move)),
+  );
+  const groups = viable.size >= 4 ? viable : groupMoves(compatible);
   const pool = [...groups].filter(([id]) => !chosen.has(id));
   for (const key of MOVE_KEYS) {
     if (set[key] || !pool.length) continue;
@@ -163,18 +194,24 @@ export function completeSet(
       id === "hiddenpower" ?
         (pickRandom(typed.length ? typed : variants, random) ?? "")
       : (variants[0] ?? "");
-    matchHiddenPower(set, set[key], generation, format);
+    matchHiddenPowerPreservingDetails(set, set[key], generation, format, {
+      preserveIvs: !!member.ivs,
+    });
   }
   if (!rules.items) set.item = "";
   else if (!set.item) {
+    const items = availableItems(RANDOM_ITEMS, generation, format);
+    const free = items.filter(item => !takenItems.includes(item));
     set.item =
-      getAutoSelectedItem(name, "") ||
-      (pickRandom(availableItems(RANDOM_ITEMS, generation, format), random) ??
-        "");
+      getAutoSelectedItem(name, "", item =>
+        isItemAvailable(item, generation, format),
+      ) ||
+      (pickRandom(free.length ? free : items, random) ?? "");
   }
   if (!rules.abilities) set.ability = "";
   else if (!set.ability)
-    set.ability = pickRandom(pokemonAbilities(name, generation), random) ?? "";
+    set.ability =
+      pickRandom(pokemonAbilities(name, generation, format), random) ?? "";
   return set;
 }
 
@@ -185,6 +222,7 @@ export const randomSet = (
   random: Random = Math.random,
   generation: Generation = 9,
   format = "",
+  takenItems: readonly string[] = [],
 ) =>
   completeSet(
     {
@@ -200,4 +238,5 @@ export const randomSet = (
     random,
     generation,
     format,
+    takenItems,
   );

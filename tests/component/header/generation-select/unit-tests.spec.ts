@@ -3,7 +3,7 @@ import { GENERATION_GAMES, GENERATIONS } from "@/shared/generations";
 import en from "@/i18n/en";
 import type { Locator } from "@playwright/test";
 
-test("Legends options are disabled with Coming soon beside their logos", async ({
+test("Let’s Go and Legends options are disabled with Coming soon beside their logos", async ({
   page,
 }) => {
   const generation = page.getByRole("combobox", { name: "Generation" });
@@ -12,14 +12,14 @@ test("Legends options are disabled with Coming soon beside their logos", async (
     await page.setViewportSize({ width, height: 1000 });
     const before = await generationInput.inputValue();
     await generation.click();
-    for (const value of ["Legends: Arceus", "Legends: Z-A"]) {
+    for (const value of ["Let’s Go", "Legends: Arceus", "Legends: Z-A"]) {
       const option = page.locator(`[role="option"][data-value="${value}"]`);
       await expect(option).toHaveAttribute("aria-disabled", "true");
       await option.scrollIntoViewIfNeeded();
       const status = option.getByText("Coming soon", { exact: true });
       await expect(status).toBeVisible();
       await expect(status).toHaveCSS("font-size", "12px");
-      const logoBounds = await option.locator("img").boundingBox();
+      const logoBounds = await option.locator("img").last().boundingBox();
       const statusBounds = await status.boundingBox();
       expect(logoBounds).not.toBeNull();
       expect(statusBounds).not.toBeNull();
@@ -38,6 +38,7 @@ test("Legends options are disabled with Coming soon beside their logos", async (
     await page.keyboard.press("Home");
     await page.keyboard.press("ArrowDown");
     await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowDown");
     await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
       "data-value",
       "8",
@@ -46,6 +47,11 @@ test("Legends options are disabled with Coming soon beside their logos", async (
     await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
       "data-value",
       "7",
+    );
+    await page.keyboard.press("ArrowDown");
+    await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
+      "data-value",
+      "6",
     );
     await page.keyboard.press("Escape");
   }
@@ -108,28 +114,36 @@ test("matches the widest menu option including its game logos", async ({
         ),
     )
     .toBe(true);
-  const widest = await page
-    .locator('header [aria-hidden="true"] > .MuiListItemText-root')
-    .evaluateAll(options =>
-      Math.max(
-        ...options.map(option => {
-          const logos = [...option.querySelectorAll("img")];
-          const first = logos[0]?.getBoundingClientRect();
-          const last = logos.at(-1)?.getBoundingClientRect();
-          const logoWidth = first && last ? last.right - first.left : 0;
-          const label = option.querySelector(".MuiListItemText-primary");
-          const range = document.createRange();
-          if (label) range.selectNodeContents(label);
-          const labelWidth = label ? range.getBoundingClientRect().width : 0;
-          const style = getComputedStyle(option.parentElement ?? option);
-          return (
-            Math.max(logoWidth, labelWidth) +
-            parseFloat(style.paddingLeft) +
-            parseFloat(style.paddingRight)
-          );
-        }),
-      ),
-    );
+  // The sizing copies hold a placeholder for each logo, so the logos load with the menu
+  const sizers = page.locator(
+    'header [aria-hidden="true"] > .MuiListItemText-root',
+  );
+  await expect(sizers.locator("img")).toHaveCount(0);
+  const widths = (elements: Element[]) =>
+    elements.map(element => Math.round(element.getBoundingClientRect().width));
+  expect(await sizers.locator("span:empty").evaluateAll(widths)).toEqual(
+    await options.locator("img").evaluateAll(widths),
+  );
+  const widest = await sizers.evaluateAll(options =>
+    Math.max(
+      ...options.map(option => {
+        const logos = [...option.querySelectorAll("span:empty")];
+        const first = logos[0]?.getBoundingClientRect();
+        const last = logos.at(-1)?.getBoundingClientRect();
+        const logoWidth = first && last ? last.right - first.left : 0;
+        const label = option.querySelector(".MuiListItemText-primary");
+        const range = document.createRange();
+        if (label) range.selectNodeContents(label);
+        const labelWidth = label ? range.getBoundingClientRect().width : 0;
+        const style = getComputedStyle(option.parentElement ?? option);
+        return (
+          Math.max(logoWidth, labelWidth) +
+          parseFloat(style.paddingLeft) +
+          parseFloat(style.paddingRight)
+        );
+      }),
+    ),
+  );
   await page.keyboard.press("Escape");
   await expect(page.locator(".MuiMenu-paper")).toBeHidden();
   expect(
@@ -163,12 +177,10 @@ for (const gen of [9, 8, 7, 6, 5, 4, 3, 2, 1] as const) {
     await expect(generation).toHaveCSS("overflow", "hidden");
     await expect(generation).toHaveCSS("text-overflow", "clip");
     await expect(generation.locator("span")).toHaveCSS("overflow", "visible");
-    expect(
-      await page.locator("body").evaluate(el => el.scrollWidth),
-    ).toBeLessThanOrEqual(320);
-    await expect(generation).toHaveText(
-      `Gen ${gen} · ${mainGames(gen, false)}`,
-    );
+    await expect
+      .poll(() => page.locator("body").evaluate(el => el.scrollWidth))
+      .toBeLessThanOrEqual(320);
+    await expect(generation).toHaveText(await expectedLabel(generation, gen));
     await page.setViewportSize({ width: 1440, height: 1000 });
     await expect(generation).toHaveText(await expectedLabel(generation, gen));
   });

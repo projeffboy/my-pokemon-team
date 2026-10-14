@@ -10,14 +10,16 @@ const isCap = (pokemon: string) => {
 };
 
 test("empty filters preserve Pokedex order and return an independent list", () => {
-  const expected = Object.keys(pokedex).filter(pokemon => !isCap(pokemon));
+  const expected = Object.keys(pokedex).filter(
+    pokemon => !isCap(pokemon) && pokemon !== "missingno",
+  );
   const result = filterPokemon(Object.freeze({ ...all }));
   expect(result).toEqual(expected);
   result.pop();
   expect(filterPokemon(all)).toEqual(expected);
 });
 
-test("CAP pokemon are hidden, but MissingNo. and Pokestar pokemon are not", () => {
+test("CAP pokemon are hidden and MissingNo is limited to Gen 1", () => {
   const result = filterPokemon(all);
   for (const cap of [
     "syclar",
@@ -27,7 +29,8 @@ test("CAP pokemon are hidden, but MissingNo. and Pokestar pokemon are not", () =
   ])
     expect(result).not.toContain(cap);
   expect(filterPokemon({ ...all, type: "Ghost" })).not.toContain("pajantom");
-  expect(result).toContain("missingno");
+  expect(result).not.toContain("missingno");
+  expect(filterPokemon({ ...all, generation: 1 })).toContain("missingno");
   expect(result).toContain("pokestargiant");
 });
 

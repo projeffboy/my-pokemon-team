@@ -1,4 +1,4 @@
-import { useId, useLayoutEffect, useMemo, useState } from "react";
+import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -38,17 +38,21 @@ const FiltersDialog = observer(function FiltersDialog() {
     format: string;
     data: GenerationTransferData;
   } | null>(null);
+  const formatRequest = useRef(0);
   const { dialog, currentTeamId } = store;
   const requested = dialog?.name === "filters";
   const isOpen = requested && dialog.teamId === currentTeamId;
   useLayoutEffect(() => {
     if (requested && !isOpen) {
+      formatRequest.current++;
       setPending(null);
       store.closeDialog();
     }
   }, [requested, isOpen]);
   const changeFormat = async (format: string) => {
     if (!isOpen || store.dialog !== dialog) return;
+    const request = ++formatRequest.current;
+    setPending(null);
     const teamId = store.currentTeamId;
     if (
       format !== CHAMPIONS_FORMAT &&
@@ -59,7 +63,12 @@ const FiltersDialog = observer(function FiltersDialog() {
     }
     try {
       const data = await loadGenerationTransferData();
-      if (store.currentTeamId !== teamId || store.dialog !== dialog) return;
+      if (
+        store.currentTeamId !== teamId ||
+        store.dialog !== dialog ||
+        request !== formatRequest.current
+      )
+        return;
       const team = store.currentTeam;
       const generation = formatGeneration(format, team.generation);
       const plan = planGenerationTransfer(
@@ -74,6 +83,12 @@ const FiltersDialog = observer(function FiltersDialog() {
         setPending({ teamId: team.id, generation, format, data });
       else store.transferTeamGeneration(generation, format, plan.team, false);
     } catch {
+      if (
+        request !== formatRequest.current ||
+        store.currentTeamId !== teamId ||
+        store.dialog !== dialog
+      )
+        return;
       store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
     }
   };
@@ -240,6 +255,9 @@ const FiltersDialog = observer(function FiltersDialog() {
                 getOptionLabel={names.ability}
                 filterOptions={filterAbilities}
                 value={store.filters.ability || null}
+                clearText={t.clear}
+                openText={t.teams.open}
+                closeText={t.close}
                 onChange={(_event, value) =>
                   (store.filters.ability = value ?? "")
                 }
@@ -264,7 +282,7 @@ const FiltersDialog = observer(function FiltersDialog() {
         <GenerationTransferDialog
           team={store.team}
           fromGeneration={store.currentTeam.generation}
-          fromFormat={store.currentTeam.format}
+          fromFormat={store.dataFormat}
           toGeneration={target.generation}
           toFormat={target.format}
           hasCarryover={plan.team.some(member => member.name)}

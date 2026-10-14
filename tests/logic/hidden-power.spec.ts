@@ -1,6 +1,13 @@
 import { test, expect } from "@playwright/test";
 import spreads from "@/data/hidden-power-spreads";
-import { hiddenPowerType, matchHiddenPower } from "@/shared/hidden-power";
+import {
+  canHaveHiddenPowerType,
+  hiddenPowerPower,
+  hiddenPowerType,
+  matchHiddenPower,
+  matchImportedHiddenPower,
+  matchHiddenPowerPreservingDetails,
+} from "@/shared/hidden-power";
 import {
   getDv,
   hpDv,
@@ -12,6 +19,14 @@ import { getIv } from "@/shared/set-details";
 import { STAT_KEYS, type Generation } from "@/types";
 import { randomSet, completeSet } from "@/store/random";
 import { createTeam } from "./shared/team";
+import { parseTeamText, serializeTeam } from "@/store/team-text";
+import { learnsetsReady } from "@/store/learnsets";
+import { planGenerationTransfer } from "@/store/generation-transfer";
+import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
+
+test.beforeAll(async () => {
+  await learnsetsReady;
+});
 
 test("all sixteen Showdown spreads produce the selected type across IV and DV generations", () => {
   expect(Object.keys(spreads)).toHaveLength(16);
@@ -19,6 +34,7 @@ test("all sixteen Showdown spreads produce the selected type across IV and DV ge
     for (const type of Object.keys(spreads)) {
       const member = createTeam({
         name: "lanturn",
+        level: 99,
         ivs:
           type === "fighting" ? undefined : (
             { atk: 0, def: 0, spa: 0, spd: 0, spe: 0, hp: 0 }
@@ -107,13 +123,13 @@ test("ordinary and untyped moves, Gen 1 and formats without IVs leave details al
   }
 });
 
-test("random Hidden Power always has matching IVs or DVs without changing the original set", () => {
+test("random Hidden Power matches new sets and respects existing custom IVs", () => {
   for (const generation of [2, 3, 5, 6, 7, 8] satisfies Generation[]) {
     for (const type of Object.keys(spreads)) {
       const move = `hiddenpower${type}`;
       const set = randomSet("unown", [move], () => 0, generation);
       expect(set.move1).toBe(move);
-      expect(hiddenPowerType(set, generation)).toBe(type);
+      expect(canHaveHiddenPowerType(set, type, generation)).toBe(true);
       const member = createTeam({
         name: "unown",
         ivs: { atk: 0, def: 0 },
@@ -122,9 +138,145 @@ test("random Hidden Power always has matching IVs or DVs without changing the or
       if (!member) throw new Error("Missing pokemon");
       const before = structuredClone(member);
       const completed = completeSet(member, [move], () => 0, generation);
-      expect(hiddenPowerType(completed, generation)).toBe(type);
+      const currentType = hiddenPowerType(member, generation);
+      expect(completed.move1).toBe(
+        canHaveHiddenPowerType(member, type, generation) ? move : "",
+      );
+      expect(hiddenPowerType(completed, generation)).toBe(currentType);
+      expect(completed.ivs).toEqual(member.ivs);
       expect(completed.nickname).toBe("Letter");
       expect(member).toEqual(before);
     }
   }
+});
+
+test("Hyper Training preserves compatible stat IVs without changing their derived type", () => {
+  for (const [generation, level] of [
+    [7, 100],
+    [8, 100],
+    [9, 50],
+  ] as const) {
+    for (const type of Object.keys(spreads)) {
+      const member = createTeam({ name: "unown", level })[0]!;
+      const before = structuredClone(member);
+      expect(hiddenPowerType(member, generation)).toBe("dark");
+      matchHiddenPower(member, `hiddenpower${type}`, generation);
+      expect(member).toEqual(before);
+      expect(canHaveHiddenPowerType(member, type, generation)).toBe(true);
+      expect(
+        matchHiddenPowerPreservingDetails(
+          member,
+          `hiddenpower${type}`,
+          generation,
+          "",
+          { preserveIvs: true },
+        ),
+      ).toBe(true);
+      expect(member).toEqual(before);
+    }
+  }
+  const partial = createTeam({
+    name: "unown",
+    ivs: { atk: 0, spe: 0 },
+  })[0]!;
+  expect(hiddenPowerType(partial, 7)).toBe("psychic");
+  expect(canHaveHiddenPowerType(partial, "fire", 7)).toBe(true);
+  expect(canHaveHiddenPowerType(partial, "ice", 7)).toBe(false);
+  expect(canHaveHiddenPowerType(partial, "dark", 7)).toBe(false);
+  const before = structuredClone(partial);
+  matchHiddenPower(partial, "hiddenpowerfire", 7);
+  expect(partial).toEqual(before);
+  const historicalLink = createTeam({ name: "raikou" })[0]!;
+  matchImportedHiddenPower(historicalLink, "hiddenpowerice", 7, "", {
+    allowHyperTraining: false,
+  });
+  expect(historicalLink.ivs).toEqual({ atk: 30, def: 30 });
+});
+
+test("Hidden Power text round trips preserve capped Gen7 IVs while earlier controls still match", () => {
+  for (const [generation, level, expected] of [
+    [6, 100, 30],
+    [7, 99, 30],
+    [7, 100, 31],
+    [9, 49, 30],
+    [9, 50, 31],
+  ] as const) {
+    const team = parseTeamText(
+      `Raikou\nLevel: ${level}\n- Hidden Power Ice`,
+      generation,
+    );
+    expect(getIv(team[0]!.ivs, "atk")).toBe(expected);
+    expect(getIv(team[0]!.ivs, "def")).toBe(expected);
+    const shared = parseTeamText(serializeTeam(team), generation);
+    expect(shared[0]!.ivs).toEqual(team[0]!.ivs);
+    expect(shared[0]!.move1).toBe("hiddenpowerice");
+  }
+  const explicit = parseTeamText(
+    "Raikou\nIVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe\n- Hidden Power Ice",
+    7,
+  );
+  const recipient = parseTeamText(serializeTeam(explicit), 7);
+  expect(recipient[0]!.ivs).toBeUndefined();
+});
+
+test("Hidden Power uses DV power in Gen2, second IV bits in Gen3–5 and fixed power since Gen6", () => {
+  const low = createTeam({
+    name: "jolteon",
+    ivs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+  })[0]!;
+  const high = createTeam({ name: "jolteon" })[0]!;
+  expect(hiddenPowerPower(low, 2)).toBe(31);
+  expect(hiddenPowerPower(high, 2)).toBe(70);
+  for (const generation of [3, 4, 5] as const) {
+    expect(hiddenPowerPower(low, generation)).toBe(30);
+    expect(hiddenPowerPower(high, generation)).toBe(70);
+    expect(
+      hiddenPowerPower(
+        { ...low, ivs: { ...low.ivs, hp: 2, atk: 2, def: 2, spe: 2 } },
+        generation,
+      ),
+    ).toBe(39);
+    expect(
+      hiddenPowerPower({ ...low, ivs: { ...low.ivs, spa: 2 } }, generation),
+    ).toBe(40);
+  }
+  expect(
+    hiddenPowerPower(
+      { ...low, ivs: { ...low.ivs, spa: 21, spd: 21, spe: 17 } },
+      2,
+    ),
+  ).toBe(39);
+  expect(
+    hiddenPowerPower(
+      { ...low, ivs: { ...low.ivs, spa: 23, spd: 23, spe: 17 } },
+      2,
+    ),
+  ).toBe(40);
+  expect(hiddenPowerPower({ ...high, shiny: true }, 2)).toBe(69);
+  for (const generation of [6, 7, 8, 9] as const) {
+    expect(hiddenPowerPower(low, generation)).toBe(60);
+    expect(hiddenPowerPower(high, generation)).toBe(60);
+  }
+});
+
+test("generation transfer retains capped Hidden Power stat IVs only in an eligible target", async () => {
+  const data = await loadGenerationTransferData();
+  const source = createTeam({ name: "unown", move1: "hiddenpowerice" });
+  const before = structuredClone(source);
+  for (const generation of [7, 6] as const) {
+    const plan = planGenerationTransfer(
+      source,
+      { generation: 8, format: "" },
+      generation,
+      "",
+      data,
+    );
+    expect(plan.team[0]?.move1).toBe("hiddenpowerice");
+    expect(getIv(plan.team[0]?.ivs, "atk")).toBe(generation === 7 ? 31 : 30);
+    expect(getIv(plan.team[0]?.ivs, "def")).toBe(generation === 7 ? 31 : 30);
+    expect(plan.losses.some(loss => loss.field === "ivs")).toBe(
+      generation === 6,
+    );
+  }
+  expect(source).toEqual(before);
 });

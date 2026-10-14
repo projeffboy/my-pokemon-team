@@ -1,3 +1,4 @@
+import { IMMUNE_SCORE } from "@/store/shared/effectiveness";
 import { test, expect } from "@playwright/test";
 import {
   isMoveStrongEnough,
@@ -76,8 +77,12 @@ test("Air Balloon's immunity and Dry Skin's Fire penalty use accurate matrix mul
 });
 
 test("Klutz prevents held items from changing defensive immunities", () => {
-  expect(typeAgainstPokemon("Ground", "swoobat", "Klutz", "ironball")).toBe(3);
-  expect(typeAgainstPokemon("Ghost", "lopunny", "Klutz", "ringtarget")).toBe(3);
+  expect(typeAgainstPokemon("Ground", "swoobat", "Klutz", "ironball")).toBe(
+    IMMUNE_SCORE,
+  );
+  expect(typeAgainstPokemon("Ghost", "lopunny", "Klutz", "ringtarget")).toBe(
+    IMMUNE_SCORE,
+  );
   expect(typeAgainstPokemon("Ground", "lopunny", "Klutz", "airballoon")).toBe(
     0,
   );
@@ -109,9 +114,9 @@ test("Klutz leaves item-dependent attack types Normal while other attacks retain
     ["technoblast", "chilldrive"],
     ["multiattack", "ghostmemory"],
   ]) {
-    expect(moveType(move, "smeargle", "Klutz", 7, "", item)).toBe("Normal");
+    expect(moveType(move, "smeargle", "Klutz", 7, item, "")).toBe("Normal");
   }
-  expect(moveType("icebeam", "lopunny", "Klutz", 7, "", "cheriberry")).toBe(
+  expect(moveType("icebeam", "lopunny", "Klutz", 7, "cheriberry", "")).toBe(
     "Ice",
   );
 });
@@ -148,14 +153,102 @@ test("Normalize's Hidden Power exception starts in generation 7", () => {
 });
 
 test("coverage uses the damaging move's power in its generation", () => {
-  expect(isMoveStrongEnough("leechlife", 6)).toBeFalsy();
-  expect(isMoveStrongEnough("leechlife", 7)).toBe(true);
-  expect(isMoveStrongEnough("rapidspin", 7)).toBeFalsy();
-  expect(isMoveStrongEnough("rapidspin", 8)).toBe(true);
-  expect(isMoveStrongEnough("bubble", 5)).toBeFalsy();
-  expect(isMoveStrongEnough("bubble", 6)).toBe(true);
-  expect(isMoveStrongEnough("rocksmash", 3)).toBeFalsy();
-  expect(isMoveStrongEnough("rocksmash", 4)).toBe(true);
+  expect(
+    isMoveStrongEnough(
+      "leechlife",
+      undefined,
+      undefined,
+      6,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "leechlife",
+      undefined,
+      undefined,
+      7,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
+  expect(
+    isMoveStrongEnough(
+      "rapidspin",
+      undefined,
+      undefined,
+      7,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "rapidspin",
+      undefined,
+      undefined,
+      8,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
+  expect(
+    isMoveStrongEnough(
+      "bubble",
+      undefined,
+      undefined,
+      5,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "bubble",
+      undefined,
+      undefined,
+      6,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
+  expect(
+    isMoveStrongEnough(
+      "rocksmash",
+      undefined,
+      undefined,
+      3,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBeFalsy();
+  expect(
+    isMoveStrongEnough(
+      "rocksmash",
+      undefined,
+      undefined,
+      4,
+      undefined,
+      undefined,
+      undefined,
+      "",
+    ),
+  ).toBe(true);
   const team = createTeam({ name: "parasect", move1: "leechlife" });
   expect(calculateTypeCoverage(team, 6).Psychic).toBe(0);
   expect(calculateTypeCoverage(team, 7).Psychic).toBe(2);

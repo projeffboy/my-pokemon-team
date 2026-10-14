@@ -17,6 +17,10 @@ export const formatGeneration = (format: string, generation: Generation) =>
     (variantGeneration(format) ?? generation)
   );
 
+// The format when it is a game, which share links carry, and "" for a tier or none
+export const gameFormat = (format: string) =>
+  format === CHAMPIONS_FORMAT || variantGeneration(format) ? format : "";
+
 // The Format options listed in the Filters dialog
 export const FORMATS: readonly string[] = [
   CHAMPIONS_FORMAT,
@@ -100,12 +104,17 @@ const SHOWDOWN_FORMAT_IDS: Record<string, string> = {
 export const showdownFormatId = (generation: Generation, format: string) =>
   `gen${generation}${SHOWDOWN_FORMAT_IDS[format] ?? ""}`;
 
-// The reverse: "gen8ou" => Gen 8 and OU, with unknown parts left at their defaults
+// The reverse: "gen8ou" => Gen 8 OU; older unprefixed tier IDs use Gen 6.
+// Unknown IDs retain the regular latest-generation default.
 export function parseShowdownFormatId(id: string): {
   generation: Generation;
   format: string;
 } {
-  const match = /^gen(\d)(.*)$/.exec(id.trim().toLowerCase());
+  const raw = id.trim().toLowerCase();
+  const legacy =
+    !raw.startsWith("gen") && Object.values(SHOWDOWN_FORMAT_IDS).includes(raw);
+  const formatId = legacy ? `gen6${raw}` : raw;
+  const match = /^gen(\d)(.*)$/.exec(formatId);
   const generation = Number(match?.[1]);
   const rest = match?.[2] ?? "";
   const format =

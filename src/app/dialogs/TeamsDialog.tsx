@@ -42,6 +42,7 @@ import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { GENERATION_GAMES } from "@/shared/generations";
 import { isTeamEmpty } from "@/shared/team";
 import { serializeTeam, serializeTeams } from "@/store/team-text";
+import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
 import { teamUrl } from "@/app/shared/team-link";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import PokemonIcon from "@/app/shared/PokemonIcon";
@@ -74,8 +75,14 @@ const iconSlot = {
 const TeamsDialog = observer(function TeamsDialog() {
   const { t } = useTranslation();
   const titleId = useId();
-  const teamSubtitle = ({ generation, format }: SavedTeam) =>
-    format === CHAMPIONS_FORMAT ? t.championsGeneration
+  const teamSubtitle = ({
+    generation,
+    format,
+    generationProfile,
+  }: SavedTeam) =>
+    generationProfile === COMBINED_GENERATIONS_PROFILE ?
+      t.combinedGenerations.label
+    : format === CHAMPIONS_FORMAT ? t.championsGeneration
     : variantGeneration(format) ?
       t.gameVariants[format as keyof typeof t.gameVariants]
     : `${t.generation(generation)} (${GENERATION_GAMES[generation]})`;
@@ -86,6 +93,7 @@ const TeamsDialog = observer(function TeamsDialog() {
     anchorEl: HTMLElement;
   } | null>(null);
   const [settingsTeamId, setSettingsTeamId] = useState<string | null>(null);
+  const pendingSettingsTeamId = useRef<string | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
   const dialogName = store.dialog?.name;
   const isOpen = dialogName === "teams" || dialogName === "importTeam";
@@ -127,7 +135,9 @@ const TeamsDialog = observer(function TeamsDialog() {
     {
       label: t.settings.editTeamName,
       Icon: EditIcon,
-      act: () => setSettingsTeamId(team.id),
+      act: () => {
+        pendingSettingsTeamId.current = team.id;
+      },
     },
     {
       label: t.team.share,
@@ -149,7 +159,7 @@ const TeamsDialog = observer(function TeamsDialog() {
         isTeamEmpty(team.team) ?
           store.openSnackbar(t.team.nothingToCopy, false, "warning")
         : copyToClipboard(
-            serializeTeam(team.team),
+            serializeTeam(team.team, team.generation, team.format),
             t.team.teamCopied,
             t.team.teamNotCopied,
           ),
@@ -250,7 +260,17 @@ const TeamsDialog = observer(function TeamsDialog() {
                   const teamId = store.currentTeamId;
                   diceRoll.onClick(event, () => {
                     if (store.currentTeamId !== teamId) return;
+                    if (!store.filteredPokemon.length) {
+                      store.openSnackbar(
+                        t.team.noMatchingPokemon,
+                        false,
+                        "warning",
+                      );
+                      return;
+                    }
+                    const filters = { ...store.filters };
                     store.openEmptyTeam();
+                    store.filters = filters;
                     store.randomizeTeam();
                     store.openSnackbar(
                       t.teams.randomTeamCreated,
@@ -462,6 +482,16 @@ const TeamsDialog = observer(function TeamsDialog() {
         anchorEl={menu?.anchorEl}
         open={!!menu}
         onClose={() => setMenu(null)}
+        slotProps={{
+          transition: {
+            onExited: () => {
+              const teamId = pendingSettingsTeamId.current;
+              pendingSettingsTeamId.current = null;
+              // Let the menu restore focus before the editor takes it.
+              if (isOpen && teamId) setSettingsTeamId(teamId);
+            },
+          },
+        }}
       >
         {menuTeam &&
           menuItems(menuTeam).map(({ label, Icon, act }) => (

@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import ErrorBoundary from "@/app/shared/ErrorBoundary";
 
 // The chart images and their tabs load the first time the dialog opens
 const TypeChart = lazy(() => import("./type-chart-dialog/TypeChart"));
@@ -24,9 +25,11 @@ export default function TypeChartDialog() {
         maxWidth="md"
         fullWidth
       >
-        <Suspense>
-          <TypeChart />
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense>
+            <TypeChart />
+          </Suspense>
+        </ErrorBoundary>
         <DialogActions>
           <Button onClick={toggleDialog}>{t.goBack}</Button>
         </DialogActions>

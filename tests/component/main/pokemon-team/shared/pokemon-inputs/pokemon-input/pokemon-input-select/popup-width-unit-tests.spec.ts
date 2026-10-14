@@ -1,12 +1,12 @@
 import { test, expect } from "fixtures";
-import { openTeamTools, selectPokemon } from "helper";
+import { turnOnAdvanced, selectPokemon, resizeTeamViewport } from "helper";
 
 test("expanded small phone move, item, and ability lists keep their 400px viewport width", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 400, height: 900 });
   await selectPokemon(page, "Eldegoss");
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   const popup = page.locator(".MuiAutocomplete-popper");
   for (const property of ["move1", "item", "ability"]) {
     const input = page.getByRole("combobox", {
@@ -34,7 +34,7 @@ test("expanded small phone move, item, and ability lists keep their 400px viewpo
   }
 });
 
-test("collapsed move and ability lists are at least their 360px viewport width", async ({
+test("move and ability lists without Advanced are at least their 360px viewport width", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 900 });
@@ -53,11 +53,59 @@ test("collapsed move and ability lists are at least their 360px viewport width",
       await expect(popup).toBeVisible();
       await expect
         .poll(async () => (await popup.boundingBox())?.width)
-        .toBeCloseTo(Math.max(152, (await field.boundingBox())?.width ?? 0), 0);
+        .toBeCloseTo(
+          Math.max(
+            // Small phones leave room for the move list's type icons
+            property === "move1" && width < 400 ? 172 : 152,
+            (await field.boundingBox())?.width ?? 0,
+          ),
+          0,
+        );
       await input.press("Escape");
     }
   }
   await page.setViewportSize({ width: 320, height: 900 });
   await page.getByRole("combobox", { name: "Pokemon 1's item" }).click();
   await expect.poll(async () => (await popup.boundingBox())?.width).toBe(172);
+});
+
+test("the Name list fits its longest names within two lines", async ({
+  page,
+}) => {
+  const popup = page.locator(".MuiAutocomplete-popper");
+  for (const width of [320, 1200]) {
+    await resizeTeamViewport(page, width, 900);
+    await page.evaluate(() => document.fonts.ready);
+    const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
+    const option = page.getByRole("option", {
+      name: "Ogerpon-Hearthflame-Tera",
+      exact: true,
+    });
+    // Resizing can swap the team viewer, which remounts the input and drops its text
+    await expect(async () => {
+      await input.fill("Ogerpon");
+      await expect(option).toBeVisible({ timeout: 1000 });
+    }).toPass();
+    await expect
+      .poll(() =>
+        option
+          .locator("span")
+          .last()
+          .evaluate(label => {
+            const lineHeight = parseFloat(getComputedStyle(label).lineHeight);
+            return Math.round(
+              label.getBoundingClientRect().height / lineHeight,
+            );
+          }),
+      )
+      .toBe(2);
+    await expect(async () => {
+      const bounds = await popup.boundingBox();
+      expect(bounds?.width).toBeGreaterThanOrEqual(168);
+      expect(bounds && bounds.x >= 0 && bounds.x + bounds.width <= width).toBe(
+        true,
+      );
+    }).toPass({ timeout: 5000 });
+    await input.press("Escape");
+  }
 });

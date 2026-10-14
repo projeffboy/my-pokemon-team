@@ -4,6 +4,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Switch from "@mui/material/Switch";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,19 +16,30 @@ import { serializeTeam } from "@/store/team-text";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { useIsMdDown } from "@/app/shared/WidthContext";
 import ToolbarButton from "./shared/ToolbarButton";
 import useFittingLabel from "@/app/shared/use-fitting-label";
 
 export const copyTeamText = () => {
   const { team } = store.translation.t;
-  const text = serializeTeam(store.team);
+  const text = serializeTeam(
+    store.team,
+    store.currentTeam.generation,
+    store.currentTeam.format,
+  );
   if (text === "") store.openSnackbar(team.nothingToCopy, false, "warning");
   else copyToClipboard(text, team.teamCopied, team.teamNotCopied);
 };
 
-// The current team's text and deletion, plus importing another.
-const ManageTeamMenu = observer(function ManageTeamMenu() {
+// The current team's text and deletion, importing another, and the display settings.
+// `basis` is its button's width where the toolbar is on two rows.
+const ManageTeamMenu = observer(function ManageTeamMenu({
+  basis,
+}: {
+  basis?: string;
+}) {
   const { t } = useTranslation();
+  const isMdDown = useIsMdDown();
   const manage = useFittingLabel([t.team.manageTeamMenu, t.team.manageTeam]);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
@@ -53,16 +65,35 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
     },
   ];
 
+  // Switches stay in the menu when flipped, so the change shows
+  const settings = [
+    // From md the toolbar has the Advanced switch itself
+    ...(isMdDown ?
+      [
+        {
+          label: t.team.advancedMode,
+          on: store.isMoreOpen,
+          flip: () => (store.isMoreOpen = !store.isMoreOpen),
+        },
+      ]
+    : []),
+    {
+      label: t.team.showMoveTypes,
+      on: store.showMoveTypes,
+      flip: () => (store.showMoveTypes = !store.showMoveTypes),
+    },
+  ];
+
   return (
     <>
       <ToolbarButton
         ref={manage.ref}
+        basis={basis}
         icon={<MoreHorizIcon />}
         onClick={(event: MouseEvent<HTMLElement>) =>
           setAnchorEl(event.currentTarget)
         }
         aria-label={t.team.manageTeamMenu}
-        data-full-label={t.team.manageTeamMenu}
         aria-haspopup="menu"
         aria-expanded={!!anchorEl}
       >
@@ -85,6 +116,25 @@ const ManageTeamMenu = observer(function ManageTeamMenu() {
               <ListItemText>{item.label}</ListItemText>
             </MenuItem>,
         )}
+        <Divider />
+        {settings.map(({ label, on, flip }) => (
+          <MenuItem
+            key={label}
+            role="menuitemcheckbox"
+            aria-checked={on}
+            onClick={flip}
+          >
+            <ListItemText>{label}</ListItemText>
+            <Switch
+              edge="end"
+              size="small"
+              checked={on}
+              tabIndex={-1}
+              slotProps={{ input: { "aria-hidden": true } }}
+              sx={{ ml: 2, pointerEvents: "none" }}
+            />
+          </MenuItem>
+        ))}
       </Menu>
       <DeleteTeamDialog
         teamId={deletingTeamId}

@@ -11,14 +11,15 @@ import getPokemonLabel from "../get-pokemon-label";
 import { dragHandle, useMoveSlot } from "../use-slot-drag";
 
 // A grip jutting out of the card's top left corner: dragging it moves the card
-// to the slot it is dropped on, and clicking it lists the slots instead
+// to the slot it is dropped on, and clicking it lists the slots instead.
+// Phones and tablets drag the slot tabs; this grip still opens the accessible move menu.
 const chip = {
   position: "absolute",
   top: -8,
-  left: -26,
+  left: { xxs: -16, md: -26 },
   zIndex: 1,
   p: 0.25,
-  width: 22,
+  width: { xxs: 18, md: 22 },
   height: 28,
   borderRadius: "4px 0 0 4px",
   color: "text.secondary",
@@ -33,7 +34,7 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
 }: {
   teamIndex: number;
   setGripRef: (node: HTMLElement | null) => void;
-  listeners: Record<string, unknown> | undefined;
+  listeners?: Record<string, unknown>;
 }) {
   const translation = useTranslation();
   const moveSlot = useMoveSlot();
@@ -51,6 +52,7 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
     <>
       <Tooltip title={title}>
         <ButtonBase
+          id={`team-slot-move-${teamIndex}`}
           ref={setGripRef}
           {...listeners}
           aria-label={title}
@@ -64,7 +66,11 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
       <Menu
         anchorEl={anchor}
         open={Boolean(anchor)}
-        onClose={() => setAnchor(null)}
+        disableRestoreFocus
+        onClose={() => {
+          setAnchor(null);
+          requestAnimationFrame(() => anchor?.focus());
+        }}
       >
         {store.team.map(
           (_member, otherIndex) =>
@@ -74,6 +80,11 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
                 onClick={() => {
                   setAnchor(null);
                   moveSlot(teamIndex, otherIndex);
+                  requestAnimationFrame(() => {
+                    document
+                      .getElementById(`team-slot-move-${otherIndex}`)
+                      ?.focus();
+                  });
                 }}
               >
                 {getPokemonLabel(otherIndex, translation)}

@@ -40,41 +40,50 @@ const totalLength = (uploads: Upload[]) =>
 
 // Posts the feedback to the api/feedback.ts function, which emails it along with the
 // screen size, any images the visitor adds, and, if they agree, the page link and a screenshot
-const FeedbackDialog = observer(function FeedbackDialog() {
+const FeedbackDialog = observer(function FeedbackDialog({
+  row,
+}: {
+  row: boolean;
+}) {
   const { t } = useTranslation();
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState(false);
   const [attachLink, setAttachLink] = useState(true);
   const [attachScreenshot, setAttachScreenshot] = useState(true);
   const [uploads, setUploads] = useState<Upload[]>([]);
   const uploadsRef = useRef<Upload[]>([]);
+  const submissionVersion = useRef(0);
+  const uploadsVersion = useRef(0);
   const [pendingUploads, setPendingUploads] = useState(0);
-  const sendVersion = useRef(0);
-  const [uploadError, setUploadError] = useState<string>();
-  const [status, setStatus] = useState<"idle" | "sending" | "failed">("idle");
-  const close = () => {
-    sendVersion.current += 1;
-    setIsOpen(false);
-    setStatus("idle");
-  };
-  const updateUploads = (next: Upload[]) => {
+  const replaceUploads = (next: Upload[]) => {
     uploadsRef.current = next;
     setUploads(next);
+  };
+  const [uploadError, setUploadError] = useState<string>();
+  const [status, setStatus] = useState<"idle" | "sending" | "failed">("idle");
+  const sending = status === "sending";
+  const close = () => {
+    submissionVersion.current++;
+    setIsOpen(false);
+    setStatus("idle");
   };
 
   const addUploads = async (input: HTMLInputElement) => {
     const files = Array.from(input.files ?? []);
     // Lets the same file be picked again after it is removed
     input.value = "";
+    const version = uploadsVersion.current;
     let error: string | undefined;
     setPendingUploads(count => count + 1);
     try {
       for (const file of files) {
-        if (uploadsRef.current.length >= MAX_UPLOADS) break;
         const dataUrl = await compressImage(file).catch(() => undefined);
+        if (version !== uploadsVersion.current) return;
         const current = uploadsRef.current;
         if (!dataUrl) {
           error = t.feedback.imageUnreadable;
@@ -83,7 +92,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         } else if (totalLength(current) + dataUrl.length > MAX_UPLOADS_LENGTH) {
           error = t.feedback.imagesTooLarge;
         } else {
-          updateUploads([
+          replaceUploads([
             ...current,
             { id: nextUploadId++, name: file.name, dataUrl },
           ]);
@@ -96,7 +105,12 @@ const FeedbackDialog = observer(function FeedbackDialog() {
   };
 
   const send = async () => {
-    const version = ++sendVersion.current;
+    if (emailRef.current && !emailRef.current.checkValidity()) {
+      setEmailError(true);
+      emailRef.current.focus();
+      return;
+    }
+    const version = ++submissionVersion.current;
     setStatus("sending");
     const screenshot =
       attachScreenshot &&
@@ -104,14 +118,14 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         dialogRef.current,
         MAX_IMAGES_LENGTH - totalLength(uploads),
       ));
-    if (version !== sendVersion.current) return;
+    if (version !== submissionVersion.current) return;
     const response = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
         screen: describeScreen(),
-        ...(email.trim() && { email }),
+        ...(email.trim() && { email: email.trim() }),
         ...(attachLink && { link: location.href }),
         ...(screenshot && { screenshot }),
         ...(uploads.length > 0 && {
@@ -119,13 +133,14 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         }),
       }),
     }).catch(() => undefined);
-    if (version !== sendVersion.current) return;
+    if (version !== submissionVersion.current) return;
     if (!response?.ok) {
       setStatus("failed");
       return;
     }
     setMessage("");
-    updateUploads([]);
+    uploadsVersion.current++;
+    replaceUploads([]);
     setUploadError(undefined);
     close();
     store.openSnackbar(t.feedback.sent, false, "send");
@@ -137,6 +152,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
         icon={<FeedbackIcon />}
         caption={t.feedback.caption}
         label={t.feedback.button}
+        row={row}
         onClick={() => setIsOpen(true)}
       />
       <Dialog
@@ -165,13 +181,20 @@ const FeedbackDialog = observer(function FeedbackDialog() {
           />
           <TextField
             label={t.feedback.email}
-            helperText={t.feedback.emailHelper}
+            helperText={
+              emailError ? t.feedback.emailInvalid : t.feedback.emailHelper
+            }
+            error={emailError}
+            inputRef={emailRef}
             type="email"
             fullWidth
             sx={{ mt: 2 }}
             value={email}
             disabled={status === "sending"}
-            onChange={event => setEmail(event.target.value)}
+            onChange={event => {
+              setEmail(event.target.value);
+              setEmailError(false);
+            }}
             slotProps={{ htmlInput: { maxLength: 254 } }}
           />
           <FormControlLabel
@@ -179,7 +202,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             control={
               <Checkbox
                 checked={attachLink}
-                disabled={status === "sending"}
+                disabled={sending}
                 onChange={event => setAttachLink(event.target.checked)}
               />
             }
@@ -189,7 +212,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
             control={
               <Checkbox
                 checked={attachScreenshot}
-                disabled={status === "sending"}
+                disabled={sending}
                 onChange={event => setAttachScreenshot(event.target.checked)}
               />
             }
@@ -209,7 +232,7 @@ const FeedbackDialog = observer(function FeedbackDialog() {
               variant="outlined"
               size="small"
               startIcon={<AddPhotoAlternateIcon />}
-              disabled={uploads.length >= MAX_UPLOADS || status === "sending"}
+              disabled={sending || uploads.length >= MAX_UPLOADS}
             >
               {t.feedback.addImage}
               <input
@@ -217,7 +240,6 @@ const FeedbackDialog = observer(function FeedbackDialog() {
                 type="file"
                 accept="image/*"
                 multiple
-                disabled={status === "sending"}
                 onChange={event => addUploads(event.target)}
               />
             </Button>
@@ -225,13 +247,16 @@ const FeedbackDialog = observer(function FeedbackDialog() {
               <Chip
                 key={upload.id}
                 label={upload.name}
-                disabled={status === "sending"}
-                onDelete={() => {
-                  updateUploads(
-                    uploadsRef.current.filter(other => other !== upload),
-                  );
-                  setUploadError(undefined);
-                }}
+                onDelete={
+                  sending ? undefined : (
+                    () => {
+                      replaceUploads(
+                        uploadsRef.current.filter(other => other !== upload),
+                      );
+                      setUploadError(undefined);
+                    }
+                  )
+                }
                 sx={{ maxWidth: 1 }}
               />
             ))}

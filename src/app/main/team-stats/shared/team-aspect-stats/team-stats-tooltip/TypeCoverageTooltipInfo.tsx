@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { pokemonTypes } from "@/shared/pokedex";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import {
   moveAgainstType,
   moveType as getMoveType,
+  effectivePokemonTypes,
 } from "@/store/shared/effectiveness";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import typeIcons from "@/images/type-icons";
@@ -16,14 +16,13 @@ import TypeBadge from "./shared/TypeBadge";
 const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
   typeColor,
   type,
-  hasIcon,
 }: {
   typeColor: string;
   type: PokemonType;
-  hasIcon: boolean;
 }) {
   const { t, names } = useTranslation();
-  const { generation, format } = store.currentTeam;
+  const { generation } = store.currentTeam;
+  const format = store.dataFormat;
   const superEffectiveMoves = store.analysisTeam.flatMap((member, i) =>
     MOVE_KEYS.flatMap(key => {
       const { name: pokemon, ability, item } = member;
@@ -36,8 +35,10 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
           pokemon,
           ability,
           generation,
-          format,
           item,
+          member.happiness,
+          member,
+          format,
         ) !== -1
       ) {
         return [];
@@ -47,11 +48,14 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
         pokemon,
         ability,
         generation,
-        format,
         item,
+        format,
       );
       const isStab =
-        !!moveType && pokemonTypes(pokemon, generation).includes(moveType);
+        !!moveType &&
+        effectivePokemonTypes(pokemon, ability, item, generation).includes(
+          moveType,
+        );
       return [{ key: `${i}-${key}`, move, moveType, pokemon, isStab }];
     }),
   );
@@ -60,9 +64,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
     <>
       <p>
         {fill(t.stats.superEffectiveAgainst, {
-          type: (
-            <TypeBadge type={type} typeColor={typeColor} hasIcon={hasIcon} />
-          ),
+          type: <TypeBadge type={type} typeColor={typeColor} />,
         })}
       </p>
       <Box component="ul" sx={{ listStyle: "none", p: 0 }}>

@@ -9,12 +9,18 @@ import type {
 } from "@/types";
 import { CHAMPIONS_FORMAT, TIER_BY_FORMAT } from "@/shared/formats";
 import { variantGeneration } from "@/shared/game-variants";
+import {
+  COMBINED_GENERATIONS_FORMAT,
+  teamDataFormat,
+} from "@/shared/generation-profile";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
 import { pokemonFormatIn } from "@/shared/generation-data";
 
 type Filters = Readonly<
-  Partial<Pick<PokemonFilters, "generation" | "ability">> &
+  Partial<
+    Pick<PokemonFilters, "generation" | "generationProfile" | "ability">
+  > &
     Pick<PokemonFilters, "format" | "region" | "type">
 >;
 
@@ -66,6 +72,7 @@ export function introducedIn({
 // Megas and primals skipped gen 8, and Gigantamax formes only exist there.
 // Gen 9 covers everything, including Legends: Z-A's megas.
 export function isInGeneration(entry: PokedexEntry, generation: Generation) {
+  if (entry.num === 0) return generation === 1;
   if (generation === LATEST_GENERATION) return true;
   const forme = entry.forme ?? "";
   if (forme.includes("Mega") || forme === "Primal")
@@ -77,6 +84,7 @@ export function isInGeneration(entry: PokedexEntry, generation: Generation) {
 // CAP pokemon still load from share links and imports; they are only hidden from the options
 export function filterPokemon({
   generation = LATEST_GENERATION,
+  generationProfile,
   format,
   region,
   type,
@@ -91,7 +99,6 @@ export function filterPokemon({
   );
 
   function filterByGeneration(pokedex: Pokedex): Pokedex {
-    if (generation === LATEST_GENERATION) return pokedex;
     return Object.fromEntries(
       Object.entries(pokedex).filter(([, entry]) =>
         isInGeneration(entry, generation),
@@ -103,7 +110,11 @@ export function filterPokemon({
     if (!ability || generation < 3) return pokedex;
     return Object.fromEntries(
       Object.entries(pokedex).filter(([pokemon]) =>
-        pokemonAbilities(pokemon, generation).includes(ability),
+        pokemonAbilities(
+          pokemon,
+          generation,
+          teamDataFormat({ format, generationProfile }),
+        ).includes(ability),
       ),
     );
   }
@@ -115,7 +126,11 @@ export function filterPokemon({
   }
 
   function filterByFormat(pokedex: Pokedex) {
-    if (format === "" || variantGeneration(format)) {
+    if (
+      format === "" ||
+      format === COMBINED_GENERATIONS_FORMAT ||
+      variantGeneration(format)
+    ) {
       return pokedex;
     }
 

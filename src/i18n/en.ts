@@ -23,10 +23,31 @@ const en = {
   },
   generationSelect: "Generation",
   comingSoon: "Coming soon",
+  combinedGenerations: {
+    label: "Generations 6–9",
+    short: "Gens 6–9",
+    description: "Combines options from all Gen 6–9 games",
+  },
   championsGeneration: "Gen 9 · Champions",
   championsGenerationShort: "Gen 9 (Champions)",
   language: "Language",
   languageFailed: "That language could not be loaded. Try again.",
+  // Shown in place of a part of the page that failed to load or crashed
+  error: {
+    title: "Something went wrong",
+    description: "Reload the page to try again.",
+    reload: "Reload",
+  },
+  siteVersion: {
+    button: "Old website",
+    // The narrowest label, for small phones
+    short: "Old site",
+    title: "Switch to the old website?",
+    description:
+      "Your current team won’t transfer to the old website. Teams already saved here will remain on this version.",
+    go: "Go to old website",
+    goLong: "Go to the old website",
+  },
   feedback: {
     button: "Send feedback",
     title: "Send Feedback",
@@ -40,6 +61,7 @@ const en = {
     imagesTooLarge:
       "The images are too large to send together. Remove one first.",
     email: "Your email (optional)",
+    emailInvalid: "Enter a valid email address, or leave it empty.",
     emailHelper: "Only if you want a reply",
     caption: "Feedback",
     send: "Send",
@@ -63,6 +85,8 @@ const en = {
   // The team column
   team: {
     teams: "Teams",
+    noMatchingPokemon:
+      "No Pokémon match the current filters. Change the filters and try again.",
     randomizedTeam: "Randomized team",
     randomizedPokemon: "Randomized pokemon",
     randomizedPokemonDetails: (details: string) =>
@@ -92,20 +116,17 @@ const en = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokemon ${slot} (${pokemon ?? "empty"})`,
     slotPair: (first: string, second: string) => `${first} and ${second}`,
-    moreTools: "More team tools",
-    fewerTools: "Fewer team tools",
     advancedMode: "Advanced",
-    more: "More",
-    less: "Less",
     filters: "Filters",
     sort: "Sort",
-    random: "Random",
-    randomize: "Randomize",
     randomizePokemon: "Randomize pokemon",
     randomizeDetails: (details: string) => `Randomize ${details.toLowerCase()}`,
     randomFor: (slot: number) => `Random pokemon for slot ${slot}`,
     advanced: "More details",
     advancedFor: (slot: number) => `More details for slot ${slot}`,
+    // The short label of the button that opens a slot's More details
+    details: "Details",
+    showMoveTypes: "Show move types",
     about: (pokemon: string) => `About ${pokemon}`,
     dragHint: "Hold and drag to reorder",
     moveToSlot: (pokemon: string) => `Move ${pokemon} to another slot`,
@@ -533,6 +554,7 @@ const en = {
     infographicCaption: "Also applies for Gen 7-9",
   },
   credits: {
+    madeBy: "Made by {name}",
     showdown:
       "The folks at Pokemon Showdown are very generous to let me use all of their sprites, icons, and pokemon data. Absolutely indispensable!",
     alsoThanks: "Also thanks to",
@@ -559,11 +581,11 @@ const en = {
     teamsAnswer:
       "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
     teamsAnswer2:
-      "The More button shows the team tools, the Filters and Sort buttons, and the More details button. Undo and Redo step through the current team's changes; on phones and tablets they are in the Manage menu.",
+      "The More button shows the team tools, the Filters and Sort buttons, and the More details button. Undo and Redo step through the current team’s changes; on phones and tablets they are above the Pokémon slot tabs.",
     generations: "Generations",
     generationsQuestion: "What does the generation change?",
     generationsAnswer:
-      "The generation, chosen at the top, lists only the pokemon and formes that existed in it: megas in Gens 6, 7, and 9, Gigantamax formes in Gen 8, and so on. Everything else stays current: the moves, abilities, type chart, and formats come from the newest games, so an old generation's team may know moves it could not learn back then.",
+      "The generation and game chosen at the top determine the Pokémon, formes, moves, items and set details offered. Historical teams use that generation’s abilities, base stats and type chart. Changing games previews required team changes, with options to cancel, update the team or make a copy.",
     advanced: "More details",
     advancedQuestion: "Nicknames, levels, natures, EVs, and IVs",
     advancedAnswer:

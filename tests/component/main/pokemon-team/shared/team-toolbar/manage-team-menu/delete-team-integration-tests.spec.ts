@@ -1,11 +1,11 @@
 import { test, expect } from "fixtures";
-import { clickMenuItem, openManageTeamMenu, openTeamTools } from "helper";
+import { clickMenuItem, openManageTeamMenu, turnOnAdvanced } from "helper";
 import type { Page } from "@playwright/test";
 import { createSavedTeam } from "@/shared/team";
 import type { SavedTeam } from "@/types";
 
 const openTeams = async (page: Page) => {
-  await openTeamTools(page);
+  await turnOnAdvanced(page);
   await page.getByRole("button", { name: "Teams", exact: true }).click();
   await expect(
     page.getByRole("dialog", { name: "Teams", exact: true }),

@@ -1,11 +1,9 @@
 import { useLayoutEffect, useRef, useState } from "react";
-import { useSetTypeIcons } from "@/app/main/shared/TypeIconContext";
 import { useBreakpoint } from "@/app/shared/WidthContext";
 
 export default function useTypeLabelLayout(labelKey: string) {
   const gridRef = useRef<HTMLDivElement>(null);
   const breakpoint = useBreakpoint();
-  const setTypeIcons = useSetTypeIcons();
   const [fit, setFit] = useState({
     icon: false,
     fullName: false,
@@ -53,7 +51,6 @@ export default function useTypeLabelLayout(labelKey: string) {
         widths.every(
           width => width.abbreviation + width.icon <= width.available,
         );
-      setTypeIcons(icon);
       const fullName =
         (breakpoint === "xxs" || breakpoint === "xs" || icon) &&
         widths.every(
@@ -84,7 +81,7 @@ export default function useTypeLabelLayout(labelKey: string) {
     }
     update();
     return () => observer.disconnect();
-  }, [breakpoint, labelKey, setTypeIcons]);
+  }, [breakpoint, labelKey]);
 
   return {
     gridRef,

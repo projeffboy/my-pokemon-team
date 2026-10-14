@@ -62,7 +62,8 @@ const AdvancedForm = observer(function AdvancedForm({
   const close = () => store.closeDialog();
   const name = names.pokemon(member.name);
   const genders = genderOptions(member.name);
-  const { generation, format } = store.currentTeam;
+  const { generation } = store.currentTeam;
+  const format = store.dataFormat;
   const champions = format === CHAMPIONS_FORMAT;
   const rules = generationRules(generation, format);
   const maxNicknameLength = nicknameLimit(generation, locale);
@@ -312,7 +313,7 @@ const AdvancedDialog = observer(function AdvancedDialog() {
   const close = () => store.closeDialog();
   const form = isOpen && member && (
     <AdvancedForm
-      key={teamIndex}
+      key={`${store.currentTeamId}:${teamIndex}:${member.name}:${store.currentTeam.generation}:${store.currentTeam.format}`}
       member={member}
       teamIndex={teamIndex}
       titleId={titleId}

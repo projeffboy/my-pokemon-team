@@ -35,6 +35,7 @@ import { sanitizeSavedTeam } from "@/store/teams-storage";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import {
+  IMMUNE_SCORE,
   typeAgainstPokemon,
   moveAgainstType,
 } from "@/store/shared/effectiveness";
@@ -262,15 +263,15 @@ test("historical stats sort correctly and unsupported abilities cannot change ea
     ),
   ).toEqual(["pidgeot", "jynx"]);
   expect(typeAgainstPokemon("Electric", "rhydon", "Lightning Rod", "", 4)).toBe(
-    3,
+    IMMUNE_SCORE,
   );
   expect(typeAgainstPokemon("Water", "gastrodon", "Storm Drain", "", 4)).toBe(
     0,
   );
   expect(typeAgainstPokemon("Water", "gastrodon", "Storm Drain", "", 5)).toBe(
-    3,
+    IMMUNE_SCORE,
   );
-  expect(moveAgainstType("bodyslam", "Ghost", "kangaskhan", "Scrappy", 1)).toBe(
+  expect(moveAgainstType("strength", "Ghost", "kangaskhan", "Scrappy", 1)).toBe(
     2,
   );
   expect(parseTeamText("Gengar\nAbility: Levitate")[0]?.ability).toBe(

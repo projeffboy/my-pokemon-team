@@ -9,12 +9,14 @@ import type {
 import { itemNameInverse } from "./names";
 import { pokemonAbilities } from "./pokedex";
 import { LATEST_GENERATION } from "./generations";
-import { CHAMPIONS_FORMAT, CHAMPIONS_GENERATION } from "./formats";
+import { gameFormat } from "./formats";
+import { COMBINED_GENERATIONS_PROFILE } from "./generation-profile";
 
 export const DEFAULT_TEAM_SETTINGS = {
-  generation: CHAMPIONS_GENERATION,
-  format: CHAMPIONS_FORMAT,
-};
+  generation: 9 as const,
+  generationProfile: COMBINED_GENERATIONS_PROFILE,
+  format: "",
+} as const;
 
 export function createEmptyTeam(): Team {
   return Array.from({ length: 6 }, (): TeamPokemon => ({
@@ -46,7 +48,7 @@ export const createSearchFilters = (): SearchFilters => ({
 export function createSavedTeam(
   settings: Partial<Omit<SavedTeam, "id">> = {},
 ): SavedTeam {
-  return {
+  const team = {
     id: newTeamId(),
     name: "",
     generation: LATEST_GENERATION as Generation,
@@ -55,24 +57,38 @@ export function createSavedTeam(
     ...settings,
     filters: { ...createSearchFilters(), ...settings.filters },
   };
+  if (team.generation !== 9 || gameFormat(team.format))
+    delete team.generationProfile;
+  return team;
 }
 
-// E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric
+// What a required item replaced: Giratina-Origin held the Griseous Orb before Gen 9
+const EARLIER_REQUIRED_ITEMS: Record<string, string> = {
+  griseouscore: "griseousorb",
+};
+
+// E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric.
+// Given the team's game, it is the first of them that game has.
 export function getAutoSelectedItem(
   pokemon: string,
   pokemonItem: string,
+  isAvailable?: (item: string) => boolean,
 ): string {
-  const { requiredItem, requiredItems } = pokedex[pokemon] ?? {};
-  const itemName = requiredItem ?? requiredItems?.[0];
+  const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
+  const items = [requiredItem, ...requiredItems]
+    .map(name => (name && itemNameInverse(name)) || "")
+    .flatMap(item => [item, EARLIER_REQUIRED_ITEMS[item] ?? ""])
+    .filter(item => item);
 
-  return (itemName && itemNameInverse(itemName)) || pokemonItem;
+  return (isAvailable && items.find(isAvailable)) || items[0] || pokemonItem;
 }
 
 // E.g. Thick Fat for Venusaur-Mega, its only ability
 export function getAutoSelectedAbility(
   pokemon: string,
   generation: Generation = LATEST_GENERATION,
+  format = "",
 ): string {
-  const abilities = pokemonAbilities(pokemon, generation);
+  const abilities = pokemonAbilities(pokemon, generation, format);
   return abilities.length === 1 ? (abilities[0] ?? "") : "";
 }

@@ -31,7 +31,8 @@ test.describe("Drag hint - Integration Tests", () => {
           });
           const pattern = `**/sprite-animations/${generation}/qwilfish.*`;
           await page.route(pattern, async route => {
-            if (route.request().resourceType() === "image") await loading;
+            if (new URL(route.request().url()).searchParams.has("selection"))
+              await loading;
             await route.continue();
           });
           const team = "Dunsparce @\n-\n\nQwilfish @\n-\n";
@@ -43,8 +44,8 @@ test.describe("Drag hint - Integration Tests", () => {
             name: "Pokemon team slots",
           });
           const wiggle = viewer.locator(".slot-lift").first();
-          const first = viewer.locator('img[alt="dunsparce"]');
-          const second = viewer.locator('img[alt="qwilfish"]');
+          const first = viewer.locator('img[alt="Dunsparce"]');
+          const second = viewer.locator('img[alt="Qwilfish"]');
           await expect(second).toHaveAttribute("data-selection-animating", "");
           await expect
             .poll(() =>

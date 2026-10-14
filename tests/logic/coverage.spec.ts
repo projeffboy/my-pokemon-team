@@ -124,4 +124,72 @@ test.describe("team coverage", () => {
       Array(18).fill(0),
     );
   });
+
+  for (const { pokemon, delayedMove, typedMove, generations, targets } of [
+    {
+      pokemon: "xatu",
+      delayedMove: "futuresight",
+      typedMove: "psychic",
+      generations: [2, 3, 4],
+      targets: ["Fighting", "Poison"],
+    },
+    {
+      pokemon: "jirachi",
+      delayedMove: "doomdesire",
+      typedMove: "irontail",
+      generations: [3, 4],
+      targets: ["Ice", "Rock"],
+    },
+  ] as const) {
+    for (const generation of generations) {
+      test(`Gen ${generation} typeless ${delayedMove} never suppresses ${typedMove} coverage`, () => {
+        const coverage = calculateTypeCoverage(
+          createTeam({ name: pokemon, move1: typedMove }),
+          generation,
+        );
+        for (const target of targets) expect(coverage[target]).toBe(2);
+        expect(
+          Object.values(
+            calculateTypeCoverage(
+              createTeam({ name: pokemon, move1: delayedMove }),
+              generation,
+            ),
+          ),
+        ).toEqual(Array(18).fill(0));
+
+        for (const [move1, move2] of [
+          [delayedMove, typedMove],
+          [typedMove, delayedMove],
+        ]) {
+          expect(
+            calculateTypeCoverage(
+              createTeam({ name: pokemon, move1, move2 }),
+              generation,
+            ),
+          ).toEqual(coverage);
+        }
+      });
+    }
+  }
+});
+
+test("coverage excludes moves below the historical power threshold", () => {
+  const wing = createTeam({ name: "aerodactyl", move1: "wingattack" });
+  expect(calculateTypeCoverage(wing, 1).Grass).toBe(0);
+  expect(calculateTypeCoverage(wing, 2).Grass).toBe(2);
+  const leech = createTeam({ name: "venonat", move1: "leechlife" });
+  expect(calculateTypeCoverage(leech, 6).Psychic).toBe(0);
+  expect(calculateTypeCoverage(leech, 7).Psychic).toBe(2);
+});
+
+test("Normalize changes Natural Gift to Normal in gen4 but preserves it in gen7", () => {
+  const team = createTeam({
+    name: "delcatty",
+    ability: "Normalize",
+    item: "liechiberry",
+    move1: "naturalgift",
+  });
+  expect(calculateTypeCoverage(team, 4).Water).toBe(0);
+  for (const generation of [5, 6, 7] as const)
+    expect(calculateTypeCoverage(team, generation).Water).toBe(1);
 });

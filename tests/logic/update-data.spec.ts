@@ -7,6 +7,7 @@ import {
   projectFormats,
   projectGameVariant,
   projectPastGenerations,
+  projectHistoricalMoves,
   projectTypeChart,
   projectHiddenPowerSpreads,
   projections,
@@ -30,6 +31,30 @@ test("Hidden Power spread generation keeps Showdown IVs and DVs, including all-d
     fire: { ivs: { atk: 30, spa: 30, spe: 30 }, dvs: { atk: 14, def: 12 } },
     dark: { ivs: {}, dvs: {} },
   });
+});
+
+test("item projection keeps attack types and power, with Showdown's Fling defaults", () => {
+  expect(
+    projections.Items({
+      name: "Liechi Berry",
+      isBerry: true,
+      naturalGift: { type: "Grass", basePower: 100 },
+    }),
+  ).toEqual({
+    name: "Liechi Berry",
+    naturalGift: { type: "Grass", basePower: 100 },
+    fling: { basePower: 10 },
+  });
+  expect(projections.Items({ onPlate: "Fire" }).fling?.basePower).toBe(90);
+  expect(projections.Items({ onDrive: "Water" }).fling?.basePower).toBe(70);
+  expect(projections.Items({ onMemory: "Grass" }).fling?.basePower).toBe(50);
+  expect(
+    projections.Items({ megaStone: { Abomasnow: "Abomasnow-Mega" } }).fling
+      ?.basePower,
+  ).toBe(80);
+  expect(
+    projections.Items({ fling: { basePower: 130, status: "brn" } }).fling,
+  ).toEqual({ basePower: 130, status: "brn" });
 });
 
 test("pick keeps only the listed fields and marks callbacks as present", () => {
@@ -116,11 +141,12 @@ test("moves keep their secondary status chance and sound flag only", () => {
   ).toEqual({ name: "Boomburst", flags: { sound: 1 } });
 });
 
-test("only non-Z Plates supply Judgment's type", () => {
+test("items retain Plate, Z-Move, Natural Gift, and Fling metadata", () => {
   expect(projections.Items({ name: "Draco Plate", onPlate: "Dragon" })).toEqual(
     {
       name: "Draco Plate",
       onPlate: "Dragon",
+      fling: { basePower: 90 },
     },
   );
   expect(
@@ -129,13 +155,21 @@ test("only non-Z Plates supply Judgment's type", () => {
       onPlate: "Dragon",
       zMove: "Dragon",
     }),
-  ).toEqual({ name: "Dragonium Z" });
+  ).toEqual({
+    name: "Dragonium Z",
+    onPlate: "Dragon",
+    zMove: "Dragon",
+    fling: { basePower: 90 },
+  });
   expect(
     projections.Items({
       name: "Liechi Berry",
       naturalGift: { type: "Grass", basePower: 100 },
     }),
-  ).toEqual({ name: "Liechi Berry", naturalGift: { type: "Grass" } });
+  ).toEqual({
+    name: "Liechi Berry",
+    naturalGift: { type: "Grass", basePower: 100 },
+  });
 });
 
 test("battle formes preserve the specific species they inherit their moves from", () => {
@@ -630,4 +664,86 @@ test("historical stats and abilities inherit through generations and cosmetic fo
   expect(past[3]?.abilities?.birdblue).toEqual(["Original"]);
   expect(past[4]?.abilities?.bird).toEqual(["Original", "Second"]);
   expect(past[5]?.abilities?.bird).toEqual(["Original", "Second", "Hidden"]);
+});
+
+test("move projections retain user boosts without confusing targets or random chances", () => {
+  expect(
+    projections.Moves({ boosts: { atk: 2 }, target: "normal" }).selfBoosts,
+  ).toBeUndefined();
+  expect(
+    projections.Moves({ self: { boosts: { atk: -1, def: -1 } } }).selfBoosts,
+  ).toEqual({ atk: -1, def: -1 });
+  expect(
+    projections.Moves({
+      secondary: { chance: 100, self: { boosts: { atk: 1 } } },
+    }).selfBoosts,
+  ).toEqual({ atk: 1 });
+  expect(
+    projections.Moves({
+      secondary: { chance: 50, self: { boosts: { spa: 1 } } },
+    }).selfBoosts,
+  ).toBeUndefined();
+});
+
+test("historical move projections replace removed effects and inherit old power", () => {
+  const latest = {
+    move: {
+      name: "Move",
+      type: "Normal",
+      category: "Physical",
+      basePower: 60,
+      basePowerCallback() {},
+      onModifyMove() {},
+      boosts: { atk: 2 },
+      self: { boosts: { spa: -2 } },
+      secondary: { chance: 100, status: "par" },
+      forceSwitch: true,
+    },
+    unchanged: { name: "Unchanged", type: "Water", basePower: 80 },
+  };
+  const past = projectHistoricalMoves(latest, {
+    3: {
+      moves: {
+        move: {
+          inherit: true,
+          basePower: 30,
+          basePowerCallback: undefined,
+          onModifyMove: undefined,
+          boosts: null,
+          self: null,
+          secondary: null,
+          forceSwitch: false,
+        },
+      },
+    },
+    1: { moves: { move: { inherit: true, basePower: 0 } } },
+  });
+  expect(past[4]).toBeUndefined();
+  expect(past[3]?.move).toEqual({
+    name: "Move",
+    type: "Normal",
+    category: "Physical",
+    basePower: 30,
+    forceSwitch: false,
+  });
+  expect(past[2]?.move).toEqual(past[3]?.move);
+  expect(past[1]?.move?.basePower).toBe(0);
+  expect(past[1]).not.toHaveProperty("unchanged");
+  const integrated = projectPastGenerations(
+    { pokedex: {}, moves: latest, typechart: {} },
+    { 3: { moves: { move: { inherit: true, basePower: 30 } } } },
+  );
+  expect(integrated[2]?.moveData?.move?.basePower).toBe(30);
+});
+
+test("move projections retain guaranteed selfBoost effects", () => {
+  expect(
+    projections.Moves({
+      selfBoost: { boosts: { atk: 1, def: 1, spa: 1, spd: 1, spe: 1 } },
+    }).selfBoosts,
+  ).toEqual({ atk: 1, def: 1, spa: 1, spd: 1, spe: 1 });
+  expect(
+    projections.Moves({ selfBoost: { boosts: { def: -1 } } }).selfBoosts,
+  ).toEqual({ def: -1 });
+  expect(projections.Moves({ selfBoost: null }).selfBoosts).toBeUndefined();
 });

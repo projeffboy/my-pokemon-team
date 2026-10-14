@@ -12,27 +12,35 @@ export default function TypeLabel({
   abbreviation,
   hasIcon,
   showFullName,
+  iconAbove = false,
 }: {
   type: PokemonType;
   name: string;
   abbreviation: string;
   hasIcon: boolean;
   showFullName: boolean;
+  // Where the icon does not fit beside the text, show it above instead of leaving it out
+  iconAbove?: boolean;
 }) {
+  const stacked = iconAbove && !hasIcon;
   return (
     <Box
       component="span"
       data-type-label
       sx={{
         display: "flex",
+        flexDirection: stacked ? "column" : "row",
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
-        gap: ICON_GAP / 8,
+        // The layout hook reads the column gap, so it stays whichever way the label runs
+        columnGap: ICON_GAP / 8,
         px: LABEL_PADDING / 16,
+        pt: stacked ? 0.375 : 0,
       }}
+      data-icon-above={stacked ? "" : undefined}
     >
-      {hasIcon && (
+      {(hasIcon || stacked) && (
         <Box
           component="img"
           src={typeIcons[type]}

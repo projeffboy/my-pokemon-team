@@ -34,11 +34,30 @@ const de: Messages = {
   },
   generationSelect: "Generation",
   comingSoon: "Demnächst",
+  combinedGenerations: {
+    label: "Generationen 6–9",
+    short: "Gen. 6–9",
+    description: "Kombiniert Optionen aus allen Spielen der Gen. 6–9",
+  },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
   language: "Sprache",
   languageFailed:
     "Die Sprache konnte nicht geladen werden. Versuche es erneut.",
+  error: {
+    title: "Etwas ist schiefgelaufen",
+    description: "Lade die Seite neu, um es noch einmal zu versuchen.",
+    reload: "Neu laden",
+  },
+  siteVersion: {
+    button: "Alte Website",
+    short: "Alte Seite",
+    title: "Zur alten Website wechseln?",
+    description:
+      "Dein aktuelles Team wird nicht auf die alte Website übertragen. Bereits hier gespeicherte Teams bleiben in dieser Version.",
+    go: "Zur alten Website",
+    goLong: "Zur alten Website",
+  },
   feedback: {
     button: "Feedback senden",
     title: "Feedback senden",
@@ -52,6 +71,8 @@ const de: Messages = {
       "Das Bild konnte nicht gelesen werden. Versuch es mit PNG oder JPEG.",
     imagesTooLarge: "Die Bilder sind zusammen zu groß. Entferne zuerst eines.",
     email: "Deine E-Mail (optional)",
+    emailInvalid:
+      "Gib eine gültige E-Mail-Adresse ein oder lass das Feld leer.",
     emailHelper: "Nur für eine Antwort",
     caption: "Feedback",
     send: "Senden",
@@ -75,6 +96,8 @@ const de: Messages = {
   // The team column
   team: {
     teams: "Teams",
+    noMatchingPokemon:
+      "Keine Pokémon entsprechen den aktuellen Filtern. Ändere die Filter und versuche es erneut.",
     randomizedTeam: "Team zufällig gefüllt",
     randomizedPokemon: "Pokémon zufällig gewählt",
     randomizedPokemonDetails: (details: string) =>
@@ -104,20 +127,16 @@ const de: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "leer"})`,
     slotPair: (first: string, second: string) => `${first} und ${second}`,
-    moreTools: "Mehr Team-Werkzeuge",
-    fewerTools: "Weniger Team-Werkzeuge",
     advancedMode: "Erweitert",
-    more: "Mehr",
-    less: "Weniger",
     filters: "Filter",
     sort: "Sortieren",
-    random: "Zufall",
-    randomize: "Zufällig wählen",
     randomizePokemon: "Pokémon zufällig wählen",
     randomizeDetails: (details: string) => `${details} zufällig wählen`,
     randomFor: (slot: number) => `Zufälliges Pokémon für Platz ${slot}`,
     advanced: "Weitere Details",
     advancedFor: (slot: number) => `Weitere Details für Platz ${slot}`,
+    details: "Details",
+    showMoveTypes: "Attackentypen anzeigen",
     about: (pokemon: string) => `Über ${pokemon}`,
     dragHint: "Halten und ziehen zum Umordnen",
     moveToSlot: (pokemon: string) =>
@@ -555,6 +574,7 @@ const de: Messages = {
     infographicCaption: "Gilt auch für Gen. 7–9",
   },
   credits: {
+    madeBy: "Erstellt von {name}",
     showdown:
       "Die Leute von Pokemon Showdown sind so großzügig, mich all ihre Sprites, Symbole und Pokémon-Daten verwenden zu lassen. Absolut unverzichtbar!",
     alsoThanks: "Außerdem danke an",
@@ -581,11 +601,11 @@ const de: Messages = {
     teamsAnswer:
       "Deine Teams werden in diesem Browser gespeichert. Sie sind also da, wenn du wiederkommst, aber nicht auf einem anderen Gerät. Die Schaltfläche „Teams“ listet sie auf, und über das Menü eines Teams kannst du es umbenennen, seine Generation und sein Format festlegen, es duplizieren, teilen oder löschen. „Alle exportieren“ lädt alle Teams als Showdown-Text herunter, den „Team importieren“ wieder einliest. Die Adressleiste enthält immer das aktuelle Team; du teilst es also, indem du die Adresse kopierst (oder auf „Teilen“ drückst).",
     teamsAnswer2:
-      "Die Schaltfläche „Mehr“ zeigt die Team-Werkzeuge, die Schaltflächen „Filter“ und „Sortieren“ sowie die Schaltfläche „Weitere Details“. Mit „Rückgängig“ und „Wiederholen“ gehst du die Änderungen am aktuellen Team durch; auf Smartphones und Tablets findest du beide im Menü „Verwalten“.",
+      "Die Schaltfläche „Mehr“ zeigt die Team-Werkzeuge, „Filter“, „Sortieren“ und „Weitere Details“. „Rückgängig“ und „Wiederholen“ gehen die Änderungen am aktuellen Team durch; auf Smartphones und Tablets stehen sie über den Pokémon-Platzreitern.",
     generations: "Generationen",
     generationsQuestion: "Was ändert die Generation?",
     generationsAnswer:
-      "Die oben gewählte Generation listet nur die Pokémon und Formen auf, die es in ihr gab: Megas in Gen. 6, 7 und 9, Gigadynamax-Formen in Gen. 8 und so weiter. Alles andere bleibt aktuell: Attacken, Fähigkeiten, Typentabelle und Formate stammen aus den neuesten Spielen, sodass ein Team einer alten Generation Attacken kennen kann, die es damals nicht lernen konnte.",
+      "Die oben gewählte Generation und das Spiel bestimmen die angebotenen Pokémon, Formen, Attacken, Items und Set-Details. Historische Teams verwenden Fähigkeiten, Basiswerte und Typentabelle ihrer Generation. Beim Spielwechsel werden nötige Änderungen angezeigt; du kannst abbrechen, das Team anpassen oder eine Kopie erstellen.",
     advanced: "Weitere Details",
     advancedQuestion: "Spitznamen, Level, Wesen, EV und DV",
     advancedAnswer:

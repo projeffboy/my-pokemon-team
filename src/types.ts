@@ -43,6 +43,9 @@ export interface MoveEntry {
   status?: string;
   secondary?: { chance?: number; status?: string };
   boosts?: Record<string, number>;
+  selfBoosts?: Record<string, number>;
+  target?: string;
+  forceSwitch?: boolean;
   basePower?: number;
   multihit?: unknown;
   basePowerCallback?: unknown;
@@ -78,17 +81,20 @@ export type TypeChart = Record<
   Record<PokemonType, number> & Partial<Record<TypeChartStatus, number>>
 >;
 
-export type Items = Record<
-  string,
-  {
-    name?: string;
-    spritenum?: number;
-    onPlate?: PokemonType;
-    onDrive?: PokemonType;
-    onMemory?: PokemonType;
-    naturalGift?: { type?: PokemonType };
-  }
->;
+export interface ItemEntry {
+  name?: string;
+  spritenum?: number;
+  onPlate?: PokemonType;
+  onDrive?: PokemonType;
+  onMemory?: PokemonType;
+  naturalGift?: { basePower: number; type: PokemonType };
+  fling?: { basePower: number; status?: string };
+  ignoreKlutz?: boolean;
+  megaStone?: Record<string, string>;
+  zMove?: boolean | string;
+}
+
+export type Items = Record<string, ItemEntry>;
 
 // A past generation's type chart holds only the types that existed then
 export type PastTypeChart = Partial<
@@ -238,6 +244,7 @@ export interface SavedTeam {
   id: string;
   name: string;
   generation: Generation;
+  generationProfile?: "6-9";
   format: string;
   filters: SearchFilters;
   team: Team;
@@ -250,6 +257,7 @@ export type SearchFilters = Record<SearchFilterKey, string>;
 
 export interface PokemonFilters extends SearchFilters {
   generation: Generation;
+  generationProfile?: SavedTeam["generationProfile"];
   format: string;
 }
 
@@ -276,7 +284,7 @@ export type NameTranslations = Record<
   Record<string, string>
 >;
 
-// Bits 0–8 represent Gen 1–9; bit 9 represents Champions.
+// Bits 0–8 represent Gen 1–9; bits 9–12 represent Champions, Arceus, Z-A, and Let’s Go.
 export interface GenerationTransferData {
   pokemon: Record<
     string,

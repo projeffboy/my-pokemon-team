@@ -10,6 +10,8 @@ import { generationRules, getStatExperience } from "@/shared/generation-rules";
 import { english, type Translation } from "@/i18n/translation";
 import { evTotal, getEv, MAX_LEVEL } from "@/shared/set-details";
 import { filterPokemon } from "./filtering";
+import { availablePokemon } from "./learnsets";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 
 // The problems that stop a team from being legal in its format, or none
 export function validateTeam(
@@ -24,8 +26,17 @@ export function validateTeam(
   const problems: string[] = [];
   const rules = generationRules(generation, format);
   const training = t.advanced[rules.investment];
+  const candidates = filterPokemon({
+    generation,
+    format,
+    region: "",
+    type: "",
+    ability: "",
+  });
   const allowed = new Set(
-    filterPokemon({ generation, format, region: "", type: "", ability: "" }),
+    format === COMBINED_GENERATIONS_FORMAT ?
+      availablePokemon(candidates, generation, format)
+    : candidates,
   );
   const where = `${t.generation(generation)}${format ? ` ${format}` : ""}`;
   const species = (pokemon: string) => {
@@ -47,7 +58,7 @@ export function validateTeam(
     if (
       ability &&
       (!rules.abilities ||
-        !pokemonAbilities(name, generation).includes(ability))
+        !pokemonAbilities(name, generation, format).includes(ability))
     )
       problems.push(t.validation.wrongAbility(label, names.ability(ability)));
 

@@ -29,10 +29,29 @@ const es: Messages = {
   },
   generationSelect: "Generación",
   comingSoon: "Próximamente",
+  combinedGenerations: {
+    label: "Generaciones 6–9",
+    short: "Gens. 6–9",
+    description: "Combina opciones de todos los juegos de las generaciones 6–9",
+  },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
   language: "Idioma",
   languageFailed: "No se pudo cargar el idioma. Inténtalo de nuevo.",
+  error: {
+    title: "Algo salió mal",
+    description: "Recarga la página para intentarlo de nuevo.",
+    reload: "Recargar",
+  },
+  siteVersion: {
+    button: "Sitio anterior",
+    short: "Sitio anterior",
+    title: "¿Cambiar al sitio anterior?",
+    description:
+      "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",
+    go: "Ir al sitio anterior",
+    goLong: "Ir al sitio anterior",
+  },
   feedback: {
     button: "Enviar comentarios",
     title: "Enviar comentarios",
@@ -46,6 +65,8 @@ const es: Messages = {
     imagesTooLarge:
       "Las imágenes pesan demasiado para enviarlas juntas. Quita una primero.",
     email: "Tu correo (opcional)",
+    emailInvalid:
+      "Introduce una dirección de correo válida o deja el campo vacío.",
     emailHelper: "Solo para responderte",
     caption: "Opinión",
     send: "Enviar",
@@ -67,6 +88,8 @@ const es: Messages = {
 
   team: {
     teams: "Equipos",
+    noMatchingPokemon:
+      "Ningún Pokémon coincide con los filtros actuales. Cambia los filtros e inténtalo de nuevo.",
     randomizedTeam: "Equipo aleatorizado",
     randomizedPokemon: "Pokémon aleatorizado",
     randomizedPokemonDetails: (details: string) =>
@@ -96,21 +119,17 @@ const es: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vacío"})`,
     slotPair: (first: string, second: string) => `${first} y ${second}`,
-    moreTools: "Más herramientas del equipo",
-    fewerTools: "Menos herramientas del equipo",
     advancedMode: "Avanzado",
-    more: "Más",
-    less: "Menos",
     filters: "Filtros",
     sort: "Ordenar",
-    random: "Aleatorio",
-    randomize: "Aleatorizar",
     randomizePokemon: "Aleatorizar Pokémon",
     randomizeDetails: (details: string) =>
       `Aleatorizar ${details.toLowerCase()}`,
     randomFor: (slot: number) => `Pokémon aleatorio para el hueco ${slot}`,
     advanced: "Más detalles",
     advancedFor: (slot: number) => `Más detalles del hueco ${slot}`,
+    details: "Detalles",
+    showMoveTypes: "Mostrar tipos de movimientos",
     about: (pokemon: string) => `Acerca de ${pokemon}`,
     dragHint: "Mantén y arrastra para reordenar",
     moveToSlot: (pokemon: string) => `Mover a ${pokemon} a otro hueco`,
@@ -538,6 +557,7 @@ const es: Messages = {
     infographicCaption: "También válida para las Gen. 7-9",
   },
   credits: {
+    madeBy: "Hecho por {name}",
     showdown:
       "La gente de Pokemon Showdown es muy generosa al dejarme usar todos sus sprites, iconos y datos de Pokémon. ¡Absolutamente indispensable!",
     alsoThanks: "Gracias también a",
@@ -564,11 +584,11 @@ const es: Messages = {
     teamsAnswer:
       "Tus equipos se guardan en este navegador, así que están aquí cuando vuelves, pero no en otro dispositivo. El botón Equipos los lista, y el menú de cada equipo lo renombra, elige su generación y formato, lo duplica, lo comparte o lo elimina. Exportar todo descarga todos los equipos como texto de Showdown, que Importar equipo vuelve a leer. La barra de direcciones siempre contiene el equipo actual, así que copiar la dirección (o pulsar Compartir) lo comparte.",
     teamsAnswer2:
-      "El botón Más muestra las herramientas del equipo, los botones Filtros y Ordenar, y el botón Más detalles. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están en el menú Gestionar.",
+      "El botón Más muestra las herramientas del equipo, Filtros, Ordenar y Más detalles. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están encima de las pestañas de los Pokémon.",
     generations: "Generaciones",
     generationsQuestion: "¿Qué cambia la generación?",
     generationsAnswer:
-      "La generación, elegida arriba, lista solo los Pokémon y formas que existían en ella: las megas en las Gen. 6, 7 y 9, las formas Gigamax en la Gen. 8, etc. Todo lo demás se mantiene actual: los movimientos, las habilidades, la tabla de tipos y los formatos vienen de los juegos más recientes, así que un equipo de una generación antigua puede conocer movimientos que entonces no podía aprender.",
+      "La generación y el juego elegidos arriba determinan los Pokémon, formas, movimientos, objetos y detalles disponibles. Los equipos antiguos usan las habilidades, estadísticas base y tabla de tipos de su generación. Cambiar de juego muestra los cambios necesarios; puedes cancelar, actualizar el equipo o crear una copia.",
     advanced: "Más detalles",
     advancedQuestion: "Motes, niveles, naturalezas, EV e IV",
     advancedAnswer:
