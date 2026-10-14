@@ -186,19 +186,21 @@ Requirements with status Implemented need no ordering. This section orders the w
 
 Importance is on every requirement. Urgency is added here for the planned work.
 
-| Planned work                                           | Importance  | Urgency | Reason for the urgency                                                                                       |
-| ------------------------------------------------------ | ----------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| PF1 Battle format for the checklist                    | Conditional | Medium  | Corrects a known wrong result, but only for Generations 4 and 5.                                             |
-| PF2 Team transfer between versions                     | Conditional | Medium  | Matters most while players are moving from the old website.                                                  |
-| PF3 Let's Go and the Legends games                     | Optional    | Low     | Already announced as coming soon; large.                                                                     |
-| PF4 Portuguese data names                              | Optional    | Low     | Cannot start until PokeAPI has the names.                                                                    |
-| PF5 Verified sender domain                             | Conditional | High    | Until it is done the feedback function can reach only the owner's own address.                               |
-| PF6 Team legality warnings                             | Optional    | Medium  | The rules are already written and tested.                                                                    |
-| PF7 Notice of entries dropped from a link              | Conditional | Medium  | Every data update can silently change old links.                                                             |
-| Keyboard operation and contrast (REQ-USE-4, REQ-USE-6) | Conditional | Medium  | Needs a review before its size is known.                                                                     |
-| Browsers by usage share (REQ-INTF-13)                  | Conditional | Low     | Which browsers qualify is not yet known; no failure has been reported.                                       |
-| Notice of Showdown data changes (REQ-DATA-12)          | Conditional | High    | Without it the 2-day target of BR-3 depends on the Maintainer noticing a change by chance.                   |
-| Fallback data source for a new game (REQ-DATA-10, 11)  | Conditional | Medium  | Needed only when a new game is released and Pokemon Showdown is late; the next new game is expected in 2027. |
+| Planned work                                           | Importance                                | Urgency                                                         | Reason for the urgency                                                                                       |
+| ------------------------------------------------------ | ----------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| PF1 Battle format for the checklist                    | Conditional                               | Medium                                                          | Corrects a known wrong result, but only for Generations 4 and 5.                                             |
+| PF2 Team transfer between versions                     | Conditional                               | Medium                                                          | Matters most while players are moving from the old website.                                                  |
+| PF3 Let's Go and the Legends games                     | Optional                                  | Low                                                             | Already announced as coming soon; large.                                                                     |
+| PF4 Portuguese data names                              | Optional                                  | Low                                                             | Cannot start until PokeAPI has the names.                                                                    |
+| R1 UI polish, with issues 128 and 129                  | REQ-USE-3, 6, 8                           | [146](https://github.com/projeffboy/my-pokemon-team/issues/146) | P1                                                                                                           |
+| R1 Bug fixing, without new features                    | Every requirement with status Implemented | [147](https://github.com/projeffboy/my-pokemon-team/issues/147) | P1                                                                                                           |
+| PF5 Verified sender domain                             | Conditional                               | High                                                            | Until it is done the feedback function can reach only the owner's own address.                               |
+| PF6 Team legality warnings                             | Optional                                  | Medium                                                          | The rules are already written and tested.                                                                    |
+| PF7 Notice of entries dropped from a link              | Conditional                               | Medium                                                          | Every data update can silently change old links.                                                             |
+| Keyboard operation and contrast (REQ-USE-4, REQ-USE-6) | Conditional                               | Medium                                                          | Needs a review before its size is known.                                                                     |
+| Browsers by usage share (REQ-INTF-13)                  | Conditional                               | Low                                                             | Which browsers qualify is not yet known; no failure has been reported.                                       |
+| Notice of Showdown data changes (REQ-DATA-12)          | Conditional                               | High                                                            | Without it the 2-day target of BR-3 depends on the Maintainer noticing a change by chance.                   |
+| Fallback data source for a new game (REQ-DATA-10, 11)  | Conditional                               | Medium                                                          | Needed only when a new game is released and Pokemon Showdown is late; the next new game is expected in 2027. |
 
 ### Wiegers' prioritization
 
@@ -238,7 +240,7 @@ Other techniques the course teaches would add to this once players can be asked:
 
 ## 6.6 Requirements and GitHub issues
 
-Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. The planned work is in the order of Section 6.5. Priority is the Priority field of the project board "My Pokemon Team Development" (P0 highest to P3 lowest), and the milestone "R2" holds the next release. Planned features are named PF1 to PF7 so that they are not mistaken for those priorities.
+Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. The planned work is in the order of Section 6.5. Priority is the Priority field of the project board "My Pokemon Team Development" (P0 highest to P3 lowest), the milestone "R1" holds the last two tasks before the redesign is released, and "R2" holds the release after it. Planned features are named PF1 to PF7 so that they are not mistaken for those priorities.
 
 | Work                                           | Requirements                              | Issue                                                           | Priority    |
 | ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------- | ----------- |
