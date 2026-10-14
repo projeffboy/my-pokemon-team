@@ -13,7 +13,7 @@ The course built feature models in the jUCMNav tool. This one is written as text
 - `XOR group`: exactly one of the children is selected when the parent is.
 - `OR group`: at least one of the children is selected when the parent is.
 - `[R0]`, `[Ash]`, `[Brock]`: the first release that has the feature (the old website, the redesign, the next release). A feature with no mark has been there since R0.
-- `[PF1]` to `[PF7]`: planned features, all proposed for Brock except PF4, which waits for PokeAPI's Portuguese names and is not scheduled. PF4 has no mark, because it adds no feature: it removes constraint C4.
+- `[PF1]` to `[PF7]`: planned features, all proposed for Brock except PF4, which waits for PokeAPI's Portuguese names and is not scheduled, and PF5, which was dropped. PF4 has no mark, because it adds no feature: it removes constraint C4.
 
 ## 4.2 Feature tree
 
@@ -87,7 +87,6 @@ My Pokemon Team
 |   +-- F9.2 Attach Screenshot                    (optional)
 |   +-- F9.3 Attach Images                        (optional)
 |   +-- F9.4 Reply Address                        (optional)
-|   +-- F9.5 Verified Sender Domain               (optional)   [PF5]
 +-- F10 Site Versions                             (optional)   [Ash]
 |   +-- F10.1 Switch to Other Version             (mandatory)
 |   +-- F10.2 Team Transfer to Old Website        (optional)   [PF2]
@@ -118,7 +117,7 @@ What each top-level feature means:
 | PF2 | F10.2 Team Transfer to Old Website | `README.md`, issue 111                                                               | Today the current team and saved teams stay on the site version they were made on.                                 |
 | PF3 | Let's Go and the Legends games     | The generation menu lists them as "Coming soon"; issue 122                           | Brings Awakening Values and Effort Levels with them.                                                               |
 | PF4 | Portuguese data names              | `AGENTS.md`, Languages; issue 124                                                    | Blocked until PokeAPI has Portuguese names (the games gain the language in 2027). Removes the constraint C4 below. |
-| PF5 | F9.5 Verified Sender Domain        | `AGENTS.md`, Feedback; issue 115                                                     | Until then the feedback function can reach only the owner's own address.                                           |
+| PF5 | Verified sender domain             | `AGENTS.md`, Feedback; issue 115                                                     | Dropped on 14 October 2026: feedback emails go only to the Site Owner, so players would see no difference.         |
 | PF6 | F4.6 Team Legality Warnings        | `src/store/validation.ts` holds the rules; no part of the page shows them; issue 117 | The Site Owner wants them shown (interview, Q10). Where they appear is still to be decided.                        |
 | PF7 | F6.1 Notice of Dropped Entries     | `AGENTS.md`, Share Links: old links silently lose renamed entries; issue 119         | Proposed by the analyst; the Site Owner agreed (interview, Q10).                                                   |
 
@@ -158,7 +157,7 @@ As "Ash, production" without F9 Feedback and its children, and without F11 Adver
 
 ### Configuration "Brock"
 
-As "Ash, production" with F4.4.1 Battle Format Context (example choice: Doubles), F10.2 Team Transfer to Old Website, F9.5 Verified Sender Domain, F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. PF3 adds three choices to the Generation Profile group and two to the Training Values group. PF4 is not part of Brock; when PokeAPI has Portuguese names, it removes constraint C4.
+As "Ash, production" with F4.4.1 Battle Format Context (example choice: Doubles), F10.2 Team Transfer to Old Website, F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. PF3 adds three choices to the Generation Profile group and two to the Training Values group. PF4 is not part of Brock; when PokeAPI has Portuguese names, it removes constraint C4.
 
 ## 4.6 Features and use cases
 

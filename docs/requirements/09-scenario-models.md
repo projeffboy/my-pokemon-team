@@ -311,7 +311,7 @@ The flow runs from the redesigned site to the old website only: the old website 
 ## 9.10 Planned features without a flow diagram
 
 - **PF6 Team legality warnings**: the site already computes the rules; the feature is a display of them, shown in mock-up M3. There is no new flow.
-- **PF5 Verified sender domain** and **PF4 Portuguese data names**: neither changes a flow. PF5 changes the address in the "message for the Site Owner" step of 9.5; PF4 changes the data that the translation step of 9.7 produces.
+- **PF4 Portuguese data names**: does not change a flow. It changes the data that the translation step of 9.7 produces.
 - **PF3 More games**: each game adds choices to the generation profile, and its flow is 9.4.
 - **The notice of Showdown data changes and the fallback data source**: both are in 9.7.
 
