@@ -240,24 +240,25 @@ Other techniques the course teaches would add to this once players can be asked:
 
 Work to do is kept in the project's GitHub issues, not in these documents. An issue names the requirements it implements or verifies; this table is the same link from the requirements' side. An issue tied to no requirement carries the label `no requirement` and is not in this table. The planned work is in the order of Section 6.5. Priority is the Priority field of the project board "My Pokemon Team Development" (P0 highest to P3 lowest), the milestone "Ash" holds the tasks left before the redesign is released, and "Brock" holds the release after it. Planned features are named PF1 to PF7 so that they are not mistaken for those priorities.
 
-| Work                                           | Requirements                              | Issue                                                           | Priority    |
-| ---------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------- | ----------- |
-| PF5 Verified sender domain                     | REQ-FEED-9                                | [115](https://github.com/projeffboy/my-pokemon-team/issues/115) | P1          |
-| Notice of Showdown data changes                | REQ-DATA-12                               | [116](https://github.com/projeffboy/my-pokemon-team/issues/116) | P1          |
-| Sprites where Pokemon Showdown is blocked      | REQ-INTF-18                               | [76](https://github.com/projeffboy/my-pokemon-team/issues/76)   | P1          |
-| Measure the speed targets                      | REQ-PERF-1 to 3                           | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | P1          |
-| PF6 Team legality warnings                     | REQ-ANLY-18, 19                           | [117](https://github.com/projeffboy/my-pokemon-team/issues/117) | P2          |
-| PF1 Battle format for the checklist            | REQ-ANLY-12 to 17                         | [118](https://github.com/projeffboy/my-pokemon-team/issues/118) | P2          |
-| PF7 Notice of entries dropped from a link      | REQ-INFO-8                                | [119](https://github.com/projeffboy/my-pokemon-team/issues/119) | P2          |
-| Keyboard operation, accessible names, contrast | REQ-USE-4 to 6                            | [77](https://github.com/projeffboy/my-pokemon-team/issues/77)   | P2          |
-| Check which requirements have tests            | Every requirement with status Implemented | [120](https://github.com/projeffboy/my-pokemon-team/issues/120) | P2          |
-| Browsers by usage share                        | REQ-INTF-13                               | [121](https://github.com/projeffboy/my-pokemon-team/issues/121) | P3          |
-| PF2 Team transfer to the old website           | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | P3          |
-| PF3 Let's Go and the Legends games             | REQ-GEN-11                                | [122](https://github.com/projeffboy/my-pokemon-team/issues/122) | P3          |
-| Fallback data source for a new game            | REQ-DATA-10, 11                           | [123](https://github.com/projeffboy/my-pokemon-team/issues/123) | P3          |
-| PF4 Portuguese data names                      | REQ-LANG-8                                | [124](https://github.com/projeffboy/my-pokemon-team/issues/124) | P3, blocked |
-| Unrecognised generation or game in a link      | REQ-LINK-11                               | [113](https://github.com/projeffboy/my-pokemon-team/issues/113) | P3          |
-| Recheck the dex links on a schedule            | REQ-REF-2                                 | [47](https://github.com/projeffboy/my-pokemon-team/issues/47)   | P3          |
+| Work                                             | Requirements                              | Issue                                                           | Priority    |
+| ------------------------------------------------ | ----------------------------------------- | --------------------------------------------------------------- | ----------- |
+| PF5 Verified sender domain                       | REQ-FEED-9                                | [115](https://github.com/projeffboy/my-pokemon-team/issues/115) | P1          |
+| Notice of Showdown data changes                  | REQ-DATA-12                               | [116](https://github.com/projeffboy/my-pokemon-team/issues/116) | P1          |
+| Sprites where Pokemon Showdown is blocked        | REQ-INTF-18                               | [76](https://github.com/projeffboy/my-pokemon-team/issues/76)   | P1          |
+| Measure the speed targets                        | REQ-PERF-1 to 3                           | [17](https://github.com/projeffboy/my-pokemon-team/issues/17)   | P1          |
+| PF6 Team legality warnings                       | REQ-ANLY-18, 19                           | [117](https://github.com/projeffboy/my-pokemon-team/issues/117) | P2          |
+| PF1 Battle format for the checklist              | REQ-ANLY-12 to 17                         | [118](https://github.com/projeffboy/my-pokemon-team/issues/118) | P2          |
+| PF7 Notice of entries dropped from a link        | REQ-INFO-8                                | [119](https://github.com/projeffboy/my-pokemon-team/issues/119) | P2          |
+| Keyboard operation, accessible names, contrast   | REQ-USE-4 to 6                            | [77](https://github.com/projeffboy/my-pokemon-team/issues/77)   | P2          |
+| Check which requirements have tests              | Every requirement with status Implemented | [120](https://github.com/projeffboy/my-pokemon-team/issues/120) | P2          |
+| Browsers by usage share                          | REQ-INTF-13                               | [121](https://github.com/projeffboy/my-pokemon-team/issues/121) | P3          |
+| PF2 Team transfer to the old website             | REQ-SITE-3, 5                             | [111](https://github.com/projeffboy/my-pokemon-team/issues/111) | P3          |
+| PF3 Let's Go and the Legends games               | REQ-GEN-11                                | [122](https://github.com/projeffboy/my-pokemon-team/issues/122) | P3          |
+| Fallback data source for a new game              | REQ-DATA-10, 11                           | [123](https://github.com/projeffboy/my-pokemon-team/issues/123) | P3          |
+| PF4 Portuguese data names                        | REQ-LANG-8                                | [124](https://github.com/projeffboy/my-pokemon-team/issues/124) | P3, blocked |
+| Unrecognised generation or game in a link        | REQ-LINK-11                               | [113](https://github.com/projeffboy/my-pokemon-team/issues/113) | P3          |
+| Recheck the dex links on a schedule              | REQ-REF-2                                 | [47](https://github.com/projeffboy/my-pokemon-team/issues/47)   | P3          |
+| Wish with Protect or Detect as reliable recovery | REQ-ANLY-20                               | [141](https://github.com/projeffboy/my-pokemon-team/issues/141) | P3          |
 
 Issues with no requirement yet, because the feature is not planned:
 
