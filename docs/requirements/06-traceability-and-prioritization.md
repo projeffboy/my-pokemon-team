@@ -67,18 +67,20 @@ Change management, sized for one maintainer:
 
 A review against the course's rule that a requirement states what the system does, not how, changed the requirements below. Rewritten requirements keep their identifiers; a requirement replaced by one with another meaning is deleted, and its identifier is not reused.
 
-| Requirements                                                        | Change                                                                                                                                   |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| REQ-INTF-1, 2, 5, REQ-FEED-8, 9, REQ-OPS-2, REQ-TEXT-10, REQ-USE-12 | Rewritten to state the outcome in place of the mechanism.                                                                                |
-| REQ-PERF-4                                                          | Rewritten as a time to an editable team; the 600 kB script limit is kept as its design budget.                                           |
-| REQ-TEXT-11                                                         | Now says that the generation profile is part of the team read back, which REQ-TEXT-10 used to ensure.                                    |
-| REQ-INTF-6, REQ-USE-13                                              | Deleted: merged into REQ-INTF-5 and REQ-USE-12.                                                                                          |
-| REQ-INTF-9, 15, REQ-PERF-5, REQ-INFO-5, REQ-MAINT-2                 | Deleted: REQ-FEED-1 to 5, REQ-PERF-4, REQ-COLL-11, and REQ-LANG-1 already state their outcome.                                           |
-| REQ-INTF-16, REQ-OPS-3                                              | Deleted: replaced by REQ-FEED-10 and REQ-PERF-9.                                                                                         |
-| REQ-USE-8, 11, REQ-INTF-7, 10, 17, REQ-PERF-8                       | Moved to the design constraints, Section 3.14.1 of the SyRS.                                                                             |
-| REQ-OPS-1, REQ-POL-4, 5, REQ-REL-1 to 3, REQ-MAINT-1, 3 to 5        | Moved to the development constraints, Section 3.14.2.                                                                                    |
-| REQ-OPS-4, 5                                                        | Moved to the constraints on the old website, Section 3.14.3; REQ-OPS-5 no longer relies on "absolutely necessary".                       |
-| REQ-USE-1, 2, 9                                                     | Deleted: they cannot be verified without sessions or a survey with players, so they are now indicators in Section 3.7 of the goal model. |
+| Requirements                                                        | Change                                                                                                                                                      |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-INTF-1, 2, 5, REQ-FEED-8, 9, REQ-OPS-2, REQ-TEXT-10, REQ-USE-12 | Rewritten to state the outcome in place of the mechanism.                                                                                                   |
+| REQ-PERF-4                                                          | Rewritten as a time to an editable team; the 600 kB script limit is kept as its design budget.                                                              |
+| REQ-TEXT-11                                                         | Now says that the generation profile is part of the team read back, which REQ-TEXT-10 used to ensure.                                                       |
+| REQ-INTF-6, REQ-USE-13                                              | Deleted: merged into REQ-INTF-5 and REQ-USE-12.                                                                                                             |
+| REQ-INTF-9, 15, REQ-PERF-5, REQ-INFO-5, REQ-MAINT-2                 | Deleted: REQ-FEED-1 to 5, REQ-PERF-4, REQ-COLL-11, and REQ-LANG-1 already state their outcome.                                                              |
+| REQ-INTF-16, REQ-OPS-3                                              | Deleted: replaced by REQ-FEED-10 and REQ-PERF-9.                                                                                                            |
+| REQ-USE-8, 11, REQ-INTF-7, 10, 17, REQ-PERF-8                       | Moved to the design constraints, Section 3.14.1 of the SyRS.                                                                                                |
+| REQ-OPS-1, REQ-POL-4, 5, REQ-REL-1 to 3, REQ-MAINT-1, 3 to 5        | Moved to the development constraints, Section 3.14.2.                                                                                                       |
+| REQ-OPS-4, 5                                                        | Moved to the constraints on the old website, Section 3.14.3; REQ-OPS-5 no longer relies on "absolutely necessary".                                          |
+| REQ-USE-1, 2, 9                                                     | Deleted: they cannot be verified without sessions or a survey with players, so they are now indicators in Section 3.7 of the goal model.                    |
+| REQ-USE-14, 15                                                      | Rewritten to state how the actions and settings are grouped, not which buttons and menus hold them.                                                         |
+| REQ-USE-18                                                          | Deleted: its condition, where the toolbar fits on one row, is a layout choice. The decision is kept as design in the text after the usability requirements. |
 
 ## 6.4 Traceability
 
