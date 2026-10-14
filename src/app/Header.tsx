@@ -67,7 +67,8 @@ export default function Header() {
           flexDirection: { xs: "column", sm: "row" },
           alignItems: "center",
           justifyContent: "center",
-          columnGap: 3,
+          columnGap: 1.5,
+          mt: { xs: 0, sm: 1.5 },
           mb: 1,
         }}
       >
