@@ -1225,9 +1225,11 @@ REQ-USE-11 lets a button show its icon alone only where a label would get in the
 
 Table 3.2-1: Icon-only buttons
 
-| Button               | Where                               | Reason                                              |
-| -------------------- | ----------------------------------- | --------------------------------------------------- |
-| Random pokemon (die) | Each slot's card, beside the sprite | A label would cover the animated sprite next to it. |
+| Button                                     | Where                                       | Reason                                              |
+| ------------------------------------------ | ------------------------------------------- | --------------------------------------------------- |
+| Random pokemon (die)                       | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it. |
+| About (info)                               | Each slot's card, at the sprite's top right | A label would cover the animated sprite.            |
+| More details, where its label does not fit | Each slot's card, beside the sprite         | A label would cover the animated sprite next to it. |
 
 ### 3.3) Performance requirements
 
