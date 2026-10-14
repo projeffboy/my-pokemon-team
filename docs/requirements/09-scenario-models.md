@@ -189,7 +189,7 @@ sequenceDiagram
 
 ## 9.6 Sequence: two tabs keep the same saved teams
 
-Covers REQ-COLL-11 and REQ-INFO-5 of UC8 Manage Saved Teams: a Player with the site open twice does not lose in one tab what was done in the other.
+Covers REQ-COLL-11 of UC8 Manage Saved Teams: a Player with the site open twice does not lose in one tab what was done in the other.
 
 ```mermaid
 sequenceDiagram
@@ -323,7 +323,7 @@ The flow runs from the redesigned site to the old website only: the old website 
 | 9.3 Share a team and open the link                     | UC11, UC12    | REQ-LINK-2, REQ-LINK-4 to REQ-LINK-8, REQ-LINK-10, REQ-INFO-8 |
 | 9.4 Change a team's generation                         | UC7           | REQ-GEN-5 to REQ-GEN-8                                        |
 | 9.5 Send feedback                                      | UC18          | REQ-FEED-1, REQ-FEED-6, REQ-FEED-7, REQ-SEC-1 to REQ-SEC-3    |
-| 9.6 Two tabs keep the same saved teams                 | UC8           | REQ-COLL-11, REQ-INFO-5                                       |
+| 9.6 Two tabs keep the same saved teams                 | UC8           | REQ-COLL-11                                                   |
 | 9.7 Update game data                                   | UC20, UC21    | REQ-DATA-1, REQ-DATA-6 to REQ-DATA-12, REQ-MAINT-1, REQ-OPS-1 |
 | 9.8 Judge the Spinner/Defogger role (planned)          | UC22          | REQ-ANLY-14 to REQ-ANLY-16                                    |
 | 9.9 Take the current team to the old website (planned) | UC19, UC23    | REQ-SITE-2, REQ-SITE-3, REQ-SITE-5                            |

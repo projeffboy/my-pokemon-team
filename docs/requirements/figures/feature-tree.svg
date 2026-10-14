@@ -187,7 +187,7 @@
 <rect x="770" y="719" width="94.0" height="18" rx="4" fill="#fff" stroke="#888"/>
 <text x="778" y="732" font-size="12" fill="#222">Big Grid<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <rect x="520" y="741" width="184.0" height="18" rx="4" fill="#f3f3f3" stroke="#888"/>
-<text x="528" y="754" font-size="12" fill="#222">F3.5 Move Types Display<tspan fill="#888" font-size="10">  Ash</tspan></text>
+<text x="528" y="754" font-size="12" fill="#222">F3.5 Types Display<tspan fill="#888" font-size="10">  Ash</tspan></text>
 <path d="M382.0 838.0 H498 V772 H515" fill="none" stroke="#888"/>
 <circle cx="515" cy="772" r="4.5" fill="#222" stroke="#222"/>
 <path d="M382.0 838.0 H498 V794 H515" fill="none" stroke="#888"/>

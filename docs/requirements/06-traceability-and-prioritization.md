@@ -62,6 +62,25 @@ Change management, sized for one maintainer:
 4. An approved change updates the requirement, its user story's acceptance criteria, and its tests in the same pull request as the code, so the documents cannot fall behind the site.
 5. A change that players will notice gets an update log entry (REQ-MAINT-5).
 
+### Changes of 14 October 2026: what, not how
+
+A review against the course's rule that a requirement states what the system does, not how, changed the requirements below. Rewritten requirements keep their identifiers; a requirement replaced by one with another meaning is deleted, and its identifier is not reused.
+
+| Requirements                                                        | Change                                                                                                                                                      |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-INTF-1, 2, 5, REQ-FEED-8, 9, REQ-OPS-2, REQ-TEXT-10, REQ-USE-12 | Rewritten to state the outcome in place of the mechanism.                                                                                                   |
+| REQ-PERF-4                                                          | Rewritten as a time to an editable team; the 600 kB script limit is kept as its design budget.                                                              |
+| REQ-TEXT-11                                                         | Now says that the generation profile is part of the team read back, which REQ-TEXT-10 used to ensure.                                                       |
+| REQ-INTF-6, REQ-USE-13                                              | Deleted: merged into REQ-INTF-5 and REQ-USE-12.                                                                                                             |
+| REQ-INTF-9, 15, REQ-PERF-5, REQ-INFO-5, REQ-MAINT-2                 | Deleted: REQ-FEED-1 to 5, REQ-PERF-4, REQ-COLL-11, and REQ-LANG-1 already state their outcome.                                                              |
+| REQ-INTF-16, REQ-OPS-3                                              | Deleted: replaced by REQ-FEED-10 and REQ-PERF-9.                                                                                                            |
+| REQ-USE-8, 11, REQ-INTF-7, 10, 17, REQ-PERF-8                       | Moved to the design constraints, Section 3.14.1 of the SyRS.                                                                                                |
+| REQ-OPS-1, REQ-POL-4, 5, REQ-REL-1 to 3, REQ-MAINT-1, 3 to 5        | Moved to the development constraints, Section 3.14.2.                                                                                                       |
+| REQ-OPS-4, 5                                                        | Moved to the constraints on the old website, Section 3.14.3; REQ-OPS-5 no longer relies on "absolutely necessary".                                          |
+| REQ-USE-1, 2, 9                                                     | Deleted: they cannot be verified without sessions or a survey with players, so they are now indicators in Section 3.7 of the goal model.                    |
+| REQ-USE-14, 15                                                      | Rewritten to state how the actions and settings are grouped, not which buttons and menus hold them.                                                         |
+| REQ-USE-18                                                          | Deleted: its condition, where the toolbar fits on one row, is a layout choice. The decision is kept as design in the text after the usability requirements. |
+
 ## 6.4 Traceability
 
 ### Traceability information model
@@ -165,7 +184,7 @@ An X means the requirements of the row help achieve the business requirement of 
 | US15       | P-1 Maya                  | UC15 Look Up Reference             | REQ-REF-1 to 6               |
 | US16       | P-3 Sofía, P-4 Kenji      | UC16 Change Language               | REQ-LANG-1 to 8              |
 | US17       | P-1 Maya                  | UC17 Change Colour Scheme          | REQ-THEME-1, 2               |
-| US18       | P-2 Daniel                | UC18 Send Feedback                 | REQ-FEED-1 to 10             |
+| US18       | P-2 Daniel                | UC18 Send Feedback                 | REQ-FEED-1 to 11             |
 | US19       | P-4 Kenji                 | UC19 Switch Site Version           | REQ-SITE-1, 2                |
 | US20       | Maintainer (SH-2)         | UC20 Update Game Data              | REQ-DATA-1 to 7, 10 to 12    |
 | US21       | Maintainer (SH-2)         | UC21 Update Translations           | REQ-DATA-8, 9                |
@@ -212,4 +231,4 @@ Work to do is kept only in the project's GitHub issues and on its project board,
 - An issue tied to no requirement carries the label `no requirement` and has no priority until a requirement is written for it.
 - The milestone "Ash" holds the tasks left before the redesign is released, "Brock" holds the release after it, and "Later" holds what is wanted after that, unscheduled. A rated issue with no milestone is ranked but not yet scheduled. Planned features are named PF1 to PF7 ([04](04-feature-model.md), Section 4.3) so that they are not mistaken for the priorities P0 to P3.
 
-Work that has no issue because it recurs: running the data and translation updates after each Pokemon Showdown change (BR-3), and reviewing the weekly dependency update (REQ-MAINT-3). Two pieces of requirements work are deferred and have no issue: usability sessions and surveys of players (REQ-USE-1, 2, 9), which the Site Owner set aside on 13 October 2026 as useful later for gauging the audience.
+Work that has no issue because it recurs: running the data and translation updates after each Pokemon Showdown change (BR-3), and reviewing the weekly dependency update (REQ-MAINT-3). Two pieces of requirements work are deferred and have no issue: usability sessions and surveys of players (the indicators of Section 3.7 of the [goal model](03-goal-model.md), formerly REQ-USE-1, 2, and 9), which the Site Owner set aside on 13 October 2026 as useful later for gauging the audience.
