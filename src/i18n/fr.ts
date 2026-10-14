@@ -30,10 +30,11 @@ const fr: Messages = {
   },
   generationSelect: "Génération",
   comingSoon: "Bientôt disponible",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principale" },
   combinedGenerations: {
     label: "Générations 6–9",
     short: "Gén. 6–9",
-    description: "Combine les options de tous les jeux des générations 6–9",
+    description: "Combine tous les jeux des générations 6–9",
   },
   championsGeneration: "Gén. 9 · Champions",
   championsGenerationShort: "Gén. 9 (Champions)",

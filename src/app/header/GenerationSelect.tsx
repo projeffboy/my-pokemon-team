@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import GenerationValue from "./generation-select/GenerationValue";
 import GenerationOption from "./generation-select/GenerationOption";
+import GenerationGroupHeader from "./generation-select/GenerationGroupHeader";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
@@ -11,6 +12,7 @@ import {
 import type { SavedTeam, Generation, GenerationTransferData } from "@/types";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
+import CheckIcon from "@mui/icons-material/Check";
 import TextField from "@mui/material/TextField";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
@@ -47,6 +49,8 @@ type GenerationSelectOption = {
 const GenerationSelect = observer(function GenerationSelect() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
+  const fieldRef = useRef<HTMLDivElement>(null);
+  const [menuHeight, setMenuHeight] = useState(400);
   const [pending, setPending] = useState<{
     teamId: string;
     generation: Generation;
@@ -62,51 +66,65 @@ const GenerationSelect = observer(function GenerationSelect() {
     : variantGeneration(format) ? format
     : `${generation}`;
 
-  // Combined generations first, then Champions and the individual games.
-  const options: GenerationSelectOption[] = [
+  // The Champions spin-off, then the main series with the combined generations first, then the games still to come
+  const groups: { title: string; options: GenerationSelectOption[] }[] = [
     {
-      value: COMBINED_GENERATIONS_PROFILE,
-      label: t.combinedGenerations.label,
-      full: t.combinedGenerations.label,
-      short: t.combinedGenerations.short,
-      description: t.combinedGenerations.description,
-      logos: [],
+      title: t.generationGroups.spinOffs,
+      options: [
+        {
+          value: CHAMPIONS,
+          label: t.championsGeneration,
+          short: t.championsGeneration,
+          full: t.championsGeneration,
+          logos: gameLogosFor(CHAMPIONS_GENERATION, CHAMPIONS_FORMAT),
+        },
+      ],
     },
     {
-      value: CHAMPIONS,
-      label: t.championsGeneration,
-      short: t.championsGeneration,
-      full: t.championsGeneration,
-      logos: gameLogosFor(CHAMPIONS_GENERATION, CHAMPIONS_FORMAT),
+      title: t.generationGroups.mainSeries,
+      options: [
+        {
+          value: COMBINED_GENERATIONS_PROFILE,
+          label: t.combinedGenerations.label,
+          full: t.combinedGenerations.label,
+          short: t.combinedGenerations.short,
+          description: t.combinedGenerations.description,
+          logos: [],
+        },
+        ...GENERATIONS.map(generation => ({
+          value: `${generation}`,
+          label: `${t.generation(generation)} · ${t.generationGames[generation]}`,
+          short: `${t.generation(generation)} · ${GENERATION_GAMES[generation]}`,
+          full: `${t.generation(generation)} · ${t.generationGames[generation]}`,
+          logos: gameLogosFor(generation),
+        })),
+      ],
     },
-    ...GENERATIONS.flatMap(generation => [
-      {
-        value: `${generation}`,
-        label: `${t.generation(generation)} · ${t.generationGames[generation]}`,
-        short: `${t.generation(generation)} · ${GENERATION_GAMES[generation]}`,
-        full: `${t.generation(generation)} · ${t.generationGames[generation]}`,
-        logos: gameLogosFor(generation),
-      },
-      ...GAME_VARIANTS.filter(
-        variant => variantGeneration(variant) === generation,
-      ).map(variant => ({
-        value: variant,
-        disabled: true,
-        compact:
-          variant === "Let’s Go" ? undefined : (
-            `${t.generation(generation)} · ${t.gameVariantsCompact[variant]}`
-          ),
-        label: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
-        short: `${t.generation(generation)} · ${
-          variant === "Let’s Go" ? "LGPE"
-          : variant === "Legends: Arceus" ? "PLA"
-          : "Z-A"
-        }`,
-        full: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
-        logos: gameLogosFor(generation, variant),
-      })),
-    ]),
+    {
+      title: t.comingSoon,
+      options: GENERATIONS.flatMap(generation =>
+        GAME_VARIANTS.filter(
+          variant => variantGeneration(variant) === generation,
+        ).map(variant => ({
+          value: variant,
+          disabled: true,
+          compact:
+            variant === "Let’s Go" ? undefined : (
+              `${t.generation(generation)} · ${t.gameVariantsCompact[variant]}`
+            ),
+          label: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
+          short: `${t.generation(generation)} · ${
+            variant === "Let’s Go" ? "LGPE"
+            : variant === "Legends: Arceus" ? "PLA"
+            : "Z-A"
+          }`,
+          full: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
+          logos: gameLogosFor(generation, variant),
+        })),
+      ),
+    },
   ];
+  const options = groups.flatMap(group => group.options);
 
   const source = options.find(option => option.value === value);
   const handleChange = async (value: string) => {
@@ -219,13 +237,14 @@ const GenerationSelect = observer(function GenerationSelect() {
             <GenerationOption
               label={option.label}
               logos={option.logos}
-              status={option.disabled ? t.comingSoon : option.description}
+              status={option.description}
               nowrap
               placeholders
             />
           </Box>
         ))}
         <TextField
+          ref={fieldRef}
           select
           disabled={loading}
           size="small"
@@ -259,32 +278,56 @@ const GenerationSelect = observer(function GenerationSelect() {
                   )
                 );
               },
-              MenuProps: { slotProps: { paper: { sx: { maxHeight: 400 } } } },
+              // Down to the screen's edge, less the menu's 16px margin, but at least 400px when
+              // the screen allows, so a field near the bottom opens the menu over it
+              onOpen: () => {
+                const bottom = fieldRef.current?.getBoundingClientRect().bottom;
+                setMenuHeight(
+                  Math.max(
+                    window.innerHeight - (bottom ?? 0) - 16,
+                    Math.min(400, window.innerHeight - 32),
+                  ),
+                );
+              },
+              MenuProps: {
+                // The check mark makes the menu a little wider than the field, so it grows rightwards
+                anchorOrigin: { vertical: "bottom", horizontal: "left" },
+                transformOrigin: { vertical: "top", horizontal: "left" },
+                slotProps: { paper: { sx: { maxHeight: menuHeight } } },
+              },
             },
             htmlInput: { "aria-label": t.generationSelect },
           }}
         >
-          {options.map(
-            ({
-              value,
-              label,
-              compact,
-              short,
-              logos,
-              disabled,
-              description,
-            }) => (
-              <MenuItem key={value} value={value} disabled={disabled}>
+          {groups.flatMap(({ title, options }, index) => [
+            <GenerationGroupHeader
+              key={title}
+              title={title}
+              first={index === 0}
+            />,
+            ...options.map(option => (
+              <MenuItem
+                key={option.value}
+                value={option.value}
+                disabled={option.disabled}
+              >
                 <GenerationOption
-                  label={label}
-                  compact={compact}
-                  short={short}
-                  logos={logos}
-                  status={disabled ? t.comingSoon : description}
+                  label={option.label}
+                  compact={option.compact}
+                  short={option.short}
+                  logos={option.logos}
+                  status={option.description}
+                />
+                <CheckIcon
+                  fontSize="small"
+                  sx={{
+                    ml: 2,
+                    visibility: option.value === value ? "visible" : "hidden",
+                  }}
                 />
               </MenuItem>
-            ),
-          )}
+            )),
+          ])}
         </TextField>
       </Box>
       {target && plan && (

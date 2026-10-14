@@ -36,11 +36,7 @@ export default function GenerationOption({
           sx={{ display: "flex", alignItems: "center", gap: 1 }}
         >
           {logos.length > 0 && (
-            <GameLogos
-              logos={logos}
-              nowrap={nowrap}
-              placeholders={placeholders}
-            />
+            <GameLogos logos={logos} nowrap placeholders={placeholders} />
           )}
           {status && (
             <Typography

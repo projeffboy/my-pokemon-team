@@ -32,10 +32,11 @@ const ptBR: Messages = {
   },
   generationSelect: "Geração",
   comingSoon: "Em breve",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principal" },
   combinedGenerations: {
     label: "Gerações 6–9",
     short: "Gerações 6–9",
-    description: "Combina opções de todos os jogos das gerações 6–9",
+    description: "Combina todos os jogos das gerações 6–9",
   },
   championsGeneration: "Ger. 9 · Champions",
   championsGenerationShort: "Ger. 9 (Champions)",

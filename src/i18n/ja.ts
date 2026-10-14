@@ -30,10 +30,11 @@ const ja: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "近日公開",
+  generationGroups: { spinOffs: "外伝", mainSeries: "本編" },
   combinedGenerations: {
     label: "第6～9世代",
     short: "第6～9世代",
-    description: "第6〜9世代の全ゲームの選択肢を統合",
+    description: "第6〜9世代の全ゲームを統合",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",

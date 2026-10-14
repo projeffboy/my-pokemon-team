@@ -45,10 +45,11 @@ const ko: Messages = {
   },
   generationSelect: "세대",
   comingSoon: "출시 예정",
+  generationGroups: { spinOffs: "외전", mainSeries: "메인 시리즈" },
   combinedGenerations: {
     label: "6–9세대",
     short: "6–9세대",
-    description: "6–9세대 모든 게임의 선택지를 통합",
+    description: "6–9세대 모든 게임을 통합",
   },
   championsGeneration: "9세대 · Champions",
   championsGenerationShort: "9세대 (Champions)",
