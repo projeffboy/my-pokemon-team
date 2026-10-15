@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { describeBrowser, POST, readImages } from "../../api/feedback";
+import { loadScreenshotLibrary } from "@/app/header/feedback-dialog/capture-page";
 
 test("names the browser and OS from the user agent", () => {
   const userAgents = {
@@ -159,4 +160,72 @@ test("a failed email connection receives a retryable response", async () => {
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("opening the dialog and sending share one screenshot library import", async () => {
+  const opened = loadScreenshotLibrary();
+  expect(loadScreenshotLibrary()).toBe(opened);
+  expect(typeof (await opened).domToJpeg).toBe("function");
+});
+
+test.describe("rate limit", () => {
+  const originalFetch = globalThis.fetch;
+  const originalNow = Date.now;
+  let now = 0;
+  let resendStatus = 200;
+  let sent = 0;
+  test.beforeEach(() => {
+    now = 1_800_000_000_000;
+    resendStatus = 200;
+    sent = 0;
+    Date.now = () => now;
+    globalThis.fetch = async () => {
+      sent++;
+      return new Response(null, { status: resendStatus });
+    };
+  });
+  test.afterEach(() => {
+    Date.now = originalNow;
+    globalThis.fetch = originalFetch;
+  });
+  const post = async (ip: string) =>
+    (
+      await POST(
+        new Request("https://mypokemonteam.com/api/feedback", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Forwarded-For": ip,
+          },
+          body: JSON.stringify({ message: "Rate limit test" }),
+        }),
+      )
+    ).status;
+  const minute = 60 * 1000;
+
+  test("allows five sends per ten minutes", async () => {
+    for (let i = 0; i < 5; i++) expect(await post("limit-test")).toBe(204);
+    expect(await post("limit-test")).toBe(429);
+    expect(sent).toBe(5);
+    expect(await post("other-limit-test")).toBe(204);
+  });
+
+  test("refused retries do not extend the wait", async () => {
+    for (let i = 0; i < 5; i++) expect(await post("retry-test")).toBe(204);
+    for (let i = 0; i < 9; i++) {
+      now += minute;
+      expect(await post("retry-test")).toBe(429);
+    }
+    now += minute;
+    expect(await post("retry-test")).toBe(204);
+  });
+
+  test("sends the email provider fails do not count", async () => {
+    resendStatus = 500;
+    for (let i = 0; i < 5; i++) expect(await post("outage-test")).toBe(502);
+    resendStatus = 200;
+    for (let i = 0; i < 5; i++) expect(await post("outage-test")).toBe(204);
+    expect(await post("outage-test")).toBe(429);
+    expect(sent).toBe(10);
+  });
 });

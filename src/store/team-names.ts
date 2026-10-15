@@ -1,36 +1,45 @@
+type CopyOf = (name: string, number?: bigint) => string;
+
+function unwrap(name: string, form: string) {
+  const [prefix = "", suffix = ""] = form.split("{name}");
+  if (
+    name.length > prefix.length + suffix.length &&
+    name.startsWith(prefix) &&
+    name.endsWith(suffix)
+  ) {
+    return name.slice(prefix.length, name.length - suffix.length);
+  }
+}
+
+// copyOf places the number of each copy after the first, so in every language it stays apart
+// from any number in the copied team's own name
 export function nextDuplicateName(
   name: string,
   existingNames: readonly string[],
-  copyOf: (name: string) => string,
+  copyOf: CopyOf,
 ) {
-  const [prefix = "", suffix = ""] = copyOf("{name}").split("{name}");
-  const numbered = /^(.*) (\d+)$/.exec(name);
-  let number = 1n;
   let base = name;
-  if (numbered) {
-    const value = BigInt(numbered[2] ?? "0");
-    const unnumbered = numbered[1] ?? "";
-    if (
-      value >= 2n &&
-      unnumbered.startsWith(prefix) &&
-      unnumbered.endsWith(suffix)
-    ) {
-      base = unnumbered;
-      number = value;
+  let number = 1n;
+  for (const [digits] of name.matchAll(/\d+/g)) {
+    const value = BigInt(digits);
+    const copied = value >= 2n && unwrap(name, copyOf("{name}", value));
+    if (copied) {
+      base = copied;
+      number += value;
+      break;
     }
   }
-  while (
-    base.startsWith(prefix) &&
-    base.endsWith(suffix) &&
-    base.length > prefix.length + suffix.length
+  for (
+    let copied = unwrap(base, copyOf("{name}"));
+    copied;
+    copied = unwrap(base, copyOf("{name}"))
   ) {
-    base = base.slice(prefix.length, base.length - suffix.length);
+    base = copied;
     number++;
   }
-  const copied = copyOf(base);
-  let candidate = number === 1n ? copied : `${copied} ${number}`;
+  let candidate = number === 1n ? copyOf(base) : copyOf(base, number);
   while (existingNames.includes(candidate)) {
-    candidate = `${copied} ${++number}`;
+    candidate = copyOf(base, ++number);
   }
   return candidate;
 }
