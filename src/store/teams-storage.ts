@@ -32,6 +32,7 @@ export function getBrowserStorage(): Storage | undefined {
 export interface StoredState {
   teams: SavedTeam[];
   currentTeamId: string;
+  // Whether pokemon and move types show; named from when it covered moves only
   showMoveTypes: boolean;
   sort: SortOrder;
   moveSort: MoveSortOrder;
