@@ -223,6 +223,23 @@ Garchomp
     expect(parseTeamsText("Not a pokemon @ Leftovers")).toEqual([]);
   });
 
+  test("reads headers with leading or trailing spaces", () => {
+    const teams = parseTeamsText(
+      "  === [gen8ou] A ===\n\nGarchomp\n\n\t=== [gen9uu] B ===  \n\nKingdra\n",
+    );
+    expect(
+      teams.map(({ name, generation, format, team }) => [
+        name,
+        generation,
+        format,
+        team[0].name,
+      ]),
+    ).toEqual([
+      ["A", 8, "OU: Over Used", "garchomp"],
+      ["B", 9, "UU: Under Used", "kingdra"],
+    ]);
+  });
+
   test("serializes every saved team under a header", () => {
     const text = serializeTeams([
       createSavedTeam({

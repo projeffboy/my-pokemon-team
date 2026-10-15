@@ -437,7 +437,7 @@ export function parseTeamsText(
     .some(line => line.trim() === BACKUP_MARKER);
   const chunks: { header?: RegExpExecArray; lines: string[] }[] = [];
   for (const line of text.split("\n")) {
-    const header = TEAM_HEADER.exec(line);
+    const header = TEAM_HEADER.exec(line.trim());
     if (header) chunks.push({ header, lines: [] });
     else if (chunks.length) chunks[chunks.length - 1]?.lines.push(line);
     else chunks.push({ lines: [line] });
