@@ -684,7 +684,7 @@ const ptBR: Messages = {
       ],
       [
         "Recuperação confiável",
-        "Golpes que garantem recuperar 50% ou mais do seu HP toda vez que são usados (em condições normais de clima). Ex.: Recover, Soft-Boiled, Milk Drink, Slack Off, Synthesis.",
+        "Golpes que garantem recuperar 50% ou mais do seu HP toda vez que são usados (em condições normais de clima). Ex.: Recover, Soft-Boiled, Milk Drink, Slack Off, Synthesis. Wish também conta se o mesmo Pokémon conhece Protect ou Detect.",
       ],
       [
         "Golpes de status",

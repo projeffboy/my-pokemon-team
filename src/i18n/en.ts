@@ -686,7 +686,7 @@ const en = {
       ],
       [
         "Reliable Recovery",
-        "Moves that are guaranteed to recover 50% or more of your HP every time you use it (under normal weather conditions). E.g. Recover, Softboiled, Milk Drink, Slack Off, Synthesis.",
+        "Moves that are guaranteed to recover 50% or more of your HP every time you use it (under normal weather conditions). E.g. Recover, Softboiled, Milk Drink, Slack Off, Synthesis. Wish also counts when the same pokemon has Protect or Detect.",
       ],
       [
         "Status Moves",

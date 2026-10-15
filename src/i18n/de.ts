@@ -703,7 +703,7 @@ const de: Messages = {
       ],
       [
         "Zuverlässige Heilung",
-        "Attacken, die bei jedem Einsatz garantiert 50 % oder mehr deiner KP heilen (bei normalem Wetter). Z. B. Genesung, Weichei, Milchgetränk, Tagedieb, Synthese.",
+        "Attacken, die bei jedem Einsatz garantiert 50 % oder mehr deiner KP heilen (bei normalem Wetter). Z. B. Genesung, Weichei, Milchgetränk, Tagedieb, Synthese. Wunschtraum zählt auch, wenn dasselbe Pokémon Schutzschild oder Scanner beherrscht.",
       ],
       [
         "Status-Attacken",

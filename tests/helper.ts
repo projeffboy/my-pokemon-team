@@ -25,7 +25,7 @@ export const goToSite = async (page: Page) => {
   await expect(page.locator("header .MuiSelect-nativeInput")).toHaveValue("9");
 };
 
-// Below md, the More button beside the slot tabs also hides the team toolbar
+// Below md, the team is shown in slot tabs instead of cards
 export const isMdDown = (page: Page) =>
   (page.viewportSize()?.width ?? Infinity) < breakpointValues.md;
 

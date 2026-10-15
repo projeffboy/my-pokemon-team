@@ -686,7 +686,7 @@ const es: Messages = {
       ],
       [
         "Recuperación fiable",
-        "Movimientos que garantizan recuperar el 50 % o más de tus PS cada vez que los usas (con un clima normal). P. ej. Recuperación, Ovocuración, Batido, Relajo, Síntesis.",
+        "Movimientos que garantizan recuperar el 50 % o más de tus PS cada vez que los usas (con un clima normal). P. ej. Recuperación, Ovocuración, Batido, Relajo, Síntesis. Deseo también cuenta si el mismo Pokémon conoce Protección o Detección.",
       ],
       [
         "Movimientos de estado",
