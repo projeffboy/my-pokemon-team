@@ -184,4 +184,18 @@ test("Hidden Power matches the level once typing ends, not each keystroke", asyn
   await expect
     .poll(() => getTeamTextFromUrl(page))
     .toContain("IVs: 30 Atk / 30 SpA / 30 Spe");
+
+  await dialog.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(level).toHaveValue("100");
+  await expect
+    .poll(() => getTeamTextFromUrl(page))
+    .toContain("IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe");
+
+  // Escape closes the dialog without blurring the field first
+  await level.fill("50");
+  await level.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect
+    .poll(() => getTeamTextFromUrl(page))
+    .toContain("Level: 50\nIVs: 30 Atk / 30 SpA / 30 Spe");
 });

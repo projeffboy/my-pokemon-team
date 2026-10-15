@@ -79,7 +79,11 @@ import {
 } from "./shared/team";
 import { clearDetails, setDetail } from "./shared/set-details";
 import { canSelectMove } from "./shared/moves";
-import { matchHiddenPower, rematchHiddenPower } from "./shared/hidden-power";
+import {
+  hiddenPowerMatches,
+  matchHiddenPower,
+  rematchHiddenPower,
+} from "./shared/hidden-power";
 import { pokemonAbilities } from "./shared/pokedex";
 import { loadGenerationTransferData } from "./shared/generation-transfer-data";
 import { typesIn } from "./shared/generation-data";
@@ -758,20 +762,34 @@ export class Store {
     return true;
   }
 
-  // Level and shininess can change which IVs or DVs give Hidden Power's type
-  setLevel(teamIndex: number, level: number | undefined) {
+  // Level and shininess can change the type Hidden Power's IVs or DVs give.
+  // Only a match the edit breaks is restored, so IVs chosen or imported to
+  // differ stay. The dialog stores each keystroke, so it passes the level its
+  // edit started from.
+  setLevel(
+    teamIndex: number,
+    level: number | undefined,
+    previousLevel = this.team[teamIndex]?.level,
+  ) {
     const member = this.team[teamIndex];
     if (!member) return;
+    const { generation } = this.currentTeam;
+    const matched = hiddenPowerMatches(
+      { ...member, level: previousLevel },
+      generation,
+    );
     setDetail(member, "level", level);
-    rematchHiddenPower(member, this.currentTeam.generation, this.dataFormat);
+    if (matched) rematchHiddenPower(member, generation, this.dataFormat);
   }
 
   setShiny(teamIndex: number, shiny: boolean) {
     const member = this.team[teamIndex];
     if (!member) return;
-    if (this.currentTeam.generation === 2) setLegacyShiny(member, shiny);
+    const { generation } = this.currentTeam;
+    const matched = hiddenPowerMatches(member, generation);
+    if (generation === 2) setLegacyShiny(member, shiny);
     else setDetail(member, "shiny", shiny);
-    rematchHiddenPower(member, this.currentTeam.generation, this.dataFormat);
+    if (matched) rematchHiddenPower(member, generation, this.dataFormat);
   }
 
   resetDetails(teamIndex: number) {

@@ -1,8 +1,10 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
-import { isShinyDv } from "@/shared/generation-rules";
+import { dvGender, getDv, isShinyDv } from "@/shared/generation-rules";
 import { canHaveHiddenPowerType, hiddenPowerType } from "@/shared/hidden-power";
+import { setDetail } from "@/shared/set-details";
+import { parseTeamText } from "@/store/team-text";
 
 test("move selection rejects duplicates but permits changing its own Hidden Power type", ({
   store,
@@ -217,6 +219,34 @@ test("a level change re-matches Hidden Power once Hyper Training no longer appli
   store.setLevel(1, 50);
   store.selectMove(1, "move1", "hiddenpowerfire");
   expect(store.team[1].ivs).toEqual(store.team[0].ivs);
+
+  // The dialog stores each keystroke, then passes the level it started from
+  store.selectPokemon(2, "ampharos");
+  store.selectMove(2, "move1", "hiddenpowerfire");
+  setDetail(store.team[2], "level", 50);
+  store.setLevel(2, 50, 100);
+  expect(store.team[2].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+});
+
+test("shiny and level edits keep Hidden Power IVs that already mismatched its type", ({
+  store,
+}) => {
+  store.currentTeam.generation = 5;
+  store.replaceTeam(
+    parseTeamText("Lanturn\nIVs: 0 Atk\n- Hidden Power Fire", 5),
+  );
+  expect(store.team[0].ivs).toEqual({ atk: 0 });
+  store.setShiny(0, true);
+  store.setLevel(0, 50);
+  expect(store.team[0].ivs).toEqual({ atk: 0 });
+  expect(store.team[0].move1).toBe("hiddenpowerfire");
+
+  store.currentTeam.generation = 7;
+  store.replaceTeam(
+    parseTeamText("Lanturn\nLevel: 50\nIVs: 0 Atk\n- Hidden Power Fire", 7),
+  );
+  store.setLevel(0, 60);
+  expect(store.team[0].ivs).toEqual({ atk: 0 });
 });
 
 test("Gen 2 shininess keeps Hidden Power matching the DVs", ({ store }) => {
@@ -236,4 +266,14 @@ test("Gen 2 shininess keeps Hidden Power matching the DVs", ({ store }) => {
   expect(isShinyDv(store.team[0])).toBe(false);
   expect(store.team[0].move1).toBe("hiddenpowerdragon");
   expect(hiddenPowerType(store.team[0], 2)).toBe("dragon");
+
+  store.replaceTeam(
+    parseTeamText("Lanturn (F)\nShiny: Yes\n- Hidden Power Dragon", 2),
+  );
+  expect(getDv(store.team[0], "atk")).toBe(7);
+  store.setShiny(0, false);
+  expect(isShinyDv(store.team[0])).toBe(false);
+  expect(hiddenPowerType(store.team[0], 2)).toBe("dragon");
+  expect(dvGender(store.team[0])).toBe("F");
+  expect(store.team[0].gender).toBe("F");
 });

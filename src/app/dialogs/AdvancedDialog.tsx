@@ -168,7 +168,11 @@ const AdvancedForm = observer(function AdvancedForm({
                 }}
                 // Hidden Power is matched to the level once typing ends, not to
                 // each keystroke on the way (typing 100 passes through 1 and 10)
-                onCommit={() => store.setLevel(teamIndex, member.level)}
+                onCommit={start => {
+                  // Editing also ends when a team switch closes the dialog
+                  if (store.team[teamIndex] === member)
+                    store.setLevel(teamIndex, member.level, start);
+                }}
                 slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
                 sx={{ flex: "0 0 80px" }}
               />
