@@ -17,13 +17,17 @@ const measure = (buttons: Locator) =>
       const button = element.getBoundingClientRect();
       const label = element.querySelector("span");
       const icon = element.querySelector("svg");
-      if (!label || !icon) throw new Error("Missing label or icon");
+      const toolbar = element.closest('[role="toolbar"]');
+      if (!label || !icon || !toolbar)
+        throw new Error("Missing label, icon, or toolbar");
       const text = label.getBoundingClientRect();
+      const bar = toolbar.getBoundingClientRect();
       return {
         top: Math.round(button.top),
         left: button.left,
         right: button.right,
         height: button.height,
+        inBar: button.left >= bar.left - 0.5 && button.right <= bar.right + 0.5,
         text: label.textContent ?? "",
         labelled:
           text.width > 0 &&
@@ -62,28 +66,23 @@ test("every team action keeps its label, on two rows where one cannot hold them"
       )
       .toBe(rows);
 
-    // The Random and Manage labels shorten a moment after the toolbar resizes
+    // The Random and Manage labels shorten a moment after the toolbar resizes,
+    // and crossing a breakpoint swaps in another toolbar, so measure until settled
     await expect
       .poll(async () =>
         (await measure(buttons))
-          .filter(box => !box.labelled)
+          .filter(box => !box.labelled || box.height < 48 || !box.inBar)
           .map(box => box.text),
       )
       .toEqual([]);
-    const boxes = await measure(buttons);
-    const bar = await toolbar.boundingBox();
-    if (!bar) throw new Error("Missing toolbar");
-    for (const box of boxes) {
-      expect(box.text, `${width}px`).not.toBe("");
-      expect(box.height).toBeGreaterThanOrEqual(48);
-      expect(box.left).toBeGreaterThanOrEqual(bar.x - 0.5);
-      expect(box.right).toBeLessThanOrEqual(bar.x + bar.width + 0.5);
-    }
     // On two rows the team's actions sit above its history and settings
     if (rows === 2)
-      expect(boxes.map(box => box.top === boxes[0]?.top)).toEqual(
-        ACTIONS.map((_, index) => index < 3),
-      );
+      await expect
+        .poll(async () => {
+          const boxes = await measure(buttons);
+          return boxes.map(box => box.top === boxes[0]?.top);
+        })
+        .toEqual(ACTIONS.map((_, index) => index < 3));
   }
 });
 

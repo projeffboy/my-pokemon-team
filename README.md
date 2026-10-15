@@ -36,7 +36,7 @@ This is a single-page application: teams and Pokemon data stay in the browser, a
 - Browser testing: Playwright.
 - Direct rule testing: Playwright's test runner in Node, without a browser.
 
-See [package.json](package.json) for dependency versions and the exact script definitions, and [AGENTS.md](AGENTS.md) for the code structure and conventions.
+See [package.json](package.json) for dependency versions and the exact script definitions, and [AGENTS.md](AGENTS.md) for the code structure and conventions. The requirements, and the decisions behind them, are in [docs/requirements](docs/requirements/README.md).
 
 ## Local Development
 
