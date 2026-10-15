@@ -11,14 +11,14 @@ const checked = (team: ReadonlyTeam, generation?: Generation) =>
     .filter(item => item.isChecked)
     .map(item => en.checklist.items[item.key].label);
 
-test("an empty team passes no check, in three groups of three", () => {
+test("an empty team passes no check, in three groups", () => {
   const groups = evaluateChecklist(createTeam());
   expect(groups.map(group => en.checklist.groups[group.key])).toEqual([
     "General",
     "Defensive",
     "Offensive",
   ]);
-  expect(groups.map(group => group.items.length)).toEqual([3, 3, 3]);
+  expect(groups.map(group => group.items.length)).toEqual([3, 4, 3]);
   expect(checked(createTeam())).toEqual([]);
 });
 
@@ -108,6 +108,33 @@ test("defensive checks count clerics and phazers", () => {
       ),
     ),
   ).toEqual(["Cleric", "Phazer"]);
+});
+
+test("trappers stop foes from switching out for as long as they stay in", () => {
+  expect(
+    checked(
+      createTeam(
+        { name: "golurk", move1: "block" },
+        { name: "drednaw", move1: "jawlock" },
+      ),
+    ),
+  ).toEqual(["Trapper"]);
+  for (const [name, ability] of [
+    ["gothitelle", "Shadow Tag"],
+    ["trapinch", "Arena Trap"],
+    ["probopass", "Magnet Pull"],
+  ])
+    expect(checked(createTeam({ name, ability }))).toEqual(["Trapper"]);
+  // Sand Tomb lets the foe go after a few turns
+  expect(checked(createTeam({ name: "hippowdon", move1: "sandtomb" }))).toEqual(
+    [],
+  );
+});
+
+test("trapping abilities count only in games that have abilities", () => {
+  const team = createTeam({ name: "wobbuffet", ability: "Shadow Tag" });
+  expect(checked(team, 2)).toEqual([]);
+  expect(checked(team, 3)).toEqual(["Trapper"]);
 });
 
 test("Ceaseless Edge sets an entry hazard, as Stone Axe does", () => {
@@ -286,6 +313,7 @@ test("Assault Vest blocks status moves in every checklist role", () => {
     "healbell",
     "toxic",
     "roar",
+    "block",
     "calmmind",
   ]) {
     const team = createTeam({

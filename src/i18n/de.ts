@@ -227,6 +227,7 @@ const de: Messages = {
       cleric: { label: "Cleric" },
       status: { label: "Status-Attacke", short: "Status" },
       phazer: { label: "Phazer" },
+      trapper: { label: "Trapper" },
       boosting: { label: "Boost-Attacke", short: "Setup" },
       voltTurn: {
         label: "Volt-Turn-Attacke",
@@ -666,6 +667,10 @@ const de: Messages = {
       [
         "Status-Attacken",
         "Hier sind damit treffsichere Attacken gemeint, die paralysieren, verbrennen oder vergiften, sowie Attacken, die Schlaf verursachen. Z. B. Toxin, Irrlicht, Donnerwelle, Gesang.",
+      ],
+      [
+        "Trapper",
+        "Ein Pokémon, das Gegner am Auswechseln hindert, solange es selbst im Kampf bleibt: mit einer Attacke wie Horrorblick, Rückentzug oder Ankerschuss oder mit der Fähigkeit Wegsperre, Ausweglos oder Magnetfalle. Attacken, die nur einige Runden lang festhalten, wie Whirlpool, zählen nicht.",
       ],
       [
         "Boost-Attacke",

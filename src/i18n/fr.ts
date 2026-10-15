@@ -224,6 +224,7 @@ const fr: Messages = {
       cleric: { label: "Cleric" },
       status: { label: "Capacité de statut", short: "Statut" },
       phazer: { label: "Phazer" },
+      trapper: { label: "Trapper" },
       boosting: { label: "Capacité de boost", short: "Boost" },
       voltTurn: {
         label: "Capacité Volt-turn",
@@ -670,6 +671,10 @@ const fr: Messages = {
       [
         "Capacités de statut",
         "Ici, il s'agit des capacités précises qui paralysent, brûlent ou empoisonnent, ainsi que de celles qui endorment. Ex. : Toxik, Feu Follet, Cage Éclair, Berceuse.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon qui empêche l'adversaire de changer tant qu'il reste au combat, grâce à une capacité comme Regard Noir, Barrage ou Ancrage, ou au talent Marque Ombre, Piège Sable ou Magnépiège. Les capacités qui piègent seulement quelques tours, comme Siphon, ne comptent pas.",
       ],
       [
         "Capacité de boost",

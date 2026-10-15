@@ -215,6 +215,7 @@ const es: Messages = {
       cleric: { label: "Cleric" },
       status: { label: "Movimiento de estado", short: "Estado" },
       phazer: { label: "Phazer" },
+      trapper: { label: "Trapper" },
       boosting: { label: "Movimiento de mejora", short: "Setup" },
       voltTurn: {
         label: "Movimiento Volt-turn",
@@ -649,6 +650,10 @@ const es: Messages = {
       [
         "Movimientos de estado",
         "Aquí se refieren a movimientos precisos que paralizan, queman o envenenan, además de movimientos que duermen. P. ej. Tóxico, Fuego Fatuo, Onda Trueno, Canto.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon que impide a los rivales cambiarse mientras él siga en combate, con un movimiento como Mal de Ojo, Bloqueo o Anclaje, o con la habilidad Sombra Trampa, Trampa Arena o Imán. Los movimientos que atrapan solo unos turnos, como Torbellino, no cuentan.",
       ],
       [
         "Movimiento de mejora",

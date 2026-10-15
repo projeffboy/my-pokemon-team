@@ -3,6 +3,7 @@ import {
   selectPokemon,
   selectMove,
   selectItem,
+  selectAbility,
   expectChecklistItem,
   openAnalysis,
 } from "helper";
@@ -50,6 +51,19 @@ test.describe("Team Checklist - Integration Tests", () => {
       checklistItem: "Phazer",
     },
     {
+      pokemon: "Cofagrigus",
+      move: "Mean Look",
+      item: null,
+      checklistItem: "Trapper",
+    },
+    {
+      pokemon: "Diglett",
+      move: null,
+      item: null,
+      ability: "Arena Trap",
+      checklistItem: "Trapper",
+    },
+    {
       pokemon: "Dragonite",
       move: "Dragon Dance",
       item: null,
@@ -69,9 +83,9 @@ test.describe("Team Checklist - Integration Tests", () => {
     },
   ];
 
-  for (const { pokemon, move, item, checklistItem } of testCases) {
+  for (const { pokemon, move, item, ability, checklistItem } of testCases) {
     test(`should check '${checklistItem}' when ${pokemon} with ${
-      move || item
+      move || item || ability
     } is selected`, async ({ page }) => {
       await selectPokemon(page, pokemon);
       if (move) {
@@ -79,6 +93,9 @@ test.describe("Team Checklist - Integration Tests", () => {
       }
       if (item) {
         await selectItem(page, item);
+      }
+      if (ability) {
+        await selectAbility(page, ability);
       }
       await expectChecklistItem(page, checklistItem, true);
     });

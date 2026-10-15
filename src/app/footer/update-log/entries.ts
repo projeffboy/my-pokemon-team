@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 14, 2026",
+    changes: [
+      "The checklist now has a Trapper role for moves and abilities that stop foes from switching out, e.g. Mean Look and Shadow Tag.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",

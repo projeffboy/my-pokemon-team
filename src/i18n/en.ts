@@ -217,6 +217,7 @@ const en = {
       cleric: { label: "Cleric" },
       status: { label: "Status Move", short: "Status" },
       phazer: { label: "Phazer" },
+      trapper: { label: "Trapper" },
       boosting: { label: "Boosting Move", short: "Setup" },
       voltTurn: {
         label: "Volt-turn Move",
@@ -646,6 +647,10 @@ const en = {
       [
         "Status Moves",
         "Here, they refer to accurate moves that paralyze, burn, or poison, as well as moves that cause sleep. E.g. Toxic, Will-O-Wisp, Thunder Wave, Sing.",
+      ],
+      [
+        "Trapper",
+        "A pokemon that stops foes from switching out while it stays in, using a move like Mean Look, Block, or Anchor Shot, or the ability Shadow Tag, Arena Trap, or Magnet Pull. Moves that trap for only a few turns, like Whirlpool, don't count.",
       ],
       [
         "Boosting Move",

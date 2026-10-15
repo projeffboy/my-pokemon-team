@@ -8,6 +8,7 @@ import {
   isMoveUsable,
 } from "./shared/effectiveness";
 import { LATEST_GENERATION } from "@/shared/generations";
+import { generationRules } from "@/shared/generation-rules";
 
 // The labels live in src/i18n, under these keys
 export type ChecklistGroupKey = keyof Messages["checklist"]["groups"];
@@ -164,6 +165,24 @@ const hasWishAndProtect = hasMovesTogether([
   ],
 ]);
 
+// Moves and abilities that stop a foe from switching out for as long as the trapper stays
+// in, unlike moves such as Whirlpool that trap for a few turns
+const traps: Check = (team, generation = LATEST_GENERATION, format = "") =>
+  hasAnyMove([
+    "meanlook",
+    "block",
+    "spiderweb",
+    "anchorshot",
+    "spiritshackle",
+    "jawlock",
+    "thousandwaves",
+    "octolock",
+  ])(team, generation, format) ||
+  (generationRules(generation, format).abilities &&
+    team.some(({ ability }) =>
+      ["Shadow Tag", "Arena Trap", "Magnet Pull"].includes(ability),
+    ));
+
 export const checklist: ChecklistGroup[] = [
   {
     key: "general",
@@ -212,6 +231,7 @@ export const checklist: ChecklistGroup[] = [
             move => !!moveDataIn(move, generation, format)?.forceSwitch,
           ),
       },
+      { key: "trapper", check: traps },
     ],
   },
   {

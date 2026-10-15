@@ -222,6 +222,7 @@ const it: Messages = {
       cleric: { label: "Cleric" },
       status: { label: "Mossa di stato", short: "Stato" },
       phazer: { label: "Phazer" },
+      trapper: { label: "Trapper" },
       boosting: { label: "Mossa potenziante", short: "Setup" },
       voltTurn: {
         label: "Mossa Volt-turn",
@@ -657,6 +658,10 @@ const it: Messages = {
       [
         "Mosse di stato",
         "Qui indicano mosse precise che paralizzano, scottano o avvelenano, oltre alle mosse che addormentano. Es. Tossina, Fuocofatuo, Tuononda, Canto.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon che impedisce agli avversari di cambiare finché resta in campo, con una mossa come Malosguardo, Blocco o Colpo d’Ancora, o con l'abilità Pedinombra, Trappoarena o Magnetismo. Le mosse che intrappolano solo per qualche turno, come Mulinello, non contano.",
       ],
       [
         "Mossa potenziante",

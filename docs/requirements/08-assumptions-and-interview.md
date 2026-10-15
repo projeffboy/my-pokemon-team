@@ -55,7 +55,7 @@ These came from his review of the site on 14 October 2026.
 - **Follow the ranking.** "Well, whatever ranks first, right?" Planned work is done in the order the board's ratings give. He does not rate the items himself, and the formula stays simple, because working every priority out again whenever a task is added was a burden.
 - **Every task has acceptance criteria**, so that "done" can be checked rather than guessed.
 - **No player survey or usability sessions for now.** "we can do those another time. Could be useful in the future if we want to gauge who our audience is." They could then measure how quickly a first-time player finds the team's worst weakness, how quickly a Showdown user imports a team and copies it back, and how many players rate the site good.
-- **Smaller calls.** Wish together with Protect or Detect counts as reliable recovery. Shrinking the inputs' clear button is not part of the plan.
+- **Smaller calls.** Wish together with Protect or Detect counts as reliable recovery. A trapper is a pokemon that keeps foes from switching out for as long as it stays in, with a move like Mean Look or an ability like Shadow Tag; moves that trap for a few turns, like Whirlpool, do not count. Shrinking the inputs' clear button is not part of the plan.
 
 ## 8.2 Open questions
 
