@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 15, 2026",
+    changes: [
+      "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",
