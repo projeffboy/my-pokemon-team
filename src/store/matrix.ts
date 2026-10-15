@@ -139,11 +139,20 @@ function moveMultiplier(
     format,
   );
   if (score === undefined) return undefined;
-  return scoreToMultiplier(
+  const multiplier = scoreToMultiplier(
     move === "flyingpress" ? score
     : score === 2 ? IMMUNE_SCORE
     : score,
   );
+  // Tinted Lens doubles not very effective hits
+  return (
+      generation >= 4 &&
+        ability === "Tinted Lens" &&
+        multiplier > 0 &&
+        multiplier < 1
+    ) ?
+      multiplier * 2
+    : multiplier;
 }
 
 // Each slot's best damaging move against each type
