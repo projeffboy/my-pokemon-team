@@ -429,7 +429,6 @@ export function parseTeamText(
         )
           member.ability =
             hasNoAbility(pokemon, generation, format) ? "No Ability" : "";
-        else if (!supports(rules.abilities)) unsupported("ability", ability);
         else if (abilities.includes(ability)) {
           member.ability = ability;
         } else if (ability)
