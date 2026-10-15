@@ -301,6 +301,36 @@ test.describe("another tab's saves", () => {
     expect(merged.teams[1]).toBe(mine.teams[1]);
   });
 
+  test("takes the other tab's order, with this tab's new teams beside their neighbours", () => {
+    const saved = base();
+    const mine = clone(saved);
+    mine.teams.splice(1, 0, savedTeam("hail", "Hail"));
+    const theirs = clone(saved);
+    theirs.teams.splice(1, 0, savedTeam("rain-copy", "Rain (copy)"));
+    theirs.teams.push(savedTeam("sand", "Sand"));
+
+    const names = (state: StoredState) => state.teams.map(({ name }) => name);
+    expect(names(mergeStoredState(saved, saved, theirs))).toEqual(
+      names(theirs),
+    );
+    expect(names(mergeStoredState(saved, mine, theirs))).toEqual([
+      "Rain",
+      "Hail",
+      "Rain (copy)",
+      "Sun",
+      "Sand",
+    ]);
+
+    const reordered = clone(saved);
+    reordered.teams.reverse();
+    expect(names(mergeStoredState(saved, reordered, theirs))).toEqual([
+      "Sun",
+      "Sand",
+      "Rain",
+      "Rain (copy)",
+    ]);
+  });
+
   test("moves to the other tab's team when this tab's is gone", () => {
     const mine = base();
     const theirs = clone(mine);
