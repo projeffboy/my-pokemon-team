@@ -7,6 +7,7 @@ import {
   getTeamTextFromUrl,
   openAnalysis,
   openFilters,
+  openMoreMenu,
   selectDialogOption,
   selectAbility,
   selectPokemon,
@@ -647,6 +648,60 @@ test.describe("Reloading an empty saved team", () => {
           {
             name: "Rain team",
             team: [{ name: "barraskewda" }, {}, {}, {}, {}, {}],
+          },
+        ],
+        currentTeamId: id,
+      });
+  });
+
+  test("keeps a saved team in a Coming soon game, full or emptied, in its game", async ({
+    page,
+  }) => {
+    await openMoreMenu(page);
+    await clickMenuItem(page, "Import team");
+    const importDialog = page.getByRole("dialog", { name: "Import Team" });
+    await importDialog
+      .getByRole("textbox")
+      .fill("=== [gen7letsgoou] Alolan Diglett ===\n\nDugtrio-Alola\n- Dig");
+    await importDialog
+      .getByRole("button", { name: "Import", exact: true })
+      .click();
+    await expect(importDialog).toBeHidden();
+    await closeDialog(page, "Close");
+    const name = page.getByLabel("Pokemon 1's name");
+    await expect(name).toHaveValue("Dugtrio-Alola");
+    await expect(generationValue(page)).toHaveValue("Let’s Go");
+    await expect(page).toHaveURL(/gen=7/);
+    await expect
+      .poll(async () => (await savedState(page))?.teams.length)
+      .toBe(2);
+    const id = (await savedState(page))?.currentTeamId;
+
+    for (const emptied of [false, true]) {
+      if (emptied) {
+        await name.click();
+        await name
+          .locator("..")
+          .getByRole("button", { name: "Clear", exact: true })
+          .click();
+        await expect(name).toHaveValue("");
+        await expect
+          .poll(async () => (await savedState(page))?.teams[1]?.team[0]?.name)
+          .toBe("");
+      }
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(name).toHaveValue(emptied ? "" : "Dugtrio-Alola");
+      await expect(generationValue(page)).toHaveValue("Let’s Go");
+    }
+    await selectPokemon(page, "Dodrio");
+    await expect
+      .poll(() => savedState(page))
+      .toMatchObject({
+        teams: [
+          {},
+          {
+            format: "Let’s Go",
+            team: [{ name: "dodrio" }, {}, {}, {}, {}, {}],
           },
         ],
         currentTeamId: id,
