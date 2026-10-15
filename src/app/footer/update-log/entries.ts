@@ -25,6 +25,7 @@ const entries: Entry[] = [
       "Switching a team to Gen 9 no longer removes Pokémon and moves that Gen 9 offers, such as Silvally and Tyranitar’s Pursuit.",
       "Imported sets without an item keep their Pokémon when the nickname holds an @, such as Mew@x (Pikachu).",
       "Picking a slot’s own Pokémon again in the Name list no longer clears its moves, item and other details.",
+      "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
     ],
   },
   {

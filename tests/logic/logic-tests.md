@@ -10,6 +10,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `filtering.spec.ts` covers formats, tiers, regions, types, abilities, generations, and combined filters.
 - `sorting.spec.ts` covers the Name dropdown's sort orders: name, pokedex number, format, base stats, and tie-breaking.
 - `dex-urls.spec.ts` covers the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex URLs, including names with punctuation or accents, and that every pokemon's Showdown URL uses its Showdown ID. `npm run test:links` checks the links on the real sites.
+- `search-filter.spec.ts` covers typing in the dropdowns: case, accents, full-width letters and digits from Japanese and Chinese IMEs, and hiragana for katakana names.
 - `random.spec.ts` covers random pokemon and set choices.
 - `matrix.spec.ts` covers the Matrix Analysis cells and their reasons.
 - `validation.spec.ts` covers the team validation rules: legality, abilities, required items, repeated moves, EVs, levels, tera types, and clauses.
