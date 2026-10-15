@@ -49,7 +49,7 @@ Rules that come from the games and from Pokemon Showdown, not from a choice made
 | Release        | Contents                                                                                                                                                               | State                                           |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | R0 Old website | Generations 6 to 9, one unsaved team, type defence and coverage, checklist, filters by format, type, and region, Showdown import and export, share link. English only. | Live at old.mypokemonteam.com                   |
-| Ash            | The redesign: every feature listed below without a PF mark.                                                                                                            | Live at mypokemonteam.com since 13 October 2026 |
+| Ash            | The redesign: every feature listed below without a PF or Brock mark.                                                                                                   | Live at mypokemonteam.com since 13 October 2026 |
 | Brock          | What is in the GitHub milestone of that name.                                                                                                                          | Next release                                    |
 | Later          | What is in the GitHub milestone of that name: wanted after Brock, not scheduled.                                                                                       | Wanted                                          |
 
@@ -57,7 +57,7 @@ Later holds ideas such as suggesting teammates or moves to fix a weakness (today
 
 ### What the site does today
 
-The features of Ash, with the IDs the later documents use. **[Ash]** marks a feature that is new in the redesign; a feature with no mark is also on the old website. **[PFn]** marks a planned feature that the site does not have yet.
+The features of Ash, and those built since for Brock, with the IDs the later documents use. **[Ash]** marks a feature that is new in the redesign, and **[Brock]** one built for the next release; a feature with no mark is also on the old website. **[PFn]** marks a planned feature that the site does not have yet.
 
 - **F1 Team Building**: six slots, each holding a pokemon, up to four moves, an item, and an ability.
   - F1.1 Pokemon Slots
@@ -86,7 +86,7 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
   - F4.4 Team Checklist
     - F4.4.1 Battle Format Context, singles or doubles [Ash]
   - F4.5 Matrix Analysis [Ash]: every type against every pokemon, with the reason for each cell.
-  - F4.6 Team Legality Warnings [PF6]
+  - F4.6 Team Legality Warnings [Brock]
 - **F5 Team Collection** [Ash]
   - F5.1 Saved Teams: any number of named teams in the browser, each with its generation, format, battle format, and filters.
   - F5.2 Synchronization Between Tabs
@@ -123,7 +123,7 @@ Each has a GitHub issue that names its ID. The issue holds the work, and its mil
 | PF3 | Let's Go and Legends: Arceus, with their training values. The generation menu lists them in its Coming soon group. | Planned                                                                                              |
 | PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                             | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
 | PF5 | Verified sender domain for feedback                                                                                | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
-| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, which no part of the page shows today         | Planned                                                                                              |
+| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, listed at the top of the team analysis        | Built for Brock (issue 117)                                                                          |
 | PF7 | F6.1 Notice of dropped entries: telling a visitor which entries a link or saved team lost to a data update         | Built (REQ-INFO-8)                                                                                   |
 
 ### Not part of the plan

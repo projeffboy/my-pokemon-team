@@ -107,8 +107,11 @@ test("matrix reasons and team problems name things in the current language", () 
   expect(defenceMatrix(porygonZ, japanese).Ground?.[0]?.reason).toBe(
     "じめん does 1x to ポリゴンZ (ノーマル)\nテクスチャー makes it ゴースト type",
   );
-  expect(validateTeam(team, 9, "", japanese)).toEqual([
-    "Two pokemon are ドータクン (Species Clause).",
+  expect(validateTeam(team, 9, "OU: Over Used", japanese)).toEqual([
+    {
+      message: "Only one pokemon may be ドータクン (Species Clause).",
+      slots: [0, 1],
+    },
   ]);
 });
 

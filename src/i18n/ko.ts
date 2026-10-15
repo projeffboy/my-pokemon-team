@@ -593,6 +593,10 @@ const ko: Messages = {
     teamName: "팀 이름",
   },
   validation: {
+    teamProblems: "팀 문제",
+    problemCount: (count: number) => `팀 문제 (${count})`,
+    noProblems: (where: string) => `${where}에서 문제가 발견되지 않았습니다.`,
+    pokemonProblems: (pokemon: string) => `${pokemon}의 문제`,
     empty: "팀이 비어 있습니다.",
     notAllowed: (pokemon: string, where: string) =>
       `${josa(pokemon, "은", "는")} ${where}에서 사용할 수 없습니다.`,
@@ -619,9 +623,9 @@ const ko: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}에게 테라스탈 타입이 설정되어 있지만, 테라스탈 타입은 ${generation(9)}에만 있습니다.`,
     speciesClause: (species: string) =>
-      `${josa(species, "이", "가")} 두 마리 있습니다 (Species Clause).`,
+      `${josa(species, "은", "는")} 한 마리만 넣을 수 있습니다 (Species Clause).`,
     itemClause: (item: string) =>
-      `${josa(item, "을", "를")} 지닌 포켓몬이 두 마리 있습니다 (Item Clause).`,
+      `${josa(item, "은", "는")} 한 마리만 지닐 수 있습니다 (Item Clause).`,
   },
   importDialog: {
     importTitle: "팀 가져오기",

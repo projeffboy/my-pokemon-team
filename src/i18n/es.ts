@@ -596,6 +596,10 @@ const es: Messages = {
     teamName: "Nombre del equipo",
   },
   validation: {
+    teamProblems: "Problemas del equipo",
+    problemCount: (count: number) => `Problemas del equipo (${count})`,
+    noProblems: (where: string) => `No se encontraron problemas en ${where}.`,
+    pokemonProblems: (pokemon: string) => `Problemas de ${pokemon}`,
     empty: "El equipo está vacío.",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon} no está permitido en ${where}.`,
@@ -622,9 +626,9 @@ const es: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon} tiene un teratipo, que solo existe en la ${generation(9)}.`,
     speciesClause: (species: string) =>
-      `Dos Pokémon son ${species} (Cláusula de Especies).`,
+      `Solo un Pokémon puede ser ${species} (Cláusula de Especies).`,
     itemClause: (item: string) =>
-      `Dos Pokémon llevan ${item} (Cláusula de Objetos).`,
+      `Solo un Pokémon puede llevar ${item} (Cláusula de Objetos).`,
   },
   importDialog: {
     importTitle: "Importar equipo",

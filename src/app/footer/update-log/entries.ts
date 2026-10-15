@@ -57,6 +57,7 @@ const entries: Entry[] = [
   {
     date: "Oct 14, 2026",
     changes: [
+      "Team analysis now lists the rules a team breaks, e.g. Levitate on Gen 9 Gengar, and marks each pokemon concerned.",
       "Hovering or tapping a checklist role now shows which pokemon fill it, e.g. Gigalith: Stealth Rock, or what would fill it.",
       "The Old website button now takes your current team along, after naming anything the old website can’t hold, such as EVs.",
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",

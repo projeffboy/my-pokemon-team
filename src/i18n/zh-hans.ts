@@ -568,6 +568,10 @@ const zhHans: Messages = {
     teamName: "队伍名称",
   },
   validation: {
+    teamProblems: "队伍问题",
+    problemCount: (count: number) => `队伍问题（${count}）`,
+    noProblems: (where: string) => `${where} 未发现问题。`,
+    pokemonProblems: (pokemon: string) => `${pokemon}的问题`,
     empty: "队伍为空。",
     notAllowed: (pokemon: string, where: string) =>
       `${where} 不允许使用${pokemon}。`,
@@ -594,8 +598,9 @@ const zhHans: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}设置了太晶属性，但太晶属性只存在于${generation(9)}。`,
     speciesClause: (species: string) =>
-      `队伍中有两只${species}（Species Clause）。`,
-    itemClause: (item: string) => `有两只宝可梦携带${item}（Item Clause）。`,
+      `${species}只能有一只（Species Clause）。`,
+    itemClause: (item: string) =>
+      `${item}只能由一只宝可梦携带（Item Clause）。`,
   },
   importDialog: {
     importTitle: "导入队伍",
