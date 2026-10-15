@@ -12,7 +12,7 @@ import {
   COMBINED_GENERATIONS_FORMAT,
   teamDataFormat,
 } from "@/shared/generation-profile";
-import { createEmptyTeam } from "@/shared/team";
+import { createEmptyTeam, requiredItemReplacement } from "@/shared/team";
 import {
   generationRules,
   generationBit,
@@ -147,7 +147,21 @@ export function planGenerationTransfer(
       previousRules.fixedLevel !== undefined
     )
       member.level = previousRules.fixedLevel;
-    if (member.item && (!rules.items || !has(data.items[member.item]))) {
+    const itemReplacement =
+      rules.items &&
+      requiredItemReplacement(member.name, member.item, item =>
+        has(data.items[item]),
+      );
+    if (itemReplacement) {
+      losses.push({
+        index,
+        pokemon: original.name,
+        field: "item",
+        value: member.item,
+        replacement: itemReplacement,
+      });
+      member.item = itemReplacement;
+    } else if (member.item && (!rules.items || !has(data.items[member.item]))) {
       loss("item", member.item);
       member.item = "";
     }

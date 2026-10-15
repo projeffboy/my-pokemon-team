@@ -691,6 +691,49 @@ test("available formes keep their forme and ability", () => {
   expect(plan.losses).toEqual([]);
 });
 
+test("Giratina-Origin swaps between the Griseous Core and Orb across generations", () => {
+  const transfer = (item: string, generation: 4 | 9, to: 4 | 9) =>
+    planGenerationTransfer(
+      createTeam({ name: "giratinaorigin", item }),
+      { generation, format: "" },
+      to,
+      "",
+      data,
+    );
+  const older = transfer("griseouscore", 9, 4);
+  expect(older.team[0]?.item).toBe("griseousorb");
+  expect(older.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "giratinaorigin",
+      field: "item",
+      value: "griseouscore",
+      replacement: "griseousorb",
+    },
+  ]);
+  const newer = transfer("griseousorb", 4, 9);
+  expect(newer.team[0]?.item).toBe("griseouscore");
+  expect(newer.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "giratinaorigin",
+      field: "item",
+      value: "griseousorb",
+      replacement: "griseouscore",
+    },
+  ]);
+  // Altered Giratina boosts its moves with the Orb in every generation
+  const altered = planGenerationTransfer(
+    createTeam({ name: "giratina", item: "griseousorb" }),
+    { generation: 4, format: "" },
+    9,
+    "",
+    data,
+  );
+  expect(altered.team[0]?.item).toBe("griseousorb");
+  expect(altered.losses).toEqual([]);
+});
+
 test("keeps compatible moves and details and explains every unsupported field", () => {
   const original = createTeam({
     name: "slowbro",
