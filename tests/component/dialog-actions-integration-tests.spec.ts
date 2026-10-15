@@ -35,14 +35,22 @@ interface DialogCase {
   // A text field the on-screen keyboard opens for
   field?: (dialog: Locator) => Locator;
   viewport?: { width: number; height: number };
+  // Stops above the bottom ad, which is fixed to the bottom of the page
+  aboveAd?: true;
 }
 
 const SMALL_PHONE = { width: 320, height: 480 };
+const AD_GAP = 60;
 
 const dialogs: DialogCase[] = [
-  {
-    name: "Type Chart",
-    open: async page => {
+  // The charts are wide, so they scroll on phones held sideways, where the dialog is
+  // full screen below 600px wide
+  ...[
+    { width: 568, height: 270 },
+    { width: 844, height: 390 },
+  ].map(viewport => ({
+    name: `Type Chart at ${viewport.width}x${viewport.height}`,
+    open: async (page: Page) => {
       await page.getByRole("button", { name: "Type Chart" }).click();
       const dialog = page.getByRole("dialog");
       await expectImageToBeLoaded(dialog.getByRole("img"));
@@ -50,9 +58,9 @@ const dialogs: DialogCase[] = [
     },
     actions: ["Go Back"],
     close: "Go Back",
-    // The charts are wide, so they scroll on a phone held sideways
-    viewport: { width: 844, height: 390 },
-  },
+    viewport,
+    aboveAd: true as const,
+  })),
   {
     name: "Update Log",
     open: async page => {
@@ -65,6 +73,7 @@ const dialogs: DialogCase[] = [
     },
     actions: ["Go Back"],
     close: "Go Back",
+    aboveAd: true,
   },
   {
     name: "Send Feedback",
@@ -91,6 +100,7 @@ const dialogs: DialogCase[] = [
     actions: ["Cancel", "Update"],
     close: "Cancel",
     field: dialog => dialog.getByRole("textbox"),
+    aboveAd: true,
   },
   {
     name: "Import Team",
@@ -216,15 +226,23 @@ const expectActionsInView = async (
   }
 };
 
-for (const { name, open, actions, close, viewport = SMALL_PHONE } of dialogs)
+for (const {
+  name,
+  open,
+  actions,
+  close,
+  viewport = SMALL_PHONE,
+  aboveAd,
+} of dialogs)
   test(`${name} keeps its actions in view while its content scrolls`, async ({
     page,
   }) => {
     await page.setViewportSize(viewport);
     const dialog = await open(page);
+    const bottom = viewport.height - (aboveAd ? AD_GAP : 0);
     for (const colorScheme of ["light", "dark"] as const) {
       await page.emulateMedia({ colorScheme });
-      await expectActionsInView(dialog, actions, 0, viewport.height);
+      await expectActionsInView(dialog, actions, 0, bottom);
     }
     await dialog.getByRole("button", { name: close, exact: true }).click();
     await expect(dialog).toBeHidden();

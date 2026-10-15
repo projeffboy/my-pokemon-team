@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import ErrorBoundary from "@/app/shared/ErrorBoundary";
+import { heightAboveAd } from "@/app/shared/visual-viewport";
 
 // The chart images and their tabs load the first time the dialog opens
 const TypeChart = lazy(() => import("./type-chart-dialog/TypeChart"));
@@ -29,6 +30,7 @@ export default function TypeChartDialog() {
         maxWidth="md"
         fullWidth
         fullScreen={isSmDown}
+        sx={{ height: heightAboveAd }}
       >
         <ErrorBoundary>
           <Suspense>
