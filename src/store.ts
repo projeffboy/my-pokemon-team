@@ -105,13 +105,16 @@ const browserLanguages =
 const teamKey = (team: Team) => stableJson(toJS(team));
 
 export class Store {
-  constructor(private readonly storage = browserStorage) {
+  constructor(
+    private readonly storage = browserStorage,
+    private readonly languages = browserLanguages,
+  ) {
     const loaded = loadStoredState(storage);
     const stored = loaded ?? initialStoredState();
+    if (!loaded) this.startingTeamId = stored.currentTeamId;
     this.teams = stored.teams;
     this.currentTeamId = stored.currentTeamId;
-    this.isMoreOpen = stored.isMoreOpen;
-    this.showMoveTypes = stored.showMoveTypes;
+    this.showTypes = stored.showMoveTypes;
     this.sort = stored.sort;
     this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
@@ -123,12 +126,13 @@ export class Store {
 
     makeAutoObservable<
       Store,
-      "lastSnapshot" | "lastRead" | "draftSnapshot" | "storage"
+      "lastSnapshot" | "lastRead" | "draftSnapshot" | "storage" | "languages"
     >(this, {
       lastSnapshot: false,
       lastRead: false,
       draftSnapshot: false,
       storage: false,
+      languages: false,
       translationReady: false,
       translation: observableRef,
     });
@@ -152,7 +156,9 @@ export class Store {
         ),
     );
 
-    this.translationReady = this.loadLocale(this.locale);
+    this.translationReady = this.loadLocale(this.locale).then(() =>
+      this.nameStartingTeam(),
+    );
     reaction(
       () => this.locale,
       locale => this.loadLocale(locale),
@@ -164,10 +170,8 @@ export class Store {
         if (
           this.draftTeam?.id === this.currentTeamId &&
           snapshot !== this.draftSnapshot
-        ) {
-          this.teams.push(this.draftTeam);
-          this.draftTeam = null;
-        }
+        )
+          this.saveDraft();
       },
     );
 
@@ -212,6 +216,44 @@ export class Store {
   saveFailed = false;
   private draftTeam: SavedTeam | null = null;
   private draftSnapshot = "";
+  // A first visit starts on a team that nothing has saved
+  private startingTeamId: string | undefined;
+  // The starting team that the draft takes the place of
+  private draftReplaces: string | undefined;
+
+  // The starting team while it is still the only team and empty, which a
+  // linked or fresh team replaces, so that the visitor does not end up with two
+  private get replaceableTeam() {
+    const [team, ...others] = this.teams;
+    if (!team || others.length || team.id !== this.startingTeamId) return;
+    return isTeamEmpty(team.team) ? team : undefined;
+  }
+
+  // Adds the draft to the saved teams, in place of the starting team it replaces
+  private saveDraft() {
+    if (!this.draftTeam) return;
+    // Another tab may have filled the starting team since this tab last read
+    if (this.draftReplaces) this.readOtherTabs();
+    const index = this.teams.findIndex(
+      ({ id, team }) => id === this.draftReplaces && isTeamEmpty(team),
+    );
+    if (index === -1) this.teams.push(this.draftTeam);
+    else this.teams[index] = this.draftTeam;
+    this.draftTeam = null;
+  }
+
+  // The starting team is made before the language loads, so it takes the
+  // language's name once loaded, as if it had been saved that way
+  private nameStartingTeam() {
+    const name = this.translation.t.team.teamNumber(1);
+    const find = ({ teams }: { teams: SavedTeam[] }) =>
+      teams.find(({ id }) => id === this.startingTeamId);
+    const team = find(this);
+    const saved = find(this.lastRead);
+    if (!team || !saved || team.name !== saved.name) return;
+    team.name = name;
+    saved.name = name;
+  }
 
   findTeam(id: string) {
     return (
@@ -253,8 +295,10 @@ export class Store {
       Partial<Pick<SavedTeam, "format" | "generationProfile">>,
   ) {
     const { generation, format } = this.currentTeam;
+    const replaced = this.replaceableTeam;
     const draft = createSavedTeam({
-      name: this.nextTeamName(),
+      name:
+        replaced ? this.translation.t.team.teamNumber(1) : this.nextTeamName(),
       generation,
       format:
         settings ? formatForGeneration(format, settings.generation) : format,
@@ -267,6 +311,7 @@ export class Store {
     });
     this.draftSnapshot = stableJson(draft);
     this.draftTeam = draft;
+    this.draftReplaces = replaced?.id;
     this.currentTeamId = draft.id;
   }
 
@@ -386,10 +431,7 @@ export class Store {
     generationProfile?: SavedTeam["generationProfile"],
   ) {
     if (newTeam) {
-      if (this.draftTeam?.id === this.currentTeamId) {
-        this.teams.push(this.draftTeam);
-        this.draftTeam = null;
-      }
+      if (this.draftTeam?.id === this.currentTeamId) this.saveDraft();
       this.addTeam({
         generation,
         format,
@@ -558,7 +600,8 @@ export class Store {
   selectPokemon(teamIndex: number, name: string) {
     const member = this.team[teamIndex];
 
-    if (!member) return;
+    // Picking the slot's own pokemon again keeps its set
+    if (!member || member.name === name) return;
     member.name = name;
     member.item =
       this.rules.items ?
@@ -773,7 +816,7 @@ export class Store {
       );
   }
 
-  // Every pokemon and move the current game's dropdowns can list, whatever the filters
+  // Every pokemon, move, and ability the current game's dropdowns can list, whatever the filters
   get gamePokemon() {
     const { generation, format } = this.currentTeam;
     return this.inGame(
@@ -793,6 +836,16 @@ export class Store {
       this.currentTeam.generation,
       this.dataFormat,
     );
+  }
+
+  get gameAbilities() {
+    return [
+      ...new Set(
+        this.gamePokemon.flatMap(name =>
+          pokemonAbilities(name, this.currentTeam.generation, this.dataFormat),
+        ),
+      ),
+    ];
   }
 
   get filteredPokemon() {
@@ -894,7 +947,7 @@ export class Store {
   chosenLocale: Locale | undefined;
 
   get locale(): Locale {
-    return this.chosenLocale ?? detectLocale(browserLanguages);
+    return this.chosenLocale ?? detectLocale(this.languages);
   }
 
   set locale(locale: Locale) {
@@ -921,8 +974,11 @@ export class Store {
       translation => {
         if (locale !== this.locale) return;
         this.translation = translation;
-        if (typeof document !== "undefined")
+        // index.html keeps the English title for crawlers
+        if (typeof document !== "undefined") {
           document.documentElement.lang = locale;
+          document.title = translation.t.pageTitle;
+        }
       },
       () => {
         if (locale === this.locale)
@@ -931,12 +987,9 @@ export class Store {
     );
   }
 
-  // Advanced mode: Filters and Sort in the dropdowns, and hidden abilities marked. Named for
-  // the More toggle it began as, which the saved state still calls it.
-  isMoreOpen: boolean;
-
-  // Each chosen move's type icon before its name, with the item's icon leading to match
-  showMoveTypes: boolean;
+  // Each pokemon's type icons, and each chosen move's before its name with the
+  // item's icon leading to match, until the Player hides them
+  showTypes: boolean;
 
   // How the Name dropdown lists its options
   nameView: NameView;
@@ -1015,13 +1068,17 @@ export class Store {
     if (!theirs) return;
     const snapshot = teamKey(this.team);
     const { generation, format, generationProfile } = this.currentTeam;
-    const mine = this.storedState;
-    const selectionChanged = mine.currentTeamId !== this.lastRead.currentTeamId;
+    // A tab on an unsaved team has no saved team chosen, so it follows the others
+    const mine = {
+      ...this.storedState,
+      ...(this.draftTeam && { currentTeamId: theirs.currentTeamId }),
+    };
+    const selectionChanged =
+      !this.draftTeam && mine.currentTeamId !== this.lastRead.currentTeamId;
     const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
-    this.isMoreOpen = merged.isMoreOpen;
-    this.showMoveTypes = merged.showMoveTypes;
+    this.showTypes = merged.showMoveTypes;
     this.sort = merged.sort;
     this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
@@ -1065,8 +1122,7 @@ export class Store {
       teams: this.teams,
       currentTeamId:
         this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId,
-      isMoreOpen: this.isMoreOpen,
-      showMoveTypes: this.showMoveTypes,
+      showMoveTypes: this.showTypes,
       sort: this.sort,
       moveSort: this.moveSort,
       nameView: this.nameView,
