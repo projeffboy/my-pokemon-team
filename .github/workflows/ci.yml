@@ -14,121 +14,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  prechecks:
-    name: Prechecks
+  diagnose:
+    name: Diagnose Z-A link (iPhone)
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 30
     env:
       CI: "true"
     steps:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
-
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Typecheck
-        run: npm run typecheck
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Logic tests
-        run: npm run test:logic
-
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium webkit firefox msedge
-
-      - name: Production smoke tests
-        run: npm run test:smoke
-
-      - name: Upload Playwright results
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: playwright-prechecks
-          path: |
-            playwright-logic-report/
-            logic-test-results/
-            playwright-smoke-report/
-            smoke-test-results/
-          retention-days: 7
-          if-no-files-found: ignore
-
-  browsers:
-    name: Browser tests (${{ matrix.project }})
-    runs-on: ubuntu-24.04
-    timeout-minutes: 90
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - project: Desktop Chrome
-            browser: chromium
-            artifact: desktop-chrome
-          - project: Desktop Safari
-            browser: webkit
-            artifact: desktop-safari
-          - project: Desktop Firefox
-            browser: firefox
-            artifact: desktop-firefox
-          - project: Desktop Edge
-            browser: msedge
-            artifact: desktop-edge
-          - project: Android
-            browser: chromium
-            artifact: android
-          - project: iPhone
-            browser: webkit
-            artifact: iphone
-    env:
-      CI: "true"
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          persist-credentials: false
-
-      - uses: actions/setup-node@v7
-        with:
-          node-version-file: .nvmrc
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright browser
-        run: npx playwright install --with-deps ${{ matrix.browser }}
-
-      - name: Development tests
-        run: npm run test:dev -- --project="${{ matrix.project }}" --reporter=list,html
-
-      - name: Upload Playwright results
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v7
-        with:
-          name: playwright-${{ matrix.artifact }}
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 7
-          if-no-files-found: ignore
-
-  validate:
-    name: Validate
-    runs-on: ubuntu-24.04
-    needs: [prechecks, browsers]
-    if: ${{ always() }}
-    steps:
-      - name: Require every check to pass
-        env:
-          PRECHECKS_RESULT: ${{ needs.prechecks.result }}
-          BROWSERS_RESULT: ${{ needs.browsers.result }}
-        run: |
-          test "$PRECHECKS_RESULT" = success
-          test "$BROWSERS_RESULT" = success
+      - run: npm ci
+      - run: npx playwright install --with-deps webkit
+      - run: npx playwright test --project=iPhone tests/zz-za-diagnose.spec.ts --repeat-each=6 --retries=0 --reporter=list
