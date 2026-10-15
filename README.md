@@ -117,9 +117,11 @@ It reads the tables from GitHub (set `POKEAPI_CSV_URL` to read another copy) and
 After setting up the project, install the Playwright browsers and run all checks:
 
 ```sh
-npx playwright install --with-deps chromium webkit
+npx playwright install --with-deps chromium webkit firefox msedge
 npm test
 ```
+
+`msedge` installs Microsoft Edge itself, which asks for administrator rights, and leaves an Edge that is already installed as it is.
 
 `npm test` runs these in order, and each can be run alone:
 
@@ -133,7 +135,7 @@ npm test
 
 `npm run test:perf` is not part of `npm test` either. It times the moments of [REQ-PERF-1 to 3](docs/requirements/05-system-requirements-specification.md#33-performance-requirements): the analysis updating after a pokemon is picked, the pokemon list opening, and a share link showing its team. It builds the production app, serves it on port 4174, and loads it in Chrome emulating a mid-range phone with Lighthouse's mobile profile: a CPU 4 times slower and its Slow 4G network. It blocks the ad script and Showdown's sprites, prints each moment's median, 95th percentile, and slowest time, and fails when a 95th percentile is over its target. Timings depend on the machine and on what else it is running, so run it on an otherwise idle machine. `PERF_RUNS` sets the number of runs (20), `PERF_CPU_SLOWDOWN` the CPU slowdown (4), and `PERF_NETWORK=fast4g` uses DevTools' Fast 4G network instead.
 
-Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
+Both browser suites use six Playwright browser profiles: Chrome, Safari, Firefox, and Edge on desktop, an Android phone, and an iPhone. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 
 The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and pushes to `master`, and keeps the Playwright reports as artifacts. Development tests run once per browser profile on separate runners, with one worker each. The `Validate` check passes only after every browser profile and the shared checks pass. [Dependabot](.github/dependabot.yml) opens a weekly pull request for minor and patch updates, and one per major update, which CI checks like any other. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
 

@@ -7,6 +7,7 @@ import {
   selectPokemon,
   selectMove,
   SMALL_VIEWPORT_WIDTH,
+  SPRITE_ANIMATIONS_TIMEOUT,
 } from "helper";
 
 const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
@@ -27,6 +28,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     test(`Gen ${generation} animation keeps the still sprite's pixel scale`, async ({
       page,
     }) => {
+      test.slow();
       const still = await page.evaluate(() => {
         const canvas = document.createElement("canvas");
         canvas.width = canvas.height = 96;
@@ -45,7 +47,9 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
           `/?team=${Buffer.from(team).toString("base64url")}&gen=${generation}`,
         );
         const sprites = page.locator('img[alt="Qwilfish"]');
-        await expect(sprites.first()).toHaveAttribute("src", /selection=/);
+        await expect(sprites.first()).toHaveAttribute("src", /selection=/, {
+          timeout: SPRITE_ANIMATIONS_TIMEOUT,
+        });
         await expect
           .poll(() =>
             sprites
@@ -90,6 +94,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     test(`Gen ${generation} selection and page loads briefly animate the sprite, but move edits do not`, async ({
       page,
     }) => {
+      test.slow();
       await page.getByRole("combobox", { name: "Generation" }).click();
       await page
         .locator(`[role="option"][data-value="${generation}"]`)
@@ -108,6 +113,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
         new RegExp(
           `/sprite-animations/${generation}/dunsparce\\.${extension}\\?(?:no-inline&)?selection=`,
         ),
+        { timeout: SPRITE_ANIMATIONS_TIMEOUT },
       );
       expect(await sprite.evaluate(image => image.getAnimations().length)).toBe(
         0,
@@ -142,6 +148,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
         new RegExp(
           `/sprite-animations/${generation}/qwilfish\\.${extension}\\?(?:no-inline&)?selection=`,
         ),
+        { timeout: SPRITE_ANIMATIONS_TIMEOUT },
       );
       await expect(qwilfish).toHaveAttribute(
         "src",
