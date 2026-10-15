@@ -12,7 +12,7 @@ import {
   COMBINED_GENERATIONS_FORMAT,
   teamDataFormat,
 } from "@/shared/generation-profile";
-import { createEmptyTeam } from "@/shared/team";
+import { createEmptyTeam, requiredItemReplacement } from "@/shared/team";
 import {
   generationRules,
   generationBit,
@@ -40,7 +40,11 @@ import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import pokedex from "@/data/pokedex";
 import hiddenPowerSpreads from "@/data/hidden-power-spreads";
 import { pokemonNameInverse } from "@/shared/names";
+import { pokemonAbilities } from "@/shared/pokedex";
+import { LATEST_GENERATION } from "@/shared/generations";
 import type { Locale } from "@/i18n/locales";
+import { filterPokemon } from "./filtering";
+import { generationLearnset } from "./learnsets";
 import {
   convertTraining,
   type TrainingConversion,
@@ -71,6 +75,15 @@ export function planGenerationTransfer(
   const previousRules = generationRules(from.generation, teamDataFormat(from));
   const combined = format === COMBINED_GENERATIONS_FORMAT;
   const has = (mask: number | undefined) => !!((mask ?? 0) & bit);
+  // The regular latest generation's editor is National Dex, so it keeps what that editor offers
+  const nationalDex =
+    generation === LATEST_GENERATION && !format ?
+      new Set(filterPokemon({ generation, format, type: "", region: "" }))
+    : undefined;
+  const isAvailable = (pokemon: string) =>
+    nationalDex ?
+      nationalDex.has(pokemon)
+    : has(data.pokemon[pokemon]?.generations);
   const losses: TransferLoss[] = [];
   const result = team.map((original, index) => {
     const source = {
@@ -99,15 +112,14 @@ export function planGenerationTransfer(
         field,
         ...(value && { value }),
       });
-    if (member.name && !has(entry?.generations)) {
+    if (member.name && !isAvailable(member.name)) {
       // A battle forme returns to the forme it changes from, such as
       // Meowstic-F-Mega to Meowstic-F, before its base species
       const { changesFrom, baseSpecies } = pokedex[member.name] ?? {};
       const base = [changesFrom, baseSpecies]
         .map(species => species && pokemonNameInverse(species))
-        .find(species => species && has(data.pokemon[species]?.generations));
-      const baseEntry = base ? data.pokemon[base] : undefined;
-      if (!base || !baseEntry) {
+        .find(species => species && isAvailable(species));
+      if (!base) {
         loss("pokemon", member.name);
         return createEmptyTeam()[0] ?? member;
       }
@@ -119,7 +131,7 @@ export function planGenerationTransfer(
         replacement: base,
       });
       member.name = base;
-      entry = baseEntry;
+      entry = data.pokemon[base];
       if (member.gender && !genderOptions(base).includes(member.gender)) {
         loss("gender");
         delete member.gender;
@@ -156,13 +168,29 @@ export function planGenerationTransfer(
       previousRules.fixedLevel !== undefined
     )
       member.level = previousRules.fixedLevel;
-    if (member.item && (!rules.items || !has(data.items[member.item]))) {
+    // The combined profile spans games that use either version, so it keeps both
+    const itemReplacement =
+      rules.items &&
+      !(combined && has(data.items[member.item])) &&
+      requiredItemReplacement(member.name, member.item, item =>
+        has(data.items[item]),
+      );
+    if (itemReplacement) {
+      losses.push({
+        index,
+        pokemon: original.name,
+        field: "item",
+        value: member.item,
+        replacement: itemReplacement,
+      });
+      member.item = itemReplacement;
+    } else if (member.item && (!rules.items || !has(data.items[member.item]))) {
       loss("item", member.item);
       member.item = "";
     }
     const abilities =
-      !rules.abilities ?
-        []
+      !rules.abilities ? []
+      : nationalDex ? pokemonAbilities(member.name, generation)
       : Object.entries(entry?.abilities ?? {})
           .filter(([, mask]) => has(mask))
           .map(([ability]) => ability)
@@ -186,10 +214,12 @@ export function planGenerationTransfer(
       else loss("ability", member.ability);
       member.ability = replacement ?? "";
     }
+    const learnset =
+      nationalDex && new Set(generationLearnset(member.name, generation));
     for (const key of MOVE_KEYS) {
       const move = member[key];
       const id = move.startsWith("hiddenpower") ? "hiddenpower" : move;
-      if (move && !has(entry?.moves[id])) {
+      if (move && !(learnset ? learnset.has(move) : has(entry?.moves[id]))) {
         loss("move", move);
         member[key] = "";
       }

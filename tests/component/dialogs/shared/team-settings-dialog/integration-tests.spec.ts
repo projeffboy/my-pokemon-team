@@ -4,13 +4,11 @@ import {
   closeDialog,
   openFilters,
   selectDialogOption,
-  turnOnAdvanced,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
 
 const openTeams = async (page: Page) => {
-  await turnOnAdvanced(page);
   await page.getByRole("button", { name: "Teams", exact: true }).click();
 };
 const openNameEditor = async (page: Page, teamName: string) => {

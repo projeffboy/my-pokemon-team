@@ -54,6 +54,8 @@ export default function UpdateLog() {
         <Button
           variant="outlined"
           href="https://github.com/projeffboy/my-pokemon-team"
+          target="_blank"
+          rel="noopener"
           sx={{ my: 5 }}
         >
           <Folder sx={{ mr: 0.5 }} />
