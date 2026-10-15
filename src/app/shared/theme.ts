@@ -1,5 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 import { blue, grey, red } from "@mui/material/colors";
+import { visualViewportHeight, visualViewportTop } from "./visual-viewport";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
@@ -84,6 +85,16 @@ export const theme = createTheme({
           }),
         },
       ],
+    },
+    MuiDialog: {
+      // Fits the dialog above the on-screen keyboard, so its actions stay in view
+      styleOverrides: {
+        root: {
+          top: visualViewportTop,
+          bottom: "auto",
+          height: visualViewportHeight,
+        },
+      },
     },
     MuiLink: {
       // Every link is external, and a new tab keeps the current team open;
