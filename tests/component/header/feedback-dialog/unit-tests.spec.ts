@@ -475,6 +475,33 @@ test("sends feedback without a screenshot when the screenshot library fails to l
   ]);
 });
 
+// The browser keeps failing an import that failed once, so an offline tab loads the library when it sends
+test("attaches a screenshot when the dialog was opened offline", async ({
+  page,
+  context,
+}) => {
+  const requests: Record<string, unknown>[] = [];
+  await page.route("/api/feedback", route => {
+    requests.push(route.request().postDataJSON());
+    return route.fulfill({ status: 204 });
+  });
+  await context.setOffline(true);
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+  await dialog.getByLabel("Your feedback").fill("Written on the train");
+  await context.setOffline(false);
+  await dialog.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(dialog).toBeHidden({ timeout: SEND_TIMEOUT });
+  expect(requests).toEqual([
+    {
+      message: "Written on the train",
+      link: expect.any(String),
+      screen: expect.any(String),
+      screenshot: expect.stringMatching(/^data:image\/jpeg;base64,/),
+    },
+  ]);
+});
+
 test("the feedback fields offer no autofill, and the message keeps its spellcheck", async ({
   page,
 }) => {
