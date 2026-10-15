@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Checks the Pokemon Info dialog's dex links on the real sites, so it is not part of `npm test`
+// Checks the Pokemon Info dialog's dex links on the real sites, so it is not part of `npm test`.
+// The Dex links workflow runs it weekly and reads the JSON report.
 export default defineConfig({
   testDir: "./tests/links",
   fullyParallel: true,
@@ -11,6 +12,7 @@ export default defineConfig({
   reporter: [
     ["list"],
     ["html", { outputFolder: "playwright-links-report", open: "never" }],
+    ["json", { outputFile: "links-test-results/results.json" }],
   ],
   projects: [{ name: "Desktop Chrome", use: { ...devices["Desktop Chrome"] } }],
 });
