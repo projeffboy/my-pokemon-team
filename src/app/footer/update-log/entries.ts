@@ -43,6 +43,7 @@ const entries: Entry[] = [
       "Formes such as totems and Bloodmoon Ursaluna now learn the same moves as on Showdown, so Bloodmoon Ursaluna no longer learns Play Rough and Stretchy Tatsugiri gains Scald.",
       "Format filters and sorting now give formes their species’ tier, so Gen 9 Uber includes Arceus-Fire.",
       "Plain Hidden Power now counts in coverage as the type its IVs give, such as Dark for perfect IVs.",
+      "Team Defence now counts Dry Skin’s 1.25x Fire damage as half a weakness rather than a full one.",
     ],
   },
   {
