@@ -1,0 +1,94 @@
+name: Dex links
+
+# Checks the dex links on the real sites, which can change without a change here
+on:
+  schedule:
+    - cron: "23 14 * * 1" # Mondays at 14:23 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: Dex links
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: "true"
+      # So that a failure can be rerun with the same random pokemon
+      DEX_LINKS_SEED: ${{ github.run_id }}
+    outputs:
+      failures: ${{ steps.failures.outputs.list }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Dex link tests
+        run: npm run test:links
+
+      - name: List failures
+        id: failures
+        if: failure()
+        run: |
+          {
+            echo "list<<EOF"
+            jq -r '.. | objects | select(has("specs")) | .title as $site
+              | .specs[] | select(.ok | not)
+              | (.tests[0].results[-1].error.message // "" | gsub("\u001b\\[[0-9;]*m"; "") | split("\n")[0] | ltrimstr("Error: ")) as $error
+              | "- \($site) › \(.title): \($error)"' links-test-results/results.json || true
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Upload Playwright results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-links
+          path: |
+            playwright-links-report/
+            links-test-results/
+          retention-days: 30
+          if-no-files-found: ignore
+
+  notify:
+    name: Notify the maintainer
+    needs: links
+    if: ${{ failure() && github.event_name == 'schedule' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      issues: write
+    steps:
+      - name: Open or update the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          FAILURES: ${{ needs.links.outputs.failures }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          title="Dex links failed the weekly check"
+          body="The [weekly check]($RUN_URL) of the dex links failed:
+
+          ${FAILURES:-- See the run for details.}
+
+          To rerun it with the same pokemon: \`DEX_LINKS_SEED=$GITHUB_RUN_ID npm run test:links\`"
+          number=$(gh issue list --state open --author app/github-actions \
+            --search "in:title \"$title\"" --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "$body"
+          else
+            gh issue create --title "$title" --body "$body" \
+              --assignee "$GITHUB_REPOSITORY_OWNER"
+          fi

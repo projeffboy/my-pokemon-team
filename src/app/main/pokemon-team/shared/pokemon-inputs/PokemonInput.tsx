@@ -54,6 +54,7 @@ const PokemonInput = observer(function PokemonInput({
           store.sort,
           store.translation,
           store.currentTeam.generation,
+          store.currentTeam.format,
         );
         optionLabels = optionValues.map(names.pokemon);
       }
