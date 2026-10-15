@@ -172,6 +172,7 @@ const GenerationSelect = observer(function GenerationSelect() {
               ""
             : team.format,
             9,
+            COMBINED_GENERATIONS_PROFILE,
           )
         : value === CHAMPIONS ? CHAMPIONS_FORMAT
         : variantGeneration(value) ? value

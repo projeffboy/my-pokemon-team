@@ -1,6 +1,7 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
+import { CAP_FORMAT } from "@/shared/formats";
 import { dvGender, getDv, isShinyDv } from "@/shared/generation-rules";
 import { canHaveHiddenPowerType, hiddenPowerType } from "@/shared/hidden-power";
 import { setDetail } from "@/shared/set-details";
@@ -182,6 +183,32 @@ test("a past generation leaves out pokemon its games lack, and the latest lists 
   store.currentTeam.generation = 7;
   expect(store.filteredPokemon).toContain("greninja");
   expect(store.filterAbilities).toContain("Battle Bond");
+});
+
+test("the CAP format adds the CAP pokemon, their abilities, and their moves", ({
+  store,
+}) => {
+  expect(store.filteredPokemon).not.toContain("caribolt");
+  expect(store.filterAbilities).not.toContain("Persistent");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.filteredPokemon).toContain("caribolt");
+  expect(store.filterAbilities).toContain("Persistent");
+  store.selectPokemon(0, "caribolt");
+  expect(store.teamLearnsets.values[0]).toContain("hornleech");
+  expect(store.teamLearnsets.values[0]).not.toContain("return");
+});
+
+test("the CAP format offers the CAP-only item its pokemon need, but not the banned Crucibellite", ({
+  store,
+}) => {
+  store.currentTeam.format = "OU: Over Used";
+  expect(store.teamItems).not.toContain("vilevial");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.teamItems).toContain("vilevial");
+  expect(store.teamItems).toContain("leftovers");
+  expect(store.teamItems).not.toContain("crucibellite");
+  store.selectPokemon(0, "venomiconepilogue");
+  expect(store.team[0]?.item).toBe("vilevial");
 });
 
 test("Random Team fills a Gen 3 Doubles OU team without Ubers", ({ store }) => {

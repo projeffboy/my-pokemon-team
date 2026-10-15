@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Gen 9 · Scarlet Violet has a new CAP format, which lists Create-A-Pokémon creations such as Syclant alongside OU’s Pokémon.",
       "Added Legends: Z-A to the generation menu, with its own Pokémon and moves, e.g. Mega Dragonite.",
       "Reloading on an empty saved team now keeps that team, with its format and filters, instead of starting a new one.",
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",

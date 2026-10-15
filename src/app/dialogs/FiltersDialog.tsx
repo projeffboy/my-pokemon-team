@@ -141,7 +141,10 @@ const FiltersDialog = observer(function FiltersDialog() {
     setPending(null);
     store.closeDialog();
   };
-  const formats = formatsForGeneration(store.currentTeam.generation);
+  const formats = formatsForGeneration(
+    store.currentTeam.generation,
+    store.currentTeam.generationProfile,
+  );
 
   // The filter values stay English; only their labels are translated
   const selects: {

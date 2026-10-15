@@ -58,8 +58,10 @@ function spriteFolders(
   isSmall: boolean,
   generation: Generation,
 ) {
-  // Showdown has not animated the Legends: Z-A megas, which start at 1320 + 93
-  if (num === 0 || (iconIndex ?? -1) >= 1320 + 93) return ["gen5"];
+  // Showdown has not animated the Legends: Z-A megas, which start at 1320 + 93.
+  // The CAP pokemon's icons come after them, but their numbers are negative.
+  if (num === 0 || ((num ?? 0) > 0 && (iconIndex ?? -1) >= 1320 + 93))
+    return ["gen5"];
   const past = PAST_FOLDERS[generation];
   const gen5Only = GEN5_ONLY.includes(pokemon);
   if (past === "gen5ani" || (!past && !isSmall)) {
