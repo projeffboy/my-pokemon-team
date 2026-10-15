@@ -657,3 +657,109 @@ export function nameChanges(
       });
   });
 }
+
+// Each src/data file's entries by ID, or its text when it is not one table
+export type DataSnapshot = Record<string, Record<string, unknown> | string>;
+
+const tableOf = (value: unknown) => (isRecord(value) ? value : {});
+
+// A full update orders some keys differently from a partial one, so compare with sorted keys
+const sortedKeys = (_key: string, value: unknown) =>
+  isRecord(value) && !Array.isArray(value) ?
+    Object.fromEntries(
+      Object.entries(value).sort(([a], [b]) => (a < b ? -1 : 1)),
+    )
+  : value;
+const isSame = (a: unknown, b: unknown) =>
+  JSON.stringify(a, sortedKeys) === JSON.stringify(b, sortedKeys);
+
+const championsLegal = (snapshot: DataSnapshot) =>
+  Object.entries(tableOf(snapshot["formats.ts"]))
+    .filter(([, entry]) => tableOf(entry).champions)
+    .map(([id]) => id);
+
+// Tells the maintainer what an update changed in src/data, and whether it looks major, like a
+// new game or regulation, or minor. Undefined when nothing changed. `capIds` holds, by file, the
+// moves and items Showdown marks as CAP (fan-made), which no game adds.
+export function changeNotice(
+  before: DataSnapshot,
+  after: DataSnapshot,
+  capIds: Partial<Record<string, string[]>> = {},
+) {
+  const nameTables = ["pokedex.ts", "items.ts", "moves.ts"].map(file => ({
+    ...tableOf(before[file]),
+    ...tableOf(after[file]),
+  }));
+  // E.g. "added Pikachu; changed Mew, Ditto, Eevee, Snorlax, Lapras, and 3 more"
+  const describe = (
+    changes: Record<string, string[]>,
+    ...tables: Record<string, unknown>[]
+  ) =>
+    Object.entries(changes)
+      .filter(([, ids]) => ids.length)
+      .map(([change, ids]) => {
+        const names = ids.map(
+          id =>
+            [...tables, ...nameTables]
+              .map(table => tableOf(table[id]).name)
+              .find(name => typeof name === "string") ?? id,
+        );
+        const more = names.length > 5 ? `, and ${names.length - 5} more` : "";
+        return `${change} ${names.slice(0, 5).join(", ")}${more}`;
+      })
+      .join("; ");
+
+  // The site's rule for CAP pokemon, in src/store/filtering.ts
+  const pokedex = tableOf(after["pokedex.ts"]);
+  const isCap = (file: string, id: string) => {
+    const { num } = tableOf(pokedex[id]);
+    return file === "pokedex.ts" ?
+        typeof num === "number" && num < 0 && num > -5000
+      : !!capIds[file]?.includes(id);
+  };
+
+  const lines: string[] = [];
+  const newEntries: Record<string, number> = {};
+  for (const [file, now] of Object.entries(after)) {
+    const old = before[file];
+    if (typeof old === "string" || typeof now === "string") {
+      if (old !== now) lines.push(`- \`${file}\` changed`);
+      continue;
+    }
+    const oldTable = tableOf(old);
+    const added = Object.keys(now).filter(id => !Object.hasOwn(oldTable, id));
+    const removed = Object.keys(oldTable).filter(id => !Object.hasOwn(now, id));
+    const changed = Object.keys(now).filter(
+      id => Object.hasOwn(oldTable, id) && !isSame(oldTable[id], now[id]),
+    );
+    const summary = describe({ added, removed, changed }, now, oldTable);
+    if (summary) lines.push(`- \`${file}\`: ${summary}`);
+    newEntries[file] = added.filter(id => !isCap(file, id)).length;
+  }
+  const wasLegal = championsLegal(before);
+  const isLegal = championsLegal(after);
+  const legality = describe({
+    "now allows": isLegal.filter(id => !wasLegal.includes(id)),
+    "no longer allows": wasLegal.filter(id => !isLegal.includes(id)),
+  });
+  if (legality) lines.unshift(`- Pokemon Champions: ${legality}`);
+  if (!lines.length) return undefined;
+
+  // One new pokemon, move, or item is minor, but a new game brings several pokemon, or pokemon
+  // with their moves or items
+  const newPokemon = newEntries["pokedex.ts"] ?? 0;
+  const newGame =
+    newPokemon > 1 ||
+    (newPokemon > 0 && !!(newEntries["moves.ts"] || newEntries["items.ts"]));
+  const reasons = [
+    newGame &&
+      "added several pokemon, or pokemon with new moves or items, as a new game does",
+    !!legality &&
+      "changed which pokemon Pokemon Champions allows, as a new regulation does",
+  ].filter(reason => typeof reason === "string");
+  const verdict =
+    reasons.length ?
+      `**Looks major:** Showdown ${reasons.join(", and ")}. Major data is due on the site within 2 days of Showdown publishing it.`
+    : "**Looks minor:** Showdown added at most one pokemon and no pokemon with new moves or items, not counting CAP (fan-made) ones, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.";
+  return [verdict, "", ...lines].join("\n");
+}

@@ -21,6 +21,11 @@ export default function AdjustmentDetails({
       <Typography variant="body2">
         {change.field === "pokemon" && change.replacement ?
           `${names.pokemon(change.value ?? change.pokemon)} → ${names.pokemon(change.replacement)}`
+        : change.field === "item" && change.replacement ?
+          text.entryLabel(
+            t.team.item,
+            `${names.item(change.value ?? "")} → ${names.item(change.replacement)}`,
+          )
         : change.field === "ability" && change.replacement ?
           text.entryLabel(
             t.team.ability,

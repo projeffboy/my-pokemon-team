@@ -11,14 +11,14 @@ const checked = (team: ReadonlyTeam, generation?: Generation) =>
     .filter(item => item.isChecked)
     .map(item => en.checklist.items[item.key].label);
 
-test("an empty team passes no check, in three groups of three", () => {
+test("an empty team passes no check, in three groups", () => {
   const groups = evaluateChecklist(createTeam());
   expect(groups.map(group => en.checklist.groups[group.key])).toEqual([
     "General",
     "Defensive",
     "Offensive",
   ]);
-  expect(groups.map(group => group.items.length)).toEqual([3, 3, 3]);
+  expect(groups.map(group => group.items.length)).toEqual([3, 3, 4]);
   expect(checked(createTeam())).toEqual([]);
 });
 
@@ -166,6 +166,18 @@ test("offensive checks count pivot moves and choice items", () => {
   expect(checked(createTeam({ name: "porygonz", item: "leftovers" }))).toEqual(
     [],
   );
+});
+
+test("priority moves are damaging moves that go first, not status moves like Protect", () => {
+  const priority = (name: string, move1: string, generation?: Generation) =>
+    checked(createTeam({ name, move1 }), generation).includes("Priority Move");
+  expect(priority("weavile", "iceshard")).toBe(true);
+  expect(priority("ragingbolt", "thunderclap")).toBe(true);
+  // Fake Out had +1 priority before Gen 5
+  expect(priority("hitmontop", "fakeout", 3)).toBe(true);
+  expect(priority("ragingbolt", "thunderbolt")).toBe(false);
+  for (const move of ["protect", "followme"])
+    expect(priority("indeedee", move)).toBe(false);
 });
 
 test("Curse counts only for non-Ghost users in the selected generation", () => {
@@ -371,4 +383,74 @@ test("Fling counts the selected item's guaranteed status only when usable", () =
   team[0].item = "flameorb";
   expect(status(4)).toBe(false);
   expect(status(7)).toBe(true);
+});
+
+const isBoosting = (
+  member: Parameters<typeof createTeam>[0],
+  generation: Generation = 9,
+) =>
+  evaluateChecklist(createTeam(member), generation)
+    .flatMap(group => group.items)
+    .find(item => item.key === "boosting")?.isChecked;
+
+test("Tidy Up and Take Heart raise the user two stages in a callback", () => {
+  expect(isBoosting({ name: "maushold", move1: "tidyup" })).toBe(true);
+  expect(
+    isBoosting({ name: "maushold", move1: "tidyup", ability: "Contrary" }),
+  ).toBe(false);
+  expect(isBoosting({ name: "phione", move1: "takeheart" })).toBe(true);
+});
+
+test("Stuff Cheeks counts only while its user holds a Berry", () => {
+  const greedent = { name: "greedent", move1: "stuffcheeks" };
+  expect(isBoosting({ ...greedent, item: "sitrusberry" })).toBe(true);
+  expect(isBoosting({ ...greedent, item: "leftovers" })).toBe(false);
+  expect(isBoosting(greedent)).toBe(false);
+});
+
+test("Simple doubles Howl after it began boosting allies too in Gen 8", () => {
+  for (const generation of [7, 8, 9] as const) {
+    expect(
+      isBoosting(
+        { name: "numel", move1: "howl", ability: "Simple" },
+        generation,
+      ),
+    ).toBe(true);
+    expect(
+      isBoosting(
+        { name: "numel", move1: "howl", ability: "Oblivious" },
+        generation,
+      ),
+    ).toBe(false);
+  }
+});
+
+test("Gear Up and Magnetic Flux boost their user only with Plus or Minus", () => {
+  for (const move1 of ["gearup", "magneticflux"]) {
+    expect(isBoosting({ name: "klinklang", move1, ability: "Plus" }, 7)).toBe(
+      true,
+    );
+    expect(isBoosting({ name: "klinklang", move1, ability: "Minus" }, 7)).toBe(
+      true,
+    );
+    expect(
+      isBoosting({ name: "klinklang", move1, ability: "Clear Body" }, 7),
+    ).toBe(false);
+  }
+});
+
+test("Rototiller boosts a grounded Grass-type user", () => {
+  const tapuBulu = { name: "tapubulu", move1: "rototiller" };
+  expect(isBoosting(tapuBulu, 7)).toBe(true);
+  expect(isBoosting({ ...tapuBulu, item: "airballoon" }, 7)).toBe(false);
+  expect(isBoosting({ name: "bibarel", move1: "rototiller" }, 7)).toBe(false);
+});
+
+test("Simple doubles the boost a charging move gives its user", () => {
+  expect(
+    isBoosting({ name: "bibarel", move1: "skullbash", ability: "Simple" }, 7),
+  ).toBe(true);
+  expect(
+    isBoosting({ name: "bibarel", move1: "skullbash", ability: "Unaware" }, 7),
+  ).toBe(false);
 });
