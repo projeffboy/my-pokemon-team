@@ -12,7 +12,11 @@ import {
   COMBINED_GENERATIONS_FORMAT,
   teamDataFormat,
 } from "@/shared/generation-profile";
-import { createEmptyTeam, requiredItemReplacement } from "@/shared/team";
+import {
+  createEmptyTeam,
+  getAutoSelectedItem,
+  requiredItemReplacement,
+} from "@/shared/team";
 import {
   generationRules,
   generationBit,
@@ -175,7 +179,18 @@ export function planGenerationTransfer(
         replacement: itemReplacement,
       });
       member.item = itemReplacement;
-    } else if (member.item && (!rules.items || !has(data.items[member.item]))) {
+    } else if (
+      member.item &&
+      (!rules.items ||
+        !(
+          has(data.items[member.item]) ||
+          // The editor gives a pokemon its required item even when the game lacks it,
+          // e.g. Bug Memory for Silvally-Bug in Gen 9
+          getAutoSelectedItem(member.name, "", item =>
+            has(data.items[item]),
+          ) === member.item
+        ))
+    ) {
       loss("item", member.item);
       member.item = "";
     }

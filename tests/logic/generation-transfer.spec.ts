@@ -783,6 +783,23 @@ test("Giratina-Origin swaps between the Griseous Core and Orb across generations
   }
 });
 
+test("keeps a required item that the destination's editor gives the pokemon", () => {
+  for (const [name, item, generation, to] of [
+    ["silvallyfairy", "fairymemory", 7, 9],
+    ["palkiaorigin", "lustrousglobe", 9, 8],
+  ] as const) {
+    const plan = planGenerationTransfer(
+      createTeam({ name, item }),
+      { generation, format: "" },
+      to,
+      "",
+      data,
+    );
+    expect(plan.team[0]?.item).toBe(item);
+    expect(plan.losses).toEqual([]);
+  }
+});
+
 test("keeps compatible moves and details and explains every unsupported field", () => {
   const original = createTeam({
     name: "slowbro",
