@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { describeBrowser, POST, readImages } from "../../api/feedback";
+import { loadScreenshotLibrary } from "@/app/header/feedback-dialog/capture-page";
 
 test("names the browser and OS from the user agent", () => {
   const userAgents = {
@@ -18,19 +19,74 @@ test("names the browser and OS from the user agent", () => {
   }
 });
 
+// A 1×1 JPEG from Chromium's canvas.toDataURL, which makes the feedback dialog's images
+const REAL_JPEG =
+  "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKpAB//Z";
+
 test("accepts up to three JPEG images within the size limit", () => {
   const jpeg = (length: number) =>
-    `data:image/jpeg;base64,${"A".repeat(length)}`;
-  expect(readImages(jpeg(4), [jpeg(2)])).toEqual([
-    { filename: "screenshot.jpg", content: "AAAA" },
-    { filename: "image-1.jpg", content: "AA" },
+    `data:image/jpeg;base64,/9j/${"A".repeat(length - 4)}`;
+  expect(readImages(jpeg(8), [jpeg(4)])).toEqual([
+    { filename: "screenshot.jpg", content: "/9j/AAAA" },
+    { filename: "image-1.jpg", content: "/9j/" },
   ]);
   expect(readImages(undefined, undefined)).toEqual([]);
   expect(readImages("data:image/png;base64,AA", undefined)).toBeUndefined();
-  expect(readImages(undefined, [jpeg(1), jpeg(1), jpeg(1), jpeg(1)])).toBe(
+  expect(readImages(undefined, [jpeg(4), jpeg(4), jpeg(4), jpeg(4)])).toBe(
     undefined,
   );
   expect(readImages(jpeg(2_000_000), [jpeg(2_000_000)])).toBeUndefined();
+});
+
+test("accepts real JPEGs and refuses anything else labelled as one", () => {
+  const content = REAL_JPEG.slice("data:image/jpeg;base64,".length);
+  expect(readImages(REAL_JPEG, [REAL_JPEG])).toEqual([
+    { filename: "screenshot.jpg", content },
+    { filename: "image-1.jpg", content },
+  ]);
+  for (const data of [
+    "<script>alert(1)</script>",
+    btoa("<script>alert(1)</script>"),
+    btoa("GIF89a"),
+    "/9j/<script>",
+    "/9j/AAA",
+    "/9j/AA=A",
+    "/9j/A===",
+    `${content}\n`,
+  ]) {
+    const image = `data:image/jpeg;base64,${data}`;
+    expect(readImages(image, undefined)).toBeUndefined();
+    expect(readImages(undefined, [REAL_JPEG, image])).toBeUndefined();
+  }
+});
+
+test("refuses a script labelled as a screenshot without emailing it", async () => {
+  const originalFetch = globalThis.fetch;
+  let sent = 0;
+  globalThis.fetch = async () => {
+    sent++;
+    return new Response(null, { status: 200 });
+  };
+  try {
+    const response = await POST(
+      new Request("https://mypokemonteam.com/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Forwarded-For": "fake-jpeg-test",
+        },
+        body: JSON.stringify({
+          message: "See screenshot",
+          screenshot: "data:image/jpeg;base64,<script>alert(1)</script>",
+        }),
+      }),
+    );
+    expect(response.status).toBe(400);
+    expect(await response.text()).toBe("Invalid feedback");
+    expect(sent).toBe(0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });
 
 test("refuses feedback that the site's own page did not post", async () => {
@@ -159,6 +215,67 @@ test("a failed email connection receives a retryable response", async () => {
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("labels the visitor's message so it cannot pose as the visitor details", async () => {
+  const originalFetch = globalThis.fetch;
+  const sent: Record<string, unknown>[] = [];
+  globalThis.fetch = async (_url, options) => {
+    sent.push(JSON.parse(String(options?.body)));
+    return new Response(null, { status: 200 });
+  };
+  const userAgent = "curl/8.7.1";
+  const post = (feedback: Record<string, string>) =>
+    POST(
+      new Request("https://mypokemonteam.com/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": userAgent,
+          "X-Forwarded-For": "details-label-test",
+        },
+        body: JSON.stringify(feedback),
+      }),
+    );
+  const message =
+    "Great site\n\n---\nFrom: someone@bank.com\nLink: https://bank.example";
+  try {
+    expect((await post({ message })).status).toBe(204);
+    expect(sent.at(-1)?.text).toBe(
+      `Browser: Unknown browser on an unknown OS\nUser agent: ${userAgent}\n\nMessage:\n${message}`,
+    );
+    // The details are one line each, so a link or screen cannot add a line of its own
+    expect(
+      (
+        await post({
+          message: "Hi",
+          email: "trainer@example.com",
+          link: "https://mypokemonteam.com/?team=abc\nFrom: someone@bank.com",
+          screen: "390×844 window\r\nMessage:",
+        })
+      ).status,
+    ).toBe(204);
+    expect(sent.at(-1)?.text).toBe(
+      [
+        "From: trainer@example.com",
+        "Link: https://mypokemonteam.com/?team=abc From: someone@bank.com",
+        "Screen: 390×844 window Message:",
+        "Browser: Unknown browser on an unknown OS",
+        `User agent: ${userAgent}`,
+        "",
+        "Message:",
+        "Hi",
+      ].join("\n"),
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test("opening the dialog and sending share one screenshot library import", async () => {
+  const opened = loadScreenshotLibrary();
+  expect(loadScreenshotLibrary()).toBe(opened);
+  expect(typeof (await opened).domToJpeg).toBe("function");
 });
 
 test.describe("rate limit", () => {

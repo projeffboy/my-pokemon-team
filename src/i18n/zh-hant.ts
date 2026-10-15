@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHant: Messages = {
+  pageTitle: "My Pokemon Team - 寶可夢配隊與隊伍規劃工具",
   // The header
   beta: "測試版",
   generation,
@@ -109,13 +110,15 @@ const zhHant: Messages = {
     delete: "刪除",
     importTeam: "匯入隊伍",
     share: "分享",
-    teamEmpty: "寶可夢隊伍是空的",
+    teamEmpty: "隊伍是空的。請先加入寶可夢再分享。",
     linkCopied: "已複製寶可夢隊伍連結",
-    linkNotCopied: "無法複製連結。",
-    nothingToCopy: "隊伍是空的，沒有可複製的內容。",
+    linkNotCopied: "無法複製連結。請在開啟該隊伍時，從網址列複製網址。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支援此連結的世代或遊戲，已改用${profile}開啟。`,
+    nothingToCopy: "隊伍是空的。請先加入寶可夢再複製。",
     teamCopied: "已複製隊伍。",
-    teamNotCopied: "無法複製隊伍。",
-    cannotDuplicateEmptyTeam: "無法建立空隊伍的副本",
+    teamNotCopied: "無法複製隊伍。請改用「編輯 Pokepaste」複製隊伍文字。",
+    cannotDuplicateEmptyTeam: "隊伍是空的。請先加入寶可夢再建立副本。",
     teamDuplicated: "已建立隊伍副本",
     teamDeleted: "已刪除隊伍",
     slots: "寶可夢隊伍欄位",
@@ -131,7 +134,7 @@ const zhHant: Messages = {
     advanced: "更多詳情",
     advancedFor: (slot: number) => `第 ${slot} 格的更多詳情`,
     details: "詳情",
-    showMoveTypes: "顯示招式屬性",
+    showTypes: "顯示屬性",
     about: (pokemon: string) => `關於${pokemon}`,
     dragHint: "長按拖曳即可調整順序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他格`,
@@ -173,7 +176,8 @@ const zhHant: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `隊伍 ${number}`,
     unnamedTeam: "隊伍",
-    copyOf: (name: string) => `${name} 副本`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} 副本 ${number}` : `${name} 副本`,
     learnsetsFailed: "無法載入招式列表。請重新載入頁面再試一次。",
   },
 
@@ -258,6 +262,7 @@ const zhHant: Messages = {
       cause: string | undefined,
     ) =>
       `${type}屬性對${pokemon}（${types}）造成 ${multiplier} 倍傷害${cause ? `（受${cause}影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其變為${type}屬性`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -402,7 +407,7 @@ const zhHant: Messages = {
     randomTeamCreated: "已建立隨機隊伍",
     exported: "已匯出所有隊伍",
     copiedAll: "已複製所有隊伍",
-    notCopiedAll: "無法複製隊伍。",
+    notCopiedAll: "無法複製隊伍。請改用「全部匯出」下載隊伍。",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -483,6 +488,8 @@ const zhHant: Messages = {
       `${pokemon}必須攜帶${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}的${move}重複了。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${where} 禁止使用${pokemon}的${thing}。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -517,7 +524,29 @@ const zhHant: Messages = {
     imported: "已匯入隊伍",
     importedMany: (count: number) => `已匯入 ${count} 支隊伍`,
     noChanges: "沒有任何變更。",
-    nothingFound: "這段文字中找不到寶可夢。",
+    nothingFound:
+      "這段文字中找不到寶可夢。請按照 Pokemon Showdown 的拼法用英文寫寶可夢名稱，或貼上從 Pokemon Showdown 匯出的隊伍。",
+    problems: (count: number) =>
+      `發現 ${count} 個問題。更新時仍會依下列方式套用文字：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}的${field}`,
+    moveSlot: (slot: number) => `招式 ${slot}`,
+    problemValue: (where: string, value: string) => `${where}：「${value}」`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "無法辨識。",
+    unlearnable: (pokemon: string) =>
+      `在所選遊戲中，${pokemon}無法學會這個招式。`,
+    wrongAbility: (pokemon: string) => `不是${pokemon}可以擁有的特性。`,
+    outOfRange: (min: number, max: number) =>
+      `不是 ${min} 到 ${max} 之間的整數。`,
+    unsupported: "所選遊戲沒有這一項。",
+    tooManyPokemon: "一支隊伍最多有 6 隻寶可夢。",
+    tooManyMoves: "一隻寶可夢最多有 4 個招式。",
+    noGigantamax: (pokemon: string) => `${pokemon}沒有超極巨化的樣子。`,
+    unread: "本網站不讀取這一項。",
+    slotLeftEmpty: "該隊伍格位留空。",
+    moveLeftEmpty: "該招式格位留空。",
+    leftOut: "此項會被省略。",
+    usedInstead: (value: string) => `改用${value}。`,
   },
   deleteDialog: {
     title: (team: string) => `要刪除${team}嗎？`,

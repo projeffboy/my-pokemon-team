@@ -32,6 +32,7 @@ export function getBrowserStorage(): Storage | undefined {
 export interface StoredState {
   teams: SavedTeam[];
   currentTeamId: string;
+  // Whether pokemon and move types show; named from when it covered moves only
   showMoveTypes: boolean;
   sort: SortOrder;
   moveSort: MoveSortOrder;
@@ -228,7 +229,7 @@ export function mergeStoredState(
     moveSort: pick(base.moveSort, mine.moveSort, theirs.moveSort),
     nameView: pick(base.nameView, mine.nameView, theirs.nameView),
     ...(locale && { locale }),
-    ...((mine.knowsSlotDrag || theirs.knowsSlotDrag) && {
+    ...(pick(base.knowsSlotDrag, mine.knowsSlotDrag, theirs.knowsSlotDrag) && {
       knowsSlotDrag: true,
     }),
   };
