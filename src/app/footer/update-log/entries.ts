@@ -28,6 +28,7 @@ const entries: Entry[] = [
       "The Old website button now takes your current team along, after naming anything the old website can’t hold, such as EVs.",
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
       "Twenty-one more Pokémon are now animated, like Great Tusk.",
+      "Matrix Analysis now notes the type Conversion gives a Pokémon, e.g. Ghost for Porygon-Z with Shadow Ball first.",
     ],
   },
   {

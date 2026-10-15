@@ -265,6 +265,7 @@ const ja: Messages = {
       cause: string | undefined,
     ) =>
       `${type}タイプの技は${pokemon}（${types}）に${multiplier}倍${cause ? `（${cause}の影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}で${type}タイプになる`,
     coverageReason: (
       pokemon: string,
       move: string,

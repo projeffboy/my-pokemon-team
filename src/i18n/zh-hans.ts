@@ -258,6 +258,7 @@ const zhHans: Messages = {
       cause: string | undefined,
     ) =>
       `${type}对${pokemon}（${types}）造成 ${multiplier} 倍伤害${cause ? `（受${cause}影响）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其变为${type}属性`,
     coverageReason: (
       pokemon: string,
       move: string,

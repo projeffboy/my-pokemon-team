@@ -261,6 +261,8 @@ const en = {
       cause: string | undefined,
     ) =>
       `${type} does ${multiplier}x to ${pokemon} (${types})${cause ? ` with ${cause}` : ""}`,
+    // A second line for a pokemon with Conversion: the type its first move gives it
+    conversion: (move: string, type: string) => `${move} makes it ${type} type`,
     coverageReason: (
       pokemon: string,
       move: string,

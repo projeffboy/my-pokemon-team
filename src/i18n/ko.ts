@@ -279,6 +279,8 @@ const ko: Messages = {
       cause: string | undefined,
     ) =>
       `${type} 타입은 ${pokemon}(${types})에게 ${multiplier}배${cause ? ` (${cause} 적용)` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} 사용 시 ${type} 타입이 됩니다`,
     coverageReason: (
       pokemon: string,
       move: string,

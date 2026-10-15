@@ -270,6 +270,8 @@ const it: Messages = {
       cause: string | undefined,
     ) =>
       `${type} fa ${multiplier}x a ${pokemon} (${types})${cause ? ` con ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} lo rende di tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
