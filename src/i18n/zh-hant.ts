@@ -170,7 +170,8 @@ const zhHant: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `隊伍 ${number}`,
     unnamedTeam: "隊伍",
-    copyOf: (name: string) => `${name} 副本`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} 副本 ${number}` : `${name} 副本`,
     learnsetsFailed: "無法載入招式列表。請重新載入頁面再試一次。",
   },
 

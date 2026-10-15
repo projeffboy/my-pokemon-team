@@ -171,7 +171,8 @@ const zhHans: Messages = {
     // 新队伍的默认名称
     teamNumber: (number: number) => `队伍 ${number}`,
     unnamedTeam: "队伍",
-    copyOf: (name: string) => `${name} 副本`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} 副本 ${number}` : `${name} 副本`,
     learnsetsFailed: "无法加载招式列表。请重新加载页面重试。",
   },
 
