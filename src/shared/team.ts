@@ -73,7 +73,7 @@ const EARLIER_REQUIRED_ITEMS: Record<string, string> = {
 };
 
 // Each required item with the item it replaced, e.g. [griseouscore, griseousorb]
-function requiredItemGroups(pokemon: string): string[][] {
+export function requiredItemGroups(pokemon: string): string[][] {
   const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
   return [requiredItem, ...requiredItems]
     .map(name => (name && itemNameInverse(name)) || "")
