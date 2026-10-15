@@ -458,7 +458,7 @@ const ko: Messages = {
     removed: {
       item: "제거되는 도구",
       ability: "제거되는 특성",
-      moves: "제거되는 기술:",
+      move: "제거되는 기술",
       details: "제거되는 세부 정보",
     },
     ivsUnused: (where: string) => `${where}에서는 개체값이 적용되지 않습니다.`,
@@ -471,6 +471,9 @@ const ko: Messages = {
       item: (count: number) => `도구 ${count}개`,
       ability: (count: number) => `특성 ${count}개`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total} 중 ${carried}마리 유지`,
+    removedSummary: (removed: string) => `${removed} 제거`,
     modify: "현재 팀 업데이트",
     copy: "새 팀으로 복사",
     createEmpty: "빈 팀 만들기",

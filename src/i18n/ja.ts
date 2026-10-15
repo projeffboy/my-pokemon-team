@@ -448,7 +448,7 @@ const ja: Messages = {
     removed: {
       item: "削除される持ち物",
       ability: "削除される特性",
-      moves: "削除される技：",
+      move: "削除される技",
       details: "削除される詳細",
     },
     ivsUnused: (where: string) => `${where}では個体値は適用されません。`,
@@ -461,6 +461,9 @@ const ja: Messages = {
       item: (count: number) => `持ち物${count}個`,
       ability: (count: number) => `特性${count}個`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中${carried}匹を引き継ぎ`,
+    removedSummary: (removed: string) => `${removed}を削除`,
     modify: "現在のチームを更新",
     copy: "新しいチームにコピー",
     createEmpty: "空のチームを作成",

@@ -446,7 +446,7 @@ const ptBR: Messages = {
     removed: {
       item: "Item removido",
       ability: "Habilidade removida",
-      moves: "Golpes removidos:",
+      move: "Golpe removido",
       details: "Detalhes removidos",
     },
     ivsUnused: (where: string) => `IVs não se aplicam em ${where}.`,
@@ -460,6 +460,9 @@ const ptBR: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidade" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} ${carried === 1 ? "será mantido" : "serão mantidos"}`,
+    removedSummary: (removed: string) => `Remoção de ${removed}`,
     modify: "Atualizar equipe atual",
     copy: "Copiar para nova equipe",
     createEmpty: "Criar equipe vazia",

@@ -441,7 +441,7 @@ const en = {
     removed: {
       item: "Item removed",
       ability: "Ability removed",
-      moves: "Moves removed:",
+      move: "Move removed",
       details: "Details removed",
     },
     ivsUnused: (where: string) => `IVs don’t apply in ${where}.`,
@@ -455,6 +455,9 @@ const en = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "ability" : "abilities"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} of ${total} ${carried === 1 ? "carries" : "carry"} over`,
+    removedSummary: (removed: string) => `${removed} removed`,
     modify: "Update existing team",
     copy: "Copy to new team",
     createEmpty: "Create empty team",

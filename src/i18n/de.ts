@@ -463,7 +463,7 @@ const de: Messages = {
     removed: {
       item: "Item entfernt",
       ability: "Fähigkeit entfernt",
-      moves: "Attacken entfernt:",
+      move: "Attacke entfernt",
       details: "Details entfernt",
     },
     ivsUnused: (where: string) => `DVs werden in ${where} nicht verwendet.`,
@@ -478,6 +478,9 @@ const de: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "Fähigkeit" : "Fähigkeiten"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} von ${total} ${carried === 1 ? "wird" : "werden"} übernommen`,
+    removedSummary: (removed: string) => `${removed} entfernt`,
     modify: "Vorhandenes Team aktualisieren",
     copy: "In neues Team kopieren",
     createEmpty: "Leeres Team erstellen",

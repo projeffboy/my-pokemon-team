@@ -452,7 +452,7 @@ const it: Messages = {
     removed: {
       item: "Strumento rimosso",
       ability: "Abilità rimossa",
-      moves: "Mosse rimosse:",
+      move: "Mossa rimossa",
       details: "Dettagli rimossi",
     },
     ivsUnused: (where: string) => `Gli IV non si applicano in ${where}.`,
@@ -467,6 +467,9 @@ const it: Messages = {
         `${count} ${count === 1 ? "strumento" : "strumenti"}`,
       ability: (count: number) => `${count} abilità`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} su ${total} ${carried === 1 ? "viene mantenuto" : "vengono mantenuti"}`,
+    removedSummary: (removed: string) => `Rimozione di ${removed}`,
     modify: "Aggiorna squadra attuale",
     copy: "Copia in una nuova squadra",
     createEmpty: "Crea squadra vuota",
