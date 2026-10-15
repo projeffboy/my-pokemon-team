@@ -11,6 +11,9 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Team analysis now checks Generations 6–9 teams against the bans of the format chosen in the filters, e.g. Spore in OU.",
+      "Team analysis now flags Pokémon that Legends: Z-A does not have, e.g. Koraidon.",
+      "Random sets no longer pick what their format bans, e.g. Tera Blast in OU.",
       "Reloading a saved Let’s Go or Legends: Arceus team now keeps that team instead of opening a Gen 7 or Gen 8 copy.",
       "The team checklist can now be set to singles or doubles, and counts Defog as hazard removal in Gen 4 and 5 doubles.",
       "Links and saved teams now name the Pokémon, moves, items and abilities a data update removed from them.",

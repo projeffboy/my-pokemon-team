@@ -39,6 +39,27 @@ test.describe("Team Problems and Dialogs - Integration Tests", () => {
     ]);
   });
 
+  test("Generations 6–9, where a fresh visit starts, checks the team against the format chosen in the filters", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await selectPokemon(page, "Cyclizar");
+    await selectMove(page, "Shed Tail");
+    await expect(problems(page)).toHaveText(
+      "No problems found for Generations 6–9.",
+    );
+    await openFilters(page);
+    await selectDialogOption(page, "Format", "OU: Over Used");
+    await closeDialog(page);
+    await expect(problems(page).getByRole("listitem")).toHaveText([
+      "Cyclizar has Shed Tail, which is banned in Generations 6–9 OU: Over Used.",
+    ]);
+    await selectMove(page, "U-turn");
+    await expect(problems(page)).toHaveText(
+      "No problems found for Generations 6–9 OU: Over Used.",
+    );
+  });
+
   // Share links and the level field keep levels in range, but saved teams keep any level
   test("a saved team's level outside 1 to 100 is a problem", async ({
     page,
