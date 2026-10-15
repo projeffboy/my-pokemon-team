@@ -24,7 +24,6 @@ import ListTools from "./pokemon-input-select/shared/ListTools";
 import { isHiddenAbility } from "@/shared/pokedex";
 import { moveType } from "@/store/shared/effectiveness";
 import { gameFormat } from "@/shared/formats";
-import { allAbilities } from "@/shared/names";
 import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
@@ -141,7 +140,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       : pokemonProperty === "ability" ?
         ([
           "ability",
-          () => allAbilities.map(names.ability),
+          () => store.gameAbilities.map(names.ability),
           TEXT_ROW_CHROME + 2,
         ] as const)
       : ([
@@ -152,7 +151,8 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     setFitWidth(
       twoLineWidth(`${kind}|${game}`, labels, typography.body1, 80) +
         chrome +
-        scrollbarWidth(),
+        // A pokemon has at most three abilities, too few for the list to scroll
+        (kind === "ability" ? 0 : scrollbarWidth()),
     );
   }, [
     pokemonProperty,

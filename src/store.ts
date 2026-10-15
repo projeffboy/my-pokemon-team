@@ -772,7 +772,7 @@ export class Store {
       );
   }
 
-  // Every pokemon and move the current game's dropdowns can list, whatever the filters
+  // Every pokemon, move, and ability the current game's dropdowns can list, whatever the filters
   get gamePokemon() {
     const { generation, format } = this.currentTeam;
     return this.inGame(
@@ -792,6 +792,16 @@ export class Store {
       this.currentTeam.generation,
       this.dataFormat,
     );
+  }
+
+  get gameAbilities() {
+    return [
+      ...new Set(
+        this.gamePokemon.flatMap(name =>
+          pokemonAbilities(name, this.currentTeam.generation, this.dataFormat),
+        ),
+      ),
+    ];
   }
 
   get filteredPokemon() {

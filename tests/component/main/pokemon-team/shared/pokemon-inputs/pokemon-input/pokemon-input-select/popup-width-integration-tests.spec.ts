@@ -118,3 +118,32 @@ test("the item, move, and ability lists keep each word whole", async ({
   await page.getByRole("menuitem", { name: "Français" }).click();
   await expectOneLine(fr.team.input(1, "ability"), "Thermodynamique");
 });
+
+test("the ability list widens only for the game's abilities", async ({
+  page,
+}) => {
+  const team = Buffer.from("Hatterene\n").toString("base64url");
+  await page.goto(`/?gen=8&team=${team}`);
+  await resizeTeamViewport(page, 1200, 900);
+  await page.evaluate(() => document.fonts.ready);
+  await page.getByRole("button", { name: "Language", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Français" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "fr");
+  const input = page.getByRole("combobox", {
+    name: fr.team.input(1, "ability"),
+  });
+  const popup = page.locator(".MuiAutocomplete-popper");
+  const popupWidth = async () => (await popup.boundingBox())?.width ?? 0;
+
+  // Only Gen 9 has Thermodynamique, which needs more than the list's minimum
+  await input.click();
+  await expect.poll(popupWidth).toBeCloseTo(152, 0);
+  await input.press("Escape");
+
+  await page.getByRole("combobox", { name: fr.generationSelect }).click();
+  await page
+    .getByRole("option", { name: new RegExp(fr.generationGames[9]) })
+    .click();
+  await input.click();
+  await expect.poll(popupWidth).toBeGreaterThan(152);
+});
