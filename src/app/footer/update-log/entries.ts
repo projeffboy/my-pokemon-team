@@ -28,7 +28,7 @@ const entries: Entry[] = [
       "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
       "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
-      "Imported sets no longer keep details their game lacks, such as IVs in Champions.",
+      "From Gen 6, choosing Hidden Power now keeps custom IVs that still give its type, such as 0 Speed for Trick Room.",
     ],
   },
   {
