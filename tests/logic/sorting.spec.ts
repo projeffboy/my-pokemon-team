@@ -153,6 +153,8 @@ test("format sorting uses doubles tiers in a doubles format", () => {
     "incineroar",
     "calyrexshadow",
     "sneasel",
+    "pichu",
+    "dusclops",
   ];
   const sort = (format: string, descending: boolean) =>
     sortPokemon(ids, { by: "format", descending }, undefined, 9, format);
@@ -161,18 +163,32 @@ test("format sorting uses doubles tiers in a doubles format", () => {
     "incineroar",
     "baxcalibur",
     "tatsugiri",
+    "dusclops",
     "sneasel",
     "trumbeak",
+    "pichu",
   ];
   expect(sort("Doubles OU", false)).toEqual(doubles);
-  expect(sort("Doubles OU", true)).toEqual([...doubles].reverse());
+  // Dusclops, Sneasel, and Trumbeak share NFE, so they stay in name order
+  expect(sort("Doubles OU", true)).toEqual([
+    "pichu",
+    "dusclops",
+    "sneasel",
+    "trumbeak",
+    "tatsugiri",
+    "baxcalibur",
+    "incineroar",
+    "calyrexshadow",
+  ]);
   expect(sort("OU: Over Used", false)).toEqual([
     "calyrexshadow",
     "baxcalibur",
     "incineroar",
     "tatsugiri",
     "sneasel",
+    "dusclops",
     "trumbeak",
+    "pichu",
   ]);
 });
 

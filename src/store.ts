@@ -24,7 +24,11 @@ import {
   variantGeneration,
 } from "./shared/generation-rules";
 import { teamDataFormat } from "./shared/generation-profile";
-import { formatForGeneration, gameFormat } from "./shared/formats";
+import {
+  formatForGeneration,
+  gameFormat,
+  linkGameFormat,
+} from "./shared/formats";
 import { allItemIds } from "./shared/names";
 import { MOVE_KEYS } from "./types";
 import {
@@ -262,8 +266,17 @@ export class Store {
     const index = this.teams.findIndex(
       ({ id, team }) => id === this.draftReplaces && isTeamEmpty(team),
     );
-    if (index === -1) this.teams.push(this.draftTeam);
-    else this.teams[index] = this.draftTeam;
+    if (index === -1) {
+      // It goes beside the starting team instead, so it gives up that team's name
+      const { name } = this.draftTeam;
+      if (
+        this.draftReplaces &&
+        name === this.translation.t.team.teamNumber(1) &&
+        this.teams.some(team => team.name === name)
+      )
+        this.draftTeam.name = this.nextTeamName();
+      this.teams.push(this.draftTeam);
+    } else this.teams[index] = this.draftTeam;
     this.draftTeam = null;
   }
 
@@ -490,6 +503,8 @@ export class Store {
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
   // A link carries a game and a battle format but no tier, so a saved team's tier does not count.
+  // Nor does it carry a Coming soon game, so the open team in one matches its generation's
+  // links, as its address bar shows it, while other teams in one do not.
   // Returns the saved team it opens, if any; an empty team opens nothing.
   openTeamFromLink(
     team: Team,
@@ -534,7 +549,9 @@ export class Store {
           saved.generationProfile === settings.generationProfile &&
           saved.battleFormat === settings.battleFormat &&
           (settings.format === undefined ||
-            gameFormat(saved.format) === settings.format))) &&
+            (saved.id === preferredId ?
+              linkGameFormat(saved.format)
+            : gameFormat(saved.format)) === settings.format))) &&
       reads(saved);
     const saved =
       this.teams.find(saved => saved.id === preferredId && matches(saved)) ??

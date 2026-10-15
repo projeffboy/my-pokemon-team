@@ -4,12 +4,17 @@ import { LETS_GO, LEGENDS_ARCEUS, LEGENDS_ZA } from "@/shared/game-variants";
 import { DEFAULT_TEAM_SETTINGS } from "@/shared/team";
 import {
   battleFormatFromUrl,
+  encodeTeamForUrl,
   generationSettingsFromUrl,
   importTeamFromUrlParameter,
   syncTeamSettingsToUrl,
 } from "@/app/shared/team-link";
 import { toBase64Url } from "@/app/shared/base64url";
-import { parseTeamText, serializeTeam } from "@/store/team-text";
+import {
+  parseTeamsText,
+  parseTeamText,
+  serializeTeam,
+} from "@/store/team-text";
 
 const profiles = [
   { slug: "champions", format: CHAMPIONS_FORMAT, generation: 9 },
@@ -127,10 +132,9 @@ test("Champions links made with the display-name game value still open as Champi
   });
 });
 
-test("unpublished display-name game values are not URL aliases", () => {
-  for (const { format } of profiles.filter(
-    profile => profile.slug !== "champions",
-  )) {
+// Both Legends games were Coming soon Oct 10–13, 2026, so no link named them by display name
+test("the Legends games' display names are not URL aliases", () => {
+  for (const format of [LEGENDS_ARCEUS, LEGENDS_ZA]) {
     const url = new URL("https://mypokemonteam.com/");
     url.searchParams.set("game", format);
     withUrl(url, () =>
@@ -140,6 +144,111 @@ test("unpublished display-name game values are not URL aliases", () => {
       }),
     );
   }
+});
+
+const comingSoonTeams = [
+  {
+    format: LETS_GO,
+    text: `=== [gen7letsgoou] Kanto Bubbles ===
+
+Eevee-Starter (F)
+Level: 50
+EVs: 200 HP / 200 Atk / 200 Def / 200 SpA / 200 SpD / 200 Spe
+Modest Nature
+- Bouncy Bubble
+- Veevee Volley
+
+Persian-Alola
+- Night Slash`,
+    details: [
+      "EVs: 200 HP / 200 Atk / 200 Def / 200 SpA / 200 SpD / 200 Spe",
+      "- Bouncy Bubble",
+    ],
+  },
+  {
+    format: LEGENDS_ARCEUS,
+    text: `=== [gen8legendsarceus] Hisui Spikes ===
+
+Overqwil
+Effort Levels: 10 Atk / 3 Spe
+Adamant Nature
+- Barb Barrage
+- Crunch
+
+Electrode-Hisui
+- Chloroblast`,
+    details: ["Effort Levels: 10 Atk / 3 Spe", "- Chloroblast"],
+  },
+];
+
+// Links do not name a Coming soon game, so a team in one shows its generation's link
+for (const { format, text, details } of comingSoonTeams) {
+  test(`a reload reopens a saved ${format} team, which links show by its generation`, ({
+    store,
+  }) => {
+    const [{ name, ...settings }] = parseTeamsText(text);
+    expect(settings.format).toBe(format);
+    const other = store.currentTeam;
+    const saved = store.addTeam({ ...settings, name });
+    const savedText = serializeTeam(saved.team, saved.generation, format);
+    // The game's own details, which the link's text, read in its generation, has to match
+    for (const detail of details) expect(savedText).toContain(detail);
+    const url = new URL("https://mypokemonteam.com/");
+    url.searchParams.set("team", encodeTeamForUrl());
+    syncTeamSettingsToUrl(url, saved);
+    expect(url.searchParams.get("gen")).toBe(String(saved.generation));
+    expect(url.searchParams.has("game")).toBe(false);
+    const open = () =>
+      withUrl(url, () =>
+        importTeamFromUrlParameter(url.searchParams.get("team") ?? ""),
+      );
+
+    // As a reload does: a new draft, then this tab's team, then the link
+    store.openUnsavedTeam();
+    store.selectTeam(saved.id);
+    open();
+    expect(store.currentTeamId).toBe(saved.id);
+    expect(store.currentTeam.format).toBe(format);
+    expect(serializeTeam(store.team, saved.generation, format)).toBe(savedText);
+    expect(store.teams).toHaveLength(2);
+
+    // From any other team, the link opens in its generation, as the game is Coming soon
+    store.selectTeam(other.id);
+    open();
+    expect(store.currentTeamId).not.toBe(saved.id);
+    expect(store.currentTeam).toMatchObject({
+      generation: saved.generation,
+      format: "",
+    });
+  });
+}
+
+// Links made Oct 10–13, 2026 named Let's Go by display name, as in ?game=Let%E2%80%99s+Go&gen=7,
+// which opens in Gen 7 while Let's Go is Coming soon
+test("Let's Go links made with the display-name game value open in Gen 7, or as the open saved team", ({
+  store,
+}) => {
+  const [{ name, ...settings }] = parseTeamsText(comingSoonTeams[0].text);
+  const saved = store.addTeam({ ...settings, name });
+  const url = new URL("https://mypokemonteam.com/");
+  url.searchParams.set("game", LETS_GO);
+  url.searchParams.set("gen", "7");
+  url.searchParams.set(
+    "team",
+    toBase64Url(serializeTeam(saved.team, 7, LETS_GO)),
+  );
+  expect(url.search).toContain("game=Let%E2%80%99s+Go&gen=7");
+  withUrl(url, () => {
+    expect(generationSettingsFromUrl()).toEqual({
+      settings: { generation: 7, format: "" },
+      unrecognized: true,
+    });
+    store.openUnsavedTeam();
+    store.selectTeam(saved.id);
+    importTeamFromUrlParameter(url.searchParams.get("team") ?? "");
+    expect(store.currentTeamId).toBe(saved.id);
+    expect(store.currentTeam.format).toBe(LETS_GO);
+  });
 });
 
 test("missing, empty, unsupported, and conflicting gen and game values", () => {
