@@ -56,6 +56,12 @@ test.describe("Team Checklist - Integration Tests", () => {
       checklistItem: "Boosting Move",
     },
     {
+      pokemon: "Azumarill",
+      move: "Aqua Jet",
+      item: null,
+      checklistItem: "Priority Move",
+    },
+    {
       pokemon: "Tapu Koko",
       move: "Volt Switch",
       item: null,

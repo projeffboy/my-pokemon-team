@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { turnOnAdvanced, selectPokemon, resizeTeamViewport } from "helper";
+import { selectPokemon, resizeTeamViewport } from "helper";
 import pokedex from "@/data/pokedex";
 import { filterPokemon } from "@/store/filtering";
 import { sortPokemon, DEFAULT_SORT } from "@/store/sorting";
@@ -319,16 +319,6 @@ test.describe("Name dropdown views - Unit Tests", () => {
     ).toContainText("Wooper");
 
     const toggle = page.getByRole("group", { name: "Name list view" });
-    const buttons = toggle.getByRole("button");
-    const firstButton = await buttons.first().boundingBox();
-    const lastButton = await buttons.last().boundingBox();
-    const popup = await page.locator(".MuiAutocomplete-paper").boundingBox();
-    expect(firstButton && lastButton && popup).toBeTruthy();
-    if (firstButton && lastButton && popup)
-      expect((firstButton.x + lastButton.x + lastButton.width) / 2).toBeCloseTo(
-        popup.x + popup.width / 2,
-        0,
-      );
     const listBounds = await toggle.boundingBox();
     await page.getByRole("button", { name: "Grid view", exact: true }).click();
     await expect
@@ -427,17 +417,34 @@ test("keyboard users can switch views without losing their search", async ({
   await expect(input).toBeFocused();
   await input.fill("rhyper");
   await input.press("Tab");
-  await page.keyboard.press("Tab");
+  // Past the view toggle, Filters, and Sort
+  for (let tab = 0; tab < 3; tab++) await page.keyboard.press("Tab");
   await expect(page.getByRole("listbox")).toBeHidden();
   await expect(
     page.getByRole("button", { name: "Random pokemon for slot 1" }),
   ).toBeFocused();
 });
 
+test("the Name dropdown has Filters and Sort, and the move dropdowns Sort alone", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 800 });
+  const filters = page.getByRole("button", { name: "Filters", exact: true });
+  const sort = page.getByRole("button", { name: "Sort", exact: true });
+  const name = page.getByLabel("Pokemon 1's name");
+  await name.click();
+  await expect(filters).toBeVisible();
+  await expect(sort).toBeVisible();
+  await name.press("Escape");
+  await selectPokemon(page, "Grafaiai");
+  await page.getByLabel("Pokemon 1's move1").click();
+  await expect(sort).toBeVisible();
+  await expect(filters).toHaveCount(0);
+});
+
 test("keyboard popup tools restore input focus after their dialogs close", async ({
   page,
 }) => {
-  await turnOnAdvanced(page);
   const input = page.getByLabel("Pokemon 1's name");
   await input.fill("no-pokemon-matches");
   await input.press("Tab");

@@ -23,12 +23,21 @@ export default function GameLogos({
         alignItems: "center",
         gap: 0.75,
         mt: 0.5,
+        // On one line, the logos shrink to fit rather than overflow
+        minWidth: nowrap ? 0 : undefined,
       }}
     >
       {logos.map(logo => {
         const { src, name, isBoxFront } = logo;
+        // A box front is twice a wordmark's height
+        const scale = isBoxFront ? 2 : 1;
         const sx = {
-          height: { xxs: isBoxFront ? 56 : 28, sm: isBoxFront ? 80 : 40 },
+          height: {
+            xxs: 28 * scale,
+            // On one line the logos shrink to fit, so they can take the larger size sooner
+            ...(nowrap && { xs: 40 * scale }),
+            sm: 40 * scale,
+          },
           aspectRatio: logoAspectRatio(logo),
           flexShrink: 0,
         };
@@ -43,6 +52,7 @@ export default function GameLogos({
                 ...sx,
                 width: "auto",
                 maxWidth: nowrap ? undefined : "100%",
+                minWidth: nowrap ? 0 : undefined,
                 flexShrink: undefined,
                 objectFit: "contain",
               }}

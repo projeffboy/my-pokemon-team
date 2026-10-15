@@ -11,7 +11,32 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
+      "Beat Up is now typeless in Gens 2–4, as in those games.",
+      "The coverage matrix now doubles resisted hits from Tinted Lens users.",
+      "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
+      "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
+      "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
+      "Abilities and items that shared a name in other languages, such as the two As One abilities, are now told apart.",
+      "Sorting by format in Doubles formats now follows doubles tiers, so Incineroar comes before Baxcalibur in Doubles OU.",
+      "Opening a shared team on your first visit no longer saves an extra empty team beside it.",
+      "Doubles OU and Doubles Uber now include Pokémon that were missing from them, such as Gen 6 Mega Tyranitar.",
+      "Changing generations now swaps Giratina-Origin’s Griseous Core and Griseous Orb instead of dropping or keeping the wrong one.",
+      "Switching a team to Gen 9 no longer removes Pokémon and moves that Gen 9 offers, such as Silvally and Tyranitar’s Pursuit.",
+      "Imported sets without an item keep their Pokémon when the nickname holds an @, such as Mew@x (Pikachu).",
+      "Picking a slot’s own Pokémon again in the Name list no longer clears its moves, item and other details.",
+      "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
+      "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
+    ],
+  },
+  {
+    date: "Oct 14, 2026",
+    changes: [
+      "The Old website button now takes your current team along, after naming anything the old website can’t hold, such as EVs.",
+      "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
+      "Twenty-one more Pokémon are now animated, like Great Tusk.",
+      "Matrix Analysis now notes the type Conversion gives a Pokémon, e.g. Ghost for Porygon-Z with Shadow Ball first.",
     ],
   },
   {
