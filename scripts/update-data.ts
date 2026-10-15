@@ -19,10 +19,12 @@ import {
   LEGENDS_ZA,
 } from "../src/shared/game-variants.ts";
 import {
+  type DataSnapshot,
   type DataTypes,
   type ModData,
   type MoveSearch,
   type ShowdownTable,
+  changeNotice,
   collectViableMoves,
   historicalViableInputs,
   flattenLearnsets,
@@ -459,6 +461,53 @@ const loadReportedData = async (): Promise<ReportedData> => {
   ]);
   return { pokedex, moves, items };
 };
+
+// Everything the full update writes
+async function loadSnapshot(): Promise<DataSnapshot> {
+  const readData = (file: string) => read(path.join(dataRoot, file));
+  const tables = [
+    "pokedex",
+    "moves",
+    "items",
+    "natures",
+    "formats",
+    "typechart",
+    "game-variants",
+    "past-generations",
+    "hidden-power-spreads",
+    "altSpriteNum",
+  ];
+  const transfer: GenerationTransferData = JSON.parse(
+    await readData("generation-transfer.json"),
+  );
+  return {
+    ...Object.fromEntries(
+      await Promise.all(
+        tables.map(async name => [`${name}.ts`, await loadAppData(name)]),
+      ),
+    ),
+    "learnsets.json": JSON.parse(await readData("learnsets.json")),
+    "generation-transfer.json (pokemon)": transfer.pokemon,
+    "generation-transfer.json (items)": transfer.items,
+    "viable-moves.ts": await readData("viable-moves.ts"),
+  };
+}
+
+// `--notice=<file>` also writes the notice there, for the Showdown data workflow to post
+async function reportChanges(before: DataSnapshot, after: DataSnapshot) {
+  const notice = changeNotice(before, after);
+  console.log(notice ?? "Showdown changed nothing the site uses.");
+  const file = process.argv
+    .find(arg => arg.startsWith("--notice="))
+    ?.slice("--notice=".length);
+  if (notice && file) {
+    await fs.writeFile(
+      file,
+      `${notice}\n\nTo bring these into the site, run \`npm run update:data\`, then \`npm run update:translations\`, as the README describes.\n`,
+    );
+  }
+}
+
 async function updateMoveEffects() {
   const latest = await loadShowdownTable("data/moves.ts", "Moves");
   const before = await loadAppData<Moves>("moves");
@@ -555,6 +604,7 @@ async function updateData() {
     return;
   }
   const before = await loadReportedData();
+  const snapshot = await loadSnapshot();
 
   await Promise.all([
     updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
@@ -599,6 +649,7 @@ async function updateData() {
   );
 
   const after = await loadReportedData();
+  await reportChanges(snapshot, await loadSnapshot());
   await reportNameChanges(before, after);
   try {
     await reportIconSheets();

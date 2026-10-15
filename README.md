@@ -90,13 +90,15 @@ The Viable moves filter comes from the Showdown client's teambuilder. The script
 
 To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data/transforms.ts` and to the matching type in `src/types.ts`, then rerun the update.
 
-After writing the data, the script reports what the update may have broken:
+After writing the data, the script says what changed in `src/data` and whether it looks major or minor. It looks major when Showdown added pokemon, moves, or items, as a new game does, or changed which pokemon Pokemon Champions allows, as a new regulation does. Then it reports what the update may have broken:
 
 - Pokemon, moves, and items that were renamed or removed. Share links store display names, so old links lose those entries.
 - Whether the bundled icon sheets in `src/images/icon-sheets` still match Showdown's. If one differs, look for blank or shifted icons in the app, and replace the sheet if there are any.
 - New pokemon with a sprite that Showdown does not host, at either sprite size. Bundle one as described in [local-sprites-sources.md](src/images/local-sprites/local-sprites-sources.md).
 
 The last two checks need a connection to play.pokemonshowdown.com and are skipped without one. If players will notice the update, add an entry to the update log in `src/app/footer/update-log/entries.ts`.
+
+The [Showdown data workflow](.github/workflows/showdown-data.yml) runs this update against Showdown's latest commits twice a day, so a change reaches the maintainer within a day. When the update would change `src/data` on `master`, the workflow opens an issue with the summary of what changed and assigns it to the repository owner. If Showdown changes more before the update is merged, it rewrites the issue and comments the new summary, and once `master` matches Showdown again, it closes the issue. When nothing the site uses changed, it does nothing. If the update fails, for example because Showdown moved a file it reads, GitHub's email about the failed run is the notice instead. GitHub turns scheduled workflows off after 60 days without a commit, and emails before it does; turn it back on from the repository's Actions tab.
 
 ## Updating Translations
 

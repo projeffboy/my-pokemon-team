@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
+  changeNotice,
   collectViableMoves,
   flattenLearnsets,
   nameChanges,
@@ -394,6 +395,104 @@ test("name changes report renames through aliases and removals", () => {
       { pokemonboxlink: "Poke Ball" },
     ),
   ).toEqual(["  items: Pokemon Box Link is now Poke Ball"]);
+});
+
+test("change notice is empty when only the key order differs", () => {
+  expect(
+    changeNotice(
+      {
+        "pokedex.ts": { wyrdeer: { num: 899, name: "Wyrdeer" } },
+        "viable-moves.ts": "same",
+      },
+      {
+        "pokedex.ts": { wyrdeer: { name: "Wyrdeer", num: 899 } },
+        "viable-moves.ts": "same",
+      },
+    ),
+  ).toBeUndefined();
+});
+
+test("change notice calls changes to existing entries minor and names them", () => {
+  const pokedex = {
+    kleavor: { name: "Kleavor" },
+    ursaluna: { name: "Ursaluna" },
+  };
+  expect(
+    changeNotice(
+      {
+        "pokedex.ts": pokedex,
+        "items.ts": {
+          blackaugurite: { name: "Black Augurite" },
+          peatblock: { name: "Peat Block" },
+        },
+        "learnsets.json": { kleavor: ["stoneaxe"], ursaluna: ["headlongrush"] },
+        "formats.ts": { kleavor: { tier: "UU" } },
+        "viable-moves.ts": "old",
+      },
+      {
+        "pokedex.ts": pokedex,
+        "items.ts": { blackaugurite: { name: "Black Augurite" } },
+        "learnsets.json": {
+          kleavor: ["stoneaxe", "xscissor"],
+          ursaluna: ["headlongrush"],
+        },
+        "formats.ts": { kleavor: { tier: "RU" } },
+        "viable-moves.ts": "new",
+      },
+    ),
+  )
+    .toBe(`**Looks minor:** Showdown added no pokemon, move, or item, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.
+
+- \`items.ts\`: removed Peat Block
+- \`learnsets.json\`: changed Kleavor
+- \`formats.ts\`: changed Kleavor
+- \`viable-moves.ts\` changed`);
+});
+
+test("change notice calls new entries and a new Champions list major", () => {
+  expect(
+    changeNotice(
+      { "moves.ts": {} },
+      { "moves.ts": { mysticalpower: { name: "Mystical Power" } } },
+    ),
+  )
+    .toBe(`**Looks major:** Showdown added pokemon, moves, or items, as a new game does. Major data is due on the site within 2 days of Showdown publishing it.
+
+- \`moves.ts\`: added Mystical Power`);
+
+  const pokedex = {
+    sandyshocks: { name: "Sandy Shocks" },
+    screamtail: { name: "Scream Tail" },
+    fluttermane: { name: "Flutter Mane" },
+    slitherwing: { name: "Slither Wing" },
+    roaringmoon: { name: "Roaring Moon" },
+    greattusk: { name: "Great Tusk" },
+    brutebonnet: { name: "Brute Bonnet" },
+  };
+  const formats = (legal: (id: string) => boolean) =>
+    Object.fromEntries(
+      Object.keys(pokedex).map(id => [
+        id,
+        { tier: "OU", ...(legal(id) && { champions: true }) },
+      ]),
+    );
+  expect(
+    changeNotice(
+      {
+        "pokedex.ts": pokedex,
+        "formats.ts": formats(id => id === "greattusk"),
+      },
+      {
+        "pokedex.ts": { ...pokedex, ironmoth: { name: "Iron Moth" } },
+        "formats.ts": formats(id => id !== "greattusk"),
+      },
+    ),
+  )
+    .toBe(`**Looks major:** Showdown added pokemon, moves, or items, as a new game does, and changed which pokemon Pokemon Champions allows, as a new regulation does. Major data is due on the site within 2 days of Showdown publishing it.
+
+- Pokemon Champions: now allows Sandy Shocks, Scream Tail, Flutter Mane, Slither Wing, Roaring Moon, and 1 more; no longer allows Great Tusk
+- \`pokedex.ts\`: added Iron Moth
+- \`formats.ts\`: changed Sandy Shocks, Scream Tail, Flutter Mane, Slither Wing, Roaring Moon, and 2 more`);
 });
 
 test("rendered data files import their type and can list one entry per line", () => {

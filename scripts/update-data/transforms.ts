@@ -655,3 +655,89 @@ export function nameChanges(
       });
   });
 }
+
+// Each src/data file's entries by ID, or its text when it is not one table
+export type DataSnapshot = Record<string, Record<string, unknown> | string>;
+
+const tableOf = (value: unknown) => (isRecord(value) ? value : {});
+
+// A full update orders some keys differently from a partial one, so compare with sorted keys
+const sortedKeys = (_key: string, value: unknown) =>
+  isRecord(value) && !Array.isArray(value) ?
+    Object.fromEntries(
+      Object.entries(value).sort(([a], [b]) => (a < b ? -1 : 1)),
+    )
+  : value;
+const isSame = (a: unknown, b: unknown) =>
+  JSON.stringify(a, sortedKeys) === JSON.stringify(b, sortedKeys);
+
+const championsLegal = (snapshot: DataSnapshot) =>
+  Object.entries(tableOf(snapshot["formats.ts"]))
+    .filter(([, entry]) => tableOf(entry).champions)
+    .map(([id]) => id);
+
+// Tells the maintainer what an update changed in src/data, and whether it looks major, like a
+// new game or regulation, or minor. Undefined when nothing changed.
+export function changeNotice(before: DataSnapshot, after: DataSnapshot) {
+  const nameTables = ["pokedex.ts", "items.ts", "moves.ts"].map(file => ({
+    ...tableOf(before[file]),
+    ...tableOf(after[file]),
+  }));
+  // E.g. "added Pikachu; changed Mew, Ditto, Eevee, Snorlax, Lapras, and 3 more"
+  const describe = (
+    changes: Record<string, string[]>,
+    ...tables: Record<string, unknown>[]
+  ) =>
+    Object.entries(changes)
+      .filter(([, ids]) => ids.length)
+      .map(([change, ids]) => {
+        const names = ids.map(
+          id =>
+            [...tables, ...nameTables]
+              .map(table => tableOf(table[id]).name)
+              .find(name => typeof name === "string") ?? id,
+        );
+        const more = names.length > 5 ? `, and ${names.length - 5} more` : "";
+        return `${change} ${names.slice(0, 5).join(", ")}${more}`;
+      })
+      .join("; ");
+
+  const lines: string[] = [];
+  let addsEntries = false;
+  for (const [file, now] of Object.entries(after)) {
+    const old = before[file];
+    if (typeof old === "string" || typeof now === "string") {
+      if (old !== now) lines.push(`- \`${file}\` changed`);
+      continue;
+    }
+    const oldTable = tableOf(old);
+    const added = Object.keys(now).filter(id => !Object.hasOwn(oldTable, id));
+    const removed = Object.keys(oldTable).filter(id => !Object.hasOwn(now, id));
+    const changed = Object.keys(now).filter(
+      id => Object.hasOwn(oldTable, id) && !isSame(oldTable[id], now[id]),
+    );
+    const summary = describe({ added, removed, changed }, now, oldTable);
+    if (summary) lines.push(`- \`${file}\`: ${summary}`);
+    if (["pokedex.ts", "moves.ts", "items.ts"].includes(file) && added.length)
+      addsEntries = true;
+  }
+  const wasLegal = championsLegal(before);
+  const isLegal = championsLegal(after);
+  const legality = describe({
+    "now allows": isLegal.filter(id => !wasLegal.includes(id)),
+    "no longer allows": wasLegal.filter(id => !isLegal.includes(id)),
+  });
+  if (legality) lines.unshift(`- Pokemon Champions: ${legality}`);
+  if (!lines.length) return undefined;
+
+  const reasons = [
+    addsEntries && "added pokemon, moves, or items, as a new game does",
+    !!legality &&
+      "changed which pokemon Pokemon Champions allows, as a new regulation does",
+  ].filter(reason => typeof reason === "string");
+  const verdict =
+    reasons.length ?
+      `**Looks major:** Showdown ${reasons.join(", and ")}. Major data is due on the site within 2 days of Showdown publishing it.`
+    : "**Looks minor:** Showdown added no pokemon, move, or item, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.";
+  return [verdict, "", ...lines].join("\n");
+}
