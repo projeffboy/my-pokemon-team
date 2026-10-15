@@ -26,6 +26,7 @@ const entries: Entry[] = [
       "Imported sets without an item keep their Pokémon when the nickname holds an @, such as Mew@x (Pikachu).",
       "Picking a slot’s own Pokémon again in the Name list no longer clears its moves, item and other details.",
       "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
+      "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "Showdown backups whose team headers are indented now import as separate teams instead of one merged team.",
     ],
   },

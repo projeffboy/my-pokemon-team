@@ -25,6 +25,7 @@ import CaptionButton from "./shared/CaptionButton";
 import {
   capturePage,
   describeScreen,
+  loadScreenshotLibrary,
   MAX_IMAGES_LENGTH,
 } from "./feedback-dialog/capture-page";
 import { compressImage } from "./feedback-dialog/compress-image";
@@ -157,7 +158,13 @@ const FeedbackDialog = observer(function FeedbackDialog({
         caption={t.feedback.caption}
         label={t.feedback.button}
         row={row}
-        onClick={() => setIsOpen(true)}
+        // Opens once the screenshot library has settled, so a stale tab reloads
+        // before anything can be typed, even when the chunk request is slow to fail
+        onClick={() => {
+          void loadScreenshotLibrary()
+            .catch(() => undefined)
+            .then(() => setIsOpen(true));
+        }}
       />
       <Dialog
         ref={dialogRef}
