@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import spreads from "@/data/hidden-power-spreads";
 import { hiddenPowerType, matchHiddenPower } from "@/shared/hidden-power";
 import { createTeam } from "./shared/team";
@@ -732,6 +733,21 @@ test("Giratina-Origin swaps between the Griseous Core and Orb across generations
   );
   expect(altered.team[0]?.item).toBe("griseousorb");
   expect(altered.losses).toEqual([]);
+  // Generations 6–9 spans games that use either version
+  for (const [item, generation] of [
+    ["griseousorb", 4],
+    ["griseouscore", 9],
+  ] as const) {
+    const combined = planGenerationTransfer(
+      createTeam({ name: "giratinaorigin", item }),
+      { generation, format: "" },
+      9,
+      COMBINED_GENERATIONS_FORMAT,
+      data,
+    );
+    expect(combined.team[0]?.item).toBe(item);
+    expect(combined.losses).toEqual([]);
+  }
 });
 
 test("keeps compatible moves and details and explains every unsupported field", () => {

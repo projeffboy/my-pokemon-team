@@ -147,8 +147,10 @@ export function planGenerationTransfer(
       previousRules.fixedLevel !== undefined
     )
       member.level = previousRules.fixedLevel;
+    // The combined profile spans games that use either version, so it keeps both
     const itemReplacement =
       rules.items &&
+      !(combined && has(data.items[member.item])) &&
       requiredItemReplacement(member.name, member.item, item =>
         has(data.items[item]),
       );
