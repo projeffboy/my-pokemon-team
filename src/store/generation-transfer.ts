@@ -26,6 +26,7 @@ import {
 } from "@/shared/generation-rules";
 import {
   DEFAULT_LEVEL,
+  genderOptions,
   getIv,
   MAX_IV,
   setDetail,
@@ -99,10 +100,14 @@ export function planGenerationTransfer(
         ...(value && { value }),
       });
     if (member.name && !has(entry?.generations)) {
-      const baseSpecies = pokedex[member.name]?.baseSpecies;
-      const base = baseSpecies && pokemonNameInverse(baseSpecies);
+      // A battle forme returns to the forme it changes from, such as
+      // Meowstic-F-Mega to Meowstic-F, before its base species
+      const { changesFrom, baseSpecies } = pokedex[member.name] ?? {};
+      const base = [changesFrom, baseSpecies]
+        .map(species => species && pokemonNameInverse(species))
+        .find(species => species && has(data.pokemon[species]?.generations));
       const baseEntry = base ? data.pokemon[base] : undefined;
-      if (!base || !baseEntry || !has(baseEntry.generations)) {
+      if (!base || !baseEntry) {
         loss("pokemon", member.name);
         return createEmptyTeam()[0] ?? member;
       }
@@ -115,6 +120,10 @@ export function planGenerationTransfer(
       });
       member.name = base;
       entry = baseEntry;
+      if (member.gender && !genderOptions(base).includes(member.gender)) {
+        loss("gender");
+        delete member.gender;
+      }
     }
     const maxNicknameLength = nicknameLimit(generation, locale);
     if (member.nickname && member.nickname.length > maxNicknameLength) {
