@@ -223,6 +223,45 @@ Garchomp
     expect(parseTeamsText("Not a pokemon @ Leftovers")).toEqual([]);
   });
 
+  test("splits a Showdown box of more than six pokemon into teams of six", () => {
+    const box = [
+      "Bulbasaur",
+      "Charmander",
+      "Squirtle",
+      "Pikachu",
+      "Eevee",
+      "Snorlax",
+      "Lapras",
+      "Ditto",
+      "Mew",
+      "Chikorita",
+      "Cyndaquil",
+      "Totodile",
+      "Togepi",
+      "Mareep",
+    ];
+    const teams = parseTeamsText(
+      `=== [gen9ou-box] Box 1 ===\n\n${box.map(name => `${name}\n- Tackle`).join("\n\n")}\n\n=== [gen9uu] Sun ===\n\nTorkoal\n`,
+    );
+    expect(
+      teams.map(({ name, format, team }) => [
+        name,
+        format,
+        team.map(({ name }) => name).filter(Boolean),
+      ]),
+    ).toEqual([
+      ["Box 1", "OU: Over Used", box.slice(0, 6).map(n => n.toLowerCase())],
+      [
+        "Box 1 (2)",
+        "OU: Over Used",
+        box.slice(6, 12).map(n => n.toLowerCase()),
+      ],
+      ["Box 1 (3)", "OU: Over Used", box.slice(12).map(n => n.toLowerCase())],
+      ["Sun", "UU: Under Used", ["torkoal"]],
+    ]);
+    expect(parseTeamsText(box.join("\n\n"))).toHaveLength(3);
+  });
+
   test("serializes every saved team under a header", () => {
     const text = serializeTeams([
       createSavedTeam({
