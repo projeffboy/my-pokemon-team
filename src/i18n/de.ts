@@ -34,10 +34,11 @@ const de: Messages = {
   },
   generationSelect: "Generation",
   comingSoon: "Demnächst",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Hauptreihe" },
   combinedGenerations: {
     label: "Generationen 6–9",
     short: "Gen. 6–9",
-    description: "Kombiniert Optionen aus allen Spielen der Gen. 6–9",
+    description: "Kombiniert alle Spiele der Gen. 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -228,6 +229,11 @@ const de: Messages = {
       status: { label: "Status-Attacke", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Boost-Attacke", short: "Setup" },
+      priority: {
+        label: "Prioritätsattacke",
+        short: "Priorität",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Volt-Turn-Attacke",
         short: "Volt-Turn",
@@ -457,7 +463,7 @@ const de: Messages = {
     removed: {
       item: "Item entfernt",
       ability: "Fähigkeit entfernt",
-      moves: "Attacken entfernt:",
+      move: "Attacke entfernt",
       details: "Details entfernt",
     },
     ivsUnused: (where: string) => `DVs werden in ${where} nicht verwendet.`,
@@ -472,6 +478,9 @@ const de: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "Fähigkeit" : "Fähigkeiten"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} von ${total} ${carried === 1 ? "wird" : "werden"} übernommen`,
+    removedSummary: (removed: string) => `${removed} entfernt`,
     modify: "Vorhandenes Team aktualisieren",
     copy: "In neues Team kopieren",
     createEmpty: "Leeres Team erstellen",
@@ -691,6 +700,10 @@ const de: Messages = {
       [
         "Boost-Attacke",
         "Attacken, die deine Statuswerte erhöhen (am besten um 2 oder mehr Stufen), wie Schwerttanz und Gedankengut.",
+      ],
+      [
+        "Prioritätsattacke",
+        "Schadensattacken, die unabhängig von der Initiative vor den meisten anderen Attacken ausgeführt werden. Z. B. Turbotempo, Tiefschlag, Wasserdüse, Patronenhieb.",
       ],
       [
         "Wahl-Item",

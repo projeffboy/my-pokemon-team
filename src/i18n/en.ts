@@ -23,10 +23,11 @@ const en = {
   },
   generationSelect: "Generation",
   comingSoon: "Coming soon",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Main series" },
   combinedGenerations: {
     label: "Generations 6–9",
     short: "Gens 6–9",
-    description: "Combines options from all Gen 6–9 games",
+    description: "Combines all Gen 6–9 games",
   },
   championsGeneration: "Gen 9 · Champions",
   championsGenerationShort: "Gen 9 (Champions)",
@@ -218,6 +219,7 @@ const en = {
       status: { label: "Status Move", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Boosting Move", short: "Setup" },
+      priority: { label: "Priority Move", short: "Priority", shorter: "Prio" },
       voltTurn: {
         label: "Volt-turn Move",
         short: "Volt-turn",
@@ -439,7 +441,7 @@ const en = {
     removed: {
       item: "Item removed",
       ability: "Ability removed",
-      moves: "Moves removed:",
+      move: "Move removed",
       details: "Details removed",
     },
     ivsUnused: (where: string) => `IVs don’t apply in ${where}.`,
@@ -453,6 +455,9 @@ const en = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "ability" : "abilities"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} of ${total} ${carried === 1 ? "carries" : "carry"} over`,
+    removedSummary: (removed: string) => `${removed} removed`,
     modify: "Update existing team",
     copy: "Copy to new team",
     createEmpty: "Create empty team",
@@ -672,6 +677,10 @@ const en = {
       [
         "Boosting Move",
         "Moves that increase your stats (preferrably by 2+), like Swords Dance and Calm Mind.",
+      ],
+      [
+        "Priority Move",
+        "Damaging moves that go before most other moves, regardless of Speed. E.g. Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Choice Item",

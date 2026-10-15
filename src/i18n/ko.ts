@@ -45,10 +45,11 @@ const ko: Messages = {
   },
   generationSelect: "세대",
   comingSoon: "출시 예정",
+  generationGroups: { spinOffs: "외전", mainSeries: "메인 시리즈" },
   combinedGenerations: {
     label: "6–9세대",
     short: "6–9세대",
-    description: "6–9세대 모든 게임의 선택지를 통합",
+    description: "6–9세대 모든 게임을 통합",
   },
   championsGeneration: "9세대 · Champions",
   championsGenerationShort: "9세대 (Champions)",
@@ -236,6 +237,7 @@ const ko: Messages = {
       status: { label: "상태이상 기술", short: "상태이상" },
       phazer: { label: "강제 교체" },
       boosting: { label: "랭크업 기술", short: "랭크업" },
+      priority: { label: "선공 기술", short: "선공기", shorter: "선공" },
       voltTurn: {
         label: "볼트체인지/유턴",
         short: "볼트턴",
@@ -456,7 +458,7 @@ const ko: Messages = {
     removed: {
       item: "제거되는 도구",
       ability: "제거되는 특성",
-      moves: "제거되는 기술:",
+      move: "제거되는 기술",
       details: "제거되는 세부 정보",
     },
     ivsUnused: (where: string) => `${where}에서는 개체값이 적용되지 않습니다.`,
@@ -469,6 +471,9 @@ const ko: Messages = {
       item: (count: number) => `도구 ${count}개`,
       ability: (count: number) => `특성 ${count}개`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total} 중 ${carried}마리 유지`,
+    removedSummary: (removed: string) => `${removed} 제거`,
     modify: "현재 팀 업데이트",
     copy: "새 팀으로 복사",
     createEmpty: "빈 팀 만들기",
@@ -686,6 +691,10 @@ const ko: Messages = {
       [
         "랭크업 기술",
         "칼춤, 명상처럼 자신의 능력을 (되도록 2랭크 이상) 올리는 기술입니다.",
+      ],
+      [
+        "선공 기술",
+        "스피드와 관계없이 대부분의 기술보다 먼저 쓰는 공격 기술입니다. 예: 신속, 기습, 아쿠아제트, 불릿펀치.",
       ],
       [
         "구애 아이템",
