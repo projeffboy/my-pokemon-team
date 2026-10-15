@@ -117,6 +117,7 @@ for (const variant of [
   {
     name: "Gen 8 · Legends: Arceus",
     slug: "legends-arceus",
+    value: "Legends: Arceus",
     display: /^Gen 8 · (Legends: Arceus|Legends Arceus|PLA)$/,
     training: "Effort Levels",
     max: "10",
@@ -127,6 +128,7 @@ for (const variant of [
   {
     name: "Gen 9 · Legends: Z-A",
     slug: "legends-za",
+    value: "Legends: Z-A",
     display: /^Gen 9 · (Legends: Z-A|Legends Z-A|Z-A)$/,
     training: "EVs",
     max: "252",
@@ -137,6 +139,7 @@ for (const variant of [
   {
     name: "Gen 7 · Let’s Go, Pikachu! / Eevee!",
     slug: "lets-go",
+    value: "Let’s Go",
     display: /Let’s Go|LGPE/,
     training: "AVs",
     max: "200",
@@ -145,19 +148,16 @@ for (const variant of [
     gen: 7,
   },
 ]) {
-  test.fixme(`${variant.name} has its own controls, limits and saved link context`, async ({
+  test(`${variant.name} has its own controls, limits and saved link context`, async ({
     page,
     browser,
   }) => {
-    if (variant.name.includes("Legends:")) {
-      const team = Buffer.from("Pikachu\n").toString("base64url");
-      await page.goto(`/?team=${team}&game=${variant.slug}`);
-    } else {
-      await generation(
-        page,
-        new RegExp(`^${variant.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}`),
-      );
-    }
+    test.fixme(variant.slug !== "legends-za", "This game is Coming soon");
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page
+      .locator(`[role="option"][data-value="${variant.value}"]`)
+      .click();
+    await expect(page.locator(".MuiMenu-paper")).toBeHidden();
     await selectPokemon(page, "Pikachu");
     await expect(
       page.getByLabel("Pokemon 1's ability", { exact: true }),

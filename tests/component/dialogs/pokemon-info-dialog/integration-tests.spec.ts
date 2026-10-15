@@ -50,9 +50,8 @@ for (const profile of [
     total: 519,
   },
 ]) {
-  test.fixme(`the Pokédex uses native stats in ${profile.game}`, async ({
-    page,
-  }) => {
+  test(`the Pokédex uses native stats in ${profile.game}`, async ({ page }) => {
+    test.fixme(profile.game === LEGENDS_ARCEUS, "This game is Coming soon");
     const team = Buffer.from(profile.pokemon).toString("base64url");
     await page.goto(`/?game=${profile.slug}&team=${team}`);
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue(

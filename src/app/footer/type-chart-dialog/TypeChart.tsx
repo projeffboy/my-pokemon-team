@@ -1,6 +1,7 @@
 import { useState, type SyntheticEvent } from "react";
 import Box from "@mui/material/Box";
 import AppBar from "@mui/material/AppBar";
+import DialogContent from "@mui/material/DialogContent";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
@@ -50,7 +51,14 @@ export default function TypeChart() {
         </Tabs>
       </AppBar>
       {chart && (
-        <Typography component="div" sx={{ p: 3 }}>
+        // Only the chart scrolls, so the tabs and the dialog's action stay in view.
+        // Safari leaves scroll containers out of the tab order, so it takes focus itself.
+        <DialogContent
+          tabIndex={0}
+          role="region"
+          aria-label={chart.label}
+          sx={{ p: 3 }}
+        >
           {chart.caption && (
             <Typography
               variant={isSmDown ? "caption" : "h5"}
@@ -65,7 +73,7 @@ export default function TypeChart() {
             src={chart.src}
             sx={{ maxWidth: "100%" }}
           />
-        </Typography>
+        </DialogContent>
       )}
     </>
   );
