@@ -82,9 +82,11 @@ This update is run manually when new data is needed. It reads the `pokemon-showd
 
 Learnsets combine every generation with the games Showdown keeps in separate mods: Pokemon Champions, Legends: Z-A, Legends: Arceus, and BDSP. To include another game, add its mod to `learnsetMods` in `scripts/update-data.ts`.
 
-Historical move rules are projected into `past-generations.ts`; game-specific move and base-stat differences, such as Let's Go Absorb and Legends: Z-A Mega Starmie, are projected into `game-variants.ts`.
+Historical move rules are projected into `past-generations.ts`; game-specific move and base-stat differences, such as Champions Snap Trap, Let's Go Absorb, and Legends: Z-A Mega Starmie, are projected into `game-variants.ts`.
 
 The Pokemon Champions (M-C) format filter reads eligibility from Showdown's `champions` mod, which follows the current regulation. When that mod moves to a new regulation, rename the filter to match.
+
+The abilities, items, and moves each Smogon tier bans, in `format-bans.ts`, come from the rule tables that Showdown's own team validator reads, for every generation the Format filter offers the tier in. A few clauses ban in code instead of with a list, such as OHKO Clause and Sleep Moves Clause. Those are listed in `CLAUSE_BANS` in `scripts/update-data/transforms.ts`, so a new clause of that kind has to be added there.
 
 The Viable moves filter comes from the Showdown client's teambuilder. The script runs the client's own `BattleMoveSearch.moveIsNotUseless` function, and a move is viable if any pokemon that learns it, with any of its abilities and required items, finds it useful in singles or doubles. If the update fails with "Could not find BattleMoveSearch.moveIsNotUseless", the client has restructured that function and `updateViableMoves` needs adjusting.
 

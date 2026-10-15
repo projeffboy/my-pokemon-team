@@ -447,6 +447,7 @@ export default function GenerationTransferDialog({
                             <RemovedEntries
                               losses={lost}
                               generation={fromGeneration}
+                              format={fromFormat}
                             />
                           )}
                           {abilities.length > 0 && (

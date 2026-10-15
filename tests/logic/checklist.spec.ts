@@ -93,6 +93,16 @@ test("status moves include guaranteed side effects but not chances", () => {
   ).toEqual([]);
 });
 
+test("Sheer Force removes a guaranteed status side effect", () => {
+  const tauros = { name: "tauros", move1: "zapcannon" };
+  expect(checked(createTeam({ ...tauros, ability: "Sheer Force" }))).toEqual(
+    [],
+  );
+  expect(checked(createTeam({ ...tauros, ability: "Intimidate" }))).toEqual([
+    "Status Move",
+  ]);
+});
+
 test("Yawn counts as a move that inflicts sleep", () => {
   expect(checked(createTeam({ name: "dondozo", move1: "yawn" }))).toEqual([
     "Status Move",
@@ -137,6 +147,12 @@ test("Growth's setup check follows its historical one-stage boost", () => {
   expect(checked(team, 1)).not.toContain("Boosting Move");
   expect(checked(team, 4)).not.toContain("Boosting Move");
   expect(checked(team, 5)).toContain("Boosting Move");
+});
+
+test("Diamond Storm's chance to raise Defense is not a boosting move", () => {
+  const team = createTeam({ name: "diancie", move1: "diamondstorm" });
+  for (const generation of [6, 7, 9] as const)
+    expect(checked(team, generation)).not.toContain("Boosting Move");
 });
 
 test("Curse counts as setup only when its user is not a Ghost type", () => {

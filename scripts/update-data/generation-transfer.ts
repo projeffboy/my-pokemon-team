@@ -1,8 +1,6 @@
-import fs from "node:fs";
 import path from "node:path";
-import { createRequire } from "node:module";
-import ts from "typescript";
 import type { GenerationTransferData } from "../../src/types.ts";
+import { typeScriptRequire } from "./typescript-require.ts";
 
 interface Entry {
   exists: boolean;
@@ -30,24 +28,7 @@ export function generationTransferData(
   pokemonIds: string[],
   itemIds: string[],
 ): GenerationTransferData {
-  const require = createRequire(import.meta.url);
-  const previous = require.extensions[".ts"];
-  require.extensions[".ts"] = (module, filename) => {
-    const { outputText } = ts.transpileModule(
-      fs.readFileSync(filename, "utf8"),
-      {
-        compilerOptions: {
-          module: ts.ModuleKind.CommonJS,
-          target: ts.ScriptTarget.ES2022,
-        },
-      },
-    );
-    (
-      module as typeof module & {
-        _compile: (code: string, filename: string) => void;
-      }
-    )._compile(outputText, filename);
-  };
+  const { require, restore } = typeScriptRequire();
   try {
     const { Dex: dex } = require(path.join(showdownRoot, "sim/dex.ts")) as {
       Dex: Dex;
@@ -116,7 +97,6 @@ export function generationTransferData(
     }
     return data;
   } finally {
-    if (previous) require.extensions[".ts"] = previous;
-    else delete require.extensions[".ts"];
+    restore();
   }
 }
