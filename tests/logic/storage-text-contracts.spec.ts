@@ -16,6 +16,7 @@ import { fromBase64Url, toBase64Url } from "@/app/shared/base64url";
 import { getStatExperience } from "@/shared/generation-rules";
 import { STAT_KEYS } from "@/types";
 import { sanitizeSavedTeam } from "@/store/teams-storage";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 
 function withGenerationUrl(generation: number, run: () => void) {
   const previous = Object.getOwnPropertyDescriptor(globalThis, "location");
@@ -238,3 +239,32 @@ for (const generation of [2, 3, 6] as const) {
     ).toEqual({ atk: 0, def: 30 });
   });
 }
+
+test("old links keep moves that formes such as Bloodmoon Ursaluna learned from their first stage", ({
+  store,
+}) => {
+  const text = "Ursaluna-Bloodmoon\n- Play Rough";
+  for (const format of ["", COMBINED_GENERATIONS_FORMAT]) {
+    expect(
+      parseTeamText(text, 9, format, LEGACY_LINK_PARSING_OPTIONS)[0].move1,
+      format,
+    ).toBe("playrough");
+    expect(parseTeamText(text, 9, format)[0].move1, format).toBe("");
+  }
+  // A link without the gen parameter, as every link made before it was, opens in Generations 6–9
+  importTeamFromUrlParameter(
+    toBase64Url(
+      `${text}\n- Hidden Power [Fire]\n\nRaticate-Alola-Totem\n- Bide`,
+    ),
+  );
+  expect(store.currentTeam.generationProfile).toBe("6-9");
+  expect(store.team[0]).toMatchObject({
+    name: "ursalunabloodmoon",
+    move1: "playrough",
+    move2: "hiddenpowerfire",
+  });
+  expect(store.team[1]).toMatchObject({
+    name: "raticatealolatotem",
+    move1: "bide",
+  });
+});
