@@ -17,6 +17,9 @@ const entries: Entry[] = [
       "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
       "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
       "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
+      "Abilities and items that shared a name in other languages, such as the two As One abilities, are now told apart.",
+      "Sorting by format in Doubles formats now follows doubles tiers, so Incineroar comes before Baxcalibur in Doubles OU.",
+      "Opening a shared team on your first visit no longer saves an extra empty team beside it.",
     ],
   },
   {
@@ -25,6 +28,7 @@ const entries: Entry[] = [
       "The Old website button now takes your current team along, after naming anything the old website can’t hold, such as EVs.",
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
       "Twenty-one more Pokémon are now animated, like Great Tusk.",
+      "Matrix Analysis now notes the type Conversion gives a Pokémon, e.g. Ghost for Porygon-Z with Shadow Ball first.",
       "Edit Pokepaste now lists each part of the text it cannot use, such as a misspelled move, and what Update does instead.",
     ],
   },

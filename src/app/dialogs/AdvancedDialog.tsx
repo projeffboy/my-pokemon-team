@@ -36,6 +36,7 @@ import {
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { verbatim } from "@/app/shared/text-entry";
 import NumberField from "./advanced-dialog/NumberField";
 import TrainingFields from "./advanced-dialog/TrainingFields";
 import {
@@ -149,7 +150,10 @@ const AdvancedForm = observer(function AdvancedForm({
                   t.advanced.nicknameLimit(maxNicknameLength)
                 : undefined
               }
-              slotProps={{ formHelperText: { role: "status" } }}
+              slotProps={{
+                formHelperText: { role: "status" },
+                htmlInput: verbatim("nickname"),
+              }}
             />
             {!champions && (
               <NumberField

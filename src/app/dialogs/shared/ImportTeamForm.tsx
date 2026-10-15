@@ -16,6 +16,7 @@ import {
 } from "@/store/team-text";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { verbatim } from "@/app/shared/text-entry";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import TeamTextProblems from "./import-team-form/TeamTextProblems";
 
@@ -117,6 +118,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
           }}
           error={isNothingFound}
           helperText={isNothingFound && importDialog.nothingFound}
+          slotProps={{ htmlInput: verbatim("team-text") }}
         />
         <TeamTextProblems problems={problems} />
         <DialogContentText>{importDialog.kept}</DialogContentText>
