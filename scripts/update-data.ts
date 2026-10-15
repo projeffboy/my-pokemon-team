@@ -1,4 +1,5 @@
 import { generationTransferData } from "./update-data/generation-transfer.ts";
+import { formatBansData } from "./update-data/format-bans.ts";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -14,6 +15,7 @@ import type {
 } from "../src/types.ts";
 import { LATEST_GENERATION } from "../src/shared/generations.ts";
 import {
+  CHAMPIONS_FORMAT,
   LETS_GO,
   LEGENDS_ARCEUS,
   LEGENDS_ZA,
@@ -88,6 +90,7 @@ const DATA_FILES: Partial<Record<keyof DataTypes, string>> = {
   PastGenerations: "past-generations",
   HiddenPowerSpreads: "hidden-power-spreads",
   GameVariantData: "game-variants",
+  FormatBans: "format-bans",
 };
 
 async function writeData<N extends keyof DataTypes>(
@@ -331,6 +334,7 @@ async function updateGameVariants() {
   let pokedex = await loadShowdownTable("data/pokedex.ts", "Pokedex");
   let moves = await loadShowdownTable("data/moves.ts", "Moves");
   const variants = [
+    [CHAMPIONS_FORMAT, "champions", 9],
     [LEGENDS_ZA, "gen9legends", 9],
     [LEGENDS_ARCEUS, "gen8legends", 8],
     [LETS_GO, "gen7letsgo", 7],
@@ -359,6 +363,18 @@ async function updateGameVariants() {
     }
   }
   await writeData("GameVariantData", data);
+}
+
+async function updateGenerationTransfer() {
+  const transferData = generationTransferData(
+    showdownRoot,
+    Object.keys(await loadAppData<Pokedex>("pokedex")),
+    Object.keys(await loadAppData<Items>("items")),
+  );
+  await fs.writeFile(
+    path.join(dataRoot, "generation-transfer.json"),
+    `${JSON.stringify(transferData, null, 2)}\n`,
+  );
 }
 
 async function updateIconIndexes() {
@@ -480,6 +496,7 @@ async function loadSnapshot(): Promise<DataSnapshot> {
     "items",
     "natures",
     "formats",
+    "format-bans",
     "typechart",
     "game-variants",
     "past-generations",
@@ -629,8 +646,16 @@ async function updateData() {
     await updatePastGenerations();
     return;
   }
+  if (process.argv.includes("--generation-transfer-only")) {
+    await updateGenerationTransfer();
+    return;
+  }
   if (process.argv.includes("--hidden-power-only")) {
     await updateHiddenPowerSpreads();
+    return;
+  }
+  if (process.argv.includes("--format-bans-only")) {
+    await writeData("FormatBans", formatBansData(showdownRoot), true);
     return;
   }
   const before = await loadReportedData();
@@ -664,15 +689,8 @@ async function updateData() {
     ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),
   );
 
-  const transferData = generationTransferData(
-    showdownRoot,
-    Object.keys(await loadAppData<Pokedex>("pokedex")),
-    Object.keys(await loadAppData<Items>("items")),
-  );
-  await fs.writeFile(
-    path.join(dataRoot, "generation-transfer.json"),
-    `${JSON.stringify(transferData, null, 2)}\n`,
-  );
+  await updateGenerationTransfer();
+  await writeData("FormatBans", formatBansData(showdownRoot), true);
 
   await updateViableMoves(
     JSON.parse(await read(path.join(dataRoot, "learnsets.json"))) as Learnsets,

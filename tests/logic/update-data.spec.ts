@@ -5,6 +5,7 @@ import {
   flattenLearnsets,
   nameChanges,
   pick,
+  projectFormatBans,
   projectFormats,
   projectGameVariant,
   projectPastGenerations,
@@ -221,6 +222,47 @@ test("formats mark champions legality, inherited through battle-only formes", ()
     dracovish: { tier: "OU" },
     zacian: { tier: "Uber" },
   });
+});
+
+test("format bans keep banlists and code-only clauses, minus what is allowed back or not yet in the game", () => {
+  const dex = {
+    abilities: {
+      sandveil: { name: "Sand Veil", gen: 3 },
+      moody: { name: "Moody", gen: 5 },
+    },
+    items: {
+      souldew: { name: "Soul Dew", gen: 3 },
+      firegem: { name: "Fire Gem", gen: 5, isGem: true },
+    },
+    moves: {
+      swagger: { gen: 2 },
+      spore: { gen: 1, status: "slp" },
+      yawn: { gen: 3, volatileStatus: "yawn" },
+      fissure: { gen: 1, ohko: true },
+      sheercold: { gen: 3, ohko: "Ice" },
+      darkvoid: { gen: 4, status: "slp" },
+      tackle: { gen: 1 },
+    },
+  };
+  const rules = [
+    "-ability:sandveil",
+    "-ability:moody",
+    "-item:souldew",
+    "-move:swagger",
+    "+move:swagger",
+    "-move:yawn",
+    "-tag:uber",
+    "ohkoclause",
+    "sleepmovesclause",
+  ];
+  expect(projectFormatBans({ gen: 3, rules, ...dex })).toEqual({
+    abilities: ["Sand Veil"],
+    items: ["souldew"],
+    moves: ["fissure", "sheercold", "spore", "yawn"],
+  });
+  expect(
+    projectFormatBans({ gen: 5, rules: ["ohkoclause", "gemsclause"], ...dex }),
+  ).toEqual({ items: ["firegem"], moves: ["fissure", "sheercold"] });
 });
 
 test("learnsets merge every mod into one sorted move list per species", () => {
@@ -877,6 +919,38 @@ test("historical stats and abilities inherit through generations and cosmetic fo
   expect(past[5]?.abilities?.bird).toEqual(["Original", "Second", "Hidden"]);
 });
 
+test("past generations drop a hidden ability that the generation's mod marks unreleased", () => {
+  const abilities = { 0: "Ordinary", H: "Hidden" };
+  const past = projectPastGenerations(
+    {
+      pokedex: {
+        beast: { name: "Beast", abilities },
+        starter: { name: "Starter", abilities },
+        cap: { name: "Cap", abilities },
+      },
+      moves: {},
+      typechart: {},
+      abilities: { ordinary: { num: 1 }, hidden: { num: 1 } },
+    },
+    {
+      7: { pokedex: { cap: { inherit: true, unreleasedHidden: "Past" } } },
+      6: { pokedex: { beast: { inherit: true, unreleasedHidden: true } } },
+      5: { pokedex: { starter: { inherit: true, unreleasedHidden: true } } },
+    },
+  );
+  expect(past[6]?.abilities?.beast).toEqual(["Ordinary"]);
+  expect(past[5]?.abilities?.beast).toEqual(["Ordinary"]);
+  expect(past[6]?.abilities?.starter).toBeUndefined();
+  expect(past[5]?.abilities?.starter).toEqual(["Ordinary"]);
+  expect(past[7]?.abilities?.cap).toBeUndefined();
+  expect(past[7]?.unreleasedHidden).toBeUndefined();
+  expect(past[6]?.unreleasedHidden).toEqual({ beast: "Hidden" });
+  expect(past[5]?.unreleasedHidden).toEqual({
+    beast: "Hidden",
+    starter: "Hidden",
+  });
+});
+
 test("move projections retain user boosts without confusing targets or random chances", () => {
   expect(
     projections.Moves({ boosts: { atk: 2 }, target: "normal" }).selfBoosts,
@@ -884,6 +958,9 @@ test("move projections retain user boosts without confusing targets or random ch
   expect(
     projections.Moves({ self: { boosts: { atk: -1, def: -1 } } }).selfBoosts,
   ).toEqual({ atk: -1, def: -1 });
+  expect(
+    projections.Moves({ self: { chance: 50, boosts: { def: 2 } } }).selfBoosts,
+  ).toBeUndefined();
   expect(
     projections.Moves({
       secondary: { chance: 100, self: { boosts: { atk: 1 } } },

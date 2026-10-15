@@ -2,6 +2,7 @@
 import {
   POKEMON_TYPES,
   type Formats,
+  type FormatBans,
   type GenerationTransferData,
   type Generation,
   type GameData,
@@ -31,6 +32,7 @@ export type DataTypes = {
   Moves: Moves;
   Items: Items;
   Formats: Formats;
+  FormatBans: FormatBans;
   Learnsets: Learnsets;
   TypeChart: TypeChart;
   Natures: Natures;
@@ -134,7 +136,9 @@ export const projections = {
       "target",
       "forceSwitch",
     ]),
+    // A self boost with its own chance, like Diamond Storm's, is not a sure boost
     ...(isRecord(entry.self) &&
+      (entry.self.chance ?? 100) === 100 &&
       isRecord(entry.self.boosts) && {
         selfBoosts: entry.self.boosts as Record<string, number>,
       }),
@@ -234,6 +238,62 @@ export function projectFormats(
       ])
       .filter(([, entry]) => Object.keys(entry).length),
   );
+}
+
+// Clauses that Showdown's validator enforces in code instead of a banlist, and what each bans
+const CLAUSE_BANS: Record<
+  string,
+  [kind: "item" | "move", isBanned: (entry: ShowdownEntry) => boolean]
+> = {
+  ohkoclause: ["move", ({ ohko }) => !!ohko],
+  sleepmovesclause: ["move", ({ status }) => status === "slp"],
+  gemsclause: ["item", ({ isGem }) => !!isGem],
+};
+
+const BAN_KINDS = {
+  ability: "abilities",
+  item: "items",
+  move: "moves",
+} as const;
+
+// What a format bans and does not allow back, among what exists by its generation
+export function projectFormatBans({
+  gen,
+  rules,
+  ...dex
+}: {
+  gen: number;
+  // The keys of the format's rule table, such as "-move:batonpass", "+item:damprock", or "ohkoclause"
+  rules: string[];
+} & Record<"abilities" | "items" | "moves", ShowdownTable>) {
+  const bans: FormatBans[string] = {};
+  for (const [kind, key] of Object.entries(BAN_KINDS)) {
+    const table = dex[key];
+    const clauseBans = Object.entries(CLAUSE_BANS)
+      .filter(([rule, [banKind]]) => banKind === kind && rules.includes(rule))
+      .flatMap(([, [, isBanned]]) =>
+        Object.entries(table)
+          .filter(([, entry]) => isBanned(entry))
+          .map(([id]) => id),
+      );
+    const ids = [
+      ...new Set([
+        ...rules
+          .filter(rule => rule.startsWith(`-${kind}:`))
+          .map(rule => rule.slice(kind.length + 2)),
+        ...clauseBans,
+      ]),
+    ]
+      .filter(
+        id =>
+          !rules.includes(`+${kind}:${id}`) && Number(table[id]?.gen) <= gen,
+      )
+      .sort();
+    if (ids.length)
+      bans[key] =
+        kind === "ability" ? ids.map(id => String(table[id]?.name)) : ids;
+  }
+  return bans;
 }
 
 const learnsetMoves = (entry: ShowdownEntry) =>
@@ -644,7 +704,6 @@ export function projectPastGenerations(
           : [[id, properties]];
       }),
     );
-    if (Object.keys(moveData).length) entry.moveData = moveData;
     const formats = Object.fromEntries(
       Object.keys(mod.formats ?? resolved.formats ?? {}).flatMap(id => {
         const format = resolved.formats?.[id];
@@ -677,7 +736,11 @@ export function projectPastGenerations(
                 const introduced = abilityGeneration(
                   resolved.abilities?.[toId(name)],
                 );
-                return !(gen < 5 && slot === "H") && introduced <= gen;
+                // Showdown's validator rejects a hidden ability it marks unreleased
+                const isHiddenUnavailable =
+                  slot === "H" &&
+                  (gen < 5 || species.unreleasedHidden === true);
+                return !isHiddenUnavailable && introduced <= gen;
               })
               .map(([, name]) => String(name));
         const latestAbilities = latestSpecies[id]?.abilities;
@@ -692,9 +755,28 @@ export function projectPastGenerations(
       }),
     );
     if (Object.keys(abilities).length) entry.abilities = abilities;
+    // Kept so that old links holding one still load it
+    const unreleasedHidden = Object.fromEntries(
+      Object.entries(resolvedSpecies).flatMap(([id, species]) => {
+        const hidden =
+          isRecord(species.abilities) ? species.abilities.H : undefined;
+        return (
+            gen >= 5 &&
+              species.unreleasedHidden === true &&
+              typeof hidden === "string" &&
+              abilityGeneration(resolved.abilities?.[toId(hidden)]) <= gen
+          ) ?
+            [[id, hidden]]
+          : [];
+      }),
+    );
+    if (Object.keys(unreleasedHidden).length)
+      entry.unreleasedHidden = unreleasedHidden;
     if (JSON.stringify(typechart) !== JSON.stringify(nextChart)) {
       entry.typechart = typechart;
     }
+    // Last, where --move-effects-only adds it, so both write the same file
+    if (Object.keys(moveData).length) entry.moveData = moveData;
     past[gen as keyof PastGenerations] = entry;
     parent = resolved;
     nextChart = typechart;
