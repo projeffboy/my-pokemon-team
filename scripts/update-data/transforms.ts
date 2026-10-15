@@ -136,7 +136,9 @@ export const projections = {
       "target",
       "forceSwitch",
     ]),
+    // A self boost with its own chance, like Diamond Storm's, is not a sure boost
     ...(isRecord(entry.self) &&
+      (entry.self.chance ?? 100) === 100 &&
       isRecord(entry.self.boosts) && {
         selfBoosts: entry.self.boosts as Record<string, number>,
       }),
@@ -634,7 +636,6 @@ export function projectPastGenerations(
           : [[id, properties]];
       }),
     );
-    if (Object.keys(moveData).length) entry.moveData = moveData;
     const formats = Object.fromEntries(
       Object.keys(mod.formats ?? resolved.formats ?? {}).flatMap(id => {
         const format = resolved.formats?.[id];
@@ -667,7 +668,11 @@ export function projectPastGenerations(
                 const introduced = abilityGeneration(
                   resolved.abilities?.[toId(name)],
                 );
-                return !(gen < 5 && slot === "H") && introduced <= gen;
+                // Showdown's validator rejects a hidden ability it marks unreleased
+                const isHiddenUnavailable =
+                  slot === "H" &&
+                  (gen < 5 || species.unreleasedHidden === true);
+                return !isHiddenUnavailable && introduced <= gen;
               })
               .map(([, name]) => String(name));
         const latestAbilities = latestSpecies[id]?.abilities;
@@ -682,9 +687,28 @@ export function projectPastGenerations(
       }),
     );
     if (Object.keys(abilities).length) entry.abilities = abilities;
+    // Kept so that old links holding one still load it
+    const unreleasedHidden = Object.fromEntries(
+      Object.entries(resolvedSpecies).flatMap(([id, species]) => {
+        const hidden =
+          isRecord(species.abilities) ? species.abilities.H : undefined;
+        return (
+            gen >= 5 &&
+              species.unreleasedHidden === true &&
+              typeof hidden === "string" &&
+              abilityGeneration(resolved.abilities?.[toId(hidden)]) <= gen
+          ) ?
+            [[id, hidden]]
+          : [];
+      }),
+    );
+    if (Object.keys(unreleasedHidden).length)
+      entry.unreleasedHidden = unreleasedHidden;
     if (JSON.stringify(typechart) !== JSON.stringify(nextChart)) {
       entry.typechart = typechart;
     }
+    // Last, where --move-effects-only adds it, so both write the same file
+    if (Object.keys(moveData).length) entry.moveData = moveData;
     past[gen as keyof PastGenerations] = entry;
     parent = resolved;
     nextChart = typechart;

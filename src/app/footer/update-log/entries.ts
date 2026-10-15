@@ -34,6 +34,13 @@ const entries: Entry[] = [
       "From Gen 6, choosing Hidden Power now keeps custom IVs that still give its type, such as 0 Speed for Trick Room.",
       "Hidden Power’s IVs now update when a level change ends Hyper Training.",
       "Ticking Shiny in Gen 2 now switches Hidden Power to the Grass or Dragon type its DVs give.",
+      "Gen 3 and Gen 4 Doubles OU now list their Pokémon, such as Salamence and Metagross, instead of none.",
+      "Importing a Showdown box with more than six Pokémon now splits it into teams of six instead of dropping the rest.",
+      "Showdown backups whose team headers are indented now import as separate teams instead of one merged team.",
+      "Showdown teams from formats such as Ubers UU or Pure Hackmons no longer import as Uber or PU teams.",
+      "Pokemon Champions (M-C) now uses its own move changes, such as Snap Trap being Steel type.",
+      "The team checklist no longer counts Diamond Storm as a boosting move, since its Defense boost is only a 50% chance.",
+      "Gens 5–7 no longer offer or randomly pick hidden abilities that were unreleased then, e.g. Contrary for Gen 5 Serperior.",
     ],
   },
   {

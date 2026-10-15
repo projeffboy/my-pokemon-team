@@ -15,7 +15,7 @@ import {
 } from "@/shared/generation-profile";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
-import { pokemonFormatIn } from "@/shared/generation-data";
+import { doublesTierIn, pokemonFormatIn } from "@/shared/generation-data";
 
 type Filters = Readonly<
   Partial<
@@ -173,19 +173,22 @@ export function filterPokemon({
     ];
 
     if (smogonSinglesTiers.includes(tierAbbreviationByFormat[format] ?? "")) {
-      return filterByTier(smogonSinglesTiers, "tier");
+      return filterByTier(
+        smogonSinglesTiers,
+        pokemon => pokemonFormatIn(pokemon, generation)?.tier,
+      );
     } else if (
       ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
     ) {
       return filterByTier(
         ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)"],
-        "doublesTier",
+        pokemon => doublesTierIn(pokemon, generation),
       );
     }
 
     function filterByTier(
       arrayOfTiers: string[],
-      tierType: "tier" | "doublesTier",
+      tierOf: (pokemon: string) => string | undefined,
     ) {
       let tierMatched = false;
 
@@ -196,7 +199,7 @@ export function filterPokemon({
 
           // Add all the pokemon from that tier to filteredPokedex
           for (const [pokemon, entry] of Object.entries(pokedex)) {
-            if (pokemonFormatIn(pokemon, generation)?.[tierType] === tier) {
+            if (tierOf(pokemon) === tier) {
               filteredPokedex[pokemon] = entry;
             }
           }

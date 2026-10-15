@@ -1,4 +1,8 @@
-import { parseTeamText, serializeTeam } from "@/store/team-text";
+import {
+  LEGACY_LINK_PARSING_OPTIONS,
+  parseTeamText,
+  serializeTeam,
+} from "@/store/team-text";
 import { learnsetsReady } from "@/store/learnsets";
 import { fromBase64Url, toBase64Url } from "@/app/shared/base64url";
 import {
@@ -501,6 +505,15 @@ test("legacy Showdown aliases and metadata case preserve set fields", async () =
   expect(
     parseTeamText("Gyarados\ntrait: Moxie\nAdamant NATURE\nmove: Waterfall")[0],
   ).toMatchObject({ ability: "Moxie", nature: "adamant", move1: "waterfall" });
+});
+
+test("old links keep hidden abilities Showdown marks unreleased in their generation", () => {
+  const ability = (text: string, generation: 5 | 6) =>
+    parseTeamText(text, generation, "", LEGACY_LINK_PARSING_OPTIONS)[0]
+      ?.ability;
+  expect(ability("Chandelure\nAbility: Shadow Tag", 5)).toBe("Shadow Tag");
+  expect(ability("Suicune\nAbility: Water Absorb", 6)).toBe("Water Absorb");
+  expect(ability("Zapdos\nAbility: Lightning Rod", 5)).toBe("Lightning Rod");
 });
 
 test("old Frustration share links keep their original default happiness", ({

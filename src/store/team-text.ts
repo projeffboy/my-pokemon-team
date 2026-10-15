@@ -28,7 +28,11 @@ import {
   itemNameInverse,
   moveNameInverse,
 } from "@/shared/names";
-import { hasNoAbility, pokemonAbilities } from "@/shared/pokedex";
+import {
+  hasNoAbility,
+  pokemonAbilities,
+  unreleasedHiddenAbility,
+} from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
   DEFAULT_HAPPINESS,
@@ -49,6 +53,7 @@ import {
 } from "@/shared/generation-profile";
 import { canItLearn, isItemAvailable } from "./learnsets";
 import { generationRules } from "@/shared/generation-rules";
+import { GENERATIONS } from "@/shared/generations";
 import { canHyperTrain, matchImportedHiddenPower } from "@/shared/hidden-power";
 
 const statsLine = (
@@ -285,7 +290,16 @@ export const LEGACY_LINK_PARSING_OPTIONS = {
   inferHiddenPowerIvs: false,
   preserveBlankAbilityDefault: true,
   allowHyperTraining: false,
+  // Links decode every detail they carry, so each keeps loading the same team
+  keepUnsupportedDetails: true,
 } as const;
+
+const splitSets = (text: string) =>
+  text
+    .replace(/^\s*---\s*$/gm, "\n")
+    .split(/\n\s*\n/)
+    .map(set => set.trim())
+    .filter(set => set);
 
 // Showdown's lines for details the site has no field for
 const UNKEPT_DETAIL = /^(?:Pokeball|Dynamax Level|Hidden Power):/i;
@@ -303,6 +317,7 @@ export function parseTeamText(
     inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
+    keepUnsupportedDetails = false,
     onProblem = () => {},
   }: {
     inferFrustrationHappiness?: boolean;
@@ -310,16 +325,15 @@ export function parseTeamText(
     inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
+    keepUnsupportedDetails?: boolean;
     onProblem?: (problem: TeamTextProblem) => void;
   } = {},
 ): Team {
   const rules = generationRules(generation, format);
+  // Pasted text drops details the game has no field for
+  const supports = (rule: boolean) => keepUnsupportedDetails || rule;
   const team = createEmptyTeam();
-  const teamPokemonRawData = text
-    .replace(/^\s*---\s*$/gm, "\n")
-    .split(/\n\s*\n/)
-    .map(eachPokemonData => eachPokemonData.trim())
-    .filter(eachPokemonData => eachPokemonData); // get rid of empty lines
+  const teamPokemonRawData = splitSets(text);
 
   teamPokemonRawData.forEach((eachPokemonData, teamIndex) => {
     const lines = eachPokemonData.split("\n"); // split pokemon into its properties
@@ -344,15 +358,17 @@ export function parseTeamText(
       pending.push({ problem, ...(replacement && { replacement }) });
 
     member.name = pokemon;
-    const abilities = Array.from({ length: 9 }, (_, i) =>
-      pokemonAbilities(pokemon, (i + 1) as Generation),
-    ).flat();
+    const abilities = GENERATIONS.flatMap(gen =>
+      pokemonAbilities(pokemon, gen).concat(
+        unreleasedHiddenAbility(pokemon, gen) ?? [],
+      ),
+    );
     member.ability =
       rules.abilities ?
         getAutoSelectedAbility(pokemon, generation, format)
       : "";
     if (nickname) member.nickname = nickname;
-    if (gender) member.gender = gender;
+    if (gender && supports(rules.gender)) member.gender = gender;
 
     // If team raw data does not mention item, leave it blank
     if (itemText) {
@@ -398,6 +414,9 @@ export function parseTeamText(
             : undefined,
           );
         });
+      const unsupported = (field: Problem["field"], text: string) => {
+        if (text) report({ field, value: text, reason: "unsupported" });
+      };
 
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
@@ -446,7 +465,8 @@ export function parseTeamText(
           );
       } else if (startsWith("Shiny:")) {
         const shiny = value("Shiny:");
-        if (shiny.toLowerCase() === "yes") member.shiny = true;
+        if (!supports(rules.shiny)) unsupported("shiny", shiny);
+        else if (shiny.toLowerCase() === "yes") member.shiny = true;
         else if (shiny && shiny.toLowerCase() !== "no")
           report({ field: "shiny", value: shiny, reason: "unrecognized" });
       } else if (startsWith("Happiness:")) {
@@ -472,7 +492,8 @@ export function parseTeamText(
           });
       } else if (startsWith("Tera Type:")) {
         const teraType = value("Tera Type:");
-        if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
+        if (!supports(rules.tera)) unsupported("teraType", teraType);
+        else if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
         else if (teraType)
           report({
             field: "teraType",
@@ -480,8 +501,12 @@ export function parseTeamText(
             reason: "unrecognized",
           });
       } else if (startsWith("EVs:")) {
-        const evs = statsIn("evs", "EVs:", 255, ev => ev === 0);
-        if (evs) member.evs = evs;
+        if (!supports(rules.investment !== "effortLevels"))
+          unsupported("evs", value("EVs:"));
+        else {
+          const evs = statsIn("evs", "EVs:", 255, ev => ev === 0);
+          if (evs) member.evs = evs;
+        }
       } else if (startsWith("Stat Experience:")) {
         member.statExperience = statsIn(
           "statExperience",
@@ -497,12 +522,16 @@ export function parseTeamText(
           n => n === 0,
         );
       } else if (startsWith("IVs:")) {
-        const ivs = statsIn("ivs", "IVs:", MAX_IV, iv => iv === MAX_IV);
-        if (ivs) member.ivs = ivs;
+        if (!supports(rules.ivs)) unsupported("ivs", value("IVs:"));
+        else {
+          const ivs = statsIn("ivs", "IVs:", MAX_IV, iv => iv === MAX_IV);
+          if (ivs) member.ivs = ivs;
+        }
       } else if (/ Nature$/i.test(line)) {
         const natureText = line.slice(0, -" Nature".length).trim();
         const nature = natureNameInverse(natureText);
-        if (nature) member.nature = nature;
+        if (!supports(rules.nature)) unsupported("nature", natureText);
+        else if (nature) member.nature = nature;
         else
           report({
             field: "nature",
@@ -602,7 +631,8 @@ export interface ParsedTeam {
 }
 
 // Splits a Showdown backup with `=== [gen9ou] Folder/Name ===` headers into its
-// teams that have pokemon; text without headers is one team
+// teams that have pokemon; text without headers is one team. A box (up to 24
+// pokemon) becomes a team per 6: "Box 1", "Box 1 (2)", ...
 export function parseTeamsText(
   text: string,
   defaults: Pick<SavedTeam, "generation" | "format" | "generationProfile"> = {
@@ -615,7 +645,7 @@ export function parseTeamsText(
     .some(line => line.trim() === BACKUP_MARKER);
   const chunks: { header?: RegExpExecArray; lines: string[] }[] = [];
   for (const line of text.split("\n")) {
-    const header = TEAM_HEADER.exec(line);
+    const header = TEAM_HEADER.exec(line.trim());
     if (header) chunks.push({ header, lines: [] });
     else if (chunks.length) chunks[chunks.length - 1]?.lines.push(line);
     else chunks.push({ lines: [line] });
@@ -628,7 +658,7 @@ export function parseTeamsText(
         line.trim() === BACKUP_MARKER ||
         line.trim() === GENERATION_PROFILE_MARKER,
     );
-  const teams = chunks.map(({ header, lines }, index): ParsedTeam => {
+  return chunks.flatMap(({ header, lines }, index) => {
     const hasFormat = header?.[1] !== undefined;
     const hasCombinedMetadata =
       !!header && lines.some(line => line.trim() === GENERATION_PROFILE_MARKER);
@@ -652,20 +682,26 @@ export function parseTeamsText(
       preserveNames || isEmptyBackup(index) ? rawName : (
         rawName.slice(rawName.indexOf("/") + 1).trim()
       );
-    return {
-      name,
-      ...settings,
-      ...(generationProfile && { generationProfile }),
-      team: parseTeamText(
-        lines
-          .filter(line => line.trim() !== GENERATION_PROFILE_MARKER)
-          .join("\n"),
-        settings.generation,
-        teamDataFormat({ format: settings.format, generationProfile }),
-      ),
-    };
+    const sets = splitSets(
+      lines
+        .filter(line => line.trim() !== GENERATION_PROFILE_MARKER)
+        .join("\n"),
+    );
+    const groups = Array.from(
+      { length: Math.max(1, Math.ceil(sets.length / 6)) },
+      (_, i) => sets.slice(i * 6, i * 6 + 6),
+    );
+    return groups
+      .map((group, i): ParsedTeam => ({
+        name: i && name ? `${name} (${i + 1})` : name,
+        ...settings,
+        ...(generationProfile && { generationProfile }),
+        team: parseTeamText(
+          group.join("\n\n"),
+          settings.generation,
+          teamDataFormat({ format: settings.format, generationProfile }),
+        ),
+      }))
+      .filter(({ team }) => !isTeamEmpty(team) || isEmptyBackup(index));
   });
-  return teams.filter(
-    ({ team }, index) => !isTeamEmpty(team) || isEmptyBackup(index),
-  );
 }

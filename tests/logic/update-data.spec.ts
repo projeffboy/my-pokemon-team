@@ -855,6 +855,38 @@ test("historical stats and abilities inherit through generations and cosmetic fo
   expect(past[5]?.abilities?.bird).toEqual(["Original", "Second", "Hidden"]);
 });
 
+test("past generations drop a hidden ability that the generation's mod marks unreleased", () => {
+  const abilities = { 0: "Ordinary", H: "Hidden" };
+  const past = projectPastGenerations(
+    {
+      pokedex: {
+        beast: { name: "Beast", abilities },
+        starter: { name: "Starter", abilities },
+        cap: { name: "Cap", abilities },
+      },
+      moves: {},
+      typechart: {},
+      abilities: { ordinary: { num: 1 }, hidden: { num: 1 } },
+    },
+    {
+      7: { pokedex: { cap: { inherit: true, unreleasedHidden: "Past" } } },
+      6: { pokedex: { beast: { inherit: true, unreleasedHidden: true } } },
+      5: { pokedex: { starter: { inherit: true, unreleasedHidden: true } } },
+    },
+  );
+  expect(past[6]?.abilities?.beast).toEqual(["Ordinary"]);
+  expect(past[5]?.abilities?.beast).toEqual(["Ordinary"]);
+  expect(past[6]?.abilities?.starter).toBeUndefined();
+  expect(past[5]?.abilities?.starter).toEqual(["Ordinary"]);
+  expect(past[7]?.abilities?.cap).toBeUndefined();
+  expect(past[7]?.unreleasedHidden).toBeUndefined();
+  expect(past[6]?.unreleasedHidden).toEqual({ beast: "Hidden" });
+  expect(past[5]?.unreleasedHidden).toEqual({
+    beast: "Hidden",
+    starter: "Hidden",
+  });
+});
+
 test("move projections retain user boosts without confusing targets or random chances", () => {
   expect(
     projections.Moves({ boosts: { atk: 2 }, target: "normal" }).selfBoosts,
@@ -862,6 +894,9 @@ test("move projections retain user boosts without confusing targets or random ch
   expect(
     projections.Moves({ self: { boosts: { atk: -1, def: -1 } } }).selfBoosts,
   ).toEqual({ atk: -1, def: -1 });
+  expect(
+    projections.Moves({ self: { chance: 50, boosts: { def: 2 } } }).selfBoosts,
+  ).toBeUndefined();
   expect(
     projections.Moves({
       secondary: { chance: 100, self: { boosts: { atk: 1 } } },
