@@ -24,7 +24,8 @@ export default function TypeChartDialog() {
       <Dialog
         open={isDialogOpen}
         onClose={toggleDialog}
-        aria-label={t.footer.typeChart}
+        // It has no title for MUI to name it by
+        slotProps={{ paper: { "aria-label": t.footer.typeChart } }}
         maxWidth="md"
         fullWidth
         fullScreen={isSmDown}

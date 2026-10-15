@@ -102,6 +102,11 @@ const TeamAspectStats = observer(function TeamAspectStats({
                   font: "inherit",
                   lineHeight: 1.25,
                   bgcolor: TYPE_COLORS[type],
+                  "&:focus-visible": {
+                    outline: 2,
+                    outlineColor: "text.primary",
+                    outlineOffset: 1,
+                  },
                   // The score below is part of the touch target
                   "&::after": {
                     content: '""',

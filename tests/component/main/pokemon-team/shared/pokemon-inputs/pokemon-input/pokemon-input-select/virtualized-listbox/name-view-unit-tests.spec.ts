@@ -1,3 +1,4 @@
+import type { Locator } from "@playwright/test";
 import { test, expect } from "fixtures";
 import { selectPokemon, resizeTeamViewport } from "helper";
 import pokedex from "@/data/pokedex";
@@ -470,6 +471,34 @@ test("the Name dropdown has Filters and Sort, and the move dropdowns Sort alone"
   await page.getByLabel("Pokemon 1's move1").click();
   await expect(sort).toBeVisible();
   await expect(filters).toHaveCount(0);
+});
+
+test("a click between the list tools and the options keeps the dropdown open", async ({
+  page,
+}) => {
+  const listbox = page.getByRole("listbox");
+  const clickAboveOptions = async (input: Locator) => {
+    await input.click();
+    await expect(listbox.getByRole("option").first()).toBeVisible();
+    const bounds = await listbox.boundingBox();
+    if (!bounds) throw new Error("The listbox has no bounds");
+    // The tools' bottom margin, just above the first option
+    const point = { x: bounds.x + bounds.width / 2, y: bounds.y - 2 };
+    expect(
+      await page.evaluate(
+        ({ x, y }) =>
+          !!document.elementFromPoint(x, y)?.closest("button, [role=option]"),
+        point,
+      ),
+    ).toBe(false);
+    await page.mouse.click(point.x, point.y);
+    await expect(listbox).toBeVisible();
+    await expect(input).toBeFocused();
+    await input.press("Escape");
+  };
+  await clickAboveOptions(page.getByLabel("Pokemon 1's name"));
+  await selectPokemon(page, "Houndstone");
+  await clickAboveOptions(page.getByLabel("Pokemon 1's move1"));
 });
 
 test("keyboard popup tools restore input focus after their dialogs close", async ({

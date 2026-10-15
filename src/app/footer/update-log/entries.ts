@@ -41,6 +41,7 @@ const entries: Entry[] = [
       "From Gen 6, choosing Hidden Power now keeps custom IVs that still give its type, such as 0 Speed for Trick Room.",
       "Hidden Power’s IVs now update when a level change ends Hyper Training.",
       "Ticking Shiny in Gen 2 now switches Hidden Power to the Grass or Dragon type its DVs give.",
+      "Screen readers now name each type row of Matrix Analysis.",
       "Gen 3 and Gen 4 Doubles OU now list their Pokémon, such as Salamence and Metagross, instead of none.",
       "Importing a Showdown box with more than six Pokémon now splits it into teams of six instead of dropping the rest.",
       "Showdown backups whose team headers are indented now import as separate teams instead of one merged team.",

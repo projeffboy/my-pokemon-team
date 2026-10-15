@@ -305,17 +305,15 @@ const VirtualizedListbox = observer(
 
       const { className, style, ...otherProps } = other;
 
+      // The buttons come before the listbox rather than in it, which may hold only options
       return (
         <Box
-          ref={ref}
-          {...otherProps}
-          sx={{ "& .MuiAutocomplete-listbox": { p: 0 } }}
+          // Keeps the focus, and so the popup, in the input
+          onMouseDown={event => event.preventDefault()}
         >
           {isNameInput && (
             <Box
               ref={toggleRef}
-              // Keeps the focus, and so the popup, in the input
-              onMouseDown={event => event.preventDefault()}
               // Keep the toggle anchored while the grid widens the dropdown
               sx={{
                 display: "flex",
@@ -370,8 +368,6 @@ const VirtualizedListbox = observer(
           {showMoveTools && (
             <Box
               ref={toggleRef}
-              // Keeps the focus, and so the popup, in the input
-              onMouseDown={event => event.preventDefault()}
               sx={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -382,36 +378,50 @@ const VirtualizedListbox = observer(
               <ListTools moves />
             </Box>
           )}
-          {isGrid ?
-            <List
-              className={className}
-              listRef={internalListRef}
-              key={`${store.nameView}-${itemCount}`}
-              rowCount={rowCount}
-              onRowsRendered={onRowsRendered}
-              rowHeight={gridRowSize}
-              rowComponent={GridRowComponent}
-              rowProps={{ itemData, columns, large: isBigGrid }}
-              // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
-              style={{ height: getHeight() }}
-              overscanCount={3}
-              tagName="ul"
-            />
-          : <List
-              className={className}
-              listRef={internalListRef}
-              key={itemCount}
-              rowCount={itemCount}
-              onRowsRendered={onRowsRendered}
-              rowHeight={dynamicRowHeight}
-              rowComponent={RowComponent}
-              rowProps={{ itemData, pokemonProperty, teamIndex, showMoveTypes }}
-              // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
-              style={{ height: getHeight() + 2 * LISTBOX_PADDING }}
-              overscanCount={5}
-              tagName="ul"
-            />
-          }
+          <Box
+            ref={ref}
+            {...otherProps}
+            sx={{ "& .MuiAutocomplete-listbox": { p: 0 } }}
+          >
+            {/* react-window's list role would come between the listbox and its options */}
+            {isGrid ?
+              <List
+                className={className}
+                role="presentation"
+                listRef={internalListRef}
+                key={`${store.nameView}-${itemCount}`}
+                rowCount={rowCount}
+                onRowsRendered={onRowsRendered}
+                rowHeight={gridRowSize}
+                rowComponent={GridRowComponent}
+                rowProps={{ itemData, columns, large: isBigGrid }}
+                // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
+                style={{ height: getHeight() }}
+                overscanCount={3}
+                tagName="ul"
+              />
+            : <List
+                className={className}
+                role="presentation"
+                listRef={internalListRef}
+                key={itemCount}
+                rowCount={itemCount}
+                onRowsRendered={onRowsRendered}
+                rowHeight={dynamicRowHeight}
+                rowComponent={RowComponent}
+                rowProps={{
+                  itemData,
+                  pokemonProperty,
+                  teamIndex,
+                  showMoveTypes,
+                }}
+                // eslint-disable-next-line no-restricted-syntax -- react-window's own prop
+                style={{ height: getHeight() + 2 * LISTBOX_PADDING }}
+                overscanCount={5}
+                tagName="ul"
+              />
+            }
+          </Box>
         </Box>
       );
     },
