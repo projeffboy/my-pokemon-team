@@ -41,8 +41,11 @@ test.describe("Dropped entries notice - Unit Tests", () => {
     // Above the team on every layout
     const noticeTop = (await notice(page).boundingBox())?.y ?? Infinity;
     const toolbarTop =
-      (await page.getByRole("button", { name: "Manage team" }).boundingBox())
-        ?.y ?? -Infinity;
+      (
+        await page
+          .getByRole("button", { name: "More", exact: true })
+          .boundingBox()
+      )?.y ?? -Infinity;
     expect(noticeTop).toBeLessThan(toolbarTop);
 
     await notice(page).getByRole("button", { name: "Dismiss" }).click();
