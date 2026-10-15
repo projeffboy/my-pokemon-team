@@ -111,6 +111,8 @@ const it: Messages = {
     teamEmpty: "La squadra Pokémon è vuota",
     linkCopied: "Link della squadra Pokémon copiato",
     linkNotCopied: "Impossibile copiare il link.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La generazione o il gioco di questo link non è supportato, quindi è stato aperto in ${profile}.`,
     nothingToCopy: "Squadra vuota, niente da copiare.",
     teamCopied: "Squadra copiata.",
     teamNotCopied: "Impossibile copiare la squadra.",

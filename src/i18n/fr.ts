@@ -112,6 +112,8 @@ const fr: Messages = {
     teamEmpty: "L'équipe Pokémon est vide",
     linkCopied: "Lien de l'équipe Pokémon copié",
     linkNotCopied: "Impossible de copier le lien.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La génération ou le jeu de ce lien n'est pas pris en charge, il a donc été ouvert en ${profile}.`,
     nothingToCopy: "Équipe vide, rien à copier.",
     teamCopied: "Équipe copiée.",
     teamNotCopied: "Impossible de copier l'équipe.",

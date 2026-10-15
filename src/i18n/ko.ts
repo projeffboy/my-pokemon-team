@@ -124,6 +124,8 @@ const ko: Messages = {
     teamEmpty: "포켓몬 팀이 비어 있습니다",
     linkCopied: "포켓몬 팀 링크를 복사했습니다",
     linkNotCopied: "링크를 복사하지 못했습니다.",
+    linkGenerationUnsupported: (profile: string) =>
+      `이 링크의 세대 또는 게임은 지원되지 않아 ${profile}에서 열었습니다.`,
     nothingToCopy: "팀이 비어 있어 복사할 내용이 없습니다.",
     teamCopied: "팀을 복사했습니다.",
     teamNotCopied: "팀을 복사하지 못했습니다.",

@@ -105,6 +105,8 @@ const en = {
     teamEmpty: "Pokemon team is empty",
     linkCopied: "Pokemon team link copied",
     linkNotCopied: "Could not copy the link.",
+    linkGenerationUnsupported: (profile: string) =>
+      `This link’s generation or game isn’t supported, so it opened in ${profile}.`,
     nothingToCopy: "Empty team, nothing to copy.",
     teamCopied: "Team copied.",
     teamNotCopied: "Could not copy the team.",

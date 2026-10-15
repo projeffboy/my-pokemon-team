@@ -62,21 +62,31 @@ export function teamUrl(
   return url.href;
 }
 
-export function generationSettingsFromUrl():
-  Pick<SavedTeam, "generation" | "format" | "generationProfile"> | undefined {
+// A recognized game wins over gen. A gen or game the site does not recognize is
+// `unrecognized`, and the link opens in its valid gen, or else in Generations 6–9.
+export function generationSettingsFromUrl(): {
+  settings: Pick<SavedTeam, "generation" | "format" | "generationProfile">;
+  unrecognized: boolean;
+} {
   const params = new URLSearchParams(
     typeof location === "undefined" ? "" : location.search,
   );
-  if (
-    !params.has("game") &&
-    (!params.has("gen") || params.get("gen") === COMBINED_GENERATIONS_PROFILE)
-  )
-    return { ...DEFAULT_TEAM_SETTINGS };
-  const game = params.get("game");
-  const format = game === "champions" ? CHAMPIONS_FORMAT : "";
-  const generation =
-    format === CHAMPIONS_FORMAT ? 9 : Number(params.get("gen"));
-  return isGeneration(generation) ? { generation, format } : undefined;
+  // An empty value counts as missing
+  const gen = params.get("gen") || null;
+  const game = params.get("game") || null;
+  if (game === "champions")
+    return {
+      settings: { generation: 9, format: CHAMPIONS_FORMAT },
+      unrecognized: false,
+    };
+  const generation = Number(gen);
+  const valid = isGeneration(generation);
+  return {
+    settings: valid ? { generation, format: "" } : { ...DEFAULT_TEAM_SETTINGS },
+    unrecognized:
+      game !== null ||
+      (gen !== null && gen !== COMBINED_GENERATIONS_PROFILE && !valid),
+  };
 }
 
 // Opens a matching saved team, or an unsaved draft until the first edit. Malformed,
@@ -95,7 +105,7 @@ export function importTeamFromUrlParameter(teamParameter: string): void {
     return;
   }
 
-  const settings = generationSettingsFromUrl() ?? { ...DEFAULT_TEAM_SETTINGS };
+  const { settings } = generationSettingsFromUrl();
   store.openTeamFromLink(
     parseTeamText(
       text,
