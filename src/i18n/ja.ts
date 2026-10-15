@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ja: Messages = {
+  pageTitle: "My Pokemon Team - ポケモンのチーム作成・計画ツール",
   // The header
   beta: "ベータ版",
   generation,
@@ -30,10 +31,11 @@ const ja: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "近日公開",
+  generationGroups: { spinOffs: "外伝", mainSeries: "本編" },
   combinedGenerations: {
     label: "第6～9世代",
     short: "第6～9世代",
-    description: "第6〜9世代の全ゲームの選択肢を統合",
+    description: "第6〜9世代の全ゲームを統合",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -49,9 +51,13 @@ const ja: Messages = {
     short: "旧サイト",
     title: "旧サイトに移動しますか？",
     description:
-      "現在のチームは旧サイトに引き継がれません。ここで保存済みのチームは、このバージョンに残ります。",
+      "現在のチームを旧サイトで開きます。ここで保存済みのチームは、このバージョンに残ります。",
     go: "旧サイトへ移動",
     goLong: "旧サイトへ移動",
+    generationsOnly: (generations: string) =>
+      `旧サイトは${generations}のみに対応しています。`,
+    leftOut: "次の内容は引き継がれません：",
+    goWithTeam: "チームと一緒に移動",
   },
   feedback: {
     button: "フィードバックを送る",
@@ -113,6 +119,8 @@ const ja: Messages = {
     linkCopied: "ポケモンチームのリンクをコピーしました",
     linkNotCopied:
       "リンクをコピーできませんでした。チームを開いた状態で、アドレスバーからコピーしてください。",
+    linkGenerationUnsupported: (profile: string) =>
+      `このリンクの世代またはゲームには対応していないため、${profile}で開きました。`,
     nothingToCopy: "チームが空です。コピーするにはポケモンを追加してください。",
     teamCopied: "チームをコピーしました。",
     teamNotCopied:
@@ -134,7 +142,7 @@ const ja: Messages = {
     advanced: "その他の詳細",
     advancedFor: (slot: number) => `スロット${slot}のその他の詳細`,
     details: "詳細",
-    showMoveTypes: "技のタイプを表示",
+    showTypes: "タイプを表示",
     about: (pokemon: string) => `${pokemon}について`,
     dragHint: "長押しドラッグで並べ替え",
     moveToSlot: (pokemon: string) => `${pokemon}を別のスロットへ移動`,
@@ -226,6 +234,7 @@ const ja: Messages = {
       status: { label: "状態異常技", short: "状態異常" },
       phazer: { label: "強制交代技" },
       boosting: { label: "積み技", short: "積み" },
+      priority: { label: "先制技", short: "先制技", shorter: "先制" },
       voltTurn: {
         label: "ボルトチェンジ系",
         short: "ボルチェン",
@@ -259,6 +268,7 @@ const ja: Messages = {
       cause: string | undefined,
     ) =>
       `${type}タイプの技は${pokemon}（${types}）に${multiplier}倍${cause ? `（${cause}の影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}で${type}タイプになる`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -450,7 +460,7 @@ const ja: Messages = {
     removed: {
       item: "削除される持ち物",
       ability: "削除される特性",
-      moves: "削除される技：",
+      move: "削除される技",
       details: "削除される詳細",
     },
     ivsUnused: (where: string) => `${where}では個体値は適用されません。`,
@@ -463,6 +473,9 @@ const ja: Messages = {
       item: (count: number) => `持ち物${count}個`,
       ability: (count: number) => `特性${count}個`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中${carried}匹を引き継ぎ`,
+    removedSummary: (removed: string) => `${removed}を削除`,
     modify: "現在のチームを更新",
     copy: "新しいチームにコピー",
     createEmpty: "空のチームを作成",
@@ -527,6 +540,28 @@ const ja: Messages = {
     noChanges: "変更はありません。",
     nothingFound:
       "そのテキストにポケモンが見つかりませんでした。ポケモンの名前をPokemon Showdownと同じ英語の表記で書くか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
+    problems: (count: number) =>
+      `問題が${count}件見つかりました。更新すると、テキストは次のとおり適用されます：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}の${field}`,
+    moveSlot: (slot: number) => `技${slot}`,
+    problemValue: (where: string, value: string) => `${where}：「${value}」`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "認識できません。",
+    unlearnable: (pokemon: string) =>
+      `選択したゲームでは、${pokemon}はこの技を覚えられません。`,
+    wrongAbility: (pokemon: string) => `${pokemon}が持てる特性ではありません。`,
+    outOfRange: (min: number, max: number) =>
+      `${min}から${max}までの整数ではありません。`,
+    unsupported: "選択したゲームにはこの項目がありません。",
+    tooManyPokemon: "チームに入るポケモンは6匹までです。",
+    tooManyMoves: "ポケモンが覚えられる技は4つまでです。",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}にはキョダイマックスのすがたがありません。`,
+    unread: "サイトが読み取る項目ではありません。",
+    slotLeftEmpty: "チームの枠は空になります。",
+    moveLeftEmpty: "技の枠は空になります。",
+    leftOut: "この項目は省かれます。",
+    usedInstead: (value: string) => `代わりに${value}が使われます。`,
   },
   deleteDialog: {
     title: (team: string) => `${team}を削除しますか？`,
@@ -661,6 +696,10 @@ const ja: Messages = {
       [
         "積み技",
         "つるぎのまいやめいそうのように、自分の能力を（できれば2段階以上）上げる技。",
+      ],
+      [
+        "先制技",
+        "すばやさに関係なく、ほとんどの技より先に出せる攻撃技。例: しんそく、ふいうち、アクアジェット、バレットパンチ。",
       ],
       [
         "こだわりアイテム",

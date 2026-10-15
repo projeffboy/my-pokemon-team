@@ -32,6 +32,7 @@ export function getBrowserStorage(): Storage | undefined {
 export interface StoredState {
   teams: SavedTeam[];
   currentTeamId: string;
+  // Whether pokemon and move types show; named from when it covered moves only
   showMoveTypes: boolean;
   sort: SortOrder;
   moveSort: MoveSortOrder;
@@ -192,8 +193,22 @@ export function mergeStoredState(
     : mine;
   const find = ({ teams }: StoredState, id: string) =>
     teams.find(team => team.id === id);
-  const ids = new Set([...mine.teams, ...theirs.teams].map(({ id }) => id));
-  const merged = [...ids]
+  const idsIn = ({ teams }: StoredState, other: StoredState) =>
+    teams.map(({ id }) => id).filter(id => find(other, id));
+  // Teams only `rest` has go after the team before them there
+  const order = (first: StoredState, rest: StoredState) => {
+    const ids = first.teams.map(({ id }) => id);
+    rest.teams.forEach(({ id }, i) => {
+      if (ids.includes(id)) return;
+      const before = rest.teams[i - 1]?.id;
+      ids.splice(before === undefined ? 0 : ids.indexOf(before) + 1, 0, id);
+    });
+    return ids;
+  };
+  // The other tab's order, unless this tab reordered its teams
+  const reordered =
+    stableJson(idsIn(mine, base)) !== stableJson(idsIn(base, mine));
+  const merged = (reordered ? order(mine, theirs) : order(theirs, mine))
     .map(id => pick(find(base, id), find(mine, id), find(theirs, id)))
     .filter(team => team !== undefined);
   const teams = merged.length ? merged : mine.teams;
