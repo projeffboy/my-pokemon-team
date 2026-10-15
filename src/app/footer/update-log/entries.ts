@@ -9,9 +9,23 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 15, 2026",
+    changes: [
+      "Gen 9 · Scarlet Violet has a new CAP format, which lists Create-A-Pokémon creations such as Syclant alongside OU’s Pokémon.",
+      "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
+      "Beat Up is now typeless in Gens 2–4, as in those games.",
+      "The coverage matrix now doubles resisted hits from Tinted Lens users.",
+      "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
+      "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
+      "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
+    ],
+  },
+  {
     date: "Oct 14, 2026",
     changes: [
-      "Gen 9 has a new CAP format, which lists Create-A-Pokémon creations such as Syclant alongside OU’s Pokémon.",
+      "The Old website button now takes your current team along, after naming anything the old website can’t hold, such as EVs.",
+      "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
+      "Twenty-one more Pokémon are now animated, like Great Tusk.",
     ],
   },
   {

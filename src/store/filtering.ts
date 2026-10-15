@@ -45,7 +45,13 @@ const REGIONAL_FORMES: Record<string, string> = {
   Hisui: "hisui",
   Paldea: "paldea",
 };
-const HISUI_ORIGIN_FORMES = ["dialgaorigin", "palkiaorigin"];
+// Other formes introduced in a later region than their species
+const FORME_REGIONS: Record<string, string> = {
+  dialgaorigin: "Hisui",
+  palkiaorigin: "Hisui",
+  basculinwhitestriped: "Hisui",
+  ursalunabloodmoon: "Paldea",
+};
 
 // The generation a species or forme first appeared in, following Showdown's dex-species.ts
 export function introducedIn({
@@ -236,13 +242,15 @@ export function filterPokemon({
       const num = pokemonProperties.num;
       const isInNumberRange =
         num !== undefined && num >= range[0] && num <= range[1];
+      const formeRegion = FORME_REGIONS[pokemon];
 
       // E.g. Alola includes vulpixalola, and Kanto excludes it
       if (
-        (regionalForme && pokemon.includes(regionalForme)) ||
-        (region === "Hisui" && HISUI_ORIGIN_FORMES.includes(pokemon)) ||
-        (isInNumberRange &&
-          !otherRegionalFormes.some(forme => pokemon.includes(forme)))
+        formeRegion ?
+          formeRegion === region
+        : (regionalForme && pokemon.includes(regionalForme)) ||
+          (isInNumberRange &&
+            !otherRegionalFormes.some(forme => pokemon.includes(forme)))
       ) {
         filteredPokedex[pokemon] = pokemonProperties;
       }

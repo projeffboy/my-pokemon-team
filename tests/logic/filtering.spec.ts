@@ -115,11 +115,30 @@ test("Kanto excludes every later regional forme", () => {
   expect(result).not.toContain("taurospaldeablaze");
 });
 
-test("Hisui includes the origin formes", () => {
-  const result = filterPokemon({ ...all, region: "Hisui" });
-  expect(result).toEqual(
-    expect.arrayContaining(["dialgaorigin", "palkiaorigin"]),
+// Each forme appears only under the region it was introduced in, not its species'
+for (const [forme, region, numberRegion] of [
+  ["dialgaorigin", "Hisui", "Sinnoh"],
+  ["palkiaorigin", "Hisui", "Sinnoh"],
+  ["basculinwhitestriped", "Hisui", "Unova"],
+  ["ursalunabloodmoon", "Paldea", "Hisui"],
+]) {
+  test(`${forme} is listed under ${region}, not ${numberRegion}`, () => {
+    expect(filterPokemon({ ...all, region })).toContain(forme);
+    expect(filterPokemon({ ...all, region: numberRegion })).not.toContain(
+      forme,
+    );
+  });
+}
+
+test("species with a forme from a later region stay in their own region", () => {
+  expect(filterPokemon({ ...all, region: "Sinnoh" })).toEqual(
+    expect.arrayContaining(["dialga", "palkia"]),
   );
+  expect(filterPokemon({ ...all, region: "Unova" })).toEqual(
+    expect.arrayContaining(["basculin", "basculinbluestriped"]),
+  );
+  expect(filterPokemon({ ...all, region: "Hisui" })).toContain("ursaluna");
+  expect(filterPokemon({ ...all, region: "Paldea" })).not.toContain("ursaluna");
 });
 
 test("singles formats include lower tiers in tier order", () => {
