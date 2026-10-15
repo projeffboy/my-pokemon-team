@@ -233,6 +233,8 @@ export class Store {
   // Adds the draft to the saved teams, in place of the starting team it replaces
   private saveDraft() {
     if (!this.draftTeam) return;
+    // Another tab may have filled the starting team since this tab last read
+    if (this.draftReplaces) this.readOtherTabs();
     const index = this.teams.findIndex(
       ({ id, team }) => id === this.draftReplaces && isTeamEmpty(team),
     );

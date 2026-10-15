@@ -246,6 +246,12 @@ function firstVisit(languages?: readonly string[]) {
     reload: () => new Store(storage, languages),
     writes: () => writes,
     savedState: () => JSON.parse(state ?? "null") as StoredState | null,
+    // Another tab saves without this tab having read it yet
+    saveFromOtherTab(edit: (state: StoredState) => void) {
+      const theirs = JSON.parse(state ?? "null") as StoredState;
+      edit(theirs);
+      state = JSON.stringify(theirs);
+    },
   };
 }
 
@@ -306,4 +312,21 @@ test("a first visit names its team in the browser's language without saving", as
   store.team[0]!.name = "bombirdier";
   await settle();
   expect(savedState()?.teams.map(({ name }) => name)).toEqual(["Équipe 1"]);
+});
+
+test("a first visit's link keeps a starting team that another tab has filled", async () => {
+  const { store, savedState, saveFromOtherTab } = firstVisit();
+  await store.translationReady;
+  store.nameView = "grid";
+  await settle();
+  saveFromOtherTab(theirs => {
+    theirs.teams[0]!.team[0]!.name = "orthworm";
+  });
+  store.openTeamFromLink(createTeam({ name: "glimmet" }));
+  store.team[0]!.move1 = "powergem";
+  await settle();
+  expect(savedState()?.teams.map(({ team }) => team[0]!.name)).toEqual([
+    "orthworm",
+    "glimmet",
+  ]);
 });
