@@ -222,6 +222,8 @@ test.describe("Slot tools - Integration Tests", () => {
       exact: true,
     });
     await expect(move).toBeVisible();
+    // The slot tabs drag at this width, so the grip shouldn't look draggable
+    await expect(move).not.toHaveCSS("cursor", "grab");
     expect((await move.boundingBox())?.x).toBeGreaterThanOrEqual(0);
     await move.focus();
     await move.press("Enter");
