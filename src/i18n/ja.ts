@@ -715,6 +715,7 @@ const ja: Messages = {
     typeColours: "タイプの色",
     typeColoursFor: "チーム分析で使っている各タイプの色",
     stunfiskFor: "良いコミュニティです",
+    serebiiFor: "LEGENDS Z-Aでポケモンに持たせられる道具",
   },
   privacy: {
     playwire:
