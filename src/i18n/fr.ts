@@ -115,15 +115,18 @@ const fr: Messages = {
     delete: "Supprimer",
     importTeam: "Importer une équipe",
     share: "Partager",
-    teamEmpty: "L'équipe Pokémon est vide",
+    teamEmpty: "L'équipe est vide. Ajoutez un Pokémon pour la partager.",
     linkCopied: "Lien de l'équipe Pokémon copié",
-    linkNotCopied: "Impossible de copier le lien.",
+    linkNotCopied:
+      "Impossible de copier le lien. Copiez-le depuis la barre d'adresse pendant que l'équipe est ouverte.",
     linkGenerationUnsupported: (profile: string) =>
       `La génération ou le jeu de ce lien n'est pas pris en charge, il a donc été ouvert en ${profile}.`,
-    nothingToCopy: "Équipe vide, rien à copier.",
+    nothingToCopy: "L'équipe est vide. Ajoutez un Pokémon pour la copier.",
     teamCopied: "Équipe copiée.",
-    teamNotCopied: "Impossible de copier l'équipe.",
-    cannotDuplicateEmptyTeam: "Impossible de dupliquer une équipe vide",
+    teamNotCopied:
+      "Impossible de copier l'équipe. Copiez plutôt son texte depuis Modifier le Pokepaste.",
+    cannotDuplicateEmptyTeam:
+      "L'équipe est vide. Ajoutez un Pokémon pour la dupliquer.",
     teamDuplicated: "Équipe dupliquée",
     teamDeleted: "Équipe supprimée",
     slots: "Emplacements de l'équipe Pokémon",
@@ -224,29 +227,72 @@ const fr: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "Piège d'entrée", short: "Piège" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Piège d'entrée",
+        short: "Piège",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui pose des pièges d'entrée : ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui retire les pièges d'entrée de votre côté : ${moves}.`,
+      },
       recovery: {
         label: "Récupération fiable",
         short: "Récupération",
         shorter: "Soin",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité de soin fiable, comme ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Capacité de statut", short: "Statut" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Capacité de boost", short: "Boost" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui soigne les altérations d'état de votre équipe : ${moves}.`,
+      },
+      status: {
+        label: "Capacité de statut",
+        short: "Statut",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui inflige toujours une altération d'état quand elle touche, comme ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui force l'adversaire à changer : ${moves}.`,
+      },
+      boosting: {
+        label: "Capacité de boost",
+        short: "Boost",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui augmente ses propres statistiques d'au moins deux niveaux au total, comme ${moves}.`,
+      },
       priority: {
         label: "Capacité prioritaire",
         short: "Priorité",
         shorter: "Prio",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité offensive qui passe avant la plupart des autres, quelle que soit la Vitesse, comme ${moves}.`,
       },
       voltTurn: {
         label: "Capacité Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui attaque puis le fait revenir : ${moves}.`,
       },
-      choice: { label: "Objet Choix", short: "Choix" },
+      choice: {
+        label: "Objet Choix",
+        short: "Choix",
+        hint: (items: string) =>
+          `Faites tenir un objet Choix à un Pokémon : ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon} : ${moves}`,
+    together: (move: string, other: string) => `${move} avec ${other}`,
+    unavailable: "Rien dans ce jeu ne remplit ce rôle.",
   },
   matrix: {
     matrix: "Matrice",
@@ -429,7 +475,8 @@ const fr: Messages = {
     randomTeamCreated: "Équipe aléatoire créée",
     exported: "Toutes les équipes exportées",
     copiedAll: "Toutes les équipes copiées",
-    notCopiedAll: "Impossible de copier les équipes.",
+    notCopiedAll:
+      "Impossible de copier les équipes. Téléchargez-les plutôt avec Tout exporter.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -521,6 +568,8 @@ const fr: Messages = {
       `${pokemon} doit tenir ${items.join(" ou ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} a ${move} en double.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} a ${thing}, ce qui est interdit en ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -557,7 +606,30 @@ const fr: Messages = {
     imported: "Équipe importée",
     importedMany: (count: number) => `${count} équipes importées`,
     noChanges: "Aucune modification.",
-    nothingFound: "Aucun Pokémon trouvé dans ce texte.",
+    nothingFound:
+      "Aucun Pokémon trouvé dans ce texte. Écrivez les noms des Pokémon en anglais, comme les écrit Pokemon Showdown, ou collez une équipe exportée depuis Pokemon Showdown.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 problème trouvé" : `${count} problèmes trouvés`}. La mise à jour applique tout de même le texte ainsi :`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Capacité ${slot}`,
+    problemValue: (where: string, value: string) => `${where} : « ${value} »`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Non reconnu.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} ne peut pas apprendre cette capacité dans le jeu sélectionné.`,
+    wrongAbility: (pokemon: string) =>
+      `Ce n'est pas un talent que ${pokemon} peut avoir.`,
+    outOfRange: (min: number, max: number) =>
+      `Ce n'est pas un nombre entier de ${min} à ${max}.`,
+    unsupported: "Le jeu sélectionné n'a pas ce détail.",
+    tooManyPokemon: "Une équipe compte au plus six Pokémon.",
+    tooManyMoves: "Un Pokémon connaît au plus quatre capacités.",
+    noGigantamax: (pokemon: string) => `${pokemon} n'a pas de forme Gigamax.`,
+    unread: "Ce n'est pas un détail que le site lit.",
+    slotLeftEmpty: "L'emplacement de l'équipe reste vide.",
+    moveLeftEmpty: "L'emplacement de la capacité reste vide.",
+    leftOut: "Cet élément est ignoré.",
+    usedInstead: (value: string) => `${value} est utilisé à la place.`,
   },
   deleteDialog: {
     title: (team: string) => `Supprimer ${team} ?`,

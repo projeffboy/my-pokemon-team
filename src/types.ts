@@ -64,6 +64,13 @@ export type Formats = Record<
   { tier?: string; doublesTier?: string; champions?: true }
 >;
 
+// What each Smogon tier bans, by Showdown format ID such as "gen9ou".
+// Abilities are by name, as teams hold them, and items and moves by ID.
+export type FormatBans = Record<
+  string,
+  Partial<Record<"abilities" | "items" | "moves", string[]>>
+>;
+
 type TypeChartStatus =
   | "prankster"
   | "par"
@@ -111,6 +118,8 @@ export interface PastGeneration {
   formats?: Formats;
   baseStats?: Record<string, BaseStats>;
   abilities?: Record<string, string[]>;
+  // Hidden abilities left out of `abilities` because Showdown marks them unreleased
+  unreleasedHidden?: Record<string, string>;
   typechart?: PastTypeChart;
 }
 

@@ -226,3 +226,12 @@ test("Normalize changes Natural Gift to Normal in gen4 but preserves it in gen7"
   for (const generation of [5, 6, 7] as const)
     expect(calculateTypeCoverage(team, generation).Water).toBe(1);
 });
+
+test("Dry Skin's 1.25x Fire damage scores a half step in team defence", () => {
+  const scores = (name: string) =>
+    calculateTypeDefence(createTeam({ name, ability: "Dry Skin" })).Fire;
+  expect(scores("toxicroak")).toBe(-0.5);
+  expect(scores("heliolisk")).toBe(-0.5);
+  expect(scores("jynx")).toBe(-1.5);
+  expect(scores("parasect")).toBe(-1.5);
+});

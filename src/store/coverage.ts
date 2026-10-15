@@ -81,7 +81,15 @@ export function calculateTypeCoverage(
       )
         continue;
 
-      const type = moveType(move, name, ability, generation, item, format);
+      const type = moveType(
+        move,
+        name,
+        ability,
+        generation,
+        item,
+        format,
+        pokemon,
+      );
       // Flying Press is also a Flying move, so it shares its targets with Flying moves
       const groups = new Set([
         type,
