@@ -610,7 +610,7 @@ const zhHant: Messages = {
     importPlaceholder: "在此貼上隊伍",
     editPlaceholder: "你的隊伍是空的",
     label: "Pokemon Showdown 隊伍原始文字",
-    kept: "暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值都會保留。所選遊戲支援時，親密度也會保留。",
+    kept: "所選遊戲有這些項時，暱稱、等級、性別、異色、親密度、太晶屬性、性格、努力值與個體值都會保留。",
     import: "匯入",
     update: "更新",
     imported: "已匯入隊伍",

@@ -638,7 +638,7 @@ const ko: Messages = {
     importPlaceholder: "여기에 팀을 붙여넣으세요",
     editPlaceholder: "팀이 비어 있습니다",
     label: "Pokemon Showdown 팀 원본 텍스트",
-    kept: "닉네임, 레벨, 성별, 색이 다름, 테라스탈 타입, 성격, 노력치, 개체값은 유지됩니다. 선택한 게임에서 지원하는 경우 친밀도도 유지됩니다.",
+    kept: "닉네임, 레벨, 성별, 색이 다름, 친밀도, 테라스탈 타입, 성격, 노력치, 개체값은 선택한 게임에 있는 경우 유지됩니다.",
     import: "가져오기",
     update: "업데이트",
     imported: "팀을 가져왔습니다",

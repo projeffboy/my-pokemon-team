@@ -14,6 +14,7 @@ export default function TeamTextProblems({
   if (!problems.length) return null;
   const { importDialog: text, team, advanced, statNames } = t;
   const fields = {
+    gender: advanced.gender,
     item: team.item,
     ability: team.ability,
     level: advanced.level,

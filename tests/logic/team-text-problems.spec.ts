@@ -306,6 +306,27 @@ test("details a game has no field for are left out as unsupported", () => {
     ["teraType", "unsupported"],
     ["ivs", "unsupported"],
   ]);
+
+  // Gen 1 has no genders, which the first line holds
+  const gen1 = read("Pikachu (F)\nShiny: Yes", 1);
+  expect(gen1.team[0]).not.toHaveProperty("gender");
+  expect(gen1.problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "pikachu",
+      field: "gender",
+      value: "F",
+      reason: "unsupported",
+    },
+    {
+      slot: 1,
+      pokemon: "pikachu",
+      field: "shiny",
+      value: "Yes",
+      reason: "unsupported",
+    },
+  ]);
+  expect(read("Pikachu (F)", 2).problems).toEqual([]);
 });
 
 // A deterministic stand-in for Math.random
