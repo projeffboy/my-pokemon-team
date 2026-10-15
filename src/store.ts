@@ -28,6 +28,7 @@ import {
   generationMoves,
   availableItems,
   availablePokemon,
+  canUseItem,
   getTeamLearnsets,
   isItemAvailable,
   learnsetsReady,
@@ -548,6 +549,15 @@ export class Store {
       : available;
     return allItemIds.filter(
       item => shown.has(item) || required.includes(item),
+    );
+  }
+
+  // Each slot's items. Under the Items filter, only those its pokemon can use, so
+  // Ribombee is not offered Venusaurite.
+  get slotItems() {
+    const items = this.teamItems;
+    return this.team.map(({ name }) =>
+      this.filters.items ? items.filter(item => canUseItem(name, item)) : items,
     );
   }
 

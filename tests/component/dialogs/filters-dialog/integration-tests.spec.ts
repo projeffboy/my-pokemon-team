@@ -415,7 +415,7 @@ test.describe("Filters Integration Tests", () => {
     expect(getTeamTextFromUrl(page)).not.toContain("- Attract");
   });
 
-  test("Items Filter hides useless items and keeps the one selected", async ({
+  test("Items Filter hides useless items and other pokemon's mega stones, and keeps the one selected", async ({
     page,
   }) => {
     await selectPokemon(page, "Ribombee");
@@ -427,7 +427,7 @@ test.describe("Filters Integration Tests", () => {
     expect(getTeamTextFromUrl(page)).toContain("@ Oran Berry");
     for (const [name, isViable] of [
       ["Leftovers", true],
-      ["Venusaurite", true],
+      ["Venusaurite", false],
       ["Poke Ball", false],
       ["Oran Berry", false],
     ] as const) {

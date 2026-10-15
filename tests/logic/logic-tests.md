@@ -3,7 +3,7 @@
 Run `npm run test:logic` to test pure rules, store integration, and parsing directly in Node. This suite uses Playwright's test runner without browser fixtures or a web server, and runs once instead of once per browser profile. It is included in `npm test` and CI.
 
 - `effectiveness.spec.ts` covers type matchups, defensive abilities, and item modifiers.
-- `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, and invalid inputs.
+- `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, invalid inputs, and which pokemon can use a mega stone, Memory, or Drive.
 - `special-moves.spec.ts` covers move type changes, Freeze-Dry, Flying Press, and coverage eligibility.
 - `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, priority moves, pivot moves, and choice items.
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.

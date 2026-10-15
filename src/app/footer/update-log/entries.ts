@@ -12,7 +12,7 @@ const entries: Entry[] = [
     date: "Oct 15, 2026",
     changes: [
       "Sprites now load on networks that block Pokémon Showdown, such as many schools’.",
-      "The new Viable items filter hides items that are rarely useful in battle, e.g. Oran Berry.",
+      "The new Viable items filter hides items that are rarely useful in battle, e.g. Oran Berry, and other Pokémon’s mega stones.",
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
       "Beat Up is now typeless in Gens 2–4, as in those games.",
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",

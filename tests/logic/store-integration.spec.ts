@@ -171,6 +171,32 @@ test("item options recompute after the Items filter, by generation", ({
   }
 });
 
+test("each slot's item options follow its pokemon under the Items filter", ({
+  store,
+}) => {
+  let items = store.slotItems;
+  const dispose = autorun(() => {
+    items = store.slotItems;
+  });
+  try {
+    store.selectPokemon(0, "pyroar");
+    expect(items[0]).toBe(store.teamItems);
+    store.filters.items = "Viable";
+    expect(items[0]).toContain("pyroarite");
+    expect(items[0]).not.toContain("dragalgite");
+    expect(items[0]).toContain("leftovers");
+    // An empty slot has no pokemon to judge by
+    expect(items[1]).toContain("dragalgite");
+    store.selectPokemon(1, "dragalge");
+    expect(items[1]).toContain("dragalgite");
+    expect(items[1]).not.toContain("pyroarite");
+    store.filters.items = "";
+    expect(items[0]).toContain("dragalgite");
+  } finally {
+    dispose();
+  }
+});
+
 test("Pokemon options recompute after each filter and filter replacement", ({
   store,
 }) => {
