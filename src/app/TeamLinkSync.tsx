@@ -98,24 +98,29 @@ const TeamLinkSync = observer(function TeamLinkSync() {
 
       lastSyncedTeamParameter = teamParameter;
       const { settings, unrecognized } = generationSettingsFromUrl();
-      if (teamParameter) importTeamFromUrlParameter(teamParameter);
-      else if (
-        firstNavigation &&
-        store.isTeamEmpty &&
-        store.teams.some(team => team.id === store.currentTeamId)
-      ) {
-        // The URL carries no tier, so the same game keeps the team's
-        const { generation, format } = store.currentTeam;
+      const openWithoutTeam = () => {
         if (
-          generation !== settings.generation ||
-          gameFormat(format) !== settings.format ||
-          store.currentTeam.generationProfile !== settings.generationProfile
-        )
-          Object.assign(store.currentTeam, {
-            ...settings,
-            generationProfile: settings.generationProfile,
-          });
-      } else store.openUnsavedTeam(undefined, settings);
+          firstNavigation &&
+          store.isTeamEmpty &&
+          store.teams.some(team => team.id === store.currentTeamId)
+        ) {
+          // The URL carries no tier, so the same game keeps the team's
+          const { generation, format } = store.currentTeam;
+          if (
+            generation !== settings.generation ||
+            gameFormat(format) !== settings.format ||
+            store.currentTeam.generationProfile !== settings.generationProfile
+          )
+            Object.assign(store.currentTeam, {
+              ...settings,
+              generationProfile: settings.generationProfile,
+            });
+        } else store.openUnsavedTeam(undefined, settings);
+      };
+      // A team the link holds but the site cannot read opens as if the link held none
+      if (teamParameter)
+        importTeamFromUrlParameter(teamParameter, openWithoutTeam);
+      else openWithoutTeam();
       if (unrecognized) {
         // Names the profile the page opened in, even if the link's team was unreadable
         const { t } = store.translation;

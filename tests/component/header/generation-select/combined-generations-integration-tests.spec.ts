@@ -1,7 +1,9 @@
 import { test, expect } from "fixtures";
 import type { Browser, Page, TestInfo } from "@playwright/test";
 import {
+  closeDialog,
   openFilters,
+  selectDialogOption,
   selectPokemon,
   selectAbility,
   selectMove,
@@ -49,6 +51,50 @@ test("a tier filter does not replace the combined generation profile", async ({
     page.getByRole("combobox", { name: "Generation" }),
   ).toContainText(generationLabel);
   await expect(page).toHaveURL(/gen=6-9/);
+});
+
+test("CAP is a Gen 9 format only, since the combined pool lists pokemon from the games", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const generation = page.getByRole("combobox", { name: "Generation" });
+  await expect(generation).toContainText(generationLabel);
+  const format = page
+    .getByRole("dialog", { name: "Filters" })
+    .getByRole("combobox", { name: "Format", exact: true });
+  await openFilters(page);
+  await format.click();
+  await expect(
+    page.getByRole("option", { name: "Little Cup (LC)", exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("option", { name: "CAP", exact: true }),
+  ).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await closeDialog(page);
+
+  await generation.click();
+  await page.locator('[role="option"][data-value="9"]').click();
+  await expect(generation).toContainText(/Scarlet|SV/);
+  await openFilters(page);
+  await selectDialogOption(page, "Format", "CAP");
+  await closeDialog(page);
+  const name = page.getByRole("combobox", { name: "Pokemon 1's name" });
+  await name.fill("Plasmanta");
+  await expect(
+    page.getByRole("listbox").getByText("Plasmanta", { exact: true }),
+  ).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  // Back in the combined pool, the team leaves CAP for every format
+  await generation.click();
+  await page.locator('[role="option"][data-value="6-9"]').click();
+  await expect(generation).toContainText(generationLabel);
+  await openFilters(page);
+  await format.click();
+  await expect(
+    page.getByRole("option", { name: "All", exact: true }),
+  ).toHaveAttribute("aria-selected", "true");
 });
 
 test("switching an imported Gen 8 team to the combined pool preserves Greninja and Pursuit", async ({

@@ -6,7 +6,7 @@ import pokedex from "@/data/pokedex";
 import altSpriteNum from "@/data/altSpriteNum";
 import { spriteUrls } from "@/app/shared/pokemon-sprite/sprite-urls";
 import { filterPokemon } from "@/store/filtering";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CAP_FORMAT, CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LATEST_GENERATION } from "@/shared/generations";
 
 const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
@@ -22,7 +22,7 @@ const localSprites = new Set(
 
 const offered = [
   ...new Set(
-    ["", CHAMPIONS_FORMAT].flatMap(format =>
+    ["", CHAMPIONS_FORMAT, CAP_FORMAT].flatMap(format =>
       filterPokemon({
         generation: LATEST_GENERATION,
         format,
@@ -68,7 +68,7 @@ function frameCount(gif: Buffer) {
   return frames;
 }
 
-test.describe("Gen 9 and Champions sprites", () => {
+test.describe("Gen 9, Champions, and CAP sprites", () => {
   test.slow();
 
   test("every pokemon has an animated or still sprite at both sizes", async ({

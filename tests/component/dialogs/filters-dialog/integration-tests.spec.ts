@@ -5,10 +5,12 @@ import {
   openAdvanced,
   openSort,
   selectDialogOption,
+  selectItem,
   selectMove,
   selectPokemon,
   getTeamTextFromUrl,
   clickMenuItem,
+  findOption,
 } from "helper";
 import type { Page } from "@playwright/test";
 import { toBase64Url } from "@/app/shared/base64url";
@@ -175,6 +177,30 @@ test.describe("Filters Integration Tests", () => {
     for (const name of notSelectablePokemon) {
       await checkPokemonNotSelectable(page, name);
     }
+  });
+
+  test("CAP Format Filter", async ({ page }) => {
+    await checkPokemonNotSelectable(page, "Equilibra");
+    await selectFilterOption(page, "Format", "CAP");
+
+    // Eligible: Equilibra (CAP), Okidogi (UUBL). Not eligible: Iron Bundle (Uber)
+    await checkPokemonSelectable(page, "Equilibra");
+    await checkPokemonSelectable(page, "Okidogi");
+    await checkPokemonNotSelectable(page, "Iron Bundle");
+
+    // Scraptor has no icon of its own, so it shows the sheet's placeholder
+    const scraptor = await findOption(page, "Pokemon 1's name", "Scraptor");
+    await expect(scraptor.locator("span[style]").first()).toHaveCSS(
+      "background-image",
+      /pokemonicons-sheet/,
+    );
+
+    // Equilibra learns the moves that Showdown gives a Gen 9 source, so not
+    // Return, which Gen 9 lacks, or Rock Polish, which it learned only before
+    await selectPokemon(page, "Equilibra");
+    await checkMoveSelectable(page, "Earth Power");
+    await checkMoveNotSelectable(page, "Return");
+    await checkMoveNotSelectable(page, "Rock Polish");
   });
 
   test("sorts the selected Pokemon even when filters exclude it", async ({
@@ -412,6 +438,41 @@ test.describe("Filters Integration Tests", () => {
       .click();
     await expect(selected).toHaveValue("");
     expect(getTeamTextFromUrl(page)).not.toContain("- Attract");
+  });
+
+  test("Items Filter hides useless items and other pokemon's mega stones, and keeps the one selected", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Ribombee");
+    await selectItem(page, "Oran Berry");
+    await selectFilterOption(page, "Items", "Viable");
+
+    const item = page.getByLabel("Pokemon 1's item");
+    await expect(item).toHaveValue("Oran Berry");
+    expect(getTeamTextFromUrl(page)).toContain("@ Oran Berry");
+    for (const [name, isViable] of [
+      ["Leftovers", true],
+      ["Venusaurite", false],
+      ["Poke Ball", false],
+      ["Oran Berry", false],
+    ] as const) {
+      await item.fill(name);
+      await expect(page.getByRole("option", { name, exact: true })).toHaveCount(
+        isViable ? 1 : 0,
+      );
+    }
+    await item.press("Escape");
+    await expect(item).toHaveValue("Oran Berry");
+  });
+
+  test("Items Filter is left out of games without held items", async ({
+    page,
+  }) => {
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page.locator('[role="option"][data-value="1"]').click();
+    await openFilters(page);
+    await expect(page.getByRole("combobox", { name: "Moves" })).toBeVisible();
+    await expect(page.getByRole("combobox", { name: "Items" })).toHaveCount(0);
   });
 
   test("Ability Filter", async ({ page }) => {

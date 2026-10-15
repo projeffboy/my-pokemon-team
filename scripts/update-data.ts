@@ -27,6 +27,7 @@ import {
   type MoveSearch,
   type ShowdownTable,
   changeNotice,
+  collectViableItems,
   collectViableMoves,
   historicalViableInputs,
   flattenLearnsets,
@@ -38,6 +39,7 @@ import {
   projectTypeChart,
   projectHiddenPowerSpreads,
   projectHistoricalMoves,
+  renderGenerationSets,
   renderTypedData,
   resolveMod,
   toId,
@@ -234,42 +236,54 @@ async function updateViableMoves(learnsets: Learnsets) {
     );
   }
 
-  const latest = generations[9] ?? [];
-  const changes = Object.fromEntries(
-    Object.entries(generations)
-      .filter(([gen]) => gen !== "9")
-      .map(([gen, viable]) => [
-        gen,
-        {
-          add: viable.filter(move => !latest.includes(move)),
-          remove: latest.filter(move => !viable.includes(move)),
-        },
-      ]),
-  );
   await fs.writeFile(
     path.join(dataRoot, "viable-moves.ts"),
+    renderGenerationSets(
+      "Moves that Pokemon Showdown's teambuilder lists as usually useful for at least one pokemon",
+      "viableMovesIn",
+      generations,
+    ),
+  );
+}
+
+// Showdown's teambuilder groups each generation's items, from popular to useless, in its
+// build-tools/build-indexes. Run that grouping itself, so its rules stay Showdown's:
+// an item is viable unless it is usually useless, useless, or unreleased.
+async function updateViableItems() {
+  const [items, source, ids] = await Promise.all([
+    loadShowdownTable("data/items.ts", "Items"),
+    read(path.join(clientRoot, "build-tools/build-indexes")),
+    loadAppData<Items>("items").then(Object.keys),
+  ]);
+  const match = source.match(
+    /(const greatItems = [\s\S]*?items\.push\(\.\.\.unreleasedItems\);)\n/,
+  );
+  if (!match) throw new Error("Could not find the teambuilder's item groups");
+  // As for a singles format that is not National Dex or Metronome
+  const { group } = await importTypeScript(
     [
-      "// Moves that Pokemon Showdown's teambuilder lists as usually useful for at least one pokemon",
-      `import type { Generation } from "../types";`,
-      `import { LATEST_GENERATION } from "../shared/generations";`,
-      "",
-      `const data: ReadonlySet<string> = new Set(${JSON.stringify(latest, null, 2)});`,
-      `const changes: Partial<Record<Generation, { add: string[]; remove: string[] }>> = ${JSON.stringify(changes, null, 2)};`,
-      "const cache = new Map<Generation, ReadonlySet<string>>();",
-      "export function viableMovesIn(generation: Generation = LATEST_GENERATION): ReadonlySet<string> {",
-      "  const change = changes[generation];",
-      "  if (!change) return data;",
-      "  let viable = cache.get(generation);",
-      "  if (!viable) {",
-      "    viable = new Set([...data].filter(move => !change.remove.includes(move)).concat(change.add));",
-      "    cache.set(generation, viable);",
-      "  }",
-      "  return viable;",
+      "export function group(Dex, gen, genNum, itemList) {",
+      "const isMetBattle = false, isNatDex = false, isNDChampions = false, isDoubles = false;",
+      "const items = [];",
+      match[1],
+      `return items.slice(0, items.indexOf(poorItems[0])).filter(row => typeof row === "string");`,
       "}",
-      "",
-      "export default data;",
-      "",
     ].join("\n"),
+  );
+  const tables: Partial<Record<Generation, ShowdownTable>> = { 9: items };
+  // Gen 1 has no held items
+  for (let generation = 8; generation >= 2; generation--)
+    tables[generation as Generation] = resolveMod(
+      tables[(generation + 1) as Generation] ?? {},
+      await loadModTable(`gen${generation}`, "items", "Items"),
+    );
+  await fs.writeFile(
+    path.join(dataRoot, "viable-items.ts"),
+    renderGenerationSets(
+      "Items that Pokemon Showdown's teambuilder lists above its usually useless ones",
+      "viableItemsIn",
+      collectViableItems(group, tables, ids),
+    ),
   );
 }
 
@@ -516,6 +530,7 @@ async function loadSnapshot(): Promise<DataSnapshot> {
     "generation-transfer.json (pokemon)": transfer.pokemon,
     "generation-transfer.json (items)": transfer.items,
     "viable-moves.ts": await readData("viable-moves.ts"),
+    "viable-items.ts": await readData("viable-items.ts"),
   };
 }
 
@@ -592,6 +607,10 @@ async function updateData() {
       await read(path.join(dataRoot, "learnsets.json")),
     ) as Learnsets;
     await updateViableMoves(learnsets);
+    return;
+  }
+  if (process.argv.includes("--viable-items-only")) {
+    await updateViableItems();
     return;
   }
   if (process.argv.includes("--learnsets-only")) {
@@ -695,6 +714,7 @@ async function updateData() {
   await updateViableMoves(
     JSON.parse(await read(path.join(dataRoot, "learnsets.json"))) as Learnsets,
   );
+  await updateViableItems();
 
   const after = await loadReportedData();
   await reportChanges(snapshot, await loadSnapshot());

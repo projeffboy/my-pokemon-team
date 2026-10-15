@@ -3,7 +3,7 @@
 Run `npm run test:logic` to test pure rules, store integration, and parsing directly in Node. This suite uses Playwright's test runner without browser fixtures or a web server, and runs once instead of once per browser profile. It is included in `npm test` and CI.
 
 - `effectiveness.spec.ts` covers type matchups, defensive abilities, and item modifiers.
-- `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, and invalid inputs.
+- `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, invalid inputs, and which pokemon can use a mega stone, Memory, or Drive.
 - `special-moves.spec.ts` covers move type changes, Freeze-Dry, Flying Press, and coverage eligibility.
 - `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, priority moves, pivot moves, and choice items. It also covers the tooltips: the pokemon that fill a role, and what in the game would fill an unfilled one.
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.
@@ -30,7 +30,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `team-sync.spec.ts` covers concurrent tab edits, selected-team identity, failed saves and recovery, and keeping unsaved work available for backups.
 - `team-backup.spec.ts` covers complete JSON backups, strict atomic validation, drafts, unavailable values, additive restore, and duplicate handling.
 - `game-variant-data.spec.ts` covers game-specific moves and stats, historical move rules, and their use in existing coverage and sorting.
-- `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, format bans, learnset merging, viable moves, the type chart, rename reports, the notice of what changed and whether it looks major, and the rendered file format.
+- `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, format bans, learnset merging, viable moves and items, the type chart, rename reports, the notice of what changed and whether it looks major, and the rendered file format.
 - `update-translations.spec.ts` covers the translation update's pure transforms in `scripts/update-translations/transforms.ts`: CSV parsing, species and forme names, the mega and regional templates, Hidden Power, Z-Move and Z-Crystal suffixes, abilities with a detail, duplicate names and the fallback languages that tell them apart, the report, and the rendered file format.
 - `translations.spec.ts` covers the language detection, the English fallback of translated names, name sorting by species in another language, translated matrix reasons and team problems, every language having English's message keys, no two ability, move, or item options sharing a name in any language, every language naming a slot's inputs, every language's failed copies naming the button that does the job instead, Portuguese keeping the English names, and the store loading a language and saving the choice.
 

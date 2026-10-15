@@ -1,5 +1,6 @@
 import { test, expect } from "fixtures";
 import { expectToOpenInNewTab, selectPokemon } from "helper";
+import { toBase64Url } from "@/app/shared/base64url";
 
 test.describe("Pokemon Info Dialog - Unit Tests", () => {
   test("shows the species' types, abilities, base stats, and weaknesses", async ({
@@ -66,5 +67,19 @@ test.describe("Pokemon Info Dialog - Unit Tests", () => {
     await page.getByRole("button", { name: "About Bronzong" }).click();
     await expect(weakTo).toContainText("Fire");
     await expect(weakTo).not.toContainText("Ground");
+  });
+
+  test("a CAP pokemon has no number and links only to the Smogon and Showdown dexes", async ({
+    page,
+  }) => {
+    await page.goto(`/?gen=9&team=${toBase64Url("Malaconda")}`);
+    await page.getByRole("button", { name: "About Malaconda" }).click();
+    const dialog = page.getByRole("dialog", { name: "Malaconda" });
+    await expect(dialog.getByText("Gen 5", { exact: true })).toBeVisible();
+    await expect(dialog).not.toContainText("#");
+    await expect(dialog.getByRole("link")).toHaveText([
+      "Smogon dex",
+      "Showdown dex",
+    ]);
   });
 });

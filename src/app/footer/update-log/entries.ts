@@ -12,6 +12,11 @@ const entries: Entry[] = [
     date: "Oct 15, 2026",
     changes: [
       "Links and saved teams now name the Pokémon, moves, items and abilities a data update removed from them.",
+      "The Manage button is now More, whose Accessibility section can stop sprites from animating.",
+      "Sprites now load on networks that block Pokémon Showdown, such as many schools’.",
+      "The new Viable items filter hides items that are rarely useful in battle, e.g. Oran Berry, and other Pokémon’s mega stones.",
+      "Gen 9 · Scarlet Violet has a new CAP format, which lists Create-A-Pokémon creations such as Syclant alongside OU’s Pokémon.",
+      "Added Legends: Z-A to the generation menu, with its own Pokémon and moves, e.g. Mega Dragonite.",
       "Reloading on an empty saved team now keeps that team, with its format and filters, instead of starting a new one.",
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
       "Beat Up is now typeless in Gens 2–4, as in those games.",

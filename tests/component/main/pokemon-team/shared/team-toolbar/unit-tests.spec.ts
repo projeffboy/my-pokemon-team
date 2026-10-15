@@ -7,7 +7,7 @@ const ACTIONS = [
   "Share pokemon team link",
   "Undo",
   "Redo",
-  "Manage team",
+  "More",
 ];
 
 // Each button's box and the box of its label, which must be shown in full below its icon
@@ -66,7 +66,7 @@ test("every team action keeps its label, on two rows where one cannot hold them"
       )
       .toBe(rows);
 
-    // The Random and Manage labels shorten a moment after the toolbar resizes,
+    // The Random label shortens a moment after the toolbar resizes,
     // and crossing a breakpoint swaps in another toolbar, so measure until settled
     await expect
       .poll(async () =>

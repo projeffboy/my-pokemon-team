@@ -32,6 +32,7 @@ import {
   generationMoves,
   availableItems,
   availablePokemon,
+  canUseItem,
   getTeamLearnsets,
   isItemAvailable,
   learnsetsReady,
@@ -114,6 +115,10 @@ const browserStorage = getBrowserStorage();
 expireSettings(browserStorage, Date.now());
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
+const reducedMotionQuery =
+  typeof matchMedia === "undefined" ? undefined : (
+    matchMedia("(prefers-reduced-motion: reduce)")
+  );
 
 const teamKey = (team: Team) => stableJson(toJS(team));
 
@@ -132,6 +137,7 @@ export class Store {
     this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
     this.chosenLocale = stored.locale;
+    this.chosenAnimateSprites = stored.animateSprites;
     this.knowsSlotDrag = stored.knowsSlotDrag ?? false;
     this.lastRead = structuredClone(stored);
     if (loaded) this.openUnsavedTeam();
@@ -172,6 +178,9 @@ export class Store {
     this.translationReady = this.loadLocale(this.locale).then(() =>
       this.nameStartingTeam(),
     );
+    reducedMotionQuery?.addEventListener("change", ({ matches }) => {
+      this.reducedMotion = matches;
+    });
     reaction(
       () => this.locale,
       locale => this.loadLocale(locale),
@@ -316,7 +325,13 @@ export class Store {
         replaced ? this.translation.t.team.teamNumber(1) : this.nextTeamName(),
       generation,
       format:
-        settings ? formatForGeneration(format, settings.generation) : format,
+        settings ?
+          formatForGeneration(
+            format,
+            settings.generation,
+            settings.generationProfile,
+          )
+        : format,
       ...settings,
       generationProfile:
         settings ?
@@ -473,7 +488,7 @@ export class Store {
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
   // A link carries a game but no tier, so a saved team's tier does not count.
-  // Returns the saved team it opens, if any.
+  // Returns the saved team it opens, if any; an empty team opens nothing.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
@@ -591,12 +606,14 @@ export class Store {
     return generationRules(this.currentTeam.generation, this.dataFormat);
   }
 
-  // Plus the required items the game lacks but auto-selects for a pokemon it lists,
-  // e.g. Bug Memory for Silvally-Bug in Gen 9
+  // The game's items (only the viable ones under the Items filter), plus the required items
+  // the game lacks but auto-selects for a pokemon it lists, e.g. Bug Memory for Silvally-Bug
+  // in Gen 9
   get teamItems() {
     if (!this.learnsetsLoaded) return [];
+    const { generation } = this.currentTeam;
     const available = new Set(
-      availableItems(allItemIds, this.currentTeam.generation, this.dataFormat),
+      availableItems(allItemIds, generation, this.dataFormat),
     );
     if (!available.size) return [];
     const listed = new Set(this.gamePokemon);
@@ -604,8 +621,21 @@ export class Store {
       .filter(name => listed.has(name))
       .map(name => getAutoSelectedItem(name, "", item => available.has(item)))
       .filter(item => item && !available.has(item));
+    const shown =
+      this.filters.items ?
+        new Set(availableItems(allItemIds, generation, this.dataFormat, true))
+      : available;
     return allItemIds.filter(
-      item => available.has(item) || required.includes(item),
+      item => shown.has(item) || required.includes(item),
+    );
+  }
+
+  // Each slot's items. Under the Items filter, only those its pokemon can use, so
+  // Ribombee is not offered Venusaurite.
+  get slotItems() {
+    const items = this.teamItems;
+    return this.team.map(({ name }) =>
+      this.filters.items ? items.filter(item => canUseItem(name, item)) : items,
     );
   }
 
@@ -920,7 +950,8 @@ export class Store {
       );
   }
 
-  // Every pokemon, move, and ability the current game's dropdowns can list, whatever the filters
+  // Every pokemon, move, ability, and item the current game's dropdowns can list, whatever
+  // the filters
   get gamePokemon() {
     const { generation, format } = this.currentTeam;
     return this.inGame(
@@ -950,6 +981,15 @@ export class Store {
         ),
       ),
     ];
+  }
+
+  get gameItems() {
+    if (!this.learnsetsLoaded) return [];
+    return availableItems(
+      allItemIds,
+      this.currentTeam.generation,
+      this.dataFormat,
+    );
   }
 
   get filteredPokemon() {
@@ -1095,6 +1135,19 @@ export class Store {
   // item's icon leading to match, until the Player hides them
   showTypes: boolean;
 
+  // Whether sprites move. Until the player chooses, a device set to reduce
+  // motion gets still ones, and a change to that setting is followed.
+  chosenAnimateSprites: boolean | undefined;
+  reducedMotion = reducedMotionQuery?.matches ?? false;
+
+  get animateSprites() {
+    return this.chosenAnimateSprites ?? !this.reducedMotion;
+  }
+
+  set animateSprites(animate: boolean) {
+    this.chosenAnimateSprites = animate;
+  }
+
   // How the Name dropdown lists its options
   nameView: NameView;
 
@@ -1187,6 +1240,7 @@ export class Store {
     this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
     this.chosenLocale = merged.locale;
+    this.chosenAnimateSprites = merged.animateSprites;
     this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
     this.lastRead = {
       ...theirs,
@@ -1231,6 +1285,9 @@ export class Store {
       moveSort: this.moveSort,
       nameView: this.nameView,
       ...(this.chosenLocale && { locale: this.chosenLocale }),
+      ...(this.chosenAnimateSprites !== undefined && {
+        animateSprites: this.chosenAnimateSprites,
+      }),
       ...(this.knowsSlotDrag && { knowsSlotDrag: true }),
     };
   }
