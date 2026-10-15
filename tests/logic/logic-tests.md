@@ -14,6 +14,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `matrix.spec.ts` covers the Matrix Analysis cells and their reasons.
 - `validation.spec.ts` covers the team validation rules: legality, abilities, required items, repeated moves, EVs, levels, tera types, and clauses.
 - `pokedex.spec.ts` checks inherited cosmetic-form data and distinct battle formes.
+- `sprite-animations.spec.ts` checks that no bundled animation is a copy of another pokemon's in the same folder.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.
 - `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, and leaves the other slots alone.
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
