@@ -3,7 +3,7 @@ import { GENERATION_GAMES, GENERATIONS } from "@/shared/generations";
 import en from "@/i18n/en";
 import type { Locator } from "@playwright/test";
 
-test("Let’s Go and Legends options are disabled with Coming soon beside their logos", async ({
+test("Let’s Go and Legends: Arceus are disabled with Coming soon beside their logos, and Legends: Z-A is not", async ({
   page,
 }) => {
   const generation = page.getByRole("combobox", { name: "Generation" });
@@ -12,7 +12,10 @@ test("Let’s Go and Legends options are disabled with Coming soon beside their 
     await page.setViewportSize({ width, height: 1000 });
     const before = await generationInput.inputValue();
     await generation.click();
-    for (const value of ["Let’s Go", "Legends: Arceus", "Legends: Z-A"]) {
+    const za = page.locator('[role="option"][data-value="Legends: Z-A"]');
+    await expect(za).not.toHaveAttribute("aria-disabled");
+    await expect(za.getByText("Coming soon", { exact: true })).toHaveCount(0);
+    for (const value of ["Let’s Go", "Legends: Arceus"]) {
       const option = page.locator(`[role="option"][data-value="${value}"]`);
       await expect(option).toHaveAttribute("aria-disabled", "true");
       await option.scrollIntoViewIfNeeded();
@@ -38,6 +41,11 @@ test("Let’s Go and Legends options are disabled with Coming soon beside their 
     await page.keyboard.press("Home");
     await page.keyboard.press("ArrowDown");
     await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowDown");
+    await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
+      "data-value",
+      "Legends: Z-A",
+    );
     await page.keyboard.press("ArrowDown");
     await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
       "data-value",

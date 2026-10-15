@@ -28,7 +28,11 @@ import { useTranslation } from "@/app/shared/TranslationContext";
 import type { GameLogo } from "@/images/game-logos";
 import { gameLogosFor } from "@/app/shared/game-logos";
 
-import { GAME_VARIANTS, variantGeneration } from "@/shared/game-variants";
+import {
+  COMING_SOON,
+  GAME_VARIANTS,
+  variantGeneration,
+} from "@/shared/game-variants";
 
 const CHAMPIONS = "champions";
 
@@ -91,7 +95,7 @@ const GenerationSelect = observer(function GenerationSelect() {
         variant => variantGeneration(variant) === generation,
       ).map(variant => ({
         value: variant,
-        disabled: true,
+        disabled: COMING_SOON.includes(variant),
         compact:
           variant === "Let’s Go" ? undefined : (
             `${t.generation(generation)} · ${t.gameVariantsCompact[variant]}`

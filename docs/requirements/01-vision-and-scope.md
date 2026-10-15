@@ -68,7 +68,7 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
   - F1.3 Randomize [Ash]: a random team, pokemon, or set details.
   - F1.4 Undo and Redo [Ash]
 - **F2 Game Data**: the pokemon, moves, items, abilities, and rules of the chosen generation or game.
-  - F2.1 Generation Profile, one of: Generations 6-9 combined, a single generation [Ash], or Pokemon Champions [Ash]. Let's Go, Legends: Arceus, and Legends: Z-A come with PF3.
+  - F2.1 Generation Profile, one of: Generations 6-9 combined, a single generation [Ash], Pokemon Champions [Ash], or Legends: Z-A [Ash]. Let's Go and Legends: Arceus come with PF3.
   - F2.2 Generation Transfer [Ash]: previews and applies the changes a team needs when its generation or game changes.
   - F2.3 Data Update Tooling
     - F2.3.1 Game Data Update, from Pokemon Showdown
@@ -119,7 +119,7 @@ Each has a GitHub issue that names its ID. The issue holds the work, and its mil
 | --- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5 | Planned                                                                                              |
 | PF2 | F10.2 Team transfer to the old website, as a share link                                                        | Planned                                                                                              |
-| PF3 | Let's Go and the Legends games, with their training values. The generation menu lists them as "Coming soon".   | Planned                                                                                              |
+| PF3 | Let's Go and Legends: Arceus, with their training values. The generation menu lists them as "Coming soon".     | Planned                                                                                              |
 | PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                         | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
 | PF5 | Verified sender domain for feedback                                                                            | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
 | PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, which no part of the page shows today     | Planned                                                                                              |

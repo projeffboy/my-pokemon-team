@@ -166,7 +166,7 @@ test.describe("Share Link - Integration Tests", () => {
       page,
     }) => {
       const team = toBase64Url("Pikachu\n- Thunderbolt");
-      for (const game of ["lets-go", "legends-arceus", "legends-za"]) {
+      for (const game of ["lets-go", "legends-arceus"]) {
         await page.goto(`/?game=${game}&team=${team}`, {
           waitUntil: "domcontentloaded",
         });
@@ -182,6 +182,26 @@ test.describe("Share Link - Integration Tests", () => {
         await expect(page).toHaveURL(/gen=6-9/);
         await expect(page).not.toHaveURL(/game=/);
       }
+    });
+
+    test("Legends: Z-A links open their team in Legends: Z-A through reload", async ({
+      page,
+    }) => {
+      const team = toBase64Url("Inkay\n- Psycho Cut");
+      await page.goto(`/?game=legends-za&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Inkay");
+      await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
+        "Psycho Cut",
+      );
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText(/Legends: Z-A|Legends Z-A|Z-A/);
+      await expect(page).toHaveURL(/game=legends-za/);
+      expect(new URL(page.url()).searchParams.has("gen")).toBe(false);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText(/Legends: Z-A|Legends Z-A|Z-A/);
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Inkay");
     });
 
     test("an empty game-specific link preserves its profile through reload", async ({

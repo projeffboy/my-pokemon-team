@@ -1,7 +1,8 @@
 // Shared store <-> URL team parameter conversion
 import store from "@/store";
 import { isGeneration } from "@/shared/generations";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, formatGeneration } from "@/shared/formats";
+import { LEGENDS_ZA } from "@/shared/game-variants";
 import {
   COMBINED_GENERATIONS_PROFILE,
   teamDataFormat,
@@ -30,13 +31,20 @@ export function encodeTeamForUrl(): string {
   );
 }
 
+// The `game` parameter of each game, which a link carries in place of `gen`
+const GAME_PARAMETERS = new Map([
+  [CHAMPIONS_FORMAT, "champions"],
+  [LEGENDS_ZA, "legends-za"],
+]);
+
 // The share link of any team, as the address bar shows the current one
 export function syncGenerationToUrl(
   url: URL,
   settings: Pick<SavedTeam, "generation" | "format" | "generationProfile">,
 ) {
-  if (settings.format === CHAMPIONS_FORMAT) {
-    url.searchParams.set("game", "champions");
+  const game = GAME_PARAMETERS.get(settings.format);
+  if (game) {
+    url.searchParams.set("game", game);
     url.searchParams.delete("gen");
   } else {
     url.searchParams.set(
@@ -73,9 +81,10 @@ export function generationSettingsFromUrl():
   )
     return { ...DEFAULT_TEAM_SETTINGS };
   const game = params.get("game");
-  const format = game === "champions" ? CHAMPIONS_FORMAT : "";
+  const format =
+    [...GAME_PARAMETERS].find(([, value]) => value === game)?.[0] ?? "";
   const generation =
-    format === CHAMPIONS_FORMAT ? 9 : Number(params.get("gen"));
+    format ? formatGeneration(format, 9) : Number(params.get("gen"));
   return isGeneration(generation) ? { generation, format } : undefined;
 }
 

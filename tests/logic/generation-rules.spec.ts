@@ -245,6 +245,48 @@ test("variants use native species and transfer removes unsupported fields with e
   expect(isSetComplete(ditto, 1)).toBe(true);
 });
 
+test("Legends: Z-A offers its own pokemon, moves and Mega Stones, and no abilities", ({
+  store,
+}) => {
+  store.currentTeam.format = LEGENDS_ZA;
+  expect(store.gamePokemon).toContain("mawilemega");
+  expect(store.gamePokemon).not.toContain("sprigatito");
+  store.selectPokemon(0, "inkay");
+  expect(store.team[0]?.ability).toBe("");
+  expect(store.teamAbilities[0]).toEqual([]);
+  expect(store.teamLearnsets.values[0]).toContain("psychocut");
+  expect(store.teamLearnsets.values[0]).not.toContain("foulplay");
+  expect(store.teamItems).toContain("dragoninite");
+});
+
+test("Legends: Z-A teams round-trip in Showdown text and storage", () => {
+  const saved = createSavedTeam({
+    generation: 9,
+    format: LEGENDS_ZA,
+    team: createTeam({
+      name: "dragonitemega",
+      item: "dragoninite",
+      move1: "extremespeed",
+      evs: { atk: 252, spe: 252 },
+    }),
+  });
+  const text = serializeTeams([saved]);
+  expect(text).toContain("[gen9legendsza]");
+  const [parsed] = parseTeamsText(text);
+  expect(parsed).toMatchObject({ generation: 9, format: LEGENDS_ZA });
+  expect(parsed?.team[0]).toMatchObject({
+    name: "dragonitemega",
+    item: "dragoninite",
+    ability: "",
+    move1: "extremespeed",
+    evs: { atk: 252, spe: 252 },
+  });
+  expect(sanitizeSavedTeam(saved)).toMatchObject({
+    generation: 9,
+    format: LEGENDS_ZA,
+  });
+});
+
 test("historical stats sort correctly and unsupported abilities cannot change early-gen coverage", () => {
   expect(
     sortPokemon(

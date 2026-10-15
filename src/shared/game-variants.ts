@@ -3,6 +3,8 @@ export const LETS_GO = "Let’s Go";
 export const LEGENDS_ARCEUS = "Legends: Arceus";
 export const LEGENDS_ZA = "Legends: Z-A";
 export const GAME_VARIANTS = [LETS_GO, LEGENDS_ARCEUS, LEGENDS_ZA] as const;
+// Listed in the generation menu as Coming soon, but not selectable yet
+export const COMING_SOON: readonly string[] = [LETS_GO, LEGENDS_ARCEUS];
 export const variantGeneration = (format: string): Generation | undefined =>
   format === LETS_GO ? 7
   : format === LEGENDS_ARCEUS ? 8

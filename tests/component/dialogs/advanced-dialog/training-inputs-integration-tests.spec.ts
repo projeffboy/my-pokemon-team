@@ -51,6 +51,12 @@ for (const variant of [
     amount: 17,
   },
   {
+    query: "game=legends-za",
+    pokemon: "Heliolisk",
+    training: "EVs",
+    amount: 196,
+  },
+  {
     query: "game=legends-arceus",
     pokemon: "Shinx",
     training: "Effort Levels",

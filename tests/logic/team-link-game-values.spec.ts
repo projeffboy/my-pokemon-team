@@ -27,20 +27,24 @@ function withUrl(url: URL, run: () => void) {
   }
 }
 
-test("Champions links select Gen 9 and serialize without gen", () => {
-  const url = new URL("https://mypokemonteam.com/?game=champions&gen=1");
-  const settings = { generation: 9, format: CHAMPIONS_FORMAT } as const;
-  withUrl(url, () => {
-    expect(generationSettingsFromUrl()).toEqual(settings);
-    syncGenerationToUrl(url, settings);
-    expect(url.search).toBe("?game=champions");
-    expect(generationSettingsFromUrl()).toEqual(settings);
-  });
-});
+const games = profiles.filter(({ slug }) =>
+  ["champions", "legends-za"].includes(slug),
+);
 
-for (const profile of profiles.filter(
-  profile => profile.slug !== "champions",
-)) {
+for (const { slug, format, generation } of games) {
+  test(`${slug} links select their game and serialize without gen`, () => {
+    const url = new URL(`https://mypokemonteam.com/?game=${slug}&gen=1`);
+    const settings = { generation, format };
+    withUrl(url, () => {
+      expect(generationSettingsFromUrl()).toEqual(settings);
+      syncGenerationToUrl(url, settings);
+      expect(url.search).toBe(`?game=${slug}`);
+      expect(generationSettingsFromUrl()).toEqual(settings);
+    });
+  });
+}
+
+for (const profile of profiles.filter(profile => !games.includes(profile))) {
   test(`${profile.slug} is coming soon and cannot select a game through the URL`, () => {
     const url = new URL(`https://mypokemonteam.com/?game=${profile.slug}`);
     withUrl(url, () => {
