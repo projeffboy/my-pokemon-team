@@ -414,6 +414,8 @@ const zhHant: Messages = {
     region: "地區",
     moves: "招式",
     viable: "實用",
+    items: "道具",
+    viableItems: "實用",
     ability: "特性",
   },
   sort: {

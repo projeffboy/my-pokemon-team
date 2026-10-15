@@ -1,5 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { expectImageToBeLoaded, selectAbility, selectPokemon } from "helper";
+import {
+  expectImageToBeLoaded,
+  openAnalysis,
+  selectAbility,
+  selectPokemon,
+} from "helper";
+import en from "@/i18n/en";
 
 test.beforeEach(async ({ page, baseURL }) => {
   const appHost = new URL(baseURL!).host;
@@ -11,7 +17,12 @@ test.beforeEach(async ({ page, baseURL }) => {
       protocol === "https:" ||
       protocol === "ws:" ||
       protocol === "wss:";
-    if (isNetworkProtocol && requestUrl.host !== appHost) {
+    // The preview server forwards /showdown-sprites/ to Showdown
+    if (
+      isNetworkProtocol &&
+      (requestUrl.host !== appHost ||
+        requestUrl.pathname.startsWith("/showdown-sprites/"))
+    ) {
       void route.abort();
       return;
     }
@@ -46,17 +57,40 @@ test("preserves selections after reloading", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
-test("names what the site does in its title and description", async ({
+test("shows a pokemon and its analysis without Showdown's sprites or the ad script", async ({
   page,
 }) => {
+  const pageErrors: Error[] = [];
+  page.on("pageerror", error => pageErrors.push(error));
+
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(page).toHaveTitle(
-    "My Pokemon Team - Pokemon Teambuilder and Team Planner",
+  await selectPokemon(page, "Steelix");
+  // Every outside request is blocked, so the slot falls back to the bundled placeholder
+  await expectImageToBeLoaded(
+    page.getByRole("img", { name: "Steelix", exact: true }).first(),
   );
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-    "content",
-    /^The best Pokemon teambuilder and team planner /,
-  );
+  await openAnalysis(page, "Team Defence");
+  await expect(
+    page
+      .getByRole("region", { name: "Team Defence" })
+      .getByLabel("Electric score: +1.5", { exact: true }),
+  ).toBeVisible();
+  expect(pageErrors).toEqual([]);
+});
+
+test.describe("without JavaScript, as crawlers read it", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("names what the site does in its title and description", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expect(page).toHaveTitle(en.pageTitle);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /^The best Pokemon teambuilder and team planner /,
+    );
+  });
 });
 
 test("opens a saved team link in the built app", async ({ page }) => {

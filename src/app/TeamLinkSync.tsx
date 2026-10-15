@@ -98,8 +98,10 @@ const TeamLinkSync = observer(function TeamLinkSync() {
 
       lastSyncedTeamParameter = teamParameter;
       const { settings, unrecognized } = generationSettingsFromUrl();
-      if (teamParameter) importTeamFromUrlParameter(teamParameter);
-      else if (
+      // A team the link holds but the site cannot read opens as if the link held none
+      if (teamParameter && importTeamFromUrlParameter(teamParameter)) {
+        // The link's team is open
+      } else if (
         firstNavigation &&
         store.isTeamEmpty &&
         store.teams.some(team => team.id === store.currentTeamId)

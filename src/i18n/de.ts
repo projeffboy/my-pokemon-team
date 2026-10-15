@@ -437,6 +437,8 @@ const de: Messages = {
     region: "Region",
     moves: "Attacken",
     viable: "Brauchbar",
+    items: "Items",
+    viableItems: "Brauchbar",
     ability: "Fähigkeit",
   },
   sort: {

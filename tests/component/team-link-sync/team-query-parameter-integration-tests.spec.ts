@@ -5,6 +5,7 @@ import {
   clickMenuItem,
   closeDialog,
   getTeamTextFromUrl,
+  openAnalysis,
   openFilters,
   selectDialogOption,
   selectAbility,
@@ -28,7 +29,7 @@ const savedState = (page: Page) =>
   );
 
 test.describe("Share Link - Integration Tests", () => {
-  test("a denied localStorage getter leaves team editing and share links usable", async ({
+  test("a denied localStorage getter leaves team editing, analysis, and share links usable", async ({
     page,
   }) => {
     const errors: string[] = [];
@@ -44,6 +45,12 @@ test.describe("Share Link - Integration Tests", () => {
     await page.reload({ waitUntil: "domcontentloaded" });
     await selectPokemon(page, "Lurantis");
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lurantis");
+    await openAnalysis(page, "Team Defence");
+    await expect(
+      page
+        .getByRole("region", { name: "Team Defence" })
+        .getByLabel("Fire score: -1", { exact: true }),
+    ).toBeVisible();
     expect(getTeamTextFromUrl(page)).toContain("Lurantis");
     expect(errors).toEqual([]);
   });
@@ -176,7 +183,7 @@ test.describe("Share Link - Integration Tests", () => {
       page,
     }) => {
       const team = toBase64Url("Pikachu\n- Thunderbolt");
-      for (const game of ["lets-go", "legends-arceus", "legends-za"]) {
+      for (const game of ["lets-go", "legends-arceus"]) {
         await page.goto(`/?game=${game}&team=${team}`, {
           waitUntil: "domcontentloaded",
         });
@@ -195,6 +202,27 @@ test.describe("Share Link - Integration Tests", () => {
         await expect(page).toHaveURL(/gen=6-9/);
         await expect(page).not.toHaveURL(/game=/);
       }
+    });
+
+    test("Legends: Z-A links open their team in Legends: Z-A through reload", async ({
+      page,
+    }) => {
+      const team = toBase64Url("Inkay\n- Psycho Cut");
+      await page.goto(`/?game=legends-za&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Inkay");
+      await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
+        "Psycho Cut",
+      );
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText(/Legends: Z-A|Legends Z-A|Z-A/);
+      await expect(page).toHaveURL(/game=legends-za/);
+      expect(new URL(page.url()).searchParams.has("gen")).toBe(false);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText(/Legends: Z-A|Legends Z-A|Z-A/);
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Inkay");
+      await expect(unsupportedMessage(page)).toHaveCount(0);
     });
 
     test("an empty game-specific link preserves its profile through reload", async ({
@@ -363,6 +391,24 @@ test.describe("Share Link - Unsupported gen and game", () => {
     await expect(name).toHaveValue("Centiskorch");
     await expect(generationValue(page)).toHaveValue("8");
     await expect(unsupportedMessage(page)).toHaveCount(0);
+  });
+
+  test("a returning visitor's unsupported gen with an unreadable or unknown team opens Generations 6–9", async ({
+    page,
+  }) => {
+    for (const team of ["%21%21%21", toBase64Url("Notamon\n- Tackle")]) {
+      await page.goto("/?gen=3", { waitUntil: "domcontentloaded" });
+      await expect(generationValue(page)).toHaveValue("3");
+      await page.goto(`/?gen=10&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(generationValue(page)).toHaveValue("6-9");
+      await expect(unsupportedMessage(page)).toHaveText(
+        en.team.linkGenerationUnsupported("Generations 6–9"),
+      );
+      await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+      await expect(page).not.toHaveURL(/team=/);
+    }
   });
 
   test("back/forward navigation to an unsupported gen opens Generations 6–9 with a message", async ({

@@ -487,6 +487,90 @@ export function collectViableMoves(
   return [...viable].sort();
 }
 
+// The Showdown teambuilder's grouping of one generation's items, which returns the items
+// it lists above its usually useless ones
+export type ItemGrouping = (
+  dex: { mod(gen: string): { items: { get(id: string): ShowdownEntry } } },
+  gen: string,
+  genNum: number,
+  itemList: string[],
+) => string[];
+
+// Each generation's viable items among `ids`. Which items a game has is the site's
+// availability data's job, so no item is left out as too new or nonstandard.
+export function collectViableItems(
+  group: ItemGrouping,
+  tables: Partial<Record<Generation, ShowdownTable>>,
+  ids: string[],
+) {
+  return Object.fromEntries(
+    Object.entries(tables).map(([gen, table]) => {
+      const items = {
+        get: (id: string) => ({
+          id,
+          exists: true,
+          ...table[id],
+          gen: undefined,
+          isNonstandard: undefined,
+        }),
+      };
+      const list = ids.filter(id => id in table).sort();
+      return [
+        gen,
+        group(
+          { mod: () => ({ items }) },
+          `gen${gen}`,
+          Number(gen),
+          list,
+        ).sort(),
+      ];
+    }),
+  ) as Partial<Record<Generation, string[]>>;
+}
+
+// A module with the latest generation's set of IDs, what each earlier generation adds
+// to it and removes from it, and a function that gives a generation's set
+export function renderGenerationSets(
+  description: string,
+  functionName: string,
+  generations: Partial<Record<Generation, string[]>>,
+) {
+  const latest = generations[9] ?? [];
+  const changes = Object.fromEntries(
+    Object.entries(generations)
+      .filter(([gen]) => gen !== "9")
+      .map(([gen, ids]) => [
+        gen,
+        {
+          add: ids.filter(id => !latest.includes(id)),
+          remove: latest.filter(id => !ids.includes(id)),
+        },
+      ]),
+  );
+  return [
+    `// ${description}`,
+    `import type { Generation } from "../types";`,
+    `import { LATEST_GENERATION } from "../shared/generations";`,
+    "",
+    `const data: ReadonlySet<string> = new Set(${JSON.stringify(latest, null, 2)});`,
+    `const changes: Partial<Record<Generation, { add: string[]; remove: string[] }>> = ${JSON.stringify(changes, null, 2)};`,
+    "const cache = new Map<Generation, ReadonlySet<string>>();",
+    `export function ${functionName}(generation: Generation = LATEST_GENERATION): ReadonlySet<string> {`,
+    "  const change = changes[generation];",
+    "  if (!change) return data;",
+    "  let viable = cache.get(generation);",
+    "  if (!viable) {",
+    "    viable = new Set([...data].filter(id => !change.remove.includes(id)).concat(change.add));",
+    "    cache.set(generation, viable);",
+    "  }",
+    "  return viable;",
+    "}",
+    "",
+    "export default data;",
+    "",
+  ].join("\n");
+}
+
 // Showdown codes damage taken as 0 neutral, 1 weak, 2 resisted, 3 immune;
 // the app scores those as 0, -1, 1, 2
 const damageCode: Record<string, number> = { 0: 0, 1: -1, 2: 1, 3: 2 };

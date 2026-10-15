@@ -12,6 +12,10 @@ export const SMALL_VIEWPORT_WIDTH = 390;
 export const MEDIUM_VIEWPORT_WIDTH = 820;
 export const LARGE_VIEWPORT_WIDTH = 1366;
 
+// The development server serves each of the 2300 Gen 2-4 sprite animations as its own
+// module, so the first animation after a page load can take Firefox over 5 seconds
+export const SPRITE_ANIMATIONS_TIMEOUT = 20000;
+
 // Helper function to create viewport object with 16:9 aspect ratio
 export const createViewport = (width: number) => ({
   width,

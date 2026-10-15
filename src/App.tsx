@@ -9,6 +9,7 @@ import Dialogs from "./app/Dialogs";
 import CssBaseline from "@mui/material/CssBaseline"; // like CSS Reset
 import { ThemeProvider } from "@mui/material/styles";
 import { theme } from "./app/shared/theme";
+import { trackVisualViewport } from "./app/shared/visual-viewport";
 import { cookieStorageManager } from "./app/color-scheme-storage";
 import { WidthProvider } from "./app/shared/WidthContext";
 import { TranslationProvider } from "./app/shared/TranslationContext";
@@ -20,6 +21,7 @@ export default function App() {
   useEffect(() => {
     window.ramp?.que.push(() => window.ramp?.spaNewPage?.(location.pathname));
   }, []);
+  useEffect(trackVisualViewport, []);
 
   return (
     <>

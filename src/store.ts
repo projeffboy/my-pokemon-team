@@ -32,6 +32,7 @@ import {
   generationMoves,
   availableItems,
   availablePokemon,
+  canUseItem,
   getTeamLearnsets,
   isItemAvailable,
   learnsetsReady,
@@ -317,7 +318,13 @@ export class Store {
         replaced ? this.translation.t.team.teamNumber(1) : this.nextTeamName(),
       generation,
       format:
-        settings ? formatForGeneration(format, settings.generation) : format,
+        settings ?
+          formatForGeneration(
+            format,
+            settings.generation,
+            settings.generationProfile,
+          )
+        : format,
       ...settings,
       generationProfile:
         settings ?
@@ -474,12 +481,13 @@ export class Store {
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
   // A link carries a game but no tier, so a saved team's tier does not count.
+  // Returns whether it opened a team; an empty one opens nothing.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
       Partial<Pick<SavedTeam, "format" | "generationProfile">>,
   ) {
-    if (isTeamEmpty(team)) return;
+    if (isTeamEmpty(team)) return false;
     const generation = settings?.generation ?? this.currentTeam.generation;
     const format = settings?.format ?? this.currentTeam.format;
     const text = serializeTeam(team, generation, format);
@@ -523,6 +531,7 @@ export class Store {
       this.teams.find(matches);
     if (saved) this.currentTeamId = saved.id;
     else this.openUnsavedTeam(team, settings);
+    return true;
   }
 
   // The current team
@@ -543,12 +552,14 @@ export class Store {
     return generationRules(this.currentTeam.generation, this.dataFormat);
   }
 
-  // Plus the required items the game lacks but auto-selects for a pokemon it lists,
-  // e.g. Bug Memory for Silvally-Bug in Gen 9
+  // The game's items (only the viable ones under the Items filter), plus the required items
+  // the game lacks but auto-selects for a pokemon it lists, e.g. Bug Memory for Silvally-Bug
+  // in Gen 9
   get teamItems() {
     if (!this.learnsetsLoaded) return [];
+    const { generation } = this.currentTeam;
     const available = new Set(
-      availableItems(allItemIds, this.currentTeam.generation, this.dataFormat),
+      availableItems(allItemIds, generation, this.dataFormat),
     );
     if (!available.size) return [];
     const listed = new Set(this.gamePokemon);
@@ -556,8 +567,21 @@ export class Store {
       .filter(name => listed.has(name))
       .map(name => getAutoSelectedItem(name, "", item => available.has(item)))
       .filter(item => item && !available.has(item));
+    const shown =
+      this.filters.items ?
+        new Set(availableItems(allItemIds, generation, this.dataFormat, true))
+      : available;
     return allItemIds.filter(
-      item => available.has(item) || required.includes(item),
+      item => shown.has(item) || required.includes(item),
+    );
+  }
+
+  // Each slot's items. Under the Items filter, only those its pokemon can use, so
+  // Ribombee is not offered Venusaurite.
+  get slotItems() {
+    const items = this.teamItems;
+    return this.team.map(({ name }) =>
+      this.filters.items ? items.filter(item => canUseItem(name, item)) : items,
     );
   }
 
@@ -872,7 +896,8 @@ export class Store {
       );
   }
 
-  // Every pokemon, move, and ability the current game's dropdowns can list, whatever the filters
+  // Every pokemon, move, ability, and item the current game's dropdowns can list, whatever
+  // the filters
   get gamePokemon() {
     const { generation, format } = this.currentTeam;
     return this.inGame(
@@ -902,6 +927,15 @@ export class Store {
         ),
       ),
     ];
+  }
+
+  get gameItems() {
+    if (!this.learnsetsLoaded) return [];
+    return availableItems(
+      allItemIds,
+      this.currentTeam.generation,
+      this.dataFormat,
+    );
   }
 
   get filteredPokemon() {

@@ -133,7 +133,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       : pokemonProperty === "item" ?
         ([
           "item",
-          () => store.teamItems.map(names.item),
+          () => store.gameItems.map(names.item),
           ITEM_ROW_CHROME,
         ] as const)
       : pokemonProperty === "ability" ?
@@ -150,7 +150,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     setFitWidth(
       twoLineWidth(`${kind}|${game}`, labels, typography.body1, 80) +
         chrome +
-        // A pokemon has at most three abilities, too few for the list to scroll
+        // A pokemon has at most four abilities, too few for the list to scroll
         (kind === "ability" ? 0 : scrollbarWidth()),
     );
   }, [

@@ -7,7 +7,7 @@ import type {
   PokedexEntry,
   PokemonFilters,
 } from "@/types";
-import { CHAMPIONS_FORMAT, TIER_BY_FORMAT } from "@/shared/formats";
+import { CAP_FORMAT, CHAMPIONS_FORMAT, TIER_BY_FORMAT } from "@/shared/formats";
 import { variantGeneration } from "@/shared/game-variants";
 import {
   COMBINED_GENERATIONS_FORMAT,
@@ -16,6 +16,7 @@ import {
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
 import { doublesTierIn, pokemonFormatIn } from "@/shared/generation-data";
+import { CAP_BANNED_POKEMON, isCapPokemon } from "./shared/pokemon";
 
 type Filters = Readonly<
   Partial<
@@ -52,10 +53,6 @@ const FORME_REGIONS: Record<string, string> = {
   ursalunabloodmoon: "Paldea",
 };
 
-// Showdown numbers CAP (fan-made) pokemon from -1 down, and Pokestar pokemon from -5000 down
-const isCap = (num: number | undefined) =>
-  num !== undefined && num < 0 && num > -5000;
-
 // The generation a species or forme first appeared in, following Showdown's dex-species.ts
 export function introducedIn({
   num = 0,
@@ -87,7 +84,7 @@ export function isInGeneration(entry: PokedexEntry, generation: Generation) {
   return introducedIn(entry) <= generation;
 }
 
-// CAP pokemon still load from share links and imports; they are only hidden from the options
+// Only the CAP format lists CAP pokemon, but they load from share links and imports in any
 export function filterPokemon({
   generation = LATEST_GENERATION,
   generationProfile,
@@ -126,8 +123,9 @@ export function filterPokemon({
   }
 
   function withoutCap(pokedex: Pokedex): Pokedex {
+    if (format === CAP_FORMAT) return pokedex;
     return Object.fromEntries(
-      Object.entries(pokedex).filter(([, { num }]) => !isCap(num)),
+      Object.entries(pokedex).filter(([pokemon]) => !isCapPokemon(pokemon)),
     );
   }
 
@@ -171,6 +169,20 @@ export function filterPokemon({
       "LC Uber",
       "LC",
     ];
+
+    if (format === CAP_FORMAT) {
+      const cap = filterByTier(
+        [
+          "CAP",
+          "CAP NFE",
+          "CAP LC",
+          ...smogonSinglesTiers.slice(smogonSinglesTiers.indexOf("OU")),
+        ],
+        pokemon => pokemonFormatIn(pokemon, generation)?.tier,
+      );
+      delete cap[CAP_BANNED_POKEMON];
+      return cap;
+    }
 
     if (smogonSinglesTiers.includes(tierAbbreviationByFormat[format] ?? "")) {
       return filterByTier(
