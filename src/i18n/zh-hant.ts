@@ -30,10 +30,11 @@ const zhHant: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即將推出",
+  generationGroups: { spinOffs: "外傳", mainSeries: "正傳系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合併第6–9世代所有遊戲的選項",
+    description: "合併第6–9世代所有遊戲",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -49,9 +50,12 @@ const zhHant: Messages = {
     short: "舊版網站",
     title: "切換到舊版網站？",
     description:
-      "目前的隊伍不會轉移到舊版網站。已在此儲存的隊伍將保留在這個版本中。",
+      "目前的隊伍將在舊版網站中開啟。已在此儲存的隊伍將保留在這個版本中。",
     go: "前往舊版網站",
     goLong: "前往舊版網站",
+    generationsOnly: (generations: string) => `舊版網站只有${generations}。`,
+    leftOut: "以下內容不會轉移：",
+    goWithTeam: "帶著我的隊伍前往",
   },
   feedback: {
     button: "意見回饋",
@@ -222,6 +226,7 @@ const zhHant: Messages = {
       phazer: { label: "強制換人" },
       trapper: { label: "禁止換人" },
       boosting: { label: "強化招式", short: "強化" },
+      priority: { label: "先制招式", short: "先制", shorter: "先制" },
       voltTurn: {
         label: "急速折返／伏特替換",
         short: "折返招式",
@@ -437,7 +442,7 @@ const zhHant: Messages = {
     removed: {
       item: "移除的道具",
       ability: "移除的特性",
-      moves: "移除的招式：",
+      move: "移除的招式",
       details: "移除的詳細資訊",
     },
     ivsUnused: (where: string) => `個體值不適用於${where}。`,
@@ -450,6 +455,9 @@ const zhHant: Messages = {
       item: (count: number) => `${count}件道具`,
       ability: (count: number) => `${count}個特性`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中保留${carried}隻`,
+    removedSummary: (removed: string) => `移除${removed}`,
     modify: "更新現有隊伍",
     copy: "複製到新隊伍",
     createEmpty: "建立空隊伍",
@@ -642,6 +650,10 @@ const zhHant: Messages = {
         "在自己留在場上期間讓對手無法替換的寶可夢，例如會使用黑色目光、擋路、擲錨等招式，或擁有踩影、沙穴、磁力特性的寶可夢。潮旋這類只束縛幾回合的招式不算。",
       ],
       ["強化招式", "能提升自身能力的招式（最好是 2 階以上），例如劍舞和冥想。"],
+      [
+        "先制招式",
+        "無論速度高低，都能比大多數招式先出手的攻擊招式。例如：神速、突襲、水流噴射、子彈拳。",
+      ],
       [
         "講究道具",
         "能提升一項能力 50%，但會鎖定只能使用一個招式的道具。共有三種：講究頭帶、講究眼鏡、講究圍巾。",

@@ -32,10 +32,11 @@ const ptBR: Messages = {
   },
   generationSelect: "Geração",
   comingSoon: "Em breve",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principal" },
   combinedGenerations: {
     label: "Gerações 6–9",
     short: "Gerações 6–9",
-    description: "Combina opções de todos os jogos das gerações 6–9",
+    description: "Combina todos os jogos das gerações 6–9",
   },
   championsGeneration: "Ger. 9 · Champions",
   championsGenerationShort: "Ger. 9 (Champions)",
@@ -51,9 +52,13 @@ const ptBR: Messages = {
     short: "Site antigo",
     title: "Ir para o site antigo?",
     description:
-      "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",
+      "Sua equipe atual será aberta no site antigo. As equipes salvas aqui permanecerão nesta versão.",
     go: "Ir para o site antigo",
     goLong: "Ir para o site antigo",
+    generationsOnly: (generations: string) =>
+      `O site antigo tem apenas as ${generations}.`,
+    leftOut: "Isto não será transferido:",
+    goWithTeam: "Ir com minha equipe",
   },
   feedback: {
     button: "Enviar feedback",
@@ -218,6 +223,11 @@ const ptBR: Messages = {
       phazer: { label: "Phazer" },
       trapper: { label: "Trapper" },
       boosting: { label: "Golpe de boost", short: "Setup" },
+      priority: {
+        label: "Golpe de prioridade",
+        short: "Prioridade",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Golpe Volt-turn",
         short: "Volt-turn",
@@ -441,7 +451,7 @@ const ptBR: Messages = {
     removed: {
       item: "Item removido",
       ability: "Habilidade removida",
-      moves: "Golpes removidos:",
+      move: "Golpe removido",
       details: "Detalhes removidos",
     },
     ivsUnused: (where: string) => `IVs não se aplicam em ${where}.`,
@@ -455,6 +465,9 @@ const ptBR: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidade" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} ${carried === 1 ? "será mantido" : "serão mantidos"}`,
+    removedSummary: (removed: string) => `Remoção de ${removed}`,
     modify: "Atualizar equipe atual",
     copy: "Copiar para nova equipe",
     createEmpty: "Criar equipe vazia",
@@ -656,6 +669,10 @@ const ptBR: Messages = {
       [
         "Golpe de boost",
         "Golpes que aumentam suas estatísticas (de preferência em 2 ou mais estágios), como Swords Dance e Calm Mind.",
+      ],
+      [
+        "Golpe de prioridade",
+        "Golpes de dano que agem antes da maioria dos outros, seja qual for a Velocidade. Ex.: Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Item Choice",
