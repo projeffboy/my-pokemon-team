@@ -358,6 +358,7 @@ export function isMoveUsable(
   ability: string | undefined,
   generation: Generation,
   format = "",
+  member?: Readonly<TeamPokemon>,
 ) {
   if (
     generation >= 6 &&
@@ -374,7 +375,8 @@ export function isMoveUsable(
   if (
     blockedType &&
     moveDataIn(move, generation, format)?.category !== "Status" &&
-    moveType(move, pokemon, ability, generation, item, format) === blockedType
+    moveType(move, pokemon, ability, generation, item, format, member) ===
+      blockedType
   )
     return false;
   const types = effectivePokemonTypes(pokemon, ability, item, generation);
@@ -394,7 +396,7 @@ export function isMoveStrongEnough(
   member?: Readonly<TeamPokemon>,
   format = "",
 ) {
-  if (!isMoveUsable(move, pokemon, item, ability, generation, format))
+  if (!isMoveUsable(move, pokemon, item, ability, generation, format, member))
     return false;
   if (moves[move] && move.startsWith("hiddenpower") && member)
     return hiddenPowerPower(member, generation) >= 40;

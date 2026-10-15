@@ -10,6 +10,7 @@ import {
 import { coverageMatrix, defenceMatrix } from "@/store/matrix";
 import { calculateTypeCoverage } from "@/store/coverage";
 import { createTeam } from "./shared/team";
+import { hiddenPowerType } from "@/shared/hidden-power";
 
 const moveCases = [
   ["return", "Dragon", "feraligatrmega", "Dragonize", 2],
@@ -314,6 +315,25 @@ test("primal weather fails the user's own moves of the opposing type, and Delta 
     expect(calculateTypeCoverage(team, 7)[target]).toBe(0);
     expect(coverageMatrix(team, undefined, 7)[target]?.[0]?.multiplier).toBe(1);
   }
+  // Plain Hidden Power is blocked by the type its IVs give
+  const [kyogre] = createTeam({
+    name: "kyogreprimal",
+    ability: "Primordial Sea",
+    move1: "hiddenpower",
+    ivs: { hp: 31, atk: 30, def: 31, spa: 30, spd: 31, spe: 30 },
+  });
+  expect(hiddenPowerType(kyogre!, 7)).toBe("fire");
+  expect(
+    isMoveUsable(
+      "hiddenpower",
+      "kyogreprimal",
+      "",
+      "Primordial Sea",
+      7,
+      "",
+      kyogre,
+    ),
+  ).toBe(false);
   // Status moves still work
   expect(
     isMoveUsable("willowisp", "kyogreprimal", "", "Primordial Sea", 7),

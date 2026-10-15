@@ -61,6 +61,7 @@ const moveset = (pokemon: Pokemon, generation: Generation, format: string) =>
         pokemon.ability,
         generation,
         format,
+        pokemon,
       ),
   );
 
