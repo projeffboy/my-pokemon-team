@@ -194,7 +194,8 @@ const ko: Messages = {
     bigGridView: "큰 격자 보기",
     teamNumber: (number: number) => `팀 ${number}`,
     unnamedTeam: "팀",
-    copyOf: (name: string) => `${name} 사본`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} 사본 ${number}` : `${name} 사본`,
     learnsetsFailed:
       "기술 목록을 불러오지 못했습니다. 페이지를 새로고침해 다시 시도하세요.",
   },

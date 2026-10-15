@@ -171,7 +171,8 @@ const it: Messages = {
       `impostare ${label} a ${value} per ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `scambiare ${first} e ${second}`,
-    moreChanges: (count: number) => `${count} altre modifiche`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 altra modifica" : `${count} altre modifiche`,
     undoAction: (action: string) => `Annulla: ${action}`,
     redoAction: (action: string) => `Ripeti: ${action}`,
     randomizeTeamAction: "generare una squadra casuale",
@@ -182,7 +183,8 @@ const it: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Squadra ${number}`,
     unnamedTeam: "Squadra",
-    copyOf: (name: string) => `Copia di ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} di ${name}` : `Copia di ${name}`,
     learnsetsFailed:
       "Impossibile caricare gli elenchi delle mosse. Ricarica la pagina per riprovare.",
   },
