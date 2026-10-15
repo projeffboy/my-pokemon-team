@@ -1,6 +1,7 @@
 import pokedex from "@/data/pokedex";
+import formatBans from "@/data/format-bans";
 import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, showdownFormatId } from "@/shared/formats";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
 import { pokemonAbilities } from "@/shared/pokedex";
@@ -39,6 +40,7 @@ export function validateTeam(
     : candidates,
   );
   const where = `${t.generation(generation)}${format ? ` ${format}` : ""}`;
+  const bans = formatBans[showdownFormatId(generation, format)];
   const species = (pokemon: string) => {
     const base = pokedex[pokemon]?.baseSpecies;
     return (base && pokemonNameInverse(base)) || pokemon;
@@ -83,6 +85,16 @@ export function validateTeam(
       problems.push(
         t.validation.repeatedMove(label, names.move(baseMoveId(repeated))),
       );
+
+    const banned = [
+      bans?.abilities?.includes(ability) && names.ability(ability),
+      bans?.items?.includes(item) && names.item(item),
+      ...moves
+        .filter(move => bans?.moves?.includes(move))
+        .map(move => names.move(move)),
+    ];
+    for (const thing of banned)
+      if (thing) problems.push(t.validation.banned(label, thing, where));
 
     const total = evTotal(member.evs);
     if (rules.maxTotal !== undefined && total > rules.maxTotal)
