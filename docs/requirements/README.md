@@ -1,62 +1,76 @@
 # My Pokemon Team: Requirements
 
-The goals, stakeholders, requirements, and specification for [mypokemonteam.com](https://mypokemonteam.com), written with the methods and templates of McGill's ECSE 326 (Software Requirements Engineering).
-
-- **Baseline**: 0.1 (draft), describing branch `major-added-features` at commit `629b75f`, 13 October 2026.
-- **Scope**: the site as it is at that commit, and the work planned after it.
-- **State**: drafted from the repository, then corrected with the Site Owner's answers to sixteen of the nineteen interview questions and part of a seventeenth, an analysis of competing products, and an analysis of player feedback. Every statement still marked **[A-n]** is an assumption. See [08-assumptions-and-interview.md](08-assumptions-and-interview.md).
+What [mypokemonteam.com](https://mypokemonteam.com) is for, who uses it, and what it shall do. These documents describe the site as it is built, plus the changes the Site Owner has approved that are not built yet. Their history is in git.
 
 ## Documents
 
-Read them in order: each refines the one before it.
+Start with 01 and 05: they say what the site is for and what it does. 08 records the Site Owner's decisions and the questions still open. 02, 11, and 12 are the research behind them.
 
-| Document                                                                                              | Requirement level | What it holds                                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [01 Vision and scope](01-vision-and-scope.md)                                                         | Business          | Business opportunity, problem statement, business requirements and rules, vision statement, scope, context diagram, business risks.                                              |
-| [02 Stakeholders and personas](02-stakeholders-and-personas.md)                                       | Business, user    | Stakeholders in the onion model with their values, user classes, five personas.                                                                                                  |
-| [03 Goal model](03-goal-model.md)                                                                     | Business, user    | Stakeholders' softgoals, the features' contributions to them, dependencies, and the evaluation of the old website, the redesign, and the next release.                           |
-| [04 Feature model](04-feature-model.md)                                                               | User              | The feature tree with its constraints, the planned features, and four configurations.                                                                                            |
-| [05 System requirements specification](05-system-requirements-specification.md)                       | System            | Use case model, domain model, state machine; for each use case a user story, acceptance criteria, the use case, and its requirements; non-functional requirements; verification. |
-| [06 Requirements management, traceability, and prioritization](06-traceability-and-prioritization.md) | All               | Identifiers, attributes, statuses, baselines, change management, traceability matrices, and how the planned work is prioritized.                                                 |
-| [08 Assumptions and interview](08-assumptions-and-interview.md)                                       | All               | Every assumption made, the interview script that settles them, and the record of answers.                                                                                        |
-| [09 Scenario models](09-scenario-models.md)                                                           | User, system      | Activity and sequence diagrams of the main flows (build, share, change generation, feedback, two tabs, update data) and of the planned features.                                 |
-| [10 Mock-ups](10-mockups.md)                                                                          | User, system      | Low-fidelity mock-ups of the planned features that change the page, with the design decisions each leaves open.                                                                  |
-| [11 Analysis of existing systems](11-existing-systems-analysis.md)                                    | Business, user    | Six competing products, their features with an assessment of each, and what sets the site apart.                                                                                 |
-| [12 Analysis of player feedback](12-feedback-analysis.md)                                             | User              | What about 105 player emails from 2021 to 2026 asked for and complained about, and what that changes.                                                                            |
-
-## How the levels connect
-
-```mermaid
-flowchart TB
-  BR["Business requirements (01)"] --> G["Stakeholder goals (03)"]
-  SH["Stakeholders and personas (02)"] --> G
-  G --> F["Features (04)"]
-  SH --> US["User stories (05)"]
-  F --> UC["Use cases (05)"]
-  US --> UC
-  UC --> REQ["System requirements (05)"]
-  BR --> REQ
-  REQ --> V["Verification: tests (05, section 4)"]
-  REQ --> T["GitHub issues"]
-```
+| Document                                                                        | What it holds                                                                                                                                                                            |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [01 Vision and scope](01-vision-and-scope.md)                                   | Why the site exists, its business requirements and rules, its scope, its features (built and planned), and its risks.                                                                    |
+| [02 Stakeholders and personas](02-stakeholders-and-personas.md)                 | Who has a stake in the site, the kinds of players, and five personas.                                                                                                                    |
+| [05 System requirements specification](05-system-requirements-specification.md) | The use cases, each with its user story, acceptance criteria, and requirements; the domain model; the non-functional requirements and constraints; and how each requirement is verified. |
+| [08 Decisions and open questions](08-assumptions-and-interview.md)              | What the Site Owner decided and why, and the questions still open.                                                                                                                       |
+| [11 Analysis of existing systems](11-existing-systems-analysis.md)              | Six competing products, their features, and what sets the site apart.                                                                                                                    |
+| [12 Analysis of player feedback](12-feedback-analysis.md)                       | What about 105 player emails from 2021 to 2026 asked for and complained about, and what that changed.                                                                                    |
 
 ## Conventions
 
-- "The site" is the system under discussion: the website, its feedback function, and its data update scripts.
+- "The site" is the website, its feedback function, and its data update scripts.
 - A requirement is one sentence whose subject is the site (or a named part of it) and whose verb is "shall". It says what the site does, not how.
-- A goal says what a stakeholder intends and is not a requirement. Goals are in [03](03-goal-model.md).
 - Pokemon terms are defined in Section 1.4 of the [SyRS](05-system-requirements-specification.md), and abbreviations in its Section 5.2.
-- Diagrams are Mermaid, which GitHub renders. The course's goal and feature models were built in the jUCMNav tool; here they are text, so that they can be reviewed and versioned with the code.
-- Identifiers and statuses are explained in Sections 6.1 and 6.2 of [06](06-traceability-and-prioritization.md).
+- Diagrams are Mermaid, which GitHub renders.
 
-## Where the work is tracked
+## Identifiers
 
-Work to do is only in the project's GitHub issues and on its project board, each issue naming the requirements it covers. These documents hold no task list and no ranking of tasks; Sections 6.5 and 6.6 of [06](06-traceability-and-prioritization.md) give the method and the rules.
+Every item has an identifier: a prefix, then a number. The numbers carry no order of importance. A number is not reused once it has appeared in a commit or an issue, so a deleted requirement leaves a gap.
 
-## What is not in this repository
+| Prefix         | Item                                                               | Defined in                                    |
+| -------------- | ------------------------------------------------------------------ | --------------------------------------------- |
+| BR, RULE, RISK | Business requirement, business rule, business risk                 | [01](01-vision-and-scope.md)                  |
+| F, PF          | Feature, planned feature                                           | [01](01-vision-and-scope.md)                  |
+| SH, P          | Stakeholder, persona                                               | [02](02-stakeholders-and-personas.md)         |
+| UC, US         | Use case, user story                                               | [05](05-system-requirements-specification.md) |
+| REQ-_AREA_     | System requirement; the area names its group, such as TEAM or LINK | [05](05-system-requirements-specification.md) |
+| A              | An open question; a statement marked **[A-n]** rests on it         | [08](08-assumptions-and-interview.md)         |
 
-Traffic figures, advertising arrangements, and offers made to the Site Owner are kept in `private/`, which is git-ignored. Nothing in these documents identifies a player who wrote in.
+Planned features are PF, not P, so that they are not mistaken for the priorities P0 to P3.
 
-## Keeping these documents true
+## Statuses
 
-A pull request that changes what the site does changes the requirement, its acceptance criteria, and its tests together (Section 6.3 of [06](06-traceability-and-prioritization.md)). `AGENTS.md` remains the source for code conventions; these documents are the source for what the site is for and what it shall do.
+Each requirement has an importance and a status. Importance (Essential, Conditional, Optional) says how much the site needs it. Priority belongs to issues, not requirements, and says what to do next.
+
+- **Proposed**: suggested, not yet agreed.
+- **Approved**: the Site Owner agreed to it, and it is not built yet.
+- **Implemented**: the code does it.
+- **Verified**: its tests have been read and pass. No requirement has this status yet.
+- **Rejected**: declined; the reason is kept with it.
+- **Deleted**: removed; its number is not reused.
+
+## Issues and priorities
+
+Work to do lives only in the GitHub issues and on the project board "My Pokemon Team Development". These documents hold no task list and no ranking of tasks.
+
+- Every issue names the requirements it covers at the start of its body, as "**Requirement:** REQ-...". A defect in, or an improvement to, a built requirement names that requirement too. Searching the issues for an identifier finds the work on it.
+- An issue tied to no requirement carries the label `no requirement`, and has no priority until a requirement is written for it.
+
+Priority follows Wiegers' method. Each issue is rated from 1 to 9 for its benefit, the penalty of not doing it, and its risk, in the board's Benefit, Penalty, and Risk fields. Its cost is its Size: XXS 1, XS 2, S 3, M 4, L 5, XL 6, XXL 7, 3XL 9.
+
+```
+score = (2 x benefit + 1 x penalty) / (1 x cost + 0.5 x risk)
+```
+
+The score sets the issue's Priority: P1 from 3.5, P2 from 2.0, and P3 below 2.0. P0 is kept for outages, and a blocked issue is P3 until it is unblocked. The Site Owner follows the ranking this gives.
+
+Each issue is scored from its own ratings, so a new issue can be rated without working out the others again. The course's version divides each rating by its column's total, which changes every score whenever an issue is opened or closed; the Site Owner dropped it on 14 October 2026. The cutoffs were set so that the issues rated on 13 October 2026 kept the levels the course's version gave them.
+
+The weights are the ones in the course's example. Because coding agents do much of the implementation, the Site Owner may halve the weight of cost to 0.5 if the ranking proves unsatisfying. That would raise every score, so the cutoffs would have to be set again.
+
+## Private notes
+
+Traffic figures, advertising arrangements, and offers made to the Site Owner are kept in a local `private/` folder beside these documents, which `.gitignore` keeps out of the repository. Nothing in these documents identifies a player who wrote in.
+
+## When the documents and the code disagree
+
+The code wins, and the document gets corrected.
