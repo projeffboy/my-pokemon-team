@@ -37,8 +37,9 @@ export const rulesLabel = (
 };
 
 // The problems that stop a team from being legal in its format, or none. The
-// format picks the games' data, and the tier the allowed pokemon, the bans, and
-// the Species Clause; the tier is the format, except in Generations 6–9.
+// format picks the games' data and the allowed pokemon, and the tier the bans
+// and the Species Clause; the tier is the format, except in Generations 6–9,
+// whose games allow pokemon that no one tier of theirs does, such as megas.
 export function validateTeam(
   team: ReadonlyTeam,
   generation: Generation,
@@ -60,7 +61,7 @@ export function validateTeam(
   const training = t.advanced[rules.investment];
   const candidates = filterPokemon({
     generation,
-    format: tier,
+    format,
     region: "",
     type: "",
     ability: "",
@@ -72,6 +73,7 @@ export function validateTeam(
       availablePokemon(candidates, generation, format)
     : candidates,
   );
+  const games = rulesLabel(generation, format, translation);
   const where = rulesLabel(generation, format, translation, tier);
   const bans = formatBans[showdownFormatId(generation, tier)];
   const species = (pokemon: string) => {
@@ -87,7 +89,7 @@ export function validateTeam(
     if ((member.nickname?.trim().length ?? 0) > maxNicknameLength)
       add(t.validation.nicknameTooLong(label, maxNicknameLength));
 
-    if (!allowed.has(name)) add(t.validation.notAllowed(label, where));
+    if (!allowed.has(name)) add(t.validation.notAllowed(label, games));
 
     if (
       ability &&

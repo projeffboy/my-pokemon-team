@@ -147,9 +147,13 @@ test("a game reports the pokemon it does not have", () => {
   ).toEqual([`Tyranitar is not allowed in Gen 8 ${LEGENDS_ARCEUS}.`]);
 });
 
-test("Generations 6–9 checks the team against the tier chosen for it", () => {
+// The tier's own pokemon are Scarlet and Violet's, so it only adds its bans
+test("Generations 6–9 checks the team against the bans of the tier chosen for it", () => {
   const team = createTeam(
-    { name: "koraidon" },
+    { name: "charizardmegax", item: "charizarditex" },
+    { name: "alakazam" },
+    { name: "aegislash" },
+    { name: "gengargmax" },
     { name: "breloom", move1: "spore" },
     { name: "breloom" },
   );
@@ -157,7 +161,6 @@ test("Generations 6–9 checks the team against the tier chosen for it", () => {
   expect(
     messages(team, 9, COMBINED_GENERATIONS_FORMAT, english, "OU: Over Used"),
   ).toEqual([
-    `Koraidon is not allowed in ${where}.`,
     `Breloom has Spore, which is banned in ${where}.`,
     "Only one pokemon may be Breloom (Species Clause).",
   ]);
