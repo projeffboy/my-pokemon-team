@@ -217,7 +217,7 @@ export function mergeStoredState(
     moveSort: pick(base.moveSort, mine.moveSort, theirs.moveSort),
     nameView: pick(base.nameView, mine.nameView, theirs.nameView),
     ...(locale && { locale }),
-    ...((mine.knowsSlotDrag || theirs.knowsSlotDrag) && {
+    ...(pick(base.knowsSlotDrag, mine.knowsSlotDrag, theirs.knowsSlotDrag) && {
       knowsSlotDrag: true,
     }),
   };
