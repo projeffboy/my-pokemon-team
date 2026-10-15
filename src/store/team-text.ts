@@ -189,18 +189,22 @@ const GENDER_SUFFIX = /\s*\((M|F|N)\)\s*$/;
 // when it names no pokemon. Accepts "Nickname (Species)", as Showdown writes it, and
 // "Species (Nickname)". The species is the last name in parentheses, so a nickname
 // may hold parentheses, and when both names are pokemon, such as a Mewtwo nicknamed
-// Mew, the one in parentheses is the species.
-function parseName(text: string) {
+// Mew, the one in parentheses is the species. With speciesLast, only "Nickname (Species)".
+function parseName(text: string, speciesLast = false) {
   const gender = GENDER_SUFFIX.exec(text)?.[1] as Gender | undefined;
   const name = text.replace(GENDER_SUFFIX, "").trim();
   const last = /^(.*)\(([^()]*)\)$/.exec(name);
   const first = /^([^(]*)\(([^)]+)\)/.exec(name);
-  const readings = [
-    { species: name, nickname: "" },
-    { species: last?.[2], nickname: last?.[1] },
-    { species: first?.[2], nickname: first?.[1] },
-    { species: first?.[1], nickname: first?.[2] },
-  ];
+  const lastReading = { species: last?.[2], nickname: last?.[1] };
+  const readings =
+    speciesLast ?
+      [lastReading]
+    : [
+        { species: name, nickname: "" },
+        lastReading,
+        { species: first?.[2], nickname: first?.[1] },
+        { species: first?.[1], nickname: first?.[2] },
+      ];
   for (const { species = "", nickname = "" } of readings) {
     const pokemon = pokemonNameInverse(species.trim());
     if (pokemon) return { pokemon, nickname: nickname.trim(), gender };
@@ -208,8 +212,12 @@ function parseName(text: string) {
   return undefined;
 }
 
-// The item follows the last @ whose left side names a pokemon, so a nickname may hold one
+// The item follows the last @ whose left side names a pokemon, so a nickname may hold one.
+// Showdown leaves out " @ " when there is no item, so a line without one that ends in
+// "(Species)" has no item, even when its nickname starts with a pokemon name and an @.
 function parseFirstLine(line: string) {
+  const showdownName = !line.includes(" @ ") && parseName(line, true);
+  if (showdownName) return { ...showdownName, itemText: undefined };
   const ats = [...line.matchAll(/@/g)].map(match => match.index).reverse();
   for (const at of ats) {
     const name = parseName(line.slice(0, at));

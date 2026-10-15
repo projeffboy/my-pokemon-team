@@ -66,9 +66,9 @@ const ManageTeamMenu = observer(function ManageTeamMenu({
   // Switches stay in the menu when flipped, so the change shows
   const settings = [
     {
-      label: t.team.showMoveTypes,
-      on: store.showMoveTypes,
-      flip: () => (store.showMoveTypes = !store.showMoveTypes),
+      label: t.team.showTypes,
+      on: store.showTypes,
+      flip: () => (store.showTypes = !store.showTypes),
     },
   ];
 

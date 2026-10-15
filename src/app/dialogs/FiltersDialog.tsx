@@ -22,8 +22,10 @@ import { variantGeneration } from "@/shared/game-variants";
 import { GENERATION_GAMES } from "@/shared/generations";
 import { REGIONS } from "@/shared/regions";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { closeKeyboard, isTouchInput, verbatim } from "@/app/shared/text-entry";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { planGenerationTransfer } from "@/store/generation-transfer";
+import { learnsetsReady } from "@/store/learnsets";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
 import { gameLogosFor } from "@/app/shared/game-logos";
 import type { Generation, GenerationTransferData } from "@/types";
@@ -62,7 +64,11 @@ const FiltersDialog = observer(function FiltersDialog() {
       return;
     }
     try {
-      const data = await loadGenerationTransferData();
+      // The plain latest generation checks the learnsets, which load after the app
+      const [data] = await Promise.all([
+        loadGenerationTransferData(),
+        learnsetsReady,
+      ]);
       if (
         store.currentTeamId !== teamId ||
         store.dialog !== dialog ||
@@ -222,6 +228,9 @@ const FiltersDialog = observer(function FiltersDialog() {
         aria-labelledby={titleId}
         fullWidth
         maxWidth="xs"
+        // After a tap, focusing the dropdown that opened this again would bring
+        // back its on-screen keyboard without the list
+        disableRestoreFocus={isTouchInput()}
       >
         <DialogTitle id={titleId}>{t.team.filters}</DialogTitle>
         <DialogContent>
@@ -261,11 +270,19 @@ const FiltersDialog = observer(function FiltersDialog() {
                 onChange={(_event, value) =>
                   (store.filters.ability = value ?? "")
                 }
+                onClose={closeKeyboard}
                 renderInput={params => (
                   <TextField
                     {...params}
                     label={t.filters.ability}
                     placeholder={t.any}
+                    slotProps={{
+                      ...params.slotProps,
+                      htmlInput: {
+                        ...params.slotProps.htmlInput,
+                        ...verbatim("ability-filter"),
+                      },
+                    }}
                   />
                 )}
               />

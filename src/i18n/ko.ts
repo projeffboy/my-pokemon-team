@@ -30,6 +30,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ko: Messages = {
+  pageTitle: "My Pokemon Team - 포켓몬 팀 빌더 및 팀 플래너",
   beta: "베타",
   generation,
   generationGames: {
@@ -129,6 +130,8 @@ const ko: Messages = {
     teamEmpty: "포켓몬 팀이 비어 있습니다",
     linkCopied: "포켓몬 팀 링크를 복사했습니다",
     linkNotCopied: "링크를 복사하지 못했습니다.",
+    linkGenerationUnsupported: (profile: string) =>
+      `이 링크의 세대 또는 게임은 지원되지 않아 ${profile}에서 열었습니다.`,
     nothingToCopy: "팀이 비어 있어 복사할 내용이 없습니다.",
     teamCopied: "팀을 복사했습니다.",
     teamNotCopied: "팀을 복사하지 못했습니다.",
@@ -149,7 +152,7 @@ const ko: Messages = {
     advanced: "추가 세부 정보",
     advancedFor: (slot: number) => `슬롯 ${slot}의 추가 세부 정보`,
     details: "상세",
-    showMoveTypes: "기술 타입 표시",
+    showTypes: "타입 표시",
     about: (pokemon: string) => `${pokemon} 정보`,
     dragHint: "길게 눌러 끌어서 순서 변경",
     moveToSlot: (pokemon: string) => `${pokemon}을(를) 다른 슬롯으로 이동`,
@@ -276,6 +279,8 @@ const ko: Messages = {
       cause: string | undefined,
     ) =>
       `${type} 타입은 ${pokemon}(${types})에게 ${multiplier}배${cause ? ` (${cause} 적용)` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} 사용 시 ${type} 타입이 됩니다`,
     coverageReason: (
       pokemon: string,
       move: string,

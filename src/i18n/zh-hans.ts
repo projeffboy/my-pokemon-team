@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHans: Messages = {
+  pageTitle: "My Pokemon Team - 宝可梦配队与队伍规划工具",
   // 页眉
   beta: "测试版",
   generation,
@@ -112,6 +113,8 @@ const zhHans: Messages = {
     teamEmpty: "宝可梦队伍为空",
     linkCopied: "已复制宝可梦队伍链接",
     linkNotCopied: "无法复制链接。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支持此链接的世代或游戏，已改用${profile}打开。`,
     nothingToCopy: "队伍为空，没有可复制的内容。",
     teamCopied: "已复制队伍。",
     teamNotCopied: "无法复制队伍。",
@@ -131,7 +134,7 @@ const zhHans: Messages = {
     advanced: "更多详情",
     advancedFor: (slot: number) => `栏位 ${slot} 的更多详情`,
     details: "详情",
-    showMoveTypes: "显示招式属性",
+    showTypes: "显示属性",
     about: (pokemon: string) => `关于${pokemon}`,
     dragHint: "长按拖动即可调整顺序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他栏位`,
@@ -255,6 +258,7 @@ const zhHans: Messages = {
       cause: string | undefined,
     ) =>
       `${type}对${pokemon}（${types}）造成 ${multiplier} 倍伤害${cause ? `（受${cause}影响）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其变为${type}属性`,
     coverageReason: (
       pokemon: string,
       move: string,
