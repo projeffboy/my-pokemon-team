@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHant: Messages = {
+  pageTitle: "My Pokemon Team - 寶可夢配隊與隊伍規劃工具",
   // The header
   beta: "測試版",
   generation,
@@ -112,6 +113,8 @@ const zhHant: Messages = {
     teamEmpty: "寶可夢隊伍是空的",
     linkCopied: "已複製寶可夢隊伍連結",
     linkNotCopied: "無法複製連結。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支援此連結的世代或遊戲，已改用${profile}開啟。`,
     nothingToCopy: "隊伍是空的，沒有可複製的內容。",
     teamCopied: "已複製隊伍。",
     teamNotCopied: "無法複製隊伍。",
@@ -258,6 +261,7 @@ const zhHant: Messages = {
       cause: string | undefined,
     ) =>
       `${type}屬性對${pokemon}（${types}）造成 ${multiplier} 倍傷害${cause ? `（受${cause}影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其變為${type}屬性`,
     coverageReason: (
       pokemon: string,
       move: string,

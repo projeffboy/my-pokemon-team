@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ja: Messages = {
+  pageTitle: "My Pokemon Team - ポケモンのチーム作成・計画ツール",
   // The header
   beta: "ベータ版",
   generation,
@@ -117,6 +118,8 @@ const ja: Messages = {
     teamEmpty: "ポケモンチームは空です",
     linkCopied: "ポケモンチームのリンクをコピーしました",
     linkNotCopied: "リンクをコピーできませんでした。",
+    linkGenerationUnsupported: (profile: string) =>
+      `このリンクの世代またはゲームには対応していないため、${profile}で開きました。`,
     nothingToCopy: "チームが空なので、コピーするものがありません。",
     teamCopied: "チームをコピーしました。",
     teamNotCopied: "チームをコピーできませんでした。",
@@ -262,6 +265,7 @@ const ja: Messages = {
       cause: string | undefined,
     ) =>
       `${type}タイプの技は${pokemon}（${types}）に${multiplier}倍${cause ? `（${cause}の影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}で${type}タイプになる`,
     coverageReason: (
       pokemon: string,
       move: string,

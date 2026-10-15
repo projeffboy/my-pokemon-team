@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const fr: Messages = {
+  pageTitle: "My Pokemon Team - Créateur et planificateur d'équipes Pokémon",
   // The header
   beta: "Bêta",
   generation,
@@ -117,6 +118,8 @@ const fr: Messages = {
     teamEmpty: "L'équipe Pokémon est vide",
     linkCopied: "Lien de l'équipe Pokémon copié",
     linkNotCopied: "Impossible de copier le lien.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La génération ou le jeu de ce lien n'est pas pris en charge, il a donc été ouvert en ${profile}.`,
     nothingToCopy: "Équipe vide, rien à copier.",
     teamCopied: "Équipe copiée.",
     teamNotCopied: "Impossible de copier l'équipe.",
@@ -269,6 +272,8 @@ const fr: Messages = {
       cause: string | undefined,
     ) =>
       `${type} inflige ${multiplier}x à ${pokemon} (${types})${cause ? ` avec ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} le rend de type ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
