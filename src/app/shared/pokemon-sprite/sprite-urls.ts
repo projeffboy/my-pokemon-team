@@ -54,6 +54,7 @@ function spriteFolder(
   iconIndex: number | undefined,
   isSmall: boolean,
   generation: Generation,
+  still: boolean,
 ) {
   if (
     (num !== undefined && 984 <= num && num <= 995) ||
@@ -64,15 +65,16 @@ function spriteFolder(
     return "gen5";
   }
   const past = PAST_FOLDERS[generation];
-  if (past) return past;
-  if (!isSmall) return "ani";
+  if (past) return still && past === "gen5ani" ? "gen5" : past;
+  if (!isSmall && !still) return "ani";
   return (num && 810 <= num && num <= 898) || pokemon.includes("galar") ?
       "bw"
     : "dex";
 }
 
-// `iconIndex` is the pokemon's altSpriteNum; `isSmall` is below the md breakpoint.
-// A pokemon the generation's games lack falls back to its static gen 5 sprite.
+// `iconIndex` is the pokemon's altSpriteNum; `isSmall` is below the md breakpoint;
+// `still` asks for a static sprite in place of an animated one. A pokemon the
+// generation's games lack falls back to its static gen 5 sprite.
 export function spriteUrls(
   pokemon: string,
   entry: SpriteEntry | undefined,
@@ -80,6 +82,7 @@ export function spriteUrls(
   isSmall: boolean,
   generation: Generation,
   shiny = false,
+  still = false,
 ) {
   const filename = spriteFilename(pokemon, entry);
   const folder = spriteFolder(
@@ -88,6 +91,7 @@ export function spriteUrls(
     iconIndex,
     isSmall,
     generation,
+    still,
   );
   const variant = shiny && folder !== "gen1rb" ? "-shiny" : "";
   return {

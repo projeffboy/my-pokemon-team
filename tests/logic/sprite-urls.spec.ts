@@ -63,3 +63,32 @@ test("shiny sprites keep the selected generation, image type and shiny fallback"
   expect(staticShiny.src).toMatch(/\/gen5-shiny\/miraidon\.png$/);
   expect(staticShiny.fallback).toBe(staticShiny.src);
 });
+
+test("still sprites replace every animated one with its static version", () => {
+  const still = (
+    pokemon: string,
+    num: number,
+    isSmall: boolean,
+    generation: 3 | 5 | 9,
+    shiny = false,
+  ) =>
+    spriteUrls(pokemon, { num }, undefined, isSmall, generation, shiny, true)
+      .src;
+  expect(still("bulbasaur", 1, false, 9)).toMatch(/\/dex\/bulbasaur\.png$/);
+  expect(still("bulbasaur", 1, true, 9)).toMatch(/\/dex\/bulbasaur\.png$/);
+  expect(still("corviknight", 823, false, 9)).toMatch(
+    /\/bw\/corviknight\.png$/,
+  );
+  expect(still("bulbasaur", 1, false, 9, true)).toMatch(
+    /\/dex-shiny\/bulbasaur\.png$/,
+  );
+  for (const isSmall of [false, true]) {
+    expect(still("bulbasaur", 1, isSmall, 5)).toMatch(
+      /\/gen5\/bulbasaur\.png$/,
+    );
+    expect(still("bulbasaur", 1, isSmall, 5, true)).toMatch(
+      /\/gen5-shiny\/bulbasaur\.png$/,
+    );
+  }
+  expect(still("bulbasaur", 1, false, 3)).toMatch(/\/gen3\/bulbasaur\.png$/);
+});

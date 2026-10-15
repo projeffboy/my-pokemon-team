@@ -1,10 +1,10 @@
 import { readFile } from "node:fs/promises";
 import { test, expect } from "fixtures";
-import { clickMenuItem, openManageTeamMenu, selectPokemon } from "helper";
+import { clickMenuItem, openMoreMenu, selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 
 async function importText(page: Page, text: string) {
-  await openManageTeamMenu(page);
+  await openMoreMenu(page);
   await clickMenuItem(page, "Import team");
   const dialog = page.getByRole("dialog", { name: "Import Team" });
   await dialog.getByRole("textbox").fill(text);

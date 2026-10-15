@@ -327,6 +327,28 @@ test("remembers that the player knows slots drag, in any tab", () => {
   expect(mergeStoredState(base, base, base).knowsSlotDrag).toBeUndefined();
 });
 
+test("keeps the sprite animation choice unset until the player makes one", () => {
+  const load = (animateSprites: unknown) =>
+    loadStoredState(
+      fakeStorage(JSON.stringify({ teams: [{ id: "a" }], animateSprites }))
+        .storage,
+    )?.animateSprites;
+  expect(load(false)).toBe(false);
+  expect(load(true)).toBe(true);
+  expect(load(undefined)).toBeUndefined();
+  expect(load("no")).toBeUndefined();
+
+  const base = initialStoredState();
+  const still = { ...base, animateSprites: false };
+  const animated = { ...base, animateSprites: true };
+  expect(mergeStoredState(base, base, still).animateSprites).toBe(false);
+  expect(mergeStoredState(base, animated, still).animateSprites).toBe(true);
+  expect(mergeStoredState(still, still, animated).animateSprites).toBe(true);
+  expect(mergeStoredState(base, base, base)).not.toHaveProperty(
+    "animateSprites",
+  );
+});
+
 test("team filters load with defaults, survive saving, and merge across teams", () => {
   const base = initialStoredState();
   const first = base.teams[0]!;

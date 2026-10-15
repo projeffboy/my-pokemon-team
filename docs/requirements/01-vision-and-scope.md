@@ -101,6 +101,7 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
   - F8.2 Colour Scheme, one of: auto, light, or dark.
   - F8.3 Responsive Layout, on screens from 320 pixels wide.
   - F8.4 Animated Sprites
+    - F8.4.1 Still Sprites [Ash]: chosen in the More menu, and the default on a device set to reduce motion.
 - **F9 Feedback** [Ash]: a message to the Site Owner by email.
   - F9.1 Attach Team Link
   - F9.2 Attach Screenshot

@@ -6,7 +6,7 @@ import {
   selectDialogOption,
   getTeamTextFromUrl,
   goToSite,
-  openManageTeamMenu,
+  openMoreMenu,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
@@ -135,7 +135,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
   test("team-name and duplicate actions live in Teams, which cannot duplicate an empty team", async ({
     page,
   }) => {
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await expect(
       page.getByRole("menuitem", { name: "Edit team name", exact: true }),
     ).toHaveCount(0);
@@ -329,10 +329,10 @@ Ability: Drizzle
     await expect(page.getByLabel("Generation")).toContainText("Gen 9");
   });
 
-  test("the Manage Team menu opens the import page, which imports nothing from text without pokemon", async ({
+  test("the More menu opens the import page, which imports nothing from text without pokemon", async ({
     page,
   }) => {
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await clickMenuItem(page, "Import team");
     const dialog = page.getByRole("dialog", { name: "Import Team" });
     await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");
