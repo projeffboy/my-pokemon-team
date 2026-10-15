@@ -113,6 +113,19 @@ test.describe("team coverage", () => {
       );
   });
 
+  test("Flying Press counts its Flying hits once with Flying moves", () => {
+    const coverage = (move1: string, move2 = "") =>
+      calculateTypeCoverage(createTeam({ name: "hawluchamega", move1, move2 }));
+    for (const [move1, move2] of [
+      ["flyingpress", "acrobatics"],
+      ["acrobatics", "flyingpress"],
+    ])
+      expect(coverage(move1, move2)).toEqual({
+        ...coverage("flyingpress"),
+        Bug: 2,
+      });
+  });
+
   test("Freeze-Dry still covers Water after a regular Ice move", () => {
     const team = createTeam();
     Object.assign(team[0], {
