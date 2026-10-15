@@ -523,6 +523,27 @@ const zhHant: Messages = {
     importedMany: (count: number) => `已匯入 ${count} 支隊伍`,
     noChanges: "沒有任何變更。",
     nothingFound: "這段文字中找不到寶可夢。",
+    problems: (count: number) =>
+      `發現 ${count} 個問題。更新時仍會依下列方式套用文字：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}的${field}`,
+    moveSlot: (slot: number) => `招式 ${slot}`,
+    problemValue: (where: string, value: string) => `${where}：「${value}」`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "無法辨識。",
+    unlearnable: (pokemon: string) =>
+      `在所選遊戲中，${pokemon}無法學會這個招式。`,
+    wrongAbility: (pokemon: string) => `不是${pokemon}可以擁有的特性。`,
+    outOfRange: (min: number, max: number) =>
+      `不是 ${min} 到 ${max} 之間的整數。`,
+    unsupported: "所選遊戲沒有這一項。",
+    tooManyPokemon: "一支隊伍最多有 6 隻寶可夢。",
+    tooManyMoves: "一隻寶可夢最多有 4 個招式。",
+    noGigantamax: (pokemon: string) => `${pokemon}沒有超極巨化的樣子。`,
+    unread: "本網站不讀取這一項。",
+    slotLeftEmpty: "該隊伍格位留空。",
+    moveLeftEmpty: "該招式格位留空。",
+    leftOut: "此項會被省略。",
+    usedInstead: (value: string) => `改用${value}。`,
   },
   deleteDialog: {
     title: (team: string) => `要刪除${team}嗎？`,

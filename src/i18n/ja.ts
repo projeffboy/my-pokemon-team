@@ -536,6 +536,28 @@ const ja: Messages = {
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",
     nothingFound: "そのテキストにポケモンが見つかりませんでした。",
+    problems: (count: number) =>
+      `問題が${count}件見つかりました。更新すると、テキストは次のとおり適用されます：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}の${field}`,
+    moveSlot: (slot: number) => `技${slot}`,
+    problemValue: (where: string, value: string) => `${where}：「${value}」`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "認識できません。",
+    unlearnable: (pokemon: string) =>
+      `選択したゲームでは、${pokemon}はこの技を覚えられません。`,
+    wrongAbility: (pokemon: string) => `${pokemon}が持てる特性ではありません。`,
+    outOfRange: (min: number, max: number) =>
+      `${min}から${max}までの整数ではありません。`,
+    unsupported: "選択したゲームにはこの項目がありません。",
+    tooManyPokemon: "チームに入るポケモンは6匹までです。",
+    tooManyMoves: "ポケモンが覚えられる技は4つまでです。",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}にはキョダイマックスのすがたがありません。`,
+    unread: "サイトが読み取る項目ではありません。",
+    slotLeftEmpty: "チームの枠は空になります。",
+    moveLeftEmpty: "技の枠は空になります。",
+    leftOut: "この項目は省かれます。",
+    usedInstead: (value: string) => `代わりに${value}が使われます。`,
   },
   deleteDialog: {
     title: (team: string) => `${team}を削除しますか？`,

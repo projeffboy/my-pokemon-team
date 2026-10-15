@@ -533,6 +533,29 @@ const en = {
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",
     nothingFound: "No pokemon found in that text.",
+    // The problems in edited text, each shown as "Ho-Oh, Move 4: “Iron Hed”"
+    // above its reason and what an update does instead
+    problems: (count: number) =>
+      `${count === 1 ? "1 problem" : `${count} problems`} found. Update still applies the text as follows:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Move ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: “${value}”`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Not recognized.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} cannot learn this move in the selected game.`,
+    wrongAbility: (pokemon: string) => `Not an ability ${pokemon} can have.`,
+    outOfRange: (min: number, max: number) =>
+      `Not a whole number from ${min} to ${max}.`,
+    unsupported: "The selected game does not have this detail.",
+    tooManyPokemon: "A team holds at most six pokemon.",
+    tooManyMoves: "A pokemon knows at most four moves.",
+    noGigantamax: (pokemon: string) => `${pokemon} has no Gigantamax form.`,
+    unread: "Not a detail the site reads.",
+    slotLeftEmpty: "The team slot is left empty.",
+    moveLeftEmpty: "The move slot is left empty.",
+    leftOut: "It is left out.",
+    usedInstead: (value: string) => `${value} is used instead.`,
   },
   deleteDialog: {
     title: (team: string) => `Delete ${team}?`,

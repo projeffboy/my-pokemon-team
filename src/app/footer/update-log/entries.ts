@@ -38,6 +38,7 @@ const entries: Entry[] = [
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
       "Twenty-one more Pokémon are now animated, like Great Tusk.",
       "Matrix Analysis now notes the type Conversion gives a Pokémon, e.g. Ghost for Porygon-Z with Shadow Ball first.",
+      "Edit Pokepaste now lists each part of the text it cannot use, such as a misspelled move, and what Update does instead.",
     ],
   },
   {

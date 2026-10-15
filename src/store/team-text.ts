@@ -18,6 +18,7 @@ import {
   isTeamEmpty,
 } from "@/shared/team";
 import {
+  allAbilities,
   pokemonName,
   itemName,
   moveName,
@@ -160,6 +161,44 @@ export const serializeTeams = (teams: readonly SavedTeam[]) => {
     .join("");
 };
 
+// A part of team text that the parser could not use as written
+export interface TeamTextProblem {
+  slot: number; // the team slot, from 1
+  pokemon?: string; // missing when the pokemon itself is the problem
+  field:
+    | "pokemon"
+    | "item"
+    | "ability"
+    | "level"
+    | "shiny"
+    | "happiness"
+    | "teraType"
+    | "evs"
+    | "statExperience"
+    | "effortLevels"
+    | "ivs"
+    | "nature"
+    | "move"
+    | "line";
+  move?: number; // the move slot, from 1
+  stat?: StatKey; // the stat of a training value
+  value: string;
+  reason:
+    | "unrecognized"
+    | "unlearnable"
+    | "wrongAbility"
+    | "outOfRange"
+    | "unsupported"
+    | "tooManyPokemon"
+    | "tooManyMoves"
+    | "noGigantamax"
+    | "unread";
+  range?: readonly [number, number];
+  replacement?: string; // what is used in its place (a number for a stat); otherwise it is left out
+}
+
+type Problem = Omit<TeamTextProblem, "slot" | "pokemon">;
+
 const STAT_BY_NAME = new Map<string, StatKey>(
   STAT_KEYS.map(stat => [STAT_NAMES[stat].toLowerCase(), stat]),
 );
@@ -169,13 +208,25 @@ function parseStats(
   text: string,
   max: number,
   isDefault: (value: number) => boolean,
+  report: (problem: Omit<Problem, "field">) => void,
 ): Partial<BaseStats> | undefined {
   const stats: Partial<BaseStats> = {};
   for (const part of text.split("/")) {
-    const [amount = "", name = ""] = part.trim().split(/\s+/);
+    const supplied = part.trim();
+    const [amount = "", name = ""] = supplied.split(/\s+/);
     const stat = STAT_BY_NAME.get(name.toLowerCase());
     const value = Math.min(max, Math.max(0, Math.round(Number(amount))));
     if (stat && !Number.isNaN(value) && !isDefault(value)) stats[stat] = value;
+    if (!supplied) continue;
+    if (!stat) report({ value: supplied, reason: "unrecognized" });
+    else if (value !== Number(amount))
+      report({
+        stat,
+        value: supplied,
+        reason: "outOfRange",
+        range: [0, max],
+        ...(!Number.isNaN(value) && { replacement: String(value) }),
+      });
   }
   return Object.keys(stats).length ? stats : undefined;
 }
@@ -234,8 +285,12 @@ export const LEGACY_LINK_PARSING_OPTIONS = {
   allowHyperTraining: false,
 } as const;
 
+// Showdown's lines for details the site has no field for
+const UNKEPT_DETAIL = /^(?:Pokeball|Dynamax Level|Hidden Power):/i;
+
 // Parses Pokemon Showdown team text into a fresh six-slot team.
-// Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected).
+// Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected),
+// and onProblem hears of each part of the text that could not be used as written.
 export function parseTeamText(
   text: string,
   generation: Generation = 9,
@@ -246,12 +301,14 @@ export function parseTeamText(
     inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
+    onProblem = () => {},
   }: {
     inferFrustrationHappiness?: boolean;
     inferLegacyTraining?: boolean;
     inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
+    onProblem?: (problem: TeamTextProblem) => void;
   } = {},
 ): Team {
   const rules = generationRules(generation, format);
@@ -260,17 +317,29 @@ export function parseTeamText(
     .replace(/^\s*---\s*$/gm, "\n")
     .split(/\n\s*\n/)
     .map(eachPokemonData => eachPokemonData.trim())
-    .filter(eachPokemonData => eachPokemonData) // get rid of empty lines
-    .slice(0, 6); // a team has at most 6 pokemon
+    .filter(eachPokemonData => eachPokemonData); // get rid of empty lines
 
   teamPokemonRawData.forEach((eachPokemonData, teamIndex) => {
     const lines = eachPokemonData.split("\n"); // split pokemon into its properties
 
     const [firstLine = ""] = lines;
-    const parsed = parseFirstLine(firstLine);
-    const member = team[teamIndex];
-    if (!parsed || !member) return;
+    const member = team[teamIndex]; // a team has at most 6 pokemon
+    const parsed = member && parseFirstLine(firstLine);
+    if (!member || !parsed) {
+      onProblem({
+        slot: teamIndex + 1,
+        field: "pokemon",
+        value: firstLine.trim(),
+        reason: member ? "unrecognized" : "tooManyPokemon",
+      });
+      return;
+    }
     const { pokemon, nickname, gender, itemText } = parsed;
+    // A later line can override an earlier one, so a replacement that depends on the
+    // final set is read once every line is parsed
+    const pending: { problem: Problem; replacement?: () => string }[] = [];
+    const report = (problem: Problem, replacement?: () => string) =>
+      pending.push({ problem, ...(replacement && { replacement }) });
 
     member.name = pokemon;
     const abilities = Array.from({ length: 9 }, (_, i) =>
@@ -292,8 +361,16 @@ export function parseTeamText(
         getAutoSelectedItem(pokemon, "", item =>
           isItemAvailable(item, generation, format),
         );
+      if (!item)
+        report({
+          field: "item",
+          value: itemText,
+          reason: "unrecognized",
+          ...(member.item && { replacement: member.item }),
+        });
     }
 
+    const gigantamaxForme = pokemonNameInverse(`${pokemonName(pokemon)}-Gmax`);
     let moveIndex = 0;
     let gigantamax = false;
     let hasHappiness = false;
@@ -303,6 +380,22 @@ export function parseTeamText(
       const value = (prefix: string) => line.slice(prefix.length).trim();
       const startsWith = (prefix: string) =>
         line.toLowerCase().startsWith(prefix.toLowerCase());
+      const statsIn = (
+        field: "evs" | "statExperience" | "effortLevels" | "ivs",
+        prefix: string,
+        max: number,
+        isDefault: (value: number) => boolean,
+      ) =>
+        parseStats(value(prefix), max, isDefault, problem => {
+          const { stat } = problem;
+          report(
+            { field, ...problem },
+            stat && problem.replacement ?
+              () =>
+                String(member[field]?.[stat] ?? (field === "ivs" ? MAX_IV : 0))
+            : undefined,
+          );
+        });
 
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
@@ -315,20 +408,52 @@ export function parseTeamText(
             hasNoAbility(pokemon, generation, format) ? "No Ability" : "";
         else if (abilities.includes(ability)) {
           member.ability = ability;
-        }
+        } else if (ability)
+          report(
+            {
+              field: "ability",
+              value: ability,
+              reason:
+                allAbilities.includes(ability) ? "wrongAbility" : (
+                  "unrecognized"
+                ),
+            },
+            () => member.ability,
+          );
       } else if (startsWith("Gigantamax:")) {
-        gigantamax = value("Gigantamax:").toLowerCase() === "yes";
+        const answer = value("Gigantamax:").toLowerCase();
+        gigantamax = answer === "yes";
+        if (gigantamax && !gigantamaxForme)
+          report({ field: "line", value: line, reason: "noGigantamax" });
+        else if (!["", "yes", "no"].includes(answer))
+          report({ field: "line", value: line, reason: "unrecognized" });
       } else if (startsWith("Level:")) {
-        const level = Math.round(Number(value("Level:")));
-        if (level >= 1 && level <= MAX_LEVEL && level !== DEFAULT_LEVEL)
-          member.level = level;
+        const raw = value("Level:");
+        const level = Math.round(Number(raw));
+        const isLevel = level >= 1 && level <= MAX_LEVEL;
+        if (isLevel && level !== DEFAULT_LEVEL) member.level = level;
+        if (raw && !(isLevel && level === Number(raw)))
+          report(
+            {
+              field: "level",
+              value: raw,
+              reason: "outOfRange",
+              range: [1, MAX_LEVEL],
+            },
+            () => String(member.level ?? rules.fixedLevel ?? DEFAULT_LEVEL),
+          );
       } else if (startsWith("Shiny:")) {
-        if (value("Shiny:").toLowerCase() === "yes") member.shiny = true;
-      } else if (startsWith("Happiness:") && rules.happiness) {
+        const shiny = value("Shiny:");
+        if (shiny.toLowerCase() === "yes") member.shiny = true;
+        else if (shiny && shiny.toLowerCase() !== "no")
+          report({ field: "shiny", value: shiny, reason: "unrecognized" });
+      } else if (startsWith("Happiness:")) {
         const raw = value("Happiness:");
         const happiness = Number(raw);
-        if (
-          raw &&
+        if (!raw) return;
+        if (!rules.happiness)
+          report({ field: "happiness", value: raw, reason: "unsupported" });
+        else if (
           Number.isInteger(happiness) &&
           happiness >= 0 &&
           happiness <= MAX_HAPPINESS
@@ -336,53 +461,76 @@ export function parseTeamText(
           hasHappiness = true;
           if (happiness === DEFAULT_HAPPINESS) delete member.happiness;
           else member.happiness = happiness;
-        }
+        } else
+          report({
+            field: "happiness",
+            value: raw,
+            reason: "outOfRange",
+            range: [0, MAX_HAPPINESS],
+          });
       } else if (startsWith("Tera Type:")) {
         const teraType = value("Tera Type:");
         if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
+        else if (teraType)
+          report({
+            field: "teraType",
+            value: teraType,
+            reason: "unrecognized",
+          });
       } else if (startsWith("EVs:")) {
-        const evs = parseStats(value("EVs:"), 255, ev => ev === 0);
+        const evs = statsIn("evs", "EVs:", 255, ev => ev === 0);
         if (evs) member.evs = evs;
       } else if (startsWith("Stat Experience:")) {
-        member.statExperience = parseStats(
-          value("Stat Experience:"),
+        member.statExperience = statsIn(
+          "statExperience",
+          "Stat Experience:",
           65535,
           n => n === 0,
         );
       } else if (startsWith("Effort Levels:")) {
-        member.effortLevels = parseStats(
-          value("Effort Levels:"),
+        member.effortLevels = statsIn(
+          "effortLevels",
+          "Effort Levels:",
           10,
           n => n === 0,
         );
       } else if (startsWith("IVs:")) {
-        const ivs = parseStats(value("IVs:"), MAX_IV, iv => iv === MAX_IV);
+        const ivs = statsIn("ivs", "IVs:", MAX_IV, iv => iv === MAX_IV);
         if (ivs) member.ivs = ivs;
       } else if (/ Nature$/i.test(line)) {
-        const nature = natureNameInverse(
-          line.slice(0, -" Nature".length).trim(),
-        );
+        const natureText = line.slice(0, -" Nature".length).trim();
+        const nature = natureNameInverse(natureText);
         if (nature) member.nature = nature;
-      } else if (/^(?:-|~|Move:)/i.test(line) && moveIndex < MOVE_KEYS.length) {
-        // if property has to do with moves
-        const moveText = line
-          .replace(/^(?:[-~]\s*|Move:\s*)/i, "")
-          .trim()
-          .replace("[", "") // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
-          .replace("]", "");
+        else
+          report({
+            field: "nature",
+            value: natureText,
+            reason: "unrecognized",
+          });
+      } else if (/^(?:-|~|Move:)/i.test(line)) {
+        // if property has to do with moves; a bare "-" is an empty move slot
+        const supplied = line.replace(/^(?:[-~]\s*|Move:\s*)/i, "").trim();
+        const moveKey = MOVE_KEYS[moveIndex];
+        moveIndex++;
+        const fail = (reason: Problem["reason"]) => {
+          if (supplied)
+            report({ field: "move", move: moveIndex, value: supplied, reason });
+        };
+        if (!moveKey) return fail("tooManyMoves");
+
+        // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
+        const move = moveNameInverse(
+          supplied.replace("[", "").replace("]", ""),
+        );
 
         // If legit, set move
         // Otherwise, set it blank
-        const move = moveNameInverse(moveText);
-
         const validMove =
           canItLearn(move, pokemon, generation, format) && move ? move : "";
-
-        const moveKey = MOVE_KEYS[moveIndex];
-        if (moveKey) member[moveKey] = validMove;
-
-        moveIndex++;
-      }
+        member[moveKey] = validMove;
+        if (!validMove) fail(move ? "unlearnable" : "unrecognized");
+      } else if (!UNKEPT_DETAIL.test(line))
+        report({ field: "line", value: line, reason: "unread" });
     });
     // Old Gen 1/2 site exports wrote a blank Ability line and omitted zero EVs.
     if (
@@ -393,10 +541,7 @@ export function parseTeamText(
       )
     )
       member.evs = Object.fromEntries(STAT_KEYS.map(stat => [stat, 252]));
-    if (gigantamax) {
-      const forme = pokemonNameInverse(`${pokemonName(member.name)}-Gmax`);
-      if (forme) member.name = forme;
-    }
+    if (gigantamax && gigantamaxForme) member.name = gigantamaxForme;
     if (
       inferFrustrationHappiness &&
       rules.happiness &&
@@ -416,9 +561,32 @@ export function parseTeamText(
           allowHyperTraining,
         });
     }
+    for (const { problem, replacement } of pending) {
+      const used = replacement ? replacement() : problem.replacement;
+      const { replacement: _, ...rest } = problem;
+      onProblem({
+        slot: teamIndex + 1,
+        pokemon,
+        ...rest,
+        ...(used && { replacement: used }),
+      });
+    }
   });
 
   return team;
+}
+
+// Each part of team text that parseTeamText could not use as written, in text order
+export function teamTextProblems(
+  text: string,
+  generation: Generation,
+  format: string,
+): TeamTextProblem[] {
+  const problems: TeamTextProblem[] = [];
+  parseTeamText(text, generation, format, {
+    onProblem: problem => problems.push(problem),
+  });
+  return problems;
 }
 
 const TEAM_HEADER = /^===\s*(?:\[([^\]]*)\])?\s*(.*?)\s*===\s*$/;

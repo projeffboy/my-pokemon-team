@@ -556,6 +556,28 @@ const de: Messages = {
     importedMany: (count: number) => `${count} Teams importiert`,
     noChanges: "Keine Änderungen vorgenommen.",
     nothingFound: "In diesem Text wurde kein Pokémon gefunden.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 Problem" : `${count} Probleme`} gefunden. Aktualisieren übernimmt den Text trotzdem so:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Attacke ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: „${value}“`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Nicht erkannt.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} kann diese Attacke im gewählten Spiel nicht erlernen.`,
+    wrongAbility: (pokemon: string) =>
+      `Keine Fähigkeit, die ${pokemon} haben kann.`,
+    outOfRange: (min: number, max: number) =>
+      `Keine ganze Zahl von ${min} bis ${max}.`,
+    unsupported: "Das gewählte Spiel hat diese Angabe nicht.",
+    tooManyPokemon: "Ein Team hat höchstens sechs Pokémon.",
+    tooManyMoves: "Ein Pokémon kennt höchstens vier Attacken.",
+    noGigantamax: (pokemon: string) => `${pokemon} hat keine Gigadynamax-Form.`,
+    unread: "Keine Angabe, die die Seite liest.",
+    slotLeftEmpty: "Der Teamplatz bleibt leer.",
+    moveLeftEmpty: "Der Attackenplatz bleibt leer.",
+    leftOut: "Die Angabe wird weggelassen.",
+    usedInstead: (value: string) => `Stattdessen wird ${value} verwendet.`,
   },
   deleteDialog: {
     title: (team: string) => `${team} löschen?`,

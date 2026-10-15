@@ -538,6 +538,28 @@ const ptBR: Messages = {
     importedMany: (count: number) => `${count} equipes importadas`,
     noChanges: "Nenhuma alteração feita.",
     nothingFound: "Nenhum Pokémon encontrado nesse texto.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 problema encontrado" : `${count} problemas encontrados`}. Atualizar ainda aplica o texto assim:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Golpe ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: “${value}”`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Não reconhecido.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} não pode aprender este golpe no jogo selecionado.`,
+    wrongAbility: (pokemon: string) =>
+      `Não é uma habilidade que ${pokemon} pode ter.`,
+    outOfRange: (min: number, max: number) =>
+      `Não é um número inteiro de ${min} a ${max}.`,
+    unsupported: "O jogo selecionado não tem este detalhe.",
+    tooManyPokemon: "Uma equipe tem no máximo seis Pokémon.",
+    tooManyMoves: "Um Pokémon conhece no máximo quatro golpes.",
+    noGigantamax: (pokemon: string) => `${pokemon} não tem forma Gigantamax.`,
+    unread: "Não é um detalhe que o site lê.",
+    slotLeftEmpty: "A posição da equipe fica vazia.",
+    moveLeftEmpty: "A posição do golpe fica vazia.",
+    leftOut: "Isso fica de fora.",
+    usedInstead: (value: string) => `${value} é usado no lugar.`,
   },
   deleteDialog: {
     title: (team: string) => `Excluir ${team}?`,

@@ -547,6 +547,30 @@ const ko: Messages = {
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
     noChanges: "변경된 내용이 없습니다.",
     nothingFound: "텍스트에서 포켓몬을 찾지 못했습니다.",
+    problems: (count: number) =>
+      `문제 ${count}개를 찾았습니다. 업데이트하면 텍스트가 다음과 같이 적용됩니다:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}의 ${field}`,
+    moveSlot: (slot: number) => `기술 ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: “${value}”`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "인식할 수 없습니다.",
+    unlearnable: (pokemon: string) =>
+      `선택한 게임에서 ${josa(pokemon, "은", "는")} 이 기술을 배울 수 없습니다.`,
+    wrongAbility: (pokemon: string) =>
+      `${josa(pokemon, "이", "가")} 가질 수 있는 특성이 아닙니다.`,
+    outOfRange: (min: number, max: number) =>
+      `${min}~${max} 사이의 정수가 아닙니다.`,
+    unsupported: "선택한 게임에는 이 항목이 없습니다.",
+    tooManyPokemon: "팀에는 포켓몬이 최대 6마리까지 들어갑니다.",
+    tooManyMoves: "포켓몬은 기술을 최대 4개까지 배웁니다.",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}에게는 거다이맥스의 모습이 없습니다.`,
+    unread: "사이트가 읽는 항목이 아닙니다.",
+    slotLeftEmpty: "팀 칸은 비워 둡니다.",
+    moveLeftEmpty: "기술 칸은 비워 둡니다.",
+    leftOut: "이 항목은 제외됩니다.",
+    usedInstead: (value: string) =>
+      `대신 ${josa(value, "을", "를")} 사용합니다.`,
   },
   deleteDialog: {
     title: (team: string) => `${josa(team, "을", "를")} 삭제할까요?`,
