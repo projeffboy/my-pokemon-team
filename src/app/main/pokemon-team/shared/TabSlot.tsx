@@ -67,7 +67,7 @@ export const TabSlotContent = observer(function TabSlotContent({
           sx={{
             fontSize: 16,
             transform: "rotate(90deg)",
-            visibility: hasPokemon ? "visible" : "hidden",
+            visibility: hasPokemon ? "inherit" : "hidden",
           }}
         />
       )}
