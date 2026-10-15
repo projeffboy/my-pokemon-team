@@ -426,6 +426,46 @@ test("a stalled screenshot image does not block feedback or leave its request ru
   ).toBeGreaterThan(0);
 });
 
+// A tab opened before a deploy cannot load the screenshot chunk, and the page reloads when
+// that fails, so the chunk must be requested when the dialog opens, before anything is typed
+test("loads the screenshot library when the dialog opens", async ({ page }) => {
+  const libraryRequested = page.waitForRequest(/modern-screenshot/);
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  await libraryRequested;
+  await expect(
+    page
+      .getByRole("dialog", { name: "Send Feedback" })
+      .getByLabel("Your feedback"),
+  ).toHaveValue("");
+});
+
+test("sends feedback without a screenshot when the screenshot library fails to load", async ({
+  page,
+}) => {
+  await page.route(/modern-screenshot/, route => route.abort());
+  const requests: Record<string, unknown>[] = [];
+  await page.route("/api/feedback", route => {
+    requests.push(route.request().postDataJSON());
+    return route.fulfill({ status: 204 });
+  });
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+  await dialog.getByLabel("Your feedback").fill("Sent from an outdated tab");
+  await expect(
+    dialog.getByLabel("Attach a screenshot of the page"),
+  ).toBeChecked();
+  await dialog.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(dialog).toBeHidden({ timeout: SEND_TIMEOUT });
+  await expect(page.getByText("Thanks! Your feedback was sent.")).toBeVisible();
+  expect(requests).toEqual([
+    {
+      message: "Sent from an outdated tab",
+      link: expect.any(String),
+      screen: expect.any(String),
+    },
+  ]);
+});
+
 test("the feedback fields offer no autofill, and the message keeps its spellcheck", async ({
   page,
 }) => {

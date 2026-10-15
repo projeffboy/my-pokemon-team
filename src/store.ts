@@ -527,12 +527,21 @@ export class Store {
     return generationRules(this.currentTeam.generation, this.dataFormat);
   }
 
+  // Plus the required items the game lacks but auto-selects for a pokemon it lists,
+  // e.g. Bug Memory for Silvally-Bug in Gen 9
   get teamItems() {
     if (!this.learnsetsLoaded) return [];
-    return availableItems(
-      allItemIds,
-      this.currentTeam.generation,
-      this.dataFormat,
+    const available = new Set(
+      availableItems(allItemIds, this.currentTeam.generation, this.dataFormat),
+    );
+    if (!available.size) return [];
+    const listed = new Set(this.gamePokemon);
+    const required = this.teamPokemon
+      .filter(name => listed.has(name))
+      .map(name => getAutoSelectedItem(name, "", item => available.has(item)))
+      .filter(item => item && !available.has(item));
+    return allItemIds.filter(
+      item => available.has(item) || required.includes(item),
     );
   }
 
@@ -600,7 +609,8 @@ export class Store {
   selectPokemon(teamIndex: number, name: string) {
     const member = this.team[teamIndex];
 
-    if (!member) return;
+    // Picking the slot's own pokemon again keeps its set
+    if (!member || member.name === name) return;
     member.name = name;
     member.item =
       this.rules.items ?
