@@ -84,11 +84,11 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
   - F4.2 Team Type Coverage
   - F4.3 Score Explanations
   - F4.4 Team Checklist
-    - F4.4.1 Battle Format Context, singles or doubles [PF1]
+    - F4.4.1 Battle Format Context, singles or doubles [Ash]
   - F4.5 Matrix Analysis [Ash]: every type against every pokemon, with the reason for each cell.
   - F4.6 Team Legality Warnings [PF6]
 - **F5 Team Collection** [Ash]
-  - F5.1 Saved Teams: any number of named teams in the browser, each with its generation, format, and filters.
+  - F5.1 Saved Teams: any number of named teams in the browser, each with its generation, format, battle format, and filters.
   - F5.2 Synchronization Between Tabs
   - F5.3 Team Backups: a backup file holding every saved team, saved and restored under Teams → Team backups.
 - **F6 Team Exchange**: a share link, Showdown team text, and Export All [Ash] for every saved team at once.
@@ -117,7 +117,7 @@ Each has a GitHub issue that names its ID. The issue holds the work, and its mil
 
 | ID  | Planned feature                                                                                                      | State                                                                                                |
 | --- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5       | Planned                                                                                              |
+| PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5       | Built on 15 October 2026                                                                             |
 | PF2 | F10.2 Team transfer to the old website, as a share link                                                              | Built on 14 October 2026                                                                             |
 | PF3 | Let's Go and the Legends games, with their training values. The generation menu lists them in its Coming soon group. | Planned                                                                                              |
 | PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                               | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
