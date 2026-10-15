@@ -27,7 +27,7 @@ test.describe("Language Select - Integration Tests", () => {
     await page.getByRole("menuitem", { name: "日本語" }).click();
     await expect(page.getByRole("menu")).toBeHidden();
 
-    // The UI text, the document language, and the data names follow the choice
+    // The UI text, the document language and title, and the data names follow the choice
     await expect(
       page.getByRole("combobox", { name: ja.generationSelect }),
     ).toBeVisible();
@@ -35,6 +35,7 @@ test.describe("Language Select - Integration Tests", () => {
       page.getByRole("region", { name: ja.team.slot(1) }),
     ).toBeVisible();
     await expect(page.locator("html")).toHaveAttribute("lang", "ja");
+    await expect(page).toHaveTitle(ja.pageTitle);
     await selectPokemon(page, ja.team.input(1, "name"), "ラプラス");
     expect(getTeamTextFromUrl(page)).toContain("Lapras");
 
@@ -51,6 +52,7 @@ test.describe("Language Select - Integration Tests", () => {
 
     await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.locator("html")).toHaveAttribute("lang", "ja");
+    await expect(page).toHaveTitle(ja.pageTitle);
     await expect(page.getByLabel(ja.team.input(1, "name"))).toHaveValue(
       "シャワーズ",
     );

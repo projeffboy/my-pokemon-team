@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { createViewport, turnOnAdvanced, SMALL_VIEWPORT_WIDTH } from "helper";
+import { createViewport, SMALL_VIEWPORT_WIDTH } from "helper";
 
 test.describe("Share Link - Unit Tests", () => {
   test.use({ viewport: createViewport(SMALL_VIEWPORT_WIDTH) });
@@ -7,7 +7,6 @@ test.describe("Share Link - Unit Tests", () => {
   test("shows an empty-team message when sharing before any Pokemon are selected", async ({
     page,
   }) => {
-    await turnOnAdvanced(page);
     const shareButton = page.getByRole("button", {
       name: "Share pokemon team link",
     });

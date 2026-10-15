@@ -201,7 +201,7 @@ function GridRowComponent({
 export const VirtualizedListboxContext = React.createContext<{
   pokemonProperty: string;
   teamIndex: number;
-  // Whether the move options show their type, as the inputs do with Show move types on
+  // Whether the move options show their type, as the inputs do with Show types on
   showMoveTypes: boolean;
   selectedValue: string;
   internalListRef: React.RefObject<ListImperativeAPI | null>;
@@ -240,12 +240,8 @@ const VirtualizedListbox = observer(
       const isNameInput = pokemonProperty === "name";
       const isGrid = isNameInput && store.nameView !== "list";
       const isBigGrid = isNameInput && store.nameView === "big-grid";
-      // In Advanced mode, Filters and Sort sit beside the view toggle, which
-      // drops its captions to make room; the tooltips and labels still name the views
-      const showTools = isNameInput && store.isMoreOpen;
-      // The move lists have Sort alone
-      const showMoveTools =
-        pokemonProperty.startsWith("move") && store.isMoreOpen;
+      // Filters and Sort sit beside the view toggle; the move lists have Sort alone
+      const showMoveTools = pokemonProperty.startsWith("move");
       const columns = gridColumns(store.nameView);
       const gridRowSize = isBigGrid ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE;
       const itemData = children as ItemData;
@@ -290,7 +286,7 @@ const VirtualizedListbox = observer(
       const [toggleHeight, setToggleHeight] = React.useState(0);
       React.useLayoutEffect(() => {
         setToggleHeight(toggleRef.current?.offsetHeight ?? 0);
-      }, [isNameInput, isGrid, showTools, showMoveTools]);
+      }, [isNameInput, isGrid, showMoveTools]);
 
       // Uses the measured average row height (rows are shorter than ITEM_SIZE on
       // wider screens, where MUI's option minHeight is no longer forced to 48px)
@@ -323,12 +319,12 @@ const VirtualizedListbox = observer(
               sx={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: showTools ? "space-between" : "center",
+                justifyContent: "space-between",
                 boxSizing: "border-box",
                 width: isGrid ? "100%" : nameListWidth,
                 maxWidth: "100%",
                 my: 0.5,
-                px: showTools ? 0.5 : 0,
+                px: 0.5,
               }}
             >
               <ToggleButtonGroup
@@ -339,31 +335,7 @@ const VirtualizedListbox = observer(
                   if (view) store.nameView = view;
                 }}
                 aria-label={t.team.nameListView}
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  minWidth: 0,
-                  width: showTools ? undefined : "100%",
-                  "& > .MuiToggleButton-root": {
-                    gap: 0.75,
-                    px:
-                      showTools ? undefined
-                      : isGrid ? 0.5
-                      : 0.75,
-                    minWidth: 0,
-                    flex: isGrid && !showTools ? 1 : undefined,
-                    flexDirection: "row",
-                    fontSize: 12,
-                    lineHeight: 1,
-                  },
-                  "& svg": { flexShrink: 0 },
-                  "& > * > span[aria-hidden]": {
-                    minWidth: 0,
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                  },
-                }}
+                sx={{ minWidth: 0 }}
               >
                 {(
                   [
@@ -385,18 +357,13 @@ const VirtualizedListbox = observer(
                     key={view}
                     value={view}
                     aria-label={label}
-                    title={showTools ? caption : undefined}
+                    title={caption}
                   >
                     <Icon fontSize="small" />
-                    {!showTools && (
-                      <span aria-hidden="true" title={caption}>
-                        {caption}
-                      </span>
-                    )}
                   </ToggleButton>
                 ))}
               </ToggleButtonGroup>
-              {showTools && <ListTools />}
+              <ListTools />
             </Box>
           )}
           {showMoveTools && (

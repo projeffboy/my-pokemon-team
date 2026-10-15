@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const es: Messages = {
+  pageTitle: "My Pokemon Team - Creador y planificador de equipos Pokémon",
   beta: "Beta",
   generation,
   generationGames: {
@@ -29,10 +30,11 @@ const es: Messages = {
   },
   generationSelect: "Generación",
   comingSoon: "Próximamente",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Serie principal" },
   combinedGenerations: {
     label: "Generaciones 6–9",
     short: "Gens. 6–9",
-    description: "Combina opciones de todos los juegos de las generaciones 6–9",
+    description: "Combina todos los juegos de las generaciones 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -48,9 +50,13 @@ const es: Messages = {
     short: "Sitio anterior",
     title: "¿Cambiar al sitio anterior?",
     description:
-      "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",
+      "Tu equipo actual se abrirá en el sitio anterior. Los equipos guardados aquí permanecerán en esta versión.",
     go: "Ir al sitio anterior",
     goLong: "Ir al sitio anterior",
+    generationsOnly: (generations: string) =>
+      `El sitio anterior solo incluye las ${generations}.`,
+    leftOut: "Esto no se transferirá:",
+    goWithTeam: "Ir con mi equipo",
   },
   feedback: {
     button: "Enviar comentarios",
@@ -108,6 +114,8 @@ const es: Messages = {
     teamEmpty: "El equipo Pokémon está vacío",
     linkCopied: "Enlace del equipo Pokémon copiado",
     linkNotCopied: "No se ha podido copiar el enlace.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La generación o el juego de este enlace no es compatible, así que se ha abierto en ${profile}.`,
     nothingToCopy: "El equipo está vacío, no hay nada que copiar.",
     teamCopied: "Equipo copiado.",
     teamNotCopied: "No se ha podido copiar el equipo.",
@@ -119,7 +127,6 @@ const es: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vacío"})`,
     slotPair: (first: string, second: string) => `${first} y ${second}`,
-    advancedMode: "Avanzado",
     filters: "Filtros",
     sort: "Ordenar",
     randomizePokemon: "Aleatorizar Pokémon",
@@ -129,7 +136,7 @@ const es: Messages = {
     advanced: "Más detalles",
     advancedFor: (slot: number) => `Más detalles del hueco ${slot}`,
     details: "Detalles",
-    showMoveTypes: "Mostrar tipos de movimientos",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Acerca de ${pokemon}`,
     dragHint: "Mantén y arrastra para reordenar",
     moveToSlot: (pokemon: string) => `Mover a ${pokemon} a otro hueco`,
@@ -161,7 +168,8 @@ const es: Messages = {
       `establecer ${label} en ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `intercambiar a ${first} y ${second}`,
-    moreChanges: (count: number) => `${count} cambios más`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 cambio más" : `${count} cambios más`,
     undoAction: (action: string) => `Deshacer ${action}`,
     redoAction: (action: string) => `Rehacer ${action}`,
     randomizeTeamAction: "crear equipo aleatorio",
@@ -171,7 +179,8 @@ const es: Messages = {
     bigGridView: "Vista de cuadrícula grande",
     teamNumber: (number: number) => `Equipo ${number}`,
     unnamedTeam: "Equipo",
-    copyOf: (name: string) => `Copia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} de ${name}` : `Copia de ${name}`,
     learnsetsFailed:
       "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
   },
@@ -217,6 +226,11 @@ const es: Messages = {
       status: { label: "Movimiento de estado", short: "Estado" },
       phazer: { label: "Phazer" },
       boosting: { label: "Movimiento de mejora", short: "Setup" },
+      priority: {
+        label: "Movimiento prioritario",
+        short: "Prioridad",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Movimiento Volt-turn",
         short: "Volt-turn",
@@ -250,6 +264,8 @@ const es: Messages = {
       cause: string | undefined,
     ) =>
       `${type} hace ${multiplier}x a ${pokemon} (${types})${cause ? ` con ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} lo vuelve de tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -440,7 +456,7 @@ const es: Messages = {
     removed: {
       item: "Objeto eliminado",
       ability: "Habilidad eliminada",
-      moves: "Movimientos eliminados:",
+      move: "Movimiento eliminado",
       details: "Detalles eliminados",
     },
     ivsUnused: (where: string) => `Los IVs no se aplican en ${where}.`,
@@ -456,6 +472,9 @@ const es: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidad" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} se ${carried === 1 ? "conserva" : "conservan"}`,
+    removedSummary: (removed: string) => `Eliminación de ${removed}`,
     modify: "Actualizar equipo actual",
     copy: "Copiar a un nuevo equipo",
     createEmpty: "Crear equipo vacío",
@@ -584,7 +603,7 @@ const es: Messages = {
     teamsAnswer:
       "Tus equipos se guardan en este navegador, así que están aquí cuando vuelves, pero no en otro dispositivo. El botón Equipos los lista, y el menú de cada equipo lo renombra, elige su generación y formato, lo duplica, lo comparte o lo elimina. Exportar todo descarga todos los equipos como texto de Showdown, que Importar equipo vuelve a leer. La barra de direcciones siempre contiene el equipo actual, así que copiar la dirección (o pulsar Compartir) lo comparte.",
     teamsAnswer2:
-      "El botón Más muestra las herramientas del equipo, Filtros, Ordenar y Más detalles. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están encima de las pestañas de los Pokémon.",
+      "La lista de nombres tiene los botones Filtros y Ordenar, y las listas de movimientos tienen Ordenar. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están encima de las pestañas de los Pokémon.",
     generations: "Generaciones",
     generationsQuestion: "¿Qué cambia la generación?",
     generationsAnswer:
@@ -645,7 +664,7 @@ const es: Messages = {
       ],
       [
         "Recuperación fiable",
-        "Movimientos que garantizan recuperar el 50 % o más de tus PS cada vez que los usas (con un clima normal). P. ej. Recuperación, Ovocuración, Batido, Relajo, Síntesis.",
+        "Movimientos que garantizan recuperar el 50 % o más de tus PS cada vez que los usas (con un clima normal). P. ej. Recuperación, Ovocuración, Batido, Relajo, Síntesis. Deseo también cuenta si el mismo Pokémon conoce Protección o Detección.",
       ],
       [
         "Movimientos de estado",
@@ -654,6 +673,10 @@ const es: Messages = {
       [
         "Movimiento de mejora",
         "Movimientos que suben tus estadísticas (preferiblemente 2 o más niveles), como Danza Espada y Paz Mental.",
+      ],
+      [
+        "Movimiento prioritario",
+        "Movimientos que hacen daño y se usan antes que la mayoría de los demás, sin importar la Velocidad. P. ej. Velocidad Extrema, Golpe Bajo, Acua Jet, Puño Bala.",
       ],
       [
         "Objeto Elegido",
