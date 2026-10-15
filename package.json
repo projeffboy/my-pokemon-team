@@ -35,6 +35,7 @@
     "test:dev": "playwright test",
     "test:smoke": "playwright test --config=playwright.smoke.config.ts",
     "test:links": "playwright test --config=playwright.links.config.ts",
+    "test:perf": "playwright test --config=playwright.perf.config.ts",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests/tsconfig.json"
   },
   "devDependencies": {
