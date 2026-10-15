@@ -72,8 +72,36 @@ test.describe("set details in Showdown text", () => {
       gender: "M",
     });
     expect(serializeTeam(team)).toBe(
-      "Garchomp (M) @ \nAbility: No Ability\n- Earthquake\n-\n-\n-\n\n",
+      "Garchomp (M)\nAbility: No Ability\n- Earthquake\n-\n-\n-\n\n",
     );
+  });
+
+  test("a set without an item leaves out the @, as Showdown does", () => {
+    const [member] = createTeam({
+      name: "pikachu",
+      nickname: "Sparky",
+      gender: "F",
+      move1: "thunderbolt",
+    });
+    const text = serializeTeam([member]);
+    expect(text.split("\n")[0]).toBe("Sparky (Pikachu) (F)");
+    expect(parseTeamText(text)[0]).toEqual(member);
+    // Text and links made before keep reading the same
+    for (const line of ["Pikachu", "Pikachu (F)", "Sparky (Pikachu) (F)"]) {
+      const set = "\nAbility: Static\n- Thunderbolt";
+      expect(parseTeamText(`${line} @ ${set}`), line).toEqual(
+        parseTeamText(`${line}${set}`),
+      );
+    }
+  });
+
+  test("a nickname holding an @ round-trips without an item", () => {
+    for (const nickname of ["Mew@x", "a@b"]) {
+      const [member] = createTeam({ name: "pikachu", nickname });
+      const text = serializeTeam([member]);
+      expect(text.split("\n")[0]).toBe(`${nickname} (Pikachu)`);
+      expect(parseTeamText(text)[0], nickname).toEqual(member);
+    }
   });
 
   test("clamps stats and levels, and drops unknown natures and tera types", () => {
@@ -294,7 +322,7 @@ Garchomp
       createSavedTeam({ team: createTeam({ name: "torkoal" }) }),
     ]);
     expect(text).toBe(
-      "=== [gen8ou] Rain ===\n\nKingdra @ \nAbility: No Ability\n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal @ \nAbility: No Ability\n-\n-\n-\n-\n\n",
+      "=== [gen8ou] Rain ===\n\nKingdra\nAbility: No Ability\n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal\nAbility: No Ability\n-\n-\n-\n-\n\n",
     );
     expect(parseTeamsText(text)).toHaveLength(2);
     expect(parseTeamsText(text)[1]).toMatchObject({
@@ -344,7 +372,7 @@ test("app backup names preserve slashes without changing external folder imports
     createSavedTeam({ name: "Sun", team: createTeam({ name: "torkoal" }) }),
   ]);
   expect(text).toMatch(
-    /^Kingdra @ *\n# mypokemonteam backup: preserve team names\n/m,
+    /^Kingdra\n# mypokemonteam backup: preserve team names\n/m,
   );
   expect(
     parseTeamsText(text).map(({ name, team }) => [name, team[0].name]),

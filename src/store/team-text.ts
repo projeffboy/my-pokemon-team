@@ -71,10 +71,12 @@ function serializeMember(
   // The Advanced dialog keeps a space being typed, which the text leaves out
   const nickname = member.nickname?.trim();
   const species = pokemonName(name) ?? name;
+  const itemText = itemName(item);
   const nameLine = [
     nickname ? `${nickname} (${species})` : species,
     gender === "M" || gender === "F" ? `(${gender})` : "",
-    `@ ${itemName(item)}`,
+    // Showdown leaves out " @ " when there is no item
+    itemText ? `@ ${itemText}` : "",
   ]
     .filter(part => part)
     .join(" ");
