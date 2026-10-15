@@ -6,7 +6,6 @@ import {
   getTeamTextFromUrl,
   openFilters,
   selectDialogOption,
-  turnOnAdvanced,
   selectAbility,
   selectPokemon,
 } from "helper";
@@ -374,7 +373,6 @@ test.describe("Teams across tabs and links", () => {
     context,
   }) => {
     await selectPokemon(page, "Tropius");
-    await turnOnAdvanced(page);
     await page.getByRole("button", { name: "Teams", exact: true }).click();
     await page
       .getByRole("button", { name: "Options for Team 1", exact: true })
@@ -457,7 +455,6 @@ test.describe("Teams across tabs and links", () => {
 
 test.describe("Reloading an empty saved team", () => {
   const renameTeam = async (page: Page, from: string, to: string) => {
-    await turnOnAdvanced(page);
     await page.getByRole("button", { name: "Teams", exact: true }).click();
     await page
       .getByRole("button", { name: `Options for ${from}`, exact: true })

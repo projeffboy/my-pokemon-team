@@ -1,7 +1,5 @@
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import ToggleOnOutlinedIcon from "@mui/icons-material/ToggleOnOutlined";
-import ToggleOffOutlinedIcon from "@mui/icons-material/ToggleOffOutlined";
 import FolderIcon from "@mui/icons-material/Folder";
 import TeamDiceIcon from "./team-toolbar/TeamDiceIcon";
 import LinkIcon from "@mui/icons-material/Link";
@@ -12,7 +10,6 @@ import store from "@/store";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import { teamUrl } from "@/app/shared/team-link";
 import { redoEdit, undoEdit } from "@/app/shared/history-actions";
-import { useIsMdDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import ManageTeamMenu from "./team-toolbar/ManageTeamMenu";
 import ToolbarButton from "./team-toolbar/shared/ToolbarButton";
@@ -37,12 +34,7 @@ export const shareTeamLink = () => {
 // onto two, with the team's actions above its history and settings.
 const TeamToolbar = observer(function TeamToolbar() {
   const { t } = useTranslation();
-  const isMdDown = useIsMdDown();
-  const { isMoreOpen } = store;
-  const AdvancedIcon =
-    isMoreOpen ? ToggleOnOutlinedIcon : ToggleOffOutlinedIcon;
   const randomLabels = t.teams.randomTeamLabels;
-  // Phones and tablets have the Advanced switch in the Manage team menu instead
   const shortLabels = [
     t.team.teams,
     randomLabels.at(-1) ?? "",
@@ -50,7 +42,6 @@ const TeamToolbar = observer(function TeamToolbar() {
     t.undo,
     t.redo,
     t.team.manageTeam,
-    ...(isMdDown ? [] : [t.team.advancedMode]),
   ];
   const count = shortLabels.length;
   // The probe is one column of a single row: the row holds if every short label fits it
@@ -137,20 +128,6 @@ const TeamToolbar = observer(function TeamToolbar() {
         {t.redo}
       </ToolbarButton>
       <ManageTeamMenu basis={basis(5)} />
-      {!isMdDown && (
-        <ToolbarButton
-          basis={basis(6)}
-          icon={
-            <AdvancedIcon
-              sx={{ color: isMoreOpen ? "success.main" : "inherit" }}
-            />
-          }
-          onClick={() => (store.isMoreOpen = !isMoreOpen)}
-          aria-pressed={isMoreOpen}
-        >
-          {t.team.advancedMode}
-        </ToolbarButton>
-      )}
     </Stack>
   );
 });

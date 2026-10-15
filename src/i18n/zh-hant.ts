@@ -119,7 +119,6 @@ const zhHant: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `寶可夢 ${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first} 與 ${second}`,
-    advancedMode: "進階",
     filters: "篩選",
     sort: "排序",
     randomizePokemon: "隨機選擇寶可夢",
@@ -574,7 +573,7 @@ const zhHant: Messages = {
     teamsAnswer:
       "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「全部匯出」會把每支隊伍以 Showdown 文字下載，「匯入隊伍」則能把它們讀回來。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
     teamsAnswer2:
-      "「更多」按鈕會顯示隊伍工具、「篩選」、「排序」與「更多詳情」。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於寶可夢欄位分頁的上方。",
+      "名稱列表中有「篩選」與「排序」按鈕，招式列表中有「排序」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於寶可夢欄位分頁的上方。",
     generations: "世代",
     generationsQuestion: "世代會改變什麼？",
     generationsAnswer:

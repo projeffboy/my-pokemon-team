@@ -4,12 +4,10 @@ import {
   clickMenuItem,
   getTeamTextFromUrl,
   openManageTeamMenu,
-  turnOnAdvanced,
   selectPokemon,
 } from "helper";
 
 const openTeams = async (page: Page) => {
-  await turnOnAdvanced(page);
   await page.getByRole("button", { name: "Teams", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Teams" })).toBeVisible();
 };

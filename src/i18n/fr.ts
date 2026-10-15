@@ -123,7 +123,6 @@ const fr: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vide"})`,
     slotPair: (first: string, second: string) => `${first} et ${second}`,
-    advancedMode: "Avancé",
     filters: "Filtres",
     sort: "Trier",
     randomizePokemon: "Randomiser le Pokémon",
@@ -603,7 +602,7 @@ const fr: Messages = {
     teamsAnswer:
       "Vos équipes sont enregistrées dans ce navigateur : elles sont donc là à votre retour, mais pas sur un autre appareil. Le bouton Équipes les liste, et le menu de chaque équipe permet de la renommer, de choisir sa génération et son format, de la dupliquer, de la partager ou de la supprimer. Tout exporter télécharge toutes les équipes en texte Showdown, qu'Importer une équipe relit ensuite. La barre d'adresse contient toujours l'équipe actuelle : copier l'adresse (ou appuyer sur Partager) la partage.",
     teamsAnswer2:
-      "Le bouton Plus affiche les outils d’équipe, Filtres, Trier et Plus de détails. Annuler et Rétablir parcourent les modifications de l’équipe actuelle ; sur téléphone et tablette, ils se trouvent au-dessus des onglets des Pokémon.",
+      "La liste des noms contient les boutons Filtres et Trier, et les listes de capacités contiennent Trier. Annuler et Rétablir parcourent les modifications de l’équipe actuelle ; sur téléphone et tablette, ils se trouvent au-dessus des onglets des Pokémon.",
     generations: "Générations",
     generationsQuestion: "Que change la génération ?",
     generationsAnswer:
