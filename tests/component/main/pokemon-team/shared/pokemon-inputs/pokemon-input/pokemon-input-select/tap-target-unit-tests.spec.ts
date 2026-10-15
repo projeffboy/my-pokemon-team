@@ -71,11 +71,13 @@ test("a tap or click on a leading type or item icon opens the list", async ({
     ["item", "Big Root icon"],
   ] as const) {
     const input = page.getByLabel(`Pokemon 1's ${property}`);
-    const bounds = await page
+    const iconImage = page
       .locator(".MuiAutocomplete-root")
       .filter({ has: input })
-      .getByRole("img", { name: icon })
-      .boundingBox();
+      .getByRole("img", { name: icon });
+    // Mouse and touchscreen coordinates do not scroll the page themselves
+    await iconImage.scrollIntoViewIfNeeded();
+    const bounds = await iconImage.boundingBox();
     if (!bounds) throw new Error(`No ${icon} for ${property}`);
     const [x, y] = [bounds.x + bounds.width / 2, bounds.y + bounds.height / 2];
     if (testInfo.project.use.hasTouch) await page.touchscreen.tap(x, y);
