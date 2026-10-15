@@ -279,13 +279,15 @@ function parseFirstLine(line: string) {
   return name && { ...name, itemText: undefined };
 }
 
-// Original links omitted zero training and interpreted blank abilities as auto-selection.
+// Original links omitted zero training and interpreted blank abilities as auto-selection, and
+// could give formes such as totems their first stage's moves.
 export const LEGACY_LINK_PARSING_OPTIONS = {
   inferFrustrationHappiness: false,
   inferLegacyTraining: false,
   inferHiddenPowerIvs: false,
   preserveBlankAbilityDefault: true,
   allowHyperTraining: false,
+  acceptLegacyFormeInheritance: true,
   // Links decode every detail they carry, so each keeps loading the same team
   keepUnsupportedDetails: true,
 } as const;
@@ -313,6 +315,7 @@ export function parseTeamText(
     inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
+    acceptLegacyFormeInheritance = false,
     keepUnsupportedDetails = false,
     onProblem = () => {},
   }: {
@@ -321,6 +324,7 @@ export function parseTeamText(
     inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
+    acceptLegacyFormeInheritance?: boolean;
     keepUnsupportedDetails?: boolean;
     onProblem?: (problem: TeamTextProblem) => void;
   } = {},
@@ -549,7 +553,14 @@ export function parseTeamText(
         // If legit, set move
         // Otherwise, set it blank
         const validMove =
-          canItLearn(move, pokemon, generation, format) && move ? move : "";
+          (
+            move &&
+            canItLearn(move, pokemon, generation, format, {
+              acceptLegacyFormeInheritance,
+            })
+          ) ?
+            move
+          : "";
         member[moveKey] = validMove;
         if (!validMove) fail(move ? "unlearnable" : "unrecognized");
       } else if (!UNKEPT_DETAIL.test(line))
@@ -671,7 +682,7 @@ export function parseTeamsText(
     .some(line => line.trim() === BACKUP_MARKER);
   const chunks: { header?: RegExpExecArray; lines: string[] }[] = [];
   for (const line of text.split("\n")) {
-    const header = TEAM_HEADER.exec(line);
+    const header = TEAM_HEADER.exec(line.trim());
     if (header) chunks.push({ header, lines: [] });
     else if (chunks.length) chunks[chunks.length - 1]?.lines.push(line);
     else chunks.push({ lines: [line] });

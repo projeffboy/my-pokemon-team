@@ -143,6 +143,12 @@ test.describe("what a saved team lost to a data update", () => {
       },
     ]);
     expect(removeMissingEntries(result.team, 9).dropped).toEqual([]);
+    // As in a link, an unreleased hidden ability is one the pokemon had
+    const chandelure = createTeam({
+      name: "chandelure",
+      ability: "Shadow Tag",
+    });
+    expect(removeMissingEntries(chandelure, 5).dropped).toEqual([]);
   });
 
   test("opening the team removes them once, names them, and starts its history afresh", ({

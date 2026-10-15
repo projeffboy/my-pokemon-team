@@ -13,9 +13,10 @@ import {
   getAutoSelectedAbility,
   getAutoSelectedItem,
 } from "@/shared/team";
-import { pokemonAbilities } from "@/shared/pokedex";
+import { pokemonAbilities, unreleasedHiddenAbility } from "@/shared/pokedex";
 import { moveNameInverse } from "@/shared/names";
 import { generationRules } from "@/shared/generation-rules";
+import { GENERATIONS } from "@/shared/generations";
 import { isItemAvailable } from "./learnsets";
 
 // An entry left out of a slot, with the text or ID it had. `pokemon` is the
@@ -50,11 +51,14 @@ export function teamHolds(
   );
 }
 
-// Every ability the pokemon has had in any generation
+// Every ability the pokemon has had in any generation, including a hidden one
+// that was not released then
 export const anyGenerationAbilities = (pokemon: string) =>
-  Array.from({ length: 9 }, (_, i) =>
-    pokemonAbilities(pokemon, (i + 1) as Generation),
-  ).flat();
+  GENERATIONS.flatMap(gen =>
+    pokemonAbilities(pokemon, gen).concat(
+      unreleasedHiddenAbility(pokemon, gen) ?? [],
+    ),
+  );
 
 // The team without the pokemon, items, abilities, and moves that the game data
 // no longer has, such as a move a data update renamed. As in a link, an item or
