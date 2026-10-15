@@ -50,9 +50,12 @@ const zhHant: Messages = {
     short: "舊版網站",
     title: "切換到舊版網站？",
     description:
-      "目前的隊伍不會轉移到舊版網站。已在此儲存的隊伍將保留在這個版本中。",
+      "目前的隊伍將在舊版網站中開啟。已在此儲存的隊伍將保留在這個版本中。",
     go: "前往舊版網站",
     goLong: "前往舊版網站",
+    generationsOnly: (generations: string) => `舊版網站只有${generations}。`,
+    leftOut: "以下內容不會轉移：",
+    goWithTeam: "帶著我的隊伍前往",
   },
   feedback: {
     button: "意見回饋",

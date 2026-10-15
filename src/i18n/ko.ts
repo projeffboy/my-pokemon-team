@@ -65,9 +65,13 @@ const ko: Messages = {
     short: "이전 사이트",
     title: "이전 사이트로 이동할까요?",
     description:
-      "현재 팀은 이전 사이트로 옮겨지지 않습니다. 여기에 이미 저장한 팀은 이 버전에 그대로 남습니다.",
+      "현재 팀이 이전 사이트에서 열립니다. 여기에 저장한 팀은 이 버전에 그대로 남습니다.",
     go: "이전 사이트로 이동",
     goLong: "이전 사이트로 이동",
+    generationsOnly: (generations: string) =>
+      `이전 사이트에는 ${generations}만 있습니다.`,
+    leftOut: "다음 항목은 옮겨지지 않습니다:",
+    goWithTeam: "내 팀과 함께 이동",
   },
   feedback: {
     button: "피드백 보내기",

@@ -50,9 +50,13 @@ const fr: Messages = {
     short: "Ancien site",
     title: "Passer à l’ancien site ?",
     description:
-      "Votre équipe actuelle ne sera pas transférée vers l’ancien site. Les équipes déjà enregistrées ici resteront sur cette version.",
+      "Votre équipe actuelle s’ouvrira sur l’ancien site. Les équipes enregistrées ici resteront sur cette version.",
     go: "Aller à l’ancien site",
     goLong: "Aller à l’ancien site",
+    generationsOnly: (generations: string) =>
+      `L’ancien site ne couvre que les ${generations}.`,
+    leftOut: "Ceci ne sera pas transféré :",
+    goWithTeam: "Y aller avec mon équipe",
   },
   feedback: {
     button: "Envoyer un commentaire",

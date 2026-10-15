@@ -55,9 +55,13 @@ const de: Messages = {
     short: "Alte Seite",
     title: "Zur alten Website wechseln?",
     description:
-      "Dein aktuelles Team wird nicht auf die alte Website übertragen. Bereits hier gespeicherte Teams bleiben in dieser Version.",
+      "Dein aktuelles Team wird auf der alten Website geöffnet. Hier gespeicherte Teams bleiben in dieser Version.",
     go: "Zur alten Website",
     goLong: "Zur alten Website",
+    generationsOnly: (generations: string) =>
+      `Die alte Website umfasst nur ${generations}.`,
+    leftOut: "Folgendes wird nicht übernommen:",
+    goWithTeam: "Mit meinem Team wechseln",
   },
   feedback: {
     button: "Feedback senden",

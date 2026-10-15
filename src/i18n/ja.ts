@@ -50,9 +50,13 @@ const ja: Messages = {
     short: "旧サイト",
     title: "旧サイトに移動しますか？",
     description:
-      "現在のチームは旧サイトに引き継がれません。ここで保存済みのチームは、このバージョンに残ります。",
+      "現在のチームを旧サイトで開きます。ここで保存済みのチームは、このバージョンに残ります。",
     go: "旧サイトへ移動",
     goLong: "旧サイトへ移動",
+    generationsOnly: (generations: string) =>
+      `旧サイトは${generations}のみに対応しています。`,
+    leftOut: "次の内容は引き継がれません：",
+    goWithTeam: "チームと一緒に移動",
   },
   feedback: {
     button: "フィードバックを送る",

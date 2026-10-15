@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { Store } from "@/store";
 import { initialStoredState, type StoredState } from "@/store/teams-storage";
+import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 
 const settle = () => new Promise(resolve => setTimeout(resolve, 500));
@@ -229,4 +230,54 @@ test("another tab's rename preserves this tab's slot history", async () => {
   expect(store.canUndo).toBe(true);
   store.undo();
   expect(store.team[0]!.name).toBe("");
+});
+
+// Two tabs sharing one storage, each counting its own writes
+function twoTabs() {
+  const saved = initialStoredState();
+  saved.teams[0]!.team = createTeam({ name: "sinistcha" });
+  saved.teams.push(createSavedTeam({ name: "Second" }));
+  let state = JSON.stringify(saved);
+  const tab = () => {
+    let writes = 0;
+    const storage = {
+      getItem: () => state,
+      setItem: (_key: string, value: string) => {
+        writes++;
+        state = value;
+      },
+    } as unknown as Storage;
+    return { store: new Store(storage), writes: () => writes };
+  };
+  return {
+    a: tab(),
+    b: tab(),
+    savedState: () => JSON.parse(state) as StoredState,
+    ids: saved.teams.map(({ id }) => id),
+  };
+}
+
+test("a team duplicated in another tab keeps its place, and an idle tab does not write it back", async () => {
+  const { a, b, savedState, ids } = twoTabs();
+  const copy = b.store.duplicateTeam(ids[0]!);
+  await settle();
+  const order = [ids[0], copy?.id, ids[1]];
+  expect(savedState().teams.map(({ id }) => id)).toEqual(order);
+  a.store.exportTeamBackup();
+  expect(a.store.teams.map(({ id }) => id)).toEqual(order);
+  await settle();
+  expect(a.writes()).toBe(0);
+  expect(savedState().teams.map(({ id }) => id)).toEqual(order);
+});
+
+test("a tab on an unsaved team keeps another tab's team choice when it saves", async () => {
+  const { a, b, savedState, ids } = twoTabs();
+  b.store.selectTeam(ids[1]!);
+  await settle();
+  expect(savedState().currentTeamId).toBe(ids[1]);
+  a.store.exportTeamBackup();
+  a.store.nameView = "grid";
+  await settle();
+  expect(a.writes()).toBeGreaterThan(0);
+  expect(savedState().currentTeamId).toBe(ids[1]);
 });

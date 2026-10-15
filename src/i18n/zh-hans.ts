@@ -50,9 +50,12 @@ const zhHans: Messages = {
     short: "旧版网站",
     title: "切换到旧版网站？",
     description:
-      "当前队伍不会转移到旧版网站。已在此保存的队伍将保留在这个版本中。",
+      "当前队伍将在旧版网站中打开。已在此保存的队伍将保留在这个版本中。",
     go: "前往旧版网站",
     goLong: "前往旧版网站",
+    generationsOnly: (generations: string) => `旧版网站只有${generations}。`,
+    leftOut: "以下内容不会转移：",
+    goWithTeam: "带上我的队伍前往",
   },
   feedback: {
     button: "发送反馈",

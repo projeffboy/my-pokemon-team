@@ -49,9 +49,13 @@ const es: Messages = {
     short: "Sitio anterior",
     title: "¿Cambiar al sitio anterior?",
     description:
-      "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",
+      "Tu equipo actual se abrirá en el sitio anterior. Los equipos guardados aquí permanecerán en esta versión.",
     go: "Ir al sitio anterior",
     goLong: "Ir al sitio anterior",
+    generationsOnly: (generations: string) =>
+      `El sitio anterior solo incluye las ${generations}.`,
+    leftOut: "Esto no se transferirá:",
+    goWithTeam: "Ir con mi equipo",
   },
   feedback: {
     button: "Enviar comentarios",

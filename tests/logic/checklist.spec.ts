@@ -378,3 +378,73 @@ test("Fling counts the selected item's guaranteed status only when usable", () =
   expect(status(4)).toBe(false);
   expect(status(7)).toBe(true);
 });
+
+const isBoosting = (
+  member: Parameters<typeof createTeam>[0],
+  generation: Generation = 9,
+) =>
+  evaluateChecklist(createTeam(member), generation)
+    .flatMap(group => group.items)
+    .find(item => item.key === "boosting")?.isChecked;
+
+test("Tidy Up and Take Heart raise the user two stages in a callback", () => {
+  expect(isBoosting({ name: "maushold", move1: "tidyup" })).toBe(true);
+  expect(
+    isBoosting({ name: "maushold", move1: "tidyup", ability: "Contrary" }),
+  ).toBe(false);
+  expect(isBoosting({ name: "phione", move1: "takeheart" })).toBe(true);
+});
+
+test("Stuff Cheeks counts only while its user holds a Berry", () => {
+  const greedent = { name: "greedent", move1: "stuffcheeks" };
+  expect(isBoosting({ ...greedent, item: "sitrusberry" })).toBe(true);
+  expect(isBoosting({ ...greedent, item: "leftovers" })).toBe(false);
+  expect(isBoosting(greedent)).toBe(false);
+});
+
+test("Simple doubles Howl after it began boosting allies too in Gen 8", () => {
+  for (const generation of [7, 8, 9] as const) {
+    expect(
+      isBoosting(
+        { name: "numel", move1: "howl", ability: "Simple" },
+        generation,
+      ),
+    ).toBe(true);
+    expect(
+      isBoosting(
+        { name: "numel", move1: "howl", ability: "Oblivious" },
+        generation,
+      ),
+    ).toBe(false);
+  }
+});
+
+test("Gear Up and Magnetic Flux boost their user only with Plus or Minus", () => {
+  for (const move1 of ["gearup", "magneticflux"]) {
+    expect(isBoosting({ name: "klinklang", move1, ability: "Plus" }, 7)).toBe(
+      true,
+    );
+    expect(isBoosting({ name: "klinklang", move1, ability: "Minus" }, 7)).toBe(
+      true,
+    );
+    expect(
+      isBoosting({ name: "klinklang", move1, ability: "Clear Body" }, 7),
+    ).toBe(false);
+  }
+});
+
+test("Rototiller boosts a grounded Grass-type user", () => {
+  const tapuBulu = { name: "tapubulu", move1: "rototiller" };
+  expect(isBoosting(tapuBulu, 7)).toBe(true);
+  expect(isBoosting({ ...tapuBulu, item: "airballoon" }, 7)).toBe(false);
+  expect(isBoosting({ name: "bibarel", move1: "rototiller" }, 7)).toBe(false);
+});
+
+test("Simple doubles the boost a charging move gives its user", () => {
+  expect(
+    isBoosting({ name: "bibarel", move1: "skullbash", ability: "Simple" }, 7),
+  ).toBe(true);
+  expect(
+    isBoosting({ name: "bibarel", move1: "skullbash", ability: "Unaware" }, 7),
+  ).toBe(false);
+});
