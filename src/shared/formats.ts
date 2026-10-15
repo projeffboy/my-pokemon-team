@@ -106,13 +106,14 @@ export const showdownFormatId = (generation: Generation, format: string) =>
 
 // The reverse: "gen8ou" => Gen 8 OU; older unprefixed tier IDs use Gen 6.
 // Tiers match exactly ("gen9ubersuu" is not Ubers), but a game's ID covers its
-// formats ("gen9championsou"). Boxes add "-box". Unknown IDs retain the regular
-// latest-generation default.
+// formats ("gen9championsou"). Boxes add "-box", and custom rules follow "@@@".
+// Unknown IDs retain the regular latest-generation default.
 export function parseShowdownFormatId(id: string): {
   generation: Generation;
   format: string;
 } {
-  const raw = id.trim().toLowerCase().replace(/-box$/, "");
+  const raw =
+    id.trim().toLowerCase().replace(/-box$/, "").split("@@@")[0] ?? "";
   const legacy =
     !raw.startsWith("gen") && Object.values(SHOWDOWN_FORMAT_IDS).includes(raw);
   const formatId = legacy ? `gen6${raw}` : raw;

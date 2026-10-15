@@ -89,6 +89,14 @@ test("tier IDs must match exactly, while game IDs cover their whole family", () 
     generation: 9,
     format: "OU: Over Used",
   });
+  expect(parseShowdownFormatId("gen9ou@@@-Pikachu,+Ubers")).toEqual({
+    generation: 9,
+    format: "OU: Over Used",
+  });
+  expect(parseShowdownFormatId("gen9ubersuu@@@-Pikachu")).toEqual({
+    generation: 9,
+    format: "",
+  });
   expect(parseShowdownFormatId("uu-box")).toEqual({
     generation: 6,
     format: "UU: Under Used",
