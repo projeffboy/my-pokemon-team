@@ -670,7 +670,7 @@ const fr: Messages = {
       ],
       [
         "Récupération fiable",
-        "Des capacités qui rendent à coup sûr 50 % ou plus de vos PV à chaque utilisation (par météo normale). Ex. : Soin, E-Coque, Lait à Boire, Paresse, Synthèse.",
+        "Des capacités qui rendent à coup sûr 50 % ou plus de vos PV à chaque utilisation (par météo normale). Ex. : Soin, E-Coque, Lait à Boire, Paresse, Synthèse. Vœu compte aussi si le même Pokémon connaît Abri ou Détection.",
       ],
       [
         "Capacités de statut",
