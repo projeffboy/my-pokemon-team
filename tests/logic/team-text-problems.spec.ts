@@ -290,3 +290,25 @@ for (const [generation, format] of GAMES)
       ).toEqual([]);
     }
   });
+
+test("a replacement names what a later line of the same field leaves in place", () => {
+  const { team, problems } = read(`Pikachu
+Ability: Pressure
+Ability: Lightning Rod
+Level: 0
+Level: 50
+EVs: 300 Atk
+EVs: 100 Atk`);
+  expect(team[0]).toMatchObject({
+    ability: "Lightning Rod",
+    level: 50,
+    evs: { atk: 100 },
+  });
+  expect(
+    problems.map(({ field, replacement }) => [field, replacement]),
+  ).toEqual([
+    ["ability", "Lightning Rod"],
+    ["level", "50"],
+    ["evs", "100 Atk"],
+  ]);
+});

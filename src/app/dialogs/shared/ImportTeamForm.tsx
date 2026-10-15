@@ -121,7 +121,11 @@ const ImportTeamForm = observer(function ImportTeamForm({
         <Button onClick={onClose}>{t.cancel}</Button>
         <Button
           onClick={isImport ? handleImport : handleUpdate}
-          disabled={!store.learnsetsLoaded || (isImport && !text.trim())}
+          // Until the problems describe the current text, an update could skip them
+          disabled={
+            !store.learnsetsLoaded ||
+            (isImport ? !text.trim() : deferredText !== text)
+          }
         >
           {isImport ? importDialog.import : importDialog.update}
         </Button>

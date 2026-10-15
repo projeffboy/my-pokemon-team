@@ -205,7 +205,7 @@ function parseStats(
   text: string,
   max: number,
   isDefault: (value: number) => boolean,
-  report: (problem: Omit<Problem, "field">) => void,
+  report: (problem: Omit<Problem, "field">, stat?: StatKey) => void,
 ): Partial<BaseStats> | undefined {
   const stats: Partial<BaseStats> = {};
   for (const part of text.split("/")) {
@@ -217,14 +217,17 @@ function parseStats(
     if (!supplied) continue;
     if (!stat) report({ value: supplied, reason: "unrecognized" });
     else if (value !== Number(amount))
-      report({
-        value: supplied,
-        reason: "outOfRange",
-        range: [0, max],
-        ...(!Number.isNaN(value) && {
-          replacement: `${value} ${STAT_NAMES[stat]}`,
-        }),
-      });
+      report(
+        {
+          value: supplied,
+          reason: "outOfRange",
+          range: [0, max],
+          ...(!Number.isNaN(value) && {
+            replacement: `${value} ${STAT_NAMES[stat]}`,
+          }),
+        },
+        stat,
+      );
   }
   return Object.keys(stats).length ? stats : undefined;
 }
@@ -325,8 +328,11 @@ export function parseTeamText(
       return;
     }
     const { pokemon, nickname, gender, itemText } = parsed;
-    const report = (problem: Problem) =>
-      onProblem({ slot: teamIndex + 1, pokemon, ...problem });
+    // A later line can override an earlier one, so a replacement that depends on the
+    // final set is read once every line is parsed
+    const pending: { problem: Problem; replacement?: () => string }[] = [];
+    const report = (problem: Problem, replacement?: () => string) =>
+      pending.push({ problem, ...(replacement && { replacement }) });
 
     member.name = pokemon;
     const abilities = Array.from({ length: 9 }, (_, i) =>
@@ -372,8 +378,14 @@ export function parseTeamText(
         max: number,
         isDefault: (value: number) => boolean,
       ) =>
-        parseStats(value(prefix), max, isDefault, problem =>
-          report({ field, ...problem }),
+        parseStats(value(prefix), max, isDefault, (problem, stat) =>
+          report(
+            { field, ...problem },
+            stat && problem.replacement ?
+              () =>
+                `${member[field]?.[stat] ?? (field === "ivs" ? MAX_IV : 0)} ${STAT_NAMES[stat]}`
+            : undefined,
+          ),
         );
 
       if (startsWith("Ability:") || startsWith("Trait:")) {
@@ -388,12 +400,10 @@ export function parseTeamText(
         else if (abilities.includes(ability)) {
           member.ability = ability;
         } else if (ability)
-          report({
-            field: "ability",
-            value: ability,
-            reason: "wrongAbility",
-            ...(member.ability && { replacement: member.ability }),
-          });
+          report(
+            { field: "ability", value: ability, reason: "wrongAbility" },
+            () => member.ability,
+          );
       } else if (startsWith("Gigantamax:")) {
         gigantamax = value("Gigantamax:").toLowerCase() === "yes";
       } else if (startsWith("Level:")) {
@@ -402,15 +412,15 @@ export function parseTeamText(
         const isLevel = level >= 1 && level <= MAX_LEVEL;
         if (isLevel && level !== DEFAULT_LEVEL) member.level = level;
         if (raw && !(isLevel && level === Number(raw)))
-          report({
-            field: "level",
-            value: raw,
-            reason: "outOfRange",
-            range: [1, MAX_LEVEL],
-            replacement: String(
-              isLevel ? level : (rules.fixedLevel ?? DEFAULT_LEVEL),
-            ),
-          });
+          report(
+            {
+              field: "level",
+              value: raw,
+              reason: "outOfRange",
+              range: [1, MAX_LEVEL],
+            },
+            () => String(member.level ?? rules.fixedLevel ?? DEFAULT_LEVEL),
+          );
       } else if (startsWith("Shiny:")) {
         const shiny = value("Shiny:");
         if (shiny.toLowerCase() === "yes") member.shiny = true;
@@ -532,6 +542,16 @@ export function parseTeamText(
         matchImportedHiddenPower(member, hiddenPower, generation, format, {
           allowHyperTraining,
         });
+    }
+    for (const { problem, replacement } of pending) {
+      const used = replacement ? replacement() : problem.replacement;
+      const { replacement: _, ...rest } = problem;
+      onProblem({
+        slot: teamIndex + 1,
+        pokemon,
+        ...rest,
+        ...(used && { replacement: used }),
+      });
     }
   });
 
