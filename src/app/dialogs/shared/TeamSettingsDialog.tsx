@@ -9,6 +9,7 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { SavedTeam } from "@/types";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { verbatim } from "@/app/shared/text-entry";
 
 function TeamNameForm({
   team,
@@ -50,6 +51,7 @@ function TeamNameForm({
             onChange={event => setName(event.target.value)}
             fullWidth
             sx={{ mt: 1 }}
+            slotProps={{ htmlInput: verbatim("team-name") }}
           />
         </form>
       </DialogContent>

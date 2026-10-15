@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { selectPokemon } from "helper";
+import { expectToOpenInNewTab, selectPokemon } from "helper";
 
 test.describe("Pokemon Info Dialog - Unit Tests", () => {
   test("shows the species' types, abilities, base stats, and weaknesses", async ({
@@ -47,10 +47,9 @@ test.describe("Pokemon Info Dialog - Unit Tests", () => {
       "Showdown dex": "https://dex.pokemonshowdown.com/pokemon/bronzong",
     };
     for (const [name, href] of Object.entries(links)) {
-      await expect(dialog.getByRole("link", { name })).toHaveAttribute(
-        "href",
-        href,
-      );
+      const link = dialog.getByRole("link", { name });
+      await expect(link).toHaveAttribute("href", href);
+      await expectToOpenInNewTab(link);
     }
 
     // Weak to Fire and Ground, unless it has Levitate
