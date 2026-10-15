@@ -46,3 +46,12 @@ export const natureName = (nature: string) => natures[nature]?.name;
 export const allItemIds = Object.keys(items);
 
 export const allNatureIds = Object.keys(natures);
+
+// Every ability any pokemon has, CAP ones such as Mountaineer included
+export const allAbilities = [
+  ...new Set(
+    Object.values(pokedex).flatMap(({ abilities }) =>
+      Object.values(abilities ?? {}),
+    ),
+  ),
+].sort();

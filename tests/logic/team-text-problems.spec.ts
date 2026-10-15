@@ -169,6 +169,18 @@ test("an unrecognized item or ability names what is used in its place", () => {
   ]);
 });
 
+test("a CAP pokemon's ability on another pokemon is the wrong ability, not an unknown one", () => {
+  expect(read("Klefki\nAbility: Mountaineer").problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "klefki",
+      field: "ability",
+      value: "Mountaineer",
+      reason: "wrongAbility",
+    },
+  ]);
+});
+
 test("an ability in another case is not recognized and the auto-selected one is used", () => {
   const { team, problems } = read("Shedinja\nAbility: wonder guard");
   expect(team[0]?.ability).toBe("Wonder Guard");
