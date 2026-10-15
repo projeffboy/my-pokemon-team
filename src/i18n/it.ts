@@ -30,10 +30,11 @@ const it: Messages = {
   },
   generationSelect: "Generazione",
   comingSoon: "In arrivo",
+  generationGroups: { spinOffs: "Spin-off", mainSeries: "Serie principale" },
   combinedGenerations: {
     label: "Generazioni 6–9",
     short: "Gen. 6–9",
-    description: "Combina le opzioni di tutti i giochi delle generazioni 6–9",
+    description: "Combina tutti i giochi delle generazioni 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -49,9 +50,13 @@ const it: Messages = {
     short: "Vecchio sito",
     title: "Passare al vecchio sito?",
     description:
-      "La tua squadra attuale non verrà trasferita al vecchio sito. Le squadre già salvate qui rimarranno in questa versione.",
+      "La tua squadra attuale si aprirà sul vecchio sito. Le squadre salvate qui rimarranno in questa versione.",
     go: "Vai al vecchio sito",
     goLong: "Vai al vecchio sito",
+    generationsOnly: (generations: string) =>
+      `Il vecchio sito include solo le ${generations}.`,
+    leftOut: "Questi elementi non verranno trasferiti:",
+    goWithTeam: "Vai con la mia squadra",
   },
   feedback: {
     button: "Invia feedback",
@@ -223,6 +228,11 @@ const it: Messages = {
       status: { label: "Mossa di stato", short: "Stato" },
       phazer: { label: "Phazer" },
       boosting: { label: "Mossa potenziante", short: "Setup" },
+      priority: {
+        label: "Mossa prioritaria",
+        short: "Priorità",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Mossa Volt-turn",
         short: "Volt-turn",
@@ -448,7 +458,7 @@ const it: Messages = {
     removed: {
       item: "Strumento rimosso",
       ability: "Abilità rimossa",
-      moves: "Mosse rimosse:",
+      move: "Mossa rimossa",
       details: "Dettagli rimossi",
     },
     ivsUnused: (where: string) => `Gli IV non si applicano in ${where}.`,
@@ -463,6 +473,9 @@ const it: Messages = {
         `${count} ${count === 1 ? "strumento" : "strumenti"}`,
       ability: (count: number) => `${count} abilità`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} su ${total} ${carried === 1 ? "viene mantenuto" : "vengono mantenuti"}`,
+    removedSummary: (removed: string) => `Rimozione di ${removed}`,
     modify: "Aggiorna squadra attuale",
     copy: "Copia in una nuova squadra",
     createEmpty: "Crea squadra vuota",
@@ -663,6 +676,10 @@ const it: Messages = {
       [
         "Mossa potenziante",
         "Mosse che aumentano le tue statistiche (preferibilmente di 2 o più livelli), come Danzaspada e Calmamente.",
+      ],
+      [
+        "Mossa prioritaria",
+        "Mosse che infliggono danni e agiscono prima della maggior parte delle altre, a prescindere dalla Velocità. Es. Extrarapido, Sbigoattacco, Acquagetto, Pugnoscarica.",
       ],
       [
         "Strumento Choice",

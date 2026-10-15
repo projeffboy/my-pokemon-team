@@ -5,7 +5,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `effectiveness.spec.ts` covers type matchups, defensive abilities, and item modifiers.
 - `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, and invalid inputs.
 - `special-moves.spec.ts` covers move type changes, Freeze-Dry, Flying Press, and coverage eligibility.
-- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, pivot moves, and choice items.
+- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, priority moves, pivot moves, and choice items.
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.
 - `filtering.spec.ts` covers formats, tiers, regions, types, abilities, generations, and combined filters.
 - `sorting.spec.ts` covers the Name dropdown's sort orders: name, pokedex number, format, base stats, and tie-breaking.
@@ -19,12 +19,13 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
 - `set-details.spec.ts` covers the set details in Showdown text (nickname, gender, level, shiny, tera type, EVs, nature, IVs), nicknames that are pokemon names or hold parentheses or an at sign, and backups with several teams.
+- `old-website.spec.ts` covers the team text that the Old website button carries and the pokemon, moves, items, abilities, and set details it names as left behind.
 - `teams.spec.ts` checks the store's saved teams, slot tools, undo history, and that a link to the current team opens no new team.
 - `teams-storage.spec.ts` covers loading and saving the teams from localStorage, including malformed data, and merging in what another tab saved.
 - `team-sync.spec.ts` covers concurrent tab edits, selected-team identity, failed saves and recovery, and keeping unsaved work available for backups.
 - `team-backup.spec.ts` covers complete JSON backups, strict atomic validation, drafts, unavailable values, additive restore, and duplicate handling.
 - `game-variant-data.spec.ts` covers game-specific moves and stats, historical move rules, and their use in existing coverage and sorting.
-- `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, learnset merging, viable moves and items, the type chart, rename reports, and the rendered file format.
+- `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, learnset merging, viable moves and items, the type chart, rename reports, the notice of what changed and whether it looks major, and the rendered file format.
 - `update-translations.spec.ts` covers the translation update's pure transforms in `scripts/update-translations/transforms.ts`: CSV parsing, species and forme names, the mega and regional templates, Hidden Power, Z-Move and Z-Crystal suffixes, abilities with a detail, duplicate names, the report, and the rendered file format.
 - `translations.spec.ts` covers the language detection, the English fallback of translated names, name sorting by species in another language, translated matrix reasons and team problems, every language having English's message keys, every language naming a slot's inputs, Portuguese keeping the English names, and the store loading a language and saving the choice.
 

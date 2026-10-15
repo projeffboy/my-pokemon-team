@@ -1020,8 +1020,13 @@ export class Store {
     if (!theirs) return;
     const snapshot = teamKey(this.team);
     const { generation, format, generationProfile } = this.currentTeam;
-    const mine = this.storedState;
-    const selectionChanged = mine.currentTeamId !== this.lastRead.currentTeamId;
+    // A tab on an unsaved team has no saved team chosen, so it follows the others
+    const mine = {
+      ...this.storedState,
+      ...(this.draftTeam && { currentTeamId: theirs.currentTeamId }),
+    };
+    const selectionChanged =
+      !this.draftTeam && mine.currentTeamId !== this.lastRead.currentTeamId;
     const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
