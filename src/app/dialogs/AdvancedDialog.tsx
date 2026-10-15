@@ -44,7 +44,6 @@ import {
   gen2Dvs,
   dvGender,
   isShinyDv,
-  setLegacyShiny,
 } from "@/shared/generation-rules";
 
 const clamp = (value: number, max: number) =>
@@ -167,6 +166,13 @@ const AdvancedForm = observer(function AdvancedForm({
                     level === DEFAULT_LEVEL || level < 1 ? undefined : level,
                   );
                 }}
+                // Hidden Power is matched to the level once typing ends, not to
+                // each keystroke on the way (typing 100 passes through 1 and 10)
+                onCommit={start => {
+                  // Editing also ends when a team switch closes the dialog
+                  if (store.team[teamIndex] === member)
+                    store.setLevel(teamIndex, member.level, start);
+                }}
                 slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
                 sx={{ flex: "0 0 80px" }}
               />
@@ -246,9 +252,7 @@ const AdvancedForm = observer(function AdvancedForm({
                       generation === 2 ? isShinyDv(dvMember) : !!member.shiny
                     }
                     onChange={event =>
-                      generation === 2 ?
-                        setLegacyShiny(member, event.target.checked)
-                      : setDetail(member, "shiny", event.target.checked)
+                      store.setShiny(teamIndex, event.target.checked)
                     }
                   />
                 }

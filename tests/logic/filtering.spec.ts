@@ -198,6 +198,22 @@ test("doubles formats include (DOU) pokemon wherever DOU ones appear", () => {
   expect(doubles("Doubles UU")).not.toContain("tyranitarmega");
 });
 
+test("Gen 3 and Gen 4 Doubles OU fall back to the singles tiers, without Ubers or unevolved pokemon", () => {
+  const gen3 = filterPokemon({ ...all, generation: 3, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "wobbuffet", "wynaut"])
+    expect(gen3).toContain(allowed);
+  // Murkrow only evolves from gen 4, and Abra has a singles tier but evolves
+  expect(gen3).toContain("murkrow");
+  for (const banned of ["mewtwo", "kyogre", "deoxysattack", "abra"])
+    expect(gen3).not.toContain(banned);
+
+  const gen4 = filterPokemon({ ...all, generation: 4, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "manaphy", "machamp"])
+    expect(gen4).toContain(allowed);
+  for (const banned of ["garchomp", "darkrai", "arceus", "murkrow"])
+    expect(gen4).not.toContain(banned);
+});
+
 test("format, region, and type filters intersect", () => {
   expect(
     filterPokemon({
