@@ -863,7 +863,7 @@ No test checks all that these requirements state.
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | REQ-TEAM-9             | That removing a slot's pokemon also removes its moves and set details. Replacing the pokemon is tested.                                                                                |
 | REQ-TEAM-11            | That a moved or swapped pokemon keeps its moves, item, ability, and set details. The tests check only the names in the slots.                                                          |
-| REQ-DET-5              | That the Level field refuses 0 and 101, and that team text with a level above 100 is refused. Team text with `Level: 0` is tested.                                                     |
+| REQ-DET-5              | That the Level field cannot hold 0 or 101, and that a level above 100 in team text is dropped, leaving the pokemon at level 100. Team text with `Level: 0` is tested.                  |
 | REQ-UNDO-3             | That a 51st change pushes the oldest one out of the history.                                                                                                                           |
 | REQ-FIND-5             | That an earlier generation offers only its own types as type filters, and that the format narrows the type and ability filters. The ability filters of Generations 7 and 8 are tested. |
 | REQ-COLL-3             | That each saved team shows its pokemon. The names, the generation profiles, and the marking of the current team are tested.                                                            |
