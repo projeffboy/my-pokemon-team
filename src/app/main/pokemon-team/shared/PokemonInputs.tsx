@@ -107,14 +107,12 @@ const PokemonInputs = observer(function PokemonInputs({
       role="region"
       aria-label={t.team.slot(teamIndex + 1)}
     >
-      {/* On phones and tablets the slot tabs are what drags */}
-      {!isMdDown && (
-        <SlotMoveHandle
-          teamIndex={teamIndex}
-          setGripRef={setGripRef}
-          listeners={listeners}
-        />
-      )}
+      {/* On phones and tablets the slot tabs are what drags, so the grip only opens its menu */}
+      <SlotMoveHandle
+        teamIndex={teamIndex}
+        setGripRef={setGripRef}
+        listeners={isMdDown ? undefined : listeners}
+      />
       <Box
         sx={{
           position: "relative",
