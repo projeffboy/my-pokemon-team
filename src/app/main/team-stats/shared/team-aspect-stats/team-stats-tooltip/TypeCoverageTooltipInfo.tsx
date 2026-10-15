@@ -50,6 +50,7 @@ const TypeCoverageTooltipInfo = observer(function TypeCoverageTooltipInfo({
         generation,
         item,
         format,
+        member,
       );
       const isStab =
         !!moveType &&

@@ -5,7 +5,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `effectiveness.spec.ts` covers type matchups, defensive abilities, and item modifiers.
 - `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, and invalid inputs.
 - `special-moves.spec.ts` covers move type changes, Freeze-Dry, Flying Press, and coverage eligibility.
-- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, priority moves, pivot moves, and choice items.
+- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, priority moves, pivot moves, and choice items. It also covers the tooltips: the pokemon that fill a role, and what in the game would fill an unfilled one.
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.
 - `filtering.spec.ts` covers formats, tiers, regions, types, abilities, generations, and combined filters.
 - `sorting.spec.ts` covers the Name dropdown's sort orders: name, pokedex number, format, base stats, and tie-breaking.
@@ -14,6 +14,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `random.spec.ts` covers random pokemon and set choices.
 - `matrix.spec.ts` covers the Matrix Analysis cells and their reasons.
 - `validation.spec.ts` covers the team validation rules: legality, abilities, required items, repeated moves, EVs, levels, tera types, clauses, and the abilities, items, and moves a Smogon tier bans.
+- `icon-position.spec.ts` covers where a pokemon's icon sits on the icon sheet, including the question mark for pokemon the sheet has no icon for, and that every pokemon's icon is on the bundled sheet.
 - `pokedex.spec.ts` checks inherited cosmetic-form data and distinct battle formes.
 - `sprite-animations.spec.ts` checks that no bundled animation is a copy of another pokemon's in the same folder.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.

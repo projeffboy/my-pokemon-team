@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
+  LEGACY_LINK_PARSING_OPTIONS,
   parseTeamsText,
   parseTeamText,
   serializeTeam,
@@ -7,7 +8,9 @@ import {
 } from "@/store/team-text";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
-import { LEGENDS_ARCEUS, LETS_GO } from "@/shared/generation-rules";
+import { LEGENDS_ARCEUS, LEGENDS_ZA, LETS_GO } from "@/shared/generation-rules";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import type { Generation } from "@/types";
 
 const fullSet = `Chompy (Garchomp) (F) @ Choice Scarf
 Ability: Rough Skin
@@ -138,6 +141,72 @@ test.describe("set details in Showdown text", () => {
     expect(
       parseTeamsText(`=== [gen2] Gold ===\n\n${text}`)[0]?.team[0]?.happiness,
     ).toBe(70);
+  });
+
+  test("Champions and Legends: Arceus leave out the IVs they have no fields for", () => {
+    const farigiraf = `Farigiraf @ Electric Seed
+Ability: Armor Tail
+EVs: 252 HP / 4 Def / 252 SpD
+Relaxed Nature
+IVs: 0 Atk / 0 Spe
+- Trick Room`;
+    const [champions] = parseTeamText(farigiraf, 9, CHAMPIONS_FORMAT);
+    expect(champions).toMatchObject({
+      name: "farigiraf",
+      nature: "relaxed",
+      evs: { hp: 252, def: 4, spd: 252 },
+    });
+    expect(champions.ivs).toBeUndefined();
+    expect(serializeTeam([champions], 9, CHAMPIONS_FORMAT)).not.toContain(
+      "IVs:",
+    );
+    expect(
+      parseTeamText("Stantler\nIVs: 0 Atk", 8, LEGENDS_ARCEUS)[0].ivs,
+    ).toBeUndefined();
+    expect(parseTeamText(farigiraf)[0].ivs).toEqual({ atk: 0, spe: 0 });
+    // Links made before this keep loading the details they carry
+    expect(
+      parseTeamText(
+        farigiraf,
+        9,
+        CHAMPIONS_FORMAT,
+        LEGACY_LINK_PARSING_OPTIONS,
+      )[0].ivs,
+    ).toEqual({ atk: 0, spe: 0 });
+  });
+
+  test("other details follow the selected game like happiness", () => {
+    const text = `Pikachu (F) @ Light Ball
+Shiny: Yes
+Tera Type: Electric
+EVs: 252 SpA
+Timid Nature
+- Thunderbolt`;
+    const parse = (generation: Generation, format = "") =>
+      parseTeamText(text, generation, format)[0];
+    expect(parse(9)).toMatchObject({
+      gender: "F",
+      shiny: true,
+      teraType: "Electric",
+      evs: { spa: 252 },
+      nature: "timid",
+    });
+    expect(parse(9, CHAMPIONS_FORMAT).teraType).toBeUndefined();
+    expect(parse(9, LEGENDS_ZA).teraType).toBeUndefined();
+    expect(parse(8)).toMatchObject({ gender: "F", shiny: true });
+    expect(parse(8).teraType).toBeUndefined();
+    expect(parse(8, LEGENDS_ARCEUS).evs).toBeUndefined();
+    expect(parse(7, LETS_GO).evs).toEqual({ spa: 252 });
+    expect(parse(2)).toMatchObject({ gender: "F", shiny: true });
+    expect(parse(2).nature).toBeUndefined();
+    const gen1 = parse(1);
+    expect(gen1).toMatchObject({ name: "pikachu", move1: "thunderbolt" });
+    expect([gen1.gender, gen1.shiny, gen1.teraType, gen1.nature]).toEqual([
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]);
   });
 
   test("ignores malformed happiness and retains both endpoints", () => {
@@ -309,6 +378,62 @@ Garchomp
     expect(parseTeamsText("=== [gen9] ===\n\n")).toEqual([]);
     expect(parseTeamsText("")).toEqual([]);
     expect(parseTeamsText("Not a pokemon @ Leftovers")).toEqual([]);
+  });
+
+  test("reads headers with leading or trailing spaces", () => {
+    const teams = parseTeamsText(
+      "  === [gen8ou] A ===\n\nGarchomp\n\n\t=== [gen9uu] B ===  \n\nKingdra\n",
+    );
+    expect(
+      teams.map(({ name, generation, format, team }) => [
+        name,
+        generation,
+        format,
+        team[0].name,
+      ]),
+    ).toEqual([
+      ["A", 8, "OU: Over Used", "garchomp"],
+      ["B", 9, "UU: Under Used", "kingdra"],
+    ]);
+  });
+
+  test("splits a Showdown box of more than six pokemon into teams of six", () => {
+    const box = [
+      "Bulbasaur",
+      "Charmander",
+      "Squirtle",
+      "Pikachu",
+      "Eevee",
+      "Snorlax",
+      "Lapras",
+      "Ditto",
+      "Mew",
+      "Chikorita",
+      "Cyndaquil",
+      "Totodile",
+      "Togepi",
+      "Mareep",
+    ];
+    const teams = parseTeamsText(
+      `=== [gen9ou-box] Box 1 ===\n\n${box.map(name => `${name}\n- Tackle`).join("\n\n")}\n\n=== [gen9uu] Sun ===\n\nTorkoal\n`,
+    );
+    expect(
+      teams.map(({ name, format, team }) => [
+        name,
+        format,
+        team.map(({ name }) => name).filter(Boolean),
+      ]),
+    ).toEqual([
+      ["Box 1", "OU: Over Used", box.slice(0, 6).map(n => n.toLowerCase())],
+      [
+        "Box 1 (2)",
+        "OU: Over Used",
+        box.slice(6, 12).map(n => n.toLowerCase()),
+      ],
+      ["Box 1 (3)", "OU: Over Used", box.slice(12).map(n => n.toLowerCase())],
+      ["Sun", "UU: Under Used", ["torkoal"]],
+    ]);
+    expect(parseTeamsText(box.join("\n\n"))).toHaveLength(3);
   });
 
   test("serializes every saved team under a header", () => {

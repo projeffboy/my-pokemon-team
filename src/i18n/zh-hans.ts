@@ -217,25 +217,69 @@ const zhHans: Messages = {
     },
     // lg 及以下屏幕用较短的标签，md 及以下再更短
     items: {
-      entryHazard: { label: "撒钉招式", short: "撒钉" },
-      spinner: { label: "扫钉／清雾", short: "扫钉", shorter: "扫钉" },
+      entryHazard: {
+        label: "撒钉招式",
+        short: "撒钉",
+        hint: (moves: string) =>
+          `让宝可梦学会在对手场地设置陷阱的招式：${moves}。`,
+      },
+      spinner: {
+        label: "扫钉／清雾",
+        short: "扫钉",
+        shorter: "扫钉",
+        hint: (moves: string) =>
+          `让宝可梦学会清除己方场地陷阱的招式：${moves}。`,
+      },
       recovery: {
         label: "稳定回复",
         short: "回复",
         shorter: "回复",
+        hint: (moves: string) =>
+          `让宝可梦学会能稳定回复 HP 的招式，例如${moves}。`,
       },
-      cleric: { label: "治愈手" },
-      status: { label: "异常状态招式", short: "异常状态" },
-      phazer: { label: "吹飞手" },
-      boosting: { label: "强化招式", short: "强化" },
-      priority: { label: "先制招式", short: "先制", shorter: "先制" },
+      cleric: {
+        label: "治愈手",
+        hint: (moves: string) =>
+          `让宝可梦学会治愈全队异常状态的招式：${moves}。`,
+      },
+      status: {
+        label: "异常状态招式",
+        short: "异常状态",
+        hint: (moves: string) =>
+          `让宝可梦学会命中后必定使对手陷入异常状态的招式，例如${moves}。`,
+      },
+      phazer: {
+        label: "吹飞手",
+        hint: (moves: string) => `让宝可梦学会强制对手替换的招式：${moves}。`,
+      },
+      boosting: {
+        label: "强化招式",
+        short: "强化",
+        hint: (moves: string) =>
+          `让宝可梦学会使自身能力合计提升 2 级或以上的招式，例如${moves}。`,
+      },
+      priority: {
+        label: "先制招式",
+        short: "先制",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `让宝可梦学会无论速度高低都能比大多数招式先出手的攻击招式，例如${moves}。`,
+      },
       voltTurn: {
         label: "急折／伏特替换",
         short: "急折伏特",
         shorter: "急折",
+        hint: (moves: string) => `让宝可梦学会攻击后替换下场的招式：${moves}。`,
       },
-      choice: { label: "讲究道具", short: "讲究" },
+      choice: {
+        label: "讲究道具",
+        short: "讲究",
+        hint: (items: string) => `让宝可梦携带讲究道具：${items}。`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
+    together: (move: string, other: string) => `${move}配合${other}`,
+    unavailable: "本作中没有符合条件的招式或道具。",
   },
   matrix: {
     matrix: "矩阵",

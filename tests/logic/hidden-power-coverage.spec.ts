@@ -125,3 +125,52 @@ test("weak per-hit multihit attacks retain the existing exception", () => {
     ),
   ).toBeFalsy();
 });
+
+for (const generation of [2, 3, 4, 7] as const) {
+  test(`Gen${generation} plain Hidden Power takes its type from the set's IVs`, () => {
+    const team = createTeam({ name: "mew", move1: "hiddenpower" });
+    const member = team[0]!;
+    expect(generationLearnset(member.name, generation)).toContain(
+      "hiddenpower",
+    );
+    expect(hiddenPowerType(member, generation)).toBe("dark");
+    for (const target of ["Ghost", "Psychic"] as const) {
+      expect(
+        moveAgainstType(
+          "hiddenpower",
+          target,
+          member.name,
+          member.ability,
+          generation,
+          member.item,
+          member.happiness,
+          member,
+        ),
+      ).toBe(-1);
+      expect(calculateTypeCoverage(team, generation)[target]).toBe(1);
+      expect(
+        coverageMatrix(team, undefined, generation)[target]?.[0],
+      ).toMatchObject({
+        multiplier: 2,
+        reason: expect.stringContaining("Hidden Power (Dark) does 2x"),
+      });
+    }
+  });
+}
+
+test("plain Hidden Power with Fire IVs covers as Fire", () => {
+  const team = createTeam({
+    name: "mew",
+    move1: "hiddenpower",
+    ivs: { atk: 30, spa: 30, spe: 30 },
+  });
+  expect(hiddenPowerType(team[0]!, 7)).toBe("fire");
+  expect(calculateTypeCoverage(team, 7)).toMatchObject({
+    Grass: 1,
+    Ghost: 0,
+  });
+  expect(coverageMatrix(team, undefined, 7).Grass?.[0]?.reason).toContain(
+    "Hidden Power (Fire) does 2x",
+  );
+  expect(coverageMatrix(team, undefined, 7).Water?.[0]?.multiplier).toBe(0.5);
+});

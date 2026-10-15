@@ -226,25 +226,72 @@ const ja: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "設置技", short: "設置" },
-      spinner: { label: "設置技の除去", short: "設置除去", shorter: "除去" },
+      entryHazard: {
+        label: "設置技",
+        short: "設置",
+        hint: (moves: string) =>
+          `相手の場に設置する技をポケモンに覚えさせましょう：${moves}。`,
+      },
+      spinner: {
+        label: "設置技の除去",
+        short: "設置除去",
+        shorter: "除去",
+        hint: (moves: string) =>
+          `自分の場の設置技を取り除く技をポケモンに覚えさせましょう：${moves}。`,
+      },
       recovery: {
         label: "安定した回復技",
         short: "回復技",
         shorter: "回復",
+        hint: (moves: string) =>
+          `安定して回復できる技をポケモンに覚えさせましょう（例：${moves}）。`,
       },
-      cleric: { label: "状態異常回復" },
-      status: { label: "状態異常技", short: "状態異常" },
-      phazer: { label: "強制交代技" },
-      boosting: { label: "積み技", short: "積み" },
-      priority: { label: "先制技", short: "先制技", shorter: "先制" },
+      cleric: {
+        label: "状態異常回復",
+        hint: (moves: string) =>
+          `手持ち全員の状態異常を治す技をポケモンに覚えさせましょう：${moves}。`,
+      },
+      status: {
+        label: "状態異常技",
+        short: "状態異常",
+        hint: (moves: string) =>
+          `命中すれば必ず相手を状態異常にする技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
+      phazer: {
+        label: "強制交代技",
+        hint: (moves: string) =>
+          `相手を強制的に交代させる技をポケモンに覚えさせましょう：${moves}。`,
+      },
+      boosting: {
+        label: "積み技",
+        short: "積み",
+        hint: (moves: string) =>
+          `自分の能力を合計2段階以上上げる技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
+      priority: {
+        label: "先制技",
+        short: "先制技",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `すばやさに関係なく、ほとんどの技より先に出せる攻撃技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
       voltTurn: {
         label: "ボルトチェンジ系",
         short: "ボルチェン",
         shorter: "交代技",
+        hint: (moves: string) =>
+          `攻撃してから手持ちと交代する技をポケモンに覚えさせましょう：${moves}。`,
       },
-      choice: { label: "こだわりアイテム", short: "こだわり" },
+      choice: {
+        label: "こだわりアイテム",
+        short: "こだわり",
+        hint: (items: string) =>
+          `こだわりアイテムをポケモンに持たせましょう：${items}。`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
+    together: (move: string, other: string) => `${move}と${other}の組み合わせ`,
+    unavailable: "このゲームには当てはまる技や道具がありません。",
   },
   matrix: {
     matrix: "マトリックス",
