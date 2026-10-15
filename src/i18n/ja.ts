@@ -139,7 +139,7 @@ const ja: Messages = {
     advanced: "その他の詳細",
     advancedFor: (slot: number) => `スロット${slot}のその他の詳細`,
     details: "詳細",
-    showMoveTypes: "技のタイプを表示",
+    showTypes: "タイプを表示",
     about: (pokemon: string) => `${pokemon}について`,
     dragHint: "長押しドラッグで並べ替え",
     moveToSlot: (pokemon: string) => `${pokemon}を別のスロットへ移動`,

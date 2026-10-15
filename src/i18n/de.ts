@@ -143,7 +143,7 @@ const de: Messages = {
     advanced: "Weitere Details",
     advancedFor: (slot: number) => `Weitere Details für Platz ${slot}`,
     details: "Details",
-    showMoveTypes: "Attackentypen anzeigen",
+    showTypes: "Typen anzeigen",
     about: (pokemon: string) => `Über ${pokemon}`,
     dragHint: "Halten und ziehen zum Umordnen",
     moveToSlot: (pokemon: string) =>

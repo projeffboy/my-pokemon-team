@@ -114,7 +114,7 @@ export class Store {
     if (!loaded) this.startingTeamId = stored.currentTeamId;
     this.teams = stored.teams;
     this.currentTeamId = stored.currentTeamId;
-    this.showMoveTypes = stored.showMoveTypes;
+    this.showTypes = stored.showMoveTypes;
     this.sort = stored.sort;
     this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
@@ -986,8 +986,9 @@ export class Store {
     );
   }
 
-  // Each chosen move's type icon before its name, with the item's icon leading to match
-  showMoveTypes: boolean;
+  // Each pokemon's type icons, and each chosen move's before its name with the
+  // item's icon leading to match, until the Player hides them
+  showTypes: boolean;
 
   // How the Name dropdown lists its options
   nameView: NameView;
@@ -1076,7 +1077,7 @@ export class Store {
     const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
-    this.showMoveTypes = merged.showMoveTypes;
+    this.showTypes = merged.showMoveTypes;
     this.sort = merged.sort;
     this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
@@ -1120,7 +1121,7 @@ export class Store {
       teams: this.teams,
       currentTeamId:
         this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId,
-      showMoveTypes: this.showMoveTypes,
+      showMoveTypes: this.showTypes,
       sort: this.sort,
       moveSort: this.moveSort,
       nameView: this.nameView,

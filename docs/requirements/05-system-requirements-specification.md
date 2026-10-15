@@ -99,7 +99,7 @@ US1. As a player, I want to choose the pokemon, moves, item, and ability for eac
 | REQ-TEAM-10 | The site shall reject the selection of a move that the same pokemon already has.                                                                              | E    | Implemented |
 | REQ-TEAM-11 | The site shall allow the Player to move a pokemon, with its moves, item, ability, and set details, to any other slot.                                         | C    | Implemented |
 | REQ-TEAM-12 | The site shall present the pokemon options as a list, a grid of sprites, or a grid of large sprites with names, as last chosen by the Player.                 | C    | Implemented |
-| REQ-TEAM-13 | The site shall show the types of each pokemon and of each selected move, unless the Player has asked for types to be hidden.                                  | C    | Approved    |
+| REQ-TEAM-13 | The site shall show the types of each pokemon and of each selected move, unless the Player has asked for types to be hidden.                                  | C    | Implemented |
 | REQ-TEAM-14 | The site shall inform the Player that no pokemon match the current filters on a request that yields no pokemon option.                                        | E    | Implemented |
 | REQ-TEAM-15 | The site shall inform the Player that the move lists could not be loaded, and how to try again, after a failure to load them.                                 | E    | Implemented |
 

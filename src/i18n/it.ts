@@ -139,7 +139,7 @@ const it: Messages = {
     advanced: "Altri dettagli",
     advancedFor: (slot: number) => `Altri dettagli per lo slot ${slot}`,
     details: "Dettagli",
-    showMoveTypes: "Mostra i tipi delle mosse",
+    showTypes: "Mostra i tipi",
     about: (pokemon: string) => `Info su ${pokemon}`,
     dragHint: "Tieni premuto e trascina per riordinare",
     moveToSlot: (pokemon: string) => `Sposta ${pokemon} in un altro slot`,
