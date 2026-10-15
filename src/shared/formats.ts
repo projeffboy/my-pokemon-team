@@ -1,5 +1,6 @@
 import {
   CHAMPIONS_FORMAT,
+  COMING_SOON,
   LETS_GO,
   LEGENDS_ARCEUS,
   LEGENDS_ZA,
@@ -21,9 +22,13 @@ export const formatGeneration = (format: string, generation: Generation) =>
     (variantGeneration(format) ?? generation)
   );
 
-// The format when it is a game, which share links carry, and "" for a tier or none
+// The format when it is a game, and "" for a tier or none
 export const gameFormat = (format: string) =>
   format === CHAMPIONS_FORMAT || variantGeneration(format) ? format : "";
+
+// The game that share links carry, which leaves out a Coming soon game as it does a tier
+export const linkGameFormat = (format: string) =>
+  COMING_SOON.includes(format) ? "" : gameFormat(format);
 
 // The Format options listed in the Filters dialog
 export const FORMATS: readonly string[] = [

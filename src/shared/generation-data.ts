@@ -85,11 +85,13 @@ for (const { prevo, forme, num = 0 } of Object.values(pokedex)) {
 export function doublesTierIn(pokemon: string, generation = LATEST_GENERATION) {
   const { tier, doublesTier } = pokemonFormatIn(pokemon, generation) ?? {};
   const singles = SINGLES_TIER_DOUBLES[generation];
-  if (doublesTier || !singles || !tier) return doublesTier;
+  // Showdown gives a pokemon without a doubles tier its singles tier, e.g. NFE
+  if (doublesTier || !tier) return doublesTier;
+  if (!singles) return tier;
   if (tier === "Uber" || tier === "AG")
     return singles.unbans.includes(pokemon) ? "DOU" : "DUber";
-  // As in later generations, unevolved pokemon stay out of the doubles tiers,
-  // even those with a singles tier, like Abra (ZU in gen 3)
+  // Unevolved pokemon rank below the doubles tiers, even those with a singles
+  // tier, like Abra (ZU in gen 3)
   if (tier === "NFE" || tier === "LC") return tier;
   const evolution = firstEvolutionNumber.get(pokemon);
   return evolution && evolution <= singles.lastDexNumber ? "NFE" : "DOU";
