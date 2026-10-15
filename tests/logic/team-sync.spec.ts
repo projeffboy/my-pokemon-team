@@ -332,6 +332,27 @@ test("a first visit's link keeps a starting team that another tab has filled", a
   ]);
 });
 
+test("a first visit's link saved beside another tab's team takes the next team name", async () => {
+  const { store, savedState, saveFromOtherTab } = firstVisit(["fr-FR"]);
+  await store.translationReady;
+  store.nameView = "grid";
+  await settle();
+  saveFromOtherTab(theirs => {
+    theirs.teams[0]!.team[0]!.name = "wiglett";
+  });
+  store.openTeamFromLink(createTeam({ name: "toedscool" }));
+  expect(store.currentTeam.name).toBe("Équipe 1");
+  store.team[0]!.move1 = "gigadrain";
+  await settle();
+  expect(
+    savedState()?.teams.map(({ name, team }) => [name, team[0]!.name]),
+  ).toEqual([
+    ["Équipe 1", "wiglett"],
+    ["Équipe 2", "toedscool"],
+  ]);
+  expect(store.currentTeam.name).toBe("Équipe 2");
+});
+
 // Two tabs sharing one storage, each counting its own writes
 function twoTabs() {
   const saved = initialStoredState();
