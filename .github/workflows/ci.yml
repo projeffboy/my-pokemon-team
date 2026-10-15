@@ -67,26 +67,18 @@ jobs:
     timeout-minutes: 90
     strategy:
       fail-fast: false
+      # Pull requests skip Firefox, and Edge, which shares Chrome's engine, so
+      # each push queues fewer jobs; master and manual runs test every browser
       matrix:
-        include:
-          - project: Desktop Chrome
-            browser: chromium
-            artifact: desktop-chrome
-          - project: Desktop Safari
-            browser: webkit
-            artifact: desktop-safari
-          - project: Desktop Firefox
-            browser: firefox
-            artifact: desktop-firefox
-          - project: Desktop Edge
-            browser: msedge
-            artifact: desktop-edge
-          - project: Android
-            browser: chromium
-            artifact: android
-          - project: iPhone
-            browser: webkit
-            artifact: iphone
+        include: >-
+          ${{ fromJSON(format('[{0}{1}]',
+          '{"project": "Desktop Chrome", "browser": "chromium", "artifact": "desktop-chrome"},
+          {"project": "Desktop Safari", "browser": "webkit", "artifact": "desktop-safari"},
+          {"project": "Android", "browser": "chromium", "artifact": "android"},
+          {"project": "iPhone", "browser": "webkit", "artifact": "iphone"}',
+          github.event_name != 'pull_request' && ',
+          {"project": "Desktop Firefox", "browser": "firefox", "artifact": "desktop-firefox"},
+          {"project": "Desktop Edge", "browser": "msedge", "artifact": "desktop-edge"}' || '')) }}
     env:
       CI: "true"
     steps:
