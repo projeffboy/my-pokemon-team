@@ -162,7 +162,8 @@ const ptBR: Messages = {
       `definir ${label} como ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `trocar ${first} e ${second} de posição`,
-    moreChanges: (count: number) => `${count} outras alterações`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 outra alteração" : `${count} outras alterações`,
     undoAction: (action: string) => `Desfazer ${action}`,
     redoAction: (action: string) => `Refazer ${action}`,
     randomizeTeamAction: "gerar equipe aleatória",
