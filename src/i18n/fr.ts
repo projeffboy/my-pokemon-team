@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const fr: Messages = {
+  pageTitle: "My Pokemon Team - Créateur et planificateur d'équipes Pokémon",
   // The header
   beta: "Bêta",
   generation,
@@ -117,6 +118,8 @@ const fr: Messages = {
     teamEmpty: "L'équipe Pokémon est vide",
     linkCopied: "Lien de l'équipe Pokémon copié",
     linkNotCopied: "Impossible de copier le lien.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La génération ou le jeu de ce lien n'est pas pris en charge, il a donc été ouvert en ${profile}.`,
     nothingToCopy: "Équipe vide, rien à copier.",
     teamCopied: "Équipe copiée.",
     teamNotCopied: "Impossible de copier l'équipe.",
@@ -137,7 +140,7 @@ const fr: Messages = {
     advanced: "Plus de détails",
     advancedFor: (slot: number) => `Plus de détails pour l'emplacement ${slot}`,
     details: "Détails",
-    showMoveTypes: "Afficher les types des capacités",
+    showTypes: "Afficher les types",
     about: (pokemon: string) => `À propos de ${pokemon}`,
     dragHint: "Maintenez et glissez pour réordonner",
     moveToSlot: (pokemon: string) =>
@@ -170,7 +173,8 @@ const fr: Messages = {
       `définir ${label} sur ${value} pour ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `échanger les places de ${first} et ${second}`,
-    moreChanges: (count: number) => `${count} autres modifications`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 autre modification" : `${count} autres modifications`,
     undoAction: (action: string) => `Annuler ${action}`,
     redoAction: (action: string) => `Rétablir ${action}`,
     randomizeTeamAction: "créer une équipe aléatoire",
@@ -181,7 +185,8 @@ const fr: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Équipe ${number}`,
     unnamedTeam: "Équipe",
-    copyOf: (name: string) => `Copie de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copie ${number} de ${name}` : `Copie de ${name}`,
     learnsetsFailed:
       "Les listes de capacités n'ont pas pu être chargées. Rechargez la page pour réessayer.",
   },
@@ -269,6 +274,8 @@ const fr: Messages = {
       cause: string | undefined,
     ) =>
       `${type} inflige ${multiplier}x à ${pokemon} (${types})${cause ? ` avec ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} le rend de type ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,

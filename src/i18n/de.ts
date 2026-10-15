@@ -18,6 +18,7 @@ const inputNames: Record<string, string> = {
 };
 
 const de: Messages = {
+  pageTitle: "My Pokemon Team - Pokémon-Teambuilder und Teamplaner",
   // The header
   beta: "Beta",
   generation,
@@ -121,6 +122,8 @@ const de: Messages = {
     teamEmpty: "Das Pokémon-Team ist leer",
     linkCopied: "Link zum Pokémon-Team kopiert",
     linkNotCopied: "Der Link konnte nicht kopiert werden.",
+    linkGenerationUnsupported: (profile: string) =>
+      `Die Generation oder das Spiel dieses Links wird nicht unterstützt, daher wurde er in ${profile} geöffnet.`,
     nothingToCopy: "Leeres Team, nichts zu kopieren.",
     teamCopied: "Team kopiert.",
     teamNotCopied: "Das Team konnte nicht kopiert werden.",
@@ -140,7 +143,7 @@ const de: Messages = {
     advanced: "Weitere Details",
     advancedFor: (slot: number) => `Weitere Details für Platz ${slot}`,
     details: "Details",
-    showMoveTypes: "Attackentypen anzeigen",
+    showTypes: "Typen anzeigen",
     about: (pokemon: string) => `Über ${pokemon}`,
     dragHint: "Halten und ziehen zum Umordnen",
     moveToSlot: (pokemon: string) =>
@@ -173,7 +176,8 @@ const de: Messages = {
       `${label} für ${pokemon} auf ${value} setzen`,
     swappedSlots: (first: string, second: string) =>
       `${first} und ${second} tauschen`,
-    moreChanges: (count: number) => `${count} weitere Änderungen`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 weitere Änderung" : `${count} weitere Änderungen`,
     undoAction: (action: string) => `Rückgängig: ${action}`,
     redoAction: (action: string) => `Wiederholen: ${action}`,
     randomizeTeamAction: "Team zufällig zusammenstellen",
@@ -184,7 +188,8 @@ const de: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Team ${number}`,
     unnamedTeam: "Team",
-    copyOf: (name: string) => `Kopie von ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Kopie ${number} von ${name}` : `Kopie von ${name}`,
     learnsetsFailed:
       "Die Attackenlisten konnten nicht geladen werden. Lade die Seite neu, um es noch einmal zu versuchen.",
   },
@@ -271,6 +276,8 @@ const de: Messages = {
       cause: string | undefined,
     ) =>
       `${type} wirkt ${times(multiplier)} auf ${pokemon} (${types})${cause ? ` mit ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} macht es zum Typ ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,

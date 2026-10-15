@@ -17,6 +17,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ptBR: Messages = {
+  pageTitle: "My Pokemon Team - Criador e planejador de equipes Pokémon",
   beta: "Beta",
   generation,
   generationGames: {
@@ -115,6 +116,8 @@ const ptBR: Messages = {
     teamEmpty: "A equipe Pokémon está vazia",
     linkCopied: "Link da equipe Pokémon copiado",
     linkNotCopied: "Não foi possível copiar o link.",
+    linkGenerationUnsupported: (profile: string) =>
+      `A geração ou o jogo deste link não é compatível, então ele foi aberto em ${profile}.`,
     nothingToCopy: "A equipe está vazia, não há nada para copiar.",
     teamCopied: "Equipe copiada.",
     teamNotCopied: "Não foi possível copiar a equipe.",
@@ -134,7 +137,7 @@ const ptBR: Messages = {
     advanced: "Mais detalhes",
     advancedFor: (slot: number) => `Mais detalhes do slot ${slot}`,
     details: "Detalhes",
-    showMoveTypes: "Mostrar tipos dos golpes",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Sobre ${pokemon}`,
     dragHint: "Segure e arraste para reordenar",
     moveToSlot: (pokemon: string) => `Mover ${pokemon} para outro slot`,
@@ -166,7 +169,8 @@ const ptBR: Messages = {
       `definir ${label} como ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `trocar ${first} e ${second} de posição`,
-    moreChanges: (count: number) => `${count} outras alterações`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 outra alteração" : `${count} outras alterações`,
     undoAction: (action: string) => `Desfazer ${action}`,
     redoAction: (action: string) => `Refazer ${action}`,
     randomizeTeamAction: "gerar equipe aleatória",
@@ -176,7 +180,8 @@ const ptBR: Messages = {
     bigGridView: "Visualização em grade grande",
     teamNumber: (number: number) => `Equipe ${number}`,
     unnamedTeam: "Equipe",
-    copyOf: (name: string) => `Cópia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Cópia ${number} de ${name}` : `Cópia de ${name}`,
     learnsetsFailed:
       "Não foi possível carregar as listas de golpes. Recarregue a página para tentar de novo.",
   },
@@ -260,6 +265,8 @@ const ptBR: Messages = {
       cause: string | undefined,
     ) =>
       `${type} causa ${multiplier}x em ${pokemon} (${types})${cause ? ` com ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} o torna do tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,

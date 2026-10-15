@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHant: Messages = {
+  pageTitle: "My Pokemon Team - 寶可夢配隊與隊伍規劃工具",
   // The header
   beta: "測試版",
   generation,
@@ -112,6 +113,8 @@ const zhHant: Messages = {
     teamEmpty: "寶可夢隊伍是空的",
     linkCopied: "已複製寶可夢隊伍連結",
     linkNotCopied: "無法複製連結。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支援此連結的世代或遊戲，已改用${profile}開啟。`,
     nothingToCopy: "隊伍是空的，沒有可複製的內容。",
     teamCopied: "已複製隊伍。",
     teamNotCopied: "無法複製隊伍。",
@@ -131,7 +134,7 @@ const zhHant: Messages = {
     advanced: "更多詳情",
     advancedFor: (slot: number) => `第 ${slot} 格的更多詳情`,
     details: "詳情",
-    showMoveTypes: "顯示招式屬性",
+    showTypes: "顯示屬性",
     about: (pokemon: string) => `關於${pokemon}`,
     dragHint: "長按拖曳即可調整順序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他格`,
@@ -173,7 +176,8 @@ const zhHant: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `隊伍 ${number}`,
     unnamedTeam: "隊伍",
-    copyOf: (name: string) => `${name} 副本`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} 副本 ${number}` : `${name} 副本`,
     learnsetsFailed: "無法載入招式列表。請重新載入頁面再試一次。",
   },
 
@@ -258,6 +262,7 @@ const zhHant: Messages = {
       cause: string | undefined,
     ) =>
       `${type}屬性對${pokemon}（${types}）造成 ${multiplier} 倍傷害${cause ? `（受${cause}影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其變為${type}屬性`,
     coverageReason: (
       pokemon: string,
       move: string,

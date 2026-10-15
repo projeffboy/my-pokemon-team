@@ -16,6 +16,7 @@ import {
 } from "@/store/team-text";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { verbatim } from "@/app/shared/text-entry";
 
 // A dialog's body and actions for pasting Showdown text: either new teams to import,
 // or the current team's text to edit. Importing or updating calls onDone; cancelling
@@ -105,6 +106,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
           error={isNothingFound}
           helperText={isNothingFound && importDialog.nothingFound}
           slotProps={{
+            htmlInput: verbatim("team-text"),
             // Above the text rather than over it, so a long label wraps instead of being
             // cut off at 320px
             inputLabel: {

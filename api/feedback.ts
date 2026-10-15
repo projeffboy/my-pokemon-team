@@ -6,7 +6,7 @@ const MAX_MESSAGE_LENGTH = 5000;
 // The most base64 the screenshot and uploaded images may total, as in capture-page.ts
 const MAX_IMAGES_LENGTH = 4_000_000;
 const MAX_UPLOADS = 3;
-// Matches the syntax accepted by the feedback form's native email input.
+// The syntax an email input accepts, which the feedback form checks too
 const EMAIL_PATTERN =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const JPEG_PREFIX = "data:image/jpeg;base64,";
@@ -65,6 +65,9 @@ const isString = (value: unknown, maxLength: number): value is string =>
   typeof value === "string" && value.length <= maxLength;
 const isOptionalString = (value: unknown, maxLength: number) =>
   value === undefined || isString(value, maxLength);
+// Keeps a visitor-supplied detail on its own line, so it cannot add a fake one
+const oneLine = (text: string) =>
+  text.replace(/\s*[\r\n\u2028\u2029]\s*/g, " ");
 const isJpeg = (value: unknown): value is string =>
   typeof value === "string" && value.startsWith(JPEG_PREFIX);
 
@@ -141,8 +144,8 @@ export async function POST(request: Request) {
   const replyTo = email?.trim();
   const details = [
     replyTo && `From: ${replyTo}`,
-    link && `Link: ${link}`,
-    screen && `Screen: ${screen}`,
+    link && `Link: ${oneLine(link)}`,
+    screen && `Screen: ${oneLine(screen)}`,
     `Browser: ${describeBrowser(userAgent)}`,
     `User agent: ${userAgent}`,
   ].filter(line => line);
@@ -156,7 +159,8 @@ export async function POST(request: Request) {
       from: "My Pokemon Team <onboarding@resend.dev>",
       to: [TO],
       subject: "My Pokemon Team feedback",
-      text: `${message}\n\n---\n${details.join("\n")}`,
+      // The details come first, so the message cannot pose as them
+      text: `${details.join("\n")}\n\nMessage:\n${message}`,
       ...(replyTo && { reply_to: replyTo }),
       ...(attachments.length > 0 && { attachments }),
     }),

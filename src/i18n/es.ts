@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const es: Messages = {
+  pageTitle: "My Pokemon Team - Creador y planificador de equipos Pokémon",
   beta: "Beta",
   generation,
   generationGames: {
@@ -113,6 +114,8 @@ const es: Messages = {
     teamEmpty: "El equipo Pokémon está vacío",
     linkCopied: "Enlace del equipo Pokémon copiado",
     linkNotCopied: "No se ha podido copiar el enlace.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La generación o el juego de este enlace no es compatible, así que se ha abierto en ${profile}.`,
     nothingToCopy: "El equipo está vacío, no hay nada que copiar.",
     teamCopied: "Equipo copiado.",
     teamNotCopied: "No se ha podido copiar el equipo.",
@@ -133,7 +136,7 @@ const es: Messages = {
     advanced: "Más detalles",
     advancedFor: (slot: number) => `Más detalles del hueco ${slot}`,
     details: "Detalles",
-    showMoveTypes: "Mostrar tipos de movimientos",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Acerca de ${pokemon}`,
     dragHint: "Mantén y arrastra para reordenar",
     moveToSlot: (pokemon: string) => `Mover a ${pokemon} a otro hueco`,
@@ -165,7 +168,8 @@ const es: Messages = {
       `establecer ${label} en ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `intercambiar a ${first} y ${second}`,
-    moreChanges: (count: number) => `${count} cambios más`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 cambio más" : `${count} cambios más`,
     undoAction: (action: string) => `Deshacer ${action}`,
     redoAction: (action: string) => `Rehacer ${action}`,
     randomizeTeamAction: "crear equipo aleatorio",
@@ -175,7 +179,8 @@ const es: Messages = {
     bigGridView: "Vista de cuadrícula grande",
     teamNumber: (number: number) => `Equipo ${number}`,
     unnamedTeam: "Equipo",
-    copyOf: (name: string) => `Copia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} de ${name}` : `Copia de ${name}`,
     learnsetsFailed:
       "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
   },
@@ -259,6 +264,8 @@ const es: Messages = {
       cause: string | undefined,
     ) =>
       `${type} hace ${multiplier}x a ${pokemon} (${types})${cause ? ` con ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} lo vuelve de tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,

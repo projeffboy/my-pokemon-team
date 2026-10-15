@@ -114,7 +114,7 @@ export class Store {
     if (!loaded) this.startingTeamId = stored.currentTeamId;
     this.teams = stored.teams;
     this.currentTeamId = stored.currentTeamId;
-    this.showMoveTypes = stored.showMoveTypes;
+    this.showTypes = stored.showMoveTypes;
     this.sort = stored.sort;
     this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
@@ -527,12 +527,21 @@ export class Store {
     return generationRules(this.currentTeam.generation, this.dataFormat);
   }
 
+  // Plus the required items the game lacks but auto-selects for a pokemon it lists,
+  // e.g. Bug Memory for Silvally-Bug in Gen 9
   get teamItems() {
     if (!this.learnsetsLoaded) return [];
-    return availableItems(
-      allItemIds,
-      this.currentTeam.generation,
-      this.dataFormat,
+    const available = new Set(
+      availableItems(allItemIds, this.currentTeam.generation, this.dataFormat),
+    );
+    if (!available.size) return [];
+    const listed = new Set(this.gamePokemon);
+    const required = this.teamPokemon
+      .filter(name => listed.has(name))
+      .map(name => getAutoSelectedItem(name, "", item => available.has(item)))
+      .filter(item => item && !available.has(item));
+    return allItemIds.filter(
+      item => available.has(item) || required.includes(item),
     );
   }
 
@@ -600,7 +609,8 @@ export class Store {
   selectPokemon(teamIndex: number, name: string) {
     const member = this.team[teamIndex];
 
-    if (!member) return;
+    // Picking the slot's own pokemon again keeps its set
+    if (!member || member.name === name) return;
     member.name = name;
     member.item =
       this.rules.items ?
@@ -815,7 +825,7 @@ export class Store {
       );
   }
 
-  // Every pokemon and move the current game's dropdowns can list, whatever the filters
+  // Every pokemon, move, and ability the current game's dropdowns can list, whatever the filters
   get gamePokemon() {
     const { generation, format } = this.currentTeam;
     return this.inGame(
@@ -835,6 +845,16 @@ export class Store {
       this.currentTeam.generation,
       this.dataFormat,
     );
+  }
+
+  get gameAbilities() {
+    return [
+      ...new Set(
+        this.gamePokemon.flatMap(name =>
+          pokemonAbilities(name, this.currentTeam.generation, this.dataFormat),
+        ),
+      ),
+    ];
   }
 
   get filteredPokemon() {
@@ -963,8 +983,11 @@ export class Store {
       translation => {
         if (locale !== this.locale) return;
         this.translation = translation;
-        if (typeof document !== "undefined")
+        // index.html keeps the English title for crawlers
+        if (typeof document !== "undefined") {
           document.documentElement.lang = locale;
+          document.title = translation.t.pageTitle;
+        }
       },
       () => {
         if (locale === this.locale)
@@ -973,8 +996,9 @@ export class Store {
     );
   }
 
-  // Each chosen move's type icon before its name, with the item's icon leading to match
-  showMoveTypes: boolean;
+  // Each pokemon's type icons, and each chosen move's before its name with the
+  // item's icon leading to match, until the Player hides them
+  showTypes: boolean;
 
   // How the Name dropdown lists its options
   nameView: NameView;
@@ -1063,7 +1087,7 @@ export class Store {
     const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
-    this.showMoveTypes = merged.showMoveTypes;
+    this.showTypes = merged.showMoveTypes;
     this.sort = merged.sort;
     this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
@@ -1107,7 +1131,7 @@ export class Store {
       teams: this.teams,
       currentTeamId:
         this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId,
-      showMoveTypes: this.showMoveTypes,
+      showMoveTypes: this.showTypes,
       sort: this.sort,
       moveSort: this.moveSort,
       nameView: this.nameView,
