@@ -30,10 +30,11 @@ const zhHans: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即将推出",
+  generationGroups: { spinOffs: "外传", mainSeries: "正传系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合并第6–9世代所有游戏的选项",
+    description: "合并第6–9世代所有游戏",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",

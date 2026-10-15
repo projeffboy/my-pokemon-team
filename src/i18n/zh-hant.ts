@@ -30,10 +30,11 @@ const zhHant: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即將推出",
+  generationGroups: { spinOffs: "外傳", mainSeries: "正傳系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合併第6–9世代所有遊戲的選項",
+    description: "合併第6–9世代所有遊戲",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
