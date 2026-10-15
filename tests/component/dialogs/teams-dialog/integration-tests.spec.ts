@@ -490,3 +490,30 @@ test("fallback copying from the Teams row menu stays inside its focus trap", asy
     )
     .toContain("Lombre");
 });
+
+test("closing Edit Pokepaste opened from a team's menu returns focus to the Teams button", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Cetitan");
+  const teamsButton = page.getByRole("button", { name: "Teams", exact: true });
+  const editor = page.getByRole("dialog", {
+    name: "Edit Pokepaste",
+    exact: true,
+  });
+  for (const close of [
+    () => editor.getByRole("button", { name: "Cancel", exact: true }).click(),
+    () => page.keyboard.press("Escape"),
+  ]) {
+    await openTeams(page);
+    await page
+      .getByRole("button", { name: "Options for Team 1", exact: true })
+      .press("Enter");
+    await page
+      .getByRole("menuitem", { name: "Edit Pokepaste", exact: true })
+      .press("Enter");
+    await expect(editor).toBeVisible();
+    await close();
+    await expect(editor).toBeHidden();
+    await expect(teamsButton).toBeFocused();
+  }
+});

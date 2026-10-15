@@ -93,7 +93,9 @@ const TeamsDialog = observer(function TeamsDialog() {
     anchorEl: HTMLElement;
   } | null>(null);
   const [settingsTeamId, setSettingsTeamId] = useState<string | null>(null);
-  const pendingSettingsTeamId = useRef<string | null>(null);
+  // Runs once the row menu has closed and restored focus, so that a dialog it
+  // opens returns focus there rather than to the removed menu item
+  const afterMenuCloses = useRef<(() => void) | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
   const dialogName = store.dialog?.name;
   const isOpen = dialogName === "teams" || dialogName === "importTeam";
@@ -136,7 +138,7 @@ const TeamsDialog = observer(function TeamsDialog() {
       label: t.settings.editTeamName,
       Icon: EditIcon,
       act: () => {
-        pendingSettingsTeamId.current = team.id;
+        afterMenuCloses.current = () => setSettingsTeamId(team.id);
       },
     },
     {
@@ -180,8 +182,10 @@ const TeamsDialog = observer(function TeamsDialog() {
       label: t.team.editPokepaste,
       Icon: EditNoteIcon,
       act: () => {
-        store.selectTeam(team.id);
-        store.openDialog("editTeam");
+        afterMenuCloses.current = () => {
+          store.selectTeam(team.id);
+          store.openDialog("editTeam");
+        };
       },
     },
     {
@@ -485,10 +489,9 @@ const TeamsDialog = observer(function TeamsDialog() {
         slotProps={{
           transition: {
             onExited: () => {
-              const teamId = pendingSettingsTeamId.current;
-              pendingSettingsTeamId.current = null;
-              // Let the menu restore focus before the editor takes it.
-              if (isOpen && teamId) setSettingsTeamId(teamId);
+              const act = afterMenuCloses.current;
+              afterMenuCloses.current = null;
+              if (isOpen) act?.();
             },
           },
         }}
