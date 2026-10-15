@@ -10,12 +10,13 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `filtering.spec.ts` covers formats, tiers, regions, types, abilities, generations, and combined filters.
 - `sorting.spec.ts` covers the Name dropdown's sort orders: name, pokedex number, format, base stats, and tie-breaking.
 - `dex-urls.spec.ts` covers the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex URLs, including names with punctuation or accents, and that every pokemon's Showdown URL uses its Showdown ID. `npm run test:links` checks the links on the real sites.
+- `search-filter.spec.ts` covers typing in the dropdowns: case, accents, full-width letters and digits from Japanese and Chinese IMEs, and hiragana for katakana names.
 - `random.spec.ts` covers random pokemon and set choices.
 - `matrix.spec.ts` covers the Matrix Analysis cells and their reasons.
 - `validation.spec.ts` covers the team validation rules: legality, abilities, required items, repeated moves, EVs, levels, tera types, clauses, and the abilities, items, and moves a Smogon tier bans.
 - `pokedex.spec.ts` checks inherited cosmetic-form data and distinct battle formes.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.
-- `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, and leaves the other slots alone.
+- `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, leaves the other slots alone, and keeps a required item the game lacks in the Item dropdown.
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
 - `team-text-problems.spec.ts` covers the problems reported in edited team text: unrecognized and unlearnable moves, pokemon named by slot, too many pokemon or moves, items and abilities with what replaces them, unreadable set details and Gigantamax lines, and that the site's own text has none in any game.

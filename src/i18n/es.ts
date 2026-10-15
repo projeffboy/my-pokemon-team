@@ -171,7 +171,8 @@ const es: Messages = {
       `establecer ${label} en ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `intercambiar a ${first} y ${second}`,
-    moreChanges: (count: number) => `${count} cambios más`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 cambio más" : `${count} cambios más`,
     undoAction: (action: string) => `Deshacer ${action}`,
     redoAction: (action: string) => `Rehacer ${action}`,
     randomizeTeamAction: "crear equipo aleatorio",
@@ -181,7 +182,8 @@ const es: Messages = {
     bigGridView: "Vista de cuadrícula grande",
     teamNumber: (number: number) => `Equipo ${number}`,
     unnamedTeam: "Equipo",
-    copyOf: (name: string) => `Copia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} de ${name}` : `Copia de ${name}`,
     learnsetsFailed:
       "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
   },

@@ -182,7 +182,8 @@ const en = {
     // The default names of new teams
     teamNumber: (number: number) => `Team ${number}`,
     unnamedTeam: "Team",
-    copyOf: (name: string) => `${name} copy`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} copy ${number}` : `${name} copy`,
     learnsetsFailed:
       "The move lists could not be loaded. Reload the page to try again.",
   },

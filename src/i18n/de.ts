@@ -180,7 +180,8 @@ const de: Messages = {
       `${label} für ${pokemon} auf ${value} setzen`,
     swappedSlots: (first: string, second: string) =>
       `${first} und ${second} tauschen`,
-    moreChanges: (count: number) => `${count} weitere Änderungen`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 weitere Änderung" : `${count} weitere Änderungen`,
     undoAction: (action: string) => `Rückgängig: ${action}`,
     redoAction: (action: string) => `Wiederholen: ${action}`,
     randomizeTeamAction: "Team zufällig zusammenstellen",
@@ -191,7 +192,8 @@ const de: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Team ${number}`,
     unnamedTeam: "Team",
-    copyOf: (name: string) => `Kopie von ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Kopie ${number} von ${name}` : `Kopie von ${name}`,
     learnsetsFailed:
       "Die Attackenlisten konnten nicht geladen werden. Lade die Seite neu, um es noch einmal zu versuchen.",
   },
