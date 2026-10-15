@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
+  LEGACY_LINK_PARSING_OPTIONS,
   parseTeamsText,
   parseTeamText,
   serializeTeam,
@@ -135,6 +136,15 @@ IVs: 0 Atk / 0 Spe
       parseTeamText("Stantler\nIVs: 0 Atk", 8, LEGENDS_ARCEUS)[0].ivs,
     ).toBeUndefined();
     expect(parseTeamText(farigiraf)[0].ivs).toEqual({ atk: 0, spe: 0 });
+    // Links made before this keep loading the details they carry
+    expect(
+      parseTeamText(
+        farigiraf,
+        9,
+        CHAMPIONS_FORMAT,
+        LEGACY_LINK_PARSING_OPTIONS,
+      )[0].ivs,
+    ).toEqual({ atk: 0, spe: 0 });
   });
 
   test("other details follow the selected game like happiness", () => {

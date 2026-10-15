@@ -224,6 +224,8 @@ export const LEGACY_LINK_PARSING_OPTIONS = {
   inferHiddenPowerIvs: false,
   preserveBlankAbilityDefault: true,
   allowHyperTraining: false,
+  // Links decode every detail they carry, so each keeps loading the same team
+  keepUnsupportedDetails: true,
 } as const;
 
 // Parses Pokemon Showdown team text into a fresh six-slot team.
@@ -238,15 +240,19 @@ export function parseTeamText(
     inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
+    keepUnsupportedDetails = false,
   }: {
     inferFrustrationHappiness?: boolean;
     inferLegacyTraining?: boolean;
     inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
+    keepUnsupportedDetails?: boolean;
   } = {},
 ): Team {
   const rules = generationRules(generation, format);
+  // Pasted text drops details the game has no field for
+  const supports = (rule: boolean) => keepUnsupportedDetails || rule;
   const team = createEmptyTeam();
   const teamPokemonRawData = text
     .replace(/^\s*---\s*$/gm, "\n")
@@ -273,7 +279,7 @@ export function parseTeamText(
         getAutoSelectedAbility(pokemon, generation, format)
       : "";
     if (nickname) member.nickname = nickname;
-    if (gender && rules.gender) member.gender = gender;
+    if (gender && supports(rules.gender)) member.gender = gender;
 
     // If team raw data does not mention item, leave it blank
     if (itemText) {
@@ -314,7 +320,7 @@ export function parseTeamText(
         const level = Math.round(Number(value("Level:")));
         if (level >= 1 && level <= MAX_LEVEL && level !== DEFAULT_LEVEL)
           member.level = level;
-      } else if (startsWith("Shiny:") && rules.shiny) {
+      } else if (startsWith("Shiny:") && supports(rules.shiny)) {
         if (value("Shiny:").toLowerCase() === "yes") member.shiny = true;
       } else if (startsWith("Happiness:") && rules.happiness) {
         const raw = value("Happiness:");
@@ -329,10 +335,13 @@ export function parseTeamText(
           if (happiness === DEFAULT_HAPPINESS) delete member.happiness;
           else member.happiness = happiness;
         }
-      } else if (startsWith("Tera Type:") && rules.tera) {
+      } else if (startsWith("Tera Type:") && supports(rules.tera)) {
         const teraType = value("Tera Type:");
         if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
-      } else if (startsWith("EVs:") && rules.investment !== "effortLevels") {
+      } else if (
+        startsWith("EVs:") &&
+        supports(rules.investment !== "effortLevels")
+      ) {
         const evs = parseStats(value("EVs:"), 255, ev => ev === 0);
         if (evs) member.evs = evs;
       } else if (startsWith("Stat Experience:")) {
@@ -347,10 +356,10 @@ export function parseTeamText(
           10,
           n => n === 0,
         );
-      } else if (startsWith("IVs:") && rules.ivs) {
+      } else if (startsWith("IVs:") && supports(rules.ivs)) {
         const ivs = parseStats(value("IVs:"), MAX_IV, iv => iv === MAX_IV);
         if (ivs) member.ivs = ivs;
-      } else if (/ Nature$/i.test(line) && rules.nature) {
+      } else if (/ Nature$/i.test(line) && supports(rules.nature)) {
         const nature = natureNameInverse(
           line.slice(0, -" Nature".length).trim(),
         );
