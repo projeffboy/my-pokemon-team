@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 15, 2026",
+    changes: [
+      "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",

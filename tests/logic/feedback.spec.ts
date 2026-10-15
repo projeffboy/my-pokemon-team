@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { describeBrowser, POST, readImages } from "../../api/feedback";
+import { loadScreenshotLibrary } from "@/app/header/feedback-dialog/capture-page";
 
 test("names the browser and OS from the user agent", () => {
   const userAgents = {
@@ -159,4 +160,10 @@ test("a failed email connection receives a retryable response", async () => {
   } finally {
     globalThis.fetch = originalFetch;
   }
+});
+
+test("opening the dialog and sending share one screenshot library import", async () => {
+  const opened = loadScreenshotLibrary();
+  expect(loadScreenshotLibrary()).toBe(opened);
+  expect(typeof (await opened).domToJpeg).toBe("function");
 });

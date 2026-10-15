@@ -24,6 +24,7 @@ import CaptionButton from "./shared/CaptionButton";
 import {
   capturePage,
   describeScreen,
+  loadScreenshotLibrary,
   MAX_IMAGES_LENGTH,
 } from "./feedback-dialog/capture-page";
 import { compressImage } from "./feedback-dialog/compress-image";
@@ -153,7 +154,10 @@ const FeedbackDialog = observer(function FeedbackDialog({
         caption={t.feedback.caption}
         label={t.feedback.button}
         row={row}
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          loadScreenshotLibrary();
+          setIsOpen(true);
+        }}
       />
       <Dialog
         ref={dialogRef}
