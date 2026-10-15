@@ -656,7 +656,7 @@ const it: Messages = {
       ],
       [
         "Recupero affidabile",
-        "Mosse che recuperano con certezza il 50% o più dei tuoi PS ogni volta che le usi (in condizioni meteo normali). Es. Ripresa, Covauova, Buonlatte, Pigro, Sintesi.",
+        "Mosse che recuperano con certezza il 50% o più dei tuoi PS ogni volta che le usi (in condizioni meteo normali). Es. Ripresa, Covauova, Buonlatte, Pigro, Sintesi. Conta anche Desiderio, se lo stesso Pokémon conosce Protezione o Individua.",
       ],
       [
         "Mosse di stato",
