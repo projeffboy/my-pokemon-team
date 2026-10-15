@@ -115,15 +115,18 @@ const fr: Messages = {
     delete: "Supprimer",
     importTeam: "Importer une équipe",
     share: "Partager",
-    teamEmpty: "L'équipe Pokémon est vide",
+    teamEmpty: "L'équipe est vide. Ajoutez un Pokémon pour la partager.",
     linkCopied: "Lien de l'équipe Pokémon copié",
-    linkNotCopied: "Impossible de copier le lien.",
+    linkNotCopied:
+      "Impossible de copier le lien. Copiez-le depuis la barre d'adresse pendant que l'équipe est ouverte.",
     linkGenerationUnsupported: (profile: string) =>
       `La génération ou le jeu de ce lien n'est pas pris en charge, il a donc été ouvert en ${profile}.`,
-    nothingToCopy: "Équipe vide, rien à copier.",
+    nothingToCopy: "L'équipe est vide. Ajoutez un Pokémon pour la copier.",
     teamCopied: "Équipe copiée.",
-    teamNotCopied: "Impossible de copier l'équipe.",
-    cannotDuplicateEmptyTeam: "Impossible de dupliquer une équipe vide",
+    teamNotCopied:
+      "Impossible de copier l'équipe. Copiez plutôt son texte depuis Modifier le Pokepaste.",
+    cannotDuplicateEmptyTeam:
+      "L'équipe est vide. Ajoutez un Pokémon pour la dupliquer.",
     teamDuplicated: "Équipe dupliquée",
     teamDeleted: "Équipe supprimée",
     slots: "Emplacements de l'équipe Pokémon",
@@ -429,7 +432,8 @@ const fr: Messages = {
     randomTeamCreated: "Équipe aléatoire créée",
     exported: "Toutes les équipes exportées",
     copiedAll: "Toutes les équipes copiées",
-    notCopiedAll: "Impossible de copier les équipes.",
+    notCopiedAll:
+      "Impossible de copier les équipes. Téléchargez-les plutôt avec Tout exporter.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -521,6 +525,8 @@ const fr: Messages = {
       `${pokemon} doit tenir ${items.join(" ou ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} a ${move} en double.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} a ${thing}, ce qui est interdit en ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -557,7 +563,30 @@ const fr: Messages = {
     imported: "Équipe importée",
     importedMany: (count: number) => `${count} équipes importées`,
     noChanges: "Aucune modification.",
-    nothingFound: "Aucun Pokémon trouvé dans ce texte.",
+    nothingFound:
+      "Aucun Pokémon trouvé dans ce texte. Écrivez les noms des Pokémon en anglais, comme les écrit Pokemon Showdown, ou collez une équipe exportée depuis Pokemon Showdown.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 problème trouvé" : `${count} problèmes trouvés`}. La mise à jour applique tout de même le texte ainsi :`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Capacité ${slot}`,
+    problemValue: (where: string, value: string) => `${where} : « ${value} »`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Non reconnu.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} ne peut pas apprendre cette capacité dans le jeu sélectionné.`,
+    wrongAbility: (pokemon: string) =>
+      `Ce n'est pas un talent que ${pokemon} peut avoir.`,
+    outOfRange: (min: number, max: number) =>
+      `Ce n'est pas un nombre entier de ${min} à ${max}.`,
+    unsupported: "Le jeu sélectionné n'a pas ce détail.",
+    tooManyPokemon: "Une équipe compte au plus six Pokémon.",
+    tooManyMoves: "Un Pokémon connaît au plus quatre capacités.",
+    noGigantamax: (pokemon: string) => `${pokemon} n'a pas de forme Gigamax.`,
+    unread: "Ce n'est pas un détail que le site lit.",
+    slotLeftEmpty: "L'emplacement de l'équipe reste vide.",
+    moveLeftEmpty: "L'emplacement de la capacité reste vide.",
+    leftOut: "Cet élément est ignoré.",
+    usedInstead: (value: string) => `${value} est utilisé à la place.`,
   },
   deleteDialog: {
     title: (team: string) => `Supprimer ${team} ?`,
