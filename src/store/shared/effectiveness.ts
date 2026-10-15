@@ -169,8 +169,9 @@ export function typeAgainstPokemon(
         }
         break;
       case "Dry Skin":
+        // A half step for 1.25x Fire damage, as Filter's 0.75x is
         if (type === "Fire") {
-          effectiveness -= 1;
+          effectiveness -= 0.5;
         } else if (type === "Water") {
           effectiveness = IMMUNE_SCORE;
         }
