@@ -10,7 +10,7 @@ import { nicknameLimit } from "@/shared/nickname";
 import { generationRules, getStatExperience } from "@/shared/generation-rules";
 import { english, type Translation } from "@/i18n/translation";
 import { evTotal, getEv, MAX_LEVEL } from "@/shared/set-details";
-import { requiredItemIds } from "@/shared/team";
+import { requiredItemGroups } from "@/shared/team";
 import { filterPokemon } from "./filtering";
 import { availablePokemon, isItemAvailable } from "./learnsets";
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
@@ -83,10 +83,13 @@ export function validateTeam(
     )
       add(t.validation.wrongAbility(label, names.ability(ability)));
 
-    // Only the ones the game has, which are none in games without items
-    const required = requiredItemIds(name).filter(id =>
-      isItemAvailable(id, generation, format),
-    );
+    // Only the ones the game has, which are none in games without items. A game
+    // requires the newest it has, e.g. the Griseous Core from Gen 9, while the
+    // combined generations accept the earlier one too.
+    const required = requiredItemGroups(name).flatMap(group => {
+      const items = group.filter(id => isItemAvailable(id, generation, format));
+      return format === COMBINED_GENERATIONS_FORMAT ? items : items.slice(0, 1);
+    });
     if (required.length && !required.includes(item))
       add(t.validation.missingItem(label, required.map(names.item)));
 

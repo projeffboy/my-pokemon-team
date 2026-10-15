@@ -182,11 +182,14 @@ test("reports illegal abilities, missing required items, and repeated moves", ()
   ]);
 });
 
-test("a required item may be any that the game has, or none in games without items", () => {
+test("a game requires the newest required item it has, the combined generations either, and games without items none", () => {
   const orb = createTeam({ name: "giratinaorigin", item: "griseousorb" });
   expect(messages(orb, 4, "")).toEqual([]);
   expect(messages(orb, 8, "Uber")).toEqual([]);
   expect(messages(orb, 9, COMBINED_GENERATIONS_FORMAT)).toEqual([]);
+  expect(messages(orb, 9, "")).toEqual([
+    "Giratina-Origin must hold Griseous Core.",
+  ]);
   expect(
     messages(
       createTeam({ name: "giratinaorigin", item: "griseouscore" }),
