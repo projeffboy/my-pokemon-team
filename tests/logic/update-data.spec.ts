@@ -412,6 +412,9 @@ test("change notice is empty when only the key order differs", () => {
   ).toBeUndefined();
 });
 
+const MINOR =
+  "**Looks minor:** Showdown added at most one pokemon and no pokemon with new moves or items, not counting CAP (fan-made) ones, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.";
+
 test("change notice calls changes to existing entries minor and names them", () => {
   const pokedex = {
     kleavor: { name: "Kleavor" },
@@ -440,8 +443,7 @@ test("change notice calls changes to existing entries minor and names them", () 
         "viable-moves.ts": "new",
       },
     ),
-  )
-    .toBe(`**Looks minor:** Showdown added no pokemon, move, or item, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.
+  ).toBe(`${MINOR}
 
 - \`items.ts\`: removed Peat Block
 - \`learnsets.json\`: changed Kleavor
@@ -449,16 +451,62 @@ test("change notice calls changes to existing entries minor and names them", () 
 - \`viable-moves.ts\` changed`);
 });
 
-test("change notice calls new entries and a new Champions list major", () => {
+test("change notice calls one new item, or one new pokemon among CAP entries, minor", () => {
   expect(
     changeNotice(
-      { "moves.ts": {} },
-      { "moves.ts": { mysticalpower: { name: "Mystical Power" } } },
+      { "items.ts": {} },
+      { "items.ts": { prettyfeather: { name: "Pretty Feather" } } },
+    ),
+  ).toBe(`${MINOR}
+
+- \`items.ts\`: added Pretty Feather`);
+
+  expect(
+    changeNotice(
+      { "pokedex.ts": {}, "moves.ts": {}, "items.ts": {} },
+      {
+        "pokedex.ts": {
+          crucibelle: { num: -39, name: "Crucibelle" },
+          crucibellemega: { num: -39, name: "Crucibelle-Mega" },
+          overqwil: { num: 904, name: "Overqwil" },
+        },
+        "moves.ts": { paleowave: { name: "Paleo Wave" } },
+        "items.ts": { crucibellite: { name: "Crucibellite" } },
+      },
+      { "moves.ts": ["paleowave"], "items.ts": ["crucibellite"] },
+    ),
+  ).toBe(`${MINOR}
+
+- \`pokedex.ts\`: added Crucibelle, Crucibelle-Mega, Overqwil
+- \`moves.ts\`: added Paleo Wave
+- \`items.ts\`: added Crucibellite`);
+});
+
+test("change notice calls a new game's entries and a new Champions list major", () => {
+  expect(
+    changeNotice(
+      { "pokedex.ts": {}, "moves.ts": {} },
+      {
+        "pokedex.ts": { sneasler: { num: 903, name: "Sneasler" } },
+        "moves.ts": { direclaw: { name: "Dire Claw" } },
+      },
     ),
   )
-    .toBe(`**Looks major:** Showdown added pokemon, moves, or items, as a new game does. Major data is due on the site within 2 days of Showdown publishing it.
+    .toBe(`**Looks major:** Showdown added several pokemon, or pokemon with new moves or items, as a new game does. Major data is due on the site within 2 days of Showdown publishing it.
 
-- \`moves.ts\`: added Mystical Power`);
+- \`pokedex.ts\`: added Sneasler
+- \`moves.ts\`: added Dire Claw`);
+  expect(
+    changeNotice(
+      { "pokedex.ts": {} },
+      {
+        "pokedex.ts": {
+          walkingwake: { num: 1009, name: "Walking Wake" },
+          ironleaves: { num: 1010, name: "Iron Leaves" },
+        },
+      },
+    ),
+  ).toMatch(/^\*\*Looks major:\*\* Showdown added several pokemon/);
 
   const pokedex = {
     sandyshocks: { name: "Sandy Shocks" },
@@ -488,7 +536,7 @@ test("change notice calls new entries and a new Champions list major", () => {
       },
     ),
   )
-    .toBe(`**Looks major:** Showdown added pokemon, moves, or items, as a new game does, and changed which pokemon Pokemon Champions allows, as a new regulation does. Major data is due on the site within 2 days of Showdown publishing it.
+    .toBe(`**Looks major:** Showdown changed which pokemon Pokemon Champions allows, as a new regulation does. Major data is due on the site within 2 days of Showdown publishing it.
 
 - Pokemon Champions: now allows Sandy Shocks, Scream Tail, Flutter Mane, Slither Wing, Roaring Moon, and 1 more; no longer allows Great Tusk
 - \`pokedex.ts\`: added Iron Moth

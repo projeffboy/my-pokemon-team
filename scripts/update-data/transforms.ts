@@ -677,8 +677,13 @@ const championsLegal = (snapshot: DataSnapshot) =>
     .map(([id]) => id);
 
 // Tells the maintainer what an update changed in src/data, and whether it looks major, like a
-// new game or regulation, or minor. Undefined when nothing changed.
-export function changeNotice(before: DataSnapshot, after: DataSnapshot) {
+// new game or regulation, or minor. Undefined when nothing changed. `capIds` holds, by file, the
+// moves and items Showdown marks as CAP (fan-made), which no game adds.
+export function changeNotice(
+  before: DataSnapshot,
+  after: DataSnapshot,
+  capIds: Partial<Record<string, string[]>> = {},
+) {
   const nameTables = ["pokedex.ts", "items.ts", "moves.ts"].map(file => ({
     ...tableOf(before[file]),
     ...tableOf(after[file]),
@@ -702,8 +707,17 @@ export function changeNotice(before: DataSnapshot, after: DataSnapshot) {
       })
       .join("; ");
 
+  // The site's rule for CAP pokemon, in src/store/filtering.ts
+  const pokedex = tableOf(after["pokedex.ts"]);
+  const isCap = (file: string, id: string) => {
+    const { num } = tableOf(pokedex[id]);
+    return file === "pokedex.ts" ?
+        typeof num === "number" && num < 0 && num > -5000
+      : !!capIds[file]?.includes(id);
+  };
+
   const lines: string[] = [];
-  let addsEntries = false;
+  const newEntries: Record<string, number> = {};
   for (const [file, now] of Object.entries(after)) {
     const old = before[file];
     if (typeof old === "string" || typeof now === "string") {
@@ -718,8 +732,7 @@ export function changeNotice(before: DataSnapshot, after: DataSnapshot) {
     );
     const summary = describe({ added, removed, changed }, now, oldTable);
     if (summary) lines.push(`- \`${file}\`: ${summary}`);
-    if (["pokedex.ts", "moves.ts", "items.ts"].includes(file) && added.length)
-      addsEntries = true;
+    newEntries[file] = added.filter(id => !isCap(file, id)).length;
   }
   const wasLegal = championsLegal(before);
   const isLegal = championsLegal(after);
@@ -730,14 +743,21 @@ export function changeNotice(before: DataSnapshot, after: DataSnapshot) {
   if (legality) lines.unshift(`- Pokemon Champions: ${legality}`);
   if (!lines.length) return undefined;
 
+  // One new pokemon, move, or item is minor, but a new game brings several pokemon, or pokemon
+  // with their moves or items
+  const newPokemon = newEntries["pokedex.ts"] ?? 0;
+  const newGame =
+    newPokemon > 1 ||
+    (newPokemon > 0 && !!(newEntries["moves.ts"] || newEntries["items.ts"]));
   const reasons = [
-    addsEntries && "added pokemon, moves, or items, as a new game does",
+    newGame &&
+      "added several pokemon, or pokemon with new moves or items, as a new game does",
     !!legality &&
       "changed which pokemon Pokemon Champions allows, as a new regulation does",
   ].filter(reason => typeof reason === "string");
   const verdict =
     reasons.length ?
       `**Looks major:** Showdown ${reasons.join(", and ")}. Major data is due on the site within 2 days of Showdown publishing it.`
-    : "**Looks minor:** Showdown added no pokemon, move, or item, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.";
+    : "**Looks minor:** Showdown added at most one pokemon and no pokemon with new moves or items, not counting CAP (fan-made) ones, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.";
   return [verdict, "", ...lines].join("\n");
 }

@@ -493,9 +493,26 @@ async function loadSnapshot(): Promise<DataSnapshot> {
   };
 }
 
+// Showdown's CAP (fan-made) moves and items, by the file they go to
+async function loadCapIds() {
+  const capIds = async (file: string, exportName: string) => {
+    const table = await loadShowdownTable(`data/${file}`, exportName);
+    const ids = Object.entries(table)
+      .filter(([, entry]) => entry.isNonstandard === "CAP")
+      .map(([id]) => id);
+    return [file, ids] as const;
+  };
+  return Object.fromEntries(
+    await Promise.all([
+      capIds("moves.ts", "Moves"),
+      capIds("items.ts", "Items"),
+    ]),
+  );
+}
+
 // `--notice=<file>` also writes the notice there, for the Showdown data workflow to post
 async function reportChanges(before: DataSnapshot, after: DataSnapshot) {
-  const notice = changeNotice(before, after);
+  const notice = changeNotice(before, after, await loadCapIds());
   console.log(notice ?? "Showdown changed nothing the site uses.");
   const file = process.argv
     .find(arg => arg.startsWith("--notice="))

@@ -90,7 +90,7 @@ The Viable moves filter comes from the Showdown client's teambuilder. The script
 
 To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data/transforms.ts` and to the matching type in `src/types.ts`, then rerun the update.
 
-After writing the data, the script says what changed in `src/data` and whether it looks major or minor. It looks major when Showdown added pokemon, moves, or items, as a new game does, or changed which pokemon Pokemon Champions allows, as a new regulation does. Then it reports what the update may have broken:
+After writing the data, the script says what changed in `src/data` and whether it looks major or minor. It looks major when Showdown added several pokemon, or pokemon with new moves or items, as a new game does, or changed which pokemon Pokemon Champions allows, as a new regulation does. CAP (fan-made) pokemon, moves, and items don't count. Then it reports what the update may have broken:
 
 - Pokemon, moves, and items that were renamed or removed. Share links store display names, so old links lose those entries.
 - Whether the bundled icon sheets in `src/images/icon-sheets` still match Showdown's. If one differs, look for blank or shifted icons in the app, and replace the sheet if there are any.
