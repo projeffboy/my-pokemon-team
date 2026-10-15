@@ -179,3 +179,18 @@ test("keyboard rename keeps textbox focus and restores the team's Options button
   await expect(renamedOptions).toBeFocused();
   await expect(dialog).toBeHidden();
 });
+
+test("Enter in the team-name editor saves the name", async ({ page }) => {
+  await openNameEditor(page, "Team 1");
+  const dialog = page.getByRole("dialog", {
+    name: "Edit team name",
+    exact: true,
+  });
+  const name = dialog.getByRole("textbox", { name: "Team name", exact: true });
+  await name.fill("Rain team");
+  await name.press("Enter");
+  await expect(dialog).toBeHidden();
+  await expect(
+    page.getByRole("button", { name: "Options for Rain team", exact: true }),
+  ).toBeVisible();
+});

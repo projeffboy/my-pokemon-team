@@ -22,6 +22,7 @@ function TeamNameForm({
   const { t } = useTranslation();
   const [name, setName] = useState(team.name);
   const inputRef = useRef<HTMLInputElement>(null);
+  const formId = useId();
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -33,19 +34,30 @@ function TeamNameForm({
     <>
       <DialogTitle id={titleId}>{t.settings.editTeamName}</DialogTitle>
       <DialogContent>
-        <TextField
-          autoFocus
-          inputRef={inputRef}
-          label={t.settings.teamName}
-          value={name}
-          onChange={event => setName(event.target.value)}
-          fullWidth
-          sx={{ mt: 1 }}
-        />
+        {/* A form, so Enter saves the name */}
+        <form
+          id={formId}
+          onSubmit={event => {
+            event.preventDefault();
+            handleSave();
+          }}
+        >
+          <TextField
+            autoFocus
+            inputRef={inputRef}
+            label={t.settings.teamName}
+            value={name}
+            onChange={event => setName(event.target.value)}
+            fullWidth
+            sx={{ mt: 1 }}
+          />
+        </form>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t.cancel}</Button>
-        <Button onClick={handleSave}>{t.save}</Button>
+        <Button type="submit" form={formId}>
+          {t.save}
+        </Button>
       </DialogActions>
     </>
   );
