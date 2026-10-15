@@ -239,25 +239,93 @@ export function projectFormats(
 const learnsetMoves = (entry: ShowdownEntry) =>
   Object.keys(isRecord(entry.learnset) ? entry.learnset : {});
 
-// Every move from every game, as a sorted list per species
+// Every move from every game, as a sorted list per species. Two of Showdown's learnset rules
+// (Dex.species.getFullLearnset and getMovePool) depend on the game, so they are applied here:
+// - A game's entry without a learnset gives the forme its base forme's moves in that game,
+//   such as Super Size Pumpkaboo in Legends: Z-A.
+// - A forme with its own learnset but no previous evolution, such as a cap Pikachu or a totem,
+//   inherits only its first stage's Gen 9 egg moves, not its whole learnset.
 export function flattenLearnsets(
   learnsets: ShowdownTable,
   modLearnsets: ShowdownTable[],
+  pokedex: ShowdownTable,
 ): Learnsets {
-  const flattened: Learnsets = Object.fromEntries(
+  const flattened: Record<string, Set<string>> = Object.fromEntries(
     Object.entries(learnsets).map(([species, entry]) => [
       species,
-      learnsetMoves(entry),
+      new Set(learnsetMoves(entry)),
     ]),
   );
+  const add = (species: string, moves: string[]) => {
+    const set = (flattened[species] ??= new Set());
+    for (const move of moves) set.add(move);
+  };
+  for (const modLearnset of modLearnsets) {
+    for (const [species, entry] of Object.entries(modLearnset))
+      add(species, learnsetMoves(entry));
+  }
+
+  // Formes with no learnset in any game already inherit their base forme's whole list.
   for (const modLearnset of modLearnsets) {
     for (const [species, entry] of Object.entries(modLearnset)) {
-      flattened[species] = [
-        ...new Set([...(flattened[species] ?? []), ...learnsetMoves(entry)]),
-      ].sort();
+      if (isRecord(entry.learnset) || !flattened[species]?.size) continue;
+      const checked = new Set([species]);
+      let base = baseForme(pokedex, species);
+      while (base && !checked.has(base)) {
+        checked.add(base);
+        const baseEntry = modLearnset[base] ?? learnsets[base];
+        if (baseEntry && isRecord(baseEntry.learnset)) {
+          add(species, learnsetMoves(baseEntry));
+          break;
+        }
+        base = baseForme(pokedex, base);
+      }
     }
   }
-  return flattened;
+
+  for (const species of Object.keys(learnsets)) {
+    const firstStage = eggMoveParent(pokedex, species);
+    if (!firstStage || !flattened[species]?.size) continue;
+    for (const table of [learnsets, ...modLearnsets]) {
+      const learnset = table[firstStage]?.learnset;
+      if (!isRecord(learnset)) continue;
+      add(
+        species,
+        Object.entries(learnset)
+          .filter(
+            ([, sources]) =>
+              Array.isArray(sources) &&
+              sources.some(source => `${source}`.startsWith("9E")),
+          )
+          .map(([move]) => move),
+      );
+    }
+  }
+
+  return Object.fromEntries(
+    Object.entries(flattened).map(([species, moves]) => [
+      species,
+      [...moves].sort(),
+    ]),
+  );
+}
+
+function baseForme(pokedex: ShowdownTable, species: string) {
+  const entry = pokedex[species];
+  const base = toId(entry?.changesFrom ?? entry?.baseSpecies);
+  return base && base !== species ? base : undefined;
+}
+
+// Showdown's Dex.species.learnsetParent for a forme with its own learnset, when it reaches
+// the forme's first stage rather than a previous evolution or the forme it changes from
+function eggMoveParent(pokedex: ShowdownTable, species: string) {
+  const entry = pokedex[species];
+  if (!entry || entry.prevo) return undefined;
+  if (entry.changesFrom && entry.baseSpecies !== "Kyurem") return undefined;
+  let stage = toId(entry.baseSpecies);
+  if (!pokedex[stage]?.prevo) return undefined;
+  while (pokedex[stage]?.prevo) stage = toId(pokedex[stage]?.prevo);
+  return stage;
 }
 
 // The Showdown client's BattleMoveSearch, which judges a move for one set

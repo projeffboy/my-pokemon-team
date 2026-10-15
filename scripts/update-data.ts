@@ -141,14 +141,17 @@ const learnsetMods = [
 ];
 
 async function updateLearnsets() {
-  const [learnsets, ...modLearnsets] = await Promise.all(
-    [
-      "data/learnsets.ts",
-      ...learnsetMods.map(mod => `data/mods/${mod}/learnsets.ts`),
-    ].map(file => loadShowdownTable(file, "Learnsets")),
-  );
+  const [pokedex, [learnsets, ...modLearnsets]] = await Promise.all([
+    loadShowdownTable("data/pokedex.ts", "Pokedex"),
+    Promise.all(
+      [
+        "data/learnsets.ts",
+        ...learnsetMods.map(mod => `data/mods/${mod}/learnsets.ts`),
+      ].map(file => loadShowdownTable(file, "Learnsets")),
+    ),
+  ]);
   if (!learnsets) throw new Error("data/learnsets.ts exports no Learnsets");
-  const flattened = flattenLearnsets(learnsets, modLearnsets);
+  const flattened = flattenLearnsets(learnsets, modLearnsets, pokedex);
   await writeData("Learnsets", flattened);
   return flattened;
 }
@@ -500,6 +503,10 @@ async function updateData() {
       await read(path.join(dataRoot, "learnsets.json")),
     ) as Learnsets;
     await updateViableMoves(learnsets);
+    return;
+  }
+  if (process.argv.includes("--learnsets-only")) {
+    await updateViableMoves(await updateLearnsets());
     return;
   }
   if (process.argv.includes("--move-effects-only")) {

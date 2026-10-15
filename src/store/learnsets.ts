@@ -113,16 +113,9 @@ function learnsetParent(pokemon: string): string | undefined {
   if (entry.prevo) return previousEvolution(pokemon);
   if (entry.changesFrom && entry.baseSpecies !== "Kyurem")
     return pokemonNameInverse(entry.changesFrom);
-
-  // Formes such as cap Pikachu can inherit their base species' egg moves.
-  let base = pokemonNameInverse(entry.baseSpecies ?? "");
-  let prevo = base && previousEvolution(base);
-  if (!prevo) return undefined;
-  while (prevo) {
-    base = prevo;
-    prevo = previousEvolution(base);
-  }
-  return base;
+  // Formes such as cap Pikachu and totems inherit only their first stage's Gen 9 egg moves,
+  // which the data update adds to their own learnsets.
+  return undefined;
 }
 
 // Preserve legacy move acceptance; union-only additions apply just to the combined mode.
