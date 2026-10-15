@@ -1,0 +1,79 @@
+# 11. Analysis of Existing Systems
+
+What players can get from other teambuilders, and what sets My Pokemon Team apart. Six products were tried on 13 October 2026, one short session each and without signing in: adding a pokemon or two, opening the analysis, and reading the page. A feature that was not found may still exist. Four of the six were on the first page of a search for "pokemon teambuilder" that day, where this site came second.
+
+## 11.1 The products
+
+**Pokemon Showdown teambuilder** (`play.pokemonshowdown.com/teambuilder`). The set editor of the battle simulator. Players build format-legal competitive sets in it and battle with them in the same application. It validates a team against a format, keeps teams in the browser or in an account, and backs them all up. It has no team-level type analysis.
+
+**Marriland Team Builder** (`marriland.com/tools/team-builder/`). A weakness and resistance table for up to six pokemon, with a column for each pokemon, a row for each type, and totals. Abilities change the result: Bronzong's Ground cell went from 2x to immune with Levitate, and Heatran's Fire cell showed immune with Flash Fire. Its page says an "Advanced Mode" checks the team's moves against up to six opposing pokemon the player enters. It has no set details beyond a tera or custom type, and no Showdown text.
+
+**richi3f Pokemon Team Planner** (`richi3f.github.io/pokemon-team-planner/`). The player picks a game, including spin-offs and Pokemon Champions, then six pokemon from that game's own list. It tallies type weaknesses per slot and is meant for planning an in-game run. Its FAQ says abilities are not counted and coverage uses the pokemon's types, not its moves. The whole team is in the page's address.
+
+**Pikalytics Team Builder** (`pikalytics.com/team`). A competitive builder that fills each pokemon with its most used set for the chosen format, then shows weak, resist, and immune counts per type and counts of super effective and same-type moves. Abilities change the counts. It adds damage, speed, and matchup tools, a share link, a share image, and Showdown import and export.
+
+**PKMN.help** (`pkmn.help`). A type calculator, not a team builder. A team member is a type combination with one ability and a tera type, with no pokemon, moves, or items. Its "Team defense" page counts matchups by multiplier, and abilities such as Levitate change them. It states that it will never run advertisements.
+
+**PokeSynergy** (`pokesynergy.app`). A Pokemon Champions builder aimed at the current ranked format. It counts defensive matchups per type, checks super effective coverage from the team's moves, and suggests what would close a gap, such as "Suggested types: Steel, covers 4: Bug, Flying, Ice, Poison". It adds an automatic team builder, threat analysis against commonly used teams, a damage calculator, and an optional account.
+
+## 11.2 Features compared
+
+The last column says what this site plans to do about each feature.
+
+| Feature                                 | Elsewhere                                                                                                                                                           | This site                                                          | Plan                                                |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ | --------------------------------------------------- |
+| Moves, item, and ability per pokemon    | A full set per slot in Showdown, Pikalytics, and PokeSynergy; a pokemon alone, or a type combination, in the planners.                                              | Has it                                                             | Keep                                                |
+| Set details                             | Nature, training values, level, tera type. Only Showdown has all of them.                                                                                           | Has it                                                             | Keep                                                |
+| Defensive totals per type               | Counts of weak, resistant, and immune members per type in every product but Showdown.                                                                               | Has it, as a score                                                 | Keep                                                |
+| Abilities change the totals             | Levitate turned a Ground weakness into an immunity in Marriland, Pikalytics, PKMN.help, and PokeSynergy. richi3f says it ignores abilities.                         | Has it                                                             | Keep                                                |
+| Held items change the totals            | Not checked in any product.                                                                                                                                         | Has it                                                             | Keep                                                |
+| Coverage from the team's own moves      | Pikalytics and PokeSynergy count super effective moves per type; Marriland checks moves against opponents the player enters; PKMN.help needs attack types typed in. | Has it, with special moves such as Freeze-Dry                      | Keep                                                |
+| Explanation of a score                  | A legend or help text at most. None says which pokemon and which move or ability produced a number.                                                                 | Has it                                                             | Keep                                                |
+| Type against each team member           | A table with one column or cell per member, in Marriland and richi3f.                                                                                               | Has it                                                             | Keep                                                |
+| Checklist of competitive roles          | None has one. Showdown links to Smogon's role pages; PokeSynergy tags one role on each pokemon.                                                                     | Has it                                                             | Could do better: more items (issue 133)             |
+| Search filters                          | richi3f filters by type, excluded type, evolution, version, colour, and more. PokeSynergy searches by type, move, or ability.                                       | Format, type, region, ability, and viable moves                    | Could do better                                     |
+| Games and generations                   | richi3f has a pokemon list for each game, including spin-offs. Showdown and Pikalytics go by format. PokeSynergy is Pokemon Champions only.                         | Generations 1 to 9, Generations 6 to 9 combined, Pokemon Champions | Could do better: more games (issue 122)             |
+| Moving a team between generations       | None offers it.                                                                                                                                                     | Has it, with a preview of what is lost                             | Keep                                                |
+| Saved teams                             | In the browser for most. Showdown and PokeSynergy also offer an account. richi3f saves nothing.                                                                     | Has it, in the browser                                             | Keep                                                |
+| Backup of all teams                     | Showdown has "Backup/Restore all teams". Not checked elsewhere.                                                                                                     | Has it (Team backups)                                              | Keep                                                |
+| Share link                              | Marriland gives a short link and a team code. richi3f keeps the team in the address. Showdown uploads to PokePaste. Pikalytics also shares an image.                | Has it; the link holds the whole team, so it is long               | Keep                                                |
+| Showdown text import and export         | Showdown, Pikalytics, and PokeSynergy have it; the planners do not.                                                                                                 | Has it                                                             | Keep                                                |
+| Legality validation                     | Showdown validates a team against a format on request. The others only limit the pokemon offered.                                                                   | Worked out but not shown                                           | Could do better: show it while building (issue 117) |
+| Suggestions to close a gap              | PokeSynergy names a type that would cover the team's weaknesses and what it covers. Pikalytics suggests commonly used partners.                                     | Does not have it                                                   | Open for a later release (issue 37)                 |
+| Check against common opponents          | Marriland checks moves against six entered opponents; PokeSynergy analyses threats from commonly used teams.                                                        | Does not have it                                                   | Open for a later release (issue 44)                 |
+| Sets filled in from usage data          | Pikalytics adds a pokemon with its most used item, ability, and moves; PokeSynergy builds whole teams.                                                              | Fills only a required item or sole ability; random sets on request | Open for a later release, as suggestions (issue 37) |
+| Damage calculator, speed tiers, battles | Part of the same product in Showdown, Pikalytics, and PokeSynergy.                                                                                                  | Does not have it                                                   | Not part of the plan                                |
+| Account and saving across devices       | Optional sign-in in Showdown and PokeSynergy.                                                                                                                       | A backup file moves teams                                          | Not part of the plan                                |
+| Custom and overridden types             | Marriland lets a pokemon's type be overridden; PKMN.help allows three types and inverse battles.                                                                    | Does not have it                                                   | Not part of the plan                                |
+| Languages                               | Several in PKMN.help, Showdown, Marriland, and Pikalytics; English only in richi3f and PokeSynergy.                                                                 | Ten                                                                | Keep                                                |
+| Phone layout                            | All fit a 375 pixel width on their first screen; Showdown's set editor was not tried.                                                                               | From 320 pixels                                                    | Keep                                                |
+| Price and advertising                   | All are free. Showdown, Marriland, and Pikalytics show advertisements, Marriland through the same ad platform as this site. PKMN.help promises none.                | Free, with advertisements                                          | Keep                                                |
+
+## 11.3 Discussion
+
+### What sets My Pokemon Team apart
+
+Three features were found in no product examined:
+
+- **A checklist of competitive roles for the team.** The nearest thing is a link out to Smogon's role pages, or one role tag per pokemon.
+- **An explanation of each score.** Every product shows counts or multipliers; none says which pokemon, move, or ability a number comes from.
+- **Moving a team between generations with a preview of what is lost.**
+
+A fourth is a combination, not a single feature. The products split into two groups. The planners (Marriland, richi3f, PKMN.help) analyse types but hold no full sets and read no Showdown text. The competitive builders (Showdown, Pikalytics, PokeSynergy) hold full sets and Showdown text but give thinner type analysis, or none. My Pokemon Team is the only one with full sets, Showdown text, a matrix of types against each member, move-based coverage, and saved teams together, across Generations 1 to 9.
+
+Counting abilities does not set the site apart: four of the six products do it, so players expect it of any planner.
+
+### Where the products are ahead
+
+- **Legality validation.** Showdown checks a team against its format. This site works out the same kind of rules and shows nothing (issue 117). It can do better than Showdown by showing the problems while the team is built, without a separate request.
+- **Suggestions.** PokeSynergy's suggestion names what it covers, which makes it an explanation as well as advice. The Site Owner left suggestions open for a later release (issue 37), and a modest version would fit the site: say which types would close the team's worst gaps, and let the type filter show the pokemon.
+- **Per-game pokemon lists.** richi3f's lists for each game, with filters for version exclusives and evolutions, serve the in-game player (persona P-1) better than a generation does. More games (issue 122) go part of the way.
+- **Search filters.** richi3f can exclude a type, and PokeSynergy finds pokemon by a move. This site's Moves filter only trims the moves offered; it does not find pokemon by a move they learn.
+- **Share links.** Marriland's link is short. This site's link holds the whole team, which keeps it working with no server and makes it long. A share image, as Pikalytics has, would suit the places teams are posted.
+- **Languages and advertising.** PKMN.help has more languages and no advertisements. Advertising is how this site pays for itself (BR-1), so that is a difference to be aware of, not one to close.
+
+### Not part of the plan
+
+Damage calculation, speed tiers, battles, and accounts are what the competitive builders are built around. They are not part of the plan for this site, and nothing here gives a reason to change that: the three products that have them are the ones with the thinnest type analysis. Custom types and inverse battles serve a small audience.
+
+Checking a team against commonly used pokemon (issue 44) and suggestions drawn from usage data (issue 37) are open for a later release. Both need usage statistics the site does not have yet.

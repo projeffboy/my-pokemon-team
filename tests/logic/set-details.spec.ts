@@ -222,6 +222,66 @@ Timid Nature
     });
   });
 
+  test("an at sign after a pokemon name in a nickname is not read as an item", () => {
+    // Showdown leaves out " @ " when a set has no item
+    const [member] = parseTeamText(
+      "Mew@x (Pikachu)\nAbility: Static\n- Thunderbolt",
+    );
+    expect(member).toMatchObject({
+      name: "pikachu",
+      nickname: "Mew@x",
+      item: "",
+      ability: "Static",
+      move1: "thunderbolt",
+    });
+    expect(parseTeamText("Mew@x (Pikachu) (F)")[0]).toMatchObject({
+      name: "pikachu",
+      nickname: "Mew@x",
+      gender: "F",
+      item: "",
+    });
+  });
+
+  test("first lines with an item or no nickname parse as before", () => {
+    // [line, name, nickname, gender, item]
+    const cases = [
+      ["Pikachu", "pikachu", undefined, undefined, ""],
+      ["Pikachu @ Light Ball", "pikachu", undefined, undefined, "lightball"],
+      ["Pikachu (M) @ Light Ball", "pikachu", undefined, "M", "lightball"],
+      [
+        "Sparky (Pikachu) (F) @ Light Ball",
+        "pikachu",
+        "Sparky",
+        "F",
+        "lightball",
+      ],
+      [
+        "Mew@x (Pikachu) @ Light Ball",
+        "pikachu",
+        "Mew@x",
+        undefined,
+        "lightball",
+      ],
+      ["Pikachu (Mew)@Leftovers", "mew", "Pikachu", undefined, "leftovers"],
+      ["Pikachu@Light Ball", "pikachu", undefined, undefined, "lightball"],
+      ["Pikachu (M)@Light Ball", "pikachu", undefined, "M", "lightball"],
+      // Showdown reads " @ " as the item separator even in a nickname
+      ["Mew @ x (Pikachu)", "mew", undefined, undefined, ""],
+    ];
+    for (const [line = "", name, nickname, gender, item] of cases) {
+      const [member] = parseTeamText(line);
+      expect(
+        {
+          name: member.name,
+          nickname: member.nickname,
+          gender: member.gender,
+          item: member.item,
+        },
+        line,
+      ).toEqual({ name, nickname, gender, item });
+    }
+  });
+
   test("a nickname still being typed is written without its outer spaces", () => {
     const [member] = parseTeamText("Porygon-Z");
     member.nickname = "Big Bird ";
