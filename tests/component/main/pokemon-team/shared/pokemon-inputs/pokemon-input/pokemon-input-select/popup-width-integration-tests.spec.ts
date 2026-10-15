@@ -1,7 +1,9 @@
 import type { Page } from "@playwright/test";
 import { test, expect } from "fixtures";
-import { resizeTeamViewport } from "helper";
+import { findOption, optionLabelLines, resizeTeamViewport } from "helper";
+import de from "@/i18n/de";
 import fr from "@/i18n/fr";
+import it from "@/i18n/it";
 
 // The Name popup's width, and the most lines any of its listed names takes
 const measureNameList = async (
@@ -68,4 +70,51 @@ test("the Name list is only as wide as the generation's names need", async ({
   expect(first.lines).toBe(1);
   expect(first.width).toBe(168);
   expect(latest.width).toBeGreaterThan(first.width);
+});
+
+test("the Name list keeps each word of a name whole", async ({ page }) => {
+  await page.goto("/?game=champions");
+  await resizeTeamViewport(page, 320, 900);
+  await page.evaluate(() => document.fonts.ready);
+  await page.getByRole("button", { name: "Language", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Italiano" }).click();
+  await expect(page.locator("html")).toHaveAttribute("lang", "it");
+  // Italian writes Champions' Mega formes as one word
+  const option = await findOption(
+    page,
+    it.team.input(1, "name"),
+    "MegaCrabominable",
+  );
+  await expect.poll(() => optionLabelLines(option)).toBe(1);
+  const [sprite, label, popup] = await Promise.all([
+    option.locator("span").first().boundingBox(),
+    option.locator("span").last().boundingBox(),
+    page.locator(".MuiAutocomplete-popper").boundingBox(),
+  ]);
+  expect(sprite && label && label.x >= sprite.x + sprite.width).toBe(true);
+  expect(popup && popup.x >= 0 && popup.x + popup.width <= 320).toBe(true);
+});
+
+test("the item, move, and ability lists keep each word whole", async ({
+  page,
+}) => {
+  const team = Buffer.from("Baxcalibur\n").toString("base64url");
+  await page.goto(`/?gen=9&team=${team}`);
+  await resizeTeamViewport(page, 1200, 900);
+  await page.evaluate(() => document.fonts.ready);
+  const expectOneLine = async (input: string, label: string) => {
+    const option = await findOption(page, input, label);
+    await expect.poll(() => optionLabelLines(option)).toBe(1);
+    await page.keyboard.press("Escape");
+  };
+
+  await page.getByRole("button", { name: "Language", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Deutsch" }).click();
+  await expectOneLine(de.team.input(1, "item"), "Fähigkeitenschild");
+  // With its type icon, Snowscape needs more room than the move list's minimum
+  await expectOneLine(de.team.input(1, "move1"), "Schneelandschaft");
+
+  await page.getByRole("button", { name: de.language, exact: true }).click();
+  await page.getByRole("menuitem", { name: "Français" }).click();
+  await expectOneLine(fr.team.input(1, "ability"), "Thermodynamique");
 });

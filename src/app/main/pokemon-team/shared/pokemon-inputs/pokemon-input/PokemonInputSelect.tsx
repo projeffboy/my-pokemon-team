@@ -24,6 +24,7 @@ import ListTools from "./pokemon-input-select/shared/ListTools";
 import { isHiddenAbility } from "@/shared/pokedex";
 import { moveType } from "@/store/shared/effectiveness";
 import { gameFormat } from "@/shared/formats";
+import { allAbilities } from "@/shared/names";
 import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import typeIcons from "@/images/type-icons";
@@ -34,14 +35,15 @@ const ITEM_ICON_CLASS = "item-icon";
 const POPUP_MARGIN = 8;
 // The Name list fits Venusaur-Gmax on one line: 4px of padding, a 40px icon,
 // 2px, the name at 16px Roboto (114px), 4px, and 4px of slack for font
-// rendering. It widens until the longest name in the language and game takes two lines.
+// rendering. It widens until every name in the language and game fits in two lines
+// without splitting a word.
 const MIN_NAME_LIST_WIDTH = 168;
 // What a row holds beside its text: the Name list's padding (4px each side), 40px icon,
-// and 2px; an item's padding, 24px icon, and 2px; a move's padding (8px each side)
-// and, with its type, the 20px icon and the 6px after it
+// and 2px; an item's padding, 24px icon, and 2px; an ability's or move's padding (8px
+// each side) and 2px, or, with the move's type, the 20px icon and the 6px after it
 const NAME_ROW_CHROME = 50;
 const ITEM_ROW_CHROME = 34;
-const MOVE_ROW_CHROME = 16;
+const TEXT_ROW_CHROME = 16;
 const MOVE_TYPE_ICON = 26;
 // At a 400px viewport: 32px page padding, 16px card padding, and an 8px column gap.
 const SMALL_PHONE_LIST_WIDTH = (400 - 32 - 16 - 8) / 2;
@@ -84,8 +86,8 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   const { typography } = useTheme();
   const rootRef = useRef<HTMLDivElement>(null);
   const [rootWidth, setRootWidth] = useState<number>();
-  // The narrowest list in which no name, move, or item of the language and game
-  // takes more than two lines
+  // The narrowest list in which no name, move, item, or ability of the language and
+  // game takes more than two lines or splits a word
   const [fitWidth, setFitWidth] = useState(0);
   const [popupMaxHeight, setPopupMaxHeight] = useState<number>();
   const [isOpen, setIsOpen] = useState(false);
@@ -122,7 +124,6 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   const isMove = pokemonProperty.startsWith("move");
   const showMoveTypes = leadingIcon && isMove;
   const measureList = useCallback(() => {
-    if (pokemonProperty === "ability") return;
     const game = `${locale}|${generation}|${gameFormat(format)}|${store.currentTeam.generationProfile ?? ""}`;
     const [kind, labels, chrome] =
       pokemonProperty === "name" ?
@@ -137,10 +138,16 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           () => store.teamItems.map(names.item),
           ITEM_ROW_CHROME,
         ] as const)
+      : pokemonProperty === "ability" ?
+        ([
+          "ability",
+          () => allAbilities.map(names.ability),
+          TEXT_ROW_CHROME + 2,
+        ] as const)
       : ([
           "move",
           () => store.gameMoves.map(names.move),
-          MOVE_ROW_CHROME + (showMoveTypes ? MOVE_TYPE_ICON : 2),
+          TEXT_ROW_CHROME + (showMoveTypes ? MOVE_TYPE_ICON : 2),
         ] as const);
     setFitWidth(
       twoLineWidth(`${kind}|${game}`, labels, typography.body1, 80) +
