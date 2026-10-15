@@ -4,6 +4,7 @@ import {
   closeDialog,
   openFilters,
   selectDialogOption,
+  selectMove,
   selectPokemon,
 } from "helper";
 import { createSavedTeam } from "@/shared/team";
@@ -22,6 +23,19 @@ test.describe("Team Problems and Dialogs - Integration Tests", () => {
     await closeDialog(page);
     await expect(problems(page).getByRole("listitem")).toHaveText([
       "Altaria is not allowed in Gen 9 Little Cup (LC).",
+    ]);
+  });
+
+  test("a format chosen in the filters lists the moves it bans", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Breloom");
+    await selectMove(page, "Spore");
+    await openFilters(page);
+    await selectDialogOption(page, "Format", "OU: Over Used");
+    await closeDialog(page);
+    await expect(problems(page).getByRole("listitem")).toHaveText([
+      "Breloom has Spore, which is banned in Gen 9 OU: Over Used.",
     ]);
   });
 
