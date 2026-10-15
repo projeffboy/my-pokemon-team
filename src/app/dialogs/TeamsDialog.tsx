@@ -315,12 +315,14 @@ const TeamsDialog = observer(function TeamsDialog() {
                         edge="end"
                         aria-label={t.teams.optionsFor(name)}
                         aria-haspopup="menu"
-                        onClick={(event: MouseEvent<HTMLElement>) =>
+                        onClick={(event: MouseEvent<HTMLElement>) => {
+                          // A menu reopened mid-close never runs the earlier action
+                          afterMenuCloses.current = null;
                           setMenu({
                             teamId: team.id,
                             anchorEl: event.currentTarget,
-                          })
-                        }
+                          });
+                        }}
                       >
                         <MoreVertIcon />
                       </IconButton>
