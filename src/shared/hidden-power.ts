@@ -1,5 +1,6 @@
 import spreads from "@/data/hidden-power-spreads";
 import {
+  MOVE_KEYS,
   STAT_KEYS,
   type Gender,
   type Generation,
@@ -13,7 +14,13 @@ import {
   isShinyDv,
   syncDvs,
 } from "./generation-rules";
-import { DEFAULT_LEVEL, getIv, MAX_IV, setDetail } from "./set-details";
+import {
+  DEFAULT_LEVEL,
+  getIv,
+  MAX_IV,
+  setDetail,
+  setStat,
+} from "./set-details";
 
 const TYPES = [
   "fighting",
@@ -107,6 +114,8 @@ export function canHaveHiddenPowerType(
 }
 
 // Use Showdown's recommended spreads when the current IVs/DVs cannot produce the type.
+// From Gen 6, where the IVs no longer change its power, only the IVs whose
+// parity differs from the spread's change, each by one.
 export function matchHiddenPower(
   member: TeamPokemon,
   move: string,
@@ -133,6 +142,12 @@ export function matchHiddenPower(
     );
     setDetail(member, "ivs", ivs);
     syncDvs(member, generation);
+  } else if (generation >= 6) {
+    for (const stat of STAT_KEYS) {
+      const iv = getIv(member.ivs, stat);
+      if (iv % 2 !== getIv(spread.ivs, stat) % 2)
+        setStat(member, "ivs", stat, iv ^ 1);
+    }
   } else {
     setDetail(
       member,
@@ -140,6 +155,48 @@ export function matchHiddenPower(
       Object.keys(spread.ivs).length ? { ...spread.ivs } : undefined,
     );
   }
+}
+
+const hiddenPowerKey = (member: Readonly<TeamPokemon>) =>
+  MOVE_KEYS.find(key => member[key].startsWith("hiddenpower"));
+
+// Whether the IVs or DVs can give the slot's Hidden Power its type
+export function hiddenPowerMatches(
+  member: Readonly<TeamPokemon>,
+  generation: Generation,
+) {
+  const key = hiddenPowerKey(member);
+  return (
+    !!key &&
+    canHaveHiddenPowerType(
+      member,
+      member[key].slice("hiddenpower".length),
+      generation,
+    )
+  );
+}
+
+// After an edit breaks the match, such as a level that loses Hyper Training.
+// Gen 2 keeps the gender and shininess the DVs give, and since shiny DVs only
+// give Grass or Dragon, the move follows them rather than undoing the shiny.
+export function rematchHiddenPower(
+  member: TeamPokemon,
+  generation: Generation,
+  format = "",
+) {
+  const key = hiddenPowerKey(member);
+  if (!key || hiddenPowerMatches(member, generation)) return;
+  const move = member[key];
+  if (generation === 2 && generationRules(generation, format).ivs) {
+    if (matchHiddenPowerPreservingDetails(member, move, generation, format))
+      return;
+    const type = hiddenPowerType(member, generation);
+    if (type && isShinyDv(gen2Dvs(member))) {
+      member[key] = `hiddenpower${type}`;
+      return;
+    }
+  }
+  matchHiddenPower(member, move, generation, format);
 }
 
 export function matchImportedHiddenPower(
