@@ -1,11 +1,13 @@
 import { useState } from "react";
 import TextField, { type TextFieldProps } from "@mui/material/TextField";
+import { verbatim } from "@/app/shared/text-entry";
 
 // A number input that shows the text being typed, which may be empty, until
 // editing ends. It reports a number, or undefined while it is empty.
 export default function NumberField({
   value,
   onChange,
+  slotProps,
   ...props
 }: Omit<TextFieldProps, "value" | "onChange" | "onBlur" | "type"> & {
   value: number;
@@ -25,6 +27,10 @@ export default function NumberField({
         );
       }}
       onBlur={() => setText(undefined)}
+      slotProps={{
+        ...slotProps,
+        htmlInput: { ...verbatim("number"), ...slotProps?.htmlInput },
+      }}
     />
   );
 }
