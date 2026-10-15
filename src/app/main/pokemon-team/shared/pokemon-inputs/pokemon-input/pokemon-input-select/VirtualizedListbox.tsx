@@ -306,12 +306,13 @@ const VirtualizedListbox = observer(
 
       // The buttons come before the listbox rather than in it, which may hold only options
       return (
-        <>
+        <Box
+          // Keeps the focus, and so the popup, in the input
+          onMouseDown={event => event.preventDefault()}
+        >
           {isNameInput && (
             <Box
               ref={toggleRef}
-              // Keeps the focus, and so the popup, in the input
-              onMouseDown={event => event.preventDefault()}
               // Keep the toggle anchored while the grid widens the dropdown
               sx={{
                 display: "flex",
@@ -366,8 +367,6 @@ const VirtualizedListbox = observer(
           {showMoveTools && (
             <Box
               ref={toggleRef}
-              // Keeps the focus, and so the popup, in the input
-              onMouseDown={event => event.preventDefault()}
               sx={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -422,7 +421,7 @@ const VirtualizedListbox = observer(
               />
             }
           </Box>
-        </>
+        </Box>
       );
     },
   ),
