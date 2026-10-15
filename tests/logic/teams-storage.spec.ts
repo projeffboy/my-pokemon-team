@@ -154,13 +154,13 @@ test("fills in defaults and drops malformed fields", () => {
         },
       ],
       currentTeamId: "missing",
+      // Saved by the removed Advanced setting, and ignored now
       isMoreOpen: "yes",
       sort: { by: "num", descending: true },
     }),
   );
   const state = loadStoredState(storage);
   expect(state?.currentTeamId).toBe("a");
-  expect(state?.isMoreOpen).toBe(false);
   // States saved before the setting existed keep the move type icons
   expect(state?.showMoveTypes).toBe(true);
   expect(state?.sort).toEqual({ by: "num", descending: true });
@@ -217,7 +217,6 @@ test("saves the state and survives a storage that throws", () => {
   const state = {
     teams: [],
     currentTeamId: "",
-    isMoreOpen: true,
     showMoveTypes: false,
     sort: { by: "name" as const, descending: false },
     moveSort: { by: "name" as const, descending: false },
@@ -299,6 +298,36 @@ test.describe("another tab's saves", () => {
     const merged = mergeStoredState(clone(mine), mine, theirs);
     expect(merged.teams[0]).toBe(mine.teams[0]);
     expect(merged.teams[1]).toBe(mine.teams[1]);
+  });
+
+  test("takes the other tab's order, with this tab's new teams beside their neighbours", () => {
+    const saved = base();
+    const mine = clone(saved);
+    mine.teams.splice(1, 0, savedTeam("hail", "Hail"));
+    const theirs = clone(saved);
+    theirs.teams.splice(1, 0, savedTeam("rain-copy", "Rain (copy)"));
+    theirs.teams.push(savedTeam("sand", "Sand"));
+
+    const names = (state: StoredState) => state.teams.map(({ name }) => name);
+    expect(names(mergeStoredState(saved, saved, theirs))).toEqual(
+      names(theirs),
+    );
+    expect(names(mergeStoredState(saved, mine, theirs))).toEqual([
+      "Rain",
+      "Hail",
+      "Rain (copy)",
+      "Sun",
+      "Sand",
+    ]);
+
+    const reordered = clone(saved);
+    reordered.teams.reverse();
+    expect(names(mergeStoredState(saved, reordered, theirs))).toEqual([
+      "Sun",
+      "Sand",
+      "Rain",
+      "Rain (copy)",
+    ]);
   });
 
   test("moves to the other tab's team when this tab's is gone", () => {

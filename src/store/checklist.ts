@@ -5,7 +5,9 @@ import {
   activeItem,
   effectivePokemonTypes,
   flingItem,
+  IMMUNE_SCORE,
   isMoveUsable,
+  typeAgainstPokemon,
 } from "./shared/effectiveness";
 import { LATEST_GENERATION } from "@/shared/generations";
 
@@ -96,6 +98,47 @@ const inflictsStatus: Check = (
     });
   });
 
+// The user's boosts from moves that Showdown applies in a callback, so the
+// move data has none
+const callbackBoosts = (
+  move: string,
+  { name, item, ability }: ReadonlyTeam[number],
+  generation: Generation,
+): Record<string, number> | undefined => {
+  const isGrass = () =>
+    effectivePokemonTypes(name, ability, item, generation).includes("Grass");
+  const plusOrMinus = ability === "Plus" || ability === "Minus";
+  switch (move) {
+    case "tidyup":
+      return { atk: 1, spe: 1 };
+    case "takeheart":
+      return { spa: 1, spd: 1 };
+    case "stuffcheeks":
+      return item.endsWith("berry") ? { def: 2 } : undefined;
+    case "gearup":
+      return plusOrMinus ? { atk: 1, spa: 1 } : undefined;
+    case "magneticflux":
+      return plusOrMinus ? { def: 1, spd: 1 } : undefined;
+    case "flowershield":
+      return isGrass() ? { def: 1 } : undefined;
+    // Only grounded Grass types, which Ground moves can hit
+    case "rototiller":
+      return (
+          isGrass() &&
+            typeAgainstPokemon("Ground", name, ability, item, generation) !==
+              IMMUNE_SCORE
+        ) ?
+          { atk: 1, spa: 1 }
+        : undefined;
+    // The boost on the charging turn
+    case "skullbash":
+      return { def: 1 };
+    case "meteorbeam":
+    case "electroshot":
+      return { spa: 1 };
+  }
+};
+
 // Curse and callback-based moves need explicit self-boost effects.
 const boostsStats: Check = (
   team,
@@ -122,8 +165,13 @@ const boostsStats: Check = (
       if (move === "bellydrum" || move === "acupressure") return !contrary;
       if (move === "stockpile") return generation >= 4 && !contrary;
       const data = moveDataIn(move, generation, format);
+      // From Gen 8, Howl targets "allies", which includes the user
       const boosts =
-        data?.selfBoosts ?? (data?.target === "self" ? data.boosts : undefined);
+        data?.selfBoosts ??
+        (data?.target === "self" || data?.target === "allies" ?
+          data.boosts
+        : undefined) ??
+        callbackBoosts(move, pokemon, generation);
       return (
         Object.entries(boosts ?? {})
           // Gen1's single Special boost is represented as both SpA and SpD.
@@ -219,6 +267,30 @@ export const checklist: ChecklistGroup[] = [
     key: "offensive",
     items: [
       { key: "boosting", check: boostsStats },
+      // Damaging moves with positive priority. Grassy Glide has it only in Grassy Terrain.
+      {
+        key: "priority",
+        check: hasAnyMove([
+          "accelerock",
+          "aquajet",
+          "bulletpunch",
+          "extremespeed",
+          "fakeout",
+          "feint",
+          "firstimpression",
+          "iceshard",
+          "jetpunch",
+          "machpunch",
+          "quickattack",
+          "shadowsneak",
+          "suckerpunch",
+          "thunderclap",
+          "upperhand",
+          "vacuumwave",
+          "watershuriken",
+          "zippyzap",
+        ]),
+      },
       {
         key: "voltTurn",
         check: hasAnyMove(["voltswitch", "uturn", "flipturn"]),
