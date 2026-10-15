@@ -45,9 +45,13 @@ const en = {
     short: "Old site",
     title: "Switch to the old website?",
     description:
-      "Your current team won’t transfer to the old website. Teams already saved here will remain on this version.",
+      "Your current team will open on the old website. Teams saved here will remain on this version.",
     go: "Go to old website",
     goLong: "Go to the old website",
+    generationsOnly: (generations: string) =>
+      `The old website has ${generations} only.`,
+    leftOut: "These won’t carry over:",
+    goWithTeam: "Go with my team",
   },
   feedback: {
     button: "Send feedback",
