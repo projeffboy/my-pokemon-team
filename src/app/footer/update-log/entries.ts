@@ -40,6 +40,7 @@ const entries: Entry[] = [
       "Pokemon Champions (M-C) now uses its own move changes, such as Snap Trap being Steel type.",
       "The team checklist no longer counts Diamond Storm as a boosting move, since its Defense boost is only a 50% chance.",
       "Gens 5–7 no longer offer or randomly pick hidden abilities that were unreleased then, e.g. Contrary for Gen 5 Serperior.",
+      "Formes such as totems and Bloodmoon Ursaluna now learn the same moves as on Showdown, so Bloodmoon Ursaluna no longer learns Play Rough and Stretchy Tatsugiri gains Scald.",
     ],
   },
   {
