@@ -185,7 +185,8 @@ const ja: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `チーム${number}`,
     unnamedTeam: "チーム",
-    copyOf: (name: string) => `${name}のコピー`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name}のコピー ${number}` : `${name}のコピー`,
     learnsetsFailed:
       "技のリストを読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
   },
