@@ -119,7 +119,6 @@ const es: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vacío"})`,
     slotPair: (first: string, second: string) => `${first} y ${second}`,
-    advancedMode: "Avanzado",
     filters: "Filtros",
     sort: "Ordenar",
     randomizePokemon: "Aleatorizar Pokémon",
@@ -584,7 +583,7 @@ const es: Messages = {
     teamsAnswer:
       "Tus equipos se guardan en este navegador, así que están aquí cuando vuelves, pero no en otro dispositivo. El botón Equipos los lista, y el menú de cada equipo lo renombra, elige su generación y formato, lo duplica, lo comparte o lo elimina. Exportar todo descarga todos los equipos como texto de Showdown, que Importar equipo vuelve a leer. La barra de direcciones siempre contiene el equipo actual, así que copiar la dirección (o pulsar Compartir) lo comparte.",
     teamsAnswer2:
-      "El botón Más muestra las herramientas del equipo, Filtros, Ordenar y Más detalles. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están encima de las pestañas de los Pokémon.",
+      "La lista de nombres tiene los botones Filtros y Ordenar, y las listas de movimientos tienen Ordenar. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están encima de las pestañas de los Pokémon.",
     generations: "Generaciones",
     generationsQuestion: "¿Qué cambia la generación?",
     generationsAnswer:

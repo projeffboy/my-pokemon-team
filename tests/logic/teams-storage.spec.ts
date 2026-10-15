@@ -154,13 +154,13 @@ test("fills in defaults and drops malformed fields", () => {
         },
       ],
       currentTeamId: "missing",
+      // Saved by the removed Advanced setting, and ignored now
       isMoreOpen: "yes",
       sort: { by: "num", descending: true },
     }),
   );
   const state = loadStoredState(storage);
   expect(state?.currentTeamId).toBe("a");
-  expect(state?.isMoreOpen).toBe(false);
   // States saved before the setting existed keep the move type icons
   expect(state?.showMoveTypes).toBe(true);
   expect(state?.sort).toEqual({ by: "num", descending: true });
@@ -217,7 +217,6 @@ test("saves the state and survives a storage that throws", () => {
   const state = {
     teams: [],
     currentTeamId: "",
-    isMoreOpen: true,
     showMoveTypes: false,
     sort: { by: "name" as const, descending: false },
     moveSort: { by: "name" as const, descending: false },

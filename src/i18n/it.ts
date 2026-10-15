@@ -122,7 +122,6 @@ const it: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vuoto"})`,
     slotPair: (first: string, second: string) => `${first} e ${second}`,
-    advancedMode: "Avanzate",
     filters: "Filtri",
     sort: "Ordina",
     randomizePokemon: "Randomizza Pokémon",
@@ -590,7 +589,7 @@ const it: Messages = {
     teamsAnswer:
       "Le tue squadre sono salvate in questo browser, quindi le ritrovi quando torni, ma non su un altro dispositivo. Il pulsante Squadre le elenca, e il menu di ogni squadra la rinomina, ne imposta generazione e formato, la duplica, la condivide o la elimina. Esporta tutte scarica ogni squadra come testo di Showdown, che Importa squadra rilegge. La barra degli indirizzi contiene sempre la squadra corrente, quindi copiare l'indirizzo (o premere Condividi) la condivide.",
     teamsAnswer2:
-      "Il pulsante Altro mostra le funzioni della squadra, Filtri, Ordina e Altri dettagli. Annulla e Ripeti scorrono le modifiche della squadra corrente; su telefoni e tablet si trovano sopra le schede dei Pokémon.",
+      "L’elenco dei nomi ha i pulsanti Filtri e Ordina, e gli elenchi delle mosse hanno Ordina. Annulla e Ripeti scorrono le modifiche della squadra corrente; su telefoni e tablet si trovano sopra le schede dei Pokémon.",
     generations: "Generazioni",
     generationsQuestion: "Cosa cambia la generazione?",
     generationsAnswer:
