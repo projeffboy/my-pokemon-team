@@ -226,6 +226,11 @@ const fr: Messages = {
       status: { label: "Capacité de statut", short: "Statut" },
       phazer: { label: "Phazer" },
       boosting: { label: "Capacité de boost", short: "Boost" },
+      priority: {
+        label: "Capacité prioritaire",
+        short: "Priorité",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Capacité Volt-turn",
         short: "Volt-turn",
@@ -675,6 +680,10 @@ const fr: Messages = {
       [
         "Capacité de boost",
         "Des capacités qui augmentent vos stats (de préférence de 2 niveaux ou plus), comme Danse Lames et Plénitude.",
+      ],
+      [
+        "Capacité prioritaire",
+        "Des capacités offensives qui passent avant la plupart des autres, quelle que soit la Vitesse. Ex. : Vitesse Extrême, Coup Bas, Aqua-Jet, Pisto-Poing.",
       ],
       [
         "Objet Choix",

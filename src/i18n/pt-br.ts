@@ -218,6 +218,11 @@ const ptBR: Messages = {
       status: { label: "Golpe de status", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Golpe de boost", short: "Setup" },
+      priority: {
+        label: "Golpe de prioridade",
+        short: "Prioridade",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Golpe Volt-turn",
         short: "Volt-turn",
@@ -652,6 +657,10 @@ const ptBR: Messages = {
       [
         "Golpe de boost",
         "Golpes que aumentam suas estatísticas (de preferência em 2 ou mais estágios), como Swords Dance e Calm Mind.",
+      ],
+      [
+        "Golpe de prioridade",
+        "Golpes de dano que agem antes da maioria dos outros, seja qual for a Velocidade. Ex.: Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Item Choice",

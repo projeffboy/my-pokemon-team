@@ -229,6 +229,11 @@ const de: Messages = {
       status: { label: "Status-Attacke", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Boost-Attacke", short: "Setup" },
+      priority: {
+        label: "Prioritätsattacke",
+        short: "Priorität",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Volt-Turn-Attacke",
         short: "Volt-Turn",
@@ -671,6 +676,10 @@ const de: Messages = {
       [
         "Boost-Attacke",
         "Attacken, die deine Statuswerte erhöhen (am besten um 2 oder mehr Stufen), wie Schwerttanz und Gedankengut.",
+      ],
+      [
+        "Prioritätsattacke",
+        "Schadensattacken, die unabhängig von der Initiative vor den meisten anderen Attacken ausgeführt werden. Z. B. Turbotempo, Tiefschlag, Wasserdüse, Patronenhieb.",
       ],
       [
         "Wahl-Item",

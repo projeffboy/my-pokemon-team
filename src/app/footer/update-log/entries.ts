@@ -10,7 +10,10 @@ export type Entry = { date: string } & (
 const entries: Entry[] = [
   {
     date: "Oct 14, 2026",
-    changes: ["Twenty-one more Pokémon are now animated, like Great Tusk."],
+    changes: [
+      "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
+      "Twenty-one more Pokémon are now animated, like Great Tusk.",
+    ],
   },
   {
     date: "Oct 13, 2026",

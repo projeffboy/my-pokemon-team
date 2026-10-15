@@ -224,6 +224,11 @@ const it: Messages = {
       status: { label: "Mossa di stato", short: "Stato" },
       phazer: { label: "Phazer" },
       boosting: { label: "Mossa potenziante", short: "Setup" },
+      priority: {
+        label: "Mossa prioritaria",
+        short: "Priorità",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Mossa Volt-turn",
         short: "Volt-turn",
@@ -662,6 +667,10 @@ const it: Messages = {
       [
         "Mossa potenziante",
         "Mosse che aumentano le tue statistiche (preferibilmente di 2 o più livelli), come Danzaspada e Calmamente.",
+      ],
+      [
+        "Mossa prioritaria",
+        "Mosse che infliggono danni e agiscono prima della maggior parte delle altre, a prescindere dalla Velocità. Es. Extrarapido, Sbigoattacco, Acquagetto, Pugnoscarica.",
       ],
       [
         "Strumento Choice",

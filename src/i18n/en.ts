@@ -219,6 +219,7 @@ const en = {
       status: { label: "Status Move", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Boosting Move", short: "Setup" },
+      priority: { label: "Priority Move", short: "Priority", shorter: "Prio" },
       voltTurn: {
         label: "Volt-turn Move",
         short: "Volt-turn",
@@ -651,6 +652,10 @@ const en = {
       [
         "Boosting Move",
         "Moves that increase your stats (preferrably by 2+), like Swords Dance and Calm Mind.",
+      ],
+      [
+        "Priority Move",
+        "Damaging moves that go before most other moves, regardless of Speed. E.g. Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Choice Item",
