@@ -216,9 +216,10 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
   test("an unavailable shiny animation uses a shiny static sprite", async ({
     page,
   }) => {
-    await page.route(`${SHOWDOWN_SPRITES}/ani-shiny/**`, route =>
-      route.fulfill({ status: 404, body: "Not found" }),
-    );
+    for (const folder of ["ani-shiny", "gen5ani-shiny"])
+      await page.route(`${SHOWDOWN_SPRITES}/${folder}/**`, route =>
+        route.fulfill({ status: 404, body: "Not found" }),
+      );
     await selectPokemon(page, "Bergmite");
     await openAdvanced(page);
     await page.getByRole("dialog").getByLabel("Shiny").check();
@@ -264,9 +265,10 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     await page.route(`**${PROXIED_SPRITES}/**`, route =>
       route.fulfill({ contentType: "image/png", body: PIXEL }),
     );
-    await page.route(`${SHOWDOWN_SPRITES}/ani/**`, route =>
-      route.fulfill({ status: 404, body: "Not found" }),
-    );
+    for (const folder of ["ani", "gen5ani"])
+      await page.route(`${SHOWDOWN_SPRITES}/${folder}/**`, route =>
+        route.fulfill({ status: 404, body: "Not found" }),
+      );
     await selectPokemon(page, "Lokix");
     const sprite = page
       .getByRole("region", { name: "Pokemon 1", exact: true })
@@ -306,6 +308,27 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       await expect(
         page.getByRole("img", { name: "Starmie-Mega" }),
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/starmie-mega.gif`);
+    });
+
+    test("should animate a paradox pokemon", async ({ page }) => {
+      await selectPokemon(page, "Sandy Shocks");
+
+      await expect(
+        page.getByRole("img", { name: "Sandy Shocks" }),
+      ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/sandyshocks.gif`);
+    });
+
+    test("should use Showdown's BW-style animation when it has no other", async ({
+      page,
+    }) => {
+      await page.route(`${SHOWDOWN_SPRITES}/ani/**`, route =>
+        route.fulfill({ status: 404, body: "Not found" }),
+      );
+      await selectPokemon(page, "Iron Thorns");
+
+      await expect(
+        page.getByRole("img", { name: "Iron Thorns" }),
+      ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/gen5ani/ironthorns.gif`);
     });
 
     test("should drop the space in a two-word forme", async ({ page }) => {

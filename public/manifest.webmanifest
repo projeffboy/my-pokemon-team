@@ -1,0 +1,28 @@
+{
+  "id": "/",
+  "name": "My Pokemon Team",
+  "short_name": "My Pokemon Team",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#212121",
+  "background_color": "#eee",
+  "icons": [
+    {
+      "src": "/app-icon-garchomp-192-2026.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/app-icon-garchomp-512-2026.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/app-icon-garchomp-maskable-512-2026.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
