@@ -386,6 +386,24 @@ test.describe("Share Link - Unsupported gen and game", () => {
     await expect(unsupportedMessage(page)).toHaveCount(0);
   });
 
+  test("a returning visitor's unsupported gen with an unreadable or unknown team opens Generations 6–9", async ({
+    page,
+  }) => {
+    for (const team of ["%21%21%21", toBase64Url("Notamon\n- Tackle")]) {
+      await page.goto("/?gen=3", { waitUntil: "domcontentloaded" });
+      await expect(generationValue(page)).toHaveValue("3");
+      await page.goto(`/?gen=10&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(generationValue(page)).toHaveValue("6-9");
+      await expect(unsupportedMessage(page)).toHaveText(
+        en.team.linkGenerationUnsupported("Generations 6–9"),
+      );
+      await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+      await expect(page).not.toHaveURL(/team=/);
+    }
+  });
+
   test("back/forward navigation to an unsupported gen opens Generations 6–9 with a message", async ({
     page,
   }) => {
