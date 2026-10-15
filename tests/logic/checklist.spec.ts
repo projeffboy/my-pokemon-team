@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { evaluateChecklist } from "@/store/checklist";
-import type { Generation, ReadonlyTeam } from "@/types";
+import type { BattleFormat, Generation, ReadonlyTeam } from "@/types";
 import en from "@/i18n/en";
 import { createTeam } from "./shared/team";
 
@@ -74,11 +74,56 @@ test("Floral Healing cannot supply its user's own reliable recovery", () => {
   ).not.toContain("Reliable Recovery");
 });
 
-test("Defog removes the user's hazards only from Gen 6 onward", () => {
-  const team = createTeam({ name: "skarmory", move1: "defog" });
-  expect(checked(team, 4)).not.toContain("Spinner/Defogger");
-  expect(checked(team, 5)).not.toContain("Spinner/Defogger");
-  expect(checked(team, 6)).toContain("Spinner/Defogger");
+// The Spinner/Defogger role's result
+const spinner = (
+  team: ReadonlyTeam,
+  generation: Generation,
+  battleFormat?: BattleFormat,
+) => {
+  const item = evaluateChecklist(team, generation, "", battleFormat)
+    .flatMap(group => group.items)
+    .find(item => item.key === "spinner");
+  return item?.dependsOnBattleFormat ? "depends" : item?.isChecked;
+};
+
+test("before Gen 6, Defog removes the user's hazards only in doubles", () => {
+  for (const [name, generation] of [
+    ["staraptor", 4],
+    ["mandibuzz", 5],
+  ] as const) {
+    const team = createTeam({ name, move1: "defog" });
+    expect(spinner(team, generation, "singles")).toBe(false);
+    expect(spinner(team, generation, "doubles")).toBe(true);
+    expect(spinner(team, generation)).toBe("depends");
+  }
+});
+
+test("from Gen 6, Defog removes the user's hazards in every battle format", () => {
+  const team = createTeam({ name: "swanna", move1: "defog" });
+  for (const generation of [6, 9] as const) {
+    expect(spinner(team, generation, "singles")).toBe(true);
+    expect(spinner(team, generation, "doubles")).toBe(true);
+    expect(spinner(team, generation)).toBe(true);
+  }
+});
+
+test("only a role that singles and doubles judge differently depends on the battle format", () => {
+  // Rapid Spin fills the role in both, so Defog beside it changes nothing
+  expect(
+    spinner(
+      createTeam(
+        { name: "hitmontop", move1: "rapidspin" },
+        { name: "staraptor", move1: "defog" },
+      ),
+      4,
+    ),
+  ).toBe(true);
+  expect(
+    evaluateChecklist(createTeam({ name: "staraptor", move1: "defog" }), 4)
+      .flatMap(group => group.items)
+      .filter(item => item.dependsOnBattleFormat)
+      .map(item => item.key),
+  ).toEqual(["spinner"]);
 });
 
 test("status moves include guaranteed side effects but not chances", () => {

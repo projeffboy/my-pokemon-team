@@ -235,6 +235,17 @@ const de: Messages = {
       },
       choice: { label: "Wahl-Item", short: "Wahl" },
     },
+    battleFormat: {
+      label: "Kampfformat",
+      singles: "Einzel",
+      doubles: "Doppel",
+      notSet: "Keine Angabe",
+      depends: "Hängt vom Kampfformat ab",
+      reasons: {
+        spinner:
+          "Spinner/Defogger hängt vom Kampfformat ab: In Generation 4 und 5 entfernt Auflockern die Entry Hazards auf deiner Seite nur im Doppelkampf, wenn es auf deinen Partner zielt.",
+      },
+    },
   },
   matrix: {
     matrix: "Matrix",

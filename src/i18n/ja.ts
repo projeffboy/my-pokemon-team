@@ -230,6 +230,17 @@ const ja: Messages = {
       },
       choice: { label: "こだわりアイテム", short: "こだわり" },
     },
+    battleFormat: {
+      label: "バトル形式",
+      singles: "シングル",
+      doubles: "ダブル",
+      notSet: "未設定",
+      depends: "バトル形式によって変わります",
+      reasons: {
+        spinner:
+          "設置技の除去はバトル形式によって変わります。第4・5世代のきりばらいは、ダブルバトルで味方に使ったときだけ自分の場の設置技を取り除きます。",
+      },
+    },
   },
   matrix: {
     matrix: "マトリックス",

@@ -1,4 +1,4 @@
-import { test } from "fixtures";
+import { test, expect } from "fixtures";
 import {
   selectPokemon,
   selectMove,
@@ -6,6 +6,7 @@ import {
   expectChecklistItem,
   openAnalysis,
 } from "helper";
+import en from "@/i18n/en";
 
 test.describe("Team Checklist - Integration Tests", () => {
   test.beforeEach(async ({ page }) => {
@@ -83,4 +84,28 @@ test.describe("Team Checklist - Integration Tests", () => {
       await expectChecklistItem(page, checklistItem, true);
     });
   }
+
+  test("in Gen 4, Defog depends on the battle format, and says why until one is picked", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=4");
+    await openAnalysis(page, "Team Checklist");
+    await selectPokemon(page, "Togekiss");
+    await selectMove(page, "Defog");
+    const checklist = page.getByRole("region", { name: "Team Checklist" });
+    const reason = checklist.getByText(
+      en.checklist.battleFormat.reasons.spinner,
+    );
+    await expectChecklistItem(page, "Spinner/Defogger", "depends");
+    await expect(reason).toBeVisible();
+
+    const battleFormat = checklist.getByRole("group", {
+      name: "Battle format",
+    });
+    await battleFormat.getByRole("button", { name: "Doubles" }).click();
+    await expectChecklistItem(page, "Spinner/Defogger", true);
+    await expect(reason).toBeHidden();
+    await battleFormat.getByRole("button", { name: "Singles" }).click();
+    await expectChecklistItem(page, "Spinner/Defogger", false);
+  });
 });

@@ -2,8 +2,9 @@ import { test, expect } from "@playwright/test";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LETS_GO, LEGENDS_ARCEUS, LEGENDS_ZA } from "@/shared/game-variants";
 import {
+  battleFormatFromUrl,
   generationSettingsFromUrl,
-  syncGenerationToUrl,
+  syncTeamSettingsToUrl,
 } from "@/app/shared/team-link";
 
 const profiles = [
@@ -32,7 +33,7 @@ test("Champions links select Gen 9 and serialize without gen", () => {
   const settings = { generation: 9, format: CHAMPIONS_FORMAT } as const;
   withUrl(url, () => {
     expect(generationSettingsFromUrl()).toEqual(settings);
-    syncGenerationToUrl(url, settings);
+    syncTeamSettingsToUrl(url, settings);
     expect(url.search).toBe("?game=champions");
     expect(generationSettingsFromUrl()).toEqual(settings);
   });
@@ -50,11 +51,29 @@ for (const profile of profiles.filter(
         generation: profile.generation,
         format: "",
       });
-      syncGenerationToUrl(url, profile);
+      syncTeamSettingsToUrl(url, profile);
       expect(url.search).toBe(`?gen=${profile.generation}`);
     });
   });
 }
+
+test("links carry the battle format only when it is set", () => {
+  const url = new URL("https://mypokemonteam.com/?gen=4");
+  withUrl(url, () => {
+    expect(battleFormatFromUrl()).toBeUndefined();
+    syncTeamSettingsToUrl(url, {
+      generation: 4,
+      format: "",
+      battleFormat: "doubles",
+    });
+    expect(url.search).toBe("?battle=doubles&gen=4");
+    expect(battleFormatFromUrl()).toBe("doubles");
+    syncTeamSettingsToUrl(url, { generation: 4, format: "" });
+    expect(url.search).toBe("?gen=4");
+    url.searchParams.set("battle", "triples");
+    expect(battleFormatFromUrl()).toBeUndefined();
+  });
+});
 
 test("unpublished display-name game values are not URL aliases", () => {
   for (const { format } of profiles) {

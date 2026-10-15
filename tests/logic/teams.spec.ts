@@ -344,6 +344,27 @@ test.describe("slot tools", () => {
     expect(store.currentTeamId).not.toBe(first);
   });
 
+  test("a link opens a saved team only with the same battle format, and a link without one opens as not set", ({
+    store,
+  }) => {
+    store.currentTeam.generation = 4;
+    store.selectPokemon(0, "honchkrow");
+    store.currentTeam.battleFormat = "doubles";
+    const doubles = store.currentTeamId;
+    const team = () => parseTeamText(serializeTeam(store.team, 4), 4);
+    // As a reload does: the address bar holds the battle format
+    store.openTeamFromLink(team(), {
+      generation: 4,
+      format: "",
+      battleFormat: "doubles",
+    });
+    expect(store.currentTeamId).toBe(doubles);
+
+    store.openTeamFromLink(team(), { generation: 4, format: "" });
+    expect(store.currentTeamId).not.toBe(doubles);
+    expect(store.currentTeam.battleFormat).toBeUndefined();
+  });
+
   test("a generation-aware link to a legacy team opens its existing saved copy", ({
     store,
   }) => {

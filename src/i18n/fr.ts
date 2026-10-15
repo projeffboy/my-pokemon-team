@@ -232,6 +232,17 @@ const fr: Messages = {
       },
       choice: { label: "Objet Choix", short: "Choix" },
     },
+    battleFormat: {
+      label: "Format de combat",
+      singles: "Simple",
+      doubles: "Double",
+      notSet: "Non défini",
+      depends: "Dépend du format de combat",
+      reasons: {
+        spinner:
+          "Spinner/Defogger dépend du format de combat : en 4e et 5e générations, Anti-Brume ne retire les pièges de ton côté qu’en combat double, en ciblant ton allié.",
+      },
+    },
   },
   matrix: {
     matrix: "Matrice",

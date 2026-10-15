@@ -1,5 +1,6 @@
 import pokedex from "@/data/pokedex";
 import type {
+  BattleFormat,
   Generation,
   SavedTeam,
   SearchFilters,
@@ -29,6 +30,9 @@ export function createEmptyTeam(): Team {
     move4: "",
   }));
 }
+
+export const isBattleFormat = (value: unknown): value is BattleFormat =>
+  value === "singles" || value === "doubles";
 
 export const isTeamEmpty = (team: readonly Readonly<TeamPokemon>[]) =>
   !team.some(({ name }) => name);

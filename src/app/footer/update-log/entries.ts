@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 14, 2026",
+    changes: [
+      "The Team Checklist can now be set to singles or doubles, and counts Defog as hazard removal in Gen 4 and 5 doubles.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",

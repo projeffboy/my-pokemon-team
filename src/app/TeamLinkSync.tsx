@@ -5,9 +5,10 @@ import store from "@/store";
 import { gameFormat } from "@/shared/formats";
 import {
   encodeTeamForUrl,
-  syncGenerationToUrl,
+  syncTeamSettingsToUrl,
   importTeamFromUrlParameter,
   generationSettingsFromUrl,
+  battleFormatFromUrl,
 } from "./shared/team-link";
 
 // Safari allows 100 history writes per 30 seconds. Edits write at once until a burst of
@@ -15,6 +16,10 @@ import {
 const URL_WRITE_BURST = 30;
 const URL_WRITE_INTERVAL = 500;
 const PENDING_URL_KEY = "mypokemonteam-pending-url";
+
+// The team's settings that a link carries beside the team itself
+const settingsKey = (params: URLSearchParams) =>
+  ["gen", "game", "battle"].map(key => params.get(key) ?? "").join("|");
 
 function restorePendingReload() {
   try {
@@ -65,13 +70,10 @@ const TeamLinkSync = observer(function TeamLinkSync() {
       restorePendingReload();
     }
     let lastSyncedTeamParameter: string | null = null;
-    let lastContext = "|";
+    let lastContext = "||";
     let initialNavigation = initializes;
     let pendingWrite: ReturnType<typeof setTimeout> | undefined;
-    const context = () => {
-      const params = new URLSearchParams(location.search);
-      return `${params.get("gen") ?? ""}|${params.get("game") ?? ""}`;
-    };
+    const context = () => settingsKey(new URLSearchParams(location.search));
 
     // URL -> store: runs on initial load and whenever navigation (back/forward) changes
     // the `team` parameter to something we didn't just write ourselves.
@@ -97,7 +99,11 @@ const TeamLinkSync = observer(function TeamLinkSync() {
       lastSyncedTeamParameter = teamParameter;
       if (teamParameter) importTeamFromUrlParameter(teamParameter);
       else {
-        const settings = generationSettingsFromUrl();
+        const generationSettings = generationSettingsFromUrl();
+        const settings = generationSettings && {
+          ...generationSettings,
+          battleFormat: battleFormatFromUrl(),
+        };
         if (
           firstNavigation &&
           store.isTeamEmpty &&
@@ -105,11 +111,13 @@ const TeamLinkSync = observer(function TeamLinkSync() {
           settings
         ) {
           // The URL carries no tier, so the same game keeps the team's
-          const { generation, format } = store.currentTeam;
+          const { generation, format, generationProfile, battleFormat } =
+            store.currentTeam;
           if (
             generation !== settings.generation ||
             gameFormat(format) !== settings.format ||
-            store.currentTeam.generationProfile !== settings.generationProfile
+            generationProfile !== settings.generationProfile ||
+            battleFormat !== settings.battleFormat
           )
             Object.assign(store.currentTeam, {
               ...settings,
@@ -158,10 +166,10 @@ const TeamLinkSync = observer(function TeamLinkSync() {
       const url = new URL(location.href);
       if (encoded) url.searchParams.set("team", encoded);
       else url.searchParams.delete("team");
-      syncGenerationToUrl(url, store.currentTeam);
+      syncTeamSettingsToUrl(url, store.currentTeam);
       desiredUrl = url.href;
       lastSyncedTeamParameter = encoded || null;
-      lastContext = `${url.searchParams.get("gen") ?? ""}|${url.searchParams.get("game") ?? ""}`;
+      lastContext = settingsKey(url.searchParams);
       rememberPending();
       if (desiredUrl === location.href) return;
       const now = Date.now();

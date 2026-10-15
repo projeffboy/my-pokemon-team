@@ -1,5 +1,10 @@
 import { moveDataIn } from "@/shared/generation-data";
-import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
+import {
+  MOVE_KEYS,
+  type BattleFormat,
+  type Generation,
+  type ReadonlyTeam,
+} from "@/types";
 import type { Messages } from "@/i18n/en";
 import {
   activeItem,
@@ -19,6 +24,7 @@ export interface ChecklistItem {
     team: ReadonlyTeam,
     generation?: Generation,
     format?: string,
+    battleFormat?: BattleFormat,
   ) => boolean;
 }
 
@@ -181,13 +187,21 @@ export const checklist: ChecklistGroup[] = [
       },
       {
         key: "spinner",
-        check: (team, generation = LATEST_GENERATION, format = "") =>
+        // Before Gen 6, Defog clears only its target's side, so it clears the user's own
+        // side only by targeting an ally in doubles
+        check: (
+          team,
+          generation = LATEST_GENERATION,
+          format = "",
+          battleFormat = "singles",
+        ) =>
           hasAnyMove(["rapidspin", "courtchange", "tidyup", "mortalspin"])(
             team,
             generation,
             format,
           ) ||
-          (generation >= 6 && hasAnyMove(["defog"])(team, generation, format)),
+          ((generation >= 6 || battleFormat === "doubles") &&
+            hasAnyMove(["defog"])(team, generation, format)),
       },
       {
         key: "recovery",
@@ -243,16 +257,27 @@ export const checklistLabel = (
   : isLgDown ? (short ?? label)
   : label;
 
+// Without a battle format, a role that singles and doubles judge differently
+// is neither checked nor unchecked but depends on it
 export function evaluateChecklist(
   team: ReadonlyTeam,
   generation = LATEST_GENERATION,
   format = "",
+  battleFormat?: BattleFormat,
 ) {
   return checklist.map(({ key, items }) => ({
     key,
-    items: items.map(({ key, check }) => ({
-      key,
-      isChecked: check(team, generation, format),
-    })),
+    items: items.map(({ key, check }) => {
+      const isCheckedIn = (battle: BattleFormat) =>
+        check(team, generation, format, battle);
+      const isChecked = isCheckedIn(battleFormat ?? "singles");
+      const dependsOnBattleFormat =
+        !battleFormat && isChecked !== isCheckedIn("doubles");
+      return {
+        key,
+        isChecked: isChecked && !dependsOnBattleFormat,
+        dependsOnBattleFormat,
+      };
+    }),
   }));
 }

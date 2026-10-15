@@ -225,6 +225,20 @@ const en = {
       },
       choice: { label: "Choice Item", short: "Choice" },
     },
+    // Whether the team is for singles or doubles, which some roles depend on
+    battleFormat: {
+      label: "Battle format",
+      singles: "Singles",
+      doubles: "Doubles",
+      notSet: "Not set",
+      // The icon of a role that singles and doubles judge differently
+      depends: "Depends on the battle format",
+      // Why each such role does
+      reasons: {
+        spinner:
+          "Spinner/Defogger depends on the battle format: in Generations 4 and 5, Defog clears your own side’s hazards only in doubles, by targeting your ally.",
+      },
+    },
   },
   matrix: {
     matrix: "Matrix",

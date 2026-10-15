@@ -224,6 +224,17 @@ const ptBR: Messages = {
       },
       choice: { label: "Item Choice", short: "Choice" },
     },
+    battleFormat: {
+      label: "Formato de batalha",
+      singles: "Individual",
+      doubles: "Dupla",
+      notSet: "Não definido",
+      depends: "Depende do formato de batalha",
+      reasons: {
+        spinner:
+          "Spinner/Defogger depende do formato de batalha: nas gerações 4 e 5, Defog só remove os Entry Hazards do seu lado em batalhas em dupla, ao usá-lo no seu aliado.",
+      },
+    },
   },
   matrix: {
     matrix: "Matriz",

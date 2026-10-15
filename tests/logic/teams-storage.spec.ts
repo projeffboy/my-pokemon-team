@@ -44,6 +44,16 @@ test("saved set details survive reload even when unsupported or outside a game's
   ).toBe(false);
 });
 
+test("the battle format survives reload, and teams saved without one load as not set", () => {
+  const doubles = createSavedTeam({ generation: 4, battleFormat: "doubles" });
+  expect(
+    sanitizeSavedTeam(JSON.parse(JSON.stringify(doubles)))?.battleFormat,
+  ).toBe("doubles");
+  const { battleFormat: _battleFormat, ...older } = doubles;
+  for (const team of [older, { ...doubles, battleFormat: "triples" }])
+    expect(sanitizeSavedTeam(team)).not.toHaveProperty("battleFormat");
+});
+
 test("fresh storage defaults to combined generations while existing regular Gen 9 saves keep their profile", () => {
   const initial = initialStoredState();
   expect(initial.teams[0]).toMatchObject({

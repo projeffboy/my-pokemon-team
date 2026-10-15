@@ -448,20 +448,20 @@ US21. As the maintainer, I want one command to refresh the translated names and 
 
 REQ-DATA-10 to 12 come from the 2-day target of BR-3. Approving REQ-DATA-10 means rewording REQ-POL-4 (Section 3.10), which allows Pokemon Showdown as the only source, to allow the fallback source for a new game while still forbidding edits by hand.
 
-#### UC22 Set Battle Format (planned)
+#### UC22 Set Battle Format
 
 US22. As a doubles player, or a player of Generations 4 and 5, I want to tell the site whether my team is for singles or doubles, so that the checklist judges moves such as Defog by the rules of the battles I play.
 
 | ID          | Requirement                                                                                                                                    | Imp. | Status      |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-ANLY-12 | The site shall allow the Player to set a team's battle format to singles, to doubles, or to unspecified.                                       | C    | Approved    |
-| REQ-ANLY-13 | The site shall keep a team's battle format with the saved team and in the team's share link.                                                   | C    | Approved    |
-| REQ-ANLY-14 | The site shall count Defog as filling the spinner or defogger role of a Generation 4 or 5 team only for a team whose battle format is doubles. | C    | Approved    |
+| REQ-ANLY-12 | The site shall allow the Player to set a team's battle format to singles, to doubles, or to unspecified.                                       | C    | Implemented |
+| REQ-ANLY-13 | The site shall keep a team's battle format with the saved team and in the team's share link.                                                   | C    | Implemented |
+| REQ-ANLY-14 | The site shall count Defog as filling the spinner or defogger role of a Generation 4 or 5 team only for a team whose battle format is doubles. | C    | Implemented |
 | REQ-ANLY-15 | The site shall count Defog as filling the spinner or defogger role of a team of Generation 6 or later in every battle format.                  | E    | Implemented |
-| REQ-ANLY-16 | The site shall identify, for a team whose battle format is unspecified, each checklist role whose result differs between singles and doubles.  | C    | Approved    |
-| REQ-ANLY-17 | The site shall treat every saved team and share link that records no battle format as having an unspecified battle format.                     | E    | Approved    |
+| REQ-ANLY-16 | The site shall identify, for a team whose battle format is unspecified, each checklist role whose result differs between singles and doubles.  | C    | Implemented |
+| REQ-ANLY-17 | The site shall treat every saved team and share link that records no battle format as having an unspecified battle format.                     | E    | Implemented |
 
-**Flow.** How the checklist would judge the Spinner/Defogger role. Today the site never counts Defog before Generation 6, which is wrong for doubles; only the battle format question and its "depends" answer are new.
+**Flow.** How the checklist judges the Spinner/Defogger role.
 
 ```mermaid
 flowchart TD
@@ -477,7 +477,7 @@ flowchart TD
   Format -- "Not set" --> Depends["Say the role depends on the battle format, and why"]
 ```
 
-Mock-up M1 shows the battle format set on the checklist: [m1-battle-format-on-checklist.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m1-battle-format-on-checklist.svg).
+The battle format is set at the top of the checklist, as mock-up M1 shows: [m1-battle-format-on-checklist.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m1-battle-format-on-checklist.svg).
 
 #### UC23 Transfer Team to Old Website (planned)
 
@@ -699,7 +699,8 @@ The test suites were matched to requirement groups by their names and folders, n
 | REQ-UNDO                         | Test                      | `tests/component/main/pokemon-team/shared/team-toolbar/history-integration-tests.spec.ts`, `tests/logic/team-change.spec.ts`                                                                                                                                                                                                                    |
 | REQ-FIND                         | Test                      | `tests/logic/filtering.spec.ts`, `tests/logic/sorting.spec.ts`, `tests/logic/formats.spec.ts`, `tests/component/dialogs/filters-dialog/`, `tests/component/dialogs/sort-dialog/`; `tests/component/main/pokemon-team/shared/pokemon-inputs/pokemon-input/pokemon-input-select/virtualized-listbox/name-view-unit-tests.spec.ts` for REQ-FIND-12 |
 | REQ-ANLY-1 to 11, 20             | Test                      | `tests/logic/effectiveness.spec.ts`, `tests/logic/coverage.spec.ts`, `tests/logic/matrix.spec.ts`, `tests/logic/checklist.spec.ts`, `tests/component/main/team-stats/`                                                                                                                                                                          |
-| REQ-ANLY-12 to 19                | Test                      | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                                                                                                                                                                      |
+| REQ-ANLY-12 to 17                | Test                      | `tests/logic/checklist.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-backup.spec.ts`, `tests/logic/team-link-game-values.spec.ts`, `tests/logic/teams.spec.ts`, `tests/component/main/team-stats/team-checklist/`                                                                                                            |
+| REQ-ANLY-18, 19                  | Test                      | To be written with the feature. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                                                                                                                                                                       |
 | REQ-GEN                          | Test                      | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                                                                                                                                                                      |
 | REQ-COLL                         | Test                      | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts`                                                                                                                                                      |
 | REQ-BKUP, REQ-INTF-11            | Test                      | `tests/logic/team-backup.spec.ts`, `tests/component/dialogs/teams-dialog/backup-integration-tests.spec.ts`                                                                                                                                                                                                                                      |

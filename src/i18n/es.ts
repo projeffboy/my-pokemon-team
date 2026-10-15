@@ -223,6 +223,17 @@ const es: Messages = {
       },
       choice: { label: "Objeto Elegido", short: "Elegido" },
     },
+    battleFormat: {
+      label: "Formato de combate",
+      singles: "Individual",
+      doubles: "Dobles",
+      notSet: "Sin definir",
+      depends: "Depende del formato de combate",
+      reasons: {
+        spinner:
+          "Spinner/Defogger depende del formato de combate: en las generaciones 4 y 5, Despejar solo quita las trampas de tu lado en combates dobles, al usarlo sobre tu aliado.",
+      },
+    },
   },
   matrix: {
     matrix: "Matriz",
