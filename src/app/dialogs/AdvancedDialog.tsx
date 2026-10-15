@@ -224,6 +224,12 @@ const AdvancedForm = observer(function AdvancedForm({
                 }
                 fullWidth
                 sx={{ flex: "1 1 120px" }}
+                // Shows None rather than a full-size label, which is too long for the
+                // field at 320px in French
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  select: { displayEmpty: true },
+                }}
               >
                 <MenuItem value="">{t.none}</MenuItem>
                 {TERA_TYPES.map(type => (

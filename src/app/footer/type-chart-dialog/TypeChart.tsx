@@ -44,8 +44,14 @@ export default function TypeChart() {
           centered
           textColor="inherit"
         >
+          {/* On phones the tabs are as wide as their labels, not MUI's 90px, so the
+              longest labels still fit at 320px */}
           {charts.map(({ label }) => (
-            <Tab key={label} label={label} />
+            <Tab
+              key={label}
+              label={label}
+              sx={{ minWidth: { xxs: 0, sm: 90 } }}
+            />
           ))}
         </Tabs>
       </AppBar>
