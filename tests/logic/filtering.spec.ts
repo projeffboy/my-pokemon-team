@@ -97,6 +97,13 @@ for (const [forme, region, numberRegion] of [
   ["palkiaorigin", "Hisui", "Sinnoh"],
   ["basculinwhitestriped", "Hisui", "Unova"],
   ["ursalunabloodmoon", "Paldea", "Hisui"],
+  ["zygarde10", "Alola", "Kalos"],
+  ["zygardecomplete", "Alola", "Kalos"],
+  ["greninjabond", "Alola", "Kalos"],
+  ["greninjaash", "Alola", "Kalos"],
+  ["pikachuoriginal", "Alola", "Kanto"],
+  ["pikachupartner", "Alola", "Kanto"],
+  ["pikachuworld", "Galar", "Kanto"],
 ]) {
   test(`${forme} is listed under ${region}, not ${numberRegion}`, () => {
     expect(filterPokemon({ ...all, region })).toContain(forme);

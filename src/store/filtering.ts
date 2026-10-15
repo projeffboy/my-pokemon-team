@@ -50,6 +50,17 @@ const FORME_REGIONS: Record<string, string> = {
   palkiaorigin: "Hisui",
   basculinwhitestriped: "Hisui",
   ursalunabloodmoon: "Paldea",
+  greninjabond: "Alola",
+  greninjaash: "Alola",
+  zygarde10: "Alola",
+  zygardecomplete: "Alola",
+  pikachuoriginal: "Alola",
+  pikachuhoenn: "Alola",
+  pikachusinnoh: "Alola",
+  pikachuunova: "Alola",
+  pikachukalos: "Alola",
+  pikachupartner: "Alola",
+  pikachuworld: "Galar",
 };
 
 // Showdown numbers CAP (fan-made) pokemon from -1 down, and Pokestar pokemon from -5000 down
