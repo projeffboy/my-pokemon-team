@@ -116,3 +116,35 @@ test("duplicate species retain their slot context", () => {
     "replace Thrash with Substitute for Darmanitan, slot 1",
   );
 });
+
+test("one extra change is singular in every language", async () => {
+  const before = createTeam({
+    name: "skarmory",
+    move1: "spikes",
+    item: "leftovers",
+    ability: "Sturdy",
+  });
+  const after = createTeam({
+    name: "skarmory",
+    move1: "roost",
+    item: "rockyhelmet",
+    ability: "Keen Eye",
+  });
+  const expected = {
+    fr: "1 autre modification",
+    es: "1 cambio más",
+    de: "1 weitere Änderung",
+    it: "1 altra modifica",
+    "pt-BR": "1 outra alteração",
+  };
+  const actual: Record<string, string | undefined> = {};
+  for (const locale of Object.keys(expected) as (keyof typeof expected)[])
+    actual[locale] = describeTeamChange(
+      before,
+      after,
+      await loadTranslation(locale),
+    )
+      ?.split("; ")
+      .at(-1);
+  expect(actual).toEqual(expected);
+});

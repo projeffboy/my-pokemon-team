@@ -173,7 +173,8 @@ const fr: Messages = {
       `définir ${label} sur ${value} pour ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `échanger les places de ${first} et ${second}`,
-    moreChanges: (count: number) => `${count} autres modifications`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 autre modification" : `${count} autres modifications`,
     undoAction: (action: string) => `Annuler ${action}`,
     redoAction: (action: string) => `Rétablir ${action}`,
     randomizeTeamAction: "créer une équipe aléatoire",
