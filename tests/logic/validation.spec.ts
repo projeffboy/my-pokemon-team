@@ -1,11 +1,19 @@
 import { test, expect } from "@playwright/test";
-import { validateTeam } from "@/store/validation";
+import { rulesLabel, validateTeam } from "@/store/validation";
+import { learnsetsReady } from "@/store/learnsets";
 import { createTeam } from "./shared/team";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CAP_FORMAT, CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LETS_GO, LEGENDS_ARCEUS } from "@/shared/game-variants";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
+
+const messages = (...args: Parameters<typeof validateTeam>) =>
+  validateTeam(...args).map(({ message }) => message);
+
+// Required items are checked against the items each game has
+test.beforeAll(() => learnsetsReady);
 
 test("an empty team is the only problem of an empty team", () => {
-  expect(validateTeam(createTeam(), 9, "OU: Over Used")).toEqual([
+  expect(messages(createTeam(), 9, "OU: Over Used")).toEqual([
     "The team is empty.",
   ]);
 });
@@ -15,21 +23,19 @@ test("a legal team has no problems", () => {
     { name: "milotic", ability: "Marvel Scale", move1: "scald" },
     { name: "ogerponwellspring", item: "wellspringmask" },
   );
-  expect(validateTeam(team, 9, "")).toEqual([]);
+  expect(messages(team, 9, "")).toEqual([]);
 });
 
 test("ability legality follows the team's generation", () => {
   const levitate = createTeam({ name: "gengar", ability: "Levitate" });
   const cursedBody = createTeam({ name: "gengar", ability: "Cursed Body" });
-  expect(validateTeam(levitate, 6, "")).toEqual([]);
-  expect(validateTeam(cursedBody, 6, "")).toEqual([
+  expect(messages(levitate, 6, "")).toEqual([]);
+  expect(messages(cursedBody, 6, "")).toEqual([
     "Gengar cannot have Cursed Body.",
   ]);
-  expect(validateTeam(cursedBody, 7, "")).toEqual([]);
-  expect(validateTeam(levitate, 7, "")).toEqual([
-    "Gengar cannot have Levitate.",
-  ]);
-  expect(validateTeam(cursedBody, 7, LETS_GO)).toContain(
+  expect(messages(cursedBody, 7, "")).toEqual([]);
+  expect(messages(levitate, 7, "")).toEqual(["Gengar cannot have Levitate."]);
+  expect(messages(cursedBody, 7, LETS_GO)).toContain(
     "Gengar cannot have Cursed Body.",
   );
 });
@@ -46,10 +52,10 @@ test("Gen 1–2 stat experience has no total training limit", () => {
       spe: 65535,
     },
   });
-  expect(validateTeam(team, 1, "")).toEqual([]);
-  expect(validateTeam(team, 2, "")).toEqual([]);
+  expect(messages(team, 1, "")).toEqual([]);
+  expect(messages(team, 2, "")).toEqual([]);
   expect(
-    validateTeam(
+    messages(
       createTeam({ name: "gengar", statExperience: { hp: 65536 } }),
       2,
       "",
@@ -59,33 +65,33 @@ test("Gen 1–2 stat experience has no total training limit", () => {
 
 test("EV limits distinguish Gen 3–5 from later generations", () => {
   const team = createTeam({ name: "gengar", evs: { hp: 255, atk: 255 } });
-  expect(validateTeam(team, 3, "")).toEqual([]);
-  expect(validateTeam(team, 5, "")).toEqual([]);
-  expect(validateTeam(team, 6, "")).toEqual([
+  expect(messages(team, 3, "")).toEqual([]);
+  expect(messages(team, 5, "")).toEqual([]);
+  expect(messages(team, 6, "")).toEqual([
     "Gengar has more than 252 EVs in one stat.",
   ]);
   expect(
-    validateTeam(createTeam({ name: "gengar", evs: { hp: 256 } }), 3, ""),
+    messages(createTeam({ name: "gengar", evs: { hp: 256 } }), 3, ""),
   ).toEqual(["Gengar has more than 255 EVs in one stat."]);
 });
 
 test("Champions enforces 66 total SPs and 32 SPs per stat", () => {
   expect(
-    validateTeam(
+    messages(
       createTeam({ name: "gengar", evs: { hp: 32, atk: 32, def: 2 } }),
       9,
       CHAMPIONS_FORMAT,
     ),
   ).toEqual([]);
   expect(
-    validateTeam(
+    messages(
       createTeam({ name: "gengar", evs: { hp: 32, atk: 32, def: 32 } }),
       9,
       CHAMPIONS_FORMAT,
     ),
   ).toEqual(["Gengar has 96 SPs (at most 66)."]);
   expect(
-    validateTeam(
+    messages(
       createTeam({ name: "gengar", evs: { hp: 33 } }),
       9,
       CHAMPIONS_FORMAT,
@@ -98,17 +104,17 @@ test("Let's Go and Arceus use uncapped totals and their own per-stat training", 
     name: "gengar",
     evs: { hp: 200, atk: 200, def: 200, spa: 200, spd: 200, spe: 200 },
   });
-  expect(validateTeam(avs, 7, LETS_GO)).toEqual([]);
+  expect(messages(avs, 7, LETS_GO)).toEqual([]);
   expect(
-    validateTeam(createTeam({ name: "gengar", evs: { hp: 201 } }), 7, LETS_GO),
+    messages(createTeam({ name: "gengar", evs: { hp: 201 } }), 7, LETS_GO),
   ).toEqual(["Gengar has more than 200 AVs in one stat."]);
   const effortLevels = createTeam({
     name: "gengar",
     effortLevels: { hp: 10, atk: 10, def: 10, spa: 10, spd: 10, spe: 10 },
   });
-  expect(validateTeam(effortLevels, 8, LEGENDS_ARCEUS)).toEqual([]);
+  expect(messages(effortLevels, 8, LEGENDS_ARCEUS)).toEqual([]);
   expect(
-    validateTeam(
+    messages(
       createTeam({ name: "gengar", effortLevels: { hp: 11 } }),
       8,
       LEGENDS_ARCEUS,
@@ -118,11 +124,45 @@ test("Let's Go and Arceus use uncapped totals and their own per-stat training", 
 
 test("reports pokemon outside the format or generation", () => {
   expect(
-    validateTeam(createTeam({ name: "milotic" }), 9, "Little Cup (LC)"),
+    messages(createTeam({ name: "milotic" }), 9, "Little Cup (LC)"),
   ).toEqual(["Milotic is not allowed in Gen 9 Little Cup (LC)."]);
-  expect(validateTeam(createTeam({ name: "chikorita" }), 1, "")).toEqual([
+  expect(messages(createTeam({ name: "chikorita" }), 1, "")).toEqual([
     "Chikorita is not allowed in Gen 1.",
   ]);
+});
+
+test("CAP pokemon are allowed only in the CAP format", () => {
+  const team = createTeam({ name: "hemogoblin", ability: "Pixilate" });
+  expect(messages(team, 9, CAP_FORMAT)).toEqual([]);
+  expect(messages(team, 9, "OU: Over Used")).toEqual([
+    "Hemogoblin is not allowed in Gen 9 OU: Over Used.",
+  ]);
+  expect(
+    messages(
+      createTeam({ name: "crucibellemega", item: "crucibellite" }),
+      9,
+      CAP_FORMAT,
+    ),
+  ).toEqual([
+    "Crucibelle-Mega is not allowed in Gen 9 CAP.",
+    "Crucibelle-Mega has Crucibellite, which is banned in Gen 9 CAP.",
+  ]);
+  expect(
+    messages(
+      createTeam({ name: "primeape", ability: "Defiant", move1: "ragefist" }),
+      9,
+      CAP_FORMAT,
+    ),
+  ).toEqual(["Primeape has Rage Fist, which is banned in Gen 9 CAP."]);
+});
+
+test("a forme without a tier of its own is allowed where its species is", () => {
+  const team = createTeam({
+    name: "arceusfire",
+    ability: "Multitype",
+    item: "flameplate",
+  });
+  expect(messages(team, 9, "Uber")).toEqual([]);
 });
 
 test("reports illegal abilities, missing required items, and repeated moves", () => {
@@ -135,16 +175,41 @@ test("reports illegal abilities, missing required items, and repeated moves", ()
     },
     { name: "ogerponwellspring" },
   );
-  expect(validateTeam(team, 9, "")).toEqual([
+  expect(messages(team, 9, "")).toEqual([
     "Milotic cannot have Levitate.",
     "Milotic has Scald twice.",
     "Ogerpon-Wellspring must hold Wellspring Mask.",
   ]);
 });
 
+test("a required item may be any that the game has, or none in games without items", () => {
+  const orb = createTeam({ name: "giratinaorigin", item: "griseousorb" });
+  expect(messages(orb, 4, "")).toEqual([]);
+  expect(messages(orb, 8, "Uber")).toEqual([]);
+  expect(messages(orb, 9, COMBINED_GENERATIONS_FORMAT)).toEqual([]);
+  expect(
+    messages(
+      createTeam({ name: "giratinaorigin", item: "griseouscore" }),
+      4,
+      "",
+    ),
+  ).toEqual(["Giratina-Origin must hold Griseous Orb."]);
+  // The analysis leaves out the items of games without them
+  expect(messages(createTeam({ name: "venusaurmega" }), 7, LETS_GO)).toEqual(
+    [],
+  );
+  expect(
+    messages(
+      createTeam({ name: "dialgaorigin" }, { name: "arceusfire" }),
+      8,
+      LEGENDS_ARCEUS,
+    ),
+  ).toEqual([]);
+});
+
 test("different Hidden Power types are still duplicate moves", () => {
   expect(
-    validateTeam(
+    messages(
       createTeam({
         name: "misdreavus",
         move1: "hiddenpowerice",
@@ -162,7 +227,7 @@ test("reports EVs, levels, and tera types that the games do not allow", () => {
     { name: "kingdra", evs: { hp: 300 }, level: 101 },
     { name: "chansey", teraType: "Steel" },
   );
-  expect(validateTeam(team, 8, "")).toEqual([
+  expect(messages(team, 8, "")).toEqual([
     "Milotic has 756 EVs (at most 510).",
     "Milotic's level must be 1 to 100.",
     "Kingdra has more than 252 EVs in one stat.",
@@ -171,23 +236,26 @@ test("reports EVs, levels, and tera types that the games do not allow", () => {
   ]);
 });
 
-test("applies Species Clause everywhere and Item Clause in Champions", () => {
+test("applies Species Clause in formats and Item Clause in Champions", () => {
   const team = createTeam(
     { name: "milotic", item: "leftovers" },
     { name: "kingdra", item: "leftovers" },
     { name: "kingdra" },
   );
-  expect(validateTeam(team, 9, "OU: Over Used")).toEqual([
-    "Two pokemon are Kingdra (Species Clause).",
+  expect(messages(team, 9, "OU: Over Used")).toEqual([
+    "Only one pokemon may be Kingdra (Species Clause).",
   ]);
-  expect(validateTeam(team, 9, "Doubles OU")).toEqual([
-    "Two pokemon are Kingdra (Species Clause).",
+  expect(messages(team, 9, "Doubles OU")).toEqual([
+    "Only one pokemon may be Kingdra (Species Clause).",
   ]);
-  expect(validateTeam(team, 9, "Pokemon Champions (M-C)")).toContain(
-    "Two pokemon hold Leftovers (Item Clause).",
+  expect(messages(team, 9, "Pokemon Champions (M-C)")).toContain(
+    "Only one pokemon may hold Leftovers (Item Clause).",
   );
+  // The games themselves allow two of a species
+  expect(messages(team, 9, "")).toEqual([]);
+  expect(messages(team, 9, COMBINED_GENERATIONS_FORMAT)).toEqual([]);
   expect(
-    validateTeam(
+    messages(
       createTeam(
         { name: "venusaur" },
         { name: "venusaurmega", item: "venusaurite" },
@@ -195,7 +263,39 @@ test("applies Species Clause everywhere and Item Clause in Champions", () => {
       9,
       "Pokemon Champions (M-C)",
     ),
-  ).toEqual(["Two pokemon are Venusaur (Species Clause)."]);
+  ).toEqual(["Only one pokemon may be Venusaur (Species Clause)."]);
+});
+
+test("each problem names the slots of the pokemon it concerns, skipping empty slots", () => {
+  const toxicTwice = { move1: "toxic", move2: "toxic" };
+  const team = createTeam(
+    { name: "toxapex", item: "blacksludge", ...toxicTwice },
+    {},
+    { name: "toxapex", item: "blacksludge", ...toxicTwice },
+    { name: "dondozo", item: "blacksludge", level: 0 },
+  );
+  expect(validateTeam(team, 9, CHAMPIONS_FORMAT)).toEqual([
+    { message: "Toxapex has Toxic twice.", slots: [0, 2] },
+    {
+      message: "Dondozo is not allowed in Gen 9 Pokemon Champions (M-C).",
+      slots: [3],
+    },
+    { message: "Dondozo's level must be 1 to 100.", slots: [3] },
+    {
+      message: "Only one pokemon may be Toxapex (Species Clause).",
+      slots: [0, 2],
+    },
+    {
+      message: "Only one pokemon may hold Black Sludge (Item Clause).",
+      slots: [0, 2, 3],
+    },
+  ]);
+});
+
+test("names the generation and format whose rules apply", () => {
+  expect(rulesLabel(9, "")).toBe("Gen 9");
+  expect(rulesLabel(4, "OU: Over Used")).toBe("Gen 4 OU: Over Used");
+  expect(rulesLabel(9, COMBINED_GENERATIONS_FORMAT)).toBe("Generations 6–9");
 });
 
 test("Smogon formats flag the abilities, items, and moves they ban", () => {
@@ -205,20 +305,20 @@ test("Smogon formats flag the abilities, items, and moves they ban", () => {
     { name: "breloom", move1: "spore", move2: "batonpass" },
   );
   const where = "Gen 9 OU: Over Used";
-  expect(validateTeam(team, 9, "OU: Over Used")).toEqual([
+  expect(messages(team, 9, "OU: Over Used")).toEqual([
     `Glalie has Moody, which is banned in ${where}.`,
     `Politoed has King's Rock, which is banned in ${where}.`,
     `Breloom has Spore, which is banned in ${where}.`,
     `Breloom has Baton Pass, which is banned in ${where}.`,
   ]);
-  expect(validateTeam(team, 9, "")).toEqual([]);
-  expect(validateTeam(team, 9, "Doubles OU")).toEqual([]);
+  expect(messages(team, 9, "")).toEqual([]);
+  expect(messages(team, 9, "Doubles OU")).toEqual([]);
 });
 
 test("a lower tier can allow back what the tier above bans", () => {
   const team = createTeam({ name: "mismagius", move1: "swagger" });
-  expect(validateTeam(team, 4, "OU: Over Used")).toEqual([
+  expect(messages(team, 4, "OU: Over Used")).toEqual([
     "Mismagius has Swagger, which is banned in Gen 4 OU: Over Used.",
   ]);
-  expect(validateTeam(team, 4, "UU: Under Used")).toEqual([]);
+  expect(messages(team, 4, "UU: Under Used")).toEqual([]);
 });

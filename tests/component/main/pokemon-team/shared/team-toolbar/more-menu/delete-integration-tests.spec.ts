@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import {
   clickMenuItem,
   getTeamTextFromUrl,
-  openManageTeamMenu,
+  openMoreMenu,
   selectPokemon,
 } from "helper";
 
@@ -17,7 +17,7 @@ for (const action of ["Clear", "Teams Delete"]) {
     page,
     context,
   }) => {
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await clickMenuItem(page, "Import team");
     const importer = page.getByRole("dialog", { name: "Import Team" });
     await importer
@@ -54,7 +54,7 @@ for (const action of ["Clear", "Teams Delete"]) {
     );
 
     if (action === "Clear") {
-      await openManageTeamMenu(page);
+      await openMoreMenu(page);
       await clickMenuItem(page, "Clear");
     } else {
       await openTeams(page);
@@ -63,7 +63,7 @@ for (const action of ["Clear", "Teams Delete"]) {
     }
     const confirmation = page.getByRole("dialog", { name: "Delete Alpha?" });
     await expect(confirmation).toBeVisible();
-    await openManageTeamMenu(otherTab);
+    await openMoreMenu(otherTab);
     await clickMenuItem(otherTab, "Clear");
     await otherTab
       .getByRole("dialog", { name: "Delete Alpha?" })
@@ -80,7 +80,7 @@ for (const action of ["Clear", "Teams Delete"]) {
         .getByRole("dialog", { name: "Teams" })
         .getByRole("button", { name: "Close", exact: true })
         .click();
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await clickMenuItem(page, "Clear");
     const nextConfirmation = page.getByRole("dialog", { name: "Delete Beta?" });
     await expect(nextConfirmation).toBeVisible();
@@ -114,7 +114,7 @@ test("Clear still clears an unsaved empty team without removing the saved team",
     .toBe("dewgong");
   await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("");
-  await openManageTeamMenu(page);
+  await openMoreMenu(page);
   await clickMenuItem(page, "Clear");
   const confirmation = page.getByRole("dialog", { name: "Delete Team 2?" });
   await expect(confirmation).toBeVisible();

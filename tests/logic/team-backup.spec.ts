@@ -23,11 +23,13 @@ function collection(): TeamBackupCollection {
       name: "Complete backup ☀",
       generation: 1,
       format: "Retired format",
+      battleFormat: "doubles",
       filters: {
         type: "Future type",
         region: "Unknown region",
         ability: "Retired Ability",
         moves: "Viable",
+        items: "Viable",
       },
       team: createTeam({
         name: "removedspecies",
@@ -120,8 +122,10 @@ test("team records, filters, and all six slots require their complete structure"
     { generation: "9" },
     { generation: 10 },
     { format: null },
+    { battleFormat: "triples" },
     { filters: { type: "" } },
     { filters: { type: "", region: "", ability: "", moves: "", extra: "" } },
+    { filters: { type: "", region: "", ability: "", moves: "", items: 1 } },
     { team: [] },
     { team: createTeam().slice(0, 5) },
     { team: [...createTeam(), createTeam()[0]] },
@@ -259,6 +263,27 @@ test("deduplication preserves intentional identical-team multiplicity and makes 
   expect(repeated.skipped).toBe(2);
 });
 
+test("backups made before the Items filter restore with none and match the same saved team", () => {
+  const saved = createSavedTeam({
+    name: "Before items filter",
+    team: createTeam({ name: "shuckle", item: "oranberry" }),
+  });
+  const { items: _items, ...filters } = saved.filters;
+  const old = { ...saved, id: "old", filters };
+  const backup = parseTeamBackup(
+    JSON.stringify({
+      format: "mypokemonteam",
+      version: 1,
+      teams: [old],
+      currentTeamId: old.id,
+    }),
+  )!;
+  expect(backup.teams[0]?.filters).toEqual(filters);
+  expect(mergeTeamBackup([saved], backup)).toEqual({ added: [], skipped: 1 });
+  const { added } = mergeTeamBackup([], backup);
+  expect(added[0]?.filters.items).toBe("");
+});
+
 test("names, filters, profiles, and set values all distinguish otherwise similar teams", () => {
   const original = createSavedTeam({
     name: "Original",
@@ -268,7 +293,9 @@ test("names, filters, profiles, and set values all distinguish otherwise similar
     { ...original, name: "Another name" },
     { ...original, generation: 8 as const },
     { ...original, format: "OU: Over Used" },
+    { ...original, battleFormat: "doubles" as const },
     { ...original, filters: { ...original.filters, type: "Dragon" } },
+    { ...original, filters: { ...original.filters, items: "Viable" } },
     { ...original, team: createTeam({ name: "druddigon", shiny: false }) },
   ]) {
     const backup: TeamBackup = {

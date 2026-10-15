@@ -14,14 +14,7 @@ export function useSelectionAnimation(
 
   useEffect(() => {
     const image = ref.current;
-    if (
-      !eligible ||
-      !image ||
-      !src ||
-      !duration ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
+    if (!eligible || !image || !src || !duration) return;
 
     const still = image.getAttribute("src") ?? "";
     // A fresh URL restarts cached GIF/APNG frames, including a repeated selection.

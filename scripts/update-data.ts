@@ -15,6 +15,7 @@ import type {
 } from "../src/types.ts";
 import { LATEST_GENERATION } from "../src/shared/generations.ts";
 import {
+  CHAMPIONS_FORMAT,
   LETS_GO,
   LEGENDS_ARCEUS,
   LEGENDS_ZA,
@@ -26,6 +27,7 @@ import {
   type MoveSearch,
   type ShowdownTable,
   changeNotice,
+  collectViableItems,
   collectViableMoves,
   historicalViableInputs,
   flattenLearnsets,
@@ -37,6 +39,7 @@ import {
   projectTypeChart,
   projectHiddenPowerSpreads,
   projectHistoricalMoves,
+  renderGenerationSets,
   renderTypedData,
   resolveMod,
   toId,
@@ -145,14 +148,17 @@ const learnsetMods = [
 ];
 
 async function updateLearnsets() {
-  const [learnsets, ...modLearnsets] = await Promise.all(
-    [
-      "data/learnsets.ts",
-      ...learnsetMods.map(mod => `data/mods/${mod}/learnsets.ts`),
-    ].map(file => loadShowdownTable(file, "Learnsets")),
-  );
+  const [pokedex, [learnsets, ...modLearnsets]] = await Promise.all([
+    loadShowdownTable("data/pokedex.ts", "Pokedex"),
+    Promise.all(
+      [
+        "data/learnsets.ts",
+        ...learnsetMods.map(mod => `data/mods/${mod}/learnsets.ts`),
+      ].map(file => loadShowdownTable(file, "Learnsets")),
+    ),
+  ]);
   if (!learnsets) throw new Error("data/learnsets.ts exports no Learnsets");
-  const flattened = flattenLearnsets(learnsets, modLearnsets);
+  const flattened = flattenLearnsets(learnsets, modLearnsets, pokedex);
   await writeData("Learnsets", flattened);
   return flattened;
 }
@@ -230,42 +236,54 @@ async function updateViableMoves(learnsets: Learnsets) {
     );
   }
 
-  const latest = generations[9] ?? [];
-  const changes = Object.fromEntries(
-    Object.entries(generations)
-      .filter(([gen]) => gen !== "9")
-      .map(([gen, viable]) => [
-        gen,
-        {
-          add: viable.filter(move => !latest.includes(move)),
-          remove: latest.filter(move => !viable.includes(move)),
-        },
-      ]),
-  );
   await fs.writeFile(
     path.join(dataRoot, "viable-moves.ts"),
+    renderGenerationSets(
+      "Moves that Pokemon Showdown's teambuilder lists as usually useful for at least one pokemon",
+      "viableMovesIn",
+      generations,
+    ),
+  );
+}
+
+// Showdown's teambuilder groups each generation's items, from popular to useless, in its
+// build-tools/build-indexes. Run that grouping itself, so its rules stay Showdown's:
+// an item is viable unless it is usually useless, useless, or unreleased.
+async function updateViableItems() {
+  const [items, source, ids] = await Promise.all([
+    loadShowdownTable("data/items.ts", "Items"),
+    read(path.join(clientRoot, "build-tools/build-indexes")),
+    loadAppData<Items>("items").then(Object.keys),
+  ]);
+  const match = source.match(
+    /(const greatItems = [\s\S]*?items\.push\(\.\.\.unreleasedItems\);)\n/,
+  );
+  if (!match) throw new Error("Could not find the teambuilder's item groups");
+  // As for a singles format that is not National Dex or Metronome
+  const { group } = await importTypeScript(
     [
-      "// Moves that Pokemon Showdown's teambuilder lists as usually useful for at least one pokemon",
-      `import type { Generation } from "../types";`,
-      `import { LATEST_GENERATION } from "../shared/generations";`,
-      "",
-      `const data: ReadonlySet<string> = new Set(${JSON.stringify(latest, null, 2)});`,
-      `const changes: Partial<Record<Generation, { add: string[]; remove: string[] }>> = ${JSON.stringify(changes, null, 2)};`,
-      "const cache = new Map<Generation, ReadonlySet<string>>();",
-      "export function viableMovesIn(generation: Generation = LATEST_GENERATION): ReadonlySet<string> {",
-      "  const change = changes[generation];",
-      "  if (!change) return data;",
-      "  let viable = cache.get(generation);",
-      "  if (!viable) {",
-      "    viable = new Set([...data].filter(move => !change.remove.includes(move)).concat(change.add));",
-      "    cache.set(generation, viable);",
-      "  }",
-      "  return viable;",
+      "export function group(Dex, gen, genNum, itemList) {",
+      "const isMetBattle = false, isNatDex = false, isNDChampions = false, isDoubles = false;",
+      "const items = [];",
+      match[1],
+      `return items.slice(0, items.indexOf(poorItems[0])).filter(row => typeof row === "string");`,
       "}",
-      "",
-      "export default data;",
-      "",
     ].join("\n"),
+  );
+  const tables: Partial<Record<Generation, ShowdownTable>> = { 9: items };
+  // Gen 1 has no held items
+  for (let generation = 8; generation >= 2; generation--)
+    tables[generation as Generation] = resolveMod(
+      tables[(generation + 1) as Generation] ?? {},
+      await loadModTable(`gen${generation}`, "items", "Items"),
+    );
+  await fs.writeFile(
+    path.join(dataRoot, "viable-items.ts"),
+    renderGenerationSets(
+      "Items that Pokemon Showdown's teambuilder lists above its usually useless ones",
+      "viableItemsIn",
+      collectViableItems(group, tables, ids),
+    ),
   );
 }
 
@@ -330,6 +348,7 @@ async function updateGameVariants() {
   let pokedex = await loadShowdownTable("data/pokedex.ts", "Pokedex");
   let moves = await loadShowdownTable("data/moves.ts", "Moves");
   const variants = [
+    [CHAMPIONS_FORMAT, "champions", 9],
     [LEGENDS_ZA, "gen9legends", 9],
     [LEGENDS_ARCEUS, "gen8legends", 8],
     [LETS_GO, "gen7letsgo", 7],
@@ -358,6 +377,18 @@ async function updateGameVariants() {
     }
   }
   await writeData("GameVariantData", data);
+}
+
+async function updateGenerationTransfer() {
+  const transferData = generationTransferData(
+    showdownRoot,
+    Object.keys(await loadAppData<Pokedex>("pokedex")),
+    Object.keys(await loadAppData<Items>("items")),
+  );
+  await fs.writeFile(
+    path.join(dataRoot, "generation-transfer.json"),
+    `${JSON.stringify(transferData, null, 2)}\n`,
+  );
 }
 
 async function updateIconIndexes() {
@@ -499,6 +530,7 @@ async function loadSnapshot(): Promise<DataSnapshot> {
     "generation-transfer.json (pokemon)": transfer.pokemon,
     "generation-transfer.json (items)": transfer.items,
     "viable-moves.ts": await readData("viable-moves.ts"),
+    "viable-items.ts": await readData("viable-items.ts"),
   };
 }
 
@@ -577,6 +609,14 @@ async function updateData() {
     await updateViableMoves(learnsets);
     return;
   }
+  if (process.argv.includes("--viable-items-only")) {
+    await updateViableItems();
+    return;
+  }
+  if (process.argv.includes("--learnsets-only")) {
+    await updateViableMoves(await updateLearnsets());
+    return;
+  }
   if (process.argv.includes("--move-effects-only")) {
     await updateMoveEffects();
     return;
@@ -625,6 +665,10 @@ async function updateData() {
     await updatePastGenerations();
     return;
   }
+  if (process.argv.includes("--generation-transfer-only")) {
+    await updateGenerationTransfer();
+    return;
+  }
   if (process.argv.includes("--hidden-power-only")) {
     await updateHiddenPowerSpreads();
     return;
@@ -664,20 +708,13 @@ async function updateData() {
     ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),
   );
 
-  const transferData = generationTransferData(
-    showdownRoot,
-    Object.keys(await loadAppData<Pokedex>("pokedex")),
-    Object.keys(await loadAppData<Items>("items")),
-  );
-  await fs.writeFile(
-    path.join(dataRoot, "generation-transfer.json"),
-    `${JSON.stringify(transferData, null, 2)}\n`,
-  );
+  await updateGenerationTransfer();
   await writeData("FormatBans", formatBansData(showdownRoot), true);
 
   await updateViableMoves(
     JSON.parse(await read(path.join(dataRoot, "learnsets.json"))) as Learnsets,
   );
+  await updateViableItems();
 
   const after = await loadReportedData();
   await reportChanges(snapshot, await loadSnapshot());

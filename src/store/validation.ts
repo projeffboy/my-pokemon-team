@@ -1,30 +1,50 @@
 import pokedex from "@/data/pokedex";
 import formatBans from "@/data/format-bans";
 import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
-import { CHAMPIONS_FORMAT, showdownFormatId } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, FORMATS, showdownFormatId } from "@/shared/formats";
 import { LATEST_GENERATION } from "@/shared/generations";
-import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
+import { pokemonNameInverse } from "@/shared/names";
 import { pokemonAbilities } from "@/shared/pokedex";
 import { baseMoveId } from "@/shared/moves";
 import { nicknameLimit } from "@/shared/nickname";
 import { generationRules, getStatExperience } from "@/shared/generation-rules";
 import { english, type Translation } from "@/i18n/translation";
 import { evTotal, getEv, MAX_LEVEL } from "@/shared/set-details";
+import { requiredItemIds } from "@/shared/team";
 import { filterPokemon } from "./filtering";
-import { availablePokemon } from "./learnsets";
+import { availablePokemon, isItemAvailable } from "./learnsets";
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
+
+// A rule the team breaks, and the slots of the pokemon it concerns
+export type TeamProblem = { message: string; slots: number[] };
+
+// The generation and format whose rules a team is checked against, e.g. "Gen 9 OU: Over Used"
+export const rulesLabel = (
+  generation: Generation,
+  format: string,
+  { t }: Translation = english,
+) =>
+  format === COMBINED_GENERATIONS_FORMAT ?
+    t.combinedGenerations.label
+  : `${t.generation(generation)}${format ? ` ${format}` : ""}`;
 
 // The problems that stop a team from being legal in its format, or none
 export function validateTeam(
   team: ReadonlyTeam,
   generation: Generation,
   format: string,
-  { t, names, locale }: Translation = english,
-): string[] {
-  const members = team.filter(({ name }) => name);
-  if (!members.length) return [t.validation.empty];
+  translation: Translation = english,
+): TeamProblem[] {
+  const { t, names, locale } = translation;
+  const members = team.flatMap((member, slot) =>
+    member.name ? [{ member, slot }] : [],
+  );
+  if (!members.length) return [{ message: t.validation.empty, slots: [] }];
 
-  const problems: string[] = [];
+  // Each problem once, with every slot it concerns
+  const problems = new Map<string, number[]>();
+  const report = (message: string, slots: number[]) =>
+    problems.set(message, [...(problems.get(message) ?? []), ...slots]);
   const rules = generationRules(generation, format);
   const training = t.advanced[rules.investment];
   const candidates = filterPokemon({
@@ -39,42 +59,36 @@ export function validateTeam(
       availablePokemon(candidates, generation, format)
     : candidates,
   );
-  const where = `${t.generation(generation)}${format ? ` ${format}` : ""}`;
+  const where = rulesLabel(generation, format, translation);
   const bans = formatBans[showdownFormatId(generation, format)];
   const species = (pokemon: string) => {
     const base = pokedex[pokemon]?.baseSpecies;
     return (base && pokemonNameInverse(base)) || pokemon;
   };
 
-  for (const member of members) {
+  for (const { member, slot } of members) {
     const { name, item, ability } = member;
     const label = names.pokemon(name);
-    const entry = pokedex[name];
+    const add = (message: string) => report(message, [slot]);
     const maxNicknameLength = nicknameLimit(generation, locale);
     if ((member.nickname?.trim().length ?? 0) > maxNicknameLength)
-      problems.push(t.validation.nicknameTooLong(label, maxNicknameLength));
+      add(t.validation.nicknameTooLong(label, maxNicknameLength));
 
-    if (!allowed.has(name))
-      problems.push(t.validation.notAllowed(label, where));
+    if (!allowed.has(name)) add(t.validation.notAllowed(label, where));
 
     if (
       ability &&
       (!rules.abilities ||
         !pokemonAbilities(name, generation, format).includes(ability))
     )
-      problems.push(t.validation.wrongAbility(label, names.ability(ability)));
+      add(t.validation.wrongAbility(label, names.ability(ability)));
 
-    const required = [
-      ...(entry?.requiredItem ? [entry.requiredItem] : []),
-      ...(entry?.requiredItems ?? []),
-    ].map(itemNameInverse);
+    // Only the ones the game has, which are none in games without items
+    const required = requiredItemIds(name).filter(id =>
+      isItemAvailable(id, generation, format),
+    );
     if (required.length && !required.includes(item))
-      problems.push(
-        t.validation.missingItem(
-          label,
-          required.map(id => names.item(id ?? "")),
-        ),
-      );
+      add(t.validation.missingItem(label, required.map(names.item)));
 
     const moves = MOVE_KEYS.map(key => member[key]).filter(move => move);
     const moveIds = moves.map(baseMoveId);
@@ -82,9 +96,7 @@ export function validateTeam(
       (_, i) => moveIds.indexOf(moveIds[i] ?? "") !== i,
     );
     if (repeated)
-      problems.push(
-        t.validation.repeatedMove(label, names.move(baseMoveId(repeated))),
-      );
+      add(t.validation.repeatedMove(label, names.move(baseMoveId(repeated))));
 
     const banned = [
       bans?.abilities?.includes(ability) && names.ability(ability),
@@ -94,13 +106,11 @@ export function validateTeam(
         .map(move => names.move(move)),
     ];
     for (const thing of banned)
-      if (thing) problems.push(t.validation.banned(label, thing, where));
+      if (thing) add(t.validation.banned(label, thing, where));
 
     const total = evTotal(member.evs);
     if (rules.maxTotal !== undefined && total > rules.maxTotal)
-      problems.push(
-        t.validation.tooMuchTraining(label, total, rules.maxTotal, training),
-      );
+      add(t.validation.tooMuchTraining(label, total, rules.maxTotal, training));
     if (
       rules.statKeys.some(stat => {
         const amount =
@@ -111,38 +121,37 @@ export function validateTeam(
         return amount > rules.maxStat;
       })
     )
-      problems.push(
-        t.validation.tooMuchStatTraining(label, rules.maxStat, training),
-      );
+      add(t.validation.tooMuchStatTraining(label, rules.maxStat, training));
 
     if (
       member.level !== undefined &&
       (member.level < 1 || member.level > MAX_LEVEL)
     )
-      problems.push(t.validation.badLevel(label, MAX_LEVEL));
+      add(t.validation.badLevel(label, MAX_LEVEL));
 
     if (member.teraType && generation !== LATEST_GENERATION)
-      problems.push(t.validation.teraType(label));
+      add(t.validation.teraType(label));
   }
 
-  const seenSpecies = new Set<string>();
-  for (const { name } of members) {
-    const base = species(name);
-    if (seenSpecies.has(base))
-      problems.push(t.validation.speciesClause(names.pokemon(base)));
-    seenSpecies.add(base);
-  }
+  // Each value that more than one pokemon shares, with their slots
+  const shared = (value: (slot: (typeof members)[number]) => string) => {
+    const slots = new Map<string, number[]>();
+    for (const entry of members) {
+      const key = value(entry);
+      if (key) slots.set(key, [...(slots.get(key) ?? []), entry.slot]);
+    }
+    return [...slots].filter(([, sharing]) => sharing.length > 1);
+  };
+
+  // The games allow two of a species; Smogon's tiers and Champions do not
+  if (FORMATS.includes(format))
+    for (const [base, slots] of shared(({ member }) => species(member.name)))
+      report(t.validation.speciesClause(names.pokemon(base)), slots);
 
   // Smogon's doubles tiers have no Item Clause
-  if (format === CHAMPIONS_FORMAT) {
-    const seenItems = new Set<string>();
-    for (const { item } of members) {
-      if (!item) continue;
-      if (seenItems.has(item))
-        problems.push(t.validation.itemClause(names.item(item)));
-      seenItems.add(item);
-    }
-  }
+  if (format === CHAMPIONS_FORMAT)
+    for (const [item, slots] of shared(({ member }) => member.item))
+      report(t.validation.itemClause(names.item(item)), slots);
 
-  return [...new Set(problems)];
+  return [...problems].map(([message, slots]) => ({ message, slots }));
 }

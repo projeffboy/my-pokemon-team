@@ -169,6 +169,18 @@ test("an unrecognized item or ability names what is used in its place", () => {
   ]);
 });
 
+test("a CAP pokemon's ability on another pokemon is the wrong ability, not an unknown one", () => {
+  expect(read("Klefki\nAbility: Mountaineer").problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "klefki",
+      field: "ability",
+      value: "Mountaineer",
+      reason: "wrongAbility",
+    },
+  ]);
+});
+
 test("an ability in another case is not recognized and the auto-selected one is used", () => {
   const { team, problems } = read("Shedinja\nAbility: wonder guard");
   expect(team[0]?.ability).toBe("Wonder Guard");
@@ -279,6 +291,20 @@ test("happiness in a game without it is left out as unsupported", () => {
       value: "0",
       reason: "unsupported",
     },
+  ]);
+});
+
+test("details a game has no field for are left out as unsupported", () => {
+  const { team, problems } = read(
+    "Farigiraf\nTera Type: Fairy\nIVs: 0 Spe\nQuiet Nature",
+    9,
+    CHAMPIONS_FORMAT,
+  );
+  expect(team[0]).not.toHaveProperty("ivs");
+  expect(team[0]).not.toHaveProperty("teraType");
+  expect(problems.map(({ field, reason }) => [field, reason])).toEqual([
+    ["teraType", "unsupported"],
+    ["ivs", "unsupported"],
   ]);
 });
 

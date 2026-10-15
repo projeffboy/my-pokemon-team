@@ -102,8 +102,9 @@ const zhHant: Messages = {
     shareTeam: "分享隊伍",
     shareTeamLink: "分享寶可夢隊伍連結",
     teamActions: "隊伍操作",
+    more: "更多",
     manageTeam: "管理隊伍",
-    manageTeamMenu: "管理隊伍",
+    accessibility: "無障礙",
     duplicate: "建立副本",
     copyText: "複製文字",
     editPokepaste: "編輯 Pokepaste",
@@ -134,6 +135,7 @@ const zhHant: Messages = {
     advanced: "更多詳情",
     advancedFor: (slot: number) => `第 ${slot} 格的更多詳情`,
     details: "詳情",
+    animateSprites: "播放精靈圖動畫",
     showTypes: "顯示屬性",
     about: (pokemon: string) => `關於${pokemon}`,
     dragHint: "長按拖曳即可調整順序",
@@ -181,6 +183,33 @@ const zhHant: Messages = {
     learnsetsFailed: "無法載入招式列表。請重新載入頁面再試一次。",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) => `此連結中的 ${count} 項已被略去`,
+    savedTeamTitle: (count: number) => `已從此隊伍中移除 ${count} 項`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "此遊戲中沒有這項內容，或該寶可夢無法使用。"
+      : "此遊戲中沒有這些內容，或該寶可夢無法使用。",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "遊戲資料更新後，這項內容已被重新命名或移除。"
+      : "遊戲資料更新後，這些內容已被重新命名或移除。",
+    pokemon: (slot: number, value: string) => `寶可夢 ${slot}：${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}，道具：${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}，特性：${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}，招式 ${move}：${value}`,
+    details: "詳情",
+    dismiss: "關閉",
+    detailsTitle: "原始隊伍文字",
+    linkDetailsDescription:
+      "這是連結中原本的隊伍，包括被略去的內容。可複製下來留作紀錄。",
+    savedTeamDetailsDescription:
+      "這是原本的隊伍，包括被移除的內容。可複製下來留作紀錄。",
+    copy: "複製",
+  },
+
   // The undo and redo buttons
   undo: "復原",
   redo: "重做",
@@ -214,28 +243,86 @@ const zhHant: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "場地陷阱", short: "陷阱" },
+      entryHazard: {
+        label: "場地陷阱",
+        short: "陷阱",
+        hint: (moves: string) =>
+          `讓寶可夢學會在對手場地設置陷阱的招式：${moves}。`,
+      },
       spinner: {
         label: "高速旋轉／清除濃霧",
         short: "清釘手",
         shorter: "清釘",
+        hint: (moves: string) =>
+          `讓寶可夢學會清除我方場地陷阱的招式：${moves}。`,
       },
       recovery: {
         label: "可靠回復",
         short: "回復招式",
         shorter: "回復",
+        hint: (moves: string) =>
+          `讓寶可夢學會能可靠回復 HP 的招式，例如${moves}。`,
       },
-      cleric: { label: "治癒手" },
-      status: { label: "異常狀態招式", short: "狀態" },
-      phazer: { label: "強制換人" },
-      boosting: { label: "強化招式", short: "強化" },
-      priority: { label: "先制招式", short: "先制", shorter: "先制" },
+      cleric: {
+        label: "治癒手",
+        hint: (moves: string) =>
+          `讓寶可夢學會治癒全隊異常狀態的招式：${moves}。`,
+      },
+      status: {
+        label: "異常狀態招式",
+        short: "狀態",
+        hint: (moves: string) =>
+          `讓寶可夢學會命中後必定使對手陷入異常狀態的招式，例如${moves}。`,
+      },
+      phazer: {
+        label: "強制換人",
+        hint: (moves: string) => `讓寶可夢學會強制對手換人的招式：${moves}。`,
+      },
+      trapper: {
+        label: "禁止換人",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `讓寶可夢學會使對手無法換人的招式，例如${moves}，或使用擁有${abilities}特性的寶可夢。`
+          : `讓寶可夢學會使對手無法換人的招式，例如${moves}。`,
+      },
+      boosting: {
+        label: "強化招式",
+        short: "強化",
+        hint: (moves: string) =>
+          `讓寶可夢學會使自身能力合計提升 2 階或以上的招式，例如${moves}。`,
+      },
+      priority: {
+        label: "先制招式",
+        short: "先制",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `讓寶可夢學會無論速度高低都能比大多數招式先出手的攻擊招式，例如${moves}。`,
+      },
       voltTurn: {
         label: "急速折返／伏特替換",
         short: "折返招式",
         shorter: "折返",
+        hint: (moves: string) => `讓寶可夢學會攻擊後換下場的招式：${moves}。`,
       },
-      choice: { label: "講究道具", short: "講究" },
+      choice: {
+        label: "講究道具",
+        short: "講究",
+        hint: (items: string) => `讓寶可夢攜帶講究道具：${items}。`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
+    together: (move: string, other: string) => `${move}配合${other}`,
+    unavailable: "本作中沒有符合條件的招式或道具。",
+    battleFormat: {
+      label: "對戰形式",
+      singles: "單打",
+      doubles: "雙打",
+      notSet: "未設定",
+      depends: "取決於對戰形式",
+      reasons: {
+        spinner:
+          "高速旋轉／清除濃霧取決於對戰形式：在第4、5世代中，清除濃霧只有在雙打對戰中對隊友使用時，才能清除己方場地的陷阱。",
+      },
     },
   },
   matrix: {
@@ -372,6 +459,8 @@ const zhHant: Messages = {
     region: "地區",
     moves: "招式",
     viable: "實用",
+    items: "道具",
+    viableItems: "實用",
     ability: "特性",
   },
   sort: {
@@ -479,6 +568,10 @@ const zhHant: Messages = {
     teamName: "隊伍名稱",
   },
   validation: {
+    teamProblems: "隊伍問題",
+    problemCount: (count: number) => `隊伍問題（${count}）`,
+    noProblems: (where: string) => `${where} 未發現問題。`,
+    pokemonProblems: (pokemon: string) => `${pokemon}的問題`,
     empty: "隊伍是空的。",
     notAllowed: (pokemon: string, where: string) =>
       `${where} 不允許使用${pokemon}。`,
@@ -504,9 +597,8 @@ const zhHant: Messages = {
       `${pokemon}的等級必須在 1 到 ${max} 之間。`,
     teraType: (pokemon: string) =>
       `${pokemon}有太晶屬性，但太晶屬性只存在於${generation(9)}。`,
-    speciesClause: (species: string) =>
-      `有兩隻寶可夢都是${species}（同種條款）。`,
-    itemClause: (item: string) => `有兩隻寶可夢都攜帶${item}（道具條款）。`,
+    speciesClause: (species: string) => `${species}只能有一隻（同種條款）。`,
+    itemClause: (item: string) => `${item}只能由一隻寶可夢攜帶（道具條款）。`,
   },
   importDialog: {
     importTitle: "匯入隊伍",
@@ -672,6 +764,10 @@ const zhHant: Messages = {
       [
         "異常狀態招式",
         "這裡指的是命中率高、能造成麻痺、灼傷或中毒的招式，以及能催眠的招式。例如：劇毒、磷火、電磁波、唱歌。",
+      ],
+      [
+        "禁止換人",
+        "在自己留在場上期間讓對手無法替換的寶可夢，例如會使用黑色目光、擋路、擲錨等招式，或擁有踩影、沙穴、磁力特性的寶可夢。潮旋這類只束縛幾回合的招式不算。",
       ],
       ["強化招式", "能提升自身能力的招式（最好是 2 階以上），例如劍舞和冥想。"],
       [

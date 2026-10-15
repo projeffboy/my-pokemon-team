@@ -106,8 +106,9 @@ const it: Messages = {
     shareTeam: "Condividi",
     shareTeamLink: "Condividi il link della squadra Pokémon",
     teamActions: "Azioni sulla squadra",
-    manageTeam: "Gestisci",
-    manageTeamMenu: "Gestisci squadra",
+    more: "Altro",
+    manageTeam: "Gestisci squadra",
+    accessibility: "Accessibilità",
     duplicate: "Duplica",
     copyText: "Copia testo",
     editPokepaste: "Modifica Pokepaste",
@@ -142,6 +143,7 @@ const it: Messages = {
     advanced: "Altri dettagli",
     advancedFor: (slot: number) => `Altri dettagli per lo slot ${slot}`,
     details: "Dettagli",
+    animateSprites: "Anima gli sprite",
     showTypes: "Mostra i tipi",
     about: (pokemon: string) => `Info su ${pokemon}`,
     dragHint: "Tieni premuto e trascina per riordinare",
@@ -192,6 +194,40 @@ const it: Messages = {
       "Impossibile caricare gli elenchi delle mosse. Ricarica la pagina per riprovare.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 elemento di questo link è stato omesso"
+      : `${count} elementi di questo link sono stati omessi`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 elemento è stato rimosso da questa squadra"
+      : `${count} elementi sono stati rimossi da questa squadra`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Questo gioco non lo ha, o il Pokémon non può usarlo."
+      : "Questo gioco non li ha, o il Pokémon non può usarli.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Un aggiornamento dei dati di gioco lo ha rinominato o rimosso."
+      : "Un aggiornamento dei dati di gioco li ha rinominati o rimossi.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, strumento: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, abilità: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, mossa ${move}: ${value}`,
+    details: "Dettagli",
+    dismiss: "Ignora",
+    detailsTitle: "Testo originale della squadra",
+    linkDetailsDescription:
+      "La squadra del link com'era, con ciò che è stato omesso. Copiala per conservarne una traccia.",
+    savedTeamDetailsDescription:
+      "La squadra com'era, con ciò che è stato rimosso. Copiala per conservarne una traccia.",
+    copy: "Copia",
+  },
+
   // The undo and redo buttons
   undo: "Annulla",
   redo: "Ripeti",
@@ -225,28 +261,89 @@ const it: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che piazza trappole sul campo avversario: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che rimuove le trappole dal tuo campo: ${moves}.`,
+      },
       recovery: {
         label: "Recupero affidabile",
         short: "Recupero",
         shorter: "Cura",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa curativa affidabile, come ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Mossa di stato", short: "Stato" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Mossa potenziante", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che cura i problemi di stato della tua squadra: ${moves}.`,
+      },
+      status: {
+        label: "Mossa di stato",
+        short: "Stato",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che infligge sempre un problema di stato quando va a segno, come ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che costringe l'avversario a cambiare: ${moves}.`,
+      },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Insegna a un Pokémon una mossa che impedisce all'avversario di cambiare, come ${moves}, o dagli l'abilità ${abilities}.`
+          : `Insegna a un Pokémon una mossa che impedisce all'avversario di cambiare, come ${moves}.`,
+      },
+      boosting: {
+        label: "Mossa potenziante",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che aumenta le sue statistiche di almeno due livelli in totale, come ${moves}.`,
+      },
       priority: {
         label: "Mossa prioritaria",
         short: "Priorità",
         shorter: "Prio",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che infligge danni e agisce prima della maggior parte delle altre, a prescindere dalla Velocità, come ${moves}.`,
       },
       voltTurn: {
         label: "Mossa Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che attacca e poi lo fa rientrare: ${moves}.`,
       },
-      choice: { label: "Strumento Choice", short: "Choice" },
+      choice: {
+        label: "Strumento Choice",
+        short: "Choice",
+        hint: (items: string) =>
+          `Fai tenere a un Pokémon uno strumento Choice: ${items}.`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} con ${other}`,
+    unavailable: "In questo gioco niente ricopre questo ruolo.",
+    battleFormat: {
+      label: "Formato di lotta",
+      singles: "Singolo",
+      doubles: "Doppio",
+      notSet: "Non impostato",
+      depends: "Dipende dal formato di lotta",
+      reasons: {
+        spinner:
+          "Spinner/Defogger dipende dal formato di lotta: nella 4ª e 5ª generazione, Scacciabruma rimuove gli Entry Hazard dal tuo lato solo nelle lotte in doppio, usandola sul tuo alleato.",
+      },
     },
   },
   matrix: {
@@ -386,6 +483,8 @@ const it: Messages = {
     region: "Regione",
     moves: "Mosse",
     viable: "Competitive",
+    items: "Strumenti",
+    viableItems: "Competitivi",
     ability: "Abilità",
   },
   sort: {
@@ -504,6 +603,10 @@ const it: Messages = {
     teamName: "Nome della squadra",
   },
   validation: {
+    teamProblems: "Problemi della squadra",
+    problemCount: (count: number) => `Problemi della squadra (${count})`,
+    noProblems: (where: string) => `Nessun problema trovato in ${where}.`,
+    pokemonProblems: (pokemon: string) => `Problemi di ${pokemon}`,
     empty: "La squadra è vuota.",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon} non è ammesso in ${where}.`,
@@ -530,8 +633,9 @@ const it: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon} ha un teratipo, che esiste solo nella ${generation(9)}.`,
     speciesClause: (species: string) =>
-      `Due Pokémon sono ${species} (Species Clause).`,
-    itemClause: (item: string) => `Due Pokémon tengono ${item} (Item Clause).`,
+      `Solo un Pokémon può essere ${species} (Species Clause).`,
+    itemClause: (item: string) =>
+      `Solo un Pokémon può tenere ${item} (Item Clause).`,
   },
   importDialog: {
     importTitle: "Importa squadra",
@@ -706,6 +810,10 @@ const it: Messages = {
       [
         "Mosse di stato",
         "Qui indicano mosse precise che paralizzano, scottano o avvelenano, oltre alle mosse che addormentano. Es. Tossina, Fuocofatuo, Tuononda, Canto.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon che impedisce agli avversari di cambiare finché resta in campo, con una mossa come Malosguardo, Blocco o Colpo d’Ancora, o con l'abilità Pedinombra, Trappoarena o Magnetismo. Le mosse che intrappolano solo per qualche turno, come Mulinello, non contano.",
       ],
       [
         "Mossa potenziante",

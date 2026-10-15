@@ -4,7 +4,7 @@ import {
   openAdvanced,
   openAnalysis,
   openFilters,
-  openManageTeamMenu,
+  openMoreMenu,
   openSort,
 } from "helper";
 import type { Locator, Page } from "@playwright/test";
@@ -137,7 +137,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       test.setTimeout(120_000);
       await expectNoViolations(page);
 
-      await openManageTeamMenu(page);
+      await openMoreMenu(page);
       await expectNoViolations(page);
       await closeAll(page);
 
@@ -185,15 +185,15 @@ for (const colorScheme of ["light", "dark"] as const) {
         page.getByRole("button", { name: "Teams", exact: true }).click(),
       );
       await checkDialog(page, async () => {
-        await openManageTeamMenu(page);
+        await openMoreMenu(page);
         await clickMenuItem(page, "Edit Pokepaste");
       });
       await checkDialog(page, async () => {
-        await openManageTeamMenu(page);
+        await openMoreMenu(page);
         await clickMenuItem(page, "Import team");
       });
       await checkDialog(page, async () => {
-        await openManageTeamMenu(page);
+        await openMoreMenu(page);
         await clickMenuItem(page, "Clear");
       });
       await checkDialog(page, () => openAdvanced(page));
