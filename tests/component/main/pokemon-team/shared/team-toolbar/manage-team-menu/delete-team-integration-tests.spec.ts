@@ -1,11 +1,10 @@
 import { test, expect } from "fixtures";
-import { clickMenuItem, openManageTeamMenu, turnOnAdvanced } from "helper";
+import { clickMenuItem, openManageTeamMenu } from "helper";
 import type { Page } from "@playwright/test";
 import { createSavedTeam } from "@/shared/team";
 import type { SavedTeam } from "@/types";
 
 const openTeams = async (page: Page) => {
-  await turnOnAdvanced(page);
   await page.getByRole("button", { name: "Teams", exact: true }).click();
   await expect(
     page.getByRole("dialog", { name: "Teams", exact: true }),
@@ -86,7 +85,6 @@ test.describe("Delete team - Integration Tests", () => {
           JSON.stringify({
             teams,
             currentTeamId: "target",
-            isMoreOpen: true,
             locale: "en",
           }),
         );
