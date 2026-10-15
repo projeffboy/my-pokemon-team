@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import spreads from "@/data/hidden-power-spreads";
 import { hiddenPowerType, matchHiddenPower } from "@/shared/hidden-power";
 import { createTeam } from "./shared/team";
@@ -689,6 +690,64 @@ test("available formes keep their forme and ability", () => {
   );
   expect(plan.team).toEqual(original);
   expect(plan.losses).toEqual([]);
+});
+
+test("Giratina-Origin swaps between the Griseous Core and Orb across generations", () => {
+  const transfer = (item: string, generation: 4 | 9, to: 4 | 9) =>
+    planGenerationTransfer(
+      createTeam({ name: "giratinaorigin", item }),
+      { generation, format: "" },
+      to,
+      "",
+      data,
+    );
+  const older = transfer("griseouscore", 9, 4);
+  expect(older.team[0]?.item).toBe("griseousorb");
+  expect(older.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "giratinaorigin",
+      field: "item",
+      value: "griseouscore",
+      replacement: "griseousorb",
+    },
+  ]);
+  const newer = transfer("griseousorb", 4, 9);
+  expect(newer.team[0]?.item).toBe("griseouscore");
+  expect(newer.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "giratinaorigin",
+      field: "item",
+      value: "griseousorb",
+      replacement: "griseouscore",
+    },
+  ]);
+  // Altered Giratina boosts its moves with the Orb in every generation
+  const altered = planGenerationTransfer(
+    createTeam({ name: "giratina", item: "griseousorb" }),
+    { generation: 4, format: "" },
+    9,
+    "",
+    data,
+  );
+  expect(altered.team[0]?.item).toBe("griseousorb");
+  expect(altered.losses).toEqual([]);
+  // Generations 6–9 spans games that use either version
+  for (const [item, generation] of [
+    ["griseousorb", 4],
+    ["griseouscore", 9],
+  ] as const) {
+    const combined = planGenerationTransfer(
+      createTeam({ name: "giratinaorigin", item }),
+      { generation, format: "" },
+      9,
+      COMBINED_GENERATIONS_FORMAT,
+      data,
+    );
+    expect(combined.team[0]?.item).toBe(item);
+    expect(combined.losses).toEqual([]);
+  }
 });
 
 test("keeps compatible moves and details and explains every unsupported field", () => {
