@@ -1,7 +1,9 @@
 import { test, expect } from "@playwright/test";
 import { spriteUrls } from "@/app/shared/pokemon-sprite/sprite-urls";
+import vercel from "../../vercel.json" with { type: "json" };
 import pokedex from "@/data/pokedex";
 import altSpriteNum from "@/data/altSpriteNum";
+import type { Generation } from "@/types";
 
 const bulbasaur = { num: 1 };
 
@@ -26,6 +28,8 @@ test("newer pokemon that Showdown animates are animated, unlike the Legends: Z-A
     /\/ani\/basculin-whitestriped\.gif$/,
   );
   expect(sources("irontreads", true)[0]).toMatch(/\/dex\/irontreads\.png$/);
+  // CAP icons come after the Z-A megas', but Showdown animates CAP pokemon
+  expect(sources("kerfluffle")[0]).toMatch(/\/ani\/kerfluffle\.gif$/);
   expect(sources("scovillainmega")).toEqual([
     expect.stringMatching(/\/gen5\/scovillain-mega\.png$/),
   ]);
@@ -70,6 +74,43 @@ test("pokemon with only gen 5 sprites use the still one in the generations befor
   ).toEqual([expect.stringMatching(/\/gen5\/miraidon\.png$/)]);
 });
 
+test("the site's own address retries each of the sprite's sources, for networks that block Showdown", () => {
+  const { sources, proxied } = spriteUrls(
+    "bulbasaur",
+    bulbasaur,
+    undefined,
+    false,
+    9,
+    true,
+  );
+  expect(proxied).toEqual([
+    "/showdown-sprites/ani-shiny/bulbasaur.gif",
+    "/showdown-sprites/gen5ani-shiny/bulbasaur.gif",
+    "/showdown-sprites/gen5-shiny/bulbasaur.png",
+  ]);
+  // vercel.json forwards each one to the same file on Showdown
+  const [rewrite] = vercel.rewrites;
+  const forwarded = proxied.map(url =>
+    url.replace(
+      rewrite.source.replace(":path*", ""),
+      rewrite.destination.replace(":path*", ""),
+    ),
+  );
+  expect(forwarded).toEqual(sources);
+});
+
+test("the site's own address caches sprites, and their 404s, only as long as Showdown does", () => {
+  const { proxied } = spriteUrls("bulbasaur", bulbasaur, undefined, false, 9);
+  // Of the header rules that match a path, the last one wins
+  const rule = vercel.headers.at(-1);
+  for (const url of proxied) {
+    expect(url).toMatch(new RegExp(`^${rule?.source}$`));
+  }
+  expect(rule?.headers).toEqual([
+    { key: "Cache-Control", value: "public, max-age=691200" },
+  ]);
+});
+
 test("shiny sprites keep the selected generation, image type and shiny fallback", () => {
   for (const [generation, folder, extension] of [
     [2, "gen2-shiny", "png"],
@@ -104,4 +145,57 @@ test("shiny sprites keep the selected generation, image type and shiny fallback"
     spriteUrls("palkiaorigin", pokedex.palkiaorigin, undefined, true, 9, true)
       .sources,
   ).toEqual([expect.stringMatching(/\/gen5-shiny\/palkia-origin\.png$/)]);
+});
+
+test("still sprites leave out every animated source, in every generation and size", () => {
+  const folders = (
+    pokemon: string,
+    isSmall: boolean,
+    generation: Generation,
+    shiny = false,
+  ) =>
+    spriteUrls(
+      pokemon,
+      pokedex[pokemon],
+      altSpriteNum[pokemon],
+      isSmall,
+      generation,
+      shiny,
+      true,
+    ).sources.map(url => url.split("/").slice(-2).join("/"));
+  for (const pokemon of ["bulbasaur", "greattusk", "miraidon", "ferroseed"])
+    for (const generation of [3, 5, 9] as const)
+      for (const isSmall of [false, true])
+        for (const shiny of [false, true])
+          for (const source of folders(pokemon, isSmall, generation, shiny))
+            expect(source).not.toMatch(/ani(-shiny)?\/|\.gif$/);
+
+  expect(folders("greattusk", false, 9)).toEqual([
+    "dex/greattusk.png",
+    "gen5/greattusk.png",
+  ]);
+  expect(folders("corviknight", false, 9)).toEqual([
+    "bw/corviknight.png",
+    "gen5/corviknight.png",
+  ]);
+  expect(folders("ferroseed", false, 9)).toEqual([
+    "dex/ferroseed.png",
+    "gen5/ferroseed.png",
+  ]);
+  expect(folders("miraidon", false, 9)).toEqual(["gen5/miraidon.png"]);
+  expect(folders("dialgaorigin", false, 9)).toEqual(["gen5/dialga-origin.png"]);
+  expect(folders("bulbasaur", false, 9, true)).toEqual([
+    "dex-shiny/bulbasaur.png",
+    "gen5-shiny/bulbasaur.png",
+  ]);
+  for (const isSmall of [false, true]) {
+    expect(folders("bulbasaur", isSmall, 5)).toEqual(["gen5/bulbasaur.png"]);
+    expect(folders("bulbasaur", isSmall, 5, true)).toEqual([
+      "gen5-shiny/bulbasaur.png",
+    ]);
+  }
+  expect(folders("bulbasaur", false, 3)).toEqual([
+    "gen3/bulbasaur.png",
+    "gen5/bulbasaur.png",
+  ]);
 });

@@ -2,14 +2,17 @@ import { test, expect } from "fixtures";
 import {
   createViewport,
   closeDialog,
+  expectImageToBeLoaded,
   LARGE_VIEWPORT_WIDTH,
   openAdvanced,
   selectPokemon,
   selectMove,
   SMALL_VIEWPORT_WIDTH,
+  SPRITE_ANIMATIONS_TIMEOUT,
 } from "helper";
 
 const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
+const PROXIED_SPRITES = "/showdown-sprites";
 const PIXEL = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
   "base64",
@@ -27,6 +30,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     test(`Gen ${generation} animation keeps the still sprite's pixel scale`, async ({
       page,
     }) => {
+      test.slow();
       const still = await page.evaluate(() => {
         const canvas = document.createElement("canvas");
         canvas.width = canvas.height = 96;
@@ -45,7 +49,9 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
           `/?team=${Buffer.from(team).toString("base64url")}&gen=${generation}`,
         );
         const sprites = page.locator('img[alt="Qwilfish"]');
-        await expect(sprites.first()).toHaveAttribute("src", /selection=/);
+        await expect(sprites.first()).toHaveAttribute("src", /selection=/, {
+          timeout: SPRITE_ANIMATIONS_TIMEOUT,
+        });
         await expect
           .poll(() =>
             sprites
@@ -90,6 +96,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     test(`Gen ${generation} selection and page loads briefly animate the sprite, but move edits do not`, async ({
       page,
     }) => {
+      test.slow();
       await page.getByRole("combobox", { name: "Generation" }).click();
       await page
         .locator(`[role="option"][data-value="${generation}"]`)
@@ -108,6 +115,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
         new RegExp(
           `/sprite-animations/${generation}/dunsparce\\.${extension}\\?(?:no-inline&)?selection=`,
         ),
+        { timeout: SPRITE_ANIMATIONS_TIMEOUT },
       );
       expect(await sprite.evaluate(image => image.getAnimations().length)).toBe(
         0,
@@ -142,6 +150,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
         new RegExp(
           `/sprite-animations/${generation}/qwilfish\\.${extension}\\?(?:no-inline&)?selection=`,
         ),
+        { timeout: SPRITE_ANIMATIONS_TIMEOUT },
       );
       await expect(qwilfish).toHaveAttribute(
         "src",
@@ -243,13 +252,58 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       "src",
       `${SHOWDOWN_SPRITES}/gen5-shiny/zeraora-mega.png`,
     );
-    await page.route(`${SHOWDOWN_SPRITES}/gen5-shiny/zeraora-mega.png`, route =>
+    // Showdown's address and the site's own both lack it
+    await page.route(/sprites\/gen5-shiny\/zeraora-mega\.png$/, route =>
       route.fulfill({ status: 404, body: "Not found" }),
     );
     await page.reload();
     await expect(sprite).toHaveAttribute("src", /zeraoramega.*\.png/);
     await expect(sprite).not.toHaveAttribute("src", /pokemonshowdown/);
     await expect(sprite).toHaveJSProperty("naturalWidth", 192);
+  });
+
+  test("a reachable Showdown serves every sprite, without the site's own address", async ({
+    page,
+  }) => {
+    const proxied: string[] = [];
+    page.on("request", request => {
+      if (request.url().includes(PROXIED_SPRITES)) proxied.push(request.url());
+    });
+    await page.route(`**${PROXIED_SPRITES}/**`, route =>
+      route.fulfill({ contentType: "image/png", body: PIXEL }),
+    );
+    for (const folder of ["ani", "gen5ani"])
+      await page.route(`${SHOWDOWN_SPRITES}/${folder}/**`, route =>
+        route.fulfill({ status: 404, body: "Not found" }),
+      );
+    await selectPokemon(page, "Lokix");
+    const sprite = page
+      .getByRole("region", { name: "Pokemon 1", exact: true })
+      .getByRole("img", { name: "Lokix", exact: true });
+    await expect(sprite).toHaveAttribute(
+      "src",
+      `${SHOWDOWN_SPRITES}/gen5/lokix.png`,
+    );
+    await expectImageToBeLoaded(sprite);
+    expect(proxied).toEqual([]);
+  });
+
+  test("a network that blocks Showdown gets the sprite through the site's own address", async ({
+    page,
+  }) => {
+    await page.route(`${SHOWDOWN_SPRITES}/**`, route => route.abort());
+    await page.route(`**${PROXIED_SPRITES}/**`, route =>
+      route.fulfill({ contentType: "image/png", body: PIXEL }),
+    );
+    await selectPokemon(page, "Tinkaton");
+    const sprite = page
+      .getByRole("region", { name: "Pokemon 1", exact: true })
+      .getByRole("img", { name: "Tinkaton", exact: true });
+    await expect(sprite).toHaveAttribute(
+      "src",
+      `${PROXIED_SPRITES}/ani/tinkaton.gif`,
+    );
+    await expectImageToBeLoaded(sprite);
   });
 
   test.describe("md and up", () => {

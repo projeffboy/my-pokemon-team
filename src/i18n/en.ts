@@ -102,8 +102,9 @@ const en = {
     shareTeam: "Share",
     shareTeamLink: "Share pokemon team link",
     teamActions: "Team actions",
-    manageTeam: "Manage",
-    manageTeamMenu: "Manage team",
+    more: "More",
+    manageTeam: "Manage team",
+    accessibility: "Accessibility",
     duplicate: "Duplicate",
     copyText: "Copy text",
     editPokepaste: "Edit Pokepaste",
@@ -138,6 +139,7 @@ const en = {
     advancedFor: (slot: number) => `More details for slot ${slot}`,
     // The short label of the button that opens a slot's More details
     details: "Details",
+    animateSprites: "Animate sprites",
     showTypes: "Show types",
     about: (pokemon: string) => `About ${pokemon}`,
     dragHint: "Hold and drag to reorder",
@@ -188,6 +190,40 @@ const en = {
       "The move lists could not be loaded. Reload the page to try again.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 entry in this link was left out"
+      : `${count} entries in this link were left out`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 entry was removed from this team"
+      : `${count} entries were removed from this team`,
+    linkReason: (count: number): string =>
+      count === 1 ?
+        "This game doesn't have it, or the pokemon can't use it."
+      : "This game doesn't have them, or the pokemon can't use them.",
+    savedTeamReason: (count: number): string =>
+      count === 1 ?
+        "A game data update renamed or removed it."
+      : "A game data update renamed or removed them.",
+    pokemon: (slot: number, value: string) => `Pokemon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, item: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, ability: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, move ${move}: ${value}`,
+    details: "Details",
+    dismiss: "Dismiss",
+    detailsTitle: "Original team text",
+    linkDetailsDescription:
+      "The link's team as it was, with what was left out. Copy it to keep a record.",
+    savedTeamDetailsDescription:
+      "The team as it was, with what was removed. Copy it to keep a record.",
+    copy: "Copy",
+  },
+
   // The undo and redo buttons
   undo: "Undo",
   redo: "Redo",
@@ -219,27 +255,84 @@ const en = {
       defensive: "Defensive",
       offensive: "Offensive",
     },
-    // Shorter labels for screens at lg and below, then shorter still at md and below
+    // Shorter labels for screens at lg and below, then shorter still at md and below. A hint
+    // says what would fill a role, given a list of the moves or items in the game that do.
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Give a pokemon a move that sets entry hazards: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Give a pokemon a move that removes entry hazards from your side: ${moves}.`,
+      },
       recovery: {
         label: "Reliable Recovery",
         short: "Recovery",
         shorter: "Heal",
+        hint: (moves: string) =>
+          `Give a pokemon a reliable healing move, such as ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Status Move", short: "Status" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Boosting Move", short: "Setup" },
-      priority: { label: "Priority Move", short: "Priority", shorter: "Prio" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Give a pokemon a move that cures your team's status conditions: ${moves}.`,
+      },
+      status: {
+        label: "Status Move",
+        short: "Status",
+        hint: (moves: string) =>
+          `Give a pokemon a move that always inflicts a status condition when it hits, such as ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Give a pokemon a move that forces the foe to switch out: ${moves}.`,
+      },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Give a pokemon a move that stops the foe from switching out, such as ${moves}, or the ability ${abilities}.`
+          : `Give a pokemon a move that stops the foe from switching out, such as ${moves}.`,
+      },
+      boosting: {
+        label: "Boosting Move",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Give a pokemon a move that raises its own stats by two or more stages in total, such as ${moves}.`,
+      },
+      priority: {
+        label: "Priority Move",
+        short: "Priority",
+        shorter: "Prio",
+        hint: (moves: string) =>
+          `Give a pokemon a damaging move that goes before most other moves, regardless of Speed, such as ${moves}.`,
+      },
       voltTurn: {
         label: "Volt-turn Move",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Give a pokemon a move that attacks and then switches it out: ${moves}.`,
       },
-      choice: { label: "Choice Item", short: "Choice" },
+      choice: {
+        label: "Choice Item",
+        short: "Choice",
+        hint: (items: string) =>
+          `Give a pokemon a Choice item to hold: ${items}.`,
+      },
     },
+    // A pokemon that fills a role, and the moves, item, or ability it fills it with
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    // Two moves that fill a role together, such as Wish with Protect
+    together: (move: string, other: string) => `${move} with ${other}`,
+    unavailable: "Nothing in this game fills it.",
     // Whether the team is for singles or doubles, which some roles depend on
     battleFormat: {
       label: "Battle format",
@@ -389,6 +482,8 @@ const en = {
     region: "Region",
     moves: "Moves",
     viable: "Viable",
+    items: "Items",
+    viableItems: "Viable",
     ability: "Ability",
   },
   sort: {
@@ -707,6 +802,10 @@ const en = {
       [
         "Status Moves",
         "Here, they refer to accurate moves that paralyze, burn, or poison, as well as moves that cause sleep. E.g. Toxic, Will-O-Wisp, Thunder Wave, Sing.",
+      ],
+      [
+        "Trapper",
+        "A pokemon that stops foes from switching out while it stays in, using a move like Mean Look, Block, or Anchor Shot, or the ability Shadow Tag, Arena Trap, or Magnet Pull. Moves that trap for only a few turns, like Whirlpool, don't count.",
       ],
       [
         "Boosting Move",

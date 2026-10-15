@@ -5,6 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
+import { inputLabelClasses } from "@mui/material/InputLabel";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
@@ -118,7 +119,23 @@ const ImportTeamForm = observer(function ImportTeamForm({
           }}
           error={isNothingFound}
           helperText={isNothingFound && importDialog.nothingFound}
-          slotProps={{ htmlInput: verbatim("team-text") }}
+          slotProps={{
+            htmlInput: verbatim("team-text"),
+            // Above the text rather than over it, so a long label wraps instead of being
+            // cut off at 320px
+            inputLabel: {
+              shrink: true,
+              sx: {
+                position: "static",
+                transform: "none",
+                maxWidth: "100%",
+                whiteSpace: "normal",
+                // The size the shrunk label had when it floated
+                fontSize: "0.75rem",
+              },
+            },
+            input: { sx: { [`.${inputLabelClasses.root} + &`]: { mt: 0 } } },
+          }}
         />
         <TeamTextProblems problems={problems} />
         <DialogContentText>{importDialog.kept}</DialogContentText>

@@ -36,6 +36,10 @@ import {
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import {
+  visualViewportHeight,
+  visualViewportTop,
+} from "@/app/shared/visual-viewport";
 import { verbatim } from "@/app/shared/text-entry";
 import NumberField from "./advanced-dialog/NumberField";
 import TrainingFields from "./advanced-dialog/TrainingFields";
@@ -234,6 +238,12 @@ const AdvancedForm = observer(function AdvancedForm({
                 }
                 fullWidth
                 sx={{ flex: "1 1 120px" }}
+                // Shows None rather than a full-size label, which is too long for the
+                // field at 320px in French
+                slotProps={{
+                  inputLabel: { shrink: true },
+                  select: { displayEmpty: true },
+                }}
               >
                 <MenuItem value="">{t.none}</MenuItem>
                 {TERA_TYPES.map(type => (
@@ -333,11 +343,21 @@ const AdvancedDialog = observer(function AdvancedDialog() {
         anchor="bottom"
         open={isOpen}
         onClose={close}
+        // The sheet sits on the bottom of the visible page, above the on-screen keyboard
+        sx={{
+          top: visualViewportTop,
+          bottom: "auto",
+          height: visualViewportHeight,
+        }}
         slotProps={{
           paper: {
             role: "dialog",
             "aria-labelledby": titleId,
-            sx: { borderRadius: "16px 16px 0 0", maxHeight: "92dvh" },
+            sx: {
+              position: "absolute",
+              borderRadius: "16px 16px 0 0",
+              maxHeight: "92%",
+            },
           },
         }}
       >

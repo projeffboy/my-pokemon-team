@@ -101,26 +101,31 @@ const TeamLinkSync = observer(function TeamLinkSync() {
       lastSyncedTeamParameter = teamParameter;
       const { settings, unrecognized } = generationSettingsFromUrl();
       const linkSettings = { ...settings, battleFormat: battleFormatFromUrl() };
-      if (teamParameter) importTeamFromUrlParameter(teamParameter);
-      else if (
-        firstNavigation &&
-        store.isTeamEmpty &&
-        store.teams.some(team => team.id === store.currentTeamId)
-      ) {
-        // The URL carries no tier, so the same game keeps the team's
-        const { generation, format, generationProfile, battleFormat } =
-          store.currentTeam;
+      const openWithoutTeam = () => {
         if (
-          generation !== settings.generation ||
-          gameFormat(format) !== settings.format ||
-          generationProfile !== settings.generationProfile ||
-          battleFormat !== linkSettings.battleFormat
-        )
-          Object.assign(store.currentTeam, {
-            ...linkSettings,
-            generationProfile: settings.generationProfile,
-          });
-      } else store.openUnsavedTeam(undefined, linkSettings);
+          firstNavigation &&
+          store.isTeamEmpty &&
+          store.teams.some(team => team.id === store.currentTeamId)
+        ) {
+          // The URL carries no tier, so the same game keeps the team's
+          const { generation, format, generationProfile, battleFormat } =
+            store.currentTeam;
+          if (
+            generation !== settings.generation ||
+            gameFormat(format) !== settings.format ||
+            generationProfile !== settings.generationProfile ||
+            battleFormat !== linkSettings.battleFormat
+          )
+            Object.assign(store.currentTeam, {
+              ...linkSettings,
+              generationProfile: settings.generationProfile,
+            });
+        } else store.openUnsavedTeam(undefined, linkSettings);
+      };
+      // A team the link holds but the site cannot read opens as if the link held none
+      if (teamParameter)
+        importTeamFromUrlParameter(teamParameter, openWithoutTeam);
+      else openWithoutTeam();
       if (unrecognized) {
         // Names the profile the page opened in, even if the link's team was unreadable
         const { t } = store.translation;

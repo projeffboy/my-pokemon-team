@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import {
   changeNotice,
+  collectViableItems,
   collectViableMoves,
   flattenLearnsets,
   nameChanges,
@@ -13,7 +14,9 @@ import {
   projectTypeChart,
   projectHiddenPowerSpreads,
   projections,
+  renderGenerationSets,
   renderTypedData,
+  type ItemGrouping,
   type MoveSearch,
 } from "../../scripts/update-data/transforms";
 
@@ -277,12 +280,76 @@ test("learnsets merge every mod into one sorted move list per species", () => {
       },
       { ursaluna: { learnset: { headlongrush: ["8L1"] } } },
     ],
+    {},
   );
   expect(flattened).toEqual({
     meganium: ["dazzlinggleam", "earthquake", "solarbeam"],
     unown: [],
     ursaluna: ["headlongrush"],
   });
+});
+
+test("learnsets give a forme its base forme's moves in a game without a learnset for it", () => {
+  const flattened = flattenLearnsets(
+    {
+      tatsugiri: { learnset: { muddywater: ["9M"] } },
+      tatsugiristretchy: { learnset: { muddywater: ["9M"] } },
+      shaymin: { learnset: { seedflare: ["9L1"] } },
+      shayminsky: {},
+    },
+    [
+      {
+        tatsugiri: { learnset: { scald: ["9L1"] } },
+        tatsugiristretchy: {},
+        shayminsky: {},
+      },
+    ],
+    {
+      tatsugiri: { name: "Tatsugiri" },
+      tatsugiristretchy: {
+        name: "Tatsugiri-Stretchy",
+        baseSpecies: "Tatsugiri",
+      },
+      shaymin: { name: "Shaymin" },
+      shayminsky: {
+        name: "Shaymin-Sky",
+        baseSpecies: "Shaymin",
+        changesFrom: "Shaymin",
+      },
+    },
+  );
+  expect(flattened.tatsugiristretchy).toEqual(["muddywater", "scald"]);
+  // With no learnset in any game, the app inherits Shaymin's whole list already
+  expect(flattened.shayminsky).toEqual([]);
+});
+
+test("learnsets give a forme without a previous evolution only its first stage's Gen 9 egg moves", () => {
+  const flattened = flattenLearnsets(
+    {
+      pichu: {
+        learnset: { wish: ["9E", "8E"], bide: ["7E"], charm: ["9L1"] },
+      },
+      pikachu: { learnset: { thunderbolt: ["9M"] } },
+      pikachuoriginal: { learnset: { thunderbolt: ["9M"] } },
+      kyurem: { learnset: { glaciate: ["9L1"] } },
+      kyuremblack: { learnset: { fusionbolt: ["9L1"] } },
+    },
+    [],
+    {
+      pichu: { name: "Pichu" },
+      pikachu: { name: "Pikachu", prevo: "Pichu" },
+      pikachuoriginal: { name: "Pikachu-Original", baseSpecies: "Pikachu" },
+      kyurem: { name: "Kyurem" },
+      kyuremblack: {
+        name: "Kyurem-Black",
+        baseSpecies: "Kyurem",
+        changesFrom: "Kyurem",
+      },
+    },
+  );
+  expect(flattened.pikachuoriginal).toEqual(["thunderbolt", "wish"]);
+  expect(flattened.pikachu).toEqual(["thunderbolt"]);
+  expect(flattened.kyuremblack).toEqual(["fusionbolt"]);
 });
 
 test("viable moves are judged per forme, with base species moves, items, and hidden powers", () => {
@@ -332,6 +399,50 @@ test("viable moves are judged per forme, with base species moves, items, and hid
     "genesectdouse:Download:Douse Drive:hiddenpowerfire",
     "genesectdouse:Download:Douse Drive:hiddenpowerice",
   ]);
+});
+
+test("viable items are grouped on each generation's data, whatever the item's generation or legality", () => {
+  const seen: unknown[] = [];
+  const group: ItemGrouping = (dex, gen, genNum, itemList) => {
+    const items = itemList.map(id => dex.mod(gen).items.get(id));
+    seen.push(...items);
+    return items
+      .filter(item => genNum > 3 || item.id !== "sitrusberry")
+      .map(item => `${item.id}`);
+  };
+  const viable = collectViableItems(
+    group,
+    {
+      3: { sitrusberry: { name: "Sitrus Berry", gen: 3 } },
+      9: {
+        sitrusberry: { name: "Sitrus Berry", gen: 3 },
+        venusaurite: { name: "Venusaurite", gen: 6, isNonstandard: "Past" },
+      },
+    },
+    ["venusaurite", "sitrusberry"],
+  );
+  expect(viable).toEqual({ 3: [], 9: ["sitrusberry", "venusaurite"] });
+  expect(seen).toContainEqual({
+    id: "venusaurite",
+    exists: true,
+    name: "Venusaurite",
+  });
+});
+
+test("generation sets render the latest set and what each earlier generation changes", () => {
+  const text = renderGenerationSets("Viable items", "viableItemsIn", {
+    3: ["leftovers", "mail"],
+    9: ["leftovers", "sitrusberry"],
+  });
+  expect(text).toContain(
+    'const data: ReadonlySet<string> = new Set([\n  "leftovers",\n  "sitrusberry"\n]);',
+  );
+  expect(text).toContain(
+    '"3": {\n    "add": [\n      "mail"\n    ],\n    "remove": [\n      "sitrusberry"\n    ]\n  }',
+  );
+  expect(text).toContain(
+    "export function viableItemsIn(generation: Generation = LATEST_GENERATION)",
+  );
 });
 
 test("the type chart converts Showdown's damage codes and drops Stellar", () => {
@@ -855,6 +966,38 @@ test("historical stats and abilities inherit through generations and cosmetic fo
   expect(past[5]?.abilities?.bird).toEqual(["Original", "Second", "Hidden"]);
 });
 
+test("past generations drop a hidden ability that the generation's mod marks unreleased", () => {
+  const abilities = { 0: "Ordinary", H: "Hidden" };
+  const past = projectPastGenerations(
+    {
+      pokedex: {
+        beast: { name: "Beast", abilities },
+        starter: { name: "Starter", abilities },
+        cap: { name: "Cap", abilities },
+      },
+      moves: {},
+      typechart: {},
+      abilities: { ordinary: { num: 1 }, hidden: { num: 1 } },
+    },
+    {
+      7: { pokedex: { cap: { inherit: true, unreleasedHidden: "Past" } } },
+      6: { pokedex: { beast: { inherit: true, unreleasedHidden: true } } },
+      5: { pokedex: { starter: { inherit: true, unreleasedHidden: true } } },
+    },
+  );
+  expect(past[6]?.abilities?.beast).toEqual(["Ordinary"]);
+  expect(past[5]?.abilities?.beast).toEqual(["Ordinary"]);
+  expect(past[6]?.abilities?.starter).toBeUndefined();
+  expect(past[5]?.abilities?.starter).toEqual(["Ordinary"]);
+  expect(past[7]?.abilities?.cap).toBeUndefined();
+  expect(past[7]?.unreleasedHidden).toBeUndefined();
+  expect(past[6]?.unreleasedHidden).toEqual({ beast: "Hidden" });
+  expect(past[5]?.unreleasedHidden).toEqual({
+    beast: "Hidden",
+    starter: "Hidden",
+  });
+});
+
 test("move projections retain user boosts without confusing targets or random chances", () => {
   expect(
     projections.Moves({ boosts: { atk: 2 }, target: "normal" }).selfBoosts,
@@ -862,6 +1005,9 @@ test("move projections retain user boosts without confusing targets or random ch
   expect(
     projections.Moves({ self: { boosts: { atk: -1, def: -1 } } }).selfBoosts,
   ).toEqual({ atk: -1, def: -1 });
+  expect(
+    projections.Moves({ self: { chance: 50, boosts: { def: 2 } } }).selfBoosts,
+  ).toBeUndefined();
   expect(
     projections.Moves({
       secondary: { chance: 100, self: { boosts: { atk: 1 } } },

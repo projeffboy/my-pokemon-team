@@ -107,8 +107,9 @@ const fr: Messages = {
     shareTeam: "Partager",
     shareTeamLink: "Partager le lien de l'équipe Pokémon",
     teamActions: "Actions de l'équipe",
-    manageTeam: "Gérer",
-    manageTeamMenu: "Gérer l'équipe",
+    more: "Plus",
+    manageTeam: "Gérer l'équipe",
+    accessibility: "Accessibilité",
     duplicate: "Dupliquer",
     copyText: "Copier le texte",
     editPokepaste: "Modifier le Pokepaste",
@@ -143,6 +144,7 @@ const fr: Messages = {
     advanced: "Plus de détails",
     advancedFor: (slot: number) => `Plus de détails pour l'emplacement ${slot}`,
     details: "Détails",
+    animateSprites: "Animer les sprites",
     showTypes: "Afficher les types",
     about: (pokemon: string) => `À propos de ${pokemon}`,
     dragHint: "Maintenez et glissez pour réordonner",
@@ -194,6 +196,40 @@ const fr: Messages = {
       "Les listes de capacités n'ont pas pu être chargées. Rechargez la page pour réessayer.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 élément de ce lien a été omis"
+      : `${count} éléments de ce lien ont été omis`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 élément a été retiré de cette équipe"
+      : `${count} éléments ont été retirés de cette équipe`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Ce jeu ne l'a pas, ou le Pokémon ne peut pas l'utiliser."
+      : "Ce jeu ne les a pas, ou le Pokémon ne peut pas les utiliser.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Une mise à jour des données du jeu l'a renommé ou supprimé."
+      : "Une mise à jour des données du jeu les a renommés ou supprimés.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot} : ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, objet : ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, talent : ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, capacité ${move} : ${value}`,
+    details: "Détails",
+    dismiss: "Ignorer",
+    detailsTitle: "Texte d'origine de l'équipe",
+    linkDetailsDescription:
+      "L'équipe du lien telle qu'elle était, avec ce qui a été omis. Copiez-la pour en garder une trace.",
+    savedTeamDetailsDescription:
+      "L'équipe telle qu'elle était, avec ce qui a été retiré. Copiez-la pour en garder une trace.",
+    copy: "Copier",
+  },
+
   // The undo and redo buttons
   undo: "Annuler",
   redo: "Rétablir",
@@ -227,29 +263,79 @@ const fr: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "Piège d'entrée", short: "Piège" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Piège d'entrée",
+        short: "Piège",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui pose des pièges d'entrée : ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui retire les pièges d'entrée de votre côté : ${moves}.`,
+      },
       recovery: {
         label: "Récupération fiable",
         short: "Récupération",
         shorter: "Soin",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité de soin fiable, comme ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Capacité de statut", short: "Statut" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Capacité de boost", short: "Boost" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui soigne les altérations d'état de votre équipe : ${moves}.`,
+      },
+      status: {
+        label: "Capacité de statut",
+        short: "Statut",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui inflige toujours une altération d'état quand elle touche, comme ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui force l'adversaire à changer : ${moves}.`,
+      },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Apprenez à un Pokémon une capacité qui empêche l'adversaire de changer, comme ${moves}, ou donnez-lui le talent ${abilities}.`
+          : `Apprenez à un Pokémon une capacité qui empêche l'adversaire de changer, comme ${moves}.`,
+      },
+      boosting: {
+        label: "Capacité de boost",
+        short: "Boost",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui augmente ses propres statistiques d'au moins deux niveaux au total, comme ${moves}.`,
+      },
       priority: {
         label: "Capacité prioritaire",
         short: "Priorité",
         shorter: "Prio",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité offensive qui passe avant la plupart des autres, quelle que soit la Vitesse, comme ${moves}.`,
       },
       voltTurn: {
         label: "Capacité Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui attaque puis le fait revenir : ${moves}.`,
       },
-      choice: { label: "Objet Choix", short: "Choix" },
+      choice: {
+        label: "Objet Choix",
+        short: "Choix",
+        hint: (items: string) =>
+          `Faites tenir un objet Choix à un Pokémon : ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon} : ${moves}`,
+    together: (move: string, other: string) => `${move} avec ${other}`,
+    unavailable: "Rien dans ce jeu ne remplit ce rôle.",
     battleFormat: {
       label: "Format de combat",
       singles: "Simple",
@@ -402,6 +488,8 @@ const fr: Messages = {
     region: "Région",
     moves: "Capacités",
     viable: "Viable",
+    items: "Objets",
+    viableItems: "Viable",
     ability: "Talent",
   },
   sort: {
@@ -730,6 +818,10 @@ const fr: Messages = {
       [
         "Capacités de statut",
         "Ici, il s'agit des capacités précises qui paralysent, brûlent ou empoisonnent, ainsi que de celles qui endorment. Ex. : Toxik, Feu Follet, Cage Éclair, Berceuse.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon qui empêche l'adversaire de changer tant qu'il reste au combat, grâce à une capacité comme Regard Noir, Barrage ou Ancrage, ou au talent Marque Ombre, Piège Sable ou Magnépiège. Les capacités qui piègent seulement quelques tours, comme Siphon, ne comptent pas.",
       ],
       [
         "Capacité de boost",

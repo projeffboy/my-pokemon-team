@@ -10,6 +10,7 @@ import { validateTeam } from "@/store/validation";
 import { loadStoredState, type StoredState } from "@/store/teams-storage";
 import { allAbilities, allItemIds } from "@/shared/names";
 import { GENERATIONS } from "@/shared/generations";
+import { CAP_FORMAT } from "@/shared/formats";
 import { availableItems, learnsetsReady } from "@/store/learnsets";
 import learnsets from "@/data/learnsets.json" with { type: "json" };
 import { createTeam } from "./shared/team";
@@ -148,6 +149,8 @@ test("no two options of a dropdown share a name in any language", async () => {
         .soft(duplicates(items, names.item), `${locale} gen ${generation}`)
         .toEqual([]);
     }
+    const capItems = availableItems(allItemIds, 9, CAP_FORMAT);
+    expect.soft(duplicates(capItems, names.item), `${locale} CAP`).toEqual([]);
   }
 });
 

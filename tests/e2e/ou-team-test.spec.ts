@@ -5,7 +5,7 @@ import {
   getTeamTextFromUrl,
   openEditPokepaste,
   openFilters,
-  openManageTeamMenu,
+  openMoreMenu,
   selectAbility,
   selectDialogOption,
   selectMove,
@@ -120,7 +120,7 @@ test.describe("Importing an OU team", () => {
     await doBasicCheck(page);
 
     // 8. Copy the team's text and check
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await clickMenuItem(page, "Copy text");
     await expect(page.getByRole("alert")).toHaveText("Team copied.");
 

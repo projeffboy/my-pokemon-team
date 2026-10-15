@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { validateTeam } from "@/store/validation";
 import { createTeam } from "./shared/team";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CAP_FORMAT, CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LETS_GO, LEGENDS_ARCEUS } from "@/shared/game-variants";
 
 test("an empty team is the only problem of an empty team", () => {
@@ -123,6 +123,40 @@ test("reports pokemon outside the format or generation", () => {
   expect(validateTeam(createTeam({ name: "chikorita" }), 1, "")).toEqual([
     "Chikorita is not allowed in Gen 1.",
   ]);
+});
+
+test("CAP pokemon are allowed only in the CAP format", () => {
+  const team = createTeam({ name: "hemogoblin", ability: "Pixilate" });
+  expect(validateTeam(team, 9, CAP_FORMAT)).toEqual([]);
+  expect(validateTeam(team, 9, "OU: Over Used")).toEqual([
+    "Hemogoblin is not allowed in Gen 9 OU: Over Used.",
+  ]);
+  expect(
+    validateTeam(
+      createTeam({ name: "crucibellemega", item: "crucibellite" }),
+      9,
+      CAP_FORMAT,
+    ),
+  ).toEqual([
+    "Crucibelle-Mega is not allowed in Gen 9 CAP.",
+    "Crucibelle-Mega has Crucibellite, which is banned in Gen 9 CAP.",
+  ]);
+  expect(
+    validateTeam(
+      createTeam({ name: "primeape", ability: "Defiant", move1: "ragefist" }),
+      9,
+      CAP_FORMAT,
+    ),
+  ).toEqual(["Primeape has Rage Fist, which is banned in Gen 9 CAP."]);
+});
+
+test("a forme without a tier of its own is allowed where its species is", () => {
+  const team = createTeam({
+    name: "arceusfire",
+    ability: "Multitype",
+    item: "flameplate",
+  });
+  expect(validateTeam(team, 9, "Uber")).toEqual([]);
 });
 
 test("reports illegal abilities, missing required items, and repeated moves", () => {

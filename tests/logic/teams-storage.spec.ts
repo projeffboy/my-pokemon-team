@@ -381,6 +381,28 @@ test("a tab left open does not bring back a drag hint that expired in another ta
   );
 });
 
+test("keeps the sprite animation choice unset until the player makes one", () => {
+  const load = (animateSprites: unknown) =>
+    loadStoredState(
+      fakeStorage(JSON.stringify({ teams: [{ id: "a" }], animateSprites }))
+        .storage,
+    )?.animateSprites;
+  expect(load(false)).toBe(false);
+  expect(load(true)).toBe(true);
+  expect(load(undefined)).toBeUndefined();
+  expect(load("no")).toBeUndefined();
+
+  const base = initialStoredState();
+  const still = { ...base, animateSprites: false };
+  const animated = { ...base, animateSprites: true };
+  expect(mergeStoredState(base, base, still).animateSprites).toBe(false);
+  expect(mergeStoredState(base, animated, still).animateSprites).toBe(true);
+  expect(mergeStoredState(still, still, animated).animateSprites).toBe(true);
+  expect(mergeStoredState(base, base, base)).not.toHaveProperty(
+    "animateSprites",
+  );
+});
+
 test("team filters load with defaults, survive saving, and merge across teams", () => {
   const base = initialStoredState();
   const first = base.teams[0]!;
@@ -393,6 +415,7 @@ test("team filters load with defaults, survive saving, and merge across teams", 
     region: "Johto",
     ability: "Chlorophyll",
     moves: "Viable",
+    items: "Viable",
   };
   theirs.teams[1]!.filters.type = "Water";
   const merged = mergeStoredState(base, mine, theirs);
@@ -407,9 +430,16 @@ test("team filters load with defaults, survive saving, and merge across teams", 
     region: "",
     ability: "",
     moves: "",
+    items: "",
   });
   expect(
     sanitizeSavedTeam({ ...first, filters: { type: "Fire", region: 5 } })
       ?.filters,
-  ).toEqual({ type: "Fire", region: "", ability: "", moves: "" });
+  ).toEqual({
+    type: "Fire",
+    region: "",
+    ability: "",
+    moves: "",
+    items: "",
+  });
 });

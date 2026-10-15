@@ -118,6 +118,8 @@ export interface PastGeneration {
   formats?: Formats;
   baseStats?: Record<string, BaseStats>;
   abilities?: Record<string, string[]>;
+  // Hidden abilities left out of `abilities` because Showdown marks them unreleased
+  unreleasedHidden?: Record<string, string>;
   typechart?: PastTypeChart;
 }
 
@@ -262,7 +264,7 @@ export interface SavedTeam {
 }
 
 // The Filters dialog's values saved with each team; format and generation are separate
-export type SearchFilterKey = "type" | "region" | "ability" | "moves";
+export type SearchFilterKey = "type" | "region" | "ability" | "moves" | "items";
 
 export type SearchFilters = Record<SearchFilterKey, string>;
 

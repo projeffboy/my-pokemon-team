@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { clickMenuItem, openManageTeamMenu } from "helper";
+import { clickMenuItem, openMoreMenu } from "helper";
 import type { Page } from "@playwright/test";
 import { createSavedTeam } from "@/shared/team";
 import type { SavedTeam } from "@/types";
@@ -50,6 +50,7 @@ test.describe("Delete team - Integration Tests", () => {
           region: "Unova",
           ability: "Levitate",
           moves: "Recover",
+          items: "Viable",
         },
       });
       survivor.id = "survivor";
@@ -103,7 +104,7 @@ test.describe("Delete team - Integration Tests", () => {
         });
 
       if (action === "toolbar Clear") {
-        await openManageTeamMenu(page);
+        await openMoreMenu(page);
         await clickMenuItem(page, "Clear");
       } else await openRowDelete(page, target.name);
       await expect(
@@ -146,7 +147,7 @@ test.describe("Delete team - Integration Tests", () => {
         currentTeamId: survivor.id,
       });
 
-      await openManageTeamMenu(page);
+      await openMoreMenu(page);
       await clickMenuItem(page, "Clear");
       const freshDelete = page.getByRole("dialog", {
         name: "Delete Surviving team?",

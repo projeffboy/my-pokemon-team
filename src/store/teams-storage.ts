@@ -40,6 +40,8 @@ export interface StoredState {
   nameView: NameView;
   // Unset until a language is chosen, so the browser's language applies
   locale?: Locale;
+  // Unset until the player chooses, so the device's reduced motion setting applies
+  animateSprites?: boolean;
   // Set once the player has dragged a slot tab or dismissed the hint about it
   knowsSlotDrag?: boolean;
 }
@@ -166,6 +168,9 @@ export function loadStoredState(
         raw.nameView
       : "list",
     ...(isLocale(raw.locale) && { locale: raw.locale }),
+    ...(typeof raw.animateSprites === "boolean" && {
+      animateSprites: raw.animateSprites,
+    }),
     ...(raw.knowsSlotDrag === true && { knowsSlotDrag: true }),
   };
 }
@@ -222,6 +227,11 @@ export function mergeStoredState(
       .map(state => find({ ...state, teams }, state.currentTeamId))
       .find(team => team) ?? teams[0];
   const locale = pick(base.locale, mine.locale, theirs.locale);
+  const animateSprites = pick(
+    base.animateSprites,
+    mine.animateSprites,
+    theirs.animateSprites,
+  );
   return {
     teams,
     currentTeamId: currentTeam?.id ?? mine.currentTeamId,
@@ -234,6 +244,7 @@ export function mergeStoredState(
     moveSort: pick(base.moveSort, mine.moveSort, theirs.moveSort),
     nameView: pick(base.nameView, mine.nameView, theirs.nameView),
     ...(locale && { locale }),
+    ...(animateSprites !== undefined && { animateSprites }),
     ...(pick(base.knowsSlotDrag, mine.knowsSlotDrag, theirs.knowsSlotDrag) && {
       knowsSlotDrag: true,
     }),

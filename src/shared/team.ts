@@ -47,6 +47,7 @@ export const createSearchFilters = (): SearchFilters => ({
   region: "",
   ability: "",
   moves: "",
+  items: "",
 });
 
 export function createSavedTeam(

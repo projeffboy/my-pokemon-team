@@ -583,6 +583,7 @@ test("filters belong to each team and duplicated teams keep an independent copy"
     region: "Johto",
     ability: "Swarm",
     moves: "Viable",
+    items: "Viable",
   };
   const second = store.addTeam();
   expect(store.filters).toEqual({
@@ -590,6 +591,7 @@ test("filters belong to each team and duplicated teams keep an independent copy"
     region: "",
     ability: "",
     moves: "",
+    items: "",
   });
   store.filters.type = "Flying";
   store.selectTeam(first.id);

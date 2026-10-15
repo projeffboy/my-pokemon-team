@@ -111,8 +111,9 @@ const de: Messages = {
     shareTeam: "Teilen",
     shareTeamLink: "Link zum Pokémon-Team teilen",
     teamActions: "Team-Aktionen",
-    manageTeam: "Verwalten",
-    manageTeamMenu: "Team verwalten",
+    more: "Mehr",
+    manageTeam: "Team verwalten",
+    accessibility: "Barrierefreiheit",
     duplicate: "Duplizieren",
     copyText: "Text kopieren",
     editPokepaste: "Pokepaste bearbeiten",
@@ -147,6 +148,7 @@ const de: Messages = {
     advanced: "Weitere Details",
     advancedFor: (slot: number) => `Weitere Details für Platz ${slot}`,
     details: "Details",
+    animateSprites: "Sprites animieren",
     showTypes: "Typen anzeigen",
     about: (pokemon: string) => `Über ${pokemon}`,
     dragHint: "Halten und ziehen zum Umordnen",
@@ -198,6 +200,40 @@ const de: Messages = {
       "Die Attackenlisten konnten nicht geladen werden. Lade die Seite neu, um es noch einmal zu versuchen.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 Eintrag in diesem Link wurde weggelassen"
+      : `${count} Einträge in diesem Link wurden weggelassen`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 Eintrag wurde aus diesem Team entfernt"
+      : `${count} Einträge wurden aus diesem Team entfernt`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Dieses Spiel hat ihn nicht, oder das Pokémon kann ihn nicht nutzen."
+      : "Dieses Spiel hat sie nicht, oder das Pokémon kann sie nicht nutzen.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Ein Update der Spieldaten hat ihn umbenannt oder entfernt."
+      : "Ein Update der Spieldaten hat sie umbenannt oder entfernt.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, Item: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, Fähigkeit: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, Attacke ${move}: ${value}`,
+    details: "Details",
+    dismiss: "Ausblenden",
+    detailsTitle: "Ursprünglicher Teamtext",
+    linkDetailsDescription:
+      "Das Team des Links, wie es war, mit allem, was weggelassen wurde. Kopiere den Text, um ihn aufzubewahren.",
+    savedTeamDetailsDescription:
+      "Das Team, wie es war, mit allem, was entfernt wurde. Kopiere den Text, um ihn aufzubewahren.",
+    copy: "Kopieren",
+  },
+
   // The undo and redo buttons
   undo: "Rückgängig",
   redo: "Wiederholen",
@@ -231,29 +267,79 @@ const de: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die Entry Hazards auslegt: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die Entry Hazards von deiner Seite entfernt: ${moves}.`,
+      },
       recovery: {
         label: "Zuverlässige Heilung",
         short: "Heilung",
         shorter: "Heilung",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine zuverlässige Heilattacke bei, z. B. ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Status-Attacke", short: "Status" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Boost-Attacke", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die die Statusprobleme deines Teams heilt: ${moves}.`,
+      },
+      status: {
+        label: "Status-Attacke",
+        short: "Status",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die bei einem Treffer immer ein Statusproblem verursacht, z. B. ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die den Gegner zum Wechseln zwingt: ${moves}.`,
+      },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Bring einem Pokémon eine Attacke bei, die den Gegner am Auswechseln hindert, z. B. ${moves}, oder gib ihm die Fähigkeit ${abilities}.`
+          : `Bring einem Pokémon eine Attacke bei, die den Gegner am Auswechseln hindert, z. B. ${moves}.`,
+      },
+      boosting: {
+        label: "Boost-Attacke",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die seine eigenen Werte insgesamt um mindestens zwei Stufen erhöht, z. B. ${moves}.`,
+      },
       priority: {
         label: "Prioritätsattacke",
         short: "Priorität",
         shorter: "Prio",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Schadensattacke bei, die unabhängig von der Initiative vor den meisten anderen Attacken ausgeführt wird, z. B. ${moves}.`,
       },
       voltTurn: {
         label: "Volt-Turn-Attacke",
         short: "Volt-Turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, mit der es angreift und danach ausgewechselt wird: ${moves}.`,
       },
-      choice: { label: "Wahl-Item", short: "Wahl" },
+      choice: {
+        label: "Wahl-Item",
+        short: "Wahl",
+        hint: (items: string) =>
+          `Gib einem Pokémon ein Wahl-Item zum Tragen: ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} mit ${other}`,
+    unavailable: "In diesem Spiel erfüllt nichts diese Rolle.",
     battleFormat: {
       label: "Kampfformat",
       singles: "Einzel",
@@ -403,6 +489,8 @@ const de: Messages = {
     region: "Region",
     moves: "Attacken",
     viable: "Brauchbar",
+    items: "Items",
+    viableItems: "Brauchbar",
     ability: "Fähigkeit",
   },
   sort: {
@@ -727,6 +815,10 @@ const de: Messages = {
       [
         "Status-Attacken",
         "Hier sind damit treffsichere Attacken gemeint, die paralysieren, verbrennen oder vergiften, sowie Attacken, die Schlaf verursachen. Z. B. Toxin, Irrlicht, Donnerwelle, Gesang.",
+      ],
+      [
+        "Trapper",
+        "Ein Pokémon, das Gegner am Auswechseln hindert, solange es selbst im Kampf bleibt: mit einer Attacke wie Horrorblick, Rückentzug oder Ankerschuss oder mit der Fähigkeit Wegsperre, Ausweglos oder Magnetfalle. Attacken, die nur einige Runden lang festhalten, wie Whirlpool, zählen nicht.",
       ],
       [
         "Boost-Attacke",
