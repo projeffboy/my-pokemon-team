@@ -217,6 +217,11 @@ const es: Messages = {
       status: { label: "Movimiento de estado", short: "Estado" },
       phazer: { label: "Phazer" },
       boosting: { label: "Movimiento de mejora", short: "Setup" },
+      priority: {
+        label: "Movimiento prioritario",
+        short: "Prioridad",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Movimiento Volt-turn",
         short: "Volt-turn",
@@ -654,6 +659,10 @@ const es: Messages = {
       [
         "Movimiento de mejora",
         "Movimientos que suben tus estadísticas (preferiblemente 2 o más niveles), como Danza Espada y Paz Mental.",
+      ],
+      [
+        "Movimiento prioritario",
+        "Movimientos que hacen daño y se usan antes que la mayoría de los demás, sin importar la Velocidad. P. ej. Velocidad Extrema, Golpe Bajo, Acua Jet, Puño Bala.",
       ],
       [
         "Objeto Elegido",

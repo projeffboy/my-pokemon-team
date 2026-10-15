@@ -224,6 +224,7 @@ const ja: Messages = {
       status: { label: "状態異常技", short: "状態異常" },
       phazer: { label: "強制交代技" },
       boosting: { label: "積み技", short: "積み" },
+      priority: { label: "先制技", short: "先制技", shorter: "先制" },
       voltTurn: {
         label: "ボルトチェンジ系",
         short: "ボルチェン",
@@ -657,6 +658,10 @@ const ja: Messages = {
       [
         "積み技",
         "つるぎのまいやめいそうのように、自分の能力を（できれば2段階以上）上げる技。",
+      ],
+      [
+        "先制技",
+        "すばやさに関係なく、ほとんどの技より先に出せる攻撃技。例: しんそく、ふいうち、アクアジェット、バレットパンチ。",
       ],
       [
         "こだわりアイテム",

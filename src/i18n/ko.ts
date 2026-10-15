@@ -237,6 +237,7 @@ const ko: Messages = {
       status: { label: "상태이상 기술", short: "상태이상" },
       phazer: { label: "강제 교체" },
       boosting: { label: "랭크업 기술", short: "랭크업" },
+      priority: { label: "선공 기술", short: "선공기", shorter: "선공" },
       voltTurn: {
         label: "볼트체인지/유턴",
         short: "볼트턴",
@@ -665,6 +666,10 @@ const ko: Messages = {
       [
         "랭크업 기술",
         "칼춤, 명상처럼 자신의 능력을 (되도록 2랭크 이상) 올리는 기술입니다.",
+      ],
+      [
+        "선공 기술",
+        "스피드와 관계없이 대부분의 기술보다 먼저 쓰는 공격 기술입니다. 예: 신속, 기습, 아쿠아제트, 불릿펀치.",
       ],
       [
         "구애 아이템",
