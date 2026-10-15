@@ -42,6 +42,7 @@ const entries: Entry[] = [
       "Gens 5–7 no longer offer or randomly pick hidden abilities that were unreleased then, e.g. Contrary for Gen 5 Serperior.",
       "Formes such as totems and Bloodmoon Ursaluna now learn the same moves as on Showdown, so Bloodmoon Ursaluna no longer learns Play Rough and Stretchy Tatsugiri gains Scald.",
       "Format filters and sorting now give formes their species’ tier, so Gen 9 Uber includes Arceus-Fire.",
+      "Plain Hidden Power now counts in coverage as the type its IVs give, such as Dark for perfect IVs.",
     ],
   },
   {
