@@ -11,14 +11,14 @@ const checked = (team: ReadonlyTeam, generation?: Generation) =>
     .filter(item => item.isChecked)
     .map(item => en.checklist.items[item.key].label);
 
-test("an empty team passes no check, in three groups of three", () => {
+test("an empty team passes no check, in three groups", () => {
   const groups = evaluateChecklist(createTeam());
   expect(groups.map(group => en.checklist.groups[group.key])).toEqual([
     "General",
     "Defensive",
     "Offensive",
   ]);
-  expect(groups.map(group => group.items.length)).toEqual([3, 3, 3]);
+  expect(groups.map(group => group.items.length)).toEqual([3, 3, 4]);
   expect(checked(createTeam())).toEqual([]);
 });
 
@@ -160,6 +160,18 @@ test("offensive checks count pivot moves and choice items", () => {
   expect(checked(createTeam({ name: "porygonz", item: "leftovers" }))).toEqual(
     [],
   );
+});
+
+test("priority moves are damaging moves that go first, not status moves like Protect", () => {
+  const priority = (name: string, move1: string, generation?: Generation) =>
+    checked(createTeam({ name, move1 }), generation).includes("Priority Move");
+  expect(priority("weavile", "iceshard")).toBe(true);
+  expect(priority("ragingbolt", "thunderclap")).toBe(true);
+  // Fake Out had +1 priority before Gen 5
+  expect(priority("hitmontop", "fakeout", 3)).toBe(true);
+  expect(priority("ragingbolt", "thunderbolt")).toBe(false);
+  for (const move of ["protect", "followme"])
+    expect(priority("indeedee", move)).toBe(false);
 });
 
 test("Curse counts only for non-Ghost users in the selected generation", () => {
