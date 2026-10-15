@@ -456,6 +456,12 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
             {
               pr: 0,
             },
+          // The text runs under the buttons, so a tap beside them, or where touch
+          // screens hide the clear button, reaches the input and opens the list
+          [`& .${autocompleteClasses.endAdornment}`]: {
+            pointerEvents: "none",
+            "& > *": { pointerEvents: "auto" },
+          },
           [`& .${autocompleteClasses.input}`]: {
             textOverflow: "clip",
           },
