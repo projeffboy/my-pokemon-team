@@ -173,20 +173,21 @@ const PokemonInputs = observer(function PokemonInputs({
                 pointerEvents: "none",
               }}
             >
-              {effectivePokemonTypes(
-                pokemon,
-                analysisMember?.ability,
-                analysisMember?.item,
-                store.currentTeam.generation,
-              ).map(type => (
-                <Box
-                  key={type}
-                  component="img"
-                  src={typeIcons[type]}
-                  alt={names.type(type)}
-                  sx={{ width: 20, height: 20 }}
-                />
-              ))}
+              {store.showTypes &&
+                effectivePokemonTypes(
+                  pokemon,
+                  analysisMember?.ability,
+                  analysisMember?.item,
+                  store.currentTeam.generation,
+                ).map(type => (
+                  <Box
+                    key={type}
+                    component="img"
+                    src={typeIcons[type]}
+                    alt={names.type(type)}
+                    sx={{ width: 20, height: 20 }}
+                  />
+                ))}
               {member &&
                 isShinyInGeneration(member, store.currentTeam.generation) && (
                   <AutoAwesomeIcon
@@ -283,7 +284,7 @@ const PokemonInputs = observer(function PokemonInputs({
             placeholder={t.team.move}
             teamIndex={teamIndex}
             pokemonProperty={key}
-            leadingIcon={store.showMoveTypes}
+            leadingIcon={store.showTypes}
           />
         ))}
         {store.rules.items && (
@@ -291,7 +292,7 @@ const PokemonInputs = observer(function PokemonInputs({
             placeholder={t.team.item}
             teamIndex={teamIndex}
             pokemonProperty="item"
-            leadingIcon={store.showMoveTypes}
+            leadingIcon={store.showTypes}
           />
         )}
         {store.rules.abilities && (

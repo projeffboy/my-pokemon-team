@@ -4,7 +4,6 @@ import {
   getTeamTextFromUrl,
   isMdDown,
   resizeTeamViewport,
-  turnOnAdvanced,
   selectMove,
   selectPokemon,
   showSlot,
@@ -21,7 +20,6 @@ test.describe("Slot tools - Integration Tests", () => {
         .getByRole("tab"),
     ).toHaveCount(6);
     await selectPokemon(page, "Cufant");
-    await turnOnAdvanced(page);
     const random = page.getByRole("button", {
       name: "Random pokemon for slot 1",
     });
