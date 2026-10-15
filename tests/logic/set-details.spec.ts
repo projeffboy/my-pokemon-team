@@ -260,6 +260,14 @@ test("app backup names preserve slashes without changing external folder imports
     parseTeamsText("=== [gen8ou] Folder/Rain ===\n\nKingdra")[0]?.name,
   ).toBe("Rain");
   expect(
+    parseTeamsText(
+      "=== [gen9vgc2025regh] VGC/Kyogre / Groudon ===\n\nKyogre",
+    )[0]?.name,
+  ).toBe("Kyogre / Groudon");
+  expect(
+    parseTeamsText("=== [gen8ou] Ladder/Rain/Sand ===\n\nKingdra")[0]?.name,
+  ).toBe("Rain/Sand");
+  expect(
     parseTeamsText("=== [gen8ou] mypokemonteam:Rain%20OU ===\n\nKingdra")[0]
       ?.name,
   ).toBe("mypokemonteam:Rain%20OU");

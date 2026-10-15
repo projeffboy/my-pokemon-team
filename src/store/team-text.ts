@@ -469,9 +469,10 @@ export function parseTeamsText(
         COMBINED_GENERATIONS_PROFILE
       : undefined;
     const rawName = header?.[2] ?? "";
+    // Showdown strips slashes from folder names but not team names
     const name =
       preserveNames || isEmptyBackup(index) ? rawName : (
-        (rawName.split("/").pop()?.trim() ?? "")
+        rawName.slice(rawName.indexOf("/") + 1).trim()
       );
     return {
       name,
