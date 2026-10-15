@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { test, expect } from "@playwright/test";
+import { test, expect, type APIRequestContext } from "@playwright/test";
 import pokedex from "@/data/pokedex";
 import altSpriteNum from "@/data/altSpriteNum";
 import { spriteUrls } from "@/app/shared/pokemon-sprite/sprite-urls";
@@ -55,6 +55,11 @@ async function listPokemon(
   return listed;
 }
 
+// The sprite PokemonSprite.tsx shows: the first of Showdown's that exists
+async function shownSprite(request: APIRequestContext, sources: string[]) {
+  for (const url of sources) if ((await request.head(url)).ok()) return url;
+}
+
 // Each frame of an animated GIF starts with a graphic control extension
 function frameCount(gif: Buffer) {
   let frames = 0;
@@ -69,14 +74,11 @@ test.describe("Gen 9 and Champions sprites", () => {
   test("every pokemon has an animated or still sprite at both sizes", async ({
     request,
   }) => {
-    const exists = async (url: string) => (await request.head(url)).ok();
     const missing = await listPokemon(async pokemon => {
       if (localSprites.has(pokemon)) return;
-      for (const isSmall of [false, true]) {
-        const { src, fallback } = urls(pokemon, isSmall);
-        if (!(await exists(src)) && !(await exists(fallback)))
+      for (const isSmall of [false, true])
+        if (!(await shownSprite(request, urls(pokemon, isSmall).sources)))
           return `${name(pokemon)}${isSmall ? " below md" : ""}`;
-      }
     });
     expect(missing, "Pokemon with neither sprite").toEqual([]);
   });
@@ -84,14 +86,21 @@ test.describe("Gen 9 and Champions sprites", () => {
   test("every pokemon that Showdown animates is animated at md and up", async ({
     request,
   }) => {
+    const animated = async (url: string) => {
+      const response = await request.get(url);
+      return response.ok() && frameCount(await response.body()) > 1;
+    };
     const stills = await listPokemon(async pokemon => {
-      const { filename, src } = urls(pokemon, false);
-      if (!localSprites.has(pokemon) && src.endsWith(".gif")) return;
-      const response = await request.get(
-        `${SHOWDOWN_SPRITES}/ani/${filename}.gif`,
-      );
-      if (response.ok() && frameCount(await response.body()) > 1)
-        return name(pokemon);
+      const { filename, sources } = urls(pokemon, false);
+      const shown =
+        localSprites.has(pokemon) ? undefined : (
+          await shownSprite(request, sources)
+        );
+      if (shown?.endsWith(".gif") && (await animated(shown))) return;
+      // Showdown's own animations, and its BW-style ones
+      for (const folder of ["ani", "gen5ani"])
+        if (await animated(`${SHOWDOWN_SPRITES}/${folder}/${filename}.gif`))
+          return name(pokemon);
     });
     expect(
       stills,
