@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-// Checks the Pokemon Info dialog's dex links on the real sites, so it is not part of `npm test`
+// Checks the Pokemon Info dialog's dex links and Showdown's sprites on the real sites, so it is not part of `npm test`
 export default defineConfig({
   testDir: "./tests/links",
   fullyParallel: true,
