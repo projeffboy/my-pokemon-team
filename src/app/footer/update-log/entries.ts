@@ -19,6 +19,7 @@ const entries: Entry[] = [
       "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
       "Abilities and items that shared a name in other languages, such as the two As One abilities, are now told apart.",
       "Sorting by format in Doubles formats now follows doubles tiers, so Incineroar comes before Baxcalibur in Doubles OU.",
+      "Opening a shared team on your first visit no longer saves an extra empty team beside it.",
     ],
   },
   {
