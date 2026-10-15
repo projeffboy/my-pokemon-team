@@ -111,6 +111,11 @@ for (const locale of Object.keys(LANGUAGE_IDS) as NamedLocale[]) {
       `  formes named after their species and English forme (${report.partialFormes.length}): ${report.partialFormes.join(", ")}`,
     );
   }
+  if (report.collisions.length) {
+    lines.push(
+      `  different things with the same name (${report.collisions.length}): ${report.collisions.join("; ")}`,
+    );
+  }
   console.log(
     `${locale}:${lines.length ? `\n${lines.join("\n")}` : " everything translated"}`,
   );
