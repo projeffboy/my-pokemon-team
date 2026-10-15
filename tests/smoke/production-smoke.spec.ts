@@ -97,6 +97,8 @@ test("links a manifest for adding the site to the home screen", async ({
   page,
   browserName,
 }) => {
+  const pageErrors: Error[] = [];
+  page.on("pageerror", error => pageErrors.push(error));
   await page.goto("/");
   const href = "/manifest.webmanifest";
   await expect(page.locator("link[rel=manifest]")).toHaveAttribute(
@@ -146,6 +148,7 @@ test("links a manifest for adding the site to the home screen", async ({
       navigator.serviceWorker.getRegistrations().then(list => list.length),
     ),
   ).toBe(0);
+  expect(pageErrors).toEqual([]);
 });
 
 test("an offline lazy-load failure keeps the page and uses the dialog fallback", async ({
