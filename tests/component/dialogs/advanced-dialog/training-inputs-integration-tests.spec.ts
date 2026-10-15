@@ -199,3 +199,22 @@ test("Hidden Power matches the level once typing ends, not each keystroke", asyn
     .poll(() => getTeamTextFromUrl(page))
     .toContain("Level: 50\nIVs: 30 Atk / 30 SpA / 30 Spe");
 });
+
+test("moving through the level without typing leaves a linked team's IVs alone", async ({
+  page,
+}) => {
+  // Links keep their IVs as written, even when they don't give Hidden Power's type
+  const team = Buffer.from(
+    "Granbull\nAbility: Intimidate\nLevel: 50\n- Hidden Power Fire\n",
+  ).toString("base64url");
+  await page.goto(`/?gen=7&team=${team}`);
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Granbull");
+  await openAdvanced(page);
+  const dialog = page.getByRole("dialog", { name: "More details" });
+  await dialog.getByRole("spinbutton", { name: "Level", exact: true }).focus();
+  await dialog.getByLabel("Nickname", { exact: true }).fill("Bully");
+  await expect.poll(() => getTeamTextFromUrl(page)).toContain("Bully");
+  expect(getTeamTextFromUrl(page)).not.toContain("IVs:");
+});
