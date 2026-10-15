@@ -36,7 +36,7 @@ This is a single-page application: teams and Pokemon data stay in the browser, a
 - Browser testing: Playwright.
 - Direct rule testing: Playwright's test runner in Node, without a browser.
 
-See [package.json](package.json) for dependency versions and the exact script definitions, and [AGENTS.md](AGENTS.md) for the code structure and conventions.
+See [package.json](package.json) for dependency versions and the exact script definitions, and [AGENTS.md](AGENTS.md) for the code structure and conventions. The requirements, and the decisions behind them, are in [docs/requirements](docs/requirements/README.md).
 
 ## Local Development
 
@@ -68,7 +68,7 @@ Showdown text exports preserve the combined setting with a `# mypokemonteam gene
 
 The header's Old website button opens the legacy site at [old.mypokemonteam.com](https://old.mypokemonteam.com/). The legacy site is based on [commit ca23d6b](https://github.com/projeffboy/my-pokemon-team/commit/ca23d6b55ea96d9bf37022c094f6945d8e6420d3), with a New website button returning to [mypokemonteam.com](https://mypokemonteam.com/). Its separate Vercel project hosts the `old-website` branch independently of `master`.
 
-Switching does not transfer the current team or URL parameters. A nonempty team triggers a confirmation; Cancel and Escape keep the user on the current site. Saved teams and settings stay on their original browser origin. The legacy site does not persist team collections, so its confirmation advises saving the current share link before leaving. Team transfer is deferred in [issue #111](https://github.com/projeffboy/my-pokemon-team/issues/111).
+Switching carries the current team in the legacy site's own `?team=` share link, holding only what that site reads: each pokemon's species, item, ability, and moves, adapted to Generations 6–9 as the generation menu would, less the moves and abilities that the legacy site's own data rejects, such as Smeargle's sketched moves (`src/store/old-website.ts`). A nonempty team first triggers a confirmation that names each pokemon, move, item, ability, and set detail left behind; Cancel and Escape keep the user on the current site. No other URL parameters cross, saved teams and settings stay on their original browser origin, and nothing is carried back. The legacy site does not persist team collections, so the carried team is its one unsaved team, kept only in its share link.
 
 ## Updating Pokemon Data
 
@@ -90,13 +90,15 @@ The Viable moves filter comes from the Showdown client's teambuilder. The script
 
 To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data/transforms.ts` and to the matching type in `src/types.ts`, then rerun the update.
 
-After writing the data, the script reports what the update may have broken:
+After writing the data, the script says what changed in `src/data` and whether it looks major or minor. It looks major when Showdown added several pokemon, or pokemon with new moves or items, as a new game does, or changed which pokemon Pokemon Champions allows, as a new regulation does. CAP (fan-made) pokemon, moves, and items don't count. Then it reports what the update may have broken:
 
 - Pokemon, moves, and items that were renamed or removed. Share links store display names, so old links lose those entries.
 - Whether the bundled icon sheets in `src/images/icon-sheets` still match Showdown's. If one differs, look for blank or shifted icons in the app, and replace the sheet if there are any.
 - New pokemon with a sprite that Showdown does not host, at either sprite size. Bundle one as described in [local-sprites-sources.md](src/images/local-sprites/local-sprites-sources.md).
 
 The last two checks need a connection to play.pokemonshowdown.com and are skipped without one. If players will notice the update, add an entry to the update log in `src/app/footer/update-log/entries.ts`.
+
+The [Showdown data workflow](.github/workflows/showdown-data.yml) runs this update against Showdown's latest commits twice a day, so a change reaches the maintainer within a day. When the update would change `src/data` on `master`, the workflow opens an issue with the summary of what changed and assigns it to the repository owner. If Showdown changes more before the update is merged, it rewrites the issue and comments the new summary, and once `master` matches Showdown again, it closes the issue. When nothing the site uses changed, it does nothing. If the update fails, for example because Showdown moved a file it reads, GitHub's email about the failed run is the notice instead. GitHub turns scheduled workflows off after 60 days without a commit, and emails before it does; turn it back on from the repository's Actions tab.
 
 ## Updating Translations
 
@@ -125,7 +127,9 @@ npm test
 - `npm run test:smoke`: builds the production app and checks its essential flows with Vite preview on port 4173.
 - `npm run test:dev`: browser tests of the UI against the development server on port 3000.
 
-`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. Run it after changing `src/shared/dex-urls.ts` or updating the data. Bulbapedia's bot protection may challenge the browser, in which case its tests are skipped.
+`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. It also requests the sprites of every pokemon offered in Gen 9 and Pokemon Champions from Showdown, and lists those with neither an animated nor a still sprite, and those shown still although Showdown animates them, in its `ani` folder or its BW-style `gen5ani` one. Run it after changing `src/shared/dex-urls.ts` or `src/app/shared/pokemon-sprite/sprite-urls.ts`, or updating the data. The [Dex links workflow](.github/workflows/links.yml) also runs it every Monday, or when started from the Actions tab. When a scheduled run fails, it opens an issue listing the failed checks and assigns it to the repository owner, or comments on that issue while it is open. A site whose bot protection challenges the browser, as Bulbapedia's may, has those checks skipped instead of failed.
+
+`npm run test:perf` is not part of `npm test` either. It times the moments of [REQ-PERF-1 to 3](docs/requirements/05-system-requirements-specification.md#33-performance-requirements): the analysis updating after a pokemon is picked, the pokemon list opening, and a share link showing its team. It builds the production app, serves it on port 4174, and loads it in Chrome emulating a mid-range phone with Lighthouse's mobile profile: a CPU 4 times slower and its Slow 4G network. It blocks the ad script and Showdown's sprites, prints each moment's median, 95th percentile, and slowest time, and fails when a 95th percentile is over its target. Timings depend on the machine and on what else it is running, so run it on an otherwise idle machine. `PERF_RUNS` sets the number of runs (20), `PERF_CPU_SLOWDOWN` the CPU slowdown (4), and `PERF_NETWORK=fast4g` uses DevTools' Fast 4G network instead.
 
 Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 

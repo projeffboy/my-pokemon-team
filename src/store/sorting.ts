@@ -10,6 +10,7 @@ import {
 import { baseStatTotal } from "@/shared/set-details";
 import { moveTypeIn, pokemonFormatIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
+import { TIER_BY_FORMAT } from "@/shared/formats";
 import { pokemonNameInverse } from "@/shared/names";
 import { english, type Translation } from "@/i18n/translation";
 
@@ -69,10 +70,25 @@ const TIER_RANK = [
   "LC",
 ];
 
-const tierRank = (pokemon: string, generation: Generation) => {
-  const tier = pokemonFormatIn(pokemon, generation)?.tier ?? "";
-  const rank = TIER_RANK.indexOf(tier === "(OU)" ? "OU" : tier);
-  return rank === -1 ? TIER_RANK.length : rank;
+// Smogon's doubles tiers, used instead in the doubles formats
+const DOUBLES_TIER_RANK = [
+  "DUber",
+  "(DUber)",
+  "DOU",
+  "(DOU)",
+  "DUU",
+  "(DUU)",
+  "NFE",
+  "LC",
+];
+
+const tierRank = (pokemon: string, generation: Generation, format: string) => {
+  const doubles = DOUBLES_TIER_RANK.includes(TIER_BY_FORMAT[format] ?? "");
+  const ranks = doubles ? DOUBLES_TIER_RANK : TIER_RANK;
+  const tiers = pokemonFormatIn(pokemon, generation);
+  const tier = (doubles ? tiers?.doublesTier : tiers?.tier) ?? "";
+  const rank = ranks.indexOf(tier === "(OU)" ? "OU" : tier);
+  return rank === -1 ? ranks.length : rank;
 };
 
 function sortValue(
@@ -88,7 +104,7 @@ function sortValue(
     case "num":
       return entry?.num ?? 0;
     case "format":
-      return tierRank(pokemon, generation);
+      return tierRank(pokemon, generation, format);
     case "bst": {
       const stats = pokemonBaseStats(pokemon, generation, format);
       return baseStatTotal(stats) - (generation === 1 ? (stats?.spd ?? 0) : 0);

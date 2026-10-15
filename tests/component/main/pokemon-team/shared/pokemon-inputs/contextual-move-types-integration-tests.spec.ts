@@ -1,17 +1,10 @@
 import { test, expect } from "fixtures";
-import {
-  selectPokemon,
-  selectItem,
-  selectMove,
-  selectAbility,
-  turnOnAdvanced,
-} from "helper";
+import { selectPokemon, selectItem, selectMove, selectAbility } from "helper";
 
 test("Judgment's input and options follow its plate", async ({ page }) => {
   await selectPokemon(page, "Arceus");
   await selectItem(page, "Flame Plate");
   await selectMove(page, "Judgment");
-  await turnOnAdvanced(page);
   const input = page.getByLabel("Pokemon 1's move1");
   await expect(
     input.locator("..").getByRole("img", { name: "Fire", exact: true }),
@@ -39,7 +32,6 @@ test("move icons update when an ability changes their type", async ({
 }) => {
   await selectPokemon(page, "Sylveon");
   await selectMove(page, "Hyper Voice");
-  await turnOnAdvanced(page);
   const input = page.getByLabel("Pokemon 1's move1");
   await expect(
     input.locator("..").getByRole("img", { name: "Normal", exact: true }),

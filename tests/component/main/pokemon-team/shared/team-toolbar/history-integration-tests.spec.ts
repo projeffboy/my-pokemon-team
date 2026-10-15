@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { test, expect } from "fixtures";
-import { turnOnAdvanced, selectMove, selectPokemon } from "helper";
+import { selectMove, selectPokemon } from "helper";
 
 type Action = "Undo" | "Redo";
 
@@ -131,7 +131,6 @@ test.describe("History - Integration Tests", () => {
     await selectPokemon(page, "Ludicolo");
     await page.waitForTimeout(500);
 
-    await turnOnAdvanced(page);
     await page.getByRole("button", { name: "Randomize team" }).click();
     // A random pokemon comes with moves
     await expect(move).not.toHaveValue("");
