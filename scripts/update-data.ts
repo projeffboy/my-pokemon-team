@@ -14,6 +14,7 @@ import type {
 } from "../src/types.ts";
 import { LATEST_GENERATION } from "../src/shared/generations.ts";
 import {
+  CHAMPIONS_FORMAT,
   LETS_GO,
   LEGENDS_ARCEUS,
   LEGENDS_ZA,
@@ -326,6 +327,7 @@ async function updateGameVariants() {
   let pokedex = await loadShowdownTable("data/pokedex.ts", "Pokedex");
   let moves = await loadShowdownTable("data/moves.ts", "Moves");
   const variants = [
+    [CHAMPIONS_FORMAT, "champions", 9],
     [LEGENDS_ZA, "gen9legends", 9],
     [LEGENDS_ARCEUS, "gen8legends", 8],
     [LETS_GO, "gen7letsgo", 7],

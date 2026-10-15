@@ -469,6 +469,7 @@ export default function GenerationTransferDialog({
                                   const type = moveTypeIn(
                                     move.value ?? "",
                                     fromGeneration,
+                                    fromFormat,
                                   );
                                   return (
                                     <Box

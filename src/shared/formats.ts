@@ -1,4 +1,5 @@
 import {
+  CHAMPIONS_FORMAT,
   LETS_GO,
   LEGENDS_ARCEUS,
   LEGENDS_ZA,
@@ -7,7 +8,7 @@ import {
 import type { Generation } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "./generations";
 
-export const CHAMPIONS_FORMAT = "Pokemon Champions (M-C)";
+export { CHAMPIONS_FORMAT };
 
 // Pokemon Champions is a Gen 9 game, so a team in its format is a Gen 9 team
 export const CHAMPIONS_GENERATION: Generation = 9;
