@@ -6,7 +6,7 @@ const MAX_MESSAGE_LENGTH = 5000;
 // The most base64 the screenshot and uploaded images may total, as in capture-page.ts
 const MAX_IMAGES_LENGTH = 4_000_000;
 const MAX_UPLOADS = 3;
-// Matches the syntax accepted by the feedback form's native email input.
+// The syntax an email input accepts, which the feedback form checks too
 const EMAIL_PATTERN =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const JPEG_PREFIX = "data:image/jpeg;base64,";

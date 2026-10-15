@@ -26,6 +26,7 @@ import { moveType } from "@/store/shared/effectiveness";
 import { gameFormat } from "@/shared/formats";
 import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { closeKeyboard, verbatim } from "@/app/shared/text-entry";
 import typeIcons from "@/images/type-icons";
 import { isPokemonType } from "@/types";
 
@@ -402,6 +403,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     event.defaultMuiPrevented = true;
     onChange(topMatch);
     setIsOpen(false);
+    closeKeyboard();
   };
 
   return (
@@ -442,6 +444,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           if (reason === "blur" && focusInPopup(event)) return;
           pendingNavigation.current = null;
           setIsOpen(false);
+          closeKeyboard(event, reason);
         }}
         options={options}
         value={selectedOption}
@@ -635,9 +638,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 },
                 htmlInput: {
                   ...params.slotProps.htmlInput,
-                  // "search" stops iOS Safari offering to autofill a contact,
-                  // which it does for any input it reads as a name field
-                  name: `search-${id}`,
+                  ...verbatim(id),
                   "aria-label": t.team.input(teamIndex + 1, pokemonProperty),
                 },
               }}
