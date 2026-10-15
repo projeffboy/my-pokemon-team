@@ -93,6 +93,61 @@ test("removes the service worker left by the old build", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
+test("links a manifest for adding the site to the home screen", async ({
+  page,
+  browserName,
+}) => {
+  await page.goto("/");
+  const href = "/manifest.webmanifest";
+  await expect(page.locator("link[rel=manifest]")).toHaveAttribute(
+    "href",
+    href,
+  );
+  const response = await page.request.get(href);
+  expect(response.ok()).toBe(true);
+  const manifest = (await response.json()) as {
+    icons: { src: string; sizes: string; purpose?: string }[];
+  };
+  expect(manifest).toMatchObject({
+    name: "My Pokemon Team",
+    short_name: "My Pokemon Team",
+    start_url: "/",
+    display: "standalone",
+    theme_color: await page
+      .locator("meta[name=theme-color]")
+      .getAttribute("content"),
+    background_color: "#eee",
+  });
+
+  for (const icon of manifest.icons) {
+    const png = await page.request.get(icon.src);
+    expect(png.headers()["content-type"]).toBe("image/png");
+    const body = await png.body();
+    expect(`${body.readUInt32BE(16)}x${body.readUInt32BE(20)}`).toBe(
+      icon.sizes,
+    );
+  }
+  const sizes = (purpose: string) =>
+    manifest.icons
+      .filter(icon => (icon.purpose ?? "any") === purpose)
+      .map(icon => icon.sizes);
+  expect(sizes("any")).toEqual(["192x192", "512x512"]);
+  expect(sizes("maskable")).toEqual(["512x512"]);
+
+  if (browserName === "chromium") {
+    // Chrome found the manifest and ignored none of it
+    const cdp = await page.context().newCDPSession(page);
+    const { url, errors } = await cdp.send("Page.getAppManifest");
+    expect(url).toBe(new URL(href, page.url()).href);
+    expect(errors).toEqual([]);
+  }
+  expect(
+    await page.evaluate(() =>
+      navigator.serviceWorker.getRegistrations().then(list => list.length),
+    ),
+  ).toBe(0);
+});
+
 test("an offline lazy-load failure keeps the page and uses the dialog fallback", async ({
   page,
   context,
