@@ -1,3 +1,4 @@
+import type { Page, TestInfo } from "@playwright/test";
 import { test, expect } from "fixtures";
 import {
   selectPokemon,
@@ -8,6 +9,19 @@ import {
   openAnalysis,
   showSlot,
 } from "helper";
+
+// The switch that opened the checklist may still show its own tooltip
+const showTooltip = async (
+  page: Page,
+  testInfo: TestInfo,
+  label: string,
+  text: string,
+) => {
+  const row = checklistRow(page, label);
+  if (testInfo.project.use.hasTouch) await row.tap();
+  else await row.hover();
+  return page.getByRole("tooltip").filter({ hasText: text });
+};
 
 test.describe("Team Checklist - Integration Tests", () => {
   test.beforeEach(async ({ page }) => {
@@ -99,21 +113,41 @@ test.describe("Team Checklist - Integration Tests", () => {
       await selectPokemon(page, pokemon, slot);
       await selectItem(page, item, slot);
     }
-    // The switch that opened the checklist may still show its own tooltip
-    const show = async (label: string, text: string) => {
-      const row = checklistRow(page, label);
-      if (testInfo.project.use.hasTouch) await row.tap();
-      else await row.hover();
-      return page.getByRole("tooltip").filter({ hasText: text });
-    };
-
-    await expect(await show("Entry Hazard", "Gigalith")).toHaveText(
-      "Gigalith: Stealth Rock",
-    );
-    const choice = await show("Choice Item", "Buzzwole");
+    await expect(
+      await showTooltip(page, testInfo, "Entry Hazard", "Gigalith"),
+    ).toHaveText("Gigalith: Stealth Rock");
+    const choice = await showTooltip(page, testInfo, "Choice Item", "Buzzwole");
     await expect(choice.getByRole("listitem")).toHaveText([
       "Buzzwole: Choice Band",
       "Tapu Lele: Choice Scarf",
     ]);
+  });
+
+  test("a filler that wraps onto two lines keeps its whole icon", async ({
+    page,
+  }, testInfo) => {
+    await selectPokemon(page, "Vileplume");
+    for (const [i, move] of [
+      "Toxic",
+      "Sleep Powder",
+      "Stun Spore",
+      "Poison Powder",
+    ].entries())
+      await selectMove(page, move, i + 1);
+
+    const status = await showTooltip(
+      page,
+      testInfo,
+      "Status Move",
+      "Vileplume",
+    );
+    const filler = status.getByRole("listitem");
+    await expect(filler).toHaveText(
+      "Vileplume: Toxic, Sleep Powder, Stun Spore, and Poison Powder",
+    );
+    await expect(filler.locator("span").first()).toHaveJSProperty(
+      "offsetWidth",
+      40,
+    );
   });
 });

@@ -27,7 +27,13 @@ const ChecklistTooltip = observer(function ChecklistTooltip({
             <Box
               component="li"
               key={`${filler.pokemon}-${i}`}
-              sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                // Keep the icon whole when a long line wraps
+                "& > span": { flexShrink: 0 },
+              }}
             >
               <PokemonIcon pokemonProperty="name" value={filler.pokemon} />
               {describeFiller(item, filler, translation)}
