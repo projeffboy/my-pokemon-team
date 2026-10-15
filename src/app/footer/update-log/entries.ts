@@ -30,6 +30,8 @@ const entries: Entry[] = [
       "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
       "From Gen 6, choosing Hidden Power now keeps custom IVs that still give its type, such as 0 Speed for Trick Room.",
+      "Hidden Power’s IVs now update when a level change ends Hyper Training.",
+      "Ticking Shiny in Gen 2 now switches Hidden Power to the Grass or Dragon type its DVs give.",
     ],
   },
   {
