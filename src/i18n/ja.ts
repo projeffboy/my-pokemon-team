@@ -109,13 +109,16 @@ const ja: Messages = {
     delete: "削除",
     importTeam: "チームをインポート",
     share: "共有",
-    teamEmpty: "ポケモンチームは空です",
+    teamEmpty: "チームが空です。共有するにはポケモンを追加してください。",
     linkCopied: "ポケモンチームのリンクをコピーしました",
-    linkNotCopied: "リンクをコピーできませんでした。",
-    nothingToCopy: "チームが空なので、コピーするものがありません。",
+    linkNotCopied:
+      "リンクをコピーできませんでした。チームを開いた状態で、アドレスバーからコピーしてください。",
+    nothingToCopy: "チームが空です。コピーするにはポケモンを追加してください。",
     teamCopied: "チームをコピーしました。",
-    teamNotCopied: "チームをコピーできませんでした。",
-    cannotDuplicateEmptyTeam: "空のチームは複製できません",
+    teamNotCopied:
+      "チームをコピーできませんでした。代わりに「Pokepasteを編集」からテキストをコピーしてください。",
+    cannotDuplicateEmptyTeam:
+      "チームが空です。複製するにはポケモンを追加してください。",
     teamDuplicated: "チームを複製しました",
     teamDeleted: "チームを削除しました",
     slots: "ポケモンチームのスロット",
@@ -403,7 +406,8 @@ const ja: Messages = {
     randomTeamCreated: "ランダムなチームを作成しました",
     exported: "すべてのチームをエクスポートしました",
     copiedAll: "すべてのチームをコピーしました",
-    notCopiedAll: "チームをコピーできませんでした。",
+    notCopiedAll:
+      "チームをコピーできませんでした。代わりに「すべてエクスポート」でダウンロードしてください。",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -521,7 +525,8 @@ const ja: Messages = {
     imported: "チームをインポートしました",
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",
-    nothingFound: "そのテキストにポケモンが見つかりませんでした。",
+    nothingFound:
+      "そのテキストにポケモンが見つかりませんでした。ポケモンの名前を確認するか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
   },
   deleteDialog: {
     title: (team: string) => `${team}を削除しますか？`,

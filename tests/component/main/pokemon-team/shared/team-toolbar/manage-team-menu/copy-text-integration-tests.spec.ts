@@ -62,4 +62,27 @@ test.describe("Manage Team: Copy text - Integration Tests", () => {
       expect(clipboardText).toContain(substring);
     }
   });
+
+  test("points to Edit Pokepaste, which shows the text, when the team cannot be copied", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Furret");
+    await page.evaluate(() =>
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: { writeText: () => Promise.reject(new Error("Denied")) },
+      }),
+    );
+    await openManageTeamMenu(page);
+    await clickMenuItem(page, "Copy text");
+
+    await expect(page.getByRole("alert").last()).toContainText(
+      "Could not copy the team. Copy its text from Edit Pokepaste instead.",
+    );
+    await openManageTeamMenu(page);
+    await clickMenuItem(page, "Edit Pokepaste");
+    await expect(
+      page.getByRole("dialog", { name: "Edit Pokepaste" }).getByRole("textbox"),
+    ).toHaveValue(/^Furret/);
+  });
 });

@@ -126,6 +126,14 @@ test("every other language names a slot's inputs in its own words", async () => 
   expect(en.team.input(1, "move2")).toBe("Pokemon 1's move2");
 });
 
+test("every language's failed copies name the button that does the job instead", async () => {
+  for (const locale of LOCALES) {
+    const { t } = await loadTranslation(locale);
+    expect(t.team.teamNotCopied, locale).toContain(t.team.editPokepaste);
+    expect(t.teams.notCopiedAll, locale).toContain(t.teams.exportAll);
+  }
+});
+
 test("Portuguese has its own text and the English names", async () => {
   const { t, names } = await loadTranslation("pt-BR");
   expect(t.team.teams).toBe("Equipes");

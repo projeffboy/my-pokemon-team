@@ -113,13 +113,17 @@ const de: Messages = {
     delete: "Löschen",
     importTeam: "Team importieren",
     share: "Teilen",
-    teamEmpty: "Das Pokémon-Team ist leer",
+    teamEmpty: "Das Team ist leer. Füge ein Pokémon hinzu, um es zu teilen.",
     linkCopied: "Link zum Pokémon-Team kopiert",
-    linkNotCopied: "Der Link konnte nicht kopiert werden.",
-    nothingToCopy: "Leeres Team, nichts zu kopieren.",
+    linkNotCopied:
+      "Der Link konnte nicht kopiert werden. Kopiere ihn aus der Adressleiste, während das Team geöffnet ist.",
+    nothingToCopy:
+      "Das Team ist leer. Füge ein Pokémon hinzu, um es zu kopieren.",
     teamCopied: "Team kopiert.",
-    teamNotCopied: "Das Team konnte nicht kopiert werden.",
-    cannotDuplicateEmptyTeam: "Ein leeres Team kann nicht dupliziert werden",
+    teamNotCopied:
+      "Das Team konnte nicht kopiert werden. Kopiere seinen Text stattdessen unter „Pokepaste bearbeiten“.",
+    cannotDuplicateEmptyTeam:
+      "Das Team ist leer. Füge ein Pokémon hinzu, um es zu duplizieren.",
     teamDuplicated: "Team dupliziert",
     teamDeleted: "Team gelöscht",
     slots: "Plätze im Pokémon-Team",
@@ -412,7 +416,8 @@ const de: Messages = {
     randomTeamCreated: "Zufallsteam erstellt",
     exported: "Alle Teams exportiert",
     copiedAll: "Alle Teams kopiert",
-    notCopiedAll: "Die Teams konnten nicht kopiert werden.",
+    notCopiedAll:
+      "Die Teams konnten nicht kopiert werden. Lade sie stattdessen mit „Alle exportieren“ herunter.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -535,7 +540,8 @@ const de: Messages = {
     imported: "Team importiert",
     importedMany: (count: number) => `${count} Teams importiert`,
     noChanges: "Keine Änderungen vorgenommen.",
-    nothingFound: "In diesem Text wurde kein Pokémon gefunden.",
+    nothingFound:
+      "In diesem Text wurde kein Pokémon gefunden. Prüfe die Pokémon-Namen oder füge ein aus Pokemon Showdown exportiertes Team ein.",
   },
   deleteDialog: {
     title: (team: string) => `${team} löschen?`,

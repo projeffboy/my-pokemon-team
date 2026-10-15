@@ -102,13 +102,16 @@ const en = {
     delete: "Delete",
     importTeam: "Import team",
     share: "Share",
-    teamEmpty: "Pokemon team is empty",
+    teamEmpty: "The team is empty. Add a pokemon to share it.",
     linkCopied: "Pokemon team link copied",
-    linkNotCopied: "Could not copy the link.",
-    nothingToCopy: "Empty team, nothing to copy.",
+    linkNotCopied:
+      "Could not copy the link. Copy it from the address bar while the team is open.",
+    nothingToCopy: "The team is empty. Add a pokemon to copy it.",
     teamCopied: "Team copied.",
-    teamNotCopied: "Could not copy the team.",
-    cannotDuplicateEmptyTeam: "Cannot duplicate empty team",
+    teamNotCopied:
+      "Could not copy the team. Copy its text from Edit Pokepaste instead.",
+    cannotDuplicateEmptyTeam:
+      "The team is empty. Add a pokemon to duplicate it.",
     teamDuplicated: "Team duplicated",
     teamDeleted: "Team deleted",
     slots: "Pokemon team slots",
@@ -395,7 +398,8 @@ const en = {
     randomTeamCreated: "Random team created",
     exported: "Exported all teams",
     copiedAll: "Copied all teams",
-    notCopiedAll: "Could not copy the teams.",
+    notCopiedAll:
+      "Could not copy the teams. Use Export All to download them instead.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -515,7 +519,8 @@ const en = {
     imported: "Team imported",
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",
-    nothingFound: "No pokemon found in that text.",
+    nothingFound:
+      "No pokemon found in that text. Check the pokemon names, or paste a team exported from Pokemon Showdown.",
   },
   deleteDialog: {
     title: (team: string) => `Delete ${team}?`,

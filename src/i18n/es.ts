@@ -105,13 +105,16 @@ const es: Messages = {
     delete: "Eliminar",
     importTeam: "Importar equipo",
     share: "Compartir",
-    teamEmpty: "El equipo Pokémon está vacío",
+    teamEmpty: "El equipo está vacío. Añade un Pokémon para compartirlo.",
     linkCopied: "Enlace del equipo Pokémon copiado",
-    linkNotCopied: "No se ha podido copiar el enlace.",
-    nothingToCopy: "El equipo está vacío, no hay nada que copiar.",
+    linkNotCopied:
+      "No se ha podido copiar el enlace. Cópialo de la barra de direcciones con el equipo abierto.",
+    nothingToCopy: "El equipo está vacío. Añade un Pokémon para copiarlo.",
     teamCopied: "Equipo copiado.",
-    teamNotCopied: "No se ha podido copiar el equipo.",
-    cannotDuplicateEmptyTeam: "No se puede duplicar un equipo vacío",
+    teamNotCopied:
+      "No se ha podido copiar el equipo. Copia su texto desde Editar Pokepaste.",
+    cannotDuplicateEmptyTeam:
+      "El equipo está vacío. Añade un Pokémon para duplicarlo.",
     teamDuplicated: "Equipo duplicado",
     teamDeleted: "Equipo eliminado",
     slots: "Huecos del equipo Pokémon",
@@ -395,7 +398,8 @@ const es: Messages = {
     randomTeamCreated: "Equipo aleatorio creado",
     exported: "Todos los equipos exportados",
     copiedAll: "Todos los equipos copiados",
-    notCopiedAll: "No se han podido copiar los equipos.",
+    notCopiedAll:
+      "No se han podido copiar los equipos. Descárgalos con Exportar todo.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -519,7 +523,8 @@ const es: Messages = {
     imported: "Equipo importado",
     importedMany: (count: number) => `${count} equipos importados`,
     noChanges: "No se ha hecho ningún cambio.",
-    nothingFound: "No se encontró ningún Pokémon en ese texto.",
+    nothingFound:
+      "No se encontró ningún Pokémon en ese texto. Revisa los nombres de los Pokémon o pega un equipo exportado de Pokemon Showdown.",
   },
   deleteDialog: {
     title: (team: string) => `¿Eliminar ${team}?`,
