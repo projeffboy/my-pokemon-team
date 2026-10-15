@@ -13,6 +13,18 @@ const TIMEOUT_MS = 10_000;
 // redraws the entire page, so retain the workaround with a bounded retry count.
 const MAX_DECODE_REDRAWS = 3;
 
+let screenshotLibrary: Promise<typeof import("modern-screenshot")> | undefined;
+// The feedback dialog starts this when it opens. A tab opened before a deploy cannot load the
+// chunk, and Index.tsx then reloads the page, which should happen before a message is typed
+// rather than while it is being sent. Kept even if it fails, so sending never retries it.
+export const loadScreenshotLibrary = () => {
+  if (!screenshotLibrary) {
+    screenshotLibrary = import("modern-screenshot");
+    screenshotLibrary.catch(() => {});
+  }
+  return screenshotLibrary;
+};
+
 const toDataUrl = (blob: Blob) =>
   new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -36,7 +48,7 @@ export async function capturePage(dialog: Element | null, maxLength: number) {
     });
     const capture = (async () => {
       const { createContext, destroyContext, domToJpeg } =
-        await import("modern-screenshot");
+        await loadScreenshotLibrary();
       if (controller.signal.aborted) return undefined;
       const context: Context<HTMLElement> = await createContext(document.body, {
         type: "image/jpeg",

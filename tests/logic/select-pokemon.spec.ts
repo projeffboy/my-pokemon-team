@@ -27,3 +27,44 @@ test("selecting a pokemon leaves the other slots alone", ({ store }) => {
   store.selectPokemon(0, "sceptilemega");
   expect(other).toMatchObject({ item: "leftovers", ability: "" });
 });
+
+test("the Item dropdown offers an auto-selected required item that the game lacks", ({
+  store,
+}) => {
+  expect(store.teamItems).not.toContain("bugmemory");
+  store.selectPokemon(0, "silvallybug");
+  store.selectPokemon(1, "necrozmaultra");
+  expect(store.team[0]?.item).toBe("bugmemory");
+  expect(store.team[1]?.item).toBe("ultranecroziumz");
+  expect(store.teamItems).toEqual(
+    expect.arrayContaining(["bugmemory", "ultranecroziumz"]),
+  );
+  expect(store.teamItems).not.toContain("firememory");
+
+  store.currentTeam.generation = 8;
+  store.selectPokemon(0, "dialgaorigin");
+  store.selectPokemon(1, "palkiaorigin");
+  expect(store.team[0]?.item).toBe("adamantcrystal");
+  expect(store.teamItems).toEqual(
+    expect.arrayContaining(["adamantcrystal", "lustrousglobe"]),
+  );
+
+  // Gen 7 does not list Dialga-Origin, so its item stays out
+  store.currentTeam.generation = 7;
+  expect(store.gamePokemon).not.toContain("dialgaorigin");
+  expect(store.teamItems).not.toContain("adamantcrystal");
+});
+
+test("picking the slot's own pokemon again keeps its set", ({ store }) => {
+  store.selectPokemon(0, "gardevoir");
+  const member = store.team[0]!;
+  Object.assign(member, {
+    move1: "moonblast",
+    item: "choicescarf",
+    ability: "Trace",
+    nickname: "Gigi",
+  });
+  const before = JSON.stringify(member);
+  store.selectPokemon(0, "gardevoir");
+  expect(JSON.stringify(member)).toBe(before);
+});
