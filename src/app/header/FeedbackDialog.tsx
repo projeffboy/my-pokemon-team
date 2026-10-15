@@ -154,9 +154,12 @@ const FeedbackDialog = observer(function FeedbackDialog({
         caption={t.feedback.caption}
         label={t.feedback.button}
         row={row}
+        // Opens once the screenshot library has settled, so a stale tab reloads
+        // before anything can be typed, even when the chunk request is slow to fail
         onClick={() => {
-          loadScreenshotLibrary();
-          setIsOpen(true);
+          void loadScreenshotLibrary()
+            .catch(() => undefined)
+            .then(() => setIsOpen(true));
         }}
       />
       <Dialog
