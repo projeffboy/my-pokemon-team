@@ -406,6 +406,7 @@ async function reportIconSheets() {
 }
 
 const exists = async (url: string) => (await fetch(url, { method: "HEAD" })).ok;
+const shortName = (url: string) => url.replace(`${showdownSprites}/`, "");
 
 // Request what PokemonSprite.tsx would, at both sprite sizes
 async function reportNewSprites(
@@ -423,17 +424,22 @@ async function reportNewSprites(
   const check = async (id: string) => {
     const lines = [];
     for (const isSmall of [false, true]) {
-      const { src, fallback } = spriteUrls(
+      const [src, ...fallbacks] = spriteUrls(
         id,
         pokedex[id],
         iconIndexes[id],
         isSmall,
         LATEST_GENERATION,
-      );
+      ).sources;
       if (await exists(src)) continue;
-      const hasFallback = src !== fallback && (await exists(fallback));
+      let shown = "a broken image";
+      for (const fallback of fallbacks) {
+        if (!(await exists(fallback))) continue;
+        shown = shortName(fallback);
+        break;
+      }
       lines.push(
-        `  ${pokedex[id]?.name}: no ${src.replace(`${showdownSprites}/`, "")}, so it shows ${hasFallback ? "the static gen5 sprite" : "a broken image"}`,
+        `  ${pokedex[id]?.name}: no ${shortName(src)}, so it shows ${shown}`,
       );
     }
     return lines;

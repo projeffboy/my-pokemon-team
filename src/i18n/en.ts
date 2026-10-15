@@ -23,10 +23,11 @@ const en = {
   },
   generationSelect: "Generation",
   comingSoon: "Coming soon",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Main series" },
   combinedGenerations: {
     label: "Generations 6–9",
     short: "Gens 6–9",
-    description: "Combines options from all Gen 6–9 games",
+    description: "Combines all Gen 6–9 games",
   },
   championsGeneration: "Gen 9 · Champions",
   championsGenerationShort: "Gen 9 (Champions)",
@@ -116,7 +117,6 @@ const en = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokemon ${slot} (${pokemon ?? "empty"})`,
     slotPair: (first: string, second: string) => `${first} and ${second}`,
-    advancedMode: "Advanced",
     filters: "Filters",
     sort: "Sort",
     randomizePokemon: "Randomize pokemon",
@@ -219,6 +219,7 @@ const en = {
       status: { label: "Status Move", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Boosting Move", short: "Setup" },
+      priority: { label: "Priority Move", short: "Priority", shorter: "Prio" },
       voltTurn: {
         label: "Volt-turn Move",
         short: "Volt-turn",
@@ -440,7 +441,7 @@ const en = {
     removed: {
       item: "Item removed",
       ability: "Ability removed",
-      moves: "Moves removed:",
+      move: "Move removed",
       details: "Details removed",
     },
     ivsUnused: (where: string) => `IVs don’t apply in ${where}.`,
@@ -454,6 +455,9 @@ const en = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "ability" : "abilities"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} of ${total} ${carried === 1 ? "carries" : "carry"} over`,
+    removedSummary: (removed: string) => `${removed} removed`,
     modify: "Update existing team",
     copy: "Copy to new team",
     createEmpty: "Create empty team",
@@ -581,7 +585,7 @@ const en = {
     teamsAnswer:
       "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
     teamsAnswer2:
-      "The More button shows the team tools, the Filters and Sort buttons, and the More details button. Undo and Redo step through the current team’s changes; on phones and tablets they are above the Pokémon slot tabs.",
+      "The Name dropdown has the Filters and Sort buttons, and the move dropdowns have Sort. Undo and Redo step through the current team’s changes; on phones and tablets they are above the Pokémon slot tabs.",
     generations: "Generations",
     generationsQuestion: "What does the generation change?",
     generationsAnswer:
@@ -642,7 +646,7 @@ const en = {
       ],
       [
         "Reliable Recovery",
-        "Moves that are guaranteed to recover 50% or more of your HP every time you use it (under normal weather conditions). E.g. Recover, Softboiled, Milk Drink, Slack Off, Synthesis.",
+        "Moves that are guaranteed to recover 50% or more of your HP every time you use it (under normal weather conditions). E.g. Recover, Softboiled, Milk Drink, Slack Off, Synthesis. Wish also counts when the same pokemon has Protect or Detect.",
       ],
       [
         "Status Moves",
@@ -651,6 +655,10 @@ const en = {
       [
         "Boosting Move",
         "Moves that increase your stats (preferrably by 2+), like Swords Dance and Calm Mind.",
+      ],
+      [
+        "Priority Move",
+        "Damaging moves that go before most other moves, regardless of Speed. E.g. Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Choice Item",

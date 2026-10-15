@@ -30,10 +30,11 @@ const fr: Messages = {
   },
   generationSelect: "Génération",
   comingSoon: "Bientôt disponible",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principale" },
   combinedGenerations: {
     label: "Générations 6–9",
     short: "Gén. 6–9",
-    description: "Combine les options de tous les jeux des générations 6–9",
+    description: "Combine tous les jeux des générations 6–9",
   },
   championsGeneration: "Gén. 9 · Champions",
   championsGenerationShort: "Gén. 9 (Champions)",
@@ -123,7 +124,6 @@ const fr: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vide"})`,
     slotPair: (first: string, second: string) => `${first} et ${second}`,
-    advancedMode: "Avancé",
     filters: "Filtres",
     sort: "Trier",
     randomizePokemon: "Randomiser le Pokémon",
@@ -226,6 +226,11 @@ const fr: Messages = {
       status: { label: "Capacité de statut", short: "Statut" },
       phazer: { label: "Phazer" },
       boosting: { label: "Capacité de boost", short: "Boost" },
+      priority: {
+        label: "Capacité prioritaire",
+        short: "Priorité",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Capacité Volt-turn",
         short: "Volt-turn",
@@ -458,7 +463,7 @@ const fr: Messages = {
     removed: {
       item: "Objet supprimé",
       ability: "Talent supprimé",
-      moves: "Capacités supprimées :",
+      move: "Capacité supprimée",
       details: "Détails supprimés",
     },
     ivsUnused: (where: string) => `Les IV ne s’appliquent pas dans ${where}.`,
@@ -474,6 +479,9 @@ const fr: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "talent" : "talents"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} sur ${total} ${carried <= 1 ? "est conservé" : "sont conservés"}`,
+    removedSummary: (removed: string) => `Suppression de ${removed}`,
     modify: "Mettre à jour l’équipe actuelle",
     copy: "Copier dans une nouvelle équipe",
     createEmpty: "Créer une équipe vide",
@@ -603,7 +611,7 @@ const fr: Messages = {
     teamsAnswer:
       "Vos équipes sont enregistrées dans ce navigateur : elles sont donc là à votre retour, mais pas sur un autre appareil. Le bouton Équipes les liste, et le menu de chaque équipe permet de la renommer, de choisir sa génération et son format, de la dupliquer, de la partager ou de la supprimer. Tout exporter télécharge toutes les équipes en texte Showdown, qu'Importer une équipe relit ensuite. La barre d'adresse contient toujours l'équipe actuelle : copier l'adresse (ou appuyer sur Partager) la partage.",
     teamsAnswer2:
-      "Le bouton Plus affiche les outils d’équipe, Filtres, Trier et Plus de détails. Annuler et Rétablir parcourent les modifications de l’équipe actuelle ; sur téléphone et tablette, ils se trouvent au-dessus des onglets des Pokémon.",
+      "La liste des noms contient les boutons Filtres et Trier, et les listes de capacités contiennent Trier. Annuler et Rétablir parcourent les modifications de l’équipe actuelle ; sur téléphone et tablette, ils se trouvent au-dessus des onglets des Pokémon.",
     generations: "Générations",
     generationsQuestion: "Que change la génération ?",
     generationsAnswer:
@@ -666,7 +674,7 @@ const fr: Messages = {
       ],
       [
         "Récupération fiable",
-        "Des capacités qui rendent à coup sûr 50 % ou plus de vos PV à chaque utilisation (par météo normale). Ex. : Soin, E-Coque, Lait à Boire, Paresse, Synthèse.",
+        "Des capacités qui rendent à coup sûr 50 % ou plus de vos PV à chaque utilisation (par météo normale). Ex. : Soin, E-Coque, Lait à Boire, Paresse, Synthèse. Vœu compte aussi si le même Pokémon connaît Abri ou Détection.",
       ],
       [
         "Capacités de statut",
@@ -675,6 +683,10 @@ const fr: Messages = {
       [
         "Capacité de boost",
         "Des capacités qui augmentent vos stats (de préférence de 2 niveaux ou plus), comme Danse Lames et Plénitude.",
+      ],
+      [
+        "Capacité prioritaire",
+        "Des capacités offensives qui passent avant la plupart des autres, quelle que soit la Vitesse. Ex. : Vitesse Extrême, Coup Bas, Aqua-Jet, Pisto-Poing.",
       ],
       [
         "Objet Choix",
