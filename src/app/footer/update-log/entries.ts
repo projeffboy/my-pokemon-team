@@ -35,6 +35,7 @@ const entries: Entry[] = [
       "Ticking Shiny in Gen 2 now switches Hidden Power to the Grass or Dragon type its DVs give.",
       "Gen 3 and Gen 4 Doubles OU now list their Pokémon, such as Salamence and Metagross, instead of none.",
       "Importing a Showdown box with more than six Pokémon now splits it into teams of six instead of dropping the rest.",
+      "Showdown backups whose team headers are indented now import as separate teams instead of one merged team.",
     ],
   },
   {
