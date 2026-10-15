@@ -13,6 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import ErrorBoundary from "@/app/shared/ErrorBoundary";
+import { heightAboveAd } from "@/app/shared/visual-viewport";
 
 // A footer button that opens a dialog with the given content and a Go Back action.
 // The content is a lazy component, so its code loads the first time the dialog opens.
@@ -42,7 +43,7 @@ export default function FooterDialog({
         onClose={toggle}
         aria-labelledby={titleId}
         fullScreen={isSmDown}
-        sx={{ height: "calc(100% - 60px)" }}
+        sx={{ height: heightAboveAd }}
       >
         <DialogTitle id={titleId}>{title}</DialogTitle>
         <DialogContent>

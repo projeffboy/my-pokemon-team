@@ -36,6 +36,10 @@ import {
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import {
+  visualViewportHeight,
+  visualViewportTop,
+} from "@/app/shared/visual-viewport";
 import { verbatim } from "@/app/shared/text-entry";
 import NumberField from "./advanced-dialog/NumberField";
 import TrainingFields from "./advanced-dialog/TrainingFields";
@@ -44,7 +48,6 @@ import {
   gen2Dvs,
   dvGender,
   isShinyDv,
-  setLegacyShiny,
 } from "@/shared/generation-rules";
 
 const clamp = (value: number, max: number) =>
@@ -167,6 +170,13 @@ const AdvancedForm = observer(function AdvancedForm({
                     level === DEFAULT_LEVEL || level < 1 ? undefined : level,
                   );
                 }}
+                // Hidden Power is matched to the level once typing ends, not to
+                // each keystroke on the way (typing 100 passes through 1 and 10)
+                onCommit={start => {
+                  // Editing also ends when a team switch closes the dialog
+                  if (store.team[teamIndex] === member)
+                    store.setLevel(teamIndex, member.level, start);
+                }}
                 slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
                 sx={{ flex: "0 0 80px" }}
               />
@@ -252,9 +262,7 @@ const AdvancedForm = observer(function AdvancedForm({
                       generation === 2 ? isShinyDv(dvMember) : !!member.shiny
                     }
                     onChange={event =>
-                      generation === 2 ?
-                        setLegacyShiny(member, event.target.checked)
-                      : setDetail(member, "shiny", event.target.checked)
+                      store.setShiny(teamIndex, event.target.checked)
                     }
                   />
                 }
@@ -335,11 +343,21 @@ const AdvancedDialog = observer(function AdvancedDialog() {
         anchor="bottom"
         open={isOpen}
         onClose={close}
+        // The sheet sits on the bottom of the visible page, above the on-screen keyboard
+        sx={{
+          top: visualViewportTop,
+          bottom: "auto",
+          height: visualViewportHeight,
+        }}
         slotProps={{
           paper: {
             role: "dialog",
             "aria-labelledby": titleId,
-            sx: { borderRadius: "16px 16px 0 0", maxHeight: "92dvh" },
+            sx: {
+              position: "absolute",
+              borderRadius: "16px 16px 0 0",
+              maxHeight: "92%",
+            },
           },
         }}
       >

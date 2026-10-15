@@ -110,15 +110,15 @@ const zhHant: Messages = {
     delete: "刪除",
     importTeam: "匯入隊伍",
     share: "分享",
-    teamEmpty: "寶可夢隊伍是空的",
+    teamEmpty: "隊伍是空的。請先加入寶可夢再分享。",
     linkCopied: "已複製寶可夢隊伍連結",
-    linkNotCopied: "無法複製連結。",
+    linkNotCopied: "無法複製連結。請在開啟該隊伍時，從網址列複製網址。",
     linkGenerationUnsupported: (profile: string) =>
       `不支援此連結的世代或遊戲，已改用${profile}開啟。`,
-    nothingToCopy: "隊伍是空的，沒有可複製的內容。",
+    nothingToCopy: "隊伍是空的。請先加入寶可夢再複製。",
     teamCopied: "已複製隊伍。",
-    teamNotCopied: "無法複製隊伍。",
-    cannotDuplicateEmptyTeam: "無法建立空隊伍的副本",
+    teamNotCopied: "無法複製隊伍。請改用「編輯 Pokepaste」複製隊伍文字。",
+    cannotDuplicateEmptyTeam: "隊伍是空的。請先加入寶可夢再建立副本。",
     teamDuplicated: "已建立隊伍副本",
     teamDeleted: "已刪除隊伍",
     slots: "寶可夢隊伍欄位",
@@ -214,29 +214,69 @@ const zhHant: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "場地陷阱", short: "陷阱" },
+      entryHazard: {
+        label: "場地陷阱",
+        short: "陷阱",
+        hint: (moves: string) =>
+          `讓寶可夢學會在對手場地設置陷阱的招式：${moves}。`,
+      },
       spinner: {
         label: "高速旋轉／清除濃霧",
         short: "清釘手",
         shorter: "清釘",
+        hint: (moves: string) =>
+          `讓寶可夢學會清除我方場地陷阱的招式：${moves}。`,
       },
       recovery: {
         label: "可靠回復",
         short: "回復招式",
         shorter: "回復",
+        hint: (moves: string) =>
+          `讓寶可夢學會能可靠回復 HP 的招式，例如${moves}。`,
       },
-      cleric: { label: "治癒手" },
-      status: { label: "異常狀態招式", short: "狀態" },
-      phazer: { label: "強制換人" },
-      boosting: { label: "強化招式", short: "強化" },
-      priority: { label: "先制招式", short: "先制", shorter: "先制" },
+      cleric: {
+        label: "治癒手",
+        hint: (moves: string) =>
+          `讓寶可夢學會治癒全隊異常狀態的招式：${moves}。`,
+      },
+      status: {
+        label: "異常狀態招式",
+        short: "狀態",
+        hint: (moves: string) =>
+          `讓寶可夢學會命中後必定使對手陷入異常狀態的招式，例如${moves}。`,
+      },
+      phazer: {
+        label: "強制換人",
+        hint: (moves: string) => `讓寶可夢學會強制對手換人的招式：${moves}。`,
+      },
+      boosting: {
+        label: "強化招式",
+        short: "強化",
+        hint: (moves: string) =>
+          `讓寶可夢學會使自身能力合計提升 2 階或以上的招式，例如${moves}。`,
+      },
+      priority: {
+        label: "先制招式",
+        short: "先制",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `讓寶可夢學會無論速度高低都能比大多數招式先出手的攻擊招式，例如${moves}。`,
+      },
       voltTurn: {
         label: "急速折返／伏特替換",
         short: "折返招式",
         shorter: "折返",
+        hint: (moves: string) => `讓寶可夢學會攻擊後換下場的招式：${moves}。`,
       },
-      choice: { label: "講究道具", short: "講究" },
+      choice: {
+        label: "講究道具",
+        short: "講究",
+        hint: (items: string) => `讓寶可夢攜帶講究道具：${items}。`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
+    together: (move: string, other: string) => `${move}配合${other}`,
+    unavailable: "本作中沒有符合條件的招式或道具。",
   },
   matrix: {
     matrix: "矩陣",
@@ -372,6 +412,8 @@ const zhHant: Messages = {
     region: "地區",
     moves: "招式",
     viable: "實用",
+    items: "道具",
+    viableItems: "實用",
     ability: "特性",
   },
   sort: {
@@ -407,7 +449,7 @@ const zhHant: Messages = {
     randomTeamCreated: "已建立隨機隊伍",
     exported: "已匯出所有隊伍",
     copiedAll: "已複製所有隊伍",
-    notCopiedAll: "無法複製隊伍。",
+    notCopiedAll: "無法複製隊伍。請改用「全部匯出」下載隊伍。",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -488,6 +530,8 @@ const zhHant: Messages = {
       `${pokemon}必須攜帶${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}的${move}重複了。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${where} 禁止使用${pokemon}的${thing}。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -522,7 +566,29 @@ const zhHant: Messages = {
     imported: "已匯入隊伍",
     importedMany: (count: number) => `已匯入 ${count} 支隊伍`,
     noChanges: "沒有任何變更。",
-    nothingFound: "這段文字中找不到寶可夢。",
+    nothingFound:
+      "這段文字中找不到寶可夢。請按照 Pokemon Showdown 的拼法用英文寫寶可夢名稱，或貼上從 Pokemon Showdown 匯出的隊伍。",
+    problems: (count: number) =>
+      `發現 ${count} 個問題。更新時仍會依下列方式套用文字：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}的${field}`,
+    moveSlot: (slot: number) => `招式 ${slot}`,
+    problemValue: (where: string, value: string) => `${where}：「${value}」`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "無法辨識。",
+    unlearnable: (pokemon: string) =>
+      `在所選遊戲中，${pokemon}無法學會這個招式。`,
+    wrongAbility: (pokemon: string) => `不是${pokemon}可以擁有的特性。`,
+    outOfRange: (min: number, max: number) =>
+      `不是 ${min} 到 ${max} 之間的整數。`,
+    unsupported: "所選遊戲沒有這一項。",
+    tooManyPokemon: "一支隊伍最多有 6 隻寶可夢。",
+    tooManyMoves: "一隻寶可夢最多有 4 個招式。",
+    noGigantamax: (pokemon: string) => `${pokemon}沒有超極巨化的樣子。`,
+    unread: "本網站不讀取這一項。",
+    slotLeftEmpty: "該隊伍格位留空。",
+    moveLeftEmpty: "該招式格位留空。",
+    leftOut: "此項會被省略。",
+    usedInstead: (value: string) => `改用${value}。`,
   },
   deleteDialog: {
     title: (team: string) => `要刪除${team}嗎？`,

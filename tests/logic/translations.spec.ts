@@ -10,6 +10,7 @@ import { validateTeam } from "@/store/validation";
 import { loadStoredState, type StoredState } from "@/store/teams-storage";
 import { allAbilities, allItemIds } from "@/shared/names";
 import { GENERATIONS } from "@/shared/generations";
+import { CAP_FORMAT } from "@/shared/formats";
 import { availableItems, learnsetsReady } from "@/store/learnsets";
 import learnsets from "@/data/learnsets.json" with { type: "json" };
 import { createTeam } from "./shared/team";
@@ -148,6 +149,8 @@ test("no two options of a dropdown share a name in any language", async () => {
         .soft(duplicates(items, names.item), `${locale} gen ${generation}`)
         .toEqual([]);
     }
+    const capItems = availableItems(allItemIds, 9, CAP_FORMAT);
+    expect.soft(duplicates(capItems, names.item), `${locale} CAP`).toEqual([]);
   }
 });
 
@@ -160,6 +163,14 @@ test("every other language names a slot's inputs in its own words", async () => 
     }
   }
   expect(en.team.input(1, "move2")).toBe("Pokemon 1's move2");
+});
+
+test("every language's failed copies name the button that does the job instead", async () => {
+  for (const locale of LOCALES) {
+    const { t } = await loadTranslation(locale);
+    expect(t.team.teamNotCopied, locale).toContain(t.team.editPokepaste);
+    expect(t.teams.notCopiedAll, locale).toContain(t.teams.exportAll);
+  }
 });
 
 test("Portuguese has its own text and the English names", async () => {

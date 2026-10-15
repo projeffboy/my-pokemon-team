@@ -43,7 +43,7 @@ jobs:
         run: npm run test:logic
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium webkit
+        run: npx playwright install --with-deps chromium webkit firefox msedge
 
       - name: Production smoke tests
         run: npm run test:smoke
@@ -75,6 +75,12 @@ jobs:
           - project: Desktop Safari
             browser: webkit
             artifact: desktop-safari
+          - project: Desktop Firefox
+            browser: firefox
+            artifact: desktop-firefox
+          - project: Desktop Edge
+            browser: msedge
+            artifact: desktop-edge
           - project: Android
             browser: chromium
             artifact: android

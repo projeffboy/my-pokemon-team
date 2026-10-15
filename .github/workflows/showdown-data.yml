@@ -36,7 +36,7 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/smogon/pokemon-showdown.git ../pokemon-showdown
           git clone --depth 1 --filter=blob:none --sparse https://github.com/smogon/pokemon-showdown-client.git ../pokemon-showdown-client
-          git -C ../pokemon-showdown-client sparse-checkout set play.pokemonshowdown.com/src
+          git -C ../pokemon-showdown-client sparse-checkout set play.pokemonshowdown.com/src build-tools
 
       - name: Update the data
         run: npm run update:data -- --notice="$RUNNER_TEMP/notice.md"

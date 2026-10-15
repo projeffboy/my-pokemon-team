@@ -106,11 +106,16 @@ const openPhone = async (browser: Browser, baseURL?: string) => {
     baseURL,
   });
   const page = await context.newPage();
-  // Blocking through the protocol, unlike page.route, keeps the browser's cache
+  // Blocking through the protocol, unlike page.route, keeps the browser's cache.
+  // The preview server forwards /showdown-sprites/ to Showdown.
   const cdp = await context.newCDPSession(page);
   await cdp.send("Network.enable");
   await cdp.send("Network.setBlockedURLs", {
-    urls: ["*://cdn.intergient.com/*", "*://play.pokemonshowdown.com/*"],
+    urls: [
+      "*://cdn.intergient.com/*",
+      "*://play.pokemonshowdown.com/*",
+      "*://*/showdown-sprites/*",
+    ],
   });
   await cdp.send("Network.emulateNetworkConditions", {
     offline: false,

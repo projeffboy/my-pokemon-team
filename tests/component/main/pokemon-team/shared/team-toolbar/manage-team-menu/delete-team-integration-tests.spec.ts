@@ -50,6 +50,7 @@ test.describe("Delete team - Integration Tests", () => {
           region: "Unova",
           ability: "Levitate",
           moves: "Recover",
+          items: "Viable",
         },
       });
       survivor.id = "survivor";

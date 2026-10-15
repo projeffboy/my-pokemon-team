@@ -13,6 +13,7 @@ import { LATEST_GENERATION } from "@/shared/generations";
 import { TIER_BY_FORMAT } from "@/shared/formats";
 import { pokemonNameInverse } from "@/shared/names";
 import { english, type Translation } from "@/i18n/translation";
+import { isCapPokemon } from "./shared/pokemon";
 
 // The Sort dialog's options, in order; their labels are in src/i18n
 export const SORT_KEYS: readonly SortKey[] = [
@@ -34,11 +35,12 @@ export function sortMoves(
   { by, descending }: MoveSortOrder = DEFAULT_MOVE_SORT,
   generation: Generation = LATEST_GENERATION,
   { locale, names }: Translation = english,
+  format = "",
 ): string[] {
   const { compare } = new Intl.Collator(locale, { sensitivity: "base" });
   const direction = descending ? -1 : 1;
   const typeName = (move: string) => {
-    const type = moveTypeIn(move, generation);
+    const type = moveTypeIn(move, generation, format);
     return type ? names.type(type) : "";
   };
   return [...moves].sort(
@@ -48,8 +50,12 @@ export function sortMoves(
   );
 }
 
-// Smogon's singles tiers from the most to the least restricted, then unranked
+// As Showdown's teambuilder orders them: the CAP tiers, which only the CAP format
+// lists, then Smogon's singles tiers from the most to the least restricted, then unranked
 const TIER_RANK = [
+  "CAP",
+  "CAP NFE",
+  "CAP LC",
   "AG",
   "Uber",
   "OU",
@@ -100,8 +106,9 @@ function sortValue(
   switch (by) {
     case "name":
       return 0;
+    // CAP pokemon count down from -1, so they sort in the order they were made
     case "num":
-      return entry?.num ?? 0;
+      return Math.abs(entry?.num ?? 0);
     case "format":
       return tierRank(pokemon, generation, format);
     case "bst": {
@@ -118,8 +125,11 @@ function sortValue(
 }
 
 // MissingNo. and the Pokestar pokemon have no real number, tier, or stats,
-// so every sort but name lists them last
-const isOddball = (pokemon: string) => (pokedex[pokemon]?.num ?? 0) <= 0;
+// so every sort but name lists them last. CAP pokemon lack only a real number.
+const isOddball = (pokemon: string, by: SortKey) =>
+  by !== "name" &&
+  (pokedex[pokemon]?.num ?? 0) <= 0 &&
+  (by === "num" || !isCapPokemon(pokemon));
 
 // Sorts pokemon IDs by the chosen key, with ties broken by name. Names sort
 // case-insensitively in the current language, and formes stay grouped after
@@ -142,7 +152,7 @@ export function sortPokemon(
   const direction = descending ? -1 : 1;
   return [...pokemon].sort(
     (a, b) =>
-      (by === "name" ? 0 : Number(isOddball(a)) - Number(isOddball(b))) ||
+      Number(isOddball(a, by)) - Number(isOddball(b, by)) ||
       direction *
         (sortValue(a, by, generation, format) -
           sortValue(b, by, generation, format)) ||

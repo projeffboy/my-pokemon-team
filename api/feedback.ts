@@ -68,8 +68,16 @@ const isOptionalString = (value: unknown, maxLength: number) =>
 // Keeps a visitor-supplied detail on its own line, so it cannot add a fake one
 const oneLine = (text: string) =>
   text.replace(/\s*[\r\n\u2028\u2029]\s*/g, " ");
-const isJpeg = (value: unknown): value is string =>
-  typeof value === "string" && value.startsWith(JPEG_PREFIX);
+// Padded base64 that starts with "/9j/", the encoding of JPEG's FF D8 FF signature
+const isJpeg = (value: unknown): value is string => {
+  if (typeof value !== "string" || !value.startsWith(JPEG_PREFIX)) return false;
+  const data = value.slice(JPEG_PREFIX.length);
+  return (
+    data.startsWith("/9j/") &&
+    data.length % 4 === 0 &&
+    /^[A-Za-z0-9+/]*={0,2}$/.test(data)
+  );
+};
 
 // The screenshot and uploaded images, or undefined if they are invalid or too large
 export function readImages(screenshot: unknown, images: unknown) {

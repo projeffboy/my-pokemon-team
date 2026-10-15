@@ -136,7 +136,7 @@ test("moves outside the old website's learnsets, such as sketched ones, are name
   ]);
   expect(text).toBe(
     "Smeargle @ Focus Sash\nAbility: Own Tempo\n-\n- Spore\n-\n-\n\n" +
-      "Smeargle @ \nAbility: Moody\n-\n- Spore\n-\n-\n\n" +
+      "Smeargle\nAbility: Moody\n-\n- Spore\n-\n-\n\n" +
       "Floette-Mega @ Floettite\nAbility: No Ability\n-\n-\n-\n-\n\n",
   );
 });
@@ -165,7 +165,7 @@ test("abilities missing from the old website's pokedex are named and left out", 
     },
   ]);
   expect(gengar.text).toBe(
-    "Gengar @ \nAbility: No Ability\n- Shadow Ball\n-\n-\n-\n\n",
+    "Gengar\nAbility: No Ability\n- Shadow Ball\n-\n-\n-\n\n",
   );
   const empoleon = planOldWebsiteTeam(
     createTeam({ name: "empoleon", item: "leftovers", ability: "Defiant" }),

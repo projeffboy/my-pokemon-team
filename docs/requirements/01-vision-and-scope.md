@@ -68,14 +68,14 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
   - F1.3 Randomize [Ash]: a random team, pokemon, or set details.
   - F1.4 Undo and Redo [Ash]
 - **F2 Game Data**: the pokemon, moves, items, abilities, and rules of the chosen generation or game.
-  - F2.1 Generation Profile, one of: Generations 6-9 combined, a single generation [Ash], or Pokemon Champions [Ash]. Let's Go, Legends: Arceus, and Legends: Z-A come with PF3.
+  - F2.1 Generation Profile, one of: Generations 6-9 combined, a single generation [Ash], Pokemon Champions [Ash], or Legends: Z-A [Ash]. Let's Go and Legends: Arceus come with PF3.
   - F2.2 Generation Transfer [Ash]: previews and applies the changes a team needs when its generation or game changes.
   - F2.3 Data Update Tooling
     - F2.3.1 Game Data Update, from Pokemon Showdown
     - F2.3.2 Translation Update, from PokeAPI [Ash]
 - **F3 Pokemon Search**: finding a pokemon, move, item, or ability for a slot.
   - F3.1 Search by Name
-  - F3.2 Filters: format, type, region, viable moves only, and ability [Ash].
+  - F3.2 Filters: format, type, region, viable moves only, viable items only [Ash], and ability [Ash].
   - F3.3 Sort [Ash]
   - F3.4 Option Views, one of: list, grid [Ash], or big grid [Ash].
   - F3.5 Types Display [Ash]
@@ -115,15 +115,15 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
 
 Each has a GitHub issue that names its ID. The issue holds the work, and its milestone holds the release.
 
-| ID  | Planned feature                                                                                                      | State                                                                                                |
-| --- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5       | Planned                                                                                              |
-| PF2 | F10.2 Team transfer to the old website, as a share link                                                              | Built on 14 October 2026                                                                             |
-| PF3 | Let's Go and the Legends games, with their training values. The generation menu lists them in its Coming soon group. | Planned                                                                                              |
-| PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                               | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
-| PF5 | Verified sender domain for feedback                                                                                  | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
-| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, which no part of the page shows today           | Planned                                                                                              |
-| PF7 | F6.1 Notice of dropped entries: telling a visitor which entries a link or saved team lost to a data update           | Planned                                                                                              |
+| ID  | Planned feature                                                                                                    | State                                                                                                |
+| --- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
+| PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5     | Planned                                                                                              |
+| PF2 | F10.2 Team transfer to the old website, as a share link                                                            | Built on 14 October 2026                                                                             |
+| PF3 | Let's Go and Legends: Arceus, with their training values. The generation menu lists them in its Coming soon group. | Planned                                                                                              |
+| PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                             | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
+| PF5 | Verified sender domain for feedback                                                                                | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
+| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, which no part of the page shows today         | Planned                                                                                              |
+| PF7 | F6.1 Notice of dropped entries: telling a visitor which entries a link or saved team lost to a data update         | Planned                                                                                              |
 
 ### Not part of the plan
 
@@ -136,7 +136,7 @@ Not intended for now. None of these is ruled out for good; each would first need
 
 ### Dependencies and limitations
 
-- Pokemon Showdown supplies the game data, the sprites, and the icon sheets. Sprites load from its servers, so they are missing where those servers are unreachable or blocked, as at many schools. REQ-INTF-18 asks for sprites that work there.
+- Pokemon Showdown supplies the game data, the sprites, and the icon sheets. Sprites load from its servers, so they are missing when those servers are down. Where a network blocks them, as at many schools, the site loads the sprites through its own address instead (REQ-INTF-18).
 - PokeAPI supplies the names in other languages. A name it lacks appears in English.
 - Resend delivers feedback email from its shared address, which can reach only the Site Owner's own address. That is all feedback needs: it goes only to the owner, who replies from their own mail to the player's reply address.
 - Playwire places the ads that pay for the site.
@@ -148,7 +148,7 @@ The Site Owner's one real worry is a takedown by the rights holders, RISK-8 ([08
 
 - **RISK-1.** A data update renames or removes a pokemon, move, or item, and old share links and saved teams silently lose it. The update script reports those names before release (REQ-DATA-6), and PF7 will tell the visitor.
 - **RISK-2.** The browser clears its site storage and the saved teams are lost. Team backups keep a copy (REQ-BKUP-1 to REQ-BKUP-8), and the site says when it could not save (REQ-COLL-9).
-- **RISK-3.** Pokemon Showdown stops serving sprites to other sites, or changes its data layout. The icon sheets are bundled, the data update writes only the fields the site reads (REQ-DATA-5), and sprites that do not depend on Showdown's servers are planned (REQ-INTF-18).
+- **RISK-3.** Pokemon Showdown stops serving sprites to other sites, or changes its data layout. The icon sheets are bundled, and the data update writes only the fields the site reads (REQ-DATA-5). Sprites still come from Showdown's servers, even when the site forwards them to a network that blocks Showdown (REQ-INTF-18).
 - **RISK-4.** A change to the page's structure removes the top ad banner, and revenue drops unnoticed. The banner's place is a requirement (REQ-INTF-5) that is checked on the production site.
 - **RISK-5.** The maintainer is away, or does not hear of it, when a new game or regulation comes out, and the 2-day target of BR-3 is missed. Data updates are scripted and report what changed (REQ-DATA-1, REQ-DATA-6), every change passes the automated checks before it deploys, and a scheduled workflow tells the maintainer within a day when Showdown changes data the site uses (REQ-DATA-12).
 - **RISK-6.** A wrong analysis result goes unreported, and players stop trusting the scores. Each score shows its reasons (REQ-ANLY-7), the rules have automated tests, and players can report errors through feedback (REQ-FEED-1).

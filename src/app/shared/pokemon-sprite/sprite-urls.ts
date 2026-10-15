@@ -1,7 +1,9 @@
 // scripts/update-data.ts loads this file on its own, so it can only import types
 import type { Generation } from "@/types";
 
-const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
+export const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
+// vercel.json and vite.config.ts forward this path of the site to SHOWDOWN_SPRITES
+export const PROXIED_SPRITES = "/showdown-sprites";
 
 // Showdown has no sprite under these names, because they look like another forme
 const FILENAME_EXCEPTIONS: Record<string, string> = {
@@ -58,8 +60,10 @@ function spriteFolders(
   isSmall: boolean,
   generation: Generation,
 ) {
-  // Showdown has not animated the Legends: Z-A megas, which start at 1320 + 93
-  if (num === 0 || (iconIndex ?? -1) >= 1320 + 93) return ["gen5"];
+  // Showdown has not animated the Legends: Z-A megas, which start at 1320 + 93.
+  // The CAP pokemon's icons come after them, but their numbers are negative.
+  if (num === 0 || ((num ?? 0) > 0 && (iconIndex ?? -1) >= 1320 + 93))
+    return ["gen5"];
   const past = PAST_FOLDERS[generation];
   const gen5Only = GEN5_ONLY.includes(pokemon);
   if (past === "gen5ani" || (!past && !isSmall)) {
@@ -95,7 +99,14 @@ export function spriteUrls(
     generation,
   );
   const variant = shiny && folders[0] !== "gen1rb" ? "-shiny" : "";
-  const url = (folder: string) =>
-    `${SHOWDOWN_SPRITES}/${folder}${variant}/${filename}.${folder.endsWith("ani") ? "gif" : "png"}`;
-  return { filename, sources: folders.map(url) };
+  const paths = folders.map(
+    folder =>
+      `${folder}${variant}/${filename}.${folder.endsWith("ani") ? "gif" : "png"}`,
+  );
+  return {
+    filename,
+    sources: paths.map(path => `${SHOWDOWN_SPRITES}/${path}`),
+    // The same ones through the site's own address, for networks that block Showdown
+    proxied: paths.map(path => `${PROXIED_SPRITES}/${path}`),
+  };
 }
