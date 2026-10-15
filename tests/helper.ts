@@ -25,7 +25,7 @@ export const goToSite = async (page: Page) => {
   await expect(page.locator("header .MuiSelect-nativeInput")).toHaveValue("9");
 };
 
-// Below md, the More button beside the slot tabs also hides the team toolbar
+// Below md, the team is shown in slot tabs instead of cards
 export const isMdDown = (page: Page) =>
   (page.viewportSize()?.width ?? Infinity) < breakpointValues.md;
 
@@ -64,22 +64,6 @@ export const openManageTeamMenu = async (page: Page) => {
   await expect(page.getByRole("menu")).toBeVisible();
 };
 
-// Turns on Advanced, which puts Filters and Sort in the dropdowns. Its switch is in the
-// toolbar from md, and in the Manage team menu on phones and tablets.
-export const turnOnAdvanced = async (page: Page) => {
-  if (!isMdDown(page)) {
-    const toggle = page.getByRole("button", { name: "Advanced", exact: true });
-    if ((await toggle.getAttribute("aria-pressed")) !== "true")
-      await toggle.click();
-    return;
-  }
-  await openManageTeamMenu(page);
-  const item = page.getByRole("menuitemcheckbox", { name: "Advanced" });
-  if ((await item.getAttribute("aria-checked")) !== "true") await item.click();
-  await page.keyboard.press("Escape");
-  await expect(page.getByRole("menu")).toBeHidden();
-};
-
 export const clickMenuItem = async (page: Page, name: string) => {
   await page.getByRole("menuitem", { name, exact: true }).click();
   await expect(page.getByRole("menu")).toBeHidden();
@@ -107,7 +91,6 @@ const openListDialog = async (
   name: "Filters" | "Sort",
   list: "name" | "move1" = "name",
 ) => {
-  await turnOnAdvanced(page);
   await page
     .getByRole("combobox", { name: new RegExp(`^Pokemon \\d's ${list}$`) })
     .first()
@@ -137,6 +120,12 @@ export const selectDialogOption = async (
 export const closeDialog = async (page: Page, button = "Done") => {
   await page.getByRole("button", { name: button, exact: true }).click();
   await expect(page.getByRole("dialog")).toBeHidden();
+};
+
+// A link to another site opens in a new tab, so the current team stays open
+export const expectToOpenInNewTab = async (link: Locator) => {
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
 };
 
 const ANALYSIS_TABS: Record<string, string> = {
@@ -224,6 +213,32 @@ export const selectMove = async (
   await input.fill(move);
   await page.getByRole("listbox").getByText(move, { exact: true }).click();
 };
+
+// Types an option's label into the dropdown named `input`, and returns the listed option
+export const findOption = async (page: Page, input: string, label: string) => {
+  const combobox = page.getByRole("combobox", { name: input });
+  const option = page
+    .getByRole("option")
+    .filter({ has: page.getByText(label, { exact: true }) });
+  // Resizing can swap the team viewer, which remounts the input and drops its text
+  await expect(async () => {
+    await combobox.fill(label);
+    await expect(option).toBeVisible({ timeout: 1000 });
+  }).toPass();
+  return option;
+};
+
+// How many lines a listed option's label takes
+export const optionLabelLines = (option: Locator) =>
+  option
+    .locator("span")
+    .last()
+    .evaluate(label =>
+      Math.round(
+        label.getBoundingClientRect().height /
+          parseFloat(getComputedStyle(label).lineHeight),
+      ),
+    );
 
 // The checklist label as shown at the page's viewport width, from its English label
 const pageChecklistLabel = (page: Page, label: string) => {
