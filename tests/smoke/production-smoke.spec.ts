@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { expectImageToBeLoaded, selectAbility, selectPokemon } from "helper";
+import en from "@/i18n/en";
 
 test.beforeEach(async ({ page, baseURL }) => {
   const appHost = new URL(baseURL!).host;
@@ -46,17 +47,19 @@ test("preserves selections after reloading", async ({ page }) => {
   expect(pageErrors).toEqual([]);
 });
 
-test("names what the site does in its title and description", async ({
-  page,
-}) => {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  await expect(page).toHaveTitle(
-    "My Pokemon Team - Pokemon Teambuilder and Team Planner",
-  );
-  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
-    "content",
-    /^The best Pokemon teambuilder and team planner /,
-  );
+test.describe("without JavaScript, as crawlers read it", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("names what the site does in its title and description", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expect(page).toHaveTitle(en.pageTitle);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /^The best Pokemon teambuilder and team planner /,
+    );
+  });
 });
 
 test("opens a saved team link in the built app", async ({ page }) => {
