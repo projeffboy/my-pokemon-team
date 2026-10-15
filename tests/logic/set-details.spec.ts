@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
+  LEGACY_LINK_PARSING_OPTIONS,
   parseTeamsText,
   parseTeamText,
   serializeTeam,
@@ -7,7 +8,9 @@ import {
 } from "@/store/team-text";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
-import { LEGENDS_ARCEUS, LETS_GO } from "@/shared/generation-rules";
+import { LEGENDS_ARCEUS, LEGENDS_ZA, LETS_GO } from "@/shared/generation-rules";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import type { Generation } from "@/types";
 
 const fullSet = `Chompy (Garchomp) (F) @ Choice Scarf
 Ability: Rough Skin
@@ -72,8 +75,36 @@ test.describe("set details in Showdown text", () => {
       gender: "M",
     });
     expect(serializeTeam(team)).toBe(
-      "Garchomp (M) @ \nAbility: No Ability\n- Earthquake\n-\n-\n-\n\n",
+      "Garchomp (M)\nAbility: No Ability\n- Earthquake\n-\n-\n-\n\n",
     );
+  });
+
+  test("a set without an item leaves out the @, as Showdown does", () => {
+    const [member] = createTeam({
+      name: "pikachu",
+      nickname: "Sparky",
+      gender: "F",
+      move1: "thunderbolt",
+    });
+    const text = serializeTeam([member]);
+    expect(text.split("\n")[0]).toBe("Sparky (Pikachu) (F)");
+    expect(parseTeamText(text)[0]).toEqual(member);
+    // Text and links made before keep reading the same
+    for (const line of ["Pikachu", "Pikachu (F)", "Sparky (Pikachu) (F)"]) {
+      const set = "\nAbility: Static\n- Thunderbolt";
+      expect(parseTeamText(`${line} @ ${set}`), line).toEqual(
+        parseTeamText(`${line}${set}`),
+      );
+    }
+  });
+
+  test("a nickname holding an @ round-trips without an item", () => {
+    for (const nickname of ["Mew@x", "a@b"]) {
+      const [member] = createTeam({ name: "pikachu", nickname });
+      const text = serializeTeam([member]);
+      expect(text.split("\n")[0]).toBe(`${nickname} (Pikachu)`);
+      expect(parseTeamText(text)[0], nickname).toEqual(member);
+    }
   });
 
   test("clamps stats and levels, and drops unknown natures and tera types", () => {
@@ -110,6 +141,72 @@ test.describe("set details in Showdown text", () => {
     expect(
       parseTeamsText(`=== [gen2] Gold ===\n\n${text}`)[0]?.team[0]?.happiness,
     ).toBe(70);
+  });
+
+  test("Champions and Legends: Arceus leave out the IVs they have no fields for", () => {
+    const farigiraf = `Farigiraf @ Electric Seed
+Ability: Armor Tail
+EVs: 252 HP / 4 Def / 252 SpD
+Relaxed Nature
+IVs: 0 Atk / 0 Spe
+- Trick Room`;
+    const [champions] = parseTeamText(farigiraf, 9, CHAMPIONS_FORMAT);
+    expect(champions).toMatchObject({
+      name: "farigiraf",
+      nature: "relaxed",
+      evs: { hp: 252, def: 4, spd: 252 },
+    });
+    expect(champions.ivs).toBeUndefined();
+    expect(serializeTeam([champions], 9, CHAMPIONS_FORMAT)).not.toContain(
+      "IVs:",
+    );
+    expect(
+      parseTeamText("Stantler\nIVs: 0 Atk", 8, LEGENDS_ARCEUS)[0].ivs,
+    ).toBeUndefined();
+    expect(parseTeamText(farigiraf)[0].ivs).toEqual({ atk: 0, spe: 0 });
+    // Links made before this keep loading the details they carry
+    expect(
+      parseTeamText(
+        farigiraf,
+        9,
+        CHAMPIONS_FORMAT,
+        LEGACY_LINK_PARSING_OPTIONS,
+      )[0].ivs,
+    ).toEqual({ atk: 0, spe: 0 });
+  });
+
+  test("other details follow the selected game like happiness", () => {
+    const text = `Pikachu (F) @ Light Ball
+Shiny: Yes
+Tera Type: Electric
+EVs: 252 SpA
+Timid Nature
+- Thunderbolt`;
+    const parse = (generation: Generation, format = "") =>
+      parseTeamText(text, generation, format)[0];
+    expect(parse(9)).toMatchObject({
+      gender: "F",
+      shiny: true,
+      teraType: "Electric",
+      evs: { spa: 252 },
+      nature: "timid",
+    });
+    expect(parse(9, CHAMPIONS_FORMAT).teraType).toBeUndefined();
+    expect(parse(9, LEGENDS_ZA).teraType).toBeUndefined();
+    expect(parse(8)).toMatchObject({ gender: "F", shiny: true });
+    expect(parse(8).teraType).toBeUndefined();
+    expect(parse(8, LEGENDS_ARCEUS).evs).toBeUndefined();
+    expect(parse(7, LETS_GO).evs).toEqual({ spa: 252 });
+    expect(parse(2)).toMatchObject({ gender: "F", shiny: true });
+    expect(parse(2).nature).toBeUndefined();
+    const gen1 = parse(1);
+    expect(gen1).toMatchObject({ name: "pikachu", move1: "thunderbolt" });
+    expect([gen1.gender, gen1.shiny, gen1.teraType, gen1.nature]).toEqual([
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]);
   });
 
   test("ignores malformed happiness and retains both endpoints", () => {
@@ -300,6 +397,45 @@ Garchomp
     ]);
   });
 
+  test("splits a Showdown box of more than six pokemon into teams of six", () => {
+    const box = [
+      "Bulbasaur",
+      "Charmander",
+      "Squirtle",
+      "Pikachu",
+      "Eevee",
+      "Snorlax",
+      "Lapras",
+      "Ditto",
+      "Mew",
+      "Chikorita",
+      "Cyndaquil",
+      "Totodile",
+      "Togepi",
+      "Mareep",
+    ];
+    const teams = parseTeamsText(
+      `=== [gen9ou-box] Box 1 ===\n\n${box.map(name => `${name}\n- Tackle`).join("\n\n")}\n\n=== [gen9uu] Sun ===\n\nTorkoal\n`,
+    );
+    expect(
+      teams.map(({ name, format, team }) => [
+        name,
+        format,
+        team.map(({ name }) => name).filter(Boolean),
+      ]),
+    ).toEqual([
+      ["Box 1", "OU: Over Used", box.slice(0, 6).map(n => n.toLowerCase())],
+      [
+        "Box 1 (2)",
+        "OU: Over Used",
+        box.slice(6, 12).map(n => n.toLowerCase()),
+      ],
+      ["Box 1 (3)", "OU: Over Used", box.slice(12).map(n => n.toLowerCase())],
+      ["Sun", "UU: Under Used", ["torkoal"]],
+    ]);
+    expect(parseTeamsText(box.join("\n\n"))).toHaveLength(3);
+  });
+
   test("serializes every saved team under a header", () => {
     const text = serializeTeams([
       createSavedTeam({
@@ -311,7 +447,7 @@ Garchomp
       createSavedTeam({ team: createTeam({ name: "torkoal" }) }),
     ]);
     expect(text).toBe(
-      "=== [gen8ou] Rain ===\n\nKingdra @ \nAbility: No Ability\n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal @ \nAbility: No Ability\n-\n-\n-\n-\n\n",
+      "=== [gen8ou] Rain ===\n\nKingdra\nAbility: No Ability\n- Surf\n-\n-\n-\n\n=== [gen9] Team ===\n\nTorkoal\nAbility: No Ability\n-\n-\n-\n-\n\n",
     );
     expect(parseTeamsText(text)).toHaveLength(2);
     expect(parseTeamsText(text)[1]).toMatchObject({
@@ -337,6 +473,14 @@ test("app backup names preserve slashes without changing external folder imports
     parseTeamsText("=== [gen8ou] Folder/Rain ===\n\nKingdra")[0]?.name,
   ).toBe("Rain");
   expect(
+    parseTeamsText(
+      "=== [gen9vgc2025regh] VGC/Kyogre / Groudon ===\n\nKyogre",
+    )[0]?.name,
+  ).toBe("Kyogre / Groudon");
+  expect(
+    parseTeamsText("=== [gen8ou] Ladder/Rain/Sand ===\n\nKingdra")[0]?.name,
+  ).toBe("Rain/Sand");
+  expect(
     parseTeamsText("=== [gen8ou] mypokemonteam:Rain%20OU ===\n\nKingdra")[0]
       ?.name,
   ).toBe("mypokemonteam:Rain%20OU");
@@ -353,7 +497,7 @@ test("app backup names preserve slashes without changing external folder imports
     createSavedTeam({ name: "Sun", team: createTeam({ name: "torkoal" }) }),
   ]);
   expect(text).toMatch(
-    /^Kingdra @ *\n# mypokemonteam backup: preserve team names\n/m,
+    /^Kingdra\n# mypokemonteam backup: preserve team names\n/m,
   );
   expect(
     parseTeamsText(text).map(({ name, team }) => [name, team[0].name]),

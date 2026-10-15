@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Reloading on an empty saved team now keeps that team, with its format and filters, instead of starting a new one.",
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
       "Beat Up is now typeless in Gens 2–4, as in those games.",
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",
@@ -23,11 +24,17 @@ const entries: Entry[] = [
       "Doubles OU and Doubles Uber now include Pokémon that were missing from them, such as Gen 6 Mega Tyranitar.",
       "Changing generations now swaps Giratina-Origin’s Griseous Core and Griseous Orb instead of dropping or keeping the wrong one.",
       "Switching a team to Gen 9 no longer removes Pokémon and moves that Gen 9 offers, such as Silvally and Tyranitar’s Pursuit.",
+      "Switching generations now turns female Mega Meowstic back into Meowstic-F instead of a male-only Meowstic marked female.",
       "Imported sets without an item keep their Pokémon when the nickname holds an @, such as Mew@x (Pikachu).",
       "Picking a slot’s own Pokémon again in the Name list no longer clears its moves, item and other details.",
       "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
       "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
+      "From Gen 6, choosing Hidden Power now keeps custom IVs that still give its type, such as 0 Speed for Trick Room.",
+      "Hidden Power’s IVs now update when a level change ends Hyper Training.",
+      "Ticking Shiny in Gen 2 now switches Hidden Power to the Grass or Dragon type its DVs give.",
+      "Gen 3 and Gen 4 Doubles OU now list their Pokémon, such as Salamence and Metagross, instead of none.",
+      "Importing a Showdown box with more than six Pokémon now splits it into teams of six instead of dropping the rest.",
       "Showdown backups whose team headers are indented now import as separate teams instead of one merged team.",
     ],
   },
@@ -38,6 +45,7 @@ const entries: Entry[] = [
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
       "Twenty-one more Pokémon are now animated, like Great Tusk.",
       "Matrix Analysis now notes the type Conversion gives a Pokémon, e.g. Ghost for Porygon-Z with Shadow Ball first.",
+      "Edit Pokepaste now lists each part of the text it cannot use, such as a misspelled move, and what Update does instead.",
     ],
   },
   {
