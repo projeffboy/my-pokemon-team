@@ -1,5 +1,5 @@
 import { useId, useLayoutEffect, useMemo, useRef, useState } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
+import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -270,6 +270,14 @@ const FiltersDialog = observer(function FiltersDialog() {
                   (store.filters.ability = value ?? "")
                 }
                 onClose={closeKeyboard}
+                // A tap where touch screens hide the clear button reaches the input
+                // row, which opens the list; the buttons themselves still take taps
+                sx={{
+                  [`& .${autocompleteClasses.endAdornment}`]: {
+                    pointerEvents: "none",
+                    "& > *": { pointerEvents: "auto" },
+                  },
+                }}
                 renderInput={params => (
                   <TextField
                     {...params}
