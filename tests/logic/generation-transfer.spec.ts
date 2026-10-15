@@ -709,7 +709,7 @@ test("battle formes fall back to the forme they change from before their base sp
       createTeam({ name: "urshifurapidstrikegmax", move1: "surgingstrikes" }),
       { generation: 8, format: "" },
       9,
-      "",
+      "OU: Over Used",
       data,
     ).team[0],
   ).toMatchObject({ name: "urshifurapidstrike", move1: "surgingstrikes" });
