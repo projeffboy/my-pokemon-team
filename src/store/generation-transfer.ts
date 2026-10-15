@@ -39,7 +39,11 @@ import { nicknameLimit, shortenNickname } from "@/shared/nickname";
 import pokedex from "@/data/pokedex";
 import hiddenPowerSpreads from "@/data/hidden-power-spreads";
 import { pokemonNameInverse } from "@/shared/names";
+import { pokemonAbilities } from "@/shared/pokedex";
+import { LATEST_GENERATION } from "@/shared/generations";
 import type { Locale } from "@/i18n/locales";
+import { filterPokemon } from "./filtering";
+import { generationLearnset } from "./learnsets";
 import {
   convertTraining,
   type TrainingConversion,
@@ -70,6 +74,15 @@ export function planGenerationTransfer(
   const previousRules = generationRules(from.generation, teamDataFormat(from));
   const combined = format === COMBINED_GENERATIONS_FORMAT;
   const has = (mask: number | undefined) => !!((mask ?? 0) & bit);
+  // The regular latest generation's editor is National Dex, so it keeps what that editor offers
+  const nationalDex =
+    generation === LATEST_GENERATION && !format ?
+      new Set(filterPokemon({ generation, format, type: "", region: "" }))
+    : undefined;
+  const isAvailable = (pokemon: string) =>
+    nationalDex ?
+      nationalDex.has(pokemon)
+    : has(data.pokemon[pokemon]?.generations);
   const losses: TransferLoss[] = [];
   const result = team.map((original, index) => {
     const source = {
@@ -98,11 +111,10 @@ export function planGenerationTransfer(
         field,
         ...(value && { value }),
       });
-    if (member.name && !has(entry?.generations)) {
+    if (member.name && !isAvailable(member.name)) {
       const baseSpecies = pokedex[member.name]?.baseSpecies;
       const base = baseSpecies && pokemonNameInverse(baseSpecies);
-      const baseEntry = base ? data.pokemon[base] : undefined;
-      if (!base || !baseEntry || !has(baseEntry.generations)) {
+      if (!base || !isAvailable(base)) {
         loss("pokemon", member.name);
         return createEmptyTeam()[0] ?? member;
       }
@@ -114,7 +126,7 @@ export function planGenerationTransfer(
         replacement: base,
       });
       member.name = base;
-      entry = baseEntry;
+      entry = data.pokemon[base];
     }
     const maxNicknameLength = nicknameLimit(generation, locale);
     if (member.nickname && member.nickname.length > maxNicknameLength) {
@@ -168,8 +180,8 @@ export function planGenerationTransfer(
       member.item = "";
     }
     const abilities =
-      !rules.abilities ?
-        []
+      !rules.abilities ? []
+      : nationalDex ? pokemonAbilities(member.name, generation)
       : Object.entries(entry?.abilities ?? {})
           .filter(([, mask]) => has(mask))
           .map(([ability]) => ability)
@@ -193,10 +205,12 @@ export function planGenerationTransfer(
       else loss("ability", member.ability);
       member.ability = replacement ?? "";
     }
+    const learnset =
+      nationalDex && new Set(generationLearnset(member.name, generation));
     for (const key of MOVE_KEYS) {
       const move = member[key];
       const id = move.startsWith("hiddenpower") ? "hiddenpower" : move;
-      if (move && !has(entry?.moves[id])) {
+      if (move && !(learnset ? learnset.has(move) : has(entry?.moves[id]))) {
         loss("move", move);
         member[key] = "";
       }

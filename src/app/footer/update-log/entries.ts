@@ -22,6 +22,7 @@ const entries: Entry[] = [
       "Opening a shared team on your first visit no longer saves an extra empty team beside it.",
       "Doubles OU and Doubles Uber now include Pokémon that were missing from them, such as Gen 6 Mega Tyranitar.",
       "Changing generations now swaps Giratina-Origin’s Griseous Core and Griseous Orb instead of dropping or keeping the wrong one.",
+      "Switching a team to Gen 9 no longer removes Pokémon and moves that Gen 9 offers, such as Silvally and Tyranitar’s Pursuit.",
     ],
   },
   {
