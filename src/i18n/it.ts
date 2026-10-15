@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const it: Messages = {
+  pageTitle: "My Pokemon Team - Creatore e pianificatore di squadre Pokémon",
   // The header
   beta: "Beta",
   generation,
@@ -30,10 +31,11 @@ const it: Messages = {
   },
   generationSelect: "Generazione",
   comingSoon: "In arrivo",
+  generationGroups: { spinOffs: "Spin-off", mainSeries: "Serie principale" },
   combinedGenerations: {
     label: "Generazioni 6–9",
     short: "Gen. 6–9",
-    description: "Combina le opzioni di tutti i giochi delle generazioni 6–9",
+    description: "Combina tutti i giochi delle generazioni 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -49,9 +51,13 @@ const it: Messages = {
     short: "Vecchio sito",
     title: "Passare al vecchio sito?",
     description:
-      "La tua squadra attuale non verrà trasferita al vecchio sito. Le squadre già salvate qui rimarranno in questa versione.",
+      "La tua squadra attuale si aprirà sul vecchio sito. Le squadre salvate qui rimarranno in questa versione.",
     go: "Vai al vecchio sito",
     goLong: "Vai al vecchio sito",
+    generationsOnly: (generations: string) =>
+      `Il vecchio sito include solo le ${generations}.`,
+    leftOut: "Questi elementi non verranno trasferiti:",
+    goWithTeam: "Vai con la mia squadra",
   },
   feedback: {
     button: "Invia feedback",
@@ -111,6 +117,8 @@ const it: Messages = {
     teamEmpty: "La squadra Pokémon è vuota",
     linkCopied: "Link della squadra Pokémon copiato",
     linkNotCopied: "Impossibile copiare il link.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La generazione o il gioco di questo link non è supportato, quindi è stato aperto in ${profile}.`,
     nothingToCopy: "Squadra vuota, niente da copiare.",
     teamCopied: "Squadra copiata.",
     teamNotCopied: "Impossibile copiare la squadra.",
@@ -131,7 +139,7 @@ const it: Messages = {
     advanced: "Altri dettagli",
     advancedFor: (slot: number) => `Altri dettagli per lo slot ${slot}`,
     details: "Dettagli",
-    showMoveTypes: "Mostra i tipi delle mosse",
+    showTypes: "Mostra i tipi",
     about: (pokemon: string) => `Info su ${pokemon}`,
     dragHint: "Tieni premuto e trascina per riordinare",
     moveToSlot: (pokemon: string) => `Sposta ${pokemon} in un altro slot`,
@@ -163,7 +171,8 @@ const it: Messages = {
       `impostare ${label} a ${value} per ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `scambiare ${first} e ${second}`,
-    moreChanges: (count: number) => `${count} altre modifiche`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 altra modifica" : `${count} altre modifiche`,
     undoAction: (action: string) => `Annulla: ${action}`,
     redoAction: (action: string) => `Ripeti: ${action}`,
     randomizeTeamAction: "generare una squadra casuale",
@@ -174,7 +183,8 @@ const it: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Squadra ${number}`,
     unnamedTeam: "Squadra",
-    copyOf: (name: string) => `Copia di ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} di ${name}` : `Copia di ${name}`,
     learnsetsFailed:
       "Impossibile caricare gli elenchi delle mosse. Ricarica la pagina per riprovare.",
   },
@@ -223,6 +233,11 @@ const it: Messages = {
       status: { label: "Mossa di stato", short: "Stato" },
       phazer: { label: "Phazer" },
       boosting: { label: "Mossa potenziante", short: "Setup" },
+      priority: {
+        label: "Mossa prioritaria",
+        short: "Priorità",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Mossa Volt-turn",
         short: "Volt-turn",
@@ -257,6 +272,8 @@ const it: Messages = {
       cause: string | undefined,
     ) =>
       `${type} fa ${multiplier}x a ${pokemon} (${types})${cause ? ` con ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} lo rende di tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -446,7 +463,7 @@ const it: Messages = {
     removed: {
       item: "Strumento rimosso",
       ability: "Abilità rimossa",
-      moves: "Mosse rimosse:",
+      move: "Mossa rimossa",
       details: "Dettagli rimossi",
     },
     ivsUnused: (where: string) => `Gli IV non si applicano in ${where}.`,
@@ -461,6 +478,9 @@ const it: Messages = {
         `${count} ${count === 1 ? "strumento" : "strumenti"}`,
       ability: (count: number) => `${count} abilità`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} su ${total} ${carried === 1 ? "viene mantenuto" : "vengono mantenuti"}`,
+    removedSummary: (removed: string) => `Rimozione di ${removed}`,
     modify: "Aggiorna squadra attuale",
     copy: "Copia in una nuova squadra",
     createEmpty: "Crea squadra vuota",
@@ -661,6 +681,10 @@ const it: Messages = {
       [
         "Mossa potenziante",
         "Mosse che aumentano le tue statistiche (preferibilmente di 2 o più livelli), come Danzaspada e Calmamente.",
+      ],
+      [
+        "Mossa prioritaria",
+        "Mosse che infliggono danni e agiscono prima della maggior parte delle altre, a prescindere dalla Velocità. Es. Extrarapido, Sbigoattacco, Acquagetto, Pugnoscarica.",
       ],
       [
         "Strumento Choice",

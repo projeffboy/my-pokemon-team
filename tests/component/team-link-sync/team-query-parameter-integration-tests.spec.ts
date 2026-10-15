@@ -1,5 +1,6 @@
 import { test, expect } from "fixtures";
 import { toBase64Url } from "@/app/shared/base64url";
+import en from "@/i18n/en";
 import {
   clickMenuItem,
   closeDialog,
@@ -11,6 +12,12 @@ import {
 } from "helper";
 import type { Page } from "@playwright/test";
 import type { StoredState } from "@/store/teams-storage";
+
+const generationValue = (page: Page) =>
+  page.locator("header .MuiSelect-nativeInput");
+
+const unsupportedMessage = (page: Page) =>
+  page.getByRole("alert").filter({ hasText: "isn’t supported" });
 
 const savedState = (page: Page) =>
   page.evaluate(
@@ -182,6 +189,9 @@ test.describe("Share Link - Integration Tests", () => {
         await expect(
           page.getByRole("combobox", { name: "Generation" }),
         ).toContainText(/Generations 6–9|Gens 6–9/);
+        await expect(unsupportedMessage(page)).toHaveText(
+          en.team.linkGenerationUnsupported("Generations 6–9"),
+        );
         await expect(page).toHaveURL(/gen=6-9/);
         await expect(page).not.toHaveURL(/game=/);
       }
@@ -283,6 +293,98 @@ test.describe("Share Link - Navigation", () => {
     await expect(pokemonName).toHaveValue("Meowscarada");
     await page.goBack();
     await expect(pokemonName).toHaveValue("Skeledirge");
+  });
+});
+
+test.describe("Share Link - Unsupported gen and game", () => {
+  // Avoid overlapping app reloads against the shared development server.
+  test.describe.configure({ mode: "default" });
+
+  // Each scenario navigates to its own starting link.
+  test.use({
+    autoGoToSite: async ({}, use) => {
+      await use();
+    },
+  });
+
+  test("a fresh visit to an unsupported gen opens Generations 6–9 with a message, until reload", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=10", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Generations 6–9"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveCount(0);
+  });
+
+  test("a returning visitor's unsupported game opens Generations 6–9, not their last generation", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=8", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("8");
+    await page.goto("/?game=foo", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Generations 6–9"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+    await expect(page).not.toHaveURL(/game=/);
+
+    await page.goBack({ waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("8");
+    await page.goForward({ waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+  });
+
+  test("a team link with an unsupported game opens its team in the link's gen with a message", async ({
+    page,
+  }) => {
+    const team = toBase64Url("Centiskorch\n- Fire Lash");
+    await page.goto(`/?gen=8&game=foo&team=${team}`, {
+      waitUntil: "domcontentloaded",
+    });
+    const name = page.getByLabel("Pokemon 1's name");
+    await expect(name).toHaveValue("Centiskorch");
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Fire Lash");
+    await expect(generationValue(page)).toHaveValue("8");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Gen 8"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=8(&|$)/);
+    await expect(page).not.toHaveURL(/game=/);
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(name).toHaveValue("Centiskorch");
+    await expect(generationValue(page)).toHaveValue("8");
+    await expect(unsupportedMessage(page)).toHaveCount(0);
+  });
+
+  test("back/forward navigation to an unsupported gen opens Generations 6–9 with a message", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=7", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("7");
+
+    // The app only ever replaces history entries, so create a second one by hand
+    await page.evaluate(() => history.pushState(null, "", "/?gen=99"));
+    await page.goBack();
+    await expect(generationValue(page)).toHaveValue("7");
+    await expect(unsupportedMessage(page)).toHaveCount(0);
+
+    await page.goForward();
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Generations 6–9"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+    await page.goBack();
+    await expect(generationValue(page)).toHaveValue("7");
   });
 });
 
