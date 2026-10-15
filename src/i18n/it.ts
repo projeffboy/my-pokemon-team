@@ -225,29 +225,72 @@ const it: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che piazza trappole sul campo avversario: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che rimuove le trappole dal tuo campo: ${moves}.`,
+      },
       recovery: {
         label: "Recupero affidabile",
         short: "Recupero",
         shorter: "Cura",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa curativa affidabile, come ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Mossa di stato", short: "Stato" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Mossa potenziante", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che cura i problemi di stato della tua squadra: ${moves}.`,
+      },
+      status: {
+        label: "Mossa di stato",
+        short: "Stato",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che infligge sempre un problema di stato quando va a segno, come ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che costringe l'avversario a cambiare: ${moves}.`,
+      },
+      boosting: {
+        label: "Mossa potenziante",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che aumenta le sue statistiche di almeno due livelli in totale, come ${moves}.`,
+      },
       priority: {
         label: "Mossa prioritaria",
         short: "Priorità",
         shorter: "Prio",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che infligge danni e agisce prima della maggior parte delle altre, a prescindere dalla Velocità, come ${moves}.`,
       },
       voltTurn: {
         label: "Mossa Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Insegna a un Pokémon una mossa che attacca e poi lo fa rientrare: ${moves}.`,
       },
-      choice: { label: "Strumento Choice", short: "Choice" },
+      choice: {
+        label: "Strumento Choice",
+        short: "Choice",
+        hint: (items: string) =>
+          `Fai tenere a un Pokémon uno strumento Choice: ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} con ${other}`,
+    unavailable: "In questo gioco niente ricopre questo ruolo.",
   },
   matrix: {
     matrix: "Matrice",

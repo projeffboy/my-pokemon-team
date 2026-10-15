@@ -241,6 +241,19 @@ export const isItemAvailable = (
   generation: Generation,
   format = "",
 ) => availableItems([item], generation, format).length > 0;
+// Whether any pokemon learns the move in the game. The regular latest-generation editor is
+// National Dex, so every move is in it.
+export function isMoveAvailable(
+  move: string,
+  generation: Generation,
+  format = "",
+) {
+  if (generation === 9 && !format) return true;
+  const bit = generationBit(generation, format);
+  return Object.values(availability?.pokemon ?? {}).some(
+    ({ moves }) => !!((moves[move] ?? 0) & bit),
+  );
+}
 // Every move that any of the pokemon learns in the generation
 export const generationMoves = (
   pokemon: readonly string[],

@@ -49,6 +49,7 @@ const entries: Entry[] = [
   {
     date: "Oct 14, 2026",
     changes: [
+      "Hovering or tapping a checklist role now shows which pokemon fill it, e.g. Gigalith: Stealth Rock, or what would fill it.",
       "The Old website button now takes your current team along, after naming anything the old website can’t hold, such as EVs.",
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
       "Twenty-one more Pokémon are now animated, like Great Tusk.",

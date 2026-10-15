@@ -1,7 +1,15 @@
 import { test, expect } from "@playwright/test";
-import { evaluateChecklist } from "@/store/checklist";
+import {
+  checklist,
+  checklistHint,
+  describeFiller,
+  evaluateChecklist,
+  type ChecklistItemKey,
+} from "@/store/checklist";
+import { learnsetsReady } from "@/store/learnsets";
 import type { Generation, ReadonlyTeam } from "@/types";
 import en from "@/i18n/en";
+import { english, loadTranslation, type Translation } from "@/i18n/translation";
 import { createTeam } from "./shared/team";
 
 // The passed checks, by their English labels
@@ -393,6 +401,118 @@ test("Fling counts the selected item's guaranteed status only when usable", () =
   team[0].item = "flameorb";
   expect(status(4)).toBe(false);
   expect(status(7)).toBe(true);
+});
+
+const role = (key: ChecklistItemKey) => {
+  const item = checklist
+    .flatMap(group => group.items)
+    .find(item => item.key === key);
+  if (!item) throw new Error(`Unknown checklist role: ${key}`);
+  return item;
+};
+
+// Each pokemon that fills the role and how, as its tooltip lists them
+const fillers = (
+  team: ReadonlyTeam,
+  key: ChecklistItemKey,
+  translation?: Translation,
+) =>
+  evaluateChecklist(team)
+    .flatMap(group => group.items)
+    .find(item => item.key === key)
+    ?.fillers.map(filler => describeFiller(role(key), filler, translation));
+
+test("a filled role names each pokemon and the moves or item that fill it", () => {
+  const team = createTeam(
+    { name: "gigalith", move1: "stoneedge", move2: "stealthrock" },
+    { name: "buzzwole", item: "choiceband" },
+    { name: "tapulele", item: "choicescarf" },
+    { name: "vaporeon", move1: "scald", move2: "protect", move3: "wish" },
+    {
+      name: "lokix",
+      move1: "firstimpression",
+      move2: "uturn",
+      move3: "suckerpunch",
+    },
+  );
+  expect(fillers(team, "entryHazard")).toEqual(["Gigalith: Stealth Rock"]);
+  expect(fillers(team, "choice")).toEqual([
+    "Buzzwole: Choice Band",
+    "Tapu Lele: Choice Scarf",
+  ]);
+  expect(fillers(team, "recovery")).toEqual(["Vaporeon: Wish and Protect"]);
+  expect(fillers(team, "priority")).toEqual([
+    "Lokix: First Impression and Sucker Punch",
+  ]);
+  // Scald burns only sometimes
+  expect(fillers(team, "status")).toEqual([]);
+});
+
+test("a role's fillers are named in the current language", async () => {
+  const japanese = await loadTranslation("ja");
+  const team = createTeam({ name: "gigalith", move1: "stealthrock" });
+  expect(fillers(team, "entryHazard", japanese)).toEqual([
+    "ギガイアス：ステルスロック",
+  ]);
+});
+
+test("an unfilled role suggests what fills it in the game", async () => {
+  await learnsetsReady;
+  const hint = (key: ChecklistItemKey, generation?: Generation) =>
+    checklistHint(role(key), english, generation);
+  expect(hint("choice")).toBe(
+    "Give a pokemon a Choice item to hold: Choice Band, Choice Specs, or Choice Scarf.",
+  );
+  expect(hint("recovery")).toBe(
+    "Give a pokemon a reliable healing move, such as Recover, Roost, Slack Off, or Wish with Protect.",
+  );
+  // Gen 2 has no other hazard, and Defog clears the user's side only from Gen 6
+  expect(hint("entryHazard", 2)).toBe(
+    "Give a pokemon a move that sets entry hazards: Spikes.",
+  );
+  expect(hint("spinner", 5)).toBe(
+    "Give a pokemon a move that removes entry hazards from your side: Rapid Spin.",
+  );
+  expect(hint("spinner", 6)).toBe(
+    "Give a pokemon a move that removes entry hazards from your side: Rapid Spin or Defog.",
+  );
+  expect(hint("priority")).toBe(
+    "Give a pokemon a damaging move that goes before most other moves, regardless of Speed, such as Extreme Speed, Sucker Punch, Aqua Jet, or Quick Attack.",
+  );
+  expect(hint("priority", 1)).toBe(
+    "Give a pokemon a damaging move that goes before most other moves, regardless of Speed, such as Quick Attack.",
+  );
+  // Gen 1's Roar and Whirlwind only end wild battles, and Gen 2 has no Choice item
+  expect(hint("phazer", 1)).toBe("Nothing in this game fills it.");
+  expect(hint("choice", 2)).toBe("Nothing in this game fills it.");
+});
+
+test("an unfilled role's suggestion is in the current language", async () => {
+  await learnsetsReady;
+  const japanese = await loadTranslation("ja");
+  expect(checklistHint(role("voltTurn"), japanese)).toBe(
+    "攻撃してから手持ちと交代する技をポケモンに覚えさせましょう：とんぼがえり、ボルトチェンジ、またはクイックターン。",
+  );
+});
+
+test("callback and ally-targeted boosts are named as the moves that fill Boosting", () => {
+  const team = createTeam(
+    { name: "minccino", move1: "tidyup", move2: "tailslap" },
+    {
+      name: "lechonk",
+      item: "oranberry",
+      move1: "stuffcheeks",
+      move2: "tackle",
+    },
+    { name: "numel", ability: "Simple", move1: "howl", move2: "ember" },
+    { name: "manaphy", move1: "takeheart", move2: "scald" },
+  );
+  expect(fillers(team, "boosting")).toEqual([
+    "Minccino: Tidy Up",
+    "Lechonk: Stuff Cheeks",
+    "Numel: Howl",
+    "Manaphy: Take Heart",
+  ]);
 });
 
 const isBoosting = (
