@@ -2,6 +2,7 @@ import spreads from "@/data/hidden-power-spreads";
 import {
   MOVE_KEYS,
   STAT_KEYS,
+  type BaseStats,
   type Gender,
   type Generation,
   type TeamPokemon,
@@ -113,9 +114,41 @@ export function canHaveHiddenPowerType(
   return false;
 }
 
+// From Gen 6, where IVs no longer change its power, move as few custom IVs
+// (below 30) as the type allows, each by one. Of the 30s and 31s, set the
+// fewest to 30, preferring the spread's, so default IVs still give the spread.
+function fixedPowerPattern(
+  ivs: Partial<BaseStats> | undefined,
+  type: string,
+  spread: Partial<BaseStats>,
+) {
+  let best = 0;
+  let bestScore = Infinity;
+  for (let bits = 0; bits < 64; bits++) {
+    if (TYPES[Math.floor((bits * 15) / 63)] !== type) continue;
+    let moved = 0;
+    let outsideSpread = 0;
+    let thirties = 0;
+    let fromSpread = 0;
+    IV_ORDER.forEach((stat, i) => {
+      const odd = (bits >> i) & 1;
+      const iv = getIv(ivs, stat);
+      const spreadOdd = getIv(spread, stat) % 2;
+      if (iv < MAX_IV - 1) moved += Number(iv % 2 !== odd);
+      else if (!odd) {
+        thirties++;
+        outsideSpread += spreadOdd;
+      }
+      fromSpread += Number(odd !== spreadOdd);
+    });
+    // Each count is at most 6, so this ranks them in order.
+    const score = ((moved * 7 + outsideSpread) * 7 + thirties) * 7 + fromSpread;
+    if (score < bestScore) [best, bestScore] = [bits, score];
+  }
+  return best;
+}
+
 // Use Showdown's recommended spreads when the current IVs/DVs cannot produce the type.
-// From Gen 6, where the IVs no longer change its power, only the IVs whose
-// parity differs from the spread's change, each by one.
 export function matchHiddenPower(
   member: TeamPokemon,
   move: string,
@@ -143,11 +176,11 @@ export function matchHiddenPower(
     setDetail(member, "ivs", ivs);
     syncDvs(member, generation);
   } else if (generation >= 6) {
-    for (const stat of STAT_KEYS) {
+    const bits = fixedPowerPattern(member.ivs, type, spread.ivs);
+    IV_ORDER.forEach((stat, i) => {
       const iv = getIv(member.ivs, stat);
-      if (iv % 2 !== getIv(spread.ivs, stat) % 2)
-        setStat(member, "ivs", stat, iv ^ 1);
-    }
+      if (iv % 2 !== ((bits >> i) & 1)) setStat(member, "ivs", stat, iv ^ 1);
+    });
   } else {
     setDetail(
       member,
