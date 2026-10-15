@@ -283,6 +283,23 @@ test("delayed attacks before Gen 5 are typeless rather than immune or resisted",
   expect(coverageMatrix(jirachi, undefined, 5).Fire?.[0]?.multiplier).toBe(0.5);
 });
 
+test("Tinted Lens doubles resisted hits in the coverage matrix, but not immune ones", () => {
+  const yanmega = createTeam({
+    name: "yanmega",
+    ability: "Tinted Lens",
+    move1: "bugbuzz",
+  });
+  expect(coverageMatrix(yanmega).Fire?.[0]?.multiplier).toBe(1);
+  expect(coverageMatrix(yanmega).Grass?.[0]?.multiplier).toBe(2);
+  const venomoth = createTeam({
+    name: "venomoth",
+    ability: "Tinted Lens",
+    move1: "sludgebomb",
+  });
+  expect(coverageMatrix(venomoth).Steel?.[0]?.multiplier).toBe(0);
+  expect(coverageMatrix(venomoth).Rock?.[0]?.multiplier).toBe(1);
+});
+
 test("Beat Up is typeless before Gen 5 and Dark from Gen 5", () => {
   const sneasel = createTeam({ name: "sneasel", move1: "beatup" });
   for (const generation of [2, 3, 4] as const) {
@@ -429,4 +446,43 @@ test("restricted attacks and ordinary attacks never double-count one attacking t
     [team[0].move1, team[0].move2] = [team[0].move2, team[0].move1];
     expect(calculateTypeCoverage(team, 7)[target]).toBe(2);
   }
+});
+
+test("the defence matrix keeps a Conversion user's types and notes the type of its first move", () => {
+  const team = createTeam(
+    {
+      name: "porygonz",
+      item: "normaliumz",
+      move1: "shadowball",
+      move2: "conversion",
+    },
+    { name: "porygon2", move1: "hiddenpowerfire", move2: "conversion" },
+    { name: "porygon", move2: "thunderbolt", move3: "conversion" },
+    { name: "smeargle", move1: "conversion", move2: "closecombat" },
+  );
+  const matrix = defenceMatrix(team, undefined, 7);
+  expect(matrix.Fighting?.[0]).toEqual({
+    multiplier: 2,
+    reason:
+      "Fighting does 2x to Porygon-Z (Normal)\nConversion makes it Ghost type",
+  });
+  // Hidden Power counts as Normal, and Conversion fails on a type its user has
+  expect(matrix.Fighting?.[1]?.reason).toBe(
+    "Fighting does 2x to Porygon2 (Normal)",
+  );
+  // An empty first slot is skipped
+  expect(matrix.Ground?.[2]?.reason).toBe(
+    "Ground does 1x to Porygon (Normal)\nConversion makes it Electric type",
+  );
+  expect(matrix.Fighting?.[3]?.reason).toBe(
+    "Fighting does 2x to Smeargle (Normal)",
+  );
+  // Before Gen 6, Conversion picks one of its user's moves at random
+  expect(defenceMatrix(team, undefined, 5).Fighting?.[0]?.reason).toBe(
+    "Fighting does 2x to Porygon-Z (Normal)",
+  );
+  team[0].move2 = "";
+  expect(defenceMatrix(team, undefined, 7).Fighting?.[0]?.reason).toBe(
+    "Fighting does 2x to Porygon-Z (Normal)",
+  );
 });

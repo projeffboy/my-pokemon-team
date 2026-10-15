@@ -5,7 +5,7 @@ import pokedex from "@/data/pokedex";
 import { pokemonTypes } from "@/shared/pokedex";
 import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
-import { isPokemonType } from "@/types";
+import { isPokemonType, MOVE_KEYS } from "@/types";
 import { hiddenPowerPower } from "@/shared/hidden-power";
 
 export const activeItem = (
@@ -32,6 +32,25 @@ export function effectivePokemonTypes(
   if (ability === "RKS System" && pokemon.startsWith("silvally"))
     return [held?.onMemory ?? "Normal"];
   return pokemonTypes(pokemon, generation);
+}
+
+// Since Gen 6, Conversion changes its user to the type of its first move, which
+// for Hidden Power is Normal. Undefined when the user already has that type, as
+// Conversion then fails.
+export function conversionType(
+  member: Readonly<TeamPokemon>,
+  generation = LATEST_GENERATION,
+) {
+  const moves = MOVE_KEYS.map(key => member[key]).filter(Boolean);
+  const [first] = moves;
+  if (generation < 6 || !first || !moves.includes("conversion")) return;
+  const type =
+    first.startsWith("hiddenpower") ? "Normal" : moveTypeIn(first, generation);
+  if (!type || !isPokemonType(type)) return;
+  const { name, ability, item } = member;
+  return effectivePokemonTypes(name, ability, item, generation).includes(type) ?
+      undefined
+    : type;
 }
 
 // Beat Up's hits were typeless until Gen 5

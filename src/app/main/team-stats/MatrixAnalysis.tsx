@@ -51,7 +51,7 @@ const tooltipGap = {
 
 // A tooltip in one of the matrix's columns. It sits above its cell and is transparent
 // to the pointer, so it never blocks the rows below, and it lines up with the cell's
-// outer edge, growing towards the middle of the table.
+// outer edge, growing towards the middle of the table. A reason may hold a second line.
 const tooltipProps = (isLeftHalf: boolean) =>
   ({
     placement: isLeftHalf ? "top-start" : "top-end",
@@ -59,7 +59,11 @@ const tooltipProps = (isLeftHalf: boolean) =>
     enterTouchDelay: 0,
     slotProps: {
       tooltip: {
-        sx: { ...tooltipGap, textAlign: isLeftHalf ? "left" : "right" },
+        sx: {
+          ...tooltipGap,
+          textAlign: isLeftHalf ? "left" : "right",
+          whiteSpace: "pre-line",
+        },
       },
     },
   }) as const;

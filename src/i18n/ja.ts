@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ja: Messages = {
+  pageTitle: "My Pokemon Team - ポケモンのチーム作成・計画ツール",
   // The header
   beta: "ベータ版",
   generation,
@@ -114,13 +115,18 @@ const ja: Messages = {
     delete: "削除",
     importTeam: "チームをインポート",
     share: "共有",
-    teamEmpty: "ポケモンチームは空です",
+    teamEmpty: "チームが空です。共有するにはポケモンを追加してください。",
     linkCopied: "ポケモンチームのリンクをコピーしました",
-    linkNotCopied: "リンクをコピーできませんでした。",
-    nothingToCopy: "チームが空なので、コピーするものがありません。",
+    linkNotCopied:
+      "リンクをコピーできませんでした。チームを開いた状態で、アドレスバーからコピーしてください。",
+    linkGenerationUnsupported: (profile: string) =>
+      `このリンクの世代またはゲームには対応していないため、${profile}で開きました。`,
+    nothingToCopy: "チームが空です。コピーするにはポケモンを追加してください。",
     teamCopied: "チームをコピーしました。",
-    teamNotCopied: "チームをコピーできませんでした。",
-    cannotDuplicateEmptyTeam: "空のチームは複製できません",
+    teamNotCopied:
+      "チームをコピーできませんでした。代わりに「Pokepasteを編集」からテキストをコピーしてください。",
+    cannotDuplicateEmptyTeam:
+      "チームが空です。複製するにはポケモンを追加してください。",
     teamDuplicated: "チームを複製しました",
     teamDeleted: "チームを削除しました",
     slots: "ポケモンチームのスロット",
@@ -136,7 +142,7 @@ const ja: Messages = {
     advanced: "その他の詳細",
     advancedFor: (slot: number) => `スロット${slot}のその他の詳細`,
     details: "詳細",
-    showMoveTypes: "技のタイプを表示",
+    showTypes: "タイプを表示",
     about: (pokemon: string) => `${pokemon}について`,
     dragHint: "長押しドラッグで並べ替え",
     moveToSlot: (pokemon: string) => `${pokemon}を別のスロットへ移動`,
@@ -179,7 +185,8 @@ const ja: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `チーム${number}`,
     unnamedTeam: "チーム",
-    copyOf: (name: string) => `${name}のコピー`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name}のコピー ${number}` : `${name}のコピー`,
     learnsetsFailed:
       "技のリストを読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
   },
@@ -262,6 +269,7 @@ const ja: Messages = {
       cause: string | undefined,
     ) =>
       `${type}タイプの技は${pokemon}（${types}）に${multiplier}倍${cause ? `（${cause}の影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}で${type}タイプになる`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -409,7 +417,8 @@ const ja: Messages = {
     randomTeamCreated: "ランダムなチームを作成しました",
     exported: "すべてのチームをエクスポートしました",
     copiedAll: "すべてのチームをコピーしました",
-    notCopiedAll: "チームをコピーできませんでした。",
+    notCopiedAll:
+      "チームをコピーできませんでした。代わりに「すべてエクスポート」でダウンロードしてください。",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -495,6 +504,8 @@ const ja: Messages = {
       `${pokemon}には${items.join("または")}を持たせる必要があります。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}が${move}を2回覚えています。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon}の${thing}は${where}では禁止されています。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -530,7 +541,30 @@ const ja: Messages = {
     imported: "チームをインポートしました",
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",
-    nothingFound: "そのテキストにポケモンが見つかりませんでした。",
+    nothingFound:
+      "そのテキストにポケモンが見つかりませんでした。ポケモンの名前をPokemon Showdownと同じ英語の表記で書くか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
+    problems: (count: number) =>
+      `問題が${count}件見つかりました。更新すると、テキストは次のとおり適用されます：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}の${field}`,
+    moveSlot: (slot: number) => `技${slot}`,
+    problemValue: (where: string, value: string) => `${where}：「${value}」`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "認識できません。",
+    unlearnable: (pokemon: string) =>
+      `選択したゲームでは、${pokemon}はこの技を覚えられません。`,
+    wrongAbility: (pokemon: string) => `${pokemon}が持てる特性ではありません。`,
+    outOfRange: (min: number, max: number) =>
+      `${min}から${max}までの整数ではありません。`,
+    unsupported: "選択したゲームにはこの項目がありません。",
+    tooManyPokemon: "チームに入るポケモンは6匹までです。",
+    tooManyMoves: "ポケモンが覚えられる技は4つまでです。",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}にはキョダイマックスのすがたがありません。`,
+    unread: "サイトが読み取る項目ではありません。",
+    slotLeftEmpty: "チームの枠は空になります。",
+    moveLeftEmpty: "技の枠は空になります。",
+    leftOut: "この項目は省かれます。",
+    usedInstead: (value: string) => `代わりに${value}が使われます。`,
   },
   deleteDialog: {
     title: (team: string) => `${team}を削除しますか？`,

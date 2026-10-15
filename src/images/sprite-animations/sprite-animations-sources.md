@@ -15,6 +15,9 @@ Run `node scripts/update-sprite-animations.ts` to refresh the files and
 `manifest.json`. It matches PokeAPI Pokémon identifiers to the app's Showdown
 IDs and records each animation's frame delays. Only sprites present in the
 app's Pokédex are included. Unsupported formes keep their static sprites.
+An animation identical to one already kept from the same folder, in
+alphabetical order, is skipped and reported: PokeAPI's Gen 4 Rotom-Frost
+animation is a copy of Rotom-Fan's.
 
 The site plays one cycle on page load and when a Pokémon is selected, then restores its
 Showdown still sprite. Reduced motion skips playback. The animations are
