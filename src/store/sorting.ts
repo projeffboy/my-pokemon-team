@@ -8,7 +8,11 @@ import {
   type SortOrder,
 } from "@/types";
 import { baseStatTotal } from "@/shared/set-details";
-import { moveTypeIn, pokemonFormatIn } from "@/shared/generation-data";
+import {
+  doublesTierIn,
+  moveTypeIn,
+  pokemonFormatIn,
+} from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { TIER_BY_FORMAT } from "@/shared/formats";
 import { pokemonNameInverse } from "@/shared/names";
@@ -90,8 +94,10 @@ const DOUBLES_TIER_RANK = [
 const tierRank = (pokemon: string, generation: Generation, format: string) => {
   const doubles = DOUBLES_TIER_RANK.includes(TIER_BY_FORMAT[format] ?? "");
   const ranks = doubles ? DOUBLES_TIER_RANK : TIER_RANK;
-  const tiers = pokemonFormatIn(pokemon, generation);
-  const tier = (doubles ? tiers?.doublesTier : tiers?.tier) ?? "";
+  const tier =
+    (doubles ?
+      doublesTierIn(pokemon, generation)
+    : pokemonFormatIn(pokemon, generation)?.tier) ?? "";
   const rank = ranks.indexOf(tier === "(OU)" ? "OU" : tier);
   return rank === -1 ? ranks.length : rank;
 };

@@ -90,7 +90,16 @@ export function calculateTypeCoverage(
         format,
         pokemon,
       );
-      const targetsUsed = typesUsed.get(type) ?? new Set<PokemonType>();
+      // Flying Press is also a Flying move, so it shares its targets with Flying moves
+      const groups = new Set([
+        type,
+        ...(move === "flyingpress" ? ["Flying" as const] : []),
+      ]);
+      const targetSets = [...groups].map(group => {
+        const targets = typesUsed.get(group) ?? new Set<PokemonType>();
+        typesUsed.set(group, targets);
+        return targets;
+      });
 
       const hasStab =
         type &&
@@ -110,12 +119,11 @@ export function calculateTypeCoverage(
           ) === -1
         ) {
           // Moves of one type, such as Ice Beam and Freeze-Dry, count each target once
-          if (!targetsUsed.has(target)) scores[target] += hasStab ? 2 : 1;
-          targetsUsed.add(target);
+          if (!targetSets.some(targets => targets.has(target)))
+            scores[target] += hasStab ? 2 : 1;
+          for (const targets of targetSets) targets.add(target);
         }
       }
-
-      typesUsed.set(type, targetsUsed);
     }
   }
 
