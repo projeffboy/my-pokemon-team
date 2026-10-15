@@ -5,7 +5,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `effectiveness.spec.ts` covers type matchups, defensive abilities, and item modifiers.
 - `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, and invalid inputs.
 - `special-moves.spec.ts` covers move type changes, Freeze-Dry, Flying Press, and coverage eligibility.
-- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, pivot moves, and choice items.
+- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, priority moves, pivot moves, and choice items.
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.
 - `filtering.spec.ts` covers formats, tiers, regions, types, abilities, generations, and combined filters.
 - `sorting.spec.ts` covers the Name dropdown's sort orders: name, pokedex number, format, base stats, and tie-breaking.
@@ -19,6 +19,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
 - `set-details.spec.ts` covers the set details in Showdown text (nickname, gender, level, shiny, tera type, EVs, nature, IVs), nicknames that are pokemon names or hold parentheses or an at sign, and backups with several teams.
+- `old-website.spec.ts` covers the team text that the Old website button carries and the pokemon, moves, items, abilities, and set details it names as left behind.
 - `teams.spec.ts` checks the store's saved teams, slot tools, undo history, and that a link to the current team opens no new team.
 - `teams-storage.spec.ts` covers loading and saving the teams from localStorage, including malformed data, and merging in what another tab saved.
 - `team-sync.spec.ts` covers concurrent tab edits, selected-team identity, failed saves and recovery, and keeping unsaved work available for backups.

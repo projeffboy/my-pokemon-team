@@ -68,7 +68,7 @@ Showdown text exports preserve the combined setting with a `# mypokemonteam gene
 
 The header's Old website button opens the legacy site at [old.mypokemonteam.com](https://old.mypokemonteam.com/). The legacy site is based on [commit ca23d6b](https://github.com/projeffboy/my-pokemon-team/commit/ca23d6b55ea96d9bf37022c094f6945d8e6420d3), with a New website button returning to [mypokemonteam.com](https://mypokemonteam.com/). Its separate Vercel project hosts the `old-website` branch independently of `master`.
 
-Switching does not transfer the current team or URL parameters. A nonempty team triggers a confirmation; Cancel and Escape keep the user on the current site. Saved teams and settings stay on their original browser origin. The legacy site does not persist team collections, so its confirmation advises saving the current share link before leaving. Team transfer is deferred in [issue #111](https://github.com/projeffboy/my-pokemon-team/issues/111).
+Switching carries the current team in the legacy site's own `?team=` share link, holding only what that site reads: each pokemon's species, item, ability, and moves, adapted to Generations 6–9 as the generation menu would, less the moves and abilities that the legacy site's own data rejects, such as Smeargle's sketched moves (`src/store/old-website.ts`). A nonempty team first triggers a confirmation that names each pokemon, move, item, ability, and set detail left behind; Cancel and Escape keep the user on the current site. No other URL parameters cross, saved teams and settings stay on their original browser origin, and nothing is carried back. The legacy site does not persist team collections, so the carried team is its one unsaved team, kept only in its share link.
 
 ## Updating Pokemon Data
 
@@ -127,7 +127,7 @@ npm test
 - `npm run test:smoke`: builds the production app and checks its essential flows with Vite preview on port 4173.
 - `npm run test:dev`: browser tests of the UI against the development server on port 3000.
 
-`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. Run it after changing `src/shared/dex-urls.ts` or updating the data. Bulbapedia's bot protection may challenge the browser, in which case its tests are skipped.
+`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. It also requests the sprites of every pokemon offered in Gen 9 and Pokemon Champions from Showdown, and lists those with neither an animated nor a still sprite, and those shown still although Showdown animates them, in its `ani` folder or its BW-style `gen5ani` one. Run it after changing `src/shared/dex-urls.ts` or `src/app/shared/pokemon-sprite/sprite-urls.ts`, or updating the data. Bulbapedia's bot protection may challenge the browser, in which case its tests are skipped.
 
 Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 
