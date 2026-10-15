@@ -30,10 +30,11 @@ const fr: Messages = {
   },
   generationSelect: "Génération",
   comingSoon: "Bientôt disponible",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principale" },
   combinedGenerations: {
     label: "Générations 6–9",
     short: "Gén. 6–9",
-    description: "Combine les options de tous les jeux des générations 6–9",
+    description: "Combine tous les jeux des générations 6–9",
   },
   championsGeneration: "Gén. 9 · Champions",
   championsGenerationShort: "Gén. 9 (Champions)",
@@ -665,7 +666,7 @@ const fr: Messages = {
       ],
       [
         "Récupération fiable",
-        "Des capacités qui rendent à coup sûr 50 % ou plus de vos PV à chaque utilisation (par météo normale). Ex. : Soin, E-Coque, Lait à Boire, Paresse, Synthèse.",
+        "Des capacités qui rendent à coup sûr 50 % ou plus de vos PV à chaque utilisation (par météo normale). Ex. : Soin, E-Coque, Lait à Boire, Paresse, Synthèse. Vœu compte aussi si le même Pokémon connaît Abri ou Détection.",
       ],
       [
         "Capacités de statut",

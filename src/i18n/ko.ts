@@ -45,10 +45,11 @@ const ko: Messages = {
   },
   generationSelect: "세대",
   comingSoon: "출시 예정",
+  generationGroups: { spinOffs: "외전", mainSeries: "메인 시리즈" },
   combinedGenerations: {
     label: "6–9세대",
     short: "6–9세대",
-    description: "6–9세대 모든 게임의 선택지를 통합",
+    description: "6–9세대 모든 게임을 통합",
   },
   championsGeneration: "9세대 · Champions",
   championsGenerationShort: "9세대 (Champions)",
@@ -655,7 +656,7 @@ const ko: Messages = {
       ],
       [
         "안정적인 회복 기술",
-        "사용할 때마다 (일반적인 날씨에서) HP의 50% 이상을 확실히 회복하는 기술입니다. 예: HP회복, 알낳기, 밀크마시기, 무릎쉬기, 광합성.",
+        "사용할 때마다 (일반적인 날씨에서) HP의 50% 이상을 확실히 회복하는 기술입니다. 예: HP회복, 알낳기, 밀크마시기, 무릎쉬기, 광합성. 같은 포켓몬이 방어나 판별을 알고 있으면 희망사항도 포함됩니다.",
       ],
       [
         "상태이상 기술",

@@ -30,10 +30,11 @@ const zhHans: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即将推出",
+  generationGroups: { spinOffs: "外传", mainSeries: "正传系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合并第6–9世代所有游戏的选项",
+    description: "合并第6–9世代所有游戏",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -627,7 +628,7 @@ const zhHans: Messages = {
       ["清雾手", "会使用清除浓雾（可吹走场上钉子）的宝可梦。"],
       [
         "稳定回复",
-        "每次使用都能保证回复 50% 或以上 HP 的招式（在正常天气下）。例如：自我再生、生蛋、喝牛奶、偷懒、光合作用。",
+        "每次使用都能保证回复 50% 或以上 HP 的招式（在正常天气下）。例如：自我再生、生蛋、喝牛奶、偷懒、光合作用。如果同一只宝可梦还会守住或看穿，祈愿也算。",
       ],
       [
         "异常状态招式",

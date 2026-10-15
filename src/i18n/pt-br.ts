@@ -32,10 +32,11 @@ const ptBR: Messages = {
   },
   generationSelect: "Geração",
   comingSoon: "Em breve",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principal" },
   combinedGenerations: {
     label: "Gerações 6–9",
     short: "Gerações 6–9",
-    description: "Combina opções de todos os jogos das gerações 6–9",
+    description: "Combina todos os jogos das gerações 6–9",
   },
   championsGeneration: "Ger. 9 · Champions",
   championsGenerationShort: "Ger. 9 (Champions)",
@@ -642,7 +643,7 @@ const ptBR: Messages = {
       ],
       [
         "Recuperação confiável",
-        "Golpes que garantem recuperar 50% ou mais do seu HP toda vez que são usados (em condições normais de clima). Ex.: Recover, Soft-Boiled, Milk Drink, Slack Off, Synthesis.",
+        "Golpes que garantem recuperar 50% ou mais do seu HP toda vez que são usados (em condições normais de clima). Ex.: Recover, Soft-Boiled, Milk Drink, Slack Off, Synthesis. Wish também conta se o mesmo Pokémon conhece Protect ou Detect.",
       ],
       [
         "Golpes de status",

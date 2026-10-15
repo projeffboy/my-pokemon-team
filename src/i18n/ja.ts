@@ -30,10 +30,11 @@ const ja: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "近日公開",
+  generationGroups: { spinOffs: "外伝", mainSeries: "本編" },
   combinedGenerations: {
     label: "第6～9世代",
     short: "第6～9世代",
-    description: "第6〜9世代の全ゲームの選択肢を統合",
+    description: "第6〜9世代の全ゲームを統合",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -647,7 +648,7 @@ const ja: Messages = {
       ],
       [
         "安定した回復技",
-        "使うたびにHPの50%以上を確実に回復する技（通常の天候のとき）。例: じこさいせい、タマゴうみ、ミルクのみ、なまける、こうごうせい。",
+        "使うたびにHPの50%以上を確実に回復する技（通常の天候のとき）。例: じこさいせい、タマゴうみ、ミルクのみ、なまける、こうごうせい。同じポケモンがまもるやみきりなどを覚えていれば、ねがいごとも含まれます。",
       ],
       [
         "状態異常技",

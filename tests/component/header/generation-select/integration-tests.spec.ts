@@ -86,6 +86,36 @@ test.describe("Generation Select - Integration Tests", () => {
     );
     await closeDialog(page);
   });
+
+  test("a long Generations 6–9 description wraps beside the check mark on a small phone", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1200, height: 800 });
+    await page.getByRole("button", { name: "Language", exact: true }).click();
+    await page.getByRole("menuitem", { name: "Español" }).click();
+    await page.setViewportSize({ width: 320, height: 800 });
+    const generation = page.getByRole("combobox", { name: "Generación" });
+    const paper = page.locator(".MuiMenu-paper");
+    const option = page.locator('[role="option"][data-value="6-9"]');
+    await generation.click();
+    await expect(paper).toHaveCSS("transform", "none");
+    await option.click();
+    await expect(paper).toBeHidden();
+    await generation.click();
+    await expect(paper).toHaveCSS("transform", "none");
+    await expect(option.getByTestId("CheckIcon")).toBeVisible();
+    const caption = option.getByText(
+      "Combina todos los juegos de las generaciones 6–9",
+    );
+    // The check mark sits inside the option, so text left of it is not cut off either
+    const textRight = await caption.evaluate(element => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getBoundingClientRect().right;
+    });
+    const checkBounds = await option.getByTestId("CheckIcon").boundingBox();
+    expect(textRight).toBeLessThanOrEqual(checkBounds?.x ?? 0);
+  });
 });
 
 const transferText = `Slowbro @ Rocky Helmet

@@ -30,10 +30,11 @@ const it: Messages = {
   },
   generationSelect: "Generazione",
   comingSoon: "In arrivo",
+  generationGroups: { spinOffs: "Spin-off", mainSeries: "Serie principale" },
   combinedGenerations: {
     label: "Generazioni 6–9",
     short: "Gen. 6–9",
-    description: "Combina le opzioni di tutti i giochi delle generazioni 6–9",
+    description: "Combina tutti i giochi delle generazioni 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -652,7 +653,7 @@ const it: Messages = {
       ],
       [
         "Recupero affidabile",
-        "Mosse che recuperano con certezza il 50% o più dei tuoi PS ogni volta che le usi (in condizioni meteo normali). Es. Ripresa, Covauova, Buonlatte, Pigro, Sintesi.",
+        "Mosse che recuperano con certezza il 50% o più dei tuoi PS ogni volta che le usi (in condizioni meteo normali). Es. Ripresa, Covauova, Buonlatte, Pigro, Sintesi. Conta anche Desiderio, se lo stesso Pokémon conosce Protezione o Individua.",
       ],
       [
         "Mosse di stato",

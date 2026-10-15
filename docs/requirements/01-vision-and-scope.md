@@ -115,15 +115,15 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
 
 Each has a GitHub issue that names its ID. The issue holds the work, and its milestone holds the release.
 
-| ID  | Planned feature                                                                                                | State                                                                                                |
-| --- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5 | Planned                                                                                              |
-| PF2 | F10.2 Team transfer to the old website, as a share link                                                        | Planned                                                                                              |
-| PF3 | Let's Go and the Legends games, with their training values. The generation menu lists them as "Coming soon".   | Planned                                                                                              |
-| PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                         | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
-| PF5 | Verified sender domain for feedback                                                                            | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
-| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, which no part of the page shows today     | Planned                                                                                              |
-| PF7 | F6.1 Notice of dropped entries: telling a visitor which entries a link or saved team lost to a data update     | Planned                                                                                              |
+| ID  | Planned feature                                                                                                      | State                                                                                                |
+| --- | -------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5       | Planned                                                                                              |
+| PF2 | F10.2 Team transfer to the old website, as a share link                                                              | Planned                                                                                              |
+| PF3 | Let's Go and the Legends games, with their training values. The generation menu lists them in its Coming soon group. | Planned                                                                                              |
+| PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                               | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
+| PF5 | Verified sender domain for feedback                                                                                  | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
+| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, which no part of the page shows today           | Planned                                                                                              |
+| PF7 | F6.1 Notice of dropped entries: telling a visitor which entries a link or saved team lost to a data update           | Planned                                                                                              |
 
 ### Not part of the plan
 

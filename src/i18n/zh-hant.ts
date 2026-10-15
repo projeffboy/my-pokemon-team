@@ -30,10 +30,11 @@ const zhHant: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即將推出",
+  generationGroups: { spinOffs: "外傳", mainSeries: "正傳系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合併第6–9世代所有遊戲的選項",
+    description: "合併第6–9世代所有遊戲",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -630,7 +631,7 @@ const zhHant: Messages = {
       ["除霧手", "會使用清除濃霧（可吹走場地陷阱）的寶可夢。"],
       [
         "可靠回復",
-        "每次使用都保證回復 50% 以上 HP 的招式（在一般天氣下）。例如：自我再生、生蛋、喝牛奶、偷懶、光合作用。",
+        "每次使用都保證回復 50% 以上 HP 的招式（在一般天氣下）。例如：自我再生、生蛋、喝牛奶、偷懶、光合作用。如果同一隻寶可夢還會守住或看穿，祈願也算。",
       ],
       [
         "異常狀態招式",

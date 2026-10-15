@@ -29,10 +29,11 @@ const es: Messages = {
   },
   generationSelect: "Generación",
   comingSoon: "Próximamente",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Serie principal" },
   combinedGenerations: {
     label: "Generaciones 6–9",
     short: "Gens. 6–9",
-    description: "Combina opciones de todos los juegos de las generaciones 6–9",
+    description: "Combina todos los juegos de las generaciones 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -644,7 +645,7 @@ const es: Messages = {
       ],
       [
         "Recuperación fiable",
-        "Movimientos que garantizan recuperar el 50 % o más de tus PS cada vez que los usas (con un clima normal). P. ej. Recuperación, Ovocuración, Batido, Relajo, Síntesis.",
+        "Movimientos que garantizan recuperar el 50 % o más de tus PS cada vez que los usas (con un clima normal). P. ej. Recuperación, Ovocuración, Batido, Relajo, Síntesis. Deseo también cuenta si el mismo Pokémon conoce Protección o Detección.",
       ],
       [
         "Movimientos de estado",
