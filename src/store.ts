@@ -818,13 +818,21 @@ export class Store {
         this.team
           .filter((_, index) => index !== teamIndex)
           .map(({ item }) => item),
+        this.currentTeam.format,
       );
       this.recordEdit();
       this.team[teamIndex] = completed;
       this.recordEdit();
       return randomizedFieldsMessage(member, completed, this.translation);
     }
-    const pokemon = randomPokemon(this.filteredPokemon, this.teamPokemon);
+    const pokemon = randomPokemon(
+      this.filteredPokemon,
+      this.teamPokemon,
+      Math.random,
+      this.currentTeam.generation,
+      this.dataFormat,
+      this.currentTeam.format,
+    );
     if (!pokemon) return;
     this.recordEdit();
     this.team[teamIndex] = randomSet(
@@ -836,6 +844,7 @@ export class Store {
       this.team
         .filter((_, index) => index !== teamIndex)
         .map(({ item }) => item),
+      this.currentTeam.format,
     );
     this.recordEdit();
     return this.translation.t.team.randomizedPokemon;
@@ -849,7 +858,14 @@ export class Store {
     this.recordEdit();
     const chosen: string[] = [];
     for (let i = 0; i < this.team.length; i++) {
-      const pokemon = randomPokemon(options, chosen);
+      const pokemon = randomPokemon(
+        options,
+        chosen,
+        Math.random,
+        this.currentTeam.generation,
+        this.dataFormat,
+        this.currentTeam.format,
+      );
       if (!pokemon) return;
       chosen.push(pokemon);
       this.team[i] = randomSet(
@@ -863,6 +879,7 @@ export class Store {
         this.currentTeam.generation,
         this.dataFormat,
         this.team.slice(0, i).map(({ item }) => item),
+        this.currentTeam.format,
       );
     }
     this.recordEdit(teamKey(this.team), true);
@@ -939,6 +956,7 @@ export class Store {
       this.currentTeam.generation,
       this.dataFormat,
       this.translation,
+      this.currentTeam.format,
     );
   }
 

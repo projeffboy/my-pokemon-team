@@ -73,11 +73,13 @@ function serializeMember(
   const nickname = member.nickname?.trim();
   const species = pokemonName(name) ?? name;
   const itemText = itemName(item) || item;
+  const nameText = nickname ? `${nickname} (${species})` : species;
   const nameLine = [
-    nickname ? `${nickname} (${species})` : species,
+    nameText,
     gender === "M" || gender === "F" ? `(${gender})` : "",
-    // Showdown leaves out " @ " when there is no item
-    itemText ? `@ ${itemText}` : "",
+    // Showdown leaves out " @ " when there is no item. A name holding " @ " keeps it,
+    // so that the name's own " @ " is not read as the item's.
+    itemText || nameText.includes(" @ ") ? `@ ${itemText}` : "",
   ]
     .filter(part => part)
     .join(" ");
@@ -170,6 +172,7 @@ export interface TeamTextProblem {
   pokemon?: string; // missing when the pokemon itself is the problem
   field:
     | "pokemon"
+    | "gender"
     | "item"
     | "ability"
     | "level"
@@ -364,7 +367,10 @@ export function parseTeamText(
         getAutoSelectedAbility(pokemon, generation, format)
       : "";
     if (nickname) member.nickname = nickname;
-    if (gender && supports(rules.gender)) member.gender = gender;
+    if (gender) {
+      if (supports(rules.gender)) member.gender = gender;
+      else report({ field: "gender", value: gender, reason: "unsupported" });
+    }
 
     // If team raw data does not mention item, leave it blank
     if (itemText) {

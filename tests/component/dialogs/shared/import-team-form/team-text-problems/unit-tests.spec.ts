@@ -36,6 +36,25 @@ Abilty: Intrepid Sword`);
     );
   });
 
+  test("names a gender the selected game lacks", async ({ page }) => {
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page
+      .getByRole("option")
+      .and(page.locator('[data-value="1"]'))
+      .click();
+    await expect(page.locator(".MuiMenu-paper")).toBeHidden();
+    await openEditPokepaste(page);
+    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await dialog.getByRole("textbox").fill("Jynx (F)\n- Lovely Kiss");
+
+    await expect(dialog.getByRole("status").getByRole("listitem")).toHaveText(
+      [
+        "Jynx, Gender: “F” The selected game does not have this detail. It is left out.",
+      ],
+      { useInnerText: true },
+    );
+  });
+
   test("shows nothing for the team's own text or intentionally empty move slots", async ({
     page,
   }) => {

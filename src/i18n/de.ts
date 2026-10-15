@@ -660,7 +660,7 @@ const de: Messages = {
     importPlaceholder: "Team hier einfügen",
     editPlaceholder: "Dein Team ist leer",
     label: "Rohtext des Pokemon-Showdown-Teams",
-    kept: "Spitznamen, Level, Geschlechter, Schillernd, Tera-Typen, Wesen, EV und DV bleiben erhalten. Freundschaft bleibt ebenfalls erhalten, wenn das gewählte Spiel sie unterstützt.",
+    kept: "Spitznamen, Level, Geschlechter, Schillernd, Freundschaft, Tera-Typen, Wesen, EV und DV bleiben erhalten, wenn das gewählte Spiel sie hat.",
     import: "Importieren",
     update: "Aktualisieren",
     imported: "Team importiert",
@@ -742,6 +742,7 @@ const de: Messages = {
     typeColours: "Typenfarben",
     typeColoursFor: "Die Farbe jedes Typs in den Team-Statistiken",
     stunfiskFor: "Eine gute Community",
+    serebiiFor: "Die Items, die Pokémon in Legenden: Z-A tragen können",
   },
   privacy: {
     playwire:

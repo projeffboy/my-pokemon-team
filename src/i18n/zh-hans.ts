@@ -613,7 +613,7 @@ const zhHans: Messages = {
     importPlaceholder: "在此粘贴队伍",
     editPlaceholder: "你的队伍为空",
     label: "Pokemon Showdown 队伍原始文本",
-    kept: "昵称、等级、性别、异色、太晶属性、性格、努力值和个体值都会保留。所选游戏支持时，亲密度也会保留。",
+    kept: "所选游戏有这些项时，昵称、等级、性别、异色、亲密度、太晶属性、性格、努力值和个体值都会保留。",
     import: "导入",
     update: "更新",
     imported: "已导入队伍",
@@ -693,6 +693,7 @@ const zhHans: Messages = {
     typeColours: "属性颜色",
     typeColoursFor: "队伍统计中每种属性的颜色",
     stunfiskFor: "一个很棒的社区",
+    serebiiFor: "传说 Z-A 中宝可梦可以携带的道具",
   },
   privacy: {
     playwire:

@@ -23,6 +23,12 @@ test.describe("Team Problems - Unit Tests", () => {
       message: "Togepi is not allowed in Gen 1.",
     },
     {
+      rule: "a pokemon the game does not have",
+      settings: "game=legends-za",
+      team: "Koraidon\n- Dragon Claw",
+      message: "Koraidon is not allowed in Gen 9 Legends: Z-A.",
+    },
+    {
       rule: "a pokemon outside the format",
       settings: "game=champions",
       team: "Dondozo\n- Wave Crash",

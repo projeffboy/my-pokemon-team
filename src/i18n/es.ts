@@ -641,7 +641,7 @@ const es: Messages = {
     importPlaceholder: "Pega un equipo aquí",
     editPlaceholder: "Tu equipo está vacío",
     label: "Texto sin formato del equipo de Pokemon Showdown",
-    kept: "Se conservan los motes, niveles, géneros, variocolor, teratipos, naturalezas, EV e IV. La felicidad también se conserva si el juego seleccionado la admite.",
+    kept: "Se conservan los motes, niveles, géneros, variocolor, felicidad, teratipos, naturalezas, EV e IV si el juego seleccionado los tiene.",
     import: "Importar",
     update: "Actualizar",
     imported: "Equipo importado",
@@ -722,6 +722,7 @@ const es: Messages = {
     typeColours: "Colores de los tipos",
     typeColoursFor: "El color de cada tipo en las estadísticas del equipo",
     stunfiskFor: "Es una buena comunidad",
+    serebiiFor: "Los objetos que pueden llevar los Pokémon en Leyendas: Z-A",
   },
   privacy: {
     playwire:

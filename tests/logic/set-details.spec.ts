@@ -99,11 +99,33 @@ test.describe("set details in Showdown text", () => {
   });
 
   test("a nickname holding an @ round-trips without an item", () => {
-    for (const nickname of ["Mew@x", "a@b"]) {
-      const [member] = createTeam({ name: "pikachu", nickname });
+    // [nickname, gender, first line]. " @ " in the name keeps a bare "@ ", which
+    // Showdown would otherwise read as the item separator
+    const cases = [
+      ["Mew@x", undefined, "Mew@x (Pikachu)"],
+      ["a@b", undefined, "a@b (Pikachu)"],
+      ["Mew @ x", undefined, "Mew @ x (Pikachu) @ "],
+      ["Mew @ x", "F", "Mew @ x (Pikachu) (F) @ "],
+      ["Mr. @ (Mime)", undefined, "Mr. @ (Mime) (Pikachu) @ "],
+      ["Eevee @ home", undefined, "Eevee @ home (Pikachu) @ "],
+      // Its " @ " appears only once the species follows it
+      ["Mew @", undefined, "Mew @ (Pikachu) @ "],
+    ] as const;
+    for (const [nickname, gender, line] of cases) {
+      const [member] = createTeam({
+        name: "pikachu",
+        nickname,
+        ...(gender && { gender }),
+        ability: "Static",
+        move1: "thunderbolt",
+      });
       const text = serializeTeam([member]);
-      expect(text.split("\n")[0]).toBe(`${nickname} (Pikachu)`);
+      expect(text.split("\n")[0], nickname).toBe(line);
       expect(parseTeamText(text)[0], nickname).toEqual(member);
+      expect(
+        parseTeamText(text, 9, "", LEGACY_LINK_PARSING_OPTIONS)[0],
+        nickname,
+      ).toEqual(member);
     }
   });
 

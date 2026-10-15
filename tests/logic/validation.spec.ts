@@ -3,8 +3,9 @@ import { rulesLabel, validateTeam } from "@/store/validation";
 import { learnsetsReady } from "@/store/learnsets";
 import { createTeam } from "./shared/team";
 import { CAP_FORMAT, CHAMPIONS_FORMAT } from "@/shared/formats";
-import { LETS_GO, LEGENDS_ARCEUS } from "@/shared/game-variants";
+import { LETS_GO, LEGENDS_ARCEUS, LEGENDS_ZA } from "@/shared/game-variants";
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
+import { english } from "@/i18n/translation";
 
 const messages = (...args: Parameters<typeof validateTeam>) =>
   validateTeam(...args).map(({ message }) => message);
@@ -129,6 +130,41 @@ test("reports pokemon outside the format or generation", () => {
   expect(messages(createTeam({ name: "chikorita" }), 1, "")).toEqual([
     "Chikorita is not allowed in Gen 1.",
   ]);
+});
+
+test("a game reports the pokemon it does not have", () => {
+  expect(messages(createTeam({ name: "koraidon" }), 9, LEGENDS_ZA)).toEqual([
+    `Koraidon is not allowed in Gen 9 ${LEGENDS_ZA}.`,
+  ]);
+  expect(messages(createTeam({ name: "dragonite" }), 9, LEGENDS_ZA)).toEqual(
+    [],
+  );
+  expect(messages(createTeam({ name: "chikorita" }), 7, LETS_GO)).toEqual([
+    `Chikorita is not allowed in Gen 7 ${LETS_GO}.`,
+  ]);
+  expect(
+    messages(createTeam({ name: "tyranitar" }), 8, LEGENDS_ARCEUS),
+  ).toEqual([`Tyranitar is not allowed in Gen 8 ${LEGENDS_ARCEUS}.`]);
+});
+
+// The tier's own pokemon are Scarlet and Violet's, so it only adds its bans
+test("Generations 6–9 checks the team against the bans of the tier chosen for it", () => {
+  const team = createTeam(
+    { name: "charizardmegax", item: "charizarditex" },
+    { name: "alakazam" },
+    { name: "aegislash" },
+    { name: "gengargmax" },
+    { name: "breloom", move1: "spore" },
+    { name: "breloom" },
+  );
+  const where = "Generations 6–9 OU: Over Used";
+  expect(
+    messages(team, 9, COMBINED_GENERATIONS_FORMAT, english, "OU: Over Used"),
+  ).toEqual([
+    `Breloom has Spore, which is banned in ${where}.`,
+    "Only one pokemon may be Breloom (Species Clause).",
+  ]);
+  expect(messages(team, 9, COMBINED_GENERATIONS_FORMAT)).toEqual([]);
 });
 
 test("CAP pokemon are allowed only in the CAP format", () => {
@@ -299,6 +335,9 @@ test("names the generation and format whose rules apply", () => {
   expect(rulesLabel(9, "")).toBe("Gen 9");
   expect(rulesLabel(4, "OU: Over Used")).toBe("Gen 4 OU: Over Used");
   expect(rulesLabel(9, COMBINED_GENERATIONS_FORMAT)).toBe("Generations 6–9");
+  expect(
+    rulesLabel(9, COMBINED_GENERATIONS_FORMAT, english, "OU: Over Used"),
+  ).toBe("Generations 6–9 OU: Over Used");
 });
 
 test("doubles formats allow NFE and LC pokemon", () => {

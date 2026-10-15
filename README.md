@@ -148,6 +148,7 @@ The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull request
 - Nintendo, The Pokemon Company, Game Freak
 - [Pokemon Showdown](https://pokemonshowdown.com/): animated sprites, non-animated sprites, and all the pokemon data (thanks Zarel!)
 - [PokeAPI](https://pokeapi.co/): the pokemon, move, item, and ability names in every language
+- [Serebii](https://www.serebii.net/legendsz-a/items.shtml): the items a pokemon can hold in Legends: Z-A
 - [React](https://react.dev/)
 - [Material UI](https://mui.com/material-ui/)
 - [MobX state management](https://mobx.js.org/)

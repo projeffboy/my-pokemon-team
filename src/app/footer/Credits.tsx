@@ -7,6 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import BusinessIcon from "@mui/icons-material/Business";
+import Backpack from "@mui/icons-material/Backpack";
 import TableChart from "@mui/icons-material/TableChart";
 import ListIcon from "@mui/icons-material/List";
 import ImageIcon from "@mui/icons-material/Image";
@@ -33,6 +34,12 @@ export default function Credits() {
       icon: <BusinessIcon />,
       label: t.credits.companies,
       secondary: t.credits.companiesFor,
+    },
+    {
+      icon: <Backpack />,
+      label: "Serebii",
+      href: "https://www.serebii.net/legendsz-a/items.shtml",
+      secondary: t.credits.serebiiFor,
     },
     {
       icon: <TableChart />,

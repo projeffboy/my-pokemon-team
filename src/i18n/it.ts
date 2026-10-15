@@ -648,7 +648,7 @@ const it: Messages = {
     importPlaceholder: "Incolla qui una squadra",
     editPlaceholder: "La tua squadra è vuota",
     label: "Testo grezzo della squadra di Pokemon Showdown",
-    kept: "Soprannomi, livelli, sessi, cromatico, teratipi, nature, EV e IV vengono mantenuti. La felicità viene mantenuta se il gioco selezionato la supporta.",
+    kept: "Soprannomi, livelli, sessi, cromatico, felicità, teratipi, nature, EV e IV vengono mantenuti se il gioco selezionato li ha.",
     import: "Importa",
     update: "Aggiorna",
     imported: "Squadra importata",
@@ -730,6 +730,7 @@ const it: Messages = {
     typeColours: "Colori dei tipi",
     typeColoursFor: "Il colore di ogni tipo nelle statistiche della squadra",
     stunfiskFor: "È una bella community",
+    serebiiFor: "Gli strumenti che i Pokémon possono tenere in Leggende: Z-A",
   },
   privacy: {
     playwire:
