@@ -261,6 +261,45 @@ test.describe("Team Stats - Unit Tests", () => {
     });
   }
 
+  test("the stats kept laid out behind the matrix and the checklist show nothing over them", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1280, height: 1000 });
+    await page.goto("/?gen=9");
+    const panel = page.getByRole("region", { name: "Team analysis" });
+    // Every element there, type names included, must inherit the hidden box's visibility
+    const shownInStats = () =>
+      panel
+        .getByRole("region", {
+          name: /^Team (Defence|Type Coverage)$/,
+          includeHidden: true,
+        })
+        .locator("*")
+        .evaluateAll(
+          elements =>
+            elements.filter(
+              element => getComputedStyle(element).visibility === "visible",
+            ).length,
+        );
+    await expect(
+      panel.getByRole("region", { name: "Team Defence" }),
+    ).toBeVisible();
+    expect(await shownInStats()).toBeGreaterThan(0);
+
+    await panel.getByRole("button", { name: "Matrix Analysis" }).click();
+    await expect(
+      panel.getByRole("region", { name: "Matrix Analysis" }),
+    ).toBeVisible();
+    await expect.poll(shownInStats).toBe(0);
+
+    await page.setViewportSize({ width: 700, height: 900 });
+    await panel.getByRole("button", { name: "Team Checklist" }).click();
+    await expect(
+      panel.getByRole("region", { name: "Team Checklist" }),
+    ).toBeVisible();
+    await expect.poll(shownInStats).toBe(0);
+  });
+
   for (const width of [320, 450]) {
     test.describe(`${width}px phones`, () => {
       test.use({ viewport: createViewport(width) });

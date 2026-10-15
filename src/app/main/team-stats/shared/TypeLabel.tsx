@@ -63,7 +63,8 @@ export default function TypeLabel({
             width: "max-content",
             flexShrink: 0,
             position: visible ? "static" : "absolute",
-            visibility: visible ? "visible" : "hidden",
+            // Inherited, so the label stays hidden wherever its stats are laid out unseen
+            visibility: visible ? "inherit" : "hidden",
           }}
         >
           {text}
