@@ -113,14 +113,8 @@ const ManageTeamMenu = observer(function ManageTeamMenu({
             onClick={flip}
           >
             <ListItemText>{label}</ListItemText>
-            <Switch
-              edge="end"
-              size="small"
-              checked={on}
-              tabIndex={-1}
-              slotProps={{ input: { "aria-hidden": true } }}
-              sx={{ ml: 2, pointerEvents: "none" }}
-            />
+            {/* Only shows the state: the menu item is the checkbox */}
+            <Switch edge="end" size="small" checked={on} inert sx={{ ml: 2 }} />
           </MenuItem>
         ))}
       </Menu>
