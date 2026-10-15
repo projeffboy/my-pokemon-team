@@ -543,6 +543,7 @@ const ptBR: Messages = {
     unsupported: "O jogo selecionado não tem este detalhe.",
     tooManyPokemon: "Uma equipe tem no máximo seis Pokémon.",
     tooManyMoves: "Um Pokémon conhece no máximo quatro golpes.",
+    noGigantamax: (pokemon: string) => `${pokemon} não tem forma Gigantamax.`,
     unread: "Não é um detalhe que o site lê.",
     slotLeftEmpty: "A posição da equipe fica vazia.",
     moveLeftEmpty: "A posição do golpe fica vazia.",

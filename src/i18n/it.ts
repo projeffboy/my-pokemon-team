@@ -550,6 +550,7 @@ const it: Messages = {
     unsupported: "Il gioco selezionato non ha questo dato.",
     tooManyPokemon: "Una squadra ha al massimo sei Pokémon.",
     tooManyMoves: "Un Pokémon conosce al massimo quattro mosse.",
+    noGigantamax: (pokemon: string) => `${pokemon} non ha una forma Gigamax.`,
     unread: "Non è un dato che il sito legge.",
     slotLeftEmpty: "Lo slot della squadra resta vuoto.",
     moveLeftEmpty: "Lo slot della mossa resta vuoto.",

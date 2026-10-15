@@ -527,6 +527,7 @@ const zhHans: Messages = {
     unsupported: "所选游戏没有这一项。",
     tooManyPokemon: "一支队伍最多有 6 只宝可梦。",
     tooManyMoves: "一只宝可梦最多有 4 个招式。",
+    noGigantamax: (pokemon: string) => `${pokemon}没有超极巨化的样子。`,
     unread: "本网站不读取这一项。",
     slotLeftEmpty: "该队伍栏位留空。",
     moveLeftEmpty: "该招式栏位留空。",

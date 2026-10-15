@@ -561,6 +561,7 @@ const de: Messages = {
     unsupported: "Das gewählte Spiel hat diese Angabe nicht.",
     tooManyPokemon: "Ein Team hat höchstens sechs Pokémon.",
     tooManyMoves: "Ein Pokémon kennt höchstens vier Attacken.",
+    noGigantamax: (pokemon: string) => `${pokemon} hat keine Gigadynamax-Form.`,
     unread: "Keine Angabe, die die Seite liest.",
     slotLeftEmpty: "Der Teamplatz bleibt leer.",
     moveLeftEmpty: "Der Attackenplatz bleibt leer.",

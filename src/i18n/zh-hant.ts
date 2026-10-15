@@ -530,6 +530,7 @@ const zhHant: Messages = {
     unsupported: "所選遊戲沒有這一項。",
     tooManyPokemon: "一支隊伍最多有 6 隻寶可夢。",
     tooManyMoves: "一隻寶可夢最多有 4 個招式。",
+    noGigantamax: (pokemon: string) => `${pokemon}沒有超極巨化的樣子。`,
     unread: "本網站不讀取這一項。",
     slotLeftEmpty: "該隊伍格位留空。",
     moveLeftEmpty: "該招式格位留空。",

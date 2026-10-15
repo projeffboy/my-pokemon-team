@@ -563,6 +563,7 @@ const fr: Messages = {
     unsupported: "Le jeu sélectionné n'a pas ce détail.",
     tooManyPokemon: "Une équipe compte au plus six Pokémon.",
     tooManyMoves: "Un Pokémon connaît au plus quatre capacités.",
+    noGigantamax: (pokemon: string) => `${pokemon} n'a pas de forme Gigamax.`,
     unread: "Ce n'est pas un détail que le site lit.",
     slotLeftEmpty: "L'emplacement de l'équipe reste vide.",
     moveLeftEmpty: "L'emplacement de la capacité reste vide.",

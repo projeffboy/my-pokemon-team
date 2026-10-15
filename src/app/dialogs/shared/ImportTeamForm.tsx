@@ -16,6 +16,7 @@ import {
 } from "@/store/team-text";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { useIsSmDown } from "@/app/shared/WidthContext";
 import TeamTextProblems from "./import-team-form/TeamTextProblems";
 
 // A dialog's body and actions for pasting Showdown text: either new teams to import,
@@ -33,6 +34,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
   contentSx?: SxProps<Theme>;
 }) {
   const { t } = useTranslation();
+  const isSmDown = useIsSmDown();
   const { importDialog } = t;
   const [initialText] = useState(() =>
     isImport ? "" : (
@@ -104,6 +106,8 @@ const ImportTeamForm = observer(function ImportTeamForm({
           }
           label={importDialog.label}
           multiline
+          // A long team scrolls within the field, keeping the problems below it in view
+          maxRows={isSmDown ? 6 : 10}
           fullWidth
           sx={{ my: 2.5 }}
           value={text}

@@ -542,6 +542,8 @@ const ja: Messages = {
     unsupported: "選択したゲームにはこの項目がありません。",
     tooManyPokemon: "チームに入るポケモンは6匹までです。",
     tooManyMoves: "ポケモンが覚えられる技は4つまでです。",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}にはキョダイマックスのすがたがありません。`,
     unread: "サイトが読み取る項目ではありません。",
     slotLeftEmpty: "チームの枠は空になります。",
     moveLeftEmpty: "技の枠は空になります。",

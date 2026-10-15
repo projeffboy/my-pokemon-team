@@ -538,6 +538,7 @@ const en = {
     unsupported: "The selected game does not have this detail.",
     tooManyPokemon: "A team holds at most six pokemon.",
     tooManyMoves: "A pokemon knows at most four moves.",
+    noGigantamax: (pokemon: string) => `${pokemon} has no Gigantamax form.`,
     unread: "Not a detail the site reads.",
     slotLeftEmpty: "The team slot is left empty.",
     moveLeftEmpty: "The move slot is left empty.",

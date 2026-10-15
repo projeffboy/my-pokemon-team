@@ -180,6 +180,7 @@ export interface TeamTextProblem {
     | "move"
     | "line";
   move?: number; // the move slot, from 1
+  stat?: StatKey; // the stat of a training value
   value: string;
   reason:
     | "unrecognized"
@@ -189,9 +190,10 @@ export interface TeamTextProblem {
     | "unsupported"
     | "tooManyPokemon"
     | "tooManyMoves"
+    | "noGigantamax"
     | "unread";
   range?: readonly [number, number];
-  replacement?: string; // what is used in its place; otherwise it is left out
+  replacement?: string; // what is used in its place (a number for a stat); otherwise it is left out
 }
 
 type Problem = Omit<TeamTextProblem, "slot" | "pokemon">;
@@ -205,7 +207,7 @@ function parseStats(
   text: string,
   max: number,
   isDefault: (value: number) => boolean,
-  report: (problem: Omit<Problem, "field">, stat?: StatKey) => void,
+  report: (problem: Omit<Problem, "field">) => void,
 ): Partial<BaseStats> | undefined {
   const stats: Partial<BaseStats> = {};
   for (const part of text.split("/")) {
@@ -217,17 +219,13 @@ function parseStats(
     if (!supplied) continue;
     if (!stat) report({ value: supplied, reason: "unrecognized" });
     else if (value !== Number(amount))
-      report(
-        {
-          value: supplied,
-          reason: "outOfRange",
-          range: [0, max],
-          ...(!Number.isNaN(value) && {
-            replacement: `${value} ${STAT_NAMES[stat]}`,
-          }),
-        },
+      report({
         stat,
-      );
+        value: supplied,
+        reason: "outOfRange",
+        range: [0, max],
+        ...(!Number.isNaN(value) && { replacement: String(value) }),
+      });
   }
   return Object.keys(stats).length ? stats : undefined;
 }
@@ -363,6 +361,7 @@ export function parseTeamText(
         });
     }
 
+    const gigantamaxForme = pokemonNameInverse(`${pokemonName(pokemon)}-Gmax`);
     let moveIndex = 0;
     let gigantamax = false;
     let hasHappiness = false;
@@ -378,18 +377,22 @@ export function parseTeamText(
         max: number,
         isDefault: (value: number) => boolean,
       ) =>
-        parseStats(value(prefix), max, isDefault, (problem, stat) =>
+        parseStats(value(prefix), max, isDefault, problem => {
+          const { stat } = problem;
           report(
             { field, ...problem },
             stat && problem.replacement ?
               () =>
-                `${member[field]?.[stat] ?? (field === "ivs" ? MAX_IV : 0)} ${STAT_NAMES[stat]}`
+                String(member[field]?.[stat] ?? (field === "ivs" ? MAX_IV : 0))
             : undefined,
-          ),
-        );
+          );
+        });
 
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
+        const known = abilities.find(
+          name => name.toLowerCase() === ability.toLowerCase(),
+        );
 
         if (
           ability === "No Ability" ||
@@ -397,15 +400,20 @@ export function parseTeamText(
         )
           member.ability =
             hasNoAbility(pokemon, generation, format) ? "No Ability" : "";
-        else if (abilities.includes(ability)) {
-          member.ability = ability;
+        else if (known) {
+          member.ability = known;
         } else if (ability)
           report(
             { field: "ability", value: ability, reason: "wrongAbility" },
             () => member.ability,
           );
       } else if (startsWith("Gigantamax:")) {
-        gigantamax = value("Gigantamax:").toLowerCase() === "yes";
+        const answer = value("Gigantamax:").toLowerCase();
+        gigantamax = answer === "yes";
+        if (gigantamax && !gigantamaxForme)
+          report({ field: "line", value: line, reason: "noGigantamax" });
+        else if (!["", "yes", "no"].includes(answer))
+          report({ field: "line", value: line, reason: "unrecognized" });
       } else if (startsWith("Level:")) {
         const raw = value("Level:");
         const level = Math.round(Number(raw));
@@ -520,10 +528,7 @@ export function parseTeamText(
       )
     )
       member.evs = Object.fromEntries(STAT_KEYS.map(stat => [stat, 252]));
-    if (gigantamax) {
-      const forme = pokemonNameInverse(`${pokemonName(member.name)}-Gmax`);
-      if (forme) member.name = forme;
-    }
+    if (gigantamax && gigantamaxForme) member.name = gigantamaxForme;
     if (
       inferFrustrationHappiness &&
       rules.happiness &&

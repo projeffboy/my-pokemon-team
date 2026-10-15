@@ -12,7 +12,7 @@ export default function TeamTextProblems({
 }) {
   const { t, names } = useTranslation();
   if (!problems.length) return null;
-  const { importDialog: text, team, advanced } = t;
+  const { importDialog: text, team, advanced, statNames } = t;
   const fields = {
     item: team.item,
     ability: team.ability,
@@ -32,6 +32,7 @@ export default function TeamTextProblems({
     pokemon = "",
     field,
     move = 0,
+    stat,
     value,
     reason,
     range: [min, max] = [0, 0],
@@ -53,6 +54,7 @@ export default function TeamTextProblems({
       unsupported: text.unsupported,
       tooManyPokemon: text.tooManyPokemon,
       tooManyMoves: text.tooManyMoves,
+      noGigantamax: text.noGigantamax(name),
       unread: text.unread,
     };
     const result =
@@ -60,6 +62,7 @@ export default function TeamTextProblems({
         text.usedInstead(
           field === "item" ? names.item(replacement)
           : field === "ability" ? names.ability(replacement)
+          : stat ? `${replacement} ${statNames[stat]}`
           : replacement,
         )
       : field === "pokemon" && reason === "unrecognized" ? text.slotLeftEmpty

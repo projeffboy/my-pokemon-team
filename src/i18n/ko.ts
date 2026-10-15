@@ -553,6 +553,8 @@ const ko: Messages = {
     unsupported: "선택한 게임에는 이 항목이 없습니다.",
     tooManyPokemon: "팀에는 포켓몬이 최대 6마리까지 들어갑니다.",
     tooManyMoves: "포켓몬은 기술을 최대 4개까지 배웁니다.",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}에게는 거다이맥스의 모습이 없습니다.`,
     unread: "사이트가 읽는 항목이 아닙니다.",
     slotLeftEmpty: "팀 칸은 비워 둡니다.",
     moveLeftEmpty: "기술 칸은 비워 둡니다.",

@@ -169,6 +169,33 @@ test("an unrecognized item or ability names what is used in its place", () => {
   ]);
 });
 
+test("an ability is matched regardless of case", () => {
+  const { team, problems } = read("Lugia\nAbility: multiscale");
+  expect(team[0]?.ability).toBe("Multiscale");
+  expect(problems).toEqual([]);
+});
+
+test("a Gigantamax line that cannot be used is reported and left out", () => {
+  const where = (pokemon: string, value: string) => ({
+    slot: 1,
+    pokemon,
+    field: "line",
+    value,
+  });
+  const { team, problems } = read("Garchomp\nGigantamax: Yes\n- Earthquake", 8);
+  expect(team[0]).toMatchObject({ name: "garchomp", move1: "earthquake" });
+  expect(problems).toEqual([
+    { ...where("garchomp", "Gigantamax: Yes"), reason: "noGigantamax" },
+  ]);
+  expect(teamTextProblems("Lapras\nGigantamax: Maybe", 8, "")).toEqual([
+    { ...where("lapras", "Gigantamax: Maybe"), reason: "unrecognized" },
+  ]);
+  for (const answer of ["Yes", "No", ""])
+    expect(teamTextProblems(`Lapras\nGigantamax: ${answer}`, 8, "")).toEqual(
+      [],
+    );
+});
+
 test("set details that cannot be read are reported with what is used instead", () => {
   const { team, problems } = read(`Grimmsnarl
 Level: 105
@@ -202,18 +229,25 @@ Hidden Power: Fire`);
     { ...where("teraType", "Fyre"), reason: "unrecognized" },
     {
       ...where("evs", "300 Atk"),
+      stat: "atk",
       reason: "outOfRange",
       range: [0, 255],
-      replacement: "255 Atk",
+      replacement: "255",
     },
     { ...where("evs", "4 Spx"), reason: "unrecognized" },
-    { ...where("evs", "x Spe"), reason: "outOfRange", range: [0, 255] },
+    {
+      ...where("evs", "x Spe"),
+      stat: "spe",
+      reason: "outOfRange",
+      range: [0, 255],
+    },
     { ...where("nature", "Adamantt"), reason: "unrecognized" },
     {
       ...where("ivs", "40 SpA"),
+      stat: "spa",
       reason: "outOfRange",
       range: [0, 31],
-      replacement: "31 SpA",
+      replacement: "31",
     },
     { ...where("line", "Abilty: Prankster"), reason: "unread" },
   ]);
@@ -309,6 +343,6 @@ EVs: 100 Atk`);
   ).toEqual([
     ["ability", "Lightning Rod"],
     ["level", "50"],
-    ["evs", "100 Atk"],
+    ["evs", "100"],
   ]);
 });
