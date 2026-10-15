@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHant: Messages = {
+  pageTitle: "My Pokemon Team - 寶可夢配隊與隊伍規劃工具",
   // The header
   beta: "測試版",
   generation,

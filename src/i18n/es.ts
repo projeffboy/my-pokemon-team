@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const es: Messages = {
+  pageTitle: "My Pokemon Team - Creador y planificador de equipos Pokémon",
   beta: "Beta",
   generation,
   generationGames: {
