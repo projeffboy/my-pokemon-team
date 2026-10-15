@@ -262,8 +262,17 @@ export class Store {
     const index = this.teams.findIndex(
       ({ id, team }) => id === this.draftReplaces && isTeamEmpty(team),
     );
-    if (index === -1) this.teams.push(this.draftTeam);
-    else this.teams[index] = this.draftTeam;
+    if (index === -1) {
+      // It goes beside the starting team instead, so it gives up that team's name
+      const { name } = this.draftTeam;
+      if (
+        this.draftReplaces &&
+        name === this.translation.t.team.teamNumber(1) &&
+        this.teams.some(team => team.name === name)
+      )
+        this.draftTeam.name = this.nextTeamName();
+      this.teams.push(this.draftTeam);
+    } else this.teams[index] = this.draftTeam;
     this.draftTeam = null;
   }
 
