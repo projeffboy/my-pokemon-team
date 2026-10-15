@@ -82,7 +82,15 @@ export function calculateTypeCoverage(
       )
         continue;
 
-      const type = moveType(move, name, ability, generation, item, format);
+      const type = moveType(
+        move,
+        name,
+        ability,
+        generation,
+        item,
+        format,
+        pokemon,
+      );
       const isSpecialMove = move === "freezedry" || move === "flyingpress";
       if (isSpecialMove && specialMovesUsed.has(move)) continue;
       const targetsUsed = typesUsed.get(type) ?? new Set<PokemonType>();

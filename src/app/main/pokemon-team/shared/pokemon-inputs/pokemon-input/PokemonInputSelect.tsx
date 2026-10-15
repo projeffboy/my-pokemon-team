@@ -582,6 +582,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 generation,
                 analysisMember?.item,
                 format,
+                analysisMember,
               )
             : undefined;
           // Always the icon: an abbreviation would take more of the move's room

@@ -6,7 +6,7 @@ import { pokemonTypes } from "@/shared/pokedex";
 import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType } from "@/types";
-import { hiddenPowerPower } from "@/shared/hidden-power";
+import { hiddenPowerPower, hiddenPowerType } from "@/shared/hidden-power";
 
 export const activeItem = (
   item: string | undefined,
@@ -198,8 +198,12 @@ export function moveType(
   generation = LATEST_GENERATION,
   item?: string,
   format = "",
+  member?: Readonly<TeamPokemon>,
 ) {
   if (generation < 3) ability = undefined;
+  // Plain Hidden Power takes its type from the set's IVs or DVs
+  if (move === "hiddenpower" && member && generation >= 2)
+    move = `hiddenpower${hiddenPowerType(member, generation)}`;
   const rawType = moveTypeIn(move, generation, format);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
@@ -391,7 +395,15 @@ export function moveAgainstType(
   format = "",
 ) {
   if (generation < 3) ability = undefined;
-  const attackType = moveType(move, pokemon, ability, generation, item, format);
+  const attackType = moveType(
+    move,
+    pokemon,
+    ability,
+    generation,
+    item,
+    format,
+    member,
+  );
   const defender = typechartIn(generation)[typeAgainst];
 
   if (

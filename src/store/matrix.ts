@@ -187,14 +187,21 @@ export function coverageMatrix(
             reason: t.matrix.noDamagingMove(names.pokemon(name)),
           };
         }
+        const bestType = names.type(
+          moveType(
+            best.move,
+            name,
+            ability,
+            generation,
+            item,
+            format,
+            member,
+          ) ?? "",
+        );
         const type =
           isTypelessMove(best.move, generation) ? "???"
-          : best.move === "flyingpress" ?
-            `${names.type(moveType(best.move, name, ability, generation, item, format) ?? "")}/${names.type("Flying")}`
-          : names.type(
-              moveType(best.move, name, ability, generation, item, format) ??
-                "",
-            );
+          : best.move === "flyingpress" ? `${bestType}/${names.type("Flying")}`
+          : bestType;
         return {
           multiplier: best.multiplier,
           reason: t.matrix.coverageReason(
