@@ -3,7 +3,6 @@ import { toBase64Url } from "@/app/shared/base64url";
 import {
   clickMenuItem,
   getTeamTextFromUrl,
-  turnOnAdvanced,
   selectAbility,
   selectPokemon,
 } from "helper";
@@ -371,7 +370,6 @@ test.describe("Teams across tabs and links", () => {
     context,
   }) => {
     await selectPokemon(page, "Tropius");
-    await turnOnAdvanced(page);
     await page.getByRole("button", { name: "Teams", exact: true }).click();
     await page
       .getByRole("button", { name: "Options for Team 1", exact: true })
