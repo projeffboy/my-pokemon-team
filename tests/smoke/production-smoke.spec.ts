@@ -1,5 +1,10 @@
 import { test, expect } from "@playwright/test";
-import { expectImageToBeLoaded, selectAbility, selectPokemon } from "helper";
+import {
+  expectImageToBeLoaded,
+  openAnalysis,
+  selectAbility,
+  selectPokemon,
+} from "helper";
 import en from "@/i18n/en";
 
 test.beforeEach(async ({ page, baseURL }) => {
@@ -44,6 +49,27 @@ test("preserves selections after reloading", async ({ page }) => {
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
   await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue("Moxie");
+  expect(pageErrors).toEqual([]);
+});
+
+test("shows a pokemon and its analysis without Showdown's sprites or the ad script", async ({
+  page,
+}) => {
+  const pageErrors: Error[] = [];
+  page.on("pageerror", error => pageErrors.push(error));
+
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await selectPokemon(page, "Steelix");
+  // Every outside request is blocked, so the slot falls back to the bundled placeholder
+  await expectImageToBeLoaded(
+    page.getByRole("img", { name: "Steelix", exact: true }).first(),
+  );
+  await openAnalysis(page, "Team Defence");
+  await expect(
+    page
+      .getByRole("region", { name: "Team Defence" })
+      .getByLabel("Electric score: +1.5", { exact: true }),
+  ).toBeVisible();
   expect(pageErrors).toEqual([]);
 });
 
