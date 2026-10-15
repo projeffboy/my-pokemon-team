@@ -576,7 +576,6 @@ export function projectPastGenerations(
           : [[id, properties]];
       }),
     );
-    if (Object.keys(moveData).length) entry.moveData = moveData;
     const formats = Object.fromEntries(
       Object.keys(mod.formats ?? resolved.formats ?? {}).flatMap(id => {
         const format = resolved.formats?.[id];
@@ -609,7 +608,11 @@ export function projectPastGenerations(
                 const introduced = abilityGeneration(
                   resolved.abilities?.[toId(name)],
                 );
-                return !(gen < 5 && slot === "H") && introduced <= gen;
+                // Showdown's validator rejects a hidden ability it marks unreleased
+                const isHiddenUnavailable =
+                  slot === "H" &&
+                  (gen < 5 || species.unreleasedHidden === true);
+                return !isHiddenUnavailable && introduced <= gen;
               })
               .map(([, name]) => String(name));
         const latestAbilities = latestSpecies[id]?.abilities;
@@ -627,6 +630,8 @@ export function projectPastGenerations(
     if (JSON.stringify(typechart) !== JSON.stringify(nextChart)) {
       entry.typechart = typechart;
     }
+    // Last, where --move-effects-only adds it, so both write the same file
+    if (Object.keys(moveData).length) entry.moveData = moveData;
     past[gen as keyof PastGenerations] = entry;
     parent = resolved;
     nextChart = typechart;

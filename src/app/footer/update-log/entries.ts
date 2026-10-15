@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 15, 2026",
+    changes: [
+      "Gens 5–7 no longer offer or randomly pick hidden abilities that were unreleased then, e.g. Contrary for Gen 5 Serperior.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",

@@ -21200,16 +21200,48 @@ const data: PastGenerations = {
         "Anger Point"
       ],
       "aerodactylmega": [],
+      "articuno": [
+        "Pressure"
+      ],
       "articunogalar": [],
       "zapdos": [
-        "Pressure",
-        "Lightning Rod"
+        "Pressure"
+      ],
+      "moltres": [
+        "Pressure"
       ],
       "moltresgalar": [],
+      "chikorita": [
+        "Overgrow"
+      ],
+      "bayleef": [
+        "Overgrow"
+      ],
+      "meganium": [
+        "Overgrow"
+      ],
       "meganiummega": [],
+      "cyndaquil": [
+        "Blaze"
+      ],
+      "quilava": [
+        "Blaze"
+      ],
+      "typhlosion": [
+        "Blaze"
+      ],
       "typhlosionhisui": [
         "Blaze",
         "Flash Fire"
+      ],
+      "totodile": [
+        "Torrent"
+      ],
+      "croconaw": [
+        "Torrent"
+      ],
+      "feraligatr": [
+        "Torrent"
       ],
       "feraligatrmega": [],
       "igglybuff": [
@@ -21227,16 +21259,13 @@ const data: PastGenerations = {
       ],
       "skarmorymega": [],
       "raikou": [
-        "Pressure",
-        "Volt Absorb"
+        "Pressure"
       ],
       "entei": [
-        "Pressure",
-        "Flash Fire"
+        "Pressure"
       ],
       "suicune": [
-        "Pressure",
-        "Water Absorb"
+        "Pressure"
       ],
       "shiftry": [
         "Chlorophyll",
@@ -21285,6 +21314,15 @@ const data: PastGenerations = {
       "glaliemega": [],
       "salamencemega": [],
       "metagrossmega": [],
+      "regirock": [
+        "Clear Body"
+      ],
+      "regice": [
+        "Clear Body"
+      ],
+      "registeel": [
+        "Clear Body"
+      ],
       "kyogreprimal": [],
       "groudonprimal": [],
       "rayquazamega": [],
@@ -21310,6 +21348,36 @@ const data: PastGenerations = {
       ],
       "dusknoir": [
         "Pressure"
+      ],
+      "heatran": [
+        "Flash Fire"
+      ],
+      "snivy": [
+        "Overgrow"
+      ],
+      "servine": [
+        "Overgrow"
+      ],
+      "serperior": [
+        "Overgrow"
+      ],
+      "tepig": [
+        "Blaze"
+      ],
+      "pignite": [
+        "Blaze"
+      ],
+      "emboar": [
+        "Blaze"
+      ],
+      "oshawott": [
+        "Torrent"
+      ],
+      "dewott": [
+        "Torrent"
+      ],
+      "samurott": [
+        "Torrent"
       ],
       "samurotthisui": [
         "Torrent",
@@ -21354,8 +21422,7 @@ const data: PastGenerations = {
       ],
       "yamaskgalar": [],
       "gothita": [
-        "Frisk",
-        "Shadow Tag"
+        "Frisk"
       ],
       "gothorita": [
         "Frisk",
@@ -21380,21 +21447,22 @@ const data: PastGenerations = {
       "ferrothorn": [
         "Iron Barbs"
       ],
+      "klink": [
+        "Plus",
+        "Minus"
+      ],
       "eelektrossmega": [],
       "litwick": [
         "Flash Fire",
-        "Flame Body",
-        "Shadow Tag"
+        "Flame Body"
       ],
       "lampent": [
         "Flash Fire",
-        "Flame Body",
-        "Shadow Tag"
+        "Flame Body"
       ],
       "chandelure": [
         "Flash Fire",
-        "Flame Body",
-        "Shadow Tag"
+        "Flame Body"
       ],
       "cubchoo": [
         "Snow Cloak",
@@ -21406,10 +21474,20 @@ const data: PastGenerations = {
       ],
       "stunfiskgalar": [],
       "golurkmega": [],
+      "rufflet": [
+        "Keen Eye",
+        "Sheer Force"
+      ],
       "braviaryhisui": [
         "Keen Eye",
         "Sheer Force",
         "Defiant"
+      ],
+      "larvesta": [
+        "Flame Body"
+      ],
+      "volcarona": [
+        "Flame Body"
       ],
       "chespin": [
         "Overgrow"
@@ -22307,6 +22385,14 @@ const data: PastGenerations = {
         "Friend Guard"
       ],
       "pajantom": [],
+      "mumbao": [
+        "Trace",
+        "Overcoat"
+      ],
+      "jumbao": [
+        "Trace",
+        "Overcoat"
+      ],
       "electrelk": [
         "Overgrow"
       ],
@@ -26079,16 +26165,13 @@ const data: PastGenerations = {
       ],
       "skarmorymega": [],
       "raikou": [
-        "Pressure",
-        "Volt Absorb"
+        "Pressure"
       ],
       "entei": [
-        "Pressure",
-        "Flash Fire"
+        "Pressure"
       ],
       "suicune": [
-        "Pressure",
-        "Water Absorb"
+        "Pressure"
       ],
       "shiftry": [
         "Chlorophyll",
@@ -26124,6 +26207,9 @@ const data: PastGenerations = {
       "gallade": [
         "Steadfast",
         "Justified"
+      ],
+      "heatran": [
+        "Flash Fire"
       ],
       "samurotthisui": [
         "Torrent",
@@ -26849,6 +26935,14 @@ const data: PastGenerations = {
         "Light Metal"
       ],
       "pajantom": [],
+      "mumbao": [
+        "Trace",
+        "Overcoat"
+      ],
+      "jumbao": [
+        "Trace",
+        "Overcoat"
+      ],
       "electrelk": [
         "Overgrow"
       ],
@@ -29611,6 +29705,9 @@ const data: PastGenerations = {
         "Steadfast",
         "Justified"
       ],
+      "heatran": [
+        "Flash Fire"
+      ],
       "samurotthisui": [
         "Torrent",
         "Shell Armor"
@@ -30039,6 +30136,14 @@ const data: PastGenerations = {
         "Frisk",
         "Limber",
         "Iron Fist"
+      ],
+      "mumbao": [
+        "Trace",
+        "Overcoat"
+      ],
+      "jumbao": [
+        "Trace",
+        "Overcoat"
       ],
       "miasmite": [
         "Hyper Cutter",
