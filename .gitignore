@@ -23,3 +23,6 @@ npm-debug.log*
 
 # Playwire docs (local symlink, see AGENTS.md)
 /playwire-docs
+
+# Requirements notes that must stay private (traffic, advertising, offers)
+/docs/requirements/private

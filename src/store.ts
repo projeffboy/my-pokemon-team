@@ -110,7 +110,6 @@ export class Store {
     const stored = loaded ?? initialStoredState();
     this.teams = stored.teams;
     this.currentTeamId = stored.currentTeamId;
-    this.isMoreOpen = stored.isMoreOpen;
     this.showMoveTypes = stored.showMoveTypes;
     this.sort = stored.sort;
     this.moveSort = stored.moveSort;
@@ -931,10 +930,6 @@ export class Store {
     );
   }
 
-  // Advanced mode: Filters and Sort in the dropdowns, and hidden abilities marked. Named for
-  // the More toggle it began as, which the saved state still calls it.
-  isMoreOpen: boolean;
-
   // Each chosen move's type icon before its name, with the item's icon leading to match
   showMoveTypes: boolean;
 
@@ -1015,12 +1010,16 @@ export class Store {
     if (!theirs) return;
     const snapshot = teamKey(this.team);
     const { generation, format, generationProfile } = this.currentTeam;
-    const mine = this.storedState;
-    const selectionChanged = mine.currentTeamId !== this.lastRead.currentTeamId;
+    // A tab on an unsaved team has no saved team chosen, so it follows the others
+    const mine = {
+      ...this.storedState,
+      ...(this.draftTeam && { currentTeamId: theirs.currentTeamId }),
+    };
+    const selectionChanged =
+      !this.draftTeam && mine.currentTeamId !== this.lastRead.currentTeamId;
     const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
-    this.isMoreOpen = merged.isMoreOpen;
     this.showMoveTypes = merged.showMoveTypes;
     this.sort = merged.sort;
     this.moveSort = merged.moveSort;
@@ -1065,7 +1064,6 @@ export class Store {
       teams: this.teams,
       currentTeamId:
         this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId,
-      isMoreOpen: this.isMoreOpen,
       showMoveTypes: this.showMoveTypes,
       sort: this.sort,
       moveSort: this.moveSort,
