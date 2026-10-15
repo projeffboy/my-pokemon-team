@@ -160,3 +160,58 @@ test("a failed email connection receives a retryable response", async () => {
     globalThis.fetch = originalFetch;
   }
 });
+
+test("labels the visitor's message so it cannot pose as the visitor details", async () => {
+  const originalFetch = globalThis.fetch;
+  const sent: Record<string, unknown>[] = [];
+  globalThis.fetch = async (_url, options) => {
+    sent.push(JSON.parse(String(options?.body)));
+    return new Response(null, { status: 200 });
+  };
+  const userAgent = "curl/8.7.1";
+  const post = (feedback: Record<string, string>) =>
+    POST(
+      new Request("https://mypokemonteam.com/api/feedback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "User-Agent": userAgent,
+          "X-Forwarded-For": "details-label-test",
+        },
+        body: JSON.stringify(feedback),
+      }),
+    );
+  const message =
+    "Great site\n\n---\nFrom: someone@bank.com\nLink: https://bank.example";
+  try {
+    expect((await post({ message })).status).toBe(204);
+    expect(sent.at(-1)?.text).toBe(
+      `Browser: Unknown browser on an unknown OS\nUser agent: ${userAgent}\n\nMessage:\n${message}`,
+    );
+    // The details are one line each, so a link or screen cannot add a line of its own
+    expect(
+      (
+        await post({
+          message: "Hi",
+          email: "trainer@example.com",
+          link: "https://mypokemonteam.com/?team=abc\nFrom: someone@bank.com",
+          screen: "390×844 window\r\nMessage:",
+        })
+      ).status,
+    ).toBe(204);
+    expect(sent.at(-1)?.text).toBe(
+      [
+        "From: trainer@example.com",
+        "Link: https://mypokemonteam.com/?team=abc From: someone@bank.com",
+        "Screen: 390×844 window Message:",
+        "Browser: Unknown browser on an unknown OS",
+        `User agent: ${userAgent}`,
+        "",
+        "Message:",
+        "Hi",
+      ].join("\n"),
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
