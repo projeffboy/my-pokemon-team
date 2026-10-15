@@ -85,7 +85,7 @@ const tierRank = (pokemon: string, generation: Generation, format: string) => {
   const doubles = DOUBLES_TIER_RANK.includes(TIER_BY_FORMAT[format] ?? "");
   const ranks = doubles ? DOUBLES_TIER_RANK : TIER_RANK;
   const tiers = pokemonFormatIn(pokemon, generation);
-  const tier = (doubles ? tiers?.doublesTier : tiers?.tier) ?? "";
+  const tier = ((doubles && tiers?.doublesTier) || tiers?.tier) ?? "";
   const rank = ranks.indexOf(tier === "(OU)" ? "OU" : tier);
   return rank === -1 ? ranks.length : rank;
 };

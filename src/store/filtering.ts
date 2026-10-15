@@ -178,7 +178,7 @@ export function filterPokemon({
       ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
     ) {
       return filterByTier(
-        ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)"],
+        ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)", "NFE", "LC"],
         "doublesTier",
       );
     }
@@ -196,7 +196,9 @@ export function filterPokemon({
 
           // Add all the pokemon from that tier to filteredPokedex
           for (const [pokemon, entry] of Object.entries(pokedex)) {
-            if (pokemonFormatIn(pokemon, generation)?.[tierType] === tier) {
+            const tiers = pokemonFormatIn(pokemon, generation);
+            // Like Showdown, a pokemon without a doubles tier has its singles tier, e.g. NFE
+            if ((tiers?.[tierType] ?? tiers?.tier) === tier) {
               filteredPokedex[pokemon] = entry;
             }
           }

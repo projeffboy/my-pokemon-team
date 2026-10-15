@@ -175,6 +175,21 @@ test("doubles formats include (DOU) pokemon wherever DOU ones appear", () => {
   expect(doubles("Doubles UU")).not.toContain("tyranitarmega");
 });
 
+// Showdown's doubles formats fall back to the singles tier and only ban the tiers above
+test("doubles formats include NFE and LC pokemon", () => {
+  for (const format of ["Doubles Uber", "Doubles OU", "Doubles UU"]) {
+    const result = filterPokemon({ ...all, format });
+    for (const pokemon of ["clefairy", "dusclops", "chansey", "pichu"])
+      expect(result, `${pokemon} in ${format}`).toContain(pokemon);
+  }
+  const ou = filterPokemon({ ...all, format: "Doubles OU" });
+  expect(ou).not.toContain("miraidon");
+  expect(ou.indexOf("dusclops")).toBeLessThan(ou.indexOf("pichu"));
+  expect(
+    filterPokemon({ ...all, generation: 6, format: "Doubles OU" }),
+  ).toContain("munchlax");
+});
+
 test("format, region, and type filters intersect", () => {
   expect(
     filterPokemon({
