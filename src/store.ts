@@ -801,6 +801,7 @@ export class Store {
         this.team
           .filter((_, index) => index !== teamIndex)
           .map(({ item }) => item),
+        this.currentTeam.format,
       );
       this.recordEdit();
       this.team[teamIndex] = completed;
@@ -819,6 +820,7 @@ export class Store {
       this.team
         .filter((_, index) => index !== teamIndex)
         .map(({ item }) => item),
+      this.currentTeam.format,
     );
     this.recordEdit();
     return this.translation.t.team.randomizedPokemon;
@@ -846,6 +848,7 @@ export class Store {
         this.currentTeam.generation,
         this.dataFormat,
         this.team.slice(0, i).map(({ item }) => item),
+        this.currentTeam.format,
       );
     }
     this.recordEdit(teamKey(this.team), true);
@@ -922,6 +925,7 @@ export class Store {
       this.currentTeam.generation,
       this.dataFormat,
       this.translation,
+      this.currentTeam.format,
     );
   }
 

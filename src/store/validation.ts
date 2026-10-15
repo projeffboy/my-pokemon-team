@@ -14,26 +14,37 @@ import { requiredItemGroups } from "@/shared/team";
 import { filterPokemon } from "./filtering";
 import { availablePokemon, isItemAvailable } from "./learnsets";
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
+import { variantGeneration } from "@/shared/game-variants";
 
 // A rule the team breaks, and the slots of the pokemon it concerns
 export type TeamProblem = { message: string; slots: number[] };
 
 // The generation and format whose rules a team is checked against, e.g. "Gen 9 OU: Over Used"
+// or "Generations 6–9 OU: Over Used"
 export const rulesLabel = (
   generation: Generation,
   format: string,
   { t }: Translation = english,
-) =>
-  format === COMBINED_GENERATIONS_FORMAT ?
-    t.combinedGenerations.label
-  : `${t.generation(generation)}${format ? ` ${format}` : ""}`;
+  tier = format,
+) => {
+  const games =
+    format === COMBINED_GENERATIONS_FORMAT ?
+      t.combinedGenerations.label
+    : t.generation(generation);
+  return tier && tier !== COMBINED_GENERATIONS_FORMAT ?
+      `${games} ${tier}`
+    : games;
+};
 
-// The problems that stop a team from being legal in its format, or none
+// The problems that stop a team from being legal in its format, or none. The
+// format picks the games' data, and the tier the allowed pokemon, the bans, and
+// the Species Clause; the tier is the format, except in Generations 6–9.
 export function validateTeam(
   team: ReadonlyTeam,
   generation: Generation,
   format: string,
   translation: Translation = english,
+  tier = format,
 ): TeamProblem[] {
   const { t, names, locale } = translation;
   const members = team.flatMap((member, slot) =>
@@ -49,18 +60,20 @@ export function validateTeam(
   const training = t.advanced[rules.investment];
   const candidates = filterPokemon({
     generation,
-    format,
+    format: tier,
     region: "",
     type: "",
     ability: "",
   });
+  // Like the Name dropdown, the combined generations and each game list only
+  // the pokemon their games have
   const allowed = new Set(
-    format === COMBINED_GENERATIONS_FORMAT ?
+    format === COMBINED_GENERATIONS_FORMAT || variantGeneration(format) ?
       availablePokemon(candidates, generation, format)
     : candidates,
   );
-  const where = rulesLabel(generation, format, translation);
-  const bans = formatBans[showdownFormatId(generation, format)];
+  const where = rulesLabel(generation, format, translation, tier);
+  const bans = formatBans[showdownFormatId(generation, tier)];
   const species = (pokemon: string) => {
     const base = pokedex[pokemon]?.baseSpecies;
     return (base && pokemonNameInverse(base)) || pokemon;
@@ -147,7 +160,7 @@ export function validateTeam(
   };
 
   // The games allow two of a species; Smogon's tiers and Champions do not
-  if (FORMATS.includes(format))
+  if (FORMATS.includes(tier))
     for (const [base, slots] of shared(({ member }) => species(member.name)))
       report(t.validation.speciesClause(names.pokemon(base)), slots);
 

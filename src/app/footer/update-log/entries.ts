@@ -11,6 +11,9 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Team analysis now checks Generations 6–9 teams against the format chosen in the filters, e.g. Spore is banned in OU.",
+      "Team analysis now flags Pokémon that Legends: Z-A does not have, e.g. Koraidon.",
+      "Random sets no longer pick what their format bans, e.g. Tera Blast in OU.",
       "The team checklist can now be set to singles or doubles, and counts Defog as hazard removal in Gen 4 and 5 doubles.",
       "Links and saved teams now name the Pokémon, moves, items and abilities a data update removed from them.",
       "The Manage button is now More, whose Accessibility section can stop sprites from animating.",
