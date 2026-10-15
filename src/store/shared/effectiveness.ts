@@ -34,8 +34,10 @@ export function effectivePokemonTypes(
   return pokemonTypes(pokemon, generation);
 }
 
+// Beat Up's hits were typeless until Gen 5
 export const isTypelessMove = (move: string, generation: number) =>
-  generation <= 4 && (move === "futuresight" || move === "doomdesire");
+  generation <= 4 &&
+  (move === "futuresight" || move === "doomdesire" || move === "beatup");
 
 export const IMMUNE_SCORE = Infinity;
 
