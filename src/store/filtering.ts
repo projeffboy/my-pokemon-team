@@ -51,6 +51,17 @@ const FORME_REGIONS: Record<string, string> = {
   palkiaorigin: "Hisui",
   basculinwhitestriped: "Hisui",
   ursalunabloodmoon: "Paldea",
+  greninjabond: "Alola",
+  greninjaash: "Alola",
+  zygarde10: "Alola",
+  zygardecomplete: "Alola",
+  pikachuoriginal: "Alola",
+  pikachuhoenn: "Alola",
+  pikachusinnoh: "Alola",
+  pikachuunova: "Alola",
+  pikachukalos: "Alola",
+  pikachupartner: "Alola",
+  pikachuworld: "Galar",
 };
 
 // The generation a species or forme first appeared in, following Showdown's dex-species.ts
