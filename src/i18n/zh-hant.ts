@@ -214,29 +214,69 @@ const zhHant: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "場地陷阱", short: "陷阱" },
+      entryHazard: {
+        label: "場地陷阱",
+        short: "陷阱",
+        hint: (moves: string) =>
+          `讓寶可夢學會在對手場地設置陷阱的招式：${moves}。`,
+      },
       spinner: {
         label: "高速旋轉／清除濃霧",
         short: "清釘手",
         shorter: "清釘",
+        hint: (moves: string) =>
+          `讓寶可夢學會清除我方場地陷阱的招式：${moves}。`,
       },
       recovery: {
         label: "可靠回復",
         short: "回復招式",
         shorter: "回復",
+        hint: (moves: string) =>
+          `讓寶可夢學會能可靠回復 HP 的招式，例如${moves}。`,
       },
-      cleric: { label: "治癒手" },
-      status: { label: "異常狀態招式", short: "狀態" },
-      phazer: { label: "強制換人" },
-      boosting: { label: "強化招式", short: "強化" },
-      priority: { label: "先制招式", short: "先制", shorter: "先制" },
+      cleric: {
+        label: "治癒手",
+        hint: (moves: string) =>
+          `讓寶可夢學會治癒全隊異常狀態的招式：${moves}。`,
+      },
+      status: {
+        label: "異常狀態招式",
+        short: "狀態",
+        hint: (moves: string) =>
+          `讓寶可夢學會命中後必定使對手陷入異常狀態的招式，例如${moves}。`,
+      },
+      phazer: {
+        label: "強制換人",
+        hint: (moves: string) => `讓寶可夢學會強制對手換人的招式：${moves}。`,
+      },
+      boosting: {
+        label: "強化招式",
+        short: "強化",
+        hint: (moves: string) =>
+          `讓寶可夢學會使自身能力合計提升 2 階或以上的招式，例如${moves}。`,
+      },
+      priority: {
+        label: "先制招式",
+        short: "先制",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `讓寶可夢學會無論速度高低都能比大多數招式先出手的攻擊招式，例如${moves}。`,
+      },
       voltTurn: {
         label: "急速折返／伏特替換",
         short: "折返招式",
         shorter: "折返",
+        hint: (moves: string) => `讓寶可夢學會攻擊後換下場的招式：${moves}。`,
       },
-      choice: { label: "講究道具", short: "講究" },
+      choice: {
+        label: "講究道具",
+        short: "講究",
+        hint: (items: string) => `讓寶可夢攜帶講究道具：${items}。`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
+    together: (move: string, other: string) => `${move}配合${other}`,
+    unavailable: "本作中沒有符合條件的招式或道具。",
   },
   matrix: {
     matrix: "矩陣",
@@ -372,6 +412,8 @@ const zhHant: Messages = {
     region: "地區",
     moves: "招式",
     viable: "實用",
+    items: "道具",
+    viableItems: "實用",
     ability: "特性",
   },
   sort: {

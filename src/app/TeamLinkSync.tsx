@@ -14,6 +14,7 @@ import {
 // them, such as a slider drag, uses up this many writes, which come back two a second.
 const URL_WRITE_BURST = 30;
 const URL_WRITE_INTERVAL = 500;
+// This tab's team and the URL it is due, which a reload restores
 const PENDING_URL_KEY = "mypokemonteam-pending-url";
 
 function restorePendingReload() {
@@ -41,6 +42,7 @@ function restorePendingReload() {
     if (url.origin !== location.origin || url.pathname !== location.pathname)
       return;
     history.replaceState(history.state, "", url);
+    // Keeps this tab's team, which an empty team's URL cannot identify
     if ("teamId" in pending && typeof pending.teamId === "string")
       store.selectTeam(pending.teamId);
   } catch {
@@ -96,8 +98,10 @@ const TeamLinkSync = observer(function TeamLinkSync() {
 
       lastSyncedTeamParameter = teamParameter;
       const { settings, unrecognized } = generationSettingsFromUrl();
-      if (teamParameter) importTeamFromUrlParameter(teamParameter);
-      else if (
+      // A team the link holds but the site cannot read opens as if the link held none
+      if (teamParameter && importTeamFromUrlParameter(teamParameter)) {
+        // The link's team is open
+      } else if (
         firstNavigation &&
         store.isTeamEmpty &&
         store.teams.some(team => team.id === store.currentTeamId)
@@ -138,17 +142,14 @@ const TeamLinkSync = observer(function TeamLinkSync() {
     let desiredUrl = location.href;
     const rememberPending = () => {
       try {
-        if (desiredUrl === location.href)
-          sessionStorage.removeItem(PENDING_URL_KEY);
-        else
-          sessionStorage.setItem(
-            PENDING_URL_KEY,
-            JSON.stringify({
-              href: location.href,
-              url: desiredUrl,
-              teamId: store.currentTeamId,
-            }),
-          );
+        sessionStorage.setItem(
+          PENDING_URL_KEY,
+          JSON.stringify({
+            href: location.href,
+            url: desiredUrl,
+            teamId: store.currentTeamId,
+          }),
+        );
       } catch {
         // The URL still updates normally when site storage is blocked.
       }

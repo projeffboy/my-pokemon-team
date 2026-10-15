@@ -32,6 +32,20 @@ test("historical abilities exclude future and hidden abilities", () => {
   expect(pokemonAbilities("gengar", 7)).toEqual(["Cursed Body"]);
 });
 
+test("hidden abilities Showdown marks unreleased are left out of their generations", () => {
+  expect(pokemonAbilities("serperior", 5)).toEqual(["Overgrow"]);
+  expect(pokemonAbilities("chandelure", 5)).not.toContain("Shadow Tag");
+  expect(isHiddenAbility("chandelure", "Shadow Tag", 5)).toBe(false);
+  expect(pokemonAbilities("volcarona", 5)).not.toContain("Swarm");
+  expect(pokemonAbilities("serperior", 6)).toContain("Contrary");
+  expect(pokemonAbilities("suicune", 5)).toEqual(["Pressure"]);
+  expect(pokemonAbilities("suicune", 6)).toEqual(["Pressure"]);
+  expect(pokemonAbilities("suicune", 7)).toEqual(["Pressure", "Inner Focus"]);
+  expect(pokemonAbilities("heatran", 6)).toEqual(["Flash Fire"]);
+  expect(pokemonAbilities("heatran", 7)).toEqual(["Flash Fire"]);
+  expect(pokemonAbilities("heatran", 8)).toContain("Flame Body");
+});
+
 test("hidden ability labels follow historical names and distinguish ordinary and special abilities", () => {
   expect(isHiddenAbility("empoleon", "Competitive", 9)).toBe(true);
   expect(isHiddenAbility("empoleon", "Defiant", 8)).toBe(true);
@@ -42,7 +56,6 @@ test("hidden ability labels follow historical names and distinguish ordinary and
   expect(isHiddenAbility("pelipper", "Keen Eye", 5)).toBe(false);
   expect(isHiddenAbility("shiftry", "Early Bird", 8)).toBe(false);
   expect(isHiddenAbility("shiftry", "Pickpocket", 8)).toBe(true);
-  expect(isHiddenAbility("chandelure", "Shadow Tag", 5)).toBe(true);
   expect(isHiddenAbility("greninja", "Battle Bond", 7)).toBe(false);
   expect(isHiddenAbility("rockruff", "Own Tempo", 7)).toBe(false);
   expect(isHiddenAbility("greninjabond", "Battle Bond", 7)).toBe(false);

@@ -219,27 +219,77 @@ const en = {
       defensive: "Defensive",
       offensive: "Offensive",
     },
-    // Shorter labels for screens at lg and below, then shorter still at md and below
+    // Shorter labels for screens at lg and below, then shorter still at md and below. A hint
+    // says what would fill a role, given a list of the moves or items in the game that do.
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Give a pokemon a move that sets entry hazards: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Give a pokemon a move that removes entry hazards from your side: ${moves}.`,
+      },
       recovery: {
         label: "Reliable Recovery",
         short: "Recovery",
         shorter: "Heal",
+        hint: (moves: string) =>
+          `Give a pokemon a reliable healing move, such as ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Status Move", short: "Status" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Boosting Move", short: "Setup" },
-      priority: { label: "Priority Move", short: "Priority", shorter: "Prio" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Give a pokemon a move that cures your team's status conditions: ${moves}.`,
+      },
+      status: {
+        label: "Status Move",
+        short: "Status",
+        hint: (moves: string) =>
+          `Give a pokemon a move that always inflicts a status condition when it hits, such as ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Give a pokemon a move that forces the foe to switch out: ${moves}.`,
+      },
+      boosting: {
+        label: "Boosting Move",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Give a pokemon a move that raises its own stats by two or more stages in total, such as ${moves}.`,
+      },
+      priority: {
+        label: "Priority Move",
+        short: "Priority",
+        shorter: "Prio",
+        hint: (moves: string) =>
+          `Give a pokemon a damaging move that goes before most other moves, regardless of Speed, such as ${moves}.`,
+      },
       voltTurn: {
         label: "Volt-turn Move",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Give a pokemon a move that attacks and then switches it out: ${moves}.`,
       },
-      choice: { label: "Choice Item", short: "Choice" },
+      choice: {
+        label: "Choice Item",
+        short: "Choice",
+        hint: (items: string) =>
+          `Give a pokemon a Choice item to hold: ${items}.`,
+      },
     },
+    // A pokemon that fills a role, and the moves or item it fills it with
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    // Two moves that fill a role together, such as Wish with Protect
+    together: (move: string, other: string) => `${move} with ${other}`,
+    unavailable: "Nothing in this game fills it.",
   },
   matrix: {
     matrix: "Matrix",
@@ -375,6 +425,8 @@ const en = {
     region: "Region",
     moves: "Moves",
     viable: "Viable",
+    items: "Items",
+    viableItems: "Viable",
     ability: "Ability",
   },
   sort: {

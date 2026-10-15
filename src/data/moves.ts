@@ -167,7 +167,7 @@ const data: Moves = {
   "destinybond": {"name":"Destiny Bond","type":"Ghost","category":"Status","basePower":0,"target":"self"},
   "detect": {"name":"Detect","type":"Fighting","category":"Status","basePower":0,"target":"self"},
   "devastatingdrake": {"name":"Devastating Drake","type":"Dragon","category":"Physical","basePower":1,"target":"normal"},
-  "diamondstorm": {"name":"Diamond Storm","type":"Rock","category":"Physical","basePower":100,"target":"allAdjacentFoes","selfBoosts":{"def":2},"secondary":{}},
+  "diamondstorm": {"name":"Diamond Storm","type":"Rock","category":"Physical","basePower":100,"target":"allAdjacentFoes","secondary":{}},
   "dig": {"name":"Dig","type":"Ground","category":"Physical","basePower":80,"target":"normal"},
   "direclaw": {"name":"Dire Claw","type":"Poison","category":"Physical","basePower":80,"target":"normal","secondary":{"chance":50}},
   "disable": {"name":"Disable","type":"Normal","category":"Status","basePower":0,"target":"normal"},

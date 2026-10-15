@@ -17,6 +17,12 @@ test.describe("Drag hint - Integration Tests", () => {
 
   test.describe("after sprite animations", () => {
     test.use({ viewport: { width: 320, height: 800 } });
+    test.skip(
+      ({ browserName }) => browserName === "firefox",
+      "The development server takes Firefox over 5 seconds to load the sprite animation list, " +
+        "and the wiggle's 5-second CSS delay runs in real time, so it ends before any sprite animates. " +
+        "The production build loads the list as one file.",
+    );
 
     for (const generation of [2, 3, 4]) {
       for (const width of [320, 800]) {

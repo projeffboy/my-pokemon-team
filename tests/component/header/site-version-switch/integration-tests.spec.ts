@@ -73,7 +73,7 @@ test("a nonempty team goes with the player after confirmation", async ({
     .click();
   await expect(page.getByRole("heading", { name: "Other site" })).toBeVisible();
   expect(page.url()).toMatch(/^https:\/\/old\.mypokemonteam\.com\/\?team=/);
-  expect(getTeamTextFromUrl(page)).toMatch(/^Whiscash @/);
+  expect(getTeamTextFromUrl(page)).toMatch(/^Whiscash\n/);
 });
 
 test("names what a Gen 2 team leaves behind and carries the rest", async ({
@@ -103,7 +103,7 @@ test("names what a Gen 2 team leaves behind and carries the rest", async ({
     .click();
   await expect(page.getByRole("heading", { name: "Other site" })).toBeVisible();
   const carried = getTeamTextFromUrl(page);
-  expect(carried).toMatch(/^Porygon2 @/);
+  expect(carried).toMatch(/^Porygon2\n/);
   expect(carried).toContain("- Tri Attack");
   expect(carried).not.toMatch(/Berserk Gene|Barrier|Pory /);
 });

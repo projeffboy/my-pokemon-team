@@ -1,14 +1,18 @@
 import { test, expect } from "@playwright/test";
 import formatBans from "@/data/format-bans";
 import {
+  CAP_FORMAT,
   CHAMPIONS_FORMAT,
   TIER_BY_FORMAT,
   formatsForGeneration,
   formatForGeneration,
+  formatShortName,
   parseShowdownFormatId,
   showdownFormatId,
 } from "@/shared/formats";
 import { GENERATIONS } from "@/shared/generations";
+import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
+import { LETS_GO } from "@/shared/game-variants";
 
 for (const generation of GENERATIONS) {
   test(`Gen ${generation} offers its Showdown tier formats`, () => {
@@ -22,6 +26,7 @@ for (const generation of GENERATIONS) {
       "PU",
       "ZU",
       ...(generation !== 2 ? ["Little Cup (LC)"] : []),
+      ...(generation === 9 ? [CAP_FORMAT] : []),
       ...(generation >= 8 ? ["Doubles Uber"] : []),
       ...(generation >= 3 ? ["Doubles OU"] : []),
       ...(generation >= 7 ? ["Doubles UU"] : []),
@@ -44,7 +49,30 @@ test("generation changes keep supported formats and clear unavailable ones", () 
   expect(formatForGeneration("RU: Rarely Used", 4)).toBe("");
   expect(formatForGeneration("Doubles UU", 6)).toBe("");
   expect(formatForGeneration(CHAMPIONS_FORMAT, 8)).toBe("");
+  expect(formatForGeneration(CAP_FORMAT, 8)).toBe("");
   expect(formatForGeneration("", 9)).toBe("");
+});
+
+test("Generations 6–9 leaves out CAP, whose pokemon are in no game", () => {
+  const combined = formatsForGeneration(9, COMBINED_GENERATIONS_PROFILE);
+  expect(combined).toContain("OU: Over Used");
+  expect(combined).not.toContain(CAP_FORMAT);
+  expect(formatForGeneration(CAP_FORMAT, 9)).toBe(CAP_FORMAT);
+  expect(formatForGeneration(CAP_FORMAT, 9, COMBINED_GENERATIONS_PROFILE)).toBe(
+    "",
+  );
+  expect(
+    formatForGeneration("OU: Over Used", 9, COMBINED_GENERATIONS_PROFILE),
+  ).toBe("OU: Over Used");
+});
+
+test("the CAP format round-trips through Showdown's team header ID", () => {
+  expect(showdownFormatId(9, CAP_FORMAT)).toBe("gen9cap");
+  expect(parseShowdownFormatId("gen9cap")).toEqual({
+    generation: 9,
+    format: CAP_FORMAT,
+  });
+  expect(formatShortName(CAP_FORMAT)).toBe("CAP");
 });
 
 test("old imports still preserve their format even when no longer selectable", () => {
@@ -82,4 +110,42 @@ test("unknown IDs beginning with a legacy tier keep the latest-generation defaul
     "doublesoucustom",
   ])
     expect(parseShowdownFormatId(id)).toEqual({ generation: 9, format: "" });
+});
+
+test("tier IDs must match exactly, while game IDs cover their whole family", () => {
+  for (const id of [
+    "gen9purehackmons",
+    "gen9ubersuu",
+    "gen9lcuu",
+    "gen9doublesoucustom",
+  ])
+    expect(parseShowdownFormatId(id)).toEqual({ generation: 9, format: "" });
+  expect(parseShowdownFormatId("gen3uubl")).toEqual({
+    generation: 3,
+    format: "",
+  });
+  expect(parseShowdownFormatId("gen9ou-box")).toEqual({
+    generation: 9,
+    format: "OU: Over Used",
+  });
+  expect(parseShowdownFormatId("gen9ou@@@-Pikachu,+Ubers")).toEqual({
+    generation: 9,
+    format: "OU: Over Used",
+  });
+  expect(parseShowdownFormatId("gen9ubersuu@@@-Pikachu")).toEqual({
+    generation: 9,
+    format: "",
+  });
+  expect(parseShowdownFormatId("uu-box")).toEqual({
+    generation: 6,
+    format: "UU: Under Used",
+  });
+  expect(parseShowdownFormatId("gen9championsvgc2026regmcbo3")).toEqual({
+    generation: 9,
+    format: CHAMPIONS_FORMAT,
+  });
+  expect(parseShowdownFormatId("gen7letsgodoublesou-box")).toEqual({
+    generation: 7,
+    format: LETS_GO,
+  });
 });

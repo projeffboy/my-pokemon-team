@@ -128,6 +128,16 @@ test("sorts by format from the top tier down, with untiered formes last", () => 
   ]);
 });
 
+test("format sorting ranks a forme without tiers of its own like its species", () => {
+  const ids = ["giratinaorigin", "tentacruel", "giratina"];
+  const sort = { by: "format", descending: false } as const;
+  expect(sortPokemon(ids, sort, undefined, 4)).toEqual([
+    "giratina",
+    "giratinaorigin",
+    "tentacruel",
+  ]);
+});
+
 test("format sorting uses the selected generation's tiers", () => {
   const ids = ["clefable", "gengar"];
   const sort = { by: "format", descending: false } as const;
@@ -211,4 +221,30 @@ test("MissingNo. and Pokestar pokemon come last in every sort but name", () => {
   expect(sortPokemon(ids, { by: "name", descending: false })[0]).toBe(
     "bulbasaur",
   );
+});
+
+test("CAP pokemon sort by their stats and CAP tiers, and by number after the real pokemon", () => {
+  const ids = ["toedscool", "smoguana", "chuggalong", "zamazenta", "shox"];
+  expect(sortPokemon(ids, { by: "bst", descending: true })).toEqual([
+    "zamazenta",
+    "shox",
+    "chuggalong",
+    "smoguana",
+    "toedscool",
+  ]);
+  // As Showdown's CAP teambuilder lists them, CAP tiers first
+  expect(sortPokemon(ids, { by: "format", descending: false })).toEqual([
+    "chuggalong",
+    "shox",
+    "smoguana",
+    "zamazenta",
+    "toedscool",
+  ]);
+  // CAP pokemon count down from -1 in the order they were made
+  for (const descending of [false, true])
+    expect(sortPokemon(ids, { by: "num", descending }).slice(2)).toEqual(
+      descending ?
+        ["shox", "chuggalong", "smoguana"]
+      : ["smoguana", "chuggalong", "shox"],
+    );
 });
