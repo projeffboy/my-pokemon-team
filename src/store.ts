@@ -110,6 +110,10 @@ const browserStorage = getBrowserStorage();
 expireSettings(browserStorage, Date.now());
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
+const reducedMotionQuery =
+  typeof matchMedia === "undefined" ? undefined : (
+    matchMedia("(prefers-reduced-motion: reduce)")
+  );
 
 const teamKey = (team: Team) => stableJson(toJS(team));
 
@@ -128,6 +132,7 @@ export class Store {
     this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
     this.chosenLocale = stored.locale;
+    this.chosenAnimateSprites = stored.animateSprites;
     this.knowsSlotDrag = stored.knowsSlotDrag ?? false;
     this.lastRead = structuredClone(stored);
     if (loaded) this.openUnsavedTeam();
@@ -168,6 +173,9 @@ export class Store {
     this.translationReady = this.loadLocale(this.locale).then(() =>
       this.nameStartingTeam(),
     );
+    reducedMotionQuery?.addEventListener("change", ({ matches }) => {
+      this.reducedMotion = matches;
+    });
     reaction(
       () => this.locale,
       locale => this.loadLocale(locale),
@@ -1073,6 +1081,19 @@ export class Store {
   // item's icon leading to match, until the Player hides them
   showTypes: boolean;
 
+  // Whether sprites move. Until the player chooses, a device set to reduce
+  // motion gets still ones, and a change to that setting is followed.
+  chosenAnimateSprites: boolean | undefined;
+  reducedMotion = reducedMotionQuery?.matches ?? false;
+
+  get animateSprites() {
+    return this.chosenAnimateSprites ?? !this.reducedMotion;
+  }
+
+  set animateSprites(animate: boolean) {
+    this.chosenAnimateSprites = animate;
+  }
+
   // How the Name dropdown lists its options
   nameView: NameView;
 
@@ -1165,6 +1186,7 @@ export class Store {
     this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
     this.chosenLocale = merged.locale;
+    this.chosenAnimateSprites = merged.animateSprites;
     this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
     this.lastRead = {
       ...theirs,
@@ -1209,6 +1231,9 @@ export class Store {
       moveSort: this.moveSort,
       nameView: this.nameView,
       ...(this.chosenLocale && { locale: this.chosenLocale }),
+      ...(this.chosenAnimateSprites !== undefined && {
+        animateSprites: this.chosenAnimateSprites,
+      }),
       ...(this.knowsSlotDrag && { knowsSlotDrag: true }),
     };
   }

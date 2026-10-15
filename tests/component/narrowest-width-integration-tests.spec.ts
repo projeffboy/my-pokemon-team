@@ -6,7 +6,7 @@ import {
   openAdvanced,
   openAnalysis,
   openFilters,
-  openManageTeamMenu,
+  openMoreMenu,
   openSort,
   showSlot,
 } from "helper";
@@ -240,8 +240,8 @@ test.describe("Narrowest Width - Integration Tests", () => {
 
   test("the team actions and the saved teams fit", async ({ page }) => {
     await loadTeam(page);
-    await openManageTeamMenu(page);
-    await expectNothingCutOff(page, "Manage team");
+    await openMoreMenu(page);
+    await expectNothingCutOff(page, "More");
     await clickMenuItem(page, "Edit Pokepaste");
     await blur(page);
     await expectNothingCutOff(page, "Edit Pokepaste");

@@ -1,12 +1,7 @@
 import { test, expect } from "fixtures";
-import {
-  clickMenuItem,
-  openManageTeamMenu,
-  selectPokemon,
-  selectMove,
-} from "helper";
+import { clickMenuItem, openMoreMenu, selectPokemon, selectMove } from "helper";
 
-test.describe("Manage Team: Copy text - Integration Tests", () => {
+test.describe("More menu: Copy text - Integration Tests", () => {
   test.beforeEach(async ({ context, browserName }, testInfo) => {
     if (browserName === "chromium" || testInfo.project.name === "Android") {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
@@ -24,8 +19,8 @@ test.describe("Manage Team: Copy text - Integration Tests", () => {
     // Select move Thunderbolt
     await selectMove(page, "Thunderbolt", 1, 0);
 
-    // 2. Copy the team's text from the Manage Team menu
-    await openManageTeamMenu(page);
+    // 2. Copy the team's text from the More menu
+    await openMoreMenu(page);
     await clickMenuItem(page, "Copy text");
 
     // Verify snackbar
@@ -74,13 +69,13 @@ test.describe("Manage Team: Copy text - Integration Tests", () => {
         value: { writeText: () => Promise.reject(new Error("Denied")) },
       }),
     );
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await clickMenuItem(page, "Copy text");
 
     await expect(page.getByRole("alert").last()).toContainText(
       "Could not copy the team. Copy its text from Edit Pokepaste instead.",
     );
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await clickMenuItem(page, "Edit Pokepaste");
     await expect(
       page.getByRole("dialog", { name: "Edit Pokepaste" }).getByRole("textbox"),

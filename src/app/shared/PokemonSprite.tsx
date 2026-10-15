@@ -33,11 +33,12 @@ const PokemonSprite = observer(function PokemonSprite({
   const generation = store.currentTeam.generation;
   const classicSprite = !!pokemon && generation >= 2 && generation <= 4;
   const shiny = !!member && isShinyInGeneration(member, generation);
+  const animate = store.animateSprites;
   const animation = useSpriteAnimation(
     pokemon,
     generation,
     shiny,
-    classicSprite,
+    classicSprite && animate,
   );
   const selection = store.pokemonSelection;
   const imageRef = useSelectionAnimation(
@@ -47,7 +48,7 @@ const PokemonSprite = observer(function PokemonSprite({
     ) ?
       selection.sequence
     : undefined,
-    classicSprite,
+    classicSprite && animate,
     animation,
   );
   const sprite =
@@ -59,6 +60,7 @@ const PokemonSprite = observer(function PokemonSprite({
         isSmall,
         store.currentTeam.generation,
         shiny,
+        !animate,
       )
     : undefined;
   const localSprite = localSpritesMap[pokemon];

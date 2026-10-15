@@ -1,11 +1,11 @@
 import { test, expect } from "fixtures";
-import { clickMenuItem, openManageTeamMenu } from "helper";
+import { clickMenuItem, openMoreMenu } from "helper";
 
-test.describe("Manage Team: Copy text - Unit Tests", () => {
+test.describe("More menu: Copy text - Unit Tests", () => {
   test("should show error message when copying empty team", async ({
     page,
   }) => {
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await clickMenuItem(page, "Copy text");
 
     // Verify snackbar message

@@ -63,8 +63,8 @@ export const showSlot = async (page: Page, slotIndex: number) => {
   await expect(input).toBeVisible();
 };
 
-export const openManageTeamMenu = async (page: Page) => {
-  await page.getByRole("button", { name: "Manage team" }).click();
+export const openMoreMenu = async (page: Page) => {
+  await page.getByRole("button", { name: "More", exact: true }).click();
   await expect(page.getByRole("menu")).toBeVisible();
 };
 
@@ -75,7 +75,7 @@ export const clickMenuItem = async (page: Page, name: string) => {
 
 // Opens the current team's text in the Edit Pokepaste dialog
 export const openEditPokepaste = async (page: Page) => {
-  await openManageTeamMenu(page);
+  await openMoreMenu(page);
   await clickMenuItem(page, "Edit Pokepaste");
   await expect(
     page.getByRole("dialog", { name: "Edit Pokepaste" }),
