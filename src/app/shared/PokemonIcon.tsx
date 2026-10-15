@@ -27,7 +27,9 @@ export default function PokemonIcon({
     if (pokemonProperty === "name") {
       type = PokemonIconsSheet;
 
-      const pokedexNumber = altSpriteNum[value] ?? pokedex[value]?.num ?? 0;
+      // A negative number, such as a CAP pokemon's without its own icon, gets the sheet's placeholder
+      const pokedexNumber =
+        altSpriteNum[value] ?? Math.max(0, pokedex[value]?.num ?? 0);
 
       // Copied from Pokemon Showdown code
       left = (pokedexNumber % 12) * 40;

@@ -9,6 +9,7 @@ import {
   selectPokemon,
   getTeamTextFromUrl,
   clickMenuItem,
+  findOption,
 } from "helper";
 import type { Page } from "@playwright/test";
 import { toBase64Url } from "@/app/shared/base64url";
@@ -185,6 +186,13 @@ test.describe("Filters Integration Tests", () => {
     await checkPokemonSelectable(page, "Equilibra");
     await checkPokemonSelectable(page, "Okidogi");
     await checkPokemonNotSelectable(page, "Iron Bundle");
+
+    // Scraptor has no icon of its own, so it shows the sheet's placeholder
+    const scraptor = await findOption(page, "Pokemon 1's name", "Scraptor");
+    await expect(scraptor.locator("span[style]").first()).toHaveCSS(
+      "background-image",
+      /pokemonicons-sheet/,
+    );
 
     // Equilibra learns its moves that Gen 9 still has
     await selectPokemon(page, "Equilibra");

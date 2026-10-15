@@ -26,6 +26,8 @@ test("newer pokemon that Showdown animates are animated, unlike the Legends: Z-A
     /\/ani\/basculin-whitestriped\.gif$/,
   );
   expect(sources("irontreads", true)[0]).toMatch(/\/dex\/irontreads\.png$/);
+  // CAP icons come after the Z-A megas', but Showdown animates CAP pokemon
+  expect(sources("kerfluffle")[0]).toMatch(/\/ani\/kerfluffle\.gif$/);
   expect(sources("scovillainmega")).toEqual([
     expect.stringMatching(/\/gen5\/scovillain-mega\.png$/),
   ]);
