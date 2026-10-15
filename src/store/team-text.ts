@@ -477,7 +477,7 @@ export function parseTeamsText(
         COMBINED_GENERATIONS_PROFILE
       : undefined;
     const rawName = header?.[2] ?? "";
-    // Showdown strips slashes from folder names but not team names
+    // Showdown folder names hold no slashes, but its new client allows them in team names
     const name =
       preserveNames || isEmptyBackup(index) ? rawName : (
         rawName.slice(rawName.indexOf("/") + 1).trim()
