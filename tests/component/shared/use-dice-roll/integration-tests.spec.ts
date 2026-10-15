@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { getTeamTextFromUrl, turnOnAdvanced } from "helper";
+import { getTeamTextFromUrl } from "helper";
 import type { Locator, Page } from "@playwright/test";
 
 const observeRolls = async (page: Page) => {
@@ -49,7 +49,6 @@ for (const target of [
     page,
   }) => {
     await observeRolls(page);
-    if (target !== "slot") await turnOnAdvanced(page);
     if (target === "teams dialog") {
       await page.getByRole("button", { name: "Teams", exact: true }).click();
     }
@@ -128,7 +127,6 @@ test("a quick team click paints dice movement before the result appears", async 
   page,
 }) => {
   await observeRolls(page);
-  await turnOnAdvanced(page);
   const button = page.getByRole("button", {
     name: "Randomize team",
     exact: true,

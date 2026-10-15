@@ -272,3 +272,19 @@ test("Flying Press explains its converted Normal/Flying type", () => {
     ).Rock?.[0]?.reason,
   ).toBe("Hawlucha's Flying Press (Normal/Flying) does 0.25x to Rock");
 });
+
+test("primal weather abilities block the opposing type, and Delta Stream removes Flying weaknesses", () => {
+  const multiplier = (
+    name: string,
+    ability: string,
+    type: "Water" | "Fire" | "Ice" | "Rock" | "Electric",
+  ) => defenceMatrix(createTeam({ name, ability }))[type]?.[0]?.multiplier;
+  expect(multiplier("groudonprimal", "Desolate Land", "Water")).toBe(0);
+  expect(multiplier("kyogreprimal", "Primordial Sea", "Fire")).toBe(0);
+  expect(multiplier("rayquazamega", "Delta Stream", "Ice")).toBe(2);
+  expect(multiplier("rayquazamega", "Delta Stream", "Rock")).toBe(1);
+  expect(multiplier("rayquazamega", "Delta Stream", "Electric")).toBe(0.5);
+  expect(typeAgainstPokemon("Water", "groudonprimal", "Desolate Land")).toBe(
+    IMMUNE_SCORE,
+  );
+});
