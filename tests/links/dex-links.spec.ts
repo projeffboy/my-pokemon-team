@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type APIResponse } from "@playwright/test";
 import pokedex from "@/data/pokedex";
 import {
   bulbapediaUrl,
@@ -100,6 +100,18 @@ const describeCase = ({
   generation: Generation;
 }) => `${entry.name} in Gen ${generation}`;
 
+// A bot challenge means the site refused the browser, not that the link is broken.
+// Cloudflare marks its challenges, and other protection answers 403 or 429.
+const skipIfChallenged = (
+  site: string,
+  response: Pick<APIResponse, "headers" | "status"> | null,
+) =>
+  test.skip(
+    response?.headers()["cf-mitigated"] === "challenge" ||
+      [403, 429].includes(response?.status() ?? 0),
+    `${site} challenged the browser instead of serving the page`,
+  );
+
 test.describe("Smogon dex links", () => {
   for (const c of cases) {
     test(describeCase(c), async ({ request }) => {
@@ -108,6 +120,7 @@ test.describe("Smogon dex links", () => {
         c.entry.baseSpecies ?? c.entry.name ?? c.id,
       );
       const response = await request.get(url);
+      skipIfChallenged("Smogon", response);
       expect(response.status(), url).toBe(200);
     });
   }
@@ -122,6 +135,7 @@ test.describe("Serebii dex links", () => {
         c.entry.baseSpecies ?? c.entry.name ?? c.id,
       );
       const response = await request.get(url);
+      skipIfChallenged("Serebii", response);
       expect(response.status(), url).toBe(200);
     });
   }
@@ -132,7 +146,8 @@ test.describe("Showdown dex links", () => {
   for (const c of cases.filter(({ generation }) => generation === 9)) {
     test(describeCase(c), async ({ page }) => {
       const url = showdownDexUrl(c.id);
-      await page.goto(url, { waitUntil: "domcontentloaded" });
+      const response = await page.goto(url, { waitUntil: "domcontentloaded" });
+      skipIfChallenged("Showdown", response);
       const heading = await page.locator("h1").first().textContent();
       expect(plainText(heading ?? ""), url).toContain(
         plainText(`${c.entry.name} #${c.entry.num}`),
@@ -147,11 +162,7 @@ test.describe("Bulbapedia links", () => {
       const name = c.entry.baseSpecies ?? c.entry.name ?? c.id;
       const url = bulbapediaUrl(name);
       const response = await page.goto(url, { waitUntil: "domcontentloaded" });
-      // Bulbapedia's bot protection challenges automated browsers
-      test.skip(
-        response?.status() === 403,
-        "Bulbapedia challenged the browser instead of serving the page",
-      );
+      skipIfChallenged("Bulbapedia", response);
       expect(response?.status(), url).toBe(200);
       const heading = await page.locator("h1").first().textContent();
       expect(plainText(heading ?? ""), url).toContain(

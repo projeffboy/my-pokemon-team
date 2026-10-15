@@ -44,7 +44,13 @@ const REGIONAL_FORMES: Record<string, string> = {
   Hisui: "hisui",
   Paldea: "paldea",
 };
-const HISUI_ORIGIN_FORMES = ["dialgaorigin", "palkiaorigin"];
+// Other formes introduced in a later region than their species
+const FORME_REGIONS: Record<string, string> = {
+  dialgaorigin: "Hisui",
+  palkiaorigin: "Hisui",
+  basculinwhitestriped: "Hisui",
+  ursalunabloodmoon: "Paldea",
+};
 
 // Showdown numbers CAP (fan-made) pokemon from -1 down, and Pokestar pokemon from -5000 down
 const isCap = (num: number | undefined) =>
@@ -223,13 +229,15 @@ export function filterPokemon({
       const num = pokemonProperties.num;
       const isInNumberRange =
         num !== undefined && num >= range[0] && num <= range[1];
+      const formeRegion = FORME_REGIONS[pokemon];
 
       // E.g. Alola includes vulpixalola, and Kanto excludes it
       if (
-        (regionalForme && pokemon.includes(regionalForme)) ||
-        (region === "Hisui" && HISUI_ORIGIN_FORMES.includes(pokemon)) ||
-        (isInNumberRange &&
-          !otherRegionalFormes.some(forme => pokemon.includes(forme)))
+        formeRegion ?
+          formeRegion === region
+        : (regionalForme && pokemon.includes(regionalForme)) ||
+          (isInNumberRange &&
+            !otherRegionalFormes.some(forme => pokemon.includes(forme)))
       ) {
         filteredPokedex[pokemon] = pokemonProperties;
       }
