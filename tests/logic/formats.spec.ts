@@ -1,11 +1,15 @@
 import { test, expect } from "@playwright/test";
+import formatBans from "@/data/format-bans";
 import {
   CHAMPIONS_FORMAT,
+  TIER_BY_FORMAT,
   formatsForGeneration,
   formatForGeneration,
   parseShowdownFormatId,
+  showdownFormatId,
 } from "@/shared/formats";
 import { GENERATIONS } from "@/shared/generations";
+import { LETS_GO } from "@/shared/game-variants";
 
 for (const generation of GENERATIONS) {
   test(`Gen ${generation} offers its Showdown tier formats`, () => {
@@ -26,6 +30,15 @@ for (const generation of GENERATIONS) {
     expect(formatsForGeneration(generation)).toEqual(expected);
   });
 }
+
+test("every Smogon tier on offer has its bans from Showdown", () => {
+  const offered = GENERATIONS.flatMap(generation =>
+    formatsForGeneration(generation)
+      .filter(format => format in TIER_BY_FORMAT)
+      .map(format => showdownFormatId(generation, format)),
+  );
+  expect(Object.keys(formatBans).sort()).toEqual(offered.sort());
+});
 
 test("generation changes keep supported formats and clear unavailable ones", () => {
   expect(formatForGeneration("OU: Over Used", 1)).toBe("OU: Over Used");
@@ -70,4 +83,42 @@ test("unknown IDs beginning with a legacy tier keep the latest-generation defaul
     "doublesoucustom",
   ])
     expect(parseShowdownFormatId(id)).toEqual({ generation: 9, format: "" });
+});
+
+test("tier IDs must match exactly, while game IDs cover their whole family", () => {
+  for (const id of [
+    "gen9purehackmons",
+    "gen9ubersuu",
+    "gen9lcuu",
+    "gen9doublesoucustom",
+  ])
+    expect(parseShowdownFormatId(id)).toEqual({ generation: 9, format: "" });
+  expect(parseShowdownFormatId("gen3uubl")).toEqual({
+    generation: 3,
+    format: "",
+  });
+  expect(parseShowdownFormatId("gen9ou-box")).toEqual({
+    generation: 9,
+    format: "OU: Over Used",
+  });
+  expect(parseShowdownFormatId("gen9ou@@@-Pikachu,+Ubers")).toEqual({
+    generation: 9,
+    format: "OU: Over Used",
+  });
+  expect(parseShowdownFormatId("gen9ubersuu@@@-Pikachu")).toEqual({
+    generation: 9,
+    format: "",
+  });
+  expect(parseShowdownFormatId("uu-box")).toEqual({
+    generation: 6,
+    format: "UU: Under Used",
+  });
+  expect(parseShowdownFormatId("gen9championsvgc2026regmcbo3")).toEqual({
+    generation: 9,
+    format: CHAMPIONS_FORMAT,
+  });
+  expect(parseShowdownFormatId("gen7letsgodoublesou-box")).toEqual({
+    generation: 7,
+    format: LETS_GO,
+  });
 });
