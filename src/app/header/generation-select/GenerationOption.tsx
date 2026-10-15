@@ -36,17 +36,18 @@ export default function GenerationOption({
           sx={{ display: "flex", alignItems: "center", gap: 1 }}
         >
           {logos.length > 0 && (
-            <GameLogos
-              logos={logos}
-              nowrap={nowrap}
-              placeholders={placeholders}
-            />
+            <GameLogos logos={logos} nowrap placeholders={placeholders} />
           )}
           {status && (
             <Typography
               component="span"
               variant="caption"
-              sx={{ mt: 0.5, whiteSpace: "nowrap" }}
+              // In the menu a long description wraps, in even lines, rather than run past the check mark
+              sx={{
+                mt: 0.5,
+                whiteSpace: nowrap ? "nowrap" : "normal",
+                textWrapStyle: "balance",
+              }}
             >
               {status}
             </Typography>
