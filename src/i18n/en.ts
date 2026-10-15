@@ -198,8 +198,14 @@ const en = {
       count === 1 ?
         "1 entry was removed from this team"
       : `${count} entries were removed from this team`,
-    linkReason: "The game data doesn't have them, or not for that pokemon.",
-    savedTeamReason: "A game data update renamed or removed them.",
+    linkReason: (count: number): string =>
+      count === 1 ?
+        "This game doesn't have it, or the pokemon can't use it."
+      : "This game doesn't have them, or the pokemon can't use them.",
+    savedTeamReason: (count: number): string =>
+      count === 1 ?
+        "A game data update renamed or removed it."
+      : "A game data update renamed or removed them.",
     pokemon: (slot: number, value: string) => `Pokemon ${slot}: ${value}`,
     item: (pokemon: string, value: string) => `${pokemon}, item: ${value}`,
     ability: (pokemon: string, value: string) =>
@@ -209,8 +215,10 @@ const en = {
     details: "Details",
     dismiss: "Dismiss",
     detailsTitle: "Original team text",
-    detailsDescription:
-      "The team as it was, with what was left out. Copy it to keep a record.",
+    linkDetailsDescription:
+      "The link's team as it was, with what was left out. Copy it to keep a record.",
+    savedTeamDetailsDescription:
+      "The team as it was, with what was removed. Copy it to keep a record.",
     copy: "Copy",
   },
 

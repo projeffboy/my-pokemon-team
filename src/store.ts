@@ -63,6 +63,7 @@ import { describeTeamChange } from "./store/team-change";
 import {
   removeMissingEntries,
   type DroppedEntry,
+  type DroppedNotice,
 } from "./store/dropped-entries";
 import {
   initialStoredState,
@@ -472,6 +473,7 @@ export class Store {
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
   // A link carries a game but no tier, so a saved team's tier does not count.
+  // Returns the saved team it opens, if any.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
@@ -521,32 +523,36 @@ export class Store {
       this.teams.find(matches);
     if (saved) this.currentTeamId = saved.id;
     else this.openUnsavedTeam(team, settings);
+    return saved;
   }
 
-  // What an opened link or saved team lost, which a notice above that team names
-  // until the player dismisses it. `text` is the team's text before, to copy.
-  droppedEntries: {
-    teamId: string;
-    source: "link" | "savedTeam";
-    entries: DroppedEntry[];
-    text: string;
-  } | null = null;
+  // What an opened link or saved team lost, by team ID, which a notice above that
+  // team names until the player dismisses it
+  droppedEntries = new Map<string, DroppedNotice>();
 
   get currentDroppedEntries() {
-    return this.droppedEntries?.teamId === this.currentTeamId ?
-        this.droppedEntries
-      : null;
+    return this.droppedEntries.get(this.currentTeamId);
   }
 
+  // Names what the current team lost. A link's report never replaces what a saved
+  // team lost, which is gone for good, while the link can be opened again.
   reportDroppedEntries(
-    source: "link" | "savedTeam",
+    source: DroppedNotice["source"],
     entries: DroppedEntry[],
     text: string,
   ) {
-    this.droppedEntries =
-      entries.length ?
-        { teamId: this.currentTeamId, source, entries, text }
-      : null;
+    const id = this.currentTeamId;
+    if (
+      entries.length &&
+      !(
+        source === "link" && this.droppedEntries.get(id)?.source === "savedTeam"
+      )
+    )
+      this.droppedEntries.set(id, { source, entries, text });
+  }
+
+  dismissDroppedEntries() {
+    this.droppedEntries.delete(this.currentTeamId);
   }
 
   // A saved team keeps what a data update removed until it is opened, and then

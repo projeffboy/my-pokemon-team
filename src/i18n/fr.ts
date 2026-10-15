@@ -204,10 +204,14 @@ const fr: Messages = {
       count === 1 ?
         "1 élément a été retiré de cette équipe"
       : `${count} éléments ont été retirés de cette équipe`,
-    linkReason:
-      "Les données du jeu ne les contiennent pas, ou pas pour ce Pokémon.",
-    savedTeamReason:
-      "Une mise à jour des données du jeu les a renommés ou supprimés.",
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Ce jeu ne l'a pas, ou le Pokémon ne peut pas l'utiliser."
+      : "Ce jeu ne les a pas, ou le Pokémon ne peut pas les utiliser.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Une mise à jour des données du jeu l'a renommé ou supprimé."
+      : "Une mise à jour des données du jeu les a renommés ou supprimés.",
     pokemon: (slot: number, value: string) => `Pokémon ${slot} : ${value}`,
     item: (pokemon: string, value: string) => `${pokemon}, objet : ${value}`,
     ability: (pokemon: string, value: string) =>
@@ -217,8 +221,10 @@ const fr: Messages = {
     details: "Détails",
     dismiss: "Ignorer",
     detailsTitle: "Texte d'origine de l'équipe",
-    detailsDescription:
-      "L'équipe telle qu'elle était, avec ce qui a été omis. Copiez-la pour en garder une trace.",
+    linkDetailsDescription:
+      "L'équipe du lien telle qu'elle était, avec ce qui a été omis. Copiez-la pour en garder une trace.",
+    savedTeamDetailsDescription:
+      "L'équipe telle qu'elle était, avec ce qui a été retiré. Copiez-la pour en garder une trace.",
     copy: "Copier",
   },
 

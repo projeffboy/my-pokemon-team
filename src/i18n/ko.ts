@@ -207,8 +207,8 @@ const ko: Messages = {
     linkTitle: (count: number) => `이 링크의 항목 ${count}개를 제외했습니다`,
     savedTeamTitle: (count: number) =>
       `이 팀에서 항목 ${count}개를 삭제했습니다`,
-    linkReason: "게임 데이터에 없거나 그 포켓몬이 가질 수 없는 항목입니다.",
-    savedTeamReason:
+    linkReason: () => "이 게임에 없거나 그 포켓몬이 사용할 수 없는 항목입니다.",
+    savedTeamReason: () =>
       "게임 데이터 업데이트로 이름이 바뀌었거나 삭제된 항목입니다.",
     pokemon: (slot: number, value: string) => `포켓몬 ${slot}: ${value}`,
     item: (pokemon: string, value: string) => `${pokemon}, 지닌 물건: ${value}`,
@@ -218,8 +218,10 @@ const ko: Messages = {
     details: "상세",
     dismiss: "닫기",
     detailsTitle: "원래 팀 텍스트",
-    detailsDescription:
-      "제외된 항목을 포함한 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    linkDetailsDescription:
+      "제외된 항목을 포함한 링크의 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    savedTeamDetailsDescription:
+      "삭제된 항목을 포함한 원래 팀입니다. 복사해서 보관할 수 있습니다.",
     copy: "복사",
   },
 

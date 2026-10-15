@@ -186,8 +186,14 @@ const zhHans: Messages = {
   droppedEntries: {
     linkTitle: (count: number) => `此链接中的 ${count} 项已被略去`,
     savedTeamTitle: (count: number) => `已从此队伍中移除 ${count} 项`,
-    linkReason: "游戏数据中没有这些内容，或该宝可梦无法使用。",
-    savedTeamReason: "游戏数据更新后，这些内容已被重命名或移除。",
+    linkReason: (count: number) =>
+      count === 1 ?
+        "此游戏中没有这项内容，或该宝可梦无法使用。"
+      : "此游戏中没有这些内容，或该宝可梦无法使用。",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "游戏数据更新后，这项内容已被重命名或移除。"
+      : "游戏数据更新后，这些内容已被重命名或移除。",
     pokemon: (slot: number, value: string) => `宝可梦 ${slot}：${value}`,
     item: (pokemon: string, value: string) => `${pokemon}，道具：${value}`,
     ability: (pokemon: string, value: string) => `${pokemon}，特性：${value}`,
@@ -196,8 +202,10 @@ const zhHans: Messages = {
     details: "详情",
     dismiss: "关闭",
     detailsTitle: "原始队伍文本",
-    detailsDescription:
-      "这是原来的队伍，包括被略去的内容。可复制下来留作记录。",
+    linkDetailsDescription:
+      "这是链接中原来的队伍，包括被略去的内容。可复制下来留作记录。",
+    savedTeamDetailsDescription:
+      "这是原来的队伍，包括被移除的内容。可复制下来留作记录。",
     copy: "复制",
   },
 

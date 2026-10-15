@@ -197,8 +197,8 @@ const ja: Messages = {
       `このリンクの${count}件の項目を読み込めませんでした`,
     savedTeamTitle: (count: number) =>
       `このチームから${count}件の項目を削除しました`,
-    linkReason: "ゲームデータにないか、そのポケモンには使えない項目です。",
-    savedTeamReason:
+    linkReason: () => "このゲームにないか、そのポケモンには使えない項目です。",
+    savedTeamReason: () =>
       "ゲームデータの更新で名前が変わったか、削除された項目です。",
     pokemon: (slot: number, value: string) => `ポケモン${slot}：${value}`,
     item: (pokemon: string, value: string) => `${pokemon}の持ち物：${value}`,
@@ -208,8 +208,10 @@ const ja: Messages = {
     details: "詳細",
     dismiss: "閉じる",
     detailsTitle: "元のチームのテキスト",
-    detailsDescription:
-      "読み込めなかった項目を含む、元のチームです。コピーして控えておけます。",
+    linkDetailsDescription:
+      "読み込めなかった項目を含む、リンクの元のチームです。コピーして控えておけます。",
+    savedTeamDetailsDescription:
+      "削除した項目を含む、元のチームです。コピーして控えておけます。",
     copy: "コピー",
   },
 

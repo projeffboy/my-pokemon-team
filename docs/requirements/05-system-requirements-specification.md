@@ -668,7 +668,7 @@ Players keep teams and links for months or years. These requirements protect the
 | REQ-INFO-7 | The site shall keep the Player's sort order, option view, move type display, and language in the browser for later visits.                     | C    | Implemented |
 | REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Implemented |
 
-Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m4-dropped-entries-notice.svg). On 14 October 2026 the Site Owner chose a notice that stays until the visitor dismisses it. A saved team loses the entries that the game data no longer has when it is opened, and is saved without them, so its notice appears once.
+Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m4-dropped-entries-notice.svg). On 14 October 2026 the Site Owner chose a notice that stays until the visitor dismisses it; each team keeps its own. A saved team loses the entries that the game data no longer has when it is opened, and is saved without them, so its notice appears once.
 
 ### 3.9) Policy and regulation requirements
 

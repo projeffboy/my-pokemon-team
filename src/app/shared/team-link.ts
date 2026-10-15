@@ -14,6 +14,7 @@ import {
   parseTeamTextReport,
   serializeTeam,
 } from "@/store/team-text";
+import { teamHolds } from "@/store/dropped-entries";
 
 // Limit applies to the raw (still-encoded) URL parameter, before any decoding is attempted
 export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
@@ -114,6 +115,11 @@ export function importTeamFromUrlParameter(teamParameter: string): void {
     teamDataFormat(settings),
     LEGACY_LINK_PARSING_OPTIONS,
   );
-  store.openTeamFromLink(team, settings);
-  store.reportDroppedEntries("link", dropped, text);
+  const saved = store.openTeamFromLink(team, settings);
+  // A saved team keeps a move that its pokemon can no longer learn
+  store.reportDroppedEntries(
+    "link",
+    saved ? dropped.filter(entry => !teamHolds(saved.team, entry)) : dropped,
+    text,
+  );
 }

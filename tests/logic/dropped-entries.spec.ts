@@ -2,7 +2,7 @@ import { test, expect } from "./fixtures";
 import { test as plainTest } from "@playwright/test";
 import { createTeam } from "./shared/team";
 import { Store } from "@/store";
-import { createSavedTeam } from "@/shared/team";
+import { createSavedTeam, DEFAULT_TEAM_SETTINGS } from "@/shared/team";
 import { removeMissingEntries } from "@/store/dropped-entries";
 import {
   LEGACY_LINK_PARSING_OPTIONS,
@@ -160,7 +160,6 @@ test.describe("what a saved team lost to a data update", () => {
     expect(store.team[2]).toMatchObject({ item: "cameruptite", move2: "" });
     expect(store.canUndo).toBe(false);
     expect(store.currentDroppedEntries).toMatchObject({
-      teamId: saved.id,
       source: "savedTeam",
       text,
     });
@@ -168,13 +167,38 @@ test.describe("what a saved team lost to a data update", () => {
 
     // The notice stays with its team until it is dismissed
     store.selectTeam(first);
-    expect(store.currentDroppedEntries).toBeNull();
+    expect(store.currentDroppedEntries).toBeUndefined();
     store.selectTeam(saved.id);
     expect(store.currentDroppedEntries?.entries).toHaveLength(4);
-    store.droppedEntries = null;
+    store.dismissDroppedEntries();
     store.selectTeam(first);
     store.selectTeam(saved.id);
-    expect(store.currentDroppedEntries).toBeNull();
+    expect(store.currentDroppedEntries).toBeUndefined();
+  });
+
+  test("each team keeps its notice while others open, until it is dismissed", ({
+    store,
+  }) => {
+    const a = createSavedTeam({ name: "A", team: outdated() });
+    const b = createSavedTeam({ name: "B", team: outdated() });
+    store.teams.push(a, b);
+
+    store.selectTeam(a.id);
+    const notice = store.currentDroppedEntries;
+    expect(notice?.entries).toHaveLength(4);
+    store.selectTeam(b.id);
+    expect(store.currentDroppedEntries?.entries).toHaveLength(4);
+    // A link that loses nothing leaves every notice alone
+    importTeamFromUrlParameter(toBase64Url("Bellibolt\n- Thunderbolt"));
+    expect(store.currentDroppedEntries).toBeUndefined();
+
+    store.selectTeam(a.id);
+    expect(store.team[2]?.move2).toBe("");
+    expect(store.currentDroppedEntries).toBe(notice);
+    store.dismissDroppedEntries();
+    expect(store.currentDroppedEntries).toBeUndefined();
+    store.selectTeam(b.id);
+    expect(store.currentDroppedEntries?.entries).toHaveLength(4);
   });
 
   plainTest(
@@ -203,19 +227,20 @@ test.describe("what a saved team lost to a data update", () => {
 
       const reloaded = new Store(storage);
       reloaded.selectTeam(saved.id);
-      expect(reloaded.currentDroppedEntries).toBeNull();
+      expect(reloaded.currentDroppedEntries).toBeUndefined();
       expect(reloaded.team[2]?.item).toBe("cameruptite");
     },
   );
 });
 
 test.describe("what a share link lost", () => {
-  test("is named above the team it opens until another link opens", ({
+  test("is named above the team it opens, which keeps it while other links open", ({
     store,
   }) => {
     const text =
       "Houndstone @ Imaginary Collar\nAbility: Fluffy\n- Shadow Ball\n- Imaginary Howl";
     importTeamFromUrlParameter(toBase64Url(text));
+    const linked = store.currentTeamId;
     expect(store.team[0]).toMatchObject({
       name: "houndstone",
       item: "",
@@ -224,7 +249,6 @@ test.describe("what a share link lost", () => {
       move2: "",
     });
     expect(store.currentDroppedEntries).toEqual({
-      teamId: store.currentTeamId,
       source: "link",
       text,
       entries: [
@@ -243,8 +267,84 @@ test.describe("what a share link lost", () => {
       ],
     });
 
+    // An edit saves the team, with its notice
+    store.team[0].move3 = "playrough";
     importTeamFromUrlParameter(toBase64Url("Houndstone\n- Shadow Ball"));
-    expect(store.droppedEntries).toBeNull();
+    expect(store.currentTeamId).not.toBe(linked);
+    expect(store.currentDroppedEntries).toBeUndefined();
+    store.selectTeam(linked);
+    expect(store.currentDroppedEntries?.entries).toHaveLength(2);
+  });
+
+  test("to a saved team names nothing the team still holds", ({ store }) => {
+    const saved = createSavedTeam({
+      ...DEFAULT_TEAM_SETTINGS,
+      team: createTeam({
+        name: "arboliva",
+        ability: "Seed Sower",
+        move1: "gigadrain",
+        move2: "spore",
+      }),
+    });
+    store.teams.push(saved);
+    const text = serializeTeam(saved.team);
+    // Arboliva cannot learn Spore, so the link's text leaves it out
+    expect(parseTeamTextReport(text).dropped).toEqual([
+      { teamIndex: 0, pokemon: "arboliva", field: "move2", value: "Spore" },
+    ]);
+
+    // As on each reload, which opens a new team before reading the link
+    for (let reload = 0; reload < 2; reload++) {
+      store.openUnsavedTeam();
+      importTeamFromUrlParameter(toBase64Url(text));
+      expect(store.currentTeamId).toBe(saved.id);
+      expect(store.team[0]?.move2).toBe("spore");
+      expect(store.currentDroppedEntries).toBeUndefined();
+    }
+  });
+
+  test("to a saved team that lost entries leaves the team's own notice", ({
+    store,
+  }) => {
+    const saved = createSavedTeam({
+      ...DEFAULT_TEAM_SETTINGS,
+      team: createTeam({
+        name: "arboliva",
+        item: "imaginaryseed",
+        ability: "Seed Sower",
+        move1: "gigadrain",
+        move2: "imaginarybloom",
+      }),
+    });
+    store.teams.push(saved);
+    const text = serializeTeam(saved.team);
+    // Earlier versions wrote a missing item as a blank one and a missing move as "undefined"
+    const link = text
+      .replace("@ imaginaryseed", "@ ")
+      .replace("- imaginarybloom", "- undefined");
+
+    store.openUnsavedTeam();
+    importTeamFromUrlParameter(toBase64Url(link));
+    expect(store.currentTeamId).toBe(saved.id);
+    expect(store.team[0]).toMatchObject({ item: "", move2: "" });
+    expect(store.currentDroppedEntries).toEqual({
+      source: "savedTeam",
+      text,
+      entries: [
+        {
+          teamIndex: 0,
+          pokemon: "arboliva",
+          field: "item",
+          value: "imaginaryseed",
+        },
+        {
+          teamIndex: 0,
+          pokemon: "arboliva",
+          field: "move2",
+          value: "imaginarybloom",
+        },
+      ],
+    });
   });
 
   test("with no pokemon left is named above the visitor's own team", ({

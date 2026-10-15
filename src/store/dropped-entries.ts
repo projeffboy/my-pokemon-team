@@ -14,6 +14,7 @@ import {
   getAutoSelectedItem,
 } from "@/shared/team";
 import { pokemonAbilities } from "@/shared/pokedex";
+import { moveNameInverse } from "@/shared/names";
 import { generationRules } from "@/shared/generation-rules";
 import { isItemAvailable } from "./learnsets";
 
@@ -24,6 +25,29 @@ export interface DroppedEntry {
   pokemon: string;
   field: "pokemon" | "item" | "ability" | MoveKey;
   value: string;
+}
+
+// What an opened link or saved team lost, and the team's text before, to copy
+export interface DroppedNotice {
+  source: "link" | "savedTeam";
+  entries: DroppedEntry[];
+  text: string;
+}
+
+// Whether the team still holds a move that team text left out, such as one its
+// pokemon can no longer learn
+export function teamHolds(
+  team: ReadonlyTeam,
+  { pokemon, field, value }: DroppedEntry,
+) {
+  const key = MOVE_KEYS.find(key => key === field);
+  // Read as the parser reads it, e.g. "Hidden Power [Fire]"
+  const move = moveNameInverse(value.replace("[", "").replace("]", ""));
+  return (
+    !!key &&
+    !!move &&
+    team.some(member => member.name === pokemon && member[key] === move)
+  );
 }
 
 // Every ability the pokemon has had in any generation

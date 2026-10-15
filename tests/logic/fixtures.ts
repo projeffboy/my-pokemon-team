@@ -12,7 +12,7 @@ function resetStore() {
   store.currentTeamId = team.id;
   store.filters = { ...emptyFilters };
   store.snackbars = [];
-  store.droppedEntries = null;
+  store.droppedEntries.clear();
   store.sort = { ...DEFAULT_SORT };
   store.moveSort = { ...DEFAULT_MOVE_SORT };
 }

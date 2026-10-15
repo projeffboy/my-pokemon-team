@@ -25,6 +25,9 @@ test.describe("Dropped entries notice - Unit Tests", () => {
     await expect(notice(page)).toContainText(
       "2 entries in this link were left out",
     );
+    await expect(notice(page)).toContainText(
+      "This game doesn't have them, or the pokemon can't use them.",
+    );
     await expect(notice(page).getByRole("listitem")).toHaveText([
       "Rabsca, item: Imaginary Egg",
       "Rabsca, move 2: Imaginary Roll",
@@ -56,6 +59,9 @@ test.describe("Dropped entries notice - Unit Tests", () => {
     await openLink(page);
     await notice(page).getByRole("button", { name: "Details" }).click();
     const details = page.getByRole("dialog", { name: "Original team text" });
+    await expect(details).toContainText(
+      "The link's team as it was, with what was left out.",
+    );
     await expect(details.getByRole("textbox")).toHaveValue(linkText);
 
     await page.evaluate(() => {

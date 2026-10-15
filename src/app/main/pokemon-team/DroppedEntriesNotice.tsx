@@ -45,10 +45,11 @@ const DroppedEntriesNotice = observer(function DroppedEntriesNotice() {
   const titleId = useId();
   const notice = store.currentDroppedEntries;
   // Tied to the notice, so that a later notice does not open with its details
-  const [detailsOf, setDetailsOf] = useState<typeof notice>(null);
+  const [detailsOf, setDetailsOf] = useState<typeof notice>();
   if (!notice) return null;
   const { source, entries, text } = notice;
-  const closeDetails = () => setDetailsOf(null);
+  const fromLink = source === "link";
+  const closeDetails = () => setDetailsOf(undefined);
 
   return (
     <Grid size={12}>
@@ -57,11 +58,13 @@ const DroppedEntriesNotice = observer(function DroppedEntriesNotice() {
         sx={{ "& .MuiAlert-message": { flexGrow: 1, minWidth: 0 } }}
       >
         <AlertTitle>
-          {source === "link" ?
+          {fromLink ?
             messages.linkTitle(entries.length)
           : messages.savedTeamTitle(entries.length)}
         </AlertTitle>
-        {source === "link" ? messages.linkReason : messages.savedTeamReason}
+        {fromLink ?
+          messages.linkReason(entries.length)
+        : messages.savedTeamReason(entries.length)}
         <Box component="ul" sx={{ my: 1, pl: 2.5, overflowWrap: "anywhere" }}>
           {entries.map(entry => (
             <li key={`${entry.teamIndex}-${entry.field}`}>
@@ -80,9 +83,7 @@ const DroppedEntriesNotice = observer(function DroppedEntriesNotice() {
           <Button
             color="inherit"
             size="small"
-            onClick={() => {
-              store.droppedEntries = null;
-            }}
+            onClick={() => store.dismissDroppedEntries()}
           >
             {messages.dismiss}
           </Button>
@@ -96,7 +97,11 @@ const DroppedEntriesNotice = observer(function DroppedEntriesNotice() {
       >
         <DialogTitle id={titleId}>{messages.detailsTitle}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{messages.detailsDescription}</DialogContentText>
+          <DialogContentText>
+            {fromLink ?
+              messages.linkDetailsDescription
+            : messages.savedTeamDetailsDescription}
+          </DialogContentText>
           <TextField
             variant="standard"
             multiline
