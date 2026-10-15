@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Added Legends: Z-A to the generation menu, with its own Pokémon and moves, e.g. Mega Dragonite.",
       "Reloading on an empty saved team now keeps that team, with its format and filters, instead of starting a new one.",
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
       "Beat Up is now typeless in Gens 2–4, as in those games.",

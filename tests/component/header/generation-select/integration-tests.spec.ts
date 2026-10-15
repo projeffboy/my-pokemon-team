@@ -87,6 +87,57 @@ test.describe("Generation Select - Integration Tests", () => {
     await closeDialog(page);
   });
 
+  test("Gen 9 · Legends: Z-A previews what a team loses and then lists only its pokemon", async ({
+    page,
+  }) => {
+    const text = `Sprigatito
+
+Malamar @ Leftovers
+Ability: Contrary
+Tera Type: Dark
+- Psycho Cut
+- Foul Play
+`;
+    await page.goto(`/?gen=9&team=${Buffer.from(text).toString("base64url")}`, {
+      waitUntil: "domcontentloaded",
+    });
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Sprigatito");
+    const generation = page.getByRole("combobox", { name: "Generation" });
+    await generation.click();
+    await page
+      .locator('[role="option"][data-value="Legends: Z-A"]')
+      .press("Enter");
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toContainText("These Pokémon won’t carry over");
+    await expect(
+      dialog.getByRole("img", { name: "Sprigatito", exact: true }),
+    ).toBeVisible();
+    await expect(dialog).toContainText("Ability and Tera Type");
+    const malamar = dialog.getByRole("group", { name: "Malamar", exact: true });
+    await expect(malamar.getByRole("listitem")).toHaveText([
+      "Move removed: Foul Play",
+    ]);
+    await dialog
+      .getByRole("button", { name: "Update existing team", exact: true })
+      .click();
+    await expect(dialog).toBeHidden();
+    await expect(generation).toContainText(/Legends: Z-A|Legends Z-A|Z-A/);
+    await expect(page).toHaveURL(/game=legends-za/);
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("");
+    await expectSelectable(page, "Inkay", true);
+    await expectSelectable(page, "Fuecoco", false);
+    await showSlot(page, 1);
+    await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("Malamar");
+    await expect(page.getByLabel("Pokemon 2's item")).toHaveValue("Leftovers");
+    await expect(
+      page.getByLabel("Pokemon 2's ability", { exact: true }),
+    ).toHaveCount(0);
+    await expect(page.getByLabel("Pokemon 2's move1")).toHaveValue(
+      "Psycho Cut",
+    );
+    await expect(page.getByLabel("Pokemon 2's move2")).toHaveValue("");
+  });
+
   test("a long Generations 6–9 description wraps beside the check mark on a small phone", async ({
     page,
   }) => {
