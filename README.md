@@ -68,7 +68,7 @@ Showdown text exports preserve the combined setting with a `# mypokemonteam gene
 
 The header's Old website button opens the legacy site at [old.mypokemonteam.com](https://old.mypokemonteam.com/). The legacy site is based on [commit ca23d6b](https://github.com/projeffboy/my-pokemon-team/commit/ca23d6b55ea96d9bf37022c094f6945d8e6420d3), with a New website button returning to [mypokemonteam.com](https://mypokemonteam.com/). Its separate Vercel project hosts the `old-website` branch independently of `master`.
 
-Switching does not transfer the current team or URL parameters. A nonempty team triggers a confirmation; Cancel and Escape keep the user on the current site. Saved teams and settings stay on their original browser origin. The legacy site does not persist team collections, so its confirmation advises saving the current share link before leaving. Team transfer is deferred in [issue #111](https://github.com/projeffboy/my-pokemon-team/issues/111).
+Switching carries the current team in the legacy site's own `?team=` share link, holding only what that site reads: each pokemon's species, item, ability, and moves, adapted to Generations 6–9 as the generation menu would, less the moves and abilities that the legacy site's own data rejects, such as Smeargle's sketched moves (`src/store/old-website.ts`). A nonempty team first triggers a confirmation that names each pokemon, move, item, ability, and set detail left behind; Cancel and Escape keep the user on the current site. No other URL parameters cross, saved teams and settings stay on their original browser origin, and nothing is carried back. The legacy site does not persist team collections, so the carried team is its one unsaved team, kept only in its share link.
 
 ## Updating Pokemon Data
 

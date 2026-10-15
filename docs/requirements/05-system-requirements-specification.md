@@ -420,10 +420,10 @@ US19. As a player who knew the old website, I want a way back to it from the red
 
 - The old website offers the way back.
 
-| ID         | Requirement                                                                                                                                                              | Imp. | Status      |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
-| REQ-SITE-1 | The site shall provide, from its header, a link to the old website.                                                                                                      | C    | Implemented |
-| REQ-SITE-2 | The site shall open the old website for a Player whose current team has pokemon only after the Player confirms a prompt stating that the current team will not transfer. | E    | Implemented |
+| ID         | Requirement                                                                                                                                                                         | Imp. | Status      |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-SITE-1 | The site shall provide, from its header, a link to the old website.                                                                                                                 | C    | Implemented |
+| REQ-SITE-2 | The site shall open the old website for a Player whose current team has pokemon only after the Player confirms a prompt stating that the current team will open on the old website. | E    | Implemented |
 
 #### UC20 Update Game Data and UC21 Update Translations
 
@@ -479,15 +479,15 @@ flowchart TD
 
 Mock-up M1 shows the battle format set on the checklist: [m1-battle-format-on-checklist.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m1-battle-format-on-checklist.svg).
 
-#### UC23 Transfer Team to Old Website (planned)
+#### UC23 Transfer Team to Old Website
 
 US23. As a player moving between the old website and the redesigned site, I want my current team to come with me, so that switching does not mean building it again.
 
-| ID         | Requirement                                                                                                                                                   | Imp. | Status   |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | -------- |
-| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                         | C    | Approved |
-| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                         | O    | Rejected |
-| REQ-SITE-5 | The site shall name, before opening the old website with the Player's current team, each pokemon and set detail of the team that the old website cannot hold. | C    | Approved |
+| ID         | Requirement                                                                                                                                                   | Imp. | Status      |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                         | C    | Implemented |
+| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                         | O    | Rejected    |
+| REQ-SITE-5 | The site shall name, before opening the old website with the Player's current team, each pokemon and set detail of the team that the old website cannot hold. | C    | Implemented |
 
 REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site.
 
@@ -504,7 +504,7 @@ flowchart TD
   Go --> Old["The old website shows the team as its one unsaved team"]
 ```
 
-Mock-up M5 shows today's confirmation next to the planned one: [m5-version-transfer.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m5-version-transfer.svg).
+The confirmation follows mock-up M5: [m5-version-transfer.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m5-version-transfer.svg).
 
 #### UC24 Check Team Legality (planned)
 
@@ -709,7 +709,7 @@ The test suites were matched to requirement groups by their names and folders, n
 | REQ-REF                          | Test, Inspection          | `tests/component/footer/`, `tests/component/dialogs/pokemon-info-dialog/`, `tests/links/dex-links.spec.ts` (run by hand)                                                                                                                                                                                                                        |
 | REQ-LANG, REQ-THEME              | Test                      | `tests/logic/translations.spec.ts`, `tests/component/header/language-select/`, `tests/component/shared/theme/`; for REQ-LANG-1, the type check fails on a text missing from a language                                                                                                                                                          |
 | REQ-FEED, REQ-SEC-1 to 3         | Test, Demonstration       | `tests/logic/feedback.spec.ts`, `tests/component/header/feedback-dialog/`; sending is demonstrated on a preview deployment                                                                                                                                                                                                                      |
-| REQ-SITE                         | Test                      | `tests/component/header/site-version-switch/`                                                                                                                                                                                                                                                                                                   |
+| REQ-SITE                         | Test                      | `tests/logic/old-website.spec.ts`, `tests/component/header/site-version-switch/`                                                                                                                                                                                                                                                                |
 | REQ-DATA                         | Test, Inspection          | `tests/logic/update-data.spec.ts`, `tests/logic/update-translations.spec.ts`; the update reports are inspected by the Maintainer                                                                                                                                                                                                                |
 | REQ-USE-3 to 7, 11, 12           | Test, Inspection          | Layout tests in `tests/component/`; for REQ-USE-12, a test that no element of a slot overlaps its sprite, to be written; an accessibility review for REQ-USE-4 and REQ-USE-6                                                                                                                                                                    |
 | REQ-USE-10                       | Test                      | `tests/component/shared/use-dice-roll/`, `tests/logic/random.spec.ts`                                                                                                                                                                                                                                                                           |

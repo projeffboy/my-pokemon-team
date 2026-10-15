@@ -52,9 +52,13 @@ const ptBR: Messages = {
     short: "Site antigo",
     title: "Ir para o site antigo?",
     description:
-      "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",
+      "Sua equipe atual será aberta no site antigo. As equipes salvas aqui permanecerão nesta versão.",
     go: "Ir para o site antigo",
     goLong: "Ir para o site antigo",
+    generationsOnly: (generations: string) =>
+      `O site antigo tem apenas as ${generations}.`,
+    leftOut: "Isto não será transferido:",
+    goWithTeam: "Ir com minha equipe",
   },
   feedback: {
     button: "Enviar feedback",
