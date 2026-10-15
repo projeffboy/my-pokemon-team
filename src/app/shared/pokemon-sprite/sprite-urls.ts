@@ -1,7 +1,9 @@
 // scripts/update-data.ts loads this file on its own, so it can only import types
 import type { Generation } from "@/types";
 
-const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
+export const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites";
+// vercel.json and vite.config.ts forward this path of the site to SHOWDOWN_SPRITES
+export const PROXIED_SPRITES = "/showdown-sprites";
 
 // Showdown has no sprite under these names, because they look like another forme
 const FILENAME_EXCEPTIONS: Record<string, string> = {
@@ -90,9 +92,13 @@ export function spriteUrls(
     generation,
   );
   const variant = shiny && folder !== "gen1rb" ? "-shiny" : "";
+  const path = `${folder}${variant}/${filename}.${folder.endsWith("ani") ? "gif" : "png"}`;
+  const fallbackPath = `gen5${variant}/${filename}.png`;
   return {
     filename,
-    src: `${SHOWDOWN_SPRITES}/${folder}${variant}/${filename}.${folder.endsWith("ani") ? "gif" : "png"}`,
-    fallback: `${SHOWDOWN_SPRITES}/gen5${variant}/${filename}.png`,
+    src: `${SHOWDOWN_SPRITES}/${path}`,
+    fallback: `${SHOWDOWN_SPRITES}/${fallbackPath}`,
+    // The same two through the site's own address, for networks that block Showdown
+    proxied: [path, fallbackPath].map(p => `${PROXIED_SPRITES}/${p}`),
   };
 }

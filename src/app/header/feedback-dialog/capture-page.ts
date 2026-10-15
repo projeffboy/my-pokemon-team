@@ -1,8 +1,9 @@
 import type { Context } from "modern-screenshot";
+import {
+  PROXIED_SPRITES,
+  SHOWDOWN_SPRITES,
+} from "@/app/shared/pokemon-sprite/sprite-urls";
 
-const SHOWDOWN_SPRITES = "https://play.pokemonshowdown.com/sprites/";
-// vercel.json proxies this path to Showdown's sprites, which do not allow cross-origin reads
-const PROXIED_SPRITES = "/showdown-sprites/";
 // The most base64 the screenshot and uploaded images may total, since Vercel rejects
 // function requests over 4.5 MB. api/feedback.ts checks the same limit.
 export const MAX_IMAGES_LENGTH = 4_000_000;
@@ -46,8 +47,9 @@ export async function capturePage(dialog: Element | null, maxLength: number) {
         fetch: {
           requestInit: { cache: "force-cache", signal: controller.signal },
         },
+        // Showdown's sprites do not allow cross-origin reads
         fetchFn: async url => {
-          if (!url.startsWith(SHOWDOWN_SPRITES)) return false;
+          if (!url.startsWith(`${SHOWDOWN_SPRITES}/`)) return false;
           const response = await fetch(
             PROXIED_SPRITES + url.slice(SHOWDOWN_SPRITES.length),
             { signal: controller.signal },

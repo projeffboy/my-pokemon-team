@@ -21,6 +21,7 @@ export default function PokemonDexSprite({ pokemon }: { pokemon: string }) {
         localSpritesMap[pokemon],
         sprite.src,
         sprite.fallback,
+        ...sprite.proxied,
         questionMark,
       ].filter((source): source is string => !!source),
     ),

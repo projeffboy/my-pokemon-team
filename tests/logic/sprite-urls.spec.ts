@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { spriteUrls } from "@/app/shared/pokemon-sprite/sprite-urls";
+import vercel from "../../vercel.json" with { type: "json" };
 
 const bulbasaur = { num: 1 };
 
@@ -23,6 +24,30 @@ test("pokemon Showdown only has static sprites for stay static in every generati
   );
   expect(src).toMatch(/\/gen5\/miraidon\.png$/);
   expect(fallback).toBe(src);
+});
+
+test("the site's own address retries the sprite and its fallback, for networks that block Showdown", () => {
+  const { src, fallback, proxied } = spriteUrls(
+    "bulbasaur",
+    bulbasaur,
+    undefined,
+    false,
+    9,
+    true,
+  );
+  expect(proxied).toEqual([
+    "/showdown-sprites/ani-shiny/bulbasaur.gif",
+    "/showdown-sprites/gen5-shiny/bulbasaur.png",
+  ]);
+  // vercel.json forwards each one to the same file on Showdown
+  const [rewrite] = vercel.rewrites;
+  const forwarded = proxied.map(url =>
+    url.replace(
+      rewrite.source.replace(":path*", ""),
+      rewrite.destination.replace(":path*", ""),
+    ),
+  );
+  expect(forwarded).toEqual([src, fallback]);
 });
 
 test("shiny sprites keep the selected generation, image type and shiny fallback", () => {
