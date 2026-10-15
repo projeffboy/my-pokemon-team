@@ -1,4 +1,5 @@
 import { generationTransferData } from "./update-data/generation-transfer.ts";
+import { formatBansData } from "./update-data/format-bans.ts";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,10 +20,12 @@ import {
   LEGENDS_ZA,
 } from "../src/shared/game-variants.ts";
 import {
+  type DataSnapshot,
   type DataTypes,
   type ModData,
   type MoveSearch,
   type ShowdownTable,
+  changeNotice,
   collectViableMoves,
   historicalViableInputs,
   flattenLearnsets,
@@ -86,6 +89,7 @@ const DATA_FILES: Partial<Record<keyof DataTypes, string>> = {
   PastGenerations: "past-generations",
   HiddenPowerSpreads: "hidden-power-spreads",
   GameVariantData: "game-variants",
+  FormatBans: "format-bans",
 };
 
 async function writeData<N extends keyof DataTypes>(
@@ -406,6 +410,7 @@ async function reportIconSheets() {
 }
 
 const exists = async (url: string) => (await fetch(url, { method: "HEAD" })).ok;
+const shortName = (url: string) => url.replace(`${showdownSprites}/`, "");
 
 // Request what PokemonSprite.tsx would, at both sprite sizes
 async function reportNewSprites(
@@ -423,17 +428,22 @@ async function reportNewSprites(
   const check = async (id: string) => {
     const lines = [];
     for (const isSmall of [false, true]) {
-      const { src, fallback } = spriteUrls(
+      const [src, ...fallbacks] = spriteUrls(
         id,
         pokedex[id],
         iconIndexes[id],
         isSmall,
         LATEST_GENERATION,
-      );
+      ).sources;
       if (await exists(src)) continue;
-      const hasFallback = src !== fallback && (await exists(fallback));
+      let shown = "a broken image";
+      for (const fallback of fallbacks) {
+        if (!(await exists(fallback))) continue;
+        shown = shortName(fallback);
+        break;
+      }
       lines.push(
-        `  ${pokedex[id]?.name}: no ${src.replace(`${showdownSprites}/`, "")}, so it shows ${hasFallback ? "the static gen5 sprite" : "a broken image"}`,
+        `  ${pokedex[id]?.name}: no ${shortName(src)}, so it shows ${shown}`,
       );
     }
     return lines;
@@ -459,6 +469,71 @@ const loadReportedData = async (): Promise<ReportedData> => {
   ]);
   return { pokedex, moves, items };
 };
+
+// Everything the full update writes
+async function loadSnapshot(): Promise<DataSnapshot> {
+  const readData = (file: string) => read(path.join(dataRoot, file));
+  const tables = [
+    "pokedex",
+    "moves",
+    "items",
+    "natures",
+    "formats",
+    "format-bans",
+    "typechart",
+    "game-variants",
+    "past-generations",
+    "hidden-power-spreads",
+    "altSpriteNum",
+  ];
+  const transfer: GenerationTransferData = JSON.parse(
+    await readData("generation-transfer.json"),
+  );
+  return {
+    ...Object.fromEntries(
+      await Promise.all(
+        tables.map(async name => [`${name}.ts`, await loadAppData(name)]),
+      ),
+    ),
+    "learnsets.json": JSON.parse(await readData("learnsets.json")),
+    "generation-transfer.json (pokemon)": transfer.pokemon,
+    "generation-transfer.json (items)": transfer.items,
+    "viable-moves.ts": await readData("viable-moves.ts"),
+  };
+}
+
+// Showdown's CAP (fan-made) moves and items, by the file they go to
+async function loadCapIds() {
+  const capIds = async (file: string, exportName: string) => {
+    const table = await loadShowdownTable(`data/${file}`, exportName);
+    const ids = Object.entries(table)
+      .filter(([, entry]) => entry.isNonstandard === "CAP")
+      .map(([id]) => id);
+    return [file, ids] as const;
+  };
+  return Object.fromEntries(
+    await Promise.all([
+      capIds("moves.ts", "Moves"),
+      capIds("items.ts", "Items"),
+    ]),
+  );
+}
+
+// `--notice=<file>` also writes the notice there, for the Showdown data workflow to post
+async function reportChanges(before: DataSnapshot, after: DataSnapshot) {
+  const notice = changeNotice(before, after, await loadCapIds());
+  console.log(notice ?? "Showdown changed nothing the site uses.");
+  const file = process.argv
+    .find(arg => arg.startsWith("--notice="))
+    ?.slice("--notice=".length);
+  if (notice && file) {
+    await fs.writeFile(
+      file,
+      `${notice}\n\nTo bring these into the site, run \`npm run update:data\`, then \`npm run update:translations\`, as the README describes.\n`,
+    );
+  }
+}
+
 async function updateMoveEffects() {
   const latest = await loadShowdownTable("data/moves.ts", "Moves");
   const before = await loadAppData<Moves>("moves");
@@ -554,7 +629,12 @@ async function updateData() {
     await updateHiddenPowerSpreads();
     return;
   }
+  if (process.argv.includes("--format-bans-only")) {
+    await writeData("FormatBans", formatBansData(showdownRoot), true);
+    return;
+  }
   const before = await loadReportedData();
+  const snapshot = await loadSnapshot();
 
   await Promise.all([
     updateProjectedDataset("pokedex", "Pokedex", "Pokedex"),
@@ -593,12 +673,14 @@ async function updateData() {
     path.join(dataRoot, "generation-transfer.json"),
     `${JSON.stringify(transferData, null, 2)}\n`,
   );
+  await writeData("FormatBans", formatBansData(showdownRoot), true);
 
   await updateViableMoves(
     JSON.parse(await read(path.join(dataRoot, "learnsets.json"))) as Learnsets,
   );
 
   const after = await loadReportedData();
+  await reportChanges(snapshot, await loadSnapshot());
   await reportNameChanges(before, after);
   try {
     await reportIconSheets();

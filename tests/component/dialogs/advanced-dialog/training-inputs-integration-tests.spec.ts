@@ -160,3 +160,48 @@ test("typed EV amounts obey the per-stat and total limits", async ({
   await expect(speed).toHaveValue("0");
   await expect(dialog.getByLabel(/^EV total/)).toHaveText("504 / 510");
 });
+
+test("Hidden Power matches the level once typing ends, not each keystroke", async ({
+  page,
+}) => {
+  const team = Buffer.from("Lanturn\n- Hidden Power Fire\n").toString(
+    "base64url",
+  );
+  await page.goto(`/?gen=7&team=${team}`);
+  await expect(
+    page.getByLabel("Pokemon 1's name", { exact: true }),
+  ).toHaveValue("Lanturn");
+  await openAdvanced(page);
+  const dialog = page.getByRole("dialog", { name: "More details" });
+  const level = dialog.getByRole("spinbutton", { name: "Level", exact: true });
+  const endEditing = () =>
+    dialog.getByLabel("Nickname", { exact: true }).focus();
+
+  // Retyping 100 passes through 1 and 10, where Hyper Training is unavailable
+  await level.fill("");
+  await level.pressSequentially("100");
+  await endEditing();
+  await expect
+    .poll(() => getTeamTextFromUrl(page))
+    .toContain("IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe");
+
+  await level.fill("50");
+  await endEditing();
+  await expect
+    .poll(() => getTeamTextFromUrl(page))
+    .toContain("IVs: 30 Atk / 30 SpA / 30 Spe");
+
+  await dialog.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(level).toHaveValue("100");
+  await expect
+    .poll(() => getTeamTextFromUrl(page))
+    .toContain("IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe");
+
+  // Escape closes the dialog without blurring the field first
+  await level.fill("50");
+  await level.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect
+    .poll(() => getTeamTextFromUrl(page))
+    .toContain("Level: 50\nIVs: 30 Atk / 30 SpA / 30 Spe");
+});
