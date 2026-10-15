@@ -63,9 +63,13 @@ export function typeAgainstPokemon(
     const value =
       defender && defender !== "Bird" ? (typechart[defender]?.[type] ?? 0) : 0;
     return (
-        value === 2 &&
+        (value === 2 &&
           ((item === "ringtarget" && generation >= 5) ||
-            (grounded && defender === "Flying"))
+            (grounded && defender === "Flying"))) ||
+          // Delta Stream's winds stop moves being super effective on Flying
+          (value === -1 &&
+            defender === "Flying" &&
+            pokemonAbility === "Delta Stream")
       ) ?
         0
       : value;
@@ -131,6 +135,13 @@ export function typeAgainstPokemon(
         ) {
           effectiveness = IMMUNE_SCORE;
         }
+        break;
+      // Primal weather makes moves of the opposing type fail
+      case "Desolate Land":
+        if (type === "Water") effectiveness = IMMUNE_SCORE;
+        break;
+      case "Primordial Sea":
+        if (type === "Fire") effectiveness = IMMUNE_SCORE;
         break;
       case "Water Bubble":
         if (type === "Fire") {

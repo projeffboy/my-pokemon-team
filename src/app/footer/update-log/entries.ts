@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 15, 2026",
+    changes: [
+      "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
+    ],
+  },
+  {
     date: "Oct 14, 2026",
     changes: [
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
