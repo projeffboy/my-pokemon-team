@@ -64,7 +64,8 @@ jobs:
   browsers:
     name: Browser tests (${{ matrix.project }})
     runs-on: ubuntu-24.04
-    timeout-minutes: 90
+    # Slow runners have taken over 90 minutes for one browser's tests
+    timeout-minutes: 150
     strategy:
       fail-fast: false
       matrix:
