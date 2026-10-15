@@ -28,11 +28,7 @@ import {
   itemNameInverse,
   moveNameInverse,
 } from "@/shared/names";
-import {
-  hasNoAbility,
-  pokemonAbilities,
-  unreleasedHiddenAbility,
-} from "@/shared/pokedex";
+import { hasNoAbility } from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
   DEFAULT_HAPPINESS,
@@ -52,8 +48,8 @@ import {
   teamDataFormat,
 } from "@/shared/generation-profile";
 import { canItLearn, isItemAvailable } from "./learnsets";
+import { anyGenerationAbilities, type DroppedEntry } from "./dropped-entries";
 import { generationRules } from "@/shared/generation-rules";
-import { GENERATIONS } from "@/shared/generations";
 import { canHyperTrain, matchImportedHiddenPower } from "@/shared/hidden-power";
 
 const statsLine = (
@@ -76,7 +72,7 @@ function serializeMember(
   // The Advanced dialog keeps a space being typed, which the text leaves out
   const nickname = member.nickname?.trim();
   const species = pokemonName(name) ?? name;
-  const itemText = itemName(item);
+  const itemText = itemName(item) || item;
   const nameLine = [
     nickname ? `${nickname} (${species})` : species,
     gender === "M" || gender === "F" ? `(${gender})` : "",
@@ -123,7 +119,7 @@ function serializeMember(
     ivs ? `IVs: ${ivs}` : "",
     ...MOVE_KEYS.map(key => {
       const move = member[key];
-      return move ? `- ${moveName(move)}` : "-";
+      return move ? `- ${moveName(move) ?? move}` : "-";
     }),
   ]
     .filter(line => line)
@@ -362,11 +358,7 @@ export function parseTeamText(
       pending.push({ problem, ...(replacement && { replacement }) });
 
     member.name = pokemon;
-    const abilities = GENERATIONS.flatMap(gen =>
-      pokemonAbilities(pokemon, gen).concat(
-        unreleasedHiddenAbility(pokemon, gen) ?? [],
-      ),
-    );
+    const abilities = anyGenerationAbilities(pokemon);
     member.ability =
       rules.abilities ?
         getAutoSelectedAbility(pokemon, generation, format)
@@ -616,6 +608,40 @@ export function parseTeamText(
   });
 
   return team;
+}
+
+// The team, with each pokemon, item, ability, and move of the text that it left
+// blank or auto-selected, by slot
+export function parseTeamTextReport(
+  text: string,
+  generation: Generation = 9,
+  format = "",
+  options: Omit<
+    NonNullable<Parameters<typeof parseTeamText>[3]>,
+    "onProblem"
+  > = {},
+) {
+  const dropped: DroppedEntry[] = [];
+  const team = parseTeamText(text, generation, format, {
+    ...options,
+    onProblem: ({ slot, pokemon = "", field, move = 0, value, reason }) => {
+      const teamIndex = slot - 1;
+      const moveKey = MOVE_KEYS[move - 1];
+      if (reason === "tooManyPokemon" || reason === "tooManyMoves") return;
+      if (field === "pokemon")
+        dropped.push({
+          teamIndex,
+          pokemon,
+          field,
+          value: value.split("@")[0]?.trim() || value,
+        });
+      else if (field === "item" || field === "ability")
+        dropped.push({ teamIndex, pokemon, field, value });
+      else if (field === "move" && moveKey)
+        dropped.push({ teamIndex, pokemon, field: moveKey, value });
+    },
+  });
+  return { team, dropped };
 }
 
 // Each part of team text that parseTeamText could not use as written, in text order

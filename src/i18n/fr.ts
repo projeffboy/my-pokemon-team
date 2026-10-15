@@ -196,6 +196,40 @@ const fr: Messages = {
       "Les listes de capacités n'ont pas pu être chargées. Rechargez la page pour réessayer.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 élément de ce lien a été omis"
+      : `${count} éléments de ce lien ont été omis`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 élément a été retiré de cette équipe"
+      : `${count} éléments ont été retirés de cette équipe`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Ce jeu ne l'a pas, ou le Pokémon ne peut pas l'utiliser."
+      : "Ce jeu ne les a pas, ou le Pokémon ne peut pas les utiliser.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Une mise à jour des données du jeu l'a renommé ou supprimé."
+      : "Une mise à jour des données du jeu les a renommés ou supprimés.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot} : ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, objet : ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, talent : ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, capacité ${move} : ${value}`,
+    details: "Détails",
+    dismiss: "Ignorer",
+    detailsTitle: "Texte d'origine de l'équipe",
+    linkDetailsDescription:
+      "L'équipe du lien telle qu'elle était, avec ce qui a été omis. Copiez-la pour en garder une trace.",
+    savedTeamDetailsDescription:
+      "L'équipe telle qu'elle était, avec ce qui a été retiré. Copiez-la pour en garder une trace.",
+    copy: "Copier",
+  },
+
   // The undo and redo buttons
   undo: "Annuler",
   redo: "Rétablir",

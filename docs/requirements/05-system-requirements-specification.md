@@ -326,7 +326,7 @@ flowchart TD
   Edit -- "Yes, a saved team" --> Keep["Keep the change, as for any saved team"]
 ```
 
-A pokemon, move, item, or ability that the link's generation profile lacks, such as one a data update renamed, is left out without a word (REQ-LINK-10). REQ-INFO-8 would name it.
+A pokemon, move, item, or ability that the link's generation profile lacks, such as one a data update renamed, is left out (REQ-LINK-10), and a notice above the team names it (REQ-INFO-8).
 
 A link that names both a game and a generation opens in the game when the site recognises it, and the generation is dropped from the address. Otherwise an unrecognised game or generation falls back as REQ-LINK-11 says, for every visitor, whatever generation they last used. An empty value counts as missing, so it gets no message.
 
@@ -662,17 +662,17 @@ REQ-SEC-7 does not stop the page's address, with the current team in it, from le
 
 Players keep teams and links for months or years. These requirements protect them across releases.
 
-| ID         | Requirement                                                                                                                                    | Imp. | Status   |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---- | -------- |
-| REQ-INFO-1 | The site shall load, from every share link that any released version of the site or of the old website accepted, the team that version loaded. | E    | Verified |
-| REQ-INFO-2 | The site shall load every saved state that any released version of the site has written to the browser.                                        | E    | Verified |
-| REQ-INFO-3 | The site shall load every backup file that any released version of the site has written.                                                       | E    | Verified |
-| REQ-INFO-4 | The site shall keep whatever part of a saved team is well formed, discarding only the parts that are not.                                      | E    | Verified |
-| REQ-INFO-6 | The site shall forget the Player's dismissal of the slot reordering hint 91 days after the Player's last visit.                                | O    | Verified |
-| REQ-INFO-7 | The site shall keep the Player's sort order, option view, move type display, and language in the browser for later visits.                     | C    | Verified |
-| REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Approved |
+| ID         | Requirement                                                                                                                                    | Imp. | Status      |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-INFO-1 | The site shall load, from every share link that any released version of the site or of the old website accepted, the team that version loaded. | E    | Verified    |
+| REQ-INFO-2 | The site shall load every saved state that any released version of the site has written to the browser.                                        | E    | Verified    |
+| REQ-INFO-3 | The site shall load every backup file that any released version of the site has written.                                                       | E    | Verified    |
+| REQ-INFO-4 | The site shall keep whatever part of a saved team is well formed, discarding only the parts that are not.                                      | E    | Verified    |
+| REQ-INFO-6 | The site shall forget the Player's dismissal of the slot reordering hint 91 days after the Player's last visit.                                | O    | Verified    |
+| REQ-INFO-7 | The site shall keep the Player's sort order, option view, move type display, and language in the browser for later visits.                     | C    | Verified    |
+| REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Implemented |
 
-Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m4-dropped-entries-notice.svg).
+Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m4-dropped-entries-notice.svg). On 14 October 2026 the Site Owner chose a notice that stays until the visitor dismisses it; each team keeps its own. A saved team loses the entries that the game data no longer has when it is opened, and is saved without them, so its notice appears once.
 
 ### 3.9) Policy and regulation requirements
 
@@ -889,6 +889,7 @@ No test checks all that these requirements state.
 | REQ-INTF-1, REQ-INTF-2 | That every pokemon and every item in the site's data has a picture of its own.                                                                                                                                                                                                                                                                    |
 | REQ-SEC-2              | The limit of 5 messages from one network address in 10 minutes.                                                                                                                                                                                                                                                                                   |
 | REQ-SEC-3              | A message longer than 5000 characters. A missing message, invalid reply addresses, and attachments that are not JPEG are tested.                                                                                                                                                                                                                  |
+| REQ-INFO-8             | Not reviewed yet: it was built after the tests were read. `tests/logic/dropped-entries.spec.ts` and `tests/component/main/pokemon-team/dropped-entries-notice/` test it.                                                                                                                                                                          |
 
 These are checked by inspection, demonstration, or analysis instead:
 
@@ -913,14 +914,14 @@ These are checked by inspection, demonstration, or analysis instead:
 
 ### 4.3) Requirements not built yet
 
-| Requirements                                        | Method           | Where                                                                                                                                                                        |
-| --------------------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| REQ-ANLY-12 to 14, 16 to 19                         | Test             | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                   |
-| REQ-USE-4, 6, 11, 12                                | Test, Inspection | Layout tests in `tests/component/`; for REQ-USE-12, a test that no element of a slot overlaps its sprite, to be written; an accessibility review for REQ-USE-4 and REQ-USE-6 |
-| REQ-USE-14                                          | Test             | To be written with the feature                                                                                                                                               |
-| REQ-PERF-1 to 3                                     | Test             | `tests/perf/response-times.spec.ts` (run by hand with `npm run test:perf`), with Lighthouse's mobile profile                                                                 |
-| REQ-PERF-4, 7, 9                                    | Test, Analysis   | Timing measurements to be added, with Lighthouse's mobile profile for REQ-PERF-4 and a deployment for REQ-PERF-9; build output for the script budget of REQ-PERF-4           |
-| REQ-INTF-13                                         | Test             | The Desktop Firefox and Desktop Edge projects of `playwright.config.ts`, once they pass in CI                                                                                |
-| REQ-REL-4                                           | Analysis         | The hosting platform's uptime reports                                                                                                                                        |
-| REQ-OPS-5                                           | Inspection       | The old website's deployment                                                                                                                                                 |
-| REQ-GEN-11, REQ-LANG-8, REQ-DATA-10, 11, REQ-INFO-8 | Test             | To be written with each feature, in its group's suites                                                                                                                       |
+| Requirements                            | Method           | Where                                                                                                                                                                        |
+| --------------------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| REQ-ANLY-12 to 14, 16 to 19             | Test             | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                   |
+| REQ-USE-4, 6, 11, 12                    | Test, Inspection | Layout tests in `tests/component/`; for REQ-USE-12, a test that no element of a slot overlaps its sprite, to be written; an accessibility review for REQ-USE-4 and REQ-USE-6 |
+| REQ-USE-14                              | Test             | To be written with the feature                                                                                                                                               |
+| REQ-PERF-1 to 3                         | Test             | `tests/perf/response-times.spec.ts` (run by hand with `npm run test:perf`), with Lighthouse's mobile profile                                                                 |
+| REQ-PERF-4, 7, 9                        | Test, Analysis   | Timing measurements to be added, with Lighthouse's mobile profile for REQ-PERF-4 and a deployment for REQ-PERF-9; build output for the script budget of REQ-PERF-4           |
+| REQ-INTF-13                             | Test             | The Desktop Firefox and Desktop Edge projects of `playwright.config.ts`, once they pass in CI                                                                                |
+| REQ-REL-4                               | Analysis         | The hosting platform's uptime reports                                                                                                                                        |
+| REQ-OPS-5                               | Inspection       | The old website's deployment                                                                                                                                                 |
+| REQ-GEN-11, REQ-LANG-8, REQ-DATA-10, 11 | Test             | To be written with each feature, in its group's suites                                                                                                                       |

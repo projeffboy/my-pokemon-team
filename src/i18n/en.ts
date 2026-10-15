@@ -190,6 +190,40 @@ const en = {
       "The move lists could not be loaded. Reload the page to try again.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 entry in this link was left out"
+      : `${count} entries in this link were left out`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 entry was removed from this team"
+      : `${count} entries were removed from this team`,
+    linkReason: (count: number): string =>
+      count === 1 ?
+        "This game doesn't have it, or the pokemon can't use it."
+      : "This game doesn't have them, or the pokemon can't use them.",
+    savedTeamReason: (count: number): string =>
+      count === 1 ?
+        "A game data update renamed or removed it."
+      : "A game data update renamed or removed them.",
+    pokemon: (slot: number, value: string) => `Pokemon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, item: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, ability: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, move ${move}: ${value}`,
+    details: "Details",
+    dismiss: "Dismiss",
+    detailsTitle: "Original team text",
+    linkDetailsDescription:
+      "The link's team as it was, with what was left out. Copy it to keep a record.",
+    savedTeamDetailsDescription:
+      "The team as it was, with what was removed. Copy it to keep a record.",
+    copy: "Copy",
+  },
+
   // The undo and redo buttons
   undo: "Undo",
   redo: "Redo",

@@ -193,6 +193,30 @@ const ja: Messages = {
       "技のリストを読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      `このリンクの${count}件の項目を読み込めませんでした`,
+    savedTeamTitle: (count: number) =>
+      `このチームから${count}件の項目を削除しました`,
+    linkReason: () => "このゲームにないか、そのポケモンには使えない項目です。",
+    savedTeamReason: () =>
+      "ゲームデータの更新で名前が変わったか、削除された項目です。",
+    pokemon: (slot: number, value: string) => `ポケモン${slot}：${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}の持ち物：${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}の特性：${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}の技${move}：${value}`,
+    details: "詳細",
+    dismiss: "閉じる",
+    detailsTitle: "元のチームのテキスト",
+    linkDetailsDescription:
+      "読み込めなかった項目を含む、リンクの元のチームです。コピーして控えておけます。",
+    savedTeamDetailsDescription:
+      "削除した項目を含む、元のチームです。コピーして控えておけます。",
+    copy: "コピー",
+  },
+
   // The undo and redo buttons
   undo: "元に戻す",
   redo: "やり直す",

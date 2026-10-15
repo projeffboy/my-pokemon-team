@@ -205,6 +205,28 @@ const ko: Messages = {
       "기술 목록을 불러오지 못했습니다. 페이지를 새로고침해 다시 시도하세요.",
   },
 
+  droppedEntries: {
+    linkTitle: (count: number) => `이 링크의 항목 ${count}개를 제외했습니다`,
+    savedTeamTitle: (count: number) =>
+      `이 팀에서 항목 ${count}개를 삭제했습니다`,
+    linkReason: () => "이 게임에 없거나 그 포켓몬이 사용할 수 없는 항목입니다.",
+    savedTeamReason: () =>
+      "게임 데이터 업데이트로 이름이 바뀌었거나 삭제된 항목입니다.",
+    pokemon: (slot: number, value: string) => `포켓몬 ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, 지닌 물건: ${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}, 특성: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, 기술 ${move}: ${value}`,
+    details: "상세",
+    dismiss: "닫기",
+    detailsTitle: "원래 팀 텍스트",
+    linkDetailsDescription:
+      "제외된 항목을 포함한 링크의 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    savedTeamDetailsDescription:
+      "삭제된 항목을 포함한 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    copy: "복사",
+  },
+
   undo: "실행 취소",
   redo: "다시 실행",
 

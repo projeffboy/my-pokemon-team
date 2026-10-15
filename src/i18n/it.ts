@@ -194,6 +194,40 @@ const it: Messages = {
       "Impossibile caricare gli elenchi delle mosse. Ricarica la pagina per riprovare.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 elemento di questo link è stato omesso"
+      : `${count} elementi di questo link sono stati omessi`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 elemento è stato rimosso da questa squadra"
+      : `${count} elementi sono stati rimossi da questa squadra`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Questo gioco non lo ha, o il Pokémon non può usarlo."
+      : "Questo gioco non li ha, o il Pokémon non può usarli.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Un aggiornamento dei dati di gioco lo ha rinominato o rimosso."
+      : "Un aggiornamento dei dati di gioco li ha rinominati o rimossi.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, strumento: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, abilità: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, mossa ${move}: ${value}`,
+    details: "Dettagli",
+    dismiss: "Ignora",
+    detailsTitle: "Testo originale della squadra",
+    linkDetailsDescription:
+      "La squadra del link com'era, con ciò che è stato omesso. Copiala per conservarne una traccia.",
+    savedTeamDetailsDescription:
+      "La squadra com'era, con ciò che è stato rimosso. Copiala per conservarne una traccia.",
+    copy: "Copia",
+  },
+
   // The undo and redo buttons
   undo: "Annulla",
   redo: "Ripeti",

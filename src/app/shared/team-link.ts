@@ -7,14 +7,15 @@ import {
   COMBINED_GENERATIONS_PROFILE,
   teamDataFormat,
 } from "@/shared/generation-profile";
-import { DEFAULT_TEAM_SETTINGS } from "@/shared/team";
+import { DEFAULT_TEAM_SETTINGS, isTeamEmpty } from "@/shared/team";
 import type { SavedTeam, ReadonlyTeam } from "@/types";
 import { toBase64Url, fromBase64Url } from "./base64url";
 import {
   LEGACY_LINK_PARSING_OPTIONS,
-  parseTeamText,
+  parseTeamTextReport,
   serializeTeam,
 } from "@/store/team-text";
+import { teamHolds } from "@/store/dropped-entries";
 
 // Limit applies to the raw (still-encoded) URL parameter, before any decoding is attempted
 export const MAX_ENCODED_TEAM_PARAMETER_LENGTH = 16 * 1024;
@@ -103,29 +104,44 @@ export function generationSettingsFromUrl(): {
 }
 
 // Opens a matching saved team, or an unsaved draft until the first edit, and returns
-// whether it opened one. Malformed, oversized, or non-UTF-8 payloads are ignored.
-export function importTeamFromUrlParameter(teamParameter: string): boolean {
+// whether it opened one. A team the site cannot read, and a malformed, oversized, or
+// non-UTF-8 payload, open nothing, so openWithoutTeam opens a team instead. Then the
+// notice names what the link's text lost above whichever team is open.
+export function importTeamFromUrlParameter(
+  teamParameter: string,
+  openWithoutTeam = () => {},
+): boolean {
   if (
     !teamParameter ||
     teamParameter.length > MAX_ENCODED_TEAM_PARAMETER_LENGTH
-  )
+  ) {
+    openWithoutTeam();
     return false;
+  }
 
   let text: string;
   try {
     text = fromBase64Url(teamParameter);
   } catch {
+    openWithoutTeam();
     return false;
   }
 
   const { settings } = generationSettingsFromUrl();
-  return store.openTeamFromLink(
-    parseTeamText(
-      text,
-      settings.generation,
-      teamDataFormat(settings),
-      LEGACY_LINK_PARSING_OPTIONS,
-    ),
-    settings,
+  const { team, dropped } = parseTeamTextReport(
+    text,
+    settings.generation,
+    teamDataFormat(settings),
+    LEGACY_LINK_PARSING_OPTIONS,
   );
+  const opened = !isTeamEmpty(team);
+  if (!opened) openWithoutTeam();
+  const saved = opened ? store.openTeamFromLink(team, settings) : undefined;
+  // A saved team keeps a move that its pokemon can no longer learn
+  store.reportDroppedEntries(
+    "link",
+    saved ? dropped.filter(entry => !teamHolds(saved.team, entry)) : dropped,
+    text,
+  );
+  return opened;
 }

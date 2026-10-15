@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Links and saved teams now name the Pokémon, moves, items and abilities a data update removed from them.",
       "The Manage button is now More, whose Accessibility section can stop sprites from animating.",
       "Sprites now load on networks that block Pokémon Showdown, such as many schools’.",
       "The new Viable items filter hides items that are rarely useful in battle, e.g. Oran Berry, and other Pokémon’s mega stones.",
