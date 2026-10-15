@@ -11,6 +11,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { useIsSmDown } from "@/app/shared/WidthContext";
 import ErrorBoundary from "@/app/shared/ErrorBoundary";
 import { heightAboveAd } from "@/app/shared/visual-viewport";
 
@@ -27,6 +28,7 @@ export default function FooterDialog({
 }) {
   const { t } = useTranslation();
   const titleId = useId();
+  const isSmDown = useIsSmDown();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(open => !open);
 
@@ -35,10 +37,12 @@ export default function FooterDialog({
       <Button variant="footer" onClick={toggle}>
         {button}
       </Button>
+      {/* Full screen on phones, so the manual's tables and long words fit at 320px */}
       <Dialog
         open={isOpen}
         onClose={toggle}
         aria-labelledby={titleId}
+        fullScreen={isSmDown}
         sx={{ height: heightAboveAd }}
       >
         <DialogTitle id={titleId}>{title}</DialogTitle>
