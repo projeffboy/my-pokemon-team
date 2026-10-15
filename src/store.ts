@@ -600,7 +600,8 @@ export class Store {
   selectPokemon(teamIndex: number, name: string) {
     const member = this.team[teamIndex];
 
-    if (!member) return;
+    // Picking the slot's own pokemon again keeps its set
+    if (!member || member.name === name) return;
     member.name = name;
     member.item =
       this.rules.items ?
