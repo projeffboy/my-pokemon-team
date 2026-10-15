@@ -114,7 +114,9 @@ Tera Type: Dark
     ).toBeVisible();
     await expect(dialog).toContainText("Ability and Tera Type");
     const malamar = dialog.getByRole("group", { name: "Malamar", exact: true });
-    await expect(malamar.getByRole("listitem")).toHaveText(["Foul Play"]);
+    await expect(malamar.getByRole("listitem")).toHaveText([
+      "Move removed: Foul Play",
+    ]);
     await dialog
       .getByRole("button", { name: "Update existing team", exact: true })
       .click();
