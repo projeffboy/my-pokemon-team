@@ -4,9 +4,11 @@ import { test, expect } from "@playwright/test";
 import {
   completeLearnset,
   canItLearn,
+  generationLearnset,
   getTeamLearnsets,
   learnsetsReady,
 } from "@/store/learnsets";
+import { CAP_FORMAT } from "@/shared/formats";
 import { createTeam } from "./shared/team";
 import type { Learnsets } from "@/types";
 
@@ -218,6 +220,22 @@ test("Viable filtering follows historical Showdown usefulness rules", () => {
   );
   expect(getTeamLearnsets(team, true, undefined, 7).values[0]).not.toContain(
     "hiddenpowerflying",
+  );
+});
+
+test("the CAP format gives CAP pokemon every move of theirs that Gen 9 still has", () => {
+  const kitsunoh = generationLearnset("kitsunoh", 9, CAP_FORMAT);
+  // Shadow Strike is CAP-only, so no game has it
+  expect(kitsunoh).toEqual(
+    expect.arrayContaining(["shadowstrike", "uturn", "meteormash"]),
+  );
+  for (const move of ["return", "magiccoat", "hiddenpowerfire"]) {
+    expect(completeLearnset("kitsunoh")).toContain(move);
+    expect(kitsunoh).not.toContain(move);
+  }
+  // Real pokemon keep Gen 9's own movepools
+  expect(generationLearnset("ogerpon", 9, CAP_FORMAT)).toEqual(
+    generationLearnset("ogerpon", 9, "OU: Over Used"),
   );
 });
 

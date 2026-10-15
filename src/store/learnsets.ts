@@ -1,4 +1,5 @@
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
+import { CAP_FORMAT } from "@/shared/formats";
 import { viableMovesIn } from "@/data/viable-moves";
 import pokedex from "@/data/pokedex";
 import { pokemonNameInverse } from "@/shared/names";
@@ -11,7 +12,7 @@ import type {
   ReadonlyTeam,
 } from "@/types";
 import { englishNames, type Names } from "@/i18n/names";
-import { previousEvolution } from "./shared/pokemon";
+import { isCapPokemon, previousEvolution } from "./shared/pokemon";
 
 const completeLearnsets = new Map<string, readonly string[]>();
 
@@ -20,6 +21,7 @@ const completeLearnsets = new Map<string, readonly string[]>();
 let learnsets: Learnsets = {};
 let availability: GenerationTransferData | undefined;
 let learnableMoves: Set<string> | undefined;
+let movesGen9Lacks: Set<string> | undefined;
 export const learnsetsReady: Promise<void> = Promise.all([
   loadGenerationTransferData().then(data => {
     availability = data;
@@ -32,6 +34,7 @@ export const learnsetsReady: Promise<void> = Promise.all([
   availability = data;
   learnsets = module.default;
   learnableMoves = undefined;
+  movesGen9Lacks = undefined;
   completeLearnsets.clear();
 });
 
@@ -206,6 +209,24 @@ export const generationMoves = (
 ) => [
   ...new Set(pokemon.flatMap(id => generationLearnset(id, generation, format))),
 ];
+// E.g. Return, which earlier games have but Gen 9's lack. CAP-only moves such as
+// Paleo Wave are in no game, so Gen 9 does not lack them.
+function gen9LacksMove(move: string) {
+  if (!movesGen9Lacks) {
+    const moves = Object.values(availability?.pokemon ?? {}).flatMap(
+      ({ moves }) => Object.entries(moves),
+    );
+    const gen9 = new Set(
+      moves.filter(([, bits]) => bits & generationBit(9)).map(([id]) => id),
+    );
+    movesGen9Lacks = new Set(
+      moves.map(([id]) => id).filter(id => !gen9.has(id)),
+    );
+  }
+  return movesGen9Lacks.has(
+    move.startsWith("hiddenpower") ? "hiddenpower" : move,
+  );
+}
 export function generationLearnset(
   pokemon: string,
   generation: Generation,
@@ -214,6 +235,9 @@ export function generationLearnset(
   const complete = completeLearnset(pokemon);
   // The regular latest-generation editor is National Dex; game variants use their native pools.
   if (generation === 9 && !format) return complete;
+  // CAP pokemon are in no game, so the CAP format gives them every move Gen 9 still has
+  if (format === CAP_FORMAT && isCapPokemon(pokemon))
+    return complete.filter(move => !gen9LacksMove(move));
   const bit = generationBit(generation, format);
   let pool = complete;
   if (format === COMBINED_GENERATIONS_FORMAT) {

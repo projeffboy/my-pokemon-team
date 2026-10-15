@@ -46,12 +46,3 @@ export const natureName = (nature: string) => natures[nature]?.name;
 export const allItemIds = Object.keys(items);
 
 export const allNatureIds = Object.keys(natures);
-
-// Every ability of a real (non-CAP) pokemon, for the ability filter
-export const allAbilities = [
-  ...new Set(
-    Object.values(pokedex)
-      .filter(({ num }) => num === undefined || num >= 0)
-      .flatMap(({ abilities }) => Object.values(abilities ?? {})),
-  ),
-].sort();

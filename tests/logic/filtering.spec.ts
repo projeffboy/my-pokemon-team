@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import pokedex from "@/data/pokedex";
 import { filterPokemon, introducedIn, isInGeneration } from "@/store/filtering";
+import { CAP_FORMAT } from "@/shared/formats";
 
 const all = { format: "", region: "", type: "" };
 
@@ -19,7 +20,7 @@ test("empty filters preserve Pokedex order and return an independent list", () =
   expect(filterPokemon(all)).toEqual(expected);
 });
 
-test("CAP pokemon are hidden and MissingNo is limited to Gen 1", () => {
+test("CAP pokemon are hidden outside the CAP format and MissingNo is limited to Gen 1", () => {
   const result = filterPokemon(all);
   for (const cap of [
     "syclar",
@@ -32,6 +33,30 @@ test("CAP pokemon are hidden and MissingNo is limited to Gen 1", () => {
   expect(result).not.toContain("missingno");
   expect(filterPokemon({ ...all, generation: 1 })).toContain("missingno");
   expect(result).toContain("pokestargiant");
+});
+
+test("the CAP format lists the CAP pokemon, OU, and the tiers below it", () => {
+  const cap = filterPokemon({ ...all, format: CAP_FORMAT });
+  expect(cap).toEqual(
+    expect.arrayContaining([
+      "cresceidon",
+      "electrelk",
+      "saharascal",
+      "ogerpon",
+      "grimmsnarl",
+      "toedscool",
+    ]),
+  );
+  expect(cap).not.toContain("fluttermane");
+  // Showdown's CAP bans Crucibellite
+  expect(cap).toContain("crucibelle");
+  expect(cap).not.toContain("crucibellemega");
+  expect(
+    filterPokemon({ ...all, format: CAP_FORMAT, ability: "Mountaineer" }),
+  ).toEqual(["syclant"]);
+  expect(filterPokemon({ ...all, format: "OU: Over Used" })).not.toContain(
+    "cresceidon",
+  );
 });
 
 test("type filtering includes either type of a dual-type species", () => {

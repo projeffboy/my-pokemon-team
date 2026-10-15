@@ -18,3 +18,9 @@ export function previousEvolution(pokemon: string) {
 
   return prevo ? pokemonNameInverse(prevo) : undefined;
 }
+
+// Showdown numbers CAP (fan-made) pokemon from -1 down, and Pokestar pokemon from -5000 down
+export function isCapPokemon(pokemon: string) {
+  const num = pokedex[pokemon]?.num ?? 0;
+  return num < 0 && num > -5000;
+}

@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 14, 2026",
+    changes: [
+      "Gen 9 has a new CAP format, which lists Create-A-Pokémon creations such as Syclant alongside OU’s Pokémon.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",

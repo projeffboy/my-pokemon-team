@@ -177,6 +177,21 @@ test.describe("Filters Integration Tests", () => {
     }
   });
 
+  test("CAP Format Filter", async ({ page }) => {
+    await checkPokemonNotSelectable(page, "Equilibra");
+    await selectFilterOption(page, "Format", "CAP");
+
+    // Eligible: Equilibra (CAP), Okidogi (UUBL). Not eligible: Iron Bundle (Uber)
+    await checkPokemonSelectable(page, "Equilibra");
+    await checkPokemonSelectable(page, "Okidogi");
+    await checkPokemonNotSelectable(page, "Iron Bundle");
+
+    // Equilibra learns its moves that Gen 9 still has
+    await selectPokemon(page, "Equilibra");
+    await checkMoveSelectable(page, "Earth Power");
+    await checkMoveNotSelectable(page, "Return");
+  });
+
   test("sorts the selected Pokemon even when filters exclude it", async ({
     page,
   }) => {

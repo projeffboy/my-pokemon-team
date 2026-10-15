@@ -9,6 +9,9 @@ import { isGeneration, LATEST_GENERATION } from "./generations";
 
 export const CHAMPIONS_FORMAT = "Pokemon Champions (M-C)";
 
+// Showdown's Create-A-Pokemon format: OU plus the fan-made CAP pokemon
+export const CAP_FORMAT = "CAP";
+
 // Pokemon Champions is a Gen 9 game, so a team in its format is a Gen 9 team
 export const CHAMPIONS_GENERATION: Generation = 9;
 
@@ -32,6 +35,7 @@ export const FORMATS: readonly string[] = [
   "PU",
   "ZU",
   "Little Cup (LC)",
+  CAP_FORMAT,
   "Doubles Uber",
   "Doubles OU",
   "Doubles UU",
@@ -39,8 +43,10 @@ export const FORMATS: readonly string[] = [
 
 // Supported tier formats in Showdown's config/formats.ts, including challenge-only
 // past-gen formats. RU exists in Gen 3 but not Gen 4; Gen 2 has no LC format.
+// Showdown's CAP goes back to Gen 4, but the past generations' data has no CAP pokemon.
 const FORMAT_GENERATIONS: Record<string, readonly Generation[]> = {
   [CHAMPIONS_FORMAT]: [9],
+  [CAP_FORMAT]: [9],
   "RU: Rarely Used": [3, 5, 6, 7, 8, 9],
   "Little Cup (LC)": [1, 3, 4, 5, 6, 7, 8, 9],
   "Doubles Uber": [8, 9],
@@ -71,6 +77,7 @@ export const TIER_BY_FORMAT: Record<string, string> = {
   PU: "PU",
   ZU: "ZU",
   "Little Cup (LC)": "LC",
+  [CAP_FORMAT]: "CAP",
   "Doubles Uber": "DUber",
   "Doubles OU": "DOU",
   "Doubles UU": "DUU",
@@ -96,6 +103,7 @@ const SHOWDOWN_FORMAT_IDS: Record<string, string> = {
   PU: "pu",
   ZU: "zu",
   "Little Cup (LC)": "lc",
+  [CAP_FORMAT]: "cap",
   "Doubles Uber": "doublesubers",
   "Doubles OU": "doublesou",
   "Doubles UU": "doublesuu",

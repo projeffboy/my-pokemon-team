@@ -1,9 +1,12 @@
 import { test, expect } from "@playwright/test";
 import {
+  CAP_FORMAT,
   CHAMPIONS_FORMAT,
   formatsForGeneration,
   formatForGeneration,
+  formatShortName,
   parseShowdownFormatId,
+  showdownFormatId,
 } from "@/shared/formats";
 import { GENERATIONS } from "@/shared/generations";
 
@@ -19,6 +22,7 @@ for (const generation of GENERATIONS) {
       "PU",
       "ZU",
       ...(generation !== 2 ? ["Little Cup (LC)"] : []),
+      ...(generation === 9 ? [CAP_FORMAT] : []),
       ...(generation >= 8 ? ["Doubles Uber"] : []),
       ...(generation >= 3 ? ["Doubles OU"] : []),
       ...(generation >= 7 ? ["Doubles UU"] : []),
@@ -32,7 +36,17 @@ test("generation changes keep supported formats and clear unavailable ones", () 
   expect(formatForGeneration("RU: Rarely Used", 4)).toBe("");
   expect(formatForGeneration("Doubles UU", 6)).toBe("");
   expect(formatForGeneration(CHAMPIONS_FORMAT, 8)).toBe("");
+  expect(formatForGeneration(CAP_FORMAT, 8)).toBe("");
   expect(formatForGeneration("", 9)).toBe("");
+});
+
+test("the CAP format round-trips through Showdown's team header ID", () => {
+  expect(showdownFormatId(9, CAP_FORMAT)).toBe("gen9cap");
+  expect(parseShowdownFormatId("gen9cap")).toEqual({
+    generation: 9,
+    format: CAP_FORMAT,
+  });
+  expect(formatShortName(CAP_FORMAT)).toBe("CAP");
 });
 
 test("old imports still preserve their format even when no longer selectable", () => {

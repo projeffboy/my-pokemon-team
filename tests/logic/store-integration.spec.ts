@@ -1,6 +1,7 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
+import { CAP_FORMAT } from "@/shared/formats";
 
 test("move selection rejects duplicates but permits changing its own Hidden Power type", ({
   store,
@@ -178,6 +179,19 @@ test("a past generation leaves out pokemon its games lack, and the latest lists 
   store.currentTeam.generation = 7;
   expect(store.filteredPokemon).toContain("greninja");
   expect(store.filterAbilities).toContain("Battle Bond");
+});
+
+test("the CAP format adds the CAP pokemon, their abilities, and their moves", ({
+  store,
+}) => {
+  expect(store.filteredPokemon).not.toContain("caribolt");
+  expect(store.filterAbilities).not.toContain("Persistent");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.filteredPokemon).toContain("caribolt");
+  expect(store.filterAbilities).toContain("Persistent");
+  store.selectPokemon(0, "caribolt");
+  expect(store.teamLearnsets.values[0]).toContain("hornleech");
+  expect(store.teamLearnsets.values[0]).not.toContain("return");
 });
 
 test("a past generation keeps the pokemon that learn no moves in any game", ({

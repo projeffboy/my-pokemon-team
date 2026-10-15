@@ -181,3 +181,29 @@ test("MissingNo. and Pokestar pokemon come last in every sort but name", () => {
     "bulbasaur",
   );
 });
+
+test("CAP pokemon sort by their stats and CAP tiers, and by number after the real pokemon", () => {
+  const ids = ["toedscool", "smoguana", "chuggalong", "zamazenta", "shox"];
+  expect(sortPokemon(ids, { by: "bst", descending: true })).toEqual([
+    "zamazenta",
+    "shox",
+    "chuggalong",
+    "smoguana",
+    "toedscool",
+  ]);
+  // As Showdown's CAP teambuilder lists them, CAP tiers first
+  expect(sortPokemon(ids, { by: "format", descending: false })).toEqual([
+    "chuggalong",
+    "shox",
+    "smoguana",
+    "zamazenta",
+    "toedscool",
+  ]);
+  // CAP pokemon count down from -1 in the order they were made
+  for (const descending of [false, true])
+    expect(sortPokemon(ids, { by: "num", descending }).slice(2)).toEqual(
+      descending ?
+        ["shox", "chuggalong", "smoguana"]
+      : ["smoguana", "chuggalong", "shox"],
+    );
+});
