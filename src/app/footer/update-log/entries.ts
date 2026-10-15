@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "The team checklist can now be set to singles or doubles, and counts Defog as hazard removal in Gen 4 and 5 doubles.",
       "Links and saved teams now name the Pokémon, moves, items and abilities a data update removed from them.",
       "The Manage button is now More, whose Accessibility section can stop sprites from animating.",
       "Sprites now load on networks that block Pokémon Showdown, such as many schools’.",

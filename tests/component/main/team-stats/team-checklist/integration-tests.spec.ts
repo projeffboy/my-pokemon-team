@@ -10,6 +10,7 @@ import {
   openAnalysis,
   showSlot,
 } from "helper";
+import en from "@/i18n/en";
 
 // The switch that opened the checklist may still show its own tooltip
 const showTooltip = async (
@@ -122,6 +123,57 @@ test.describe("Team Checklist - Integration Tests", () => {
       await expectChecklistItem(page, checklistItem, true);
     });
   }
+
+  test("in Gen 4, Defog depends on the battle format, and says why until one is picked", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=4");
+    await openAnalysis(page, "Team Checklist");
+    await selectPokemon(page, "Togekiss");
+    await selectMove(page, "Defog");
+    const checklist = page.getByRole("region", { name: "Team Checklist" });
+    const reason = checklist.getByText(
+      en.checklist.battleFormat.reasons.spinner,
+    );
+    await expectChecklistItem(page, "Spinner/Defogger", "depends");
+    await expect(reason).toBeVisible();
+
+    const battleFormat = checklist.getByRole("group", {
+      name: "Battle format",
+    });
+    await battleFormat.getByRole("button", { name: "Doubles" }).click();
+    await expectChecklistItem(page, "Spinner/Defogger", true);
+    await expect(reason).toBeHidden();
+
+    // The share link keeps the battle format, so a reload reopens the same saved team
+    await page.reload();
+    await openAnalysis(page, "Team Checklist");
+    await expect(
+      battleFormat.getByRole("button", { name: "Doubles" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expectChecklistItem(page, "Spinner/Defogger", true);
+    await battleFormat.getByRole("button", { name: "Singles" }).click();
+    await expectChecklistItem(page, "Spinner/Defogger", false);
+  });
+
+  test("a role that depends on the battle format names its filler and why in its tooltip", async ({
+    page,
+  }, testInfo) => {
+    await page.goto("/?gen=4");
+    await openAnalysis(page, "Team Checklist");
+    await selectPokemon(page, "Togekiss");
+    await selectMove(page, "Defog");
+    const tooltip = await showTooltip(
+      page,
+      testInfo,
+      "Spinner/Defogger",
+      "Togekiss",
+    );
+    await expect(tooltip).toContainText("Togekiss: Defog");
+    await expect(tooltip).toContainText(
+      en.checklist.battleFormat.reasons.spinner,
+    );
+  });
 
   test("a filled role's tooltip names each pokemon and what fills it", async ({
     page,

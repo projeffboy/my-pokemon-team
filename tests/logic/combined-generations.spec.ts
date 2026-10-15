@@ -11,7 +11,7 @@ import {
 } from "@/store/learnsets";
 import {
   generationSettingsFromUrl,
-  syncGenerationToUrl,
+  syncTeamSettingsToUrl,
   importTeamFromUrlParameter,
 } from "@/app/shared/team-link";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
@@ -105,7 +105,7 @@ test("changing to the combined pool retains otherwise unavailable species and mo
 test("combined and individual generations have distinct URLs; team-only links default to the combined profile", () => {
   const descriptor = Object.getOwnPropertyDescriptor(globalThis, "location");
   const url = new URL("https://mypokemonteam.com/?team=test&gen=9");
-  syncGenerationToUrl(url, {
+  syncTeamSettingsToUrl(url, {
     generation: 9,
     format: "OU: Over Used",
     generationProfile: "6-9",
@@ -122,7 +122,7 @@ test("combined and individual generations have distinct URLs; team-only links de
       generationProfile: "6-9",
       generation: 9,
     });
-    syncGenerationToUrl(url, { generation: 9, format: "" });
+    syncTeamSettingsToUrl(url, { generation: 9, format: "" });
     expect(url.searchParams.get("gen")).toBe("9");
     expect(generationSettingsFromUrl().settings).toEqual({
       generation: 9,

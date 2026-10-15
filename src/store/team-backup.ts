@@ -8,7 +8,11 @@ import {
   type TeamPokemon,
 } from "@/types";
 import { isGeneration } from "@/shared/generations";
-import { createSavedTeam, createSearchFilters } from "@/shared/team";
+import {
+  createSavedTeam,
+  createSearchFilters,
+  isBattleFormat,
+} from "@/shared/team";
 import { stableJson } from "./teams-storage";
 
 export const MAX_TEAM_BACKUP_BYTES = 10 * 1024 * 1024;
@@ -84,7 +88,7 @@ function isSavedTeam(value: unknown): value is SavedTeam {
     hasFields(
       value,
       ["id", "name", "generation", "format", "filters", "team"],
-      ["generationProfile"],
+      ["generationProfile", "battleFormat"],
     ) &&
     typeof value.id === "string" &&
     value.id.length > 0 &&
@@ -95,6 +99,7 @@ function isSavedTeam(value: unknown): value is SavedTeam {
       (value.generationProfile === COMBINED_GENERATIONS_PROFILE &&
         value.generation === 9 &&
         !gameFormat(value.format))) &&
+    (value.battleFormat === undefined || isBattleFormat(value.battleFormat)) &&
     isRecord(value.filters) &&
     // Backups made before the Items filter have none
     hasFields(

@@ -328,11 +328,25 @@ const en = {
           `Give a pokemon a Choice item to hold: ${items}.`,
       },
     },
-    // A pokemon that fills a role, and the moves or item it fills it with
+    // A pokemon that fills a role, and the moves, item, or ability it fills it with
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     // Two moves that fill a role together, such as Wish with Protect
     together: (move: string, other: string) => `${move} with ${other}`,
     unavailable: "Nothing in this game fills it.",
+    // Whether the team is for singles or doubles, which some roles depend on
+    battleFormat: {
+      label: "Battle format",
+      singles: "Singles",
+      doubles: "Doubles",
+      notSet: "Not set",
+      // The icon of a role that singles and doubles judge differently
+      depends: "Depends on the battle format",
+      // Why each such role does
+      reasons: {
+        spinner:
+          "Spinner/Defogger depends on the battle format: in Generations 4 and 5, Defog clears your own side’s hazards only in doubles, by targeting your ally.",
+      },
+    },
   },
   matrix: {
     matrix: "Matrix",

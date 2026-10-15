@@ -313,6 +313,17 @@ const zhHant: Messages = {
     filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
     together: (move: string, other: string) => `${move}配合${other}`,
     unavailable: "本作中沒有符合條件的招式或道具。",
+    battleFormat: {
+      label: "對戰形式",
+      singles: "單打",
+      doubles: "雙打",
+      notSet: "未設定",
+      depends: "取決於對戰形式",
+      reasons: {
+        spinner:
+          "高速旋轉／清除濃霧取決於對戰形式：在第4、5世代中，清除濃霧只有在雙打對戰中對隊友使用時，才能清除己方場地的陷阱。",
+      },
+    },
   },
   matrix: {
     matrix: "矩陣",

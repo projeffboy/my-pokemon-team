@@ -248,6 +248,8 @@ export interface SnackbarNotification {
 
 export type Generation = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
+export type BattleFormat = "singles" | "doubles";
+
 // A team as saved in the browser, with its generation and filters
 export interface SavedTeam {
   id: string;
@@ -255,6 +257,8 @@ export interface SavedTeam {
   generation: Generation;
   generationProfile?: "6-9";
   format: string;
+  // Unset until the player picks one; never inferred from the generation or format
+  battleFormat?: BattleFormat;
   filters: SearchFilters;
   team: Team;
 }

@@ -326,6 +326,17 @@ const es: Messages = {
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     together: (move: string, other: string) => `${move} con ${other}`,
     unavailable: "Nada en este juego cumple este papel.",
+    battleFormat: {
+      label: "Formato de combate",
+      singles: "Individual",
+      doubles: "Dobles",
+      notSet: "Sin definir",
+      depends: "Depende del formato de combate",
+      reasons: {
+        spinner:
+          "Spinner/Defogger depende del formato de combate: en las generaciones 4 y 5, Despejar solo quita las trampas de tu lado en combates dobles, al usarlo sobre tu aliado.",
+      },
+    },
   },
   matrix: {
     matrix: "Matriz",

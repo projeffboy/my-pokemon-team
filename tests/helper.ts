@@ -264,14 +264,18 @@ export const checklistRow = (page: Page, label: string) =>
     .getByText(pageChecklistLabel(page, label), { exact: true })
     .locator("..");
 
+// "depends" for a role whose result depends on a battle format that is not set
 export const expectChecklistItem = async (
   page: Page,
   label: string,
-  isChecked: boolean,
+  isChecked: boolean | "depends",
 ) => {
   await expect(
     checklistRow(page, label).getByRole("img", {
-      name: isChecked ? "Checked" : "Unchecked",
+      name:
+        isChecked === "depends" ? en.checklist.battleFormat.depends
+        : isChecked ? "Checked"
+        : "Unchecked",
     }),
   ).toBeVisible();
 };

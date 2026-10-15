@@ -1,6 +1,7 @@
 import { moveDataIn } from "@/shared/generation-data";
 import {
   MOVE_KEYS,
+  type BattleFormat,
   type Generation,
   type ReadonlyTeam,
   type TeamPokemon,
@@ -30,6 +31,7 @@ type Fills = (
   pokemon: Pokemon,
   generation: Generation,
   format: string,
+  battleFormat?: BattleFormat,
 ) => string[];
 
 export interface ChecklistItem {
@@ -279,15 +281,16 @@ export const checklist: ChecklistGroup[] = [
       { key: "entryHazard", fills: anyMove(HAZARDS), examples: HAZARDS },
       {
         key: "spinner",
-        // Defog clears the user's side too from Gen 6
-        fills: (pokemon, generation, format) =>
+        // Before Gen 6, Defog clears only its target's side, so it clears the user's own
+        // side only by targeting an ally in doubles
+        fills: (pokemon, generation, format, battleFormat) =>
           anyMove([
             "rapidspin",
             "courtchange",
             "tidyup",
             "mortalspin",
-            ...(generation >= 6 ? ["defog"] : []),
-          ])(pokemon, generation, format),
+            ...(generation >= 6 || battleFormat === "doubles" ? ["defog"] : []),
+          ])(pokemon, generation, format, battleFormat),
         examples: ["rapidspin", "defog", "courtchange", "tidyup", "mortalspin"],
       },
       {
@@ -363,19 +366,33 @@ export const checklistLabel = (
   : isLgDown ? (short ?? label)
   : label;
 
+// Without a battle format, a role that singles and doubles judge differently is
+// neither checked nor unchecked but depends on it, and its fillers are those of the
+// battle format that it is filled in
 export function evaluateChecklist(
   team: ReadonlyTeam,
   generation = LATEST_GENERATION,
   format = "",
+  battleFormat?: BattleFormat,
 ) {
   return checklist.map(({ key, items }) => ({
     key,
     items: items.map(item => {
-      const fillers = team.flatMap(pokemon => {
-        const by = pokemon.name ? item.fills(pokemon, generation, format) : [];
-        return by.length ? [{ pokemon: pokemon.name, by }] : [];
-      });
-      return { ...item, isChecked: fillers.length > 0, fillers };
+      const fillersIn = (battle: BattleFormat) =>
+        team.flatMap(pokemon => {
+          const by =
+            pokemon.name ? item.fills(pokemon, generation, format, battle) : [];
+          return by.length ? [{ pokemon: pokemon.name, by }] : [];
+        });
+      const fillers = fillersIn(battleFormat ?? "singles");
+      const doubles = battleFormat ? fillers : fillersIn("doubles");
+      const dependsOnBattleFormat = fillers.length > 0 !== doubles.length > 0;
+      return {
+        ...item,
+        isChecked: fillers.length > 0 && !dependsOnBattleFormat,
+        dependsOnBattleFormat,
+        fillers: fillers.length ? fillers : doubles,
+      };
     }),
   }));
 }
@@ -409,13 +426,17 @@ const standIn = ([first = "", second = ""]: string[], heldItem = false) => ({
   move4: "",
 });
 
-// What would fill a role: the examples that are in the game and fill it there
+// What would fill a role: the examples that are in the game and fill it there, in the
+// team's battle format, or in both when it has none
 export function checklistHint(
   { key, fills, examples, heldItem, abilities = [] }: ChecklistItem,
   { locale, t, names }: Translation = english,
   generation = LATEST_GENERATION,
   format = "",
+  battleFormat?: BattleFormat,
 ) {
+  const battleFormats: BattleFormat[] =
+    battleFormat ? [battleFormat] : ["singles", "doubles"];
   const list = (items: string[]) =>
     new Intl.ListFormat(locale, { type: "disjunction" }).format(items);
   const isAvailable = heldItem ? isItemAvailable : isMoveAvailable;
@@ -424,7 +445,11 @@ export function checklistHint(
     .filter(
       ids =>
         ids.every(id => isAvailable(id, generation, format)) &&
-        fills(standIn(ids, heldItem), generation, format).length > 0,
+        battleFormats.every(
+          battle =>
+            fills(standIn(ids, heldItem), generation, format, battle).length >
+            0,
+        ),
     )
     .map(ids => {
       const [first = "", second] = ids.map(heldItem ? names.item : names.move);

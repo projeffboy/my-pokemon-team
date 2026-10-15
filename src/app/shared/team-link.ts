@@ -7,8 +7,12 @@ import {
   COMBINED_GENERATIONS_PROFILE,
   teamDataFormat,
 } from "@/shared/generation-profile";
-import { DEFAULT_TEAM_SETTINGS, isTeamEmpty } from "@/shared/team";
-import type { SavedTeam, ReadonlyTeam } from "@/types";
+import {
+  DEFAULT_TEAM_SETTINGS,
+  isBattleFormat,
+  isTeamEmpty,
+} from "@/shared/team";
+import type { BattleFormat, SavedTeam, ReadonlyTeam } from "@/types";
 import { toBase64Url, fromBase64Url } from "./base64url";
 import {
   LEGACY_LINK_PARSING_OPTIONS,
@@ -39,10 +43,16 @@ const GAME_PARAMETERS = new Map([
 ]);
 
 // The share link of any team, as the address bar shows the current one
-export function syncGenerationToUrl(
+export function syncTeamSettingsToUrl(
   url: URL,
-  settings: Pick<SavedTeam, "generation" | "format" | "generationProfile">,
+  settings: Pick<
+    SavedTeam,
+    "generation" | "format" | "generationProfile" | "battleFormat"
+  >,
 ) {
+  if (settings.battleFormat)
+    url.searchParams.set("battle", settings.battleFormat);
+  else url.searchParams.delete("battle");
   const game = GAME_PARAMETERS.get(settings.format);
   if (game) {
     url.searchParams.set("game", game);
@@ -67,7 +77,7 @@ export function teamUrl(
     "team",
     toBase64Url(serializeTeam(team, settings.generation, settings.format)),
   );
-  syncGenerationToUrl(url, settings);
+  syncTeamSettingsToUrl(url, settings);
   return url.href;
 }
 
@@ -103,6 +113,14 @@ export function generationSettingsFromUrl(): {
   };
 }
 
+// Links made before the battle format existed, or without one, leave it not set
+export function battleFormatFromUrl(): BattleFormat | undefined {
+  const battle = new URLSearchParams(
+    typeof location === "undefined" ? "" : location.search,
+  ).get("battle");
+  return isBattleFormat(battle) ? battle : undefined;
+}
+
 // Opens a matching saved team, or an unsaved draft until the first edit, and returns
 // whether it opened one. A team the site cannot read, and a malformed, oversized, or
 // non-UTF-8 payload, open nothing, so openWithoutTeam opens a team instead. Then the
@@ -136,7 +154,13 @@ export function importTeamFromUrlParameter(
   );
   const opened = !isTeamEmpty(team);
   if (!opened) openWithoutTeam();
-  const saved = opened ? store.openTeamFromLink(team, settings) : undefined;
+  const saved =
+    opened ?
+      store.openTeamFromLink(team, {
+        ...settings,
+        battleFormat: battleFormatFromUrl(),
+      })
+    : undefined;
   // A saved team keeps a move that its pokemon can no longer learn
   store.reportDroppedEntries(
     "link",

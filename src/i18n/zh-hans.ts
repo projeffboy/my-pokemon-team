@@ -314,6 +314,17 @@ const zhHans: Messages = {
     filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
     together: (move: string, other: string) => `${move}配合${other}`,
     unavailable: "本作中没有符合条件的招式或道具。",
+    battleFormat: {
+      label: "对战形式",
+      singles: "单打",
+      doubles: "双打",
+      notSet: "未设置",
+      depends: "取决于对战形式",
+      reasons: {
+        spinner:
+          "扫钉／清雾取决于对战形式：在第4、5世代中，清除浓雾只有在双打对战中对队友使用时，才能清除己方场地的撒钉。",
+      },
+    },
   },
   matrix: {
     matrix: "矩阵",

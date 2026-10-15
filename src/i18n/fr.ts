@@ -336,6 +336,17 @@ const fr: Messages = {
     filledBy: (pokemon: string, moves: string) => `${pokemon} : ${moves}`,
     together: (move: string, other: string) => `${move} avec ${other}`,
     unavailable: "Rien dans ce jeu ne remplit ce rôle.",
+    battleFormat: {
+      label: "Format de combat",
+      singles: "Simple",
+      doubles: "Double",
+      notSet: "Non défini",
+      depends: "Dépend du format de combat",
+      reasons: {
+        spinner:
+          "Spinner/Defogger dépend du format de combat : en 4e et 5e générations, Anti-Brume ne retire les pièges de ton côté qu’en combat double, en ciblant ton allié.",
+      },
+    },
   },
   matrix: {
     matrix: "Matrice",

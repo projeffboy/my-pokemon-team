@@ -331,6 +331,17 @@ const ko: Messages = {
     together: (move: string, other: string) =>
       `${josa(other, "과", "와")} 함께 쓰는 ${move}`,
     unavailable: "이 게임에는 해당하는 기술이나 아이템이 없습니다.",
+    battleFormat: {
+      label: "배틀 형식",
+      singles: "싱글",
+      doubles: "더블",
+      notSet: "미설정",
+      depends: "배틀 형식에 따라 다름",
+      reasons: {
+        spinner:
+          "고속스핀/안개제거는 배틀 형식에 따라 다릅니다. 4세대와 5세대의 안개제거는 더블배틀에서 같은 편에게 사용할 때만 내 쪽의 설치 기술을 없앱니다.",
+      },
+    },
   },
   matrix: {
     matrix: "매트릭스",

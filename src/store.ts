@@ -316,7 +316,7 @@ export class Store {
   openUnsavedTeam(
     team?: Team,
     settings?: Pick<SavedTeam, "generation"> &
-      Partial<Pick<SavedTeam, "format" | "generationProfile">>,
+      Partial<Pick<SavedTeam, "format" | "generationProfile" | "battleFormat">>,
   ) {
     const { generation, format } = this.currentTeam;
     const replaced = this.replaceableTeam;
@@ -466,6 +466,7 @@ export class Store {
         generation,
         format,
         generationProfile,
+        battleFormat: this.currentTeam.battleFormat,
         team,
         filters: toJS(this.filters),
       });
@@ -487,12 +488,12 @@ export class Store {
 
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
-  // A link carries a game but no tier, so a saved team's tier does not count.
+  // A link carries a game and a battle format but no tier, so a saved team's tier does not count.
   // Returns the saved team it opens, if any; an empty team opens nothing.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
-      Partial<Pick<SavedTeam, "format" | "generationProfile">>,
+      Partial<Pick<SavedTeam, "format" | "generationProfile" | "battleFormat">>,
   ) {
     if (isTeamEmpty(team)) return;
     const generation = settings?.generation ?? this.currentTeam.generation;
@@ -530,6 +531,7 @@ export class Store {
       (!settings ||
         (saved.generation === settings.generation &&
           saved.generationProfile === settings.generationProfile &&
+          saved.battleFormat === settings.battleFormat &&
           (settings.format === undefined ||
             gameFormat(saved.format) === settings.format))) &&
       reads(saved);
@@ -901,6 +903,7 @@ export class Store {
       this.analysisTeam,
       this.currentTeam.generation,
       this.dataFormat,
+      this.currentTeam.battleFormat,
     );
   }
 

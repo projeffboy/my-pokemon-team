@@ -16,6 +16,7 @@ import {
   createSavedTeam,
   createSearchFilters,
   DEFAULT_TEAM_SETTINGS,
+  isBattleFormat,
 } from "@/shared/team";
 import { DEFAULT_SORT, DEFAULT_MOVE_SORT, SORT_KEYS } from "./sorting";
 
@@ -106,6 +107,10 @@ export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
       value.generationProfile === COMBINED_GENERATIONS_PROFILE && {
         generationProfile: COMBINED_GENERATIONS_PROFILE,
       }),
+    // Teams saved before the battle format existed load as not set
+    ...(isBattleFormat(value.battleFormat) && {
+      battleFormat: value.battleFormat,
+    }),
     filters: Object.fromEntries(
       Object.entries(createSearchFilters()).map(([key, fallback]) => [
         key,

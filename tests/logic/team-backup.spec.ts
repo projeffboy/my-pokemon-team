@@ -23,6 +23,7 @@ function collection(): TeamBackupCollection {
       name: "Complete backup ☀",
       generation: 1,
       format: "Retired format",
+      battleFormat: "doubles",
       filters: {
         type: "Future type",
         region: "Unknown region",
@@ -121,6 +122,7 @@ test("team records, filters, and all six slots require their complete structure"
     { generation: "9" },
     { generation: 10 },
     { format: null },
+    { battleFormat: "triples" },
     { filters: { type: "" } },
     { filters: { type: "", region: "", ability: "", moves: "", extra: "" } },
     { filters: { type: "", region: "", ability: "", moves: "", items: 1 } },
@@ -291,6 +293,7 @@ test("names, filters, profiles, and set values all distinguish otherwise similar
     { ...original, name: "Another name" },
     { ...original, generation: 8 as const },
     { ...original, format: "OU: Over Used" },
+    { ...original, battleFormat: "doubles" as const },
     { ...original, filters: { ...original.filters, type: "Dragon" } },
     { ...original, filters: { ...original.filters, items: "Viable" } },
     { ...original, team: createTeam({ name: "druddigon", shiny: false }) },

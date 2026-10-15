@@ -334,6 +334,17 @@ const it: Messages = {
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     together: (move: string, other: string) => `${move} con ${other}`,
     unavailable: "In questo gioco niente ricopre questo ruolo.",
+    battleFormat: {
+      label: "Formato di lotta",
+      singles: "Singolo",
+      doubles: "Doppio",
+      notSet: "Non impostato",
+      depends: "Dipende dal formato di lotta",
+      reasons: {
+        spinner:
+          "Spinner/Defogger dipende dal formato di lotta: nella 4ª e 5ª generazione, Scacciabruma rimuove gli Entry Hazard dal tuo lato solo nelle lotte in doppio, usandola sul tuo alleato.",
+      },
+    },
   },
   matrix: {
     matrix: "Matrice",

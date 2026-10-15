@@ -9,16 +9,22 @@ import {
   describeFiller,
   type ChecklistFiller,
   type ChecklistItem,
+  type ChecklistItemKey,
 } from "@/store/checklist";
 
 // Each pokemon that fills a role and how, such as "Gigalith: Stealth Rock", or else what
-// would fill it
+// would fill it. A role that depends on the battle format also says why.
 const ChecklistTooltip = observer(function ChecklistTooltip({
   item,
 }: {
-  item: ChecklistItem & { fillers: ChecklistFiller[] };
+  item: ChecklistItem & {
+    fillers: ChecklistFiller[];
+    dependsOnBattleFormat: boolean;
+  };
 }) {
   const translation = useTranslation();
+  const reasons: Partial<Record<ChecklistItemKey, string>> =
+    translation.t.checklist.battleFormat.reasons;
   return (
     <Typography component="div" variant="body2">
       {item.fillers.length ?
@@ -45,8 +51,14 @@ const ChecklistTooltip = observer(function ChecklistTooltip({
           translation,
           store.currentTeam.generation,
           store.dataFormat,
+          store.currentTeam.battleFormat,
         )
       }
+      {item.dependsOnBattleFormat && (
+        <Box component="p" sx={{ m: 0, mt: 0.5 }}>
+          {reasons[item.key]}
+        </Box>
+      )}
     </Typography>
   );
 });

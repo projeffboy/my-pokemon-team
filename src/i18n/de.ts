@@ -340,6 +340,17 @@ const de: Messages = {
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     together: (move: string, other: string) => `${move} mit ${other}`,
     unavailable: "In diesem Spiel erfüllt nichts diese Rolle.",
+    battleFormat: {
+      label: "Kampfformat",
+      singles: "Einzel",
+      doubles: "Doppel",
+      notSet: "Keine Angabe",
+      depends: "Hängt vom Kampfformat ab",
+      reasons: {
+        spinner:
+          "Spinner/Defogger hängt vom Kampfformat ab: In Generation 4 und 5 entfernt Auflockern die Entry Hazards auf deiner Seite nur im Doppelkampf, wenn es auf deinen Partner zielt.",
+      },
+    },
   },
   matrix: {
     matrix: "Matrix",

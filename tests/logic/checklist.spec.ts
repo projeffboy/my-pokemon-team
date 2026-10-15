@@ -7,7 +7,7 @@ import {
   type ChecklistItemKey,
 } from "@/store/checklist";
 import { learnsetsReady } from "@/store/learnsets";
-import type { Generation, ReadonlyTeam } from "@/types";
+import type { BattleFormat, Generation, ReadonlyTeam } from "@/types";
 import en from "@/i18n/en";
 import { english, loadTranslation, type Translation } from "@/i18n/translation";
 import { createTeam } from "./shared/team";
@@ -82,11 +82,56 @@ test("Floral Healing cannot supply its user's own reliable recovery", () => {
   ).not.toContain("Reliable Recovery");
 });
 
-test("Defog removes the user's hazards only from Gen 6 onward", () => {
-  const team = createTeam({ name: "skarmory", move1: "defog" });
-  expect(checked(team, 4)).not.toContain("Spinner/Defogger");
-  expect(checked(team, 5)).not.toContain("Spinner/Defogger");
-  expect(checked(team, 6)).toContain("Spinner/Defogger");
+// The Spinner/Defogger role's result
+const spinner = (
+  team: ReadonlyTeam,
+  generation: Generation,
+  battleFormat?: BattleFormat,
+) => {
+  const item = evaluateChecklist(team, generation, "", battleFormat)
+    .flatMap(group => group.items)
+    .find(item => item.key === "spinner");
+  return item?.dependsOnBattleFormat ? "depends" : item?.isChecked;
+};
+
+test("before Gen 6, Defog removes the user's hazards only in doubles", () => {
+  for (const [name, generation] of [
+    ["staraptor", 4],
+    ["mandibuzz", 5],
+  ] as const) {
+    const team = createTeam({ name, move1: "defog" });
+    expect(spinner(team, generation, "singles")).toBe(false);
+    expect(spinner(team, generation, "doubles")).toBe(true);
+    expect(spinner(team, generation)).toBe("depends");
+  }
+});
+
+test("from Gen 6, Defog removes the user's hazards in every battle format", () => {
+  const team = createTeam({ name: "swanna", move1: "defog" });
+  for (const generation of [6, 9] as const) {
+    expect(spinner(team, generation, "singles")).toBe(true);
+    expect(spinner(team, generation, "doubles")).toBe(true);
+    expect(spinner(team, generation)).toBe(true);
+  }
+});
+
+test("only a role that singles and doubles judge differently depends on the battle format", () => {
+  // Rapid Spin fills the role in both, so Defog beside it changes nothing
+  expect(
+    spinner(
+      createTeam(
+        { name: "hitmontop", move1: "rapidspin" },
+        { name: "staraptor", move1: "defog" },
+      ),
+      4,
+    ),
+  ).toBe(true);
+  expect(
+    evaluateChecklist(createTeam({ name: "staraptor", move1: "defog" }), 4)
+      .flatMap(group => group.items)
+      .filter(item => item.dependsOnBattleFormat)
+      .map(item => item.key),
+  ).toEqual(["spinner"]);
 });
 
 test("status moves include guaranteed side effects but not chances", () => {
@@ -521,6 +566,29 @@ test("an unfilled role's suggestion is in the current language", async () => {
   expect(checklistHint(role("voltTurn"), japanese)).toBe(
     "攻撃してから手持ちと交代する技をポケモンに覚えさせましょう：とんぼがえり、ボルトチェンジ、またはクイックターン。",
   );
+});
+
+test("before Gen 6, the spinner tooltip follows the battle format", async () => {
+  await learnsetsReady;
+  const hint = (battleFormat?: BattleFormat) =>
+    checklistHint(role("spinner"), english, 4, "", battleFormat);
+  const rapidSpin =
+    "Give a pokemon a move that removes entry hazards from your side: Rapid Spin.";
+  expect(hint()).toBe(rapidSpin);
+  expect(hint("singles")).toBe(rapidSpin);
+  expect(hint("doubles")).toBe(
+    "Give a pokemon a move that removes entry hazards from your side: Rapid Spin or Defog.",
+  );
+  // Without a battle format, the role depends on it and names what fills it in doubles
+  const spinner = evaluateChecklist(
+    createTeam({ name: "staraptor", move1: "defog" }),
+    4,
+  )
+    .flatMap(group => group.items)
+    .find(item => item.key === "spinner");
+  expect(
+    spinner?.fillers.map(filler => describeFiller(role("spinner"), filler)),
+  ).toEqual(["Staraptor: Defog"]);
 });
 
 test("a trapper is named by its move or its ability, and the hint names both", async () => {

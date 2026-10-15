@@ -3,9 +3,10 @@ import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LETS_GO, LEGENDS_ARCEUS, LEGENDS_ZA } from "@/shared/game-variants";
 import { DEFAULT_TEAM_SETTINGS } from "@/shared/team";
 import {
+  battleFormatFromUrl,
   generationSettingsFromUrl,
   importTeamFromUrlParameter,
-  syncGenerationToUrl,
+  syncTeamSettingsToUrl,
 } from "@/app/shared/team-link";
 import { toBase64Url } from "@/app/shared/base64url";
 import { parseTeamText, serializeTeam } from "@/store/team-text";
@@ -44,7 +45,7 @@ for (const { slug, format, generation } of games) {
         settings,
         unrecognized: false,
       });
-      syncGenerationToUrl(url, settings);
+      syncTeamSettingsToUrl(url, settings);
       expect(url.search).toBe(`?game=${slug}`);
       expect(generationSettingsFromUrl()).toEqual({
         settings,
@@ -67,11 +68,29 @@ for (const profile of profiles.filter(profile => !games.includes(profile))) {
         settings: { generation: profile.generation, format: "" },
         unrecognized: true,
       });
-      syncGenerationToUrl(url, profile);
+      syncTeamSettingsToUrl(url, profile);
       expect(url.search).toBe(`?gen=${profile.generation}`);
     });
   });
 }
+
+test("links carry the battle format only when it is set", () => {
+  const url = new URL("https://mypokemonteam.com/?gen=4");
+  withUrl(url, () => {
+    expect(battleFormatFromUrl()).toBeUndefined();
+    syncTeamSettingsToUrl(url, {
+      generation: 4,
+      format: "",
+      battleFormat: "doubles",
+    });
+    expect(url.search).toBe("?battle=doubles&gen=4");
+    expect(battleFormatFromUrl()).toBe("doubles");
+    syncTeamSettingsToUrl(url, { generation: 4, format: "" });
+    expect(url.search).toBe("?gen=4");
+    url.searchParams.set("battle", "triples");
+    expect(battleFormatFromUrl()).toBeUndefined();
+  });
+});
 
 // Oct 10–13, 2026 links wrote the format's display name, as in ?game=Pokemon+Champions+%28M-C%29
 test("Champions links made with the display-name game value still open as Champions", ({
@@ -103,7 +122,7 @@ test("Champions links made with the display-name game value still open as Champi
     });
     importTeamFromUrlParameter(url.searchParams.get("team") ?? "");
     expect(store.currentTeamId).toBe(saved.id);
-    syncGenerationToUrl(url, store.currentTeam);
+    syncTeamSettingsToUrl(url, store.currentTeam);
     expect(url.searchParams.get("game")).toBe("champions");
   });
 });

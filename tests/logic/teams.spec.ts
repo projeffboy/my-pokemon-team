@@ -344,6 +344,27 @@ test.describe("slot tools", () => {
     expect(store.currentTeamId).not.toBe(first);
   });
 
+  test("a link opens a saved team only with the same battle format, and a link without one opens as not set", ({
+    store,
+  }) => {
+    store.currentTeam.generation = 4;
+    store.selectPokemon(0, "honchkrow");
+    store.currentTeam.battleFormat = "doubles";
+    const doubles = store.currentTeamId;
+    const team = () => parseTeamText(serializeTeam(store.team, 4), 4);
+    // As a reload does: the address bar holds the battle format
+    store.openTeamFromLink(team(), {
+      generation: 4,
+      format: "",
+      battleFormat: "doubles",
+    });
+    expect(store.currentTeamId).toBe(doubles);
+
+    store.openTeamFromLink(team(), { generation: 4, format: "" });
+    expect(store.currentTeamId).not.toBe(doubles);
+    expect(store.currentTeam.battleFormat).toBeUndefined();
+  });
+
   test("a generation-aware link to a legacy team opens its existing saved copy", ({
     store,
   }) => {
@@ -586,10 +607,11 @@ test("filters belong to each team and duplicated teams keep an independent copy"
   expect(store.filters.type).toBe("Flying");
 });
 
-test("generation transfer can modify the current team or keep an unsaved original as a separate team", ({
+test("generation transfer can modify the current team or keep an unsaved original as a separate team, with the same battle format", ({
   store,
 }) => {
   store.openUnsavedTeam(createTeam({ name: "gorebyss", move1: "surf" }));
+  store.currentTeam.battleFormat = "doubles";
   const originalId = store.currentTeamId;
   store.transferTeamGeneration(
     2,
@@ -600,10 +622,14 @@ test("generation transfer can modify the current team or keep an unsaved origina
   expect(store.findTeam(originalId)?.team[0]!.name).toBe("gorebyss");
   expect(store.findTeam(originalId)?.generation).toBe(9);
   expect(store.currentTeamId).not.toBe(originalId);
-  expect(store.currentTeam.generation).toBe(2);
+  expect(store.currentTeam).toMatchObject({
+    generation: 2,
+    battleFormat: "doubles",
+  });
   const newId = store.currentTeamId;
   store.transferTeamGeneration(1, "", createTeam({ name: "seadra" }), false);
   expect(store.currentTeamId).toBe(newId);
+  expect(store.currentTeam.battleFormat).toBe("doubles");
   expect(store.team[0]!.move1).toBe("");
   expect(store.findTeam(originalId)?.team[0]!.move1).toBe("surf");
 });
