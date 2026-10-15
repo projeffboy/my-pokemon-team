@@ -177,6 +177,32 @@ const ptBR: Messages = {
       "Não foi possível carregar as listas de golpes. Recarregue a página para tentar de novo.",
   },
 
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 entrada deste link foi deixada de fora"
+      : `${count} entradas deste link foram deixadas de fora`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 entrada foi removida desta equipe"
+      : `${count} entradas foram removidas desta equipe`,
+    linkReason: "Os dados do jogo não as têm, ou não para esse Pokémon.",
+    savedTeamReason:
+      "Uma atualização dos dados do jogo as renomeou ou removeu.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, item: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, habilidade: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, golpe ${move}: ${value}`,
+    details: "Detalhes",
+    dismiss: "Dispensar",
+    detailsTitle: "Texto original da equipe",
+    detailsDescription:
+      "A equipe como era, com o que foi deixado de fora. Copie para guardar um registro.",
+    copy: "Copiar",
+  },
+
   undo: "Desfazer",
   redo: "Refazer",
 

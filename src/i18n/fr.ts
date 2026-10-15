@@ -182,6 +182,34 @@ const fr: Messages = {
       "Les listes de capacités n'ont pas pu être chargées. Rechargez la page pour réessayer.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 élément de ce lien a été omis"
+      : `${count} éléments de ce lien ont été omis`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 élément a été retiré de cette équipe"
+      : `${count} éléments ont été retirés de cette équipe`,
+    linkReason:
+      "Les données du jeu ne les contiennent pas, ou pas pour ce Pokémon.",
+    savedTeamReason:
+      "Une mise à jour des données du jeu les a renommés ou supprimés.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot} : ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, objet : ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, talent : ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, capacité ${move} : ${value}`,
+    details: "Détails",
+    dismiss: "Ignorer",
+    detailsTitle: "Texte d'origine de l'équipe",
+    detailsDescription:
+      "L'équipe telle qu'elle était, avec ce qui a été omis. Copiez-la pour en garder une trace.",
+    copy: "Copier",
+  },
+
   // The undo and redo buttons
   undo: "Annuler",
   redo: "Rétablir",

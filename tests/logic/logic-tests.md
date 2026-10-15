@@ -18,6 +18,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, and leaves the other slots alone.
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
+- `dropped-entries.spec.ts` covers what a link's text or a saved team lost: the parser's report of unrecognized pokemon, items, abilities, and moves by slot, removing what a data update took from a saved team once, and the notice the store keeps for the team.
 - `set-details.spec.ts` covers the set details in Showdown text (nickname, gender, level, shiny, tera type, EVs, nature, IVs), nicknames that are pokemon names or hold parentheses or an at sign, and backups with several teams.
 - `teams.spec.ts` checks the store's saved teams, slot tools, undo history, and that a link to the current team opens no new team.
 - `teams-storage.spec.ts` covers loading and saving the teams from localStorage, including malformed data, and merging in what another tab saved.

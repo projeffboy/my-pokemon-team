@@ -57,6 +57,10 @@ import {
 } from "./store/team-backup";
 import { describeTeamChange } from "./store/team-change";
 import {
+  removeMissingEntries,
+  type DroppedEntry,
+} from "./store/dropped-entries";
+import {
   initialStoredState,
   getBrowserStorage,
   loadStoredState,
@@ -184,11 +188,13 @@ export class Store {
       });
     }
 
-    // Undo history is per team, so switching teams starts it afresh
+    // Undo history is per team, so switching teams starts it afresh, after
+    // anything the team lost to a data update is gone for good
     reaction(
       () => this.currentTeamId,
       () => {
         if (this.draftTeam?.id !== this.currentTeamId) this.draftTeam = null;
+        this.dropMissingEntries();
         this.resetHistory();
       },
     );
@@ -464,6 +470,50 @@ export class Store {
       this.teams.find(matches);
     if (saved) this.currentTeamId = saved.id;
     else this.openUnsavedTeam(team, settings);
+  }
+
+  // What an opened link or saved team lost, which a notice above that team names
+  // until the player dismisses it. `text` is the team's text before, to copy.
+  droppedEntries: {
+    teamId: string;
+    source: "link" | "savedTeam";
+    entries: DroppedEntry[];
+    text: string;
+  } | null = null;
+
+  get currentDroppedEntries() {
+    return this.droppedEntries?.teamId === this.currentTeamId ?
+        this.droppedEntries
+      : null;
+  }
+
+  reportDroppedEntries(
+    source: "link" | "savedTeam",
+    entries: DroppedEntry[],
+    text: string,
+  ) {
+    this.droppedEntries =
+      entries.length ?
+        { teamId: this.currentTeamId, source, entries, text }
+      : null;
+  }
+
+  // A saved team keeps what a data update removed until it is opened, and then
+  // loses it once, as the save that follows has none of it
+  private dropMissingEntries() {
+    const { generation, format } = this.currentTeam;
+    const { team, dropped } = removeMissingEntries(
+      this.team,
+      generation,
+      this.dataFormat,
+    );
+    if (!dropped.length) return;
+    this.reportDroppedEntries(
+      "savedTeam",
+      dropped,
+      serializeTeam(this.team, generation, format),
+    );
+    this.team = team;
   }
 
   // The current team

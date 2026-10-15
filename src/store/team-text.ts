@@ -27,7 +27,7 @@ import {
   itemNameInverse,
   moveNameInverse,
 } from "@/shared/names";
-import { hasNoAbility, pokemonAbilities } from "@/shared/pokedex";
+import { hasNoAbility } from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
   DEFAULT_HAPPINESS,
@@ -47,6 +47,7 @@ import {
   teamDataFormat,
 } from "@/shared/generation-profile";
 import { canItLearn, isItemAvailable } from "./learnsets";
+import { anyGenerationAbilities, type DroppedEntry } from "./dropped-entries";
 import { generationRules } from "@/shared/generation-rules";
 import { canHyperTrain, matchImportedHiddenPower } from "@/shared/hidden-power";
 
@@ -73,7 +74,7 @@ function serializeMember(
   const nameLine = [
     nickname ? `${nickname} (${species})` : species,
     gender === "M" || gender === "F" ? `(${gender})` : "",
-    `@ ${itemName(item)}`,
+    `@ ${itemName(item) || item}`,
   ]
     .filter(part => part)
     .join(" ");
@@ -115,7 +116,7 @@ function serializeMember(
     ivs ? `IVs: ${ivs}` : "",
     ...MOVE_KEYS.map(key => {
       const move = member[key];
-      return move ? `- ${moveName(move)}` : "-";
+      return move ? `- ${moveName(move) ?? move}` : "-";
     }),
   ]
     .filter(line => line)
@@ -226,9 +227,9 @@ export const LEGACY_LINK_PARSING_OPTIONS = {
   allowHyperTraining: false,
 } as const;
 
-// Parses Pokemon Showdown team text into a fresh six-slot team.
-// Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected).
-export function parseTeamText(
+// Parses Pokemon Showdown team text into a fresh six-slot team, with the
+// unrecognized pokemon, items, abilities, and moves it left blank or auto-selected
+export function parseTeamTextReport(
   text: string,
   generation: Generation = 9,
   format = "",
@@ -245,9 +246,10 @@ export function parseTeamText(
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
   } = {},
-): Team {
+): { team: Team; dropped: DroppedEntry[] } {
   const rules = generationRules(generation, format);
   const team = createEmptyTeam();
+  const dropped: DroppedEntry[] = [];
   const teamPokemonRawData = text
     .replace(/^\s*---\s*$/gm, "\n")
     .split(/\n\s*\n/)
@@ -261,13 +263,23 @@ export function parseTeamText(
     const [firstLine = ""] = lines;
     const parsed = parseFirstLine(firstLine);
     const member = team[teamIndex];
-    if (!parsed || !member) return;
+    if (!member) return;
+    if (!parsed) {
+      const [name = ""] = firstLine.split("@");
+      dropped.push({
+        teamIndex,
+        pokemon: "",
+        field: "pokemon",
+        value: name.trim() || firstLine.trim(),
+      });
+      return;
+    }
     const { pokemon, nickname, gender, itemText } = parsed;
+    const drop = (field: DroppedEntry["field"], value: string) =>
+      dropped.push({ teamIndex, pokemon, field, value });
 
     member.name = pokemon;
-    const abilities = Array.from({ length: 9 }, (_, i) =>
-      pokemonAbilities(pokemon, (i + 1) as Generation),
-    ).flat();
+    const abilities = anyGenerationAbilities(pokemon);
     member.ability =
       rules.abilities ?
         getAutoSelectedAbility(pokemon, generation, format)
@@ -279,6 +291,7 @@ export function parseTeamText(
     if (itemText) {
       // Check if item is legit
       const item = itemNameInverse(itemText);
+      if (!item) drop("item", itemText);
       member.item =
         item ||
         getAutoSelectedItem(pokemon, "", item =>
@@ -307,7 +320,7 @@ export function parseTeamText(
             hasNoAbility(pokemon, generation, format) ? "No Ability" : "";
         else if (abilities.includes(ability)) {
           member.ability = ability;
-        }
+        } else if (ability) drop("ability", ability);
       } else if (startsWith("Gigantamax:")) {
         gigantamax = value("Gigantamax:").toLowerCase() === "yes";
       } else if (startsWith("Level:")) {
@@ -357,11 +370,9 @@ export function parseTeamText(
         if (nature) member.nature = nature;
       } else if (/^(?:-|~|Move:)/i.test(line) && moveIndex < MOVE_KEYS.length) {
         // if property has to do with moves
-        const moveText = line
-          .replace(/^(?:[-~]\s*|Move:\s*)/i, "")
-          .trim()
-          .replace("[", "") // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
-          .replace("]", "");
+        const givenMove = line.replace(/^(?:[-~]\s*|Move:\s*)/i, "").trim();
+        // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
+        const moveText = givenMove.replace("[", "").replace("]", "");
 
         // If legit, set move
         // Otherwise, set it blank
@@ -372,6 +383,7 @@ export function parseTeamText(
 
         const moveKey = MOVE_KEYS[moveIndex];
         if (moveKey) member[moveKey] = validMove;
+        if (moveKey && givenMove && !validMove) drop(moveKey, givenMove);
 
         moveIndex++;
       }
@@ -410,8 +422,12 @@ export function parseTeamText(
     }
   });
 
-  return team;
+  return { team, dropped };
 }
+
+export const parseTeamText = (
+  ...args: Parameters<typeof parseTeamTextReport>
+): Team => parseTeamTextReport(...args).team;
 
 const TEAM_HEADER = /^===\s*(?:\[([^\]]*)\])?\s*(.*?)\s*===\s*$/;
 

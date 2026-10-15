@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 14, 2026",
     changes: [
+      "A link or saved team that lost a Pokémon, move, item or ability to a data update now names what was lost above the team.",
       "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
       "Twenty-one more Pokémon are now animated, like Great Tusk.",
     ],

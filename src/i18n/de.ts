@@ -185,6 +185,34 @@ const de: Messages = {
       "Die Attackenlisten konnten nicht geladen werden. Lade die Seite neu, um es noch einmal zu versuchen.",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 Eintrag in diesem Link wurde weggelassen"
+      : `${count} Einträge in diesem Link wurden weggelassen`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 Eintrag wurde aus diesem Team entfernt"
+      : `${count} Einträge wurden aus diesem Team entfernt`,
+    linkReason:
+      "Die Spieldaten kennen sie nicht, oder nicht für dieses Pokémon.",
+    savedTeamReason:
+      "Ein Update der Spieldaten hat sie umbenannt oder entfernt.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, Item: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, Fähigkeit: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, Attacke ${move}: ${value}`,
+    details: "Details",
+    dismiss: "Ausblenden",
+    detailsTitle: "Ursprünglicher Teamtext",
+    detailsDescription:
+      "Das Team, wie es war, mit allem, was weggelassen wurde. Kopiere den Text, um ihn aufzubewahren.",
+    copy: "Kopieren",
+  },
+
   // The undo and redo buttons
   undo: "Rückgängig",
   redo: "Wiederholen",

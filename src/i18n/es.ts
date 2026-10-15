@@ -176,6 +176,32 @@ const es: Messages = {
       "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
   },
 
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "Se ha omitido 1 elemento de este enlace"
+      : `Se han omitido ${count} elementos de este enlace`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "Se ha quitado 1 elemento de este equipo"
+      : `Se han quitado ${count} elementos de este equipo`,
+    linkReason: "Los datos del juego no los tienen, o no para ese Pokémon.",
+    savedTeamReason:
+      "Una actualización de los datos del juego les cambió el nombre o los eliminó.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, objeto: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, habilidad: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, movimiento ${move}: ${value}`,
+    details: "Detalles",
+    dismiss: "Descartar",
+    detailsTitle: "Texto original del equipo",
+    detailsDescription:
+      "El equipo tal como era, con lo que se omitió. Cópialo para guardarlo.",
+    copy: "Copiar",
+  },
+
   undo: "Deshacer",
   redo: "Rehacer",
 

@@ -11,7 +11,7 @@ import type { SavedTeam, ReadonlyTeam } from "@/types";
 import { toBase64Url, fromBase64Url } from "./base64url";
 import {
   LEGACY_LINK_PARSING_OPTIONS,
-  parseTeamText,
+  parseTeamTextReport,
   serializeTeam,
 } from "@/store/team-text";
 
@@ -79,8 +79,9 @@ export function generationSettingsFromUrl():
   return isGeneration(generation) ? { generation, format } : undefined;
 }
 
-// Opens a matching saved team, or an unsaved draft until the first edit. Malformed,
-// oversized, or non-UTF-8 payloads are ignored rather than throwing.
+// Opens a matching saved team, or an unsaved draft until the first edit, and names
+// what the link's text lost. Malformed, oversized, or non-UTF-8 payloads are
+// ignored rather than throwing.
 export function importTeamFromUrlParameter(teamParameter: string): void {
   if (
     !teamParameter ||
@@ -96,13 +97,12 @@ export function importTeamFromUrlParameter(teamParameter: string): void {
   }
 
   const settings = generationSettingsFromUrl() ?? { ...DEFAULT_TEAM_SETTINGS };
-  store.openTeamFromLink(
-    parseTeamText(
-      text,
-      settings.generation,
-      teamDataFormat(settings),
-      LEGACY_LINK_PARSING_OPTIONS,
-    ),
-    settings,
+  const { team, dropped } = parseTeamTextReport(
+    text,
+    settings.generation,
+    teamDataFormat(settings),
+    LEGACY_LINK_PARSING_OPTIONS,
   );
+  store.openTeamFromLink(team, settings);
+  store.reportDroppedEntries("link", dropped, text);
 }

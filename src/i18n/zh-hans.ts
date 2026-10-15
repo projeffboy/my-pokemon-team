@@ -175,6 +175,25 @@ const zhHans: Messages = {
     learnsetsFailed: "无法加载招式列表。请重新加载页面重试。",
   },
 
+  // 队伍上方的提示：打开的链接或已保存队伍缺失的内容
+  droppedEntries: {
+    linkTitle: (count: number) => `此链接中的 ${count} 项已被略去`,
+    savedTeamTitle: (count: number) => `已从此队伍中移除 ${count} 项`,
+    linkReason: "游戏数据中没有这些内容，或该宝可梦无法使用。",
+    savedTeamReason: "游戏数据更新后，这些内容已被重命名或移除。",
+    pokemon: (slot: number, value: string) => `宝可梦 ${slot}：${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}，道具：${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}，特性：${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}，招式 ${move}：${value}`,
+    details: "详情",
+    dismiss: "关闭",
+    detailsTitle: "原始队伍文本",
+    detailsDescription:
+      "这是原来的队伍，包括被略去的内容。可复制下来留作记录。",
+    copy: "复制",
+  },
+
   // 撤销与重做按钮
   undo: "撤销",
   redo: "重做",

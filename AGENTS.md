@@ -96,7 +96,7 @@ Keep source documentation for downloaded images in a `*-sources.md` file beside 
 
 The address bar always holds the current team as `?team=`, the base64url encoding of its Showdown team text (`src/app/TeamLinkSync.tsx`, `src/app/shared/team-link.ts`, `src/store/team-text.ts`). Players bookmark and post these links, so every link made so far must keep loading the same team. Do not rename the `team` parameter, change the encoding, or make `parseTeamText` reject text it accepts today. If the format has to change, keep decoding the old one as well.
 
-The text holds display names, which are matched exactly. When a data update renames or removes a pokemon, item, or move, old links silently lose that entry. `npm run update:data` reports those names, so pass them on when you run it.
+The text holds display names, which are matched exactly. When a data update renames or removes a pokemon, item, or move, old links lose that entry, and a saved team loses it the next time it is opened; a notice above the team names what was lost (`src/store/dropped-entries.ts`). `npm run update:data` reports those names, so pass them on when you run it.
 
 The text also carries Showdown's set details (nickname, gender, level, shiny, tera type, EVs, nature, IVs), which `parseTeamText` reads and `serializeTeam` writes only when they differ from their defaults.
 

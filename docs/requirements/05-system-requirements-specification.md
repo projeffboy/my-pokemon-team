@@ -325,7 +325,7 @@ flowchart TD
   Edit -- "Yes, a saved team" --> Keep["Keep the change, as for any saved team"]
 ```
 
-A pokemon, move, item, or ability that the link's generation profile lacks, such as one a data update renamed, is left out without a word (REQ-LINK-10). REQ-INFO-8 would name it.
+A pokemon, move, item, or ability that the link's generation profile lacks, such as one a data update renamed, is left out (REQ-LINK-10), and a notice above the team names it (REQ-INFO-8).
 
 #### UC13 Import Team Text and UC14 Export Team Text
 
@@ -664,9 +664,9 @@ Players keep teams and links for months or years. These requirements protect the
 | REQ-INFO-4 | The site shall keep whatever part of a saved team is well formed, discarding only the parts that are not.                                      | E    | Implemented |
 | REQ-INFO-6 | The site shall forget the Player's dismissal of the slot reordering hint 91 days after the Player's last visit.                                | O    | Implemented |
 | REQ-INFO-7 | The site shall keep the Player's sort order, option view, move type display, and language in the browser for later visits.                     | C    | Implemented |
-| REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Approved    |
+| REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Implemented |
 
-Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m4-dropped-entries-notice.svg).
+Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m4-dropped-entries-notice.svg). On 14 October 2026 the Site Owner chose a notice that stays until the visitor dismisses it. A saved team loses the entries that the game data no longer has when it is opened, and is saved without them, so its notice appears once.
 
 ### 3.9) Policy and regulation requirements
 
@@ -727,7 +727,7 @@ The test suites were matched to requirement groups by their names and folders, n
 | REQ-INTF-14                      | Inspection                | The link-preview tags of `index.html`, the screenshot they name, and the earlier screenshots kept in `public/`                                                                                                                                                                                                                                  |
 | REQ-MODE                         | Test                      | `tests/smoke/production-smoke.spec.ts`, `tests/logic/teams-storage.spec.ts`                                                                                                                                                                                                                                                                     |
 | REQ-SEC-4 to 7                   | Inspection, Test          | Review of `vercel.json` and of the repository for secrets; `tests/logic/storage-text-contracts.spec.ts` for REQ-SEC-5                                                                                                                                                                                                                           |
-| REQ-INFO                         | Test                      | `tests/logic/storage-text-contracts.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/settings-expiry.spec.ts`                                                                                                                                                                                                                        |
+| REQ-INFO                         | Test                      | `tests/logic/storage-text-contracts.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/settings-expiry.spec.ts`; `tests/logic/dropped-entries.spec.ts` and `tests/component/main/pokemon-team/dropped-entries-notice/` for REQ-INFO-8                                                                                                  |
 | REQ-POL-1 to 3                   | Inspection                | Review of the privacy policy and the credits                                                                                                                                                                                                                                                                                                    |
 | REQ-OPS-2                        | Demonstration             | A visit with a warm cache after a release                                                                                                                                                                                                                                                                                                       |
 | REQ-REL-4                        | Analysis                  | The hosting platform's uptime reports                                                                                                                                                                                                                                                                                                           |
