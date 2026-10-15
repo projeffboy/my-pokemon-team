@@ -17,6 +17,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ptBR: Messages = {
+  pageTitle: "My Pokemon Team - Criador e planejador de equipes Pokémon",
   beta: "Beta",
   generation,
   generationGames: {
@@ -32,10 +33,11 @@ const ptBR: Messages = {
   },
   generationSelect: "Geração",
   comingSoon: "Em breve",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principal" },
   combinedGenerations: {
     label: "Gerações 6–9",
     short: "Gerações 6–9",
-    description: "Combina opções de todos os jogos das gerações 6–9",
+    description: "Combina todos os jogos das gerações 6–9",
   },
   championsGeneration: "Ger. 9 · Champions",
   championsGenerationShort: "Ger. 9 (Champions)",
@@ -51,9 +53,13 @@ const ptBR: Messages = {
     short: "Site antigo",
     title: "Ir para o site antigo?",
     description:
-      "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",
+      "Sua equipe atual será aberta no site antigo. As equipes salvas aqui permanecerão nesta versão.",
     go: "Ir para o site antigo",
     goLong: "Ir para o site antigo",
+    generationsOnly: (generations: string) =>
+      `O site antigo tem apenas as ${generations}.`,
+    leftOut: "Isto não será transferido:",
+    goWithTeam: "Ir com minha equipe",
   },
   feedback: {
     button: "Enviar feedback",
@@ -110,6 +116,8 @@ const ptBR: Messages = {
     teamEmpty: "A equipe Pokémon está vazia",
     linkCopied: "Link da equipe Pokémon copiado",
     linkNotCopied: "Não foi possível copiar o link.",
+    linkGenerationUnsupported: (profile: string) =>
+      `A geração ou o jogo deste link não é compatível, então ele foi aberto em ${profile}.`,
     nothingToCopy: "A equipe está vazia, não há nada para copiar.",
     teamCopied: "Equipe copiada.",
     teamNotCopied: "Não foi possível copiar a equipe.",
@@ -121,7 +129,6 @@ const ptBR: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `Pokémon ${slot} (${pokemon ?? "vazio"})`,
     slotPair: (first: string, second: string) => `${first} e ${second}`,
-    advancedMode: "Avançado",
     filters: "Filtros",
     sort: "Ordenar",
     randomizePokemon: "Sortear Pokémon",
@@ -130,7 +137,7 @@ const ptBR: Messages = {
     advanced: "Mais detalhes",
     advancedFor: (slot: number) => `Mais detalhes do slot ${slot}`,
     details: "Detalhes",
-    showMoveTypes: "Mostrar tipos dos golpes",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Sobre ${pokemon}`,
     dragHint: "Segure e arraste para reordenar",
     moveToSlot: (pokemon: string) => `Mover ${pokemon} para outro slot`,
@@ -219,6 +226,11 @@ const ptBR: Messages = {
       status: { label: "Golpe de status", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Golpe de boost", short: "Setup" },
+      priority: {
+        label: "Golpe de prioridade",
+        short: "Prioridade",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Golpe Volt-turn",
         short: "Volt-turn",
@@ -252,6 +264,8 @@ const ptBR: Messages = {
       cause: string | undefined,
     ) =>
       `${type} causa ${multiplier}x em ${pokemon} (${types})${cause ? ` com ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} o torna do tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -442,7 +456,7 @@ const ptBR: Messages = {
     removed: {
       item: "Item removido",
       ability: "Habilidade removida",
-      moves: "Golpes removidos:",
+      move: "Golpe removido",
       details: "Detalhes removidos",
     },
     ivsUnused: (where: string) => `IVs não se aplicam em ${where}.`,
@@ -456,6 +470,9 @@ const ptBR: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidade" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} ${carried === 1 ? "será mantido" : "serão mantidos"}`,
+    removedSummary: (removed: string) => `Remoção de ${removed}`,
     modify: "Atualizar equipe atual",
     copy: "Copiar para nova equipe",
     createEmpty: "Criar equipe vazia",
@@ -583,7 +600,7 @@ const ptBR: Messages = {
     teamsAnswer:
       "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Exportar tudo baixa todas as equipes como texto do Showdown, que Importar equipe lê de volta. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
     teamsAnswer2:
-      "O botão Mais mostra as ferramentas da equipe, Filtros, Ordenar e Mais detalhes. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam acima das abas dos Pokémon.",
+      "A lista de nomes tem os botões Filtros e Ordenar, e as listas de golpes têm Ordenar. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam acima das abas dos Pokémon.",
     generations: "Gerações",
     generationsQuestion: "O que a geração muda?",
     generationsAnswer:
@@ -644,7 +661,7 @@ const ptBR: Messages = {
       ],
       [
         "Recuperação confiável",
-        "Golpes que garantem recuperar 50% ou mais do seu HP toda vez que são usados (em condições normais de clima). Ex.: Recover, Soft-Boiled, Milk Drink, Slack Off, Synthesis.",
+        "Golpes que garantem recuperar 50% ou mais do seu HP toda vez que são usados (em condições normais de clima). Ex.: Recover, Soft-Boiled, Milk Drink, Slack Off, Synthesis. Wish também conta se o mesmo Pokémon conhece Protect ou Detect.",
       ],
       [
         "Golpes de status",
@@ -653,6 +670,10 @@ const ptBR: Messages = {
       [
         "Golpe de boost",
         "Golpes que aumentam suas estatísticas (de preferência em 2 ou mais estágios), como Swords Dance e Calm Mind.",
+      ],
+      [
+        "Golpe de prioridade",
+        "Golpes de dano que agem antes da maioria dos outros, seja qual for a Velocidade. Ex.: Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Item Choice",
