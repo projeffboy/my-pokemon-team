@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ja: Messages = {
+  pageTitle: "My Pokemon Team - ポケモンのチーム作成・計画ツール",
   // The header
   beta: "ベータ版",
   generation,

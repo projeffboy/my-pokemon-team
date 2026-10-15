@@ -7,6 +7,9 @@
 const generation = (generation: number) => `Gen ${generation}`;
 
 const en = {
+  // The browser tab's title, the same as index.html's <title>. The site's name stays English
+  // in every language.
+  pageTitle: "My Pokemon Team - Pokemon Teambuilder and Team Planner",
   // The header
   beta: "Beta",
   generation,

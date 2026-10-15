@@ -963,8 +963,11 @@ export class Store {
       translation => {
         if (locale !== this.locale) return;
         this.translation = translation;
-        if (typeof document !== "undefined")
+        // index.html keeps the English title for crawlers
+        if (typeof document !== "undefined") {
           document.documentElement.lang = locale;
+          document.title = translation.t.pageTitle;
+        }
       },
       () => {
         if (locale === this.locale)

@@ -30,6 +30,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ko: Messages = {
+  pageTitle: "My Pokemon Team - 포켓몬 팀 빌더 및 팀 플래너",
   beta: "베타",
   generation,
   generationGames: {
