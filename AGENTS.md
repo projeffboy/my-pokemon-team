@@ -38,7 +38,7 @@ Compile-time checks, such as a `@ts-expect-error` on a call the types must rejec
 
 In the browser suites, a unit test exercises one UI group, such as Team Defence, and an integration test exercises several, such as Team Defence and the pokemon inputs. Snackbars do not count as a separate group.
 
-Browser tests import `test` and `expect` from `"fixtures"`, which opens the site before each test, and page helpers such as `selectPokemon` from `"helper"`. Both are path aliases in `tests/tsconfig.json`. The smoke suite is the exception: it imports `test` from `@playwright/test`, because it has to block external requests before it opens the site.
+Browser tests import `test` and `expect` from `"fixtures"`, which opens the site before each test, and page helpers such as `selectPokemon` from `"helper"`. Both are path aliases in `tests/tsconfig.json`. The smoke and speed suites are the exceptions: they import `test` from `@playwright/test`, because they have to block external requests before they open the site.
 
 When choosing example pokemon for a test, try to choose pokemon that haven't been selected for other tests, so the tests cover more of the data.
 
@@ -62,6 +62,8 @@ Component files are PascalCase `.tsx`, and every other module is kebab-case `.ts
 Whole-team user flows live in `tests/e2e/`.
 
 Production smoke tests live in `tests/smoke/`. Keep them focused on essential user flows against the production build. Block external requests and fail on uncaught browser errors.
+
+The speed check for REQ-PERF-1 to 3 lives in `tests/perf/`. It times the production build on an emulated phone, so its results depend on the machine, and it runs by hand with `npm run test:perf` rather than in `npm test`.
 
 ## General Coding Conventions
 
