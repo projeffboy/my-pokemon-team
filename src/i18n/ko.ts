@@ -222,28 +222,66 @@ const ko: Messages = {
       offensive: "공격",
     },
     items: {
-      entryHazard: { label: "설치 기술", short: "설치기" },
+      entryHazard: {
+        label: "설치 기술",
+        short: "설치기",
+        hint: (moves: string) =>
+          `상대 필드에 설치하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
       spinner: {
         label: "고속스핀/안개제거",
         short: "설치 제거",
         shorter: "제거",
+        hint: (moves: string) =>
+          `내 필드의 설치 기술을 없애는 기술을 포켓몬에게 가르치세요: ${moves}.`,
       },
       recovery: {
         label: "안정적인 회복 기술",
         short: "회복 기술",
         shorter: "회복",
+        hint: (moves: string) =>
+          `HP를 절반 이상 회복하는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
       },
-      cleric: { label: "클레릭" },
-      status: { label: "상태이상 기술", short: "상태이상" },
-      phazer: { label: "강제 교체" },
-      boosting: { label: "랭크업 기술", short: "랭크업" },
+      cleric: {
+        label: "클레릭",
+        hint: (moves: string) =>
+          `팀 전체의 상태이상을 치료하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
+      status: {
+        label: "상태이상 기술",
+        short: "상태이상",
+        hint: (moves: string) =>
+          `상대를 상태이상으로 만드는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
+      phazer: {
+        label: "강제 교체",
+        hint: (moves: string) =>
+          `상대를 강제로 교체시키는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
+      boosting: {
+        label: "랭크업 기술",
+        short: "랭크업",
+        hint: (moves: string) =>
+          `자신의 능력치를 올리는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
       voltTurn: {
         label: "볼트체인지/유턴",
         short: "볼트턴",
         shorter: "볼트턴",
+        hint: (moves: string) =>
+          `공격한 뒤 교체하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
       },
-      choice: { label: "구애 아이템", short: "구애" },
+      choice: {
+        label: "구애 아이템",
+        short: "구애",
+        hint: (items: string) =>
+          `포켓몬에게 구애 아이템을 지니게 하세요: ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) =>
+      `${josa(other, "과", "와")} 함께 쓰는 ${move}`,
+    unavailable: "이 게임에는 해당하는 기술이나 아이템이 없습니다.",
   },
   matrix: {
     matrix: "매트릭스",

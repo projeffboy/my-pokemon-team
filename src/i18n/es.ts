@@ -206,24 +206,65 @@ const es: Messages = {
       offensive: "Ofensivo",
     },
     items: {
-      entryHazard: { label: "Trampa de entrada", short: "Trampa" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Trampa de entrada",
+        short: "Trampa",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que coloque trampas de entrada: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que retire las trampas de entrada de tu lado: ${moves}.`,
+      },
       recovery: {
         label: "Recuperación fiable",
         short: "Curación",
         shorter: "Cura",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que le recupere la mitad de sus PS o más, como ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Movimiento de estado", short: "Estado" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Movimiento de mejora", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que cure los problemas de estado de tu equipo: ${moves}.`,
+      },
+      status: {
+        label: "Movimiento de estado",
+        short: "Estado",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que cause un problema de estado, como ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que obligue al rival a cambiar: ${moves}.`,
+      },
+      boosting: {
+        label: "Movimiento de mejora",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que suba sus propias características, como ${moves}.`,
+      },
       voltTurn: {
         label: "Movimiento Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento con el que ataque y luego se retire: ${moves}.`,
       },
-      choice: { label: "Objeto Elegido", short: "Elegido" },
+      choice: {
+        label: "Objeto Elegido",
+        short: "Elegido",
+        hint: (items: string) =>
+          `Haz que un Pokémon lleve un objeto Elegido: ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} con ${other}`,
+    unavailable: "Nada en este juego cumple este papel.",
   },
   matrix: {
     matrix: "Matriz",

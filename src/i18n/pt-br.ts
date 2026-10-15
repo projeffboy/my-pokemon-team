@@ -207,24 +207,65 @@ const ptBR: Messages = {
       offensive: "Ofensivo",
     },
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que espalha armadilhas no campo do oponente: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que remove as armadilhas do seu lado: ${moves}.`,
+      },
       recovery: {
         label: "Recuperação confiável",
         short: "Recuperação",
         shorter: "Cura",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que recupera metade do HP dele ou mais, como ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Golpe de status", short: "Status" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Golpe de boost", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que cura as condições de status do seu time: ${moves}.`,
+      },
+      status: {
+        label: "Golpe de status",
+        short: "Status",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que causa uma condição de status, como ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que força o oponente a trocar: ${moves}.`,
+      },
+      boosting: {
+        label: "Golpe de boost",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que aumenta os próprios atributos, como ${moves}.`,
+      },
       voltTurn: {
         label: "Golpe Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que ataca e depois o troca: ${moves}.`,
       },
-      choice: { label: "Item Choice", short: "Choice" },
+      choice: {
+        label: "Item Choice",
+        short: "Choice",
+        hint: (items: string) =>
+          `Dê a um Pokémon um item Choice para segurar: ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} com ${other}`,
+    unavailable: "Nada neste jogo cumpre esse papel.",
   },
   matrix: {
     matrix: "Matriz",

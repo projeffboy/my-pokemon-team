@@ -222,16 +222,21 @@ const pageChecklistLabel = (page: Page, label: string) => {
   });
 };
 
+// A checklist role's row, which shows its tooltip, from its English label
+export const checklistRow = (page: Page, label: string) =>
+  page
+    .getByText(pageChecklistLabel(page, label), { exact: true })
+    .locator("..");
+
 export const expectChecklistItem = async (
   page: Page,
   label: string,
   isChecked: boolean,
 ) => {
-  const row = page
-    .getByText(pageChecklistLabel(page, label), { exact: true })
-    .locator("..");
   await expect(
-    row.getByRole("img", { name: isChecked ? "Checked" : "Unchecked" }),
+    checklistRow(page, label).getByRole("img", {
+      name: isChecked ? "Checked" : "Unchecked",
+    }),
   ).toBeVisible();
 };
 

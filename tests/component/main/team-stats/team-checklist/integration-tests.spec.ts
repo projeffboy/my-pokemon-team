@@ -1,10 +1,12 @@
-import { test } from "fixtures";
+import { test, expect } from "fixtures";
 import {
   selectPokemon,
   selectMove,
   selectItem,
   expectChecklistItem,
+  checklistRow,
   openAnalysis,
+  showSlot,
 } from "helper";
 
 test.describe("Team Checklist - Integration Tests", () => {
@@ -83,4 +85,35 @@ test.describe("Team Checklist - Integration Tests", () => {
       await expectChecklistItem(page, checklistItem, true);
     });
   }
+
+  test("a filled role's tooltip names each pokemon and what fills it", async ({
+    page,
+  }, testInfo) => {
+    await selectPokemon(page, "Gigalith");
+    await selectMove(page, "Stealth Rock");
+    for (const [slot, pokemon, item] of [
+      [1, "Buzzwole", "Choice Band"],
+      [2, "Tapu Lele", "Choice Scarf"],
+    ] as const) {
+      await showSlot(page, slot);
+      await selectPokemon(page, pokemon, slot);
+      await selectItem(page, item, slot);
+    }
+    // The switch that opened the checklist may still show its own tooltip
+    const show = async (label: string, text: string) => {
+      const row = checklistRow(page, label);
+      if (testInfo.project.use.hasTouch) await row.tap();
+      else await row.hover();
+      return page.getByRole("tooltip").filter({ hasText: text });
+    };
+
+    await expect(await show("Entry Hazard", "Gigalith")).toHaveText(
+      "Gigalith: Stealth Rock",
+    );
+    const choice = await show("Choice Item", "Buzzwole");
+    await expect(choice.getByRole("listitem")).toHaveText([
+      "Buzzwole: Choice Band",
+      "Tapu Lele: Choice Scarf",
+    ]);
+  });
 });

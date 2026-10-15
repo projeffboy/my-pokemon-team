@@ -218,24 +218,65 @@ const de: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die Entry Hazards auslegt: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die Entry Hazards von deiner Seite entfernt: ${moves}.`,
+      },
       recovery: {
         label: "Zuverlässige Heilung",
         short: "Heilung",
         shorter: "Heilung",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die mindestens die Hälfte seiner KP heilt, z. B. ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Status-Attacke", short: "Status" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Boost-Attacke", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die die Statusprobleme deines Teams heilt: ${moves}.`,
+      },
+      status: {
+        label: "Status-Attacke",
+        short: "Status",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die ein Statusproblem verursacht, z. B. ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die den Gegner zum Wechseln zwingt: ${moves}.`,
+      },
+      boosting: {
+        label: "Boost-Attacke",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, die seine eigenen Werte erhöht, z. B. ${moves}.`,
+      },
       voltTurn: {
         label: "Volt-Turn-Attacke",
         short: "Volt-Turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Bring einem Pokémon eine Attacke bei, mit der es angreift und danach ausgewechselt wird: ${moves}.`,
       },
-      choice: { label: "Wahl-Item", short: "Wahl" },
+      choice: {
+        label: "Wahl-Item",
+        short: "Wahl",
+        hint: (items: string) =>
+          `Gib einem Pokémon ein Wahl-Item zum Tragen: ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} mit ${other}`,
+    unavailable: "In diesem Spiel erfüllt nichts diese Rolle.",
   },
   matrix: {
     matrix: "Matrix",
