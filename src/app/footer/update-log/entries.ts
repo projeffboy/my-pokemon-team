@@ -12,6 +12,7 @@ const entries: Entry[] = [
     date: "Oct 15, 2026",
     changes: [
       "Sprites now load on networks that block Pokémon Showdown, such as many schools’.",
+      "The new Viable items filter hides items that are rarely useful in battle, e.g. Oran Berry.",
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
       "Beat Up is now typeless in Gens 2–4, as in those games.",
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",
@@ -29,7 +30,7 @@ const entries: Entry[] = [
       "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
       "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
-      "The new Viable items filter hides items that are rarely useful in battle, e.g. Oran Berry.",
+      "From Gen 6, choosing Hidden Power now keeps custom IVs that still give its type, such as 0 Speed for Trick Room.",
     ],
   },
   {
