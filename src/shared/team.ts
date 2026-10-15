@@ -67,8 +67,6 @@ const EARLIER_REQUIRED_ITEMS: Record<string, string> = {
   griseouscore: "griseousorb",
 };
 
-// E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric.
-// Given the team's game, it is the first of them that game has.
 // Each required item with the item it replaced, e.g. [griseouscore, griseousorb]
 function requiredItemGroups(pokemon: string): string[][] {
   const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
@@ -81,6 +79,8 @@ function requiredItemGroups(pokemon: string): string[][] {
     });
 }
 
+// E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric.
+// Given the team's game, it is the first of them that game has.
 export function getAutoSelectedItem(
   pokemon: string,
   pokemonItem: string,
