@@ -50,11 +50,19 @@ test("all sixteen Showdown spreads produce the selected type across IV and DV ge
         expect(getDv(member, "hp")).toBe(hpDv(member));
         expect(getDv(member, "spd")).toBe(getDv(member, "spa"));
         expect(member.shiny ?? false).toBe(isShinyDv(member));
-      } else {
+      } else if (generation < 6) {
         // Every recommended IV retains its second bit, giving base power 70 before Gen 6.
         expect(STAT_KEYS.every(stat => getIv(member.ivs, stat) % 4 >= 2)).toBe(
           true,
         );
+      } else {
+        // Power is fixed from Gen 6, so each IV moves by at most one.
+        const start = type === "fighting" ? 31 : 0;
+        expect(
+          STAT_KEYS.every(
+            stat => Math.abs(getIv(member.ivs, stat) - start) <= 1,
+          ),
+        ).toBe(true);
       }
     }
   }
@@ -99,6 +107,24 @@ test("compatible custom IVs and shiny DVs are preserved", () => {
   expect(hiddenPowerType(shiny, 2)).toBe("dragon");
   matchHiddenPower(shiny, "hiddenpowerdragon", 2);
   expect(shiny).toEqual({ ...createTeam({ name: "lanturn" })[0], shiny: true });
+});
+
+test("fixed-power Hidden Power keeps custom IVs whose parity already gives the type", () => {
+  for (const generation of [6, 7, 8] as const) {
+    const trickRoom = createTeam({
+      name: "lanturn",
+      level: 99,
+      ivs: { spe: 0 },
+    })[0]!;
+    matchHiddenPower(trickRoom, "hiddenpowerfire", generation);
+    expect(trickRoom.ivs).toEqual({ atk: 30, spa: 30, spe: 0 });
+    matchHiddenPower(trickRoom, "hiddenpowerice", generation);
+    expect(trickRoom.ivs).toEqual({ atk: 30, def: 30, spe: 1 });
+    expect(hiddenPowerType(trickRoom, generation)).toBe("ice");
+  }
+  const variablePower = createTeam({ name: "lanturn", ivs: { spe: 0 } })[0]!;
+  matchHiddenPower(variablePower, "hiddenpowerfire", 5);
+  expect(variablePower.ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
 });
 
 test("ordinary and untyped moves, Gen 1 and formats without IVs leave details alone", () => {

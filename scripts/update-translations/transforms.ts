@@ -245,7 +245,69 @@ export interface TranslationReport {
   untranslated: Record<keyof NameTranslations, string[]>;
   // Formes named after their translated species and English forme, e.g. 彩粉蝶-Icy Snow
   partialFormes: string[];
+  // Different things left with the same name, e.g. "items: A, B (name)"
+  collisions: string[];
 }
+
+// A name and the PokeAPI row it comes from, with the row's name in each of the locale's
+// languages, the preferred name first
+interface Candidate {
+  source: string;
+  names: string[];
+}
+
+// Groups of keys that share a name although they come from different sources. Keys from
+// one source share it on purpose, e.g. Leek and Stick, the same item in different games.
+function sharedNames(
+  names: Record<string, string>,
+  sourceOf = (key: string) => key,
+) {
+  const byName = new Map<string, string[]>();
+  for (const [key, name] of Object.entries(names)) {
+    byName.set(name, [...(byName.get(name) ?? []), key]);
+  }
+  return [...byName.values()].filter(
+    keys => new Set(keys.map(sourceOf)).size > 1,
+  );
+}
+
+// Each key's preferred name, except that rows sharing one, such as PokeAPI's Japanese
+// Masterpiece Teacup repeating the Unremarkable Teacup's name, take their names in the
+// first fallback language that tells them apart
+function distinctNames(candidates: Record<string, Candidate>) {
+  const names: Record<string, string> = {};
+  for (const [key, candidate] of Object.entries(candidates)) {
+    names[key] = candidate.names[0] ?? "";
+  }
+  const sourceOf = (key: string) => candidates[key]?.source ?? key;
+  for (const keys of sharedNames(names, sourceOf)) {
+    const languages = Math.max(
+      ...keys.map(key => candidates[key]?.names.length ?? 0),
+    );
+    for (let i = 1; i < languages; i++) {
+      const alternatives = keys.map(key => candidates[key]?.names[i] ?? "");
+      if (alternatives.includes("") || new Set(alternatives).size < keys.length)
+        continue;
+      keys.forEach((key, j) => (names[key] = alternatives[j] ?? ""));
+      break;
+    }
+  }
+  return names;
+}
+
+const reportCollisions = (
+  report: TranslationReport,
+  dataset: keyof NameTranslations,
+  names: Record<string, string>,
+  displayName = (key: string) => key,
+  sourceOf?: (key: string) => string,
+) => {
+  for (const keys of sharedNames(names, sourceOf)) {
+    report.collisions.push(
+      `${dataset}: ${keys.map(displayName).join(", ")} (${names[keys[0] ?? ""]})`,
+    );
+  }
+};
 
 const firstName = (
   names: Record<string, string> | undefined,
@@ -267,6 +329,19 @@ export function buildTranslations(
   const languageIds = LANGUAGE_IDS[locale];
   const lookup = (names: Names, id: string | undefined) =>
     id === undefined ? undefined : firstName(names.get(id), languageIds);
+  // A row's names for distinctNames: its preferred name, then its name in each fallback
+  // language, or the preferred name where that language has none
+  const candidate = (
+    names: Names,
+    id: string,
+    preferred: string,
+  ): Candidate => ({
+    source: id,
+    names: languageIds.map((languageId, i) => {
+      const name = names.get(id)?.[languageId];
+      return i && name ? toHalfwidth(name) : preferred;
+    }),
+  });
 
   const speciesIds = identifierOf(tables.pokemon_species);
   const speciesNames = namesById(
@@ -320,6 +395,7 @@ export function buildTranslations(
       regions: [],
     },
     partialFormes: [],
+    collisions: [],
   };
 
   const { pokedex } = showdown;
@@ -413,37 +489,72 @@ export function buildTranslations(
 
   const MOVE_ALIASES: Record<string, string> = { visegrip: "vicegrip" };
   const hiddenPower = lookup(moveNames, moveIds.get("hiddenpower"));
+  const moveCandidates: Record<string, Candidate> = {};
   for (const [id, { name }] of Object.entries(showdown.moves)) {
     const type = /^hiddenpower(.+)$/.exec(id)?.[1];
     const hiddenPowerType = type && typeName(type);
-    const translated =
-      type && hiddenPower && hiddenPowerType ?
-        `${hiddenPower} ${hiddenPowerType}`
-      : lookup(moveNames, moveIds.get(MOVE_ALIASES[id] ?? id));
-    if (translated) translations.moves[id] = translated;
-    else report.untranslated.moves.push(name ?? id);
+    const moveId = moveIds.get(MOVE_ALIASES[id] ?? id);
+    const translated = lookup(moveNames, moveId);
+    if (type && hiddenPower && hiddenPowerType) {
+      moveCandidates[id] = {
+        source: id,
+        names: [`${hiddenPower} ${hiddenPowerType}`],
+      };
+    } else if (moveId && translated) {
+      moveCandidates[id] = candidate(moveNames, moveId, translated);
+    } else report.untranslated.moves.push(name ?? id);
   }
+  translations.moves = distinctNames(moveCandidates);
 
   const ITEM_ALIASES: Record<string, string> = {
     leek: "stick",
     prettyfeather: "prettywing",
   };
+  const itemCandidates: Record<string, Candidate> = {};
   for (const [id, { name }] of Object.entries(showdown.items)) {
-    const translated = lookup(itemNames, itemIds.get(ITEM_ALIASES[id] ?? id));
-    if (translated) translations.items[id] = translated;
-    else report.untranslated.items.push(name ?? id);
+    const itemId = itemIds.get(ITEM_ALIASES[id] ?? id);
+    const translated = lookup(itemNames, itemId);
+    if (itemId && translated) {
+      itemCandidates[id] = candidate(itemNames, itemId, translated);
+    } else report.untranslated.items.push(name ?? id);
   }
+  translations.items = distinctNames(itemCandidates);
 
+  const abilityCandidates: Record<string, Candidate> = {};
+  const details: Record<string, string> = {};
   for (const ability of showdown.abilities) {
-    // E.g. Embody Aspect (Teal) is one of four Embody Aspect abilities
-    const [, plain = ability, detail = ""] =
-      /^(.*?)\s*(\(.*\))?$/.exec(ability) ?? [];
-    const exact = lookup(abilityNames, abilityIds.get(toId(ability)));
-    const shared = lookup(abilityNames, abilityIds.get(toId(plain)));
-    const translated =
-      exact ?? (shared && detail ? `${shared} ${detail}` : shared);
-    if (translated) translations.abilities[ability] = translated;
-    else report.untranslated.abilities.push(ability);
+    // E.g. Embody Aspect (Teal) is one of four Embody Aspect abilities, and As One
+    // (Glastrier) one of two, with the pokemon named in the current language
+    const [, plain = ability, detail] =
+      /^(.*?)\s*\((.*)\)$/.exec(ability) ?? [];
+    if (detail) details[ability] = `(${speciesName(toId(detail)) ?? detail})`;
+    const exactId = abilityIds.get(toId(ability));
+    const sharedId = abilityIds.get(toId(plain));
+    const exact = lookup(abilityNames, exactId);
+    const shared = lookup(abilityNames, sharedId);
+    const withDetail = (name: string) =>
+      details[ability] ? `${name} ${details[ability]}` : name;
+    if (exactId && exact) {
+      abilityCandidates[ability] = candidate(abilityNames, exactId, exact);
+    } else if (sharedId && shared) {
+      const { names } = candidate(abilityNames, sharedId, shared);
+      abilityCandidates[ability] = {
+        source: ability,
+        names: names.map(withDetail),
+      };
+    } else report.untranslated.abilities.push(ability);
+  }
+  translations.abilities = distinctNames(abilityCandidates);
+  // Abilities that PokeAPI names alike in every language, such as the two As One, keep
+  // their detail
+  const abilitySource = (ability: string) =>
+    abilityCandidates[ability]?.source ?? ability;
+  for (const abilities of sharedNames(translations.abilities, abilitySource)) {
+    for (const ability of abilities) {
+      if (details[ability]) {
+        translations.abilities[ability] += ` ${details[ability]}`;
+      }
+    }
   }
 
   for (const [id, { name }] of Object.entries(showdown.natures)) {
@@ -464,6 +575,41 @@ export function buildTranslations(
     else report.untranslated.regions.push(region);
   }
 
+  const englishName =
+    (data: Record<string, { name?: string }>) => (id: string) =>
+      data[id]?.name ?? id;
+  const sourceOf = (candidates: Record<string, Candidate>) => (key: string) =>
+    candidates[key]?.source ?? key;
+  reportCollisions(
+    report,
+    "moves",
+    translations.moves,
+    englishName(showdown.moves),
+    sourceOf(moveCandidates),
+  );
+  reportCollisions(
+    report,
+    "items",
+    translations.items,
+    englishName(showdown.items),
+    sourceOf(itemCandidates),
+  );
+  reportCollisions(
+    report,
+    "abilities",
+    translations.abilities,
+    undefined,
+    abilitySource,
+  );
+  reportCollisions(
+    report,
+    "natures",
+    translations.natures,
+    englishName(showdown.natures),
+  );
+  reportCollisions(report, "types", translations.types);
+  reportCollisions(report, "regions", translations.regions);
+
   return { translations, report };
 }
 
@@ -474,12 +620,7 @@ export function disambiguatePokemon(
   pokedex: Pokedex,
   report: TranslationReport,
 ) {
-  const byName = new Map<string, string[]>();
-  for (const [id, name] of Object.entries(translations.pokemon)) {
-    byName.set(name, [...(byName.get(name) ?? []), id]);
-  }
-  for (const ids of byName.values()) {
-    if (ids.length < 2) continue;
+  for (const ids of sharedNames(translations.pokemon)) {
     for (const id of ids) {
       const entry = pokedex[id];
       const base = entry?.baseSpecies ? toId(entry.baseSpecies) : id;
@@ -489,6 +630,12 @@ export function disambiguatePokemon(
       report.partialFormes.push(entry.name ?? id);
     }
   }
+  reportCollisions(
+    report,
+    "pokemon",
+    translations.pokemon,
+    id => pokedex[id]?.name ?? id,
+  );
 }
 
 // One entry per line, so PokeAPI updates produce readable diffs

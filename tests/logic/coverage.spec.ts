@@ -93,6 +93,26 @@ test.describe("team coverage", () => {
     });
   }
 
+  test("Freeze-Dry and Flying Press count a target once with moves of their own type", () => {
+    const coverage = (name: string, move1: string, move2: string) =>
+      calculateTypeCoverage(createTeam({ name, move1, move2 }));
+    for (const [move1, move2] of [
+      ["icebeam", "freezedry"],
+      ["freezedry", "icebeam"],
+    ])
+      expect(coverage("lapras", move1, move2)).toEqual({
+        ...coverage("lapras", "icebeam", "blizzard"),
+        Water: 2,
+      });
+    for (const [move1, move2] of [
+      ["closecombat", "flyingpress"],
+      ["flyingpress", "closecombat"],
+    ])
+      expect(coverage("hawlucha", move1, move2).Normal).toBe(
+        coverage("hawlucha", "closecombat", "highjumpkick").Normal,
+      );
+  });
+
   test("Freeze-Dry still covers Water after a regular Ice move", () => {
     const team = createTeam();
     Object.assign(team[0], {
