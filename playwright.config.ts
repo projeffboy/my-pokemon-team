@@ -62,6 +62,8 @@ export default defineConfig({
       name: "Desktop Edge",
       use: {
         ...devices["Desktop Edge"],
+        // Without a channel, the project runs Playwright's Chromium with Edge's user agent
+        channel: "msedge",
         viewport: createViewport(LARGE_VIEWPORT_WIDTH),
       },
     },

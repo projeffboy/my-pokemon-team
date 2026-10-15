@@ -105,7 +105,9 @@ const FeedbackDialog = observer(function FeedbackDialog({
   };
 
   const send = async () => {
-    if (emailRef.current && !emailRef.current.checkValidity()) {
+    const replyTo = email.trim();
+    // Firefox reports an address of only spaces as invalid
+    if (replyTo && emailRef.current && !emailRef.current.checkValidity()) {
       setEmailError(true);
       emailRef.current.focus();
       return;
@@ -125,7 +127,7 @@ const FeedbackDialog = observer(function FeedbackDialog({
       body: JSON.stringify({
         message,
         screen: describeScreen(),
-        ...(email.trim() && { email: email.trim() }),
+        ...(replyTo && { email: replyTo }),
         ...(attachLink && { link: location.href }),
         ...(screenshot && { screenshot }),
         ...(uploads.length > 0 && {
