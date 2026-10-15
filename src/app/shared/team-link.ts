@@ -90,24 +90,24 @@ export function generationSettingsFromUrl(): {
   };
 }
 
-// Opens a matching saved team, or an unsaved draft until the first edit. Malformed,
-// oversized, or non-UTF-8 payloads are ignored rather than throwing.
-export function importTeamFromUrlParameter(teamParameter: string): void {
+// Opens a matching saved team, or an unsaved draft until the first edit, and returns
+// whether it opened one. Malformed, oversized, or non-UTF-8 payloads are ignored.
+export function importTeamFromUrlParameter(teamParameter: string): boolean {
   if (
     !teamParameter ||
     teamParameter.length > MAX_ENCODED_TEAM_PARAMETER_LENGTH
   )
-    return;
+    return false;
 
   let text: string;
   try {
     text = fromBase64Url(teamParameter);
   } catch {
-    return;
+    return false;
   }
 
   const { settings } = generationSettingsFromUrl();
-  store.openTeamFromLink(
+  return store.openTeamFromLink(
     parseTeamText(
       text,
       settings.generation,

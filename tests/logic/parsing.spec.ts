@@ -304,7 +304,7 @@ test.describe("team URL encoding", () => {
     expect(fromBase64Url(teamParameter)).toBe(`${reuniclusText}\n\n`);
 
     store.replaceTeam(parseTeamText(""));
-    importTeamFromUrlParameter(teamParameter);
+    expect(importTeamFromUrlParameter(teamParameter)).toBe(true);
     expect(store.team).toEqual(expectedTeam);
   });
 
@@ -317,13 +317,14 @@ test.describe("team URL encoding", () => {
       "oversized",
       toBase64Url("Komala".padEnd(MAX_ENCODED_TEAM_PARAMETER_LENGTH, " ")),
     ],
+    ["unknown pokemon", toBase64Url("Notamon\n- Tackle")],
   ]) {
     test(`ignores ${description} URL parameters without changing the team`, ({
       store,
     }) => {
       store.replaceTeam(parseTeamText(reuniclusText));
       const expectedTeam = store.team.map(pokemon => ({ ...pokemon }));
-      expect(() => importTeamFromUrlParameter(teamParameter)).not.toThrow();
+      expect(importTeamFromUrlParameter(teamParameter)).toBe(false);
       expect(store.team).toEqual(expectedTeam);
     });
   }
@@ -337,7 +338,7 @@ test.describe("team URL encoding", () => {
     );
     const teamParameter = toBase64Url(text);
     expect(teamParameter).toHaveLength(MAX_ENCODED_TEAM_PARAMETER_LENGTH);
-    importTeamFromUrlParameter(teamParameter);
+    expect(importTeamFromUrlParameter(teamParameter)).toBe(true);
     expect(store.team[0].name).toBe("komala");
 
     store.replaceTeam(parseTeamText(reuniclusText));
@@ -346,7 +347,7 @@ test.describe("team URL encoding", () => {
       MAX_ENCODED_TEAM_PARAMETER_LENGTH,
     );
     expect(fromBase64Url(oversizedParameter).trim()).toBe("Komala");
-    importTeamFromUrlParameter(oversizedParameter);
+    expect(importTeamFromUrlParameter(oversizedParameter)).toBe(false);
     expect(store.team[0].name).toBe("reuniclus");
   });
 });
