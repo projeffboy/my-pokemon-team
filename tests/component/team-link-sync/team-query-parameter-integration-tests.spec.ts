@@ -1,13 +1,24 @@
 import { test, expect } from "fixtures";
 import { toBase64Url } from "@/app/shared/base64url";
+import en from "@/i18n/en";
 import {
   clickMenuItem,
+  closeDialog,
   getTeamTextFromUrl,
+  openAnalysis,
+  openFilters,
+  selectDialogOption,
   selectAbility,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
 import type { StoredState } from "@/store/teams-storage";
+
+const generationValue = (page: Page) =>
+  page.locator("header .MuiSelect-nativeInput");
+
+const unsupportedMessage = (page: Page) =>
+  page.getByRole("alert").filter({ hasText: "isn’t supported" });
 
 const savedState = (page: Page) =>
   page.evaluate(
@@ -18,7 +29,7 @@ const savedState = (page: Page) =>
   );
 
 test.describe("Share Link - Integration Tests", () => {
-  test("a denied localStorage getter leaves team editing and share links usable", async ({
+  test("a denied localStorage getter leaves team editing, analysis, and share links usable", async ({
     page,
   }) => {
     const errors: string[] = [];
@@ -34,6 +45,12 @@ test.describe("Share Link - Integration Tests", () => {
     await page.reload({ waitUntil: "domcontentloaded" });
     await selectPokemon(page, "Lurantis");
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lurantis");
+    await openAnalysis(page, "Team Defence");
+    await expect(
+      page
+        .getByRole("region", { name: "Team Defence" })
+        .getByLabel("Fire score: -1", { exact: true }),
+    ).toBeVisible();
     expect(getTeamTextFromUrl(page)).toContain("Lurantis");
     expect(errors).toEqual([]);
   });
@@ -166,7 +183,7 @@ test.describe("Share Link - Integration Tests", () => {
       page,
     }) => {
       const team = toBase64Url("Pikachu\n- Thunderbolt");
-      for (const game of ["lets-go", "legends-arceus", "legends-za"]) {
+      for (const game of ["lets-go", "legends-arceus"]) {
         await page.goto(`/?game=${game}&team=${team}`, {
           waitUntil: "domcontentloaded",
         });
@@ -179,9 +196,33 @@ test.describe("Share Link - Integration Tests", () => {
         await expect(
           page.getByRole("combobox", { name: "Generation" }),
         ).toContainText(/Generations 6–9|Gens 6–9/);
+        await expect(unsupportedMessage(page)).toHaveText(
+          en.team.linkGenerationUnsupported("Generations 6–9"),
+        );
         await expect(page).toHaveURL(/gen=6-9/);
         await expect(page).not.toHaveURL(/game=/);
       }
+    });
+
+    test("Legends: Z-A links open their team in Legends: Z-A through reload", async ({
+      page,
+    }) => {
+      const team = toBase64Url("Inkay\n- Psycho Cut");
+      await page.goto(`/?game=legends-za&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Inkay");
+      await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
+        "Psycho Cut",
+      );
+      const generation = page.getByRole("combobox", { name: "Generation" });
+      await expect(generation).toContainText(/Legends: Z-A|Legends Z-A|Z-A/);
+      await expect(page).toHaveURL(/game=legends-za/);
+      expect(new URL(page.url()).searchParams.has("gen")).toBe(false);
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await expect(generation).toContainText(/Legends: Z-A|Legends Z-A|Z-A/);
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Inkay");
+      await expect(unsupportedMessage(page)).toHaveCount(0);
     });
 
     test("an empty game-specific link preserves its profile through reload", async ({
@@ -280,6 +321,116 @@ test.describe("Share Link - Navigation", () => {
     await expect(pokemonName).toHaveValue("Meowscarada");
     await page.goBack();
     await expect(pokemonName).toHaveValue("Skeledirge");
+  });
+});
+
+test.describe("Share Link - Unsupported gen and game", () => {
+  // Avoid overlapping app reloads against the shared development server.
+  test.describe.configure({ mode: "default" });
+
+  // Each scenario navigates to its own starting link.
+  test.use({
+    autoGoToSite: async ({}, use) => {
+      await use();
+    },
+  });
+
+  test("a fresh visit to an unsupported gen opens Generations 6–9 with a message, until reload", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=10", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Generations 6–9"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveCount(0);
+  });
+
+  test("a returning visitor's unsupported game opens Generations 6–9, not their last generation", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=8", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("8");
+    await page.goto("/?game=foo", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Generations 6–9"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+    await expect(page).not.toHaveURL(/game=/);
+
+    await page.goBack({ waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("8");
+    await page.goForward({ waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+  });
+
+  test("a team link with an unsupported game opens its team in the link's gen with a message", async ({
+    page,
+  }) => {
+    const team = toBase64Url("Centiskorch\n- Fire Lash");
+    await page.goto(`/?gen=8&game=foo&team=${team}`, {
+      waitUntil: "domcontentloaded",
+    });
+    const name = page.getByLabel("Pokemon 1's name");
+    await expect(name).toHaveValue("Centiskorch");
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("Fire Lash");
+    await expect(generationValue(page)).toHaveValue("8");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Gen 8"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=8(&|$)/);
+    await expect(page).not.toHaveURL(/game=/);
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(name).toHaveValue("Centiskorch");
+    await expect(generationValue(page)).toHaveValue("8");
+    await expect(unsupportedMessage(page)).toHaveCount(0);
+  });
+
+  test("a returning visitor's unsupported gen with an unreadable or unknown team opens Generations 6–9", async ({
+    page,
+  }) => {
+    for (const team of ["%21%21%21", toBase64Url("Notamon\n- Tackle")]) {
+      await page.goto("/?gen=3", { waitUntil: "domcontentloaded" });
+      await expect(generationValue(page)).toHaveValue("3");
+      await page.goto(`/?gen=10&team=${team}`, {
+        waitUntil: "domcontentloaded",
+      });
+      await expect(generationValue(page)).toHaveValue("6-9");
+      await expect(unsupportedMessage(page)).toHaveText(
+        en.team.linkGenerationUnsupported("Generations 6–9"),
+      );
+      await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+      await expect(page).not.toHaveURL(/team=/);
+    }
+  });
+
+  test("back/forward navigation to an unsupported gen opens Generations 6–9 with a message", async ({
+    page,
+  }) => {
+    await page.goto("/?gen=7", { waitUntil: "domcontentloaded" });
+    await expect(generationValue(page)).toHaveValue("7");
+
+    // The app only ever replaces history entries, so create a second one by hand
+    await page.evaluate(() => history.pushState(null, "", "/?gen=99"));
+    await page.goBack();
+    await expect(generationValue(page)).toHaveValue("7");
+    await expect(unsupportedMessage(page)).toHaveCount(0);
+
+    await page.goForward();
+    await expect(generationValue(page)).toHaveValue("6-9");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported("Generations 6–9"),
+    );
+    await expect(page).toHaveURL(/[?&]gen=6-9(&|$)/);
+    await page.goBack();
+    await expect(generationValue(page)).toHaveValue("7");
   });
 });
 
@@ -447,5 +598,85 @@ test.describe("Teams across tabs and links", () => {
     await expect
       .poll(async () => (await savedState(page))?.teams.length)
       .toBe(2);
+  });
+});
+
+test.describe("Reloading an empty saved team", () => {
+  const renameTeam = async (page: Page, from: string, to: string) => {
+    await page.getByRole("button", { name: "Teams", exact: true }).click();
+    await page
+      .getByRole("button", { name: `Options for ${from}`, exact: true })
+      .click();
+    await clickMenuItem(page, "Edit team name");
+    const dialog = page.getByRole("dialog", { name: "Edit team name" });
+    await dialog.getByLabel("Team name").fill(to);
+    await dialog.getByRole("button", { name: "Save", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await closeDialog(page, "Close");
+  };
+
+  test("keeps the team with its name, format, and filters", async ({
+    page,
+  }) => {
+    await renameTeam(page, "Team 1", "Rain team");
+    await openFilters(page);
+    await selectDialogOption(page, "Format", "OU: Over Used");
+    await selectDialogOption(page, "Type", "Water");
+    await closeDialog(page);
+    await expect
+      .poll(() => savedState(page))
+      .toMatchObject({
+        teams: [{ name: "Rain team", filters: { type: "Water" } }],
+      });
+    const id = (await savedState(page))?.currentTeamId;
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await openFilters(page);
+    await expect(page.getByRole("combobox", { name: "Format" })).toContainText(
+      "OU: Over Used",
+    );
+    await expect(
+      page.getByRole("dialog").getByLabel("Type", { exact: true }),
+    ).toHaveText("Water");
+    await closeDialog(page);
+    await selectPokemon(page, "Barraskewda");
+    await expect
+      .poll(() => savedState(page))
+      .toMatchObject({
+        teams: [
+          {
+            name: "Rain team",
+            team: [{ name: "barraskewda" }, {}, {}, {}, {}, {}],
+          },
+        ],
+        currentTeamId: id,
+      });
+  });
+
+  test("keeps a saved team whose slots were all cleared", async ({ page }) => {
+    await selectPokemon(page, "Pyukumuku");
+    await expect
+      .poll(async () => (await savedState(page))?.teams[0]?.team[0]?.name)
+      .toBe("pyukumuku");
+    const id = (await savedState(page))?.currentTeamId;
+    const name = page.getByLabel("Pokemon 1's name");
+    await name.click();
+    await name
+      .locator("..")
+      .getByRole("button", { name: "Clear", exact: true })
+      .click();
+    await expect(name).toHaveValue("");
+    await expect
+      .poll(async () => (await savedState(page))?.teams[0]?.team[0]?.name)
+      .toBe("");
+
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await selectPokemon(page, "Wishiwashi");
+    await expect
+      .poll(() => savedState(page))
+      .toMatchObject({
+        teams: [{ team: [{ name: "wishiwashi" }, {}, {}, {}, {}, {}] }],
+        currentTeamId: id,
+      });
   });
 });

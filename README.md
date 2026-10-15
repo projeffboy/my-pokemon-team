@@ -9,7 +9,7 @@ An all-purpose Pokemon teambuilder for generations 1-9, including Legends: Z-A a
 1. You can import/export your team to Pokemon Showdown, or share it as a link
 2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
 3. There's a team checklist, and a matrix of every type against every pokemon
-4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
+4. Search filters narrow down the Pokemon by generation, format, type, region, and ability, and the moves and items to the viable ones. The dropdown sorts by name, number, format, or base stats
 5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on). Team backups keep all of these details in a file you can restore on another device
 6. The sprites are animated, which is nice
 7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI, and Brazilian Portuguese, with the English names until the games are in Portuguese
@@ -60,7 +60,7 @@ npm run preview
 
 Vite preview uses port 4173 by default. It serves the existing build, so rebuild after making changes.
 
-Fresh visits default to **Generations 6–9**, a union of the Pokémon, abilities, moves, and held items available in any Gen 6–9 game, including Champions, Let’s Go, and the Legends games, using Gen 9 mechanics and latest stats. Individual generations and Pokémon Champions remain available; Let’s Go and the Legends games are marked Coming soon. The combined profile is saved with each team and shared as `gen=6-9`. Old website links containing only `team` also use this combined profile. Individual generations are explicit (for example, `gen=9`), and game-specific links use `game` without a redundant `gen`. The only supported game value is `champions`, independent of its display name.
+Fresh visits default to **Generations 6–9**, a union of the Pokémon, abilities, moves, and held items available in any Gen 6–9 game, including Champions, Let’s Go, and the Legends games, using Gen 9 mechanics and latest stats. Individual generations, Pokémon Champions, and Legends: Z-A remain available; Let’s Go and Legends: Arceus are marked Coming soon. The combined profile is saved with each team and shared as `gen=6-9`. Old website links containing only `team` also use this combined profile. Individual generations are explicit (for example, `gen=9`), and game-specific links use `game` without a redundant `gen`. The supported game values are `champions` and `legends-za`, independent of the games' display names.
 
 Showdown text exports preserve the combined setting with a `# mypokemonteam generation profile: 6-9` metadata line. Imports with explicit generation headers use their declared settings; new teams inherit the current selection.
 
@@ -82,11 +82,15 @@ This update is run manually when new data is needed. It reads the `pokemon-showd
 
 Learnsets combine every generation with the games Showdown keeps in separate mods: Pokemon Champions, Legends: Z-A, Legends: Arceus, and BDSP. To include another game, add its mod to `learnsetMods` in `scripts/update-data.ts`.
 
-Historical move rules are projected into `past-generations.ts`; game-specific move and base-stat differences, such as Let's Go Absorb and Legends: Z-A Mega Starmie, are projected into `game-variants.ts`.
+Historical move rules are projected into `past-generations.ts`; game-specific move and base-stat differences, such as Champions Snap Trap, Let's Go Absorb, and Legends: Z-A Mega Starmie, are projected into `game-variants.ts`.
 
 The Pokemon Champions (M-C) format filter reads eligibility from Showdown's `champions` mod, which follows the current regulation. When that mod moves to a new regulation, rename the filter to match.
 
+The abilities, items, and moves each Smogon tier bans, in `format-bans.ts`, come from the rule tables that Showdown's own team validator reads, for every generation the Format filter offers the tier in. A few clauses ban in code instead of with a list, such as OHKO Clause and Sleep Moves Clause. Those are listed in `CLAUSE_BANS` in `scripts/update-data/transforms.ts`, so a new clause of that kind has to be added there.
+
 The Viable moves filter comes from the Showdown client's teambuilder. The script runs the client's own `BattleMoveSearch.moveIsNotUseless` function, and a move is viable if any pokemon that learns it, with any of its abilities and required items, finds it useful in singles or doubles. If the update fails with "Could not find BattleMoveSearch.moveIsNotUseless", the client has restructured that function and `updateViableMoves` needs adjusting.
+
+The Viable items filter also comes from the teambuilder. The script runs the item grouping in the client's `build-tools/build-indexes` for each generation, as for a singles format, and an item is viable unless it is grouped as usually useless, useless, or unreleased. Pokemon-specific items, such as mega stones, stay viable, and the site lists mega stones, Memories, and Drives only for the pokemon that use them (`canUseItem` in `src/store/learnsets.ts`). If the update fails with "Could not find the teambuilder's item groups", or with an error from inside that code, the client has restructured it and `updateViableItems` needs adjusting. `npm run update:data -- --viable-items-only` regenerates just this list.
 
 To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data/transforms.ts` and to the matching type in `src/types.ts`, then rerun the update.
 
@@ -115,9 +119,11 @@ It reads the tables from GitHub (set `POKEAPI_CSV_URL` to read another copy) and
 After setting up the project, install the Playwright browsers and run all checks:
 
 ```sh
-npx playwright install --with-deps chromium webkit
+npx playwright install --with-deps chromium webkit firefox msedge
 npm test
 ```
+
+`msedge` installs Microsoft Edge itself, which asks for administrator rights, and leaves an Edge that is already installed as it is.
 
 `npm test` runs these in order, and each can be run alone:
 
@@ -129,7 +135,9 @@ npm test
 
 `npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. It also requests the sprites of every pokemon offered in Gen 9 and Pokemon Champions from Showdown, and lists those with neither an animated nor a still sprite, and those shown still although Showdown animates them, in its `ani` folder or its BW-style `gen5ani` one. Run it after changing `src/shared/dex-urls.ts` or `src/app/shared/pokemon-sprite/sprite-urls.ts`, or updating the data. The [Dex links workflow](.github/workflows/links.yml) also runs it every Monday, or when started from the Actions tab. When a scheduled run fails, it opens an issue listing the failed checks and assigns it to the repository owner, or comments on that issue while it is open. A site whose bot protection challenges the browser, as Bulbapedia's may, has those checks skipped instead of failed.
 
-Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
+`npm run test:perf` is not part of `npm test` either. It times the moments of [REQ-PERF-1 to 3](docs/requirements/05-system-requirements-specification.md#33-performance-requirements): the analysis updating after a pokemon is picked, the pokemon list opening, and a share link showing its team. It builds the production app, serves it on port 4174, and loads it in Chrome emulating a mid-range phone with Lighthouse's mobile profile: a CPU 4 times slower and its Slow 4G network. It blocks the ad script and Showdown's sprites, prints each moment's median, 95th percentile, and slowest time, and fails when a 95th percentile is over its target. Timings depend on the machine and on what else it is running, so run it on an otherwise idle machine. `PERF_RUNS` sets the number of runs (20), `PERF_CPU_SLOWDOWN` the CPU slowdown (4), and `PERF_NETWORK=fast4g` uses DevTools' Fast 4G network instead.
+
+Both browser suites use six Playwright browser profiles: Chrome, Safari, Firefox, and Edge on desktop, an Android phone, and an iPhone. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 
 The [CI workflow](.github/workflows/ci.yml) runs the same checks on pull requests and pushes to `master`, and keeps the Playwright reports as artifacts. Development tests run once per browser profile on separate runners, with one worker each. The `Validate` check passes only after every browser profile and the shared checks pass. [Dependabot](.github/dependabot.yml) opens a weekly pull request for minor and patch updates, and one per major update, which CI checks like any other. To use its settings locally, run `CI=true npm test` with ports 3000 and 4173 free.
 

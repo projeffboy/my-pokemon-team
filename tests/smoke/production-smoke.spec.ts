@@ -1,5 +1,11 @@
 import { test, expect } from "@playwright/test";
-import { expectImageToBeLoaded, selectAbility, selectPokemon } from "helper";
+import {
+  expectImageToBeLoaded,
+  openAnalysis,
+  selectAbility,
+  selectPokemon,
+} from "helper";
+import en from "@/i18n/en";
 
 test.beforeEach(async ({ page, baseURL }) => {
   const appHost = new URL(baseURL!).host;
@@ -11,7 +17,12 @@ test.beforeEach(async ({ page, baseURL }) => {
       protocol === "https:" ||
       protocol === "ws:" ||
       protocol === "wss:";
-    if (isNetworkProtocol && requestUrl.host !== appHost) {
+    // The preview server forwards /showdown-sprites/ to Showdown
+    if (
+      isNetworkProtocol &&
+      (requestUrl.host !== appHost ||
+        requestUrl.pathname.startsWith("/showdown-sprites/"))
+    ) {
       void route.abort();
       return;
     }
@@ -44,6 +55,42 @@ test("preserves selections after reloading", async ({ page }) => {
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Gyarados");
   await expect(page.getByLabel("Pokemon 1's ability")).toHaveValue("Moxie");
   expect(pageErrors).toEqual([]);
+});
+
+test("shows a pokemon and its analysis without Showdown's sprites or the ad script", async ({
+  page,
+}) => {
+  const pageErrors: Error[] = [];
+  page.on("pageerror", error => pageErrors.push(error));
+
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await selectPokemon(page, "Steelix");
+  // Every outside request is blocked, so the slot falls back to the bundled placeholder
+  await expectImageToBeLoaded(
+    page.getByRole("img", { name: "Steelix", exact: true }).first(),
+  );
+  await openAnalysis(page, "Team Defence");
+  await expect(
+    page
+      .getByRole("region", { name: "Team Defence" })
+      .getByLabel("Electric score: +1.5", { exact: true }),
+  ).toBeVisible();
+  expect(pageErrors).toEqual([]);
+});
+
+test.describe("without JavaScript, as crawlers read it", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("names what the site does in its title and description", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await expect(page).toHaveTitle(en.pageTitle);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      /^The best Pokemon teambuilder and team planner /,
+    );
+  });
 });
 
 test("opens a saved team link in the built app", async ({ page }) => {
@@ -90,6 +137,64 @@ test("removes the service worker left by the old build", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "My Pokemon Team", level: 1 }),
   ).toBeVisible();
+  expect(pageErrors).toEqual([]);
+});
+
+test("links a manifest for adding the site to the home screen", async ({
+  page,
+  browserName,
+}) => {
+  const pageErrors: Error[] = [];
+  page.on("pageerror", error => pageErrors.push(error));
+  await page.goto("/");
+  const href = "/manifest.webmanifest";
+  await expect(page.locator("link[rel=manifest]")).toHaveAttribute(
+    "href",
+    href,
+  );
+  const response = await page.request.get(href);
+  expect(response.ok()).toBe(true);
+  const manifest = (await response.json()) as {
+    icons: { src: string; sizes: string; purpose?: string }[];
+  };
+  expect(manifest).toMatchObject({
+    name: "My Pokemon Team",
+    short_name: "My Pokemon Team",
+    start_url: "/",
+    display: "standalone",
+    theme_color: await page
+      .locator("meta[name=theme-color]")
+      .getAttribute("content"),
+    background_color: "#eee",
+  });
+
+  for (const icon of manifest.icons) {
+    const png = await page.request.get(icon.src);
+    expect(png.headers()["content-type"]).toBe("image/png");
+    const body = await png.body();
+    expect(`${body.readUInt32BE(16)}x${body.readUInt32BE(20)}`).toBe(
+      icon.sizes,
+    );
+  }
+  const sizes = (purpose: string) =>
+    manifest.icons
+      .filter(icon => (icon.purpose ?? "any") === purpose)
+      .map(icon => icon.sizes);
+  expect(sizes("any")).toEqual(["192x192", "512x512"]);
+  expect(sizes("maskable")).toEqual(["512x512"]);
+
+  if (browserName === "chromium") {
+    // Chrome found the manifest and ignored none of it
+    const cdp = await page.context().newCDPSession(page);
+    const { url, errors } = await cdp.send("Page.getAppManifest");
+    expect(url).toBe(new URL(href, page.url()).href);
+    expect(errors).toEqual([]);
+  }
+  expect(
+    await page.evaluate(() =>
+      navigator.serviceWorker.getRegistrations().then(list => list.length),
+    ),
+  ).toBe(0);
   expect(pageErrors).toEqual([]);
 });
 

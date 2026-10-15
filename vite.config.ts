@@ -89,7 +89,8 @@ export default defineConfig({
   server: {
     port: 3000,
     strictPort: true,
-    // Matches the rewrite in vercel.json, which the feedback screenshot uses
+    // Matches the rewrite in vercel.json, which sprites retry through when Showdown
+    // fails and which the feedback screenshot uses
     proxy: {
       "/showdown-sprites": {
         target: "https://play.pokemonshowdown.com",

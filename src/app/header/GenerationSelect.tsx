@@ -4,6 +4,7 @@ import GenerationOption from "./generation-select/GenerationOption";
 import GenerationGroupHeader from "./generation-select/GenerationGroupHeader";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
 import { planGenerationTransfer } from "@/store/generation-transfer";
+import { learnsetsReady } from "@/store/learnsets";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import {
   COMBINED_GENERATIONS_PROFILE,
@@ -30,7 +31,11 @@ import { useTranslation } from "@/app/shared/TranslationContext";
 import type { GameLogo } from "@/images/game-logos";
 import { gameLogosFor } from "@/app/shared/game-logos";
 
-import { GAME_VARIANTS, variantGeneration } from "@/shared/game-variants";
+import {
+  COMING_SOON,
+  GAME_VARIANTS,
+  variantGeneration,
+} from "@/shared/game-variants";
 
 const CHAMPIONS = "champions";
 
@@ -67,7 +72,31 @@ const GenerationSelect = observer(function GenerationSelect() {
     : variantGeneration(format) ? format
     : `${generation}`;
 
-  // The Champions spin-off, then the main series with the combined generations first, then the games still to come
+  // A generation's games that can be picked, or those still to come
+  const variantOptions = (generation: Generation, comingSoon: boolean) =>
+    GAME_VARIANTS.filter(
+      variant =>
+        variantGeneration(variant) === generation &&
+        COMING_SOON.includes(variant) === comingSoon,
+    ).map(variant => ({
+      value: variant,
+      disabled: comingSoon,
+      compact:
+        variant === "Let’s Go" ? undefined : (
+          `${t.generation(generation)} · ${t.gameVariantsCompact[variant]}`
+        ),
+      label: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
+      short: `${t.generation(generation)} · ${
+        variant === "Let’s Go" ? "LGPE"
+        : variant === "Legends: Arceus" ? "PLA"
+        : "Z-A"
+      }`,
+      full: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
+      logos: gameLogosFor(generation, variant),
+    }));
+
+  // The Champions spin-off, then the main series with the combined generations first and each
+  // generation's games after it, then the games still to come
   const groups: { title: string; options: GenerationSelectOption[] }[] = [
     {
       title: t.generationGroups.spinOffs,
@@ -92,36 +121,22 @@ const GenerationSelect = observer(function GenerationSelect() {
           description: t.combinedGenerations.description,
           logos: [],
         },
-        ...GENERATIONS.map(generation => ({
-          value: `${generation}`,
-          label: `${t.generation(generation)} · ${t.generationGames[generation]}`,
-          short: `${t.generation(generation)} · ${GENERATION_GAMES[generation]}`,
-          full: `${t.generation(generation)} · ${t.generationGames[generation]}`,
-          logos: gameLogosFor(generation),
-        })),
+        ...GENERATIONS.flatMap(generation => [
+          {
+            value: `${generation}`,
+            label: `${t.generation(generation)} · ${t.generationGames[generation]}`,
+            short: `${t.generation(generation)} · ${GENERATION_GAMES[generation]}`,
+            full: `${t.generation(generation)} · ${t.generationGames[generation]}`,
+            logos: gameLogosFor(generation),
+          },
+          ...variantOptions(generation, false),
+        ]),
       ],
     },
     {
       title: t.comingSoon,
       options: GENERATIONS.flatMap(generation =>
-        GAME_VARIANTS.filter(
-          variant => variantGeneration(variant) === generation,
-        ).map(variant => ({
-          value: variant,
-          disabled: true,
-          compact:
-            variant === "Let’s Go" ? undefined : (
-              `${t.generation(generation)} · ${t.gameVariantsCompact[variant]}`
-            ),
-          label: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
-          short: `${t.generation(generation)} · ${
-            variant === "Let’s Go" ? "LGPE"
-            : variant === "Legends: Arceus" ? "PLA"
-            : "Z-A"
-          }`,
-          full: `${t.generation(generation)} · ${t.gameVariants[variant]}`,
-          logos: gameLogosFor(generation, variant),
-        })),
+        variantOptions(generation, true),
       ),
     },
   ];
@@ -139,7 +154,11 @@ const GenerationSelect = observer(function GenerationSelect() {
     const teamId = store.currentTeamId;
     setLoading(true);
     try {
-      const data = await loadGenerationTransferData();
+      // The plain latest generation checks the learnsets, which load after the app
+      const [data] = await Promise.all([
+        loadGenerationTransferData(),
+        learnsetsReady,
+      ]);
       if (teamId !== store.currentTeamId) return;
       const team = store.currentTeam;
       const generationProfile =
@@ -153,6 +172,7 @@ const GenerationSelect = observer(function GenerationSelect() {
               ""
             : team.format,
             9,
+            COMBINED_GENERATIONS_PROFILE,
           )
         : value === CHAMPIONS ? CHAMPIONS_FORMAT
         : variantGeneration(value) ? value

@@ -46,9 +46,13 @@ for (const width of [320, 960]) {
 
       for (const placement of ["bottom", "top"]) {
         await page.mouse.move(0, 0);
+        // Keeps the whole label in view, since hovering a label that is not
+        // scrolls it to the middle in Firefox
         await type.evaluate((element, placement) => {
-          const top = placement === "bottom" ? 16 : window.innerHeight - 32;
-          window.scrollBy(0, element.getBoundingClientRect().top - top);
+          const { top, height } = element.getBoundingClientRect();
+          const target =
+            placement === "bottom" ? 16 : window.innerHeight - height - 16;
+          window.scrollBy(0, top - target);
         }, placement);
         await expect(async () => {
           await type.hover();

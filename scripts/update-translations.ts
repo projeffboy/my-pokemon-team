@@ -53,7 +53,7 @@ const showdown: ShowdownNames = {
   moves,
   items,
   natures,
-  // CAP pokemon are hidden from the dropdown, so their names and abilities stay English
+  // CAP pokemon and their own abilities are fan-made, so PokeAPI lacks them and they stay English
   abilities: [
     ...new Set(
       Object.values(pokedex)
@@ -109,6 +109,11 @@ for (const locale of Object.keys(LANGUAGE_IDS) as NamedLocale[]) {
   if (report.partialFormes.length) {
     lines.push(
       `  formes named after their species and English forme (${report.partialFormes.length}): ${report.partialFormes.join(", ")}`,
+    );
+  }
+  if (report.collisions.length) {
+    lines.push(
+      `  different things with the same name (${report.collisions.length}): ${report.collisions.join("; ")}`,
     );
   }
   console.log(

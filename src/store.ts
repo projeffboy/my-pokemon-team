@@ -18,7 +18,11 @@ import type {
   SnackbarNotification,
   SnackbarKind,
 } from "./types";
-import { generationRules, variantGeneration } from "./shared/generation-rules";
+import {
+  generationRules,
+  setLegacyShiny,
+  variantGeneration,
+} from "./shared/generation-rules";
 import { teamDataFormat } from "./shared/generation-profile";
 import { formatForGeneration, gameFormat } from "./shared/formats";
 import { allItemIds } from "./shared/names";
@@ -28,6 +32,7 @@ import {
   generationMoves,
   availableItems,
   availablePokemon,
+  canUseItem,
   getTeamLearnsets,
   isItemAvailable,
   learnsetsReady,
@@ -57,6 +62,11 @@ import {
 } from "./store/team-backup";
 import { describeTeamChange } from "./store/team-change";
 import {
+  removeMissingEntries,
+  type DroppedEntry,
+  type DroppedNotice,
+} from "./store/dropped-entries";
+import {
   initialStoredState,
   getBrowserStorage,
   loadStoredState,
@@ -73,9 +83,13 @@ import {
   getAutoSelectedItem,
   isTeamEmpty,
 } from "./shared/team";
-import { clearDetails } from "./shared/set-details";
+import { clearDetails, setDetail } from "./shared/set-details";
 import { canSelectMove } from "./shared/moves";
-import { matchHiddenPower } from "./shared/hidden-power";
+import {
+  hiddenPowerMatches,
+  matchHiddenPower,
+  rematchHiddenPower,
+} from "./shared/hidden-power";
 import { pokemonAbilities } from "./shared/pokedex";
 import { loadGenerationTransferData } from "./shared/generation-transfer-data";
 import { typesIn } from "./shared/generation-data";
@@ -101,20 +115,29 @@ const browserStorage = getBrowserStorage();
 expireSettings(browserStorage, Date.now());
 const browserLanguages =
   typeof navigator === "undefined" ? [] : navigator.languages;
+const reducedMotionQuery =
+  typeof matchMedia === "undefined" ? undefined : (
+    matchMedia("(prefers-reduced-motion: reduce)")
+  );
 
 const teamKey = (team: Team) => stableJson(toJS(team));
 
 export class Store {
-  constructor(private readonly storage = browserStorage) {
+  constructor(
+    private readonly storage = browserStorage,
+    private readonly languages = browserLanguages,
+  ) {
     const loaded = loadStoredState(storage);
     const stored = loaded ?? initialStoredState();
+    if (!loaded) this.startingTeamId = stored.currentTeamId;
     this.teams = stored.teams;
     this.currentTeamId = stored.currentTeamId;
-    this.showMoveTypes = stored.showMoveTypes;
+    this.showTypes = stored.showMoveTypes;
     this.sort = stored.sort;
     this.moveSort = stored.moveSort;
     this.nameView = stored.nameView;
     this.chosenLocale = stored.locale;
+    this.chosenAnimateSprites = stored.animateSprites;
     this.knowsSlotDrag = stored.knowsSlotDrag ?? false;
     this.lastRead = structuredClone(stored);
     if (loaded) this.openUnsavedTeam();
@@ -122,12 +145,13 @@ export class Store {
 
     makeAutoObservable<
       Store,
-      "lastSnapshot" | "lastRead" | "draftSnapshot" | "storage"
+      "lastSnapshot" | "lastRead" | "draftSnapshot" | "storage" | "languages"
     >(this, {
       lastSnapshot: false,
       lastRead: false,
       draftSnapshot: false,
       storage: false,
+      languages: false,
       translationReady: false,
       translation: observableRef,
     });
@@ -151,7 +175,12 @@ export class Store {
         ),
     );
 
-    this.translationReady = this.loadLocale(this.locale);
+    this.translationReady = this.loadLocale(this.locale).then(() =>
+      this.nameStartingTeam(),
+    );
+    reducedMotionQuery?.addEventListener("change", ({ matches }) => {
+      this.reducedMotion = matches;
+    });
     reaction(
       () => this.locale,
       locale => this.loadLocale(locale),
@@ -163,10 +192,8 @@ export class Store {
         if (
           this.draftTeam?.id === this.currentTeamId &&
           snapshot !== this.draftSnapshot
-        ) {
-          this.teams.push(this.draftTeam);
-          this.draftTeam = null;
-        }
+        )
+          this.saveDraft();
       },
     );
 
@@ -184,11 +211,13 @@ export class Store {
       });
     }
 
-    // Undo history is per team, so switching teams starts it afresh
+    // Undo history is per team, so switching teams starts it afresh, after
+    // anything the team lost to a data update is gone for good
     reaction(
       () => this.currentTeamId,
       () => {
         if (this.draftTeam?.id !== this.currentTeamId) this.draftTeam = null;
+        this.dropMissingEntries();
         this.resetHistory();
       },
     );
@@ -211,6 +240,44 @@ export class Store {
   saveFailed = false;
   private draftTeam: SavedTeam | null = null;
   private draftSnapshot = "";
+  // A first visit starts on a team that nothing has saved
+  private startingTeamId: string | undefined;
+  // The starting team that the draft takes the place of
+  private draftReplaces: string | undefined;
+
+  // The starting team while it is still the only team and empty, which a
+  // linked or fresh team replaces, so that the visitor does not end up with two
+  private get replaceableTeam() {
+    const [team, ...others] = this.teams;
+    if (!team || others.length || team.id !== this.startingTeamId) return;
+    return isTeamEmpty(team.team) ? team : undefined;
+  }
+
+  // Adds the draft to the saved teams, in place of the starting team it replaces
+  private saveDraft() {
+    if (!this.draftTeam) return;
+    // Another tab may have filled the starting team since this tab last read
+    if (this.draftReplaces) this.readOtherTabs();
+    const index = this.teams.findIndex(
+      ({ id, team }) => id === this.draftReplaces && isTeamEmpty(team),
+    );
+    if (index === -1) this.teams.push(this.draftTeam);
+    else this.teams[index] = this.draftTeam;
+    this.draftTeam = null;
+  }
+
+  // The starting team is made before the language loads, so it takes the
+  // language's name once loaded, as if it had been saved that way
+  private nameStartingTeam() {
+    const name = this.translation.t.team.teamNumber(1);
+    const find = ({ teams }: { teams: SavedTeam[] }) =>
+      teams.find(({ id }) => id === this.startingTeamId);
+    const team = find(this);
+    const saved = find(this.lastRead);
+    if (!team || !saved || team.name !== saved.name) return;
+    team.name = name;
+    saved.name = name;
+  }
 
   findTeam(id: string) {
     return (
@@ -252,11 +319,19 @@ export class Store {
       Partial<Pick<SavedTeam, "format" | "generationProfile">>,
   ) {
     const { generation, format } = this.currentTeam;
+    const replaced = this.replaceableTeam;
     const draft = createSavedTeam({
-      name: this.nextTeamName(),
+      name:
+        replaced ? this.translation.t.team.teamNumber(1) : this.nextTeamName(),
       generation,
       format:
-        settings ? formatForGeneration(format, settings.generation) : format,
+        settings ?
+          formatForGeneration(
+            format,
+            settings.generation,
+            settings.generationProfile,
+          )
+        : format,
       ...settings,
       generationProfile:
         settings ?
@@ -266,6 +341,7 @@ export class Store {
     });
     this.draftSnapshot = stableJson(draft);
     this.draftTeam = draft;
+    this.draftReplaces = replaced?.id;
     this.currentTeamId = draft.id;
   }
 
@@ -385,10 +461,7 @@ export class Store {
     generationProfile?: SavedTeam["generationProfile"],
   ) {
     if (newTeam) {
-      if (this.draftTeam?.id === this.currentTeamId) {
-        this.teams.push(this.draftTeam);
-        this.draftTeam = null;
-      }
+      if (this.draftTeam?.id === this.currentTeamId) this.saveDraft();
       this.addTeam({
         generation,
         format,
@@ -415,6 +488,7 @@ export class Store {
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
   // A link carries a game but no tier, so a saved team's tier does not count.
+  // Returns the saved team it opens, if any; an empty team opens nothing.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
@@ -464,6 +538,54 @@ export class Store {
       this.teams.find(matches);
     if (saved) this.currentTeamId = saved.id;
     else this.openUnsavedTeam(team, settings);
+    return saved;
+  }
+
+  // What an opened link or saved team lost, by team ID, which a notice above that
+  // team names until the player dismisses it
+  droppedEntries = new Map<string, DroppedNotice>();
+
+  get currentDroppedEntries() {
+    return this.droppedEntries.get(this.currentTeamId);
+  }
+
+  // Names what the current team lost. A link's report never replaces what a saved
+  // team lost, which is gone for good, while the link can be opened again.
+  reportDroppedEntries(
+    source: DroppedNotice["source"],
+    entries: DroppedEntry[],
+    text: string,
+  ) {
+    const id = this.currentTeamId;
+    if (
+      entries.length &&
+      !(
+        source === "link" && this.droppedEntries.get(id)?.source === "savedTeam"
+      )
+    )
+      this.droppedEntries.set(id, { source, entries, text });
+  }
+
+  dismissDroppedEntries() {
+    this.droppedEntries.delete(this.currentTeamId);
+  }
+
+  // A saved team keeps what a data update removed until it is opened, and then
+  // loses it once, as the save that follows has none of it
+  private dropMissingEntries() {
+    const { generation, format } = this.currentTeam;
+    const { team, dropped } = removeMissingEntries(
+      this.team,
+      generation,
+      this.dataFormat,
+    );
+    if (!dropped.length) return;
+    this.reportDroppedEntries(
+      "savedTeam",
+      dropped,
+      serializeTeam(this.team, generation, format),
+    );
+    this.team = team;
   }
 
   // The current team
@@ -484,12 +606,36 @@ export class Store {
     return generationRules(this.currentTeam.generation, this.dataFormat);
   }
 
+  // The game's items (only the viable ones under the Items filter), plus the required items
+  // the game lacks but auto-selects for a pokemon it lists, e.g. Bug Memory for Silvally-Bug
+  // in Gen 9
   get teamItems() {
     if (!this.learnsetsLoaded) return [];
-    return availableItems(
-      allItemIds,
-      this.currentTeam.generation,
-      this.dataFormat,
+    const { generation } = this.currentTeam;
+    const available = new Set(
+      availableItems(allItemIds, generation, this.dataFormat),
+    );
+    if (!available.size) return [];
+    const listed = new Set(this.gamePokemon);
+    const required = this.teamPokemon
+      .filter(name => listed.has(name))
+      .map(name => getAutoSelectedItem(name, "", item => available.has(item)))
+      .filter(item => item && !available.has(item));
+    const shown =
+      this.filters.items ?
+        new Set(availableItems(allItemIds, generation, this.dataFormat, true))
+      : available;
+    return allItemIds.filter(
+      item => shown.has(item) || required.includes(item),
+    );
+  }
+
+  // Each slot's items. Under the Items filter, only those its pokemon can use, so
+  // Ribombee is not offered Venusaurite.
+  get slotItems() {
+    const items = this.teamItems;
+    return this.team.map(({ name }) =>
+      this.filters.items ? items.filter(item => canUseItem(name, item)) : items,
     );
   }
 
@@ -544,6 +690,7 @@ export class Store {
         this.moveSort,
         this.currentTeam.generation,
         this.translation,
+        this.dataFormat,
       ),
     );
     return {
@@ -557,7 +704,8 @@ export class Store {
   selectPokemon(teamIndex: number, name: string) {
     const member = this.team[teamIndex];
 
-    if (!member) return;
+    // Picking the slot's own pokemon again keeps its set
+    if (!member || member.name === name) return;
     member.name = name;
     member.item =
       this.rules.items ?
@@ -701,6 +849,36 @@ export class Store {
     return true;
   }
 
+  // Level and shininess can change the type Hidden Power's IVs or DVs give.
+  // Only a match the edit breaks is restored, so IVs chosen or imported to
+  // differ stay. The dialog stores each keystroke, so it passes the level its
+  // edit started from.
+  setLevel(
+    teamIndex: number,
+    level: number | undefined,
+    previousLevel = this.team[teamIndex]?.level,
+  ) {
+    const member = this.team[teamIndex];
+    if (!member) return;
+    const { generation } = this.currentTeam;
+    const matched = hiddenPowerMatches(
+      { ...member, level: previousLevel },
+      generation,
+    );
+    setDetail(member, "level", level);
+    if (matched) rematchHiddenPower(member, generation, this.dataFormat);
+  }
+
+  setShiny(teamIndex: number, shiny: boolean) {
+    const member = this.team[teamIndex];
+    if (!member) return;
+    const { generation } = this.currentTeam;
+    const matched = hiddenPowerMatches(member, generation);
+    if (generation === 2) setLegacyShiny(member, shiny);
+    else setDetail(member, "shiny", shiny);
+    if (matched) rematchHiddenPower(member, generation, this.dataFormat);
+  }
+
   resetDetails(teamIndex: number) {
     const member = this.team[teamIndex];
     if (member) clearDetails(member);
@@ -772,7 +950,8 @@ export class Store {
       );
   }
 
-  // Every pokemon and move the current game's dropdowns can list, whatever the filters
+  // Every pokemon, move, ability, and item the current game's dropdowns can list, whatever
+  // the filters
   get gamePokemon() {
     const { generation, format } = this.currentTeam;
     return this.inGame(
@@ -789,6 +968,25 @@ export class Store {
     if (!this.learnsetsLoaded) return [];
     return generationMoves(
       this.gamePokemon,
+      this.currentTeam.generation,
+      this.dataFormat,
+    );
+  }
+
+  get gameAbilities() {
+    return [
+      ...new Set(
+        this.gamePokemon.flatMap(name =>
+          pokemonAbilities(name, this.currentTeam.generation, this.dataFormat),
+        ),
+      ),
+    ];
+  }
+
+  get gameItems() {
+    if (!this.learnsetsLoaded) return [];
+    return availableItems(
+      allItemIds,
       this.currentTeam.generation,
       this.dataFormat,
     );
@@ -893,7 +1091,7 @@ export class Store {
   chosenLocale: Locale | undefined;
 
   get locale(): Locale {
-    return this.chosenLocale ?? detectLocale(browserLanguages);
+    return this.chosenLocale ?? detectLocale(this.languages);
   }
 
   set locale(locale: Locale) {
@@ -920,8 +1118,11 @@ export class Store {
       translation => {
         if (locale !== this.locale) return;
         this.translation = translation;
-        if (typeof document !== "undefined")
+        // index.html keeps the English title for crawlers
+        if (typeof document !== "undefined") {
           document.documentElement.lang = locale;
+          document.title = translation.t.pageTitle;
+        }
       },
       () => {
         if (locale === this.locale)
@@ -930,8 +1131,22 @@ export class Store {
     );
   }
 
-  // Each chosen move's type icon before its name, with the item's icon leading to match
-  showMoveTypes: boolean;
+  // Each pokemon's type icons, and each chosen move's before its name with the
+  // item's icon leading to match, until the Player hides them
+  showTypes: boolean;
+
+  // Whether sprites move. Until the player chooses, a device set to reduce
+  // motion gets still ones, and a change to that setting is followed.
+  chosenAnimateSprites: boolean | undefined;
+  reducedMotion = reducedMotionQuery?.matches ?? false;
+
+  get animateSprites() {
+    return this.chosenAnimateSprites ?? !this.reducedMotion;
+  }
+
+  set animateSprites(animate: boolean) {
+    this.chosenAnimateSprites = animate;
+  }
 
   // How the Name dropdown lists its options
   nameView: NameView;
@@ -1020,11 +1235,12 @@ export class Store {
     const merged = mergeStoredState(this.lastRead, mine, theirs);
     this.teams = merged.teams;
     if (!this.draftTeam) this.currentTeamId = merged.currentTeamId;
-    this.showMoveTypes = merged.showMoveTypes;
+    this.showTypes = merged.showMoveTypes;
     this.sort = merged.sort;
     this.moveSort = merged.moveSort;
     this.nameView = merged.nameView;
     this.chosenLocale = merged.locale;
+    this.chosenAnimateSprites = merged.animateSprites;
     this.knowsSlotDrag = merged.knowsSlotDrag ?? false;
     this.lastRead = {
       ...theirs,
@@ -1064,11 +1280,14 @@ export class Store {
       teams: this.teams,
       currentTeamId:
         this.draftTeam ? this.lastRead.currentTeamId : this.currentTeamId,
-      showMoveTypes: this.showMoveTypes,
+      showMoveTypes: this.showTypes,
       sort: this.sort,
       moveSort: this.moveSort,
       nameView: this.nameView,
       ...(this.chosenLocale && { locale: this.chosenLocale }),
+      ...(this.chosenAnimateSprites !== undefined && {
+        animateSprites: this.chosenAnimateSprites,
+      }),
       ...(this.knowsSlotDrag && { knowsSlotDrag: true }),
     };
   }

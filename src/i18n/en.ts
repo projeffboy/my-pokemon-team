@@ -7,6 +7,9 @@
 const generation = (generation: number) => `Gen ${generation}`;
 
 const en = {
+  // The browser tab's title, the same as index.html's <title>. The site's name stays English
+  // in every language.
+  pageTitle: "My Pokemon Team - Pokemon Teambuilder and Team Planner",
   // The header
   beta: "Beta",
   generation,
@@ -99,21 +102,27 @@ const en = {
     shareTeam: "Share",
     shareTeamLink: "Share pokemon team link",
     teamActions: "Team actions",
-    manageTeam: "Manage",
-    manageTeamMenu: "Manage team",
+    more: "More",
+    manageTeam: "Manage team",
+    accessibility: "Accessibility",
     duplicate: "Duplicate",
     copyText: "Copy text",
     editPokepaste: "Edit Pokepaste",
     delete: "Delete",
     importTeam: "Import team",
     share: "Share",
-    teamEmpty: "Pokemon team is empty",
+    teamEmpty: "The team is empty. Add a pokemon to share it.",
     linkCopied: "Pokemon team link copied",
-    linkNotCopied: "Could not copy the link.",
-    nothingToCopy: "Empty team, nothing to copy.",
+    linkNotCopied:
+      "Could not copy the link. Copy it from the address bar while the team is open.",
+    linkGenerationUnsupported: (profile: string) =>
+      `This link’s generation or game isn’t supported, so it opened in ${profile}.`,
+    nothingToCopy: "The team is empty. Add a pokemon to copy it.",
     teamCopied: "Team copied.",
-    teamNotCopied: "Could not copy the team.",
-    cannotDuplicateEmptyTeam: "Cannot duplicate empty team",
+    teamNotCopied:
+      "Could not copy the team. Copy its text from Edit Pokepaste instead.",
+    cannotDuplicateEmptyTeam:
+      "The team is empty. Add a pokemon to duplicate it.",
     teamDuplicated: "Team duplicated",
     teamDeleted: "Team deleted",
     slots: "Pokemon team slots",
@@ -130,7 +139,8 @@ const en = {
     advancedFor: (slot: number) => `More details for slot ${slot}`,
     // The short label of the button that opens a slot's More details
     details: "Details",
-    showMoveTypes: "Show move types",
+    animateSprites: "Animate sprites",
+    showTypes: "Show types",
     about: (pokemon: string) => `About ${pokemon}`,
     dragHint: "Hold and drag to reorder",
     moveToSlot: (pokemon: string) => `Move ${pokemon} to another slot`,
@@ -174,9 +184,44 @@ const en = {
     // The default names of new teams
     teamNumber: (number: number) => `Team ${number}`,
     unnamedTeam: "Team",
-    copyOf: (name: string) => `${name} copy`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} copy ${number}` : `${name} copy`,
     learnsetsFailed:
       "The move lists could not be loaded. Reload the page to try again.",
+  },
+
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 entry in this link was left out"
+      : `${count} entries in this link were left out`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 entry was removed from this team"
+      : `${count} entries were removed from this team`,
+    linkReason: (count: number): string =>
+      count === 1 ?
+        "This game doesn't have it, or the pokemon can't use it."
+      : "This game doesn't have them, or the pokemon can't use them.",
+    savedTeamReason: (count: number): string =>
+      count === 1 ?
+        "A game data update renamed or removed it."
+      : "A game data update renamed or removed them.",
+    pokemon: (slot: number, value: string) => `Pokemon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, item: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, ability: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, move ${move}: ${value}`,
+    details: "Details",
+    dismiss: "Dismiss",
+    detailsTitle: "Original team text",
+    linkDetailsDescription:
+      "The link's team as it was, with what was left out. Copy it to keep a record.",
+    savedTeamDetailsDescription:
+      "The team as it was, with what was removed. Copy it to keep a record.",
+    copy: "Copy",
   },
 
   // The undo and redo buttons
@@ -210,28 +255,84 @@ const en = {
       defensive: "Defensive",
       offensive: "Offensive",
     },
-    // Shorter labels for screens at lg and below, then shorter still at md and below
+    // Shorter labels for screens at lg and below, then shorter still at md and below. A hint
+    // says what would fill a role, given a list of the moves or items in the game that do.
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Give a pokemon a move that sets entry hazards: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Give a pokemon a move that removes entry hazards from your side: ${moves}.`,
+      },
       recovery: {
         label: "Reliable Recovery",
         short: "Recovery",
         shorter: "Heal",
+        hint: (moves: string) =>
+          `Give a pokemon a reliable healing move, such as ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Status Move", short: "Status" },
-      phazer: { label: "Phazer" },
-      trapper: { label: "Trapper" },
-      boosting: { label: "Boosting Move", short: "Setup" },
-      priority: { label: "Priority Move", short: "Priority", shorter: "Prio" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Give a pokemon a move that cures your team's status conditions: ${moves}.`,
+      },
+      status: {
+        label: "Status Move",
+        short: "Status",
+        hint: (moves: string) =>
+          `Give a pokemon a move that always inflicts a status condition when it hits, such as ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Give a pokemon a move that forces the foe to switch out: ${moves}.`,
+      },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Give a pokemon a move that stops the foe from switching out, such as ${moves}, or the ability ${abilities}.`
+          : `Give a pokemon a move that stops the foe from switching out, such as ${moves}.`,
+      },
+      boosting: {
+        label: "Boosting Move",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Give a pokemon a move that raises its own stats by two or more stages in total, such as ${moves}.`,
+      },
+      priority: {
+        label: "Priority Move",
+        short: "Priority",
+        shorter: "Prio",
+        hint: (moves: string) =>
+          `Give a pokemon a damaging move that goes before most other moves, regardless of Speed, such as ${moves}.`,
+      },
       voltTurn: {
         label: "Volt-turn Move",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Give a pokemon a move that attacks and then switches it out: ${moves}.`,
       },
-      choice: { label: "Choice Item", short: "Choice" },
+      choice: {
+        label: "Choice Item",
+        short: "Choice",
+        hint: (items: string) =>
+          `Give a pokemon a Choice item to hold: ${items}.`,
+      },
     },
+    // A pokemon that fills a role, and the moves or item it fills it with
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    // Two moves that fill a role together, such as Wish with Protect
+    together: (move: string, other: string) => `${move} with ${other}`,
+    unavailable: "Nothing in this game fills it.",
   },
   matrix: {
     matrix: "Matrix",
@@ -257,6 +358,8 @@ const en = {
       cause: string | undefined,
     ) =>
       `${type} does ${multiplier}x to ${pokemon} (${types})${cause ? ` with ${cause}` : ""}`,
+    // A second line for a pokemon with Conversion: the type its first move gives it
+    conversion: (move: string, type: string) => `${move} makes it ${type} type`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -365,6 +468,8 @@ const en = {
     region: "Region",
     moves: "Moves",
     viable: "Viable",
+    items: "Items",
+    viableItems: "Viable",
     ability: "Ability",
   },
   sort: {
@@ -402,7 +507,8 @@ const en = {
     randomTeamCreated: "Random team created",
     exported: "Exported all teams",
     copiedAll: "Copied all teams",
-    notCopiedAll: "Could not copy the teams.",
+    notCopiedAll:
+      "Could not copy the teams. Use Export All to download them instead.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -490,6 +596,8 @@ const en = {
       `${pokemon} must hold ${items.join(" or ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} has ${move} twice.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} has ${thing}, which is banned in ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -525,7 +633,31 @@ const en = {
     imported: "Team imported",
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",
-    nothingFound: "No pokemon found in that text.",
+    nothingFound:
+      "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
+    // The problems in edited text, each shown as "Ho-Oh, Move 4: “Iron Hed”"
+    // above its reason and what an update does instead
+    problems: (count: number) =>
+      `${count === 1 ? "1 problem" : `${count} problems`} found. Update still applies the text as follows:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Move ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: “${value}”`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Not recognized.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} cannot learn this move in the selected game.`,
+    wrongAbility: (pokemon: string) => `Not an ability ${pokemon} can have.`,
+    outOfRange: (min: number, max: number) =>
+      `Not a whole number from ${min} to ${max}.`,
+    unsupported: "The selected game does not have this detail.",
+    tooManyPokemon: "A team holds at most six pokemon.",
+    tooManyMoves: "A pokemon knows at most four moves.",
+    noGigantamax: (pokemon: string) => `${pokemon} has no Gigantamax form.`,
+    unread: "Not a detail the site reads.",
+    slotLeftEmpty: "The team slot is left empty.",
+    moveLeftEmpty: "The move slot is left empty.",
+    leftOut: "It is left out.",
+    usedInstead: (value: string) => `${value} is used instead.`,
   },
   deleteDialog: {
     title: (team: string) => `Delete ${team}?`,
