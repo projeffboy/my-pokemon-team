@@ -190,23 +190,41 @@ for (const { name, open, actions, close, viewport = SMALL_PHONE } of dialogs)
     await expect(dialog).toBeHidden();
   });
 
-// Phone browsers shrink only the visual viewport for the on-screen keyboard, and
-// Safari pans it to show the focused field
-const openKeyboard = (page: Page, offsetTop: number, height: number) =>
+// Phone browsers shrink only the visual viewport for the on-screen keyboard and for
+// pinch zoom, and Safari pans it to show the focused field
+const moveVisualViewport = (
+  page: Page,
+  offsetTop: number,
+  height: number,
+  scale = 1,
+) =>
   page.evaluate(
-    ([offsetTop, height]) => {
+    ([offsetTop, height, scale]) => {
       const viewport = window.visualViewport;
       if (!viewport) throw new Error("No visual viewport");
       const resized = viewport.height !== height;
-      for (const [key, value] of Object.entries({ offsetTop, height }))
+      for (const [key, value] of Object.entries({ offsetTop, height, scale }))
         Object.defineProperty(viewport, key, {
           get: () => value,
           configurable: true,
         });
       viewport.dispatchEvent(new Event(resized ? "resize" : "scroll"));
     },
-    [offsetTop, height],
+    [offsetTop, height, scale],
   );
+
+// The height of the part of the dialog that scrolls the field, which should leave
+// room for a few lines of text above the keyboard
+const MIN_FIELD_AREA_HEIGHT = 80;
+const expectRoomForField = async (field: Locator) =>
+  expect(
+    await field.evaluate(element => {
+      let area = element.parentElement;
+      while (area && getComputedStyle(area).overflowY !== "auto")
+        area = area.parentElement;
+      return area?.clientHeight ?? 0;
+    }),
+  ).toBeGreaterThanOrEqual(MIN_FIELD_AREA_HEIGHT);
 
 for (const { name, open, actions, close, field } of dialogs)
   if (field)
@@ -216,11 +234,23 @@ for (const { name, open, actions, close, field } of dialogs)
       await page.setViewportSize({ width: 320, height: 568 });
       const dialog = await open(page);
       await field(dialog).focus();
-      await openKeyboard(page, 0, 270);
+      await moveVisualViewport(page, 0, 270);
       await expectActionsInView(dialog, actions, 0, 270);
+      await expectRoomForField(field(dialog));
       // Safari pans the visible part of the page down to the field
-      await openKeyboard(page, 120, 270);
+      await moveVisualViewport(page, 120, 270);
       await expectActionsInView(dialog, actions, 120, 390);
+      await expectRoomForField(field(dialog));
       await dialog.getByRole("button", { name: close, exact: true }).click();
       await expect(dialog).toBeHidden();
     });
+
+test("Pinch zoom leaves an open dialog where it is", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole("button", { name: "Type Chart" }).click();
+  const dialog = page.getByRole("dialog");
+  await expectImageToBeLoaded(dialog.getByRole("img"));
+  const box = await dialog.boundingBox();
+  await moveVisualViewport(page, 300, 281, 3);
+  expect(await dialog.boundingBox()).toEqual(box);
+});

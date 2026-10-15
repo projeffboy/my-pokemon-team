@@ -4,7 +4,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import { visualViewportHeight } from "@/app/shared/visual-viewport";
+import { heightAboveAd } from "@/app/shared/visual-viewport";
 import ImportTeamForm from "./shared/ImportTeamForm";
 
 // Edits the current team as Showdown text
@@ -24,7 +24,7 @@ const EditTeamDialog = observer(function EditTeamDialog() {
       open={isOpen}
       onClose={close}
       aria-labelledby={titleId}
-      sx={{ height: `calc(${visualViewportHeight} - 60px)` }}
+      sx={{ height: heightAboveAd }}
       fullWidth
     >
       {isOpen && (

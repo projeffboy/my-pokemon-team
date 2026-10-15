@@ -51,8 +51,14 @@ export default function TypeChart() {
         </Tabs>
       </AppBar>
       {chart && (
-        // Only the chart scrolls, so the tabs and the dialog's action stay in view
-        <DialogContent sx={{ p: 3 }}>
+        // Only the chart scrolls, so the tabs and the dialog's action stay in view.
+        // Safari leaves scroll containers out of the tab order, so it takes focus itself.
+        <DialogContent
+          tabIndex={0}
+          role="region"
+          aria-label={chart.label}
+          sx={{ p: 3 }}
+        >
           {chart.caption && (
             <Typography
               variant={isSmDown ? "caption" : "h5"}
