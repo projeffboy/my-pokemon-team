@@ -128,7 +128,10 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
       {isOpen && entry && (
         <>
           <DialogTitle id={titleId}>{name}</DialogTitle>
+          {/* Focusable, so the keyboard can scroll it on a short screen: nothing in it
+              takes focus */}
           <DialogContent
+            tabIndex={0}
             sx={{ display: "flex", flexDirection: "column", gap: 2 }}
           >
             <Box
