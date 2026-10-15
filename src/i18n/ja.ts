@@ -50,9 +50,13 @@ const ja: Messages = {
     short: "旧サイト",
     title: "旧サイトに移動しますか？",
     description:
-      "現在のチームは旧サイトに引き継がれません。ここで保存済みのチームは、このバージョンに残ります。",
+      "現在のチームを旧サイトで開きます。ここで保存済みのチームは、このバージョンに残ります。",
     go: "旧サイトへ移動",
     goLong: "旧サイトへ移動",
+    generationsOnly: (generations: string) =>
+      `旧サイトは${generations}のみに対応しています。`,
+    leftOut: "次の内容は引き継がれません：",
+    goWithTeam: "チームと一緒に移動",
   },
   feedback: {
     button: "フィードバックを送る",
@@ -254,6 +258,13 @@ const ja: Messages = {
         short: "積み",
         hint: (moves: string) =>
           `自分の能力を合計2段階以上上げる技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
+      priority: {
+        label: "先制技",
+        short: "先制技",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `すばやさに関係なく、ほとんどの技より先に出せる攻撃技をポケモンに覚えさせましょう（例：${moves}）。`,
       },
       voltTurn: {
         label: "ボルトチェンジ系",
@@ -488,7 +499,7 @@ const ja: Messages = {
     removed: {
       item: "削除される持ち物",
       ability: "削除される特性",
-      moves: "削除される技：",
+      move: "削除される技",
       details: "削除される詳細",
     },
     ivsUnused: (where: string) => `${where}では個体値は適用されません。`,
@@ -501,6 +512,9 @@ const ja: Messages = {
       item: (count: number) => `持ち物${count}個`,
       ability: (count: number) => `特性${count}個`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中${carried}匹を引き継ぎ`,
+    removedSummary: (removed: string) => `${removed}を削除`,
     modify: "現在のチームを更新",
     copy: "新しいチームにコピー",
     createEmpty: "空のチームを作成",
@@ -698,6 +712,10 @@ const ja: Messages = {
       [
         "積み技",
         "つるぎのまいやめいそうのように、自分の能力を（できれば2段階以上）上げる技。",
+      ],
+      [
+        "先制技",
+        "すばやさに関係なく、ほとんどの技より先に出せる攻撃技。例: しんそく、ふいうち、アクアジェット、バレットパンチ。",
       ],
       [
         "こだわりアイテム",

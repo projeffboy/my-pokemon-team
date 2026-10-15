@@ -45,9 +45,13 @@ const en = {
     short: "Old site",
     title: "Switch to the old website?",
     description:
-      "Your current team won’t transfer to the old website. Teams already saved here will remain on this version.",
+      "Your current team will open on the old website. Teams saved here will remain on this version.",
     go: "Go to old website",
     goLong: "Go to the old website",
+    generationsOnly: (generations: string) =>
+      `The old website has ${generations} only.`,
+    leftOut: "These won’t carry over:",
+    goWithTeam: "Go with my team",
   },
   feedback: {
     button: "Send feedback",
@@ -250,6 +254,13 @@ const en = {
         short: "Setup",
         hint: (moves: string) =>
           `Give a pokemon a move that raises its own stats by two or more stages in total, such as ${moves}.`,
+      },
+      priority: {
+        label: "Priority Move",
+        short: "Priority",
+        shorter: "Prio",
+        hint: (moves: string) =>
+          `Give a pokemon a damaging move that goes before most other moves, regardless of Speed, such as ${moves}.`,
       },
       voltTurn: {
         label: "Volt-turn Move",
@@ -484,7 +495,7 @@ const en = {
     removed: {
       item: "Item removed",
       ability: "Ability removed",
-      moves: "Moves removed:",
+      move: "Move removed",
       details: "Details removed",
     },
     ivsUnused: (where: string) => `IVs don’t apply in ${where}.`,
@@ -498,6 +509,9 @@ const en = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "ability" : "abilities"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} of ${total} ${carried === 1 ? "carries" : "carry"} over`,
+    removedSummary: (removed: string) => `${removed} removed`,
     modify: "Update existing team",
     copy: "Copy to new team",
     createEmpty: "Create empty team",
@@ -695,6 +709,10 @@ const en = {
       [
         "Boosting Move",
         "Moves that increase your stats (preferrably by 2+), like Swords Dance and Calm Mind.",
+      ],
+      [
+        "Priority Move",
+        "Damaging moves that go before most other moves, regardless of Speed. E.g. Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Choice Item",

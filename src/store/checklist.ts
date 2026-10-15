@@ -173,6 +173,27 @@ const HAZARDS = [
   "ceaselessedge",
 ];
 const CLERICS = ["healbell", "aromatherapy", "sparklyswirl"];
+// Damaging moves with positive priority. Grassy Glide has it only in Grassy Terrain.
+const PRIORITY_MOVES = [
+  "accelerock",
+  "aquajet",
+  "bulletpunch",
+  "extremespeed",
+  "fakeout",
+  "feint",
+  "firstimpression",
+  "iceshard",
+  "jetpunch",
+  "machpunch",
+  "quickattack",
+  "shadowsneak",
+  "suckerpunch",
+  "thunderclap",
+  "upperhand",
+  "vacuumwave",
+  "watershuriken",
+  "zippyzap",
+];
 const PIVOTS = ["uturn", "voltswitch", "flipturn"];
 const CHOICE_ITEMS = ["choiceband", "choicespecs", "choicescarf"];
 
@@ -230,6 +251,12 @@ export const checklist: ChecklistGroup[] = [
         key: "boosting",
         fills: boostsStats,
         examples: ["swordsdance", "nastyplot", "dragondance", "calmmind"],
+      },
+      {
+        key: "priority",
+        fills: anyMove(PRIORITY_MOVES),
+        // Quick Attack is the only one in Gen 1
+        examples: ["extremespeed", "suckerpunch", "aquajet", "quickattack"],
       },
       { key: "voltTurn", fills: anyMove(PIVOTS), examples: PIVOTS },
       {

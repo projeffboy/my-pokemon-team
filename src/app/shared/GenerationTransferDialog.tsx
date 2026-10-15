@@ -15,13 +15,12 @@ import DialogHeader from "./DialogHeader";
 import GameLogos from "./GameLogos";
 import ScrollContent from "./generation-transfer-dialog/ScrollContent";
 import AdjustmentDetails from "./generation-transfer-dialog/AdjustmentDetails";
+import RemovedEntries from "./generation-transfer-dialog/RemovedEntries";
 import TransferEndpoint from "./generation-transfer-dialog/TransferEndpoint";
 import { universalTransferChanges } from "@/store/generation-transfer/universal-changes";
 import type { GameLogo } from "@/images/game-logos";
 import type { TransferLoss } from "@/store/generation-transfer";
-import { isPokemonType, type Generation, type ReadonlyTeam } from "@/types";
-import { moveTypeIn } from "@/shared/generation-data";
-import typeIcons from "@/images/type-icons";
+import type { Generation, ReadonlyTeam } from "@/types";
 
 export default function GenerationTransferDialog({
   from,
@@ -60,6 +59,8 @@ export default function GenerationTransferDialog({
   const compact = useIsSmDown();
   const titleId = useId();
   const destinationId = useId();
+  const summaryId = useId();
+  const universalId = useId();
   const text = t.generationTransfer;
   const destination = where.split(" · ").at(-1) ?? where;
   const valueName = (loss: TransferLoss) => {
@@ -138,6 +139,25 @@ export default function GenerationTransferDialog({
   const isDetail = (loss: TransferLoss) =>
     !categories.some(category => category === loss.field);
   const list = new Intl.ListFormat(locale, { type: "conjunction" });
+  const members = team.filter(member => member.name).length;
+  const removedCounts = categories.flatMap(category => {
+    const count =
+      category === "pokemon" ?
+        unavailable.size
+      : losses.filter(
+          loss => loss.field === category && loss.replacement === undefined,
+        ).length;
+    return count ? [text.counts[category](count)] : [];
+  });
+  const summary = [
+    text.carryOverSummary(
+      members - unavailable.size,
+      text.counts.pokemon(members),
+    ),
+    ...(removedCounts.length ?
+      [text.removedSummary(list.format(removedCounts))]
+    : []),
+  ].join(" · ");
   const slots = [...new Set(losses.map(loss => loss.index))]
     .filter(index => !unavailable.has(index))
     .sort((a, b) => a - b);
@@ -154,6 +174,7 @@ export default function GenerationTransferDialog({
       open
       onClose={onCancel}
       aria-labelledby={`${titleId} ${destinationId}`}
+      aria-describedby={summaryId}
       fullWidth
       fullScreen={compact}
       maxWidth="sm"
@@ -254,6 +275,9 @@ export default function GenerationTransferDialog({
         </Box>
       </Box>
       <ScrollContent>
+        <Typography id={summaryId} variant="body2" sx={{ mt: 2 }}>
+          {summary}
+        </Typography>
         {unavailable.size > 0 && (
           <Box role="group" aria-label={unavailableHeading}>
             <Typography
@@ -286,7 +310,12 @@ export default function GenerationTransferDialog({
                     <Box
                       role="img"
                       aria-label={names.pokemon(loss.pokemon)}
-                      sx={{ display: "flex", flexShrink: 0 }}
+                      sx={{
+                        display: "flex",
+                        flexShrink: 0,
+                        opacity: 0.5,
+                        filter: "grayscale(1)",
+                      }}
                     >
                       <PokemonIcon
                         pokemonProperty="name"
@@ -294,8 +323,9 @@ export default function GenerationTransferDialog({
                       />
                     </Box>
                     <Typography
+                      component="del"
                       variant="body2"
-                      sx={{ overflowWrap: "anywhere" }}
+                      sx={{ overflowWrap: "anywhere", color: "text.secondary" }}
                     >
                       {names.pokemon(loss.pokemon)}
                     </Typography>
@@ -314,22 +344,32 @@ export default function GenerationTransferDialog({
                 {adjustedHeading}
               </Typography>
               {hasCarryover && universalMessages.length > 0 && (
-                <Box
-                  component="ul"
-                  aria-label={text.universalChanges}
-                  sx={{ mt: 1, mb: 1, pl: 2.5, color: "text.secondary" }}
-                >
-                  {universalMessages.map((message, i) => (
-                    <Typography
-                      component="li"
-                      key={i}
-                      variant="body2"
-                      sx={{ mt: 0.5 }}
-                    >
-                      {message}
-                    </Typography>
-                  ))}
-                </Box>
+                <>
+                  <Typography
+                    id={universalId}
+                    component="h3"
+                    variant="subtitle2"
+                    sx={{ mt: 1.5, color: "text.secondary" }}
+                  >
+                    {text.universalChanges}
+                  </Typography>
+                  <Box
+                    component="ul"
+                    aria-labelledby={universalId}
+                    sx={{ mt: 0, mb: 1, pl: 2.5, color: "text.secondary" }}
+                  >
+                    {universalMessages.map((message, i) => (
+                      <Typography
+                        component="li"
+                        key={i}
+                        variant="body2"
+                        sx={{ mt: 0.5 }}
+                      >
+                        {message}
+                      </Typography>
+                    ))}
+                  </Box>
+                </>
               )}
               <Box
                 sx={{
@@ -365,7 +405,12 @@ export default function GenerationTransferDialog({
                   const first = entries[0] ?? changes[0];
                   if (!first) return null;
                   const details = entries.filter(isDetail).map(valueName);
-                  const moves = entries.filter(loss => loss.field === "move");
+                  const lost = entries.filter(
+                    loss => loss.field === "item" || loss.field === "move",
+                  );
+                  const abilities = entries
+                    .filter(loss => loss.field === "ability")
+                    .map(valueName);
                   return (
                     <Fragment key={first.index}>
                       {position > 0 && position % 2 === 0 && (
@@ -398,110 +443,22 @@ export default function GenerationTransferDialog({
                           {pokemonHeading(first)}
                         </Box>
                         <Box sx={{ mt: 1 }}>
-                          {(["item", "ability"] as const).map(field => {
-                            const values = entries.filter(
-                              loss => loss.field === field,
-                            );
-                            if (field === "item")
-                              return values.map((item, i) => (
-                                <Box
-                                  key={i}
-                                  sx={{ color: "text.secondary", mb: 0.5 }}
-                                >
-                                  <Typography variant="body2">
-                                    {text.entryLabel(text.removed.item, "")}
-                                  </Typography>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "flex-start",
-                                      gap: 0.5,
-                                    }}
-                                  >
-                                    <Box
-                                      role="img"
-                                      aria-label={t.team.itemIcon(
-                                        valueName(item),
-                                      )}
-                                      sx={{ display: "flex", flexShrink: 0 }}
-                                    >
-                                      <PokemonIcon
-                                        pokemonProperty="item"
-                                        value={item.value ?? ""}
-                                      />
-                                    </Box>
-                                    <Typography variant="body2">
-                                      {valueName(item)}
-                                    </Typography>
-                                  </Box>
-                                </Box>
-                              ));
-                            return (
-                              values.length > 0 && (
-                                <Typography
-                                  key={field}
-                                  variant="body2"
-                                  sx={{ color: "text.secondary", mb: 0.5 }}
-                                >
-                                  {text.entryLabel(
-                                    text.removed[field],
-                                    list.format(values.map(valueName)),
-                                  )}
-                                </Typography>
-                              )
-                            );
-                          })}
-                          {moves.length > 0 && (
-                            <Box sx={{ color: "text.secondary" }}>
-                              <Typography variant="body2">
-                                {text.removed.moves}
-                              </Typography>
-                              <Box
-                                component="ul"
-                                sx={{
-                                  mt: 0,
-                                  mb: 0.5,
-                                  pl: 0,
-                                  listStyle: "none",
-                                }}
-                              >
-                                {moves.map((move, i) => {
-                                  const type = moveTypeIn(
-                                    move.value ?? "",
-                                    fromGeneration,
-                                  );
-                                  return (
-                                    <Box
-                                      component="li"
-                                      key={i}
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "flex-start",
-                                        gap: 0.5,
-                                      }}
-                                    >
-                                      {type && isPokemonType(type) && (
-                                        <Box
-                                          component="img"
-                                          data-move-type={type}
-                                          src={typeIcons[type]}
-                                          alt={names.type(type)}
-                                          sx={{
-                                            width: 16,
-                                            height: 16,
-                                            mt: 0.25,
-                                            flexShrink: 0,
-                                          }}
-                                        />
-                                      )}
-                                      <Typography variant="body2">
-                                        {valueName(move)}
-                                      </Typography>
-                                    </Box>
-                                  );
-                                })}
-                              </Box>
-                            </Box>
+                          {lost.length > 0 && (
+                            <RemovedEntries
+                              losses={lost}
+                              generation={fromGeneration}
+                            />
+                          )}
+                          {abilities.length > 0 && (
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "text.secondary", mb: 0.5 }}
+                            >
+                              {text.entryLabel(
+                                text.removed.ability,
+                                list.format(abilities),
+                              )}
+                            </Typography>
                           )}
                           {details.length > 0 && (
                             <Typography
@@ -550,13 +507,13 @@ export default function GenerationTransferDialog({
             pt: 1,
           }}
         >
-          <Button onClick={onNew} variant="contained">
-            {hasCarryover ? text.copy : text.createEmpty}
-          </Button>
+          {!compact && <Button onClick={onCancel}>{t.cancel}</Button>}
           <Button onClick={onModify} variant="outlined">
             {hasCarryover ? text.modify : text.clearExisting}
           </Button>
-          {!compact && <Button onClick={onCancel}>{t.cancel}</Button>}
+          <Button onClick={onNew} variant="contained">
+            {hasCarryover ? text.copy : text.createEmpty}
+          </Button>
         </DialogActions>
       </Box>
     </Dialog>
