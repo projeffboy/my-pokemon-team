@@ -112,7 +112,9 @@ export function setLegacyShiny(member: TeamPokemon, shiny: boolean) {
     for (const stat of ["def", "spe", "spa"] as const)
       setStat(member, "ivs", stat, 21);
     if (getDv(member, "atk") % 4 < 2) setStat(member, "ivs", "atk", 31);
-  } else if (isShinyDv(member)) setStat(member, "ivs", "def", 31);
+  } else if (isShinyDv(member))
+    // Def DV 14 keeps 10's low bits, so HP, Hidden Power and gender stay the same
+    setStat(member, "ivs", "def", 29);
   syncDvs(member, 2);
 }
 

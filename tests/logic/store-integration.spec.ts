@@ -1,8 +1,18 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
-import { dvGender, getDv, isShinyDv } from "@/shared/generation-rules";
-import { canHaveHiddenPowerType, hiddenPowerType } from "@/shared/hidden-power";
+import {
+  dvGender,
+  getDv,
+  hpDv,
+  isShinyDv,
+  setDv,
+} from "@/shared/generation-rules";
+import {
+  canHaveHiddenPowerType,
+  hiddenPowerPower,
+  hiddenPowerType,
+} from "@/shared/hidden-power";
 import { setDetail } from "@/shared/set-details";
 import { parseTeamText } from "@/store/team-text";
 
@@ -276,4 +286,31 @@ test("Gen 2 shininess keeps Hidden Power matching the DVs", ({ store }) => {
   expect(hiddenPowerType(store.team[0], 2)).toBe("dragon");
   expect(dvGender(store.team[0])).toBe("F");
   expect(store.team[0].gender).toBe("F");
+});
+
+test("unticking Gen 2 shininess keeps custom DVs, gender and Hidden Power", ({
+  store,
+}) => {
+  store.currentTeam.generation = 2;
+  store.selectPokemon(0, "qwilfish");
+  store.selectMove(0, "move1", "hiddenpowergrass");
+  store.setShiny(0, true);
+  const member = store.team[0];
+  setDv(member, "atk", 2, 2);
+  expect(dvGender(member)).toBe("F");
+  const hp = hpDv(member);
+  const power = hiddenPowerPower(member, 2);
+
+  store.setShiny(0, false);
+  expect(isShinyDv(member)).toBe(false);
+  expect(member.shiny).toBeUndefined();
+  expect(dvGender(member)).toBe("F");
+  expect(member.gender).toBe("F");
+  expect(
+    (["atk", "spe", "spa"] as const).map(stat => getDv(member, stat)),
+  ).toEqual([2, 10, 10]);
+  expect(hpDv(member)).toBe(hp);
+  expect(member.move1).toBe("hiddenpowergrass");
+  expect(hiddenPowerType(member, 2)).toBe("grass");
+  expect(hiddenPowerPower(member, 2)).toBe(power);
 });

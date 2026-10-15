@@ -15,6 +15,7 @@ import {
   LETS_GO,
 } from "@/shared/generation-rules";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { hiddenPowerPower, hiddenPowerType } from "@/shared/hidden-power";
 import { createTeam } from "./shared/team";
 import {
   generationLearnset,
@@ -124,6 +125,30 @@ test("Gen 2 DVs derive HP, gender and shiny while Special stays shared", () => {
   expect(member.shiny).toBeUndefined();
   expect(getDv(member, "spd")).toBe(9);
   expect(hpDv(member)).toBe(9);
+});
+
+test("unticking Gen 2 shininess changes only Def, keeping HP, Hidden Power and gender", () => {
+  // Every Atk DV a shiny can have; its Def, Spe and Special DVs are all 10
+  for (const atk of [2, 3, 6, 7, 10, 11, 14, 15]) {
+    const member = createTeam({ name: "chikorita" })[0]!;
+    setDv(member, "atk", atk, 2);
+    setLegacyShiny(member, true);
+    expect(isShinyDv(member)).toBe(true);
+    const derived = () => ({
+      hp: hpDv(member),
+      type: hiddenPowerType(member, 2),
+      power: hiddenPowerPower(member, 2),
+      gender: dvGender(member),
+    });
+    const shiny = derived();
+    setLegacyShiny(member, false);
+    expect(isShinyDv(member)).toBe(false);
+    expect(member.shiny).toBeUndefined();
+    expect(
+      (["atk", "def", "spe", "spa"] as const).map(stat => getDv(member, stat)),
+    ).toEqual([atk, 14, 10, 10]);
+    expect(derived()).toEqual(shiny);
+  }
 });
 
 test("a Gen 2 shiny import with omitted IVs resolves linked DVs without changing its text", () => {
