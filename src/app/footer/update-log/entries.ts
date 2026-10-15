@@ -29,7 +29,6 @@ const entries: Entry[] = [
       "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
       "From Gen 6, choosing Hidden Power now keeps custom IVs that still give its type, such as 0 Speed for Trick Room.",
-      "Rotom-Frost no longer plays Rotom-Fan’s Gen 4 animation.",
     ],
   },
   {
