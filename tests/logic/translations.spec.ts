@@ -8,6 +8,10 @@ import { sortPokemon } from "@/store/sorting";
 import { defenceMatrix } from "@/store/matrix";
 import { validateTeam } from "@/store/validation";
 import { loadStoredState, type StoredState } from "@/store/teams-storage";
+import { allAbilities, allItemIds } from "@/shared/names";
+import { GENERATIONS } from "@/shared/generations";
+import { availableItems, learnsetsReady } from "@/store/learnsets";
+import learnsets from "@/data/learnsets.json" with { type: "json" };
 import { createTeam } from "./shared/team";
 
 const japanese: Translation = {
@@ -113,6 +117,30 @@ test("every language has the same message keys as English", async () => {
     expect(t.checklist.items.spinner.short, locale).toBeTruthy();
   }
   expect(await loadTranslation("en")).toBe(english);
+});
+
+test("no two options of a dropdown share a name in any language", async () => {
+  await learnsetsReady;
+  const duplicates = (ids: readonly string[], name: (id: string) => string) => {
+    const seen = new Map<string, string>();
+    return ids.flatMap(id => {
+      const other = seen.get(name(id));
+      seen.set(name(id), id);
+      return other === undefined ? [] : [`${other} and ${id}: ${name(id)}`];
+    });
+  };
+  const learnableMoves = [...new Set(Object.values(learnsets).flat())];
+  for (const locale of LOCALES) {
+    const { names } = await loadTranslation(locale);
+    expect.soft(duplicates(allAbilities, names.ability), locale).toEqual([]);
+    expect.soft(duplicates(learnableMoves, names.move), locale).toEqual([]);
+    for (const generation of GENERATIONS) {
+      const items = availableItems(allItemIds, generation);
+      expect
+        .soft(duplicates(items, names.item), `${locale} gen ${generation}`)
+        .toEqual([]);
+    }
+  }
 });
 
 test("every other language names a slot's inputs in its own words", async () => {

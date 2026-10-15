@@ -17,6 +17,7 @@ const entries: Entry[] = [
       "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
       "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
       "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
+      "Abilities and items that shared a name in other languages, such as the two As One abilities, are now told apart.",
     ],
   },
   {
