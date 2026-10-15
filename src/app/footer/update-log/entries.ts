@@ -13,6 +13,7 @@ const entries: Entry[] = [
     changes: [
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
       "Beat Up is now typeless in Gens 2–4, as in those games.",
+      "The coverage matrix now doubles resisted hits from Tinted Lens users.",
     ],
   },
   {
