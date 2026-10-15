@@ -21,8 +21,6 @@ const FILENAME_EXCEPTIONS: Record<string, string> = {
 const GEN5_ONLY = [
   "dialgaorigin",
   "palkiaorigin",
-  "basculinwhitestriped",
-  "ursaluna",
   "pichuspikyeared",
   "miraidon",
 ];
@@ -55,8 +53,8 @@ function spriteFolder(
   isSmall: boolean,
   generation: Generation,
 ) {
+  // Showdown has not animated the Legends: Z-A megas, which start at 1320 + 93
   if (
-    (num !== undefined && 984 <= num && num <= 995) ||
     num === 0 ||
     (iconIndex ?? -1) >= 1320 + 93 ||
     GEN5_ONLY.includes(pokemon)

@@ -262,6 +262,14 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/starmie-mega.gif`);
     });
 
+    test("should animate a paradox pokemon", async ({ page }) => {
+      await selectPokemon(page, "Sandy Shocks");
+
+      await expect(
+        page.getByRole("img", { name: "Sandy Shocks" }),
+      ).toHaveAttribute("src", `${SHOWDOWN_SPRITES}/ani/sandyshocks.gif`);
+    });
+
     test("should drop the space in a two-word forme", async ({ page }) => {
       await selectPokemon(page, "Vivillon-Icy Snow");
 

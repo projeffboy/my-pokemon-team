@@ -1,5 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { spriteUrls } from "@/app/shared/pokemon-sprite/sprite-urls";
+import pokedex from "@/data/pokedex";
+import altSpriteNum from "@/data/altSpriteNum";
 
 const bulbasaur = { num: 1 };
 
@@ -11,6 +13,19 @@ test("sprites come from the generation's own games, animated from gen 5", () => 
   expect(src(false, 5)).toMatch(/\/gen5ani\/bulbasaur\.gif$/);
   expect(src(false, 9)).toMatch(/\/ani\/bulbasaur\.gif$/);
   expect(src(true, 9)).toMatch(/\/dex\/bulbasaur\.png$/);
+});
+
+test("newer pokemon that Showdown animates are animated, unlike the Legends: Z-A megas", () => {
+  const src = (pokemon: string, isSmall = false) =>
+    spriteUrls(pokemon, pokedex[pokemon], altSpriteNum[pokemon], isSmall, 9)
+      .src;
+  expect(src("greattusk")).toMatch(/\/ani\/greattusk\.gif$/);
+  expect(src("ursaluna")).toMatch(/\/ani\/ursaluna\.gif$/);
+  expect(src("basculinwhitestriped")).toMatch(
+    /\/ani\/basculin-whitestriped\.gif$/,
+  );
+  expect(src("irontreads", true)).toMatch(/\/dex\/irontreads\.png$/);
+  expect(src("scovillainmega")).toMatch(/\/gen5\/scovillain-mega\.png$/);
 });
 
 test("pokemon Showdown only has static sprites for stay static in every generation", () => {
