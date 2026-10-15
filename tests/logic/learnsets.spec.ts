@@ -223,7 +223,7 @@ test("Viable filtering follows historical Showdown usefulness rules", () => {
   );
 });
 
-test("the CAP format gives CAP pokemon every move of theirs that Gen 9 still has", () => {
+test("the CAP format gives CAP pokemon the moves Showdown's CAP learnsets give a Gen 9 source", () => {
   const kitsunoh = generationLearnset("kitsunoh", 9, CAP_FORMAT);
   // Shadow Strike is CAP-only, so no game has it
   expect(kitsunoh).toEqual(
@@ -233,6 +233,13 @@ test("the CAP format gives CAP pokemon every move of theirs that Gen 9 still has
     expect(completeLearnset("kitsunoh")).toContain(move);
     expect(kitsunoh).not.toContain(move);
   }
+  // Gen 9 has these moves, but Revenankh learns them only in earlier generations
+  const revenankh = generationLearnset("revenankh", 9, CAP_FORMAT);
+  for (const move of ["darkestlariat", "throatchop"]) {
+    expect(completeLearnset("revenankh")).toContain(move);
+    expect(revenankh).not.toContain(move);
+  }
+  expect(revenankh).toContain("drainpunch");
   // Real pokemon keep Gen 9's own movepools
   expect(generationLearnset("ogerpon", 9, CAP_FORMAT)).toEqual(
     generationLearnset("ogerpon", 9, "OU: Over Used"),

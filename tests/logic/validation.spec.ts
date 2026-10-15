@@ -137,7 +137,17 @@ test("CAP pokemon are allowed only in the CAP format", () => {
       9,
       CAP_FORMAT,
     ),
-  ).toEqual(["Crucibelle-Mega is not allowed in Gen 9 CAP."]);
+  ).toEqual([
+    "Crucibelle-Mega is not allowed in Gen 9 CAP.",
+    "Crucibelle-Mega has Crucibellite, which is banned in Gen 9 CAP.",
+  ]);
+  expect(
+    validateTeam(
+      createTeam({ name: "primeape", ability: "Defiant", move1: "ragefist" }),
+      9,
+      CAP_FORMAT,
+    ),
+  ).toEqual(["Primeape has Rage Fist, which is banned in Gen 9 CAP."]);
 });
 
 test("reports illegal abilities, missing required items, and repeated moves", () => {

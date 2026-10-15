@@ -194,10 +194,12 @@ test.describe("Filters Integration Tests", () => {
       /pokemonicons-sheet/,
     );
 
-    // Equilibra learns its moves that Gen 9 still has
+    // Equilibra learns the moves that Showdown gives a Gen 9 source, so not
+    // Return, which Gen 9 lacks, or Rock Polish, which it learned only before
     await selectPokemon(page, "Equilibra");
     await checkMoveSelectable(page, "Earth Power");
     await checkMoveNotSelectable(page, "Return");
+    await checkMoveNotSelectable(page, "Rock Polish");
   });
 
   test("sorts the selected Pokemon even when filters exclude it", async ({

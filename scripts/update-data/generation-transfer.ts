@@ -62,7 +62,14 @@ export function generationTransferData(
         }
         for (const id of pokemonIds) {
           const species = target.species.get(id);
-          if (!available(species)) continue;
+          // CAP pokemon are in no game, so they get no generation, but Showdown's
+          // Gen 9 CAP format allows their abilities and their moves with a Gen 9 source
+          const cap =
+            mod === "gen9" && species.exists && species.isNonstandard === "CAP";
+          const allowed = (entry: Entry) =>
+            available(entry) ||
+            (cap && entry.exists && entry.isNonstandard === "CAP");
+          if (!available(species) && !cap) continue;
           // Z-A's stones inherit SV's Past/Future tags, although its Mega formes use them.
           if (mod === "gen9legends" && species.requiredItem) {
             const item = target.items.get(species.requiredItem);
@@ -77,16 +84,17 @@ export function generationTransferData(
             moves: {},
             abilities: {},
           });
-          entry.generations |= bit;
+          if (!cap) entry.generations |= bit;
           if (target.gen >= 3) {
             for (const ability of Object.values(species.abilities)) {
-              if (available(target.abilities.get(ability)))
+              if (allowed(target.abilities.get(ability)))
                 entry.abilities[ability] =
                   (entry.abilities[ability] ?? 0) | bit;
             }
           }
+          // From Gen 9, the move pool keeps only moves with a source in that generation
           for (const move of target.species.getMovePool(id)) {
-            if (available(target.moves.get(move)))
+            if (allowed(target.moves.get(move)))
               entry.moves[move] = (entry.moves[move] ?? 0) | bit;
           }
         }
