@@ -83,7 +83,7 @@ Users of the site differ in ways that change which requirements matter to them.
 | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Domain experience              | In-game players who know types but not competitive terms; competitive singles players (Smogon tiers); competitive doubles players (VGC, Pokemon Champions).  |
 | Tasks performed                | Building a new team; checking an existing team pasted from Showdown; opening a team someone shared; keeping a collection of teams.                           |
-| Features used                  | Name, moves, item, and ability only; or also set details (nature, EVs, IVs), filters, the matrix, and exporting every team.                                  |
+| Features used                  | Name, moves, item, and ability only; or also set details (nature, EVs, IVs), filters, the matrix, and backups.                                               |
 | Frequency of use               | First-time visitors from a share link or a search; occasional visitors before a playthrough; regular visitors who return to saved teams.                     |
 | Platform                       | Phones from 320 pixels wide (touch, small screen); tablets; laptops and desktops (keyboard, wide screen).                                                    |
 | Language                       | English, Japanese, Korean, Simplified Chinese, Traditional Chinese, Spanish, French, German, Italian, Brazilian Portuguese.                                  |

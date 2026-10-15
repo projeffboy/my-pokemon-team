@@ -49,9 +49,8 @@ Users are Pokemon players of any age who can read one of the site's ten language
 | Term               | Definition                                                                                                                                                      |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ability            | A passive trait of a pokemon that can change type matchups, such as Levitate.                                                                                   |
-| Backup file        | A JSON file of every saved team, `my-pokemon-teams-backup.json`, written by the Team backups action of released versions of the site.                           |
+| Backup file        | A file the site writes that holds every saved team, the unsaved draft, and each team's settings.                                                                |
 | Checklist          | The list of roles a competitive team usually fills, such as an entry hazard or reliable recovery, each marked as present or absent for the team.                |
-| Collection export  | A Showdown text file from Export All holding every saved team with its name, generation profile, format, and pokemon details.                                   |
 | Coverage           | How hard a team's damaging moves hit each type. A type is covered by a move that is super effective against it.                                                 |
 | Current team       | The team the Player is editing.                                                                                                                                 |
 | Defence            | How hard each attacking type hits the pokemon of a team.                                                                                                        |
@@ -313,7 +312,7 @@ stateDiagram-v2
   [*] --> Draft : site opened
   [*] --> Draft : shared link opened [no saved team matches]
   [*] --> Saved : new team requested [no empty team matches]
-  [*] --> Saved : team text imported, team duplicated, team copied to another generation
+  [*] --> Saved : team text imported, backup restored, team duplicated, team copied to another generation
   Draft --> Saved : team edited
   Draft --> [*] : another team opened, draft deleted
   state Saved {
@@ -708,7 +707,7 @@ US8. As a player with several teams in progress, I want each one kept in my brow
 - f) There is always at least one saved team.
 - g) An empty team cannot be duplicated.
 - h) Teams changed in one tab appear in the site's other tabs, and neither tab undoes the other's changes.
-- i) The Player is told when the browser could not save, and is pointed to Export All.
+- i) The Player is told when the browser could not save, and is pointed to a backup.
 
 **Use case**
 
@@ -748,7 +747,7 @@ Alternatives/Exceptions:
 3c.1a.1: System informs Player that an empty team cannot be duplicated; use case continues
          at step 2.
 1-5a: System could not keep the saved teams in the Player's browser:
-1-5a.1: System informs Player that the teams could not be saved and that Export All will keep
+1-5a.1: System informs Player that the teams could not be saved and that a backup will keep
         them; use case continues at the step that was interrupted.
 Postcondition: The saved teams are those the Player created and did not delete, and at least
 one saved team exists.
@@ -766,7 +765,7 @@ one saved team exists.
 | REQ-COLL-6  | The site shall allow the Player to rename any saved team.                                                                                                                                 | C    | Implemented |
 | REQ-COLL-7  | The site shall create, on the Player's request, a copy of a saved team that has at least one pokemon, under a name no other saved team has.                                               | C    | Implemented |
 | REQ-COLL-8  | The site shall delete a saved team only after the Player confirms a prompt stating that the deletion cannot be undone.                                                                    | E    | Implemented |
-| REQ-COLL-9  | The site shall inform the Player that the browser could not save the teams, and that Export All will keep them, after a failed attempt to save.                                           | E    | Approved    |
+| REQ-COLL-9  | The site shall inform the Player that the browser could not save the teams, and that a backup will keep them, after a failed attempt to save.                                             | E    | Implemented |
 | REQ-COLL-10 | The site shall hold at least one saved team at all times, creating an empty one after the deletion of the last.                                                                           | E    | Implemented |
 | REQ-COLL-11 | The site shall take into each open tab the teams that the site's other tabs in the same browser save, merging team by team so that no tab discards another's changes.                     | E    | Implemented |
 | REQ-COLL-12 | The site shall keep saved teams without an expiry date.                                                                                                                                   | E    | Implemented |
@@ -774,64 +773,62 @@ one saved team exists.
 
 #### 3.1.12) UC9 Back Up Teams and UC10 Restore Teams
 
-**Requirements change, Oct 14, 2026 — implementation pending.** The Site Owner wants collection backups consolidated into Export All and Import Team. The current implementation has not been changed. Filters and unsaved drafts are excluded from future exports, and imports must skip duplicates. Criterion e is a proposed matching rule **[A-25]**.
-
 **User stories**
 
 US9. As a player who keeps many teams, I want to save all of them to a file, so that clearing my browser does not lose them.
 
-US10. As a player with two devices, I want to add the teams from a collection export to the teams I already have, so that I can carry my collection from one device to the other.
+US10. As a player with two devices, I want to add the teams from a backup file to the teams I already have, so that I can carry my collection from one device to the other.
 
 **Acceptance criteria (Verify that...)**
 
-- a) Export All writes every saved team as Showdown text, including names, generations, games, formats, empty teams, and supported pokemon details; filters and unsaved drafts are excluded.
-- b) Import Team adds new teams without changing or removing existing teams and opens the last newly imported team.
-- c) Importing the same export twice adds nothing the second time, keeps the current team open, and tells the Player the teams are already there.
-- d) Duplicates within the same pasted text are added only once.
-- e) Named teams match by name, generation profile, format, and the pokemon details that survive text export and import. Different filters do not make a team different; text without a team name matches by the remaining fields. **[A-25]**
-- f) Imports are read on the Player's device and are not sent anywhere.
-- g) Export All includes teams saved by other tabs up to the request.
-- h) The separate Team backups action is absent; collection exports and restores use Export All and Import Team.
-- i) Collection exports preserve stored pokemon set values, including values not legal in the selected game.
-- j) Import Team also adds the teams of a backup file, as it adds those of a collection export, so that backups saved before the change still load (REQ-INFO-3). **[A-26]**
+- a) A backup file holds every saved team and the unsaved draft, with each team's name, generation profile, format, filters, and every pokemon's details.
+- b) Restoring a backup adds its teams and leaves the existing teams and the current team unchanged.
+- c) Restoring the same backup twice adds nothing the second time, and the Player is told the teams are already there.
+- d) Before restoring, the Player is told how many teams the file holds.
+- e) A file that is not a backup written by the site is refused with a message saying so.
+- f) The backup file is read on the Player's device and is not sent anywhere.
+- g) A backup keeps a pokemon's values even where they are not legal in its game.
 
 **Use case**
 
 ```
 Title: Restore Teams
 Actors: Player
-Intention: The intention of the Player is to add exported teams to the saved teams,
-without losing any team already saved.
-Precondition: Player has a collection export or a backup file.
+Intention: The intention of the Player is to add the teams held in a backup file to the
+saved teams, without losing any team already saved.
+Precondition: Player has a backup file.
 Main Scenario:
-1: Player provides System with the collection export or the backup file and requests an
-   import.
-2: System reads the teams and omits duplicates.
-3: System adds the new teams, opens the last one, and informs Player how many were added.
+1: Player provides System with a backup file.
+2: System validates the file and informs Player of the number of teams it holds.
+3: Player requests System to add the teams.
+4: System adds to the saved teams each team of the file that is not already among them, and
+   informs Player that the teams were added.
 Alternatives/Exceptions:
-2a: The text contains no recognizable teams:
-2a.1: System informs Player that no pokemon were found; use case continues at step 1.
-2b: Every team is already among the saved teams:
-2b.1: System informs Player that the teams are already in the collection; use case ends in
-      success without changing the current team.
+2a: The file is not a backup written by the site, or exceeds the size the System accepts:
+2a.1: System informs Player that the file could not be read; use case continues at step 1.
+4a: Every team of the file is already among the saved teams:
+4a.1: System informs Player that the teams are already in the collection; use case ends in
+      success.
+4b: The saved teams with the added teams would exceed the size the System can keep:
+4b.1: System informs Player that the backup has too many teams to add; use case ends in
+      failure.
 Postcondition (for success case): The saved teams are those saved before, followed by the
-new teams. The last added team is current, or the current team is unchanged when none is added.
+teams of the file that were not among them. The current team is unchanged.
 Postcondition (for fail case): The saved teams and the current team are unchanged.
 ```
 
 **Requirements**
 
-| ID          | Requirement                                                                                                                                                   | Imp. | Status   |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | -------- |
-| REQ-BKUP-1  | The site shall export every saved team as Showdown text, preserving each team's name, generation profile, format, empty teams, and supported pokemon details. | E    | Approved |
-| REQ-BKUP-2  | The site shall add imported teams without changing or removing existing saved teams.                                                                          | E    | Approved |
-| REQ-BKUP-3  | The site shall skip imported teams matching the saved collection or an earlier team in the same import according to criterion e **[A-25]**.                   | E    | Approved |
-| REQ-BKUP-6  | The site shall keep in a collection export every stored pokemon set value, including values not legal in the team’s game.                                     | C    | Approved |
-| REQ-BKUP-8  | The site shall include in Export All the teams that other tabs in the same browser have saved up to the request.                                              | C    | Approved |
-| REQ-BKUP-9  | The site shall provide collection backup and restore through Export All and Import Team without a separate Team backups action.                               | E    | Approved |
-| REQ-BKUP-10 | The site shall add through Import Team the teams of a backup file, without changing or removing existing saved teams **[A-26]**.                              | E    | Proposed |
-
-REQ-BKUP-4, REQ-BKUP-5, REQ-BKUP-7, and REQ-INTF-11 are deleted from the revised requirements: a separate JSON export, file selection screen, restore preview, and backup-specific size limit are no longer required. These identifiers will not be reused. This is a requirements decision; the existing implementation is unchanged. REQ-BKUP-6 and REQ-INFO-3 are retained because the Site Owner has not withdrawn set-value preservation or compatibility with existing backups. The Team backups action is the only way to load a backup file today, so REQ-BKUP-9 cannot be implemented without breaking REQ-INFO-3 until REQ-BKUP-10, or another way to load backup files, is approved.
+| ID         | Requirement                                                                                                                                                       | Imp. | Status      |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-BKUP-1 | The site shall write, on the Player's request, a backup file holding every saved team and the draft, each with its name, generation profile, format, and filters. | E    | Implemented |
+| REQ-BKUP-2 | The site shall add the teams of a backup file to the saved teams without changing or removing any saved team or the current team.                                 | E    | Implemented |
+| REQ-BKUP-3 | The site shall add no team from a backup file that equals a team already among the saved teams.                                                                   | E    | Implemented |
+| REQ-BKUP-4 | The site shall refuse a file that is not a backup written by the site, informing the Player that the file could not be read.                                      | E    | Implemented |
+| REQ-BKUP-5 | The site shall inform the Player of the number of teams in a backup file before adding them.                                                                      | C    | Implemented |
+| REQ-BKUP-6 | The site shall keep in a backup file every set value of every pokemon, including values that are not legal in the team's game.                                    | C    | Implemented |
+| REQ-BKUP-7 | The site shall accept a backup file of up to 10 megabytes.                                                                                                        | C    | Implemented |
+| REQ-BKUP-8 | The site shall include in a backup file the teams that the site's other tabs in the same browser have saved up to the moment of the request.                      | C    | Implemented |
 
 #### 3.1.13) UC11 Share Team by Link and UC12 Open Shared Team
 
@@ -909,7 +906,7 @@ US14. As a Pokemon Showdown user, I want my team as text in Showdown's format, s
 
 **Acceptance criteria (Verify that...)**
 
-- a) Pasted team text adds one saved team per new team, named as in the text, skipping duplicates by the collection criteria in UC9/UC10. This change is approved and awaiting implementation.
+- a) Pasted text of one team becomes a new saved team; pasted text of several teams becomes as many saved teams, named as in the text.
 - b) Nicknames, levels, genders, shiny flags, tera types, natures, EVs, and IVs in the text are kept; happiness is kept where the game has it.
 - c) A team whose text names a generation or format is given that generation and format; otherwise it takes the current team's.
 - d) Imported text with no pokemon in it is refused with a message, and nothing changes.
@@ -956,8 +953,8 @@ Main Scenario:
 1: Player provides System with team text.
 2: System reads the teams in the text, each with its name, generation profile, format,
    pokemon, moves, items, abilities, and set details.
-3: System adds each new team to the saved teams, makes the last added team the current team,
-   and informs Player of the number of teams added. Duplicate teams are skipped.
+3: System adds each team to the saved teams, makes the last one the current team, and
+   informs Player of the number of teams imported.
 4: Analyze Team.
 Alternatives/Exceptions:
 2a: The text holds no pokemon:
@@ -969,12 +966,8 @@ Alternatives/Exceptions:
 2c: A pokemon, move, item, or ability named in the text does not exist in the team's
     generation profile:
 2c.1: System leaves that entry out of the team; use case continues at step 3.
-3a: All teams in the text are duplicates:
-3a.1: System informs Player that the teams are already saved, keeps the current team
-      unchanged, and ends in success.
-Postcondition (for success case): The saved teams include each new team from the text.
-The teams saved before are unchanged. An import containing only duplicates keeps the
-current team unchanged and reports that the teams are already saved.
+Postcondition (for success case): The saved teams include one team for each team of the
+text. The teams saved before are unchanged.
 Postcondition (for fail case): The saved teams and the current team are unchanged.
 ```
 
@@ -982,7 +975,7 @@ Postcondition (for fail case): The saved teams and the current team are unchange
 
 | ID          | Requirement                                                                                                                                                                                                                       | Imp. | Status      |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-TEXT-1  | The site shall create one saved team for each new team in imported text, skipping duplicates according to UC9/UC10 **[A-25]**.                                                                                                    | E    | Approved    |
+| REQ-TEXT-1  | The site shall create one saved team for each team in team text that the Player provides for import.                                                                                                                              | E    | Implemented |
 | REQ-TEXT-2  | The site shall read from team text each pokemon's name, nickname, gender, item, ability, level, shiny flag, happiness, tera type, training values, nature, and moves.                                                             | E    | Implemented |
 | REQ-TEXT-3  | The site shall give an imported team the generation profile and format that its text names, and those of the current team for text that names none.                                                                               | C    | Implemented |
 | REQ-TEXT-4  | The site shall inform the Player that no pokemon were found, changing no team, for imported text that holds no pokemon.                                                                                                           | E    | Implemented |
@@ -1378,6 +1371,7 @@ Design budget for REQ-PERF-4: at most 600 kB of gzip-compressed script before a 
 | REQ-INTF-4  | The site shall write the share link's generation profile as the `gen` parameter (a generation number, or `6-9`), and Pokemon Champions as `game=champions` with no `gen`. | E    | Implemented |
 | REQ-INTF-5  | The site shall present the ad platform's top banner above the page content in production.                                                                                 | E    | Implemented |
 | REQ-INTF-8  | The site shall redirect requests for `ads.txt` to the ad platform's copy, and shall allow the ad platform's crawler in `robots.txt`.                                      | E    | Implemented |
+| REQ-INTF-11 | The site shall write a backup file as JSON that identifies its format as `mypokemonteam` and its version as 1.                                                            | E    | Implemented |
 | REQ-INTF-12 | The site shall operate in the current versions of Chrome and Safari on desktop, Chrome on Android, and Safari on iOS.                                                     | E    | Implemented |
 | REQ-INTF-13 | The site shall operate in the current version of each browser that its maker still updates and that has at least 2% of browser usage **[A-18]**.                          | C    | Proposed    |
 | REQ-INTF-14 | The site shall provide, for link previews, a title, a description, and a screenshot at an address that does not change.                                                   | C    | Implemented |
@@ -1545,7 +1539,7 @@ Verification methods follow the requirement groups of Section 3. The test suites
 | REQ-ANLY-12 to 19                | Test                      | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                                                                                                                                                                      |
 | REQ-GEN                          | Test                      | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                                                                                                                                                                      |
 | REQ-COLL                         | Test                      | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts`                                                                                                                                                      |
-| REQ-BKUP                         | Test                      | `tests/logic/set-details.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/integration-tests.spec.ts` (extend for duplicate imports and consolidation; pending)                                                                                                                                                  |
+| REQ-BKUP                         | Test                      | `tests/logic/team-backup.spec.ts`, `tests/component/dialogs/teams-dialog/backup-integration-tests.spec.ts`                                                                                                                                                                                                                                      |
 | REQ-LINK, REQ-INTF-3, REQ-INTF-4 | Test                      | `tests/component/team-link-sync/`, `tests/logic/team-link-game-values.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/share-link-*.spec.ts`                                                                                                                                                                                    |
 | REQ-TEXT-1 to 11                 | Test                      | `tests/logic/parsing.spec.ts`, `tests/logic/storage-text-contracts.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/manage-team-menu/`; for REQ-TEXT-10, a test that reads the text with Pokemon Showdown's own parser, to be written                                                                                           |
 | REQ-TEXT-12 to 14                | Test, Demonstration       | Extend parsing and team-text editor checks for advisory reports, updating despite problems without confirmation, invalid and unlearnable moves becoming empty slots, valid later moves retaining their positions, and cancellation; diagnostic checks pending.                                                                                  |

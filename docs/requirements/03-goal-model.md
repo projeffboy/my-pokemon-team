@@ -6,8 +6,6 @@ The course built goal models in the jUCMNav tool. This one is written as text, i
 
 Every importance and contribution value below is the analyst's estimate **[A-15]**. As the course notes, such values serve to rank alternatives and to argue for decisions; a difference of a few points between two results means nothing.
 
-Under the approved Oct 14, 2026 requirements change, the Backups task is supplied by Export All and Import Team. Removing the separate backups action is awaiting implementation.
-
 ## 3.1 Actors and intentional elements
 
 The model has three stakeholder actors, each holding softgoals, and one system actor holding the tasks. Features from [04-feature-model.md](04-feature-model.md) are used directly as tasks. The number in parentheses after a softgoal is its importance to its actor, from 0 to 100.
@@ -47,7 +45,7 @@ The system's goal "Support team planning" is AND-decomposed into the mandatory f
 | -------------------- | -------------------------------------------------- | -------------------- | ---------------------------------- |
 | Team Defence         | F4.1                                               | Saved Teams          | F5.1                               |
 | Coverage             | F4.2                                               | Tab Sync             | F5.2                               |
-| Explanations         | F4.3                                               | Backups              | F6                                 |
+| Explanations         | F4.3                                               | Backups              | F5.3                               |
 | Checklist            | F4.4                                               | Share Link           | F6 Share Link                      |
 | Matrix               | F4.5                                               | Showdown Text        | F6 Showdown Text                   |
 | Legality Warnings    | F4.6 (PF6)                                         | Export All           | F6 Export All                      |

@@ -56,8 +56,6 @@ Statuses:
 
 The Oct 14, 2026 changes below changed only the requirements; the implementation and verification of the requirements they approve are pending.
 
-**Oct 14, 2026 change request:** consolidate Team backups into Export All and Import Team, omit filters and unsaved drafts from exports, and skip duplicate imports. Matching details remain open in A-25, and how backup files saved before the change are loaded in A-26.
-
 **Oct 14, 2026 mobile autofill request:** REQ-USE-19 is approved and applies to editable fields throughout the site, including dialogs. Personal-data autofill must be suppressed while the site's own option lists remain usable, as checked on native mobile browsers.
 
 **Oct 14, 2026 dropdown keyboard request:** REQ-USE-20 is approved. Closing a dropdown on mobile must also dismiss the keyboard it opened, without an extra tap. Selection, dismissal, dialog closure, and transfer to another editable field are covered by the acceptance criteria.
@@ -189,8 +187,8 @@ An X means the requirements of the row help achieve the business requirement of 
 | US6        | P-1 Maya, P-2 Daniel      | UC6 Analyze Team                            | REQ-ANLY-1 to 11, 20         |
 | US7        | P-4 Kenji                 | UC7 Change Generation                       | REQ-GEN-1 to 12              |
 | US8        | P-3 Sofía                 | UC8 Manage Saved Teams                      | REQ-COLL-1 to 13             |
-| US9        | P-3 Sofía                 | UC9 Back Up Teams                           | REQ-BKUP-1, 6, 8, 9          |
-| US10       | P-3 Sofía                 | UC10 Restore Teams                          | REQ-BKUP-2, 3, 10            |
+| US9        | P-3 Sofía                 | UC9 Back Up Teams                           | REQ-BKUP-1, 6, 8             |
+| US10       | P-3 Sofía                 | UC10 Restore Teams                          | REQ-BKUP-2 to 5, 7           |
 | US11       | P-2 Daniel, P-3 Sofía     | UC11 Share Team by Link                     | REQ-LINK-1 to 3              |
 | US12       | P-4 Kenji                 | UC12 Open Shared Team                       | REQ-LINK-4 to 11, REQ-INFO-8 |
 | US13       | P-2 Daniel                | UC13 Import Team Text                       | REQ-TEXT-1 to 4              |
