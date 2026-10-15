@@ -127,15 +127,18 @@ const ko: Messages = {
     delete: "삭제",
     importTeam: "팀 가져오기",
     share: "공유",
-    teamEmpty: "포켓몬 팀이 비어 있습니다",
+    teamEmpty: "팀이 비어 있습니다. 공유하려면 포켓몬을 추가하세요.",
     linkCopied: "포켓몬 팀 링크를 복사했습니다",
-    linkNotCopied: "링크를 복사하지 못했습니다.",
+    linkNotCopied:
+      "링크를 복사하지 못했습니다. 팀을 연 상태에서 주소창의 주소를 복사하세요.",
     linkGenerationUnsupported: (profile: string) =>
       `이 링크의 세대 또는 게임은 지원되지 않아 ${profile}에서 열었습니다.`,
-    nothingToCopy: "팀이 비어 있어 복사할 내용이 없습니다.",
+    nothingToCopy: "팀이 비어 있습니다. 복사하려면 포켓몬을 추가하세요.",
     teamCopied: "팀을 복사했습니다.",
-    teamNotCopied: "팀을 복사하지 못했습니다.",
-    cannotDuplicateEmptyTeam: "빈 팀은 복제할 수 없습니다",
+    teamNotCopied:
+      "팀을 복사하지 못했습니다. 대신 Pokepaste 편집에서 텍스트를 복사하세요.",
+    cannotDuplicateEmptyTeam:
+      "팀이 비어 있습니다. 복제하려면 포켓몬을 추가하세요.",
     teamDuplicated: "팀을 복제했습니다",
     teamDeleted: "팀을 삭제했습니다",
     slots: "포켓몬 팀 슬롯",
@@ -424,7 +427,8 @@ const ko: Messages = {
     randomTeamCreated: "랜덤 팀을 만들었습니다",
     exported: "모든 팀을 내보냈습니다",
     copiedAll: "모든 팀을 복사했습니다",
-    notCopiedAll: "팀을 복사하지 못했습니다.",
+    notCopiedAll:
+      "팀을 복사하지 못했습니다. 대신 전체 내보내기로 내려받으세요.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -546,7 +550,8 @@ const ko: Messages = {
     imported: "팀을 가져왔습니다",
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
     noChanges: "변경된 내용이 없습니다.",
-    nothingFound: "텍스트에서 포켓몬을 찾지 못했습니다.",
+    nothingFound:
+      "텍스트에서 포켓몬을 찾지 못했습니다. 포켓몬 이름을 Pokemon Showdown과 같은 영어 표기로 쓰거나 Pokemon Showdown에서 내보낸 팀을 붙여넣으세요.",
     problems: (count: number) =>
       `문제 ${count}개를 찾았습니다. 업데이트하면 텍스트가 다음과 같이 적용됩니다:`,
     problemAt: (pokemon: string, field: string) => `${pokemon}의 ${field}`,

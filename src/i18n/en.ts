@@ -110,15 +110,18 @@ const en = {
     delete: "Delete",
     importTeam: "Import team",
     share: "Share",
-    teamEmpty: "Pokemon team is empty",
+    teamEmpty: "The team is empty. Add a pokemon to share it.",
     linkCopied: "Pokemon team link copied",
-    linkNotCopied: "Could not copy the link.",
+    linkNotCopied:
+      "Could not copy the link. Copy it from the address bar while the team is open.",
     linkGenerationUnsupported: (profile: string) =>
       `This link’s generation or game isn’t supported, so it opened in ${profile}.`,
-    nothingToCopy: "Empty team, nothing to copy.",
+    nothingToCopy: "The team is empty. Add a pokemon to copy it.",
     teamCopied: "Team copied.",
-    teamNotCopied: "Could not copy the team.",
-    cannotDuplicateEmptyTeam: "Cannot duplicate empty team",
+    teamNotCopied:
+      "Could not copy the team. Copy its text from Edit Pokepaste instead.",
+    cannotDuplicateEmptyTeam:
+      "The team is empty. Add a pokemon to duplicate it.",
     teamDuplicated: "Team duplicated",
     teamDeleted: "Team deleted",
     slots: "Pokemon team slots",
@@ -409,7 +412,8 @@ const en = {
     randomTeamCreated: "Random team created",
     exported: "Exported all teams",
     copiedAll: "Copied all teams",
-    notCopiedAll: "Could not copy the teams.",
+    notCopiedAll:
+      "Could not copy the teams. Use Export All to download them instead.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -532,7 +536,8 @@ const en = {
     imported: "Team imported",
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",
-    nothingFound: "No pokemon found in that text.",
+    nothingFound:
+      "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
     // The problems in edited text, each shown as "Ho-Oh, Move 4: “Iron Hed”"
     // above its reason and what an update does instead
     problems: (count: number) =>

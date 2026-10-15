@@ -115,15 +115,18 @@ const ja: Messages = {
     delete: "削除",
     importTeam: "チームをインポート",
     share: "共有",
-    teamEmpty: "ポケモンチームは空です",
+    teamEmpty: "チームが空です。共有するにはポケモンを追加してください。",
     linkCopied: "ポケモンチームのリンクをコピーしました",
-    linkNotCopied: "リンクをコピーできませんでした。",
+    linkNotCopied:
+      "リンクをコピーできませんでした。チームを開いた状態で、アドレスバーからコピーしてください。",
     linkGenerationUnsupported: (profile: string) =>
       `このリンクの世代またはゲームには対応していないため、${profile}で開きました。`,
-    nothingToCopy: "チームが空なので、コピーするものがありません。",
+    nothingToCopy: "チームが空です。コピーするにはポケモンを追加してください。",
     teamCopied: "チームをコピーしました。",
-    teamNotCopied: "チームをコピーできませんでした。",
-    cannotDuplicateEmptyTeam: "空のチームは複製できません",
+    teamNotCopied:
+      "チームをコピーできませんでした。代わりに「Pokepasteを編集」からテキストをコピーしてください。",
+    cannotDuplicateEmptyTeam:
+      "チームが空です。複製するにはポケモンを追加してください。",
     teamDuplicated: "チームを複製しました",
     teamDeleted: "チームを削除しました",
     slots: "ポケモンチームのスロット",
@@ -414,7 +417,8 @@ const ja: Messages = {
     randomTeamCreated: "ランダムなチームを作成しました",
     exported: "すべてのチームをエクスポートしました",
     copiedAll: "すべてのチームをコピーしました",
-    notCopiedAll: "チームをコピーできませんでした。",
+    notCopiedAll:
+      "チームをコピーできませんでした。代わりに「すべてエクスポート」でダウンロードしてください。",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -535,7 +539,8 @@ const ja: Messages = {
     imported: "チームをインポートしました",
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",
-    nothingFound: "そのテキストにポケモンが見つかりませんでした。",
+    nothingFound:
+      "そのテキストにポケモンが見つかりませんでした。ポケモンの名前をPokemon Showdownと同じ英語の表記で書くか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
     problems: (count: number) =>
       `問題が${count}件見つかりました。更新すると、テキストは次のとおり適用されます：`,
     problemAt: (pokemon: string, field: string) => `${pokemon}の${field}`,

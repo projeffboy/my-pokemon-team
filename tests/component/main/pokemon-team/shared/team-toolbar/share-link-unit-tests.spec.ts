@@ -15,7 +15,7 @@ test.describe("Share Link - Unit Tests", () => {
     await shareButton.click();
 
     await expect(page.getByRole("alert")).toContainText(
-      "Pokemon team is empty",
+      "The team is empty. Add a pokemon to share it.",
     );
   });
 });

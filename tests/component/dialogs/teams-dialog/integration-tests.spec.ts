@@ -152,7 +152,11 @@ test.describe("Teams Dialog - Integration Tests", () => {
     await page.getByRole("button", { name: "Options for Team 1" }).click();
     await clickMenuItem(page, "Duplicate");
     await expect(
-      page.getByText("Cannot duplicate empty team", { exact: true }).last(),
+      page
+        .getByText("The team is empty. Add a pokemon to duplicate it.", {
+          exact: true,
+        })
+        .last(),
     ).toBeVisible();
     await expect(teams.getByRole("button", { name: /^Load Team/ })).toHaveCount(
       1,
@@ -337,7 +341,9 @@ Ability: Drizzle
     const dialog = page.getByRole("dialog", { name: "Import Team" });
     await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");
     await dialog.getByRole("button", { name: "Import" }).click();
-    await expect(dialog).toContainText("No pokemon found in that text.");
+    await expect(dialog).toContainText(
+      "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
+    );
 
     // Going back shows the team list, still with the one team
     await dialog.getByRole("button", { name: "Go Back" }).click();
@@ -454,7 +460,9 @@ test("fallback Copy All selects its textarea inside the active modal and restore
   await copy.press("Enter");
   await expect(
     page.getByRole("alert", { includeHidden: true }).last(),
-  ).toContainText("Could not copy");
+  ).toContainText(
+    "Could not copy the teams. Use Export All to download them instead.",
+  );
 });
 
 test("fallback copying from the Teams row menu stays inside its focus trap", async ({
