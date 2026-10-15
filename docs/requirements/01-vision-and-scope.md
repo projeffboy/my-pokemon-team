@@ -75,7 +75,7 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
     - F2.3.2 Translation Update, from PokeAPI [Ash]
 - **F3 Pokemon Search**: finding a pokemon, move, item, or ability for a slot.
   - F3.1 Search by Name
-  - F3.2 Filters: format, type, region, viable moves only, and ability [Ash].
+  - F3.2 Filters: format, type, region, viable moves only, viable items only [Ash], and ability [Ash].
   - F3.3 Sort [Ash]
   - F3.4 Option Views, one of: list, grid [Ash], or big grid [Ash].
   - F3.5 Types Display [Ash]

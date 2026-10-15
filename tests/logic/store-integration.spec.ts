@@ -1,6 +1,7 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
+import { createSearchFilters } from "@/shared/team";
 
 test("move selection rejects duplicates but permits changing its own Hidden Power type", ({
   store,
@@ -139,6 +140,37 @@ test("learnsets recompute after species and move filter edits", ({ store }) => {
   }
 });
 
+test("item options recompute after the Items filter, by generation", ({
+  store,
+}) => {
+  let items = store.teamItems;
+  const dispose = autorun(() => {
+    items = store.teamItems;
+  });
+  try {
+    expect(items).toContain("pokeball");
+    expect(items).toContain("oranberry");
+    store.filters.items = "Viable";
+    expect(items).not.toContain("pokeball");
+    expect(items).not.toContain("oranberry");
+    expect(items).toContain("leftovers");
+    expect(items).toContain("venusaurite");
+    expect(items).toContain("lightball");
+    expect(store.gameItems).toContain("pokeball");
+    // Sitrus Berry restored only 30 HP before Gen 4
+    store.currentTeam.generation = 3;
+    expect(store.gameItems).toContain("sitrusberry");
+    expect(items).not.toContain("sitrusberry");
+    store.currentTeam.generation = 4;
+    expect(items).toContain("sitrusberry");
+    store.filters.items = "";
+    store.currentTeam.generation = 3;
+    expect(items).toContain("sitrusberry");
+  } finally {
+    dispose();
+  }
+});
+
 test("Pokemon options recompute after each filter and filter replacement", ({
   store,
 }) => {
@@ -158,7 +190,7 @@ test("Pokemon options recompute after each filter and filter replacement", ({
     store.currentTeam.format = "Little Cup (LC)";
     expect(names).not.toContain("Medicham");
     expect(names).toContain("Spoink");
-    store.filters = { type: "", region: "", ability: "", moves: "" };
+    store.filters = createSearchFilters();
     store.currentTeam.format = "";
     expect(names).toContain("Milotic");
   } finally {

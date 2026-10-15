@@ -377,6 +377,8 @@ const ko: Messages = {
     region: "지방",
     moves: "기술",
     viable: "실전용만",
+    items: "지닌 물건",
+    viableItems: "실전용만",
     ability: "특성",
   },
   sort: {

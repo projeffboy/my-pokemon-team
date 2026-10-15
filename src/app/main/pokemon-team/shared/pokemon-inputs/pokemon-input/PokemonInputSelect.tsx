@@ -134,7 +134,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
       : pokemonProperty === "item" ?
         ([
           "item",
-          () => store.teamItems.map(names.item),
+          () => store.gameItems.map(names.item),
           ITEM_ROW_CHROME,
         ] as const)
       : ([

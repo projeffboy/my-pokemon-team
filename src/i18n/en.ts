@@ -358,6 +358,8 @@ const en = {
     region: "Region",
     moves: "Moves",
     viable: "Viable",
+    items: "Items",
+    viableItems: "Viable",
     ability: "Ability",
   },
   sort: {

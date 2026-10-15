@@ -367,6 +367,8 @@ const ja: Messages = {
     region: "地方",
     moves: "技",
     viable: "実戦向き",
+    items: "持ち物",
+    viableItems: "実戦向き",
     ability: "特性",
   },
   sort: {

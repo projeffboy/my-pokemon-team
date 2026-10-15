@@ -8,7 +8,7 @@ import {
   type TeamPokemon,
 } from "@/types";
 import { isGeneration } from "@/shared/generations";
-import { createSavedTeam } from "@/shared/team";
+import { createSavedTeam, createSearchFilters } from "@/shared/team";
 import { stableJson } from "./teams-storage";
 
 export const MAX_TEAM_BACKUP_BYTES = 10 * 1024 * 1024;
@@ -79,7 +79,6 @@ function isMember(value: unknown): value is TeamPokemon {
 }
 
 function isSavedTeam(value: unknown): value is SavedTeam {
-  const filters = ["type", "region", "ability", "moves"];
   return (
     isRecord(value) &&
     hasFields(
@@ -97,11 +96,13 @@ function isSavedTeam(value: unknown): value is SavedTeam {
         value.generation === 9 &&
         !gameFormat(value.format))) &&
     isRecord(value.filters) &&
-    hasFields(value.filters, filters) &&
-    filters.every(
-      key =>
-        typeof (value.filters as Record<string, unknown>)[key] === "string",
+    // Backups made before the Items filter have none
+    hasFields(
+      value.filters,
+      ["type", "region", "ability", "moves"],
+      ["items"],
     ) &&
+    Object.values(value.filters).every(filter => typeof filter === "string") &&
     Array.isArray(value.team) &&
     value.team.length === 6 &&
     Array.from(value.team).every(isMember)
@@ -161,7 +162,12 @@ export function parseTeamBackup(text: string): TeamBackup | undefined {
   }
 }
 
-const payloadKey = ({ id: _id, ...payload }: SavedTeam) => stableJson(payload);
+// A team from a backup made before the Items filter matches the same team saved since
+const payloadKey = ({ id: _id, ...payload }: SavedTeam) =>
+  stableJson({
+    ...payload,
+    filters: { ...createSearchFilters(), ...payload.filters },
+  });
 
 export function mergeTeamBackup(
   existing: readonly SavedTeam[],

@@ -9,7 +9,7 @@ An all-purpose Pokemon teambuilder for generations 1-9, including Legends: Z-A a
 1. You can import/export your team to Pokemon Showdown, or share it as a link
 2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
 3. There's a team checklist, and a matrix of every type against every pokemon
-4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
+4. Search filters narrow down the Pokemon by generation, format, type, region, and ability, and the moves and items to the viable ones. The dropdown sorts by name, number, format, or base stats
 5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on). Team backups keep all of these details in a file you can restore on another device
 6. The sprites are animated, which is nice
 7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI, and Brazilian Portuguese, with the English names until the games are in Portuguese
@@ -87,6 +87,8 @@ Historical move rules are projected into `past-generations.ts`; game-specific mo
 The Pokemon Champions (M-C) format filter reads eligibility from Showdown's `champions` mod, which follows the current regulation. When that mod moves to a new regulation, rename the filter to match.
 
 The Viable moves filter comes from the Showdown client's teambuilder. The script runs the client's own `BattleMoveSearch.moveIsNotUseless` function, and a move is viable if any pokemon that learns it, with any of its abilities and required items, finds it useful in singles or doubles. If the update fails with "Could not find BattleMoveSearch.moveIsNotUseless", the client has restructured that function and `updateViableMoves` needs adjusting.
+
+The Viable items filter also comes from the teambuilder. The script runs the item grouping in the client's `build-tools/build-indexes` for each generation, as for a singles format, and an item is viable unless it is grouped as usually useless, useless, or unreleased. Pokemon-specific items, such as mega stones, stay viable. If the update fails with "Could not find the teambuilder's item groups", or with an error from inside that code, the client has restructured it and `updateViableItems` needs adjusting. `npm run update:data -- --viable-items-only` regenerates just this list.
 
 To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data/transforms.ts` and to the matching type in `src/types.ts`, then rerun the update.
 

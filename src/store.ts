@@ -490,6 +490,7 @@ export class Store {
       allItemIds,
       this.currentTeam.generation,
       this.dataFormat,
+      !!this.filters.items,
     );
   }
 
@@ -772,7 +773,7 @@ export class Store {
       );
   }
 
-  // Every pokemon and move the current game's dropdowns can list, whatever the filters
+  // Every pokemon, move, and item the current game's dropdowns can list, whatever the filters
   get gamePokemon() {
     const { generation, format } = this.currentTeam;
     return this.inGame(
@@ -789,6 +790,15 @@ export class Store {
     if (!this.learnsetsLoaded) return [];
     return generationMoves(
       this.gamePokemon,
+      this.currentTeam.generation,
+      this.dataFormat,
+    );
+  }
+
+  get gameItems() {
+    if (!this.learnsetsLoaded) return [];
+    return availableItems(
+      allItemIds,
       this.currentTeam.generation,
       this.dataFormat,
     );

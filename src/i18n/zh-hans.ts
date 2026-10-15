@@ -358,6 +358,8 @@ const zhHans: Messages = {
     region: "地区",
     moves: "招式",
     viable: "实用招式",
+    items: "道具",
+    viableItems: "实用道具",
     ability: "特性",
   },
   sort: {

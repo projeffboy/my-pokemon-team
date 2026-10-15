@@ -366,6 +366,8 @@ const it: Messages = {
     region: "Regione",
     moves: "Mosse",
     viable: "Competitive",
+    items: "Strumenti",
+    viableItems: "Competitivi",
     ability: "Abilità",
   },
   sort: {

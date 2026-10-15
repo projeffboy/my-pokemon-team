@@ -251,7 +251,7 @@ export interface SavedTeam {
 }
 
 // The Filters dialog's values saved with each team; format and generation are separate
-export type SearchFilterKey = "type" | "region" | "ability" | "moves";
+export type SearchFilterKey = "type" | "region" | "ability" | "moves" | "items";
 
 export type SearchFilters = Record<SearchFilterKey, string>;
 

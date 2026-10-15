@@ -2864,7 +2864,7 @@ export function viableMovesIn(generation: Generation = LATEST_GENERATION): Reado
   if (!change) return data;
   let viable = cache.get(generation);
   if (!viable) {
-    viable = new Set([...data].filter(move => !change.remove.includes(move)).concat(change.add));
+    viable = new Set([...data].filter(id => !change.remove.includes(id)).concat(change.add));
     cache.set(generation, viable);
   }
   return viable;

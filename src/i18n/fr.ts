@@ -371,6 +371,8 @@ const fr: Messages = {
     region: "Région",
     moves: "Capacités",
     viable: "Viable",
+    items: "Objets",
+    viableItems: "Viable",
     ability: "Talent",
   },
   sort: {

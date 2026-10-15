@@ -5,6 +5,7 @@ import {
   openAdvanced,
   openSort,
   selectDialogOption,
+  selectItem,
   selectMove,
   selectPokemon,
   getTeamTextFromUrl,
@@ -412,6 +413,41 @@ test.describe("Filters Integration Tests", () => {
       .click();
     await expect(selected).toHaveValue("");
     expect(getTeamTextFromUrl(page)).not.toContain("- Attract");
+  });
+
+  test("Items Filter hides useless items and keeps the one selected", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Ribombee");
+    await selectItem(page, "Oran Berry");
+    await selectFilterOption(page, "Items", "Viable");
+
+    const item = page.getByLabel("Pokemon 1's item");
+    await expect(item).toHaveValue("Oran Berry");
+    expect(getTeamTextFromUrl(page)).toContain("@ Oran Berry");
+    for (const [name, isViable] of [
+      ["Leftovers", true],
+      ["Venusaurite", true],
+      ["Poke Ball", false],
+      ["Oran Berry", false],
+    ] as const) {
+      await item.fill(name);
+      await expect(page.getByRole("option", { name, exact: true })).toHaveCount(
+        isViable ? 1 : 0,
+      );
+    }
+    await item.press("Escape");
+    await expect(item).toHaveValue("Oran Berry");
+  });
+
+  test("Items Filter is left out of games without held items", async ({
+    page,
+  }) => {
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page.locator('[role="option"][data-value="1"]').click();
+    await openFilters(page);
+    await expect(page.getByRole("combobox", { name: "Moves" })).toBeVisible();
+    await expect(page.getByRole("combobox", { name: "Items" })).toHaveCount(0);
   });
 
   test("Ability Filter", async ({ page }) => {

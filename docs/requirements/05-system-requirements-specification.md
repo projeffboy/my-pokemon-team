@@ -157,7 +157,7 @@ US4. As a player, I want to step back and forward through the changes I made to 
 
 #### UC5 Narrow Pokemon Choices
 
-US5. As a player choosing a pokemon, I want to limit the pokemon offered by format, type, region, and ability, to limit the moves offered to the viable ones, and to put the options in an order that suits me, so that I can find a pokemon that fills the gap in my team without scrolling through more than a thousand names.
+US5. As a player choosing a pokemon, I want to limit the pokemon offered by format, type, region, and ability, to limit the moves and items offered to the viable ones, and to put the options in an order that suits me, so that I can find a pokemon that fills the gap in my team without scrolling through more than a thousand names.
 
 | ID          | Requirement                                                                                                                                                        | Imp. | Status      |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
@@ -173,6 +173,7 @@ US5. As a player choosing a pokemon, I want to limit the pokemon offered by form
 | REQ-FIND-10 | The site shall keep each saved team's filters with that team.                                                                                                      | C    | Implemented |
 | REQ-FIND-11 | The site shall remove all of the current team's filters on a single request from the Player.                                                                       | C    | Implemented |
 | REQ-FIND-12 | The site shall offer the filters and the pokemon sort order in the list of pokemon for a slot, and the move sort order in the list of moves, without a setting.    | C    | Implemented |
+| REQ-FIND-13 | The site shall limit the items offered, for a Player who has asked for viable items only, to the items Pokemon Showdown's teambuilder treats as useful.            | C    | Implemented |
 
 #### UC6 Analyze Team
 
@@ -445,6 +446,7 @@ US21. As the maintainer, I want one command to refresh the translated names and 
 | REQ-DATA-10 | The data update tooling shall generate the site's data for a newly released game from a source other than Pokemon Showdown, for a game whose data Pokemon Showdown has not published within 7 days of the game's release **[A-3]**. | C    | Proposed    |
 | REQ-DATA-11 | The data update tooling shall replace data taken from another source with Pokemon Showdown's data once Pokemon Showdown publishes it.                                                                                               | C    | Proposed    |
 | REQ-DATA-12 | The data update tooling shall notify the Maintainer within 1 day of Pokemon Showdown publishing a change to data the site uses.                                                                                                     | C    | Approved    |
+| REQ-DATA-13 | The data update tooling shall derive the viable items of each generation from the item groups of Pokemon Showdown's own teambuilder.                                                                                                | C    | Implemented |
 
 REQ-DATA-10 to 12 come from the 2-day target of BR-3. Approving REQ-DATA-10 means rewording REQ-POL-4 (Section 3.10), which allows Pokemon Showdown as the only source, to allow the fallback source for a new game while still forbidding edits by hand.
 

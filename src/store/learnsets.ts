@@ -1,5 +1,6 @@
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import { viableMovesIn } from "@/data/viable-moves";
+import { viableItemsIn } from "@/data/viable-items";
 import pokedex from "@/data/pokedex";
 import { pokemonNameInverse } from "@/shared/names";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
@@ -161,14 +162,21 @@ export function getTeamLearnsets(
   };
 }
 
+// The items the game has, or only those Pokemon Showdown's teambuilder treats as useful
 export function availableItems(
   items: readonly string[],
   generation: Generation,
   format = "",
+  viableOnly = false,
 ) {
   if (!generationRules(generation, format).items) return [];
   const bit = generationBit(generation, format);
-  return items.filter(item => !!((availability?.items[item] ?? 0) & bit));
+  const viable = viableItemsIn(generation);
+  return items.filter(
+    item =>
+      !!((availability?.items[item] ?? 0) & bit) &&
+      (!viableOnly || viable.has(item)),
+  );
 }
 export function availablePokemon(
   pokemon: readonly string[],

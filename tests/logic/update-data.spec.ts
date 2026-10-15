@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
+  collectViableItems,
   collectViableMoves,
   flattenLearnsets,
   nameChanges,
@@ -11,7 +12,9 @@ import {
   projectTypeChart,
   projectHiddenPowerSpreads,
   projections,
+  renderGenerationSets,
   renderTypedData,
+  type ItemGrouping,
   type MoveSearch,
 } from "../../scripts/update-data/transforms";
 
@@ -289,6 +292,50 @@ test("viable moves are judged per forme, with base species moves, items, and hid
     "genesectdouse:Download:Douse Drive:hiddenpowerfire",
     "genesectdouse:Download:Douse Drive:hiddenpowerice",
   ]);
+});
+
+test("viable items are grouped on each generation's data, whatever the item's generation or legality", () => {
+  const seen: unknown[] = [];
+  const group: ItemGrouping = (dex, gen, genNum, itemList) => {
+    const items = itemList.map(id => dex.mod(gen).items.get(id));
+    seen.push(...items);
+    return items
+      .filter(item => genNum > 3 || item.id !== "sitrusberry")
+      .map(item => `${item.id}`);
+  };
+  const viable = collectViableItems(
+    group,
+    {
+      3: { sitrusberry: { name: "Sitrus Berry", gen: 3 } },
+      9: {
+        sitrusberry: { name: "Sitrus Berry", gen: 3 },
+        venusaurite: { name: "Venusaurite", gen: 6, isNonstandard: "Past" },
+      },
+    },
+    ["venusaurite", "sitrusberry"],
+  );
+  expect(viable).toEqual({ 3: [], 9: ["sitrusberry", "venusaurite"] });
+  expect(seen).toContainEqual({
+    id: "venusaurite",
+    exists: true,
+    name: "Venusaurite",
+  });
+});
+
+test("generation sets render the latest set and what each earlier generation changes", () => {
+  const text = renderGenerationSets("Viable items", "viableItemsIn", {
+    3: ["leftovers", "mail"],
+    9: ["leftovers", "sitrusberry"],
+  });
+  expect(text).toContain(
+    'const data: ReadonlySet<string> = new Set([\n  "leftovers",\n  "sitrusberry"\n]);',
+  );
+  expect(text).toContain(
+    '"3": {\n    "add": [\n      "mail"\n    ],\n    "remove": [\n      "sitrusberry"\n    ]\n  }',
+  );
+  expect(text).toContain(
+    "export function viableItemsIn(generation: Generation = LATEST_GENERATION)",
+  );
 });
 
 test("the type chart converts Showdown's damage codes and drops Stellar", () => {
