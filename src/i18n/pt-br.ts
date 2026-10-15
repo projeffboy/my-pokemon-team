@@ -390,6 +390,14 @@ const ptBR: Messages = {
       "Aleatório",
     ],
     savedTeams: "Equipes salvas",
+    search: "Buscar equipes",
+    searchPlaceholder: "Nome da equipe, Pokémon ou apelido",
+    clearSearch: "Limpar busca",
+    noSearchResults: "Nenhuma equipe corresponde à busca.",
+    teamCount: (count: number) =>
+      `${count} ${count === 1 ? "equipe" : "equipes"}`,
+    searchCount: (count: number, total: number) =>
+      `${count} de ${total} ${total === 1 ? "equipe" : "equipes"}`,
     optionsFor: (team: string) => `Opções de ${team}`,
     load: (team: string) => `Carregar ${team}`,
     importTeam: "Importar equipe",
@@ -418,6 +426,9 @@ const ptBR: Messages = {
       "Adicione times de um arquivo de backup. Os times que você já tem serão mantidos.",
     chooseFile: "Escolher arquivo de backup",
     restore: "Adicionar times",
+    reading: "Lendo backup…",
+    fileTooLarge:
+      "Este arquivo de backup é muito grande. Escolha um arquivo de até 10 MiB.",
     ready: (count: number) => `Times neste backup: ${count}`,
     error:
       "Não foi possível ler este arquivo. Escolha um backup de times salvo neste site.",

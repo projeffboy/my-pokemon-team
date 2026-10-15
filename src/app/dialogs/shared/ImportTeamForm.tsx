@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { isTeamEmpty } from "@/shared/team";
 import {
   parseTeamsText,
   parseTeamText,
@@ -59,11 +60,18 @@ const ImportTeamForm = observer(function ImportTeamForm({
   };
 
   const handleUpdate = () => {
-    if (text !== initialText)
-      store.replaceTeam(
-        parseTeamText(text, store.currentTeam.generation, store.dataFormat),
+    if (text !== initialText) {
+      const team = parseTeamText(
+        text,
+        store.currentTeam.generation,
+        store.dataFormat,
       );
-    else store.openSnackbar(importDialog.noChanges);
+      if (text.trim() && isTeamEmpty(team)) {
+        setIsNothingFound(true);
+        return;
+      }
+      store.replaceTeam(team);
+    } else store.openSnackbar(importDialog.noChanges);
     onDone();
   };
 

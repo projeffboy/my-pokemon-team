@@ -76,7 +76,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
       teams.getByRole("button", { name: "Load Saved 16" }),
     ).toBeInViewport();
     for (const width of [320, 400, 600, 960, 1366]) {
-      await page.setViewportSize({ width, height: 560 });
+      await page.setViewportSize({ width, height: 640 });
       if (width < 600) {
         await expect
           .poll(() => dialog.boundingBox())
@@ -84,7 +84,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
             x: 0,
             y: 0,
             width,
-            height: 560,
+            height: 640,
           });
       }
       await teams
@@ -323,7 +323,7 @@ Ability: Drizzle
     await expect(teams.getByRole("listitem").last()).toContainText(
       "Gen 9 (SV)",
     );
-    await expect(teams.getByRole("listitem").last()).not.toContainText("DOU");
+    await expect(teams.getByRole("listitem").last()).toContainText("DOU");
     await page.getByRole("button", { name: "Close" }).click();
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Pelipper");
     await expect(page.getByLabel("Generation")).toContainText("Gen 9");

@@ -402,6 +402,13 @@ const ko: Messages = {
     randomTeam: "랜덤 팀",
     randomTeamLabels: ["팀 랜덤 생성", "랜덤 팀", "랜덤"],
     savedTeams: "저장된 팀",
+    search: "팀 검색",
+    searchPlaceholder: "팀 이름, 포켓몬 또는 별명",
+    clearSearch: "검색 지우기",
+    noSearchResults: "검색과 일치하는 팀이 없습니다.",
+    teamCount: (count: number) => `팀 ${count}개`,
+    searchCount: (count: number, total: number) =>
+      `전체 ${total}개 중 ${count}개 팀`,
     optionsFor: (team: string) => `${team} 옵션`,
     load: (team: string) => `${team} 불러오기`,
     importTeam: "팀 가져오기",
@@ -430,6 +437,8 @@ const ko: Messages = {
       "백업 파일에서 팀을 추가합니다. 기존 팀은 그대로 유지됩니다.",
     chooseFile: "백업 파일 선택",
     restore: "팀 추가",
+    reading: "백업을 읽는 중…",
+    fileTooLarge: "백업 파일이 너무 큽니다. 10 MiB 이하의 파일을 선택하세요.",
     ready: (count: number) => `이 백업의 팀 수: ${count}`,
     error:
       "이 파일을 읽을 수 없습니다. 이 사이트에서 저장한 팀 백업을 선택하세요.",

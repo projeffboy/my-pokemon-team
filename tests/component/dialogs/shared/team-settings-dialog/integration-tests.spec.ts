@@ -30,6 +30,34 @@ const chooseGeneration = async (page: Page, generation: number) => {
   await expect(page.locator(".MuiMenu-paper")).toBeHidden();
 };
 
+test("Enter saves a trimmed team name and retains it after reload", async ({
+  page,
+}) => {
+  await openNameEditor(page, "Team 1");
+  const dialog = page.getByRole("dialog", {
+    name: "Edit team name",
+    exact: true,
+  });
+  const name = dialog.getByRole("textbox", { name: "Team name", exact: true });
+  await name.fill("  Keyboard favorites  ");
+  await name.press("Enter");
+  await expect(dialog).toBeHidden();
+  await expect(
+    page.getByRole("button", {
+      name: "Options for Keyboard favorites",
+      exact: true,
+    }),
+  ).toBeFocused();
+  await expect
+    .poll(() => page.evaluate(() => localStorage.getItem("mypokemonteam")))
+    .toContain('"name":"Keyboard favorites"');
+  await page.reload();
+  await openTeams(page);
+  await expect(
+    page.getByRole("button", { name: "Load Keyboard favorites", exact: true }),
+  ).toBeVisible();
+});
+
 test("the team-name editor saves and cancels names without generation or format controls", async ({
   page,
 }) => {

@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -30,7 +31,13 @@ function TeamNameForm({
     onClose();
   };
   return (
-    <>
+    <Box
+      component="form"
+      onSubmit={event => {
+        event.preventDefault();
+        handleSave();
+      }}
+    >
       <DialogTitle id={titleId}>{t.settings.editTeamName}</DialogTitle>
       <DialogContent>
         <TextField
@@ -45,9 +52,9 @@ function TeamNameForm({
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t.cancel}</Button>
-        <Button onClick={handleSave}>{t.save}</Button>
+        <Button type="submit">{t.save}</Button>
       </DialogActions>
-    </>
+    </Box>
   );
 }
 
@@ -60,6 +67,9 @@ const TeamSettingsDialog = observer(function TeamSettingsDialog({
 }) {
   const titleId = useId();
   const team = teamId ? store.findTeam(teamId) : undefined;
+  useEffect(() => {
+    if (teamId && !team) onClose();
+  }, [teamId, team, onClose]);
   return (
     <Dialog
       open={!!team}

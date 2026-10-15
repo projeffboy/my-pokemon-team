@@ -66,6 +66,40 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
     expect(getTeamTextFromUrl(page)).toContain("Gigalith");
   });
 
+  test("invalid replacement text preserves the team until a valid update or intentional clear", async ({
+    page,
+  }) => {
+    await importTeam(page, "Maractus\n- Energy Ball");
+    const before = getTeamTextFromUrl(page);
+    await openEditPokepaste(page);
+    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    const text = dialog.getByRole("textbox");
+    await text.fill("This is not a Pokémon set");
+    await dialog.getByRole("button", { name: "Update", exact: true }).click();
+    await expect(dialog).toBeVisible();
+    await expect(dialog).toContainText("No pokemon found in that text.");
+    expect(getTeamTextFromUrl(page)).toBe(before);
+
+    await text.fill("Maractus\n- Giga Drain");
+    await expect(
+      dialog.getByText("No pokemon found in that text."),
+    ).toHaveCount(0);
+    await dialog.getByRole("button", { name: "Update", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await expect.poll(() => getTeamTextFromUrl(page)).toContain("Giga Drain");
+    await expect
+      .poll(() => page.evaluate(() => localStorage.getItem("mypokemonteam")))
+      .toContain("gigadrain");
+    await page.reload();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Maractus");
+
+    await openEditPokepaste(page);
+    await text.fill("   ");
+    await dialog.getByRole("button", { name: "Update", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("");
+  });
+
   test("updating unchanged text preserves edits made in another tab", async ({
     page,
     context,

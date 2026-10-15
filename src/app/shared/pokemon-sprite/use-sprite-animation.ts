@@ -17,7 +17,10 @@ export function useSpriteAnimation(
   useEffect(() => {
     if (!eligible || animations) return;
     let unmounted = false;
-    (loading ??= import("@/images/sprite-animations")).then(
+    (loading ??=
+      import.meta.env.DEV ?
+        import("@/images/sprite-animations/development")
+      : import("@/images/sprite-animations")).then(
       module => {
         animations = module;
         if (!unmounted) setLoaded(true);

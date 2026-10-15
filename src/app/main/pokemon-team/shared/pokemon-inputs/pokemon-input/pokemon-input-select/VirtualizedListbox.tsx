@@ -199,6 +199,8 @@ function GridRowComponent({
 // The Autocomplete's listbox slot only accepts list element props, so the
 // select passes what the listbox needs through this context instead
 export const VirtualizedListboxContext = React.createContext<{
+  inputId: string;
+  keyboardNavigationRef: React.RefObject<boolean>;
   pokemonProperty: string;
   teamIndex: number;
   // Whether the move options show their type, as the inputs do with Show move types on
@@ -227,6 +229,8 @@ const VirtualizedListbox = observer(
         );
       }
       const {
+        inputId,
+        keyboardNavigationRef,
         pokemonProperty,
         teamIndex,
         showMoveTypes,
@@ -288,6 +292,42 @@ const VirtualizedListbox = observer(
         setToggleHeight(toggleRef.current?.offsetHeight ?? 0);
       }, [isNameInput, isGrid, showMoveTools]);
 
+      // Wrapped rows can finish measuring after keyboard scrolling settles.
+      React.useLayoutEffect(() => {
+        const frame = requestAnimationFrame(() => {
+          if (!keyboardNavigationRef.current) return;
+          const activeId = document
+            .getElementById(inputId)
+            ?.getAttribute("aria-activedescendant");
+          const option = activeId ? document.getElementById(activeId) : null;
+          const index = Number(option?.getAttribute("data-option-index"));
+          if (
+            !option ||
+            !Number.isInteger(index) ||
+            index < 0 ||
+            index >= itemCount ||
+            !internalListRef.current?.element?.contains(option)
+          )
+            return;
+          internalListRef.current.scrollToRow({
+            index: isGrid ? Math.floor(index / columns) : index,
+            align: "auto",
+          });
+        });
+        return () => cancelAnimationFrame(frame);
+      }, [
+        inputId,
+        keyboardNavigationRef,
+        dynamicRowHeight,
+        popupMaxHeight,
+        nameListWidth,
+        toggleHeight,
+        itemCount,
+        isGrid,
+        columns,
+        internalListRef,
+      ]);
+
       // Uses the measured average row height (rows are shorter than ITEM_SIZE on
       // wider screens, where MUI's option minHeight is no longer forced to 48px)
       // so the popup doesn't reserve extra empty space below the rows. Up to
@@ -303,11 +343,17 @@ const VirtualizedListbox = observer(
       };
 
       const { className, style, ...otherProps } = other;
+      const suspendKeyboardAlignment = () => {
+        keyboardNavigationRef.current = false;
+      };
 
       return (
         <Box
           ref={ref}
           {...otherProps}
+          onPointerDownCapture={suspendKeyboardAlignment}
+          onTouchStartCapture={suspendKeyboardAlignment}
+          onWheelCapture={suspendKeyboardAlignment}
           sx={{ "& .MuiAutocomplete-listbox": { p: 0 } }}
         >
           {isNameInput && (

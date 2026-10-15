@@ -38,6 +38,101 @@ test.describe("Name dropdown views - Unit Tests", () => {
     }
   });
 
+  test("late wrapped-row measurements preserve manual scrolling until keyboard navigation resumes", async ({
+    page,
+  }) => {
+    await resizeTeamViewport(page, 320, 640);
+    await page.evaluate(() => {
+      const NativeObserver = window.ResizeObserver;
+      let deferred = true;
+      const pending: Array<() => void> = [];
+      window.ResizeObserver = class extends NativeObserver {
+        constructor(callback: ResizeObserverCallback) {
+          super((entries, observer) => {
+            if (
+              deferred &&
+              entries.some(entry => entry.target.matches('[role="option"]'))
+            )
+              pending.push(() => callback(entries, observer));
+            else callback(entries, observer);
+          });
+        }
+      };
+      const controlled = window as typeof window & {
+        pendingNameRows: () => number;
+        releaseNameRows: () => void;
+      };
+      controlled.pendingNameRows = () => pending.length;
+      controlled.releaseNameRows = () => {
+        deferred = false;
+        window.ResizeObserver = NativeObserver;
+        for (const callback of pending) callback();
+        pending.length = 0;
+      };
+    });
+    const input = page.getByLabel("Pokemon 1's name");
+    await input.fill("a");
+    await input.press("ArrowDown");
+    await expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      "react-select-single-0-name-option-0",
+    );
+    await expect
+      .poll(() =>
+        page.evaluate(() =>
+          (
+            window as typeof window & { pendingNameRows: () => number }
+          ).pendingNameRows(),
+        ),
+      )
+      .toBeGreaterThan(0);
+    const list = page.getByRole("listbox").locator("ul");
+    await list.evaluate(element => {
+      element.dispatchEvent(new Event("touchstart", { bubbles: true }));
+      element.scrollTop = 144;
+    });
+    await page.evaluate(() => {
+      (
+        window as typeof window & { releaseNameRows: () => void }
+      ).releaseNameRows();
+    });
+    const wrapped = page.getByRole("option", {
+      name: "Charizard-Mega-Y",
+      exact: true,
+    });
+    await expect
+      .poll(() => wrapped.evaluate(element => element.style.transform))
+      .not.toBe("translateY(480px)");
+    await page.evaluate(
+      () =>
+        new Promise<void>(resolve =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+        ),
+    );
+    await expect
+      .poll(() => list.evaluate(element => element.scrollTop))
+      .toBe(144);
+
+    await input.press("ArrowDown");
+    const next = page.getByRole("option", { name: "Ivysaur", exact: true });
+    await expect(input).toHaveAttribute(
+      "aria-activedescendant",
+      "react-select-single-0-name-option-1",
+    );
+    await expect
+      .poll(() =>
+        next.evaluate(element => {
+          const viewport = element.closest("ul")!.getBoundingClientRect();
+          const bounds = element.getBoundingClientRect();
+          return (
+            bounds.top >= viewport.top - 1 &&
+            bounds.bottom <= viewport.bottom + 1
+          );
+        }),
+      )
+      .toBe(true);
+  });
+
   test("filtering before the selected row scrolls does not raise a list error", async ({
     page,
   }) => {

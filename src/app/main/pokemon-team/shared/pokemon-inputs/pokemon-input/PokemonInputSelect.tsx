@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
+import type { AutocompleteHighlightChangeReason } from "@mui/material/useAutocomplete";
 import { useListRef } from "react-window";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
@@ -201,6 +202,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     (isMove || pokemonProperty === "ability") && !store.team[teamIndex]?.name;
   const noOtherMoves = isMove && !missingPokemon && options.length === 0;
   const internalListRef = useListRef(null);
+  const keyboardNavigationRef = useRef(false);
   // The options the popup lists, which typing narrows down
   const listedValuesRef = useRef<readonly string[]>([]);
   const pendingNavigation = useRef<{
@@ -322,7 +324,9 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   const handleHighlightChange = (
     event: React.SyntheticEvent,
     option: SelectOption | null,
+    reason: AutocompleteHighlightChangeReason,
   ) => {
+    keyboardNavigationRef.current = !!option && reason === "keyboard";
     if (option && internalListRef.current) {
       const index = listedValuesRef.current.indexOf(option.value);
       if (index !== -1) {
@@ -407,6 +411,8 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   return (
     <VirtualizedListboxContext
       value={{
+        inputId: id,
+        keyboardNavigationRef,
         pokemonProperty,
         teamIndex,
         showMoveTypes,

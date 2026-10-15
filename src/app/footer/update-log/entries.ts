@@ -11,6 +11,9 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
+      "Saved teams can now be searched by team name, Pokémon, or nickname.",
+      "Editing a team with unrecognized text now keeps your Pokémon instead of clearing them.",
+      "Keyboard navigation now keeps long Pokémon names fully visible in the dropdown.",
       "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
       "Beat Up is now typeless in Gens 2–4, as in those games.",
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",

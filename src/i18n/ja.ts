@@ -393,6 +393,13 @@ const ja: Messages = {
     randomTeam: "ランダムチーム",
     randomTeamLabels: ["チームをランダムにする", "ランダムチーム", "ランダム"],
     savedTeams: "保存済みのチーム",
+    search: "チームを検索",
+    searchPlaceholder: "チーム名・ポケモン・ニックネーム",
+    clearSearch: "検索をクリア",
+    noSearchResults: "検索に一致するチームはありません。",
+    teamCount: (count: number) => `${count}チーム`,
+    searchCount: (count: number, total: number) =>
+      `${total}チーム中${count}チーム`,
     optionsFor: (team: string) => `${team}のオプション`,
     load: (team: string) => `${team}を開く`,
     importTeam: "チームをインポート",
@@ -421,6 +428,9 @@ const ja: Messages = {
       "バックアップファイルからチームを追加します。今あるチームはそのまま残ります。",
     chooseFile: "バックアップファイルを選ぶ",
     restore: "チームを追加",
+    reading: "バックアップを読み込み中…",
+    fileTooLarge:
+      "バックアップファイルが大きすぎます。10 MiB以下のファイルを選んでください。",
     ready: (count: number) => `このバックアップのチーム数: ${count}`,
     error:
       "このファイルを読み込めませんでした。このサイトで保存したチームのバックアップを選んでください。",

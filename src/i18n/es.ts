@@ -389,6 +389,14 @@ const es: Messages = {
       "Aleatorio",
     ],
     savedTeams: "Equipos guardados",
+    search: "Buscar equipos",
+    searchPlaceholder: "Nombre del equipo, Pokémon o mote",
+    clearSearch: "Borrar búsqueda",
+    noSearchResults: "Ningún equipo coincide con tu búsqueda.",
+    teamCount: (count: number) =>
+      `${count} ${count === 1 ? "equipo" : "equipos"}`,
+    searchCount: (count: number, total: number) =>
+      `${count} de ${total} ${total === 1 ? "equipo" : "equipos"}`,
     optionsFor: (team: string) => `Opciones de ${team}`,
     load: (team: string) => `Cargar ${team}`,
     importTeam: "Importar equipo",
@@ -417,6 +425,9 @@ const es: Messages = {
       "Añade equipos desde una copia de seguridad. Los equipos que ya tienes se conservarán.",
     chooseFile: "Elegir archivo de copia",
     restore: "Añadir equipos",
+    reading: "Leyendo copia de seguridad…",
+    fileTooLarge:
+      "Esta copia de seguridad es demasiado grande. Elige un archivo de hasta 10 MiB.",
     ready: (count: number) => `Equipos en esta copia: ${count}`,
     error:
       "No se pudo leer este archivo. Elige una copia de seguridad de equipos guardada desde este sitio.",

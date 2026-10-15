@@ -13,7 +13,13 @@ import { MAX_TEAM_BACKUP_BYTES, parseTeamBackup } from "@/store/team-backup";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import downloadText from "./shared/download-text";
 
-export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
+export default function TeamBackupForm({
+  onClose,
+  onDone = onClose,
+}: {
+  onClose: () => void;
+  onDone?: () => void;
+}) {
   const { t } = useTranslation();
   const messages = t.teamBackup;
   const [file, setFile] = useState<{
@@ -22,7 +28,8 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
     count: number;
   }>();
   const [isReading, setIsReading] = useState(false);
-  const [error, setError] = useState<"error" | "tooLarge">();
+  const [error, setError] = useState<"error" | "tooLarge" | "fileTooLarge">();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const readVersion = useRef(0);
   useEffect(
     () => () => {
@@ -40,8 +47,11 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
     setError(undefined);
     setIsReading(true);
     try {
-      const text =
-        selected.size <= MAX_TEAM_BACKUP_BYTES ? await selected.text() : "";
+      if (selected.size > MAX_TEAM_BACKUP_BYTES) {
+        setError("fileTooLarge");
+        return;
+      }
+      const text = await selected.text();
       if (version !== readVersion.current) return;
       const backup = parseTeamBackup(text);
       if (backup) {
@@ -89,7 +99,7 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
       false,
       "import",
     );
-    onClose();
+    onDone();
   };
 
   return (
@@ -113,23 +123,31 @@ export default function TeamBackupForm({ onClose }: { onClose: () => void }) {
         <Button
           fullWidth
           variant="outlined"
-          component="label"
           startIcon={<UploadIcon />}
+          onClick={() => fileInputRef.current?.click()}
+          loading={isReading}
+          loadingPosition="start"
         >
           {messages.chooseFile}
-          <input
-            hidden
-            type="file"
-            accept=".json,application/json"
-            onChange={event => readFile(event.target)}
-          />
         </Button>
+        <input
+          ref={fileInputRef}
+          hidden
+          type="file"
+          accept=".json,application/json"
+          onChange={event => readFile(event.target)}
+        />
+        {isReading && (
+          <Typography role="status" sx={{ mt: 2 }}>
+            {messages.reading}
+          </Typography>
+        )}
         {file && (
           <>
             <Typography sx={{ mt: 2, overflowWrap: "anywhere" }}>
               {file.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography role="status" variant="body2" color="text.secondary">
               {messages.ready(file.count)}
             </Typography>
           </>

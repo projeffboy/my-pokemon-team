@@ -10,7 +10,7 @@ An all-purpose Pokemon teambuilder for generations 1-9, including Legends: Z-A a
 2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
 3. There's a team checklist, and a matrix of every type against every pokemon
 4. Search filters narrow down the Pokemon by generation, format, type, region, ability, and moves, and the dropdown sorts by name, number, format, or base stats
-5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on). Team backups keep all of these details in a file you can restore on another device
+5. Several teams are saved in the browser, each with a name, generation, and format. Search teams by name, Pokémon, or nickname, in English or your chosen language. Each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on), and team backups keep all of these details in a file you can restore on another device
 6. The sprites are animated, which is nice
 7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI, and Brazilian Portuguese, with the English names until the games are in Portuguese
 

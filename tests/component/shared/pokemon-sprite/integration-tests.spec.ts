@@ -23,6 +23,41 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
     );
   });
 
+  test("the first classic animation loads without importing every sprite as a script", async ({
+    page,
+  }) => {
+    const assetModules: string[] = [];
+    page.on("request", request => {
+      if (
+        request.resourceType() === "script" &&
+        /\/sprite-animations\/.*\.(gif|png)$/.test(
+          new URL(request.url()).pathname,
+        )
+      )
+        assetModules.push(request.url());
+    });
+    await page.goto(
+      `/?gen=2&team=${Buffer.from("Ledyba\n- Tackle").toString("base64url")}`,
+      { waitUntil: "domcontentloaded" },
+    );
+    const sprite = page
+      .getByRole("region", { name: "Pokemon 1", exact: true })
+      .getByRole("img", { name: "Ledyba", exact: true });
+    await expect(sprite).toHaveAttribute("data-selection-animating", "");
+    await expect
+      .poll(() =>
+        sprite.evaluate(image =>
+          image.style.getPropertyValue("--sprite-scale"),
+        ),
+      )
+      .not.toBe("");
+    await expect(sprite).toHaveAttribute(
+      "src",
+      /\/sprite-animations\/2\/ledyba\.gif\?selection=/,
+    );
+    expect(assetModules).toEqual([]);
+  });
+
   for (const generation of [2, 3, 4]) {
     test(`Gen ${generation} animation keeps the still sprite's pixel scale`, async ({
       page,

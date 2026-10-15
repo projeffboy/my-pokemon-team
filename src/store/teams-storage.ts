@@ -7,6 +7,7 @@ import type {
   Team,
   TeamPokemon,
 } from "@/types";
+import { STAT_KEYS } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "@/shared/generations";
 import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
 import { gameFormat } from "@/shared/formats";
@@ -43,13 +44,22 @@ export interface StoredState {
 }
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
-  typeof value === "object" && value !== null;
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
 const string = (value: unknown, fallback = "") =>
   typeof value === "string" ? value : fallback;
 
-const isStatMap = (value: unknown): value is Partial<BaseStats> =>
-  isRecord(value) && Object.values(value).every(n => typeof n === "number");
+function sanitizeStats(value: unknown): Partial<BaseStats> | undefined {
+  if (!isRecord(value)) return undefined;
+  return Object.fromEntries(
+    STAT_KEYS.flatMap(stat => {
+      const number = value[stat];
+      return typeof number === "number" && Number.isFinite(number) ?
+          [[stat, number]]
+        : [];
+    }),
+  );
+}
 
 // Keeps whatever of a stored slot is well-formed
 function sanitizeMember(value: unknown): TeamPokemon {
@@ -64,7 +74,8 @@ function sanitizeMember(value: unknown): TeamPokemon {
     move4: string(raw.move4),
   };
   if (typeof raw.nickname === "string") member.nickname = raw.nickname;
-  if (typeof raw.level === "number") member.level = raw.level;
+  if (typeof raw.level === "number" && Number.isFinite(raw.level))
+    member.level = raw.level;
   if (typeof raw.happiness === "number" && Number.isFinite(raw.happiness))
     member.happiness = raw.happiness;
   if (raw.gender === "M" || raw.gender === "F" || raw.gender === "N")
@@ -72,10 +83,10 @@ function sanitizeMember(value: unknown): TeamPokemon {
   if (typeof raw.shiny === "boolean") member.shiny = raw.shiny;
   if (typeof raw.teraType === "string") member.teraType = raw.teraType;
   if (typeof raw.nature === "string") member.nature = raw.nature;
-  if (isStatMap(raw.evs)) member.evs = raw.evs;
-  if (isStatMap(raw.ivs)) member.ivs = raw.ivs;
-  if (isStatMap(raw.statExperience)) member.statExperience = raw.statExperience;
-  if (isStatMap(raw.effortLevels)) member.effortLevels = raw.effortLevels;
+  for (const key of ["evs", "ivs", "statExperience", "effortLevels"] as const) {
+    const stats = sanitizeStats(raw[key]);
+    if (stats) member[key] = stats;
+  }
   return member;
 }
 
@@ -88,7 +99,8 @@ export function sanitizeTeam(value: unknown): Team {
 }
 
 export function sanitizeSavedTeam(value: unknown): SavedTeam | undefined {
-  if (!isRecord(value) || typeof value.id !== "string") return undefined;
+  if (!isRecord(value) || typeof value.id !== "string" || !value.id)
+    return undefined;
   const generation =
     isGeneration(value.generation) ? value.generation : LATEST_GENERATION;
   const format = string(value.format);
@@ -140,11 +152,36 @@ export function loadStoredState(
     return undefined;
   }
   if (!isRecord(raw) || !Array.isArray(raw.teams)) return undefined;
+  const usedIds = new Set(
+    raw.teams.flatMap(team =>
+      isRecord(team) && typeof team.id === "string" && team.id ? [team.id] : [],
+    ),
+  );
+  const seenIds = new Set<string>();
+  let recoveredCurrentTeamId: string | undefined;
   const teams = raw.teams
-    .map(sanitizeSavedTeam)
+    .map((team, index) => {
+      if (!isRecord(team)) return undefined;
+      let id = typeof team.id === "string" ? team.id : "";
+      if (!id || seenIds.has(id)) {
+        const prefix = `recovered-team-${index + 1}`;
+        id = prefix;
+        let suffix = 2;
+        while (usedIds.has(id)) id = `${prefix}-${suffix++}`;
+        usedIds.add(id);
+      }
+      seenIds.add(id);
+      if (
+        recoveredCurrentTeamId === undefined &&
+        typeof raw.currentTeamId === "string" &&
+        team.id === raw.currentTeamId
+      )
+        recoveredCurrentTeamId = id;
+      return sanitizeSavedTeam({ ...team, id });
+    })
     .filter((team): team is SavedTeam => team !== undefined);
   if (!teams.length) return undefined;
-  const currentTeamId = string(raw.currentTeamId);
+  const currentTeamId = recoveredCurrentTeamId ?? string(raw.currentTeamId);
   return {
     teams,
     currentTeamId:
@@ -183,37 +220,54 @@ export function mergeStoredState(
   mine: StoredState,
   theirs: StoredState,
 ): StoredState {
-  const pick = <T>(base: T, mine: T, theirs: T) =>
-    (
-      stableJson(mine) === stableJson(base) &&
-      stableJson(mine) !== stableJson(theirs)
-    ) ?
-      theirs
-    : mine;
-  const find = ({ teams }: StoredState, id: string) =>
-    teams.find(team => team.id === id);
-  const idsIn = ({ teams }: StoredState, other: StoredState) =>
-    teams.map(({ id }) => id).filter(id => find(other, id));
+  const pick = <T>(base: T, mine: T, theirs: T) => {
+    const value = stableJson(mine);
+    return value === stableJson(base) && value !== stableJson(theirs) ?
+        theirs
+      : mine;
+  };
+  const indexed = ({ teams }: StoredState) =>
+    new Map(teams.map(team => [team.id, team]));
+  const baseById = indexed(base);
+  const mineById = indexed(mine);
+  const theirsById = indexed(theirs);
+  const idsIn = ({ teams }: StoredState, other: Map<string, SavedTeam>) =>
+    teams.map(({ id }) => id).filter(id => other.has(id));
   // Teams only `rest` has go after the team before them there
   const order = (first: StoredState, rest: StoredState) => {
-    const ids = first.teams.map(({ id }) => id);
-    rest.teams.forEach(({ id }, i) => {
-      if (ids.includes(id)) return;
-      const before = rest.teams[i - 1]?.id;
-      ids.splice(before === undefined ? 0 : ids.indexOf(before) + 1, 0, id);
+    const nextIds = new Map<string, string | undefined>(
+      first.teams.map(({ id }, index) => [id, first.teams[index + 1]?.id]),
+    );
+    let head = first.teams[0]?.id;
+    let before: string | undefined;
+    rest.teams.forEach(({ id }) => {
+      if (!nextIds.has(id)) {
+        nextIds.set(id, before === undefined ? head : nextIds.get(before));
+        if (before === undefined) head = id;
+        else nextIds.set(before, id);
+      }
+      before = id;
     });
+    const ids: string[] = [];
+    for (
+      let id: string | undefined = head;
+      id !== undefined;
+      id = nextIds.get(id)
+    )
+      ids.push(id);
     return ids;
   };
   // The other tab's order, unless this tab reordered its teams
   const reordered =
-    stableJson(idsIn(mine, base)) !== stableJson(idsIn(base, mine));
+    stableJson(idsIn(mine, baseById)) !== stableJson(idsIn(base, mineById));
   const merged = (reordered ? order(mine, theirs) : order(theirs, mine))
-    .map(id => pick(find(base, id), find(mine, id), find(theirs, id)))
+    .map(id => pick(baseById.get(id), mineById.get(id), theirsById.get(id)))
     .filter(team => team !== undefined);
   const teams = merged.length ? merged : mine.teams;
+  const teamsById = new Map(teams.map(team => [team.id, team]));
   const currentTeam =
     [mine, theirs]
-      .map(state => find({ ...state, teams }, state.currentTeamId))
+      .map(state => teamsById.get(state.currentTeamId))
       .find(team => team) ?? teams[0];
   const locale = pick(base.locale, mine.locale, theirs.locale);
   return {

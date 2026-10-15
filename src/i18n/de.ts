@@ -406,6 +406,13 @@ const de: Messages = {
       "Zufall",
     ],
     savedTeams: "Gespeicherte Teams",
+    search: "Teams suchen",
+    searchPlaceholder: "Teamname, Pokémon oder Spitzname",
+    clearSearch: "Suche löschen",
+    noSearchResults: "Keine Teams entsprechen deiner Suche.",
+    teamCount: (count: number) => `${count} ${count === 1 ? "Team" : "Teams"}`,
+    searchCount: (count: number, total: number) =>
+      `${count} von ${total} ${total === 1 ? "Team" : "Teams"}`,
     optionsFor: (team: string) => `Optionen für ${team}`,
     load: (team: string) => `${team} laden`,
     importTeam: "Team importieren",
@@ -434,6 +441,9 @@ const de: Messages = {
       "Füge Teams aus einer Sicherungsdatei hinzu. Deine vorhandenen Teams bleiben erhalten.",
     chooseFile: "Sicherungsdatei auswählen",
     restore: "Teams hinzufügen",
+    reading: "Sicherung wird gelesen…",
+    fileTooLarge:
+      "Diese Sicherungsdatei ist zu groß. Wähle eine Datei mit höchstens 10 MiB.",
     ready: (count: number) => `Teams in dieser Sicherung: ${count}`,
     error:
       "Diese Datei konnte nicht gelesen werden. Wähle eine Team-Sicherung, die auf dieser Seite gespeichert wurde.",

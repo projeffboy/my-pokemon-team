@@ -406,6 +406,14 @@ const fr: Messages = {
       "Aléatoire",
     ],
     savedTeams: "Équipes enregistrées",
+    search: "Rechercher des équipes",
+    searchPlaceholder: "Nom d’équipe, Pokémon ou surnom",
+    clearSearch: "Effacer la recherche",
+    noSearchResults: "Aucune équipe ne correspond à ta recherche.",
+    teamCount: (count: number) =>
+      `${count} ${count === 1 ? "équipe" : "équipes"}`,
+    searchCount: (count: number, total: number) =>
+      `${count} sur ${total} ${total === 1 ? "équipe" : "équipes"}`,
     optionsFor: (team: string) => `Options de ${team}`,
     load: (team: string) => `Charger ${team}`,
     importTeam: "Importer une équipe",
@@ -434,6 +442,9 @@ const fr: Messages = {
       "Ajoute des équipes depuis un fichier de sauvegarde. Tes équipes actuelles seront conservées.",
     chooseFile: "Choisir une sauvegarde",
     restore: "Ajouter les équipes",
+    reading: "Lecture de la sauvegarde…",
+    fileTooLarge:
+      "Ce fichier de sauvegarde est trop volumineux. Choisis un fichier de 10 Mio maximum.",
     ready: (count: number) => `Équipes dans cette sauvegarde : ${count}`,
     error:
       "Impossible de lire ce fichier. Choisis une sauvegarde d'équipes enregistrée depuis ce site.",

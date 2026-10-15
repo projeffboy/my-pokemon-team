@@ -396,6 +396,14 @@ const it: Messages = {
     randomTeam: "Squadra casuale",
     randomTeamLabels: ["Genera squadra casuale", "Squadra casuale", "Casuale"],
     savedTeams: "Squadre salvate",
+    search: "Cerca squadre",
+    searchPlaceholder: "Nome della squadra, Pokémon o soprannome",
+    clearSearch: "Cancella ricerca",
+    noSearchResults: "Nessuna squadra corrisponde alla ricerca.",
+    teamCount: (count: number) =>
+      `${count} ${count === 1 ? "squadra" : "squadre"}`,
+    searchCount: (count: number, total: number) =>
+      `${count} di ${total} ${total === 1 ? "squadra" : "squadre"}`,
     optionsFor: (team: string) => `Opzioni per ${team}`,
     load: (team: string) => `Carica ${team}`,
     importTeam: "Importa squadra",
@@ -424,6 +432,9 @@ const it: Messages = {
       "Aggiungi squadre da un file di backup. Le squadre che hai già verranno conservate.",
     chooseFile: "Scegli file di backup",
     restore: "Aggiungi squadre",
+    reading: "Lettura del backup…",
+    fileTooLarge:
+      "Questo file di backup è troppo grande. Scegli un file di massimo 10 MiB.",
     ready: (count: number) => `Squadre in questo backup: ${count}`,
     error:
       "Impossibile leggere il file. Scegli un backup delle squadre salvato da questo sito.",

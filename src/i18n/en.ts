@@ -385,6 +385,13 @@ const en = {
     // The toolbar shows the first one that fits on one line
     randomTeamLabels: ["Randomize team", "Random team", "Randomize", "Random"],
     savedTeams: "Saved teams",
+    search: "Search teams",
+    searchPlaceholder: "Team name, Pokémon, or nickname",
+    clearSearch: "Clear search",
+    noSearchResults: "No teams match your search.",
+    teamCount: (count: number) => `${count} ${count === 1 ? "team" : "teams"}`,
+    searchCount: (count: number, total: number) =>
+      `${count} of ${total} ${total === 1 ? "team" : "teams"}`,
     optionsFor: (team: string) => `Options for ${team}`,
     load: (team: string) => `Load ${team}`,
     importTeam: "Import Team",
@@ -413,6 +420,9 @@ const en = {
       "Add teams from a backup file. The teams you already have will stay.",
     chooseFile: "Choose backup file",
     restore: "Add teams",
+    reading: "Reading backup…",
+    fileTooLarge:
+      "This backup file is too large. Choose a file of 10 MiB or less.",
     ready: (count: number) => `Teams in this backup: ${count}`,
     error:
       "This file couldn't be read. Choose a team backup saved by this site.",

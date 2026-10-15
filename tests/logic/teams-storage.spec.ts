@@ -11,6 +11,7 @@ import {
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { parseTeamBackup, serializeTeamBackup } from "@/store/team-backup";
 
 test("saved set details survive reload even when unsupported or outside a game's limits", () => {
   const regular = createSavedTeam({
@@ -196,6 +197,96 @@ test("fills in defaults and drops malformed fields", () => {
   });
   expect(state?.teams[0].team[1].name).toBe("");
   expect(sanitizeSavedTeam({ name: "no id" })).toBeUndefined();
+  expect(sanitizeSavedTeam({ id: "" })).toBeUndefined();
+});
+
+test("recovers malformed saved set details without preventing a complete backup", () => {
+  const saved = sanitizeSavedTeam({
+    id: "recoverable",
+    team: [
+      {
+        name: "huntail",
+        level: Infinity,
+        evs: { hp: -1, spa: 999.5, spe: "252", unknown: 20 },
+        ivs: [31, 31],
+        statExperience: { atk: NaN, def: 12345, spd: Infinity },
+        effortLevels: { hp: null, atk: 15 },
+      },
+      { name: "luvdisc", level: -2.5, evs: { hp: 0 } },
+    ],
+  });
+  expect(saved?.team[0]).toMatchObject({
+    name: "huntail",
+    evs: { hp: -1, spa: 999.5 },
+    statExperience: { def: 12345 },
+    effortLevels: { atk: 15 },
+  });
+  expect(saved?.team[0]?.level).toBeUndefined();
+  expect(saved?.team[0]?.ivs).toBeUndefined();
+  expect(saved?.team[1]).toMatchObject({ level: -2.5, evs: { hp: 0 } });
+  if (!saved) throw new Error("Missing recovered team");
+  const backup = serializeTeamBackup({
+    teams: [saved],
+    currentTeamId: saved.id,
+  });
+  expect(parseTeamBackup(backup)?.teams).toEqual([saved]);
+
+  const loaded = loadStoredState(
+    fakeStorage(
+      '{"teams":[{"id":"overflow","team":[{"name":"clamperl","level":1e400,"evs":{"hp":4,"atk":1e400}}]}]}',
+    ).storage,
+  );
+  expect(loaded?.teams[0]?.team[0]?.level).toBeUndefined();
+  expect(loaded?.teams[0]?.team[0]?.evs).toEqual({ hp: 4 });
+});
+
+test("recovers missing and duplicate saved IDs deterministically without losing teams or selection", () => {
+  const teams = [
+    { id: "", name: "Empty ID" },
+    { id: "duplicate", name: "Original ID" },
+    { id: "duplicate", name: "Duplicate ID" },
+    { id: "recovered-team-1", name: "Existing ID" },
+    { name: "Missing ID" },
+    { id: 42, name: "Numeric ID" },
+  ];
+  const { storage } = fakeStorage(
+    JSON.stringify({ teams, currentTeamId: "duplicate" }),
+  );
+  const loaded = loadStoredState(storage);
+  expect(loaded?.teams.map(({ name }) => name)).toEqual(
+    teams.map(({ name }) => name),
+  );
+  expect(loaded?.teams.map(({ id }) => id)).toEqual([
+    "recovered-team-1-2",
+    "duplicate",
+    "recovered-team-3",
+    "recovered-team-1",
+    "recovered-team-5",
+    "recovered-team-6",
+  ]);
+  expect(loaded?.currentTeamId).toBe("duplicate");
+  expect(loadStoredState(storage)).toEqual(loaded);
+  if (!loaded) throw new Error("Missing recovered collection");
+  expect(
+    parseTeamBackup(
+      serializeTeamBackup({
+        teams: loaded.teams,
+        currentTeamId: loaded.currentTeamId,
+      }),
+    )?.teams,
+  ).toEqual(loaded.teams);
+  expect(saveStoredState(storage, loaded)).toBe(true);
+  expect(loadStoredState(storage)).toEqual(loaded);
+
+  const selectedEmptyId = loadStoredState(
+    fakeStorage(
+      JSON.stringify({
+        teams: [teams[1], teams[0]],
+        currentTeamId: "",
+      }),
+    ).storage,
+  );
+  expect(selectedEmptyId?.currentTeamId).toBe(selectedEmptyId?.teams[1]?.id);
 });
 
 test("loads all name views and defaults unknown views to List", () => {
@@ -338,6 +429,42 @@ test.describe("another tab's saves", () => {
     expect(mergeStoredState(clone(mine), mine, theirs).currentTeamId).toBe(
       "sun",
     );
+  });
+
+  test("large collections keep interleaved additions beside their neighbours and preserve every independent edit", () => {
+    const saved = base();
+    saved.teams = Array.from({ length: 1000 }, (_, index) =>
+      savedTeam(`team-${index}`, `Team ${index}`),
+    );
+    saved.currentTeamId = "team-500";
+    const mine = clone(saved);
+    const theirs = clone(saved);
+    mine.teams = mine.teams.flatMap((team, index) => [
+      { ...team, ...(index % 2 === 0 && { name: `Mine ${index}` }) },
+      savedTeam(`mine-${index}`, `New here ${index}`),
+    ]);
+    theirs.teams = theirs.teams.flatMap((team, index) => [
+      { ...team, ...(index % 2 === 1 && { name: `Theirs ${index}` }) },
+      savedTeam(`theirs-${index}`, `New there ${index}`),
+    ]);
+    const merged = mergeStoredState(saved, mine, theirs);
+    expect(merged.teams.map(({ id }) => id)).toEqual(
+      saved.teams.flatMap(({ id }, index) => [
+        id,
+        `mine-${index}`,
+        `theirs-${index}`,
+      ]),
+    );
+    expect(
+      merged.teams
+        .filter(({ id }) => id.startsWith("team-"))
+        .map(({ name }) => name),
+    ).toEqual(
+      saved.teams.map((_, index) =>
+        index % 2 === 0 ? `Mine ${index}` : `Theirs ${index}`,
+      ),
+    );
+    expect(merged.currentTeamId).toBe("team-500");
   });
 });
 

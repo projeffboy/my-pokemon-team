@@ -2,6 +2,7 @@ import { test, expect } from "fixtures";
 import { selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 import { createSavedTeam } from "@/shared/team";
+import { MAX_TEAM_BACKUP_BYTES } from "@/store/team-backup";
 
 const openTeams = async (page: Page) => {
   await page.getByRole("button", { name: "Teams", exact: true }).click();
@@ -19,6 +20,95 @@ const openBackups = async (page: Page) => {
 };
 
 test.describe("Team backups", () => {
+  test("the backup file chooser works from the keyboard and explains oversized files", async ({
+    page,
+  }) => {
+    await openTeams(page);
+    const dialog = await openBackups(page);
+    const choose = dialog.getByRole("button", {
+      name: "Choose backup file",
+      exact: true,
+    });
+    await choose.focus();
+    const choosing = page.waitForEvent("filechooser");
+    await choose.press("Enter");
+    const chooser = await choosing;
+    await chooser.setFiles({
+      name: "oversized.json",
+      mimeType: "application/json",
+      buffer: Buffer.alloc(MAX_TEAM_BACKUP_BYTES + 1, " "),
+    });
+    await expect(dialog.getByRole("alert")).toContainText(
+      "This backup file is too large.",
+    );
+    const add = dialog.getByRole("button", { name: "Add teams", exact: true });
+    await expect(add).toBeDisabled();
+
+    const team = createSavedTeam({ name: "Recovered", generation: 9 });
+    await dialog.locator("input[type=file]").setInputFiles({
+      name: "valid.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(
+        JSON.stringify({
+          format: "mypokemonteam",
+          version: 1,
+          teams: [team],
+          currentTeamId: team.id,
+        }),
+      ),
+    });
+    await expect(dialog.getByRole("alert")).toHaveCount(0);
+    await expect(dialog.getByRole("status")).toHaveText(
+      "Teams in this backup: 1",
+    );
+    await expect(add).toBeEnabled();
+    await add.click();
+    await expect(
+      page.getByRole("button", { name: "Load Recovered", exact: true }),
+    ).toBeVisible();
+  });
+
+  test("backup reading shows a status and waits before enabling restore", async ({
+    page,
+  }) => {
+    await page.evaluate(() => {
+      const read = File.prototype.text;
+      File.prototype.text = async function () {
+        await new Promise<void>(resolve => {
+          document.addEventListener("finish-backup-read", () => resolve(), {
+            once: true,
+          });
+        });
+        return read.call(this);
+      };
+    });
+    await openTeams(page);
+    const dialog = await openBackups(page);
+    const team = createSavedTeam({ name: "Reading", generation: 9 });
+    await dialog.locator("input[type=file]").setInputFiles({
+      name: "reading.json",
+      mimeType: "application/json",
+      buffer: Buffer.from(
+        JSON.stringify({
+          format: "mypokemonteam",
+          version: 1,
+          teams: [team],
+          currentTeamId: team.id,
+        }),
+      ),
+    });
+    await expect(dialog.getByRole("status")).toContainText("Reading backup");
+    const add = dialog.getByRole("button", { name: "Add teams", exact: true });
+    await expect(add).toBeDisabled();
+    await page.evaluate(() => {
+      document.dispatchEvent(new Event("finish-backup-read"));
+    });
+    await expect(dialog.getByRole("status")).toHaveText(
+      "Teams in this backup: 1",
+    );
+    await expect(add).toBeEnabled();
+  });
+
   test("a backup that would exceed collection capacity leaves current work unchanged", async ({
     page,
   }) => {
