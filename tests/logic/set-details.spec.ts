@@ -98,9 +98,9 @@ test.describe("set details in Showdown text", () => {
   test("a nickname holding an @ round-trips without an item", () => {
     for (const nickname of ["Mew@x", "a@b"]) {
       const [member] = createTeam({ name: "pikachu", nickname });
-      expect(parseTeamText(serializeTeam([member]))[0], nickname).toEqual(
-        member,
-      );
+      const text = serializeTeam([member]);
+      expect(text.split("\n")[0]).toBe(`${nickname} (Pikachu)`);
+      expect(parseTeamText(text)[0], nickname).toEqual(member);
     }
   });
 

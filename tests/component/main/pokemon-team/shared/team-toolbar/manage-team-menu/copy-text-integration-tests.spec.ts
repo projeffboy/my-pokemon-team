@@ -56,8 +56,9 @@ test.describe("Manage Team: Copy text - Integration Tests", () => {
       clipboardText = await page.evaluate(() => navigator.clipboard.readText());
     }
 
-    // We check for the expected format
-    const expectedSubstrings = ["Pikachu @", "Ability:", "- Thunderbolt"];
+    // We check for the expected format; without an item there is no " @ "
+    expect(clipboardText.split("\n")[0]).toBe("Pikachu");
+    const expectedSubstrings = ["Ability:", "- Thunderbolt"];
     for (const substring of expectedSubstrings) {
       expect(clipboardText).toContain(substring);
     }

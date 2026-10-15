@@ -74,9 +74,8 @@ function serializeMember(
   const nameLine = [
     nickname ? `${nickname} (${species})` : species,
     gender === "M" || gender === "F" ? `(${gender})` : "",
-    // Showdown leaves out " @ " when there is no item. A nickname holding an @
-    // keeps it, so that its own @ is not read as the item's.
-    itemText || nickname?.includes("@") ? `@ ${itemText}` : "",
+    // Showdown leaves out " @ " when there is no item
+    itemText ? `@ ${itemText}` : "",
   ]
     .filter(part => part)
     .join(" ");
