@@ -301,7 +301,7 @@ test.describe("Advanced Dialog - Integration Tests", () => {
       .poll(() => getTeamTextFromUrl(page))
       .toContain("Adamant Nature");
     const text = getTeamTextFromUrl(page);
-    expect(text).toContain("Big Clyde (Mudsdale) (F) @ ");
+    expect(text).toContain("Big Clyde (Mudsdale) (F)\n");
     expect(text).toContain("Level: 50");
     expect(text).toContain("Shiny: Yes");
     expect(text).toContain("Tera Type: Steel");
