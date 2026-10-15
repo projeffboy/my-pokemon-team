@@ -86,6 +86,8 @@ Historical move rules are projected into `past-generations.ts`; game-specific mo
 
 The Pokemon Champions (M-C) format filter reads eligibility from Showdown's `champions` mod, which follows the current regulation. When that mod moves to a new regulation, rename the filter to match.
 
+The abilities, items, and moves each Smogon tier bans, in `format-bans.ts`, come from the rule tables that Showdown's own team validator reads, for every generation the Format filter offers the tier in. A few clauses ban in code instead of with a list, such as OHKO Clause and Sleep Moves Clause. Those are listed in `CLAUSE_BANS` in `scripts/update-data/transforms.ts`, so a new clause of that kind has to be added there.
+
 The Viable moves filter comes from the Showdown client's teambuilder. The script runs the client's own `BattleMoveSearch.moveIsNotUseless` function, and a move is viable if any pokemon that learns it, with any of its abilities and required items, finds it useful in singles or doubles. If the update fails with "Could not find BattleMoveSearch.moveIsNotUseless", the client has restructured that function and `updateViableMoves` needs adjusting.
 
 To keep the bundle small, the script only keeps the fields the app reads. To use another Showdown field, add it to `projections` in `scripts/update-data/transforms.ts` and to the matching type in `src/types.ts`, then rerun the update.

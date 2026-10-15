@@ -501,6 +501,8 @@ const en = {
       `${pokemon} must hold ${items.join(" or ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} has ${move} twice.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} has ${thing}, which is banned in ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,

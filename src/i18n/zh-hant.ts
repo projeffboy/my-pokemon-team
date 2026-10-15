@@ -488,6 +488,8 @@ const zhHant: Messages = {
       `${pokemon}必須攜帶${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}的${move}重複了。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${where} 禁止使用${pokemon}的${thing}。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,

@@ -525,6 +525,8 @@ const fr: Messages = {
       `${pokemon} doit tenir ${items.join(" ou ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} a ${move} en double.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} a ${thing}, ce qui est interdit en ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
