@@ -28,7 +28,11 @@ import {
   itemNameInverse,
   moveNameInverse,
 } from "@/shared/names";
-import { hasNoAbility, pokemonAbilities } from "@/shared/pokedex";
+import {
+  hasNoAbility,
+  pokemonAbilities,
+  unreleasedHiddenAbility,
+} from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
   DEFAULT_HAPPINESS,
@@ -49,6 +53,7 @@ import {
 } from "@/shared/generation-profile";
 import { canItLearn, isItemAvailable } from "./learnsets";
 import { generationRules } from "@/shared/generation-rules";
+import { GENERATIONS } from "@/shared/generations";
 import { canHyperTrain, matchImportedHiddenPower } from "@/shared/hidden-power";
 
 const statsLine = (
@@ -353,9 +358,11 @@ export function parseTeamText(
       pending.push({ problem, ...(replacement && { replacement }) });
 
     member.name = pokemon;
-    const abilities = Array.from({ length: 9 }, (_, i) =>
-      pokemonAbilities(pokemon, (i + 1) as Generation),
-    ).flat();
+    const abilities = GENERATIONS.flatMap(gen =>
+      pokemonAbilities(pokemon, gen).concat(
+        unreleasedHiddenAbility(pokemon, gen) ?? [],
+      ),
+    );
     member.ability =
       rules.abilities ?
         getAutoSelectedAbility(pokemon, generation, format)

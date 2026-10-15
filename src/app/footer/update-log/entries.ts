@@ -39,6 +39,7 @@ const entries: Entry[] = [
       "Showdown teams from formats such as Ubers UU or Pure Hackmons no longer import as Uber or PU teams.",
       "Pokemon Champions (M-C) now uses its own move changes, such as Snap Trap being Steel type.",
       "The team checklist no longer counts Diamond Storm as a boosting move, since its Defense boost is only a 50% chance.",
+      "Gens 5–7 no longer offer or randomly pick hidden abilities that were unreleased then, e.g. Contrary for Gen 5 Serperior.",
     ],
   },
   {
