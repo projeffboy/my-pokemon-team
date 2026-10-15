@@ -222,6 +222,7 @@ const zhHans: Messages = {
       status: { label: "异常状态招式", short: "异常状态" },
       phazer: { label: "吹飞手" },
       boosting: { label: "强化招式", short: "强化" },
+      priority: { label: "先制招式", short: "先制", shorter: "先制" },
       voltTurn: {
         label: "急折／伏特替换",
         short: "急折伏特",
@@ -436,7 +437,7 @@ const zhHans: Messages = {
     removed: {
       item: "移除的道具",
       ability: "移除的特性",
-      moves: "移除的招式：",
+      move: "移除的招式",
       details: "移除的详细信息",
     },
     ivsUnused: (where: string) => `个体值不适用于${where}。`,
@@ -449,6 +450,9 @@ const zhHans: Messages = {
       item: (count: number) => `${count}件道具`,
       ability: (count: number) => `${count}个特性`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中保留${carried}只`,
+    removedSummary: (removed: string) => `移除${removed}`,
     modify: "更新现有队伍",
     copy: "复制到新队伍",
     createEmpty: "创建空队伍",
@@ -638,6 +642,10 @@ const zhHans: Messages = {
         "这里指命中率高、能造成麻痹、灼伤或中毒的招式，以及能催眠的招式。例如：剧毒、磷火、电磁波、唱歌。",
       ],
       ["强化招式", "提升自身能力的招式（最好是 +2 以上），例如剑舞和冥想。"],
+      [
+        "先制招式",
+        "无论速度高低，都能比大多数招式先出手的攻击招式。例如：神速、突袭、水流喷射、子弹拳。",
+      ],
       [
         "讲究道具",
         "使某项能力提升 50% 但会锁定一个招式的道具。共有三种：讲究头带、讲究眼镜和讲究围巾。",

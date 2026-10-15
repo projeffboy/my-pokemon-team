@@ -225,6 +225,7 @@ const zhHant: Messages = {
       status: { label: "異常狀態招式", short: "狀態" },
       phazer: { label: "強制換人" },
       boosting: { label: "強化招式", short: "強化" },
+      priority: { label: "先制招式", short: "先制", shorter: "先制" },
       voltTurn: {
         label: "急速折返／伏特替換",
         short: "折返招式",
@@ -440,7 +441,7 @@ const zhHant: Messages = {
     removed: {
       item: "移除的道具",
       ability: "移除的特性",
-      moves: "移除的招式：",
+      move: "移除的招式",
       details: "移除的詳細資訊",
     },
     ivsUnused: (where: string) => `個體值不適用於${where}。`,
@@ -453,6 +454,9 @@ const zhHant: Messages = {
       item: (count: number) => `${count}件道具`,
       ability: (count: number) => `${count}個特性`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中保留${carried}隻`,
+    removedSummary: (removed: string) => `移除${removed}`,
     modify: "更新現有隊伍",
     copy: "複製到新隊伍",
     createEmpty: "建立空隊伍",
@@ -641,6 +645,10 @@ const zhHant: Messages = {
         "這裡指的是命中率高、能造成麻痺、灼傷或中毒的招式，以及能催眠的招式。例如：劇毒、磷火、電磁波、唱歌。",
       ],
       ["強化招式", "能提升自身能力的招式（最好是 2 階以上），例如劍舞和冥想。"],
+      [
+        "先制招式",
+        "無論速度高低，都能比大多數招式先出手的攻擊招式。例如：神速、突襲、水流噴射、子彈拳。",
+      ],
       [
         "講究道具",
         "能提升一項能力 50%，但會鎖定只能使用一個招式的道具。共有三種：講究頭帶、講究眼鏡、講究圍巾。",

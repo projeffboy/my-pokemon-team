@@ -151,8 +151,9 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
     });
     await expect(member).toContainText("Kyogre-Primal → Kyogre");
     await expect(member).toContainText("Ability: Primordial Sea → Drizzle");
-    await expect(member).toContainText("Item removed:");
-    await expect(member).toContainText("Blue Orb");
+    await expect(member.getByRole("listitem")).toHaveText([
+      "Item removed: Blue Orb",
+    ]);
     await dialog.getByRole("button", { name: action, exact: true }).click();
     await expect(dialog).toBeHidden();
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue(
@@ -278,6 +279,9 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
     await expect(dialog).toContainText(
       "Copying keeps your original team unchanged.",
     );
+    await expect(dialog).toHaveAccessibleDescription(
+      "1 of 2 Pokémon carries over · 1 Pokémon, 1 move, 1 item, and 1 ability removed",
+    );
     await expect(dialog).toContainText("These Pokémon won’t carry over");
     await expect(dialog).toContainText(
       "The rest of your Pokémon will carry over with changes",
@@ -292,10 +296,9 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
     );
     await expect(dialog).toContainText("Slack Off");
     const slowbro = dialog.getByRole("group", { name: "Slowbro", exact: true });
-    await expect(
-      slowbro.getByText("Moves removed:", { exact: true }),
-    ).toHaveCount(1);
-    await expect(slowbro.getByRole("listitem")).toHaveText(["Slack Off"]);
+    await expect(slowbro.getByRole("listitem")).toHaveText([
+      "Move removed: Slack Off",
+    ]);
     await expect(slowbro).not.toContainText("Item removed:");
     await expect(
       slowbro.getByRole("img", { name: "Normal", exact: true }),
@@ -304,19 +307,23 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
     await expect(slowbro).not.toContainText("Details removed:");
     await expect(dialog.getByText("Abomasnow", { exact: true })).toBeVisible();
     await expect(dialog).not.toContainText("Move: Surf");
-    if (action === "Cancel" && (page.viewportSize()?.width ?? Infinity) < 600) {
-      const bounds = await Promise.all(
-        ["Copy to new team", "Update existing team", "Cancel"].map(name =>
+    if (action === "Cancel") {
+      const [cancel, update, copy] = await Promise.all(
+        ["Cancel", "Update existing team", "Copy to new team"].map(name =>
           dialog.getByRole("button", { name, exact: true }).boundingBox(),
         ),
       );
-      const [copy, update, cancel] = bounds;
-      expect(copy && update && cancel).toBeTruthy();
-      if (copy && update && cancel) {
-        expect(copy.x).toBe(update.x);
-        expect(copy.width).toBe(update.width);
-        expect(copy.y + copy.height).toBeLessThan(update.y);
-        expect(cancel.y + cancel.height).toBeLessThan(copy.y);
+      if (!cancel || !update || !copy) throw new Error("Missing actions");
+      if ((page.viewportSize()?.width ?? Infinity) < 600) {
+        expect(update.x).toBe(copy.x);
+        expect(update.width).toBe(copy.width);
+        expect(cancel.y + cancel.height).toBeLessThan(update.y);
+        expect(update.y + update.height).toBeLessThan(copy.y);
+      } else {
+        expect(update.y).toBe(cancel.y);
+        expect(copy.y).toBe(cancel.y);
+        expect(cancel.x + cancel.width).toBeLessThan(update.x);
+        expect(update.x + update.width).toBeLessThan(copy.x);
       }
     }
     await dialog.getByRole("button", { name: action, exact: true }).click();
@@ -360,6 +367,129 @@ for (const action of ["Cancel", "Update existing team", "Copy to new team"]) {
     }
   });
 }
+
+test("generation transfer: summarizes the cost and marks what is removed", async ({
+  page,
+}) => {
+  const team = `Heracross @ Choice Scarf
+Ability: Guts
+- Megahorn
+- Close Combat
+
+Tinkaton @
+-
+
+Granbull @ Leftovers
+Ability: Intimidate
+- Return
+- Play Rough
+
+Annihilape @
+-
+
+Lokix @
+-
+`;
+  await page.goto(`/?gen=9&team=${Buffer.from(team).toString("base64url")}`, {
+    waitUntil: "domcontentloaded",
+  });
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Heracross");
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  await page.locator('[role="option"][data-value="2"]').press("Enter");
+  const dialog = page.getByRole("dialog");
+  const summary =
+    "2 of 5 Pokémon carry over · 3 Pokémon, 2 moves, 1 item, and 2 abilities removed";
+  await expect(dialog).toHaveAccessibleDescription(summary);
+  const unavailable = dialog.getByRole("group", {
+    name: "These Pokémon won’t carry over",
+    exact: true,
+  });
+  const summaryBounds = await dialog
+    .getByText(summary, { exact: true })
+    .boundingBox();
+  const detailsBounds = await unavailable.boundingBox();
+  if (!summaryBounds || !detailsBounds) throw new Error("Missing summary");
+  expect(summaryBounds.y + summaryBounds.height).toBeLessThanOrEqual(
+    detailsBounds.y,
+  );
+
+  const removedPokemon = unavailable.getByRole("deletion");
+  await expect(removedPokemon).toHaveText(["Tinkaton", "Annihilape", "Lokix"]);
+  await expect(removedPokemon.first()).toHaveCSS(
+    "text-decoration-line",
+    "line-through",
+  );
+
+  const carryingOver = dialog.getByRole("group", {
+    name: "The rest of your Pokémon will carry over with changes",
+    exact: true,
+  });
+  await expect(
+    carryingOver.getByRole("heading", {
+      name: "For every Pokémon carrying over",
+      level: 3,
+    }),
+  ).toBeVisible();
+  await expect(
+    carryingOver.getByRole("list", {
+      name: "For every Pokémon carrying over",
+      exact: true,
+    }),
+  ).toHaveText("Not used in Gen 2: Ability.");
+
+  const heracross = dialog.getByRole("group", {
+    name: "Heracross",
+    exact: true,
+  });
+  await expect(heracross.getByRole("listitem")).toHaveText([
+    "Item removed: Choice Scarf",
+    "Move removed: Close Combat",
+  ]);
+  await expect(heracross).not.toContainText("Megahorn");
+  await expect(
+    dialog
+      .getByRole("group", { name: "Granbull", exact: true })
+      .getByRole("listitem"),
+  ).toHaveText(["Move removed: Play Rough"]);
+  for (const [scheme, color] of [
+    ["light", "rgb(211, 47, 47)"],
+    ["dark", "rgb(239, 154, 154)"],
+  ] as const) {
+    await page.emulateMedia({ colorScheme: scheme });
+    for (const name of ["Choice Scarf", "Close Combat"])
+      await expect(heracross.getByText(name, { exact: true })).toHaveCSS(
+        "color",
+        color,
+      );
+  }
+
+  const buttons = dialog.getByRole("button");
+  await expect(buttons).toHaveCount(3);
+  for (const [index, name] of [
+    "Cancel",
+    "Update existing team",
+    "Copy to new team",
+  ].entries())
+    await expect(buttons.nth(index)).toHaveAccessibleName(name);
+  await expect(buttons.last()).toHaveClass(/MuiButton-contained/);
+
+  await page.setViewportSize({ width: 320, height: 640 });
+  await expect(buttons.first()).toHaveAccessibleName("Cancel");
+  await expect(dialog.getByText(summary, { exact: true })).toBeInViewport({
+    ratio: 1,
+  });
+  for (const name of ["Update existing team", "Copy to new team"])
+    await expect(
+      dialog.getByRole("button", { name, exact: true }),
+    ).toBeInViewport({ ratio: 1 });
+  await expect
+    .poll(() =>
+      dialog
+        .locator(".MuiDialogContent-root")
+        .evaluate(element => element.scrollWidth - element.clientWidth),
+    )
+    .toBe(0);
+});
 
 test("generation transfer: compact layout groups unavailable Pokemon with names", async ({
   page,
@@ -514,6 +644,7 @@ Claydol @
     expect(bounds.x + bounds.width).toBeLessThanOrEqual(320);
   }
   await expect(dialog.getByRole("heading", { level: 3 })).toHaveText([
+    "For every Pokémon carrying over",
     "Forretress",
   ]);
   await expect(dialog).toContainText(
@@ -524,13 +655,10 @@ Claydol @
     name: "Forretress",
     exact: true,
   });
-  await expect(
-    forretress.getByText("Moves removed:", { exact: true }),
-  ).toHaveCount(1);
   await expect(forretress.getByRole("listitem")).toHaveText([
-    "Hidden Power Ghost",
+    "Item removed: Lucky Punch",
+    "Move removed: Hidden Power Ghost",
   ]);
-  await expect(forretress).toContainText("Item removed:");
   await expect(
     forretress.getByRole("img", { name: "Lucky Punch icon", exact: true }),
   ).toBeVisible();
@@ -562,9 +690,9 @@ Claydol @
     .boundingBox();
   expect(copy && update && cancel).toBeTruthy();
   if (copy && update && cancel) {
-    expect(cancel.y + cancel.height).toBeLessThan(copy.y);
-    expect(copy.y + copy.height).toBeLessThan(update.y);
-    expect(update.y + update.height).toBeLessThanOrEqual(640);
+    expect(cancel.y + cancel.height).toBeLessThan(update.y);
+    expect(update.y + update.height).toBeLessThan(copy.y);
+    expect(copy.y + copy.height).toBeLessThanOrEqual(640);
   }
   await page.setViewportSize({ width: 400, height: 640 });
   await expect(dialog).toHaveAccessibleName("Switch game? Gen 9 · Champions");
@@ -582,6 +710,7 @@ Claydol @
     }),
   ).toHaveCount(1);
   await expect(dialog.getByRole("heading", { level: 3 })).toHaveText([
+    "For every Pokémon carrying over",
     "Forretress",
   ]);
   await expect(dialog).toContainText(
@@ -643,12 +772,15 @@ test("generation transfer: all six adjustments fit two columns on phones", async
     dialog
       .getByRole("group", { name: "Cacturne", exact: true })
       .getByRole("listitem"),
-  ).toHaveText(["Encore", "Hidden Power Ground"]);
+  ).toHaveText(["Move removed: Encore", "Move removed: Hidden Power Ground"]);
   await expect(
     dialog
       .getByRole("group", { name: "Forretress", exact: true })
       .getByRole("listitem"),
-  ).toHaveText(["Body Slam", "Hidden Power Ground"]);
+  ).toHaveText([
+    "Move removed: Body Slam",
+    "Move removed: Hidden Power Ground",
+  ]);
   const cacturne = dialog.getByRole("group", { name: "Cacturne", exact: true });
   await expect(
     cacturne.getByRole("img", { name: "Normal", exact: true }),
@@ -730,6 +862,7 @@ Level: 50
   ).toHaveCount(1);
   await expect(dialog).not.toContainText(/Level: (100|56) → 50/);
   await expect(dialog.getByRole("heading", { level: 3 })).toHaveText([
+    "For every Pokémon carrying over",
     "Gardevoir",
   ]);
   const gardevoir = dialog.getByRole("group", {
@@ -800,12 +933,14 @@ Ariados @
   await expect(dialog).toContainText(
     "Your Pokémon will carry over with changes",
   );
-  await expect(
-    dialog.getByText("For every Pokémon carrying over", { exact: true }),
-  ).toHaveCount(0);
+  await expect(dialog).toHaveAccessibleDescription(
+    "3 of 3 Pokémon carry over · 2 abilities removed",
+  );
   await expect(dialog).not.toContainText("Own Tempo");
   await expect(dialog).not.toContainText("Guts");
-  await expect(dialog.getByRole("heading", { level: 3 })).toHaveCount(0);
+  await expect(dialog.getByRole("heading", { level: 3 })).toHaveText([
+    "For every Pokémon carrying over",
+  ]);
   await dialog
     .getByRole("button", { name: "Update existing team", exact: true })
     .click();
@@ -834,6 +969,9 @@ for (const action of ["Cancel", "Create empty team", "Clear existing team"]) {
     await page.locator('[role="option"][data-value="1"]').press("Enter");
     const dialog = page.getByRole("dialog");
     await expect(dialog).toContainText("All Pokémon won’t carry over");
+    await expect(dialog).toHaveAccessibleDescription(
+      "0 of 2 Pokémon carry over · 2 Pokémon removed",
+    );
     await expect(dialog).not.toContainText("These Pokémon won’t carry over");
     await expect(dialog).not.toContainText("will carry over with changes");
     await expect(
@@ -946,19 +1084,19 @@ Lapras @ Sitrus Berry
     "Training changes from EVs to Stat experience.",
   ]);
   await expect(carryingOver.getByRole("heading", { level: 3 })).toHaveText([
+    "For every Pokémon carrying over",
     "Celebi",
     "Lapras",
   ]);
-  await expect(
-    dialog.getByText("For every Pokémon carrying over", { exact: true }),
-  ).toHaveCount(0);
   expect(
     await carryingOver.evaluate(element => {
-      const rules = element.querySelector("ul");
+      const [, heading, rules] = element.children;
       return (
         element.previousElementSibling?.getAttribute("aria-label") ===
           "These Pokémon won’t carry over" &&
-        rules === element.children[1] &&
+        heading?.tagName === "H3" &&
+        heading.textContent === "For every Pokémon carrying over" &&
+        rules?.tagName === "UL" &&
         rules.nextElementSibling?.querySelector("h3")?.textContent === "Celebi"
       );
     }),

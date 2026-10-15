@@ -5,7 +5,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `effectiveness.spec.ts` covers type matchups, defensive abilities, and item modifiers.
 - `learnsets.spec.ts` covers evolution and forme inheritance, regional exclusions, Hidden Power variants, and invalid inputs.
 - `special-moves.spec.ts` covers move type changes, Freeze-Dry, Flying Press, and coverage eligibility.
-- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, pivot moves, and choice items.
+- `checklist.spec.ts` covers the team checklist's rules: hazards, removal, recovery, Wish with Protect, status, clerics, phazers, boosting, priority moves, pivot moves, and choice items.
 - `coverage.spec.ts` covers team defence scores, STAB, duplicate moves, and input immutability.
 - `filtering.spec.ts` covers formats, tiers, regions, types, abilities, generations, and combined filters.
 - `sorting.spec.ts` covers the Name dropdown's sort orders: name, pokedex number, format, base stats, and tie-breaking.
