@@ -17,7 +17,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `pokedex.spec.ts` checks inherited cosmetic-form data and distinct battle formes.
 - `sprite-animations.spec.ts` checks that no bundled animation is a copy of another pokemon's in the same folder.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.
-- `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, and leaves the other slots alone.
+- `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, leaves the other slots alone, and keeps a required item the game lacks in the Item dropdown.
 - `auto-select-item.spec.ts` covers required items for megas, primals, and item-dependent formes.
 - `parsing.spec.ts` covers Showdown text, nicknames, invalid entries, team and move limits, serialization, URL encoding, and atomic team replacement.
 - `set-details.spec.ts` covers the set details in Showdown text (nickname, gender, level, shiny, tera type, EVs, nature, IVs), nicknames that are pokemon names or hold parentheses or an at sign, and backups with several teams.

@@ -27,6 +27,7 @@ const entries: Entry[] = [
       "Picking a slot’s own Pokémon again in the Name list no longer clears its moves, item and other details.",
       "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
       "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
+      "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
       "Rotom-Frost no longer plays Rotom-Fan’s Gen 4 animation.",
     ],
   },
