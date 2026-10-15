@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHans: Messages = {
+  pageTitle: "My Pokemon Team - 宝可梦配队与队伍规划工具",
   // 页眉
   beta: "测试版",
   generation,
@@ -30,10 +31,11 @@ const zhHans: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即将推出",
+  generationGroups: { spinOffs: "外传", mainSeries: "正传系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合并第6–9世代所有游戏的选项",
+    description: "合并第6–9世代所有游戏",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -49,9 +51,12 @@ const zhHans: Messages = {
     short: "旧版网站",
     title: "切换到旧版网站？",
     description:
-      "当前队伍不会转移到旧版网站。已在此保存的队伍将保留在这个版本中。",
+      "当前队伍将在旧版网站中打开。已在此保存的队伍将保留在这个版本中。",
     go: "前往旧版网站",
     goLong: "前往旧版网站",
+    generationsOnly: (generations: string) => `旧版网站只有${generations}。`,
+    leftOut: "以下内容不会转移：",
+    goWithTeam: "带上我的队伍前往",
   },
   feedback: {
     button: "发送反馈",
@@ -108,6 +113,8 @@ const zhHans: Messages = {
     teamEmpty: "宝可梦队伍为空",
     linkCopied: "已复制宝可梦队伍链接",
     linkNotCopied: "无法复制链接。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支持此链接的世代或游戏，已改用${profile}打开。`,
     nothingToCopy: "队伍为空，没有可复制的内容。",
     teamCopied: "已复制队伍。",
     teamNotCopied: "无法复制队伍。",
@@ -119,7 +126,6 @@ const zhHans: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `宝可梦 ${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first}和${second}`,
-    advancedMode: "高级",
     filters: "筛选",
     sort: "排序",
     randomizePokemon: "随机选择宝可梦",
@@ -128,7 +134,7 @@ const zhHans: Messages = {
     advanced: "更多详情",
     advancedFor: (slot: number) => `栏位 ${slot} 的更多详情`,
     details: "详情",
-    showMoveTypes: "显示招式属性",
+    showTypes: "显示属性",
     about: (pokemon: string) => `关于${pokemon}`,
     dragHint: "长按拖动即可调整顺序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他栏位`,
@@ -219,6 +225,7 @@ const zhHans: Messages = {
       status: { label: "异常状态招式", short: "异常状态" },
       phazer: { label: "吹飞手" },
       boosting: { label: "强化招式", short: "强化" },
+      priority: { label: "先制招式", short: "先制", shorter: "先制" },
       voltTurn: {
         label: "急折／伏特替换",
         short: "急折伏特",
@@ -251,6 +258,7 @@ const zhHans: Messages = {
       cause: string | undefined,
     ) =>
       `${type}对${pokemon}（${types}）造成 ${multiplier} 倍伤害${cause ? `（受${cause}影响）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其变为${type}属性`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -433,7 +441,7 @@ const zhHans: Messages = {
     removed: {
       item: "移除的道具",
       ability: "移除的特性",
-      moves: "移除的招式：",
+      move: "移除的招式",
       details: "移除的详细信息",
     },
     ivsUnused: (where: string) => `个体值不适用于${where}。`,
@@ -446,6 +454,9 @@ const zhHans: Messages = {
       item: (count: number) => `${count}件道具`,
       ability: (count: number) => `${count}个特性`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中保留${carried}只`,
+    removedSummary: (removed: string) => `移除${removed}`,
     modify: "更新现有队伍",
     copy: "复制到新队伍",
     createEmpty: "创建空队伍",
@@ -571,7 +582,7 @@ const zhHans: Messages = {
     teamsAnswer:
       "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
     teamsAnswer2:
-      "“更多”按钮会显示队伍工具、“筛选”、“排序”和“更多详情”。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
+      "名称列表中有“筛选”和“排序”按钮，招式列表中有“排序”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
     generations: "世代",
     generationsQuestion: "世代会改变什么？",
     generationsAnswer:
@@ -628,13 +639,17 @@ const zhHans: Messages = {
       ["清雾手", "会使用清除浓雾（可吹走场上钉子）的宝可梦。"],
       [
         "稳定回复",
-        "每次使用都能保证回复 50% 或以上 HP 的招式（在正常天气下）。例如：自我再生、生蛋、喝牛奶、偷懒、光合作用。",
+        "每次使用都能保证回复 50% 或以上 HP 的招式（在正常天气下）。例如：自我再生、生蛋、喝牛奶、偷懒、光合作用。如果同一只宝可梦还会守住或看穿，祈愿也算。",
       ],
       [
         "异常状态招式",
         "这里指命中率高、能造成麻痹、灼伤或中毒的招式，以及能催眠的招式。例如：剧毒、磷火、电磁波、唱歌。",
       ],
       ["强化招式", "提升自身能力的招式（最好是 +2 以上），例如剑舞和冥想。"],
+      [
+        "先制招式",
+        "无论速度高低，都能比大多数招式先出手的攻击招式。例如：神速、突袭、水流喷射、子弹拳。",
+      ],
       [
         "讲究道具",
         "使某项能力提升 50% 但会锁定一个招式的道具。共有三种：讲究头带、讲究眼镜和讲究围巾。",
