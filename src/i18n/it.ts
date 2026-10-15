@@ -730,6 +730,7 @@ const it: Messages = {
     typeColours: "Colori dei tipi",
     typeColoursFor: "Il colore di ogni tipo nelle statistiche della squadra",
     stunfiskFor: "È una bella community",
+    serebiiFor: "Gli strumenti che i Pokémon possono tenere in Leggende: Z-A",
   },
   privacy: {
     playwire:

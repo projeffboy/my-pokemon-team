@@ -693,6 +693,7 @@ const zhHans: Messages = {
     typeColours: "属性颜色",
     typeColoursFor: "队伍统计中每种属性的颜色",
     stunfiskFor: "一个很棒的社区",
+    serebiiFor: "传说 Z-A 中宝可梦可以携带的道具",
   },
   privacy: {
     playwire:

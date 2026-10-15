@@ -722,6 +722,7 @@ const es: Messages = {
     typeColours: "Colores de los tipos",
     typeColoursFor: "El color de cada tipo en las estadísticas del equipo",
     stunfiskFor: "Es una buena comunidad",
+    serebiiFor: "Los objetos que pueden llevar los Pokémon en Leyendas: Z-A",
   },
   privacy: {
     playwire:

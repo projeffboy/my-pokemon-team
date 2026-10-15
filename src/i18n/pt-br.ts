@@ -721,6 +721,7 @@ const ptBR: Messages = {
     typeColours: "Cores dos tipos",
     typeColoursFor: "A cor de cada tipo nas estatísticas da equipe",
     stunfiskFor: "É uma boa comunidade",
+    serebiiFor: "Os itens que os Pokémon podem segurar em Legends: Z-A",
   },
   privacy: {
     playwire:

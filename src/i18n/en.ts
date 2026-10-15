@@ -730,6 +730,7 @@ const en = {
     typeColours: "Type colours",
     typeColoursFor: "The colour of each type in the team stats",
     stunfiskFor: "It's a good community",
+    serebiiFor: "The items a pokemon can hold in Legends: Z-A",
   },
   privacy: {
     playwire:

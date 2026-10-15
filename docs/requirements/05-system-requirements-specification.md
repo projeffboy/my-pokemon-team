@@ -681,7 +681,7 @@ Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](http
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
 | REQ-POL-1 | The site shall present a privacy policy that names the ad platform, states that it may collect aggregated and anonymized data for advertising, and links to the ad platform's own policy. | E    | Implemented |
 | REQ-POL-2 | The site shall collect from a Player only what the Player submits as feedback.                                                                                                            | E    | Implemented |
-| REQ-POL-3 | The site shall credit Pokemon Showdown, PokeAPI, the rights holders, and the source of each downloaded image.                                                                             | E    | Implemented |
+| REQ-POL-3 | The site shall credit Pokemon Showdown, PokeAPI, Serebii, the rights holders, and the source of each downloaded image.                                                                    | E    | Implemented |
 
 ### 3.10) Constraints
 

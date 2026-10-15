@@ -690,6 +690,7 @@ const zhHant: Messages = {
     typeColours: "屬性顏色",
     typeColoursFor: "隊伍數據中各屬性的顏色",
     stunfiskFor: "很棒的社群",
+    serebiiFor: "傳說 Z-A 中寶可夢可以攜帶的道具",
   },
   privacy: {
     playwire:

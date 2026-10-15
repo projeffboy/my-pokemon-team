@@ -721,6 +721,7 @@ const ko: Messages = {
     typeColours: "타입 색상",
     typeColoursFor: "팀 통계에 쓰인 각 타입의 색상",
     stunfiskFor: "좋은 커뮤니티입니다",
+    serebiiFor: "LEGENDS Z-A에서 포켓몬이 지닐 수 있는 물건",
   },
   privacy: {
     playwire:

@@ -14,6 +14,13 @@ test.describe("Credits - Unit Tests", () => {
     await expect(
       dialog.getByRole("link", { name: "Pokemon Showdown" }),
     ).toHaveAttribute("href", "https://pokemonshowdown.com");
+    await expect(dialog.getByRole("link", { name: "Serebii" })).toHaveAttribute(
+      "href",
+      "https://www.serebii.net/legendsz-a/items.shtml",
+    );
+    await expect(dialog).toContainText(
+      "The items a pokemon can hold in Legends: Z-A",
+    );
     await expect(dialog.getByRole("link", { name: "React" })).toHaveAttribute(
       "href",
       "https://react.dev/",
