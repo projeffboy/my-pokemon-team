@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 15, 2026",
+    changes: [
+      "Hidden Power’s IVs now update after level changes, and ticking Shiny in Gen 2 switches it to the Grass or Dragon type its DVs give.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",

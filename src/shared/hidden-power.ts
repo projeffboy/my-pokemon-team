@@ -1,5 +1,6 @@
 import spreads from "@/data/hidden-power-spreads";
 import {
+  MOVE_KEYS,
   STAT_KEYS,
   type Gender,
   type Generation,
@@ -140,6 +141,30 @@ export function matchHiddenPower(
       Object.keys(spread.ivs).length ? { ...spread.ivs } : undefined,
     );
   }
+}
+
+// After an edit that changes which IVs or DVs can give the slot's Hidden Power
+// type, such as a level that loses Hyper Training. Shiny Gen 2 DVs only give
+// Grass or Dragon, so the move follows the DVs rather than undoing the shiny.
+export function rematchHiddenPower(
+  member: TeamPokemon,
+  generation: Generation,
+  format = "",
+) {
+  const key = MOVE_KEYS.find(key => member[key].startsWith("hiddenpower"));
+  if (!key) return;
+  const move = member[key];
+  if (generation !== 2 || !isShinyDv(gen2Dvs(member))) {
+    matchHiddenPower(member, move, generation, format);
+    return;
+  }
+  if (
+    !generationRules(generation, format).ivs ||
+    matchHiddenPowerPreservingDetails(member, move, generation, format)
+  )
+    return;
+  const type = hiddenPowerType(member, generation);
+  if (type) member[key] = `hiddenpower${type}`;
 }
 
 export function matchImportedHiddenPower(

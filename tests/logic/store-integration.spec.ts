@@ -1,6 +1,8 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
+import { isShinyDv } from "@/shared/generation-rules";
+import { canHaveHiddenPowerType, hiddenPowerType } from "@/shared/hidden-power";
 
 test("move selection rejects duplicates but permits changing its own Hidden Power type", ({
   store,
@@ -196,4 +198,42 @@ test("choosing Giratina-Origin fills in the item its generation has", ({
   store.currentTeam.generation = 9;
   store.selectPokemon(0, "giratinaorigin");
   expect(store.team[0].item).toBe("griseouscore");
+});
+
+test("a level change re-matches Hidden Power once Hyper Training no longer applies", ({
+  store,
+}) => {
+  store.currentTeam.generation = 7;
+  store.selectPokemon(0, "lanturn");
+  store.selectMove(0, "move1", "hiddenpowerfire");
+  expect(store.team[0].ivs).toBeUndefined();
+  store.setLevel(0, 50);
+  expect(store.team[0].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+  expect(canHaveHiddenPowerType(store.team[0], "fire", 7)).toBe(true);
+  store.setLevel(0, undefined);
+  expect(store.team[0].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+
+  store.selectPokemon(1, "chinchou");
+  store.setLevel(1, 50);
+  store.selectMove(1, "move1", "hiddenpowerfire");
+  expect(store.team[1].ivs).toEqual(store.team[0].ivs);
+});
+
+test("Gen 2 shininess keeps Hidden Power matching the DVs", ({ store }) => {
+  store.currentTeam.generation = 2;
+  store.selectPokemon(0, "lanturn");
+  store.selectMove(0, "move1", "hiddenpowerfire");
+  store.setShiny(0, true);
+  expect(isShinyDv(store.team[0])).toBe(true);
+  expect(store.team[0].move1).toBe("hiddenpowergrass");
+  expect(hiddenPowerType(store.team[0], 2)).toBe("grass");
+
+  store.selectMove(0, "move1", "hiddenpowerdragon");
+  store.setShiny(0, true);
+  expect(store.team[0].move1).toBe("hiddenpowerdragon");
+  expect(isShinyDv(store.team[0])).toBe(true);
+  store.setShiny(0, false);
+  expect(isShinyDv(store.team[0])).toBe(false);
+  expect(store.team[0].move1).toBe("hiddenpowerdragon");
+  expect(hiddenPowerType(store.team[0], 2)).toBe("dragon");
 });

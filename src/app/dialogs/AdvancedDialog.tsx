@@ -43,7 +43,6 @@ import {
   gen2Dvs,
   dvGender,
   isShinyDv,
-  setLegacyShiny,
 } from "@/shared/generation-rules";
 
 const clamp = (value: number, max: number) =>
@@ -157,9 +156,8 @@ const AdvancedForm = observer(function AdvancedForm({
                 value={member.level ?? DEFAULT_LEVEL}
                 onChange={(value = DEFAULT_LEVEL) => {
                   const level = clamp(value, MAX_LEVEL);
-                  setDetail(
-                    member,
-                    "level",
+                  store.setLevel(
+                    teamIndex,
                     level === DEFAULT_LEVEL || level < 1 ? undefined : level,
                   );
                 }}
@@ -242,9 +240,7 @@ const AdvancedForm = observer(function AdvancedForm({
                       generation === 2 ? isShinyDv(dvMember) : !!member.shiny
                     }
                     onChange={event =>
-                      generation === 2 ?
-                        setLegacyShiny(member, event.target.checked)
-                      : setDetail(member, "shiny", event.target.checked)
+                      store.setShiny(teamIndex, event.target.checked)
                     }
                   />
                 }
