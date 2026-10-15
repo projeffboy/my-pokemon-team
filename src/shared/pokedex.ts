@@ -2,7 +2,7 @@ import pokedex from "@/data/pokedex";
 import pastGenerations from "@/data/past-generations";
 import gameVariants from "@/data/game-variants";
 import { LATEST_GENERATION } from "./generations";
-import { isPokemonType } from "@/types";
+import { isPokemonType, type Generation } from "@/types";
 import {
   COMBINED_GENERATIONS_FORMAT,
   COMBINED_GENERATIONS_MASK,
@@ -35,6 +35,12 @@ export const pokemonAbilities = (
     : (pastGenerations[generation]?.abilities?.[pokemon] ??
         Object.values(pokedex[pokemon]?.abilities ?? {}));
 };
+
+// E.g. 'chandelure' => 'Shadow Tag' in gen 5, which old links may still hold
+export const unreleasedHiddenAbility = (
+  pokemon: string,
+  generation: Generation,
+) => pastGenerations[generation]?.unreleasedHidden?.[pokemon];
 
 export function hasNoAbility(
   pokemon: string,

@@ -107,23 +107,27 @@ const ja: Messages = {
     shareTeam: "共有",
     shareTeamLink: "ポケモンチームのリンクを共有",
     teamActions: "チームの操作",
-    manageTeam: "管理",
-    manageTeamMenu: "チームの管理",
+    more: "その他",
+    manageTeam: "チームの管理",
+    accessibility: "アクセシビリティ",
     duplicate: "複製",
     copyText: "テキストをコピー",
     editPokepaste: "Pokepasteを編集",
     delete: "削除",
     importTeam: "チームをインポート",
     share: "共有",
-    teamEmpty: "ポケモンチームは空です",
+    teamEmpty: "チームが空です。共有するにはポケモンを追加してください。",
     linkCopied: "ポケモンチームのリンクをコピーしました",
-    linkNotCopied: "リンクをコピーできませんでした。",
+    linkNotCopied:
+      "リンクをコピーできませんでした。チームを開いた状態で、アドレスバーからコピーしてください。",
     linkGenerationUnsupported: (profile: string) =>
       `このリンクの世代またはゲームには対応していないため、${profile}で開きました。`,
-    nothingToCopy: "チームが空なので、コピーするものがありません。",
+    nothingToCopy: "チームが空です。コピーするにはポケモンを追加してください。",
     teamCopied: "チームをコピーしました。",
-    teamNotCopied: "チームをコピーできませんでした。",
-    cannotDuplicateEmptyTeam: "空のチームは複製できません",
+    teamNotCopied:
+      "チームをコピーできませんでした。代わりに「Pokepasteを編集」からテキストをコピーしてください。",
+    cannotDuplicateEmptyTeam:
+      "チームが空です。複製するにはポケモンを追加してください。",
     teamDuplicated: "チームを複製しました",
     teamDeleted: "チームを削除しました",
     slots: "ポケモンチームのスロット",
@@ -139,6 +143,7 @@ const ja: Messages = {
     advanced: "その他の詳細",
     advancedFor: (slot: number) => `スロット${slot}のその他の詳細`,
     details: "詳細",
+    animateSprites: "スプライトを動かす",
     showTypes: "タイプを表示",
     about: (pokemon: string) => `${pokemon}について`,
     dragHint: "長押しドラッグで並べ替え",
@@ -188,6 +193,30 @@ const ja: Messages = {
       "技のリストを読み込めませんでした。ページを再読み込みしてもう一度お試しください。",
   },
 
+  // The notice above the team of what an opened link or saved team lost
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      `このリンクの${count}件の項目を読み込めませんでした`,
+    savedTeamTitle: (count: number) =>
+      `このチームから${count}件の項目を削除しました`,
+    linkReason: () => "このゲームにないか、そのポケモンには使えない項目です。",
+    savedTeamReason: () =>
+      "ゲームデータの更新で名前が変わったか、削除された項目です。",
+    pokemon: (slot: number, value: string) => `ポケモン${slot}：${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}の持ち物：${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}の特性：${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}の技${move}：${value}`,
+    details: "詳細",
+    dismiss: "閉じる",
+    detailsTitle: "元のチームのテキスト",
+    linkDetailsDescription:
+      "読み込めなかった項目を含む、リンクの元のチームです。コピーして控えておけます。",
+    savedTeamDetailsDescription:
+      "削除した項目を含む、元のチームです。コピーして控えておけます。",
+    copy: "コピー",
+  },
+
   // The undo and redo buttons
   undo: "元に戻す",
   redo: "やり直す",
@@ -221,24 +250,89 @@ const ja: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "設置技", short: "設置" },
-      spinner: { label: "設置技の除去", short: "設置除去", shorter: "除去" },
+      entryHazard: {
+        label: "設置技",
+        short: "設置",
+        hint: (moves: string) =>
+          `相手の場に設置する技をポケモンに覚えさせましょう：${moves}。`,
+      },
+      spinner: {
+        label: "設置技の除去",
+        short: "設置除去",
+        shorter: "除去",
+        hint: (moves: string) =>
+          `自分の場の設置技を取り除く技をポケモンに覚えさせましょう：${moves}。`,
+      },
       recovery: {
         label: "安定した回復技",
         short: "回復技",
         shorter: "回復",
+        hint: (moves: string) =>
+          `安定して回復できる技をポケモンに覚えさせましょう（例：${moves}）。`,
       },
-      cleric: { label: "状態異常回復" },
-      status: { label: "状態異常技", short: "状態異常" },
-      phazer: { label: "強制交代技" },
-      boosting: { label: "積み技", short: "積み" },
-      priority: { label: "先制技", short: "先制技", shorter: "先制" },
+      cleric: {
+        label: "状態異常回復",
+        hint: (moves: string) =>
+          `手持ち全員の状態異常を治す技をポケモンに覚えさせましょう：${moves}。`,
+      },
+      status: {
+        label: "状態異常技",
+        short: "状態異常",
+        hint: (moves: string) =>
+          `命中すれば必ず相手を状態異常にする技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
+      phazer: {
+        label: "強制交代技",
+        hint: (moves: string) =>
+          `相手を強制的に交代させる技をポケモンに覚えさせましょう：${moves}。`,
+      },
+      trapper: {
+        label: "交代封じ",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `相手を交代できなくする技をポケモンに覚えさせるか（例：${moves}）、特性が${abilities}のポケモンを入れましょう。`
+          : `相手を交代できなくする技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
+      boosting: {
+        label: "積み技",
+        short: "積み",
+        hint: (moves: string) =>
+          `自分の能力を合計2段階以上上げる技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
+      priority: {
+        label: "先制技",
+        short: "先制技",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `すばやさに関係なく、ほとんどの技より先に出せる攻撃技をポケモンに覚えさせましょう（例：${moves}）。`,
+      },
       voltTurn: {
         label: "ボルトチェンジ系",
         short: "ボルチェン",
         shorter: "交代技",
+        hint: (moves: string) =>
+          `攻撃してから手持ちと交代する技をポケモンに覚えさせましょう：${moves}。`,
       },
-      choice: { label: "こだわりアイテム", short: "こだわり" },
+      choice: {
+        label: "こだわりアイテム",
+        short: "こだわり",
+        hint: (items: string) =>
+          `こだわりアイテムをポケモンに持たせましょう：${items}。`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
+    together: (move: string, other: string) => `${move}と${other}の組み合わせ`,
+    unavailable: "このゲームには当てはまる技や道具がありません。",
+    battleFormat: {
+      label: "バトル形式",
+      singles: "シングル",
+      doubles: "ダブル",
+      notSet: "未設定",
+      depends: "バトル形式によって変わります",
+      reasons: {
+        spinner:
+          "設置技の除去はバトル形式によって変わります。第4・5世代のきりばらいは、ダブルバトルで味方に使ったときだけ自分の場の設置技を取り除きます。",
+      },
     },
   },
   matrix: {
@@ -378,6 +472,8 @@ const ja: Messages = {
     region: "地方",
     moves: "技",
     viable: "実戦向き",
+    items: "持ち物",
+    viableItems: "実戦向き",
     ability: "特性",
   },
   sort: {
@@ -414,7 +510,8 @@ const ja: Messages = {
     randomTeamCreated: "ランダムなチームを作成しました",
     exported: "すべてのチームをエクスポートしました",
     copiedAll: "すべてのチームをコピーしました",
-    notCopiedAll: "チームをコピーできませんでした。",
+    notCopiedAll:
+      "チームをコピーできませんでした。代わりに「すべてエクスポート」でダウンロードしてください。",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -491,6 +588,10 @@ const ja: Messages = {
     teamName: "チーム名",
   },
   validation: {
+    teamProblems: "チームの問題",
+    problemCount: (count: number) => `チームの問題（${count}）`,
+    noProblems: (where: string) => `${where}での問題は見つかりませんでした。`,
+    pokemonProblems: (pokemon: string) => `${pokemon}の問題`,
     empty: "チームが空です。",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon}は${where}では使用できません。`,
@@ -500,6 +601,8 @@ const ja: Messages = {
       `${pokemon}には${items.join("または")}を持たせる必要があります。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}が${move}を2回覚えています。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon}の${thing}は${where}では禁止されています。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -515,8 +618,9 @@ const ja: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}にテラスタイプが設定されていますが、テラスタイプは${generation(9)}にしか存在しません。`,
     speciesClause: (species: string) =>
-      `${species}が2体います（Species Clause）。`,
-    itemClause: (item: string) => `2体が${item}を持っています（Item Clause）。`,
+      `${species}は1体までです（Species Clause）。`,
+    itemClause: (item: string) =>
+      `${item}を持てるのは1体までです（Item Clause）。`,
   },
   importDialog: {
     importTitle: "チームをインポート",
@@ -535,7 +639,30 @@ const ja: Messages = {
     imported: "チームをインポートしました",
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",
-    nothingFound: "そのテキストにポケモンが見つかりませんでした。",
+    nothingFound:
+      "そのテキストにポケモンが見つかりませんでした。ポケモンの名前をPokemon Showdownと同じ英語の表記で書くか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
+    problems: (count: number) =>
+      `問題が${count}件見つかりました。更新すると、テキストは次のとおり適用されます：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}の${field}`,
+    moveSlot: (slot: number) => `技${slot}`,
+    problemValue: (where: string, value: string) => `${where}：「${value}」`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "認識できません。",
+    unlearnable: (pokemon: string) =>
+      `選択したゲームでは、${pokemon}はこの技を覚えられません。`,
+    wrongAbility: (pokemon: string) => `${pokemon}が持てる特性ではありません。`,
+    outOfRange: (min: number, max: number) =>
+      `${min}から${max}までの整数ではありません。`,
+    unsupported: "選択したゲームにはこの項目がありません。",
+    tooManyPokemon: "チームに入るポケモンは6匹までです。",
+    tooManyMoves: "ポケモンが覚えられる技は4つまでです。",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}にはキョダイマックスのすがたがありません。`,
+    unread: "サイトが読み取る項目ではありません。",
+    slotLeftEmpty: "チームの枠は空になります。",
+    moveLeftEmpty: "技の枠は空になります。",
+    leftOut: "この項目は省かれます。",
+    usedInstead: (value: string) => `代わりに${value}が使われます。`,
   },
   deleteDialog: {
     title: (team: string) => `${team}を削除しますか？`,
@@ -666,6 +793,10 @@ const ja: Messages = {
       [
         "状態異常技",
         "ここでは、命中率の高いまひ、やけど、どくにする技と、眠らせる技を指します。例: どくどく、おにび、でんじは、うたう。",
+      ],
+      [
+        "交代封じ",
+        "自分が場にいる間、相手を交代できなくするポケモン。くろいまなざし、とおせんぼう、アンカーショットなどの技や、かげふみ、ありじごく、じりょくの特性が当てはまります。うずしおのように数ターンだけ閉じ込める技は含みません。",
       ],
       [
         "積み技",

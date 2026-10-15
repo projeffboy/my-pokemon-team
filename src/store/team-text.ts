@@ -18,6 +18,7 @@ import {
   isTeamEmpty,
 } from "@/shared/team";
 import {
+  allAbilities,
   pokemonName,
   itemName,
   moveName,
@@ -27,7 +28,7 @@ import {
   itemNameInverse,
   moveNameInverse,
 } from "@/shared/names";
-import { hasNoAbility, pokemonAbilities } from "@/shared/pokedex";
+import { hasNoAbility } from "@/shared/pokedex";
 import {
   DEFAULT_LEVEL,
   DEFAULT_HAPPINESS,
@@ -47,6 +48,7 @@ import {
   teamDataFormat,
 } from "@/shared/generation-profile";
 import { canItLearn, isItemAvailable } from "./learnsets";
+import { anyGenerationAbilities, type DroppedEntry } from "./dropped-entries";
 import { generationRules } from "@/shared/generation-rules";
 import { canHyperTrain, matchImportedHiddenPower } from "@/shared/hidden-power";
 
@@ -70,10 +72,12 @@ function serializeMember(
   // The Advanced dialog keeps a space being typed, which the text leaves out
   const nickname = member.nickname?.trim();
   const species = pokemonName(name) ?? name;
+  const itemText = itemName(item) || item;
   const nameLine = [
     nickname ? `${nickname} (${species})` : species,
     gender === "M" || gender === "F" ? `(${gender})` : "",
-    `@ ${itemName(item)}`,
+    // Showdown leaves out " @ " when there is no item
+    itemText ? `@ ${itemText}` : "",
   ]
     .filter(part => part)
     .join(" ");
@@ -115,7 +119,7 @@ function serializeMember(
     ivs ? `IVs: ${ivs}` : "",
     ...MOVE_KEYS.map(key => {
       const move = member[key];
-      return move ? `- ${moveName(move)}` : "-";
+      return move ? `- ${moveName(move) ?? move}` : "-";
     }),
   ]
     .filter(line => line)
@@ -160,6 +164,44 @@ export const serializeTeams = (teams: readonly SavedTeam[]) => {
     .join("");
 };
 
+// A part of team text that the parser could not use as written
+export interface TeamTextProblem {
+  slot: number; // the team slot, from 1
+  pokemon?: string; // missing when the pokemon itself is the problem
+  field:
+    | "pokemon"
+    | "item"
+    | "ability"
+    | "level"
+    | "shiny"
+    | "happiness"
+    | "teraType"
+    | "evs"
+    | "statExperience"
+    | "effortLevels"
+    | "ivs"
+    | "nature"
+    | "move"
+    | "line";
+  move?: number; // the move slot, from 1
+  stat?: StatKey; // the stat of a training value
+  value: string;
+  reason:
+    | "unrecognized"
+    | "unlearnable"
+    | "wrongAbility"
+    | "outOfRange"
+    | "unsupported"
+    | "tooManyPokemon"
+    | "tooManyMoves"
+    | "noGigantamax"
+    | "unread";
+  range?: readonly [number, number];
+  replacement?: string; // what is used in its place (a number for a stat); otherwise it is left out
+}
+
+type Problem = Omit<TeamTextProblem, "slot" | "pokemon">;
+
 const STAT_BY_NAME = new Map<string, StatKey>(
   STAT_KEYS.map(stat => [STAT_NAMES[stat].toLowerCase(), stat]),
 );
@@ -169,13 +211,25 @@ function parseStats(
   text: string,
   max: number,
   isDefault: (value: number) => boolean,
+  report: (problem: Omit<Problem, "field">) => void,
 ): Partial<BaseStats> | undefined {
   const stats: Partial<BaseStats> = {};
   for (const part of text.split("/")) {
-    const [amount = "", name = ""] = part.trim().split(/\s+/);
+    const supplied = part.trim();
+    const [amount = "", name = ""] = supplied.split(/\s+/);
     const stat = STAT_BY_NAME.get(name.toLowerCase());
     const value = Math.min(max, Math.max(0, Math.round(Number(amount))));
     if (stat && !Number.isNaN(value) && !isDefault(value)) stats[stat] = value;
+    if (!supplied) continue;
+    if (!stat) report({ value: supplied, reason: "unrecognized" });
+    else if (value !== Number(amount))
+      report({
+        stat,
+        value: supplied,
+        reason: "outOfRange",
+        range: [0, max],
+        ...(!Number.isNaN(value) && { replacement: String(value) }),
+      });
   }
   return Object.keys(stats).length ? stats : undefined;
 }
@@ -225,17 +279,32 @@ function parseFirstLine(line: string) {
   return name && { ...name, itemText: undefined };
 }
 
-// Original links omitted zero training and interpreted blank abilities as auto-selection.
+// Original links omitted zero training and interpreted blank abilities as auto-selection, and
+// could give formes such as totems their first stage's moves.
 export const LEGACY_LINK_PARSING_OPTIONS = {
   inferFrustrationHappiness: false,
   inferLegacyTraining: false,
   inferHiddenPowerIvs: false,
   preserveBlankAbilityDefault: true,
   allowHyperTraining: false,
+  acceptLegacyFormeInheritance: true,
+  // Links decode every detail they carry, so each keeps loading the same team
+  keepUnsupportedDetails: true,
 } as const;
 
+const splitSets = (text: string) =>
+  text
+    .replace(/^\s*---\s*$/gm, "\n")
+    .split(/\n\s*\n/)
+    .map(set => set.trim())
+    .filter(set => set);
+
+// Showdown's lines for details the site has no field for
+const UNKEPT_DETAIL = /^(?:Pokeball|Dynamax Level|Hidden Power):/i;
+
 // Parses Pokemon Showdown team text into a fresh six-slot team.
-// Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected).
+// Unrecognized pokemon/items/moves/abilities are ignored (left blank or auto-selected),
+// and onProblem hears of each part of the text that could not be used as written.
 export function parseTeamText(
   text: string,
   generation: Generation = 9,
@@ -246,42 +315,56 @@ export function parseTeamText(
     inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
+    acceptLegacyFormeInheritance = false,
+    keepUnsupportedDetails = false,
+    onProblem = () => {},
   }: {
     inferFrustrationHappiness?: boolean;
     inferLegacyTraining?: boolean;
     inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
+    acceptLegacyFormeInheritance?: boolean;
+    keepUnsupportedDetails?: boolean;
+    onProblem?: (problem: TeamTextProblem) => void;
   } = {},
 ): Team {
   const rules = generationRules(generation, format);
+  // Pasted text drops details the game has no field for
+  const supports = (rule: boolean) => keepUnsupportedDetails || rule;
   const team = createEmptyTeam();
-  const teamPokemonRawData = text
-    .replace(/^\s*---\s*$/gm, "\n")
-    .split(/\n\s*\n/)
-    .map(eachPokemonData => eachPokemonData.trim())
-    .filter(eachPokemonData => eachPokemonData) // get rid of empty lines
-    .slice(0, 6); // a team has at most 6 pokemon
+  const teamPokemonRawData = splitSets(text);
 
   teamPokemonRawData.forEach((eachPokemonData, teamIndex) => {
     const lines = eachPokemonData.split("\n"); // split pokemon into its properties
 
     const [firstLine = ""] = lines;
-    const parsed = parseFirstLine(firstLine);
-    const member = team[teamIndex];
-    if (!parsed || !member) return;
+    const member = team[teamIndex]; // a team has at most 6 pokemon
+    const parsed = member && parseFirstLine(firstLine);
+    if (!member || !parsed) {
+      onProblem({
+        slot: teamIndex + 1,
+        field: "pokemon",
+        value: firstLine.trim(),
+        reason: member ? "unrecognized" : "tooManyPokemon",
+      });
+      return;
+    }
     const { pokemon, nickname, gender, itemText } = parsed;
+    // A later line can override an earlier one, so a replacement that depends on the
+    // final set is read once every line is parsed
+    const pending: { problem: Problem; replacement?: () => string }[] = [];
+    const report = (problem: Problem, replacement?: () => string) =>
+      pending.push({ problem, ...(replacement && { replacement }) });
 
     member.name = pokemon;
-    const abilities = Array.from({ length: 9 }, (_, i) =>
-      pokemonAbilities(pokemon, (i + 1) as Generation),
-    ).flat();
+    const abilities = anyGenerationAbilities(pokemon);
     member.ability =
       rules.abilities ?
         getAutoSelectedAbility(pokemon, generation, format)
       : "";
     if (nickname) member.nickname = nickname;
-    if (gender) member.gender = gender;
+    if (gender && supports(rules.gender)) member.gender = gender;
 
     // If team raw data does not mention item, leave it blank
     if (itemText) {
@@ -292,8 +375,16 @@ export function parseTeamText(
         getAutoSelectedItem(pokemon, "", item =>
           isItemAvailable(item, generation, format),
         );
+      if (!item)
+        report({
+          field: "item",
+          value: itemText,
+          reason: "unrecognized",
+          ...(member.item && { replacement: member.item }),
+        });
     }
 
+    const gigantamaxForme = pokemonNameInverse(`${pokemonName(pokemon)}-Gmax`);
     let moveIndex = 0;
     let gigantamax = false;
     let hasHappiness = false;
@@ -303,6 +394,25 @@ export function parseTeamText(
       const value = (prefix: string) => line.slice(prefix.length).trim();
       const startsWith = (prefix: string) =>
         line.toLowerCase().startsWith(prefix.toLowerCase());
+      const statsIn = (
+        field: "evs" | "statExperience" | "effortLevels" | "ivs",
+        prefix: string,
+        max: number,
+        isDefault: (value: number) => boolean,
+      ) =>
+        parseStats(value(prefix), max, isDefault, problem => {
+          const { stat } = problem;
+          report(
+            { field, ...problem },
+            stat && problem.replacement ?
+              () =>
+                String(member[field]?.[stat] ?? (field === "ivs" ? MAX_IV : 0))
+            : undefined,
+          );
+        });
+      const unsupported = (field: Problem["field"], text: string) => {
+        if (text) report({ field, value: text, reason: "unsupported" });
+      };
 
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
@@ -315,20 +425,53 @@ export function parseTeamText(
             hasNoAbility(pokemon, generation, format) ? "No Ability" : "";
         else if (abilities.includes(ability)) {
           member.ability = ability;
-        }
+        } else if (ability)
+          report(
+            {
+              field: "ability",
+              value: ability,
+              reason:
+                allAbilities.includes(ability) ? "wrongAbility" : (
+                  "unrecognized"
+                ),
+            },
+            () => member.ability,
+          );
       } else if (startsWith("Gigantamax:")) {
-        gigantamax = value("Gigantamax:").toLowerCase() === "yes";
+        const answer = value("Gigantamax:").toLowerCase();
+        gigantamax = answer === "yes";
+        if (gigantamax && !gigantamaxForme)
+          report({ field: "line", value: line, reason: "noGigantamax" });
+        else if (!["", "yes", "no"].includes(answer))
+          report({ field: "line", value: line, reason: "unrecognized" });
       } else if (startsWith("Level:")) {
-        const level = Math.round(Number(value("Level:")));
-        if (level >= 1 && level <= MAX_LEVEL && level !== DEFAULT_LEVEL)
-          member.level = level;
+        const raw = value("Level:");
+        const level = Math.round(Number(raw));
+        const isLevel = level >= 1 && level <= MAX_LEVEL;
+        if (isLevel && level !== DEFAULT_LEVEL) member.level = level;
+        if (raw && !(isLevel && level === Number(raw)))
+          report(
+            {
+              field: "level",
+              value: raw,
+              reason: "outOfRange",
+              range: [1, MAX_LEVEL],
+            },
+            () => String(member.level ?? rules.fixedLevel ?? DEFAULT_LEVEL),
+          );
       } else if (startsWith("Shiny:")) {
-        if (value("Shiny:").toLowerCase() === "yes") member.shiny = true;
-      } else if (startsWith("Happiness:") && rules.happiness) {
+        const shiny = value("Shiny:");
+        if (!supports(rules.shiny)) unsupported("shiny", shiny);
+        else if (shiny.toLowerCase() === "yes") member.shiny = true;
+        else if (shiny && shiny.toLowerCase() !== "no")
+          report({ field: "shiny", value: shiny, reason: "unrecognized" });
+      } else if (startsWith("Happiness:")) {
         const raw = value("Happiness:");
         const happiness = Number(raw);
-        if (
-          raw &&
+        if (!raw) return;
+        if (!rules.happiness)
+          report({ field: "happiness", value: raw, reason: "unsupported" });
+        else if (
           Number.isInteger(happiness) &&
           happiness >= 0 &&
           happiness <= MAX_HAPPINESS
@@ -336,53 +479,92 @@ export function parseTeamText(
           hasHappiness = true;
           if (happiness === DEFAULT_HAPPINESS) delete member.happiness;
           else member.happiness = happiness;
-        }
+        } else
+          report({
+            field: "happiness",
+            value: raw,
+            reason: "outOfRange",
+            range: [0, MAX_HAPPINESS],
+          });
       } else if (startsWith("Tera Type:")) {
         const teraType = value("Tera Type:");
-        if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
+        if (!supports(rules.tera)) unsupported("teraType", teraType);
+        else if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
+        else if (teraType)
+          report({
+            field: "teraType",
+            value: teraType,
+            reason: "unrecognized",
+          });
       } else if (startsWith("EVs:")) {
-        const evs = parseStats(value("EVs:"), 255, ev => ev === 0);
-        if (evs) member.evs = evs;
+        if (!supports(rules.investment !== "effortLevels"))
+          unsupported("evs", value("EVs:"));
+        else {
+          const evs = statsIn("evs", "EVs:", 255, ev => ev === 0);
+          if (evs) member.evs = evs;
+        }
       } else if (startsWith("Stat Experience:")) {
-        member.statExperience = parseStats(
-          value("Stat Experience:"),
+        member.statExperience = statsIn(
+          "statExperience",
+          "Stat Experience:",
           65535,
           n => n === 0,
         );
       } else if (startsWith("Effort Levels:")) {
-        member.effortLevels = parseStats(
-          value("Effort Levels:"),
+        member.effortLevels = statsIn(
+          "effortLevels",
+          "Effort Levels:",
           10,
           n => n === 0,
         );
       } else if (startsWith("IVs:")) {
-        const ivs = parseStats(value("IVs:"), MAX_IV, iv => iv === MAX_IV);
-        if (ivs) member.ivs = ivs;
+        if (!supports(rules.ivs)) unsupported("ivs", value("IVs:"));
+        else {
+          const ivs = statsIn("ivs", "IVs:", MAX_IV, iv => iv === MAX_IV);
+          if (ivs) member.ivs = ivs;
+        }
       } else if (/ Nature$/i.test(line)) {
-        const nature = natureNameInverse(
-          line.slice(0, -" Nature".length).trim(),
+        const natureText = line.slice(0, -" Nature".length).trim();
+        const nature = natureNameInverse(natureText);
+        if (!supports(rules.nature)) unsupported("nature", natureText);
+        else if (nature) member.nature = nature;
+        else
+          report({
+            field: "nature",
+            value: natureText,
+            reason: "unrecognized",
+          });
+      } else if (/^(?:-|~|Move:)/i.test(line)) {
+        // if property has to do with moves; a bare "-" is an empty move slot
+        const supplied = line.replace(/^(?:[-~]\s*|Move:\s*)/i, "").trim();
+        const moveKey = MOVE_KEYS[moveIndex];
+        moveIndex++;
+        const fail = (reason: Problem["reason"]) => {
+          if (supplied)
+            report({ field: "move", move: moveIndex, value: supplied, reason });
+        };
+        if (!moveKey) return fail("tooManyMoves");
+
+        // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
+        const move = moveNameInverse(
+          supplied.replace("[", "").replace("]", ""),
         );
-        if (nature) member.nature = nature;
-      } else if (/^(?:-|~|Move:)/i.test(line) && moveIndex < MOVE_KEYS.length) {
-        // if property has to do with moves
-        const moveText = line
-          .replace(/^(?:[-~]\s*|Move:\s*)/i, "")
-          .trim()
-          .replace("[", "") // Smogon accepts, for instance, 'Hidden Power [Fire]' as a move
-          .replace("]", "");
 
         // If legit, set move
         // Otherwise, set it blank
-        const move = moveNameInverse(moveText);
-
         const validMove =
-          canItLearn(move, pokemon, generation, format) && move ? move : "";
-
-        const moveKey = MOVE_KEYS[moveIndex];
-        if (moveKey) member[moveKey] = validMove;
-
-        moveIndex++;
-      }
+          (
+            move &&
+            canItLearn(move, pokemon, generation, format, {
+              acceptLegacyFormeInheritance,
+            })
+          ) ?
+            move
+          : "";
+        member[moveKey] = validMove;
+        if (!validMove) fail(move ? "unlearnable" : "unrecognized");
+      } else if (!UNKEPT_DETAIL.test(line))
+        report({ field: "line", value: line, reason: "unread" });
     });
     // Old Gen 1/2 site exports wrote a blank Ability line and omitted zero EVs.
     if (
@@ -393,10 +575,7 @@ export function parseTeamText(
       )
     )
       member.evs = Object.fromEntries(STAT_KEYS.map(stat => [stat, 252]));
-    if (gigantamax) {
-      const forme = pokemonNameInverse(`${pokemonName(member.name)}-Gmax`);
-      if (forme) member.name = forme;
-    }
+    if (gigantamax && gigantamaxForme) member.name = gigantamaxForme;
     if (
       inferFrustrationHappiness &&
       rules.happiness &&
@@ -416,9 +595,66 @@ export function parseTeamText(
           allowHyperTraining,
         });
     }
+    for (const { problem, replacement } of pending) {
+      const used = replacement ? replacement() : problem.replacement;
+      const { replacement: _, ...rest } = problem;
+      onProblem({
+        slot: teamIndex + 1,
+        pokemon,
+        ...rest,
+        ...(used && { replacement: used }),
+      });
+    }
   });
 
   return team;
+}
+
+// The team, with each pokemon, item, ability, and move of the text that it left
+// blank or auto-selected, by slot
+export function parseTeamTextReport(
+  text: string,
+  generation: Generation = 9,
+  format = "",
+  options: Omit<
+    NonNullable<Parameters<typeof parseTeamText>[3]>,
+    "onProblem"
+  > = {},
+) {
+  const dropped: DroppedEntry[] = [];
+  const team = parseTeamText(text, generation, format, {
+    ...options,
+    onProblem: ({ slot, pokemon = "", field, move = 0, value, reason }) => {
+      const teamIndex = slot - 1;
+      const moveKey = MOVE_KEYS[move - 1];
+      if (reason === "tooManyPokemon" || reason === "tooManyMoves") return;
+      if (field === "pokemon")
+        dropped.push({
+          teamIndex,
+          pokemon,
+          field,
+          value: value.split("@")[0]?.trim() || value,
+        });
+      else if (field === "item" || field === "ability")
+        dropped.push({ teamIndex, pokemon, field, value });
+      else if (field === "move" && moveKey)
+        dropped.push({ teamIndex, pokemon, field: moveKey, value });
+    },
+  });
+  return { team, dropped };
+}
+
+// Each part of team text that parseTeamText could not use as written, in text order
+export function teamTextProblems(
+  text: string,
+  generation: Generation,
+  format: string,
+): TeamTextProblem[] {
+  const problems: TeamTextProblem[] = [];
+  parseTeamText(text, generation, format, {
+    onProblem: problem => problems.push(problem),
+  });
+  return problems;
 }
 
 const TEAM_HEADER = /^===\s*(?:\[([^\]]*)\])?\s*(.*?)\s*===\s*$/;
@@ -432,7 +668,8 @@ export interface ParsedTeam {
 }
 
 // Splits a Showdown backup with `=== [gen9ou] Folder/Name ===` headers into its
-// teams that have pokemon; text without headers is one team
+// teams that have pokemon; text without headers is one team. A box (up to 24
+// pokemon) becomes a team per 6: "Box 1", "Box 1 (2)", ...
 export function parseTeamsText(
   text: string,
   defaults: Pick<SavedTeam, "generation" | "format" | "generationProfile"> = {
@@ -445,7 +682,7 @@ export function parseTeamsText(
     .some(line => line.trim() === BACKUP_MARKER);
   const chunks: { header?: RegExpExecArray; lines: string[] }[] = [];
   for (const line of text.split("\n")) {
-    const header = TEAM_HEADER.exec(line);
+    const header = TEAM_HEADER.exec(line.trim());
     if (header) chunks.push({ header, lines: [] });
     else if (chunks.length) chunks[chunks.length - 1]?.lines.push(line);
     else chunks.push({ lines: [line] });
@@ -458,7 +695,7 @@ export function parseTeamsText(
         line.trim() === BACKUP_MARKER ||
         line.trim() === GENERATION_PROFILE_MARKER,
     );
-  const teams = chunks.map(({ header, lines }, index): ParsedTeam => {
+  return chunks.flatMap(({ header, lines }, index) => {
     const hasFormat = header?.[1] !== undefined;
     const hasCombinedMetadata =
       !!header && lines.some(line => line.trim() === GENERATION_PROFILE_MARKER);
@@ -477,24 +714,31 @@ export function parseTeamsText(
         COMBINED_GENERATIONS_PROFILE
       : undefined;
     const rawName = header?.[2] ?? "";
+    // Showdown folder names hold no slashes, but its new client allows them in team names
     const name =
       preserveNames || isEmptyBackup(index) ? rawName : (
-        (rawName.split("/").pop()?.trim() ?? "")
+        rawName.slice(rawName.indexOf("/") + 1).trim()
       );
-    return {
-      name,
-      ...settings,
-      ...(generationProfile && { generationProfile }),
-      team: parseTeamText(
-        lines
-          .filter(line => line.trim() !== GENERATION_PROFILE_MARKER)
-          .join("\n"),
-        settings.generation,
-        teamDataFormat({ format: settings.format, generationProfile }),
-      ),
-    };
+    const sets = splitSets(
+      lines
+        .filter(line => line.trim() !== GENERATION_PROFILE_MARKER)
+        .join("\n"),
+    );
+    const groups = Array.from(
+      { length: Math.max(1, Math.ceil(sets.length / 6)) },
+      (_, i) => sets.slice(i * 6, i * 6 + 6),
+    );
+    return groups
+      .map((group, i): ParsedTeam => ({
+        name: i && name ? `${name} (${i + 1})` : name,
+        ...settings,
+        ...(generationProfile && { generationProfile }),
+        team: parseTeamText(
+          group.join("\n\n"),
+          settings.generation,
+          teamDataFormat({ format: settings.format, generationProfile }),
+        ),
+      }))
+      .filter(({ team }) => !isTeamEmpty(team) || isEmptyBackup(index));
   });
-  return teams.filter(
-    ({ team }, index) => !isTeamEmpty(team) || isEmptyBackup(index),
-  );
 }

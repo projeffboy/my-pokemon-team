@@ -668,6 +668,74 @@ test("unavailable Primal forme converts to its available base and checks the bas
   expect(original).toEqual(before);
 });
 
+test("battle formes fall back to the forme they change from before their base species", () => {
+  for (const generation of [6, 7, 8] as const) {
+    const plan = planGenerationTransfer(
+      createTeam({
+        name: "meowsticfmega",
+        item: "meowsticite",
+        gender: "F",
+        move1: "psychic",
+      }),
+      from,
+      generation,
+      "",
+      data,
+    );
+    expect(plan.team[0], `Gen ${generation}`).toMatchObject({
+      name: "meowsticf",
+      gender: "F",
+      move1: "psychic",
+    });
+    expect(plan.losses).toContainEqual({
+      index: 0,
+      pokemon: "meowsticfmega",
+      field: "pokemon",
+      value: "meowsticfmega",
+      replacement: "meowsticf",
+    });
+  }
+  expect(
+    planGenerationTransfer(
+      createTeam({ name: "magearnaoriginalmega" }),
+      from,
+      8,
+      "",
+      data,
+    ).team[0]?.name,
+  ).toBe("magearnaoriginal");
+  expect(
+    planGenerationTransfer(
+      createTeam({ name: "urshifurapidstrikegmax", move1: "surgingstrikes" }),
+      { generation: 8, format: "" },
+      9,
+      "OU: Over Used",
+      data,
+    ).team[0],
+  ).toMatchObject({ name: "urshifurapidstrike", move1: "surgingstrikes" });
+});
+
+test("a base species fallback drops a gender the species cannot have", () => {
+  const meowsticf = data.pokemon.meowsticf!;
+  const plan = planGenerationTransfer(
+    createTeam({ name: "meowsticfmega", gender: "F" }),
+    from,
+    7,
+    "",
+    {
+      ...data,
+      pokemon: { ...data.pokemon, meowsticf: { ...meowsticf, generations: 0 } },
+    },
+  );
+  expect(plan.team[0]?.name).toBe("meowstic");
+  expect(plan.team[0]?.gender).toBeUndefined();
+  expect(plan.losses).toContainEqual({
+    index: 0,
+    pokemon: "meowsticfmega",
+    field: "gender",
+  });
+});
+
 test("forme fallback leaves an ambiguous base ability for the player to choose", () => {
   const plan = planGenerationTransfer(
     createTeam({ name: "charizardmegax", ability: "Tough Claws" }),
@@ -845,6 +913,22 @@ test("uses historical abilities and moves without treating tier filters as trans
   });
   const plan = planGenerationTransfer(blastoise, from, 2, "", data);
   expect(plan.team[0]).toMatchObject({ move1: "", move2: "surf" });
+});
+
+test("hidden abilities Showdown marks unreleased are lost in those generations", () => {
+  const transfer = (generation: 5 | 6) =>
+    planGenerationTransfer(
+      createTeam({ name: "serperior", ability: "Contrary" }),
+      from,
+      generation,
+      "",
+      data,
+    );
+  expect(transfer(5).team[0]?.ability).toBe("");
+  expect(transfer(5).losses).toEqual([
+    { index: 0, pokemon: "serperior", field: "ability", value: "Contrary" },
+  ]);
+  expect(transfer(6).losses).toEqual([]);
 });
 
 test("Champions checks its own moves, items, abilities, and stat system", () => {

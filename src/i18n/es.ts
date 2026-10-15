@@ -103,23 +103,27 @@ const es: Messages = {
     shareTeam: "Compartir",
     shareTeamLink: "Compartir el enlace del equipo Pokémon",
     teamActions: "Acciones del equipo",
-    manageTeam: "Gestionar",
-    manageTeamMenu: "Gestionar equipo",
+    more: "Más",
+    manageTeam: "Gestionar equipo",
+    accessibility: "Accesibilidad",
     duplicate: "Duplicar",
     copyText: "Copiar texto",
     editPokepaste: "Editar Pokepaste",
     delete: "Eliminar",
     importTeam: "Importar equipo",
     share: "Compartir",
-    teamEmpty: "El equipo Pokémon está vacío",
+    teamEmpty: "El equipo está vacío. Añade un Pokémon para compartirlo.",
     linkCopied: "Enlace del equipo Pokémon copiado",
-    linkNotCopied: "No se ha podido copiar el enlace.",
+    linkNotCopied:
+      "No se ha podido copiar el enlace. Cópialo de la barra de direcciones con el equipo abierto.",
     linkGenerationUnsupported: (profile: string) =>
       `La generación o el juego de este enlace no es compatible, así que se ha abierto en ${profile}.`,
-    nothingToCopy: "El equipo está vacío, no hay nada que copiar.",
+    nothingToCopy: "El equipo está vacío. Añade un Pokémon para copiarlo.",
     teamCopied: "Equipo copiado.",
-    teamNotCopied: "No se ha podido copiar el equipo.",
-    cannotDuplicateEmptyTeam: "No se puede duplicar un equipo vacío",
+    teamNotCopied:
+      "No se ha podido copiar el equipo. Copia su texto desde Editar Pokepaste.",
+    cannotDuplicateEmptyTeam:
+      "El equipo está vacío. Añade un Pokémon para duplicarlo.",
     teamDuplicated: "Equipo duplicado",
     teamDeleted: "Equipo eliminado",
     slots: "Huecos del equipo Pokémon",
@@ -136,6 +140,7 @@ const es: Messages = {
     advanced: "Más detalles",
     advancedFor: (slot: number) => `Más detalles del hueco ${slot}`,
     details: "Detalles",
+    animateSprites: "Animar sprites",
     showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Acerca de ${pokemon}`,
     dragHint: "Mantén y arrastra para reordenar",
@@ -185,6 +190,39 @@ const es: Messages = {
       "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
   },
 
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "Se ha omitido 1 elemento de este enlace"
+      : `Se han omitido ${count} elementos de este enlace`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "Se ha quitado 1 elemento de este equipo"
+      : `Se han quitado ${count} elementos de este equipo`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Este juego no lo tiene, o el Pokémon no puede usarlo."
+      : "Este juego no los tiene, o el Pokémon no puede usarlos.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Una actualización de los datos del juego le cambió el nombre o lo eliminó."
+      : "Una actualización de los datos del juego les cambió el nombre o los eliminó.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, objeto: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, habilidad: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, movimiento ${move}: ${value}`,
+    details: "Detalles",
+    dismiss: "Descartar",
+    detailsTitle: "Texto original del equipo",
+    linkDetailsDescription:
+      "El equipo del enlace tal como era, con lo que se omitió. Cópialo para guardarlo.",
+    savedTeamDetailsDescription:
+      "El equipo tal como era, con lo que se quitó. Cópialo para guardarlo.",
+    copy: "Copiar",
+  },
+
   undo: "Deshacer",
   redo: "Rehacer",
 
@@ -215,28 +253,89 @@ const es: Messages = {
       offensive: "Ofensivo",
     },
     items: {
-      entryHazard: { label: "Trampa de entrada", short: "Trampa" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Trampa de entrada",
+        short: "Trampa",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que coloque trampas de entrada: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que retire las trampas de entrada de tu lado: ${moves}.`,
+      },
       recovery: {
         label: "Recuperación fiable",
         short: "Curación",
         shorter: "Cura",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento de curación fiable, como ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Movimiento de estado", short: "Estado" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Movimiento de mejora", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que cure los problemas de estado de tu equipo: ${moves}.`,
+      },
+      status: {
+        label: "Movimiento de estado",
+        short: "Estado",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que siempre cause un problema de estado al acertar, como ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que obligue al rival a cambiar: ${moves}.`,
+      },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Enseña a un Pokémon un movimiento que impida al rival cambiarse, como ${moves}, o dale la habilidad ${abilities}.`
+          : `Enseña a un Pokémon un movimiento que impida al rival cambiarse, como ${moves}.`,
+      },
+      boosting: {
+        label: "Movimiento de mejora",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que suba sus propias características dos niveles o más en total, como ${moves}.`,
+      },
       priority: {
         label: "Movimiento prioritario",
         short: "Prioridad",
         shorter: "Prio",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento que haga daño y se use antes que la mayoría de los demás, sin importar la Velocidad, como ${moves}.`,
       },
       voltTurn: {
         label: "Movimiento Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Enseña a un Pokémon un movimiento con el que ataque y luego se retire: ${moves}.`,
       },
-      choice: { label: "Objeto Elegido", short: "Elegido" },
+      choice: {
+        label: "Objeto Elegido",
+        short: "Elegido",
+        hint: (items: string) =>
+          `Haz que un Pokémon lleve un objeto Elegido: ${items}.`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} con ${other}`,
+    unavailable: "Nada en este juego cumple este papel.",
+    battleFormat: {
+      label: "Formato de combate",
+      singles: "Individual",
+      doubles: "Dobles",
+      notSet: "Sin definir",
+      depends: "Depende del formato de combate",
+      reasons: {
+        spinner:
+          "Spinner/Defogger depende del formato de combate: en las generaciones 4 y 5, Despejar solo quita las trampas de tu lado en combates dobles, al usarlo sobre tu aliado.",
+      },
     },
   },
   matrix: {
@@ -372,6 +471,8 @@ const es: Messages = {
     region: "Región",
     moves: "Movimientos",
     viable: "Viable",
+    items: "Objetos",
+    viableItems: "Viable",
     ability: "Habilidad",
   },
   sort: {
@@ -412,7 +513,8 @@ const es: Messages = {
     randomTeamCreated: "Equipo aleatorio creado",
     exported: "Todos los equipos exportados",
     copiedAll: "Todos los equipos copiados",
-    notCopiedAll: "No se han podido copiar los equipos.",
+    notCopiedAll:
+      "No se han podido copiar los equipos. Descárgalos con Exportar todo.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -494,6 +596,10 @@ const es: Messages = {
     teamName: "Nombre del equipo",
   },
   validation: {
+    teamProblems: "Problemas del equipo",
+    problemCount: (count: number) => `Problemas del equipo (${count})`,
+    noProblems: (where: string) => `No se encontraron problemas en ${where}.`,
+    pokemonProblems: (pokemon: string) => `Problemas de ${pokemon}`,
     empty: "El equipo está vacío.",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon} no está permitido en ${where}.`,
@@ -503,6 +609,8 @@ const es: Messages = {
       `${pokemon} debe llevar ${items.join(" o ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} tiene ${move} dos veces.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} tiene ${thing}, que no se permite en ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -518,9 +626,9 @@ const es: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon} tiene un teratipo, que solo existe en la ${generation(9)}.`,
     speciesClause: (species: string) =>
-      `Dos Pokémon son ${species} (Cláusula de Especies).`,
+      `Solo un Pokémon puede ser ${species} (Cláusula de Especies).`,
     itemClause: (item: string) =>
-      `Dos Pokémon llevan ${item} (Cláusula de Objetos).`,
+      `Solo un Pokémon puede llevar ${item} (Cláusula de Objetos).`,
   },
   importDialog: {
     importTitle: "Importar equipo",
@@ -539,7 +647,30 @@ const es: Messages = {
     imported: "Equipo importado",
     importedMany: (count: number) => `${count} equipos importados`,
     noChanges: "No se ha hecho ningún cambio.",
-    nothingFound: "No se encontró ningún Pokémon en ese texto.",
+    nothingFound:
+      "No se encontró ningún Pokémon en ese texto. Escribe los nombres de los Pokémon en inglés, tal como los escribe Pokemon Showdown, o pega un equipo exportado de Pokemon Showdown.",
+    problems: (count: number) =>
+      `${count === 1 ? "Se encontró 1 problema" : `Se encontraron ${count} problemas`}. Al actualizar, el texto se aplica igualmente así:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Movimiento ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: «${value}»`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "No se reconoce.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} no puede aprender este movimiento en el juego seleccionado.`,
+    wrongAbility: (pokemon: string) =>
+      `No es una habilidad que ${pokemon} pueda tener.`,
+    outOfRange: (min: number, max: number) =>
+      `No es un número entero de ${min} a ${max}.`,
+    unsupported: "El juego seleccionado no tiene este dato.",
+    tooManyPokemon: "Un equipo tiene como máximo seis Pokémon.",
+    tooManyMoves: "Un Pokémon conoce como máximo cuatro movimientos.",
+    noGigantamax: (pokemon: string) => `${pokemon} no tiene forma Gigamax.`,
+    unread: "No es un dato que el sitio lea.",
+    slotLeftEmpty: "El hueco del equipo queda vacío.",
+    moveLeftEmpty: "El hueco del movimiento queda vacío.",
+    leftOut: "Se omite.",
+    usedInstead: (value: string) => `Se usa ${value} en su lugar.`,
   },
   deleteDialog: {
     title: (team: string) => `¿Eliminar ${team}?`,
@@ -669,6 +800,10 @@ const es: Messages = {
       [
         "Movimientos de estado",
         "Aquí se refieren a movimientos precisos que paralizan, queman o envenenan, además de movimientos que duermen. P. ej. Tóxico, Fuego Fatuo, Onda Trueno, Canto.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon que impide a los rivales cambiarse mientras él siga en combate, con un movimiento como Mal de Ojo, Bloqueo o Anclaje, o con la habilidad Sombra Trampa, Trampa Arena o Imán. Los movimientos que atrapan solo unos turnos, como Torbellino, no cuentan.",
       ],
       [
         "Movimiento de mejora",

@@ -9,6 +9,9 @@ import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import type { Generation } from "@/types";
 import { createTeam } from "./shared/team";
 
+const messages = (...args: Parameters<typeof validateTeam>) =>
+  validateTeam(...args).map(({ message }) => message);
+
 test("nickname limits follow the games' generations and supported languages", () => {
   const limits: [Locale[], number[]][] = [
     [
@@ -45,14 +48,14 @@ test("old share links preserve long nicknames but validation reports the game's 
   const team = parseTeamText(original);
   expect(team[0]?.nickname).toBe("ABCDEFGHIJKLMNO");
   expect(serializeTeam(team)).toContain("ABCDEFGHIJKLMNO (Golduck)");
-  expect(validateTeam(team, 5, "")).toContain(
+  expect(messages(team, 5, "")).toContain(
     "Golduck's nickname must be 10 characters or fewer.",
   );
-  expect(validateTeam(team, 6, "")).toContain(
+  expect(messages(team, 6, "")).toContain(
     "Golduck's nickname must be 12 characters or fewer.",
   );
   const japanese = await loadTranslation("ja");
-  expect(validateTeam(team, 6, "", japanese)).toContain(
+  expect(messages(team, 6, "", japanese)).toContain(
     japanese.t.validation.nicknameTooLong(japanese.names.pokemon("golduck"), 6),
   );
   expect(team[0]?.nickname).toBe("ABCDEFGHIJKLMNO");

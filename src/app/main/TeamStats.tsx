@@ -14,6 +14,7 @@ import GridOnIcon from "@mui/icons-material/GridOn";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import TeamAspectStats from "./team-stats/shared/TeamAspectStats";
 import TeamChecklist from "./team-stats/TeamChecklist";
+import TeamProblems from "./team-stats/TeamProblems";
 import MatrixAnalysis, { type MatrixKind } from "./team-stats/MatrixAnalysis";
 import useChecklistTab from "./team-stats/use-checklist-tab";
 import { useIsSmDown } from "@/app/shared/WidthContext";
@@ -40,7 +41,7 @@ const statSection = (stat: TeamStatType, hideTitle = false) => {
 // each; from tablets up the stats share a view, with a switch for the matrix.
 // The checklist joins the stats while that leaves the panel about as tall as
 // the team beside it, and otherwise has a view of its own. Each view grows to
-// its full height.
+// its full height. The team's problems head every view.
 export default function TeamStats({
   teamColumn,
 }: {
@@ -139,6 +140,7 @@ export default function TeamStats({
     return (
       <Paper component="section" aria-label={t.stats.teamAnalysis}>
         {header}
+        <TeamProblems sx={{ mx: 1, mb: 1 }} />
         <Tabs
           value={view}
           onChange={(_event: SyntheticEvent, value: View) => setView(value)}
@@ -190,6 +192,7 @@ export default function TeamStats({
       }}
     >
       {header}
+      <TeamProblems sx={{ mb: 3 }} />
       <Box
         sx={{
           position: "relative",

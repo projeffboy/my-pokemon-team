@@ -28,6 +28,8 @@ test.describe("with touch", () => {
 
     await ability.tap();
     await expect(ability).toBeFocused();
+    // On a small phone the full list covers Done; a typed search keeps it short
+    await ability.fill("Levitat");
     await dialog.getByRole("button", { name: "Done", exact: true }).tap();
     await expect(dialog).toBeHidden();
     await expect(name).not.toBeFocused();

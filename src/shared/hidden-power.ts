@@ -1,5 +1,6 @@
 import spreads from "@/data/hidden-power-spreads";
 import {
+  MOVE_KEYS,
   STAT_KEYS,
   type BaseStats,
   type Gender,
@@ -187,6 +188,48 @@ export function matchHiddenPower(
       Object.keys(spread.ivs).length ? { ...spread.ivs } : undefined,
     );
   }
+}
+
+const hiddenPowerKey = (member: Readonly<TeamPokemon>) =>
+  MOVE_KEYS.find(key => member[key].startsWith("hiddenpower"));
+
+// Whether the IVs or DVs can give the slot's Hidden Power its type
+export function hiddenPowerMatches(
+  member: Readonly<TeamPokemon>,
+  generation: Generation,
+) {
+  const key = hiddenPowerKey(member);
+  return (
+    !!key &&
+    canHaveHiddenPowerType(
+      member,
+      member[key].slice("hiddenpower".length),
+      generation,
+    )
+  );
+}
+
+// After an edit breaks the match, such as a level that loses Hyper Training.
+// Gen 2 keeps the gender and shininess the DVs give, and since shiny DVs only
+// give Grass or Dragon, the move follows them rather than undoing the shiny.
+export function rematchHiddenPower(
+  member: TeamPokemon,
+  generation: Generation,
+  format = "",
+) {
+  const key = hiddenPowerKey(member);
+  if (!key || hiddenPowerMatches(member, generation)) return;
+  const move = member[key];
+  if (generation === 2 && generationRules(generation, format).ivs) {
+    if (matchHiddenPowerPreservingDetails(member, move, generation, format))
+      return;
+    const type = hiddenPowerType(member, generation);
+    if (type && isShinyDv(gen2Dvs(member))) {
+      member[key] = `hiddenpower${type}`;
+      return;
+    }
+  }
+  matchHiddenPower(member, move, generation, format);
 }
 
 export function matchImportedHiddenPower(

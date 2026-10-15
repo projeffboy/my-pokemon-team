@@ -119,23 +119,27 @@ const ko: Messages = {
     shareTeam: "팀 공유",
     shareTeamLink: "포켓몬 팀 링크 공유",
     teamActions: "팀 작업",
+    more: "더보기",
     manageTeam: "팀 관리",
-    manageTeamMenu: "팀 관리",
+    accessibility: "접근성",
     duplicate: "복제",
     copyText: "텍스트 복사",
     editPokepaste: "Pokepaste 편집",
     delete: "삭제",
     importTeam: "팀 가져오기",
     share: "공유",
-    teamEmpty: "포켓몬 팀이 비어 있습니다",
+    teamEmpty: "팀이 비어 있습니다. 공유하려면 포켓몬을 추가하세요.",
     linkCopied: "포켓몬 팀 링크를 복사했습니다",
-    linkNotCopied: "링크를 복사하지 못했습니다.",
+    linkNotCopied:
+      "링크를 복사하지 못했습니다. 팀을 연 상태에서 주소창의 주소를 복사하세요.",
     linkGenerationUnsupported: (profile: string) =>
       `이 링크의 세대 또는 게임은 지원되지 않아 ${profile}에서 열었습니다.`,
-    nothingToCopy: "팀이 비어 있어 복사할 내용이 없습니다.",
+    nothingToCopy: "팀이 비어 있습니다. 복사하려면 포켓몬을 추가하세요.",
     teamCopied: "팀을 복사했습니다.",
-    teamNotCopied: "팀을 복사하지 못했습니다.",
-    cannotDuplicateEmptyTeam: "빈 팀은 복제할 수 없습니다",
+    teamNotCopied:
+      "팀을 복사하지 못했습니다. 대신 Pokepaste 편집에서 텍스트를 복사하세요.",
+    cannotDuplicateEmptyTeam:
+      "팀이 비어 있습니다. 복제하려면 포켓몬을 추가하세요.",
     teamDuplicated: "팀을 복제했습니다",
     teamDeleted: "팀을 삭제했습니다",
     slots: "포켓몬 팀 슬롯",
@@ -152,6 +156,7 @@ const ko: Messages = {
     advanced: "추가 세부 정보",
     advancedFor: (slot: number) => `슬롯 ${slot}의 추가 세부 정보`,
     details: "상세",
+    animateSprites: "스프라이트 애니메이션",
     showTypes: "타입 표시",
     about: (pokemon: string) => `${pokemon} 정보`,
     dragHint: "길게 눌러 끌어서 순서 변경",
@@ -200,6 +205,28 @@ const ko: Messages = {
       "기술 목록을 불러오지 못했습니다. 페이지를 새로고침해 다시 시도하세요.",
   },
 
+  droppedEntries: {
+    linkTitle: (count: number) => `이 링크의 항목 ${count}개를 제외했습니다`,
+    savedTeamTitle: (count: number) =>
+      `이 팀에서 항목 ${count}개를 삭제했습니다`,
+    linkReason: () => "이 게임에 없거나 그 포켓몬이 사용할 수 없는 항목입니다.",
+    savedTeamReason: () =>
+      "게임 데이터 업데이트로 이름이 바뀌었거나 삭제된 항목입니다.",
+    pokemon: (slot: number, value: string) => `포켓몬 ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, 지닌 물건: ${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}, 특성: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, 기술 ${move}: ${value}`,
+    details: "상세",
+    dismiss: "닫기",
+    detailsTitle: "원래 팀 텍스트",
+    linkDetailsDescription:
+      "제외된 항목을 포함한 링크의 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    savedTeamDetailsDescription:
+      "삭제된 항목을 포함한 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    copy: "복사",
+  },
+
   undo: "실행 취소",
   redo: "다시 실행",
 
@@ -230,28 +257,90 @@ const ko: Messages = {
       offensive: "공격",
     },
     items: {
-      entryHazard: { label: "설치 기술", short: "설치기" },
+      entryHazard: {
+        label: "설치 기술",
+        short: "설치기",
+        hint: (moves: string) =>
+          `상대 필드에 설치하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
       spinner: {
         label: "고속스핀/안개제거",
         short: "설치 제거",
         shorter: "제거",
+        hint: (moves: string) =>
+          `내 필드의 설치 기술을 없애는 기술을 포켓몬에게 가르치세요: ${moves}.`,
       },
       recovery: {
         label: "안정적인 회복 기술",
         short: "회복 기술",
         shorter: "회복",
+        hint: (moves: string) =>
+          `안정적으로 회복할 수 있는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
       },
-      cleric: { label: "클레릭" },
-      status: { label: "상태이상 기술", short: "상태이상" },
-      phazer: { label: "강제 교체" },
-      boosting: { label: "랭크업 기술", short: "랭크업" },
-      priority: { label: "선공 기술", short: "선공기", shorter: "선공" },
+      cleric: {
+        label: "클레릭",
+        hint: (moves: string) =>
+          `팀 전체의 상태이상을 치료하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
+      status: {
+        label: "상태이상 기술",
+        short: "상태이상",
+        hint: (moves: string) =>
+          `명중하면 반드시 상대를 상태이상으로 만드는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
+      phazer: {
+        label: "강제 교체",
+        hint: (moves: string) =>
+          `상대를 강제로 교체시키는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
+      trapper: {
+        label: "교체 봉쇄",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `상대가 교체하지 못하게 하는 기술을 포켓몬에게 가르치거나(예: ${moves}), ${abilities} 특성을 가진 포켓몬을 넣으세요.`
+          : `상대가 교체하지 못하게 하는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
+      boosting: {
+        label: "랭크업 기술",
+        short: "랭크업",
+        hint: (moves: string) =>
+          `자신의 능력치를 합계 2랭크 이상 올리는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
+      priority: {
+        label: "선공 기술",
+        short: "선공기",
+        shorter: "선공",
+        hint: (moves: string) =>
+          `스피드와 관계없이 대부분의 기술보다 먼저 쓰는 공격 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
       voltTurn: {
         label: "볼트체인지/유턴",
         short: "볼트턴",
         shorter: "볼트턴",
+        hint: (moves: string) =>
+          `공격한 뒤 교체하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
       },
-      choice: { label: "구애 아이템", short: "구애" },
+      choice: {
+        label: "구애 아이템",
+        short: "구애",
+        hint: (items: string) =>
+          `포켓몬에게 구애 아이템을 지니게 하세요: ${items}.`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) =>
+      `${josa(other, "과", "와")} 함께 쓰는 ${move}`,
+    unavailable: "이 게임에는 해당하는 기술이나 아이템이 없습니다.",
+    battleFormat: {
+      label: "배틀 형식",
+      singles: "싱글",
+      doubles: "더블",
+      notSet: "미설정",
+      depends: "배틀 형식에 따라 다름",
+      reasons: {
+        spinner:
+          "고속스핀/안개제거는 배틀 형식에 따라 다릅니다. 4세대와 5세대의 안개제거는 더블배틀에서 같은 편에게 사용할 때만 내 쪽의 설치 기술을 없앱니다.",
+      },
     },
   },
   matrix: {
@@ -389,6 +478,8 @@ const ko: Messages = {
     region: "지방",
     moves: "기술",
     viable: "실전용만",
+    items: "지닌 물건",
+    viableItems: "실전용만",
     ability: "특성",
   },
   sort: {
@@ -424,7 +515,8 @@ const ko: Messages = {
     randomTeamCreated: "랜덤 팀을 만들었습니다",
     exported: "모든 팀을 내보냈습니다",
     copiedAll: "모든 팀을 복사했습니다",
-    notCopiedAll: "팀을 복사하지 못했습니다.",
+    notCopiedAll:
+      "팀을 복사하지 못했습니다. 대신 전체 내보내기로 내려받으세요.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -501,6 +593,10 @@ const ko: Messages = {
     teamName: "팀 이름",
   },
   validation: {
+    teamProblems: "팀 문제",
+    problemCount: (count: number) => `팀 문제 (${count})`,
+    noProblems: (where: string) => `${where}에서 문제가 발견되지 않았습니다.`,
+    pokemonProblems: (pokemon: string) => `${pokemon}의 문제`,
     empty: "팀이 비어 있습니다.",
     notAllowed: (pokemon: string, where: string) =>
       `${josa(pokemon, "은", "는")} ${where}에서 사용할 수 없습니다.`,
@@ -510,6 +606,8 @@ const ko: Messages = {
       `${josa(pokemon, "은", "는")} ${josa(items.join(" 또는 "), "을", "를")} 지녀야 합니다.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${josa(pokemon, "은", "는")} ${josa(move, "을", "를")} 두 번 배우고 있습니다.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon}의 ${josa(thing, "은", "는")} ${where}에서 금지되어 있습니다.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -525,9 +623,9 @@ const ko: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}에게 테라스탈 타입이 설정되어 있지만, 테라스탈 타입은 ${generation(9)}에만 있습니다.`,
     speciesClause: (species: string) =>
-      `${josa(species, "이", "가")} 두 마리 있습니다 (Species Clause).`,
+      `${josa(species, "은", "는")} 한 마리만 넣을 수 있습니다 (Species Clause).`,
     itemClause: (item: string) =>
-      `${josa(item, "을", "를")} 지닌 포켓몬이 두 마리 있습니다 (Item Clause).`,
+      `${josa(item, "은", "는")} 한 마리만 지닐 수 있습니다 (Item Clause).`,
   },
   importDialog: {
     importTitle: "팀 가져오기",
@@ -546,7 +644,32 @@ const ko: Messages = {
     imported: "팀을 가져왔습니다",
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
     noChanges: "변경된 내용이 없습니다.",
-    nothingFound: "텍스트에서 포켓몬을 찾지 못했습니다.",
+    nothingFound:
+      "텍스트에서 포켓몬을 찾지 못했습니다. 포켓몬 이름을 Pokemon Showdown과 같은 영어 표기로 쓰거나 Pokemon Showdown에서 내보낸 팀을 붙여넣으세요.",
+    problems: (count: number) =>
+      `문제 ${count}개를 찾았습니다. 업데이트하면 텍스트가 다음과 같이 적용됩니다:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}의 ${field}`,
+    moveSlot: (slot: number) => `기술 ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: “${value}”`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "인식할 수 없습니다.",
+    unlearnable: (pokemon: string) =>
+      `선택한 게임에서 ${josa(pokemon, "은", "는")} 이 기술을 배울 수 없습니다.`,
+    wrongAbility: (pokemon: string) =>
+      `${josa(pokemon, "이", "가")} 가질 수 있는 특성이 아닙니다.`,
+    outOfRange: (min: number, max: number) =>
+      `${min}~${max} 사이의 정수가 아닙니다.`,
+    unsupported: "선택한 게임에는 이 항목이 없습니다.",
+    tooManyPokemon: "팀에는 포켓몬이 최대 6마리까지 들어갑니다.",
+    tooManyMoves: "포켓몬은 기술을 최대 4개까지 배웁니다.",
+    noGigantamax: (pokemon: string) =>
+      `${pokemon}에게는 거다이맥스의 모습이 없습니다.`,
+    unread: "사이트가 읽는 항목이 아닙니다.",
+    slotLeftEmpty: "팀 칸은 비워 둡니다.",
+    moveLeftEmpty: "기술 칸은 비워 둡니다.",
+    leftOut: "이 항목은 제외됩니다.",
+    usedInstead: (value: string) =>
+      `대신 ${josa(value, "을", "를")} 사용합니다.`,
   },
   deleteDialog: {
     title: (team: string) => `${josa(team, "을", "를")} 삭제할까요?`,
@@ -675,6 +798,10 @@ const ko: Messages = {
       [
         "상태이상 기술",
         "여기서는 명중률이 높은 마비, 화상, 독 기술과 잠들게 하는 기술을 뜻합니다. 예: 맹독, 도깨비불, 전기자석파, 노래하기.",
+      ],
+      [
+        "교체 봉쇄",
+        "자신이 필드에 있는 동안 상대가 교체하지 못하게 하는 포켓몬입니다. 검은눈빛, 블록, 앵커샷 같은 기술이나 그림자밟기, 개미지옥, 자력 특성이 해당합니다. 바다회오리처럼 몇 턴 동안만 가두는 기술은 포함되지 않습니다.",
       ],
       [
         "랭크업 기술",

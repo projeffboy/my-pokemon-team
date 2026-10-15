@@ -47,3 +47,17 @@ test("defence and coverage descriptions stay distinct when both are open", async
   for (const id of [defenceId, coverageId])
     await expect(page.locator(`[id="${id}"]`)).toBeHidden();
 });
+
+test("a type reached with the keyboard is outlined", async ({ page }) => {
+  const bug = page
+    .getByRole("region", { name: "Team Defence", exact: true })
+    .getByRole("button", { name: "Bug", exact: true });
+  const outline = () =>
+    bug.evaluate(tile => getComputedStyle(tile).outlineStyle);
+  expect(await outline()).toBe("none");
+  await bug.focus();
+  await page.keyboard.press("Shift+Tab");
+  await page.keyboard.press("Tab");
+  await expect(bug).toBeFocused();
+  await expect.poll(outline).toBe("solid");
+});

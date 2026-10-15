@@ -44,6 +44,16 @@ test("saved set details survive reload even when unsupported or outside a game's
   ).toBe(false);
 });
 
+test("the battle format survives reload, and teams saved without one load as not set", () => {
+  const doubles = createSavedTeam({ generation: 4, battleFormat: "doubles" });
+  expect(
+    sanitizeSavedTeam(JSON.parse(JSON.stringify(doubles)))?.battleFormat,
+  ).toBe("doubles");
+  const { battleFormat: _battleFormat, ...older } = doubles;
+  for (const team of [older, { ...doubles, battleFormat: "triples" }])
+    expect(sanitizeSavedTeam(team)).not.toHaveProperty("battleFormat");
+});
+
 test("fresh storage defaults to combined generations while existing regular Gen 9 saves keep their profile", () => {
   const initial = initialStoredState();
   expect(initial.teams[0]).toMatchObject({
@@ -357,6 +367,42 @@ test("remembers that the player knows slots drag, in any tab", () => {
   expect(mergeStoredState(base, base, base).knowsSlotDrag).toBeUndefined();
 });
 
+test("a tab left open does not bring back a drag hint that expired in another tab", () => {
+  const knows = { ...initialStoredState(), knowsSlotDrag: true };
+  const { knowsSlotDrag: _, ...expired } = knows;
+  const mine = { ...knows, nameView: "grid" as const };
+  const merged = mergeStoredState(knows, mine, expired);
+  expect(merged.knowsSlotDrag).toBeUndefined();
+  expect(merged.nameView).toBe("grid");
+
+  const dismissed = { ...expired, knowsSlotDrag: true };
+  expect(mergeStoredState(expired, dismissed, expired).knowsSlotDrag).toBe(
+    true,
+  );
+});
+
+test("keeps the sprite animation choice unset until the player makes one", () => {
+  const load = (animateSprites: unknown) =>
+    loadStoredState(
+      fakeStorage(JSON.stringify({ teams: [{ id: "a" }], animateSprites }))
+        .storage,
+    )?.animateSprites;
+  expect(load(false)).toBe(false);
+  expect(load(true)).toBe(true);
+  expect(load(undefined)).toBeUndefined();
+  expect(load("no")).toBeUndefined();
+
+  const base = initialStoredState();
+  const still = { ...base, animateSprites: false };
+  const animated = { ...base, animateSprites: true };
+  expect(mergeStoredState(base, base, still).animateSprites).toBe(false);
+  expect(mergeStoredState(base, animated, still).animateSprites).toBe(true);
+  expect(mergeStoredState(still, still, animated).animateSprites).toBe(true);
+  expect(mergeStoredState(base, base, base)).not.toHaveProperty(
+    "animateSprites",
+  );
+});
+
 test("team filters load with defaults, survive saving, and merge across teams", () => {
   const base = initialStoredState();
   const first = base.teams[0]!;
@@ -369,6 +415,7 @@ test("team filters load with defaults, survive saving, and merge across teams", 
     region: "Johto",
     ability: "Chlorophyll",
     moves: "Viable",
+    items: "Viable",
   };
   theirs.teams[1]!.filters.type = "Water";
   const merged = mergeStoredState(base, mine, theirs);
@@ -383,9 +430,16 @@ test("team filters load with defaults, survive saving, and merge across teams", 
     region: "",
     ability: "",
     moves: "",
+    items: "",
   });
   expect(
     sanitizeSavedTeam({ ...first, filters: { type: "Fire", region: 5 } })
       ?.filters,
-  ).toEqual({ type: "Fire", region: "", ability: "", moves: "" });
+  ).toEqual({
+    type: "Fire",
+    region: "",
+    ability: "",
+    moves: "",
+    items: "",
+  });
 });

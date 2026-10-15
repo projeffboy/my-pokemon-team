@@ -1,8 +1,6 @@
-import fs from "node:fs";
 import path from "node:path";
-import { createRequire } from "node:module";
-import ts from "typescript";
 import type { GenerationTransferData } from "../../src/types.ts";
+import { typeScriptRequire } from "./typescript-require.ts";
 
 interface Entry {
   exists: boolean;
@@ -10,6 +8,7 @@ interface Entry {
   isNonstandard: string | null;
   abilities: Record<string, string>;
   requiredItem?: string;
+  unreleasedHidden?: boolean | "Past";
 }
 interface Dex {
   gen: number;
@@ -29,24 +28,7 @@ export function generationTransferData(
   pokemonIds: string[],
   itemIds: string[],
 ): GenerationTransferData {
-  const require = createRequire(import.meta.url);
-  const previous = require.extensions[".ts"];
-  require.extensions[".ts"] = (module, filename) => {
-    const { outputText } = ts.transpileModule(
-      fs.readFileSync(filename, "utf8"),
-      {
-        compilerOptions: {
-          module: ts.ModuleKind.CommonJS,
-          target: ts.ScriptTarget.ES2022,
-        },
-      },
-    );
-    (
-      module as typeof module & {
-        _compile: (code: string, filename: string) => void;
-      }
-    )._compile(outputText, filename);
-  };
+  const { require, restore } = typeScriptRequire();
   try {
     const { Dex: dex } = require(path.join(showdownRoot, "sim/dex.ts")) as {
       Dex: Dex;
@@ -81,7 +63,14 @@ export function generationTransferData(
         }
         for (const id of pokemonIds) {
           const species = target.species.get(id);
-          if (!available(species)) continue;
+          // CAP pokemon are in no game, so they get no generation, but Showdown's
+          // Gen 9 CAP format allows their abilities and their moves with a Gen 9 source
+          const cap =
+            mod === "gen9" && species.exists && species.isNonstandard === "CAP";
+          const allowed = (entry: Entry) =>
+            available(entry) ||
+            (cap && entry.exists && entry.isNonstandard === "CAP");
+          if (!available(species) && !cap) continue;
           // Z-A's stones inherit SV's Past/Future tags, although its Mega formes use them.
           if (mod === "gen9legends" && species.requiredItem) {
             const item = target.items.get(species.requiredItem);
@@ -96,16 +85,19 @@ export function generationTransferData(
             moves: {},
             abilities: {},
           });
-          entry.generations |= bit;
+          if (!cap) entry.generations |= bit;
           if (target.gen >= 3) {
-            for (const ability of Object.values(species.abilities)) {
-              if (available(target.abilities.get(ability)))
+            for (const [slot, ability] of Object.entries(species.abilities)) {
+              // Showdown's validator rejects a hidden ability it marks unreleased
+              if (slot === "H" && species.unreleasedHidden === true) continue;
+              if (allowed(target.abilities.get(ability)))
                 entry.abilities[ability] =
                   (entry.abilities[ability] ?? 0) | bit;
             }
           }
+          // From Gen 9, the move pool keeps only moves with a source in that generation
           for (const move of target.species.getMovePool(id)) {
-            if (available(target.moves.get(move)))
+            if (allowed(target.moves.get(move)))
               entry.moves[move] = (entry.moves[move] ?? 0) | bit;
           }
         }
@@ -113,7 +105,6 @@ export function generationTransferData(
     }
     return data;
   } finally {
-    if (previous) require.extensions[".ts"] = previous;
-    else delete require.extensions[".ts"];
+    restore();
   }
 }

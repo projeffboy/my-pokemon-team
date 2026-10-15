@@ -253,7 +253,12 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
             <TableBody>
               {types.map(type => (
                 <TableRow key={type}>
-                  <TableCell component="th" scope="row" sx={{ p: 0.25 }}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    aria-label={names.type(type)}
+                    sx={{ p: 0.25 }}
+                  >
                     <Box
                       sx={{
                         bgcolor: TYPE_COLORS[type],
@@ -264,7 +269,6 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
                         textAlign: "center",
                         lineHeight: "22px",
                       }}
-                      aria-label={names.type(type)}
                     >
                       <TypeLabel
                         type={type}

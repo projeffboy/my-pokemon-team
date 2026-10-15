@@ -19,6 +19,7 @@ import useFittingLabel from "@/app/shared/use-fitting-label";
 import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "@/app/shared/PokemonSprite";
 import SlotMoveHandle from "./pokemon-inputs/SlotMoveHandle";
+import SlotProblems from "./pokemon-inputs/SlotProblems";
 import useSlotDrag, { dropTarget } from "./use-slot-drag";
 import { MOVE_KEYS } from "@/types";
 import { randomizeSlotLabel } from "@/store/random";
@@ -107,14 +108,12 @@ const PokemonInputs = observer(function PokemonInputs({
       role="region"
       aria-label={t.team.slot(teamIndex + 1)}
     >
-      {/* On phones and tablets the slot tabs are what drags */}
-      {!isMdDown && (
-        <SlotMoveHandle
-          teamIndex={teamIndex}
-          setGripRef={setGripRef}
-          listeners={listeners}
-        />
-      )}
+      {/* On phones and tablets the slot tabs are what drags, so the grip only opens its menu */}
+      <SlotMoveHandle
+        teamIndex={teamIndex}
+        setGripRef={setGripRef}
+        listeners={isMdDown ? undefined : listeners}
+      />
       <Box
         sx={{
           position: "relative",
@@ -158,18 +157,23 @@ const PokemonInputs = observer(function PokemonInputs({
               maxHeight={184}
             />
           </Box>
-          {/* The pokemon's types straddle the card's left edge at the sprite area's top,
-              matching the team stats' icons */}
+          {/* The pokemon's types, and any shiny or problem marker, straddle the card's left
+              edge at the sprite area's top, matching the team stats' icons. On a short card
+              they wrap into a second column rather than reach the Random button. */}
           {pokemon && (
             <Box
               sx={{
                 position: "absolute",
                 // A step below the name input
                 top: 8,
+                // A step above the Random button, which is 28px tall and 4px from the bottom
+                bottom: 36,
                 left: -16,
                 zIndex: 2,
                 display: "flex",
                 flexDirection: "column",
+                flexWrap: "wrap",
+                alignContent: "flex-start",
                 alignItems: "flex-start",
                 gap: 0.5,
                 pointerEvents: "none",
@@ -201,6 +205,7 @@ const PokemonInputs = observer(function PokemonInputs({
                     }}
                   />
                 )}
+              <SlotProblems teamIndex={teamIndex} pokemon={label} />
             </Box>
           )}
           {/* In the sprite area's top right corner, however the sprite is centred in it */}

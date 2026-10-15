@@ -226,7 +226,7 @@ test.describe("Team Stats - Unit Tests", () => {
     );
     // Showing it is worth running this far past the team column, and no further
     expect((analysis ?? 0) - (team ?? 0)).toBeGreaterThan(0);
-    expect((analysis ?? 0) - (team ?? 0)).toBeLessThanOrEqual(120);
+    expect((analysis ?? 0) - (team ?? 0)).toBeLessThanOrEqual(165);
   });
 
   // The checklist leaves the stats' view when they alone come close to the team column's
