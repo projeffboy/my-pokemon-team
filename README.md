@@ -82,6 +82,8 @@ This update is run manually when new data is needed. It reads the `pokemon-showd
 
 Learnsets combine every generation with the games Showdown keeps in separate mods: Pokemon Champions, Legends: Z-A, Legends: Arceus, and BDSP. To include another game, add its mod to `learnsetMods` in `scripts/update-data.ts`.
 
+Showdown has no list of the items Legends: Z-A lets pokemon hold, so `LEGENDS_ZA_ITEMS` in `scripts/update-data/generation-transfer.ts` lists them, from Serebii. Update it when a Z-A update adds held items.
+
 Historical move rules are projected into `past-generations.ts`; game-specific move and base-stat differences, such as Champions Snap Trap, Let's Go Absorb, and Legends: Z-A Mega Starmie, are projected into `game-variants.ts`.
 
 The Pokemon Champions (M-C) format filter reads eligibility from Showdown's `champions` mod, which follows the current regulation. When that mod moves to a new regulation, rename the filter to match.
