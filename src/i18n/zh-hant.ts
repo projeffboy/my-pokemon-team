@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHant: Messages = {
+  pageTitle: "My Pokemon Team - 寶可夢配隊與隊伍規劃工具",
   // The header
   beta: "測試版",
   generation,
@@ -30,10 +31,11 @@ const zhHant: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即將推出",
+  generationGroups: { spinOffs: "外傳", mainSeries: "正傳系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合併第6–9世代所有遊戲的選項",
+    description: "合併第6–9世代所有遊戲",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -49,9 +51,12 @@ const zhHant: Messages = {
     short: "舊版網站",
     title: "切換到舊版網站？",
     description:
-      "目前的隊伍不會轉移到舊版網站。已在此儲存的隊伍將保留在這個版本中。",
+      "目前的隊伍將在舊版網站中開啟。已在此儲存的隊伍將保留在這個版本中。",
     go: "前往舊版網站",
     goLong: "前往舊版網站",
+    generationsOnly: (generations: string) => `舊版網站只有${generations}。`,
+    leftOut: "以下內容不會轉移：",
+    goWithTeam: "帶著我的隊伍前往",
   },
   feedback: {
     button: "意見回饋",
@@ -108,6 +113,8 @@ const zhHant: Messages = {
     teamEmpty: "寶可夢隊伍是空的",
     linkCopied: "已複製寶可夢隊伍連結",
     linkNotCopied: "無法複製連結。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支援此連結的世代或遊戲，已改用${profile}開啟。`,
     nothingToCopy: "隊伍是空的，沒有可複製的內容。",
     teamCopied: "已複製隊伍。",
     teamNotCopied: "無法複製隊伍。",
@@ -119,7 +126,6 @@ const zhHant: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `寶可夢 ${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first} 與 ${second}`,
-    advancedMode: "進階",
     filters: "篩選",
     sort: "排序",
     randomizePokemon: "隨機選擇寶可夢",
@@ -128,7 +134,7 @@ const zhHant: Messages = {
     advanced: "更多詳情",
     advancedFor: (slot: number) => `第 ${slot} 格的更多詳情`,
     details: "詳情",
-    showMoveTypes: "顯示招式屬性",
+    showTypes: "顯示屬性",
     about: (pokemon: string) => `關於${pokemon}`,
     dragHint: "長按拖曳即可調整順序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他格`,
@@ -223,6 +229,7 @@ const zhHant: Messages = {
       status: { label: "異常狀態招式", short: "狀態" },
       phazer: { label: "強制換人" },
       boosting: { label: "強化招式", short: "強化" },
+      priority: { label: "先制招式", short: "先制", shorter: "先制" },
       voltTurn: {
         label: "急速折返／伏特替換",
         short: "折返招式",
@@ -255,6 +262,7 @@ const zhHant: Messages = {
       cause: string | undefined,
     ) =>
       `${type}屬性對${pokemon}（${types}）造成 ${multiplier} 倍傷害${cause ? `（受${cause}影響）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其變為${type}屬性`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -438,7 +446,7 @@ const zhHant: Messages = {
     removed: {
       item: "移除的道具",
       ability: "移除的特性",
-      moves: "移除的招式：",
+      move: "移除的招式",
       details: "移除的詳細資訊",
     },
     ivsUnused: (where: string) => `個體值不適用於${where}。`,
@@ -451,6 +459,9 @@ const zhHant: Messages = {
       item: (count: number) => `${count}件道具`,
       ability: (count: number) => `${count}個特性`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中保留${carried}隻`,
+    removedSummary: (removed: string) => `移除${removed}`,
     modify: "更新現有隊伍",
     copy: "複製到新隊伍",
     createEmpty: "建立空隊伍",
@@ -575,7 +586,7 @@ const zhHant: Messages = {
     teamsAnswer:
       "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「全部匯出」會把每支隊伍以 Showdown 文字下載，「匯入隊伍」則能把它們讀回來。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
     teamsAnswer2:
-      "「更多」按鈕會顯示隊伍工具、「篩選」、「排序」與「更多詳情」。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於寶可夢欄位分頁的上方。",
+      "名稱列表中有「篩選」與「排序」按鈕，招式列表中有「排序」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於寶可夢欄位分頁的上方。",
     generations: "世代",
     generationsQuestion: "世代會改變什麼？",
     generationsAnswer:
@@ -632,13 +643,17 @@ const zhHant: Messages = {
       ["除霧手", "會使用清除濃霧（可吹走場地陷阱）的寶可夢。"],
       [
         "可靠回復",
-        "每次使用都保證回復 50% 以上 HP 的招式（在一般天氣下）。例如：自我再生、生蛋、喝牛奶、偷懶、光合作用。",
+        "每次使用都保證回復 50% 以上 HP 的招式（在一般天氣下）。例如：自我再生、生蛋、喝牛奶、偷懶、光合作用。如果同一隻寶可夢還會守住或看穿，祈願也算。",
       ],
       [
         "異常狀態招式",
         "這裡指的是命中率高、能造成麻痺、灼傷或中毒的招式，以及能催眠的招式。例如：劇毒、磷火、電磁波、唱歌。",
       ],
       ["強化招式", "能提升自身能力的招式（最好是 2 階以上），例如劍舞和冥想。"],
+      [
+        "先制招式",
+        "無論速度高低，都能比大多數招式先出手的攻擊招式。例如：神速、突襲、水流噴射、子彈拳。",
+      ],
       [
         "講究道具",
         "能提升一項能力 50%，但會鎖定只能使用一個招式的道具。共有三種：講究頭帶、講究眼鏡、講究圍巾。",
