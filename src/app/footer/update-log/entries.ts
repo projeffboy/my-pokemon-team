@@ -16,7 +16,6 @@ const entries: Entry[] = [
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",
       "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
       "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
-      "The team checklist no longer counts moves like Zap Cannon as status moves for Sheer Force Pokémon.",
       "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
       "Abilities and items that shared a name in other languages, such as the two As One abilities, are now told apart.",
       "Sorting by format in Doubles formats now follows doubles tiers, so Incineroar comes before Baxcalibur in Doubles OU.",
