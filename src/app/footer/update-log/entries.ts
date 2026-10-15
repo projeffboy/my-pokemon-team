@@ -15,6 +15,7 @@ const entries: Entry[] = [
       "Beat Up is now typeless in Gens 2–4, as in those games.",
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",
       "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
+      "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
     ],
   },
   {
