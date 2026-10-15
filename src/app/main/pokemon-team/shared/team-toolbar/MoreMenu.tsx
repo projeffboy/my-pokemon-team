@@ -87,9 +87,9 @@ const MoreMenu = observer(function MoreMenu({ basis }: { basis?: string }) {
       flip: () => (store.animateSprites = !store.animateSprites),
     },
     {
-      label: t.team.showMoveTypes,
-      on: store.showMoveTypes,
-      flip: () => (store.showMoveTypes = !store.showMoveTypes),
+      label: t.team.showTypes,
+      on: store.showTypes,
+      flip: () => (store.showTypes = !store.showTypes),
     },
   ];
 

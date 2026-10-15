@@ -11,7 +11,7 @@ test.describe("More menu: Copy text - Unit Tests", () => {
     // Verify snackbar message
     const snackbar = page
       .getByRole("alert")
-      .getByText("Empty team, nothing to copy.");
+      .getByText("The team is empty. Add a pokemon to copy it.");
     await expect(snackbar).toBeVisible();
   });
 });

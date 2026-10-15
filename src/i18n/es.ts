@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const es: Messages = {
+  pageTitle: "My Pokemon Team - Creador y planificador de equipos Pokémon",
   beta: "Beta",
   generation,
   generationGames: {
@@ -29,10 +30,11 @@ const es: Messages = {
   },
   generationSelect: "Generación",
   comingSoon: "Próximamente",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Serie principal" },
   combinedGenerations: {
     label: "Generaciones 6–9",
     short: "Gens. 6–9",
-    description: "Combina opciones de todos los juegos de las generaciones 6–9",
+    description: "Combina todos los juegos de las generaciones 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -48,9 +50,13 @@ const es: Messages = {
     short: "Sitio anterior",
     title: "¿Cambiar al sitio anterior?",
     description:
-      "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",
+      "Tu equipo actual se abrirá en el sitio anterior. Los equipos guardados aquí permanecerán en esta versión.",
     go: "Ir al sitio anterior",
     goLong: "Ir al sitio anterior",
+    generationsOnly: (generations: string) =>
+      `El sitio anterior solo incluye las ${generations}.`,
+    leftOut: "Esto no se transferirá:",
+    goWithTeam: "Ir con mi equipo",
   },
   feedback: {
     button: "Enviar comentarios",
@@ -106,13 +112,18 @@ const es: Messages = {
     delete: "Eliminar",
     importTeam: "Importar equipo",
     share: "Compartir",
-    teamEmpty: "El equipo Pokémon está vacío",
+    teamEmpty: "El equipo está vacío. Añade un Pokémon para compartirlo.",
     linkCopied: "Enlace del equipo Pokémon copiado",
-    linkNotCopied: "No se ha podido copiar el enlace.",
-    nothingToCopy: "El equipo está vacío, no hay nada que copiar.",
+    linkNotCopied:
+      "No se ha podido copiar el enlace. Cópialo de la barra de direcciones con el equipo abierto.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La generación o el juego de este enlace no es compatible, así que se ha abierto en ${profile}.`,
+    nothingToCopy: "El equipo está vacío. Añade un Pokémon para copiarlo.",
     teamCopied: "Equipo copiado.",
-    teamNotCopied: "No se ha podido copiar el equipo.",
-    cannotDuplicateEmptyTeam: "No se puede duplicar un equipo vacío",
+    teamNotCopied:
+      "No se ha podido copiar el equipo. Copia su texto desde Editar Pokepaste.",
+    cannotDuplicateEmptyTeam:
+      "El equipo está vacío. Añade un Pokémon para duplicarlo.",
     teamDuplicated: "Equipo duplicado",
     teamDeleted: "Equipo eliminado",
     slots: "Huecos del equipo Pokémon",
@@ -130,7 +141,7 @@ const es: Messages = {
     advancedFor: (slot: number) => `Más detalles del hueco ${slot}`,
     details: "Detalles",
     animateSprites: "Animar sprites",
-    showMoveTypes: "Mostrar tipos de movimientos",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Acerca de ${pokemon}`,
     dragHint: "Mantén y arrastra para reordenar",
     moveToSlot: (pokemon: string) => `Mover a ${pokemon} a otro hueco`,
@@ -162,7 +173,8 @@ const es: Messages = {
       `establecer ${label} en ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `intercambiar a ${first} y ${second}`,
-    moreChanges: (count: number) => `${count} cambios más`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 cambio más" : `${count} cambios más`,
     undoAction: (action: string) => `Deshacer ${action}`,
     redoAction: (action: string) => `Rehacer ${action}`,
     randomizeTeamAction: "crear equipo aleatorio",
@@ -172,7 +184,8 @@ const es: Messages = {
     bigGridView: "Vista de cuadrícula grande",
     teamNumber: (number: number) => `Equipo ${number}`,
     unnamedTeam: "Equipo",
-    copyOf: (name: string) => `Copia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} de ${name}` : `Copia de ${name}`,
     learnsetsFailed:
       "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
   },
@@ -218,6 +231,11 @@ const es: Messages = {
       status: { label: "Movimiento de estado", short: "Estado" },
       phazer: { label: "Phazer" },
       boosting: { label: "Movimiento de mejora", short: "Setup" },
+      priority: {
+        label: "Movimiento prioritario",
+        short: "Prioridad",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Movimiento Volt-turn",
         short: "Volt-turn",
@@ -251,6 +269,8 @@ const es: Messages = {
       cause: string | undefined,
     ) =>
       `${type} hace ${multiplier}x a ${pokemon} (${types})${cause ? ` con ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} lo vuelve de tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -397,7 +417,8 @@ const es: Messages = {
     randomTeamCreated: "Equipo aleatorio creado",
     exported: "Todos los equipos exportados",
     copiedAll: "Todos los equipos copiados",
-    notCopiedAll: "No se han podido copiar los equipos.",
+    notCopiedAll:
+      "No se han podido copiar los equipos. Descárgalos con Exportar todo.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -441,7 +462,7 @@ const es: Messages = {
     removed: {
       item: "Objeto eliminado",
       ability: "Habilidad eliminada",
-      moves: "Movimientos eliminados:",
+      move: "Movimiento eliminado",
       details: "Detalles eliminados",
     },
     ivsUnused: (where: string) => `Los IVs no se aplican en ${where}.`,
@@ -457,6 +478,9 @@ const es: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidad" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} se ${carried === 1 ? "conserva" : "conservan"}`,
+    removedSummary: (removed: string) => `Eliminación de ${removed}`,
     modify: "Actualizar equipo actual",
     copy: "Copiar a un nuevo equipo",
     createEmpty: "Crear equipo vacío",
@@ -485,6 +509,8 @@ const es: Messages = {
       `${pokemon} debe llevar ${items.join(" o ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} tiene ${move} dos veces.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} tiene ${thing}, que no se permite en ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -521,7 +547,30 @@ const es: Messages = {
     imported: "Equipo importado",
     importedMany: (count: number) => `${count} equipos importados`,
     noChanges: "No se ha hecho ningún cambio.",
-    nothingFound: "No se encontró ningún Pokémon en ese texto.",
+    nothingFound:
+      "No se encontró ningún Pokémon en ese texto. Escribe los nombres de los Pokémon en inglés, tal como los escribe Pokemon Showdown, o pega un equipo exportado de Pokemon Showdown.",
+    problems: (count: number) =>
+      `${count === 1 ? "Se encontró 1 problema" : `Se encontraron ${count} problemas`}. Al actualizar, el texto se aplica igualmente así:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Movimiento ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: «${value}»`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "No se reconoce.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} no puede aprender este movimiento en el juego seleccionado.`,
+    wrongAbility: (pokemon: string) =>
+      `No es una habilidad que ${pokemon} pueda tener.`,
+    outOfRange: (min: number, max: number) =>
+      `No es un número entero de ${min} a ${max}.`,
+    unsupported: "El juego seleccionado no tiene este dato.",
+    tooManyPokemon: "Un equipo tiene como máximo seis Pokémon.",
+    tooManyMoves: "Un Pokémon conoce como máximo cuatro movimientos.",
+    noGigantamax: (pokemon: string) => `${pokemon} no tiene forma Gigamax.`,
+    unread: "No es un dato que el sitio lea.",
+    slotLeftEmpty: "El hueco del equipo queda vacío.",
+    moveLeftEmpty: "El hueco del movimiento queda vacío.",
+    leftOut: "Se omite.",
+    usedInstead: (value: string) => `Se usa ${value} en su lugar.`,
   },
   deleteDialog: {
     title: (team: string) => `¿Eliminar ${team}?`,
@@ -655,6 +704,10 @@ const es: Messages = {
       [
         "Movimiento de mejora",
         "Movimientos que suben tus estadísticas (preferiblemente 2 o más niveles), como Danza Espada y Paz Mental.",
+      ],
+      [
+        "Movimiento prioritario",
+        "Movimientos que hacen daño y se usan antes que la mayoría de los demás, sin importar la Velocidad. P. ej. Velocidad Extrema, Golpe Bajo, Acua Jet, Puño Bala.",
       ],
       [
         "Objeto Elegido",

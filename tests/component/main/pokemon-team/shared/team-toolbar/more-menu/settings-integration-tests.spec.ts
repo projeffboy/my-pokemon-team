@@ -22,28 +22,35 @@ const accessibilitySetting = (page: Page, name: string) =>
 test.describe("More menu accessibility settings", () => {
   test.use({ viewport: createViewport(400) });
 
-  test("Show move types hides each move's type icon when turned off", async ({
+  test("Show types hides the pokemon's and each move's type icons when turned off", async ({
     page,
   }) => {
     await selectPokemon(page, "Arctozolt");
     await selectMove(page, "Icicle Crash");
-    const field = page.getByLabel("Pokemon 1's move1").locator("..");
-    const icon = field.getByRole("img", { name: "Ice" });
-    const setting = accessibilitySetting(page, "Show move types");
-    await expect(icon).toBeVisible();
+    const slot = page.getByRole("region", { name: "Pokemon 1", exact: true });
+    const pokemonType = slot.getByRole("img", { name: "Electric" });
+    const move = page.getByLabel("Pokemon 1's move1");
+    const moveType = move.locator("..").getByRole("img", { name: "Ice" });
+    const setting = accessibilitySetting(page, "Show types");
+    await expect(pokemonType).toBeVisible();
+    await expect(moveType).toBeVisible();
 
     await openMoreMenu(page);
     await expect(setting).toHaveAttribute("aria-checked", "true");
     await setting.click();
     await expect(setting).toHaveAttribute("aria-checked", "false");
     await page.keyboard.press("Escape");
-    await expect(icon).toHaveCount(0);
+    await expect(pokemonType).toHaveCount(0);
+    await expect(moveType).toHaveCount(0);
 
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
-      "Icicle Crash",
-    );
-    await expect(icon).toHaveCount(0);
+    await expect(move).toHaveValue("Icicle Crash");
+    await expect(pokemonType).toHaveCount(0);
+    await expect(moveType).toHaveCount(0);
+    await page.getByLabel("Pokemon 1's move2").click({ force: true });
+    const options = page.getByRole("listbox");
+    await expect(options.getByRole("option").first()).toBeVisible();
+    await expect(options.getByRole("img")).toHaveCount(0);
   });
 });
 

@@ -122,6 +122,12 @@ export const closeDialog = async (page: Page, button = "Done") => {
   await expect(page.getByRole("dialog")).toBeHidden();
 };
 
+// A link to another site opens in a new tab, so the current team stays open
+export const expectToOpenInNewTab = async (link: Locator) => {
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
+};
+
 const ANALYSIS_TABS: Record<string, string> = {
   "Team Defence": "Defence",
   "Team Type Coverage": "Coverage",
@@ -207,6 +213,32 @@ export const selectMove = async (
   await input.fill(move);
   await page.getByRole("listbox").getByText(move, { exact: true }).click();
 };
+
+// Types an option's label into the dropdown named `input`, and returns the listed option
+export const findOption = async (page: Page, input: string, label: string) => {
+  const combobox = page.getByRole("combobox", { name: input });
+  const option = page
+    .getByRole("option")
+    .filter({ has: page.getByText(label, { exact: true }) });
+  // Resizing can swap the team viewer, which remounts the input and drops its text
+  await expect(async () => {
+    await combobox.fill(label);
+    await expect(option).toBeVisible({ timeout: 1000 });
+  }).toPass();
+  return option;
+};
+
+// How many lines a listed option's label takes
+export const optionLabelLines = (option: Locator) =>
+  option
+    .locator("span")
+    .last()
+    .evaluate(label =>
+      Math.round(
+        label.getBoundingClientRect().height /
+          parseFloat(getComputedStyle(label).lineHeight),
+      ),
+    );
 
 // The checklist label as shown at the page's viewport width, from its English label
 const pageChecklistLabel = (page: Page, label: string) => {
