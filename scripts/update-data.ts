@@ -479,6 +479,7 @@ async function loadSnapshot(): Promise<DataSnapshot> {
     "items",
     "natures",
     "formats",
+    "format-bans",
     "typechart",
     "game-variants",
     "past-generations",
