@@ -169,7 +169,8 @@ const ptBR: Messages = {
       `definir ${label} como ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `trocar ${first} e ${second} de posição`,
-    moreChanges: (count: number) => `${count} outras alterações`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 outra alteração" : `${count} outras alterações`,
     undoAction: (action: string) => `Desfazer ${action}`,
     redoAction: (action: string) => `Refazer ${action}`,
     randomizeTeamAction: "gerar equipe aleatória",
@@ -179,7 +180,8 @@ const ptBR: Messages = {
     bigGridView: "Visualização em grade grande",
     teamNumber: (number: number) => `Equipe ${number}`,
     unnamedTeam: "Equipe",
-    copyOf: (name: string) => `Cópia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Cópia ${number} de ${name}` : `Cópia de ${name}`,
     learnsetsFailed:
       "Não foi possível carregar as listas de golpes. Recarregue a página para tentar de novo.",
   },

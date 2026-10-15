@@ -24,6 +24,10 @@ const entries: Entry[] = [
       "Changing generations now swaps Giratina-Origin’s Griseous Core and Griseous Orb instead of dropping or keeping the wrong one.",
       "Switching a team to Gen 9 no longer removes Pokémon and moves that Gen 9 offers, such as Silvally and Tyranitar’s Pursuit.",
       "Imported sets without an item keep their Pokémon when the nickname holds an @, such as Mew@x (Pikachu).",
+      "Picking a slot’s own Pokémon again in the Name list no longer clears its moves, item and other details.",
+      "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
+      "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
+      "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
     ],
   },
   {
