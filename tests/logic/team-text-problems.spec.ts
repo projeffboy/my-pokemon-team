@@ -169,10 +169,19 @@ test("an unrecognized item or ability names what is used in its place", () => {
   ]);
 });
 
-test("an ability is matched regardless of case", () => {
-  const { team, problems } = read("Lugia\nAbility: multiscale");
-  expect(team[0]?.ability).toBe("Multiscale");
-  expect(problems).toEqual([]);
+test("an ability in another case is not recognized and the auto-selected one is used", () => {
+  const { team, problems } = read("Shedinja\nAbility: wonder guard");
+  expect(team[0]?.ability).toBe("Wonder Guard");
+  expect(problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "shedinja",
+      field: "ability",
+      value: "wonder guard",
+      reason: "unrecognized",
+      replacement: "Wonder Guard",
+    },
+  ]);
 });
 
 test("a Gigantamax line that cannot be used is reported and left out", () => {

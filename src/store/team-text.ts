@@ -18,6 +18,7 @@ import {
   isTeamEmpty,
 } from "@/shared/team";
 import {
+  allAbilities,
   pokemonName,
   itemName,
   moveName,
@@ -390,9 +391,6 @@ export function parseTeamText(
 
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
-        const known = abilities.find(
-          name => name.toLowerCase() === ability.toLowerCase(),
-        );
 
         if (
           ability === "No Ability" ||
@@ -400,11 +398,18 @@ export function parseTeamText(
         )
           member.ability =
             hasNoAbility(pokemon, generation, format) ? "No Ability" : "";
-        else if (known) {
-          member.ability = known;
+        else if (abilities.includes(ability)) {
+          member.ability = ability;
         } else if (ability)
           report(
-            { field: "ability", value: ability, reason: "wrongAbility" },
+            {
+              field: "ability",
+              value: ability,
+              reason:
+                allAbilities.includes(ability) ? "wrongAbility" : (
+                  "unrecognized"
+                ),
+            },
             () => member.ability,
           );
       } else if (startsWith("Gigantamax:")) {
