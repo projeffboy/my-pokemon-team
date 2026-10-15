@@ -134,6 +134,37 @@ test("names the set details of a Gen 6–9 team, and Cancel keeps them", async (
   expect(getTeamTextFromUrl(page)).toContain("Adamant Nature");
 });
 
+test("names what the old website's own data lacks, apart from the generation", async ({
+  page,
+}) => {
+  const team =
+    "Smeargle @ Focus Sash\nAbility: Own Tempo\n- Sticky Web\n- Spore\n\n" +
+    "Gengar\nAbility: Levitate\n- Shadow Ball\n\n";
+  await page.goto(`/?team=${Buffer.from(team).toString("base64url")}`);
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Smeargle");
+  await page.route(oldSite, route =>
+    route.fulfill({ contentType: "text/html", body: "<h1>Other site</h1>" }),
+  );
+  await page
+    .getByRole("banner")
+    .getByRole("button", { name: /^(Go to (the )?)?old (web)?site$/i })
+    .click();
+  const warning = page.getByRole("dialog").getByRole("alert");
+  await expect(warning.getByRole("listitem")).toHaveText([
+    "Smeargle: Sticky Web",
+    "Gengar: Levitate → Cursed Body",
+  ]);
+  await expect(warning).not.toContainText("Generations 6–9");
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Go with my team", exact: true })
+    .click();
+  await expect(page.getByRole("heading", { name: "Other site" })).toBeVisible();
+  const carried = getTeamTextFromUrl(page);
+  expect(carried).toContain("- Spore");
+  expect(carried).not.toMatch(/Sticky Web|Levitate/);
+});
+
 test("Japanese keeps its full label and both faces where they fit", async ({
   page,
 }) => {

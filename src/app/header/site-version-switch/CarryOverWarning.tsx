@@ -21,12 +21,12 @@ export default function CarryOverWarning({
     loss.replacement ?
       `${name(loss)} → ${name(loss, loss.replacement)}`
     : name(loss);
-  const line = ({ pokemon, entries, details }: OldWebsiteLoss) => {
+  const line = ({ pokemon, entries, rejected, details }: OldWebsiteLoss) => {
     const species = entries.find(loss => loss.field === "pokemon");
     if (species && !species.replacement) return names.pokemon(pokemon);
     const heading = species ? change(species) : names.pokemon(pokemon);
     const lost = [
-      ...entries.filter(loss => loss !== species).map(change),
+      ...[...entries.filter(loss => loss !== species), ...rejected].map(change),
       ...details.map(detail => t.advanced[detail]),
     ];
     return lost.length ?

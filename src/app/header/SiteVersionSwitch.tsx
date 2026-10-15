@@ -12,6 +12,7 @@ import { useTranslation } from "@/app/shared/TranslationContext";
 import useFittingLabel from "@/app/shared/use-fitting-label";
 import { toBase64Url } from "@/app/shared/base64url";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
+import { learnsetsReady } from "@/store/learnsets";
 import { planOldWebsiteTeam } from "@/store/old-website";
 import CarryOverWarning from "./site-version-switch/CarryOverWarning";
 
@@ -58,7 +59,11 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
   const handleSwitch = async () => {
     if (store.isTeamEmpty) return goToSite();
     try {
-      const data = await loadGenerationTransferData();
+      // The plan checks the moves against the old website's learnsets
+      const [data] = await Promise.all([
+        loadGenerationTransferData(),
+        learnsetsReady,
+      ]);
       setPlan(planOldWebsiteTeam(store.team, store.currentTeam, data));
       setOpen(true);
     } catch {
