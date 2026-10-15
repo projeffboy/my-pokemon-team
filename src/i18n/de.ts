@@ -18,6 +18,7 @@ const inputNames: Record<string, string> = {
 };
 
 const de: Messages = {
+  pageTitle: "My Pokemon Team - Pokémon-Teambuilder und Teamplaner",
   // The header
   beta: "Beta",
   generation,
@@ -34,10 +35,11 @@ const de: Messages = {
   },
   generationSelect: "Generation",
   comingSoon: "Demnächst",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Hauptreihe" },
   combinedGenerations: {
     label: "Generationen 6–9",
     short: "Gen. 6–9",
-    description: "Kombiniert Optionen aus allen Spielen der Gen. 6–9",
+    description: "Kombiniert alle Spiele der Gen. 6–9",
   },
   championsGeneration: "Gen. 9 · Champions",
   championsGenerationShort: "Gen. 9 (Champions)",
@@ -54,9 +56,13 @@ const de: Messages = {
     short: "Alte Seite",
     title: "Zur alten Website wechseln?",
     description:
-      "Dein aktuelles Team wird nicht auf die alte Website übertragen. Bereits hier gespeicherte Teams bleiben in dieser Version.",
+      "Dein aktuelles Team wird auf der alten Website geöffnet. Hier gespeicherte Teams bleiben in dieser Version.",
     go: "Zur alten Website",
     goLong: "Zur alten Website",
+    generationsOnly: (generations: string) =>
+      `Die alte Website umfasst nur ${generations}.`,
+    leftOut: "Folgendes wird nicht übernommen:",
+    goWithTeam: "Mit meinem Team wechseln",
   },
   feedback: {
     button: "Feedback senden",
@@ -116,6 +122,8 @@ const de: Messages = {
     teamEmpty: "Das Pokémon-Team ist leer",
     linkCopied: "Link zum Pokémon-Team kopiert",
     linkNotCopied: "Der Link konnte nicht kopiert werden.",
+    linkGenerationUnsupported: (profile: string) =>
+      `Die Generation oder das Spiel dieses Links wird nicht unterstützt, daher wurde er in ${profile} geöffnet.`,
     nothingToCopy: "Leeres Team, nichts zu kopieren.",
     teamCopied: "Team kopiert.",
     teamNotCopied: "Das Team konnte nicht kopiert werden.",
@@ -135,7 +143,7 @@ const de: Messages = {
     advanced: "Weitere Details",
     advancedFor: (slot: number) => `Weitere Details für Platz ${slot}`,
     details: "Details",
-    showMoveTypes: "Attackentypen anzeigen",
+    showTypes: "Typen anzeigen",
     about: (pokemon: string) => `Über ${pokemon}`,
     dragHint: "Halten und ziehen zum Umordnen",
     moveToSlot: (pokemon: string) =>
@@ -168,7 +176,8 @@ const de: Messages = {
       `${label} für ${pokemon} auf ${value} setzen`,
     swappedSlots: (first: string, second: string) =>
       `${first} und ${second} tauschen`,
-    moreChanges: (count: number) => `${count} weitere Änderungen`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 weitere Änderung" : `${count} weitere Änderungen`,
     undoAction: (action: string) => `Rückgängig: ${action}`,
     redoAction: (action: string) => `Wiederholen: ${action}`,
     randomizeTeamAction: "Team zufällig zusammenstellen",
@@ -179,7 +188,8 @@ const de: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Team ${number}`,
     unnamedTeam: "Team",
-    copyOf: (name: string) => `Kopie von ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Kopie ${number} von ${name}` : `Kopie von ${name}`,
     learnsetsFailed:
       "Die Attackenlisten konnten nicht geladen werden. Lade die Seite neu, um es noch einmal zu versuchen.",
   },
@@ -228,6 +238,11 @@ const de: Messages = {
       status: { label: "Status-Attacke", short: "Status" },
       phazer: { label: "Phazer" },
       boosting: { label: "Boost-Attacke", short: "Setup" },
+      priority: {
+        label: "Prioritätsattacke",
+        short: "Priorität",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Volt-Turn-Attacke",
         short: "Volt-Turn",
@@ -261,6 +276,8 @@ const de: Messages = {
       cause: string | undefined,
     ) =>
       `${type} wirkt ${times(multiplier)} auf ${pokemon} (${types})${cause ? ` mit ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} macht es zum Typ ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -457,7 +474,7 @@ const de: Messages = {
     removed: {
       item: "Item entfernt",
       ability: "Fähigkeit entfernt",
-      moves: "Attacken entfernt:",
+      move: "Attacke entfernt",
       details: "Details entfernt",
     },
     ivsUnused: (where: string) => `DVs werden in ${where} nicht verwendet.`,
@@ -472,6 +489,9 @@ const de: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "Fähigkeit" : "Fähigkeiten"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} von ${total} ${carried === 1 ? "wird" : "werden"} übernommen`,
+    removedSummary: (removed: string) => `${removed} entfernt`,
     modify: "Vorhandenes Team aktualisieren",
     copy: "In neues Team kopieren",
     createEmpty: "Leeres Team erstellen",
@@ -670,6 +690,10 @@ const de: Messages = {
       [
         "Boost-Attacke",
         "Attacken, die deine Statuswerte erhöhen (am besten um 2 oder mehr Stufen), wie Schwerttanz und Gedankengut.",
+      ],
+      [
+        "Prioritätsattacke",
+        "Schadensattacken, die unabhängig von der Initiative vor den meisten anderen Attacken ausgeführt werden. Z. B. Turbotempo, Tiefschlag, Wasserdüse, Patronenhieb.",
       ],
       [
         "Wahl-Item",
