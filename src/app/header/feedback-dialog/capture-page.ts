@@ -16,7 +16,13 @@ let screenshotLibrary: Promise<typeof import("modern-screenshot")> | undefined;
 // The feedback dialog starts this when it opens. A tab opened before a deploy cannot load the
 // chunk, and Index.tsx then reloads the page, which should happen before a message is typed
 // rather than while it is being sent. Kept even if it fails, so sending never retries it.
+// Not started offline: browsers keep failing an import that failed once, and the
+// screenshot can still be taken once the tab is back online.
 export const loadScreenshotLibrary = () => {
+  if (navigator.onLine === false)
+    return Promise.reject(
+      new Error("The screenshot library needs a connection"),
+    );
   if (!screenshotLibrary) {
     screenshotLibrary = import("modern-screenshot");
     screenshotLibrary.catch(() => {});
