@@ -30,10 +30,11 @@ const fr: Messages = {
   },
   generationSelect: "Génération",
   comingSoon: "Bientôt disponible",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principale" },
   combinedGenerations: {
     label: "Générations 6–9",
     short: "Gén. 6–9",
-    description: "Combine les options de tous les jeux des générations 6–9",
+    description: "Combine tous les jeux des générations 6–9",
   },
   championsGeneration: "Gén. 9 · Champions",
   championsGenerationShort: "Gén. 9 (Champions)",
@@ -49,9 +50,13 @@ const fr: Messages = {
     short: "Ancien site",
     title: "Passer à l’ancien site ?",
     description:
-      "Votre équipe actuelle ne sera pas transférée vers l’ancien site. Les équipes déjà enregistrées ici resteront sur cette version.",
+      "Votre équipe actuelle s’ouvrira sur l’ancien site. Les équipes enregistrées ici resteront sur cette version.",
     go: "Aller à l’ancien site",
     goLong: "Aller à l’ancien site",
+    generationsOnly: (generations: string) =>
+      `L’ancien site ne couvre que les ${generations}.`,
+    leftOut: "Ceci ne sera pas transféré :",
+    goWithTeam: "Y aller avec mon équipe",
   },
   feedback: {
     button: "Envoyer un commentaire",
@@ -225,6 +230,11 @@ const fr: Messages = {
       status: { label: "Capacité de statut", short: "Statut" },
       phazer: { label: "Phazer" },
       boosting: { label: "Capacité de boost", short: "Boost" },
+      priority: {
+        label: "Capacité prioritaire",
+        short: "Priorité",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Capacité Volt-turn",
         short: "Volt-turn",
@@ -457,7 +467,7 @@ const fr: Messages = {
     removed: {
       item: "Objet supprimé",
       ability: "Talent supprimé",
-      moves: "Capacités supprimées :",
+      move: "Capacité supprimée",
       details: "Détails supprimés",
     },
     ivsUnused: (where: string) => `Les IV ne s’appliquent pas dans ${where}.`,
@@ -473,6 +483,9 @@ const fr: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "talent" : "talents"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} sur ${total} ${carried <= 1 ? "est conservé" : "sont conservés"}`,
+    removedSummary: (removed: string) => `Suppression de ${removed}`,
     modify: "Mettre à jour l’équipe actuelle",
     copy: "Copier dans une nouvelle équipe",
     createEmpty: "Créer une équipe vide",
@@ -674,6 +687,10 @@ const fr: Messages = {
       [
         "Capacité de boost",
         "Des capacités qui augmentent vos stats (de préférence de 2 niveaux ou plus), comme Danse Lames et Plénitude.",
+      ],
+      [
+        "Capacité prioritaire",
+        "Des capacités offensives qui passent avant la plupart des autres, quelle que soit la Vitesse. Ex. : Vitesse Extrême, Coup Bas, Aqua-Jet, Pisto-Poing.",
       ],
       [
         "Objet Choix",

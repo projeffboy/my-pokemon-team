@@ -122,6 +122,12 @@ export const closeDialog = async (page: Page, button = "Done") => {
   await expect(page.getByRole("dialog")).toBeHidden();
 };
 
+// A link to another site opens in a new tab, so the current team stays open
+export const expectToOpenInNewTab = async (link: Locator) => {
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
+};
+
 const ANALYSIS_TABS: Record<string, string> = {
   "Team Defence": "Defence",
   "Team Type Coverage": "Coverage",
