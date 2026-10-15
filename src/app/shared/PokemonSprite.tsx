@@ -67,6 +67,7 @@ const PokemonSprite = observer(function PokemonSprite({
       [
         shiny ? undefined : localSprite,
         ...(sprite?.sources ?? []),
+        ...(sprite?.proxied ?? []),
         localSprite,
         questionMark,
       ].filter((src): src is string => !!src),

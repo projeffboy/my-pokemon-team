@@ -310,6 +310,36 @@ test.describe("Name dropdown views - Unit Tests", () => {
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Wooper");
   });
 
+  test("Big Grid gets sprites through the site's own address when Showdown is blocked", async ({
+    page,
+  }) => {
+    await page.route("https://play.pokemonshowdown.com/**", route =>
+      route.abort(),
+    );
+    await page.route("**/showdown-sprites/**", route =>
+      route.fulfill({
+        contentType: "image/png",
+        body: Buffer.from(
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+          "base64",
+        ),
+      }),
+    );
+    await page.getByLabel("Pokemon 1's name").fill("Spidops");
+    await page.getByRole("button", { name: "Grid view", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Big grid view", exact: true })
+      .click();
+    const sprite = page
+      .getByRole("option", { name: "Spidops", exact: true })
+      .locator("img");
+    await expect(sprite).toHaveAttribute(
+      "src",
+      "/showdown-sprites/dex/spidops.png",
+    );
+    await expect(sprite).not.toHaveJSProperty("naturalWidth", 0);
+  });
+
   test("switches between the list and the grid of icons", async ({ page }) => {
     const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
     await input.fill("Wooper");

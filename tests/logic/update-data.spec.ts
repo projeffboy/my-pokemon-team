@@ -6,6 +6,7 @@ import {
   flattenLearnsets,
   nameChanges,
   pick,
+  projectFormatBans,
   projectFormats,
   projectGameVariant,
   projectPastGenerations,
@@ -224,6 +225,47 @@ test("formats mark champions legality, inherited through battle-only formes", ()
     dracovish: { tier: "OU" },
     zacian: { tier: "Uber" },
   });
+});
+
+test("format bans keep banlists and code-only clauses, minus what is allowed back or not yet in the game", () => {
+  const dex = {
+    abilities: {
+      sandveil: { name: "Sand Veil", gen: 3 },
+      moody: { name: "Moody", gen: 5 },
+    },
+    items: {
+      souldew: { name: "Soul Dew", gen: 3 },
+      firegem: { name: "Fire Gem", gen: 5, isGem: true },
+    },
+    moves: {
+      swagger: { gen: 2 },
+      spore: { gen: 1, status: "slp" },
+      yawn: { gen: 3, volatileStatus: "yawn" },
+      fissure: { gen: 1, ohko: true },
+      sheercold: { gen: 3, ohko: "Ice" },
+      darkvoid: { gen: 4, status: "slp" },
+      tackle: { gen: 1 },
+    },
+  };
+  const rules = [
+    "-ability:sandveil",
+    "-ability:moody",
+    "-item:souldew",
+    "-move:swagger",
+    "+move:swagger",
+    "-move:yawn",
+    "-tag:uber",
+    "ohkoclause",
+    "sleepmovesclause",
+  ];
+  expect(projectFormatBans({ gen: 3, rules, ...dex })).toEqual({
+    abilities: ["Sand Veil"],
+    items: ["souldew"],
+    moves: ["fissure", "sheercold", "spore", "yawn"],
+  });
+  expect(
+    projectFormatBans({ gen: 5, rules: ["ohkoclause", "gemsclause"], ...dex }),
+  ).toEqual({ items: ["firegem"], moves: ["fissure", "sheercold"] });
 });
 
 test("learnsets merge every mod into one sorted move list per species", () => {

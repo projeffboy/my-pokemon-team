@@ -18,6 +18,7 @@ const inputNames: Record<string, string> = {
 };
 
 const de: Messages = {
+  pageTitle: "My Pokemon Team - Pokémon-Teambuilder und Teamplaner",
   // The header
   beta: "Beta",
   generation,
@@ -118,13 +119,19 @@ const de: Messages = {
     delete: "Löschen",
     importTeam: "Team importieren",
     share: "Teilen",
-    teamEmpty: "Das Pokémon-Team ist leer",
+    teamEmpty: "Das Team ist leer. Füge ein Pokémon hinzu, um es zu teilen.",
     linkCopied: "Link zum Pokémon-Team kopiert",
-    linkNotCopied: "Der Link konnte nicht kopiert werden.",
-    nothingToCopy: "Leeres Team, nichts zu kopieren.",
+    linkNotCopied:
+      "Der Link konnte nicht kopiert werden. Kopiere ihn aus der Adressleiste, während das Team geöffnet ist.",
+    linkGenerationUnsupported: (profile: string) =>
+      `Die Generation oder das Spiel dieses Links wird nicht unterstützt, daher wurde er in ${profile} geöffnet.`,
+    nothingToCopy:
+      "Das Team ist leer. Füge ein Pokémon hinzu, um es zu kopieren.",
     teamCopied: "Team kopiert.",
-    teamNotCopied: "Das Team konnte nicht kopiert werden.",
-    cannotDuplicateEmptyTeam: "Ein leeres Team kann nicht dupliziert werden",
+    teamNotCopied:
+      "Das Team konnte nicht kopiert werden. Kopiere seinen Text stattdessen unter „Pokepaste bearbeiten“.",
+    cannotDuplicateEmptyTeam:
+      "Das Team ist leer. Füge ein Pokémon hinzu, um es zu duplizieren.",
     teamDuplicated: "Team dupliziert",
     teamDeleted: "Team gelöscht",
     slots: "Plätze im Pokémon-Team",
@@ -140,7 +147,7 @@ const de: Messages = {
     advanced: "Weitere Details",
     advancedFor: (slot: number) => `Weitere Details für Platz ${slot}`,
     details: "Details",
-    showMoveTypes: "Attackentypen anzeigen",
+    showTypes: "Typen anzeigen",
     about: (pokemon: string) => `Über ${pokemon}`,
     dragHint: "Halten und ziehen zum Umordnen",
     moveToSlot: (pokemon: string) =>
@@ -271,6 +278,8 @@ const de: Messages = {
       cause: string | undefined,
     ) =>
       `${type} wirkt ${times(multiplier)} auf ${pokemon} (${types})${cause ? ` mit ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} macht es zum Typ ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -424,7 +433,8 @@ const de: Messages = {
     randomTeamCreated: "Zufallsteam erstellt",
     exported: "Alle Teams exportiert",
     copiedAll: "Alle Teams kopiert",
-    notCopiedAll: "Die Teams konnten nicht kopiert werden.",
+    notCopiedAll:
+      "Die Teams konnten nicht kopiert werden. Lade sie stattdessen mit „Alle exportieren“ herunter.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -515,6 +525,8 @@ const de: Messages = {
       `${pokemon} muss ${items.join(" oder ")} tragen.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} hat ${move} zweimal.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} hat ${thing}, was in ${where} verboten ist.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -550,7 +562,30 @@ const de: Messages = {
     imported: "Team importiert",
     importedMany: (count: number) => `${count} Teams importiert`,
     noChanges: "Keine Änderungen vorgenommen.",
-    nothingFound: "In diesem Text wurde kein Pokémon gefunden.",
+    nothingFound:
+      "In diesem Text wurde kein Pokémon gefunden. Schreibe die Pokémon-Namen auf Englisch, wie Pokemon Showdown sie schreibt, oder füge ein aus Pokemon Showdown exportiertes Team ein.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 Problem" : `${count} Probleme`} gefunden. Aktualisieren übernimmt den Text trotzdem so:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Attacke ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: „${value}“`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Nicht erkannt.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} kann diese Attacke im gewählten Spiel nicht erlernen.`,
+    wrongAbility: (pokemon: string) =>
+      `Keine Fähigkeit, die ${pokemon} haben kann.`,
+    outOfRange: (min: number, max: number) =>
+      `Keine ganze Zahl von ${min} bis ${max}.`,
+    unsupported: "Das gewählte Spiel hat diese Angabe nicht.",
+    tooManyPokemon: "Ein Team hat höchstens sechs Pokémon.",
+    tooManyMoves: "Ein Pokémon kennt höchstens vier Attacken.",
+    noGigantamax: (pokemon: string) => `${pokemon} hat keine Gigadynamax-Form.`,
+    unread: "Keine Angabe, die die Seite liest.",
+    slotLeftEmpty: "Der Teamplatz bleibt leer.",
+    moveLeftEmpty: "Der Attackenplatz bleibt leer.",
+    leftOut: "Die Angabe wird weggelassen.",
+    usedInstead: (value: string) => `Stattdessen wird ${value} verwendet.`,
   },
   deleteDialog: {
     title: (team: string) => `${team} löschen?`,

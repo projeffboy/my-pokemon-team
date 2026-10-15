@@ -23,6 +23,7 @@ import { GENERATION_GAMES } from "@/shared/generations";
 import { REGIONS } from "@/shared/regions";
 import { createSearchFilters } from "@/shared/team";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { closeKeyboard, isTouchInput, verbatim } from "@/app/shared/text-entry";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
@@ -234,6 +235,9 @@ const FiltersDialog = observer(function FiltersDialog() {
         aria-labelledby={titleId}
         fullWidth
         maxWidth="xs"
+        // After a tap, focusing the dropdown that opened this again would bring
+        // back its on-screen keyboard without the list
+        disableRestoreFocus={isTouchInput()}
       >
         <DialogTitle id={titleId}>{t.team.filters}</DialogTitle>
         <DialogContent>
@@ -273,11 +277,19 @@ const FiltersDialog = observer(function FiltersDialog() {
                 onChange={(_event, value) =>
                   (store.filters.ability = value ?? "")
                 }
+                onClose={closeKeyboard}
                 renderInput={params => (
                   <TextField
                     {...params}
                     label={t.filters.ability}
                     placeholder={t.any}
+                    slotProps={{
+                      ...params.slotProps,
+                      htmlInput: {
+                        ...params.slotProps.htmlInput,
+                        ...verbatim("ability-filter"),
+                      },
+                    }}
                   />
                 )}
               />

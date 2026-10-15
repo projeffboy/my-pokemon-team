@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { spriteUrls } from "@/app/shared/pokemon-sprite/sprite-urls";
+import vercel from "../../vercel.json" with { type: "json" };
 import pokedex from "@/data/pokedex";
 import altSpriteNum from "@/data/altSpriteNum";
 
@@ -68,6 +69,43 @@ test("pokemon with only gen 5 sprites use the still one in the generations befor
   expect(
     spriteUrls("miraidon", { num: 1008 }, undefined, false, 1).sources,
   ).toEqual([expect.stringMatching(/\/gen5\/miraidon\.png$/)]);
+});
+
+test("the site's own address retries each of the sprite's sources, for networks that block Showdown", () => {
+  const { sources, proxied } = spriteUrls(
+    "bulbasaur",
+    bulbasaur,
+    undefined,
+    false,
+    9,
+    true,
+  );
+  expect(proxied).toEqual([
+    "/showdown-sprites/ani-shiny/bulbasaur.gif",
+    "/showdown-sprites/gen5ani-shiny/bulbasaur.gif",
+    "/showdown-sprites/gen5-shiny/bulbasaur.png",
+  ]);
+  // vercel.json forwards each one to the same file on Showdown
+  const [rewrite] = vercel.rewrites;
+  const forwarded = proxied.map(url =>
+    url.replace(
+      rewrite.source.replace(":path*", ""),
+      rewrite.destination.replace(":path*", ""),
+    ),
+  );
+  expect(forwarded).toEqual(sources);
+});
+
+test("the site's own address caches sprites, and their 404s, only as long as Showdown does", () => {
+  const { proxied } = spriteUrls("bulbasaur", bulbasaur, undefined, false, 9);
+  // Of the header rules that match a path, the last one wins
+  const rule = vercel.headers.at(-1);
+  for (const url of proxied) {
+    expect(url).toMatch(new RegExp(`^${rule?.source}$`));
+  }
+  expect(rule?.headers).toEqual([
+    { key: "Cache-Control", value: "public, max-age=691200" },
+  ]);
 });
 
 test("shiny sprites keep the selected generation, image type and shiny fallback", () => {
