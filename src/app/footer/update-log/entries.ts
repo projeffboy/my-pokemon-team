@@ -20,6 +20,7 @@ const entries: Entry[] = [
       "Abilities and items that shared a name in other languages, such as the two As One abilities, are now told apart.",
       "Sorting by format in Doubles formats now follows doubles tiers, so Incineroar comes before Baxcalibur in Doubles OU.",
       "Opening a shared team on your first visit no longer saves an extra empty team beside it.",
+      "Doubles OU and Doubles Uber now include Pokémon that were missing from them, such as Gen 6 Mega Tyranitar.",
     ],
   },
   {
