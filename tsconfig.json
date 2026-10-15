@@ -27,7 +27,8 @@
     "vite.config.ts",
     "playwright.config.ts",
     "playwright.logic.config.ts",
-    "playwright.smoke.config.ts"
+    "playwright.smoke.config.ts",
+    "playwright.perf.config.ts"
   ],
   "exclude": ["tests"]
 }
