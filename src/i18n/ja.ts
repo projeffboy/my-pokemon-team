@@ -118,6 +118,8 @@ const ja: Messages = {
     teamEmpty: "ポケモンチームは空です",
     linkCopied: "ポケモンチームのリンクをコピーしました",
     linkNotCopied: "リンクをコピーできませんでした。",
+    linkGenerationUnsupported: (profile: string) =>
+      `このリンクの世代またはゲームには対応していないため、${profile}で開きました。`,
     nothingToCopy: "チームが空なので、コピーするものがありません。",
     teamCopied: "チームをコピーしました。",
     teamNotCopied: "チームをコピーできませんでした。",

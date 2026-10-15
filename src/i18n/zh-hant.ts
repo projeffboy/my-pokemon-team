@@ -113,6 +113,8 @@ const zhHant: Messages = {
     teamEmpty: "寶可夢隊伍是空的",
     linkCopied: "已複製寶可夢隊伍連結",
     linkNotCopied: "無法複製連結。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支援此連結的世代或遊戲，已改用${profile}開啟。`,
     nothingToCopy: "隊伍是空的，沒有可複製的內容。",
     teamCopied: "已複製隊伍。",
     teamNotCopied: "無法複製隊伍。",

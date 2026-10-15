@@ -113,6 +113,8 @@ const zhHans: Messages = {
     teamEmpty: "宝可梦队伍为空",
     linkCopied: "已复制宝可梦队伍链接",
     linkNotCopied: "无法复制链接。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支持此链接的世代或游戏，已改用${profile}打开。`,
     nothingToCopy: "队伍为空，没有可复制的内容。",
     teamCopied: "已复制队伍。",
     teamNotCopied: "无法复制队伍。",

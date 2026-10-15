@@ -294,19 +294,19 @@ US12. As someone who was sent a team link, I want the team and its analysis show
 
 - With a team that has no pokemon, the share action says there is nothing to copy.
 
-| ID          | Requirement                                                                                                                                                     | Imp. | Status      |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-LINK-1  | The site shall hold in the page's address, at all times, the current team and its generation profile.                                                           | E    | Implemented |
-| REQ-LINK-2  | The site shall copy the current team's share link to the Player's clipboard on request, informing the Player of the outcome.                                    | E    | Implemented |
-| REQ-LINK-3  | The site shall provide the share link of any saved team on the Player's request.                                                                                | C    | Implemented |
-| REQ-LINK-4  | The site shall present, to a visitor who opens a share link, the team the link holds as the current team.                                                       | E    | Implemented |
-| REQ-LINK-5  | The site shall make a saved team the current team for a share link whose team equals that saved team, adding no team.                                           | E    | Implemented |
-| REQ-LINK-6  | The site shall keep a team opened from a share link out of the saved teams until the visitor changes it.                                                        | E    | Implemented |
-| REQ-LINK-7  | The site shall use the generation profile Generations 6 to 9 combined for a share link that names no generation profile.                                        | E    | Implemented |
-| REQ-LINK-8  | The site shall ignore the team of a share link that it cannot read or that is longer than 16 kilobytes, presenting the visitor's own current team in its place. | E    | Implemented |
-| REQ-LINK-9  | The site shall present the team that the address held, after the Player moves back or forward in the browser's history.                                         | C    | Implemented |
-| REQ-LINK-10 | The site shall leave out of a team opened from a share link each pokemon, move, item, and ability that does not exist in the link's generation profile.         | E    | Implemented |
-| REQ-LINK-11 | The site shall inform a visitor that a share link names a generation or game the site does not recognise, naming the generation profile used in its place.      | O    | Proposed    |
+| ID          | Requirement                                                                                                                                                                                                                             | Imp. | Status      |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-LINK-1  | The site shall hold in the page's address, at all times, the current team and its generation profile.                                                                                                                                   | E    | Implemented |
+| REQ-LINK-2  | The site shall copy the current team's share link to the Player's clipboard on request, informing the Player of the outcome.                                                                                                            | E    | Implemented |
+| REQ-LINK-3  | The site shall provide the share link of any saved team on the Player's request.                                                                                                                                                        | C    | Implemented |
+| REQ-LINK-4  | The site shall present, to a visitor who opens a share link, the team the link holds as the current team.                                                                                                                               | E    | Implemented |
+| REQ-LINK-5  | The site shall make a saved team the current team for a share link whose team equals that saved team, adding no team.                                                                                                                   | E    | Implemented |
+| REQ-LINK-6  | The site shall keep a team opened from a share link out of the saved teams until the visitor changes it.                                                                                                                                | E    | Implemented |
+| REQ-LINK-7  | The site shall use the generation profile Generations 6 to 9 combined for a share link that names no generation profile.                                                                                                                | E    | Implemented |
+| REQ-LINK-8  | The site shall ignore the team of a share link that it cannot read or that is longer than 16 kilobytes, presenting the visitor's own current team in its place.                                                                         | E    | Implemented |
+| REQ-LINK-9  | The site shall present the team that the address held, after the Player moves back or forward in the browser's history.                                                                                                                 | C    | Implemented |
+| REQ-LINK-10 | The site shall leave out of a team opened from a share link each pokemon, move, item, and ability that does not exist in the link's generation profile.                                                                                 | E    | Implemented |
+| REQ-LINK-11 | The site shall open a share link that names a generation or game the site does not recognise in the link's recognised generation, or else in Generations 6 to 9 combined, informing the visitor and naming the generation profile used. | O    | Implemented |
 
 **Opening a share link.** The team in a link never replaces or duplicates a saved team.
 
@@ -326,6 +326,8 @@ flowchart TD
 ```
 
 A pokemon, move, item, or ability that the link's generation profile lacks, such as one a data update renamed, is left out without a word (REQ-LINK-10). REQ-INFO-8 would name it.
+
+A link that names both a game and a generation opens in the game when the site recognises it, and the generation is dropped from the address. Otherwise an unrecognised game or generation falls back as REQ-LINK-11 says, for every visitor, whatever generation they last used. An empty value counts as missing, so it gets no message.
 
 #### UC13 Import Team Text and UC14 Export Team Text
 
