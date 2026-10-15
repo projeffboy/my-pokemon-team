@@ -13,7 +13,13 @@ import {
   isShinyDv,
   syncDvs,
 } from "./generation-rules";
-import { DEFAULT_LEVEL, getIv, MAX_IV, setDetail } from "./set-details";
+import {
+  DEFAULT_LEVEL,
+  getIv,
+  MAX_IV,
+  setDetail,
+  setStat,
+} from "./set-details";
 
 const TYPES = [
   "fighting",
@@ -107,6 +113,8 @@ export function canHaveHiddenPowerType(
 }
 
 // Use Showdown's recommended spreads when the current IVs/DVs cannot produce the type.
+// From Gen 6, where the IVs no longer change its power, only the IVs whose
+// parity differs from the spread's change, each by one.
 export function matchHiddenPower(
   member: TeamPokemon,
   move: string,
@@ -133,6 +141,12 @@ export function matchHiddenPower(
     );
     setDetail(member, "ivs", ivs);
     syncDvs(member, generation);
+  } else if (generation >= 6) {
+    for (const stat of STAT_KEYS) {
+      const iv = getIv(member.ivs, stat);
+      if (iv % 2 !== getIv(spread.ivs, stat) % 2)
+        setStat(member, "ivs", stat, iv ^ 1);
+    }
   } else {
     setDetail(
       member,
