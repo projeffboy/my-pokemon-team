@@ -139,6 +139,50 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
     await otherTab.close();
   });
 
+  test("updating despite a reported problem applies the rest without a confirmation", async ({
+    page,
+  }) => {
+    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await dialog.getByRole("textbox").fill(`Ho-Oh @ Leftovers
+Ability: Regenerator
+- Sacred Fire
+- Iron Hed
+- Recover
+- Brave Bird`);
+    await expect(dialog.getByRole("status")).toContainText(
+      "Ho-Oh, Move 2: “Iron Hed”",
+    );
+    await dialog.getByRole("button", { name: "Update", exact: true }).click();
+
+    await expect(page.getByRole("dialog")).toBeHidden();
+    await verifyPokemonProperty(page, "Ho-Oh");
+    for (const [value, property] of [
+      ["Leftovers", "item"],
+      ["Regenerator", "ability"],
+      ["Sacred Fire", "move1"],
+      ["", "move2"],
+      ["Recover", "move3"],
+      ["Brave Bird", "move4"],
+    ])
+      await verifyPokemonProperty(page, value, { property });
+  });
+
+  test("a reported problem changes no team until an update, and Cancel keeps the team", async ({
+    page,
+  }) => {
+    await importTeam(page, "Mienshao");
+    await openEditPokepaste(page);
+    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await dialog.getByRole("textbox").fill("Cofagrigus\n- Shadow Bal");
+    await expect(dialog.getByRole("status")).toBeVisible();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mienshao");
+
+    await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(dialog).toBeHidden();
+    await verifyPokemonProperty(page, "Mienshao");
+    expect(getTeamTextFromUrl(page)).not.toContain("Cofagrigus");
+  });
+
   test("Paste in a pokemon's details", async ({ page }) => {
     const pokemonText = `Weepinbell @ Life Orb
 Ability: Chlorophyll

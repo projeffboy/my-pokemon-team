@@ -138,6 +138,15 @@ test.describe("Feedback Dialog - Unit Tests", () => {
   test("sends the message, reply address, link, and screenshot", async ({
     page,
   }) => {
+    await page.route(/(?:\/sprites\/|\/showdown-sprites\/)/, route =>
+      route.fulfill({
+        contentType: "image/png",
+        body: Buffer.from(
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==",
+          "base64",
+        ),
+      }),
+    );
     const requests: Record<string, unknown>[] = [];
     await page.route("/api/feedback", route => {
       requests.push(route.request().postDataJSON());
