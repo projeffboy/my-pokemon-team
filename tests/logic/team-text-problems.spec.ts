@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import pokedex from "@/data/pokedex";
 import type { Generation, TeamPokemon } from "@/types";
 import {
+  LEGACY_LINK_PARSING_OPTIONS,
   parseTeamText,
   serializeTeam,
   teamTextProblems,
@@ -306,6 +307,73 @@ test("details a game has no field for are left out as unsupported", () => {
     ["teraType", "unsupported"],
     ["ivs", "unsupported"],
   ]);
+
+  // Gen 1 has no genders, which the first line holds
+  const gen1 = read("Pikachu (F)\nShiny: Yes", 1);
+  expect(gen1.team[0]).not.toHaveProperty("gender");
+  expect(gen1.problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "pikachu",
+      field: "gender",
+      value: "F",
+      reason: "unsupported",
+    },
+    {
+      slot: 1,
+      pokemon: "pikachu",
+      field: "shiny",
+      value: "Yes",
+      reason: "unsupported",
+    },
+  ]);
+  expect(read("Pikachu (F)", 2).problems).toEqual([]);
+});
+
+test("an ability in a game without abilities is left out as unsupported", () => {
+  const games: [Generation, string][] = [
+    [1, ""],
+    [2, ""],
+    [7, LETS_GO],
+    [8, LEGENDS_ARCEUS],
+    [9, LEGENDS_ZA],
+  ];
+  for (const [generation, format] of games) {
+    const game = `Gen ${generation} ${format}`;
+    const { team, problems } = read(
+      "Gengar\nAbility: Levitate",
+      generation,
+      format,
+    );
+    expect(team[0].ability, game).toBe("");
+    expect(problems, game).toEqual([
+      {
+        slot: 1,
+        pokemon: "gengar",
+        field: "ability",
+        value: "Levitate",
+        reason: "unsupported",
+      },
+    ]);
+    // The site's own text writes No Ability in every game
+    expect(
+      read("Gengar\nAbility: No Ability", generation, format).problems,
+      game,
+    ).toEqual([]);
+    // Links keep every detail they carry
+    expect(
+      parseTeamText(
+        "Gengar\nAbility: Levitate",
+        generation,
+        format,
+        LEGACY_LINK_PARSING_OPTIONS,
+      )[0].ability,
+      game,
+    ).toBe("Levitate");
+  }
+  const gen3 = read("Gengar\nAbility: Levitate", 3);
+  expect(gen3.team[0].ability).toBe("Levitate");
+  expect(gen3.problems).toEqual([]);
 });
 
 // A deterministic stand-in for Math.random
