@@ -156,11 +156,15 @@ const AdvancedForm = observer(function AdvancedForm({
                 value={member.level ?? DEFAULT_LEVEL}
                 onChange={(value = DEFAULT_LEVEL) => {
                   const level = clamp(value, MAX_LEVEL);
-                  store.setLevel(
-                    teamIndex,
+                  setDetail(
+                    member,
+                    "level",
                     level === DEFAULT_LEVEL || level < 1 ? undefined : level,
                   );
                 }}
+                // Hidden Power is matched to the level once typing ends, not to
+                // each keystroke on the way (typing 100 passes through 1 and 10)
+                onCommit={() => store.setLevel(teamIndex, member.level)}
                 slotProps={{ htmlInput: { min: 1, max: MAX_LEVEL } }}
                 sx={{ flex: "0 0 80px" }}
               />

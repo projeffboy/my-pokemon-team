@@ -2,14 +2,17 @@ import { useState } from "react";
 import TextField, { type TextFieldProps } from "@mui/material/TextField";
 
 // A number input that shows the text being typed, which may be empty, until
-// editing ends. It reports a number, or undefined while it is empty.
+// editing ends. It reports a number, or undefined while it is empty, on each
+// keystroke, and calls onCommit when editing ends.
 export default function NumberField({
   value,
   onChange,
+  onCommit,
   ...props
 }: Omit<TextFieldProps, "value" | "onChange" | "onBlur" | "type"> & {
   value: number;
   onChange: (value: number | undefined) => void;
+  onCommit?: () => void;
 }) {
   const [text, setText] = useState<string>();
 
@@ -24,7 +27,10 @@ export default function NumberField({
           event.target.value === "" ? undefined : Number(event.target.value),
         );
       }}
-      onBlur={() => setText(undefined)}
+      onBlur={() => {
+        setText(undefined);
+        onCommit?.();
+      }}
     />
   );
 }
