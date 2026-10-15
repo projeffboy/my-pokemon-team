@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import spreads from "@/data/hidden-power-spreads";
 import { hiddenPowerType, matchHiddenPower } from "@/shared/hidden-power";
 import { createTeam } from "./shared/team";
@@ -13,13 +14,16 @@ import {
   hpDv,
   isShinyDv,
   LEGENDS_ARCEUS,
+  LEGENDS_ZA,
 } from "@/shared/generation-rules";
 import { evTotal, getIv } from "@/shared/set-details";
 import { universalTransferChanges } from "@/store/generation-transfer/universal-changes";
 import { parseTeamText, serializeTeam } from "@/store/team-text";
 import { STAT_KEYS } from "@/types";
+import { learnsetsReady } from "@/store/learnsets";
 
 const data = await loadGenerationTransferData();
+await learnsetsReady;
 const from = { generation: 9 as const, format: "" };
 
 test.describe("Gen 2 Hidden Power transfer", () => {
@@ -561,6 +565,36 @@ test("Gen 9 includes Z-A Mega formes and their required stones", () => {
   );
 });
 
+test("plain Gen 9 keeps the National Dex pokemon, abilities, and moves its editor offers", () => {
+  const original = createTeam(
+    {
+      name: "tyranitar",
+      ability: "Sand Stream",
+      move1: "pursuit",
+      move2: "return",
+    },
+    { name: "silvally", ability: "RKS System", move1: "multiattack" },
+  );
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 7, format: "" },
+    9,
+    "",
+    data,
+  );
+  expect(plan.losses).toEqual([]);
+  expect(plan.team).toEqual(original);
+  expect(
+    planGenerationTransfer(
+      original,
+      { generation: 7, format: "" },
+      9,
+      LEGENDS_ZA,
+      data,
+    ).losses.map(loss => loss.value),
+  ).toEqual(expect.arrayContaining(["pursuit", "silvally"]));
+});
+
 test("unavailable species clears its whole slot without shifting later slots", () => {
   const original = createTeam(
     { name: "helioptile", item: "leftovers", move1: "thunderbolt" },
@@ -634,6 +668,74 @@ test("unavailable Primal forme converts to its available base and checks the bas
   expect(original).toEqual(before);
 });
 
+test("battle formes fall back to the forme they change from before their base species", () => {
+  for (const generation of [6, 7, 8] as const) {
+    const plan = planGenerationTransfer(
+      createTeam({
+        name: "meowsticfmega",
+        item: "meowsticite",
+        gender: "F",
+        move1: "psychic",
+      }),
+      from,
+      generation,
+      "",
+      data,
+    );
+    expect(plan.team[0], `Gen ${generation}`).toMatchObject({
+      name: "meowsticf",
+      gender: "F",
+      move1: "psychic",
+    });
+    expect(plan.losses).toContainEqual({
+      index: 0,
+      pokemon: "meowsticfmega",
+      field: "pokemon",
+      value: "meowsticfmega",
+      replacement: "meowsticf",
+    });
+  }
+  expect(
+    planGenerationTransfer(
+      createTeam({ name: "magearnaoriginalmega" }),
+      from,
+      8,
+      "",
+      data,
+    ).team[0]?.name,
+  ).toBe("magearnaoriginal");
+  expect(
+    planGenerationTransfer(
+      createTeam({ name: "urshifurapidstrikegmax", move1: "surgingstrikes" }),
+      { generation: 8, format: "" },
+      9,
+      "OU: Over Used",
+      data,
+    ).team[0],
+  ).toMatchObject({ name: "urshifurapidstrike", move1: "surgingstrikes" });
+});
+
+test("a base species fallback drops a gender the species cannot have", () => {
+  const meowsticf = data.pokemon.meowsticf!;
+  const plan = planGenerationTransfer(
+    createTeam({ name: "meowsticfmega", gender: "F" }),
+    from,
+    7,
+    "",
+    {
+      ...data,
+      pokemon: { ...data.pokemon, meowsticf: { ...meowsticf, generations: 0 } },
+    },
+  );
+  expect(plan.team[0]?.name).toBe("meowstic");
+  expect(plan.team[0]?.gender).toBeUndefined();
+  expect(plan.losses).toContainEqual({
+    index: 0,
+    pokemon: "meowsticfmega",
+    field: "gender",
+  });
+});
+
 test("forme fallback leaves an ambiguous base ability for the player to choose", () => {
   const plan = planGenerationTransfer(
     createTeam({ name: "charizardmegax", ability: "Tough Claws" }),
@@ -689,6 +791,64 @@ test("available formes keep their forme and ability", () => {
   );
   expect(plan.team).toEqual(original);
   expect(plan.losses).toEqual([]);
+});
+
+test("Giratina-Origin swaps between the Griseous Core and Orb across generations", () => {
+  const transfer = (item: string, generation: 4 | 9, to: 4 | 9) =>
+    planGenerationTransfer(
+      createTeam({ name: "giratinaorigin", item }),
+      { generation, format: "" },
+      to,
+      "",
+      data,
+    );
+  const older = transfer("griseouscore", 9, 4);
+  expect(older.team[0]?.item).toBe("griseousorb");
+  expect(older.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "giratinaorigin",
+      field: "item",
+      value: "griseouscore",
+      replacement: "griseousorb",
+    },
+  ]);
+  const newer = transfer("griseousorb", 4, 9);
+  expect(newer.team[0]?.item).toBe("griseouscore");
+  expect(newer.losses).toEqual([
+    {
+      index: 0,
+      pokemon: "giratinaorigin",
+      field: "item",
+      value: "griseousorb",
+      replacement: "griseouscore",
+    },
+  ]);
+  // Altered Giratina boosts its moves with the Orb in every generation
+  const altered = planGenerationTransfer(
+    createTeam({ name: "giratina", item: "griseousorb" }),
+    { generation: 4, format: "" },
+    9,
+    "",
+    data,
+  );
+  expect(altered.team[0]?.item).toBe("griseousorb");
+  expect(altered.losses).toEqual([]);
+  // Generations 6–9 spans games that use either version
+  for (const [item, generation] of [
+    ["griseousorb", 4],
+    ["griseouscore", 9],
+  ] as const) {
+    const combined = planGenerationTransfer(
+      createTeam({ name: "giratinaorigin", item }),
+      { generation, format: "" },
+      9,
+      COMBINED_GENERATIONS_FORMAT,
+      data,
+    );
+    expect(combined.team[0]?.item).toBe(item);
+    expect(combined.losses).toEqual([]);
+  }
 });
 
 test("keeps compatible moves and details and explains every unsupported field", () => {

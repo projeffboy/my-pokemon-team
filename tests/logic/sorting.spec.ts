@@ -135,6 +135,37 @@ test("format sorting uses the selected generation's tiers", () => {
   expect(sortPokemon(ids, sort, undefined, 9)).toEqual(["clefable", "gengar"]);
 });
 
+test("format sorting uses doubles tiers in a doubles format", () => {
+  const ids = [
+    "trumbeak",
+    "tatsugiri",
+    "baxcalibur",
+    "incineroar",
+    "calyrexshadow",
+    "sneasel",
+  ];
+  const sort = (format: string, descending: boolean) =>
+    sortPokemon(ids, { by: "format", descending }, undefined, 9, format);
+  const doubles = [
+    "calyrexshadow",
+    "incineroar",
+    "baxcalibur",
+    "tatsugiri",
+    "sneasel",
+    "trumbeak",
+  ];
+  expect(sort("Doubles OU", false)).toEqual(doubles);
+  expect(sort("Doubles OU", true)).toEqual([...doubles].reverse());
+  expect(sort("OU: Over Used", false)).toEqual([
+    "calyrexshadow",
+    "baxcalibur",
+    "incineroar",
+    "tatsugiri",
+    "sneasel",
+    "trumbeak",
+  ]);
+});
+
 test("sorts by base stat total and by single stats", () => {
   const ids = ["shuckle", "arceus", "magikarp"];
   expect(sortPokemon(ids, { by: "bst", descending: false })).toEqual([

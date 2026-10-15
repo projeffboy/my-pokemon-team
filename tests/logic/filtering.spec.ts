@@ -189,6 +189,17 @@ test("doubles formats use doubles tiers, including untiered DUU species", () => 
   expect(result.indexOf("regieleki")).toBeLessThan(result.indexOf("milotic"));
 });
 
+test("doubles formats include (DOU) pokemon wherever DOU ones appear", () => {
+  const doubles = (format: string) =>
+    filterPokemon({ ...all, generation: 6, format });
+  for (const format of ["Doubles Uber", "Doubles OU"]) {
+    const result = doubles(format);
+    expect(result).toContain("tyranitar");
+    expect(result).toContain("tyranitarmega");
+  }
+  expect(doubles("Doubles UU")).not.toContain("tyranitarmega");
+});
+
 test("format, region, and type filters intersect", () => {
   expect(
     filterPokemon({

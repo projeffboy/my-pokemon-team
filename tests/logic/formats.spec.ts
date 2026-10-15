@@ -1,7 +1,9 @@
 import { test, expect } from "@playwright/test";
+import formatBans from "@/data/format-bans";
 import {
   CAP_FORMAT,
   CHAMPIONS_FORMAT,
+  TIER_BY_FORMAT,
   formatsForGeneration,
   formatForGeneration,
   formatShortName,
@@ -31,6 +33,15 @@ for (const generation of GENERATIONS) {
     expect(formatsForGeneration(generation)).toEqual(expected);
   });
 }
+
+test("every Smogon tier on offer has its bans from Showdown", () => {
+  const offered = GENERATIONS.flatMap(generation =>
+    formatsForGeneration(generation)
+      .filter(format => format in TIER_BY_FORMAT)
+      .map(format => showdownFormatId(generation, format)),
+  );
+  expect(Object.keys(formatBans).sort()).toEqual(offered.sort());
+});
 
 test("generation changes keep supported formats and clear unavailable ones", () => {
   expect(formatForGeneration("OU: Over Used", 1)).toBe("OU: Over Used");

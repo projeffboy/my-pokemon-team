@@ -22,7 +22,8 @@ export const scrollbarWidth = () => {
 };
 
 // The narrowest text column, no narrower than `minWidth`, in which none of a dropdown's
-// labels takes more than two lines. `key` names the list: its kind, language, and game.
+// labels takes more than two lines or splits a word. `key` names the list: its kind,
+// language, and game.
 // Measured in the browser, since the width of a name depends on the fonts the device has,
 // most of all for Chinese, Japanese, and Korean.
 export default function twoLineWidth(
@@ -40,7 +41,10 @@ export default function twoLineWidth(
     visibility: "hidden",
     top: "0",
     left: "0",
-    wordBreak: "break-word",
+    // As wide as the widest word, breaking lines only where the language allows
+    width: "min-content",
+    wordBreak: "normal",
+    overflowWrap: "normal",
   });
   const line = document.createElement("div");
   line.textContent = "A";
@@ -51,13 +55,15 @@ export default function twoLineWidth(
   });
   probe.append(line, ...rows);
   document.body.append(probe);
+  const wordWidth = Math.ceil(probe.getBoundingClientRect().width);
+  probe.style.wordBreak = "break-word";
 
   const twoLines = 2 * line.offsetHeight + 1;
   const tooTall = (candidates: HTMLElement[], width: number) => {
     probe.style.width = `${width}px`;
     return candidates.filter(row => row.offsetHeight > twoLines);
   };
-  let low = minWidth;
+  let low = Math.max(minWidth, wordWidth);
   let high = MAX_TEXT_WIDTH;
   // A label that fits at the narrowest width fits at every wider one
   const longLabels = tooTall(rows, low);

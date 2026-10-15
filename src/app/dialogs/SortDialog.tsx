@@ -24,6 +24,7 @@ import {
 } from "@/types";
 import { SORT_KEYS } from "@/store/sorting";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { isTouchInput } from "@/app/shared/text-entry";
 
 const isStat = (key: SortKey): key is StatKey =>
   STAT_KEYS.includes(key as StatKey);
@@ -55,6 +56,8 @@ const SortDialog = observer(function SortDialog() {
       aria-labelledby={titleId}
       fullWidth
       maxWidth="xs"
+      // As in FiltersDialog, a tap leaves the dropdown's field without focus
+      disableRestoreFocus={isTouchInput()}
     >
       <DialogTitle id={titleId}>{t.team.sort}</DialogTitle>
       <DialogContent>
