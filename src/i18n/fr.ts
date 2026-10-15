@@ -344,7 +344,7 @@ const fr: Messages = {
       depends: "Dépend du format de combat",
       reasons: {
         spinner:
-          "Spinner/Defogger dépend du format de combat : en 4e et 5e générations, Anti-Brume ne retire les pièges de ton côté qu’en combat double, en ciblant ton allié.",
+          "Spinner/Defogger dépend du format de combat : en 4e et 5e générations, Anti-Brume ne retire les pièges de votre côté qu’en combat double, en ciblant votre allié.",
       },
     },
   },

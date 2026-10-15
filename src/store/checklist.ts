@@ -1,4 +1,6 @@
+import formatBans from "@/data/format-bans";
 import { moveDataIn } from "@/shared/generation-data";
+import { showdownFormatId } from "@/shared/formats";
 import {
   MOVE_KEYS,
   type BattleFormat,
@@ -16,6 +18,7 @@ import {
   isMoveUsable,
   typeAgainstPokemon,
 } from "./shared/effectiveness";
+import { filterPokemon } from "./filtering";
 import { isItemAvailable, isMoveAvailable } from "./learnsets";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { generationRules } from "@/shared/generation-rules";
@@ -426,8 +429,9 @@ const standIn = ([first = "", second = ""]: string[], heldItem = false) => ({
   move4: "",
 });
 
-// What would fill a role: the examples that are in the game and fill it there, in the
-// team's battle format, or in both when it has none
+// What would fill a role: the examples that are in the game, that its format allows, and
+// that fill it there, in the team's battle format, or in both when it has none. The
+// abilities are those that a pokemon allowed there can have.
 export function checklistHint(
   { key, fills, examples, heldItem, abilities = [] }: ChecklistItem,
   { locale, t, names }: Translation = english,
@@ -440,11 +444,15 @@ export function checklistHint(
   const list = (items: string[]) =>
     new Intl.ListFormat(locale, { type: "disjunction" }).format(items);
   const isAvailable = heldItem ? isItemAvailable : isMoveAvailable;
+  const bans = formatBans[showdownFormatId(generation, format)];
+  const banned = (heldItem ? bans?.items : bans?.moves) ?? [];
   const named = examples
     .map(example => [example].flat())
     .filter(
       ids =>
-        ids.every(id => isAvailable(id, generation, format)) &&
+        ids.every(
+          id => isAvailable(id, generation, format) && !banned.includes(id),
+        ) &&
         battleFormats.every(
           battle =>
             fills(standIn(ids, heldItem), generation, format, battle).length >
@@ -457,7 +465,14 @@ export function checklistHint(
     });
   const namedAbilities =
     generationRules(generation, format).abilities ?
-      abilities.map(names.ability)
+      abilities
+        .filter(
+          ability =>
+            !bans?.abilities?.includes(ability) &&
+            filterPokemon({ generation, format, region: "", type: "", ability })
+              .length > 0,
+        )
+        .map(names.ability)
     : [];
   return named.length ?
       t.checklist.items[key].hint(list(named), list(namedAbilities))
