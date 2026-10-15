@@ -26,7 +26,7 @@ test("an empty team passes no check, in three groups", () => {
     "Defensive",
     "Offensive",
   ]);
-  expect(groups.map(group => group.items.length)).toEqual([3, 3, 4]);
+  expect(groups.map(group => group.items.length)).toEqual([3, 4, 4]);
   expect(checked(createTeam())).toEqual([]);
 });
 
@@ -126,6 +126,33 @@ test("defensive checks count clerics and phazers", () => {
       ),
     ),
   ).toEqual(["Cleric", "Phazer"]);
+});
+
+test("trappers stop foes from switching out for as long as they stay in", () => {
+  expect(
+    checked(
+      createTeam(
+        { name: "golurk", move1: "block" },
+        { name: "drednaw", move1: "jawlock" },
+      ),
+    ),
+  ).toEqual(["Trapper"]);
+  for (const [name, ability] of [
+    ["gothitelle", "Shadow Tag"],
+    ["trapinch", "Arena Trap"],
+    ["probopass", "Magnet Pull"],
+  ])
+    expect(checked(createTeam({ name, ability }))).toEqual(["Trapper"]);
+  // Sand Tomb lets the foe go after a few turns
+  expect(checked(createTeam({ name: "hippowdon", move1: "sandtomb" }))).toEqual(
+    [],
+  );
+});
+
+test("trapping abilities count only in games that have abilities", () => {
+  const team = createTeam({ name: "wobbuffet", ability: "Shadow Tag" });
+  expect(checked(team, 2)).toEqual([]);
+  expect(checked(team, 3)).toEqual(["Trapper"]);
 });
 
 test("Ceaseless Edge sets an entry hazard, as Stone Axe does", () => {
@@ -322,6 +349,7 @@ test("Assault Vest blocks status moves in every checklist role", () => {
     "healbell",
     "toxic",
     "roar",
+    "block",
     "calmmind",
   ]) {
     const team = createTeam({
@@ -492,6 +520,27 @@ test("an unfilled role's suggestion is in the current language", async () => {
   const japanese = await loadTranslation("ja");
   expect(checklistHint(role("voltTurn"), japanese)).toBe(
     "攻撃してから手持ちと交代する技をポケモンに覚えさせましょう：とんぼがえり、ボルトチェンジ、またはクイックターン。",
+  );
+});
+
+test("a trapper is named by its move or its ability, and the hint names both", async () => {
+  await learnsetsReady;
+  const team = createTeam(
+    { name: "gengar", move1: "meanlook", move2: "shadowball" },
+    { name: "gothitelle", ability: "Shadow Tag", move1: "psychic" },
+  );
+  expect(fillers(team, "trapper")).toEqual([
+    "Gengar: Mean Look",
+    "Gothitelle: Shadow Tag",
+  ]);
+  const hint = (generation?: Generation) =>
+    checklistHint(role("trapper"), english, generation);
+  expect(hint()).toBe(
+    "Give a pokemon a move that stops the foe from switching out, such as Mean Look, Block, or Anchor Shot, or the ability Shadow Tag, Arena Trap, or Magnet Pull.",
+  );
+  // Gen 2 has Mean Look but no abilities
+  expect(hint(2)).toBe(
+    "Give a pokemon a move that stops the foe from switching out, such as Mean Look.",
   );
 });
 

@@ -303,6 +303,13 @@ const de: Messages = {
         hint: (moves: string) =>
           `Bring einem Pokémon eine Attacke bei, die den Gegner zum Wechseln zwingt: ${moves}.`,
       },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Bring einem Pokémon eine Attacke bei, die den Gegner am Auswechseln hindert, z. B. ${moves}, oder gib ihm die Fähigkeit ${abilities}.`
+          : `Bring einem Pokémon eine Attacke bei, die den Gegner am Auswechseln hindert, z. B. ${moves}.`,
+      },
       boosting: {
         label: "Boost-Attacke",
         short: "Setup",
@@ -797,6 +804,10 @@ const de: Messages = {
       [
         "Status-Attacken",
         "Hier sind damit treffsichere Attacken gemeint, die paralysieren, verbrennen oder vergiften, sowie Attacken, die Schlaf verursachen. Z. B. Toxin, Irrlicht, Donnerwelle, Gesang.",
+      ],
+      [
+        "Trapper",
+        "Ein Pokémon, das Gegner am Auswechseln hindert, solange es selbst im Kampf bleibt: mit einer Attacke wie Horrorblick, Rückentzug oder Ankerschuss oder mit der Fähigkeit Wegsperre, Ausweglos oder Magnetfalle. Attacken, die nur einige Runden lang festhalten, wie Whirlpool, zählen nicht.",
       ],
       [
         "Boost-Attacke",

@@ -294,6 +294,13 @@ const en = {
         hint: (moves: string) =>
           `Give a pokemon a move that forces the foe to switch out: ${moves}.`,
       },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Give a pokemon a move that stops the foe from switching out, such as ${moves}, or the ability ${abilities}.`
+          : `Give a pokemon a move that stops the foe from switching out, such as ${moves}.`,
+      },
       boosting: {
         label: "Boosting Move",
         short: "Setup",
@@ -781,6 +788,10 @@ const en = {
       [
         "Status Moves",
         "Here, they refer to accurate moves that paralyze, burn, or poison, as well as moves that cause sleep. E.g. Toxic, Will-O-Wisp, Thunder Wave, Sing.",
+      ],
+      [
+        "Trapper",
+        "A pokemon that stops foes from switching out while it stays in, using a move like Mean Look, Block, or Anchor Shot, or the ability Shadow Tag, Arena Trap, or Magnet Pull. Moves that trap for only a few turns, like Whirlpool, don't count.",
       ],
       [
         "Boosting Move",

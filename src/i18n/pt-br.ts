@@ -290,6 +290,13 @@ const ptBR: Messages = {
         hint: (moves: string) =>
           `Ensine a um Pokémon um golpe que força o oponente a trocar: ${moves}.`,
       },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Ensine a um Pokémon um golpe que impede o oponente de trocar, como ${moves}, ou dê a ele a habilidade ${abilities}.`
+          : `Ensine a um Pokémon um golpe que impede o oponente de trocar, como ${moves}.`,
+      },
       boosting: {
         label: "Golpe de boost",
         short: "Setup",
@@ -776,6 +783,10 @@ const ptBR: Messages = {
       [
         "Golpes de status",
         "Aqui, são os golpes precisos que paralisam, queimam ou envenenam, além dos golpes que fazem dormir. Ex.: Toxic, Will-O-Wisp, Thunder Wave, Sing.",
+      ],
+      [
+        "Trapper",
+        "Um Pokémon que impede o adversário de trocar enquanto continua em campo, com um golpe como Mean Look, Block ou Anchor Shot, ou com a habilidade Shadow Tag, Arena Trap ou Magnet Pull. Golpes que prendem só por alguns turnos, como Whirlpool, não contam.",
       ],
       [
         "Golpe de boost",

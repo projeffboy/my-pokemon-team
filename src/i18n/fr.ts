@@ -299,6 +299,13 @@ const fr: Messages = {
         hint: (moves: string) =>
           `Apprenez à un Pokémon une capacité qui force l'adversaire à changer : ${moves}.`,
       },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Apprenez à un Pokémon une capacité qui empêche l'adversaire de changer, comme ${moves}, ou donnez-lui le talent ${abilities}.`
+          : `Apprenez à un Pokémon une capacité qui empêche l'adversaire de changer, comme ${moves}.`,
+      },
       boosting: {
         label: "Capacité de boost",
         short: "Boost",
@@ -800,6 +807,10 @@ const fr: Messages = {
       [
         "Capacités de statut",
         "Ici, il s'agit des capacités précises qui paralysent, brûlent ou empoisonnent, ainsi que de celles qui endorment. Ex. : Toxik, Feu Follet, Cage Éclair, Berceuse.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon qui empêche l'adversaire de changer tant qu'il reste au combat, grâce à une capacité comme Regard Noir, Barrage ou Ancrage, ou au talent Marque Ombre, Piège Sable ou Magnépiège. Les capacités qui piègent seulement quelques tours, comme Siphon, ne comptent pas.",
       ],
       [
         "Capacité de boost",

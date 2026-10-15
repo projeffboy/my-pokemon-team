@@ -297,6 +297,13 @@ const it: Messages = {
         hint: (moves: string) =>
           `Insegna a un Pokémon una mossa che costringe l'avversario a cambiare: ${moves}.`,
       },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Insegna a un Pokémon una mossa che impedisce all'avversario di cambiare, come ${moves}, o dagli l'abilità ${abilities}.`
+          : `Insegna a un Pokémon una mossa che impedisce all'avversario di cambiare, come ${moves}.`,
+      },
       boosting: {
         label: "Mossa potenziante",
         short: "Setup",
@@ -787,6 +794,10 @@ const it: Messages = {
       [
         "Mosse di stato",
         "Qui indicano mosse precise che paralizzano, scottano o avvelenano, oltre alle mosse che addormentano. Es. Tossina, Fuocofatuo, Tuononda, Canto.",
+      ],
+      [
+        "Trapper",
+        "Un Pokémon che impedisce agli avversari di cambiare finché resta in campo, con una mossa come Malosguardo, Blocco o Colpo d’Ancora, o con l'abilità Pedinombra, Trappoarena o Magnetismo. Le mosse che intrappolano solo per qualche turno, come Mulinello, non contano.",
       ],
       [
         "Mossa potenziante",

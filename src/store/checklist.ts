@@ -17,6 +17,7 @@ import {
 } from "./shared/effectiveness";
 import { isItemAvailable, isMoveAvailable } from "./learnsets";
 import { LATEST_GENERATION } from "@/shared/generations";
+import { generationRules } from "@/shared/generation-rules";
 
 // The labels live in src/i18n, under these keys
 export type ChecklistGroupKey = keyof Messages["checklist"]["groups"];
@@ -24,7 +25,7 @@ export type ChecklistItemKey = keyof Messages["checklist"]["items"];
 
 type Pokemon = Readonly<TeamPokemon>;
 
-// The moves, or the held item, with which one pokemon fills a role
+// The moves, the held item, or the ability with which one pokemon fills a role
 type Fills = (
   pokemon: Pokemon,
   generation: Generation,
@@ -37,6 +38,8 @@ export interface ChecklistItem {
   // What the hint suggests: moves, moves that one pokemon needs together, or held items
   examples: (string | string[])[];
   heldItem?: boolean;
+  // Abilities that fill the role on their own, which the hint names after the examples
+  abilities?: string[];
 }
 
 export interface ChecklistGroup {
@@ -44,7 +47,7 @@ export interface ChecklistGroup {
   items: ChecklistItem[];
 }
 
-// A pokemon that fills a role, and the moves or item it fills it with
+// A pokemon that fills a role, and the moves, item, or ability it fills it with
 export interface ChecklistFiller {
   pokemon: string;
   by: string[];
@@ -244,6 +247,28 @@ const PRIORITY_MOVES = [
   "watershuriken",
   "zippyzap",
 ];
+// Moves and abilities that stop a foe from switching out for as long as the trapper
+// stays in, unlike moves such as Whirlpool that trap for a few turns
+const TRAPPING_MOVES = [
+  "meanlook",
+  "block",
+  "spiderweb",
+  "anchorshot",
+  "spiritshackle",
+  "jawlock",
+  "thousandwaves",
+  "octolock",
+];
+const TRAPPING_ABILITIES = ["Shadow Tag", "Arena Trap", "Magnet Pull"];
+const traps: Fills = (pokemon, generation, format) => [
+  ...anyMove(TRAPPING_MOVES)(pokemon, generation, format),
+  ...((
+    generationRules(generation, format).abilities &&
+    TRAPPING_ABILITIES.includes(pokemon.ability)
+  ) ?
+    [pokemon.ability]
+  : []),
+];
 const PIVOTS = ["uturn", "voltswitch", "flipturn"];
 const CHOICE_ITEMS = ["choiceband", "choicespecs", "choicescarf"];
 
@@ -291,6 +316,12 @@ export const checklist: ChecklistGroup[] = [
             move => !!moveDataIn(move, generation, format)?.forceSwitch,
           ),
         examples: ["roar", "whirlwind", "dragontail", "circlethrow"],
+      },
+      {
+        key: "trapper",
+        fills: traps,
+        examples: ["meanlook", "block", "anchorshot"],
+        abilities: TRAPPING_ABILITIES,
       },
     ],
   },
@@ -351,14 +382,18 @@ export function evaluateChecklist(
 
 // E.g. "Gigalith: Stealth Rock"
 export function describeFiller(
-  { heldItem }: ChecklistItem,
+  { heldItem, abilities = [] }: ChecklistItem,
   { pokemon, by }: ChecklistFiller,
   { locale, t, names }: Translation = english,
 ) {
   return t.checklist.filledBy(
     names.pokemon(pokemon),
     new Intl.ListFormat(locale, { type: "conjunction" }).format(
-      by.map(heldItem ? names.item : names.move),
+      by.map(id =>
+        heldItem ? names.item(id)
+        : abilities.includes(id) ? names.ability(id)
+        : names.move(id),
+      ),
     ),
   );
 }
@@ -376,11 +411,13 @@ const standIn = ([first = "", second = ""]: string[], heldItem = false) => ({
 
 // What would fill a role: the examples that are in the game and fill it there
 export function checklistHint(
-  { key, fills, examples, heldItem }: ChecklistItem,
+  { key, fills, examples, heldItem, abilities = [] }: ChecklistItem,
   { locale, t, names }: Translation = english,
   generation = LATEST_GENERATION,
   format = "",
 ) {
+  const list = (items: string[]) =>
+    new Intl.ListFormat(locale, { type: "disjunction" }).format(items);
   const isAvailable = heldItem ? isItemAvailable : isMoveAvailable;
   const named = examples
     .map(example => [example].flat())
@@ -393,9 +430,11 @@ export function checklistHint(
       const [first = "", second] = ids.map(heldItem ? names.item : names.move);
       return second ? t.checklist.together(first, second) : first;
     });
+  const namedAbilities =
+    generationRules(generation, format).abilities ?
+      abilities.map(names.ability)
+    : [];
   return named.length ?
-      t.checklist.items[key].hint(
-        new Intl.ListFormat(locale, { type: "disjunction" }).format(named),
-      )
+      t.checklist.items[key].hint(list(named), list(namedAbilities))
     : t.checklist.unavailable;
 }

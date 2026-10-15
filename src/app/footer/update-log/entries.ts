@@ -22,6 +22,7 @@ const entries: Entry[] = [
       "Beat Up is now typeless in Gens 2–4, as in those games.",
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",
       "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
+      "The team checklist has a new Trapper role, for moves and abilities such as Mean Look or Shadow Tag that keep foes from switching out while the trapper stays in.",
       "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
       "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
       "Abilities and items that shared a name in other languages, such as the two As One abilities, are now told apart.",
