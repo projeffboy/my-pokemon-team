@@ -300,6 +300,22 @@ test("Tinted Lens doubles resisted hits in the coverage matrix, but not immune o
   expect(coverageMatrix(venomoth).Rock?.[0]?.multiplier).toBe(1);
 });
 
+test("Beat Up is typeless before Gen 5 and Dark from Gen 5", () => {
+  const sneasel = createTeam({ name: "sneasel", move1: "beatup" });
+  for (const generation of [2, 3, 4] as const) {
+    expect(calculateTypeCoverage(sneasel, generation).Psychic).toBe(0);
+    expect(
+      coverageMatrix(sneasel, undefined, generation).Psychic?.[0],
+    ).toMatchObject({
+      multiplier: 1,
+      reason: expect.stringContaining("(???)"),
+    });
+  }
+  expect(coverageMatrix(sneasel, undefined, 5).Psychic?.[0]?.multiplier).toBe(
+    2,
+  );
+});
+
 test("coverage matrix uses historical move power and Normalize exceptions", () => {
   const weak = createTeam({ name: "aerodactyl", move1: "wingattack" });
   expect(coverageMatrix(weak, undefined, 1).Grass?.[0]).toMatchObject({
