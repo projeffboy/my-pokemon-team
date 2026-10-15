@@ -1,9 +1,9 @@
 import { useLayoutEffect, useRef, useState, type RefObject } from "react";
 
-// The room the checklist needs under the stats to stay with them. It is about 245px tall with
-// its gap and battle format, so the analysis may end up to 165px below the team: showing the
-// checklist is worth a column that runs a little long, but not one that runs far past the team.
-const ROOM_FOR_CHECKLIST = 80;
+// The room the checklist needs under the stats to stay with them. It is about 230px tall with
+// its gap, so the analysis may end up to 120px below the team: showing the checklist is
+// worth a column that runs a little long, but not one that runs far past the team.
+const ROOM_FOR_CHECKLIST = 110;
 
 // Whether the checklist gets a view of its own, so the analysis column does not run far
 // past the team column. It does when the stats alone come close to the team column's

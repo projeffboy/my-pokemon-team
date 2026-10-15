@@ -10,6 +10,11 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import useFittingLabel from "@/app/shared/use-fitting-label";
+import { toBase64Url } from "@/app/shared/base64url";
+import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
+import { learnsetsReady } from "@/store/learnsets";
+import { planOldWebsiteTeam } from "@/store/old-website";
+import CarryOverWarning from "./site-version-switch/CarryOverWarning";
 
 import landorusFace from "@/images/pokemon-shuffle-faces/landorus-face-96.png";
 import ogerponFace from "@/images/pokemon-shuffle-faces/ogerpon-teal-mask-by-jormxdos-96.png";
@@ -40,14 +45,30 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
   ]);
   const bothFaces = !!fitting;
   const [open, setOpen] = useState(false);
+  const [plan, setPlan] = useState<ReturnType<typeof planOldWebsiteTeam>>();
   const cancelButton = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
-  const goToSite = () => location.assign(SITE_URL);
+  // The old website opens a team from the same base64url link as this site
+  const goToSite = (text = "") => {
+    const url = new URL(SITE_URL);
+    if (text) url.searchParams.set("team", toBase64Url(text));
+    location.assign(url);
+  };
 
-  const handleSwitch = () => {
-    if (store.isTeamEmpty) goToSite();
-    else setOpen(true);
+  const handleSwitch = async () => {
+    if (store.isTeamEmpty) return goToSite();
+    try {
+      // The plan checks the moves against the old website's learnsets
+      const [data] = await Promise.all([
+        loadGenerationTransferData(),
+        learnsetsReady,
+      ]);
+      setPlan(planOldWebsiteTeam(store.team, store.currentTeam, data));
+      setOpen(true);
+    } catch {
+      store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
+    }
   };
 
   return (
@@ -102,12 +123,15 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
           <DialogContentText id={descriptionId}>
             {t.siteVersion.description}
           </DialogContentText>
+          {!!plan?.losses.length && <CarryOverWarning losses={plan.losses} />}
         </DialogContent>
         <DialogActions>
           <Button ref={cancelButton} autoFocus onClick={() => setOpen(false)}>
             {t.cancel}
           </Button>
-          <Button onClick={goToSite}>{t.siteVersion.go}</Button>
+          <Button onClick={() => goToSite(plan?.text)}>
+            {t.siteVersion.goWithTeam}
+          </Button>
         </DialogActions>
       </Dialog>
     </>
