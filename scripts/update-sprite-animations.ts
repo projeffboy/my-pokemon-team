@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -80,22 +81,38 @@ for (const [generation, game, extension] of games) {
     await fs.mkdir(path.join(output, `${generation}${shiny ? "-shiny" : ""}`), {
       recursive: true,
     });
+    const downloads: { key: string; data: Buffer }[] = [];
     await Promise.all(
       Array.from({ length: 6 }, async () => {
         for (let file = pending.pop(); file; file = pending.pop()) {
           const name = names.get(path.parse(file.name).name);
           if (!name) continue;
-          const key = `${generation}${shiny ? "-shiny" : ""}/${name}`;
-          const filename = `${key}.${extension}`;
-          const data = Buffer.from(
-            await (await read(file.download_url)).arrayBuffer(),
-          );
-          manifest[key] = { file: filename, duration: duration(data) };
-          await fs.writeFile(path.join(output, filename), data);
-          bytes += data.length;
+          downloads.push({
+            key: `${generation}${shiny ? "-shiny" : ""}/${name}`,
+            data: Buffer.from(
+              await (await read(file.download_url)).arrayBuffer(),
+            ),
+          });
         }
       }),
     );
+    // PokeAPI has filed some formes under another forme's animation
+    const owners = new Map<string, string>();
+    downloads.sort((a, b) => a.key.localeCompare(b.key));
+    for (const { key, data } of downloads) {
+      const filename = `${key}.${extension}`;
+      const hash = createHash("sha256").update(data).digest("hex");
+      const owner = owners.get(hash);
+      if (owner) {
+        console.warn(`Skipped ${key}: identical to ${owner}`);
+        await fs.rm(path.join(output, filename), { force: true });
+        continue;
+      }
+      owners.set(hash, key);
+      manifest[key] = { file: filename, duration: duration(data) };
+      await fs.writeFile(path.join(output, filename), data);
+      bytes += data.length;
+    }
     console.log(
       `Downloaded Gen ${generation}${shiny ? " shiny" : ""} animations`,
     );

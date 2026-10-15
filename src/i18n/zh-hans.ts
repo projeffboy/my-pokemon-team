@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const zhHans: Messages = {
+  pageTitle: "My Pokemon Team - 宝可梦配队与队伍规划工具",
   // 页眉
   beta: "测试版",
   generation,
@@ -109,13 +110,15 @@ const zhHans: Messages = {
     delete: "删除",
     importTeam: "导入队伍",
     share: "分享",
-    teamEmpty: "宝可梦队伍为空",
+    teamEmpty: "队伍为空。请先添加宝可梦再分享。",
     linkCopied: "已复制宝可梦队伍链接",
-    linkNotCopied: "无法复制链接。",
-    nothingToCopy: "队伍为空，没有可复制的内容。",
+    linkNotCopied: "无法复制链接。请在打开该队伍时，从地址栏复制网址。",
+    linkGenerationUnsupported: (profile: string) =>
+      `不支持此链接的世代或游戏，已改用${profile}打开。`,
+    nothingToCopy: "队伍为空。请先添加宝可梦再复制。",
     teamCopied: "已复制队伍。",
-    teamNotCopied: "无法复制队伍。",
-    cannotDuplicateEmptyTeam: "无法创建空队伍的副本",
+    teamNotCopied: "无法复制队伍。请改用“编辑 Pokepaste”复制队伍文本。",
+    cannotDuplicateEmptyTeam: "队伍为空。请先添加宝可梦再创建副本。",
     teamDuplicated: "已创建队伍副本",
     teamDeleted: "已删除队伍",
     slots: "宝可梦队伍栏位",
@@ -131,7 +134,7 @@ const zhHans: Messages = {
     advanced: "更多详情",
     advancedFor: (slot: number) => `栏位 ${slot} 的更多详情`,
     details: "详情",
-    showMoveTypes: "显示招式属性",
+    showTypes: "显示属性",
     about: (pokemon: string) => `关于${pokemon}`,
     dragHint: "长按拖动即可调整顺序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他栏位`,
@@ -174,7 +177,8 @@ const zhHans: Messages = {
     // 新队伍的默认名称
     teamNumber: (number: number) => `队伍 ${number}`,
     unnamedTeam: "队伍",
-    copyOf: (name: string) => `${name} 副本`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `${name} 副本 ${number}` : `${name} 副本`,
     learnsetsFailed: "无法加载招式列表。请重新加载页面重试。",
   },
 
@@ -299,6 +303,7 @@ const zhHans: Messages = {
       cause: string | undefined,
     ) =>
       `${type}对${pokemon}（${types}）造成 ${multiplier} 倍伤害${cause ? `（受${cause}影响）` : ""}`,
+    conversion: (move: string, type: string) => `${move}使其变为${type}属性`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -442,7 +447,7 @@ const zhHans: Messages = {
     randomTeamCreated: "已创建随机队伍",
     exported: "已导出所有队伍",
     copiedAll: "已复制所有队伍",
-    notCopiedAll: "无法复制队伍。",
+    notCopiedAll: "无法复制队伍。请改用“全部导出”下载队伍。",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -523,6 +528,8 @@ const zhHans: Messages = {
       `${pokemon}必须携带${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}有两个${move}。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${where} 禁止使用${pokemon}的${thing}。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -558,7 +565,29 @@ const zhHans: Messages = {
     imported: "已导入队伍",
     importedMany: (count: number) => `已导入 ${count} 支队伍`,
     noChanges: "没有改动。",
-    nothingFound: "这段文字中找不到宝可梦。",
+    nothingFound:
+      "这段文字中找不到宝可梦。请按 Pokemon Showdown 的拼写用英文写宝可梦名称，或粘贴从 Pokemon Showdown 导出的队伍。",
+    problems: (count: number) =>
+      `发现 ${count} 个问题。更新时仍会按以下方式应用文本：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}的${field}`,
+    moveSlot: (slot: number) => `招式 ${slot}`,
+    problemValue: (where: string, value: string) => `${where}：“${value}”`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "无法识别。",
+    unlearnable: (pokemon: string) =>
+      `在所选游戏中，${pokemon}无法学会这个招式。`,
+    wrongAbility: (pokemon: string) => `不是${pokemon}可以拥有的特性。`,
+    outOfRange: (min: number, max: number) =>
+      `不是 ${min} 到 ${max} 之间的整数。`,
+    unsupported: "所选游戏没有这一项。",
+    tooManyPokemon: "一支队伍最多有 6 只宝可梦。",
+    tooManyMoves: "一只宝可梦最多有 4 个招式。",
+    noGigantamax: (pokemon: string) => `${pokemon}没有超极巨化的样子。`,
+    unread: "本网站不读取这一项。",
+    slotLeftEmpty: "该队伍栏位留空。",
+    moveLeftEmpty: "该招式栏位留空。",
+    leftOut: "此项被省略。",
+    usedInstead: (value: string) => `改用${value}。`,
   },
   deleteDialog: {
     title: (team: string) => `删除${team}？`,

@@ -232,6 +232,106 @@ test("another tab's rename preserves this tab's slot history", async () => {
   expect(store.team[0]!.name).toBe("");
 });
 
+function firstVisit(languages?: readonly string[]) {
+  let state: string | null = null;
+  let writes = 0;
+  const storage = {
+    getItem: () => state,
+    setItem: (_key: string, value: string) => {
+      writes++;
+      state = value;
+    },
+  } as unknown as Storage;
+  return {
+    store: new Store(storage, languages),
+    reload: () => new Store(storage, languages),
+    writes: () => writes,
+    savedState: () => JSON.parse(state ?? "null") as StoredState | null,
+    // Another tab saves without this tab having read it yet
+    saveFromOtherTab(edit: (state: StoredState) => void) {
+      const theirs = JSON.parse(state ?? "null") as StoredState;
+      edit(theirs);
+      state = JSON.stringify(theirs);
+    },
+  };
+}
+
+test("a first visit's link becomes its only saved team on the first edit", async () => {
+  const { store, writes, savedState, reload } = firstVisit(["fr-FR"]);
+  await store.translationReady;
+  store.openTeamFromLink(createTeam({ name: "tinkatink", move1: "fairywind" }));
+  expect(store.currentTeam.name).toBe("Équipe 1");
+  await settle();
+  expect(writes()).toBe(0);
+
+  store.team[0]!.move2 = "rockslide";
+  await settle();
+  const saved = savedState();
+  expect(saved?.currentTeamId).toBe(store.currentTeamId);
+  expect(saved?.teams).toHaveLength(1);
+  expect(saved?.teams[0]).toMatchObject({ name: "Équipe 1" });
+  expect(saved?.teams[0]?.team[0]).toMatchObject({
+    name: "tinkatink",
+    move2: "rockslide",
+  });
+  expect(reload().teams).toHaveLength(1);
+});
+
+test("a first visit's link moved to a new generation keeps the link as Team 1", async () => {
+  const { store, savedState } = firstVisit();
+  await store.translationReady;
+  const linked = createTeam({ name: "flittle" });
+  store.openTeamFromLink(linked);
+  store.transferTeamGeneration(8, "", linked, true);
+  await settle();
+  expect(
+    savedState()?.teams.map(({ name, team }) => [name, team[0]!.name]),
+  ).toEqual([
+    ["Team 1", "flittle"],
+    ["Team 2", "flittle"],
+  ]);
+});
+
+test("a returning visitor's link still opens beside the saved team", async () => {
+  const { store, savedState } = storedTeam();
+  store.openTeamFromLink(createTeam({ name: "cetoddle" }));
+  expect(store.currentTeam.name).toBe("Team 2");
+  store.team[0]!.move1 = "iceshard";
+  await settle();
+  expect(savedState().teams.map(({ name }) => name)).toEqual([
+    "Team 1",
+    "Team 2",
+  ]);
+});
+
+test("a first visit names its team in the browser's language without saving", async () => {
+  const { store, writes, savedState } = firstVisit(["fr-FR"]);
+  await store.translationReady;
+  expect(store.currentTeam.name).toBe("Équipe 1");
+  await settle();
+  expect(writes()).toBe(0);
+  store.team[0]!.name = "bombirdier";
+  await settle();
+  expect(savedState()?.teams.map(({ name }) => name)).toEqual(["Équipe 1"]);
+});
+
+test("a first visit's link keeps a starting team that another tab has filled", async () => {
+  const { store, savedState, saveFromOtherTab } = firstVisit();
+  await store.translationReady;
+  store.nameView = "grid";
+  await settle();
+  saveFromOtherTab(theirs => {
+    theirs.teams[0]!.team[0]!.name = "orthworm";
+  });
+  store.openTeamFromLink(createTeam({ name: "glimmet" }));
+  store.team[0]!.move1 = "powergem";
+  await settle();
+  expect(savedState()?.teams.map(({ team }) => team[0]!.name)).toEqual([
+    "orthworm",
+    "glimmet",
+  ]);
+});
+
 // Two tabs sharing one storage, each counting its own writes
 function twoTabs() {
   const saved = initialStoredState();

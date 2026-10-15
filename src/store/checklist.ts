@@ -88,9 +88,10 @@ const movesTogether =
   };
 
 // Moves that inflict a non-volatile status, like Toxic, or always do so as a
-// side effect, like Nuzzle
-const inflictsStatus: Fills = (pokemon, generation, format) =>
-  moveset(pokemon, generation, format).filter(move => {
+// side effect, like Nuzzle. Sheer Force removes side effects.
+const inflictsStatus: Fills = (pokemon, generation, format) => {
+  const sheerForce = generation >= 5 && pokemon.ability === "Sheer Force";
+  return moveset(pokemon, generation, format).filter(move => {
     const { status, secondary } = moveDataIn(move, generation, format) ?? {};
     return !!(
       move === "yawn" ||
@@ -98,9 +99,10 @@ const inflictsStatus: Fills = (pokemon, generation, format) =>
       (move === "fling" &&
         flingItem(pokemon.item, pokemon.ability, generation, pokemon.name)
           ?.status) ||
-      (secondary?.chance === 100 && secondary.status)
+      (!sheerForce && secondary?.chance === 100 && secondary.status)
     );
   });
+};
 
 // The user's boosts from moves that Showdown applies in a callback, so the
 // move data has none
