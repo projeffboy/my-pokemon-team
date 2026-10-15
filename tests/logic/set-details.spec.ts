@@ -7,7 +7,9 @@ import {
 } from "@/store/team-text";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
-import { LEGENDS_ARCEUS, LETS_GO } from "@/shared/generation-rules";
+import { LEGENDS_ARCEUS, LEGENDS_ZA, LETS_GO } from "@/shared/generation-rules";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import type { Generation } from "@/types";
 
 const fullSet = `Chompy (Garchomp) (F) @ Choice Scarf
 Ability: Rough Skin
@@ -110,6 +112,63 @@ test.describe("set details in Showdown text", () => {
     expect(
       parseTeamsText(`=== [gen2] Gold ===\n\n${text}`)[0]?.team[0]?.happiness,
     ).toBe(70);
+  });
+
+  test("Champions and Legends: Arceus leave out the IVs they have no fields for", () => {
+    const farigiraf = `Farigiraf @ Electric Seed
+Ability: Armor Tail
+EVs: 252 HP / 4 Def / 252 SpD
+Relaxed Nature
+IVs: 0 Atk / 0 Spe
+- Trick Room`;
+    const [champions] = parseTeamText(farigiraf, 9, CHAMPIONS_FORMAT);
+    expect(champions).toMatchObject({
+      name: "farigiraf",
+      nature: "relaxed",
+      evs: { hp: 252, def: 4, spd: 252 },
+    });
+    expect(champions.ivs).toBeUndefined();
+    expect(serializeTeam([champions], 9, CHAMPIONS_FORMAT)).not.toContain(
+      "IVs:",
+    );
+    expect(
+      parseTeamText("Stantler\nIVs: 0 Atk", 8, LEGENDS_ARCEUS)[0].ivs,
+    ).toBeUndefined();
+    expect(parseTeamText(farigiraf)[0].ivs).toEqual({ atk: 0, spe: 0 });
+  });
+
+  test("other details follow the selected game like happiness", () => {
+    const text = `Pikachu (F) @ Light Ball
+Shiny: Yes
+Tera Type: Electric
+EVs: 252 SpA
+Timid Nature
+- Thunderbolt`;
+    const parse = (generation: Generation, format = "") =>
+      parseTeamText(text, generation, format)[0];
+    expect(parse(9)).toMatchObject({
+      gender: "F",
+      shiny: true,
+      teraType: "Electric",
+      evs: { spa: 252 },
+      nature: "timid",
+    });
+    expect(parse(9, CHAMPIONS_FORMAT).teraType).toBeUndefined();
+    expect(parse(9, LEGENDS_ZA).teraType).toBeUndefined();
+    expect(parse(8)).toMatchObject({ gender: "F", shiny: true });
+    expect(parse(8).teraType).toBeUndefined();
+    expect(parse(8, LEGENDS_ARCEUS).evs).toBeUndefined();
+    expect(parse(7, LETS_GO).evs).toEqual({ spa: 252 });
+    expect(parse(2)).toMatchObject({ gender: "F", shiny: true });
+    expect(parse(2).nature).toBeUndefined();
+    const gen1 = parse(1);
+    expect(gen1).toMatchObject({ name: "pikachu", move1: "thunderbolt" });
+    expect([gen1.gender, gen1.shiny, gen1.teraType, gen1.nature]).toEqual([
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+    ]);
   });
 
   test("ignores malformed happiness and retains both endpoints", () => {

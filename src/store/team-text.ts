@@ -273,7 +273,7 @@ export function parseTeamText(
         getAutoSelectedAbility(pokemon, generation, format)
       : "";
     if (nickname) member.nickname = nickname;
-    if (gender) member.gender = gender;
+    if (gender && rules.gender) member.gender = gender;
 
     // If team raw data does not mention item, leave it blank
     if (itemText) {
@@ -314,7 +314,7 @@ export function parseTeamText(
         const level = Math.round(Number(value("Level:")));
         if (level >= 1 && level <= MAX_LEVEL && level !== DEFAULT_LEVEL)
           member.level = level;
-      } else if (startsWith("Shiny:")) {
+      } else if (startsWith("Shiny:") && rules.shiny) {
         if (value("Shiny:").toLowerCase() === "yes") member.shiny = true;
       } else if (startsWith("Happiness:") && rules.happiness) {
         const raw = value("Happiness:");
@@ -329,10 +329,10 @@ export function parseTeamText(
           if (happiness === DEFAULT_HAPPINESS) delete member.happiness;
           else member.happiness = happiness;
         }
-      } else if (startsWith("Tera Type:")) {
+      } else if (startsWith("Tera Type:") && rules.tera) {
         const teraType = value("Tera Type:");
         if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
-      } else if (startsWith("EVs:")) {
+      } else if (startsWith("EVs:") && rules.investment !== "effortLevels") {
         const evs = parseStats(value("EVs:"), 255, ev => ev === 0);
         if (evs) member.evs = evs;
       } else if (startsWith("Stat Experience:")) {
@@ -347,10 +347,10 @@ export function parseTeamText(
           10,
           n => n === 0,
         );
-      } else if (startsWith("IVs:")) {
+      } else if (startsWith("IVs:") && rules.ivs) {
         const ivs = parseStats(value("IVs:"), MAX_IV, iv => iv === MAX_IV);
         if (ivs) member.ivs = ivs;
-      } else if (/ Nature$/i.test(line)) {
+      } else if (/ Nature$/i.test(line) && rules.nature) {
         const nature = natureNameInverse(
           line.slice(0, -" Nature".length).trim(),
         );
