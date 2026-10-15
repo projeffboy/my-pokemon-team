@@ -85,6 +85,41 @@ test.describe("learnset inheritance", () => {
     expect(canItLearn("lightofruin", "floettemega")).toBe(true);
   });
 
+  test("totems keep their own moves and only their first stage's Gen 9 egg moves", () => {
+    expect(canItLearn("bite", "raticatealolatotem")).toBe(true);
+    // Kanto Rattata's moves, which Showdown never gives the Alolan totem
+    expect(canItLearn("bide", "raticatealolatotem")).toBe(false);
+    expect(canItLearn("thunderbolt", "raticatealolatotem")).toBe(false);
+    // Alolan Rattata's egg moves, which a totem from an event cannot have
+    expect(canItLearn("stockpile", "raticatealolatotem")).toBe(false);
+    expect(canItLearn("firefang", "gumshoostotem")).toBe(true);
+    expect(canItLearn("psychicfangs", "gumshoostotem")).toBe(false);
+  });
+
+  test("cap Pikachu inherit Pichu's Gen 9 egg moves but not its other moves", () => {
+    expect(canItLearn("wish", "pikachuoriginal")).toBe(true);
+    expect(canItLearn("fakeout", "pikachucosplay")).toBe(true);
+    expect(canItLearn("bide", "pikachuoriginal")).toBe(false);
+    expect(canItLearn("volttackle", "pikachucosplay")).toBe(false);
+  });
+
+  test("a forme without a learnset in a game learns its base forme's moves there", () => {
+    // Legends: Z-A gives Super Size Pumpkaboo and Stretchy Tatsugiri no learnset of their own
+    expect(learnsets.pumpkaboo).toContain("tackle");
+    expect(canItLearn("tackle", "pumpkaboosuper")).toBe(true);
+    expect(canItLearn("tackle", "gourgeistsuper")).toBe(true);
+    expect(learnsets.tatsugiri).toContain("scald");
+    expect(canItLearn("scald", "tatsugiristretchy")).toBe(true);
+    expect(completeLearnset("tatsugiristretchy")).toEqual(
+      expect.arrayContaining([...completeLearnset("tatsugiri")]),
+    );
+  });
+
+  test("Indeedee-F still lacks Indeedee's male-only moves", () => {
+    expect(canItLearn("psychicnoise", "indeedee")).toBe(true);
+    expect(canItLearn("psychicnoise", "indeedeef")).toBe(false);
+  });
+
   test("a regional evolution can inherit from a nonregional predecessor", () => {
     expect(learnsets.marowakalola).not.toContain("bellydrum");
     expect(canItLearn("bellydrum", "marowakalola")).toBe(true);

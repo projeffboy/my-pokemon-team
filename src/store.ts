@@ -472,12 +472,13 @@ export class Store {
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
   // A link carries a game but no tier, so a saved team's tier does not count.
+  // Returns whether it opened a team; an empty one opens nothing.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
       Partial<Pick<SavedTeam, "format" | "generationProfile">>,
   ) {
-    if (isTeamEmpty(team)) return;
+    if (isTeamEmpty(team)) return false;
     const generation = settings?.generation ?? this.currentTeam.generation;
     const format = settings?.format ?? this.currentTeam.format;
     const text = serializeTeam(team, generation, format);
@@ -521,6 +522,7 @@ export class Store {
       this.teams.find(matches);
     if (saved) this.currentTeamId = saved.id;
     else this.openUnsavedTeam(team, settings);
+    return true;
   }
 
   // The current team
@@ -610,6 +612,7 @@ export class Store {
         this.moveSort,
         this.currentTeam.generation,
         this.translation,
+        this.dataFormat,
       ),
     );
     return {

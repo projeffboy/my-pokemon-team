@@ -150,6 +150,15 @@ test("CAP pokemon are allowed only in the CAP format", () => {
   ).toEqual(["Primeape has Rage Fist, which is banned in Gen 9 CAP."]);
 });
 
+test("a forme without a tier of its own is allowed where its species is", () => {
+  const team = createTeam({
+    name: "arceusfire",
+    ability: "Multitype",
+    item: "flameplate",
+  });
+  expect(validateTeam(team, 9, "Uber")).toEqual([]);
+});
+
 test("reports illegal abilities, missing required items, and repeated moves", () => {
   const team = createTeam(
     {

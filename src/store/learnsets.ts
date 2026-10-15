@@ -20,6 +20,7 @@ import {
 } from "./shared/pokemon";
 
 const completeLearnsets = new Map<string, readonly string[]>();
+const legacyLearnsets = new Map<string, readonly string[]>();
 
 // The learnsets are most of the bundled data, so they load after the app instead of blocking it.
 // Until then every learnset is empty.
@@ -39,6 +40,7 @@ export const learnsetsReady: Promise<void> = Promise.all([
   learnsets = module.default;
   learnableMoves = undefined;
   completeLearnsets.clear();
+  legacyLearnsets.clear();
 });
 
 export function completeLearnset(pokemon: string): readonly string[] {
@@ -51,14 +53,27 @@ export function completeLearnset(pokemon: string): readonly string[] {
   return learnset;
 }
 
-function buildCompleteLearnset(pokemon: string): string[] {
+// Before formes followed Showdown's inheritance, one with its own learnset but no prevo, such as a
+// totem or Bloodmoon Ursaluna, learned its first stage's whole learnset. Links made then can hold
+// those moves, so they still load with them.
+function legacyLearnset(pokemon: string): readonly string[] {
+  let learnset = legacyLearnsets.get(pokemon);
+  if (!learnset) {
+    learnset = Object.freeze(buildCompleteLearnset(pokemon, true));
+    legacyLearnsets.set(pokemon, learnset);
+  }
+
+  return learnset;
+}
+
+function buildCompleteLearnset(pokemon: string, legacy = false): string[] {
   const completeLearnset: string[] = [];
   const checked = new Set<string>();
   let parent: string | undefined = pokemon;
   while (parent && !checked.has(parent)) {
     checked.add(parent);
     completeLearnset.push(...(learnsets[parent] ?? []));
-    parent = learnsetParent(parent);
+    parent = learnsetParent(parent, legacy);
   }
 
   // Sketch copies nearly every move, which the per-game data lists for Smeargle.
@@ -131,7 +146,7 @@ export function oldWebsiteLearnset(pokemon: string): string[] {
   return withHiddenPowers(learnset);
 }
 
-function learnsetParent(pokemon: string): string | undefined {
+function learnsetParent(pokemon: string, legacy: boolean): string | undefined {
   const entry = pokedex[pokemon];
   if (!entry) return undefined;
   if (!learnsets[pokemon] && entry.forme) {
@@ -140,9 +155,13 @@ function learnsetParent(pokemon: string): string | undefined {
   if (entry.prevo) return previousEvolution(pokemon);
   if (entry.changesFrom && entry.baseSpecies !== "Kyurem")
     return pokemonNameInverse(entry.changesFrom);
+  // Formes such as cap Pikachu and totems inherit only their first stage's Gen 9 egg moves,
+  // which the data update adds to their own learnsets.
+  return legacy ? legacyFirstStage(pokemon) : undefined;
+}
 
-  // Formes such as cap Pikachu can inherit their base species' egg moves.
-  let base = pokemonNameInverse(entry.baseSpecies ?? "");
+function legacyFirstStage(pokemon: string): string | undefined {
+  let base = pokemonNameInverse(pokedex[pokemon]?.baseSpecies ?? "");
   let prevo = base && previousEvolution(base);
   if (!prevo) return undefined;
   while (prevo) {
@@ -158,9 +177,12 @@ export const canItLearn = (
   pokemon: string,
   generation: Generation = 9,
   format = "",
+  { acceptLegacyFormeInheritance = false } = {},
 ): boolean =>
   !!move &&
-  (completeLearnset(pokemon).includes(move) ||
+  ((acceptLegacyFormeInheritance ? legacyLearnset : completeLearnset)(
+    pokemon,
+  ).includes(move) ||
     (format === COMBINED_GENERATIONS_FORMAT &&
       generationLearnset(pokemon, generation, format).includes(move)));
 
@@ -240,6 +262,19 @@ export const isItemAvailable = (
   generation: Generation,
   format = "",
 ) => availableItems([item], generation, format).length > 0;
+// Whether any pokemon learns the move in the game. The regular latest-generation editor is
+// National Dex, so every move is in it.
+export function isMoveAvailable(
+  move: string,
+  generation: Generation,
+  format = "",
+) {
+  if (generation === 9 && !format) return true;
+  const bit = generationBit(generation, format);
+  return Object.values(availability?.pokemon ?? {}).some(
+    ({ moves }) => !!((moves[move] ?? 0) & bit),
+  );
+}
 // Every move that any of the pokemon learns in the generation
 export const generationMoves = (
   pokemon: readonly string[],

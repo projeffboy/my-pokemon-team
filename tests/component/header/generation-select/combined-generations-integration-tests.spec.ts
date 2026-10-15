@@ -203,7 +203,7 @@ async function freshRecipient(
   });
 }
 
-test("union-only moves survive shared links in a fresh browser and subsequent reload", async ({
+test("a Generations 6–9 team’s moves survive shared links in a fresh browser and subsequent reload", async ({
   page,
   browser,
 }, testInfo) => {

@@ -46,7 +46,7 @@ Each requirement has an importance and a status. Importance (Essential, Conditio
 - **Proposed**: suggested or set aside, not agreed.
 - **Approved**: the Site Owner agreed to it, in his own words or by putting its issue in a release milestone such as Brock, and it is not built yet. If that issue is closed as not planned, the requirement goes back to Proposed.
 - **Implemented**: the code does it.
-- **Verified**: its tests have been read and pass. No requirement has this status yet.
+- **Verified**: implemented, and a test that checks all it states has been read and passes. Section 4 of the SyRS names that test.
 - **Rejected**: declined; the reason is kept with it.
 - **Deleted**: removed; its number is not reused.
 

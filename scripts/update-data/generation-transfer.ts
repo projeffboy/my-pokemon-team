@@ -8,6 +8,7 @@ interface Entry {
   isNonstandard: string | null;
   abilities: Record<string, string>;
   requiredItem?: string;
+  unreleasedHidden?: boolean | "Past";
 }
 interface Dex {
   gen: number;
@@ -86,7 +87,9 @@ export function generationTransferData(
           });
           if (!cap) entry.generations |= bit;
           if (target.gen >= 3) {
-            for (const ability of Object.values(species.abilities)) {
+            for (const [slot, ability] of Object.entries(species.abilities)) {
+              // Showdown's validator rejects a hidden ability it marks unreleased
+              if (slot === "H" && species.unreleasedHidden === true) continue;
               if (allowed(target.abilities.get(ability)))
                 entry.abilities[ability] =
                   (entry.abilities[ability] ?? 0) | bit;

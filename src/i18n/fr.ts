@@ -227,29 +227,72 @@ const fr: Messages = {
     },
     // Shorter labels for screens at lg and below, then shorter still at md and below
     items: {
-      entryHazard: { label: "Piège d'entrée", short: "Piège" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Piège d'entrée",
+        short: "Piège",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui pose des pièges d'entrée : ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui retire les pièges d'entrée de votre côté : ${moves}.`,
+      },
       recovery: {
         label: "Récupération fiable",
         short: "Récupération",
         shorter: "Soin",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité de soin fiable, comme ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Capacité de statut", short: "Statut" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Capacité de boost", short: "Boost" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui soigne les altérations d'état de votre équipe : ${moves}.`,
+      },
+      status: {
+        label: "Capacité de statut",
+        short: "Statut",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui inflige toujours une altération d'état quand elle touche, comme ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui force l'adversaire à changer : ${moves}.`,
+      },
+      boosting: {
+        label: "Capacité de boost",
+        short: "Boost",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui augmente ses propres statistiques d'au moins deux niveaux au total, comme ${moves}.`,
+      },
       priority: {
         label: "Capacité prioritaire",
         short: "Priorité",
         shorter: "Prio",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité offensive qui passe avant la plupart des autres, quelle que soit la Vitesse, comme ${moves}.`,
       },
       voltTurn: {
         label: "Capacité Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Apprenez à un Pokémon une capacité qui attaque puis le fait revenir : ${moves}.`,
       },
-      choice: { label: "Objet Choix", short: "Choix" },
+      choice: {
+        label: "Objet Choix",
+        short: "Choix",
+        hint: (items: string) =>
+          `Faites tenir un objet Choix à un Pokémon : ${items}.`,
+      },
     },
+    filledBy: (pokemon: string, moves: string) => `${pokemon} : ${moves}`,
+    together: (move: string, other: string) => `${move} avec ${other}`,
+    unavailable: "Rien dans ce jeu ne remplit ce rôle.",
   },
   matrix: {
     matrix: "Matrice",

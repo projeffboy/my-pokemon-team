@@ -118,6 +118,8 @@ export interface PastGeneration {
   formats?: Formats;
   baseStats?: Record<string, BaseStats>;
   abilities?: Record<string, string[]>;
+  // Hidden abilities left out of `abilities` because Showdown marks them unreleased
+  unreleasedHidden?: Record<string, string>;
   typechart?: PastTypeChart;
 }
 

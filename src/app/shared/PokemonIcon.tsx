@@ -3,6 +3,7 @@ import items from "@/data/items";
 import altSpriteNum from "@/data/altSpriteNum";
 import PokemonIconsSheet from "@/images/icon-sheets/pokemonicons-sheet.png";
 import ItemIconsSheet from "@/images/icon-sheets/itemicons-sheet.png";
+import { pokemonIconPosition } from "./pokemon-icon/icon-position";
 
 /*
  * Returns an icon of a pokemon (pokemonProperty === 'name') or an item (pokemonProperty === 'item)
@@ -27,13 +28,10 @@ export default function PokemonIcon({
     if (pokemonProperty === "name") {
       type = PokemonIconsSheet;
 
-      // A negative number, such as a CAP pokemon's without its own icon, gets the sheet's placeholder
-      const pokedexNumber =
-        altSpriteNum[value] ?? Math.max(0, pokedex[value]?.num ?? 0);
-
-      // Copied from Pokemon Showdown code
-      left = (pokedexNumber % 12) * 40;
-      top = Math.floor(pokedexNumber / 12) * 30;
+      ({ left, top } = pokemonIconPosition(
+        pokedex[value]?.num ?? 0,
+        altSpriteNum[value],
+      ));
 
       width = 40;
       height = 30;

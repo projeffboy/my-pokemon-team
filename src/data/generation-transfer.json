@@ -15456,7 +15456,7 @@
       },
       "abilities": {
         "Pressure": 508,
-        "Snow Cloak": 496,
+        "Snow Cloak": 480,
         "No Ability": 4096
       }
     },
@@ -15554,7 +15554,6 @@
       },
       "abilities": {
         "Pressure": 508,
-        "Lightning Rod": 16,
         "Static": 480,
         "No Ability": 4096
       }
@@ -15649,7 +15648,7 @@
       },
       "abilities": {
         "Pressure": 508,
-        "Flame Body": 496,
+        "Flame Body": 480,
         "No Ability": 4096
       }
     },
@@ -16657,7 +16656,7 @@
       },
       "abilities": {
         "Overgrow": 2556,
-        "Leaf Guard": 2544
+        "Leaf Guard": 2528
       }
     },
     "bayleef": {
@@ -16755,7 +16754,7 @@
       },
       "abilities": {
         "Overgrow": 2556,
-        "Leaf Guard": 2544
+        "Leaf Guard": 2528
       }
     },
     "meganium": {
@@ -16866,7 +16865,7 @@
       },
       "abilities": {
         "Overgrow": 3068,
-        "Leaf Guard": 3056
+        "Leaf Guard": 3040
       }
     },
     "cyndaquil": {
@@ -16953,7 +16952,7 @@
       },
       "abilities": {
         "Blaze": 1532,
-        "Flash Fire": 1520
+        "Flash Fire": 1504
       }
     },
     "quilava": {
@@ -17046,7 +17045,7 @@
       },
       "abilities": {
         "Blaze": 1532,
-        "Flash Fire": 1520
+        "Flash Fire": 1504
       }
     },
     "typhlosion": {
@@ -17166,7 +17165,7 @@
       },
       "abilities": {
         "Blaze": 1020,
-        "Flash Fire": 1008
+        "Flash Fire": 992
       }
     },
     "totodile": {
@@ -17280,7 +17279,7 @@
       },
       "abilities": {
         "Torrent": 2556,
-        "Sheer Force": 2544
+        "Sheer Force": 2528
       }
     },
     "croconaw": {
@@ -17398,7 +17397,7 @@
       },
       "abilities": {
         "Torrent": 2556,
-        "Sheer Force": 2544
+        "Sheer Force": 2528
       }
     },
     "feraligatr": {
@@ -17533,7 +17532,7 @@
       },
       "abilities": {
         "Torrent": 3068,
-        "Sheer Force": 3056
+        "Sheer Force": 3040
       }
     },
     "sentret": {
@@ -27010,7 +27009,6 @@
       },
       "abilities": {
         "Pressure": 508,
-        "Volt Absorb": 48,
         "Inner Focus": 448
       }
     },
@@ -27103,7 +27101,6 @@
       },
       "abilities": {
         "Pressure": 508,
-        "Flash Fire": 48,
         "Inner Focus": 448
       }
     },
@@ -27198,7 +27195,6 @@
       },
       "abilities": {
         "Pressure": 508,
-        "Water Absorb": 48,
         "Inner Focus": 448
       }
     },
@@ -40355,7 +40351,7 @@
       },
       "abilities": {
         "Clear Body": 508,
-        "Sturdy": 496
+        "Sturdy": 480
       }
     },
     "regice": {
@@ -40447,7 +40443,7 @@
       },
       "abilities": {
         "Clear Body": 508,
-        "Ice Body": 496
+        "Ice Body": 480
       }
     },
     "registeel": {
@@ -40545,7 +40541,7 @@
       },
       "abilities": {
         "Clear Body": 508,
-        "Light Metal": 496
+        "Light Metal": 480
       }
     },
     "latias": {
@@ -52650,7 +52646,7 @@
       },
       "abilities": {
         "Flash Fire": 3576,
-        "Flame Body": 3568
+        "Flame Body": 3456
       }
     },
     "regigigas": {
@@ -56869,7 +56865,7 @@
       },
       "abilities": {
         "Overgrow": 368,
-        "Contrary": 368
+        "Contrary": 352
       }
     },
     "servine": {
@@ -56956,7 +56952,7 @@
       },
       "abilities": {
         "Overgrow": 368,
-        "Contrary": 368
+        "Contrary": 352
       }
     },
     "serperior": {
@@ -57057,7 +57053,7 @@
       },
       "abilities": {
         "Overgrow": 880,
-        "Contrary": 880
+        "Contrary": 864
       }
     },
     "tepig": {
@@ -57142,7 +57138,7 @@
       },
       "abilities": {
         "Blaze": 2416,
-        "Thick Fat": 2416
+        "Thick Fat": 2400
       }
     },
     "pignite": {
@@ -57248,7 +57244,7 @@
       },
       "abilities": {
         "Blaze": 2416,
-        "Thick Fat": 2416
+        "Thick Fat": 2400
       }
     },
     "emboar": {
@@ -57371,7 +57367,7 @@
       },
       "abilities": {
         "Blaze": 2928,
-        "Reckless": 2928
+        "Reckless": 2912
       }
     },
     "oshawott": {
@@ -57458,7 +57454,7 @@
       },
       "abilities": {
         "Torrent": 1520,
-        "Shell Armor": 1520
+        "Shell Armor": 1504
       }
     },
     "dewott": {
@@ -57547,7 +57543,7 @@
       },
       "abilities": {
         "Torrent": 1520,
-        "Shell Armor": 1520
+        "Shell Armor": 1504
       }
     },
     "samurott": {
@@ -57651,7 +57647,7 @@
       },
       "abilities": {
         "Torrent": 880,
-        "Shell Armor": 880
+        "Shell Armor": 864
       }
     },
     "patrat": {
@@ -63998,8 +63994,8 @@
       },
       "abilities": {
         "Frisk": 496,
-        "Shadow Tag": 496,
-        "Competitive": 480
+        "Competitive": 480,
+        "Shadow Tag": 480
       }
     },
     "gothorita": {
@@ -66257,7 +66253,7 @@
       "abilities": {
         "Plus": 240,
         "Minus": 240,
-        "Clear Body": 240
+        "Clear Body": 224
       }
     },
     "klang": {
@@ -66865,7 +66861,6 @@
       "abilities": {
         "Flash Fire": 2544,
         "Flame Body": 2544,
-        "Shadow Tag": 16,
         "Infiltrator": 2528
       }
     },
@@ -66951,7 +66946,6 @@
       "abilities": {
         "Flash Fire": 2544,
         "Flame Body": 2544,
-        "Shadow Tag": 16,
         "Infiltrator": 2528
       }
     },
@@ -67042,7 +67036,6 @@
       "abilities": {
         "Flash Fire": 3056,
         "Flame Body": 3056,
-        "Shadow Tag": 16,
         "Infiltrator": 3040
       }
     },
@@ -68706,7 +68699,7 @@
       "abilities": {
         "Keen Eye": 1520,
         "Sheer Force": 1520,
-        "Hustle": 1520
+        "Hustle": 1504
       }
     },
     "braviary": {
@@ -69466,7 +69459,7 @@
       },
       "abilities": {
         "Flame Body": 496,
-        "Swarm": 496
+        "Swarm": 480
       }
     },
     "volcarona": {
@@ -69556,7 +69549,7 @@
       },
       "abilities": {
         "Flame Body": 1008,
-        "Swarm": 1008
+        "Swarm": 992
       }
     },
     "cobalion": {

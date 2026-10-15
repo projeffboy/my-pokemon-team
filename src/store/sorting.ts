@@ -35,11 +35,12 @@ export function sortMoves(
   { by, descending }: MoveSortOrder = DEFAULT_MOVE_SORT,
   generation: Generation = LATEST_GENERATION,
   { locale, names }: Translation = english,
+  format = "",
 ): string[] {
   const { compare } = new Intl.Collator(locale, { sensitivity: "base" });
   const direction = descending ? -1 : 1;
   const typeName = (move: string) => {
-    const type = moveTypeIn(move, generation);
+    const type = moveTypeIn(move, generation, format);
     return type ? names.type(type) : "";
   };
   return [...moves].sort(

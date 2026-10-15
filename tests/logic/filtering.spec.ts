@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import pokedex from "@/data/pokedex";
 import { filterPokemon, introducedIn, isInGeneration } from "@/store/filtering";
 import { CAP_FORMAT } from "@/shared/formats";
+import type { Generation } from "@/types";
 
 const all = { format: "", region: "", type: "" };
 
@@ -180,6 +181,28 @@ test("format filters use each generation's tiers, including old Mega evolutions"
   ).not.toContain("tentacruel");
 });
 
+test("formes without tiers of their own take their species' tiers", () => {
+  const formatIn = (generation: Generation, format: string) =>
+    filterPokemon({ ...all, generation, format });
+  expect(formatIn(9, "Uber")).toEqual(
+    expect.arrayContaining(["arceus", "arceusfire", "arceusfairy"]),
+  );
+  for (const generation of [4, 6, 7] as const) {
+    expect(formatIn(generation, "Uber")).toContain("giratinaorigin");
+  }
+  expect(formatIn(8, "Uber")).toContain("magearnaoriginal");
+  expect(formatIn(9, "UU: Under Used")).toContain("keldeoresolute");
+  expect(formatIn(9, "ZU")).toEqual(
+    expect.arrayContaining(["meowsticf", "vivillonfancy"]),
+  );
+  expect(formatIn(9, "Little Cup (LC)")).toEqual(
+    expect.arrayContaining(["deerlingsummer", "shelloseast"]),
+  );
+  expect(formatIn(9, "Doubles Uber")).toContain("arceusfire");
+  expect(formatIn(9, "OU: Over Used")).not.toContain("arceusfire");
+  expect(formatIn(9, "Little Cup (LC)")).not.toContain("gastrodoneast");
+});
+
 test("doubles formats use doubles tiers, including untiered DUU species", () => {
   const result = filterPokemon({ ...all, format: "Doubles UU" });
   expect(result).toContain("regieleki");
@@ -198,6 +221,22 @@ test("doubles formats include (DOU) pokemon wherever DOU ones appear", () => {
     expect(result).toContain("tyranitarmega");
   }
   expect(doubles("Doubles UU")).not.toContain("tyranitarmega");
+});
+
+test("Gen 3 and Gen 4 Doubles OU fall back to the singles tiers, without Ubers or unevolved pokemon", () => {
+  const gen3 = filterPokemon({ ...all, generation: 3, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "wobbuffet", "wynaut"])
+    expect(gen3).toContain(allowed);
+  // Murkrow only evolves from gen 4, and Abra has a singles tier but evolves
+  expect(gen3).toContain("murkrow");
+  for (const banned of ["mewtwo", "kyogre", "deoxysattack", "abra"])
+    expect(gen3).not.toContain(banned);
+
+  const gen4 = filterPokemon({ ...all, generation: 4, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "manaphy", "machamp"])
+    expect(gen4).toContain(allowed);
+  for (const banned of ["garchomp", "darkrai", "arceus", "murkrow"])
+    expect(gen4).not.toContain(banned);
 });
 
 test("format, region, and type filters intersect", () => {
