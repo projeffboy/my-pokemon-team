@@ -526,7 +526,7 @@ const ja: Messages = {
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",
     nothingFound:
-      "そのテキストにポケモンが見つかりませんでした。ポケモンの名前を確認するか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
+      "そのテキストにポケモンが見つかりませんでした。ポケモンの名前をPokemon Showdownと同じ英語の表記で書くか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
   },
   deleteDialog: {
     title: (team: string) => `${team}を削除しますか？`,

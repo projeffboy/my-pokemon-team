@@ -536,7 +536,7 @@ const ko: Messages = {
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
     noChanges: "변경된 내용이 없습니다.",
     nothingFound:
-      "텍스트에서 포켓몬을 찾지 못했습니다. 포켓몬 이름을 확인하거나 Pokemon Showdown에서 내보낸 팀을 붙여넣으세요.",
+      "텍스트에서 포켓몬을 찾지 못했습니다. 포켓몬 이름을 Pokemon Showdown과 같은 영어 표기로 쓰거나 Pokemon Showdown에서 내보낸 팀을 붙여넣으세요.",
   },
   deleteDialog: {
     title: (team: string) => `${josa(team, "을", "를")} 삭제할까요?`,

@@ -541,7 +541,7 @@ const de: Messages = {
     importedMany: (count: number) => `${count} Teams importiert`,
     noChanges: "Keine Änderungen vorgenommen.",
     nothingFound:
-      "In diesem Text wurde kein Pokémon gefunden. Prüfe die Pokémon-Namen oder füge ein aus Pokemon Showdown exportiertes Team ein.",
+      "In diesem Text wurde kein Pokémon gefunden. Schreibe die Pokémon-Namen auf Englisch, wie Pokemon Showdown sie schreibt, oder füge ein aus Pokemon Showdown exportiertes Team ein.",
   },
   deleteDialog: {
     title: (team: string) => `${team} löschen?`,

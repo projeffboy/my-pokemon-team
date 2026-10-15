@@ -342,7 +342,7 @@ Ability: Drizzle
     await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");
     await dialog.getByRole("button", { name: "Import" }).click();
     await expect(dialog).toContainText(
-      "No pokemon found in that text. Check the pokemon names, or paste a team exported from Pokemon Showdown.",
+      "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
     );
 
     // Going back shows the team list, still with the one team

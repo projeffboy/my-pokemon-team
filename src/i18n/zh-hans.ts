@@ -507,7 +507,7 @@ const zhHans: Messages = {
     importedMany: (count: number) => `已导入 ${count} 支队伍`,
     noChanges: "没有改动。",
     nothingFound:
-      "这段文字中找不到宝可梦。请检查宝可梦名称，或粘贴从 Pokemon Showdown 导出的队伍。",
+      "这段文字中找不到宝可梦。请按 Pokemon Showdown 的拼写用英文写宝可梦名称，或粘贴从 Pokemon Showdown 导出的队伍。",
   },
   deleteDialog: {
     title: (team: string) => `删除${team}？`,

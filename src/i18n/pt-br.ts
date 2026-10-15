@@ -522,7 +522,7 @@ const ptBR: Messages = {
     importedMany: (count: number) => `${count} equipes importadas`,
     noChanges: "Nenhuma alteração feita.",
     nothingFound:
-      "Nenhum Pokémon encontrado nesse texto. Confira os nomes dos Pokémon ou cole uma equipe exportada do Pokemon Showdown.",
+      "Nenhum Pokémon encontrado nesse texto. Escreva os nomes dos Pokémon em inglês, como o Pokemon Showdown os escreve, ou cole uma equipe exportada do Pokemon Showdown.",
   },
   deleteDialog: {
     title: (team: string) => `Excluir ${team}?`,

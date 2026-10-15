@@ -520,7 +520,7 @@ const en = {
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",
     nothingFound:
-      "No pokemon found in that text. Check the pokemon names, or paste a team exported from Pokemon Showdown.",
+      "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
   },
   deleteDialog: {
     title: (team: string) => `Delete ${team}?`,

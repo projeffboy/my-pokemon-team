@@ -510,7 +510,7 @@ const zhHant: Messages = {
     importedMany: (count: number) => `已匯入 ${count} 支隊伍`,
     noChanges: "沒有任何變更。",
     nothingFound:
-      "這段文字中找不到寶可夢。請檢查寶可夢名稱，或貼上從 Pokemon Showdown 匯出的隊伍。",
+      "這段文字中找不到寶可夢。請按照 Pokemon Showdown 的拼法用英文寫寶可夢名稱，或貼上從 Pokemon Showdown 匯出的隊伍。",
   },
   deleteDialog: {
     title: (team: string) => `要刪除${team}嗎？`,
