@@ -126,6 +126,23 @@ test("skips pokemon that learn no moves while others remain", () => {
   expect(randomPokemon(["pokestarufo", "ditto"], [], () => 0)).toBe("ditto");
 });
 
+test("skips pokemon whose every ability the tier bans while others remain", () => {
+  // Gen 3 OU bans Soundproof, Loudred's only ability
+  expect(pokemonAbilities("loudred", 3)).toEqual(["Soundproof"]);
+  const options = ["loudred", "corsola"];
+  for (const random of [() => 0, () => 0.99]) {
+    expect(randomPokemon(options, [], random, 3, "OU: Over Used")).toBe(
+      "corsola",
+    );
+  }
+  expect(randomPokemon(["loudred"], [], () => 0, 3, "OU: Over Used")).toBe(
+    "loudred",
+  );
+  expect(randomPokemon(options, [], () => 0, 3, "UU: Under Used")).toBe(
+    "loudred",
+  );
+});
+
 test("builds a set with an ability, an item, and four different viable moves", () => {
   const set = randomSet("swampert", completeLearnset("swampert"));
   expect(pokemonAbilities("swampert")).toContain(set.ability);
@@ -432,6 +449,14 @@ test("random teams break none of their tier's rules, such as its bans", () => {
     [9, "Little Cup (LC)", "Little Cup (LC)"],
     [8, "OU: Over Used", "OU: Over Used"],
     [9, COMBINED_GENERATIONS_FORMAT, "OU: Over Used"],
+    // These ban abilities that are some pokemon's only ones, such as Sand Veil
+    [3, "OU: Over Used", "OU: Over Used"],
+    [4, "OU: Over Used", "OU: Over Used"],
+    [4, "UU: Under Used", "UU: Under Used"],
+    [4, "Little Cup (LC)", "Little Cup (LC)"],
+    [4, "Doubles OU", "Doubles OU"],
+    [5, "OU: Over Used", "OU: Over Used"],
+    [5, "Little Cup (LC)", "Little Cup (LC)"],
   ] as const) {
     const candidates = filterPokemon({
       generation,
@@ -447,7 +472,14 @@ test("random teams break none of their tier's rules, such as its bans", () => {
       const team = createTeam();
       const chosen: string[] = [];
       for (const slot of team.keys()) {
-        const pokemon = randomPokemon(options, chosen, random);
+        const pokemon = randomPokemon(
+          options,
+          chosen,
+          random,
+          generation,
+          format,
+          tier,
+        );
         chosen.push(pokemon);
         team[slot] = randomSet(
           pokemon,

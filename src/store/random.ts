@@ -48,14 +48,33 @@ const species = (pokemon: string) => baseForme(pokemon) ?? pokemon;
 // A random pokemon from the options, preferring a species not already on the team,
 // as the Species Clause asks, and then a forme not already on it.
 // Pokemon that learn no moves, such as the Pokestars, are left out while any
-// others remain, so a random set has moves.
+// others remain, so a random set has moves. So are pokemon whose every ability
+// the tier bans, such as Gible with Sand Veil in Gen 4 OU; the tier is the
+// format, except in Generations 6–9.
 export function randomPokemon(
   options: readonly string[],
   taken: readonly string[],
   random: Random = Math.random,
+  generation: Generation = 9,
+  format = "",
+  tier = format,
 ) {
-  const movable = options.filter(pokemon => completeLearnset(pokemon).length);
-  if (movable.length) options = movable;
+  const banned =
+    formatBans[showdownFormatId(generation, tier)]?.abilities ?? [];
+  for (const usable of [
+    (pokemon: string) => completeLearnset(pokemon).length > 0,
+    (pokemon: string) => {
+      const abilities =
+        banned.length ? pokemonAbilities(pokemon, generation, format) : [];
+      return (
+        !abilities.length ||
+        abilities.some(ability => !banned.includes(ability))
+      );
+    },
+  ]) {
+    const kept = options.filter(usable);
+    if (kept.length) options = kept;
+  }
   const takenSpecies = new Set(taken.filter(Boolean).map(species));
   const newSpecies = options.filter(
     pokemon => !takenSpecies.has(species(pokemon)),

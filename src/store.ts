@@ -808,7 +808,14 @@ export class Store {
       this.recordEdit();
       return randomizedFieldsMessage(member, completed, this.translation);
     }
-    const pokemon = randomPokemon(this.filteredPokemon, this.teamPokemon);
+    const pokemon = randomPokemon(
+      this.filteredPokemon,
+      this.teamPokemon,
+      Math.random,
+      this.currentTeam.generation,
+      this.dataFormat,
+      this.currentTeam.format,
+    );
     if (!pokemon) return;
     this.recordEdit();
     this.team[teamIndex] = randomSet(
@@ -834,7 +841,14 @@ export class Store {
     this.recordEdit();
     const chosen: string[] = [];
     for (let i = 0; i < this.team.length; i++) {
-      const pokemon = randomPokemon(options, chosen);
+      const pokemon = randomPokemon(
+        options,
+        chosen,
+        Math.random,
+        this.currentTeam.generation,
+        this.dataFormat,
+        this.currentTeam.format,
+      );
       if (!pokemon) return;
       chosen.push(pokemon);
       this.team[i] = randomSet(
