@@ -27,3 +27,17 @@ test("selecting a pokemon leaves the other slots alone", ({ store }) => {
   store.selectPokemon(0, "sceptilemega");
   expect(other).toMatchObject({ item: "leftovers", ability: "" });
 });
+
+test("picking the slot's own pokemon again keeps its set", ({ store }) => {
+  store.selectPokemon(0, "gardevoir");
+  const member = store.team[0]!;
+  Object.assign(member, {
+    move1: "moonblast",
+    item: "choicescarf",
+    ability: "Trace",
+    nickname: "Gigi",
+  });
+  const before = JSON.stringify(member);
+  store.selectPokemon(0, "gardevoir");
+  expect(JSON.stringify(member)).toBe(before);
+});
