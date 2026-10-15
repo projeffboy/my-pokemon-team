@@ -38,6 +38,7 @@ const entries: Entry[] = [
       "Showdown backups whose team headers are indented now import as separate teams instead of one merged team.",
       "Showdown teams from formats such as Ubers UU or Pure Hackmons no longer import as Uber or PU teams.",
       "Pokemon Champions (M-C) now uses its own move changes, such as Snap Trap being Steel type.",
+      "The team checklist no longer counts Diamond Storm as a boosting move, since its Defense boost is only a 50% chance.",
     ],
   },
   {

@@ -863,6 +863,9 @@ test("move projections retain user boosts without confusing targets or random ch
     projections.Moves({ self: { boosts: { atk: -1, def: -1 } } }).selfBoosts,
   ).toEqual({ atk: -1, def: -1 });
   expect(
+    projections.Moves({ self: { chance: 50, boosts: { def: 2 } } }).selfBoosts,
+  ).toBeUndefined();
+  expect(
     projections.Moves({
       secondary: { chance: 100, self: { boosts: { atk: 1 } } },
     }).selfBoosts,
