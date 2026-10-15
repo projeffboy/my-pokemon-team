@@ -10,13 +10,18 @@ import {
   randomizeSlotLabel,
 } from "@/store/random";
 import {
+  availablePokemon,
   completeLearnset,
   generationLearnset,
   learnsetsReady,
 } from "@/store/learnsets";
+import { filterPokemon } from "@/store/filtering";
+import { validateTeam } from "@/store/validation";
+import { CAP_FORMAT } from "@/shared/formats";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import { pokemonAbilities } from "@/shared/pokedex";
 import { createTeam } from "./shared/team";
-import { loadTranslation } from "@/i18n/translation";
+import { english, loadTranslation } from "@/i18n/translation";
 import { hiddenPowerType } from "@/shared/hidden-power";
 import {
   dvGender,
@@ -119,6 +124,23 @@ test("skips pokemon that learn no moves while others remain", () => {
   }
   expect(randomPokemon(["pokestarufo"], [], () => 0)).toBe("pokestarufo");
   expect(randomPokemon(["pokestarufo", "ditto"], [], () => 0)).toBe("ditto");
+});
+
+test("skips pokemon whose every ability the tier bans while others remain", () => {
+  // Gen 3 OU bans Soundproof, Loudred's only ability
+  expect(pokemonAbilities("loudred", 3)).toEqual(["Soundproof"]);
+  const options = ["loudred", "corsola"];
+  for (const random of [() => 0, () => 0.99]) {
+    expect(randomPokemon(options, [], random, 3, "OU: Over Used")).toBe(
+      "corsola",
+    );
+  }
+  expect(randomPokemon(["loudred"], [], () => 0, 3, "OU: Over Used")).toBe(
+    "loudred",
+  );
+  expect(randomPokemon(options, [], () => 0, 3, "UU: Under Used")).toBe(
+    "loudred",
+  );
 });
 
 test("builds a set with an ability, an item, and four different viable moves", () => {
@@ -365,4 +387,116 @@ test("random tooltips identify duplicate moves that completion will replace", ()
   })[0];
   if (!member) throw new Error("Missing pokemon");
   expect(randomizeSlotLabel(member, undefined, 3)).toBe("Randomize moves");
+});
+
+test("random sets leave out the moves and abilities the tier bans", () => {
+  const learnset = [
+    "terablast",
+    "batonpass",
+    "tackle",
+    "growl",
+    "protect",
+    "rest",
+  ];
+  for (const value of [0, 0.3, 0.6, 0.99]) {
+    for (const set of [
+      randomSet("garchomp", learnset, () => value, 9, "OU: Over Used"),
+      // A Generations 6–9 team follows the bans of the tier chosen for it
+      randomSet(
+        "garchomp",
+        learnset,
+        () => value,
+        9,
+        COMBINED_GENERATIONS_FORMAT,
+        [],
+        "OU: Over Used",
+      ),
+    ]) {
+      expect(set.ability).toBe("Rough Skin");
+      expect([set.move1, set.move2, set.move3, set.move4].sort()).toEqual([
+        "growl",
+        "protect",
+        "rest",
+        "tackle",
+      ]);
+    }
+    // With fewer than four moves left, a banned one still completes the set
+    const short = randomSet(
+      "garchomp",
+      learnset.slice(1, -1),
+      () => value,
+      9,
+      "OU: Over Used",
+    );
+    expect([short.move1, short.move2, short.move3, short.move4].sort()).toEqual(
+      ["batonpass", "growl", "protect", "tackle"],
+    );
+  }
+});
+
+// Randomize should never build a team that the team analysis warns about
+test("random teams break none of their tier's rules, such as its bans", () => {
+  // A fixed sequence, so that a failure repeats
+  let seed = 1;
+  const random = () => {
+    seed = (seed * 16807) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+  const problems: string[] = [];
+  for (const [generation, format, tier] of [
+    [9, "OU: Over Used", "OU: Over Used"],
+    [9, CAP_FORMAT, CAP_FORMAT],
+    [9, "Little Cup (LC)", "Little Cup (LC)"],
+    [8, "OU: Over Used", "OU: Over Used"],
+    [9, COMBINED_GENERATIONS_FORMAT, "OU: Over Used"],
+    // These ban abilities that are some pokemon's only ones, such as Sand Veil
+    [3, "OU: Over Used", "OU: Over Used"],
+    [4, "OU: Over Used", "OU: Over Used"],
+    [4, "UU: Under Used", "UU: Under Used"],
+    [4, "Little Cup (LC)", "Little Cup (LC)"],
+    [4, "Doubles OU", "Doubles OU"],
+    [5, "OU: Over Used", "OU: Over Used"],
+    [5, "Little Cup (LC)", "Little Cup (LC)"],
+  ] as const) {
+    const candidates = filterPokemon({
+      generation,
+      format: tier,
+      region: "",
+      type: "",
+    });
+    const options =
+      format === COMBINED_GENERATIONS_FORMAT ?
+        availablePokemon(candidates, generation, format)
+      : candidates;
+    for (let i = 0; i < 50; i++) {
+      const team = createTeam();
+      const chosen: string[] = [];
+      for (const slot of team.keys()) {
+        const pokemon = randomPokemon(
+          options,
+          chosen,
+          random,
+          generation,
+          format,
+          tier,
+        );
+        chosen.push(pokemon);
+        team[slot] = randomSet(
+          pokemon,
+          generationLearnset(pokemon, generation, format),
+          random,
+          generation,
+          format,
+          team.map(({ item }) => item),
+          tier,
+        );
+      }
+      problems.push(
+        ...validateTeam(team, generation, format, english, tier).map(
+          ({ message }) => message,
+        ),
+      );
+    }
+  }
+  expect(problems).toEqual([]);
 });

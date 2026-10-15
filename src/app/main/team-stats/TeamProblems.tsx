@@ -40,6 +40,7 @@ const TeamProblems = observer(function TeamProblems({
             store.currentTeam.generation,
             store.dataFormat,
             translation,
+            store.currentTeam.format,
           ),
         )
       }

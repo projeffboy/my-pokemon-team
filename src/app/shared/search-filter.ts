@@ -10,7 +10,8 @@ const searchText = (text: string) =>
     )
     .toLowerCase();
 
-// An Autocomplete filterOptions matching the typed text anywhere in stringify's
+// An Autocomplete filterOptions that matches the typed text anywhere in
+// stringify's text, like MUI's default.
 export const searchFilter =
   <T>(stringify: (option: T) => string) =>
   (options: T[], { inputValue }: { inputValue: string }) => {

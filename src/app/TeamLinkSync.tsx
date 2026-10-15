@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { CHAMPIONS_FORMAT, gameFormat } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, linkGameFormat } from "@/shared/formats";
 import {
   encodeTeamForUrl,
   syncTeamSettingsToUrl,
@@ -107,12 +107,12 @@ const TeamLinkSync = observer(function TeamLinkSync() {
           store.isTeamEmpty &&
           store.teams.some(team => team.id === store.currentTeamId)
         ) {
-          // The URL carries no tier, so the same game keeps the team's
+          // The URL carries no tier or Coming soon game, so the same game keeps the team's
           const { generation, format, generationProfile, battleFormat } =
             store.currentTeam;
           if (
             generation !== settings.generation ||
-            gameFormat(format) !== settings.format ||
+            linkGameFormat(format) !== settings.format ||
             generationProfile !== settings.generationProfile ||
             battleFormat !== linkSettings.battleFormat
           )

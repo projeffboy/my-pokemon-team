@@ -1,4 +1,6 @@
+import formatBans from "@/data/format-bans";
 import { moveDataIn } from "@/shared/generation-data";
+import { showdownFormatId } from "@/shared/formats";
 import {
   MOVE_KEYS,
   type BattleFormat,
@@ -16,9 +18,15 @@ import {
   isMoveUsable,
   typeAgainstPokemon,
 } from "./shared/effectiveness";
-import { isItemAvailable, isMoveAvailable } from "./learnsets";
+import { filterPokemon } from "./filtering";
+import {
+  availablePokemon,
+  isItemAvailable,
+  isMoveAvailable,
+} from "./learnsets";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { generationRules } from "@/shared/generation-rules";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 
 // The labels live in src/i18n, under these keys
 export type ChecklistGroupKey = keyof Messages["checklist"]["groups"];
@@ -66,6 +74,7 @@ const moveset = (pokemon: Pokemon, generation: Generation, format: string) =>
         pokemon.ability,
         generation,
         format,
+        pokemon,
       ),
   );
 
@@ -426,25 +435,33 @@ const standIn = ([first = "", second = ""]: string[], heldItem = false) => ({
   move4: "",
 });
 
-// What would fill a role: the examples that are in the game and fill it there, in the
-// team's battle format, or in both when it has none
+// What would fill a role: the examples that are in the game, that its tier allows, and
+// that fill it there, in the team's battle format, or in both when it has none. The
+// abilities are those that a pokemon allowed there can have. As in validateTeam, the
+// format picks the games' data and the allowed pokemon, and the tier the bans; the tier
+// is the format, except in Generations 6–9.
 export function checklistHint(
   { key, fills, examples, heldItem, abilities = [] }: ChecklistItem,
   { locale, t, names }: Translation = english,
   generation = LATEST_GENERATION,
   format = "",
   battleFormat?: BattleFormat,
+  tier = format,
 ) {
   const battleFormats: BattleFormat[] =
     battleFormat ? [battleFormat] : ["singles", "doubles"];
   const list = (items: string[]) =>
     new Intl.ListFormat(locale, { type: "disjunction" }).format(items);
   const isAvailable = heldItem ? isItemAvailable : isMoveAvailable;
+  const bans = formatBans[showdownFormatId(generation, tier)];
+  const banned = (heldItem ? bans?.items : bans?.moves) ?? [];
   const named = examples
     .map(example => [example].flat())
     .filter(
       ids =>
-        ids.every(id => isAvailable(id, generation, format)) &&
+        ids.every(
+          id => isAvailable(id, generation, format) && !banned.includes(id),
+        ) &&
         battleFormats.every(
           battle =>
             fills(standIn(ids, heldItem), generation, format, battle).length >
@@ -455,9 +472,29 @@ export function checklistHint(
       const [first = "", second] = ids.map(heldItem ? names.item : names.move);
       return second ? t.checklist.together(first, second) : first;
     });
+  // Like validateTeam, Generations 6–9 allow only the pokemon their games have
+  const allowsAbility = (ability: string) => {
+    const holders = filterPokemon({
+      generation,
+      format,
+      region: "",
+      type: "",
+      ability,
+    });
+    const allowed =
+      format === COMBINED_GENERATIONS_FORMAT ?
+        availablePokemon(holders, generation, format)
+      : holders;
+    return allowed.length > 0;
+  };
   const namedAbilities =
     generationRules(generation, format).abilities ?
-      abilities.map(names.ability)
+      abilities
+        .filter(
+          ability =>
+            !bans?.abilities?.includes(ability) && allowsAbility(ability),
+        )
+        .map(names.ability)
     : [];
   return named.length ?
       t.checklist.items[key].hint(list(named), list(namedAbilities))

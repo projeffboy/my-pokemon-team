@@ -122,6 +122,13 @@ for (const [forme, region, numberRegion] of [
   ["palkiaorigin", "Hisui", "Sinnoh"],
   ["basculinwhitestriped", "Hisui", "Unova"],
   ["ursalunabloodmoon", "Paldea", "Hisui"],
+  ["zygarde10", "Alola", "Kalos"],
+  ["zygardecomplete", "Alola", "Kalos"],
+  ["greninjabond", "Alola", "Kalos"],
+  ["greninjaash", "Alola", "Kalos"],
+  ["pikachuoriginal", "Alola", "Kanto"],
+  ["pikachupartner", "Alola", "Kanto"],
+  ["pikachuworld", "Galar", "Kanto"],
 ]) {
   test(`${forme} is listed under ${region}, not ${numberRegion}`, () => {
     expect(filterPokemon({ ...all, region })).toContain(forme);
@@ -223,19 +230,36 @@ test("doubles formats include (DOU) pokemon wherever DOU ones appear", () => {
   expect(doubles("Doubles UU")).not.toContain("tyranitarmega");
 });
 
-test("Gen 3 and Gen 4 Doubles OU fall back to the singles tiers, without Ubers or unevolved pokemon", () => {
+// Showdown's doubles formats fall back to the singles tier and only ban the tiers above
+test("doubles formats include NFE and LC pokemon", () => {
+  for (const format of ["Doubles Uber", "Doubles OU", "Doubles UU"]) {
+    const result = filterPokemon({ ...all, format });
+    for (const pokemon of ["clefairy", "dusclops", "chansey", "pichu"])
+      expect(result, `${pokemon} in ${format}`).toContain(pokemon);
+  }
+  const ou = filterPokemon({ ...all, format: "Doubles OU" });
+  expect(ou).not.toContain("miraidon");
+  expect(ou.indexOf("dusclops")).toBeLessThan(ou.indexOf("pichu"));
+  expect(
+    filterPokemon({ ...all, generation: 6, format: "Doubles OU" }),
+  ).toContain("munchlax");
+});
+
+test("Gen 3 and Gen 4 Doubles OU fall back to the singles tiers, without Ubers", () => {
   const gen3 = filterPokemon({ ...all, generation: 3, format: "Doubles OU" });
   for (const allowed of ["metagross", "salamence", "wobbuffet", "wynaut"])
     expect(gen3).toContain(allowed);
-  // Murkrow only evolves from gen 4, and Abra has a singles tier but evolves
-  expect(gen3).toContain("murkrow");
-  for (const banned of ["mewtwo", "kyogre", "deoxysattack", "abra"])
+  // Unevolved pokemon are allowed, like Abra, which has a singles tier there
+  for (const unevolved of ["abra", "pichu", "murkrow"])
+    expect(gen3).toContain(unevolved);
+  for (const banned of ["mewtwo", "kyogre", "deoxysattack"])
     expect(gen3).not.toContain(banned);
 
   const gen4 = filterPokemon({ ...all, generation: 4, format: "Doubles OU" });
   for (const allowed of ["metagross", "salamence", "manaphy", "machamp"])
     expect(gen4).toContain(allowed);
-  for (const banned of ["garchomp", "darkrai", "arceus", "murkrow"])
+  expect(gen4).toContain("murkrow");
+  for (const banned of ["garchomp", "darkrai", "arceus"])
     expect(gen4).not.toContain(banned);
 });
 

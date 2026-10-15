@@ -344,7 +344,7 @@ const fr: Messages = {
       depends: "Dépend du format de combat",
       reasons: {
         spinner:
-          "Spinner/Defogger dépend du format de combat : en 4e et 5e générations, Anti-Brume ne retire les pièges de ton côté qu’en combat double, en ciblant ton allié.",
+          "Spinner/Defogger dépend du format de combat : en 4e et 5e générations, Anti-Brume ne retire les pièges de votre côté qu’en combat double, en ciblant votre allié.",
       },
     },
   },
@@ -660,7 +660,7 @@ const fr: Messages = {
     importPlaceholder: "Collez une équipe ici",
     editPlaceholder: "Votre équipe est vide",
     label: "Texte brut de l'équipe Pokemon Showdown",
-    kept: "Les surnoms, niveaux, sexes, chromatiques, types Téracristal, natures, EV et IV sont conservés. Le bonheur est aussi conservé si le jeu sélectionné le prend en charge.",
+    kept: "Les surnoms, niveaux, sexes, chromatiques, bonheur, types Téracristal, natures, EV et IV sont conservés si le jeu sélectionné les possède.",
     import: "Importer",
     update: "Mettre à jour",
     imported: "Équipe importée",
@@ -742,6 +742,7 @@ const fr: Messages = {
     typeColours: "Couleurs des types",
     typeColoursFor: "La couleur de chaque type dans les stats de l'équipe",
     stunfiskFor: "C'est une bonne communauté",
+    serebiiFor: "Les objets que les Pokémon peuvent tenir dans Légendes : Z-A",
   },
   privacy: {
     playwire:

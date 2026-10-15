@@ -1,4 +1,3 @@
-import type { Page, TestInfo } from "@playwright/test";
 import { test, expect } from "fixtures";
 import {
   selectPokemon,
@@ -6,24 +5,11 @@ import {
   selectItem,
   selectAbility,
   expectChecklistItem,
-  checklistRow,
   openAnalysis,
+  showChecklistTooltip as showTooltip,
   showSlot,
 } from "helper";
 import en from "@/i18n/en";
-
-// The switch that opened the checklist may still show its own tooltip
-const showTooltip = async (
-  page: Page,
-  testInfo: TestInfo,
-  label: string,
-  text: string,
-) => {
-  const row = checklistRow(page, label);
-  if (testInfo.project.use.hasTouch) await row.tap();
-  else await row.hover();
-  return page.getByRole("tooltip").filter({ hasText: text });
-};
 
 test.describe("Team Checklist - Integration Tests", () => {
   test.beforeEach(async ({ page }) => {

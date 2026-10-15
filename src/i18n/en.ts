@@ -647,7 +647,7 @@ const en = {
     importPlaceholder: "Paste a team here",
     editPlaceholder: "Your team is empty",
     label: "Pokemon Showdown Team Raw Text",
-    kept: "Nicknames, levels, genders, shiny, tera types, natures, EVs, and IVs are kept. Happiness is also kept when the selected game supports it.",
+    kept: "Nicknames, levels, genders, shiny, happiness, tera types, natures, EVs, and IVs are kept when the selected game has them.",
     import: "Import",
     update: "Update",
     imported: "Team imported",
@@ -730,6 +730,7 @@ const en = {
     typeColours: "Type colours",
     typeColoursFor: "The colour of each type in the team stats",
     stunfiskFor: "It's a good community",
+    serebiiFor: "The items a pokemon can hold in Legends: Z-A",
   },
   privacy: {
     playwire:

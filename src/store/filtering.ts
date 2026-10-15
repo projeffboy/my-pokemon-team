@@ -51,6 +51,17 @@ const FORME_REGIONS: Record<string, string> = {
   palkiaorigin: "Hisui",
   basculinwhitestriped: "Hisui",
   ursalunabloodmoon: "Paldea",
+  greninjabond: "Alola",
+  greninjaash: "Alola",
+  zygarde10: "Alola",
+  zygardecomplete: "Alola",
+  pikachuoriginal: "Alola",
+  pikachuhoenn: "Alola",
+  pikachusinnoh: "Alola",
+  pikachuunova: "Alola",
+  pikachukalos: "Alola",
+  pikachupartner: "Alola",
+  pikachuworld: "Galar",
 };
 
 // The generation a species or forme first appeared in, following Showdown's dex-species.ts
@@ -193,7 +204,7 @@ export function filterPokemon({
       ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
     ) {
       return filterByTier(
-        ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)"],
+        ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)", "NFE", "LC"],
         pokemon => doublesTierIn(pokemon, generation),
       );
     }

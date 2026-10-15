@@ -109,7 +109,7 @@ test("compatible custom IVs and shiny DVs are preserved", () => {
   expect(shiny).toEqual({ ...createTeam({ name: "lanturn" })[0], shiny: true });
 });
 
-test("fixed-power Hidden Power keeps custom IVs whose parity already gives the type", () => {
+test("fixed-power Hidden Power changes as few custom IVs as the type allows", () => {
   for (const generation of [6, 7, 8] as const) {
     const trickRoom = createTeam({
       name: "lanturn",
@@ -119,8 +119,34 @@ test("fixed-power Hidden Power keeps custom IVs whose parity already gives the t
     matchHiddenPower(trickRoom, "hiddenpowerfire", generation);
     expect(trickRoom.ivs).toEqual({ atk: 30, spa: 30, spe: 0 });
     matchHiddenPower(trickRoom, "hiddenpowerice", generation);
-    expect(trickRoom.ivs).toEqual({ atk: 30, def: 30, spe: 1 });
+    expect(trickRoom.ivs).toEqual({ spe: 0 });
     expect(hiddenPowerType(trickRoom, generation)).toBe("ice");
+    for (const [type, ivs] of [
+      ["water", { spa: 30, spe: 0 }],
+      ["bug", { spd: 30, spe: 0 }],
+    ] as const) {
+      const member = createTeam({
+        name: "lanturn",
+        level: 99,
+        ivs: { spe: 0 },
+      })[0]!;
+      matchHiddenPower(member, `hiddenpower${type}`, generation);
+      expect(member.ivs, `${generation}: ${type}`).toEqual(ivs);
+    }
+    const special = createTeam({
+      name: "starmie",
+      level: 50,
+      ivs: { atk: 0 },
+    })[0]!;
+    matchHiddenPower(special, "hiddenpowerghost", generation);
+    expect(special.ivs).toEqual({ atk: 0, spd: 30 });
+    for (const type of Object.keys(spreads)) {
+      const member = createTeam({ name: "lanturn", level: 99 })[0]!;
+      matchHiddenPower(member, `hiddenpower${type}`, generation);
+      expect(member.ivs ?? {}, `${generation}: ${type}`).toEqual(
+        spreads[type]?.ivs,
+      );
+    }
   }
   const variablePower = createTeam({ name: "lanturn", ivs: { spe: 0 } })[0]!;
   matchHiddenPower(variablePower, "hiddenpowerfire", 5);

@@ -1,4 +1,6 @@
 import { viableMovesIn } from "@/data/viable-moves";
+import formatBans from "@/data/format-bans";
+import { showdownFormatId } from "@/shared/formats";
 import { generationRules } from "@/shared/generation-rules";
 import { baseMoveId } from "@/shared/moves";
 import { matchHiddenPowerPreservingDetails } from "@/shared/hidden-power";
@@ -46,14 +48,33 @@ const species = (pokemon: string) => baseForme(pokemon) ?? pokemon;
 // A random pokemon from the options, preferring a species not already on the team,
 // as the Species Clause asks, and then a forme not already on it.
 // Pokemon that learn no moves, such as the Pokestars, are left out while any
-// others remain, so a random set has moves.
+// others remain, so a random set has moves. So are pokemon whose every ability
+// the tier bans, such as Gible with Sand Veil in Gen 4 OU; the tier is the
+// format, except in Generations 6–9.
 export function randomPokemon(
   options: readonly string[],
   taken: readonly string[],
   random: Random = Math.random,
+  generation: Generation = 9,
+  format = "",
+  tier = format,
 ) {
-  const movable = options.filter(pokemon => completeLearnset(pokemon).length);
-  if (movable.length) options = movable;
+  const banned =
+    formatBans[showdownFormatId(generation, tier)]?.abilities ?? [];
+  for (const usable of [
+    (pokemon: string) => completeLearnset(pokemon).length > 0,
+    (pokemon: string) => {
+      const abilities =
+        banned.length ? pokemonAbilities(pokemon, generation, format) : [];
+      return (
+        !abilities.length ||
+        abilities.some(ability => !banned.includes(ability))
+      );
+    },
+  ]) {
+    const kept = options.filter(usable);
+    if (kept.length) options = kept;
+  }
   const takenSpecies = new Set(taken.filter(Boolean).map(species));
   const newSpecies = options.filter(
     pokemon => !takenSpecies.has(species(pokemon)),
@@ -143,7 +164,9 @@ export function randomizeSlotLabel(
 
 // Fills in what the set lacks: one of its abilities, its required item or else
 // a random one that no teammate holds, as the Item Clause asks, and different
-// moves, drawn from its viable moves when it has enough of them
+// moves, drawn from its viable moves when it has enough of them. It avoids what
+// the tier bans while enough else remains; the tier is the format, except in
+// Generations 6–9.
 export function completeSet(
   member: Readonly<TeamPokemon>,
   learnset: readonly string[],
@@ -151,8 +174,10 @@ export function completeSet(
   generation: Generation = 9,
   format = "",
   takenItems: readonly string[] = [],
+  tier = format,
 ): TeamPokemon {
   const rules = generationRules(generation, format);
+  const bans = formatBans[showdownFormatId(generation, tier)];
   const { name } = member;
   const set = { ...member };
   const chosen = new Set<string>();
@@ -178,10 +203,12 @@ export function completeSet(
       preserveIvs: !!member.ivs,
     }),
   );
+  const allowed = compatible.filter(move => !bans?.moves?.includes(move));
+  const usable = groupMoves(allowed).size >= 4 ? allowed : compatible;
   const viable = groupMoves(
-    compatible.filter(move => viableMovesIn(generation).has(move)),
+    usable.filter(move => viableMovesIn(generation).has(move)),
   );
-  const groups = viable.size >= 4 ? viable : groupMoves(compatible);
+  const groups = viable.size >= 4 ? viable : groupMoves(usable);
   const pool = [...groups].filter(([id]) => !chosen.has(id));
   for (const key of MOVE_KEYS) {
     if (set[key] || !pool.length) continue;
@@ -200,8 +227,11 @@ export function completeSet(
   }
   if (!rules.items) set.item = "";
   else if (!set.item) {
-    const items = availableItems(RANDOM_ITEMS, generation, format);
+    const items = availableItems(RANDOM_ITEMS, generation, format).filter(
+      item => !bans?.items?.includes(item),
+    );
     const free = items.filter(item => !takenItems.includes(item));
+    // A required item stays even where it is banned
     set.item =
       getAutoSelectedItem(name, "", item =>
         isItemAvailable(item, generation, format),
@@ -209,9 +239,17 @@ export function completeSet(
       (pickRandom(free.length ? free : items, random) ?? "");
   }
   if (!rules.abilities) set.ability = "";
-  else if (!set.ability)
+  else if (!set.ability) {
+    const abilities = pokemonAbilities(name, generation, format);
+    const allowedAbilities = abilities.filter(
+      ability => !bans?.abilities?.includes(ability),
+    );
     set.ability =
-      pickRandom(pokemonAbilities(name, generation, format), random) ?? "";
+      pickRandom(
+        allowedAbilities.length ? allowedAbilities : abilities,
+        random,
+      ) ?? "";
+  }
   return set;
 }
 
@@ -223,6 +261,7 @@ export const randomSet = (
   generation: Generation = 9,
   format = "",
   takenItems: readonly string[] = [],
+  tier = format,
 ) =>
   completeSet(
     {
@@ -239,4 +278,5 @@ export const randomSet = (
     generation,
     format,
     takenItems,
+    tier,
   );

@@ -640,7 +640,7 @@ const ptBR: Messages = {
     importPlaceholder: "Cole uma equipe aqui",
     editPlaceholder: "Sua equipe está vazia",
     label: "Texto bruto da equipe do Pokemon Showdown",
-    kept: "Apelidos, níveis, gêneros, shiny, Tipos Tera, naturezas, EVs e IVs são mantidos. A felicidade também é mantida quando o jogo selecionado a suporta.",
+    kept: "Apelidos, níveis, gêneros, shiny, felicidade, Tipos Tera, naturezas, EVs e IVs são mantidos quando o jogo selecionado os tem.",
     import: "Importar",
     update: "Atualizar",
     imported: "Equipe importada",
@@ -721,6 +721,7 @@ const ptBR: Messages = {
     typeColours: "Cores dos tipos",
     typeColoursFor: "A cor de cada tipo nas estatísticas da equipe",
     stunfiskFor: "É uma boa comunidade",
+    serebiiFor: "Os itens que os Pokémon podem segurar em Legends: Z-A",
   },
   privacy: {
     playwire:
