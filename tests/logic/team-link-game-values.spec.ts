@@ -75,7 +75,8 @@ test("Champions links made with the display-name game value still open as Champi
   });
   store.addTeam();
   const url = new URL("https://mypokemonteam.com/");
-  url.searchParams.set("game", CHAMPIONS_FORMAT);
+  // The value published Oct 10–13, 2026, independent of the current name
+  url.searchParams.set("game", "Pokemon Champions (M-C)");
   url.searchParams.set(
     "team",
     toBase64Url(serializeTeam(team, 9, CHAMPIONS_FORMAT)),

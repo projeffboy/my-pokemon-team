@@ -73,9 +73,11 @@ export function generationSettingsFromUrl():
   )
     return { ...DEFAULT_TEAM_SETTINGS };
   const game = params.get("game");
-  // Links made Oct 10–13, 2026 named the game by its format
+  // Links made Oct 10–13, 2026 named the game by its format at the time
   const format =
-    game === "champions" || game === CHAMPIONS_FORMAT ? CHAMPIONS_FORMAT : "";
+    game === "champions" || game === "Pokemon Champions (M-C)" ?
+      CHAMPIONS_FORMAT
+    : "";
   const generation =
     format === CHAMPIONS_FORMAT ? 9 : Number(params.get("gen"));
   return isGeneration(generation) ? { generation, format } : undefined;
