@@ -23,6 +23,7 @@ const entries: Entry[] = [
       "Doubles OU and Doubles Uber now include Pokémon that were missing from them, such as Gen 6 Mega Tyranitar.",
       "Changing generations now swaps Giratina-Origin’s Griseous Core and Griseous Orb instead of dropping or keeping the wrong one.",
       "Switching a team to Gen 9 no longer removes Pokémon and moves that Gen 9 offers, such as Silvally and Tyranitar’s Pursuit.",
+      "Imported sets without an item keep their Pokémon when the nickname holds an @, such as Mew@x (Pikachu).",
     ],
   },
   {
