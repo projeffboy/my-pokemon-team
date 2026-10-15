@@ -538,6 +538,27 @@ const fr: Messages = {
     importedMany: (count: number) => `${count} équipes importées`,
     noChanges: "Aucune modification.",
     nothingFound: "Aucun Pokémon trouvé dans ce texte.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 problème trouvé" : `${count} problèmes trouvés`}. La mise à jour applique tout de même le texte ainsi :`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Capacité ${slot}`,
+    problemValue: (where: string, value: string) => `${where} : « ${value} »`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Non reconnu.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} ne peut pas apprendre cette capacité dans le jeu sélectionné.`,
+    wrongAbility: (pokemon: string) =>
+      `Ce n'est pas un talent que ${pokemon} peut avoir.`,
+    outOfRange: (min: number, max: number) =>
+      `Ce n'est pas un nombre entier de ${min} à ${max}.`,
+    unsupported: "Le jeu sélectionné n'a pas ce détail.",
+    tooManyPokemon: "Une équipe compte au plus six Pokémon.",
+    tooManyMoves: "Un Pokémon connaît au plus quatre capacités.",
+    unread: "Ce n'est pas un détail que le site lit.",
+    slotLeftEmpty: "L'emplacement de l'équipe reste vide.",
+    moveLeftEmpty: "L'emplacement de la capacité reste vide.",
+    leftOut: "Cet élément est ignoré.",
+    usedInstead: (value: string) => `${value} est utilisé à la place.`,
   },
   deleteDialog: {
     title: (team: string) => `Supprimer ${team} ?`,

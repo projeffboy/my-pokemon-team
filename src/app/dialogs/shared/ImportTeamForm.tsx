@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -12,13 +12,15 @@ import {
   parseTeamsText,
   parseTeamText,
   serializeTeam,
+  teamTextProblems,
 } from "@/store/team-text";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import TeamTextProblems from "./import-team-form/TeamTextProblems";
 
 // A dialog's body and actions for pasting Showdown text: either new teams to import,
-// or the current team's text to edit. Importing or updating calls onDone; cancelling
-// calls onClose.
+// or the current team's text to edit, with the problems an update would work around.
+// Importing or updating calls onDone; cancelling calls onClose.
 const ImportTeamForm = observer(function ImportTeamForm({
   isImport,
   onClose,
@@ -39,6 +41,16 @@ const ImportTeamForm = observer(function ImportTeamForm({
   );
   const [text, setText] = useState(initialText);
   const [isNothingFound, setIsNothingFound] = useState(false);
+  const { generation } = store.currentTeam;
+  const { dataFormat, learnsetsLoaded } = store;
+  const deferredText = useDeferredValue(text);
+  const problems = useMemo(
+    () =>
+      isImport || !learnsetsLoaded ?
+        []
+      : teamTextProblems(deferredText, generation, dataFormat),
+    [isImport, learnsetsLoaded, deferredText, generation, dataFormat],
+  );
 
   const handleImport = () => {
     const teams = parseTeamsText(text, store.currentTeam);
@@ -60,9 +72,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
 
   const handleUpdate = () => {
     if (text !== initialText)
-      store.replaceTeam(
-        parseTeamText(text, store.currentTeam.generation, store.dataFormat),
-      );
+      store.replaceTeam(parseTeamText(text, generation, dataFormat));
     else store.openSnackbar(importDialog.noChanges);
     onDone();
   };
@@ -104,6 +114,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
           error={isNothingFound}
           helperText={isNothingFound && importDialog.nothingFound}
         />
+        <TeamTextProblems problems={problems} />
         <DialogContentText>{importDialog.kept}</DialogContentText>
       </DialogContent>
       <DialogActions>

@@ -1,0 +1,292 @@
+import { test, expect } from "@playwright/test";
+import pokedex from "@/data/pokedex";
+import type { Generation, TeamPokemon } from "@/types";
+import {
+  parseTeamText,
+  serializeTeam,
+  teamTextProblems,
+  type TeamTextProblem,
+} from "@/store/team-text";
+import {
+  availablePokemon,
+  generationLearnset,
+  learnsetsReady,
+} from "@/store/learnsets";
+import { randomSet } from "@/store/random";
+import { generationRules } from "@/shared/generation-rules";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
+import { LEGENDS_ARCEUS, LEGENDS_ZA, LETS_GO } from "@/shared/game-variants";
+
+test.beforeAll(() => learnsetsReady);
+
+const read = (text: string, generation: Generation = 9, format = "") => {
+  const problems: TeamTextProblem[] = [];
+  const team = parseTeamText(text, generation, format, {
+    onProblem: problem => problems.push(problem),
+  });
+  return { team, problems };
+};
+
+test("an unrecognized move leaves its slot empty and keeps the other edits", () => {
+  const { team, problems } = read(`Lugia @ Leftovers
+Ability: Multiscale
+- Aeroblast
+- Iron Hed
+- Roost
+- Calm Mind`);
+  expect(team[0]).toMatchObject({
+    name: "lugia",
+    item: "leftovers",
+    ability: "Multiscale",
+    move1: "aeroblast",
+    move2: "",
+    move3: "roost",
+    move4: "calmmind",
+  });
+  expect(problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "lugia",
+      field: "move",
+      move: 2,
+      value: "Iron Hed",
+      reason: "unrecognized",
+    },
+  ]);
+});
+
+test("a move the pokemon cannot learn is reported with that reason", () => {
+  const { team, problems } = read("Sigilyph\n- Psychic\n- Close Combat");
+  expect(team[0]).toMatchObject({ move1: "psychic", move2: "" });
+  expect(problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "sigilyph",
+      field: "move",
+      move: 2,
+      value: "Close Combat",
+      reason: "unlearnable",
+    },
+  ]);
+});
+
+test("bare dashes and fewer than four moves are not problems", () => {
+  const { team, problems } = read("Mienshao\n-\n- U-turn\n-");
+  expect(team[0]).toMatchObject({ move1: "", move2: "uturn", move3: "" });
+  expect(problems).toEqual([]);
+  expect(teamTextProblems("Mienshao", 9, "")).toEqual([]);
+});
+
+test("an unrecognized pokemon is named by its team slot and leaves that slot empty", () => {
+  const { team, problems } = read(
+    "Furret\n\nToucanon @ Life Orb\n- Beak Blast\n\nGrimmsnarl",
+  );
+  expect(team.map(({ name }) => name).slice(0, 3)).toEqual([
+    "furret",
+    "",
+    "grimmsnarl",
+  ]);
+  expect(problems).toEqual([
+    {
+      slot: 2,
+      field: "pokemon",
+      value: "Toucanon @ Life Orb",
+      reason: "unrecognized",
+    },
+  ]);
+});
+
+test("pokemon past the sixth and moves past the fourth are left out", () => {
+  const text = [
+    "Azumarill\n- Aqua Jet\n- Play Rough\n- Belly Drum\n- Knock Off\n- Superpower\n-",
+    "Furret",
+    "Tinkaton",
+    "Cofagrigus",
+    "Mienshao",
+    "Sigilyph",
+    "Lugia @ Leftovers",
+  ].join("\n\n");
+  const { team, problems } = read(text);
+  expect(team[0]).toMatchObject({ move4: "knockoff" });
+  expect(team[5]?.name).toBe("sigilyph");
+  expect(problems).toEqual([
+    {
+      slot: 1,
+      pokemon: "azumarill",
+      field: "move",
+      move: 5,
+      value: "Superpower",
+      reason: "tooManyMoves",
+    },
+    {
+      slot: 7,
+      field: "pokemon",
+      value: "Lugia @ Leftovers",
+      reason: "tooManyPokemon",
+    },
+  ]);
+});
+
+test("an unrecognized item or ability names what is used in its place", () => {
+  expect(
+    teamTextProblems(
+      "Zacian-Crowned @ Rusted Swrd\n\nCofagrigus @ Leftover\nAbility: Levitate\n\nTinkaton\nAbility: Pressure",
+      9,
+      "",
+    ),
+  ).toEqual([
+    {
+      slot: 1,
+      pokemon: "zaciancrowned",
+      field: "item",
+      value: "Rusted Swrd",
+      reason: "unrecognized",
+      replacement: "rustedsword",
+    },
+    {
+      slot: 2,
+      pokemon: "cofagrigus",
+      field: "item",
+      value: "Leftover",
+      reason: "unrecognized",
+    },
+    {
+      slot: 2,
+      pokemon: "cofagrigus",
+      field: "ability",
+      value: "Levitate",
+      reason: "wrongAbility",
+      replacement: "Mummy",
+    },
+    {
+      slot: 3,
+      pokemon: "tinkaton",
+      field: "ability",
+      value: "Pressure",
+      reason: "wrongAbility",
+    },
+  ]);
+});
+
+test("set details that cannot be read are reported with what is used instead", () => {
+  const { team, problems } = read(`Grimmsnarl
+Level: 105
+Shiny: Maybe
+Happiness: 300
+Tera Type: Fyre
+EVs: 300 Atk / 4 Spx / x Spe / 252 HP
+Adamantt Nature
+IVs: 40 SpA
+Abilty: Prankster
+Pokeball: Poke Ball
+Dynamax Level: 10
+Hidden Power: Fire`);
+  expect(team[0]?.evs).toEqual({ atk: 255, hp: 252 });
+  expect(team[0]?.ivs).toBeUndefined();
+  const where = (field: TeamTextProblem["field"], value: string) => ({
+    slot: 1,
+    pokemon: "grimmsnarl",
+    field,
+    value,
+  });
+  expect(problems).toEqual([
+    {
+      ...where("level", "105"),
+      reason: "outOfRange",
+      range: [1, 100],
+      replacement: "100",
+    },
+    { ...where("shiny", "Maybe"), reason: "unrecognized" },
+    { ...where("happiness", "300"), reason: "outOfRange", range: [0, 255] },
+    { ...where("teraType", "Fyre"), reason: "unrecognized" },
+    {
+      ...where("evs", "300 Atk"),
+      reason: "outOfRange",
+      range: [0, 255],
+      replacement: "255 Atk",
+    },
+    { ...where("evs", "4 Spx"), reason: "unrecognized" },
+    { ...where("evs", "x Spe"), reason: "outOfRange", range: [0, 255] },
+    { ...where("nature", "Adamantt"), reason: "unrecognized" },
+    {
+      ...where("ivs", "40 SpA"),
+      reason: "outOfRange",
+      range: [0, 31],
+      replacement: "31 SpA",
+    },
+    { ...where("line", "Abilty: Prankster"), reason: "unread" },
+  ]);
+  expect(teamTextProblems("Grimmsnarl\nLevel: 49.6", 9, "")).toEqual([
+    {
+      ...where("level", "49.6"),
+      reason: "outOfRange",
+      range: [1, 100],
+      replacement: "50",
+    },
+  ]);
+});
+
+test("happiness in a game without it is left out as unsupported", () => {
+  expect(teamTextProblems("Mew\nHappiness: 0", 1, "")).toEqual([
+    {
+      slot: 1,
+      pokemon: "mew",
+      field: "happiness",
+      value: "0",
+      reason: "unsupported",
+    },
+  ]);
+});
+
+// A deterministic stand-in for Math.random
+const seeded = (seed: number) => () => {
+  seed = (seed * 16807) % 2147483647;
+  return seed / 2147483647;
+};
+
+const GAMES: [Generation, string][] = [
+  ...([1, 2, 3, 4, 5, 6, 7, 8, 9] as const).map(
+    (generation): [Generation, string] => [generation, ""],
+  ),
+  [9, CHAMPIONS_FORMAT],
+  [7, LETS_GO],
+  [8, LEGENDS_ARCEUS],
+  [9, LEGENDS_ZA],
+  [9, COMBINED_GENERATIONS_FORMAT],
+];
+
+for (const [generation, format] of GAMES)
+  test(`the site's own text has no problems in Gen ${generation} ${format}`, () => {
+    const rules = generationRules(generation, format);
+    const random = seeded(generation * 31 + format.length);
+    const pokemon = availablePokemon(Object.keys(pokedex), generation, format);
+    const training = { atk: Math.min(252, rules.maxStat), spe: 4 };
+    for (const name of pokemon) {
+      const set: TeamPokemon = {
+        ...randomSet(
+          name,
+          generationLearnset(name, generation, format),
+          random,
+          generation,
+          format,
+        ),
+        nickname: "Ace",
+        ...(!rules.fixedLevel && { level: 50 }),
+        ...(rules.shiny && { shiny: true }),
+        ...(rules.happiness && { happiness: 70 }),
+        ...(rules.tera && { teraType: "Fairy" }),
+        ...(rules.nature && { nature: "modest" }),
+        ...(rules.investment === "statExperience" ?
+          { statExperience: { atk: 65535 } }
+        : rules.investment === "effortLevels" ? { effortLevels: { atk: 10 } }
+        : { evs: training }),
+        ...(rules.ivs && { ivs: { spa: 30 } }),
+      };
+      const text = serializeTeam([set], generation, format);
+      expect(
+        teamTextProblems(text, generation, format),
+        `${text} in Gen ${generation} ${format}`,
+      ).toEqual([]);
+    }
+  });

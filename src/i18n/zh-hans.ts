@@ -507,6 +507,26 @@ const zhHans: Messages = {
     importedMany: (count: number) => `已导入 ${count} 支队伍`,
     noChanges: "没有改动。",
     nothingFound: "这段文字中找不到宝可梦。",
+    problems: (count: number) =>
+      `发现 ${count} 个问题。更新时仍会按以下方式应用文本：`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}的${field}`,
+    moveSlot: (slot: number) => `招式 ${slot}`,
+    problemValue: (where: string, value: string) => `${where}：“${value}”`,
+    explanation: (reason: string, result: string) => `${reason}${result}`,
+    unrecognized: "无法识别。",
+    unlearnable: (pokemon: string) =>
+      `在所选游戏中，${pokemon}无法学会这个招式。`,
+    wrongAbility: (pokemon: string) => `不是${pokemon}可以拥有的特性。`,
+    outOfRange: (min: number, max: number) =>
+      `不是 ${min} 到 ${max} 之间的整数。`,
+    unsupported: "所选游戏没有这一项。",
+    tooManyPokemon: "一支队伍最多有 6 只宝可梦。",
+    tooManyMoves: "一只宝可梦最多有 4 个招式。",
+    unread: "本网站不读取这一项。",
+    slotLeftEmpty: "该队伍栏位留空。",
+    moveLeftEmpty: "该招式栏位留空。",
+    leftOut: "此项被省略。",
+    usedInstead: (value: string) => `改用${value}。`,
   },
   deleteDialog: {
     title: (team: string) => `删除${team}？`,
