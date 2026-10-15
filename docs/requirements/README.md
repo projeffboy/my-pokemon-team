@@ -37,6 +37,8 @@ Every item has an identifier: a prefix, then a number. The numbers carry no orde
 
 Planned features are PF, not P, so that they are not mistaken for the priorities P0 to P3.
 
+Issues closed as not planned on 14 October 2026 name some draft numbers that no document defines: REQ-USE-13 and "Table 3.2-1" (issue 146), REQ-TEXT-12 (issue 149), REQ-COLL-14 and 15 (issue 150), and REQ-FEED-10 (issue 151). Those numbers are not used.
+
 ## Statuses
 
 Each requirement has an importance and a status. Importance (Essential, Conditional, Optional) says how much the site needs it. Priority belongs to issues, not requirements, and says what to do next.

@@ -356,9 +356,9 @@ On 14 October 2026 the Site Owner chose advisory parsing reports in the team-tex
 | REQ-TEXT-9  | The site shall write in team text only the set details that differ from their defaults.                                                                                                                                           | C    | Implemented |
 | REQ-TEXT-10 | The site shall write team text that Pokemon Showdown's importer accepts without error.                                                                                                                                            | C    | Implemented |
 | REQ-TEXT-11 | The site shall read back from team text that it wrote a team equal to the team it wrote, generation profile included.                                                                                                             | E    | Implemented |
-| REQ-TEXT-12 | The site shall report each parsing problem in edited team text before an update, identifying the affected pokemon (team-slot number for an unrecognized name), field, supplied value, reason, and resulting omission or fallback. | C    | Approved    |
 | REQ-TEXT-13 | The site shall apply the parsed result of edited team text upon the Player's update request despite reported parsing problems, without requiring an additional confirmation.                                                      | C    | Approved    |
 | REQ-TEXT-14 | The site shall leave an edited team's move slot empty for a supplied move that is unrecognized or cannot be learned under the team's generation profile and format.                                                               | C    | Implemented |
+| REQ-TEXT-15 | The site shall report each parsing problem in edited team text before an update, identifying the affected pokemon (team-slot number for an unrecognized name), field, supplied value, reason, and resulting omission or fallback. | C    | Approved    |
 
 #### UC15 Look Up Reference
 
@@ -407,8 +407,8 @@ US18. As a player who found something wrong or has an idea, I want to tell the s
 | REQ-FEED-7  | The site shall keep the Player's message in the feedback form after a failure to send.                                           | C    | Implemented |
 | REQ-FEED-8  | The site shall deliver feedback that carries a picture of the page and three screenshots taken on a phone.                       | C    | Implemented |
 | REQ-FEED-9  | The site shall deliver the Site Owner's reply to a feedback message to the reply address that the Player gave.                   | C    | Implemented |
-| REQ-FEED-10 | The site shall include in the picture of the page each pokemon sprite shown on the page.                                         | C    | Implemented |
 | REQ-FEED-11 | The site shall tell the Player, before sending feedback without a reply address, that the Site Owner cannot reply without one.   | C    | Implemented |
+| REQ-FEED-12 | The site shall include in the picture of the page each pokemon sprite shown on the page.                                         | C    | Implemented |
 
 REQ-FEED-9 and REQ-FEED-11 need no verified sending domain: the email's reply-to is the Player's address, whatever address it is sent from, and the form marks the email field "Only if you want a reply".
 
@@ -461,6 +461,24 @@ US22. As a doubles player, or a player of Generations 4 and 5, I want to tell th
 | REQ-ANLY-16 | The site shall identify, for a team whose battle format is unspecified, each checklist role whose result differs between singles and doubles.  | C    | Approved    |
 | REQ-ANLY-17 | The site shall treat every saved team and share link that records no battle format as having an unspecified battle format.                     | E    | Approved    |
 
+**Flow.** How the checklist would judge the Spinner/Defogger role. Today the site never counts Defog before Generation 6, which is wrong for doubles; only the battle format question and its "depends" answer are new.
+
+```mermaid
+flowchart TD
+  Other{"Can a pokemon use Rapid Spin, Court Change, Tidy Up, or Mortal Spin?"}
+  Other -- "Yes" --> Filled["Mark the role as filled"]
+  Other -- "No" --> Defog{"Can a pokemon use Defog?"}
+  Defog -- "No" --> Unfilled["Mark the role as unfilled"]
+  Defog -- "Yes" --> Gen{"Team's generation?"}
+  Gen -- "6 or later" --> Filled
+  Gen -- "4 or 5" --> Format{"Battle format?"}
+  Format -- "Doubles" --> Filled
+  Format -- "Singles" --> Unfilled
+  Format -- "Not set" --> Depends["Say the role depends on the battle format, and why"]
+```
+
+Mock-up M1 shows the battle format set on the checklist: [m1-battle-format-on-checklist.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m1-battle-format-on-checklist.svg).
+
 #### UC23 Transfer Team to Old Website (planned)
 
 US23. As a player moving between the old website and the redesigned site, I want my current team to come with me, so that switching does not mean building it again.
@@ -473,6 +491,21 @@ US23. As a player moving between the old website and the redesigned site, I want
 
 REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site.
 
+**Flow.** The team crosses as its share link, which the old website already reads, so the old website is not changed (REQ-OPS-5). The old website covers Generations 6 to 9 only and does not read newer set details such as EVs and natures, so REQ-SITE-5 warns before the Player leaves.
+
+```mermaid
+flowchart TD
+  Ask["Player asks for the old website"] --> Empty{"Current team has pokemon?"}
+  Empty -- "No" --> Plain["Open the old website without a team"]
+  Empty -- "Yes" --> Warn["Name the pokemon and set details the old website cannot hold"]
+  Warn --> Choose{"Player chooses"}
+  Choose -- "Cancel" --> Stay["Stay, with the team unchanged"]
+  Choose -- "Go with my team" --> Go["Open the old website with the team's share link"]
+  Go --> Old["The old website shows the team as its one unsaved team"]
+```
+
+Mock-up M5 shows today's confirmation next to the planned one: [m5-version-transfer.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m5-version-transfer.svg).
+
 #### UC24 Check Team Legality (planned)
 
 US24. As a competitive player, I want to be told which parts of my team break the rules of its game or format, so that I find out here and not when Pokemon Showdown rejects the team.
@@ -481,6 +514,8 @@ US24. As a competitive player, I want to be told which parts of my team break th
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | -------- |
 | REQ-ANLY-18 | The site shall present to the Player each rule of the current team's generation profile and format that the team breaks, naming the pokemon concerned and marking its slot.                                                                                             | O    | Approved |
 | REQ-ANLY-19 | The site shall check a team against the species clause and the item clause, and each pokemon against its format's allowed pokemon, its possible abilities, its required item, repeated moves, its training limits, its nickname's length, its level, and its tera type. | O    | Approved |
+
+Mock-up M3 shows the problems as a card in the analysis column: [m3-legality-warnings.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m3-legality-warnings.svg).
 
 ### 3.2) Usability requirements
 
@@ -500,13 +535,13 @@ The Site Owner rates speed as paramount: a visitor who waits, or who has to work
 | REQ-USE-15 | The site shall present the accessibility settings apart from the actions on the current team.                                                                                                                                                                                      | C    | Approved    |
 | REQ-USE-16 | The site shall present still sprites in place of animated ones to a Player who has asked for sprites not to be animated.                                                                                                                                                           | C    | Approved    |
 | REQ-USE-17 | The site shall present every function to every Player, without a mode that the Player has to turn on.                                                                                                                                                                              | C    | Implemented |
-| REQ-USE-19 | The site shall suppress browser and operating-system autofill suggestions for saved passwords, payment details, address or location records, and contact records whenever a mobile user focuses an editable form field.                                                            | E    | Approved    |
-| REQ-USE-20 | The site shall dismiss the on-screen keyboard when a mobile user closes a dropdown that opened it.                                                                                                                                                                                 | E    | Approved    |
+| REQ-USE-19 | The site shall suppress browser and operating-system autofill suggestions for saved passwords, payment details, address or location records, and contact records whenever the Player focuses an editable form field on a phone or tablet.                                          | E    | Approved    |
+| REQ-USE-20 | The site shall dismiss the on-screen keyboard when the Player closes a dropdown that opened it.                                                                                                                                                                                    | E    | Approved    |
 | REQ-USE-21 | The site shall suppress spellcheck markings in all fields used to enter team data or Showdown text.                                                                                                                                                                                | E    | Approved    |
 | REQ-USE-22 | The site shall preserve entered text in team-data and Showdown-text fields without automatic correction or capitalization.                                                                                                                                                         | E    | Approved    |
 | REQ-USE-23 | The site shall keep a dialog's action buttons visible while its content scrolls.                                                                                                                                                                                                   | E    | Approved    |
 
-REQ-USE-11 and REQ-USE-12 are Proposed again: the issue that tracked them was closed as not planned on 14 October 2026.
+REQ-USE-11 and REQ-USE-12 are Proposed again: the issue that tracked them was closed as not planned on 14 October 2026. The Site Owner's rule in [08](08-assumptions-and-interview.md#screens-and-editing) lets only the die and the info button on a slot's sprite show an icon alone. The other exceptions in REQ-USE-11, close and dismiss buttons, a saved team's options button, and the Filters and Sort buttons in the lists, are a suggestion he has not agreed to.
 
 REQ-USE-14 keeps the toolbar about the current team, with the Teams button as the one way to the other saved teams. Import Team adds new teams rather than changing the current one, so it belongs behind the Teams button; today the toolbar's Manage menu offers it too. Editing the current team's text stays in the toolbar. The design the Site Owner chose for REQ-USE-14 to 16, a More button with a Manage team section and an Accessibility section for the still sprites (REQ-USE-16) and hidden types (REQ-TEAM-13) switches, is in [08](08-assumptions-and-interview.md#screens-and-editing).
 
@@ -544,15 +579,15 @@ The Site Owner gave no figures but rated every one of these as critical, so the 
 
 Each value is measured on a mid-range phone released within the last four years, over a 4G connection, with an empty browser cache for REQ-PERF-3 and REQ-PERF-4 and a warm one otherwise. Lighthouse's mobile profile emulates such a phone and is the measure for REQ-PERF-4. The advertising script and the sprites served by Pokemon Showdown are left out.
 
-| ID         | Requirement                                                                                                                                                            | Imp. | Status      |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-PERF-1 | In 95% of all cases, the site shall have a maximal response time of 100 ms between a change to the current team and the presentation of the updated analysis.          | E    | Approved    |
-| REQ-PERF-2 | In 95% of all cases, the site shall have a maximal response time of 200 ms between a request to list the pokemon for a slot and the presentation of the first options. | E    | Approved    |
-| REQ-PERF-3 | In 95% of all cases, the site shall have a maximal response time of 3 s between the opening of a share link and the presentation of the team's pokemon and analysis.   | E    | Approved    |
-| REQ-PERF-4 | The site shall let a first-time visitor edit a team within 3 s of opening the site **[A-16]**.                                                                         | E    | Approved    |
-| REQ-PERF-6 | The site shall save a change to a team to the Player's browser within 1 s of the change, and before the page is hidden.                                                | E    | Implemented |
-| REQ-PERF-7 | The site shall be able to store a minimum of 500 saved teams in a browser that grants 5 megabytes of site storage **[A-16]**.                                          | C    | Proposed    |
-| REQ-PERF-9 | The site shall download at most 20 kB on a repeat visit when nothing has been released since the visitor's last visit **[A-16]**.                                      | C    | Approved    |
+| ID         | Requirement                                                                                                                       | Imp. | Status      |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-PERF-1 | The site shall present the updated analysis within 100 ms of a change to the current team, in 95% of cases.                       | E    | Approved    |
+| REQ-PERF-2 | The site shall present the first pokemon options within 200 ms of a request to list the pokemon for a slot, in 95% of cases.      | E    | Approved    |
+| REQ-PERF-3 | The site shall present the team's pokemon and analysis within 3 s of the opening of a share link, in 95% of cases.                | E    | Approved    |
+| REQ-PERF-4 | The site shall let a first-time visitor edit a team within 3 s of opening the site **[A-16]**.                                    | E    | Approved    |
+| REQ-PERF-6 | The site shall save a change to a team to the Player's browser within 1 s of the change, and before the page is hidden.           | E    | Implemented |
+| REQ-PERF-7 | The site shall be able to store a minimum of 500 saved teams in a browser that grants 5 megabytes of site storage **[A-16]**.     | C    | Proposed    |
+| REQ-PERF-9 | The site shall download at most 20 kB on a repeat visit when nothing has been released since the visitor's last visit **[A-16]**. | C    | Approved    |
 
 Design budget for REQ-PERF-4: at most 600 kB of gzip-compressed script before a team can be edited. The production build of 13 October 2026 downloads about 520 kB before editing, and defers the move lists, the generation transfer data, the sprite animation table, and each language.
 
@@ -603,17 +638,19 @@ The site holds no accounts and no secrets of its players. What is worth protecti
 | Craft a share link or backup file that destroys the visitor's saved teams  | REQ-SEC-5, REQ-LINK-6, REQ-BKUP-2 |
 | Obtain the email delivery key                                              | REQ-SEC-6                         |
 
-| ID        | Requirement                                                                                                                                                                                          | Imp. | Status      |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-SEC-1 | The feedback function shall accept only requests that carry JSON, rejecting those that the browser reports as coming from another site.                                                              | E    | Implemented |
-| REQ-SEC-2 | The feedback function shall accept a maximum of 5 messages from one network address in any 10 minutes.                                                                                               | E    | Implemented |
-| REQ-SEC-3 | The feedback function shall reject a message that is empty or longer than 5000 characters, a reply address that is not a valid email address, and any attachment that is not a JPEG image.           | E    | Implemented |
-| REQ-SEC-4 | The site shall forward a sprite request to Pokemon Showdown's sprite server only for a request that the browser reports as coming from the site's own pages.                                         | E    | Implemented |
-| REQ-SEC-5 | The site shall read from a share link, team text, a backup file, and its saved state only the fields of the expected kind, discarding every other part without executing or displaying it as markup. | E    | Implemented |
-| REQ-SEC-6 | The site shall hold the email delivery key only in the hosting environment, outside the repository and outside every file a browser downloads.                                                       | E    | Implemented |
-| REQ-SEC-7 | The site shall send no saved team and no backup file to any server, other than the current team's share link, which feedback attaches unless the Player declines it (REQ-FEED-2).                    | E    | Implemented |
+| ID        | Requirement                                                                                                                                                                                                                                                              | Imp. | Status      |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
+| REQ-SEC-1 | The feedback function shall accept only requests that carry JSON, rejecting those that the browser reports as coming from another site.                                                                                                                                  | E    | Implemented |
+| REQ-SEC-2 | The feedback function shall accept a maximum of 5 messages from one network address in any 10 minutes.                                                                                                                                                                   | E    | Implemented |
+| REQ-SEC-3 | The feedback function shall reject a message that is empty or longer than 5000 characters, a reply address that is not a valid email address, and any attachment that is not a JPEG image.                                                                               | E    | Implemented |
+| REQ-SEC-4 | The site shall forward a sprite request to Pokemon Showdown's sprite server only for a request that the browser reports as coming from the site's own pages.                                                                                                             | E    | Implemented |
+| REQ-SEC-5 | The site shall read from a share link, team text, a backup file, and its saved state only the fields of the expected kind, discarding every other part without executing or displaying it as markup.                                                                     | E    | Implemented |
+| REQ-SEC-6 | The site shall hold the email delivery key only in the hosting environment, outside the repository and outside every file a browser downloads.                                                                                                                           | E    | Implemented |
+| REQ-SEC-7 | The site shall send no saved team and no backup file to any server, other than the current team's share link, which the page's address carries to the hosting platform on each load (REQ-LINK-1) and which feedback attaches unless the Player declines it (REQ-FEED-2). | E    | Implemented |
 
 REQ-SEC-2 is met on a best-effort basis: the count is kept by one running copy of the function, and the hosting platform may run several.
+
+REQ-SEC-7 does not stop the page's address, with the current team in it, from leaving the browser in other ways: the site sets no Referrer-Policy, so each sprite request through the site's own address carries the full address in its Referer header, and the ad platform's script runs in the page, where it can read the address.
 
 ### 3.8) Information management requirements
 
@@ -628,6 +665,8 @@ Players keep teams and links for months or years. These requirements protect the
 | REQ-INFO-6 | The site shall forget the Player's dismissal of the slot reordering hint 91 days after the Player's last visit.                                | O    | Implemented |
 | REQ-INFO-7 | The site shall keep the Player's sort order, option view, move type display, and language in the browser for later visits.                     | C    | Implemented |
 | REQ-INFO-8 | The site shall name, to a visitor who opens a share link or a saved team, each pokemon, move, item, and ability that it left out of the team.  | C    | Approved    |
+
+Mock-up M4 shows the notice for REQ-INFO-8: [m4-dropped-entries-notice.svg](https://github.com/projeffboy/my-pokemon-team/blob/efdc7baec1e8232065a848c9f042e6046427fb63/docs/requirements/mockups/m4-dropped-entries-notice.svg).
 
 ### 3.9) Policy and regulation requirements
 
@@ -663,10 +702,10 @@ The test suites were matched to requirement groups by their names and folders, n
 | REQ-ANLY-12 to 19                | Test                      | To be written with the features. `tests/logic/validation.spec.ts` already covers the rules of REQ-ANLY-19.                                                                                                                                                                                                                                      |
 | REQ-GEN                          | Test                      | `tests/logic/generation-transfer.spec.ts`, `tests/logic/generation-rules.spec.ts`, `tests/logic/combined-generations.spec.ts`, `tests/component/header/generation-select/`                                                                                                                                                                      |
 | REQ-COLL                         | Test                      | `tests/logic/teams.spec.ts`, `tests/logic/teams-storage.spec.ts`, `tests/logic/team-sync.spec.ts`, `tests/component/dialogs/teams-dialog/`, `tests/e2e/synchronization-regression.spec.ts`                                                                                                                                                      |
-| REQ-BKUP                         | Test                      | `tests/logic/team-backup.spec.ts`, `tests/component/dialogs/teams-dialog/backup-integration-tests.spec.ts`                                                                                                                                                                                                                                      |
+| REQ-BKUP, REQ-INTF-11            | Test                      | `tests/logic/team-backup.spec.ts`, `tests/component/dialogs/teams-dialog/backup-integration-tests.spec.ts`                                                                                                                                                                                                                                      |
 | REQ-LINK, REQ-INTF-3, REQ-INTF-4 | Test                      | `tests/component/team-link-sync/`, `tests/logic/team-link-game-values.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/share-link-*.spec.ts`                                                                                                                                                                                    |
 | REQ-TEXT-1 to 11                 | Test                      | `tests/logic/parsing.spec.ts`, `tests/logic/storage-text-contracts.spec.ts`, `tests/component/main/pokemon-team/shared/team-toolbar/manage-team-menu/`; for REQ-TEXT-10, a test that reads the text with Pokemon Showdown's own parser, to be written                                                                                           |
-| REQ-TEXT-12 to 14                | Test, Demonstration       | Parsing and team-text editor checks for advisory reports, updating despite problems without confirmation, invalid and unlearnable moves becoming empty slots, later valid moves keeping their slots, and cancelling.                                                                                                                            |
+| REQ-TEXT-13 to 15                | Test, Demonstration       | Parsing and team-text editor checks for advisory reports, updating despite problems without confirmation, invalid and unlearnable moves becoming empty slots, later valid moves keeping their slots, and cancelling.                                                                                                                            |
 | REQ-REF                          | Test, Inspection          | `tests/component/footer/`, `tests/component/dialogs/pokemon-info-dialog/`, `tests/links/dex-links.spec.ts` (run by hand)                                                                                                                                                                                                                        |
 | REQ-LANG, REQ-THEME              | Test                      | `tests/logic/translations.spec.ts`, `tests/component/header/language-select/`, `tests/component/shared/theme/`; for REQ-LANG-1, the type check fails on a text missing from a language                                                                                                                                                          |
 | REQ-FEED, REQ-SEC-1 to 3         | Test, Demonstration       | `tests/logic/feedback.spec.ts`, `tests/component/header/feedback-dialog/`; sending is demonstrated on a preview deployment                                                                                                                                                                                                                      |
