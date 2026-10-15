@@ -2,7 +2,7 @@ import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import { CAP_FORMAT } from "@/shared/formats";
 import { viableMovesIn } from "@/data/viable-moves";
 import pokedex from "@/data/pokedex";
-import { pokemonNameInverse } from "@/shared/names";
+import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { generationBit, generationRules } from "@/shared/generation-rules";
 import type {
@@ -12,7 +12,12 @@ import type {
   ReadonlyTeam,
 } from "@/types";
 import { englishNames, type Names } from "@/i18n/names";
-import { baseForme, isCapPokemon, previousEvolution } from "./shared/pokemon";
+import {
+  baseForme,
+  CAP_BANNED_POKEMON,
+  isCapPokemon,
+  previousEvolution,
+} from "./shared/pokemon";
 
 const completeLearnsets = new Map<string, readonly string[]>();
 
@@ -185,6 +190,17 @@ export function getTeamLearnsets(
   };
 }
 
+// CAP-only items are in no game, so the CAP format adds those its pokemon need, e.g. Vile Vial
+const capFormatItems = new Set(
+  Object.entries(pokedex).flatMap(([pokemon, { requiredItem }]) => {
+    const item =
+      isCapPokemon(pokemon) &&
+      pokemon !== CAP_BANNED_POKEMON &&
+      requiredItem &&
+      itemNameInverse(requiredItem);
+    return item ? [item] : [];
+  }),
+);
 export function availableItems(
   items: readonly string[],
   generation: Generation,
@@ -192,7 +208,11 @@ export function availableItems(
 ) {
   if (!generationRules(generation, format).items) return [];
   const bit = generationBit(generation, format);
-  return items.filter(item => !!((availability?.items[item] ?? 0) & bit));
+  return items.filter(
+    item =>
+      !!((availability?.items[item] ?? 0) & bit) ||
+      (format === CAP_FORMAT && capFormatItems.has(item)),
+  );
 }
 export function availablePokemon(
   pokemon: readonly string[],

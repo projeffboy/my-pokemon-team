@@ -16,7 +16,7 @@ import {
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
 import { pokemonFormatIn } from "@/shared/generation-data";
-import { isCapPokemon } from "./shared/pokemon";
+import { CAP_BANNED_POKEMON, isCapPokemon } from "./shared/pokemon";
 
 type Filters = Readonly<
   Partial<
@@ -180,8 +180,7 @@ export function filterPokemon({
         ],
         "tier",
       );
-      // Showdown's CAP bans Crucibellite, the stone Crucibelle-Mega needs
-      delete cap.crucibellemega;
+      delete cap[CAP_BANNED_POKEMON];
       return cap;
     }
 

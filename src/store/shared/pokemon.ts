@@ -24,3 +24,6 @@ export function isCapPokemon(pokemon: string) {
   const num = pokedex[pokemon]?.num ?? 0;
   return num < 0 && num > -5000;
 }
+
+// Showdown's CAP bans Crucibellite, the stone Crucibelle-Mega needs
+export const CAP_BANNED_POKEMON = "crucibellemega";

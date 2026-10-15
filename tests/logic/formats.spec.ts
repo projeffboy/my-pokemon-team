@@ -9,6 +9,7 @@ import {
   showdownFormatId,
 } from "@/shared/formats";
 import { GENERATIONS } from "@/shared/generations";
+import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
 
 for (const generation of GENERATIONS) {
   test(`Gen ${generation} offers its Showdown tier formats`, () => {
@@ -38,6 +39,19 @@ test("generation changes keep supported formats and clear unavailable ones", () 
   expect(formatForGeneration(CHAMPIONS_FORMAT, 8)).toBe("");
   expect(formatForGeneration(CAP_FORMAT, 8)).toBe("");
   expect(formatForGeneration("", 9)).toBe("");
+});
+
+test("Generations 6–9 leaves out CAP, whose pokemon are in no game", () => {
+  const combined = formatsForGeneration(9, COMBINED_GENERATIONS_PROFILE);
+  expect(combined).toContain("OU: Over Used");
+  expect(combined).not.toContain(CAP_FORMAT);
+  expect(formatForGeneration(CAP_FORMAT, 9)).toBe(CAP_FORMAT);
+  expect(formatForGeneration(CAP_FORMAT, 9, COMBINED_GENERATIONS_PROFILE)).toBe(
+    "",
+  );
+  expect(
+    formatForGeneration("OU: Over Used", 9, COMBINED_GENERATIONS_PROFILE),
+  ).toBe("OU: Over Used");
 });
 
 test("the CAP format round-trips through Showdown's team header ID", () => {

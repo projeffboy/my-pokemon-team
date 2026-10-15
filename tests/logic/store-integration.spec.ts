@@ -194,6 +194,19 @@ test("the CAP format adds the CAP pokemon, their abilities, and their moves", ({
   expect(store.teamLearnsets.values[0]).not.toContain("return");
 });
 
+test("the CAP format offers the CAP-only item its pokemon need, but not the banned Crucibellite", ({
+  store,
+}) => {
+  store.currentTeam.format = "OU: Over Used";
+  expect(store.teamItems).not.toContain("vilevial");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.teamItems).toContain("vilevial");
+  expect(store.teamItems).toContain("leftovers");
+  expect(store.teamItems).not.toContain("crucibellite");
+  store.selectPokemon(0, "venomiconepilogue");
+  expect(store.team[0]?.item).toBe("vilevial");
+});
+
 test("a past generation keeps the pokemon that learn no moves in any game", ({
   store,
 }) => {

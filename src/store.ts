@@ -256,7 +256,13 @@ export class Store {
       name: this.nextTeamName(),
       generation,
       format:
-        settings ? formatForGeneration(format, settings.generation) : format,
+        settings ?
+          formatForGeneration(
+            format,
+            settings.generation,
+            settings.generationProfile,
+          )
+        : format,
       ...settings,
       generationProfile:
         settings ?

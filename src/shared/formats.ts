@@ -4,7 +4,7 @@ import {
   LEGENDS_ZA,
   variantGeneration,
 } from "./game-variants";
-import type { Generation } from "@/types";
+import type { Generation, SavedTeam } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "./generations";
 
 export const CHAMPIONS_FORMAT = "Pokemon Champions (M-C)";
@@ -54,15 +54,25 @@ const FORMAT_GENERATIONS: Record<string, readonly Generation[]> = {
   "Doubles UU": [7, 8, 9],
 };
 
-export const formatsForGeneration = (generation: Generation) =>
+// Generations 6–9 lists only pokemon from the games, so there CAP would be the same as OU
+export const formatsForGeneration = (
+  generation: Generation,
+  generationProfile?: SavedTeam["generationProfile"],
+) =>
   FORMATS.filter(
-    format => FORMAT_GENERATIONS[format]?.includes(generation) ?? true,
+    format =>
+      (FORMAT_GENERATIONS[format]?.includes(generation) ?? true) &&
+      !(format === CAP_FORMAT && generationProfile),
   );
 
-export const formatForGeneration = (format: string, generation: Generation) =>
+export const formatForGeneration = (
+  format: string,
+  generation: Generation,
+  generationProfile?: SavedTeam["generationProfile"],
+) =>
   (
     variantGeneration(format) === generation ||
-    formatsForGeneration(generation).includes(format)
+    formatsForGeneration(generation, generationProfile).includes(format)
   ) ?
     format
   : "";
