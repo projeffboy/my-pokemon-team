@@ -514,9 +514,9 @@ const ko: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}에게 테라스탈 타입이 설정되어 있지만, 테라스탈 타입은 ${generation(9)}에만 있습니다.`,
     speciesClause: (species: string) =>
-      `${josa(species, "이", "가")} 두 마리 있습니다 (Species Clause).`,
+      `${josa(species, "은", "는")} 한 마리만 넣을 수 있습니다 (Species Clause).`,
     itemClause: (item: string) =>
-      `${josa(item, "을", "를")} 지닌 포켓몬이 두 마리 있습니다 (Item Clause).`,
+      `${josa(item, "은", "는")} 한 마리만 지닐 수 있습니다 (Item Clause).`,
   },
   importDialog: {
     importTitle: "팀 가져오기",

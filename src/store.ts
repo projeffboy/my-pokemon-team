@@ -727,11 +727,13 @@ export class Store {
     );
   }
 
-  // The rules the current team breaks, once the data they need has loaded
+  // The rules the current team breaks, once the data they need, such as each
+  // game's items, has loaded
   get teamProblems(): TeamProblem[] | undefined {
     if (
-      this.currentTeam.generationProfile === "6-9" &&
-      !this.generationDataLoaded
+      !this.learnsetsLoaded ||
+      (this.currentTeam.generationProfile === "6-9" &&
+        !this.generationDataLoaded)
     )
       return undefined;
     return validateTeam(

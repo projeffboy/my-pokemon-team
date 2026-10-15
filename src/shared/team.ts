@@ -67,19 +67,23 @@ const EARLIER_REQUIRED_ITEMS: Record<string, string> = {
   griseouscore: "griseousorb",
 };
 
-// E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric.
-// Given the team's game, it is the first of them that game has.
+// The items a pokemon must hold one of, e.g. Blastoisinite for Blastoise-Mega, or
+// Zap Plate (listed before Electrium Z) for Arceus-Electric
+export const requiredItemIds = (pokemon: string) => {
+  const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
+  return [requiredItem, ...requiredItems]
+    .map(name => (name && itemNameInverse(name)) || "")
+    .flatMap(item => [item, EARLIER_REQUIRED_ITEMS[item] ?? ""])
+    .filter(item => item);
+};
+
+// Given the team's game, the first required item that game has
 export function getAutoSelectedItem(
   pokemon: string,
   pokemonItem: string,
   isAvailable?: (item: string) => boolean,
 ): string {
-  const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
-  const items = [requiredItem, ...requiredItems]
-    .map(name => (name && itemNameInverse(name)) || "")
-    .flatMap(item => [item, EARLIER_REQUIRED_ITEMS[item] ?? ""])
-    .filter(item => item);
-
+  const items = requiredItemIds(pokemon);
   return (isAvailable && items.find(isAvailable)) || items[0] || pokemonItem;
 }
 

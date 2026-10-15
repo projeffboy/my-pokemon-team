@@ -493,9 +493,8 @@ const zhHant: Messages = {
       `${pokemon}的等級必須在 1 到 ${max} 之間。`,
     teraType: (pokemon: string) =>
       `${pokemon}有太晶屬性，但太晶屬性只存在於${generation(9)}。`,
-    speciesClause: (species: string) =>
-      `有兩隻寶可夢都是${species}（同種條款）。`,
-    itemClause: (item: string) => `有兩隻寶可夢都攜帶${item}（道具條款）。`,
+    speciesClause: (species: string) => `${species}只能有一隻（同種條款）。`,
+    itemClause: (item: string) => `${item}只能由一隻寶可夢攜帶（道具條款）。`,
   },
   importDialog: {
     importTitle: "匯入隊伍",

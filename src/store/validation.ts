@@ -1,16 +1,17 @@
 import pokedex from "@/data/pokedex";
 import { MOVE_KEYS, type Generation, type ReadonlyTeam } from "@/types";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, FORMATS } from "@/shared/formats";
 import { LATEST_GENERATION } from "@/shared/generations";
-import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
+import { pokemonNameInverse } from "@/shared/names";
 import { pokemonAbilities } from "@/shared/pokedex";
 import { baseMoveId } from "@/shared/moves";
 import { nicknameLimit } from "@/shared/nickname";
 import { generationRules, getStatExperience } from "@/shared/generation-rules";
 import { english, type Translation } from "@/i18n/translation";
 import { evTotal, getEv, MAX_LEVEL } from "@/shared/set-details";
+import { requiredItemIds } from "@/shared/team";
 import { filterPokemon } from "./filtering";
-import { availablePokemon } from "./learnsets";
+import { availablePokemon, isItemAvailable } from "./learnsets";
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 
 // A rule the team breaks, and the slots of the pokemon it concerns
@@ -66,7 +67,6 @@ export function validateTeam(
   for (const { member, slot } of members) {
     const { name, item, ability } = member;
     const label = names.pokemon(name);
-    const entry = pokedex[name];
     const add = (message: string) => report(message, [slot]);
     const maxNicknameLength = nicknameLimit(generation, locale);
     if ((member.nickname?.trim().length ?? 0) > maxNicknameLength)
@@ -81,17 +81,12 @@ export function validateTeam(
     )
       add(t.validation.wrongAbility(label, names.ability(ability)));
 
-    const required = [
-      ...(entry?.requiredItem ? [entry.requiredItem] : []),
-      ...(entry?.requiredItems ?? []),
-    ].map(itemNameInverse);
+    // Only the ones the game has, which are none in games without items
+    const required = requiredItemIds(name).filter(id =>
+      isItemAvailable(id, generation, format),
+    );
     if (required.length && !required.includes(item))
-      add(
-        t.validation.missingItem(
-          label,
-          required.map(id => names.item(id ?? "")),
-        ),
-      );
+      add(t.validation.missingItem(label, required.map(names.item)));
 
     const moves = MOVE_KEYS.map(key => member[key]).filter(move => move);
     const moveIds = moves.map(baseMoveId);
@@ -136,8 +131,10 @@ export function validateTeam(
     return [...slots].filter(([, sharing]) => sharing.length > 1);
   };
 
-  for (const [base, slots] of shared(({ member }) => species(member.name)))
-    report(t.validation.speciesClause(names.pokemon(base)), slots);
+  // The games allow two of a species; Smogon's tiers and Champions do not
+  if (FORMATS.includes(format))
+    for (const [base, slots] of shared(({ member }) => species(member.name)))
+      report(t.validation.speciesClause(names.pokemon(base)), slots);
 
   // Smogon's doubles tiers have no Item Clause
   if (format === CHAMPIONS_FORMAT)

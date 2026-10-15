@@ -500,8 +500,9 @@ const en = {
     teraType: (pokemon: string) =>
       `${pokemon} has a Tera Type, which only exists in ${generation(9)}.`,
     speciesClause: (species: string) =>
-      `Two pokemon are ${species} (Species Clause).`,
-    itemClause: (item: string) => `Two pokemon hold ${item} (Item Clause).`,
+      `Only one pokemon may be ${species} (Species Clause).`,
+    itemClause: (item: string) =>
+      `Only one pokemon may hold ${item} (Item Clause).`,
   },
   importDialog: {
     importTitle: "Import Team",

@@ -94,8 +94,11 @@ test("matrix reasons and team problems name things in the current language", () 
   expect(defenceMatrix(team, japanese).Ground?.[0]?.reason).toBe(
     "じめん does 0x to ドータクン (はがね/エスパー) with ふゆう",
   );
-  expect(validateTeam(team, 9, "", japanese)).toEqual([
-    { message: "Two pokemon are ドータクン (Species Clause).", slots: [0, 1] },
+  expect(validateTeam(team, 9, "OU: Over Used", japanese)).toEqual([
+    {
+      message: "Only one pokemon may be ドータクン (Species Clause).",
+      slots: [0, 1],
+    },
   ]);
 });
 

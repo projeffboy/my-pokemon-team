@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { rulesLabel, validateTeam } from "@/store/validation";
+import { learnsetsReady } from "@/store/learnsets";
 import { createTeam } from "./shared/team";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LETS_GO, LEGENDS_ARCEUS } from "@/shared/game-variants";
@@ -7,6 +8,9 @@ import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 
 const messages = (...args: Parameters<typeof validateTeam>) =>
   validateTeam(...args).map(({ message }) => message);
+
+// Required items are checked against the items each game has
+test.beforeAll(() => learnsetsReady);
 
 test("an empty team is the only problem of an empty team", () => {
   expect(messages(createTeam(), 9, "OU: Over Used")).toEqual([
@@ -144,6 +148,31 @@ test("reports illegal abilities, missing required items, and repeated moves", ()
   ]);
 });
 
+test("a required item may be any that the game has, or none in games without items", () => {
+  const orb = createTeam({ name: "giratinaorigin", item: "griseousorb" });
+  expect(messages(orb, 4, "")).toEqual([]);
+  expect(messages(orb, 8, "Uber")).toEqual([]);
+  expect(messages(orb, 9, COMBINED_GENERATIONS_FORMAT)).toEqual([]);
+  expect(
+    messages(
+      createTeam({ name: "giratinaorigin", item: "griseouscore" }),
+      4,
+      "",
+    ),
+  ).toEqual(["Giratina-Origin must hold Griseous Orb."]);
+  // The analysis leaves out the items of games without them
+  expect(messages(createTeam({ name: "venusaurmega" }), 7, LETS_GO)).toEqual(
+    [],
+  );
+  expect(
+    messages(
+      createTeam({ name: "dialgaorigin" }, { name: "arceusfire" }),
+      8,
+      LEGENDS_ARCEUS,
+    ),
+  ).toEqual([]);
+});
+
 test("different Hidden Power types are still duplicate moves", () => {
   expect(
     messages(
@@ -173,21 +202,24 @@ test("reports EVs, levels, and tera types that the games do not allow", () => {
   ]);
 });
 
-test("applies Species Clause everywhere and Item Clause in Champions", () => {
+test("applies Species Clause in formats and Item Clause in Champions", () => {
   const team = createTeam(
     { name: "milotic", item: "leftovers" },
     { name: "kingdra", item: "leftovers" },
     { name: "kingdra" },
   );
   expect(messages(team, 9, "OU: Over Used")).toEqual([
-    "Two pokemon are Kingdra (Species Clause).",
+    "Only one pokemon may be Kingdra (Species Clause).",
   ]);
   expect(messages(team, 9, "Doubles OU")).toEqual([
-    "Two pokemon are Kingdra (Species Clause).",
+    "Only one pokemon may be Kingdra (Species Clause).",
   ]);
   expect(messages(team, 9, "Pokemon Champions (M-C)")).toContain(
-    "Two pokemon hold Leftovers (Item Clause).",
+    "Only one pokemon may hold Leftovers (Item Clause).",
   );
+  // The games themselves allow two of a species
+  expect(messages(team, 9, "")).toEqual([]);
+  expect(messages(team, 9, COMBINED_GENERATIONS_FORMAT)).toEqual([]);
   expect(
     messages(
       createTeam(
@@ -197,7 +229,7 @@ test("applies Species Clause everywhere and Item Clause in Champions", () => {
       9,
       "Pokemon Champions (M-C)",
     ),
-  ).toEqual(["Two pokemon are Venusaur (Species Clause)."]);
+  ).toEqual(["Only one pokemon may be Venusaur (Species Clause)."]);
 });
 
 test("each problem names the slots of the pokemon it concerns, skipping empty slots", () => {
@@ -215,9 +247,12 @@ test("each problem names the slots of the pokemon it concerns, skipping empty sl
       slots: [3],
     },
     { message: "Dondozo's level must be 1 to 100.", slots: [3] },
-    { message: "Two pokemon are Toxapex (Species Clause).", slots: [0, 2] },
     {
-      message: "Two pokemon hold Black Sludge (Item Clause).",
+      message: "Only one pokemon may be Toxapex (Species Clause).",
+      slots: [0, 2],
+    },
+    {
+      message: "Only one pokemon may hold Black Sludge (Item Clause).",
       slots: [0, 2, 3],
     },
   ]);

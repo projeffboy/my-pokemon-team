@@ -520,9 +520,9 @@ const fr: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon} a un type Téracristal, qui n'existe qu'en ${generation(9)}.`,
     speciesClause: (species: string) =>
-      `Deux Pokémon sont des ${species} (Species Clause).`,
+      `Un seul Pokémon peut être ${species} (Species Clause).`,
     itemClause: (item: string) =>
-      `Deux Pokémon tiennent ${item} (Item Clause).`,
+      `Un seul Pokémon peut tenir ${item} (Item Clause).`,
   },
   importDialog: {
     importTitle: "Importer une équipe",

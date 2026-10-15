@@ -505,8 +505,9 @@ const ja: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}にテラスタイプが設定されていますが、テラスタイプは${generation(9)}にしか存在しません。`,
     speciesClause: (species: string) =>
-      `${species}が2体います（Species Clause）。`,
-    itemClause: (item: string) => `2体が${item}を持っています（Item Clause）。`,
+      `${species}は1体までです（Species Clause）。`,
+    itemClause: (item: string) =>
+      `${item}を持てるのは1体までです（Item Clause）。`,
   },
   importDialog: {
     importTitle: "チームをインポート",

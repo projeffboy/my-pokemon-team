@@ -72,15 +72,15 @@ test.describe("Team Problems - Unit Tests", () => {
     },
     {
       rule: "the Species Clause",
-      settings: "gen=9",
+      settings: "game=champions",
       team: "Gholdengo\n- Make It Rain\n\nGholdengo\n- Shadow Ball",
-      message: "Two pokemon are Gholdengo (Species Clause).",
+      message: "Only one pokemon may be Gholdengo (Species Clause).",
     },
     {
       rule: "the Item Clause",
       settings: "game=champions",
       team: "Corviknight @ Leftovers\n- Roost\n\nToxapex @ Leftovers\n- Recover",
-      message: "Two pokemon hold Leftovers (Item Clause).",
+      message: "Only one pokemon may hold Leftovers (Item Clause).",
     },
   ];
 
@@ -95,21 +95,24 @@ test.describe("Team Problems - Unit Tests", () => {
   test("lists every problem, each once", async ({ page }) => {
     await openTeam(
       page,
-      "gen=9",
+      "game=champions",
       "Garganacl\n- Salt Cure\n- Salt Cure\n\nGarganacl\n- Salt Cure\n- Salt Cure",
     );
     await expect(problems(page)).toContainText("Team problems (2)");
     await expect(problems(page).getByRole("listitem")).toHaveText([
       "Garganacl has Salt Cure twice.",
-      "Two pokemon are Garganacl (Species Clause).",
+      "Only one pokemon may be Garganacl (Species Clause).",
     ]);
   });
 
   test("says when the team breaks no rule, naming the game and format", async ({
     page,
   }) => {
-    await openTeam(page, "gen=9", "Hatterene\n- Psychic");
+    // The games allow two of a species, and earlier games the Griseous Orb
+    await openTeam(page, "gen=9", "Hatterene\n- Psychic\n\nHatterene");
     await expect(problems(page)).toHaveText("No problems found for Gen 9.");
+    await openTeam(page, "gen=4", "Giratina-Origin @ Griseous Orb");
+    await expect(problems(page)).toHaveText("No problems found for Gen 4.");
     await openTeam(page, "game=champions", "Corviknight @ Leftovers");
     await expect(problems(page)).toHaveText(
       "No problems found for Gen 9 Pokemon Champions (M-C).",
@@ -133,7 +136,7 @@ test.describe("Team Problems - Unit Tests", () => {
     test("lists the problems in the site's language", async ({ page }) => {
       await openTeam(
         page,
-        "gen=9",
+        "game=champions",
         "Annihilape\n- Rage Fist\n\nAnnihilape\n- Bulk Up",
       );
       const card = page.getByRole("status", {

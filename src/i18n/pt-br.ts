@@ -501,8 +501,9 @@ const ptBR: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon} tem um Tipo Tera, que só existe na ${generation(9)}.`,
     speciesClause: (species: string) =>
-      `Dois Pokémon são ${species} (Species Clause).`,
-    itemClause: (item: string) => `Dois Pokémon seguram ${item} (Item Clause).`,
+      `Só um Pokémon pode ser ${species} (Species Clause).`,
+    itemClause: (item: string) =>
+      `Só um Pokémon pode segurar ${item} (Item Clause).`,
   },
   importDialog: {
     importTitle: "Importar equipe",

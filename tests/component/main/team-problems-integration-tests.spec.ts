@@ -1,6 +1,7 @@
 import { test, expect } from "fixtures";
 import type { Page } from "@playwright/test";
 import { isMdDown, selectPokemon, showSlot } from "helper";
+import { toBase64Url } from "@/app/shared/base64url";
 
 const problems = (page: Page) =>
   page.getByRole("status", { name: "Team problems" });
@@ -27,13 +28,17 @@ test.describe("Team Problems and Pokemon Inputs - Integration Tests", () => {
   test("the problems follow each change to the team and mark the slots they concern", async ({
     page,
   }) => {
-    await selectPokemon(page, "Azumarill", 0);
-    await expect(problems(page)).toHaveText("No problems found for Gen 9.");
+    // The Species Clause applies in a format such as Champions
+    await page.goto(`/?game=champions&team=${toBase64Url("Azumarill")}`, {
+      waitUntil: "domcontentloaded",
+    });
+    const noProblems = "No problems found for Gen 9 Pokemon Champions (M-C).";
+    await expect(problems(page)).toHaveText(noProblems);
 
     // The empty slot between the two is not a problem
     await showSlot(page, 2);
     await selectPokemon(page, "Azumarill", 2);
-    const speciesClause = "Two pokemon are Azumarill (Species Clause).";
+    const speciesClause = "Only one pokemon may be Azumarill (Species Clause).";
     await expect(problems(page).getByRole("listitem")).toHaveText([
       speciesClause,
     ]);
@@ -46,7 +51,7 @@ test.describe("Team Problems and Pokemon Inputs - Integration Tests", () => {
 
     await showSlot(page, 2);
     await selectPokemon(page, "Pawmot", 2);
-    await expect(problems(page)).toHaveText("No problems found for Gen 9.");
+    await expect(problems(page)).toHaveText(noProblems);
     await expectTabMarkers(page, 0);
     await expect(await marker(page, 0, "Azumarill")).toHaveCount(0);
   });
