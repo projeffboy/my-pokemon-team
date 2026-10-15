@@ -184,6 +184,17 @@ test("a past generation leaves out pokemon its games lack, and the latest lists 
   expect(store.filterAbilities).toContain("Battle Bond");
 });
 
+test("Random Team fills a Gen 3 Doubles OU team without Ubers", ({ store }) => {
+  store.currentTeam.generation = 3;
+  store.currentTeam.format = "Doubles OU";
+  expect(store.filteredPokemon).toContain("swampert");
+  expect(store.filteredPokemon).not.toContain("lugia");
+  expect(store.randomizeTeam()).toBe(true);
+  expect(store.teamPokemon.every(name => name)).toBe(true);
+  for (const name of store.teamPokemon)
+    expect(store.filteredPokemon).toContain(name);
+});
+
 test("a past generation keeps the pokemon that learn no moves in any game", ({
   store,
 }) => {
