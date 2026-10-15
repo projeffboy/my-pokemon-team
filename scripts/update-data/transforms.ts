@@ -627,6 +627,23 @@ export function projectPastGenerations(
       }),
     );
     if (Object.keys(abilities).length) entry.abilities = abilities;
+    // Kept so that old links holding one still load it
+    const unreleasedHidden = Object.fromEntries(
+      Object.entries(resolvedSpecies).flatMap(([id, species]) => {
+        const hidden =
+          isRecord(species.abilities) ? species.abilities.H : undefined;
+        return (
+            gen >= 5 &&
+              species.unreleasedHidden === true &&
+              typeof hidden === "string" &&
+              abilityGeneration(resolved.abilities?.[toId(hidden)]) <= gen
+          ) ?
+            [[id, hidden]]
+          : [];
+      }),
+    );
+    if (Object.keys(unreleasedHidden).length)
+      entry.unreleasedHidden = unreleasedHidden;
     if (JSON.stringify(typechart) !== JSON.stringify(nextChart)) {
       entry.typechart = typechart;
     }

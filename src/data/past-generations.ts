@@ -22468,6 +22468,46 @@ const data: PastGenerations = {
         "Sniper"
       ]
     },
+    "unreleasedHidden": {
+      "articuno": "Snow Cloak",
+      "zapdos": "Lightning Rod",
+      "moltres": "Flame Body",
+      "chikorita": "Leaf Guard",
+      "bayleef": "Leaf Guard",
+      "meganium": "Leaf Guard",
+      "cyndaquil": "Flash Fire",
+      "quilava": "Flash Fire",
+      "typhlosion": "Flash Fire",
+      "totodile": "Sheer Force",
+      "croconaw": "Sheer Force",
+      "feraligatr": "Sheer Force",
+      "raikou": "Volt Absorb",
+      "entei": "Flash Fire",
+      "suicune": "Water Absorb",
+      "regirock": "Sturdy",
+      "regice": "Ice Body",
+      "registeel": "Light Metal",
+      "heatran": "Flame Body",
+      "snivy": "Contrary",
+      "servine": "Contrary",
+      "serperior": "Contrary",
+      "tepig": "Thick Fat",
+      "pignite": "Thick Fat",
+      "emboar": "Reckless",
+      "oshawott": "Shell Armor",
+      "dewott": "Shell Armor",
+      "samurott": "Shell Armor",
+      "gothita": "Shadow Tag",
+      "klink": "Clear Body",
+      "litwick": "Shadow Tag",
+      "lampent": "Shadow Tag",
+      "chandelure": "Shadow Tag",
+      "rufflet": "Hustle",
+      "larvesta": "Swarm",
+      "volcarona": "Swarm",
+      "mumbao": "Solar Power",
+      "jumbao": "Drought"
+    },
     "typechart": {
       "Bug": {
         "Bug": 0,
@@ -26990,6 +27030,14 @@ const data: PastGenerations = {
         "Sniper"
       ]
     },
+    "unreleasedHidden": {
+      "raikou": "Volt Absorb",
+      "entei": "Flash Fire",
+      "suicune": "Water Absorb",
+      "heatran": "Flame Body",
+      "mumbao": "Solar Power",
+      "jumbao": "Drought"
+    },
     "moveData": {
       "baddybad": {
         "name": "Baddy Bad",
@@ -30184,6 +30232,11 @@ const data: PastGenerations = {
         "Early Bird",
         "Sniper"
       ]
+    },
+    "unreleasedHidden": {
+      "heatran": "Flame Body",
+      "mumbao": "Solar Power",
+      "jumbao": "Drought"
     },
     "moveData": {
       "baddybad": {

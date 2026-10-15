@@ -837,6 +837,12 @@ test("past generations drop a hidden ability that the generation's mod marks unr
   expect(past[6]?.abilities?.starter).toBeUndefined();
   expect(past[5]?.abilities?.starter).toEqual(["Ordinary"]);
   expect(past[7]?.abilities?.cap).toBeUndefined();
+  expect(past[7]?.unreleasedHidden).toBeUndefined();
+  expect(past[6]?.unreleasedHidden).toEqual({ beast: "Hidden" });
+  expect(past[5]?.unreleasedHidden).toEqual({
+    beast: "Hidden",
+    starter: "Hidden",
+  });
 });
 
 test("move projections retain user boosts without confusing targets or random chances", () => {
