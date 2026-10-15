@@ -283,6 +283,23 @@ test("delayed attacks before Gen 5 are typeless rather than immune or resisted",
   expect(coverageMatrix(jirachi, undefined, 5).Fire?.[0]?.multiplier).toBe(0.5);
 });
 
+test("Tinted Lens doubles resisted hits in the coverage matrix, but not immune ones", () => {
+  const yanmega = createTeam({
+    name: "yanmega",
+    ability: "Tinted Lens",
+    move1: "bugbuzz",
+  });
+  expect(coverageMatrix(yanmega).Fire?.[0]?.multiplier).toBe(1);
+  expect(coverageMatrix(yanmega).Grass?.[0]?.multiplier).toBe(2);
+  const venomoth = createTeam({
+    name: "venomoth",
+    ability: "Tinted Lens",
+    move1: "sludgebomb",
+  });
+  expect(coverageMatrix(venomoth).Steel?.[0]?.multiplier).toBe(0);
+  expect(coverageMatrix(venomoth).Rock?.[0]?.multiplier).toBe(1);
+});
+
 test("coverage matrix uses historical move power and Normalize exceptions", () => {
   const weak = createTeam({ name: "aerodactyl", move1: "wingattack" });
   expect(coverageMatrix(weak, undefined, 1).Grass?.[0]).toMatchObject({
