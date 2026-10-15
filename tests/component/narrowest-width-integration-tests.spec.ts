@@ -84,9 +84,12 @@ const findCutOff = () => {
     let right = root.clientWidth;
     for (let box = node.parentElement; box; box = box.parentElement) {
       if (getComputedStyle(box).overflowX === "visible") continue;
-      const boxLeft = box.getBoundingClientRect().left + box.clientLeft;
+      // clientWidth ignores transforms, such as a shrunk label's scale(0.75)
+      const rect = box.getBoundingClientRect();
+      const scale = box.offsetWidth ? rect.width / box.offsetWidth : 1;
+      const boxLeft = rect.left + box.clientLeft * scale;
       left = Math.max(left, boxLeft);
-      right = Math.min(right, boxLeft + box.clientWidth);
+      right = Math.min(right, boxLeft + box.clientWidth * scale);
     }
     return { left, right };
   };
