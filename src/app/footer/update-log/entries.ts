@@ -41,6 +41,7 @@ const entries: Entry[] = [
       "The team checklist no longer counts Diamond Storm as a boosting move, since its Defense boost is only a 50% chance.",
       "Gens 5–7 no longer offer or randomly pick hidden abilities that were unreleased then, e.g. Contrary for Gen 5 Serperior.",
       "Formes such as totems and Bloodmoon Ursaluna now learn the same moves as on Showdown, so Bloodmoon Ursaluna no longer learns Play Rough and Stretchy Tatsugiri gains Scald.",
+      "Format filters and sorting now give formes their species’ tier, so Gen 9 Uber includes Arceus-Fire.",
     ],
   },
   {
