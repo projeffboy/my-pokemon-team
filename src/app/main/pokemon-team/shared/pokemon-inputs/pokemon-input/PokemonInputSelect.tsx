@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
-import Autocomplete, {
-  autocompleteClasses,
-  createFilterOptions,
-} from "@mui/material/Autocomplete";
+import Autocomplete, { autocompleteClasses } from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -26,6 +23,7 @@ import { moveType } from "@/store/shared/effectiveness";
 import { gameFormat } from "@/shared/formats";
 import { englishNames, type Names } from "@/i18n/names";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { searchFilter } from "@/app/shared/search-filter";
 import typeIcons from "@/images/type-icons";
 import { isPokemonType } from "@/types";
 
@@ -167,10 +165,10 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
   }, [isOpen, measureList]);
   const filterOptions = useMemo(
     () =>
-      createFilterOptions<SelectOption>({
-        stringify: option =>
+      searchFilter<SelectOption>(
+        option =>
           `${option.label} ${optionName(englishNames, pokemonProperty, option.value)}`,
-      }),
+      ),
     [pokemonProperty],
   );
   // Stable while the options and value are, since a new value object makes the
