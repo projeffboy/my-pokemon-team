@@ -314,7 +314,10 @@ export function moveType(
     if (isPokemonType(capitalizedType)) moveType = capitalizedType;
   } else if (move === "naturalgift") {
     moveType = held?.naturalGift?.type ?? moveType;
-  } else if (ability === "Liquid Voice" && moves[move]?.flags?.sound === 1) {
+  } else if (
+    ability === "Liquid Voice" &&
+    moveDataIn(move, generation, format)?.flags?.sound === 1
+  ) {
     moveType = "Water";
   }
 

@@ -58,7 +58,7 @@ const SlotMoveHandle = observer(function SlotMoveHandle({
           aria-label={title}
           aria-haspopup="menu"
           onClick={event => setAnchor(event.currentTarget)}
-          sx={[chip, dragHandle]}
+          sx={[chip, Boolean(listeners) && dragHandle]}
         >
           <DragIndicatorIcon sx={{ fontSize: 18 }} />
         </ButtonBase>

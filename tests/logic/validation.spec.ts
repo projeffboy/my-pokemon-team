@@ -197,3 +197,28 @@ test("applies Species Clause everywhere and Item Clause in Champions", () => {
     ),
   ).toEqual(["Two pokemon are Venusaur (Species Clause)."]);
 });
+
+test("Smogon formats flag the abilities, items, and moves they ban", () => {
+  const team = createTeam(
+    { name: "glalie", ability: "Moody" },
+    { name: "politoed", item: "kingsrock" },
+    { name: "breloom", move1: "spore", move2: "batonpass" },
+  );
+  const where = "Gen 9 OU: Over Used";
+  expect(validateTeam(team, 9, "OU: Over Used")).toEqual([
+    `Glalie has Moody, which is banned in ${where}.`,
+    `Politoed has King's Rock, which is banned in ${where}.`,
+    `Breloom has Spore, which is banned in ${where}.`,
+    `Breloom has Baton Pass, which is banned in ${where}.`,
+  ]);
+  expect(validateTeam(team, 9, "")).toEqual([]);
+  expect(validateTeam(team, 9, "Doubles OU")).toEqual([]);
+});
+
+test("a lower tier can allow back what the tier above bans", () => {
+  const team = createTeam({ name: "mismagius", move1: "swagger" });
+  expect(validateTeam(team, 4, "OU: Over Used")).toEqual([
+    "Mismagius has Swagger, which is banned in Gen 4 OU: Over Used.",
+  ]);
+  expect(validateTeam(team, 4, "UU: Under Used")).toEqual([]);
+});

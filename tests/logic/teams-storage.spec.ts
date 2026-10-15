@@ -357,6 +357,20 @@ test("remembers that the player knows slots drag, in any tab", () => {
   expect(mergeStoredState(base, base, base).knowsSlotDrag).toBeUndefined();
 });
 
+test("a tab left open does not bring back a drag hint that expired in another tab", () => {
+  const knows = { ...initialStoredState(), knowsSlotDrag: true };
+  const { knowsSlotDrag: _, ...expired } = knows;
+  const mine = { ...knows, nameView: "grid" as const };
+  const merged = mergeStoredState(knows, mine, expired);
+  expect(merged.knowsSlotDrag).toBeUndefined();
+  expect(merged.nameView).toBe("grid");
+
+  const dismissed = { ...expired, knowsSlotDrag: true };
+  expect(mergeStoredState(expired, dismissed, expired).knowsSlotDrag).toBe(
+    true,
+  );
+});
+
 test("team filters load with defaults, survive saving, and merge across teams", () => {
   const base = initialStoredState();
   const first = base.teams[0]!;
