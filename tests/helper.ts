@@ -12,6 +12,10 @@ export const SMALL_VIEWPORT_WIDTH = 390;
 export const MEDIUM_VIEWPORT_WIDTH = 820;
 export const LARGE_VIEWPORT_WIDTH = 1366;
 
+// The development server serves each of the 2300 Gen 2-4 sprite animations as its own
+// module, so the first animation after a page load can take Firefox over 5 seconds
+export const SPRITE_ANIMATIONS_TIMEOUT = 20000;
+
 // Helper function to create viewport object with 16:9 aspect ratio
 export const createViewport = (width: number) => ({
   width,
@@ -254,16 +258,21 @@ const pageChecklistLabel = (page: Page, label: string) => {
   });
 };
 
+// A checklist role's row, which shows its tooltip, from its English label
+export const checklistRow = (page: Page, label: string) =>
+  page
+    .getByText(pageChecklistLabel(page, label), { exact: true })
+    .locator("..");
+
 export const expectChecklistItem = async (
   page: Page,
   label: string,
   isChecked: boolean,
 ) => {
-  const row = page
-    .getByText(pageChecklistLabel(page, label), { exact: true })
-    .locator("..");
   await expect(
-    row.getByRole("img", { name: isChecked ? "Checked" : "Unchecked" }),
+    checklistRow(page, label).getByRole("img", {
+      name: isChecked ? "Checked" : "Unchecked",
+    }),
   ).toBeVisible();
 };
 

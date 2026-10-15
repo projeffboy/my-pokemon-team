@@ -18,7 +18,11 @@ import type {
   SnackbarNotification,
   SnackbarKind,
 } from "./types";
-import { generationRules, variantGeneration } from "./shared/generation-rules";
+import {
+  generationRules,
+  setLegacyShiny,
+  variantGeneration,
+} from "./shared/generation-rules";
 import { teamDataFormat } from "./shared/generation-profile";
 import { formatForGeneration, gameFormat } from "./shared/formats";
 import { allItemIds } from "./shared/names";
@@ -74,9 +78,13 @@ import {
   getAutoSelectedItem,
   isTeamEmpty,
 } from "./shared/team";
-import { clearDetails } from "./shared/set-details";
+import { clearDetails, setDetail } from "./shared/set-details";
 import { canSelectMove } from "./shared/moves";
-import { matchHiddenPower } from "./shared/hidden-power";
+import {
+  hiddenPowerMatches,
+  matchHiddenPower,
+  rematchHiddenPower,
+} from "./shared/hidden-power";
 import { pokemonAbilities } from "./shared/pokedex";
 import { loadGenerationTransferData } from "./shared/generation-transfer-data";
 import { typesIn } from "./shared/generation-data";
@@ -302,7 +310,13 @@ export class Store {
         replaced ? this.translation.t.team.teamNumber(1) : this.nextTeamName(),
       generation,
       format:
-        settings ? formatForGeneration(format, settings.generation) : format,
+        settings ?
+          formatForGeneration(
+            format,
+            settings.generation,
+            settings.generationProfile,
+          )
+        : format,
       ...settings,
       generationProfile:
         settings ?
@@ -459,12 +473,13 @@ export class Store {
   // Link text matches saved teams even when the text leaves out empty slots, or
   // reads back differently than the team was saved, such as an ability filled in.
   // A link carries a game but no tier, so a saved team's tier does not count.
+  // Returns whether it opened a team; an empty one opens nothing.
   openTeamFromLink(
     team: Team,
     settings?: Pick<SavedTeam, "generation"> &
       Partial<Pick<SavedTeam, "format" | "generationProfile">>,
   ) {
-    if (isTeamEmpty(team)) return;
+    if (isTeamEmpty(team)) return false;
     const generation = settings?.generation ?? this.currentTeam.generation;
     const format = settings?.format ?? this.currentTeam.format;
     const text = serializeTeam(team, generation, format);
@@ -508,6 +523,7 @@ export class Store {
       this.teams.find(matches);
     if (saved) this.currentTeamId = saved.id;
     else this.openUnsavedTeam(team, settings);
+    return true;
   }
 
   // The current team
@@ -612,6 +628,7 @@ export class Store {
         this.moveSort,
         this.currentTeam.generation,
         this.translation,
+        this.dataFormat,
       ),
     );
     return {
@@ -768,6 +785,36 @@ export class Store {
     }
     this.recordEdit(teamKey(this.team), true);
     return true;
+  }
+
+  // Level and shininess can change the type Hidden Power's IVs or DVs give.
+  // Only a match the edit breaks is restored, so IVs chosen or imported to
+  // differ stay. The dialog stores each keystroke, so it passes the level its
+  // edit started from.
+  setLevel(
+    teamIndex: number,
+    level: number | undefined,
+    previousLevel = this.team[teamIndex]?.level,
+  ) {
+    const member = this.team[teamIndex];
+    if (!member) return;
+    const { generation } = this.currentTeam;
+    const matched = hiddenPowerMatches(
+      { ...member, level: previousLevel },
+      generation,
+    );
+    setDetail(member, "level", level);
+    if (matched) rematchHiddenPower(member, generation, this.dataFormat);
+  }
+
+  setShiny(teamIndex: number, shiny: boolean) {
+    const member = this.team[teamIndex];
+    if (!member) return;
+    const { generation } = this.currentTeam;
+    const matched = hiddenPowerMatches(member, generation);
+    if (generation === 2) setLegacyShiny(member, shiny);
+    else setDetail(member, "shiny", shiny);
+    if (matched) rematchHiddenPower(member, generation, this.dataFormat);
   }
 
   resetDetails(teamIndex: number) {

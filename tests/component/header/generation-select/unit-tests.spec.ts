@@ -3,7 +3,7 @@ import { GENERATION_GAMES, GENERATIONS } from "@/shared/generations";
 import en from "@/i18n/en";
 import type { Locator } from "@playwright/test";
 
-test("Let’s Go and Legends options are disabled, under Coming soon only", async ({
+test("Let’s Go and Legends: Arceus are disabled, under Coming soon only, and Legends: Z-A is not", async ({
   page,
 }) => {
   const generation = page.getByRole("combobox", { name: "Generation" });
@@ -16,7 +16,10 @@ test("Let’s Go and Legends options are disabled, under Coming soon only", asyn
     await expect(
       page.getByRole("listbox").getByText("Coming soon", { exact: true }),
     ).toHaveCount(1);
-    for (const value of ["Let’s Go", "Legends: Arceus", "Legends: Z-A"]) {
+    const za = page.locator('[role="option"][data-value="Legends: Z-A"]');
+    await expect(za).not.toHaveAttribute("aria-disabled");
+    await expect(za).toHaveAccessibleDescription("Main series");
+    for (const value of ["Let’s Go", "Legends: Arceus"]) {
       const option = page.locator(`[role="option"][data-value="${value}"]`);
       await expect(option).toHaveAttribute("aria-disabled", "true");
       await option.scrollIntoViewIfNeeded();
@@ -33,6 +36,11 @@ test("Let’s Go and Legends options are disabled, under Coming soon only", asyn
     await page.keyboard.press("Home");
     await page.keyboard.press("ArrowDown");
     await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowDown");
+    await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
+      "data-value",
+      "Legends: Z-A",
+    );
     await page.keyboard.press("ArrowDown");
     await expect(page.locator('[role="option"]:focus')).toHaveAttribute(
       "data-value",
@@ -306,6 +314,7 @@ test("groups the options under headings, with the coming-soon games last", async
     "Main series",
     "6-9",
     "9",
+    "Legends: Z-A",
     "8",
     "7",
     "6",
@@ -315,7 +324,6 @@ test("groups the options under headings, with the coming-soon games last", async
     "2",
     "1",
     "Coming soon",
-    "Legends: Z-A",
     "Legends: Arceus",
     "Let’s Go",
   ]);
@@ -324,7 +332,7 @@ test("groups the options under headings, with the coming-soon games last", async
     listbox.locator('[role="option"][data-value="9"]'),
   ).toHaveAccessibleDescription("Main series");
   await expect(
-    listbox.locator('[role="option"][data-value="Legends: Z-A"]'),
+    listbox.locator('[role="option"][data-value="Legends: Arceus"]'),
   ).toHaveAccessibleDescription("Coming soon");
   // A heading stays put when clicked, rather than choosing a generation
   const before = await page

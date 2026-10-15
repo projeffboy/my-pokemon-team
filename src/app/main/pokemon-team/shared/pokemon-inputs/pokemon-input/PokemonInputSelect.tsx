@@ -150,7 +150,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
     setFitWidth(
       twoLineWidth(`${kind}|${game}`, labels, typography.body1, 80) +
         chrome +
-        // A pokemon has at most three abilities, too few for the list to scroll
+        // A pokemon has at most four abilities, too few for the list to scroll
         (kind === "ability" ? 0 : scrollbarWidth()),
     );
   }, [
@@ -464,6 +464,12 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
             {
               pr: 0,
             },
+          // The text runs under the buttons, so a tap beside them, or where touch
+          // screens hide the clear button, reaches the input and opens the list
+          [`& .${autocompleteClasses.endAdornment}`]: {
+            pointerEvents: "none",
+            "& > *": { pointerEvents: "auto" },
+          },
           [`& .${autocompleteClasses.input}`]: {
             textOverflow: "clip",
           },
@@ -590,6 +596,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 generation,
                 analysisMember?.item,
                 format,
+                analysisMember,
               )
             : undefined;
           // Always the icon: an abbreviation would take more of the move's room

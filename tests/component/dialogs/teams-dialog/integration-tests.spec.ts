@@ -333,6 +333,25 @@ Ability: Drizzle
     await expect(page.getByLabel("Generation")).toContainText("Gen 9");
   });
 
+  test("a pasted team name written as markup shows as text and runs nothing", async ({
+    page,
+  }) => {
+    const name = `<img src=x onerror="window.injected=true">`;
+    await openTeams(page);
+    await page.getByRole("button", { name: "Import Team" }).click();
+    const dialog = page.getByRole("dialog", { name: "Import Team" });
+    await dialog
+      .getByRole("textbox")
+      .fill(`=== [gen9] ${name} ===\n\nPolitoed @ Damp Rock\n- Hydro Pump\n`);
+    await dialog.getByRole("button", { name: "Import" }).click();
+    const teams = page
+      .getByRole("dialog", { name: "Teams" })
+      .getByRole("list", { name: "Saved teams" });
+    await expect(teams.getByRole("listitem").last()).toContainText(name);
+    await expect(page.locator('img[src="x"]')).toHaveCount(0);
+    expect(await page.evaluate(() => "injected" in window)).toBe(false);
+  });
+
   test("the Manage Team menu opens the import page, which imports nothing from text without pokemon", async ({
     page,
   }) => {
@@ -495,4 +514,31 @@ test("fallback copying from the Teams row menu stays inside its focus trap", asy
       page.evaluate(() => document.documentElement.dataset.copiedText),
     )
     .toContain("Lombre");
+});
+
+test("closing Edit Pokepaste opened from a team's menu returns focus to the Teams button", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Cetitan");
+  const teamsButton = page.getByRole("button", { name: "Teams", exact: true });
+  const editor = page.getByRole("dialog", {
+    name: "Edit Pokepaste",
+    exact: true,
+  });
+  for (const close of [
+    () => editor.getByRole("button", { name: "Cancel", exact: true }).click(),
+    () => page.keyboard.press("Escape"),
+  ]) {
+    await openTeams(page);
+    await page
+      .getByRole("button", { name: "Options for Team 1", exact: true })
+      .press("Enter");
+    await page
+      .getByRole("menuitem", { name: "Edit Pokepaste", exact: true })
+      .press("Enter");
+    await expect(editor).toBeVisible();
+    await close();
+    await expect(editor).toBeHidden();
+    await expect(teamsButton).toBeFocused();
+  }
 });

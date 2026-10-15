@@ -5,9 +5,11 @@ import {
   completeLearnset,
   canItLearn,
   canUseItem,
+  generationLearnset,
   getTeamLearnsets,
   learnsetsReady,
 } from "@/store/learnsets";
+import { CAP_FORMAT } from "@/shared/formats";
 import { createTeam } from "./shared/team";
 import type { Learnsets } from "@/types";
 
@@ -82,6 +84,41 @@ test.describe("learnset inheritance", () => {
     expect(canItLearn("glaciate", "kyuremblack")).toBe(false);
     expect(canItLearn("fusionbolt", "kyuremblack")).toBe(true);
     expect(canItLearn("lightofruin", "floettemega")).toBe(true);
+  });
+
+  test("totems keep their own moves and only their first stage's Gen 9 egg moves", () => {
+    expect(canItLearn("bite", "raticatealolatotem")).toBe(true);
+    // Kanto Rattata's moves, which Showdown never gives the Alolan totem
+    expect(canItLearn("bide", "raticatealolatotem")).toBe(false);
+    expect(canItLearn("thunderbolt", "raticatealolatotem")).toBe(false);
+    // Alolan Rattata's egg moves, which a totem from an event cannot have
+    expect(canItLearn("stockpile", "raticatealolatotem")).toBe(false);
+    expect(canItLearn("firefang", "gumshoostotem")).toBe(true);
+    expect(canItLearn("psychicfangs", "gumshoostotem")).toBe(false);
+  });
+
+  test("cap Pikachu inherit Pichu's Gen 9 egg moves but not its other moves", () => {
+    expect(canItLearn("wish", "pikachuoriginal")).toBe(true);
+    expect(canItLearn("fakeout", "pikachucosplay")).toBe(true);
+    expect(canItLearn("bide", "pikachuoriginal")).toBe(false);
+    expect(canItLearn("volttackle", "pikachucosplay")).toBe(false);
+  });
+
+  test("a forme without a learnset in a game learns its base forme's moves there", () => {
+    // Legends: Z-A gives Super Size Pumpkaboo and Stretchy Tatsugiri no learnset of their own
+    expect(learnsets.pumpkaboo).toContain("tackle");
+    expect(canItLearn("tackle", "pumpkaboosuper")).toBe(true);
+    expect(canItLearn("tackle", "gourgeistsuper")).toBe(true);
+    expect(learnsets.tatsugiri).toContain("scald");
+    expect(canItLearn("scald", "tatsugiristretchy")).toBe(true);
+    expect(completeLearnset("tatsugiristretchy")).toEqual(
+      expect.arrayContaining([...completeLearnset("tatsugiri")]),
+    );
+  });
+
+  test("Indeedee-F still lacks Indeedee's male-only moves", () => {
+    expect(canItLearn("psychicnoise", "indeedee")).toBe(true);
+    expect(canItLearn("psychicnoise", "indeedeef")).toBe(false);
   });
 
   test("a regional evolution can inherit from a nonregional predecessor", () => {
@@ -239,6 +276,29 @@ test("mega stones, Memories, and Drives are only for the pokemon that use them",
     ["", "scovillainite", true],
   ] as const)
     expect(canUseItem(pokemon, item), `${pokemon} ${item}`).toBe(usable);
+});
+
+test("the CAP format gives CAP pokemon the moves Showdown's CAP learnsets give a Gen 9 source", () => {
+  const kitsunoh = generationLearnset("kitsunoh", 9, CAP_FORMAT);
+  // Shadow Strike is CAP-only, so no game has it
+  expect(kitsunoh).toEqual(
+    expect.arrayContaining(["shadowstrike", "uturn", "meteormash"]),
+  );
+  for (const move of ["return", "magiccoat", "hiddenpowerfire"]) {
+    expect(completeLearnset("kitsunoh")).toContain(move);
+    expect(kitsunoh).not.toContain(move);
+  }
+  // Gen 9 has these moves, but Revenankh learns them only in earlier generations
+  const revenankh = generationLearnset("revenankh", 9, CAP_FORMAT);
+  for (const move of ["darkestlariat", "throatchop"]) {
+    expect(completeLearnset("revenankh")).toContain(move);
+    expect(revenankh).not.toContain(move);
+  }
+  expect(revenankh).toContain("drainpunch");
+  // Real pokemon keep Gen 9's own movepools
+  expect(generationLearnset("ogerpon", 9, CAP_FORMAT)).toEqual(
+    generationLearnset("ogerpon", 9, "OU: Over Used"),
+  );
 });
 
 test("historical viability excludes usefulness from future abilities", () => {

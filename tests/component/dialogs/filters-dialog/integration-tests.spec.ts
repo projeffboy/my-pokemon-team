@@ -10,6 +10,7 @@ import {
   selectPokemon,
   getTeamTextFromUrl,
   clickMenuItem,
+  findOption,
 } from "helper";
 import type { Page } from "@playwright/test";
 import { toBase64Url } from "@/app/shared/base64url";
@@ -176,6 +177,30 @@ test.describe("Filters Integration Tests", () => {
     for (const name of notSelectablePokemon) {
       await checkPokemonNotSelectable(page, name);
     }
+  });
+
+  test("CAP Format Filter", async ({ page }) => {
+    await checkPokemonNotSelectable(page, "Equilibra");
+    await selectFilterOption(page, "Format", "CAP");
+
+    // Eligible: Equilibra (CAP), Okidogi (UUBL). Not eligible: Iron Bundle (Uber)
+    await checkPokemonSelectable(page, "Equilibra");
+    await checkPokemonSelectable(page, "Okidogi");
+    await checkPokemonNotSelectable(page, "Iron Bundle");
+
+    // Scraptor has no icon of its own, so it shows the sheet's placeholder
+    const scraptor = await findOption(page, "Pokemon 1's name", "Scraptor");
+    await expect(scraptor.locator("span[style]").first()).toHaveCSS(
+      "background-image",
+      /pokemonicons-sheet/,
+    );
+
+    // Equilibra learns the moves that Showdown gives a Gen 9 source, so not
+    // Return, which Gen 9 lacks, or Rock Polish, which it learned only before
+    await selectPokemon(page, "Equilibra");
+    await checkMoveSelectable(page, "Earth Power");
+    await checkMoveNotSelectable(page, "Return");
+    await checkMoveNotSelectable(page, "Rock Polish");
   });
 
   test("sorts the selected Pokemon even when filters exclude it", async ({

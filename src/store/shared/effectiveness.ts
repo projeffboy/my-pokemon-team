@@ -6,7 +6,7 @@ import { pokemonTypes } from "@/shared/pokedex";
 import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { isPokemonType, MOVE_KEYS } from "@/types";
-import { hiddenPowerPower } from "@/shared/hidden-power";
+import { hiddenPowerPower, hiddenPowerType } from "@/shared/hidden-power";
 
 export const activeItem = (
   item: string | undefined,
@@ -201,8 +201,9 @@ export function typeAgainstPokemon(
         }
         break;
       case "Dry Skin":
+        // A half step for 1.25x Fire damage, as Filter's 0.75x is
         if (type === "Fire") {
-          effectiveness -= 1;
+          effectiveness -= 0.5;
         } else if (type === "Water") {
           effectiveness = IMMUNE_SCORE;
         }
@@ -230,8 +231,12 @@ export function moveType(
   generation = LATEST_GENERATION,
   item?: string,
   format = "",
+  member?: Readonly<TeamPokemon>,
 ) {
   if (generation < 3) ability = undefined;
+  // Plain Hidden Power takes its type from the set's IVs or DVs
+  if (move === "hiddenpower" && member && generation >= 2)
+    move = `hiddenpower${hiddenPowerType(member, generation)}`;
   const rawType = moveTypeIn(move, generation, format);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
@@ -314,7 +319,10 @@ export function moveType(
     if (isPokemonType(capitalizedType)) moveType = capitalizedType;
   } else if (move === "naturalgift") {
     moveType = held?.naturalGift?.type ?? moveType;
-  } else if (ability === "Liquid Voice" && moves[move]?.flags?.sound === 1) {
+  } else if (
+    ability === "Liquid Voice" &&
+    moveDataIn(move, generation, format)?.flags?.sound === 1
+  ) {
     moveType = "Water";
   }
 
@@ -423,7 +431,15 @@ export function moveAgainstType(
   format = "",
 ) {
   if (generation < 3) ability = undefined;
-  const attackType = moveType(move, pokemon, ability, generation, item, format);
+  const attackType = moveType(
+    move,
+    pokemon,
+    ability,
+    generation,
+    item,
+    format,
+    member,
+  );
   const defender = typechartIn(generation)[typeAgainst];
 
   if (

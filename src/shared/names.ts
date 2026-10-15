@@ -47,11 +47,11 @@ export const allItemIds = Object.keys(items);
 
 export const allNatureIds = Object.keys(natures);
 
-// Every ability of a real (non-CAP) pokemon, for the ability filter
+// Every ability any pokemon has, CAP ones such as Mountaineer included
 export const allAbilities = [
   ...new Set(
-    Object.values(pokedex)
-      .filter(({ num }) => num === undefined || num >= 0)
-      .flatMap(({ abilities }) => Object.values(abilities ?? {})),
+    Object.values(pokedex).flatMap(({ abilities }) =>
+      Object.values(abilities ?? {}),
+    ),
   ),
 ].sort();

@@ -2,6 +2,11 @@ import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
 import { createSearchFilters } from "@/shared/team";
+import { CAP_FORMAT } from "@/shared/formats";
+import { dvGender, getDv, isShinyDv } from "@/shared/generation-rules";
+import { canHaveHiddenPowerType, hiddenPowerType } from "@/shared/hidden-power";
+import { setDetail } from "@/shared/set-details";
+import { parseTeamText } from "@/store/team-text";
 
 test("move selection rejects duplicates but permits changing its own Hidden Power type", ({
   store,
@@ -238,6 +243,43 @@ test("a past generation leaves out pokemon its games lack, and the latest lists 
   expect(store.filterAbilities).toContain("Battle Bond");
 });
 
+test("the CAP format adds the CAP pokemon, their abilities, and their moves", ({
+  store,
+}) => {
+  expect(store.filteredPokemon).not.toContain("caribolt");
+  expect(store.filterAbilities).not.toContain("Persistent");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.filteredPokemon).toContain("caribolt");
+  expect(store.filterAbilities).toContain("Persistent");
+  store.selectPokemon(0, "caribolt");
+  expect(store.teamLearnsets.values[0]).toContain("hornleech");
+  expect(store.teamLearnsets.values[0]).not.toContain("return");
+});
+
+test("the CAP format offers the CAP-only item its pokemon need, but not the banned Crucibellite", ({
+  store,
+}) => {
+  store.currentTeam.format = "OU: Over Used";
+  expect(store.teamItems).not.toContain("vilevial");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.teamItems).toContain("vilevial");
+  expect(store.teamItems).toContain("leftovers");
+  expect(store.teamItems).not.toContain("crucibellite");
+  store.selectPokemon(0, "venomiconepilogue");
+  expect(store.team[0]?.item).toBe("vilevial");
+});
+
+test("Random Team fills a Gen 3 Doubles OU team without Ubers", ({ store }) => {
+  store.currentTeam.generation = 3;
+  store.currentTeam.format = "Doubles OU";
+  expect(store.filteredPokemon).toContain("swampert");
+  expect(store.filteredPokemon).not.toContain("lugia");
+  expect(store.randomizeTeam()).toBe(true);
+  expect(store.teamPokemon.every(name => name)).toBe(true);
+  for (const name of store.teamPokemon)
+    expect(store.filteredPokemon).toContain(name);
+});
+
 test("a past generation keeps the pokemon that learn no moves in any game", ({
   store,
 }) => {
@@ -254,4 +296,80 @@ test("choosing Giratina-Origin fills in the item its generation has", ({
   store.currentTeam.generation = 9;
   store.selectPokemon(1, "giratinaorigin");
   expect(store.team[1].item).toBe("griseouscore");
+});
+
+test("a level change re-matches Hidden Power once Hyper Training no longer applies", ({
+  store,
+}) => {
+  store.currentTeam.generation = 7;
+  store.selectPokemon(0, "lanturn");
+  store.selectMove(0, "move1", "hiddenpowerfire");
+  expect(store.team[0].ivs).toBeUndefined();
+  store.setLevel(0, 50);
+  expect(store.team[0].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+  expect(canHaveHiddenPowerType(store.team[0], "fire", 7)).toBe(true);
+  store.setLevel(0, undefined);
+  expect(store.team[0].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+
+  store.selectPokemon(1, "chinchou");
+  store.setLevel(1, 50);
+  store.selectMove(1, "move1", "hiddenpowerfire");
+  expect(store.team[1].ivs).toEqual(store.team[0].ivs);
+
+  // The dialog stores each keystroke, then passes the level it started from
+  store.selectPokemon(2, "ampharos");
+  store.selectMove(2, "move1", "hiddenpowerfire");
+  setDetail(store.team[2], "level", 50);
+  store.setLevel(2, 50, 100);
+  expect(store.team[2].ivs).toEqual({ atk: 30, spa: 30, spe: 30 });
+});
+
+test("shiny and level edits keep Hidden Power IVs that already mismatched its type", ({
+  store,
+}) => {
+  store.currentTeam.generation = 5;
+  store.replaceTeam(
+    parseTeamText("Lanturn\nIVs: 0 Atk\n- Hidden Power Fire", 5),
+  );
+  expect(store.team[0].ivs).toEqual({ atk: 0 });
+  store.setShiny(0, true);
+  store.setLevel(0, 50);
+  expect(store.team[0].ivs).toEqual({ atk: 0 });
+  expect(store.team[0].move1).toBe("hiddenpowerfire");
+
+  store.currentTeam.generation = 7;
+  store.replaceTeam(
+    parseTeamText("Lanturn\nLevel: 50\nIVs: 0 Atk\n- Hidden Power Fire", 7),
+  );
+  store.setLevel(0, 60);
+  expect(store.team[0].ivs).toEqual({ atk: 0 });
+});
+
+test("Gen 2 shininess keeps Hidden Power matching the DVs", ({ store }) => {
+  store.currentTeam.generation = 2;
+  store.selectPokemon(0, "lanturn");
+  store.selectMove(0, "move1", "hiddenpowerfire");
+  store.setShiny(0, true);
+  expect(isShinyDv(store.team[0])).toBe(true);
+  expect(store.team[0].move1).toBe("hiddenpowergrass");
+  expect(hiddenPowerType(store.team[0], 2)).toBe("grass");
+
+  store.selectMove(0, "move1", "hiddenpowerdragon");
+  store.setShiny(0, true);
+  expect(store.team[0].move1).toBe("hiddenpowerdragon");
+  expect(isShinyDv(store.team[0])).toBe(true);
+  store.setShiny(0, false);
+  expect(isShinyDv(store.team[0])).toBe(false);
+  expect(store.team[0].move1).toBe("hiddenpowerdragon");
+  expect(hiddenPowerType(store.team[0], 2)).toBe("dragon");
+
+  store.replaceTeam(
+    parseTeamText("Lanturn (F)\nShiny: Yes\n- Hidden Power Dragon", 2),
+  );
+  expect(getDv(store.team[0], "atk")).toBe(7);
+  store.setShiny(0, false);
+  expect(isShinyDv(store.team[0])).toBe(false);
+  expect(hiddenPowerType(store.team[0], 2)).toBe("dragon");
+  expect(dvGender(store.team[0])).toBe("F");
+  expect(store.team[0].gender).toBe("F");
 });
