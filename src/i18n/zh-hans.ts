@@ -30,10 +30,11 @@ const zhHans: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "即将推出",
+  generationGroups: { spinOffs: "外传", mainSeries: "正传系列" },
   combinedGenerations: {
     label: "第6–9世代",
     short: "第6–9世代",
-    description: "合并第6–9世代所有游戏的选项",
+    description: "合并第6–9世代所有游戏",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -119,7 +120,6 @@ const zhHans: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `宝可梦 ${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first}和${second}`,
-    advancedMode: "高级",
     filters: "筛选",
     sort: "排序",
     randomizePokemon: "随机选择宝可梦",
@@ -219,6 +219,7 @@ const zhHans: Messages = {
       status: { label: "异常状态招式", short: "异常状态" },
       phazer: { label: "吹飞手" },
       boosting: { label: "强化招式", short: "强化" },
+      priority: { label: "先制招式", short: "先制", shorter: "先制" },
       voltTurn: {
         label: "急折／伏特替换",
         short: "急折伏特",
@@ -433,7 +434,7 @@ const zhHans: Messages = {
     removed: {
       item: "移除的道具",
       ability: "移除的特性",
-      moves: "移除的招式：",
+      move: "移除的招式",
       details: "移除的详细信息",
     },
     ivsUnused: (where: string) => `个体值不适用于${where}。`,
@@ -446,6 +447,9 @@ const zhHans: Messages = {
       item: (count: number) => `${count}件道具`,
       ability: (count: number) => `${count}个特性`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中保留${carried}只`,
+    removedSummary: (removed: string) => `移除${removed}`,
     modify: "更新现有队伍",
     copy: "复制到新队伍",
     createEmpty: "创建空队伍",
@@ -571,7 +575,7 @@ const zhHans: Messages = {
     teamsAnswer:
       "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
     teamsAnswer2:
-      "“更多”按钮会显示队伍工具、“筛选”、“排序”和“更多详情”。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
+      "名称列表中有“筛选”和“排序”按钮，招式列表中有“排序”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
     generations: "世代",
     generationsQuestion: "世代会改变什么？",
     generationsAnswer:
@@ -628,13 +632,17 @@ const zhHans: Messages = {
       ["清雾手", "会使用清除浓雾（可吹走场上钉子）的宝可梦。"],
       [
         "稳定回复",
-        "每次使用都能保证回复 50% 或以上 HP 的招式（在正常天气下）。例如：自我再生、生蛋、喝牛奶、偷懒、光合作用。",
+        "每次使用都能保证回复 50% 或以上 HP 的招式（在正常天气下）。例如：自我再生、生蛋、喝牛奶、偷懒、光合作用。如果同一只宝可梦还会守住或看穿，祈愿也算。",
       ],
       [
         "异常状态招式",
         "这里指命中率高、能造成麻痹、灼伤或中毒的招式，以及能催眠的招式。例如：剧毒、磷火、电磁波、唱歌。",
       ],
       ["强化招式", "提升自身能力的招式（最好是 +2 以上），例如剑舞和冥想。"],
+      [
+        "先制招式",
+        "无论速度高低，都能比大多数招式先出手的攻击招式。例如：神速、突袭、水流喷射、子弹拳。",
+      ],
       [
         "讲究道具",
         "使某项能力提升 50% 但会锁定一个招式的道具。共有三种：讲究头带、讲究眼镜和讲究围巾。",

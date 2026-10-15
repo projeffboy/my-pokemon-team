@@ -36,7 +36,7 @@ This is a single-page application: teams and Pokemon data stay in the browser, a
 - Browser testing: Playwright.
 - Direct rule testing: Playwright's test runner in Node, without a browser.
 
-See [package.json](package.json) for dependency versions and the exact script definitions, and [AGENTS.md](AGENTS.md) for the code structure and conventions.
+See [package.json](package.json) for dependency versions and the exact script definitions, and [AGENTS.md](AGENTS.md) for the code structure and conventions. The requirements, and the decisions behind them, are in [docs/requirements](docs/requirements/README.md).
 
 ## Local Development
 
@@ -125,7 +125,7 @@ npm test
 - `npm run test:smoke`: builds the production app and checks its essential flows with Vite preview on port 4173.
 - `npm run test:dev`: browser tests of the UI against the development server on port 3000.
 
-`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. Run it after changing `src/shared/dex-urls.ts` or updating the data. Bulbapedia's bot protection may challenge the browser, in which case its tests are skipped.
+`npm run test:links` is not part of `npm test`: it opens the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex links for a few dozen pokemon, ten of them chosen at random each run, on the real sites. It also requests the sprites of every pokemon offered in Gen 9 and Pokemon Champions from Showdown, and lists those with neither an animated nor a still sprite, and those shown still although Showdown animates them, in its `ani` folder or its BW-style `gen5ani` one. Run it after changing `src/shared/dex-urls.ts` or `src/app/shared/pokemon-sprite/sprite-urls.ts`, or updating the data. Bulbapedia's bot protection may challenge the browser, in which case its tests are skipped.
 
 Both browser suites use four Playwright browser profiles. Playwright starts and stops the servers itself, except that `test:dev` reuses a development server already running on port 3000. Keep port 4173 free. Arguments after `--` go to Playwright, for example `npm run test:logic -- learnsets` or `npm run test:dev -- --project="Desktop Chrome"`.
 

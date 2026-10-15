@@ -10,7 +10,17 @@ export type Entry = { date: string } & (
 const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
-    changes: ["Beat Up is now typeless in Gens 2–4, as in those games."],
+    changes: [
+      "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
+      "Beat Up is now typeless in Gens 2–4, as in those games.",
+    ],
+  },
+  {
+    date: "Oct 14, 2026",
+    changes: [
+      "The team checklist has a new Priority Move role, for damaging moves such as Extreme Speed or Sucker Punch.",
+      "Twenty-one more Pokémon are now animated, like Great Tusk.",
+    ],
   },
   {
     date: "Oct 13, 2026",

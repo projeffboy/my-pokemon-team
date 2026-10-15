@@ -30,10 +30,11 @@ const ja: Messages = {
   },
   generationSelect: "世代",
   comingSoon: "近日公開",
+  generationGroups: { spinOffs: "外伝", mainSeries: "本編" },
   combinedGenerations: {
     label: "第6～9世代",
     short: "第6～9世代",
-    description: "第6〜9世代の全ゲームの選択肢を統合",
+    description: "第6〜9世代の全ゲームを統合",
   },
   championsGeneration: "第9世代 · Champions",
   championsGenerationShort: "第9世代（Champions）",
@@ -123,7 +124,6 @@ const ja: Messages = {
     slotWith: (slot: number, pokemon: string | undefined) =>
       `ポケモン${slot}（${pokemon ?? "空"}）`,
     slotPair: (first: string, second: string) => `${first}と${second}`,
-    advancedMode: "詳細",
     filters: "絞り込み",
     sort: "並べ替え",
     randomizePokemon: "ポケモンをランダムに選ぶ",
@@ -224,6 +224,7 @@ const ja: Messages = {
       status: { label: "状態異常技", short: "状態異常" },
       phazer: { label: "強制交代技" },
       boosting: { label: "積み技", short: "積み" },
+      priority: { label: "先制技", short: "先制技", shorter: "先制" },
       voltTurn: {
         label: "ボルトチェンジ系",
         short: "ボルチェン",
@@ -447,7 +448,7 @@ const ja: Messages = {
     removed: {
       item: "削除される持ち物",
       ability: "削除される特性",
-      moves: "削除される技：",
+      move: "削除される技",
       details: "削除される詳細",
     },
     ivsUnused: (where: string) => `${where}では個体値は適用されません。`,
@@ -460,6 +461,9 @@ const ja: Messages = {
       item: (count: number) => `持ち物${count}個`,
       ability: (count: number) => `特性${count}個`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中${carried}匹を引き継ぎ`,
+    removedSummary: (removed: string) => `${removed}を削除`,
     modify: "現在のチームを更新",
     copy: "新しいチームにコピー",
     createEmpty: "空のチームを作成",
@@ -587,7 +591,7 @@ const ja: Messages = {
     teamsAnswer:
       "チームはこのブラウザに保存されるので、次に来たときもここにありますが、別の端末には引き継がれません。「チーム一覧」ボタンで一覧が表示され、各チームのメニューから名前の変更、世代とフォーマットの設定、複製、共有、削除ができます。「すべてエクスポート」はすべてのチームをShowdownのテキストとしてダウンロードし、「チームをインポート」でそれを読み戻せます。アドレスバーには常に現在のチームが入っているので、アドレスをコピーする（または「共有」を押す）とチームを共有できます。",
     teamsAnswer2:
-      "「その他」ボタンでチームツール、「絞り込み」、「並べ替え」、「その他の詳細」が表示されます。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは、ポケモンの枠のタブの上にあります。",
+      "名前のリストには「絞り込み」と「並べ替え」、わざのリストには「並べ替え」のボタンがあります。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは、ポケモンの枠のタブの上にあります。",
     generations: "世代",
     generationsQuestion: "世代を変えると何が変わりますか？",
     generationsAnswer:
@@ -648,7 +652,7 @@ const ja: Messages = {
       ],
       [
         "安定した回復技",
-        "使うたびにHPの50%以上を確実に回復する技（通常の天候のとき）。例: じこさいせい、タマゴうみ、ミルクのみ、なまける、こうごうせい。",
+        "使うたびにHPの50%以上を確実に回復する技（通常の天候のとき）。例: じこさいせい、タマゴうみ、ミルクのみ、なまける、こうごうせい。同じポケモンがまもるやみきりなどを覚えていれば、ねがいごとも含まれます。",
       ],
       [
         "状態異常技",
@@ -657,6 +661,10 @@ const ja: Messages = {
       [
         "積み技",
         "つるぎのまいやめいそうのように、自分の能力を（できれば2段階以上）上げる技。",
+      ],
+      [
+        "先制技",
+        "すばやさに関係なく、ほとんどの技より先に出せる攻撃技。例: しんそく、ふいうち、アクアジェット、バレットパンチ。",
       ],
       [
         "こだわりアイテム",
