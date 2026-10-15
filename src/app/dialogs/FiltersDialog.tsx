@@ -21,6 +21,7 @@ import {
 import { variantGeneration } from "@/shared/game-variants";
 import { GENERATION_GAMES } from "@/shared/generations";
 import { REGIONS } from "@/shared/regions";
+import { createSearchFilters } from "@/shared/team";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { searchFilter } from "@/app/shared/search-filter";
 import { closeKeyboard, isTouchInput, verbatim } from "@/app/shared/text-entry";
@@ -173,11 +174,20 @@ const FiltersDialog = observer(function FiltersDialog() {
       label: t.filters.moves,
       options: [{ value: "Viable", label: t.filters.viable }],
     },
+    ...(store.rules.items ?
+      [
+        {
+          key: "items" as const,
+          label: t.filters.items,
+          options: [{ value: "Viable", label: t.filters.viableItems }],
+        },
+      ]
+    : []),
   ];
 
   const clear = () => {
     if (!variantGeneration(store.currentTeam.format)) void changeFormat("");
-    store.filters = { type: "", region: "", ability: "", moves: "" };
+    store.filters = createSearchFilters();
   };
 
   const renderSelect = ({ key, label, options }: (typeof selects)[number]) => (
@@ -194,7 +204,9 @@ const FiltersDialog = observer(function FiltersDialog() {
       onChange={event => (store.filters[key] = event.target.value)}
       fullWidth
     >
-      <MenuItem value="">{key === "moves" ? t.all : t.any}</MenuItem>
+      <MenuItem value="">
+        {key === "moves" || key === "items" ? t.all : t.any}
+      </MenuItem>
       {options.map(({ value, label }) => (
         <MenuItem key={value} value={value}>
           {key === "type" && isPokemonType(value) ?

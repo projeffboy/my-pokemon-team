@@ -418,6 +418,8 @@ const es: Messages = {
     region: "Región",
     moves: "Movimientos",
     viable: "Viable",
+    items: "Objetos",
+    viableItems: "Viable",
     ability: "Habilidad",
   },
   sort: {

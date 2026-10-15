@@ -1,7 +1,9 @@
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import { CAP_FORMAT } from "@/shared/formats";
 import { viableMovesIn } from "@/data/viable-moves";
+import { viableItemsIn } from "@/data/viable-items";
 import pokedex from "@/data/pokedex";
+import itemData from "@/data/items";
 import { itemNameInverse, pokemonNameInverse } from "@/shared/names";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { generationBit, generationRules } from "@/shared/generation-rules";
@@ -221,18 +223,35 @@ const capFormatItems = new Set(
     return item ? [item] : [];
   }),
 );
+// The items the game has, or only those Pokemon Showdown's teambuilder treats as useful
 export function availableItems(
   items: readonly string[],
   generation: Generation,
   format = "",
+  viableOnly = false,
 ) {
   if (!generationRules(generation, format).items) return [];
   const bit = generationBit(generation, format);
+  const viable = viableItemsIn(generation);
   return items.filter(
     item =>
-      !!((availability?.items[item] ?? 0) & bit) ||
-      (format === CAP_FORMAT && capFormatItems.has(item)),
+      (!!((availability?.items[item] ?? 0) & bit) ||
+        (format === CAP_FORMAT && capFormatItems.has(item))) &&
+      (!viableOnly || viable.has(item)),
   );
+}
+// Mega stones are only for the pokemon that mega evolves with them and its mega, Memories
+// only for Silvally, and Drives only for Genesect. An empty slot can hold any item.
+export function canUseItem(pokemon: string, item: string) {
+  const species = pokedex[pokemon];
+  const held = itemData[item];
+  if (!species?.name || !held) return true;
+  const { name, baseSpecies = name } = species;
+  if (held.megaStone)
+    return Object.entries(held.megaStone).some(forms => forms.includes(name));
+  if (held.onMemory) return baseSpecies === "Silvally";
+  if (held.onDrive) return baseSpecies === "Genesect";
+  return true;
 }
 export function availablePokemon(
   pokemon: readonly string[],

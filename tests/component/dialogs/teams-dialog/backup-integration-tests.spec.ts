@@ -133,6 +133,7 @@ test.describe("Team backups", () => {
       region: "Sinnoh",
       ability: "Hydration",
       moves: "Tail Glow",
+      items: "Viable",
     };
     modern.team[0] = {
       name: "manaphy",

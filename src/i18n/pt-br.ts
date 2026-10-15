@@ -419,6 +419,8 @@ const ptBR: Messages = {
     region: "Região",
     moves: "Golpes",
     viable: "Viável",
+    items: "Itens",
+    viableItems: "Viável",
     ability: "Habilidade",
   },
   sort: {

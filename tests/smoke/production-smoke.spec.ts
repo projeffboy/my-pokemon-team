@@ -17,7 +17,12 @@ test.beforeEach(async ({ page, baseURL }) => {
       protocol === "https:" ||
       protocol === "ws:" ||
       protocol === "wss:";
-    if (isNetworkProtocol && requestUrl.host !== appHost) {
+    // The preview server forwards /showdown-sprites/ to Showdown
+    if (
+      isNetworkProtocol &&
+      (requestUrl.host !== appHost ||
+        requestUrl.pathname.startsWith("/showdown-sprites/"))
+    ) {
       void route.abort();
       return;
     }

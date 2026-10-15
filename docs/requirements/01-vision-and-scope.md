@@ -75,7 +75,7 @@ The features of Ash, with the IDs the later documents use. **[Ash]** marks a fea
     - F2.3.2 Translation Update, from PokeAPI [Ash]
 - **F3 Pokemon Search**: finding a pokemon, move, item, or ability for a slot.
   - F3.1 Search by Name
-  - F3.2 Filters: format, type, region, viable moves only, and ability [Ash].
+  - F3.2 Filters: format, type, region, viable moves only, viable items only [Ash], and ability [Ash].
   - F3.3 Sort [Ash]
   - F3.4 Option Views, one of: list, grid [Ash], or big grid [Ash].
   - F3.5 Types Display [Ash]
@@ -136,7 +136,7 @@ Not intended for now. None of these is ruled out for good; each would first need
 
 ### Dependencies and limitations
 
-- Pokemon Showdown supplies the game data, the sprites, and the icon sheets. Sprites load from its servers, so they are missing where those servers are unreachable or blocked, as at many schools. REQ-INTF-18 asks for sprites that work there.
+- Pokemon Showdown supplies the game data, the sprites, and the icon sheets. Sprites load from its servers, so they are missing when those servers are down. Where a network blocks them, as at many schools, the site loads the sprites through its own address instead (REQ-INTF-18).
 - PokeAPI supplies the names in other languages. A name it lacks appears in English.
 - Resend delivers feedback email from its shared address, which can reach only the Site Owner's own address. That is all feedback needs: it goes only to the owner, who replies from their own mail to the player's reply address.
 - Playwire places the ads that pay for the site.
@@ -148,7 +148,7 @@ The Site Owner's one real worry is a takedown by the rights holders, RISK-8 ([08
 
 - **RISK-1.** A data update renames or removes a pokemon, move, or item, and old share links and saved teams silently lose it. The update script reports those names before release (REQ-DATA-6), and PF7 will tell the visitor.
 - **RISK-2.** The browser clears its site storage and the saved teams are lost. Team backups keep a copy (REQ-BKUP-1 to REQ-BKUP-8), and the site says when it could not save (REQ-COLL-9).
-- **RISK-3.** Pokemon Showdown stops serving sprites to other sites, or changes its data layout. The icon sheets are bundled, the data update writes only the fields the site reads (REQ-DATA-5), and sprites that do not depend on Showdown's servers are planned (REQ-INTF-18).
+- **RISK-3.** Pokemon Showdown stops serving sprites to other sites, or changes its data layout. The icon sheets are bundled, and the data update writes only the fields the site reads (REQ-DATA-5). Sprites still come from Showdown's servers, even when the site forwards them to a network that blocks Showdown (REQ-INTF-18).
 - **RISK-4.** A change to the page's structure removes the top ad banner, and revenue drops unnoticed. The banner's place is a requirement (REQ-INTF-5) that is checked on the production site.
 - **RISK-5.** The maintainer is away, or does not hear of it, when a new game or regulation comes out, and the 2-day target of BR-3 is missed. Data updates are scripted and report what changed (REQ-DATA-1, REQ-DATA-6), every change passes the automated checks before it deploys, and a scheduled workflow tells the maintainer within a day when Showdown changes data the site uses (REQ-DATA-12).
 - **RISK-6.** A wrong analysis result goes unreported, and players stop trusting the scores. Each score shows its reasons (REQ-ANLY-7), the rules have automated tests, and players can report errors through feedback (REQ-FEED-1).

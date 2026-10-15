@@ -383,6 +383,7 @@ test("team filters load with defaults, survive saving, and merge across teams", 
     region: "Johto",
     ability: "Chlorophyll",
     moves: "Viable",
+    items: "Viable",
   };
   theirs.teams[1]!.filters.type = "Water";
   const merged = mergeStoredState(base, mine, theirs);
@@ -397,9 +398,16 @@ test("team filters load with defaults, survive saving, and merge across teams", 
     region: "",
     ability: "",
     moves: "",
+    items: "",
   });
   expect(
     sanitizeSavedTeam({ ...first, filters: { type: "Fire", region: 5 } })
       ?.filters,
-  ).toEqual({ type: "Fire", region: "", ability: "", moves: "" });
+  ).toEqual({
+    type: "Fire",
+    region: "",
+    ability: "",
+    moves: "",
+    items: "",
+  });
 });

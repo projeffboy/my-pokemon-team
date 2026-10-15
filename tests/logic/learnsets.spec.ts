@@ -4,6 +4,7 @@ import { test, expect } from "@playwright/test";
 import {
   completeLearnset,
   canItLearn,
+  canUseItem,
   generationLearnset,
   getTeamLearnsets,
   learnsetsReady,
@@ -256,6 +257,25 @@ test("Viable filtering follows historical Showdown usefulness rules", () => {
   expect(getTeamLearnsets(team, true, undefined, 7).values[0]).not.toContain(
     "hiddenpowerflying",
   );
+});
+
+test("mega stones, Memories, and Drives are only for the pokemon that use them", () => {
+  for (const [pokemon, item, usable] of [
+    ["scovillain", "scovillainite", true],
+    ["scovillainmega", "scovillainite", true],
+    ["toedscruel", "scovillainite", false],
+    ["tatsugiridroopy", "tatsugirinite", true],
+    ["tatsugiridroopymega", "tatsugirinite", true],
+    ["floetteeternal", "floettite", true],
+    ["floette", "floettite", false],
+    ["silvallyrock", "ghostmemory", true],
+    ["toedscruel", "ghostmemory", false],
+    ["genesect", "chilldrive", true],
+    ["toedscruel", "chilldrive", false],
+    ["toedscruel", "leftovers", true],
+    ["", "scovillainite", true],
+  ] as const)
+    expect(canUseItem(pokemon, item), `${pokemon} ${item}`).toBe(usable);
 });
 
 test("the CAP format gives CAP pokemon the moves Showdown's CAP learnsets give a Gen 9 source", () => {
