@@ -353,6 +353,32 @@ test("a first visit's link saved beside another tab's team takes the next team n
   expect(store.currentTeam.name).toBe("Équipe 2");
 });
 
+test("two first-visit tabs opening links save them as Team 1 and Team 2", async () => {
+  let state: string | null = null;
+  const storage = {
+    getItem: () => state,
+    setItem: (_key: string, value: string) => {
+      state = value;
+    },
+  } as unknown as Storage;
+  const [a, b] = [new Store(storage), new Store(storage)];
+  await Promise.all([a.translationReady, b.translationReady]);
+  a.openTeamFromLink(createTeam({ name: "capsakid" }));
+  b.openTeamFromLink(createTeam({ name: "varoom" }));
+  b.team[0]!.move1 = "gunkshot";
+  await settle();
+  a.team[0]!.move1 = "bulletseed";
+  await settle();
+  expect(
+    (JSON.parse(state ?? "null") as StoredState | null)?.teams.map(
+      ({ name, team }) => [name, team[0]!.name],
+    ),
+  ).toEqual([
+    ["Team 1", "varoom"],
+    ["Team 2", "capsakid"],
+  ]);
+});
+
 // Two tabs sharing one storage, each counting its own writes
 function twoTabs() {
   const saved = initialStoredState();
