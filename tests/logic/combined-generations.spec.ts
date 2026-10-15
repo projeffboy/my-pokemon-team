@@ -422,6 +422,31 @@ test("combined calculations use latest stats and types", () => {
   expect(pokemonTypes("clefable", 9)).toEqual(["Fairy"]);
 });
 
+test("the combined format accepts every move its learnsets offer", async () => {
+  await learnsetsReady;
+  for (const name of Object.keys(pokedex))
+    expect(
+      generationLearnset(name, 9, COMBINED_GENERATIONS_FORMAT).filter(
+        move => !canItLearn(move, name, 9, COMBINED_GENERATIONS_FORMAT),
+      ),
+      name,
+    ).toEqual([]);
+});
+
+test("the combined format accepts a move its pokemon lost after Gen 7", async () => {
+  await learnsetsReady;
+  expect(generationLearnset("audino", 8)).not.toContain("return");
+  expect(
+    generationLearnset("audino", 9, COMBINED_GENERATIONS_FORMAT),
+  ).toContain("return");
+  expect(canItLearn("return", "audino", 9, COMBINED_GENERATIONS_FORMAT)).toBe(
+    true,
+  );
+  expect(
+    parseTeamText("Audino\n- Return", 9, COMBINED_GENERATIONS_FORMAT)[0]?.move1,
+  ).toBe("return");
+});
+
 test("combined learnsets include special-game moves for alternate formes without unlearnable battle moves", async ({
   store,
 }) => {
