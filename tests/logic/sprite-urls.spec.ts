@@ -50,6 +50,18 @@ test("the site's own address retries the sprite and its fallback, for networks t
   expect(forwarded).toEqual([src, fallback]);
 });
 
+test("the site's own address caches sprites, and their 404s, only as long as Showdown does", () => {
+  const { proxied } = spriteUrls("bulbasaur", bulbasaur, undefined, false, 9);
+  // Of the header rules that match a path, the last one wins
+  const rule = vercel.headers.at(-1);
+  for (const url of proxied) {
+    expect(url).toMatch(new RegExp(`^${rule?.source}$`));
+  }
+  expect(rule?.headers).toEqual([
+    { key: "Cache-Control", value: "public, max-age=691200" },
+  ]);
+});
+
 test("shiny sprites keep the selected generation, image type and shiny fallback", () => {
   for (const [generation, folder, extension] of [
     [2, "gen2-shiny", "png"],

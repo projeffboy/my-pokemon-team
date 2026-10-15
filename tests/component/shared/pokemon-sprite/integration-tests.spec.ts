@@ -245,7 +245,7 @@ test.describe("Pokemon Sprite - Integration Tests", () => {
       `${SHOWDOWN_SPRITES}/gen5-shiny/zeraora-mega.png`,
     );
     // Showdown's address and the site's own both lack it
-    await page.route(/\/sprites\/gen5-shiny\/zeraora-mega\.png$/, route =>
+    await page.route(/sprites\/gen5-shiny\/zeraora-mega\.png$/, route =>
       route.fulfill({ status: 404, body: "Not found" }),
     );
     await page.reload();
