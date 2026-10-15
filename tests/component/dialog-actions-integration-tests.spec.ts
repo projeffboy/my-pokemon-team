@@ -15,6 +15,18 @@ const LONG_TEAM_TEXT = Array.from(
     "Mesprit @ Leftovers\nAbility: Levitate\nEVs: 252 HP / 4 Def / 252 SpD\nCalm Nature\n- Psychic\n- Thunder Wave\n- U-turn\n- Stealth Rock\n",
 ).join("\n");
 
+// Switching to Gen 1 leaves out Gallade and changes Electrode
+const TRANSFER_TEAM_TEXT = `Electrode @ Life Orb
+Ability: Aftermath
+Timid Nature
+- Thunderbolt
+- Volt Switch
+
+Gallade @ Leftovers
+Ability: Sharpness
+- Sacred Sword
+`;
+
 interface DialogCase {
   name: string;
   open: (page: Page) => Promise<Locator>;
@@ -133,6 +145,27 @@ const dialogs: DialogCase[] = [
     actions: ["Close"],
     close: "Close",
   },
+  // Phones held sideways, with the browser's toolbar taking part of the height
+  ...[
+    { width: 844, height: 340 },
+    { width: 568, height: 270 },
+  ].map(viewport => ({
+    name: `Switch game at ${viewport.width}x${viewport.height}`,
+    open: async (page: Page) => {
+      await page.goto(
+        `/?gen=9&team=${Buffer.from(TRANSFER_TEAM_TEXT).toString("base64url")}`,
+      );
+      await expect(page.getByLabel("Pokemon 1's name")).toHaveValue(
+        "Electrode",
+      );
+      await page.getByRole("combobox", { name: "Generation" }).click();
+      await page.locator('[role="option"][data-value="1"]').press("Enter");
+      return page.getByRole("dialog", { name: /^Switch game/ });
+    },
+    actions: ["Cancel", "Update existing team", "Copy to new team"],
+    close: "Cancel",
+    viewport,
+  })),
 ];
 
 // Scrolls the dialog's scrolling parts to the start or the end of its content, and
@@ -148,11 +181,18 @@ const scrollDialog = (dialog: Locator, to: "start" | "end") =>
     return scrolls;
   }, to);
 
+// Also checks that a tap on the action's centre reaches it, which fails when the
+// dialog's edge cuts it off
 const expectWithin = async (locator: Locator, top: number, bottom: number) => {
   await expect
     .poll(async () => {
       const box = await locator.boundingBox();
-      return !!box && box.y >= top && box.y + box.height <= bottom;
+      if (!box || box.y < top || box.y + box.height > bottom) return false;
+      return locator.evaluate(
+        (element, { x, y }) =>
+          element.contains(document.elementFromPoint(x, y)),
+        { x: box.x + box.width / 2, y: box.y + box.height / 2 },
+      );
     })
     .toBe(true);
 };

@@ -6,6 +6,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Fragment, useId } from "react";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -57,6 +58,9 @@ export default function GenerationTransferDialog({
 }) {
   const { t, names, locale } = useTranslation();
   const compact = useIsSmDown();
+  // On a short screen, such as a phone held sideways, the games scroll with the
+  // details, so the details keep room and the actions stay in view
+  const short = useMediaQuery("(max-height: 499.95px)");
   const titleId = useId();
   const destinationId = useId();
   const summaryId = useId();
@@ -169,6 +173,95 @@ export default function GenerationTransferDialog({
       {names.pokemon(loss.pokemon)}
     </Typography>
   );
+  const endpoints = (
+    <Box sx={{ flexShrink: 0, px: short ? 0 : { xxs: 2, sm: 3 } }}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "minmax(0, 1fr) 24px minmax(0, 1fr)",
+          gap: 1,
+          alignItems: "start",
+          mt: short ? 2 : { xxs: 1, sm: 0 },
+          mb: 0.5,
+        }}
+      >
+        <Box
+          role="group"
+          aria-label={text.from(from)}
+          sx={{
+            gridColumn: 1,
+            minWidth: 0,
+            overflowWrap: "anywhere",
+          }}
+        >
+          <TransferEndpoint
+            value={from}
+            label={text.fromLabel}
+            generation={fromGeneration}
+            format={fromFormat}
+          />
+        </Box>
+        <Box
+          aria-hidden="true"
+          sx={{
+            gridColumn: 2,
+            display: "flex",
+            alignSelf: "center",
+            color: "text.secondary",
+          }}
+        >
+          <ArrowForwardIcon />
+        </Box>
+        <Box
+          id={destinationId}
+          aria-label={where}
+          sx={{
+            gridColumn: 3,
+            textAlign: "right",
+            minWidth: 0,
+            overflowWrap: "anywhere",
+          }}
+        >
+          <TransferEndpoint
+            value={where}
+            label={text.toLabel}
+            games={games}
+            generation={toGeneration}
+            format={toFormat}
+          />
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xxs: `minmax(0, ${fromLogos.length}fr) 1px minmax(0, ${toLogos.length}fr)`,
+            xs: "minmax(0, 1fr) 24px minmax(0, 1fr)",
+          },
+          gap: 1,
+          mb: 1,
+          alignItems: { xxs: "center", xs: "start" },
+          "& > span": {
+            minWidth: 0,
+            flexWrap: { xxs: "nowrap", xs: "wrap" },
+          },
+          "& img": {
+            minWidth: 0,
+            flex: { xxs: "1 1 0", xs: "0 1 auto" },
+          },
+        }}
+      >
+        <GameLogos logos={fromLogos} />
+        <Divider
+          orientation="vertical"
+          flexItem
+          aria-hidden="true"
+          sx={{ justifySelf: "center", mt: 0.5 }}
+        />
+        <GameLogos logos={toLogos} end />
+      </Box>
+    </Box>
+  );
   return (
     <Dialog
       open
@@ -187,94 +280,9 @@ export default function GenerationTransferDialog({
           closeLabel={t.cancel}
         />
       : <DialogTitle id={titleId}>{text.title}</DialogTitle>}
-      <Box sx={{ flexShrink: 0, px: { xxs: 2, sm: 3 } }}>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "minmax(0, 1fr) 24px minmax(0, 1fr)",
-            gap: 1,
-            alignItems: "start",
-            mt: { xxs: 1, sm: 0 },
-            mb: 0.5,
-          }}
-        >
-          <Box
-            role="group"
-            aria-label={text.from(from)}
-            sx={{
-              gridColumn: 1,
-              minWidth: 0,
-              overflowWrap: "anywhere",
-            }}
-          >
-            <TransferEndpoint
-              value={from}
-              label={text.fromLabel}
-              generation={fromGeneration}
-              format={fromFormat}
-            />
-          </Box>
-          <Box
-            aria-hidden="true"
-            sx={{
-              gridColumn: 2,
-              display: "flex",
-              alignSelf: "center",
-              color: "text.secondary",
-            }}
-          >
-            <ArrowForwardIcon />
-          </Box>
-          <Box
-            id={destinationId}
-            aria-label={where}
-            sx={{
-              gridColumn: 3,
-              textAlign: "right",
-              minWidth: 0,
-              overflowWrap: "anywhere",
-            }}
-          >
-            <TransferEndpoint
-              value={where}
-              label={text.toLabel}
-              games={games}
-              generation={toGeneration}
-              format={toFormat}
-            />
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: {
-              xxs: `minmax(0, ${fromLogos.length}fr) 1px minmax(0, ${toLogos.length}fr)`,
-              xs: "minmax(0, 1fr) 24px minmax(0, 1fr)",
-            },
-            gap: 1,
-            mb: 1,
-            alignItems: { xxs: "center", xs: "start" },
-            "& > span": {
-              minWidth: 0,
-              flexWrap: { xxs: "nowrap", xs: "wrap" },
-            },
-            "& img": {
-              minWidth: 0,
-              flex: { xxs: "1 1 0", xs: "0 1 auto" },
-            },
-          }}
-        >
-          <GameLogos logos={fromLogos} />
-          <Divider
-            orientation="vertical"
-            flexItem
-            aria-hidden="true"
-            sx={{ justifySelf: "center", mt: 0.5 }}
-          />
-          <GameLogos logos={toLogos} end />
-        </Box>
-      </Box>
+      {!short && endpoints}
       <ScrollContent>
+        {short && endpoints}
         <Typography id={summaryId} variant="body2" sx={{ mt: 2 }}>
           {summary}
         </Typography>
