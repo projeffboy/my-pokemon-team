@@ -16,6 +16,7 @@ const entries: Entry[] = [
       "The coverage matrix now doubles resisted hits from Tinted Lens users.",
       "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
       "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
+      "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
     ],
   },
   {
