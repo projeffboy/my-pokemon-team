@@ -128,6 +128,16 @@ test("sorts by format from the top tier down, with untiered formes last", () => 
   ]);
 });
 
+test("format sorting ranks a forme without tiers of its own like its species", () => {
+  const ids = ["giratinaorigin", "tentacruel", "giratina"];
+  const sort = { by: "format", descending: false } as const;
+  expect(sortPokemon(ids, sort, undefined, 4)).toEqual([
+    "giratina",
+    "giratinaorigin",
+    "tentacruel",
+  ]);
+});
+
 test("format sorting uses the selected generation's tiers", () => {
   const ids = ["clefable", "gengar"];
   const sort = { by: "format", descending: false } as const;

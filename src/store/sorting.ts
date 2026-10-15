@@ -8,7 +8,11 @@ import {
   type SortOrder,
 } from "@/types";
 import { baseStatTotal } from "@/shared/set-details";
-import { moveTypeIn, pokemonFormatIn } from "@/shared/generation-data";
+import {
+  doublesTierIn,
+  moveTypeIn,
+  pokemonFormatIn,
+} from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { TIER_BY_FORMAT } from "@/shared/formats";
 import { pokemonNameInverse } from "@/shared/names";
@@ -34,11 +38,12 @@ export function sortMoves(
   { by, descending }: MoveSortOrder = DEFAULT_MOVE_SORT,
   generation: Generation = LATEST_GENERATION,
   { locale, names }: Translation = english,
+  format = "",
 ): string[] {
   const { compare } = new Intl.Collator(locale, { sensitivity: "base" });
   const direction = descending ? -1 : 1;
   const typeName = (move: string) => {
-    const type = moveTypeIn(move, generation);
+    const type = moveTypeIn(move, generation, format);
     return type ? names.type(type) : "";
   };
   return [...moves].sort(
@@ -84,8 +89,10 @@ const DOUBLES_TIER_RANK = [
 const tierRank = (pokemon: string, generation: Generation, format: string) => {
   const doubles = DOUBLES_TIER_RANK.includes(TIER_BY_FORMAT[format] ?? "");
   const ranks = doubles ? DOUBLES_TIER_RANK : TIER_RANK;
-  const tiers = pokemonFormatIn(pokemon, generation);
-  const tier = ((doubles && tiers?.doublesTier) || tiers?.tier) ?? "";
+  const tier =
+    (doubles ?
+      doublesTierIn(pokemon, generation)
+    : pokemonFormatIn(pokemon, generation)?.tier) ?? "";
   const rank = ranks.indexOf(tier === "(OU)" ? "OU" : tier);
   return rank === -1 ? ranks.length : rank;
 };

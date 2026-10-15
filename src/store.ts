@@ -604,6 +604,7 @@ export class Store {
         this.moveSort,
         this.currentTeam.generation,
         this.translation,
+        this.dataFormat,
       ),
     );
     return {

@@ -1,4 +1,5 @@
 import {
+  CHAMPIONS_FORMAT,
   LETS_GO,
   LEGENDS_ARCEUS,
   LEGENDS_ZA,
@@ -7,7 +8,7 @@ import {
 import type { Generation } from "@/types";
 import { isGeneration, LATEST_GENERATION } from "./generations";
 
-export const CHAMPIONS_FORMAT = "Pokemon Champions (M-C)";
+export { CHAMPIONS_FORMAT };
 
 // Pokemon Champions is a Gen 9 game, so a team in its format is a Gen 9 team
 export const CHAMPIONS_GENERATION: Generation = 9;
@@ -105,12 +106,15 @@ export const showdownFormatId = (generation: Generation, format: string) =>
   `gen${generation}${SHOWDOWN_FORMAT_IDS[format] ?? ""}`;
 
 // The reverse: "gen8ou" => Gen 8 OU; older unprefixed tier IDs use Gen 6.
+// Tiers match exactly ("gen9ubersuu" is not Ubers), but a game's ID covers its
+// formats ("gen9championsou"). Boxes add "-box", and custom rules follow "@@@".
 // Unknown IDs retain the regular latest-generation default.
 export function parseShowdownFormatId(id: string): {
   generation: Generation;
   format: string;
 } {
-  const raw = id.trim().toLowerCase();
+  const raw =
+    id.trim().toLowerCase().replace(/-box$/, "").split("@@@")[0] ?? "";
   const legacy =
     !raw.startsWith("gen") && Object.values(SHOWDOWN_FORMAT_IDS).includes(raw);
   const formatId = legacy ? `gen6${raw}` : raw;
@@ -118,8 +122,8 @@ export function parseShowdownFormatId(id: string): {
   const generation = Number(match?.[1]);
   const rest = match?.[2] ?? "";
   const format =
-    Object.entries(SHOWDOWN_FORMAT_IDS).find(([, formatId]) =>
-      rest.startsWith(formatId),
+    Object.entries(SHOWDOWN_FORMAT_IDS).find(([format, formatId]) =>
+      gameFormat(format) ? rest.startsWith(formatId) : rest === formatId,
     )?.[0] ?? "";
   return {
     generation: formatGeneration(

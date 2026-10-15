@@ -81,7 +81,15 @@ export function calculateTypeCoverage(
       )
         continue;
 
-      const type = moveType(move, name, ability, generation, item, format);
+      const type = moveType(
+        move,
+        name,
+        ability,
+        generation,
+        item,
+        format,
+        pokemon,
+      );
       const targetsUsed = typesUsed.get(type) ?? new Set<PokemonType>();
 
       const hasStab =
