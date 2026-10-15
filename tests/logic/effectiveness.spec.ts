@@ -61,6 +61,7 @@ test.describe("type effectiveness", () => {
     ["Fire", "dubwool", "Fluffy", -1],
     ["Fire", "parasect", "Dry Skin", -3],
     ["Water", "parasect", "Dry Skin", IMMUNE_SCORE],
+    ["Ghost", "croagunk", "Dry Skin", 0],
     ["Ghost", "garganacl", "Purifying Salt", 1],
     ["Rock", "camerupt", "Solid Rock", 0],
     ["Ground", "camerupt", "Solid Rock", -0.5],

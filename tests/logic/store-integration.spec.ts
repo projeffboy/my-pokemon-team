@@ -205,6 +205,6 @@ test("choosing Giratina-Origin fills in the item its generation has", ({
   store.selectPokemon(0, "giratinaorigin");
   expect(store.team[0].item).toBe("griseousorb");
   store.currentTeam.generation = 9;
-  store.selectPokemon(0, "giratinaorigin");
-  expect(store.team[0].item).toBe("griseouscore");
+  store.selectPokemon(1, "giratinaorigin");
+  expect(store.team[1].item).toBe("griseouscore");
 });
