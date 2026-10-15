@@ -13,7 +13,7 @@ The course built feature models in the jUCMNav tool. This one is written as text
 - `XOR group`: exactly one of the children is selected when the parent is.
 - `OR group`: at least one of the children is selected when the parent is.
 - `[R0]`, `[Ash]`, `[Brock]`: the first release that has the feature (the old website, the redesign, the next release). A feature with no mark has been there since R0.
-- `[PF1]` to `[PF7]`: planned features, all proposed for Brock except PF4, which waits for PokeAPI's Portuguese names and is not scheduled, and PF5, which was dropped. PF4 has no mark, because it adds no feature: it removes constraint C4.
+- `[PF1]` to `[PF7]`: planned features, all proposed for Brock except PF2, which was built in the redesign, PF4, which waits for PokeAPI's Portuguese names and is not scheduled, and PF5, which was dropped. PF4 has no mark, because it adds no feature: it removes constraint C4.
 
 ## 4.2 Feature tree
 
@@ -89,7 +89,7 @@ My Pokemon Team
 |   +-- F9.4 Reply Address                        (optional)
 +-- F10 Site Versions                             (optional)   [Ash]
 |   +-- F10.1 Switch to Other Version             (mandatory)
-|   +-- F10.2 Team Transfer to Old Website        (optional)   [PF2]
+|   +-- F10.2 Team Transfer to Old Website        (optional)   [Ash]
 +-- F11 Advertising                               (optional)
 ```
 
@@ -114,7 +114,7 @@ What each top-level feature means:
 | ID  | Feature                            | Source                                                                               | Notes                                                                                                              |
 | --- | ---------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | PF1 | F4.4.1 Battle Format Context       | Issue 118; deferred during bug fixing on 2026-10-11                                  | Lets the checklist judge Defog correctly in Generations 4 and 5 singles and doubles.                               |
-| PF2 | F10.2 Team Transfer to Old Website | `README.md`, issue 111                                                               | Today the current team and saved teams stay on the site version they were made on.                                 |
+| PF2 | F10.2 Team Transfer to Old Website | `README.md`, issue 111                                                               | Built on 14 October 2026: the current team goes to the old website, and saved teams stay on this version.          |
 | PF3 | Let's Go and the Legends games     | The generation menu lists them as "Coming soon"; issue 122                           | Brings Awakening Values and Effort Levels with them.                                                               |
 | PF4 | Portuguese data names              | `AGENTS.md`, Languages; issue 124                                                    | Blocked until PokeAPI has Portuguese names (the games gain the language in 2027). Removes the constraint C4 below. |
 | PF5 | Verified sender domain             | `AGENTS.md`, Feedback; issue 115                                                     | Dropped on 14 October 2026: feedback emails go only to the Site Owner, so players would see no difference.         |
@@ -149,7 +149,7 @@ Not selected: F1.1.1, F1.2, F1.3, F1.4, F2.2, F2.3.2, F3.3, F3.5, F4.5, F5, F7.1
 
 Selected: every feature without a `[PF1]` to `[PF7]` mark. Example run-time choices: Generation Profile: Generations 6-9 Combined; Training Values: IVs and EVs; Option Views: List; Language: Spanish with F8.1.1 Translated Data Names; Colour Scheme: Auto.
 
-Not selected: PF1 to PF7.
+Not selected: PF1 and PF3 to PF7.
 
 ### Configuration "Ash, local development"
 
@@ -157,7 +157,7 @@ As "Ash, production" without F9 Feedback and its children, and without F11 Adver
 
 ### Configuration "Brock"
 
-As "Ash, production" with F4.4.1 Battle Format Context (example choice: Doubles), F10.2 Team Transfer to Old Website, F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. PF3 adds three choices to the Generation Profile group and two to the Training Values group. PF4 is not part of Brock; when PokeAPI has Portuguese names, it removes constraint C4.
+As "Ash, production" with F4.4.1 Battle Format Context (example choice: Doubles), F4.6 Team Legality Warnings, and F6.1 Notice of Dropped Entries. PF3 adds three choices to the Generation Profile group and two to the Training Values group. PF4 is not part of Brock; when PokeAPI has Portuguese names, it removes constraint C4.
 
 ## 4.6 Features and use cases
 

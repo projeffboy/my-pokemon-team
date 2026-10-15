@@ -120,7 +120,7 @@ flowchart LR
     UC20("UC20 Update Game Data")
     UC21("UC21 Update Translations")
     UC22("UC22 Set Battle Format (planned)")
-    UC23("UC23 Transfer Team to Old Website (planned)")
+    UC23("UC23 Transfer Team to Old Website")
     UC24("UC24 Check Team Legality (planned)")
   end
   Showdown["Pokemon Showdown"]
@@ -1086,21 +1086,21 @@ US19. As a player who knew the old website, I want a way back to it from the red
 **Acceptance criteria (Verify that...)**
 
 - a) The old website can be opened from every page of the redesigned site.
-- b) With a team that has pokemon, the Player is first told that the current team will not transfer and that saved teams stay on this version, and can cancel.
+- b) With a team that has pokemon, the Player is first told that the current team will open on the old website and that saved teams stay on this version, and can cancel.
 - c) With an empty team, the switch needs no confirmation.
 - d) The old website offers the way back.
 
 **Requirements**
 
-| ID         | Requirement                                                                                                                                                              | Imp. | Status      |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | ----------- |
-| REQ-SITE-1 | The site shall provide, from its header, a link to the old website.                                                                                                      | C    | Implemented |
-| REQ-SITE-2 | The site shall open the old website for a Player whose current team has pokemon only after the Player confirms a prompt stating that the current team will not transfer. | E    | Implemented |
-| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                                    | C    | Approved    |
-| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                                    | O    | Rejected    |
-| REQ-SITE-5 | The site shall name, before opening the old website with the Player's current team, each pokemon and set detail of the team that the old website cannot hold **[A-22]**. | C    | Approved    |
+| ID         | Requirement                                                                                                                                                                         | Imp. | Status      |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-SITE-1 | The site shall provide, from its header, a link to the old website.                                                                                                                 | C    | Implemented |
+| REQ-SITE-2 | The site shall open the old website for a Player whose current team has pokemon only after the Player confirms a prompt stating that the current team will open on the old website. | E    | Implemented |
+| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                                               | C    | Implemented |
+| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                                               | O    | Rejected    |
+| REQ-SITE-5 | The site shall name, before opening the old website with the Player's current team, each pokemon and set detail of the team that the old website cannot hold **[A-22]**.            | C    | Implemented |
 
-REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site either. REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Team to Old Website (planned, PF2).
+REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site either. REQ-SITE-3 to REQ-SITE-5 belong to UC23 Transfer Team to Old Website (PF2).
 
 US23. As a player moving between the old website and the redesigned site, I want my current team to come with me, so that switching does not mean building it again.
 
