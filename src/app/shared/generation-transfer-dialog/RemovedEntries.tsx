@@ -12,9 +12,11 @@ import typeIcons from "@/images/type-icons";
 export default function RemovedEntries({
   losses,
   generation,
+  format,
 }: {
   losses: TransferLoss[];
   generation: Generation;
+  format: string;
 }) {
   const { t, names } = useTranslation();
   const text = t.generationTransfer;
@@ -27,7 +29,7 @@ export default function RemovedEntries({
         const value = loss.value ?? "";
         const isItem = loss.field === "item";
         const name = isItem ? names.item(value) : names.move(value);
-        const type = isItem ? undefined : moveTypeIn(value, generation);
+        const type = isItem ? undefined : moveTypeIn(value, generation, format);
         return (
           <Box
             component="li"
