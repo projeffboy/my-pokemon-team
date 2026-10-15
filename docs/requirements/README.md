@@ -6,20 +6,20 @@ What [mypokemonteam.com](https://mypokemonteam.com) is for, who uses it, and wha
 
 Start with 01 and 05: they say what the site is for and what it does. 08 records the Site Owner's decisions and the questions still open. 02, 11, and 12 are the research behind them.
 
-| Document                                                                        | What it holds                                                                                                                                                                            |
-| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [01 Vision and scope](01-vision-and-scope.md)                                   | Why the site exists, its business requirements and rules, its scope, its features (built and planned), and its risks.                                                                    |
-| [02 Stakeholders and personas](02-stakeholders-and-personas.md)                 | Who has a stake in the site, the kinds of players, and five personas.                                                                                                                    |
-| [05 System requirements specification](05-system-requirements-specification.md) | The use cases, each with its user story, acceptance criteria, and requirements; the domain model; the non-functional requirements and constraints; and how each requirement is verified. |
-| [08 Decisions and open questions](08-assumptions-and-interview.md)              | What the Site Owner decided and why, and the questions still open.                                                                                                                       |
-| [11 Analysis of existing systems](11-existing-systems-analysis.md)              | Six competing products, their features, and what sets the site apart.                                                                                                                    |
-| [12 Analysis of player feedback](12-feedback-analysis.md)                       | What about 105 player emails from 2021 to 2026 asked for and complained about, and what that changed.                                                                                    |
+| Document                                                                        | What it holds                                                                                                                                    |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [01 Vision and scope](01-vision-and-scope.md)                                   | Why the site exists, its business requirements and rules, its scope, its features (built and planned), and its risks.                            |
+| [02 Stakeholders and personas](02-stakeholders-and-personas.md)                 | Who has a stake in the site, how players differ, and two personas.                                                                               |
+| [05 System requirements specification](05-system-requirements-specification.md) | The use cases, each with its user story and requirements; the non-functional requirements and constraints; and how each requirement is verified. |
+| [08 Decisions and open questions](08-assumptions-and-interview.md)              | What the Site Owner decided and why, and the questions still open.                                                                               |
+| [11 Analysis of existing systems](11-existing-systems-analysis.md)              | Six competing products, their features, and what sets the site apart.                                                                            |
+| [12 Analysis of player feedback](12-feedback-analysis.md)                       | What about 105 player emails from 2021 to 2026 asked for and complained about, and what that changed.                                            |
 
 ## Conventions
 
 - "The site" is the website, its feedback function, and its data update scripts.
 - A requirement is one sentence whose subject is the site (or a named part of it) and whose verb is "shall". It says what the site does, not how.
-- Pokemon terms are defined in Section 1.4 of the [SyRS](05-system-requirements-specification.md), and abbreviations in its Section 5.2.
+- Pokemon terms and abbreviations are defined in [Section 1.2 of the SyRS](05-system-requirements-specification.md#12-definitions).
 - Diagrams are Mermaid, which GitHub renders.
 
 ## Identifiers
@@ -41,8 +41,8 @@ Planned features are PF, not P, so that they are not mistaken for the priorities
 
 Each requirement has an importance and a status. Importance (Essential, Conditional, Optional) says how much the site needs it. Priority belongs to issues, not requirements, and says what to do next.
 
-- **Proposed**: suggested, not yet agreed.
-- **Approved**: the Site Owner agreed to it, and it is not built yet.
+- **Proposed**: suggested or set aside, not agreed.
+- **Approved**: the Site Owner agreed to it, in his own words or by putting its issue in a release milestone such as Brock, and it is not built yet. If that issue is closed as not planned, the requirement goes back to Proposed.
 - **Implemented**: the code does it.
 - **Verified**: its tests have been read and pass. No requirement has this status yet.
 - **Rejected**: declined; the reason is kept with it.
@@ -63,9 +63,9 @@ score = (2 x benefit + 1 x penalty) / (1 x cost + 0.5 x risk)
 
 The score sets the issue's Priority: P1 from 3.5, P2 from 2.0, and P3 below 2.0. P0 is kept for outages, and a blocked issue is P3 until it is unblocked. The Site Owner follows the ranking this gives.
 
-Each issue is scored from its own ratings, so a new issue can be rated without working out the others again. The course's version divides each rating by its column's total, which changes every score whenever an issue is opened or closed; the Site Owner dropped it on 14 October 2026. The cutoffs were set so that the issues rated on 13 October 2026 kept the levels the course's version gave them.
+Each issue is scored from its own ratings, so a new issue can be rated without working out the others again. Wiegers' full method divides each rating by its column's total, which changes every score whenever an issue is opened or closed; the Site Owner dropped that step on 14 October 2026. The cutoffs were set so that the issues rated on 13 October 2026 kept the levels the full method gave them.
 
-The weights are the ones in the course's example. Because coding agents do much of the implementation, the Site Owner may halve the weight of cost to 0.5 if the ranking proves unsatisfying. That would raise every score, so the cutoffs would have to be set again.
+The weights are Wiegers' usual ones. Because coding agents do much of the implementation, the Site Owner may halve the weight of cost to 0.5 if the ranking proves unsatisfying. That would raise every score, so the cutoffs would have to be set again.
 
 ## Private notes
 

@@ -26,7 +26,7 @@ Missing numbers belonged to stakeholders that were removed; they are not reused.
 
 ## 2.3 Personas
 
-Each persona is made up, but drawn from what players wrote in. P-2 to P-4, a competitive singles player, a doubles player, and a returning player of the older games, were dropped because the feedback gave them little or no support.
+Each persona is made up, but drawn from what players wrote in. P-2 to P-4, a competitive singles player, a doubles player, and a returning player of the older games, were dropped because the feedback gave them little or no support ([12, Section 12.4](12-feedback-analysis.md#124-effect-on-the-personas)).
 
 ### P-1 Maya / planning her next playthrough on the bus
 

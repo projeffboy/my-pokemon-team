@@ -2,7 +2,7 @@
 
 Why My Pokemon Team exists, what it has to achieve, and what it does and plans to do. Every requirement in the later documents should serve one of the business requirements here.
 
-Statements marked **[A-n]** are assumptions the Site Owner has not confirmed yet. [08-assumptions-and-interview.md](08-assumptions-and-interview.md) lists each one with the question that would settle it.
+Statements marked **[A-n]** are assumptions the Site Owner has not confirmed yet. [08-assumptions-and-interview.md](08-assumptions-and-interview.md#82-open-questions) lists each one with the question that would settle it.
 
 ## 1.1 Why the site exists
 
@@ -28,7 +28,7 @@ The Site Owner made the site in 2019 because good teambuilders were lacking. It 
 
 ### When players and upkeep conflict
 
-When a change helps players but adds upkeep, players come first, unless the upkeep would stop the site being improved at all, such as a backend to run (interview, Q12). That is why the site took on more generations, games, and languages despite the data and rules each one brings.
+When a change helps players but adds upkeep, players come first, unless the upkeep would stop the site being improved at all, such as a backend to run ([08](08-assumptions-and-interview.md#what-the-site-does-and-does-not-do)). That is why the site took on more generations, games, and languages despite the data and rules each one brings.
 
 ### Business rules
 
@@ -118,7 +118,7 @@ Each has a GitHub issue that names its ID. The issue holds the work, and its mil
 | ID  | Planned feature                                                                                                | State                                                                                                |
 | --- | -------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | PF1 | F4.4.1 Battle format for the checklist, so that it judges moves such as Defog correctly in Generations 4 and 5 | Planned                                                                                              |
-| PF2 | F10.2 Team transfer to the old website, as a share link **[A-14]**                                             | Planned                                                                                              |
+| PF2 | F10.2 Team transfer to the old website, as a share link                                                        | Planned                                                                                              |
 | PF3 | Let's Go and the Legends games, with their training values. The generation menu lists them as "Coming soon".   | Planned                                                                                              |
 | PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                         | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
 | PF5 | Verified sender domain for feedback                                                                            | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
@@ -144,14 +144,14 @@ Not intended for now. None of these is ruled out for good; each would first need
 
 ## 1.4 Business risks
 
-The Site Owner's one real worry is a takedown by the rights holders, RISK-8 (interview, Q8). The others are listed with what reduces them.
+The Site Owner's one real worry is a takedown by the rights holders, RISK-8 ([08](08-assumptions-and-interview.md#purpose-and-money)). The others are listed with what reduces them.
 
 - **RISK-1.** A data update renames or removes a pokemon, move, or item, and old share links and saved teams silently lose it. The update script reports those names before release (REQ-DATA-6), and PF7 will tell the visitor.
 - **RISK-2.** The browser clears its site storage and the saved teams are lost. Team backups keep a copy (REQ-BKUP-1 to REQ-BKUP-8), and the site says when it could not save (REQ-COLL-9).
 - **RISK-3.** Pokemon Showdown stops serving sprites to other sites, or changes its data layout. The icon sheets are bundled, the data update writes only the fields the site reads (REQ-DATA-5), and sprites that do not depend on Showdown's servers are planned (REQ-INTF-18).
 - **RISK-4.** A change to the page's structure removes the top ad banner, and revenue drops unnoticed. The banner's place is a requirement (REQ-INTF-5) that is checked on the production site.
-- **RISK-5.** The maintainer is away, or does not hear of it, when a new game or regulation comes out, and the 2-day target of BR-3 is missed. Data updates are scripted and report what changed (REQ-DATA-1, REQ-DATA-6), every change passes automated checks (REQ-MAINT-1), and a notice of Showdown data changes is planned (REQ-DATA-12).
-- **RISK-6.** A wrong analysis result goes unreported, and players stop trusting the scores. Each score shows its reasons (REQ-ANLY-7), the rules have automated tests (REQ-REL-1), and players can report errors through feedback (REQ-FEED-1).
+- **RISK-5.** The maintainer is away, or does not hear of it, when a new game or regulation comes out, and the 2-day target of BR-3 is missed. Data updates are scripted and report what changed (REQ-DATA-1, REQ-DATA-6), every change passes the automated checks before it deploys, and a notice of Showdown data changes is planned (REQ-DATA-12).
+- **RISK-6.** A wrong analysis result goes unreported, and players stop trusting the scores. Each score shows its reasons (REQ-ANLY-7), the rules have automated tests, and players can report errors through feedback (REQ-FEED-1).
 - **RISK-7.** The feedback function or the sprite rewrite is abused to send spam or to proxy other sites' requests. REQ-SEC-1 to REQ-SEC-4 limit both.
 - **RISK-8.** The rights holders object to the use of Pokemon names and artwork and have the site taken down. They have not acted against comparable sites. The site credits its sources (REQ-POL-3) and bundles no artwork beyond the icon sheets and the local sprites recorded with their sources.
 - **RISK-9.** Players of the old website do not find the features they used, and leave. The header links to the old website (REQ-SITE-1), and PF2 will take a team there.

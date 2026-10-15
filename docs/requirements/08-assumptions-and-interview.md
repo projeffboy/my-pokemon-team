@@ -43,7 +43,7 @@ These documents were first written from the repository alone. The Site Owner the
 These came from his review of the site on 14 October 2026.
 
 - **The toolbar is about the team on screen.** Importing another team belongs behind the Teams button, which holds every action on other teams. The Advanced switch was removed, so every function is always shown. He chose to turn the Manage button into a More button with two sections, Manage team and Accessibility, where Accessibility has switches to stop animated sprites and to hide pokemon and move types. Where the toolbar fits on one row, Clear gets its own button.
-- **Buttons have text labels.** Every button needs a text label, except the die and the info button on a slot's sprite, which must not cover the sprite. Where a labelled button is too wide, the site is wrong, not the rule.
+- **Buttons have text labels.** Every button needs a text label, except the die and the info button on a slot's sprite, which must not cover the sprite. Where a labelled button is too wide, the site is wrong, not the rule. Issue 146, which held this and the sprite rule, was closed as not planned on 14 October 2026, so both are proposals again (REQ-USE-11 and 12).
 - **Nothing is cut off at 320 pixels.** The type chart's tabs did not all fit on a 320 pixel screen; no control or label may be cut off.
 - **Phones.** Focusing a field on a phone should not bring up saved passwords, cards, addresses, contacts, or similar autofill. "closing the dropdown menu should also cause the keyboard to close as well (e.g. on a phone)".
 - **Team text is kept as typed.** Fields for team data and Showdown text get no spellcheck, automatic correction, or capitals, and a dialog's buttons stay in view while its content scrolls. He objected to disabling Save until something is edited.
@@ -54,26 +54,19 @@ These came from his review of the site on 14 October 2026.
 - **Tasks live on GitHub only.** Tasks, their ratings, and their priority are kept in the issues and on the project board, not in these documents. An issue in a release milestone approves its requirements; an issue with no milestone is ranked but not scheduled.
 - **Follow the ranking.** "Well, whatever ranks first, right?" Planned work is done in the order the board's ratings give. He does not rate the items himself, and the formula stays simple, because working every priority out again whenever a task is added was a burden.
 - **Every task has acceptance criteria**, so that "done" can be checked rather than guessed.
-- **No player survey or usability sessions for now.** "we can do those another time. Could be useful in the future if we want to gauge who our audience is."
+- **No player survey or usability sessions for now.** "we can do those another time. Could be useful in the future if we want to gauge who our audience is." They could then measure how quickly a first-time player finds the team's worst weakness, how quickly a Showdown user imports a team and copies it back, and how many players rate the site good.
 - **Smaller calls.** Wish together with Protect or Detect counts as reliable recovery. Shrinking the inputs' clear button is not part of the plan.
 
 ## 8.2 Open questions
 
 Text marked **[A-n]** in the other documents rests on one of these.
 
-| ID   | Open question                                                                                                                                        | Where                  |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| A-2  | What hourly rate, for how many hours, should advertising pay for? Left open by the Site Owner's choice.                                              | BR-1                   |
-| A-3  | How late must Pokemon Showdown be with a new game's data before another source is used, and which source? 7 days is proposed.                        | BR-3, issue 123        |
-| A-4  | What thresholds show that the redesign has won? Fewer than 10% of sessions switching back, and fewer than five defect reports a month, are proposed. | BR-5                   |
-| A-18 | What share of browser usage makes a browser worth supporting? 2% is proposed.                                                                        | REQ-INTF-13, issue 121 |
-| A-23 | How should "a large share" of non-competitive players be measured, such as by monthly users or search position?                                      | BR-9                   |
-| A-24 | Are children and teenagers a large part of the audience, as the Site Owner believes? Analytics could check.                                          | Scope, 02              |
-
-These figures are estimates that nobody has confirmed:
-
-| ID   | Estimate                                                                                                                                                      | Where  |
-| ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| A-10 | How likely and how harmful each business risk is. The Site Owner named only a takedown as a real worry.                                                       | 01     |
-| A-15 | The importance and contribution values in the goal model.                                                                                                     | 03     |
-| A-16 | The usability, performance, contrast, and uptime figures, and the goal model's indicator values. The Site Owner rated speed as paramount and gave no figures. | 03, 05 |
+| ID   | Open question                                                                                                                                            | Where                         |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| A-2  | What hourly rate, for how many hours, should advertising pay for? Left open by the Site Owner's choice.                                                  | BR-1                          |
+| A-3  | How late must Pokemon Showdown be with a new game's data before another source is used, and which source? 7 days is proposed.                            | BR-3, issue 123               |
+| A-4  | What thresholds show that the redesign has won? Fewer than 10% of sessions switching back, and fewer than five defect reports a month, are proposed.     | BR-5                          |
+| A-16 | What figures should the usability, performance, and uptime requirements use? The Site Owner rated speed as paramount and gave none, so 05 proposes them. | 05 Sections 3.2, 3.3, and 3.5 |
+| A-18 | What share of browser usage makes a browser worth supporting? 2% is proposed.                                                                            | REQ-INTF-13, issue 121        |
+| A-23 | How should "a large share" of non-competitive players be measured, such as by monthly users or search position?                                          | BR-9                          |
+| A-24 | Are children and teenagers a large part of the audience, as the Site Owner believes? Analytics could check.                                              | 01 Scope, 02                  |

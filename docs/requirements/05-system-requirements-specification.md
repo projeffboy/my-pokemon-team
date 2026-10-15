@@ -8,7 +8,7 @@ The site's requirements, each with its importance and status. The functional req
 
 In this document "the site" means the My Pokemon Team website at `mypokemonteam.com` as a browser runs it, together with the feedback function that emails a player's message to the Site Owner and the scripts that refresh its game data and translations. A requirement that concerns only one part names that part: the data update tooling, the translation update tooling, or the feedback function.
 
-The business requirements these requirements serve (BR-1 to BR-9), and what is not part of the plan, are in Sections 1.3 and 1.5 of [01-vision-and-scope.md](01-vision-and-scope.md).
+The business requirements these requirements serve (BR-1 to BR-9), and what is not part of the plan, are in Sections 1.2 and 1.3 of [01-vision-and-scope.md](01-vision-and-scope.md).
 
 ### 1.2) Definitions
 
@@ -39,7 +39,7 @@ The business requirements these requirements serve (BR-1 to BR-9), and what is n
 
 - [01-vision-and-scope.md](01-vision-and-scope.md): the business requirements, the business rules (RULE-n), and the scope.
 - [`AGENTS.md`](../../AGENTS.md): the project's conventions, and how the site is built, tested, and released.
-- The project's GitHub issues: the work still to do. An issue names the requirements it implements, so searching the issues for a requirement's identifier finds the work on it.
+- The project's GitHub issues: the work still to do, each naming the requirements it covers ([README.md](README.md#issues-and-priorities)).
 - Pokemon Showdown's team export format and data files, at `github.com/smogon/pokemon-showdown`.
 - Web Content Accessibility Guidelines (WCAG) 2.1.
 
@@ -48,8 +48,8 @@ The business requirements these requirements serve (BR-1 to BR-9), and what is n
 Each requirement has an identifier, an importance, and a status.
 
 - Importance: **E** essential (the product is unacceptable without it), **C** conditional (it improves the product, which is acceptable without it), **O** optional (it may or may not be worthwhile).
-- Status: **Proposed** (suggested or set aside, not agreed), **Approved** (agreed, not built yet), **Implemented** (built), **Rejected** (declined, with the reason kept). Section 6.2 of [06-traceability-and-prioritization.md](06-traceability-and-prioritization.md) defines them.
-- **[A-n]** marks a requirement that rests on an assumption. The assumptions are listed in [08-assumptions-and-interview.md](08-assumptions-and-interview.md).
+- Status: **Proposed**, **Approved** (agreed, not built yet), **Implemented**, or **Rejected**, as defined in [README.md](README.md#statuses).
+- **[A-n]** marks a requirement that rests on an open question in [08-assumptions-and-interview.md](08-assumptions-and-interview.md#82-open-questions).
 
 ### 3.1) Functional requirements
 
@@ -444,7 +444,7 @@ US21. As the maintainer, I want one command to refresh the translated names and 
 | REQ-DATA-9  | The translation update tooling shall report, for each language, each name that it left in English.                                                                                                                                  | C    | Implemented |
 | REQ-DATA-10 | The data update tooling shall generate the site's data for a newly released game from a source other than Pokemon Showdown, for a game whose data Pokemon Showdown has not published within 7 days of the game's release **[A-3]**. | C    | Proposed    |
 | REQ-DATA-11 | The data update tooling shall replace data taken from another source with Pokemon Showdown's data once Pokemon Showdown publishes it.                                                                                               | C    | Proposed    |
-| REQ-DATA-12 | The data update tooling shall notify the Maintainer within 1 day of Pokemon Showdown publishing a change to data the site uses **[A-21]**.                                                                                          | C    | Approved    |
+| REQ-DATA-12 | The data update tooling shall notify the Maintainer within 1 day of Pokemon Showdown publishing a change to data the site uses.                                                                                                     | C    | Approved    |
 
 REQ-DATA-10 to 12 come from the 2-day target of BR-3. Approving REQ-DATA-10 means rewording REQ-POL-4 (Section 3.10), which allows Pokemon Showdown as the only source, to allow the fallback source for a new game while still forbidding edits by hand.
 
@@ -465,11 +465,11 @@ US22. As a doubles player, or a player of Generations 4 and 5, I want to tell th
 
 US23. As a player moving between the old website and the redesigned site, I want my current team to come with me, so that switching does not mean building it again.
 
-| ID         | Requirement                                                                                                                                                              | Imp. | Status   |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- | -------- |
-| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                                    | C    | Approved |
-| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                                    | O    | Rejected |
-| REQ-SITE-5 | The site shall name, before opening the old website with the Player's current team, each pokemon and set detail of the team that the old website cannot hold **[A-22]**. | C    | Approved |
+| ID         | Requirement                                                                                                                                                   | Imp. | Status   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | -------- |
+| REQ-SITE-3 | The site shall open the old website with the Player's current team as the old website's current team.                                                         | C    | Approved |
+| REQ-SITE-4 | The site shall add to its saved teams, on the Player's request, the team that the Player last had on the old website.                                         | O    | Rejected |
+| REQ-SITE-5 | The site shall name, before opening the old website with the Player's current team, each pokemon and set detail of the team that the old website cannot hold. | C    | Approved |
 
 REQ-SITE-4 was rejected in the interview: carrying the current team is enough, and the old website is in maintenance and gets no new features, so nothing is carried from the old website to the redesigned site.
 
@@ -508,9 +508,7 @@ The Site Owner rates speed as paramount: a visitor who waits, or who has to work
 
 REQ-USE-11 and REQ-USE-12 are Proposed again: the issue that tracked them was closed as not planned on 14 October 2026.
 
-REQ-USE-14 keeps the toolbar about the current team, with the Teams button as the one way to the other saved teams. Import Team adds new teams rather than changing the current one, so it belongs behind the Teams button; today the toolbar's Manage menu offers it too. Editing the current team's text stays in the toolbar.
-
-Design chosen on 14 October 2026 for REQ-USE-15: a More button replaces the Manage button, with a Manage team section and an Accessibility section that holds the still sprites (REQ-USE-16) and hidden types (REQ-TEAM-13) switches. Where the toolbar fits on one row, Clear is a button of its own.
+REQ-USE-14 keeps the toolbar about the current team, with the Teams button as the one way to the other saved teams. Import Team adds new teams rather than changing the current one, so it belongs behind the Teams button; today the toolbar's Manage menu offers it too. Editing the current team's text stays in the toolbar. The design the Site Owner chose for REQ-USE-14 to 16, a More button with a Manage team section and an Accessibility section for the still sprites (REQ-USE-16) and hidden types (REQ-TEAM-13) switches, is in [08](08-assumptions-and-interview.md#screens-and-editing).
 
 **REQ-USE-19 acceptance criteria (verify that...)**
 
@@ -542,7 +540,7 @@ Design chosen on 14 October 2026 for REQ-USE-15: a More button replaces the Mana
 
 ### 3.3) Performance requirements
 
-The Site Owner gave no figures but rated every one of these as critical, so the values are proposals to measure against **[A-16]**. There is no throughput target: the site is served as static files, so that is the hosting platform's concern **[A-17]**.
+The Site Owner gave no figures but rated every one of these as critical, so the values are proposals to measure against **[A-16]**. There is no throughput target: the site is served as static files, so that is the hosting platform's concern.
 
 Each value is measured on a mid-range phone released within the last four years, over a 4G connection, with an empty browser cache for REQ-PERF-3 and REQ-PERF-4 and a warm one otherwise. Lighthouse's mobile profile emulates such a phone and is the measure for REQ-PERF-4. The advertising script and the sprites served by Pokemon Showdown are left out.
 
@@ -574,7 +572,7 @@ Design budget for REQ-PERF-4: at most 600 kB of gzip-compressed script before a 
 | REQ-INTF-14 | The site shall provide, for link previews, a title, a description, and a screenshot, and shall keep a replaced screenshot's address working while previews made before the replacement may still use it. | C    | Implemented |
 | REQ-INTF-18 | The site shall present pokemon sprites to a visitor whose network blocks Pokemon Showdown's servers.                                                                                                     | E    | Approved    |
 
-REQ-INTF-18: schools often block Pokemon Showdown and not this site, so the sprites fail there, and missing pictures are the second most common complaint in the feedback.
+REQ-INTF-18: schools often block Pokemon Showdown and not this site, so the sprites fail there, and missing pictures are the third most common complaint in the feedback, after missing data and wrong results.
 
 ### 3.5) Operations
 
