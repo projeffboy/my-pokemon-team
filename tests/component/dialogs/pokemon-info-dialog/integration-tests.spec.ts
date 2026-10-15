@@ -1,11 +1,6 @@
 import { LEGENDS_ZA, LEGENDS_ARCEUS } from "@/shared/game-variants";
 import { test, expect } from "fixtures";
-import {
-  selectPokemon,
-  selectAbility,
-  selectItem,
-  turnOnAdvanced,
-} from "helper";
+import { selectPokemon, selectAbility, selectItem } from "helper";
 import type { Page } from "@playwright/test";
 
 async function generation(page: Page, gen: number) {
@@ -136,7 +131,6 @@ test("held-item typing stays consistent between the slot and its Pokédex", asyn
 }) => {
   await selectPokemon(page, "Arceus");
   await selectItem(page, "Flame Plate");
-  await turnOnAdvanced(page);
   const slot = page.getByRole("region", { name: "Pokemon 1", exact: true });
   await expect(
     slot.getByRole("img", { name: "Fire", exact: true }),

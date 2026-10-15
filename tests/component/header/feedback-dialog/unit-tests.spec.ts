@@ -465,3 +465,25 @@ test("sends feedback without a screenshot when the screenshot library fails to l
     },
   ]);
 });
+
+test("the feedback fields offer no autofill, and the message keeps its spellcheck", async ({
+  page,
+}) => {
+  await page
+    .getByRole("button", { name: "Send feedback", exact: true })
+    .click();
+  const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+  const message = dialog.getByLabel("Your feedback", { exact: true });
+  const email = dialog.getByLabel("Your email (optional)", { exact: true });
+  for (const field of [message, email]) {
+    await expect(field).toHaveAttribute("autocomplete", "off");
+    await expect(field).toHaveAttribute("name", /^search-/);
+  }
+  await expect(message).not.toHaveAttribute("spellcheck", "false");
+  await expect(email).toHaveAttribute("spellcheck", "false");
+  await expect(email).toHaveAttribute("autocorrect", "off");
+  await expect(email).toHaveAttribute("autocapitalize", "none");
+  // Phones offer the visitor's contact card in an email input
+  await expect(email).toHaveAttribute("type", "text");
+  await expect(email).toHaveAttribute("inputmode", "email");
+});

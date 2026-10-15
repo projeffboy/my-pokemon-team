@@ -20,6 +20,7 @@ import { observer } from "mobx-react-lite";
 import store from "@/store";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { noAutofill, verbatim } from "@/app/shared/text-entry";
 import CaptionButton from "./shared/CaptionButton";
 import {
   capturePage,
@@ -33,6 +34,9 @@ const EMAIL = "jeffery124@gmail.com";
 const MAX_UPLOADS = 3;
 // Leaves room in MAX_IMAGES_LENGTH for the page screenshot
 const MAX_UPLOADS_LENGTH = 3_000_000;
+// The syntax an email input accepts, which api/feedback.ts checks too
+const EMAIL_PATTERN =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 type Upload = { id: number; name: string; dataUrl: string };
 let nextUploadId = 0;
@@ -106,9 +110,9 @@ const FeedbackDialog = observer(function FeedbackDialog({
   };
 
   const send = async () => {
-    if (emailRef.current && !emailRef.current.checkValidity()) {
+    if (email.trim() && !EMAIL_PATTERN.test(email.trim())) {
       setEmailError(true);
-      emailRef.current.focus();
+      emailRef.current?.focus();
       return;
     }
     const version = ++submissionVersion.current;
@@ -184,7 +188,9 @@ const FeedbackDialog = observer(function FeedbackDialog({
             value={message}
             disabled={status === "sending"}
             onChange={event => setMessage(event.target.value)}
-            slotProps={{ htmlInput: { maxLength: 5000 } }}
+            slotProps={{
+              htmlInput: { ...noAutofill("feedback"), maxLength: 5000 },
+            }}
           />
           <TextField
             label={t.feedback.email}
@@ -193,7 +199,6 @@ const FeedbackDialog = observer(function FeedbackDialog({
             }
             error={emailError}
             inputRef={emailRef}
-            type="email"
             fullWidth
             sx={{ mt: 2 }}
             value={email}
@@ -202,7 +207,14 @@ const FeedbackDialog = observer(function FeedbackDialog({
               setEmail(event.target.value);
               setEmailError(false);
             }}
-            slotProps={{ htmlInput: { maxLength: 254 } }}
+            // Not type="email", for which phones offer the visitor's contact card
+            slotProps={{
+              htmlInput: {
+                ...verbatim("feedback-email"),
+                inputMode: "email",
+                maxLength: 254,
+              },
+            }}
           />
           <FormControlLabel
             sx={{ mt: 1 }}
