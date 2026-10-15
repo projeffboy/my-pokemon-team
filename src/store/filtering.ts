@@ -204,7 +204,7 @@ export function filterPokemon({
       ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
     ) {
       return filterByTier(
-        ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)"],
+        ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)", "NFE", "LC"],
         pokemon => doublesTierIn(pokemon, generation),
       );
     }

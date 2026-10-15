@@ -358,12 +358,25 @@ export function isMoveUsable(
   ability: string | undefined,
   generation: Generation,
   format = "",
+  member?: Readonly<TeamPokemon>,
 ) {
   if (
     generation >= 6 &&
     activeItem(item, ability, generation) === "assaultvest" &&
     moveDataIn(move, generation, format)?.category === "Status" &&
     move !== "mefirst"
+  )
+    return false;
+  // The user's own primal weather makes its moves of the opposing type fail
+  const blockedType =
+    ability === "Primordial Sea" ? "Fire"
+    : ability === "Desolate Land" ? "Water"
+    : undefined;
+  if (
+    blockedType &&
+    moveDataIn(move, generation, format)?.category !== "Status" &&
+    moveType(move, pokemon, ability, generation, item, format, member) ===
+      blockedType
   )
     return false;
   const types = effectivePokemonTypes(pokemon, ability, item, generation);
@@ -383,7 +396,7 @@ export function isMoveStrongEnough(
   member?: Readonly<TeamPokemon>,
   format = "",
 ) {
-  if (!isMoveUsable(move, pokemon, item, ability, generation, format))
+  if (!isMoveUsable(move, pokemon, item, ability, generation, format, member))
     return false;
   if (moves[move] && move.startsWith("hiddenpower") && member)
     return hiddenPowerPower(member, generation) >= 40;
@@ -465,6 +478,11 @@ export function moveAgainstType(
     )
   )
     return IMMUNE_SCORE;
+  // Delta Stream's winds also stop the user's own moves being super effective on Flying
+  const windsAllow = (score: number) =>
+    ability === "Delta Stream" && typeAgainst === "Flying" && score < 0 ?
+      0
+    : score;
   let score = defender?.[attackType];
   if (
     (ability === "Scrappy" || ability === "Mind's Eye") &&
@@ -482,7 +500,7 @@ export function moveAgainstType(
     return -1;
   if (move === "flyingpress") {
     if (score === 2) return IMMUNE_SCORE;
-    return (score ?? 0) + (defender?.Flying ?? 0);
+    return windsAllow((score ?? 0) + (defender?.Flying ?? 0));
   }
-  return score;
+  return score === undefined ? score : windsAllow(score);
 }

@@ -337,6 +337,15 @@ test("names the generation and format whose rules apply", () => {
   ).toBe("Generations 6–9 OU: Over Used");
 });
 
+test("doubles formats allow NFE and LC pokemon", () => {
+  const team = createTeam(
+    { name: "clefairy", ability: "Friend Guard", item: "eviolite" },
+    { name: "porygon", ability: "Download", item: "eviolite" },
+  );
+  expect(validateTeam(team, 9, "Doubles OU")).toEqual([]);
+  expect(validateTeam(team, 9, "Doubles UU")).toEqual([]);
+});
+
 test("Smogon formats flag the abilities, items, and moves they ban", () => {
   const team = createTeam(
     { name: "glalie", ability: "Moody" },

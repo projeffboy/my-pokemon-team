@@ -11,9 +11,10 @@ const entries: Entry[] = [
   {
     date: "Oct 15, 2026",
     changes: [
-      "Team analysis now checks Generations 6–9 teams against the format chosen in the filters, e.g. Spore is banned in OU.",
+      "Team analysis now checks Generations 6–9 teams against the bans of the format chosen in the filters, e.g. Spore in OU.",
       "Team analysis now flags Pokémon that Legends: Z-A does not have, e.g. Koraidon.",
       "Random sets no longer pick what their format bans, e.g. Tera Blast in OU.",
+      "Reloading a saved Let’s Go or Legends: Arceus team now keeps that team instead of opening a Gen 7 or Gen 8 copy.",
       "The team checklist can now be set to singles or doubles, and counts Defog as hazard removal in Gen 4 and 5 doubles.",
       "Links and saved teams now name the Pokémon, moves, items and abilities a data update removed from them.",
       "The Manage button is now More, whose Accessibility section can stop sprites from animating.",
@@ -42,6 +43,7 @@ const entries: Entry[] = [
       "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
       "Sending feedback from a tab opened before a site update no longer reloads the page and loses your message.",
       "The Item dropdown now lists a Pokémon’s required item even when the game lacks it, such as Bug Memory for Silvally-Bug in Gen 9.",
+      "Pokémon Champions team links shared Oct 10–13 open as Champions teams again.",
       "From Gen 6, choosing Hidden Power now changes as few custom IVs as its type allows, such as keeping 0 Speed for Trick Room with Hidden Power Fire.",
       "Hidden Power’s IVs now update when a level change ends Hyper Training.",
       "Ticking Shiny in Gen 2 now switches Hidden Power to the Grass or Dragon type its DVs give.",
@@ -52,6 +54,7 @@ const entries: Entry[] = [
       "Showdown teams from formats such as Ubers UU or Pure Hackmons no longer import as Uber or PU teams.",
       "Pokemon Champions (M-C) now uses its own move changes, such as Snap Trap being Steel type.",
       "The team checklist no longer counts Diamond Storm as a boosting move, since its Defense boost is only a 50% chance.",
+      "The team checklist no longer counts moves like Zap Cannon as status moves for Sheer Force Pokémon.",
       "Gens 5–7 no longer offer or randomly pick hidden abilities that were unreleased then, e.g. Contrary for Gen 5 Serperior.",
       "Formes such as totems and Bloodmoon Ursaluna now learn the same moves as on Showdown, so Bloodmoon Ursaluna no longer learns Play Rough and Stretchy Tatsugiri gains Scald.",
       "Format filters and sorting now give formes their species’ tier, so Gen 9 Uber includes Arceus-Fire.",
