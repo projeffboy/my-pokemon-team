@@ -6599,10 +6599,6 @@
     "file": "4-shiny/rotomfan.png",
     "duration": 4050
   },
-  "4-shiny/rotomfrost": {
-    "file": "4-shiny/rotomfrost.png",
-    "duration": 4050
-  },
   "4-shiny/rotomheat": {
     "file": "4-shiny/rotomheat.png",
     "duration": 4050
@@ -8629,10 +8625,6 @@
   },
   "4/rotomfan": {
     "file": "4/rotomfan.png",
-    "duration": 4050
-  },
-  "4/rotomfrost": {
-    "file": "4/rotomfrost.png",
     "duration": 4050
   },
   "4/rotomheat": {
