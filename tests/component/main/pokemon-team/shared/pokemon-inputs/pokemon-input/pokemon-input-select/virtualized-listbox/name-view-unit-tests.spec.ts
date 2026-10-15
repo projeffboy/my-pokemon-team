@@ -1,3 +1,4 @@
+import type { Locator } from "@playwright/test";
 import { test, expect } from "fixtures";
 import { selectPokemon, resizeTeamViewport } from "helper";
 import pokedex from "@/data/pokedex";
@@ -310,6 +311,36 @@ test.describe("Name dropdown views - Unit Tests", () => {
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Wooper");
   });
 
+  test("Big Grid gets sprites through the site's own address when Showdown is blocked", async ({
+    page,
+  }) => {
+    await page.route("https://play.pokemonshowdown.com/**", route =>
+      route.abort(),
+    );
+    await page.route("**/showdown-sprites/**", route =>
+      route.fulfill({
+        contentType: "image/png",
+        body: Buffer.from(
+          "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+          "base64",
+        ),
+      }),
+    );
+    await page.getByLabel("Pokemon 1's name").fill("Spidops");
+    await page.getByRole("button", { name: "Grid view", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Big grid view", exact: true })
+      .click();
+    const sprite = page
+      .getByRole("option", { name: "Spidops", exact: true })
+      .locator("img");
+    await expect(sprite).toHaveAttribute(
+      "src",
+      "/showdown-sprites/dex/spidops.png",
+    );
+    await expect(sprite).not.toHaveJSProperty("naturalWidth", 0);
+  });
+
   test("switches between the list and the grid of icons", async ({ page }) => {
     const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
     await input.fill("Wooper");
@@ -440,6 +471,34 @@ test("the Name dropdown has Filters and Sort, and the move dropdowns Sort alone"
   await page.getByLabel("Pokemon 1's move1").click();
   await expect(sort).toBeVisible();
   await expect(filters).toHaveCount(0);
+});
+
+test("a click between the list tools and the options keeps the dropdown open", async ({
+  page,
+}) => {
+  const listbox = page.getByRole("listbox");
+  const clickAboveOptions = async (input: Locator) => {
+    await input.click();
+    await expect(listbox.getByRole("option").first()).toBeVisible();
+    const bounds = await listbox.boundingBox();
+    if (!bounds) throw new Error("The listbox has no bounds");
+    // The tools' bottom margin, just above the first option
+    const point = { x: bounds.x + bounds.width / 2, y: bounds.y - 2 };
+    expect(
+      await page.evaluate(
+        ({ x, y }) =>
+          !!document.elementFromPoint(x, y)?.closest("button, [role=option]"),
+        point,
+      ),
+    ).toBe(false);
+    await page.mouse.click(point.x, point.y);
+    await expect(listbox).toBeVisible();
+    await expect(input).toBeFocused();
+    await input.press("Escape");
+  };
+  await clickAboveOptions(page.getByLabel("Pokemon 1's name"));
+  await selectPokemon(page, "Houndstone");
+  await clickAboveOptions(page.getByLabel("Pokemon 1's move1"));
 });
 
 test("keyboard popup tools restore input focus after their dialogs close", async ({

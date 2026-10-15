@@ -102,8 +102,9 @@ const zhHans: Messages = {
     shareTeam: "分享队伍",
     shareTeamLink: "分享宝可梦队伍链接",
     teamActions: "队伍操作",
+    more: "更多",
     manageTeam: "管理队伍",
-    manageTeamMenu: "管理队伍",
+    accessibility: "无障碍",
     duplicate: "创建副本",
     copyText: "复制文本",
     editPokepaste: "编辑 Pokepaste",
@@ -134,6 +135,7 @@ const zhHans: Messages = {
     advanced: "更多详情",
     advancedFor: (slot: number) => `栏位 ${slot} 的更多详情`,
     details: "详情",
+    animateSprites: "播放宝可梦图像动画",
     showTypes: "显示属性",
     about: (pokemon: string) => `关于${pokemon}`,
     dragHint: "长按拖动即可调整顺序",
@@ -182,6 +184,33 @@ const zhHans: Messages = {
     learnsetsFailed: "无法加载招式列表。请重新加载页面重试。",
   },
 
+  // 队伍上方的提示：打开的链接或已保存队伍缺失的内容
+  droppedEntries: {
+    linkTitle: (count: number) => `此链接中的 ${count} 项已被略去`,
+    savedTeamTitle: (count: number) => `已从此队伍中移除 ${count} 项`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "此游戏中没有这项内容，或该宝可梦无法使用。"
+      : "此游戏中没有这些内容，或该宝可梦无法使用。",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "游戏数据更新后，这项内容已被重命名或移除。"
+      : "游戏数据更新后，这些内容已被重命名或移除。",
+    pokemon: (slot: number, value: string) => `宝可梦 ${slot}：${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}，道具：${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}，特性：${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}，招式 ${move}：${value}`,
+    details: "详情",
+    dismiss: "关闭",
+    detailsTitle: "原始队伍文本",
+    linkDetailsDescription:
+      "这是链接中原来的队伍，包括被略去的内容。可复制下来留作记录。",
+    savedTeamDetailsDescription:
+      "这是原来的队伍，包括被移除的内容。可复制下来留作记录。",
+    copy: "复制",
+  },
+
   // 撤销与重做按钮
   undo: "撤销",
   redo: "重做",
@@ -215,24 +244,86 @@ const zhHans: Messages = {
     },
     // lg 及以下屏幕用较短的标签，md 及以下再更短
     items: {
-      entryHazard: { label: "撒钉招式", short: "撒钉" },
-      spinner: { label: "扫钉／清雾", short: "扫钉", shorter: "扫钉" },
+      entryHazard: {
+        label: "撒钉招式",
+        short: "撒钉",
+        hint: (moves: string) =>
+          `让宝可梦学会在对手场地设置陷阱的招式：${moves}。`,
+      },
+      spinner: {
+        label: "扫钉／清雾",
+        short: "扫钉",
+        shorter: "扫钉",
+        hint: (moves: string) =>
+          `让宝可梦学会清除己方场地陷阱的招式：${moves}。`,
+      },
       recovery: {
         label: "稳定回复",
         short: "回复",
         shorter: "回复",
+        hint: (moves: string) =>
+          `让宝可梦学会能稳定回复 HP 的招式，例如${moves}。`,
       },
-      cleric: { label: "治愈手" },
-      status: { label: "异常状态招式", short: "异常状态" },
-      phazer: { label: "吹飞手" },
-      boosting: { label: "强化招式", short: "强化" },
-      priority: { label: "先制招式", short: "先制", shorter: "先制" },
+      cleric: {
+        label: "治愈手",
+        hint: (moves: string) =>
+          `让宝可梦学会治愈全队异常状态的招式：${moves}。`,
+      },
+      status: {
+        label: "异常状态招式",
+        short: "异常状态",
+        hint: (moves: string) =>
+          `让宝可梦学会命中后必定使对手陷入异常状态的招式，例如${moves}。`,
+      },
+      phazer: {
+        label: "吹飞手",
+        hint: (moves: string) => `让宝可梦学会强制对手替换的招式：${moves}。`,
+      },
+      trapper: {
+        label: "抓人手",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `让宝可梦学会使对手无法替换的招式，例如${moves}，或使用拥有${abilities}特性的宝可梦。`
+          : `让宝可梦学会使对手无法替换的招式，例如${moves}。`,
+      },
+      boosting: {
+        label: "强化招式",
+        short: "强化",
+        hint: (moves: string) =>
+          `让宝可梦学会使自身能力合计提升 2 级或以上的招式，例如${moves}。`,
+      },
+      priority: {
+        label: "先制招式",
+        short: "先制",
+        shorter: "先制",
+        hint: (moves: string) =>
+          `让宝可梦学会无论速度高低都能比大多数招式先出手的攻击招式，例如${moves}。`,
+      },
       voltTurn: {
         label: "急折／伏特替换",
         short: "急折伏特",
         shorter: "急折",
+        hint: (moves: string) => `让宝可梦学会攻击后替换下场的招式：${moves}。`,
       },
-      choice: { label: "讲究道具", short: "讲究" },
+      choice: {
+        label: "讲究道具",
+        short: "讲究",
+        hint: (items: string) => `让宝可梦携带讲究道具：${items}。`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
+    together: (move: string, other: string) => `${move}配合${other}`,
+    unavailable: "本作中没有符合条件的招式或道具。",
+    battleFormat: {
+      label: "对战形式",
+      singles: "单打",
+      doubles: "双打",
+      notSet: "未设置",
+      depends: "取决于对战形式",
+      reasons: {
+        spinner:
+          "扫钉／清雾取决于对战形式：在第4、5世代中，清除浓雾只有在双打对战中对队友使用时，才能清除己方场地的撒钉。",
+      },
     },
   },
   matrix: {
@@ -368,6 +459,8 @@ const zhHans: Messages = {
     region: "地区",
     moves: "招式",
     viable: "实用招式",
+    items: "道具",
+    viableItems: "实用道具",
     ability: "特性",
   },
   sort: {
@@ -475,6 +568,10 @@ const zhHans: Messages = {
     teamName: "队伍名称",
   },
   validation: {
+    teamProblems: "队伍问题",
+    problemCount: (count: number) => `队伍问题（${count}）`,
+    noProblems: (where: string) => `${where} 未发现问题。`,
+    pokemonProblems: (pokemon: string) => `${pokemon}的问题`,
     empty: "队伍为空。",
     notAllowed: (pokemon: string, where: string) =>
       `${where} 不允许使用${pokemon}。`,
@@ -501,8 +598,9 @@ const zhHans: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}设置了太晶属性，但太晶属性只存在于${generation(9)}。`,
     speciesClause: (species: string) =>
-      `队伍中有两只${species}（Species Clause）。`,
-    itemClause: (item: string) => `有两只宝可梦携带${item}（Item Clause）。`,
+      `${species}只能有一只（Species Clause）。`,
+    itemClause: (item: string) =>
+      `${item}只能由一只宝可梦携带（Item Clause）。`,
   },
   importDialog: {
     importTitle: "导入队伍",
@@ -669,6 +767,10 @@ const zhHans: Messages = {
       [
         "异常状态招式",
         "这里指命中率高、能造成麻痹、灼伤或中毒的招式，以及能催眠的招式。例如：剧毒、磷火、电磁波、唱歌。",
+      ],
+      [
+        "抓人手",
+        "在自己留在场上期间让对手无法替换的宝可梦，例如会使用黑色目光、挡路、掷锚等招式，或拥有踩影、沙穴、磁力特性的宝可梦。潮旋这类只束缚几回合的招式不算。",
       ],
       ["强化招式", "提升自身能力的招式（最好是 +2 以上），例如剑舞和冥想。"],
       [

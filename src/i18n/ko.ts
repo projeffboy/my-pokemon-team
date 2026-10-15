@@ -119,8 +119,9 @@ const ko: Messages = {
     shareTeam: "팀 공유",
     shareTeamLink: "포켓몬 팀 링크 공유",
     teamActions: "팀 작업",
+    more: "더보기",
     manageTeam: "팀 관리",
-    manageTeamMenu: "팀 관리",
+    accessibility: "접근성",
     duplicate: "복제",
     copyText: "텍스트 복사",
     editPokepaste: "Pokepaste 편집",
@@ -155,6 +156,7 @@ const ko: Messages = {
     advanced: "추가 세부 정보",
     advancedFor: (slot: number) => `슬롯 ${slot}의 추가 세부 정보`,
     details: "상세",
+    animateSprites: "스프라이트 애니메이션",
     showTypes: "타입 표시",
     about: (pokemon: string) => `${pokemon} 정보`,
     dragHint: "길게 눌러 끌어서 순서 변경",
@@ -203,6 +205,28 @@ const ko: Messages = {
       "기술 목록을 불러오지 못했습니다. 페이지를 새로고침해 다시 시도하세요.",
   },
 
+  droppedEntries: {
+    linkTitle: (count: number) => `이 링크의 항목 ${count}개를 제외했습니다`,
+    savedTeamTitle: (count: number) =>
+      `이 팀에서 항목 ${count}개를 삭제했습니다`,
+    linkReason: () => "이 게임에 없거나 그 포켓몬이 사용할 수 없는 항목입니다.",
+    savedTeamReason: () =>
+      "게임 데이터 업데이트로 이름이 바뀌었거나 삭제된 항목입니다.",
+    pokemon: (slot: number, value: string) => `포켓몬 ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, 지닌 물건: ${value}`,
+    ability: (pokemon: string, value: string) => `${pokemon}, 특성: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, 기술 ${move}: ${value}`,
+    details: "상세",
+    dismiss: "닫기",
+    detailsTitle: "원래 팀 텍스트",
+    linkDetailsDescription:
+      "제외된 항목을 포함한 링크의 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    savedTeamDetailsDescription:
+      "삭제된 항목을 포함한 원래 팀입니다. 복사해서 보관할 수 있습니다.",
+    copy: "복사",
+  },
+
   undo: "실행 취소",
   redo: "다시 실행",
 
@@ -233,28 +257,90 @@ const ko: Messages = {
       offensive: "공격",
     },
     items: {
-      entryHazard: { label: "설치 기술", short: "설치기" },
+      entryHazard: {
+        label: "설치 기술",
+        short: "설치기",
+        hint: (moves: string) =>
+          `상대 필드에 설치하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
       spinner: {
         label: "고속스핀/안개제거",
         short: "설치 제거",
         shorter: "제거",
+        hint: (moves: string) =>
+          `내 필드의 설치 기술을 없애는 기술을 포켓몬에게 가르치세요: ${moves}.`,
       },
       recovery: {
         label: "안정적인 회복 기술",
         short: "회복 기술",
         shorter: "회복",
+        hint: (moves: string) =>
+          `안정적으로 회복할 수 있는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
       },
-      cleric: { label: "클레릭" },
-      status: { label: "상태이상 기술", short: "상태이상" },
-      phazer: { label: "강제 교체" },
-      boosting: { label: "랭크업 기술", short: "랭크업" },
-      priority: { label: "선공 기술", short: "선공기", shorter: "선공" },
+      cleric: {
+        label: "클레릭",
+        hint: (moves: string) =>
+          `팀 전체의 상태이상을 치료하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
+      status: {
+        label: "상태이상 기술",
+        short: "상태이상",
+        hint: (moves: string) =>
+          `명중하면 반드시 상대를 상태이상으로 만드는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
+      phazer: {
+        label: "강제 교체",
+        hint: (moves: string) =>
+          `상대를 강제로 교체시키는 기술을 포켓몬에게 가르치세요: ${moves}.`,
+      },
+      trapper: {
+        label: "교체 봉쇄",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `상대가 교체하지 못하게 하는 기술을 포켓몬에게 가르치거나(예: ${moves}), ${abilities} 특성을 가진 포켓몬을 넣으세요.`
+          : `상대가 교체하지 못하게 하는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
+      boosting: {
+        label: "랭크업 기술",
+        short: "랭크업",
+        hint: (moves: string) =>
+          `자신의 능력치를 합계 2랭크 이상 올리는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
+      priority: {
+        label: "선공 기술",
+        short: "선공기",
+        shorter: "선공",
+        hint: (moves: string) =>
+          `스피드와 관계없이 대부분의 기술보다 먼저 쓰는 공격 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+      },
       voltTurn: {
         label: "볼트체인지/유턴",
         short: "볼트턴",
         shorter: "볼트턴",
+        hint: (moves: string) =>
+          `공격한 뒤 교체하는 기술을 포켓몬에게 가르치세요: ${moves}.`,
       },
-      choice: { label: "구애 아이템", short: "구애" },
+      choice: {
+        label: "구애 아이템",
+        short: "구애",
+        hint: (items: string) =>
+          `포켓몬에게 구애 아이템을 지니게 하세요: ${items}.`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) =>
+      `${josa(other, "과", "와")} 함께 쓰는 ${move}`,
+    unavailable: "이 게임에는 해당하는 기술이나 아이템이 없습니다.",
+    battleFormat: {
+      label: "배틀 형식",
+      singles: "싱글",
+      doubles: "더블",
+      notSet: "미설정",
+      depends: "배틀 형식에 따라 다름",
+      reasons: {
+        spinner:
+          "고속스핀/안개제거는 배틀 형식에 따라 다릅니다. 4세대와 5세대의 안개제거는 더블배틀에서 같은 편에게 사용할 때만 내 쪽의 설치 기술을 없앱니다.",
+      },
     },
   },
   matrix: {
@@ -392,6 +478,8 @@ const ko: Messages = {
     region: "지방",
     moves: "기술",
     viable: "실전용만",
+    items: "지닌 물건",
+    viableItems: "실전용만",
     ability: "특성",
   },
   sort: {
@@ -505,6 +593,10 @@ const ko: Messages = {
     teamName: "팀 이름",
   },
   validation: {
+    teamProblems: "팀 문제",
+    problemCount: (count: number) => `팀 문제 (${count})`,
+    noProblems: (where: string) => `${where}에서 문제가 발견되지 않았습니다.`,
+    pokemonProblems: (pokemon: string) => `${pokemon}의 문제`,
     empty: "팀이 비어 있습니다.",
     notAllowed: (pokemon: string, where: string) =>
       `${josa(pokemon, "은", "는")} ${where}에서 사용할 수 없습니다.`,
@@ -531,9 +623,9 @@ const ko: Messages = {
     teraType: (pokemon: string) =>
       `${pokemon}에게 테라스탈 타입이 설정되어 있지만, 테라스탈 타입은 ${generation(9)}에만 있습니다.`,
     speciesClause: (species: string) =>
-      `${josa(species, "이", "가")} 두 마리 있습니다 (Species Clause).`,
+      `${josa(species, "은", "는")} 한 마리만 넣을 수 있습니다 (Species Clause).`,
     itemClause: (item: string) =>
-      `${josa(item, "을", "를")} 지닌 포켓몬이 두 마리 있습니다 (Item Clause).`,
+      `${josa(item, "은", "는")} 한 마리만 지닐 수 있습니다 (Item Clause).`,
   },
   importDialog: {
     importTitle: "팀 가져오기",
@@ -706,6 +798,10 @@ const ko: Messages = {
       [
         "상태이상 기술",
         "여기서는 명중률이 높은 마비, 화상, 독 기술과 잠들게 하는 기술을 뜻합니다. 예: 맹독, 도깨비불, 전기자석파, 노래하기.",
+      ],
+      [
+        "교체 봉쇄",
+        "자신이 필드에 있는 동안 상대가 교체하지 못하게 하는 포켓몬입니다. 검은눈빛, 블록, 앵커샷 같은 기술이나 그림자밟기, 개미지옥, 자력 특성이 해당합니다. 바다회오리처럼 몇 턴 동안만 가두는 기술은 포함되지 않습니다.",
       ],
       [
         "랭크업 기술",

@@ -11,7 +11,7 @@ import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import { teamUrl } from "@/app/shared/team-link";
 import { redoEdit, undoEdit } from "@/app/shared/history-actions";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import ManageTeamMenu from "./team-toolbar/ManageTeamMenu";
+import MoreMenu from "./team-toolbar/MoreMenu";
 import ToolbarButton from "./team-toolbar/shared/ToolbarButton";
 import useFittingLabel from "@/app/shared/use-fitting-label";
 import useDiceRoll from "@/app/shared/use-dice-roll";
@@ -41,7 +41,7 @@ const TeamToolbar = observer(function TeamToolbar() {
     t.team.shareTeam,
     t.undo,
     t.redo,
-    t.team.manageTeam,
+    t.team.more,
   ];
   const count = shortLabels.length;
   // The probe is one column of a single row: the row holds if every short label fits it
@@ -127,7 +127,7 @@ const TeamToolbar = observer(function TeamToolbar() {
       >
         {t.redo}
       </ToolbarButton>
-      <ManageTeamMenu basis={basis(5)} />
+      <MoreMenu basis={basis(5)} />
     </Stack>
   );
 });

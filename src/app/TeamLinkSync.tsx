@@ -5,9 +5,10 @@ import store from "@/store";
 import { CHAMPIONS_FORMAT, gameFormat } from "@/shared/formats";
 import {
   encodeTeamForUrl,
-  syncGenerationToUrl,
+  syncTeamSettingsToUrl,
   importTeamFromUrlParameter,
   generationSettingsFromUrl,
+  battleFormatFromUrl,
 } from "./shared/team-link";
 
 // Safari allows 100 history writes per 30 seconds. Edits write at once until a burst of
@@ -16,6 +17,10 @@ const URL_WRITE_BURST = 30;
 const URL_WRITE_INTERVAL = 500;
 // This tab's team and the URL it is due, which a reload restores
 const PENDING_URL_KEY = "mypokemonteam-pending-url";
+
+// The team's settings that a link carries beside the team itself
+const settingsKey = (params: URLSearchParams) =>
+  ["gen", "game", "battle"].map(key => params.get(key) ?? "").join("|");
 
 function restorePendingReload() {
   try {
@@ -67,13 +72,10 @@ const TeamLinkSync = observer(function TeamLinkSync() {
       restorePendingReload();
     }
     let lastSyncedTeamParameter: string | null = null;
-    let lastContext = "|";
+    let lastContext = "||";
     let initialNavigation = initializes;
     let pendingWrite: ReturnType<typeof setTimeout> | undefined;
-    const context = () => {
-      const params = new URLSearchParams(location.search);
-      return `${params.get("gen") ?? ""}|${params.get("game") ?? ""}`;
-    };
+    const context = () => settingsKey(new URLSearchParams(location.search));
 
     // URL -> store: runs on initial load and whenever navigation (back/forward) changes
     // the `team` parameter to something we didn't just write ourselves.
@@ -98,24 +100,32 @@ const TeamLinkSync = observer(function TeamLinkSync() {
 
       lastSyncedTeamParameter = teamParameter;
       const { settings, unrecognized } = generationSettingsFromUrl();
-      if (teamParameter) importTeamFromUrlParameter(teamParameter);
-      else if (
-        firstNavigation &&
-        store.isTeamEmpty &&
-        store.teams.some(team => team.id === store.currentTeamId)
-      ) {
-        // The URL carries no tier, so the same game keeps the team's
-        const { generation, format } = store.currentTeam;
+      const linkSettings = { ...settings, battleFormat: battleFormatFromUrl() };
+      const openWithoutTeam = () => {
         if (
-          generation !== settings.generation ||
-          gameFormat(format) !== settings.format ||
-          store.currentTeam.generationProfile !== settings.generationProfile
-        )
-          Object.assign(store.currentTeam, {
-            ...settings,
-            generationProfile: settings.generationProfile,
-          });
-      } else store.openUnsavedTeam(undefined, settings);
+          firstNavigation &&
+          store.isTeamEmpty &&
+          store.teams.some(team => team.id === store.currentTeamId)
+        ) {
+          // The URL carries no tier, so the same game keeps the team's
+          const { generation, format, generationProfile, battleFormat } =
+            store.currentTeam;
+          if (
+            generation !== settings.generation ||
+            gameFormat(format) !== settings.format ||
+            generationProfile !== settings.generationProfile ||
+            battleFormat !== linkSettings.battleFormat
+          )
+            Object.assign(store.currentTeam, {
+              ...linkSettings,
+              generationProfile: settings.generationProfile,
+            });
+        } else store.openUnsavedTeam(undefined, linkSettings);
+      };
+      // A team the link holds but the site cannot read opens as if the link held none
+      if (teamParameter)
+        importTeamFromUrlParameter(teamParameter, openWithoutTeam);
+      else openWithoutTeam();
       if (unrecognized) {
         // Names the profile the page opened in, even if the link's team was unreadable
         const { t } = store.translation;
@@ -168,10 +178,10 @@ const TeamLinkSync = observer(function TeamLinkSync() {
       const url = new URL(location.href);
       if (encoded) url.searchParams.set("team", encoded);
       else url.searchParams.delete("team");
-      syncGenerationToUrl(url, store.currentTeam);
+      syncTeamSettingsToUrl(url, store.currentTeam);
       desiredUrl = url.href;
       lastSyncedTeamParameter = encoded || null;
-      lastContext = `${url.searchParams.get("gen") ?? ""}|${url.searchParams.get("game") ?? ""}`;
+      lastContext = settingsKey(url.searchParams);
       rememberPending();
       if (desiredUrl === location.href) return;
       const now = Date.now();

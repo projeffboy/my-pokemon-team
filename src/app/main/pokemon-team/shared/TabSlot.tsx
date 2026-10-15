@@ -2,6 +2,7 @@ import { useState } from "react";
 import Box from "@mui/material/Box";
 import { keyframes } from "@mui/material/styles";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import WarningIcon from "@mui/icons-material/Warning";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { observer } from "mobx-react-lite";
@@ -29,6 +30,7 @@ export const TabSlotContent = observer(function TabSlotContent({
   const [hasWiggled, setHasWiggled] = useState(false);
   const hasPokemon = Boolean(store.team[teamIndex]?.name);
   const hasAnyPokemon = store.team.some(({ name }) => name);
+  const hasProblems = store.slotProblems(teamIndex).length > 0;
   const wiggles =
     !hasWiggled &&
     store.showDragHint &&
@@ -83,7 +85,22 @@ export const TabSlotContent = observer(function TabSlotContent({
       >
         <PokemonSprite teamIndex={teamIndex} />
       </Box>
-      {teamIndex + 1}
+      {/* A pokemon that breaks a rule is marked beside its number, which stays centred */}
+      <Box component="span" sx={{ position: "relative" }}>
+        {teamIndex + 1}
+        {hasProblems && (
+          <WarningIcon
+            sx={{
+              position: "absolute",
+              left: "100%",
+              top: "50%",
+              translate: "0 -50%",
+              fontSize: 14,
+              color: "warning.main",
+            }}
+          />
+        )}
+      </Box>
     </Box>
   );
 });

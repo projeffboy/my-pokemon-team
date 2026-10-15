@@ -6,7 +6,7 @@ import {
   selectDialogOption,
   getTeamTextFromUrl,
   goToSite,
-  openManageTeamMenu,
+  openMoreMenu,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
@@ -135,7 +135,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
   test("team-name and duplicate actions live in Teams, which cannot duplicate an empty team", async ({
     page,
   }) => {
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await expect(
       page.getByRole("menuitem", { name: "Edit team name", exact: true }),
     ).toHaveCount(0);
@@ -333,10 +333,29 @@ Ability: Drizzle
     await expect(page.getByLabel("Generation")).toContainText("Gen 9");
   });
 
-  test("the Manage Team menu opens the import page, which imports nothing from text without pokemon", async ({
+  test("a pasted team name written as markup shows as text and runs nothing", async ({
     page,
   }) => {
-    await openManageTeamMenu(page);
+    const name = `<img src=x onerror="window.injected=true">`;
+    await openTeams(page);
+    await page.getByRole("button", { name: "Import Team" }).click();
+    const dialog = page.getByRole("dialog", { name: "Import Team" });
+    await dialog
+      .getByRole("textbox")
+      .fill(`=== [gen9] ${name} ===\n\nPolitoed @ Damp Rock\n- Hydro Pump\n`);
+    await dialog.getByRole("button", { name: "Import" }).click();
+    const teams = page
+      .getByRole("dialog", { name: "Teams" })
+      .getByRole("list", { name: "Saved teams" });
+    await expect(teams.getByRole("listitem").last()).toContainText(name);
+    await expect(page.locator('img[src="x"]')).toHaveCount(0);
+    expect(await page.evaluate(() => "injected" in window)).toBe(false);
+  });
+
+  test("the More menu opens the import page, which imports nothing from text without pokemon", async ({
+    page,
+  }) => {
+    await openMoreMenu(page);
     await clickMenuItem(page, "Import team");
     const dialog = page.getByRole("dialog", { name: "Import Team" });
     await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");

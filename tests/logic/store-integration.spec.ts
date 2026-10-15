@@ -1,6 +1,8 @@
 import { autorun } from "mobx";
 import { test, expect } from "./fixtures";
 import { LETS_GO, LEGENDS_ZA } from "@/shared/game-variants";
+import { createSearchFilters } from "@/shared/team";
+import { CAP_FORMAT } from "@/shared/formats";
 import {
   dvGender,
   getDv,
@@ -153,6 +155,63 @@ test("learnsets recompute after species and move filter edits", ({ store }) => {
   }
 });
 
+test("item options recompute after the Items filter, by generation", ({
+  store,
+}) => {
+  let items = store.teamItems;
+  const dispose = autorun(() => {
+    items = store.teamItems;
+  });
+  try {
+    expect(items).toContain("pokeball");
+    expect(items).toContain("oranberry");
+    store.filters.items = "Viable";
+    expect(items).not.toContain("pokeball");
+    expect(items).not.toContain("oranberry");
+    expect(items).toContain("leftovers");
+    expect(items).toContain("venusaurite");
+    expect(items).toContain("lightball");
+    expect(store.gameItems).toContain("pokeball");
+    // Sitrus Berry restored only 30 HP before Gen 4
+    store.currentTeam.generation = 3;
+    expect(store.gameItems).toContain("sitrusberry");
+    expect(items).not.toContain("sitrusberry");
+    store.currentTeam.generation = 4;
+    expect(items).toContain("sitrusberry");
+    store.filters.items = "";
+    store.currentTeam.generation = 3;
+    expect(items).toContain("sitrusberry");
+  } finally {
+    dispose();
+  }
+});
+
+test("each slot's item options follow its pokemon under the Items filter", ({
+  store,
+}) => {
+  let items = store.slotItems;
+  const dispose = autorun(() => {
+    items = store.slotItems;
+  });
+  try {
+    store.selectPokemon(0, "pyroar");
+    expect(items[0]).toBe(store.teamItems);
+    store.filters.items = "Viable";
+    expect(items[0]).toContain("pyroarite");
+    expect(items[0]).not.toContain("dragalgite");
+    expect(items[0]).toContain("leftovers");
+    // An empty slot has no pokemon to judge by
+    expect(items[1]).toContain("dragalgite");
+    store.selectPokemon(1, "dragalge");
+    expect(items[1]).toContain("dragalgite");
+    expect(items[1]).not.toContain("pyroarite");
+    store.filters.items = "";
+    expect(items[0]).toContain("dragalgite");
+  } finally {
+    dispose();
+  }
+});
+
 test("Pokemon options recompute after each filter and filter replacement", ({
   store,
 }) => {
@@ -172,7 +231,7 @@ test("Pokemon options recompute after each filter and filter replacement", ({
     store.currentTeam.format = "Little Cup (LC)";
     expect(names).not.toContain("Medicham");
     expect(names).toContain("Spoink");
-    store.filters = { type: "", region: "", ability: "", moves: "" };
+    store.filters = createSearchFilters();
     store.currentTeam.format = "";
     expect(names).toContain("Milotic");
   } finally {
@@ -192,6 +251,43 @@ test("a past generation leaves out pokemon its games lack, and the latest lists 
   store.currentTeam.generation = 7;
   expect(store.filteredPokemon).toContain("greninja");
   expect(store.filterAbilities).toContain("Battle Bond");
+});
+
+test("the CAP format adds the CAP pokemon, their abilities, and their moves", ({
+  store,
+}) => {
+  expect(store.filteredPokemon).not.toContain("caribolt");
+  expect(store.filterAbilities).not.toContain("Persistent");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.filteredPokemon).toContain("caribolt");
+  expect(store.filterAbilities).toContain("Persistent");
+  store.selectPokemon(0, "caribolt");
+  expect(store.teamLearnsets.values[0]).toContain("hornleech");
+  expect(store.teamLearnsets.values[0]).not.toContain("return");
+});
+
+test("the CAP format offers the CAP-only item its pokemon need, but not the banned Crucibellite", ({
+  store,
+}) => {
+  store.currentTeam.format = "OU: Over Used";
+  expect(store.teamItems).not.toContain("vilevial");
+  store.currentTeam.format = CAP_FORMAT;
+  expect(store.teamItems).toContain("vilevial");
+  expect(store.teamItems).toContain("leftovers");
+  expect(store.teamItems).not.toContain("crucibellite");
+  store.selectPokemon(0, "venomiconepilogue");
+  expect(store.team[0]?.item).toBe("vilevial");
+});
+
+test("Random Team fills a Gen 3 Doubles OU team without Ubers", ({ store }) => {
+  store.currentTeam.generation = 3;
+  store.currentTeam.format = "Doubles OU";
+  expect(store.filteredPokemon).toContain("swampert");
+  expect(store.filteredPokemon).not.toContain("lugia");
+  expect(store.randomizeTeam()).toBe(true);
+  expect(store.teamPokemon.every(name => name)).toBe(true);
+  for (const name of store.teamPokemon)
+    expect(store.filteredPokemon).toContain(name);
 });
 
 test("a past generation keeps the pokemon that learn no moves in any game", ({

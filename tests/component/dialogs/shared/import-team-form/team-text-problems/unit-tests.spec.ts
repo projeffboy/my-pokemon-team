@@ -100,7 +100,7 @@ Abilty: Intrepid Sword`);
     await page.getByRole("button", { name: "Language", exact: true }).click();
     await page.getByRole("menuitem", { name: "Deutsch" }).click();
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
-    await page.getByRole("button", { name: de.team.manageTeamMenu }).click();
+    await page.getByRole("button", { name: de.team.more, exact: true }).click();
     await page
       .getByRole("menuitem", { name: de.team.editPokepaste, exact: true })
       .click();

@@ -1,11 +1,4 @@
-import {
-  useId,
-  useRef,
-  useState,
-  type KeyboardEvent,
-  type MouseEvent,
-  type SyntheticEvent,
-} from "react";
+import { useId, useRef } from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -23,6 +16,7 @@ import TeamStatsTooltip from "./team-aspect-stats/TeamStatsTooltip";
 import { TYPE_COLORS, TYPE_TEXT_COLORS } from "@/app/shared/type-colors";
 import TypeLabel from "./TypeLabel";
 import useTypeLabelLayout from "./team-aspect-stats/use-type-label-layout";
+import useToggleTooltip from "./use-toggle-tooltip";
 
 // The 18 type scores of one team stat. The heading can be hidden when a tab names the stat.
 const TeamAspectStats = observer(function TeamAspectStats({
@@ -36,7 +30,8 @@ const TeamAspectStats = observer(function TeamAspectStats({
 }) {
   const { t, names } = useTranslation();
   const tooltipId = useId();
-  const pressedOpen = useRef<boolean | undefined>(undefined);
+  // The type tile whose popover is open, if any
+  const { open, triggerProps } = useToggleTooltip<number>();
   const types = typesIn(store.currentTeam.generation);
   const { gridRef, hasIcon, showFullName, chipWidth } = useTypeLabelLayout(
     JSON.stringify(
@@ -48,11 +43,6 @@ const TeamAspectStats = observer(function TeamAspectStats({
       t.stats.teamDefence
     : t.stats.teamTypeCoverage;
 
-  // The type tile whose popover is open, if any
-  const [popover, setPopover] = useState<{
-    index: number;
-    anchorEl: HTMLElement;
-  } | null>(null);
   const typeAnchors = useRef<(HTMLDivElement | null)[]>([]);
 
   const formatPositiveScore = (value: number) =>
@@ -68,27 +58,6 @@ const TeamAspectStats = observer(function TeamAspectStats({
     } else {
       return <Box>{formattedValue}</Box>;
     }
-  };
-
-  const handlePopoverOpen = (e: SyntheticEvent<HTMLElement>, i: number) => {
-    if (popover?.anchorEl !== e.currentTarget)
-      setPopover({ index: i, anchorEl: e.currentTarget });
-  };
-
-  const handlePopoverClose = () => setPopover(null);
-
-  const handleClick = (e: MouseEvent<HTMLElement>, i: number) => {
-    const wasOpen =
-      e.detail ?
-        (pressedOpen.current ?? popover?.index === i)
-      : popover?.index === i;
-    pressedOpen.current = undefined;
-    if (wasOpen) handlePopoverClose();
-    else handlePopoverOpen(e, i);
-  };
-
-  const handleKeyDown = (e: KeyboardEvent<HTMLElement>) => {
-    if (e.key === "Escape") handlePopoverClose();
   };
 
   const teamStatValues =
@@ -133,6 +102,11 @@ const TeamAspectStats = observer(function TeamAspectStats({
                   font: "inherit",
                   lineHeight: 1.25,
                   bgcolor: TYPE_COLORS[type],
+                  "&:focus-visible": {
+                    outline: 2,
+                    outlineColor: "text.primary",
+                    outlineOffset: 1,
+                  },
                   // The score below is part of the touch target
                   "&::after": {
                     content: '""',
@@ -140,22 +114,9 @@ const TeamAspectStats = observer(function TeamAspectStats({
                     inset: "-3px 0 -24px",
                   },
                 }}
-                aria-describedby={
-                  popover?.index === i ? `${tooltipId}-${i}` : undefined
-                }
+                aria-describedby={open === i ? `${tooltipId}-${i}` : undefined}
                 aria-label={names.type(type)}
-                onPointerDown={() => {
-                  pressedOpen.current = popover?.index === i;
-                }}
-                onPointerCancel={() => {
-                  pressedOpen.current = undefined;
-                }}
-                onMouseEnter={e => handlePopoverOpen(e, i)}
-                onMouseLeave={handlePopoverClose}
-                onFocus={e => handlePopoverOpen(e, i)}
-                onBlur={handlePopoverClose}
-                onKeyDown={handleKeyDown}
-                onClick={e => handleClick(e, i)}
+                {...triggerProps(i)}
               >
                 <TypeLabel
                   iconAbove
@@ -170,8 +131,8 @@ const TeamAspectStats = observer(function TeamAspectStats({
                 id={`${tooltipId}-${i}`}
                 role="tooltip"
                 sx={{ pointerEvents: "none", zIndex: "tooltip" }}
-                open={popover?.index === i}
-                anchorEl={popover ? typeAnchors.current[popover.index] : null}
+                open={open === i}
+                anchorEl={open === null ? null : typeAnchors.current[open]}
                 transition
               >
                 {({ TransitionProps }) => (

@@ -10,6 +10,7 @@ import { validateTeam } from "@/store/validation";
 import { loadStoredState, type StoredState } from "@/store/teams-storage";
 import { allAbilities, allItemIds } from "@/shared/names";
 import { GENERATIONS } from "@/shared/generations";
+import { CAP_FORMAT } from "@/shared/formats";
 import { availableItems, learnsetsReady } from "@/store/learnsets";
 import learnsets from "@/data/learnsets.json" with { type: "json" };
 import { createTeam } from "./shared/team";
@@ -106,8 +107,11 @@ test("matrix reasons and team problems name things in the current language", () 
   expect(defenceMatrix(porygonZ, japanese).Ground?.[0]?.reason).toBe(
     "じめん does 1x to ポリゴンZ (ノーマル)\nテクスチャー makes it ゴースト type",
   );
-  expect(validateTeam(team, 9, "", japanese)).toEqual([
-    "Two pokemon are ドータクン (Species Clause).",
+  expect(validateTeam(team, 9, "OU: Over Used", japanese)).toEqual([
+    {
+      message: "Only one pokemon may be ドータクン (Species Clause).",
+      slots: [0, 1],
+    },
   ]);
 });
 
@@ -148,6 +152,8 @@ test("no two options of a dropdown share a name in any language", async () => {
         .soft(duplicates(items, names.item), `${locale} gen ${generation}`)
         .toEqual([]);
     }
+    const capItems = availableItems(allItemIds, 9, CAP_FORMAT);
+    expect.soft(duplicates(capItems, names.item), `${locale} CAP`).toEqual([]);
   }
 });
 
