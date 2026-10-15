@@ -42,6 +42,26 @@ export const pokemonFormatIn = (
   generation = LATEST_GENERATION,
 ) => pastGenerations[generation]?.formats?.[pokemon] ?? formats[pokemon];
 
+// Showdown's Gen 3-4 data has no doubles tiers, so it uses the singles tier, and
+// Doubles OU there bans Uber and AG except for these pokemon
+const SINGLES_TIER_DOUBLES_OU_UNBANS: Partial<
+  Record<Generation, readonly string[]>
+> = {
+  3: ["wobbuffet", "wynaut"],
+  4: ["machamp", "manaphy", "mew", "salamence", "wobbuffet", "wynaut"],
+};
+
+// E.g. 'garchomp' => 'DUber' in gen 4, and 'salamence' => 'DOU' there
+export function doublesTierIn(pokemon: string, generation = LATEST_GENERATION) {
+  const { tier, doublesTier } = pokemonFormatIn(pokemon, generation) ?? {};
+  const unbans = SINGLES_TIER_DOUBLES_OU_UNBANS[generation];
+  if (doublesTier || !unbans || !tier) return doublesTier;
+  if (tier === "Uber" || tier === "AG")
+    return unbans.includes(pokemon) ? "DOU" : "DUber";
+  // As in later generations, unevolved pokemon stay out of the doubles tiers
+  return tier === "NFE" || tier === "LC" ? tier : "DOU";
+}
+
 // Damage taken by each type from each attacking type. A generation without its
 // own chart shares the next one's.
 export function typechartIn(generation: Generation): PastTypeChart {

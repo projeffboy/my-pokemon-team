@@ -145,6 +145,20 @@ test("doubles formats use doubles tiers, including untiered DUU species", () => 
   expect(result.indexOf("regieleki")).toBeLessThan(result.indexOf("milotic"));
 });
 
+test("Gen 3 and Gen 4 Doubles OU fall back to the singles tiers, banning Ubers as Showdown does", () => {
+  const gen3 = filterPokemon({ ...all, generation: 3, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "wobbuffet", "wynaut"])
+    expect(gen3).toContain(allowed);
+  for (const banned of ["mewtwo", "kyogre", "deoxysattack"])
+    expect(gen3).not.toContain(banned);
+
+  const gen4 = filterPokemon({ ...all, generation: 4, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "manaphy", "machamp"])
+    expect(gen4).toContain(allowed);
+  for (const banned of ["garchomp", "darkrai", "arceus"])
+    expect(gen4).not.toContain(banned);
+});
+
 test("format, region, and type filters intersect", () => {
   expect(
     filterPokemon({
