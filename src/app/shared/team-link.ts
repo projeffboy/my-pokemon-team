@@ -74,7 +74,8 @@ export function generationSettingsFromUrl(): {
   // An empty value counts as missing
   const gen = params.get("gen") || null;
   const game = params.get("game") || null;
-  if (game === "champions")
+  // Links made Oct 10–13, 2026 named the game by its format at the time
+  if (game === "champions" || game === "Pokemon Champions (M-C)")
     return {
       settings: { generation: 9, format: CHAMPIONS_FORMAT },
       unrecognized: false,
