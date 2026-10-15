@@ -3,7 +3,9 @@ import formats from "@/data/formats";
 import typechart from "@/data/typechart";
 import pastGenerations from "@/data/past-generations";
 import gameVariants from "@/data/game-variants";
+import pokedex from "@/data/pokedex";
 import { LATEST_GENERATION } from "./generations";
+import { pokemonNameInverse } from "./names";
 import {
   POKEMON_TYPES,
   type Generation,
@@ -43,23 +45,41 @@ export const pokemonFormatIn = (
 ) => pastGenerations[generation]?.formats?.[pokemon] ?? formats[pokemon];
 
 // Showdown's Gen 3-4 data has no doubles tiers, so it uses the singles tier, and
-// Doubles OU there bans Uber and AG except for these pokemon
-const SINGLES_TIER_DOUBLES_OU_UNBANS: Partial<
-  Record<Generation, readonly string[]>
+// Doubles OU there bans Uber and AG except for the unbanned pokemon
+const SINGLES_TIER_DOUBLES: Partial<
+  Record<Generation, { lastDexNumber: number; unbans: readonly string[] }>
 > = {
-  3: ["wobbuffet", "wynaut"],
-  4: ["machamp", "manaphy", "mew", "salamence", "wobbuffet", "wynaut"],
+  3: { lastDexNumber: 386, unbans: ["wobbuffet", "wynaut"] },
+  4: {
+    lastDexNumber: 493,
+    unbans: ["machamp", "manaphy", "mew", "salamence", "wobbuffet", "wynaut"],
+  },
 };
+
+// The lowest dex number among each pokemon's evolutions, e.g. 'murkrow' => 430
+// (Honchkrow). Formes are skipped: up to gen 4, their prevos evolve anyway.
+const firstEvolutionNumber = new Map<string, number>();
+for (const { prevo, forme, num = 0 } of Object.values(pokedex)) {
+  const id = prevo && !forme && num > 0 && pokemonNameInverse(prevo);
+  if (id)
+    firstEvolutionNumber.set(
+      id,
+      Math.min(num, firstEvolutionNumber.get(id) ?? num),
+    );
+}
 
 // E.g. 'garchomp' => 'DUber' in gen 4, and 'salamence' => 'DOU' there
 export function doublesTierIn(pokemon: string, generation = LATEST_GENERATION) {
   const { tier, doublesTier } = pokemonFormatIn(pokemon, generation) ?? {};
-  const unbans = SINGLES_TIER_DOUBLES_OU_UNBANS[generation];
-  if (doublesTier || !unbans || !tier) return doublesTier;
+  const singles = SINGLES_TIER_DOUBLES[generation];
+  if (doublesTier || !singles || !tier) return doublesTier;
   if (tier === "Uber" || tier === "AG")
-    return unbans.includes(pokemon) ? "DOU" : "DUber";
-  // As in later generations, unevolved pokemon stay out of the doubles tiers
-  return tier === "NFE" || tier === "LC" ? tier : "DOU";
+    return singles.unbans.includes(pokemon) ? "DOU" : "DUber";
+  // As in later generations, unevolved pokemon stay out of the doubles tiers,
+  // even those with a singles tier, like Abra (ZU in gen 3)
+  if (tier === "NFE" || tier === "LC") return tier;
+  const evolution = firstEvolutionNumber.get(pokemon);
+  return evolution && evolution <= singles.lastDexNumber ? "NFE" : "DOU";
 }
 
 // Damage taken by each type from each attacking type. A generation without its
