@@ -116,15 +116,18 @@ test("combined and individual generations have distinct URLs; team-only links de
       configurable: true,
       value: url,
     });
-    expect(generationSettingsFromUrl()).toMatchObject({
+    expect(generationSettingsFromUrl().settings).toMatchObject({
       generationProfile: "6-9",
       generation: 9,
     });
     syncTeamSettingsToUrl(url, { generation: 9, format: "" });
     expect(url.searchParams.get("gen")).toBe("9");
-    expect(generationSettingsFromUrl()).toEqual({ generation: 9, format: "" });
+    expect(generationSettingsFromUrl().settings).toEqual({
+      generation: 9,
+      format: "",
+    });
     url.searchParams.delete("gen");
-    expect(generationSettingsFromUrl()).toMatchObject({
+    expect(generationSettingsFromUrl().settings).toMatchObject({
       generation: 9,
       generationProfile: "6-9",
     });

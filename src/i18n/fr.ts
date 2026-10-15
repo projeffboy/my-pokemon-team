@@ -14,6 +14,7 @@ const inputNames: Record<string, string> = {
 };
 
 const fr: Messages = {
+  pageTitle: "My Pokemon Team - Créateur et planificateur d'équipes Pokémon",
   // The header
   beta: "Bêta",
   generation,
@@ -114,13 +115,18 @@ const fr: Messages = {
     delete: "Supprimer",
     importTeam: "Importer une équipe",
     share: "Partager",
-    teamEmpty: "L'équipe Pokémon est vide",
+    teamEmpty: "L'équipe est vide. Ajoutez un Pokémon pour la partager.",
     linkCopied: "Lien de l'équipe Pokémon copié",
-    linkNotCopied: "Impossible de copier le lien.",
-    nothingToCopy: "Équipe vide, rien à copier.",
+    linkNotCopied:
+      "Impossible de copier le lien. Copiez-le depuis la barre d'adresse pendant que l'équipe est ouverte.",
+    linkGenerationUnsupported: (profile: string) =>
+      `La génération ou le jeu de ce lien n'est pas pris en charge, il a donc été ouvert en ${profile}.`,
+    nothingToCopy: "L'équipe est vide. Ajoutez un Pokémon pour la copier.",
     teamCopied: "Équipe copiée.",
-    teamNotCopied: "Impossible de copier l'équipe.",
-    cannotDuplicateEmptyTeam: "Impossible de dupliquer une équipe vide",
+    teamNotCopied:
+      "Impossible de copier l'équipe. Copiez plutôt son texte depuis Modifier le Pokepaste.",
+    cannotDuplicateEmptyTeam:
+      "L'équipe est vide. Ajoutez un Pokémon pour la dupliquer.",
     teamDuplicated: "Équipe dupliquée",
     teamDeleted: "Équipe supprimée",
     slots: "Emplacements de l'équipe Pokémon",
@@ -137,7 +143,7 @@ const fr: Messages = {
     advanced: "Plus de détails",
     advancedFor: (slot: number) => `Plus de détails pour l'emplacement ${slot}`,
     details: "Détails",
-    showMoveTypes: "Afficher les types des capacités",
+    showTypes: "Afficher les types",
     about: (pokemon: string) => `À propos de ${pokemon}`,
     dragHint: "Maintenez et glissez pour réordonner",
     moveToSlot: (pokemon: string) =>
@@ -170,7 +176,8 @@ const fr: Messages = {
       `définir ${label} sur ${value} pour ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `échanger les places de ${first} et ${second}`,
-    moreChanges: (count: number) => `${count} autres modifications`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 autre modification" : `${count} autres modifications`,
     undoAction: (action: string) => `Annuler ${action}`,
     redoAction: (action: string) => `Rétablir ${action}`,
     randomizeTeamAction: "créer une équipe aléatoire",
@@ -181,7 +188,8 @@ const fr: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Équipe ${number}`,
     unnamedTeam: "Équipe",
-    copyOf: (name: string) => `Copie de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copie ${number} de ${name}` : `Copie de ${name}`,
     learnsetsFailed:
       "Les listes de capacités n'ont pas pu être chargées. Rechargez la page pour réessayer.",
   },
@@ -280,6 +288,8 @@ const fr: Messages = {
       cause: string | undefined,
     ) =>
       `${type} inflige ${multiplier}x à ${pokemon} (${types})${cause ? ` avec ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} le rend de type ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -433,7 +443,8 @@ const fr: Messages = {
     randomTeamCreated: "Équipe aléatoire créée",
     exported: "Toutes les équipes exportées",
     copiedAll: "Toutes les équipes copiées",
-    notCopiedAll: "Impossible de copier les équipes.",
+    notCopiedAll:
+      "Impossible de copier les équipes. Téléchargez-les plutôt avec Tout exporter.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -525,6 +536,8 @@ const fr: Messages = {
       `${pokemon} doit tenir ${items.join(" ou ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} a ${move} en double.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} a ${thing}, ce qui est interdit en ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -561,7 +574,30 @@ const fr: Messages = {
     imported: "Équipe importée",
     importedMany: (count: number) => `${count} équipes importées`,
     noChanges: "Aucune modification.",
-    nothingFound: "Aucun Pokémon trouvé dans ce texte.",
+    nothingFound:
+      "Aucun Pokémon trouvé dans ce texte. Écrivez les noms des Pokémon en anglais, comme les écrit Pokemon Showdown, ou collez une équipe exportée depuis Pokemon Showdown.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 problème trouvé" : `${count} problèmes trouvés`}. La mise à jour applique tout de même le texte ainsi :`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Capacité ${slot}`,
+    problemValue: (where: string, value: string) => `${where} : « ${value} »`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Non reconnu.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} ne peut pas apprendre cette capacité dans le jeu sélectionné.`,
+    wrongAbility: (pokemon: string) =>
+      `Ce n'est pas un talent que ${pokemon} peut avoir.`,
+    outOfRange: (min: number, max: number) =>
+      `Ce n'est pas un nombre entier de ${min} à ${max}.`,
+    unsupported: "Le jeu sélectionné n'a pas ce détail.",
+    tooManyPokemon: "Une équipe compte au plus six Pokémon.",
+    tooManyMoves: "Un Pokémon connaît au plus quatre capacités.",
+    noGigantamax: (pokemon: string) => `${pokemon} n'a pas de forme Gigamax.`,
+    unread: "Ce n'est pas un détail que le site lit.",
+    slotLeftEmpty: "L'emplacement de l'équipe reste vide.",
+    moveLeftEmpty: "L'emplacement de la capacité reste vide.",
+    leftOut: "Cet élément est ignoré.",
+    usedInstead: (value: string) => `${value} est utilisé à la place.`,
   },
   deleteDialog: {
     title: (team: string) => `Supprimer ${team} ?`,

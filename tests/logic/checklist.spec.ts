@@ -138,6 +138,16 @@ test("status moves include guaranteed side effects but not chances", () => {
   ).toEqual([]);
 });
 
+test("Sheer Force removes a guaranteed status side effect", () => {
+  const tauros = { name: "tauros", move1: "zapcannon" };
+  expect(checked(createTeam({ ...tauros, ability: "Sheer Force" }))).toEqual(
+    [],
+  );
+  expect(checked(createTeam({ ...tauros, ability: "Intimidate" }))).toEqual([
+    "Status Move",
+  ]);
+});
+
 test("Yawn counts as a move that inflicts sleep", () => {
   expect(checked(createTeam({ name: "dondozo", move1: "yawn" }))).toEqual([
     "Status Move",

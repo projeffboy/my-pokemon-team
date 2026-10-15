@@ -71,6 +71,18 @@ const EARLIER_REQUIRED_ITEMS: Record<string, string> = {
   griseouscore: "griseousorb",
 };
 
+// Each required item with the item it replaced, e.g. [griseouscore, griseousorb]
+function requiredItemGroups(pokemon: string): string[][] {
+  const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
+  return [requiredItem, ...requiredItems]
+    .map(name => (name && itemNameInverse(name)) || "")
+    .filter(item => item)
+    .map(item => {
+      const earlier = EARLIER_REQUIRED_ITEMS[item];
+      return earlier ? [item, earlier] : [item];
+    });
+}
+
 // E.g. Blastoisinite for Blastoise-Mega, or Zap Plate (listed before Electrium Z) for Arceus-Electric.
 // Given the team's game, it is the first of them that game has.
 export function getAutoSelectedItem(
@@ -78,13 +90,24 @@ export function getAutoSelectedItem(
   pokemonItem: string,
   isAvailable?: (item: string) => boolean,
 ): string {
-  const { requiredItem, requiredItems = [] } = pokedex[pokemon] ?? {};
-  const items = [requiredItem, ...requiredItems]
-    .map(name => (name && itemNameInverse(name)) || "")
-    .flatMap(item => [item, EARLIER_REQUIRED_ITEMS[item] ?? ""])
-    .filter(item => item);
+  const items = requiredItemGroups(pokemon).flat();
 
   return (isAvailable && items.find(isAvailable)) || items[0] || pokemonItem;
+}
+
+// The item to hold instead when a game needs another version of a required item,
+// e.g. the Griseous Orb for a Griseous Core Giratina-Origin moved to Gen 4
+export function requiredItemReplacement(
+  pokemon: string,
+  item: string,
+  isAvailable: (item: string) => boolean,
+): string | undefined {
+  const group = requiredItemGroups(pokemon).find(group => group.includes(item));
+  if (!group || group.find(isAvailable) === item) return undefined;
+  const replacement = getAutoSelectedItem(pokemon, "", isAvailable);
+  return replacement !== item && isAvailable(replacement) ?
+      replacement
+    : undefined;
 }
 
 // E.g. Thick Fat for Venusaur-Mega, its only ability

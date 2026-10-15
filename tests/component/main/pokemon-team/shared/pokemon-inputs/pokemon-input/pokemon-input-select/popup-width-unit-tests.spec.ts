@@ -1,5 +1,10 @@
 import { test, expect } from "fixtures";
-import { selectPokemon, resizeTeamViewport } from "helper";
+import {
+  findOption,
+  optionLabelLines,
+  selectPokemon,
+  resizeTeamViewport,
+} from "helper";
 
 test("small phone move, item, and ability lists keep their 400px viewport width", async ({
   page,
@@ -40,29 +45,12 @@ test("the Name list fits its longest names within two lines", async ({
   for (const width of [320, 1200]) {
     await resizeTeamViewport(page, width, 900);
     await page.evaluate(() => document.fonts.ready);
-    const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
-    const option = page.getByRole("option", {
-      name: "Ogerpon-Hearthflame-Tera",
-      exact: true,
-    });
-    // Resizing can swap the team viewer, which remounts the input and drops its text
-    await expect(async () => {
-      await input.fill("Ogerpon");
-      await expect(option).toBeVisible({ timeout: 1000 });
-    }).toPass();
-    await expect
-      .poll(() =>
-        option
-          .locator("span")
-          .last()
-          .evaluate(label => {
-            const lineHeight = parseFloat(getComputedStyle(label).lineHeight);
-            return Math.round(
-              label.getBoundingClientRect().height / lineHeight,
-            );
-          }),
-      )
-      .toBe(2);
+    const option = await findOption(
+      page,
+      "Pokemon 1's name",
+      "Ogerpon-Hearthflame-Tera",
+    );
+    await expect.poll(() => optionLabelLines(option)).toBe(2);
     await expect(async () => {
       const bounds = await popup.boundingBox();
       expect(bounds?.width).toBeGreaterThanOrEqual(168);
@@ -70,6 +58,23 @@ test("the Name list fits its longest names within two lines", async ({
         true,
       );
     }).toPass({ timeout: 5000 });
-    await input.press("Escape");
+    await page.keyboard.press("Escape");
+  }
+});
+
+test("one-word names and items take one line", async ({ page }) => {
+  for (const width of [320, 1200]) {
+    await resizeTeamViewport(page, width, 900);
+    await page.evaluate(() => document.fonts.ready);
+    for (const [property, label] of [
+      ["name", "Charmeleon"],
+      ["name", "Crabominable"],
+      // At 1200px, wider than the room the item list's 130px minimum leaves
+      ["item", "Kangaskhanite"],
+    ]) {
+      const option = await findOption(page, `Pokemon 1's ${property}`, label);
+      await expect.poll(() => optionLabelLines(option)).toBe(1);
+      await page.keyboard.press("Escape");
+    }
   }
 });
