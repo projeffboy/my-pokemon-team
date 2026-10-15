@@ -22,6 +22,90 @@ interface Dex {
   mod: (mod: string) => Dex;
 }
 
+// Showdown's Z-A mod takes every Gen 9 item, and Showdown has no list of Z-A's own. Besides the
+// stones its pokemon require, Z-A's held items are the Berries and Hold Items on
+// https://www.serebii.net/legendsz-a/items.shtml whose descriptions say a pokemon holds them.
+const LEGENDS_ZA_ITEMS = new Set([
+  "aspearberry",
+  "babiriberry",
+  "chartiberry",
+  "cheriberry",
+  "chestoberry",
+  "chilanberry",
+  "chopleberry",
+  "cobaberry",
+  "colburberry",
+  "habanberry",
+  "kasibberry",
+  "kebiaberry",
+  "lumberry",
+  "occaberry",
+  "oranberry",
+  "passhoberry",
+  "payapaberry",
+  "pechaberry",
+  "persimberry",
+  "rawstberry",
+  "rindoberry",
+  "roseliberry",
+  "shucaberry",
+  "sitrusberry",
+  "tangaberry",
+  "wacanberry",
+  "yacheberry",
+  "assaultvest",
+  "bigroot",
+  "blackbelt",
+  "blackglasses",
+  "burndrive",
+  "charcoal",
+  "chilldrive",
+  "dousedrive",
+  "dragonfang",
+  "eviolite",
+  "expertbelt",
+  "fairyfeather",
+  "focusband",
+  "focussash",
+  "hardstone",
+  "kingsrock",
+  "leek",
+  "leftovers",
+  "lifeorb",
+  "lightball",
+  "luckyegg",
+  "magnet",
+  "metalcoat",
+  "miracleseed",
+  "muscleband",
+  "mysticwater",
+  "nevermeltice",
+  "normalgem",
+  "poisonbarb",
+  "poweranklet",
+  "powerband",
+  "powerbelt",
+  "powerbracer",
+  "powerlens",
+  "powerweight",
+  "quickclaw",
+  "rockyhelmet",
+  "scopelens",
+  "sharpbeak",
+  "shellbell",
+  "shockdrive",
+  "silkscarf",
+  "silverpowder",
+  "softsand",
+  "soothebell",
+  "spelltag",
+  "thickclub",
+  "twistedspoon",
+  "weaknesspolicy",
+  "whiteherb",
+  "wiseglasses",
+]);
+
 // Compile Showdown's source in memory; its generation-aware dex supplies the move pools.
 export function generationTransferData(
   showdownRoot: string,
@@ -51,13 +135,20 @@ export function generationTransferData(
     ];
     for (const [index, mods] of targets.entries()) {
       const bit = 2 ** index;
+      // Z-A's own bit, rather than Gen 9's, which also reads its mod
+      const legendsZA = mods.join() === "gen9legends";
       for (const mod of mods) {
         const target = dex.mod(mod);
         const available = (entry: Entry) =>
           entry.exists && entry.gen <= target.gen && !entry.isNonstandard;
         if (target.gen > 1) {
           for (const id of itemIds) {
-            if (available(target.items.get(id)))
+            const item = target.items.get(id);
+            if (
+              legendsZA ?
+                LEGENDS_ZA_ITEMS.has(id) && item.exists
+              : available(item)
+            )
               data.items[id] = (data.items[id] ?? 0) | bit;
           }
         }

@@ -257,6 +257,11 @@ test("Legends: Z-A offers its own pokemon, moves and Mega Stones, and no abiliti
   expect(store.teamLearnsets.values[0]).toContain("psychocut");
   expect(store.teamLearnsets.values[0]).not.toContain("foulplay");
   expect(store.teamItems).toContain("dragoninite");
+  expect(store.teamItems).toContain("leftovers");
+  expect(store.teamItems).toContain("thickclub");
+  // Scarlet and Violet items that Z-A has no use for, or no way to hold
+  for (const item of ["boosterenergy", "abilityshield", "choicescarf"])
+    expect(store.teamItems).not.toContain(item);
 });
 
 test("Legends: Z-A teams round-trip in Showdown text and storage", () => {
