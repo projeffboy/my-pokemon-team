@@ -6,7 +6,7 @@ const MAX_MESSAGE_LENGTH = 5000;
 // The most base64 the screenshot and uploaded images may total, as in capture-page.ts
 const MAX_IMAGES_LENGTH = 4_000_000;
 const MAX_UPLOADS = 3;
-// Matches the syntax accepted by the feedback form's native email input.
+// The syntax an email input accepts, which the feedback form checks too
 const EMAIL_PATTERN =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 const JPEG_PREFIX = "data:image/jpeg;base64,";
@@ -16,13 +16,22 @@ const RATE_WINDOW_MS = 10 * 60 * 1000;
 // Best effort: Vercel reuses an instance for many requests, but not all of them
 const recentSends = new Map<string, number[]>();
 
-function isRateLimited(ip: string) {
-  const now = Date.now();
+// Records a send at `time`, unless the IP has used up its sends. Refused
+// attempts are not recorded, so retrying does not push back the wait.
+function reserveSend(ip: string, time: number) {
   const sends = (recentSends.get(ip) ?? []).filter(
-    time => now - time < RATE_WINDOW_MS,
+    sent => time - sent < RATE_WINDOW_MS,
   );
-  recentSends.set(ip, [...sends, now]);
-  return sends.length >= RATE_LIMIT;
+  if (sends.length >= RATE_LIMIT) return false;
+  recentSends.set(ip, [...sends, time]);
+  return true;
+}
+
+// Gives back a send that the email provider failed to deliver
+function releaseSend(ip: string, time: number) {
+  const sends = recentSends.get(ip) ?? [];
+  const index = sends.lastIndexOf(time);
+  if (index !== -1) sends.splice(index, 1);
 }
 
 // Order matters: Edge and Opera also say Chrome, and Chrome also says Safari
@@ -56,8 +65,19 @@ const isString = (value: unknown, maxLength: number): value is string =>
   typeof value === "string" && value.length <= maxLength;
 const isOptionalString = (value: unknown, maxLength: number) =>
   value === undefined || isString(value, maxLength);
-const isJpeg = (value: unknown): value is string =>
-  typeof value === "string" && value.startsWith(JPEG_PREFIX);
+// Keeps a visitor-supplied detail on its own line, so it cannot add a fake one
+const oneLine = (text: string) =>
+  text.replace(/\s*[\r\n\u2028\u2029]\s*/g, " ");
+// Padded base64 that starts with "/9j/", the encoding of JPEG's FF D8 FF signature
+const isJpeg = (value: unknown): value is string => {
+  if (typeof value !== "string" || !value.startsWith(JPEG_PREFIX)) return false;
+  const data = value.slice(JPEG_PREFIX.length);
+  return (
+    data.startsWith("/9j/") &&
+    data.length % 4 === 0 &&
+    /^[A-Za-z0-9+/]*={0,2}$/.test(data)
+  );
+};
 
 // The screenshot and uploaded images, or undefined if they are invalid or too large
 export function readImages(screenshot: unknown, images: unknown) {
@@ -123,7 +143,8 @@ export async function POST(request: Request) {
   }
 
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0] ?? "";
-  if (isRateLimited(ip)) {
+  const sendTime = Date.now();
+  if (!reserveSend(ip, sendTime)) {
     return new Response("Too many messages", { status: 429 });
   }
 
@@ -131,8 +152,8 @@ export async function POST(request: Request) {
   const replyTo = email?.trim();
   const details = [
     replyTo && `From: ${replyTo}`,
-    link && `Link: ${link}`,
-    screen && `Screen: ${screen}`,
+    link && `Link: ${oneLine(link)}`,
+    screen && `Screen: ${oneLine(screen)}`,
     `Browser: ${describeBrowser(userAgent)}`,
     `User agent: ${userAgent}`,
   ].filter(line => line);
@@ -146,12 +167,14 @@ export async function POST(request: Request) {
       from: "My Pokemon Team <onboarding@resend.dev>",
       to: [TO],
       subject: "My Pokemon Team feedback",
-      text: `${message}\n\n---\n${details.join("\n")}`,
+      // The details come first, so the message cannot pose as them
+      text: `${details.join("\n")}\n\nMessage:\n${message}`,
       ...(replyTo && { reply_to: replyTo }),
       ...(attachments.length > 0 && { attachments }),
     }),
   }).catch(() => undefined);
   if (!response?.ok) {
+    releaseSend(ip, sendTime);
     console.error(
       "Resend failed",
       response?.status,

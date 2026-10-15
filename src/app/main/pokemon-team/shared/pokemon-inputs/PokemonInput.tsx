@@ -33,8 +33,8 @@ const PokemonInput = observer(function PokemonInput({
   const { names } = useTranslation();
   const member = store.team[teamIndex];
   // Stable while the language is, since a new array resets the text being typed
-  const items = store.teamItems;
-  const allItemNames = useMemo(() => items.map(names.item), [items, names]);
+  const items = store.slotItems[teamIndex];
+  const itemNames = useMemo(() => items?.map(names.item) ?? [], [items, names]);
   const abilities = store.teamAbilities[teamIndex];
   const abilityNames = useMemo(
     () => abilities?.map(names.ability) ?? [],
@@ -54,14 +54,15 @@ const PokemonInput = observer(function PokemonInput({
           store.sort,
           store.translation,
           store.currentTeam.generation,
+          store.currentTeam.format,
         );
         optionLabels = optionValues.map(names.pokemon);
       }
       break;
     }
     case "item":
-      optionValues = items;
-      optionLabels = allItemNames;
+      optionValues = items ?? [];
+      optionLabels = itemNames;
       break;
     case "ability":
       optionValues = abilities ?? [];

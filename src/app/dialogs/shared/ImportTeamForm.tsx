@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
+import { inputLabelClasses } from "@mui/material/InputLabel";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
@@ -12,13 +13,17 @@ import {
   parseTeamsText,
   parseTeamText,
   serializeTeam,
+  teamTextProblems,
 } from "@/store/team-text";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { verbatim } from "@/app/shared/text-entry";
+import { useIsSmDown } from "@/app/shared/WidthContext";
+import TeamTextProblems from "./import-team-form/TeamTextProblems";
 
 // A dialog's body and actions for pasting Showdown text: either new teams to import,
-// or the current team's text to edit. Importing or updating calls onDone; cancelling
-// calls onClose.
+// or the current team's text to edit, with the problems an update would work around.
+// Importing or updating calls onDone; cancelling calls onClose.
 const ImportTeamForm = observer(function ImportTeamForm({
   isImport,
   onClose,
@@ -31,6 +36,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
   contentSx?: SxProps<Theme>;
 }) {
   const { t } = useTranslation();
+  const isSmDown = useIsSmDown();
   const { importDialog } = t;
   const [initialText] = useState(() =>
     isImport ? "" : (
@@ -39,6 +45,16 @@ const ImportTeamForm = observer(function ImportTeamForm({
   );
   const [text, setText] = useState(initialText);
   const [isNothingFound, setIsNothingFound] = useState(false);
+  const { generation } = store.currentTeam;
+  const { dataFormat, learnsetsLoaded } = store;
+  const deferredText = useDeferredValue(text);
+  const problems = useMemo(
+    () =>
+      isImport || !learnsetsLoaded ?
+        []
+      : teamTextProblems(deferredText, generation, dataFormat),
+    [isImport, learnsetsLoaded, deferredText, generation, dataFormat],
+  );
 
   const handleImport = () => {
     const teams = parseTeamsText(text, store.currentTeam);
@@ -60,9 +76,7 @@ const ImportTeamForm = observer(function ImportTeamForm({
 
   const handleUpdate = () => {
     if (text !== initialText)
-      store.replaceTeam(
-        parseTeamText(text, store.currentTeam.generation, store.dataFormat),
-      );
+      store.replaceTeam(parseTeamText(text, generation, dataFormat));
     else store.openSnackbar(importDialog.noChanges);
     onDone();
   };
@@ -94,6 +108,8 @@ const ImportTeamForm = observer(function ImportTeamForm({
           }
           label={importDialog.label}
           multiline
+          // A long team scrolls within the field, keeping the problems below it in view
+          maxRows={isSmDown ? 6 : 10}
           fullWidth
           sx={{ my: 2.5 }}
           value={text}
@@ -103,14 +119,36 @@ const ImportTeamForm = observer(function ImportTeamForm({
           }}
           error={isNothingFound}
           helperText={isNothingFound && importDialog.nothingFound}
+          slotProps={{
+            htmlInput: verbatim("team-text"),
+            // Above the text rather than over it, so a long label wraps instead of being
+            // cut off at 320px
+            inputLabel: {
+              shrink: true,
+              sx: {
+                position: "static",
+                transform: "none",
+                maxWidth: "100%",
+                whiteSpace: "normal",
+                // The size the shrunk label had when it floated
+                fontSize: "0.75rem",
+              },
+            },
+            input: { sx: { [`.${inputLabelClasses.root} + &`]: { mt: 0 } } },
+          }}
         />
+        <TeamTextProblems problems={problems} />
         <DialogContentText>{importDialog.kept}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>{t.cancel}</Button>
         <Button
           onClick={isImport ? handleImport : handleUpdate}
-          disabled={!store.learnsetsLoaded || (isImport && !text.trim())}
+          // Until the problems describe the current text, an update could skip them
+          disabled={
+            !store.learnsetsLoaded ||
+            (isImport ? !text.trim() : deferredText !== text)
+          }
         >
           {isImport ? importDialog.import : importDialog.update}
         </Button>

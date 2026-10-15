@@ -93,6 +93,26 @@ test.describe("team coverage", () => {
     });
   }
 
+  test("Freeze-Dry and Flying Press count a target once with moves of their own type", () => {
+    const coverage = (name: string, move1: string, move2: string) =>
+      calculateTypeCoverage(createTeam({ name, move1, move2 }));
+    for (const [move1, move2] of [
+      ["icebeam", "freezedry"],
+      ["freezedry", "icebeam"],
+    ])
+      expect(coverage("lapras", move1, move2)).toEqual({
+        ...coverage("lapras", "icebeam", "blizzard"),
+        Water: 2,
+      });
+    for (const [move1, move2] of [
+      ["closecombat", "flyingpress"],
+      ["flyingpress", "closecombat"],
+    ])
+      expect(coverage("hawlucha", move1, move2).Normal).toBe(
+        coverage("hawlucha", "closecombat", "highjumpkick").Normal,
+      );
+  });
+
   test("Freeze-Dry still covers Water after a regular Ice move", () => {
     const team = createTeam();
     Object.assign(team[0], {
@@ -192,4 +212,13 @@ test("Normalize changes Natural Gift to Normal in gen4 but preserves it in gen7"
   expect(calculateTypeCoverage(team, 4).Water).toBe(0);
   for (const generation of [5, 6, 7] as const)
     expect(calculateTypeCoverage(team, generation).Water).toBe(1);
+});
+
+test("Dry Skin's 1.25x Fire damage scores a half step in team defence", () => {
+  const scores = (name: string) =>
+    calculateTypeDefence(createTeam({ name, ability: "Dry Skin" })).Fire;
+  expect(scores("toxicroak")).toBe(-0.5);
+  expect(scores("heliolisk")).toBe(-0.5);
+  expect(scores("jynx")).toBe(-1.5);
+  expect(scores("parasect")).toBe(-1.5);
 });

@@ -5,8 +5,8 @@ import pokedex from "@/data/pokedex";
 import { pokemonTypes } from "@/shared/pokedex";
 import { moveDataIn, moveTypeIn, typechartIn } from "@/shared/generation-data";
 import { LATEST_GENERATION } from "@/shared/generations";
-import { isPokemonType } from "@/types";
-import { hiddenPowerPower } from "@/shared/hidden-power";
+import { isPokemonType, MOVE_KEYS } from "@/types";
+import { hiddenPowerPower, hiddenPowerType } from "@/shared/hidden-power";
 
 export const activeItem = (
   item: string | undefined,
@@ -34,8 +34,29 @@ export function effectivePokemonTypes(
   return pokemonTypes(pokemon, generation);
 }
 
+// Since Gen 6, Conversion changes its user to the type of its first move, which
+// for Hidden Power is Normal. Undefined when the user already has that type, as
+// Conversion then fails.
+export function conversionType(
+  member: Readonly<TeamPokemon>,
+  generation = LATEST_GENERATION,
+) {
+  const moves = MOVE_KEYS.map(key => member[key]).filter(Boolean);
+  const [first] = moves;
+  if (generation < 6 || !first || !moves.includes("conversion")) return;
+  const type =
+    first.startsWith("hiddenpower") ? "Normal" : moveTypeIn(first, generation);
+  if (!type || !isPokemonType(type)) return;
+  const { name, ability, item } = member;
+  return effectivePokemonTypes(name, ability, item, generation).includes(type) ?
+      undefined
+    : type;
+}
+
+// Beat Up's hits were typeless until Gen 5
 export const isTypelessMove = (move: string, generation: number) =>
-  generation <= 4 && (move === "futuresight" || move === "doomdesire");
+  generation <= 4 &&
+  (move === "futuresight" || move === "doomdesire" || move === "beatup");
 
 export const IMMUNE_SCORE = Infinity;
 
@@ -63,9 +84,13 @@ export function typeAgainstPokemon(
     const value =
       defender && defender !== "Bird" ? (typechart[defender]?.[type] ?? 0) : 0;
     return (
-        value === 2 &&
+        (value === 2 &&
           ((item === "ringtarget" && generation >= 5) ||
-            (grounded && defender === "Flying"))
+            (grounded && defender === "Flying"))) ||
+          // Delta Stream's winds stop moves being super effective on Flying
+          (value === -1 &&
+            defender === "Flying" &&
+            pokemonAbility === "Delta Stream")
       ) ?
         0
       : value;
@@ -132,6 +157,13 @@ export function typeAgainstPokemon(
           effectiveness = IMMUNE_SCORE;
         }
         break;
+      // Primal weather makes moves of the opposing type fail
+      case "Desolate Land":
+        if (type === "Water") effectiveness = IMMUNE_SCORE;
+        break;
+      case "Primordial Sea":
+        if (type === "Fire") effectiveness = IMMUNE_SCORE;
+        break;
       case "Water Bubble":
         if (type === "Fire") {
           effectiveness += 1;
@@ -169,8 +201,9 @@ export function typeAgainstPokemon(
         }
         break;
       case "Dry Skin":
+        // A half step for 1.25x Fire damage, as Filter's 0.75x is
         if (type === "Fire") {
-          effectiveness -= 1;
+          effectiveness -= 0.5;
         } else if (type === "Water") {
           effectiveness = IMMUNE_SCORE;
         }
@@ -198,8 +231,12 @@ export function moveType(
   generation = LATEST_GENERATION,
   item?: string,
   format = "",
+  member?: Readonly<TeamPokemon>,
 ) {
   if (generation < 3) ability = undefined;
+  // Plain Hidden Power takes its type from the set's IVs or DVs
+  if (move === "hiddenpower" && member && generation >= 2)
+    move = `hiddenpower${hiddenPowerType(member, generation)}`;
   const rawType = moveTypeIn(move, generation, format);
   let moveType: PokemonType | undefined =
     rawType && isPokemonType(rawType) ? rawType : undefined;
@@ -282,7 +319,10 @@ export function moveType(
     if (isPokemonType(capitalizedType)) moveType = capitalizedType;
   } else if (move === "naturalgift") {
     moveType = held?.naturalGift?.type ?? moveType;
-  } else if (ability === "Liquid Voice" && moves[move]?.flags?.sound === 1) {
+  } else if (
+    ability === "Liquid Voice" &&
+    moveDataIn(move, generation, format)?.flags?.sound === 1
+  ) {
     moveType = "Water";
   }
 
@@ -391,7 +431,15 @@ export function moveAgainstType(
   format = "",
 ) {
   if (generation < 3) ability = undefined;
-  const attackType = moveType(move, pokemon, ability, generation, item, format);
+  const attackType = moveType(
+    move,
+    pokemon,
+    ability,
+    generation,
+    item,
+    format,
+    member,
+  );
   const defender = typechartIn(generation)[typeAgainst];
 
   if (

@@ -108,14 +108,12 @@ const PokemonInputs = observer(function PokemonInputs({
       role="region"
       aria-label={t.team.slot(teamIndex + 1)}
     >
-      {/* On phones and tablets the slot tabs are what drags */}
-      {!isMdDown && (
-        <SlotMoveHandle
-          teamIndex={teamIndex}
-          setGripRef={setGripRef}
-          listeners={listeners}
-        />
-      )}
+      {/* On phones and tablets the slot tabs are what drags, so the grip only opens its menu */}
+      <SlotMoveHandle
+        teamIndex={teamIndex}
+        setGripRef={setGripRef}
+        listeners={isMdDown ? undefined : listeners}
+      />
       <Box
         sx={{
           position: "relative",
@@ -181,20 +179,21 @@ const PokemonInputs = observer(function PokemonInputs({
                 pointerEvents: "none",
               }}
             >
-              {effectivePokemonTypes(
-                pokemon,
-                analysisMember?.ability,
-                analysisMember?.item,
-                store.currentTeam.generation,
-              ).map(type => (
-                <Box
-                  key={type}
-                  component="img"
-                  src={typeIcons[type]}
-                  alt={names.type(type)}
-                  sx={{ width: 20, height: 20 }}
-                />
-              ))}
+              {store.showTypes &&
+                effectivePokemonTypes(
+                  pokemon,
+                  analysisMember?.ability,
+                  analysisMember?.item,
+                  store.currentTeam.generation,
+                ).map(type => (
+                  <Box
+                    key={type}
+                    component="img"
+                    src={typeIcons[type]}
+                    alt={names.type(type)}
+                    sx={{ width: 20, height: 20 }}
+                  />
+                ))}
               {member &&
                 isShinyInGeneration(member, store.currentTeam.generation) && (
                   <AutoAwesomeIcon
@@ -292,7 +291,7 @@ const PokemonInputs = observer(function PokemonInputs({
             placeholder={t.team.move}
             teamIndex={teamIndex}
             pokemonProperty={key}
-            leadingIcon={store.showMoveTypes}
+            leadingIcon={store.showTypes}
           />
         ))}
         {store.rules.items && (
@@ -300,7 +299,7 @@ const PokemonInputs = observer(function PokemonInputs({
             placeholder={t.team.item}
             teamIndex={teamIndex}
             pokemonProperty="item"
-            leadingIcon={store.showMoveTypes}
+            leadingIcon={store.showTypes}
           />
         )}
         {store.rules.abilities && (

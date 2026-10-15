@@ -21,6 +21,7 @@ import {
   smogonDexUrl,
 } from "@/shared/dex-urls";
 import { introducedIn } from "@/store/filtering";
+import { isCapPokemon } from "@/store/shared/pokemon";
 import { defenceMultiplier } from "@/store/matrix";
 import { effectivePokemonTypes } from "@/store/shared/effectiveness";
 import PokemonSprite from "@/app/shared/PokemonSprite";
@@ -87,8 +88,10 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
         }))
         .filter(({ multiplier }) => multiplier > 1)
     : [];
+  // CAP pokemon are fan-made, so their numbers are Showdown's and the game dexes lack them
+  const isCap = isCapPokemon(pokemon);
   const about = [
-    `#${entry?.num ?? "?"}`,
+    !isCap && `#${entry?.num ?? "?"}`,
     entry?.forme,
     entry && t.generation(introducedIn(entry)),
   ].filter(part => part);
@@ -100,16 +103,20 @@ const PokemonInfoDialog = observer(function PokemonInfoDialog() {
       href: smogonDexUrl(generation, baseSpeciesName),
       logo: dexLogos.smogon,
     },
-    {
-      label: t.info.bulbapedia,
-      href: bulbapediaUrl(baseSpeciesName),
-      logo: dexLogos.bulbapedia,
-    },
-    {
-      label: t.info.serebii,
-      href: serebiiDexUrl(generation, entry?.num ?? 0, baseSpeciesName),
-      logo: dexLogos.serebii,
-    },
+    ...(isCap ?
+      []
+    : [
+        {
+          label: t.info.bulbapedia,
+          href: bulbapediaUrl(baseSpeciesName),
+          logo: dexLogos.bulbapedia,
+        },
+        {
+          label: t.info.serebii,
+          href: serebiiDexUrl(generation, entry?.num ?? 0, baseSpeciesName),
+          logo: dexLogos.serebii,
+        },
+      ]),
     {
       label: t.info.showdownDex,
       href: showdownDexUrl(pokemon),

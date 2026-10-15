@@ -19,6 +19,8 @@ These documents were first written from the repository alone. The Site Owner the
 - **Players usually win over upkeep.** When a feature helps players but makes the site harder to maintain, helping players usually wins. Upkeep wins sometimes, "like with the backend and that kind of stuff", because a site that is hard to maintain is harder to improve.
 - **Smarter features later, and kept simple.** Suggestions, deeper analysis, and a usage chart are wanted for a later release, but: "I don't want to try to make the site too intelligent. I think my user base is a lot of kids and teenagers."
 - **Show a team's problems.** The site should show the rules a team breaks, and tell players when a link or a saved team lost an entry to a data update.
+- **Lost entries are named once.** On 14 October 2026 he chose a notice that stays above the team until the player closes it. A saved team drops what it lost when it is opened, so the notice appears once and the site has nothing else to remember.
+- **Links with an unknown generation open in Generations 6–9.** On 14 October 2026 he chose that a share link whose generation or game the site does not recognise opens in Generations 6–9 for every visitor (or in the link's generation, when only its game is unknown), with a message saying so, rather than in the generation the visitor last used (REQ-LINK-11).
 - **Team backups stay.** The site keeps its Team backups action and its backup file. A change to fold them into Export All and Import Team (issue 148) was closed as not planned on 14 October 2026.
 - **Feedback can be anonymous.** Players must be able to send feedback without an email address; the form already says an email is only needed for a reply. Sending from the site's own domain would look more professional, but it is not wanted, because players would see no difference.
 
@@ -31,7 +33,7 @@ These documents were first written from the repository alone. The Site Owner the
 ### Speed and browsers
 
 - **Speed first.** "Speed is extremely important. The site has to be fast. No question about it." He gave no figures. The random button exists so that one tap gives an analysed team.
-- **Browsers by usage.** "Which other browsers we should support should be determined by their market share / browser usage. However, this does not mean that we should support IE11 if it still has a lot of people using it, because we do not want to support very old legacy browsers."
+- **Browsers by usage.** "Which other browsers we should support should be determined by their market share / browser usage. However, this does not mean that we should support IE11 if it still has a lot of people using it, because we do not want to support very old legacy browsers." On 14 October 2026 he accepted 2% of worldwide usage as the bar, with Firefox and Edge tested on desktop and Samsung Internet, which shares Chrome's engine, covered by the Android tests (issue 121).
 
 ### The old website
 
@@ -55,7 +57,7 @@ These came from his review of the site on 14 October 2026.
 - **Follow the ranking.** "Well, whatever ranks first, right?" Planned work is done in the order the board's ratings give. He does not rate the items himself, and the formula stays simple, because working every priority out again whenever a task is added was a burden.
 - **Every task has acceptance criteria**, so that "done" can be checked rather than guessed.
 - **No player survey or usability sessions for now.** "we can do those another time. Could be useful in the future if we want to gauge who our audience is." They could then measure how quickly a first-time player finds the team's worst weakness, how quickly a Showdown user imports a team and copies it back, and how many players rate the site good.
-- **Smaller calls.** Wish together with Protect or Detect counts as reliable recovery. Shrinking the inputs' clear button is not part of the plan.
+- **Smaller calls.** Wish together with Protect or Detect counts as reliable recovery. A trapper is a pokemon that keeps foes from switching out for as long as it stays in, with a move like Mean Look or an ability like Shadow Tag; moves that trap for a few turns, like Whirlpool, do not count. Shrinking the inputs' clear button is not part of the plan.
 
 ## 8.2 Open questions
 
@@ -67,6 +69,5 @@ Text marked **[A-n]** in the other documents rests on one of these.
 | A-3  | How late must Pokemon Showdown be with a new game's data before another source is used, and which source? 7 days is proposed.                            | BR-3, issue 123               |
 | A-4  | What thresholds show that the redesign has won? Fewer than 10% of sessions switching back, and fewer than five defect reports a month, are proposed.     | BR-5                          |
 | A-16 | What figures should the usability, performance, and uptime requirements use? The Site Owner rated speed as paramount and gave none, so 05 proposes them. | 05 Sections 3.2, 3.3, and 3.5 |
-| A-18 | What share of browser usage makes a browser worth supporting? 2% is proposed.                                                                            | REQ-INTF-13, issue 121        |
 | A-23 | How should "a large share" of non-competitive players be measured, such as by monthly users or search position?                                          | BR-9                          |
 | A-24 | Are children and teenagers a large part of the audience, as the Site Owner believes? Analytics could check.                                              | 01 Scope, 02                  |

@@ -38,7 +38,7 @@ Compile-time checks, such as a `@ts-expect-error` on a call the types must rejec
 
 In the browser suites, a unit test exercises one UI group, such as Team Defence, and an integration test exercises several, such as Team Defence and the pokemon inputs. Snackbars do not count as a separate group.
 
-Browser tests import `test` and `expect` from `"fixtures"`, which opens the site before each test, and page helpers such as `selectPokemon` from `"helper"`. Both are path aliases in `tests/tsconfig.json`. The smoke suite is the exception: it imports `test` from `@playwright/test`, because it has to block external requests before it opens the site.
+Browser tests import `test` and `expect` from `"fixtures"`, which opens the site before each test, and page helpers such as `selectPokemon` from `"helper"`. Both are path aliases in `tests/tsconfig.json`. The smoke and speed suites are the exceptions: they import `test` from `@playwright/test`, because they have to block external requests before they open the site.
 
 When choosing example pokemon for a test, try to choose pokemon that haven't been selected for other tests, so the tests cover more of the data.
 
@@ -63,6 +63,8 @@ Whole-team user flows live in `tests/e2e/`.
 
 Production smoke tests live in `tests/smoke/`. Keep them focused on essential user flows against the production build. Block external requests and fail on uncaught browser errors.
 
+The speed check for REQ-PERF-1 to 3 lives in `tests/perf/`. It times the production build on an emulated phone, so its results depend on the machine, and it runs by hand with `npm run test:perf` rather than in `npm test`.
+
 ## General Coding Conventions
 
 Aim to write concise code without sacrificing readability/maintainability.
@@ -84,11 +86,11 @@ For responsive styling, use MUI's breakpoint objects, such as `sx={{ px: { xxs: 
 
 ## Images
 
-Host images statically with the site, except for pokemon sprites, which load from Pokemon Showdown's URLs. Showdown does not allow cross-origin reads, so the feedback screenshot fetches them through the `/showdown-sprites/` rewrite in `vercel.json` instead. The rewrite only answers the site's own requests, so other sites cannot use it as a proxy. The pokemon and item icon sheets also come from Showdown, but keep them bundled in `src/images/icon-sheets/`: Showdown changes its sheets as it adds pokemon and items, and a sheet that no longer matches `src/data/` can cause bugs or crash the site. `npm run update:data` reports when a bundled sheet differs from Showdown's.
+Host images statically with the site, except for pokemon sprites, which load from Pokemon Showdown's URLs. A sprite that fails to load is retried through the `/showdown-sprites/` rewrite in `vercel.json`, so it still shows on networks that block Showdown, such as schools', and only those visitors' sprites use the site's bandwidth. Showdown does not allow cross-origin reads, so the feedback screenshot fetches sprites through the rewrite too. The rewrite only answers the site's own requests, so other sites cannot use it as a proxy, and `vercel.json` caches its responses, 404s included, for Showdown's own 8 days rather than a year, so a sprite Showdown adds or redraws later still reaches blocked visitors. The pokemon and item icon sheets also come from Showdown, but keep them bundled in `src/images/icon-sheets/`: Showdown changes its sheets as it adds pokemon and items, and a sheet that no longer matches `src/data/` can cause bugs or crash the site. `npm run update:data` reports when a bundled sheet differs from Showdown's.
 
 Formes that Showdown has no usable sprite for are bundled in `src/images/local-sprites/`, and `PokemonSprite.tsx` uses a local sprite before any Showdown URL. `npm run update:data` reports new pokemon whose sprites Showdown does not host. Read [local-sprites-sources.md](src/images/local-sprites/local-sprites-sources.md) before adding or deleting a local sprite.
 
-Images that the code imports go in `src/images/`: Vite gives them hashed filenames, ships only the ones that are imported, and fails the build if one is missing. `public/` is only for files that something outside the bundle fetches by a fixed URL, such as the favicon, `robots.txt`, and the link-preview screenshot named in `index.html`. `vercel.json` caches every image for a year as immutable, so when replacing a `public/` image, give it a new filename. Images that only the GitHub README shows, such as its screenshot, go in `.github/`, so they are neither bundled nor deployed. `public/mypokemonteam-screenshot-2026.png` is a duplicate of the README screenshot, kept only so its former link-preview URL keeps resolving for previews cached before Sep 22, 2026; delete it after October 2026.
+Images that the code imports go in `src/images/`: Vite gives them hashed filenames, ships only the ones that are imported, and fails the build if one is missing. `public/` is only for files that something outside the bundle fetches by a fixed URL, such as the favicon, `robots.txt`, the link-preview screenshot named in `index.html`, and the web app manifest and its home screen icons. `vercel.json` caches the site's own images for a year as immutable, so when replacing a `public/` image, give it a new filename. Images that only the GitHub README shows, such as its screenshot, go in `.github/`, so they are neither bundled nor deployed. `public/mypokemonteam-screenshot-2026.png` is a duplicate of the README screenshot, kept only so its former link-preview URL keeps resolving for previews cached before Sep 22, 2026; delete it after October 2026.
 
 Keep source documentation for downloaded images in a `*-sources.md` file beside them, like `src/images/type-charts/type-chart-sources.md`.
 
@@ -96,7 +98,7 @@ Keep source documentation for downloaded images in a `*-sources.md` file beside 
 
 The address bar always holds the current team as `?team=`, the base64url encoding of its Showdown team text (`src/app/TeamLinkSync.tsx`, `src/app/shared/team-link.ts`, `src/store/team-text.ts`). Players bookmark and post these links, so every link made so far must keep loading the same team. Do not rename the `team` parameter, change the encoding, or make `parseTeamText` reject text it accepts today. If the format has to change, keep decoding the old one as well.
 
-The text holds display names, which are matched exactly. When a data update renames or removes a pokemon, item, or move, old links silently lose that entry. `npm run update:data` reports those names, so pass them on when you run it.
+The text holds display names, which are matched exactly. When a data update renames or removes a pokemon, item, or move, old links lose that entry, and a saved team loses it the next time it is opened; a notice above the team names what was lost (`src/store/dropped-entries.ts`). `npm run update:data` reports those names, so pass them on when you run it.
 
 The text also carries Showdown's set details (nickname, gender, level, shiny, tera type, EVs, nature, IVs), which `parseTeamText` reads and `serializeTeam` writes only when they differ from their defaults.
 

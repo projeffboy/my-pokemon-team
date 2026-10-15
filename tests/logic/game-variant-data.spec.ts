@@ -1,10 +1,15 @@
 import { test, expect } from "@playwright/test";
 import { moveDataIn } from "@/shared/generation-data";
 import { pokemonBaseStats } from "@/shared/pokedex";
-import { LETS_GO, LEGENDS_ARCEUS, LEGENDS_ZA } from "@/shared/game-variants";
+import {
+  CHAMPIONS_FORMAT,
+  LETS_GO,
+  LEGENDS_ARCEUS,
+  LEGENDS_ZA,
+} from "@/shared/game-variants";
 import { calculateTypeCoverage } from "@/store/coverage";
 import { coverageMatrix } from "@/store/matrix";
-import { sortPokemon } from "@/store/sorting";
+import { sortMoves, sortPokemon } from "@/store/sorting";
 import { createTeam } from "./shared/team";
 
 test("Let's Go Absorb has its native power and adds coverage", () => {
@@ -16,6 +21,28 @@ test("Let's Go Absorb has its native power and adds coverage", () => {
   expect(
     coverageMatrix(team, undefined, 7, LETS_GO).Water?.[0]?.multiplier,
   ).toBe(2);
+});
+
+test("Pokemon Champions uses its own move changes without changing ordinary Gen 9", () => {
+  expect(moveDataIn("appleacid", 9)?.basePower).toBe(80);
+  expect(moveDataIn("appleacid", 9, CHAMPIONS_FORMAT)?.basePower).toBe(90);
+  expect(moveDataIn("freezedry", 9)?.secondary?.chance).toBe(10);
+  expect(
+    moveDataIn("freezedry", 9, CHAMPIONS_FORMAT)?.secondary,
+  ).toBeUndefined();
+  expect(moveDataIn("earthquake", 9, CHAMPIONS_FORMAT)).toBe(
+    moveDataIn("earthquake", 9),
+  );
+});
+
+test("Pokemon Champions sorts Snap Trap by its Steel type", () => {
+  const moves = ["snaptrap", "psychic"];
+  const sort = { by: "type", descending: false } as const;
+  expect(sortMoves(moves, sort, 9)).toEqual(["snaptrap", "psychic"]);
+  expect(sortMoves(moves, sort, 9, undefined, CHAMPIONS_FORMAT)).toEqual([
+    "psychic",
+    "snaptrap",
+  ]);
 });
 
 test("Legends Z-A uses its Mega evolution base stats without changing ordinary Gen 9", () => {

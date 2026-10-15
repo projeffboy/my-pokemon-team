@@ -12,6 +12,10 @@ export const SMALL_VIEWPORT_WIDTH = 390;
 export const MEDIUM_VIEWPORT_WIDTH = 820;
 export const LARGE_VIEWPORT_WIDTH = 1366;
 
+// The development server serves each of the 2300 Gen 2-4 sprite animations as its own
+// module, so the first animation after a page load can take Firefox over 5 seconds
+export const SPRITE_ANIMATIONS_TIMEOUT = 20000;
+
 // Helper function to create viewport object with 16:9 aspect ratio
 export const createViewport = (width: number) => ({
   width,
@@ -59,8 +63,8 @@ export const showSlot = async (page: Page, slotIndex: number) => {
   await expect(input).toBeVisible();
 };
 
-export const openManageTeamMenu = async (page: Page) => {
-  await page.getByRole("button", { name: "Manage team" }).click();
+export const openMoreMenu = async (page: Page) => {
+  await page.getByRole("button", { name: "More", exact: true }).click();
   await expect(page.getByRole("menu")).toBeVisible();
 };
 
@@ -71,7 +75,7 @@ export const clickMenuItem = async (page: Page, name: string) => {
 
 // Opens the current team's text in the Edit Pokepaste dialog
 export const openEditPokepaste = async (page: Page) => {
-  await openManageTeamMenu(page);
+  await openMoreMenu(page);
   await clickMenuItem(page, "Edit Pokepaste");
   await expect(
     page.getByRole("dialog", { name: "Edit Pokepaste" }),
@@ -120,6 +124,12 @@ export const selectDialogOption = async (
 export const closeDialog = async (page: Page, button = "Done") => {
   await page.getByRole("button", { name: button, exact: true }).click();
   await expect(page.getByRole("dialog")).toBeHidden();
+};
+
+// A link to another site opens in a new tab, so the current team stays open
+export const expectToOpenInNewTab = async (link: Locator) => {
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", /\bnoopener\b/);
 };
 
 const ANALYSIS_TABS: Record<string, string> = {
@@ -208,6 +218,32 @@ export const selectMove = async (
   await page.getByRole("listbox").getByText(move, { exact: true }).click();
 };
 
+// Types an option's label into the dropdown named `input`, and returns the listed option
+export const findOption = async (page: Page, input: string, label: string) => {
+  const combobox = page.getByRole("combobox", { name: input });
+  const option = page
+    .getByRole("option")
+    .filter({ has: page.getByText(label, { exact: true }) });
+  // Resizing can swap the team viewer, which remounts the input and drops its text
+  await expect(async () => {
+    await combobox.fill(label);
+    await expect(option).toBeVisible({ timeout: 1000 });
+  }).toPass();
+  return option;
+};
+
+// How many lines a listed option's label takes
+export const optionLabelLines = (option: Locator) =>
+  option
+    .locator("span")
+    .last()
+    .evaluate(label =>
+      Math.round(
+        label.getBoundingClientRect().height /
+          parseFloat(getComputedStyle(label).lineHeight),
+      ),
+    );
+
 // The checklist label as shown at the page's viewport width, from its English label
 const pageChecklistLabel = (page: Page, label: string) => {
   const item = Object.values(en.checklist.items).find(
@@ -222,16 +258,25 @@ const pageChecklistLabel = (page: Page, label: string) => {
   });
 };
 
+// A checklist role's row, which shows its tooltip, from its English label
+export const checklistRow = (page: Page, label: string) =>
+  page
+    .getByText(pageChecklistLabel(page, label), { exact: true })
+    .locator("..");
+
+// "depends" for a role whose result depends on a battle format that is not set
 export const expectChecklistItem = async (
   page: Page,
   label: string,
-  isChecked: boolean,
+  isChecked: boolean | "depends",
 ) => {
-  const row = page
-    .getByText(pageChecklistLabel(page, label), { exact: true })
-    .locator("..");
   await expect(
-    row.getByRole("img", { name: isChecked ? "Checked" : "Unchecked" }),
+    checklistRow(page, label).getByRole("img", {
+      name:
+        isChecked === "depends" ? en.checklist.battleFormat.depends
+        : isChecked ? "Checked"
+        : "Unchecked",
+    }),
   ).toBeVisible();
 };
 

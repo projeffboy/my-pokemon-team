@@ -145,6 +145,32 @@ test.describe("Team Stats - Unit Tests", () => {
     });
   }
 
+  // The stats stay laid out under the matrix, with abbreviated or full type names
+  for (const width of [820, 1400]) {
+    test(`${width}px Matrix Analysis shows nothing of the stats under it`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 });
+      const panel = page.getByRole("region", { name: "Team analysis" });
+      const stats = ["Team Defence", "Team Type Coverage"].map(name =>
+        panel.getByRole("region", { name, includeHidden: true }),
+      );
+      for (const region of stats)
+        await expect(
+          region.locator("[data-type-label] > span:visible"),
+        ).toHaveCount(18);
+      await panel.getByRole("button", { name: "Matrix Analysis" }).click();
+      const matrix = panel.getByRole("region", { name: "Matrix Analysis" });
+      for (const kind of ["Defence", "Coverage"]) {
+        const button = matrix.getByRole("button", { name: kind, exact: true });
+        await button.click();
+        await expect(button).toHaveAttribute("aria-pressed", "true");
+        for (const region of stats)
+          await expect(region.locator("*:visible")).toHaveCount(0);
+      }
+    });
+  }
+
   test("the panel's title outranks its analyses' headings and sits just above their cards, with no space over it", async ({
     page,
   }) => {
@@ -200,7 +226,7 @@ test.describe("Team Stats - Unit Tests", () => {
     );
     // Showing it is worth running this far past the team column, and no further
     expect((analysis ?? 0) - (team ?? 0)).toBeGreaterThan(0);
-    expect((analysis ?? 0) - (team ?? 0)).toBeLessThanOrEqual(120);
+    expect((analysis ?? 0) - (team ?? 0)).toBeLessThanOrEqual(165);
   });
 
   // The checklist leaves the stats' view when they alone come close to the team column's

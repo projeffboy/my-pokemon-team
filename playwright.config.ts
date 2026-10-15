@@ -11,7 +11,7 @@ import {
 
 export default defineConfig({
   testDir: "./tests",
-  testIgnore: ["**/smoke/**", "**/logic/**", "**/links/**"],
+  testIgnore: ["**/smoke/**", "**/logic/**", "**/links/**", "**/perf/**"],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -47,6 +47,24 @@ export default defineConfig({
       use: {
         ...devices["Desktop Safari"],
         viewport: createViewport(MEDIUM_VIEWPORT_WIDTH),
+      },
+    },
+
+    {
+      name: "Desktop Firefox",
+      use: {
+        ...devices["Desktop Firefox"],
+        viewport: createViewport(LARGE_VIEWPORT_WIDTH),
+      },
+    },
+
+    {
+      name: "Desktop Edge",
+      use: {
+        ...devices["Desktop Edge"],
+        // Without a channel, the project runs Playwright's Chromium with Edge's user agent
+        channel: "msedge",
+        viewport: createViewport(LARGE_VIEWPORT_WIDTH),
       },
     },
 

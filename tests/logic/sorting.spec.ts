@@ -128,11 +128,52 @@ test("sorts by format from the top tier down, with untiered formes last", () => 
   ]);
 });
 
+test("format sorting ranks a forme without tiers of its own like its species", () => {
+  const ids = ["giratinaorigin", "tentacruel", "giratina"];
+  const sort = { by: "format", descending: false } as const;
+  expect(sortPokemon(ids, sort, undefined, 4)).toEqual([
+    "giratina",
+    "giratinaorigin",
+    "tentacruel",
+  ]);
+});
+
 test("format sorting uses the selected generation's tiers", () => {
   const ids = ["clefable", "gengar"];
   const sort = { by: "format", descending: false } as const;
   expect(sortPokemon(ids, sort, undefined, 1)).toEqual(["gengar", "clefable"]);
   expect(sortPokemon(ids, sort, undefined, 9)).toEqual(["clefable", "gengar"]);
+});
+
+test("format sorting uses doubles tiers in a doubles format", () => {
+  const ids = [
+    "trumbeak",
+    "tatsugiri",
+    "baxcalibur",
+    "incineroar",
+    "calyrexshadow",
+    "sneasel",
+  ];
+  const sort = (format: string, descending: boolean) =>
+    sortPokemon(ids, { by: "format", descending }, undefined, 9, format);
+  const doubles = [
+    "calyrexshadow",
+    "incineroar",
+    "baxcalibur",
+    "tatsugiri",
+    "sneasel",
+    "trumbeak",
+  ];
+  expect(sort("Doubles OU", false)).toEqual(doubles);
+  expect(sort("Doubles OU", true)).toEqual([...doubles].reverse());
+  expect(sort("OU: Over Used", false)).toEqual([
+    "calyrexshadow",
+    "baxcalibur",
+    "incineroar",
+    "tatsugiri",
+    "sneasel",
+    "trumbeak",
+  ]);
 });
 
 test("sorts by base stat total and by single stats", () => {
@@ -180,4 +221,30 @@ test("MissingNo. and Pokestar pokemon come last in every sort but name", () => {
   expect(sortPokemon(ids, { by: "name", descending: false })[0]).toBe(
     "bulbasaur",
   );
+});
+
+test("CAP pokemon sort by their stats and CAP tiers, and by number after the real pokemon", () => {
+  const ids = ["toedscool", "smoguana", "chuggalong", "zamazenta", "shox"];
+  expect(sortPokemon(ids, { by: "bst", descending: true })).toEqual([
+    "zamazenta",
+    "shox",
+    "chuggalong",
+    "smoguana",
+    "toedscool",
+  ]);
+  // As Showdown's CAP teambuilder lists them, CAP tiers first
+  expect(sortPokemon(ids, { by: "format", descending: false })).toEqual([
+    "chuggalong",
+    "shox",
+    "smoguana",
+    "zamazenta",
+    "toedscool",
+  ]);
+  // CAP pokemon count down from -1 in the order they were made
+  for (const descending of [false, true])
+    expect(sortPokemon(ids, { by: "num", descending }).slice(2)).toEqual(
+      descending ?
+        ["shox", "chuggalong", "smoguana"]
+      : ["smoguana", "chuggalong", "shox"],
+    );
 });

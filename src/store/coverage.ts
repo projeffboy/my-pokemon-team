@@ -62,7 +62,6 @@ export function calculateTypeCoverage(
   for (const pokemon of team) {
     const { name, ability, item } = pokemon;
     const typesUsed = new Map<PokemonType | undefined, Set<PokemonType>>();
-    const specialMovesUsed = new Set<string>();
 
     const moves = [pokemon.move1, pokemon.move2, pokemon.move3, pokemon.move4];
     for (const move of moves) {
@@ -82,9 +81,15 @@ export function calculateTypeCoverage(
       )
         continue;
 
-      const type = moveType(move, name, ability, generation, item, format);
-      const isSpecialMove = move === "freezedry" || move === "flyingpress";
-      if (isSpecialMove && specialMovesUsed.has(move)) continue;
+      const type = moveType(
+        move,
+        name,
+        ability,
+        generation,
+        item,
+        format,
+        pokemon,
+      );
       const targetsUsed = typesUsed.get(type) ?? new Set<PokemonType>();
 
       const hasStab =
@@ -104,17 +109,13 @@ export function calculateTypeCoverage(
             format,
           ) === -1
         ) {
-          if (isSpecialMove || !targetsUsed.has(target))
-            scores[target] += hasStab ? 2 : 1;
-          if (!isSpecialMove) targetsUsed.add(target);
+          // Moves of one type, such as Ice Beam and Freeze-Dry, count each target once
+          if (!targetsUsed.has(target)) scores[target] += hasStab ? 2 : 1;
+          targetsUsed.add(target);
         }
       }
 
-      if (isSpecialMove) {
-        specialMovesUsed.add(move);
-      } else {
-        typesUsed.set(type, targetsUsed);
-      }
+      typesUsed.set(type, targetsUsed);
     }
   }
 

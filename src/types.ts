@@ -64,6 +64,13 @@ export type Formats = Record<
   { tier?: string; doublesTier?: string; champions?: true }
 >;
 
+// What each Smogon tier bans, by Showdown format ID such as "gen9ou".
+// Abilities are by name, as teams hold them, and items and moves by ID.
+export type FormatBans = Record<
+  string,
+  Partial<Record<"abilities" | "items" | "moves", string[]>>
+>;
+
 type TypeChartStatus =
   | "prankster"
   | "par"
@@ -111,6 +118,8 @@ export interface PastGeneration {
   formats?: Formats;
   baseStats?: Record<string, BaseStats>;
   abilities?: Record<string, string[]>;
+  // Hidden abilities left out of `abilities` because Showdown marks them unreleased
+  unreleasedHidden?: Record<string, string>;
   typechart?: PastTypeChart;
 }
 
@@ -239,6 +248,8 @@ export interface SnackbarNotification {
 
 export type Generation = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
+export type BattleFormat = "singles" | "doubles";
+
 // A team as saved in the browser, with its generation and filters
 export interface SavedTeam {
   id: string;
@@ -246,12 +257,14 @@ export interface SavedTeam {
   generation: Generation;
   generationProfile?: "6-9";
   format: string;
+  // Unset until the player picks one; never inferred from the generation or format
+  battleFormat?: BattleFormat;
   filters: SearchFilters;
   team: Team;
 }
 
 // The Filters dialog's values saved with each team; format and generation are separate
-export type SearchFilterKey = "type" | "region" | "ability" | "moves";
+export type SearchFilterKey = "type" | "region" | "ability" | "moves" | "items";
 
 export type SearchFilters = Record<SearchFilterKey, string>;
 

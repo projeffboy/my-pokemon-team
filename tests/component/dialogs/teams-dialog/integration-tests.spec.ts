@@ -6,7 +6,7 @@ import {
   selectDialogOption,
   getTeamTextFromUrl,
   goToSite,
-  openManageTeamMenu,
+  openMoreMenu,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
@@ -135,7 +135,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
   test("team-name and duplicate actions live in Teams, which cannot duplicate an empty team", async ({
     page,
   }) => {
-    await openManageTeamMenu(page);
+    await openMoreMenu(page);
     await expect(
       page.getByRole("menuitem", { name: "Edit team name", exact: true }),
     ).toHaveCount(0);
@@ -152,7 +152,11 @@ test.describe("Teams Dialog - Integration Tests", () => {
     await page.getByRole("button", { name: "Options for Team 1" }).click();
     await clickMenuItem(page, "Duplicate");
     await expect(
-      page.getByText("Cannot duplicate empty team", { exact: true }).last(),
+      page
+        .getByText("The team is empty. Add a pokemon to duplicate it.", {
+          exact: true,
+        })
+        .last(),
     ).toBeVisible();
     await expect(teams.getByRole("button", { name: /^Load Team/ })).toHaveCount(
       1,
@@ -329,15 +333,36 @@ Ability: Drizzle
     await expect(page.getByLabel("Generation")).toContainText("Gen 9");
   });
 
-  test("the Manage Team menu opens the import page, which imports nothing from text without pokemon", async ({
+  test("a pasted team name written as markup shows as text and runs nothing", async ({
     page,
   }) => {
-    await openManageTeamMenu(page);
+    const name = `<img src=x onerror="window.injected=true">`;
+    await openTeams(page);
+    await page.getByRole("button", { name: "Import Team" }).click();
+    const dialog = page.getByRole("dialog", { name: "Import Team" });
+    await dialog
+      .getByRole("textbox")
+      .fill(`=== [gen9] ${name} ===\n\nPolitoed @ Damp Rock\n- Hydro Pump\n`);
+    await dialog.getByRole("button", { name: "Import" }).click();
+    const teams = page
+      .getByRole("dialog", { name: "Teams" })
+      .getByRole("list", { name: "Saved teams" });
+    await expect(teams.getByRole("listitem").last()).toContainText(name);
+    await expect(page.locator('img[src="x"]')).toHaveCount(0);
+    expect(await page.evaluate(() => "injected" in window)).toBe(false);
+  });
+
+  test("the More menu opens the import page, which imports nothing from text without pokemon", async ({
+    page,
+  }) => {
+    await openMoreMenu(page);
     await clickMenuItem(page, "Import team");
     const dialog = page.getByRole("dialog", { name: "Import Team" });
     await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");
     await dialog.getByRole("button", { name: "Import" }).click();
-    await expect(dialog).toContainText("No pokemon found in that text.");
+    await expect(dialog).toContainText(
+      "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
+    );
 
     // Going back shows the team list, still with the one team
     await dialog.getByRole("button", { name: "Go Back" }).click();
@@ -454,7 +479,9 @@ test("fallback Copy All selects its textarea inside the active modal and restore
   await copy.press("Enter");
   await expect(
     page.getByRole("alert", { includeHidden: true }).last(),
-  ).toContainText("Could not copy");
+  ).toContainText(
+    "Could not copy the teams. Use Export All to download them instead.",
+  );
 });
 
 test("fallback copying from the Teams row menu stays inside its focus trap", async ({
@@ -487,4 +514,31 @@ test("fallback copying from the Teams row menu stays inside its focus trap", asy
       page.evaluate(() => document.documentElement.dataset.copiedText),
     )
     .toContain("Lombre");
+});
+
+test("closing Edit Pokepaste opened from a team's menu returns focus to the Teams button", async ({
+  page,
+}) => {
+  await selectPokemon(page, "Cetitan");
+  const teamsButton = page.getByRole("button", { name: "Teams", exact: true });
+  const editor = page.getByRole("dialog", {
+    name: "Edit Pokepaste",
+    exact: true,
+  });
+  for (const close of [
+    () => editor.getByRole("button", { name: "Cancel", exact: true }).click(),
+    () => page.keyboard.press("Escape"),
+  ]) {
+    await openTeams(page);
+    await page
+      .getByRole("button", { name: "Options for Team 1", exact: true })
+      .press("Enter");
+    await page
+      .getByRole("menuitem", { name: "Edit Pokepaste", exact: true })
+      .press("Enter");
+    await expect(editor).toBeVisible();
+    await close();
+    await expect(editor).toBeHidden();
+    await expect(teamsButton).toBeFocused();
+  }
 });

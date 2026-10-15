@@ -58,6 +58,7 @@ const MoveTypeIcon = observer(function MoveTypeIcon({
     store.currentTeam.generation,
     member?.item,
     store.dataFormat,
+    member,
   );
   // A placeholder keeps the labels aligned for the few moves without a type
   if (!type || !isPokemonType(type)) {
@@ -201,7 +202,7 @@ function GridRowComponent({
 export const VirtualizedListboxContext = React.createContext<{
   pokemonProperty: string;
   teamIndex: number;
-  // Whether the move options show their type, as the inputs do with Show move types on
+  // Whether the move options show their type, as the inputs do with Show types on
   showMoveTypes: boolean;
   selectedValue: string;
   internalListRef: React.RefObject<ListImperativeAPI | null>;

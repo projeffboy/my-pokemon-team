@@ -17,6 +17,7 @@ const inputNames: Record<string, string> = {
 };
 
 const ptBR: Messages = {
+  pageTitle: "My Pokemon Team - Criador e planejador de equipes Pokémon",
   beta: "Beta",
   generation,
   generationGames: {
@@ -32,10 +33,11 @@ const ptBR: Messages = {
   },
   generationSelect: "Geração",
   comingSoon: "Em breve",
+  generationGroups: { spinOffs: "Spin-offs", mainSeries: "Série principal" },
   combinedGenerations: {
     label: "Gerações 6–9",
     short: "Gerações 6–9",
-    description: "Combina opções de todos os jogos das gerações 6–9",
+    description: "Combina todos os jogos das gerações 6–9",
   },
   championsGeneration: "Ger. 9 · Champions",
   championsGenerationShort: "Ger. 9 (Champions)",
@@ -51,9 +53,13 @@ const ptBR: Messages = {
     short: "Site antigo",
     title: "Ir para o site antigo?",
     description:
-      "Sua equipe atual não será transferida para o site antigo. As equipes já salvas aqui permanecerão nesta versão.",
+      "Sua equipe atual será aberta no site antigo. As equipes salvas aqui permanecerão nesta versão.",
     go: "Ir para o site antigo",
     goLong: "Ir para o site antigo",
+    generationsOnly: (generations: string) =>
+      `O site antigo tem apenas as ${generations}.`,
+    leftOut: "Isto não será transferido:",
+    goWithTeam: "Ir com minha equipe",
   },
   feedback: {
     button: "Enviar feedback",
@@ -99,21 +105,27 @@ const ptBR: Messages = {
     shareTeam: "Copiar link",
     shareTeamLink: "Compartilhar o link da equipe Pokémon",
     teamActions: "Ações da equipe",
-    manageTeam: "Gerenciar",
-    manageTeamMenu: "Gerenciar equipe",
+    more: "Mais",
+    manageTeam: "Gerenciar equipe",
+    accessibility: "Acessibilidade",
     duplicate: "Duplicar",
     copyText: "Copiar texto",
     editPokepaste: "Editar Pokepaste",
     delete: "Excluir",
     importTeam: "Importar equipe",
     share: "Compartilhar",
-    teamEmpty: "A equipe Pokémon está vazia",
+    teamEmpty: "A equipe está vazia. Adicione um Pokémon para compartilhá-la.",
     linkCopied: "Link da equipe Pokémon copiado",
-    linkNotCopied: "Não foi possível copiar o link.",
-    nothingToCopy: "A equipe está vazia, não há nada para copiar.",
+    linkNotCopied:
+      "Não foi possível copiar o link. Copie-o da barra de endereços com a equipe aberta.",
+    linkGenerationUnsupported: (profile: string) =>
+      `A geração ou o jogo deste link não é compatível, então ele foi aberto em ${profile}.`,
+    nothingToCopy: "A equipe está vazia. Adicione um Pokémon para copiá-la.",
     teamCopied: "Equipe copiada.",
-    teamNotCopied: "Não foi possível copiar a equipe.",
-    cannotDuplicateEmptyTeam: "Não é possível duplicar uma equipe vazia",
+    teamNotCopied:
+      "Não foi possível copiar a equipe. Copie o texto dela em Editar Pokepaste.",
+    cannotDuplicateEmptyTeam:
+      "A equipe está vazia. Adicione um Pokémon para duplicá-la.",
     teamDuplicated: "Equipe duplicada",
     teamDeleted: "Equipe excluída",
     slots: "Slots da equipe Pokémon",
@@ -129,7 +141,8 @@ const ptBR: Messages = {
     advanced: "Mais detalhes",
     advancedFor: (slot: number) => `Mais detalhes do slot ${slot}`,
     details: "Detalhes",
-    showMoveTypes: "Mostrar tipos dos golpes",
+    animateSprites: "Animar sprites",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Sobre ${pokemon}`,
     dragHint: "Segure e arraste para reordenar",
     moveToSlot: (pokemon: string) => `Mover ${pokemon} para outro slot`,
@@ -161,7 +174,8 @@ const ptBR: Messages = {
       `definir ${label} como ${value} para ${pokemon}`,
     swappedSlots: (first: string, second: string) =>
       `trocar ${first} e ${second} de posição`,
-    moreChanges: (count: number) => `${count} outras alterações`,
+    moreChanges: (count: number) =>
+      count === 1 ? "1 outra alteração" : `${count} outras alterações`,
     undoAction: (action: string) => `Desfazer ${action}`,
     redoAction: (action: string) => `Refazer ${action}`,
     randomizeTeamAction: "gerar equipe aleatória",
@@ -171,9 +185,43 @@ const ptBR: Messages = {
     bigGridView: "Visualização em grade grande",
     teamNumber: (number: number) => `Equipe ${number}`,
     unnamedTeam: "Equipe",
-    copyOf: (name: string) => `Cópia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Cópia ${number} de ${name}` : `Cópia de ${name}`,
     learnsetsFailed:
       "Não foi possível carregar as listas de golpes. Recarregue a página para tentar de novo.",
+  },
+
+  droppedEntries: {
+    linkTitle: (count: number) =>
+      count === 1 ?
+        "1 entrada deste link foi deixada de fora"
+      : `${count} entradas deste link foram deixadas de fora`,
+    savedTeamTitle: (count: number) =>
+      count === 1 ?
+        "1 entrada foi removida desta equipe"
+      : `${count} entradas foram removidas desta equipe`,
+    linkReason: (count: number) =>
+      count === 1 ?
+        "Este jogo não a tem, ou o Pokémon não pode usá-la."
+      : "Este jogo não as tem, ou o Pokémon não pode usá-las.",
+    savedTeamReason: (count: number) =>
+      count === 1 ?
+        "Uma atualização dos dados do jogo a renomeou ou removeu."
+      : "Uma atualização dos dados do jogo as renomeou ou removeu.",
+    pokemon: (slot: number, value: string) => `Pokémon ${slot}: ${value}`,
+    item: (pokemon: string, value: string) => `${pokemon}, item: ${value}`,
+    ability: (pokemon: string, value: string) =>
+      `${pokemon}, habilidade: ${value}`,
+    move: (pokemon: string, move: number, value: string) =>
+      `${pokemon}, golpe ${move}: ${value}`,
+    details: "Detalhes",
+    dismiss: "Dispensar",
+    detailsTitle: "Texto original da equipe",
+    linkDetailsDescription:
+      "A equipe do link como era, com o que foi deixado de fora. Copie para guardar um registro.",
+    savedTeamDetailsDescription:
+      "A equipe como era, com o que foi removido. Copie para guardar um registro.",
+    copy: "Copiar",
   },
 
   undo: "Desfazer",
@@ -206,23 +254,89 @@ const ptBR: Messages = {
       offensive: "Ofensivo",
     },
     items: {
-      entryHazard: { label: "Entry Hazard", short: "Hazard" },
-      spinner: { label: "Spinner/Defogger", short: "Spinner", shorter: "Spin" },
+      entryHazard: {
+        label: "Entry Hazard",
+        short: "Hazard",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que espalha armadilhas no campo do oponente: ${moves}.`,
+      },
+      spinner: {
+        label: "Spinner/Defogger",
+        short: "Spinner",
+        shorter: "Spin",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que remove as armadilhas do seu lado: ${moves}.`,
+      },
       recovery: {
         label: "Recuperação confiável",
         short: "Recuperação",
         shorter: "Cura",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe de cura confiável, como ${moves}.`,
       },
-      cleric: { label: "Cleric" },
-      status: { label: "Golpe de status", short: "Status" },
-      phazer: { label: "Phazer" },
-      boosting: { label: "Golpe de boost", short: "Setup" },
+      cleric: {
+        label: "Cleric",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que cura as condições de status do seu time: ${moves}.`,
+      },
+      status: {
+        label: "Golpe de status",
+        short: "Status",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que sempre causa uma condição de status quando acerta, como ${moves}.`,
+      },
+      phazer: {
+        label: "Phazer",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que força o oponente a trocar: ${moves}.`,
+      },
+      trapper: {
+        label: "Trapper",
+        hint: (moves: string, abilities: string) =>
+          abilities ?
+            `Ensine a um Pokémon um golpe que impede o oponente de trocar, como ${moves}, ou dê a ele a habilidade ${abilities}.`
+          : `Ensine a um Pokémon um golpe que impede o oponente de trocar, como ${moves}.`,
+      },
+      boosting: {
+        label: "Golpe de boost",
+        short: "Setup",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que aumenta os próprios atributos em dois estágios ou mais no total, como ${moves}.`,
+      },
+      priority: {
+        label: "Golpe de prioridade",
+        short: "Prioridade",
+        shorter: "Prio",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe de dano que age antes da maioria dos outros, seja qual for a Velocidade, como ${moves}.`,
+      },
       voltTurn: {
         label: "Golpe Volt-turn",
         short: "Volt-turn",
         shorter: "Volturn",
+        hint: (moves: string) =>
+          `Ensine a um Pokémon um golpe que ataca e depois o troca: ${moves}.`,
       },
-      choice: { label: "Item Choice", short: "Choice" },
+      choice: {
+        label: "Item Choice",
+        short: "Choice",
+        hint: (items: string) =>
+          `Dê a um Pokémon um item Choice para segurar: ${items}.`,
+      },
+    },
+    filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
+    together: (move: string, other: string) => `${move} com ${other}`,
+    unavailable: "Nada neste jogo cumpre esse papel.",
+    battleFormat: {
+      label: "Formato de batalha",
+      singles: "Individual",
+      doubles: "Dupla",
+      notSet: "Não definido",
+      depends: "Depende do formato de batalha",
+      reasons: {
+        spinner:
+          "Spinner/Defogger depende do formato de batalha: nas gerações 4 e 5, Defog só remove os Entry Hazards do seu lado em batalhas em dupla, ao usá-lo no seu aliado.",
+      },
     },
   },
   matrix: {
@@ -250,6 +364,8 @@ const ptBR: Messages = {
       cause: string | undefined,
     ) =>
       `${type} causa ${multiplier}x em ${pokemon} (${types})${cause ? ` com ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} o torna do tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,
@@ -356,6 +472,8 @@ const ptBR: Messages = {
     region: "Região",
     moves: "Golpes",
     viable: "Viável",
+    items: "Itens",
+    viableItems: "Viável",
     ability: "Habilidade",
   },
   sort: {
@@ -396,7 +514,8 @@ const ptBR: Messages = {
     randomTeamCreated: "Equipe aleatória criada",
     exported: "Todas as equipes exportadas",
     copiedAll: "Todas as equipes copiadas",
-    notCopiedAll: "Não foi possível copiar as equipes.",
+    notCopiedAll:
+      "Não foi possível copiar as equipes. Baixe-as com Exportar tudo.",
     exportFilename: "my-pokemon-teams.txt",
   },
   teamBackup: {
@@ -440,7 +559,7 @@ const ptBR: Messages = {
     removed: {
       item: "Item removido",
       ability: "Habilidade removida",
-      moves: "Golpes removidos:",
+      move: "Golpe removido",
       details: "Detalhes removidos",
     },
     ivsUnused: (where: string) => `IVs não se aplicam em ${where}.`,
@@ -454,6 +573,9 @@ const ptBR: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidade" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} ${carried === 1 ? "será mantido" : "serão mantidos"}`,
+    removedSummary: (removed: string) => `Remoção de ${removed}`,
     modify: "Atualizar equipe atual",
     copy: "Copiar para nova equipe",
     createEmpty: "Criar equipe vazia",
@@ -486,6 +608,8 @@ const ptBR: Messages = {
       `${pokemon} precisa segurar ${items.join(" ou ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} tem ${move} duas vezes.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} tem ${thing}, o que é proibido em ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
@@ -522,7 +646,30 @@ const ptBR: Messages = {
     imported: "Equipe importada",
     importedMany: (count: number) => `${count} equipes importadas`,
     noChanges: "Nenhuma alteração feita.",
-    nothingFound: "Nenhum Pokémon encontrado nesse texto.",
+    nothingFound:
+      "Nenhum Pokémon encontrado nesse texto. Escreva os nomes dos Pokémon em inglês, como o Pokemon Showdown os escreve, ou cole uma equipe exportada do Pokemon Showdown.",
+    problems: (count: number) =>
+      `${count === 1 ? "1 problema encontrado" : `${count} problemas encontrados`}. Atualizar ainda aplica o texto assim:`,
+    problemAt: (pokemon: string, field: string) => `${pokemon}, ${field}`,
+    moveSlot: (slot: number) => `Golpe ${slot}`,
+    problemValue: (where: string, value: string) => `${where}: “${value}”`,
+    explanation: (reason: string, result: string) => `${reason} ${result}`,
+    unrecognized: "Não reconhecido.",
+    unlearnable: (pokemon: string) =>
+      `${pokemon} não pode aprender este golpe no jogo selecionado.`,
+    wrongAbility: (pokemon: string) =>
+      `Não é uma habilidade que ${pokemon} pode ter.`,
+    outOfRange: (min: number, max: number) =>
+      `Não é um número inteiro de ${min} a ${max}.`,
+    unsupported: "O jogo selecionado não tem este detalhe.",
+    tooManyPokemon: "Uma equipe tem no máximo seis Pokémon.",
+    tooManyMoves: "Um Pokémon conhece no máximo quatro golpes.",
+    noGigantamax: (pokemon: string) => `${pokemon} não tem forma Gigantamax.`,
+    unread: "Não é um detalhe que o site lê.",
+    slotLeftEmpty: "A posição da equipe fica vazia.",
+    moveLeftEmpty: "A posição do golpe fica vazia.",
+    leftOut: "Isso fica de fora.",
+    usedInstead: (value: string) => `${value} é usado no lugar.`,
   },
   deleteDialog: {
     title: (team: string) => `Excluir ${team}?`,
@@ -654,8 +801,16 @@ const ptBR: Messages = {
         "Aqui, são os golpes precisos que paralisam, queimam ou envenenam, além dos golpes que fazem dormir. Ex.: Toxic, Will-O-Wisp, Thunder Wave, Sing.",
       ],
       [
+        "Trapper",
+        "Um Pokémon que impede o adversário de trocar enquanto continua em campo, com um golpe como Mean Look, Block ou Anchor Shot, ou com a habilidade Shadow Tag, Arena Trap ou Magnet Pull. Golpes que prendem só por alguns turnos, como Whirlpool, não contam.",
+      ],
+      [
         "Golpe de boost",
         "Golpes que aumentam suas estatísticas (de preferência em 2 ou mais estágios), como Swords Dance e Calm Mind.",
+      ],
+      [
+        "Golpe de prioridade",
+        "Golpes de dano que agem antes da maioria dos outros, seja qual for a Velocidade. Ex.: Extreme Speed, Sucker Punch, Aqua Jet, Bullet Punch.",
       ],
       [
         "Item Choice",

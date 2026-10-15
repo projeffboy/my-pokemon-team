@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { rulesLabel, validateTeam } from "@/store/validation";
 import { learnsetsReady } from "@/store/learnsets";
 import { createTeam } from "./shared/team";
-import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { CAP_FORMAT, CHAMPIONS_FORMAT } from "@/shared/formats";
 import { LETS_GO, LEGENDS_ARCEUS } from "@/shared/game-variants";
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 
@@ -129,6 +129,40 @@ test("reports pokemon outside the format or generation", () => {
   expect(messages(createTeam({ name: "chikorita" }), 1, "")).toEqual([
     "Chikorita is not allowed in Gen 1.",
   ]);
+});
+
+test("CAP pokemon are allowed only in the CAP format", () => {
+  const team = createTeam({ name: "hemogoblin", ability: "Pixilate" });
+  expect(messages(team, 9, CAP_FORMAT)).toEqual([]);
+  expect(messages(team, 9, "OU: Over Used")).toEqual([
+    "Hemogoblin is not allowed in Gen 9 OU: Over Used.",
+  ]);
+  expect(
+    messages(
+      createTeam({ name: "crucibellemega", item: "crucibellite" }),
+      9,
+      CAP_FORMAT,
+    ),
+  ).toEqual([
+    "Crucibelle-Mega is not allowed in Gen 9 CAP.",
+    "Crucibelle-Mega has Crucibellite, which is banned in Gen 9 CAP.",
+  ]);
+  expect(
+    messages(
+      createTeam({ name: "primeape", ability: "Defiant", move1: "ragefist" }),
+      9,
+      CAP_FORMAT,
+    ),
+  ).toEqual(["Primeape has Rage Fist, which is banned in Gen 9 CAP."]);
+});
+
+test("a forme without a tier of its own is allowed where its species is", () => {
+  const team = createTeam({
+    name: "arceusfire",
+    ability: "Multitype",
+    item: "flameplate",
+  });
+  expect(messages(team, 9, "Uber")).toEqual([]);
 });
 
 test("reports illegal abilities, missing required items, and repeated moves", () => {
@@ -262,4 +296,29 @@ test("names the generation and format whose rules apply", () => {
   expect(rulesLabel(9, "")).toBe("Gen 9");
   expect(rulesLabel(4, "OU: Over Used")).toBe("Gen 4 OU: Over Used");
   expect(rulesLabel(9, COMBINED_GENERATIONS_FORMAT)).toBe("Generations 6–9");
+});
+
+test("Smogon formats flag the abilities, items, and moves they ban", () => {
+  const team = createTeam(
+    { name: "glalie", ability: "Moody" },
+    { name: "politoed", item: "kingsrock" },
+    { name: "breloom", move1: "spore", move2: "batonpass" },
+  );
+  const where = "Gen 9 OU: Over Used";
+  expect(messages(team, 9, "OU: Over Used")).toEqual([
+    `Glalie has Moody, which is banned in ${where}.`,
+    `Politoed has King's Rock, which is banned in ${where}.`,
+    `Breloom has Spore, which is banned in ${where}.`,
+    `Breloom has Baton Pass, which is banned in ${where}.`,
+  ]);
+  expect(messages(team, 9, "")).toEqual([]);
+  expect(messages(team, 9, "Doubles OU")).toEqual([]);
+});
+
+test("a lower tier can allow back what the tier above bans", () => {
+  const team = createTeam({ name: "mismagius", move1: "swagger" });
+  expect(messages(team, 4, "OU: Over Used")).toEqual([
+    "Mismagius has Swagger, which is banned in Gen 4 OU: Over Used.",
+  ]);
+  expect(messages(team, 4, "UU: Under Used")).toEqual([]);
 });

@@ -2,6 +2,7 @@
 import {
   POKEMON_TYPES,
   type Formats,
+  type FormatBans,
   type GenerationTransferData,
   type Generation,
   type GameData,
@@ -31,6 +32,7 @@ export type DataTypes = {
   Moves: Moves;
   Items: Items;
   Formats: Formats;
+  FormatBans: FormatBans;
   Learnsets: Learnsets;
   TypeChart: TypeChart;
   Natures: Natures;
@@ -134,7 +136,9 @@ export const projections = {
       "target",
       "forceSwitch",
     ]),
+    // A self boost with its own chance, like Diamond Storm's, is not a sure boost
     ...(isRecord(entry.self) &&
+      (entry.self.chance ?? 100) === 100 &&
       isRecord(entry.self.boosts) && {
         selfBoosts: entry.self.boosts as Record<string, number>,
       }),
@@ -236,28 +240,152 @@ export function projectFormats(
   );
 }
 
+// Clauses that Showdown's validator enforces in code instead of a banlist, and what each bans
+const CLAUSE_BANS: Record<
+  string,
+  [kind: "item" | "move", isBanned: (entry: ShowdownEntry) => boolean]
+> = {
+  ohkoclause: ["move", ({ ohko }) => !!ohko],
+  sleepmovesclause: ["move", ({ status }) => status === "slp"],
+  gemsclause: ["item", ({ isGem }) => !!isGem],
+};
+
+const BAN_KINDS = {
+  ability: "abilities",
+  item: "items",
+  move: "moves",
+} as const;
+
+// What a format bans and does not allow back, among what exists by its generation
+export function projectFormatBans({
+  gen,
+  rules,
+  ...dex
+}: {
+  gen: number;
+  // The keys of the format's rule table, such as "-move:batonpass", "+item:damprock", or "ohkoclause"
+  rules: string[];
+} & Record<"abilities" | "items" | "moves", ShowdownTable>) {
+  const bans: FormatBans[string] = {};
+  for (const [kind, key] of Object.entries(BAN_KINDS)) {
+    const table = dex[key];
+    const clauseBans = Object.entries(CLAUSE_BANS)
+      .filter(([rule, [banKind]]) => banKind === kind && rules.includes(rule))
+      .flatMap(([, [, isBanned]]) =>
+        Object.entries(table)
+          .filter(([, entry]) => isBanned(entry))
+          .map(([id]) => id),
+      );
+    const ids = [
+      ...new Set([
+        ...rules
+          .filter(rule => rule.startsWith(`-${kind}:`))
+          .map(rule => rule.slice(kind.length + 2)),
+        ...clauseBans,
+      ]),
+    ]
+      .filter(
+        id =>
+          !rules.includes(`+${kind}:${id}`) && Number(table[id]?.gen) <= gen,
+      )
+      .sort();
+    if (ids.length)
+      bans[key] =
+        kind === "ability" ? ids.map(id => String(table[id]?.name)) : ids;
+  }
+  return bans;
+}
+
 const learnsetMoves = (entry: ShowdownEntry) =>
   Object.keys(isRecord(entry.learnset) ? entry.learnset : {});
 
-// Every move from every game, as a sorted list per species
+// Every move from every game, as a sorted list per species. Two of Showdown's learnset rules
+// (Dex.species.getFullLearnset and getMovePool) depend on the game, so they are applied here:
+// - A game's entry without a learnset gives the forme its base forme's moves in that game,
+//   such as Super Size Pumpkaboo in Legends: Z-A.
+// - A forme with its own learnset but no previous evolution, such as a cap Pikachu or a totem,
+//   inherits only its first stage's Gen 9 egg moves, not its whole learnset.
 export function flattenLearnsets(
   learnsets: ShowdownTable,
   modLearnsets: ShowdownTable[],
+  pokedex: ShowdownTable,
 ): Learnsets {
-  const flattened: Learnsets = Object.fromEntries(
+  const flattened: Record<string, Set<string>> = Object.fromEntries(
     Object.entries(learnsets).map(([species, entry]) => [
       species,
-      learnsetMoves(entry),
+      new Set(learnsetMoves(entry)),
     ]),
   );
+  const add = (species: string, moves: string[]) => {
+    const set = (flattened[species] ??= new Set());
+    for (const move of moves) set.add(move);
+  };
+  for (const modLearnset of modLearnsets) {
+    for (const [species, entry] of Object.entries(modLearnset))
+      add(species, learnsetMoves(entry));
+  }
+
+  // Formes with no learnset in any game already inherit their base forme's whole list.
   for (const modLearnset of modLearnsets) {
     for (const [species, entry] of Object.entries(modLearnset)) {
-      flattened[species] = [
-        ...new Set([...(flattened[species] ?? []), ...learnsetMoves(entry)]),
-      ].sort();
+      if (isRecord(entry.learnset) || !flattened[species]?.size) continue;
+      const checked = new Set([species]);
+      let base = baseForme(pokedex, species);
+      while (base && !checked.has(base)) {
+        checked.add(base);
+        const baseEntry = modLearnset[base] ?? learnsets[base];
+        if (baseEntry && isRecord(baseEntry.learnset)) {
+          add(species, learnsetMoves(baseEntry));
+          break;
+        }
+        base = baseForme(pokedex, base);
+      }
     }
   }
-  return flattened;
+
+  for (const species of Object.keys(learnsets)) {
+    const firstStage = eggMoveParent(pokedex, species);
+    if (!firstStage || !flattened[species]?.size) continue;
+    for (const table of [learnsets, ...modLearnsets]) {
+      const learnset = table[firstStage]?.learnset;
+      if (!isRecord(learnset)) continue;
+      add(
+        species,
+        Object.entries(learnset)
+          .filter(
+            ([, sources]) =>
+              Array.isArray(sources) &&
+              sources.some(source => `${source}`.startsWith("9E")),
+          )
+          .map(([move]) => move),
+      );
+    }
+  }
+
+  return Object.fromEntries(
+    Object.entries(flattened).map(([species, moves]) => [
+      species,
+      [...moves].sort(),
+    ]),
+  );
+}
+
+function baseForme(pokedex: ShowdownTable, species: string) {
+  const entry = pokedex[species];
+  const base = toId(entry?.changesFrom ?? entry?.baseSpecies);
+  return base && base !== species ? base : undefined;
+}
+
+// Showdown's Dex.species.learnsetParent for a forme with its own learnset, when it reaches
+// the forme's first stage rather than a previous evolution or the forme it changes from
+function eggMoveParent(pokedex: ShowdownTable, species: string) {
+  const entry = pokedex[species];
+  if (!entry || entry.prevo) return undefined;
+  if (entry.changesFrom && entry.baseSpecies !== "Kyurem") return undefined;
+  let stage = toId(entry.baseSpecies);
+  if (!pokedex[stage]?.prevo) return undefined;
+  while (pokedex[stage]?.prevo) stage = toId(pokedex[stage]?.prevo);
+  return stage;
 }
 
 // The Showdown client's BattleMoveSearch, which judges a move for one set
@@ -357,6 +485,90 @@ export function collectViableMoves(
     }
   }
   return [...viable].sort();
+}
+
+// The Showdown teambuilder's grouping of one generation's items, which returns the items
+// it lists above its usually useless ones
+export type ItemGrouping = (
+  dex: { mod(gen: string): { items: { get(id: string): ShowdownEntry } } },
+  gen: string,
+  genNum: number,
+  itemList: string[],
+) => string[];
+
+// Each generation's viable items among `ids`. Which items a game has is the site's
+// availability data's job, so no item is left out as too new or nonstandard.
+export function collectViableItems(
+  group: ItemGrouping,
+  tables: Partial<Record<Generation, ShowdownTable>>,
+  ids: string[],
+) {
+  return Object.fromEntries(
+    Object.entries(tables).map(([gen, table]) => {
+      const items = {
+        get: (id: string) => ({
+          id,
+          exists: true,
+          ...table[id],
+          gen: undefined,
+          isNonstandard: undefined,
+        }),
+      };
+      const list = ids.filter(id => id in table).sort();
+      return [
+        gen,
+        group(
+          { mod: () => ({ items }) },
+          `gen${gen}`,
+          Number(gen),
+          list,
+        ).sort(),
+      ];
+    }),
+  ) as Partial<Record<Generation, string[]>>;
+}
+
+// A module with the latest generation's set of IDs, what each earlier generation adds
+// to it and removes from it, and a function that gives a generation's set
+export function renderGenerationSets(
+  description: string,
+  functionName: string,
+  generations: Partial<Record<Generation, string[]>>,
+) {
+  const latest = generations[9] ?? [];
+  const changes = Object.fromEntries(
+    Object.entries(generations)
+      .filter(([gen]) => gen !== "9")
+      .map(([gen, ids]) => [
+        gen,
+        {
+          add: ids.filter(id => !latest.includes(id)),
+          remove: latest.filter(id => !ids.includes(id)),
+        },
+      ]),
+  );
+  return [
+    `// ${description}`,
+    `import type { Generation } from "../types";`,
+    `import { LATEST_GENERATION } from "../shared/generations";`,
+    "",
+    `const data: ReadonlySet<string> = new Set(${JSON.stringify(latest, null, 2)});`,
+    `const changes: Partial<Record<Generation, { add: string[]; remove: string[] }>> = ${JSON.stringify(changes, null, 2)};`,
+    "const cache = new Map<Generation, ReadonlySet<string>>();",
+    `export function ${functionName}(generation: Generation = LATEST_GENERATION): ReadonlySet<string> {`,
+    "  const change = changes[generation];",
+    "  if (!change) return data;",
+    "  let viable = cache.get(generation);",
+    "  if (!viable) {",
+    "    viable = new Set([...data].filter(id => !change.remove.includes(id)).concat(change.add));",
+    "    cache.set(generation, viable);",
+    "  }",
+    "  return viable;",
+    "}",
+    "",
+    "export default data;",
+    "",
+  ].join("\n");
 }
 
 // Showdown codes damage taken as 0 neutral, 1 weak, 2 resisted, 3 immune;
@@ -576,7 +788,6 @@ export function projectPastGenerations(
           : [[id, properties]];
       }),
     );
-    if (Object.keys(moveData).length) entry.moveData = moveData;
     const formats = Object.fromEntries(
       Object.keys(mod.formats ?? resolved.formats ?? {}).flatMap(id => {
         const format = resolved.formats?.[id];
@@ -609,7 +820,11 @@ export function projectPastGenerations(
                 const introduced = abilityGeneration(
                   resolved.abilities?.[toId(name)],
                 );
-                return !(gen < 5 && slot === "H") && introduced <= gen;
+                // Showdown's validator rejects a hidden ability it marks unreleased
+                const isHiddenUnavailable =
+                  slot === "H" &&
+                  (gen < 5 || species.unreleasedHidden === true);
+                return !isHiddenUnavailable && introduced <= gen;
               })
               .map(([, name]) => String(name));
         const latestAbilities = latestSpecies[id]?.abilities;
@@ -624,9 +839,28 @@ export function projectPastGenerations(
       }),
     );
     if (Object.keys(abilities).length) entry.abilities = abilities;
+    // Kept so that old links holding one still load it
+    const unreleasedHidden = Object.fromEntries(
+      Object.entries(resolvedSpecies).flatMap(([id, species]) => {
+        const hidden =
+          isRecord(species.abilities) ? species.abilities.H : undefined;
+        return (
+            gen >= 5 &&
+              species.unreleasedHidden === true &&
+              typeof hidden === "string" &&
+              abilityGeneration(resolved.abilities?.[toId(hidden)]) <= gen
+          ) ?
+            [[id, hidden]]
+          : [];
+      }),
+    );
+    if (Object.keys(unreleasedHidden).length)
+      entry.unreleasedHidden = unreleasedHidden;
     if (JSON.stringify(typechart) !== JSON.stringify(nextChart)) {
       entry.typechart = typechart;
     }
+    // Last, where --move-effects-only adds it, so both write the same file
+    if (Object.keys(moveData).length) entry.moveData = moveData;
     past[gen as keyof PastGenerations] = entry;
     parent = resolved;
     nextChart = typechart;
@@ -654,4 +888,110 @@ export function nameChanges(
         return `  ${dataset}: ${name} ${isRenamed ? `is now ${newName}` : "was removed"}`;
       });
   });
+}
+
+// Each src/data file's entries by ID, or its text when it is not one table
+export type DataSnapshot = Record<string, Record<string, unknown> | string>;
+
+const tableOf = (value: unknown) => (isRecord(value) ? value : {});
+
+// A full update orders some keys differently from a partial one, so compare with sorted keys
+const sortedKeys = (_key: string, value: unknown) =>
+  isRecord(value) && !Array.isArray(value) ?
+    Object.fromEntries(
+      Object.entries(value).sort(([a], [b]) => (a < b ? -1 : 1)),
+    )
+  : value;
+const isSame = (a: unknown, b: unknown) =>
+  JSON.stringify(a, sortedKeys) === JSON.stringify(b, sortedKeys);
+
+const championsLegal = (snapshot: DataSnapshot) =>
+  Object.entries(tableOf(snapshot["formats.ts"]))
+    .filter(([, entry]) => tableOf(entry).champions)
+    .map(([id]) => id);
+
+// Tells the maintainer what an update changed in src/data, and whether it looks major, like a
+// new game or regulation, or minor. Undefined when nothing changed. `capIds` holds, by file, the
+// moves and items Showdown marks as CAP (fan-made), which no game adds.
+export function changeNotice(
+  before: DataSnapshot,
+  after: DataSnapshot,
+  capIds: Partial<Record<string, string[]>> = {},
+) {
+  const nameTables = ["pokedex.ts", "items.ts", "moves.ts"].map(file => ({
+    ...tableOf(before[file]),
+    ...tableOf(after[file]),
+  }));
+  // E.g. "added Pikachu; changed Mew, Ditto, Eevee, Snorlax, Lapras, and 3 more"
+  const describe = (
+    changes: Record<string, string[]>,
+    ...tables: Record<string, unknown>[]
+  ) =>
+    Object.entries(changes)
+      .filter(([, ids]) => ids.length)
+      .map(([change, ids]) => {
+        const names = ids.map(
+          id =>
+            [...tables, ...nameTables]
+              .map(table => tableOf(table[id]).name)
+              .find(name => typeof name === "string") ?? id,
+        );
+        const more = names.length > 5 ? `, and ${names.length - 5} more` : "";
+        return `${change} ${names.slice(0, 5).join(", ")}${more}`;
+      })
+      .join("; ");
+
+  // The site's rule for CAP pokemon, in src/store/filtering.ts
+  const pokedex = tableOf(after["pokedex.ts"]);
+  const isCap = (file: string, id: string) => {
+    const { num } = tableOf(pokedex[id]);
+    return file === "pokedex.ts" ?
+        typeof num === "number" && num < 0 && num > -5000
+      : !!capIds[file]?.includes(id);
+  };
+
+  const lines: string[] = [];
+  const newEntries: Record<string, number> = {};
+  for (const [file, now] of Object.entries(after)) {
+    const old = before[file];
+    if (typeof old === "string" || typeof now === "string") {
+      if (old !== now) lines.push(`- \`${file}\` changed`);
+      continue;
+    }
+    const oldTable = tableOf(old);
+    const added = Object.keys(now).filter(id => !Object.hasOwn(oldTable, id));
+    const removed = Object.keys(oldTable).filter(id => !Object.hasOwn(now, id));
+    const changed = Object.keys(now).filter(
+      id => Object.hasOwn(oldTable, id) && !isSame(oldTable[id], now[id]),
+    );
+    const summary = describe({ added, removed, changed }, now, oldTable);
+    if (summary) lines.push(`- \`${file}\`: ${summary}`);
+    newEntries[file] = added.filter(id => !isCap(file, id)).length;
+  }
+  const wasLegal = championsLegal(before);
+  const isLegal = championsLegal(after);
+  const legality = describe({
+    "now allows": isLegal.filter(id => !wasLegal.includes(id)),
+    "no longer allows": wasLegal.filter(id => !isLegal.includes(id)),
+  });
+  if (legality) lines.unshift(`- Pokemon Champions: ${legality}`);
+  if (!lines.length) return undefined;
+
+  // One new pokemon, move, or item is minor, but a new game brings several pokemon, or pokemon
+  // with their moves or items
+  const newPokemon = newEntries["pokedex.ts"] ?? 0;
+  const newGame =
+    newPokemon > 1 ||
+    (newPokemon > 0 && !!(newEntries["moves.ts"] || newEntries["items.ts"]));
+  const reasons = [
+    newGame &&
+      "added several pokemon, or pokemon with new moves or items, as a new game does",
+    !!legality &&
+      "changed which pokemon Pokemon Champions allows, as a new regulation does",
+  ].filter(reason => typeof reason === "string");
+  const verdict =
+    reasons.length ?
+      `**Looks major:** Showdown ${reasons.join(", and ")}. Major data is due on the site within 2 days of Showdown publishing it.`
+    : "**Looks minor:** Showdown added at most one pokemon and no pokemon with new moves or items, not counting CAP (fan-made) ones, and Pokemon Champions allows the same pokemon. Minor data is due on the site within 7 days of Showdown publishing it.";
+  return [verdict, "", ...lines].join("\n");
 }
