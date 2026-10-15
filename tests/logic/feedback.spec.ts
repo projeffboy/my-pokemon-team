@@ -283,4 +283,16 @@ test.describe("rate limit", () => {
     expect(await post("outage-test")).toBe(429);
     expect(sent).toBe(10);
   });
+
+  test("sends the email provider rejects still count", async () => {
+    resendStatus = 422;
+    for (let i = 0; i < 5; i++) expect(await post("rejected-test")).toBe(502);
+    expect(await post("rejected-test")).toBe(429);
+    expect(sent).toBe(5);
+    resendStatus = 429;
+    expect(await post("busy-test")).toBe(502);
+    resendStatus = 200;
+    for (let i = 0; i < 5; i++) expect(await post("busy-test")).toBe(204);
+    expect(await post("busy-test")).toBe(429);
+  });
 });

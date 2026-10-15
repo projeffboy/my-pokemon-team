@@ -27,7 +27,7 @@ function reserveSend(ip: string, time: number) {
   return true;
 }
 
-// Gives back a send that the email provider failed to deliver
+// Gives back a send that the email provider could not take, as when it is down or busy
 function releaseSend(ip: string, time: number) {
   const sends = recentSends.get(ip) ?? [];
   const index = sends.lastIndexOf(time);
@@ -166,7 +166,9 @@ export async function POST(request: Request) {
     }),
   }).catch(() => undefined);
   if (!response?.ok) {
-    releaseSend(ip, sendTime);
+    // A 4xx other than 429 means Resend refused this request, so it still counts
+    if (!response || response.status === 429 || response.status >= 500)
+      releaseSend(ip, sendTime);
     console.error(
       "Resend failed",
       response?.status,
