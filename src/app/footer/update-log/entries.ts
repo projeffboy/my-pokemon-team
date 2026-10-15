@@ -23,6 +23,7 @@ const entries: Entry[] = [
       "Doubles OU and Doubles Uber now include Pokémon that were missing from them, such as Gen 6 Mega Tyranitar.",
       "Changing generations now swaps Giratina-Origin’s Griseous Core and Griseous Orb instead of dropping or keeping the wrong one.",
       "Switching a team to Gen 9 no longer removes Pokémon and moves that Gen 9 offers, such as Silvally and Tyranitar’s Pursuit.",
+      "Switching generations now turns female Mega Meowstic back into Meowstic-F instead of a male-only Meowstic marked female.",
       "Imported sets without an item keep their Pokémon when the nickname holds an @, such as Mew@x (Pikachu).",
       "Picking a slot’s own Pokémon again in the Name list no longer clears its moves, item and other details.",
       "In Japanese and Chinese, the dropdowns now find names typed with full-width letters or digits, or in hiragana, e.g. ポリゴン２ or ぴかちゅう.",
