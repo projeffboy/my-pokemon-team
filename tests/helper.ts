@@ -1,5 +1,5 @@
 import { test, expect } from "./fixtures";
-import type { Locator, Page } from "@playwright/test";
+import type { Locator, Page, TestInfo } from "@playwright/test";
 import { fromBase64Url } from "@/app/shared/base64url";
 import { breakpointValues } from "@/app/shared/theme";
 import { checklistLabel } from "@/store/checklist";
@@ -263,6 +263,20 @@ export const checklistRow = (page: Page, label: string) =>
   page
     .getByText(pageChecklistLabel(page, label), { exact: true })
     .locator("..");
+
+// A checklist role's tooltip, found by text in it. The switch that opened the
+// checklist may still show its own tooltip.
+export const showChecklistTooltip = async (
+  page: Page,
+  testInfo: TestInfo,
+  label: string,
+  text: string,
+) => {
+  const row = checklistRow(page, label);
+  if (testInfo.project.use.hasTouch) await row.tap();
+  else await row.hover();
+  return page.getByRole("tooltip").filter({ hasText: text });
+};
 
 // "depends" for a role whose result depends on a battle format that is not set
 export const expectChecklistItem = async (

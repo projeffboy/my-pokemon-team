@@ -7,6 +7,8 @@ import {
   type ChecklistItemKey,
 } from "@/store/checklist";
 import { learnsetsReady } from "@/store/learnsets";
+import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import type { BattleFormat, Generation, ReadonlyTeam } from "@/types";
 import en from "@/i18n/en";
 import { english, loadTranslation, type Translation } from "@/i18n/translation";
@@ -539,10 +541,12 @@ test("an unfilled role suggests what fills it in the game", async () => {
   expect(hint("recovery")).toBe(
     "Give a pokemon a reliable healing move, such as Recover, Roost, Slack Off, or Wish with Protect.",
   );
-  // Gen 2 has no other hazard, and Defog clears the user's side only from Gen 6
+  // Gen 2 has no other hazard
   expect(hint("entryHazard", 2)).toBe(
     "Give a pokemon a move that sets entry hazards: Spikes.",
   );
+  // Before Gen 6, Defog clears the user's side only in doubles, so a team with no
+  // battle format is not offered it
   expect(hint("spinner", 5)).toBe(
     "Give a pokemon a move that removes entry hazards from your side: Rapid Spin.",
   );
@@ -601,8 +605,8 @@ test("a trapper is named by its move or its ability, and the hint names both", a
     "Gengar: Mean Look",
     "Gothitelle: Shadow Tag",
   ]);
-  const hint = (generation?: Generation) =>
-    checklistHint(role("trapper"), english, generation);
+  const hint = (generation?: Generation, format?: string) =>
+    checklistHint(role("trapper"), english, generation, format);
   expect(hint()).toBe(
     "Give a pokemon a move that stops the foe from switching out, such as Mean Look, Block, or Anchor Shot, or the ability Shadow Tag, Arena Trap, or Magnet Pull.",
   );
@@ -610,6 +614,59 @@ test("a trapper is named by its move or its ability, and the hint names both", a
   expect(hint(2)).toBe(
     "Give a pokemon a move that stops the foe from switching out, such as Mean Look.",
   );
+  // Mega Gengar is the only pokemon in Champions with any of the abilities
+  expect(hint(9, CHAMPIONS_FORMAT)).toBe(
+    "Give a pokemon a move that stops the foe from switching out, such as Mean Look or Block, or the ability Shadow Tag.",
+  );
+});
+
+test("an unfilled role's suggestion leaves out what the team's format bans", async () => {
+  await learnsetsReady;
+  const hint = (key: ChecklistItemKey, format: string) =>
+    checklistHint(role(key), english, 9, format);
+  // OU bans Shadow Tag, Arena Trap, and Spore, and Doubles OU bans Shadow Tag
+  expect(hint("trapper", "OU: Over Used")).toBe(
+    "Give a pokemon a move that stops the foe from switching out, such as Mean Look or Block, or the ability Magnet Pull.",
+  );
+  expect(hint("status", "OU: Over Used")).toBe(
+    "Give a pokemon a move that always inflicts a status condition when it hits, such as Toxic, Will-O-Wisp, or Thunder Wave.",
+  );
+  expect(hint("trapper", "Doubles OU")).toBe(
+    "Give a pokemon a move that stops the foe from switching out, such as Mean Look or Block, or the ability Arena Trap or Magnet Pull.",
+  );
+});
+
+test("a Generations 6–9 team's suggestion leaves out what the format in the filters bans", async () => {
+  await learnsetsReady;
+  const hint = (key: ChecklistItemKey, tier?: string) =>
+    checklistHint(
+      role(key),
+      english,
+      9,
+      COMBINED_GENERATIONS_FORMAT,
+      undefined,
+      tier,
+    );
+  // Without a tier, nothing is banned
+  expect(hint("trapper")).toContain("Shadow Tag");
+  expect(hint("status")).toContain("Spore");
+  // OU bans Shadow Tag, Arena Trap, and Spore
+  expect(hint("trapper", "OU: Over Used")).toBe(
+    "Give a pokemon a move that stops the foe from switching out, such as Mean Look, Block, or Anchor Shot, or the ability Magnet Pull.",
+  );
+  expect(hint("status", "OU: Over Used")).toBe(
+    "Give a pokemon a move that always inflicts a status condition when it hits, such as Toxic, Will-O-Wisp, or Thunder Wave.",
+  );
+});
+
+test("the French tooltip addresses the player as vous, in its hints and the reason below them", async () => {
+  const { items, battleFormat } = (await loadTranslation("fr")).t.checklist;
+  const texts = [
+    ...Object.values(items).map(item => item.hint("Abri", "Marque Ombre")),
+    ...Object.values(battleFormat.reasons),
+  ];
+  for (const text of texts)
+    expect(text).not.toMatch(/(?<!\p{L})(tu|te|toi|ton|ta|tes)(?!\p{L})/iu);
 });
 
 test("callback and ally-targeted boosts are named as the moves that fill Boosting", () => {
