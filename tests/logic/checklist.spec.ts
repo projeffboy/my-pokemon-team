@@ -139,6 +139,12 @@ test("Growth's setup check follows its historical one-stage boost", () => {
   expect(checked(team, 5)).toContain("Boosting Move");
 });
 
+test("Diamond Storm's chance to raise Defense is not a boosting move", () => {
+  const team = createTeam({ name: "diancie", move1: "diamondstorm" });
+  for (const generation of [6, 7, 9] as const)
+    expect(checked(team, generation)).not.toContain("Boosting Move");
+});
+
 test("Curse counts as setup only when its user is not a Ghost type", () => {
   expect(
     checked(createTeam({ name: "banette", move1: "curse" })),

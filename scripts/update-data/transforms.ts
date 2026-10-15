@@ -134,7 +134,9 @@ export const projections = {
       "target",
       "forceSwitch",
     ]),
+    // A self boost with its own chance, like Diamond Storm's, is not a sure boost
     ...(isRecord(entry.self) &&
+      (entry.self.chance ?? 100) === 100 &&
       isRecord(entry.self.boosts) && {
         selfBoosts: entry.self.boosts as Record<string, number>,
       }),
