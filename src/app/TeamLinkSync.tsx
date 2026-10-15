@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
-import { gameFormat } from "@/shared/formats";
+import { CHAMPIONS_FORMAT, gameFormat } from "@/shared/formats";
 import {
   encodeTeamForUrl,
   syncGenerationToUrl,
@@ -14,6 +14,7 @@ import {
 // them, such as a slider drag, uses up this many writes, which come back two a second.
 const URL_WRITE_BURST = 30;
 const URL_WRITE_INTERVAL = 500;
+// This tab's team and the URL it is due, which a reload restores
 const PENDING_URL_KEY = "mypokemonteam-pending-url";
 
 function restorePendingReload() {
@@ -41,6 +42,7 @@ function restorePendingReload() {
     if (url.origin !== location.origin || url.pathname !== location.pathname)
       return;
     history.replaceState(history.state, "", url);
+    // Keeps this tab's team, which an empty team's URL cannot identify
     if ("teamId" in pending && typeof pending.teamId === "string")
       store.selectTeam(pending.teamId);
   } catch {
@@ -95,27 +97,38 @@ const TeamLinkSync = observer(function TeamLinkSync() {
       lastContext = context();
 
       lastSyncedTeamParameter = teamParameter;
+      const { settings, unrecognized } = generationSettingsFromUrl();
       if (teamParameter) importTeamFromUrlParameter(teamParameter);
-      else {
-        const settings = generationSettingsFromUrl();
+      else if (
+        firstNavigation &&
+        store.isTeamEmpty &&
+        store.teams.some(team => team.id === store.currentTeamId)
+      ) {
+        // The URL carries no tier, so the same game keeps the team's
+        const { generation, format } = store.currentTeam;
         if (
-          firstNavigation &&
-          store.isTeamEmpty &&
-          store.teams.some(team => team.id === store.currentTeamId) &&
-          settings
-        ) {
-          // The URL carries no tier, so the same game keeps the team's
-          const { generation, format } = store.currentTeam;
-          if (
-            generation !== settings.generation ||
-            gameFormat(format) !== settings.format ||
-            store.currentTeam.generationProfile !== settings.generationProfile
-          )
-            Object.assign(store.currentTeam, {
-              ...settings,
-              generationProfile: settings.generationProfile,
-            });
-        } else store.openUnsavedTeam(undefined, settings);
+          generation !== settings.generation ||
+          gameFormat(format) !== settings.format ||
+          store.currentTeam.generationProfile !== settings.generationProfile
+        )
+          Object.assign(store.currentTeam, {
+            ...settings,
+            generationProfile: settings.generationProfile,
+          });
+      } else store.openUnsavedTeam(undefined, settings);
+      if (unrecognized) {
+        // Names the profile the page opened in, even if the link's team was unreadable
+        const { t } = store.translation;
+        const { generation, format, generationProfile } = store.currentTeam;
+        store.openSnackbar(
+          t.team.linkGenerationUnsupported(
+            generationProfile ? t.combinedGenerations.label
+            : format === CHAMPIONS_FORMAT ? t.championsGeneration
+            : t.generation(generation),
+          ),
+          false,
+          "warning",
+        );
       }
     };
     if (initializes || pendingNavigation.current) syncFromUrl();
@@ -127,17 +140,14 @@ const TeamLinkSync = observer(function TeamLinkSync() {
     let desiredUrl = location.href;
     const rememberPending = () => {
       try {
-        if (desiredUrl === location.href)
-          sessionStorage.removeItem(PENDING_URL_KEY);
-        else
-          sessionStorage.setItem(
-            PENDING_URL_KEY,
-            JSON.stringify({
-              href: location.href,
-              url: desiredUrl,
-              teamId: store.currentTeamId,
-            }),
-          );
+        sessionStorage.setItem(
+          PENDING_URL_KEY,
+          JSON.stringify({
+            href: location.href,
+            url: desiredUrl,
+            teamId: store.currentTeamId,
+          }),
+        );
       } catch {
         // The URL still updates normally when site storage is blocked.
       }

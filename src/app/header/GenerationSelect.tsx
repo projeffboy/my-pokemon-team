@@ -4,6 +4,7 @@ import GenerationOption from "./generation-select/GenerationOption";
 import GenerationGroupHeader from "./generation-select/GenerationGroupHeader";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
 import { planGenerationTransfer } from "@/store/generation-transfer";
+import { learnsetsReady } from "@/store/learnsets";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import {
   COMBINED_GENERATIONS_PROFILE,
@@ -139,7 +140,11 @@ const GenerationSelect = observer(function GenerationSelect() {
     const teamId = store.currentTeamId;
     setLoading(true);
     try {
-      const data = await loadGenerationTransferData();
+      // The plain latest generation checks the learnsets, which load after the app
+      const [data] = await Promise.all([
+        loadGenerationTransferData(),
+        learnsetsReady,
+      ]);
       if (teamId !== store.currentTeamId) return;
       const team = store.currentTeam;
       const generationProfile =

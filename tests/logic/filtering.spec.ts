@@ -90,11 +90,30 @@ test("Kanto excludes every later regional forme", () => {
   expect(result).not.toContain("taurospaldeablaze");
 });
 
-test("Hisui includes the origin formes", () => {
-  const result = filterPokemon({ ...all, region: "Hisui" });
-  expect(result).toEqual(
-    expect.arrayContaining(["dialgaorigin", "palkiaorigin"]),
+// Each forme appears only under the region it was introduced in, not its species'
+for (const [forme, region, numberRegion] of [
+  ["dialgaorigin", "Hisui", "Sinnoh"],
+  ["palkiaorigin", "Hisui", "Sinnoh"],
+  ["basculinwhitestriped", "Hisui", "Unova"],
+  ["ursalunabloodmoon", "Paldea", "Hisui"],
+]) {
+  test(`${forme} is listed under ${region}, not ${numberRegion}`, () => {
+    expect(filterPokemon({ ...all, region })).toContain(forme);
+    expect(filterPokemon({ ...all, region: numberRegion })).not.toContain(
+      forme,
+    );
+  });
+}
+
+test("species with a forme from a later region stay in their own region", () => {
+  expect(filterPokemon({ ...all, region: "Sinnoh" })).toEqual(
+    expect.arrayContaining(["dialga", "palkia"]),
   );
+  expect(filterPokemon({ ...all, region: "Unova" })).toEqual(
+    expect.arrayContaining(["basculin", "basculinbluestriped"]),
+  );
+  expect(filterPokemon({ ...all, region: "Hisui" })).toContain("ursaluna");
+  expect(filterPokemon({ ...all, region: "Paldea" })).not.toContain("ursaluna");
 });
 
 test("singles formats include lower tiers in tier order", () => {
@@ -143,6 +162,33 @@ test("doubles formats use doubles tiers, including untiered DUU species", () => 
   expect(result).not.toContain("tinglu");
   expect(result).not.toContain("miraidon");
   expect(result.indexOf("regieleki")).toBeLessThan(result.indexOf("milotic"));
+});
+
+test("doubles formats include (DOU) pokemon wherever DOU ones appear", () => {
+  const doubles = (format: string) =>
+    filterPokemon({ ...all, generation: 6, format });
+  for (const format of ["Doubles Uber", "Doubles OU"]) {
+    const result = doubles(format);
+    expect(result).toContain("tyranitar");
+    expect(result).toContain("tyranitarmega");
+  }
+  expect(doubles("Doubles UU")).not.toContain("tyranitarmega");
+});
+
+test("Gen 3 and Gen 4 Doubles OU fall back to the singles tiers, without Ubers or unevolved pokemon", () => {
+  const gen3 = filterPokemon({ ...all, generation: 3, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "wobbuffet", "wynaut"])
+    expect(gen3).toContain(allowed);
+  // Murkrow only evolves from gen 4, and Abra has a singles tier but evolves
+  expect(gen3).toContain("murkrow");
+  for (const banned of ["mewtwo", "kyogre", "deoxysattack", "abra"])
+    expect(gen3).not.toContain(banned);
+
+  const gen4 = filterPokemon({ ...all, generation: 4, format: "Doubles OU" });
+  for (const allowed of ["metagross", "salamence", "manaphy", "machamp"])
+    expect(gen4).toContain(allowed);
+  for (const banned of ["garchomp", "darkrai", "arceus", "murkrow"])
+    expect(gen4).not.toContain(banned);
 });
 
 test("format, region, and type filters intersect", () => {

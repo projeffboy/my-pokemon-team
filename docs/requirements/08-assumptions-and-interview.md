@@ -20,6 +20,7 @@ These documents were first written from the repository alone. The Site Owner the
 - **Smarter features later, and kept simple.** Suggestions, deeper analysis, and a usage chart are wanted for a later release, but: "I don't want to try to make the site too intelligent. I think my user base is a lot of kids and teenagers."
 - **Show a team's problems.** The site should show the rules a team breaks, and tell players when a link or a saved team lost an entry to a data update.
 - **Lost entries are named once.** On 14 October 2026 he chose a notice that stays above the team until the player closes it. A saved team drops what it lost when it is opened, so the notice appears once and the site has nothing else to remember.
+- **Links with an unknown generation open in Generations 6–9.** On 14 October 2026 he chose that a share link whose generation or game the site does not recognise opens in Generations 6–9 for every visitor (or in the link's generation, when only its game is unknown), with a message saying so, rather than in the generation the visitor last used (REQ-LINK-11).
 - **Team backups stay.** The site keeps its Team backups action and its backup file. A change to fold them into Export All and Import Team (issue 148) was closed as not planned on 14 October 2026.
 - **Feedback can be anonymous.** Players must be able to send feedback without an email address; the form already says an email is only needed for a reply. Sending from the site's own domain would look more professional, but it is not wanted, because players would see no difference.
 

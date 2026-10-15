@@ -15,7 +15,7 @@ import {
 } from "@/shared/generation-profile";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { pokemonAbilities, pokemonTypes } from "@/shared/pokedex";
-import { pokemonFormatIn } from "@/shared/generation-data";
+import { doublesTierIn, pokemonFormatIn } from "@/shared/generation-data";
 
 type Filters = Readonly<
   Partial<
@@ -44,7 +44,13 @@ const REGIONAL_FORMES: Record<string, string> = {
   Hisui: "hisui",
   Paldea: "paldea",
 };
-const HISUI_ORIGIN_FORMES = ["dialgaorigin", "palkiaorigin"];
+// Other formes introduced in a later region than their species
+const FORME_REGIONS: Record<string, string> = {
+  dialgaorigin: "Hisui",
+  palkiaorigin: "Hisui",
+  basculinwhitestriped: "Hisui",
+  ursalunabloodmoon: "Paldea",
+};
 
 // Showdown numbers CAP (fan-made) pokemon from -1 down, and Pokestar pokemon from -5000 down
 const isCap = (num: number | undefined) =>
@@ -167,19 +173,22 @@ export function filterPokemon({
     ];
 
     if (smogonSinglesTiers.includes(tierAbbreviationByFormat[format] ?? "")) {
-      return filterByTier(smogonSinglesTiers, "tier");
+      return filterByTier(
+        smogonSinglesTiers,
+        pokemon => pokemonFormatIn(pokemon, generation)?.tier,
+      );
     } else if (
       ["DUber", "DOU", "DUU"].includes(tierAbbreviationByFormat[format] ?? "")
     ) {
       return filterByTier(
-        ["DUber", "(DUber)", "DOU", "DUU", "(DUU)"],
-        "doublesTier",
+        ["DUber", "(DUber)", "DOU", "(DOU)", "DUU", "(DUU)"],
+        pokemon => doublesTierIn(pokemon, generation),
       );
     }
 
     function filterByTier(
       arrayOfTiers: string[],
-      tierType: "tier" | "doublesTier",
+      tierOf: (pokemon: string) => string | undefined,
     ) {
       let tierMatched = false;
 
@@ -190,7 +199,7 @@ export function filterPokemon({
 
           // Add all the pokemon from that tier to filteredPokedex
           for (const [pokemon, entry] of Object.entries(pokedex)) {
-            if (pokemonFormatIn(pokemon, generation)?.[tierType] === tier) {
+            if (tierOf(pokemon) === tier) {
               filteredPokedex[pokemon] = entry;
             }
           }
@@ -223,13 +232,15 @@ export function filterPokemon({
       const num = pokemonProperties.num;
       const isInNumberRange =
         num !== undefined && num >= range[0] && num <= range[1];
+      const formeRegion = FORME_REGIONS[pokemon];
 
       // E.g. Alola includes vulpixalola, and Kanto excludes it
       if (
-        (regionalForme && pokemon.includes(regionalForme)) ||
-        (region === "Hisui" && HISUI_ORIGIN_FORMES.includes(pokemon)) ||
-        (isInNumberRange &&
-          !otherRegionalFormes.some(forme => pokemon.includes(forme)))
+        formeRegion ?
+          formeRegion === region
+        : (regionalForme && pokemon.includes(regionalForme)) ||
+          (isInNumberRange &&
+            !otherRegionalFormes.some(forme => pokemon.includes(forme)))
       ) {
         filteredPokedex[pokemon] = pokemonProperties;
       }
