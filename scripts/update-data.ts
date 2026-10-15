@@ -356,6 +356,18 @@ async function updateGameVariants() {
   await writeData("GameVariantData", data);
 }
 
+async function updateGenerationTransfer() {
+  const transferData = generationTransferData(
+    showdownRoot,
+    Object.keys(await loadAppData<Pokedex>("pokedex")),
+    Object.keys(await loadAppData<Items>("items")),
+  );
+  await fs.writeFile(
+    path.join(dataRoot, "generation-transfer.json"),
+    `${JSON.stringify(transferData, null, 2)}\n`,
+  );
+}
+
 async function updateIconIndexes() {
   const source = await read(
     path.join(clientRoot, "play.pokemonshowdown.com/src/battle-dex-data.ts"),
@@ -550,6 +562,10 @@ async function updateData() {
     await updatePastGenerations();
     return;
   }
+  if (process.argv.includes("--generation-transfer-only")) {
+    await updateGenerationTransfer();
+    return;
+  }
   if (process.argv.includes("--hidden-power-only")) {
     await updateHiddenPowerSpreads();
     return;
@@ -584,15 +600,7 @@ async function updateData() {
     ].map(name => fs.rm(path.join(dataRoot, `${name}.js`), { force: true })),
   );
 
-  const transferData = generationTransferData(
-    showdownRoot,
-    Object.keys(await loadAppData<Pokedex>("pokedex")),
-    Object.keys(await loadAppData<Items>("items")),
-  );
-  await fs.writeFile(
-    path.join(dataRoot, "generation-transfer.json"),
-    `${JSON.stringify(transferData, null, 2)}\n`,
-  );
+  await updateGenerationTransfer();
 
   await updateViableMoves(
     JSON.parse(await read(path.join(dataRoot, "learnsets.json"))) as Learnsets,

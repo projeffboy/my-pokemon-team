@@ -755,6 +755,22 @@ test("uses historical abilities and moves without treating tier filters as trans
   expect(plan.team[0]).toMatchObject({ move1: "", move2: "surf" });
 });
 
+test("hidden abilities Showdown marks unreleased are lost in those generations", () => {
+  const transfer = (generation: 5 | 6) =>
+    planGenerationTransfer(
+      createTeam({ name: "serperior", ability: "Contrary" }),
+      from,
+      generation,
+      "",
+      data,
+    );
+  expect(transfer(5).team[0]?.ability).toBe("");
+  expect(transfer(5).losses).toEqual([
+    { index: 0, pokemon: "serperior", field: "ability", value: "Contrary" },
+  ]);
+  expect(transfer(6).losses).toEqual([]);
+});
+
 test("Champions checks its own moves, items, abilities, and stat system", () => {
   const original = createTeam({
     name: "venusaur",
