@@ -366,14 +366,14 @@ On 14 October 2026 the Site Owner chose advisory parsing reports in the team-tex
 
 US15. As a player who does not know every pokemon or every competitive term, I want to look up a pokemon's stats, abilities, and weaknesses, the type chart, and what the site's terms and scores mean, so that I can understand the analysis.
 
-| ID        | Requirement                                                                                                                                                             | Imp. | Status      |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
-| REQ-REF-1 | The site shall present, for a pokemon of the current team, its types, abilities, base stats, base stat total, and the types it is weak to in the team's generation.     | C    | Implemented |
-| REQ-REF-2 | The site shall link from a pokemon's information to that pokemon's page on Smogon's dex, Bulbapedia, Serebii, and the Showdown dex.                                     | O    | Implemented |
-| REQ-REF-3 | The site shall present a type chart as a table, as a list, and as an infographic.                                                                                       | C    | Implemented |
-| REQ-REF-4 | The site shall present a manual that states how the defence score and the coverage score are calculated and defines each checklist term that Smogon's dictionary lacks. | C    | Implemented |
-| REQ-REF-5 | The site shall present an update log of the changes to pokemon data, features, and serious defects, newest first, showing the date of the newest entry.                 | C    | Implemented |
-| REQ-REF-6 | The site shall present credits naming the sources of its data, sprites, and images.                                                                                     | E    | Implemented |
+| ID        | Requirement                                                                                                                                                                 | Imp. | Status      |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---- | ----------- |
+| REQ-REF-1 | The site shall present, for a pokemon of the current team, its types, abilities, base stats, base stat total, and the types it is weak to in the team's generation.         | C    | Implemented |
+| REQ-REF-2 | The site shall link from a pokemon's information to that pokemon's page on Smogon's dex and the Showdown dex, and, for a pokemon from the games, on Bulbapedia and Serebii. | O    | Implemented |
+| REQ-REF-3 | The site shall present a type chart as a table, as a list, and as an infographic.                                                                                           | C    | Implemented |
+| REQ-REF-4 | The site shall present a manual that states how the defence score and the coverage score are calculated and defines each checklist term that Smogon's dictionary lacks.     | C    | Implemented |
+| REQ-REF-5 | The site shall present an update log of the changes to pokemon data, features, and serious defects, newest first, showing the date of the newest entry.                     | C    | Implemented |
+| REQ-REF-6 | The site shall present credits naming the sources of its data, sprites, and images.                                                                                         | E    | Implemented |
 
 #### UC16 Change Language and UC17 Change Colour Scheme
 
