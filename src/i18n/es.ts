@@ -179,7 +179,8 @@ const es: Messages = {
     bigGridView: "Vista de cuadrícula grande",
     teamNumber: (number: number) => `Equipo ${number}`,
     unnamedTeam: "Equipo",
-    copyOf: (name: string) => `Copia de ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} de ${name}` : `Copia de ${name}`,
     learnsetsFailed:
       "No se han podido cargar las listas de movimientos. Recarga la página para volver a intentarlo.",
   },

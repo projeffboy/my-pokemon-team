@@ -183,7 +183,8 @@ const it: Messages = {
     // The default names of new teams
     teamNumber: (number: number) => `Squadra ${number}`,
     unnamedTeam: "Squadra",
-    copyOf: (name: string) => `Copia di ${name}`,
+    copyOf: (name: string, number?: bigint) =>
+      number ? `Copia ${number} di ${name}` : `Copia di ${name}`,
     learnsetsFailed:
       "Impossibile caricare gli elenchi delle mosse. Ricarica la pagina per riprovare.",
   },
