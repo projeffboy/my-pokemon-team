@@ -111,6 +111,14 @@ test.describe("Team Checklist - Integration Tests", () => {
     await battleFormat.getByRole("button", { name: "Doubles" }).click();
     await expectChecklistItem(page, "Spinner/Defogger", true);
     await expect(reason).toBeHidden();
+
+    // The share link keeps the battle format, so a reload reopens the same saved team
+    await page.reload();
+    await openAnalysis(page, "Team Checklist");
+    await expect(
+      battleFormat.getByRole("button", { name: "Doubles" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await expectChecklistItem(page, "Spinner/Defogger", true);
     await battleFormat.getByRole("button", { name: "Singles" }).click();
     await expectChecklistItem(page, "Spinner/Defogger", false);
   });
