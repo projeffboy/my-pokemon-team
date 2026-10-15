@@ -1,9 +1,11 @@
 import moves from "@/data/moves";
+import pokedex from "@/data/pokedex";
 import formats from "@/data/formats";
 import typechart from "@/data/typechart";
 import pastGenerations from "@/data/past-generations";
 import gameVariants from "@/data/game-variants";
 import { LATEST_GENERATION } from "./generations";
+import { pokemonNameInverse } from "./names";
 import {
   POKEMON_TYPES,
   type Generation,
@@ -37,10 +39,23 @@ export const moveDataIn = (
   pastGenerations[generation]?.moveData?.[move] ??
   moves[move];
 
+const ownFormatIn = (pokemon: string, generation: Generation) =>
+  pastGenerations[generation]?.formats?.[pokemon] ?? formats[pokemon];
+
+// A forme without tiers of its own, such as Arceus-Fire, takes those of the
+// species it changes from, as in Showdown's dex-species.ts
 export const pokemonFormatIn = (
   pokemon: string,
   generation = LATEST_GENERATION,
-) => pastGenerations[generation]?.formats?.[pokemon] ?? formats[pokemon];
+) => {
+  const format = ownFormatIn(pokemon, generation);
+  if (format?.tier || format?.doublesTier) return format;
+  const { changesFrom, baseSpecies } = pokedex[pokemon] ?? {};
+  const parent = pokemonNameInverse(changesFrom ?? baseSpecies ?? "");
+  if (!parent || parent === pokemon) return format;
+  const { tier, doublesTier } = ownFormatIn(parent, generation) ?? {};
+  return { ...format, tier, doublesTier };
+};
 
 // Damage taken by each type from each attacking type. A generation without its
 // own chart shares the next one's.

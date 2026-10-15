@@ -125,6 +125,15 @@ test("reports pokemon outside the format or generation", () => {
   ]);
 });
 
+test("a forme without a tier of its own is allowed where its species is", () => {
+  const team = createTeam({
+    name: "arceusfire",
+    ability: "Multitype",
+    item: "flameplate",
+  });
+  expect(validateTeam(team, 9, "Uber")).toEqual([]);
+});
+
 test("reports illegal abilities, missing required items, and repeated moves", () => {
   const team = createTeam(
     {
