@@ -49,9 +49,13 @@ const es: Messages = {
     short: "Sitio anterior",
     title: "¿Cambiar al sitio anterior?",
     description:
-      "Tu equipo actual no se transferirá al sitio anterior. Los equipos que ya hayas guardado aquí permanecerán en esta versión.",
+      "Tu equipo actual se abrirá en el sitio anterior. Los equipos guardados aquí permanecerán en esta versión.",
     go: "Ir al sitio anterior",
     goLong: "Ir al sitio anterior",
+    generationsOnly: (generations: string) =>
+      `El sitio anterior solo incluye las ${generations}.`,
+    leftOut: "Esto no se transferirá:",
+    goWithTeam: "Ir con mi equipo",
   },
   feedback: {
     button: "Enviar comentarios",
@@ -217,6 +221,11 @@ const es: Messages = {
       status: { label: "Movimiento de estado", short: "Estado" },
       phazer: { label: "Phazer" },
       boosting: { label: "Movimiento de mejora", short: "Setup" },
+      priority: {
+        label: "Movimiento prioritario",
+        short: "Prioridad",
+        shorter: "Prio",
+      },
       voltTurn: {
         label: "Movimiento Volt-turn",
         short: "Volt-turn",
@@ -440,7 +449,7 @@ const es: Messages = {
     removed: {
       item: "Objeto eliminado",
       ability: "Habilidad eliminada",
-      moves: "Movimientos eliminados:",
+      move: "Movimiento eliminado",
       details: "Detalles eliminados",
     },
     ivsUnused: (where: string) => `Los IVs no se aplican en ${where}.`,
@@ -456,6 +465,9 @@ const es: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidad" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} se ${carried === 1 ? "conserva" : "conservan"}`,
+    removedSummary: (removed: string) => `Eliminación de ${removed}`,
     modify: "Actualizar equipo actual",
     copy: "Copiar a un nuevo equipo",
     createEmpty: "Crear equipo vacío",
@@ -654,6 +666,10 @@ const es: Messages = {
       [
         "Movimiento de mejora",
         "Movimientos que suben tus estadísticas (preferiblemente 2 o más niveles), como Danza Espada y Paz Mental.",
+      ],
+      [
+        "Movimiento prioritario",
+        "Movimientos que hacen daño y se usan antes que la mayoría de los demás, sin importar la Velocidad. P. ej. Velocidad Extrema, Golpe Bajo, Acua Jet, Puño Bala.",
       ],
       [
         "Objeto Elegido",
