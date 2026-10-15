@@ -9,6 +9,12 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 14, 2026",
+    changes: [
+      "Team analysis now lists the rules a team breaks, e.g. Levitate on Gen 9 Gengar, and marks each pokemon concerned.",
+    ],
+  },
+  {
     date: "Oct 13, 2026",
     changes: [
       "Showdown imports and text exports now preserve each team’s generation setting.",

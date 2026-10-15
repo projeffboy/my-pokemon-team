@@ -95,7 +95,7 @@ test("matrix reasons and team problems name things in the current language", () 
     "じめん does 0x to ドータクン (はがね/エスパー) with ふゆう",
   );
   expect(validateTeam(team, 9, "", japanese)).toEqual([
-    "Two pokemon are ドータクン (Species Clause).",
+    { message: "Two pokemon are ドータクン (Species Clause).", slots: [0, 1] },
   ]);
 });
 

@@ -30,6 +30,8 @@ export default function useChecklistTab(
     const observer = new ResizeObserver(update);
     observer.observe(team);
     observer.observe(measured);
+    // The team's problems above the stats move them without resizing them
+    observer.observe(section);
     return () => observer.disconnect();
   }, [teamColumn, enabled, measured]);
 

@@ -477,6 +477,10 @@ const ja: Messages = {
     teamName: "チーム名",
   },
   validation: {
+    teamProblems: "チームの問題",
+    problemCount: (count: number) => `チームの問題（${count}）`,
+    noProblems: (where: string) => `${where}での問題は見つかりませんでした。`,
+    pokemonProblems: (pokemon: string) => `${pokemon}の問題`,
     empty: "チームが空です。",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon}は${where}では使用できません。`,

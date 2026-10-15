@@ -19,6 +19,7 @@ import useFittingLabel from "@/app/shared/use-fitting-label";
 import PokemonInput from "./pokemon-inputs/PokemonInput";
 import PokemonSprite from "@/app/shared/PokemonSprite";
 import SlotMoveHandle from "./pokemon-inputs/SlotMoveHandle";
+import SlotProblems from "./pokemon-inputs/SlotProblems";
 import useSlotDrag, { dropTarget } from "./use-slot-drag";
 import { MOVE_KEYS } from "@/types";
 import { randomizeSlotLabel } from "@/store/random";
@@ -158,8 +159,8 @@ const PokemonInputs = observer(function PokemonInputs({
               maxHeight={184}
             />
           </Box>
-          {/* The pokemon's types straddle the card's left edge at the sprite area's top,
-              matching the team stats' icons */}
+          {/* The pokemon's types, and any shiny or problem marker, straddle the card's left
+              edge at the sprite area's top, matching the team stats' icons */}
           {pokemon && (
             <Box
               sx={{
@@ -200,6 +201,7 @@ const PokemonInputs = observer(function PokemonInputs({
                     }}
                   />
                 )}
+              <SlotProblems teamIndex={teamIndex} pokemon={label} />
             </Box>
           )}
           {/* In the sprite area's top right corner, however the sprite is centred in it */}

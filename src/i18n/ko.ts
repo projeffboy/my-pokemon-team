@@ -486,6 +486,10 @@ const ko: Messages = {
     teamName: "팀 이름",
   },
   validation: {
+    teamProblems: "팀 문제",
+    problemCount: (count: number) => `팀 문제 (${count})`,
+    noProblems: (where: string) => `${where}에서 문제가 발견되지 않았습니다.`,
+    pokemonProblems: (pokemon: string) => `${pokemon}의 문제`,
     empty: "팀이 비어 있습니다.",
     notAllowed: (pokemon: string, where: string) =>
       `${josa(pokemon, "은", "는")} ${where}에서 사용할 수 없습니다.`,

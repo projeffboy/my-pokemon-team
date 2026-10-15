@@ -491,6 +491,10 @@ const de: Messages = {
     teamName: "Teamname",
   },
   validation: {
+    teamProblems: "Teamprobleme",
+    problemCount: (count: number) => `Teamprobleme (${count})`,
+    noProblems: (where: string) => `Keine Probleme in ${where} gefunden.`,
+    pokemonProblems: (pokemon: string) => `Probleme mit ${pokemon}`,
     empty: "Das Team ist leer.",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon} ist in ${where} nicht erlaubt.`,

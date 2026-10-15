@@ -122,7 +122,7 @@ Each has a GitHub issue that names its ID. The issue holds the work, and its mil
 | PF3 | Let's Go and the Legends games, with their training values. The generation menu lists them as "Coming soon".   | Planned                                                                                              |
 | PF4 | Portuguese data names (F8.1.1 in Brazilian Portuguese)                                                         | Waits for PokeAPI to have Portuguese names, which should follow the games in 2027                    |
 | PF5 | Verified sender domain for feedback                                                                            | Dropped on 14 October 2026: feedback goes only to the Site Owner, so players would see no difference |
-| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, which no part of the page shows today     | Planned                                                                                              |
+| PF6 | F4.6 Team legality warnings: the rules in `src/store/validation.ts`, listed at the top of the team analysis    | Built on 14 October 2026 (issue 117)                                                                 |
 | PF7 | F6.1 Notice of dropped entries: telling a visitor which entries a link or saved team lost to a data update     | Planned                                                                                              |
 
 ### Not part of the plan

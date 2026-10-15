@@ -37,6 +37,7 @@ import { calculateTypeDefence, calculateTypeCoverage } from "./store/coverage";
 import { filterPokemon } from "./store/filtering";
 import { sortPokemon, sortMoves } from "./store/sorting";
 import { evaluateChecklist } from "./store/checklist";
+import { validateTeam, type TeamProblem } from "./store/validation";
 import {
   completeSet,
   isSetComplete,
@@ -723,6 +724,27 @@ export class Store {
       this.analysisTeam,
       this.currentTeam.generation,
       this.dataFormat,
+    );
+  }
+
+  // The rules the current team breaks, once the data they need has loaded
+  get teamProblems(): TeamProblem[] | undefined {
+    if (
+      this.currentTeam.generationProfile === "6-9" &&
+      !this.generationDataLoaded
+    )
+      return undefined;
+    return validateTeam(
+      this.analysisTeam,
+      this.currentTeam.generation,
+      this.dataFormat,
+      this.translation,
+    );
+  }
+
+  slotProblems(teamIndex: number) {
+    return (this.teamProblems ?? []).filter(({ slots }) =>
+      slots.includes(teamIndex),
     );
   }
 

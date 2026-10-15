@@ -474,6 +474,10 @@ const es: Messages = {
     teamName: "Nombre del equipo",
   },
   validation: {
+    teamProblems: "Problemas del equipo",
+    problemCount: (count: number) => `Problemas del equipo (${count})`,
+    noProblems: (where: string) => `No se encontraron problemas en ${where}.`,
+    pokemonProblems: (pokemon: string) => `Problemas de ${pokemon}`,
     empty: "El equipo está vacío.",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon} no está permitido en ${where}.`,

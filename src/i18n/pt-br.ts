@@ -473,6 +473,10 @@ const ptBR: Messages = {
     teamName: "Nome da equipe",
   },
   validation: {
+    teamProblems: "Problemas da equipe",
+    problemCount: (count: number) => `Problemas da equipe (${count})`,
+    noProblems: (where: string) => `Nenhum problema encontrado em ${where}.`,
+    pokemonProblems: (pokemon: string) => `Problemas de ${pokemon}`,
     empty: "A equipe está vazia.",
     notAllowed: (pokemon: string, where: string) =>
       `${pokemon} não é permitido em ${where}.`,

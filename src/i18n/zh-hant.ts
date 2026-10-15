@@ -466,6 +466,10 @@ const zhHant: Messages = {
     teamName: "隊伍名稱",
   },
   validation: {
+    teamProblems: "隊伍問題",
+    problemCount: (count: number) => `隊伍問題（${count}）`,
+    noProblems: (where: string) => `${where} 未發現問題。`,
+    pokemonProblems: (pokemon: string) => `${pokemon}的問題`,
     empty: "隊伍是空的。",
     notAllowed: (pokemon: string, where: string) =>
       `${where} 不允許使用${pokemon}。`,
