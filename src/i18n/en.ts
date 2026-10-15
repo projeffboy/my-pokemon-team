@@ -227,7 +227,7 @@ const en = {
         short: "Recovery",
         shorter: "Heal",
         hint: (moves: string) =>
-          `Give a pokemon a move that heals half its HP or more, such as ${moves}.`,
+          `Give a pokemon a reliable healing move, such as ${moves}.`,
       },
       cleric: {
         label: "Cleric",
@@ -238,7 +238,7 @@ const en = {
         label: "Status Move",
         short: "Status",
         hint: (moves: string) =>
-          `Give a pokemon a move that inflicts a status condition, such as ${moves}.`,
+          `Give a pokemon a move that always inflicts a status condition when it hits, such as ${moves}.`,
       },
       phazer: {
         label: "Phazer",
@@ -249,7 +249,7 @@ const en = {
         label: "Boosting Move",
         short: "Setup",
         hint: (moves: string) =>
-          `Give a pokemon a move that raises its own stats, such as ${moves}.`,
+          `Give a pokemon a move that raises its own stats by two or more stages in total, such as ${moves}.`,
       },
       voltTurn: {
         label: "Volt-turn Move",

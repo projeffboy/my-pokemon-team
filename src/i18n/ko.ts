@@ -240,7 +240,7 @@ const ko: Messages = {
         short: "회복 기술",
         shorter: "회복",
         hint: (moves: string) =>
-          `HP를 절반 이상 회복하는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+          `안정적으로 회복할 수 있는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
       },
       cleric: {
         label: "클레릭",
@@ -251,7 +251,7 @@ const ko: Messages = {
         label: "상태이상 기술",
         short: "상태이상",
         hint: (moves: string) =>
-          `상대를 상태이상으로 만드는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+          `명중하면 반드시 상대를 상태이상으로 만드는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
       },
       phazer: {
         label: "강제 교체",
@@ -262,7 +262,7 @@ const ko: Messages = {
         label: "랭크업 기술",
         short: "랭크업",
         hint: (moves: string) =>
-          `자신의 능력치를 올리는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
+          `자신의 능력치를 합계 2랭크 이상 올리는 기술을 포켓몬에게 가르치세요. 예: ${moves}.`,
       },
       voltTurn: {
         label: "볼트체인지/유턴",

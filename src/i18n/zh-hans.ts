@@ -226,7 +226,7 @@ const zhHans: Messages = {
         short: "回复",
         shorter: "回复",
         hint: (moves: string) =>
-          `让宝可梦学会回复一半或以上 HP 的招式，例如${moves}。`,
+          `让宝可梦学会能稳定回复 HP 的招式，例如${moves}。`,
       },
       cleric: {
         label: "治愈手",
@@ -237,7 +237,7 @@ const zhHans: Messages = {
         label: "异常状态招式",
         short: "异常状态",
         hint: (moves: string) =>
-          `让宝可梦学会使对手陷入异常状态的招式，例如${moves}。`,
+          `让宝可梦学会命中后必定使对手陷入异常状态的招式，例如${moves}。`,
       },
       phazer: {
         label: "吹飞手",
@@ -247,7 +247,7 @@ const zhHans: Messages = {
         label: "强化招式",
         short: "强化",
         hint: (moves: string) =>
-          `让宝可梦学会提升自身能力的招式，例如${moves}。`,
+          `让宝可梦学会使自身能力合计提升 2 级或以上的招式，例如${moves}。`,
       },
       voltTurn: {
         label: "急折／伏特替换",

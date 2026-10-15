@@ -231,7 +231,7 @@ const it: Messages = {
         short: "Recupero",
         shorter: "Cura",
         hint: (moves: string) =>
-          `Insegna a un Pokémon una mossa che gli fa recuperare almeno metà dei suoi PS, come ${moves}.`,
+          `Insegna a un Pokémon una mossa curativa affidabile, come ${moves}.`,
       },
       cleric: {
         label: "Cleric",
@@ -242,7 +242,7 @@ const it: Messages = {
         label: "Mossa di stato",
         short: "Stato",
         hint: (moves: string) =>
-          `Insegna a un Pokémon una mossa che infligge un problema di stato, come ${moves}.`,
+          `Insegna a un Pokémon una mossa che infligge sempre un problema di stato quando va a segno, come ${moves}.`,
       },
       phazer: {
         label: "Phazer",
@@ -253,7 +253,7 @@ const it: Messages = {
         label: "Mossa potenziante",
         short: "Setup",
         hint: (moves: string) =>
-          `Insegna a un Pokémon una mossa che aumenta le sue statistiche, come ${moves}.`,
+          `Insegna a un Pokémon una mossa che aumenta le sue statistiche di almeno due livelli in totale, come ${moves}.`,
       },
       voltTurn: {
         label: "Mossa Volt-turn",

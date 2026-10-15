@@ -231,7 +231,7 @@ const ja: Messages = {
         short: "回復技",
         shorter: "回復",
         hint: (moves: string) =>
-          `HPを半分以上回復する技をポケモンに覚えさせましょう（例：${moves}）。`,
+          `安定して回復できる技をポケモンに覚えさせましょう（例：${moves}）。`,
       },
       cleric: {
         label: "状態異常回復",
@@ -242,7 +242,7 @@ const ja: Messages = {
         label: "状態異常技",
         short: "状態異常",
         hint: (moves: string) =>
-          `相手を状態異常にする技をポケモンに覚えさせましょう（例：${moves}）。`,
+          `命中すれば必ず相手を状態異常にする技をポケモンに覚えさせましょう（例：${moves}）。`,
       },
       phazer: {
         label: "強制交代技",
@@ -253,7 +253,7 @@ const ja: Messages = {
         label: "積み技",
         short: "積み",
         hint: (moves: string) =>
-          `自分の能力を上げる技をポケモンに覚えさせましょう（例：${moves}）。`,
+          `自分の能力を合計2段階以上上げる技をポケモンに覚えさせましょう（例：${moves}）。`,
       },
       voltTurn: {
         label: "ボルトチェンジ系",

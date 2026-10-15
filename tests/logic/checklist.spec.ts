@@ -427,7 +427,7 @@ test("an unfilled role suggests what fills it in the game", async () => {
     "Give a pokemon a Choice item to hold: Choice Band, Choice Specs, or Choice Scarf.",
   );
   expect(hint("recovery")).toBe(
-    "Give a pokemon a move that heals half its HP or more, such as Recover, Roost, Slack Off, or Wish with Protect.",
+    "Give a pokemon a reliable healing move, such as Recover, Roost, Slack Off, or Wish with Protect.",
   );
   // Gen 2 has no other hazard, and Defog clears the user's side only from Gen 6
   expect(hint("entryHazard", 2)).toBe(

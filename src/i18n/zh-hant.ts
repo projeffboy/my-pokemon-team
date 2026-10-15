@@ -225,7 +225,7 @@ const zhHant: Messages = {
         short: "回復招式",
         shorter: "回復",
         hint: (moves: string) =>
-          `讓寶可夢學會回復一半或以上 HP 的招式，例如${moves}。`,
+          `讓寶可夢學會能可靠回復 HP 的招式，例如${moves}。`,
       },
       cleric: {
         label: "治癒手",
@@ -236,7 +236,7 @@ const zhHant: Messages = {
         label: "異常狀態招式",
         short: "狀態",
         hint: (moves: string) =>
-          `讓寶可夢學會使對手陷入異常狀態的招式，例如${moves}。`,
+          `讓寶可夢學會命中後必定使對手陷入異常狀態的招式，例如${moves}。`,
       },
       phazer: {
         label: "強制換人",
@@ -246,7 +246,7 @@ const zhHant: Messages = {
         label: "強化招式",
         short: "強化",
         hint: (moves: string) =>
-          `讓寶可夢學會提升自身能力的招式，例如${moves}。`,
+          `讓寶可夢學會使自身能力合計提升 2 階或以上的招式，例如${moves}。`,
       },
       voltTurn: {
         label: "急速折返／伏特替換",

@@ -236,7 +236,7 @@ const de: Messages = {
         short: "Heilung",
         shorter: "Heilung",
         hint: (moves: string) =>
-          `Bring einem Pokémon eine Attacke bei, die mindestens die Hälfte seiner KP heilt, z. B. ${moves}.`,
+          `Bring einem Pokémon eine zuverlässige Heilattacke bei, z. B. ${moves}.`,
       },
       cleric: {
         label: "Cleric",
@@ -247,7 +247,7 @@ const de: Messages = {
         label: "Status-Attacke",
         short: "Status",
         hint: (moves: string) =>
-          `Bring einem Pokémon eine Attacke bei, die ein Statusproblem verursacht, z. B. ${moves}.`,
+          `Bring einem Pokémon eine Attacke bei, die bei einem Treffer immer ein Statusproblem verursacht, z. B. ${moves}.`,
       },
       phazer: {
         label: "Phazer",
@@ -258,7 +258,7 @@ const de: Messages = {
         label: "Boost-Attacke",
         short: "Setup",
         hint: (moves: string) =>
-          `Bring einem Pokémon eine Attacke bei, die seine eigenen Werte erhöht, z. B. ${moves}.`,
+          `Bring einem Pokémon eine Attacke bei, die seine eigenen Werte insgesamt um mindestens zwei Stufen erhöht, z. B. ${moves}.`,
       },
       voltTurn: {
         label: "Volt-Turn-Attacke",

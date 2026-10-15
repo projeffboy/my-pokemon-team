@@ -225,7 +225,7 @@ const ptBR: Messages = {
         short: "Recuperação",
         shorter: "Cura",
         hint: (moves: string) =>
-          `Ensine a um Pokémon um golpe que recupera metade do HP dele ou mais, como ${moves}.`,
+          `Ensine a um Pokémon um golpe de cura confiável, como ${moves}.`,
       },
       cleric: {
         label: "Cleric",
@@ -236,7 +236,7 @@ const ptBR: Messages = {
         label: "Golpe de status",
         short: "Status",
         hint: (moves: string) =>
-          `Ensine a um Pokémon um golpe que causa uma condição de status, como ${moves}.`,
+          `Ensine a um Pokémon um golpe que sempre causa uma condição de status quando acerta, como ${moves}.`,
       },
       phazer: {
         label: "Phazer",
@@ -247,7 +247,7 @@ const ptBR: Messages = {
         label: "Golpe de boost",
         short: "Setup",
         hint: (moves: string) =>
-          `Ensine a um Pokémon um golpe que aumenta os próprios atributos, como ${moves}.`,
+          `Ensine a um Pokémon um golpe que aumenta os próprios atributos em dois estágios ou mais no total, como ${moves}.`,
       },
       voltTurn: {
         label: "Golpe Volt-turn",

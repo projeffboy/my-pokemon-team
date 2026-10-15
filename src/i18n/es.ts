@@ -224,7 +224,7 @@ const es: Messages = {
         short: "Curación",
         shorter: "Cura",
         hint: (moves: string) =>
-          `Enseña a un Pokémon un movimiento que le recupere la mitad de sus PS o más, como ${moves}.`,
+          `Enseña a un Pokémon un movimiento de curación fiable, como ${moves}.`,
       },
       cleric: {
         label: "Cleric",
@@ -235,7 +235,7 @@ const es: Messages = {
         label: "Movimiento de estado",
         short: "Estado",
         hint: (moves: string) =>
-          `Enseña a un Pokémon un movimiento que cause un problema de estado, como ${moves}.`,
+          `Enseña a un Pokémon un movimiento que siempre cause un problema de estado al acertar, como ${moves}.`,
       },
       phazer: {
         label: "Phazer",
@@ -246,7 +246,7 @@ const es: Messages = {
         label: "Movimiento de mejora",
         short: "Setup",
         hint: (moves: string) =>
-          `Enseña a un Pokémon un movimiento que suba sus propias características, como ${moves}.`,
+          `Enseña a un Pokémon un movimiento que suba sus propias características dos niveles o más en total, como ${moves}.`,
       },
       voltTurn: {
         label: "Movimiento Volt-turn",

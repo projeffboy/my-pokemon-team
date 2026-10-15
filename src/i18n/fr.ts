@@ -233,7 +233,7 @@ const fr: Messages = {
         short: "Récupération",
         shorter: "Soin",
         hint: (moves: string) =>
-          `Apprenez à un Pokémon une capacité qui lui rend la moitié de ses PV ou plus, comme ${moves}.`,
+          `Apprenez à un Pokémon une capacité de soin fiable, comme ${moves}.`,
       },
       cleric: {
         label: "Cleric",
@@ -244,7 +244,7 @@ const fr: Messages = {
         label: "Capacité de statut",
         short: "Statut",
         hint: (moves: string) =>
-          `Apprenez à un Pokémon une capacité qui inflige une altération d'état, comme ${moves}.`,
+          `Apprenez à un Pokémon une capacité qui inflige toujours une altération d'état quand elle touche, comme ${moves}.`,
       },
       phazer: {
         label: "Phazer",
@@ -255,7 +255,7 @@ const fr: Messages = {
         label: "Capacité de boost",
         short: "Boost",
         hint: (moves: string) =>
-          `Apprenez à un Pokémon une capacité qui augmente ses propres statistiques, comme ${moves}.`,
+          `Apprenez à un Pokémon une capacité qui augmente ses propres statistiques d'au moins deux niveaux au total, comme ${moves}.`,
       },
       voltTurn: {
         label: "Capacité Volt-turn",
