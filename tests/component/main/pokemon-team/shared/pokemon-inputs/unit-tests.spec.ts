@@ -1,7 +1,6 @@
 import { test, expect } from "fixtures";
 import {
   getTeamTextFromUrl,
-  turnOnAdvanced,
   selectAbility,
   selectItem,
   selectMove,
@@ -103,7 +102,7 @@ test.describe("Pokemon Card - Unit Tests", () => {
     expect(getTeamTextFromUrl(page)).toContain("Ability: Cursed Body");
   });
 
-  test("Hidden labels appear only with More and enough space beside a selected hidden ability", async ({
+  test("Hidden labels appear only with enough space beside a selected hidden ability", async ({
     page,
   }) => {
     const team = Buffer.from("Salamence\nAbility: Moxie\n").toString(
@@ -114,8 +113,6 @@ test.describe("Pokemon Card - Unit Tests", () => {
     const ability = page.getByLabel("Pokemon 1's ability");
     const field = ability.locator("..");
     const hidden = field.getByText("Hidden", { exact: true });
-    await expect(hidden).toHaveCount(0);
-    await turnOnAdvanced(page);
 
     for (const { width, visible } of [
       { width: 480, visible: true },
@@ -160,7 +157,6 @@ test.describe("Pokemon Card - Unit Tests", () => {
     );
     await page.goto(`/?gen=8&team=${team}`);
     await page.setViewportSize({ width: 480, height: 1000 });
-    await turnOnAdvanced(page);
     const ability = page.getByLabel("Pokemon 1's ability");
     await expect(ability.locator("..").getByText("Hidden")).toBeVisible();
     await page.getByRole("button", { name: "Language", exact: true }).click();
@@ -169,14 +165,6 @@ test.describe("Pokemon Card - Unit Tests", () => {
     await expect(
       translated.locator("..").getByText(ja.team.hidden),
     ).toBeVisible();
-    await page.getByRole("button", { name: ja.team.manageTeamMenu }).click();
-    await page
-      .getByRole("menuitemcheckbox", { name: ja.team.advancedMode })
-      .click();
-    await page.keyboard.press("Escape");
-    await expect(
-      translated.locator("..").getByText(ja.team.hidden),
-    ).toHaveCount(0);
   });
 
   test("move selectors exclude duplicates and other Hidden Power types", async ({
@@ -369,32 +357,27 @@ test.describe("Pokemon Card - Unit Tests", () => {
       });
     });
     const card = page.getByRole("region", { name: "Pokemon 1", exact: true });
-    for (const tools of [false, true]) {
-      if (tools) await turnOnAdvanced(page);
-      await selectPokemon(page, "Chimecho");
-      const small = card.getByRole("img", { name: "Chimecho", exact: true });
-      await expect(small).toHaveJSProperty("naturalHeight", 64);
-      const before = await card.boundingBox();
+    await selectPokemon(page, "Chimecho");
+    const small = card.getByRole("img", { name: "Chimecho", exact: true });
+    await expect(small).toHaveJSProperty("naturalHeight", 64);
+    const before = await card.boundingBox();
 
-      await selectPokemon(page, "Exeggutor-Alola");
-      const sprite = card.getByRole("img", {
-        name: "Exeggutor-Alola",
-        exact: true,
-      });
-      await expect(sprite).toHaveJSProperty("naturalHeight", 180);
-      await expect
-        .poll(async () => (await card.boundingBox())?.height)
-        .toBe(before?.height);
-      const after = await card.boundingBox();
-      const image = await sprite.boundingBox();
-      expect(after).not.toBeNull();
-      expect(image).not.toBeNull();
-      if (!after || !image) return;
-      expect(image.y).toBeGreaterThanOrEqual(after.y);
-      expect(image.y + image.height).toBeLessThanOrEqual(
-        after.y + after.height,
-      );
-    }
+    await selectPokemon(page, "Exeggutor-Alola");
+    const sprite = card.getByRole("img", {
+      name: "Exeggutor-Alola",
+      exact: true,
+    });
+    await expect(sprite).toHaveJSProperty("naturalHeight", 180);
+    await expect
+      .poll(async () => (await card.boundingBox())?.height)
+      .toBe(before?.height);
+    const after = await card.boundingBox();
+    const image = await sprite.boundingBox();
+    expect(after).not.toBeNull();
+    expect(image).not.toBeNull();
+    if (!after || !image) return;
+    expect(image.y).toBeGreaterThanOrEqual(after.y);
+    expect(image.y + image.height).toBeLessThanOrEqual(after.y + after.height);
   });
 
   test("should list and select abilities for Vivillon-Garden", async ({

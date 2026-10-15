@@ -3,7 +3,7 @@ import { GENERATION_GAMES, GENERATIONS } from "@/shared/generations";
 import en from "@/i18n/en";
 import type { Locator } from "@playwright/test";
 
-test("Let’s Go and Legends options are disabled with Coming soon beside their logos", async ({
+test("Let’s Go and Legends options are disabled, under Coming soon only", async ({
   page,
 }) => {
   const generation = page.getByRole("combobox", { name: "Generation" });
@@ -12,21 +12,16 @@ test("Let’s Go and Legends options are disabled with Coming soon beside their 
     await page.setViewportSize({ width, height: 1000 });
     const before = await generationInput.inputValue();
     await generation.click();
+    // The group heading says it once, rather than each option
+    await expect(
+      page.getByRole("listbox").getByText("Coming soon", { exact: true }),
+    ).toHaveCount(1);
     for (const value of ["Let’s Go", "Legends: Arceus", "Legends: Z-A"]) {
       const option = page.locator(`[role="option"][data-value="${value}"]`);
       await expect(option).toHaveAttribute("aria-disabled", "true");
       await option.scrollIntoViewIfNeeded();
-      const status = option.getByText("Coming soon", { exact: true });
-      await expect(status).toBeVisible();
-      await expect(status).toHaveCSS("font-size", "12px");
       const logoBounds = await option.locator("img").last().boundingBox();
-      const statusBounds = await status.boundingBox();
       expect(logoBounds).not.toBeNull();
-      expect(statusBounds).not.toBeNull();
-      if (logoBounds && statusBounds)
-        expect(statusBounds.x).toBeGreaterThanOrEqual(
-          logoBounds.x + logoBounds.width,
-        );
       if (logoBounds)
         await page.mouse.click(
           logoBounds.x + logoBounds.width / 2,
@@ -288,4 +283,161 @@ test("keeps Legends names when they fit before using initials", async ({
   await expect(arceus).toHaveText("Gen 8 · PLA");
   await expect(za).toHaveText("Gen 9 · Z-A");
   await expect(gen1).toHaveText("Gen 1 · RBY");
+});
+
+test("groups the options under headings, with the coming-soon games last", async ({
+  page,
+}) => {
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  const listbox = page.getByRole("listbox");
+  await expect(listbox.getByRole("option")).toHaveCount(14);
+  const items = await listbox
+    .locator(":scope > li")
+    .evaluateAll(items =>
+      items.map(item =>
+        item.getAttribute("role") === "option" ?
+          item.getAttribute("data-value")
+        : item.textContent,
+      ),
+    );
+  expect(items).toEqual([
+    "Spin-offs",
+    "champions",
+    "Main series",
+    "6-9",
+    "9",
+    "8",
+    "7",
+    "6",
+    "5",
+    "4",
+    "3",
+    "2",
+    "1",
+    "Coming soon",
+    "Legends: Z-A",
+    "Legends: Arceus",
+    "Let’s Go",
+  ]);
+  // Screen readers say each option's group after its name
+  await expect(
+    listbox.locator('[role="option"][data-value="9"]'),
+  ).toHaveAccessibleDescription("Main series");
+  await expect(
+    listbox.locator('[role="option"][data-value="Legends: Z-A"]'),
+  ).toHaveAccessibleDescription("Coming soon");
+  // A heading stays put when clicked, rather than choosing a generation
+  const before = await page
+    .locator("header .MuiSelect-nativeInput")
+    .inputValue();
+  await listbox.getByText("Main series", { exact: true }).click();
+  await expect(listbox).toBeVisible();
+  await expect(page.locator("header .MuiSelect-nativeInput")).toHaveValue(
+    before,
+  );
+});
+
+test("checks only the selected option", async ({ page }) => {
+  const generation = page.getByRole("combobox", { name: "Generation" });
+  for (const value of ["9", "3"]) {
+    await generation.click();
+    const option = page.locator(`[role="option"][data-value="${value}"]`);
+    await option.click();
+    await expect(page.getByRole("listbox")).toBeHidden();
+    await generation.click();
+    await expect(option.getByTestId("CheckIcon")).toBeVisible();
+    await expect(
+      page
+        .getByRole("listbox")
+        .getByTestId("CheckIcon")
+        .filter({ visible: true }),
+    ).toHaveCount(1);
+    await page.keyboard.press("Escape");
+  }
+});
+
+test("the menu reaches down to the screen's edge, even after the screen shrinks", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  const paper = page.locator(".MuiMenu-paper");
+  await expect(paper).toHaveCSS("transform", "none");
+  const bottom = async () => {
+    const bounds = await paper.boundingBox();
+    return bounds && bounds.y + bounds.height;
+  };
+  expect(await bottom()).toBeCloseTo(900 - 16, 0);
+  // As when a phone is turned while the menu is open
+  await page.setViewportSize({ width: 1440, height: 500 });
+  await expect.poll(bottom).toBeLessThanOrEqual(500 - 16 + 1);
+});
+
+test("an option reached with the keyboard scrolls clear of the sticky group heading", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  const paper = page.locator(".MuiMenu-paper");
+  await expect(paper).toHaveCSS("transform", "none");
+  await page.keyboard.press("End");
+  for (let i = 0; i < 3; i++) await page.keyboard.press("ArrowUp");
+  const focused = page.locator('[role="option"]:focus');
+  await expect(focused).toHaveAttribute("data-value", "4");
+  const heading = await page
+    .getByRole("listbox")
+    .getByText("Main series", { exact: true })
+    .boundingBox();
+  const label = await focused.locator(".MuiListItemText-primary").boundingBox();
+  // The heading is stuck to the menu's top, over the options scrolled past
+  expect(heading?.y).toBeCloseTo((await paper.boundingBox())?.y ?? 0, 0);
+  expect(label?.y).toBeGreaterThanOrEqual(
+    (heading?.y ?? 0) + (heading?.height ?? 0),
+  );
+});
+
+test("keeps each option's logos on one line on a small phone", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.getByRole("combobox", { name: "Generation" }).click();
+  await expect(page.locator(".MuiMenu-paper")).toHaveCSS("transform", "none");
+  for (const option of await page.getByRole("option").all()) {
+    const logos = await option
+      .locator("img")
+      .evaluateAll(images =>
+        images.map(image => image.getBoundingClientRect().toJSON() as DOMRect),
+      );
+    if (!logos.length) continue;
+    const optionRight = await option.evaluate(
+      element => element.getBoundingClientRect().right,
+    );
+    const centres = logos.map(logo => logo.top + logo.height / 2);
+    expect(Math.max(...centres) - Math.min(...centres)).toBeLessThan(1);
+    expect(Math.max(...logos.map(logo => logo.right))).toBeLessThanOrEqual(
+      optionRight,
+    );
+  }
+});
+
+test("uses the larger logos from larger phones up, with box fronts twice as tall", async ({
+  page,
+}) => {
+  const generation = page.getByRole("combobox", { name: "Generation" });
+  const diamond = page
+    .locator('[role="option"][data-value="4"]')
+    .getByRole("img", { name: "Pokémon Diamond" });
+  const red = page
+    .locator('[role="option"][data-value="1"]')
+    .getByRole("img", { name: "Pokémon Red" });
+  for (const [width, height] of [
+    [500, 40],
+    [399, 28],
+  ]) {
+    await page.setViewportSize({ width, height: 900 });
+    await generation.click();
+    await expect(diamond).toHaveCSS("height", `${height}px`);
+    await expect(red).toHaveCSS("height", `${height * 2}px`);
+    await page.keyboard.press("Escape");
+  }
 });

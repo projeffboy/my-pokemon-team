@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { turnOnAdvanced, selectMove, selectPokemon } from "helper";
+import { selectMove, selectPokemon } from "helper";
 
 test.describe("Share Link - Integration Tests", () => {
   test.beforeEach(async ({ context, browserName }, testInfo) => {
@@ -19,7 +19,6 @@ test.describe("Share Link - Integration Tests", () => {
     await selectPokemon(page, "Pikachu");
     await selectMove(page, "Thunderbolt", 1, 0);
 
-    await turnOnAdvanced(page);
     const shareButton = page.getByRole("button", {
       name: "Share pokemon team link",
     });
