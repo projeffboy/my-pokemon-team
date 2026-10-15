@@ -11,7 +11,7 @@ import type {
   ReadonlyTeam,
 } from "@/types";
 import { englishNames, type Names } from "@/i18n/names";
-import { previousEvolution } from "./shared/pokemon";
+import { baseForme, previousEvolution } from "./shared/pokemon";
 
 const completeLearnsets = new Map<string, readonly string[]>();
 
@@ -46,7 +46,7 @@ export function completeLearnset(pokemon: string): readonly string[] {
 }
 
 function buildCompleteLearnset(pokemon: string): string[] {
-  let completeLearnset: string[] = [];
+  const completeLearnset: string[] = [];
   const checked = new Set<string>();
   let parent: string | undefined = pokemon;
   while (parent && !checked.has(parent)) {
@@ -66,42 +66,63 @@ function buildCompleteLearnset(pokemon: string): string[] {
     );
   }
 
-  // turning array to set removes duplicates then back to array
-  completeLearnset = Array.from(new Set(completeLearnset));
+  return withHiddenPowers(completeLearnset);
+}
 
-  // Add in all the hidden powers
-  if (completeLearnset.includes("hiddenpower")) {
-    // hidden power normal is already included by default
-    const pokemonTypes = [
-      // no hidden power fairy btw
-      "bug",
-      "dark",
-      "dragon",
-      "electric",
-      "fighting",
-      "fire",
-      "flying",
-      "ghost",
-      "grass",
-      "ground",
-      "ice",
-      "poison",
-      "psychic",
-      "rock",
-      "steel",
-      "water",
-    ];
-    const hiddenpowers = pokemonTypes.map(type => `hiddenpower${type}`);
+// Without duplicates, and with Hidden Power of every type but Fairy where it learns Hidden Power
+function withHiddenPowers(learnset: string[]): string[] {
+  const moves = [...new Set(learnset)];
+  if (!moves.includes("hiddenpower")) return moves;
+  const types = [
+    "bug",
+    "dark",
+    "dragon",
+    "electric",
+    "fighting",
+    "fire",
+    "flying",
+    "ghost",
+    "grass",
+    "ground",
+    "ice",
+    "poison",
+    "psychic",
+    "rock",
+    "steel",
+    "water",
+  ];
+  return [
+    ...moves.filter(move => move !== "hiddenpower"),
+    "hiddenpower",
+    ...types.map(type => `hiddenpower${type}`),
+  ];
+}
 
-    // remove hidden power normal
-    completeLearnset.splice(completeLearnset.indexOf("hiddenpower"), 1);
-
-    // add all hidden powers together
-    completeLearnset.push("hiddenpower");
-    completeLearnset.push(...hiddenpowers);
+// The old website's rule, which the moves carried there must pass: a forme's own moves, its
+// base forme's unless it is regional, and its prevos', with no Sketch
+export function oldWebsiteLearnset(pokemon: string): string[] {
+  const regions = ["alola", "galar", "hisui", "paldea"];
+  const regional = regions.some(region => pokemon.includes(region));
+  const base = baseForme(pokemon) ?? pokemon;
+  const learnset = [
+    ...(learnsets[pokemon] ?? []),
+    ...((!regional && learnsets[base]) || []),
+  ];
+  for (
+    let prevo = previousEvolution(base);
+    prevo;
+    prevo = previousEvolution(prevo)
+  ) {
+    // A regional forme's prevos are walked from its base forme, then switched back to a regional
+    // forme, e.g. Persian-Alola => Meowth => Meowth-Alola
+    const otherFormes = (regional && pokedex[prevo]?.otherFormes) || [];
+    const region =
+      regions.find(region =>
+        otherFormes.some(forme => forme.toLowerCase().includes(region)),
+      ) ?? "";
+    learnset.push(...(learnsets[`${prevo}${region}`] ?? []));
   }
-
-  return completeLearnset;
+  return withHiddenPowers(learnset);
 }
 
 function learnsetParent(pokemon: string): string | undefined {
