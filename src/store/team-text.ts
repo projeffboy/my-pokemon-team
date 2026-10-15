@@ -225,13 +225,15 @@ function parseFirstLine(line: string) {
   return name && { ...name, itemText: undefined };
 }
 
-// Original links omitted zero training and interpreted blank abilities as auto-selection.
+// Original links omitted zero training and interpreted blank abilities as auto-selection, and
+// could give formes such as totems their first stage's moves.
 export const LEGACY_LINK_PARSING_OPTIONS = {
   inferFrustrationHappiness: false,
   inferLegacyTraining: false,
   inferHiddenPowerIvs: false,
   preserveBlankAbilityDefault: true,
   allowHyperTraining: false,
+  acceptLegacyFormeInheritance: true,
 } as const;
 
 // Parses Pokemon Showdown team text into a fresh six-slot team.
@@ -246,12 +248,14 @@ export function parseTeamText(
     inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
+    acceptLegacyFormeInheritance = false,
   }: {
     inferFrustrationHappiness?: boolean;
     inferLegacyTraining?: boolean;
     inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
+    acceptLegacyFormeInheritance?: boolean;
   } = {},
 ): Team {
   const rules = generationRules(generation, format);
@@ -376,7 +380,14 @@ export function parseTeamText(
         const move = moveNameInverse(moveText);
 
         const validMove =
-          canItLearn(move, pokemon, generation, format) && move ? move : "";
+          (
+            move &&
+            canItLearn(move, pokemon, generation, format, {
+              acceptLegacyFormeInheritance,
+            })
+          ) ?
+            move
+          : "";
 
         const moveKey = MOVE_KEYS[moveIndex];
         if (moveKey) member[moveKey] = validMove;

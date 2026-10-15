@@ -15,6 +15,8 @@ import {
   importTeamFromUrlParameter,
 } from "@/app/shared/team-link";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
+import { generationBit } from "@/shared/generation-rules";
+import type { GenerationTransferData } from "@/types";
 import { planGenerationTransfer } from "@/store/generation-transfer";
 import { createTeam } from "./shared/team";
 import { createSavedTeam } from "@/shared/team";
@@ -467,34 +469,69 @@ function withLocation(url: string, run: () => void) {
   }
 }
 
-test("all union-only move additions survive team text and backup round trips", async () => {
+// No pokemon has a union-only move now that formes follow Showdown's inheritance, so this stands
+// one in: Surf for Grafaiai, as if only a Gen 9 game taught it.
+async function withUnionOnlyMove(run: () => void) {
   await learnsetsReady;
-  const additions = Object.keys(pokedex).flatMap(name =>
+  const data: GenerationTransferData = await loadGenerationTransferData();
+  const moves = data.pokemon.grafaiai?.moves;
+  if (!moves) throw new Error("Missing Grafaiai");
+  expect(completeLearnset("grafaiai")).not.toContain("surf");
+  expect(moves.surf).toBeUndefined();
+  moves.surf = generationBit(9, "");
+  try {
+    run();
+  } finally {
+    delete moves.surf;
+  }
+}
+
+const unionOnlyAdditions = () =>
+  Object.keys(pokedex).flatMap(name =>
     generationLearnset(name, 9, COMBINED_GENERATIONS_FORMAT)
       .filter(move => !completeLearnset(name).includes(move))
       .map(move => ({ name, move })),
   );
-  for (const { name, move } of additions) {
-    const team = createTeam({ name, move1: move });
-    const text = serializeTeam(team, 9, COMBINED_GENERATIONS_FORMAT);
-    expect(
-      parseTeamText(text, 9, COMBINED_GENERATIONS_FORMAT)[0]?.move1,
-      `${name}: ${move}`,
-    ).toBe(move);
-    const backup = serializeTeams([
-      createSavedTeam({ name: "Union", team, generationProfile: "6-9" }),
-    ]);
-    expect(parseTeamsText(backup)[0]?.team[0]?.move1, `${name}: ${move}`).toBe(
-      move,
-    );
-  }
+
+test("all union-only move additions survive team text and backup round trips", async () => {
+  await learnsetsReady;
+  // The union path currently adds nothing to the real data
+  expect(unionOnlyAdditions()).toEqual([]);
+  await withUnionOnlyMove(() => {
+    const additions = unionOnlyAdditions();
+    expect(additions).toEqual([{ name: "grafaiai", move: "surf" }]);
+    for (const { name, move } of additions) {
+      const team = createTeam({ name, move1: move });
+      const text = serializeTeam(team, 9, COMBINED_GENERATIONS_FORMAT);
+      expect(
+        parseTeamText(text, 9, COMBINED_GENERATIONS_FORMAT)[0]?.move1,
+        `${name}: ${move}`,
+      ).toBe(move);
+      const backup = serializeTeams([
+        createSavedTeam({ name: "Union", team, generationProfile: "6-9" }),
+      ]);
+      expect(
+        parseTeamsText(backup)[0]?.team[0]?.move1,
+        `${name}: ${move}`,
+      ).toBe(move);
+    }
+  });
 });
 
-test("union recognition does not narrow legacy imports", async () => {
-  await learnsetsReady;
-  expect(
-    canItLearn("weatherball", "vivillonfancy", 9, COMBINED_GENERATIONS_FORMAT),
-  ).toBe(true);
+test("union recognition is scoped to the combined profile without narrowing legacy imports", async () => {
+  await withUnionOnlyMove(() => {
+    expect(canItLearn("surf", "grafaiai", 9, COMBINED_GENERATIONS_FORMAT)).toBe(
+      true,
+    );
+    expect(canItLearn("surf", "grafaiai")).toBe(false);
+    const text = "Grafaiai\n- Surf";
+    expect(parseTeamText(text, 9, COMBINED_GENERATIONS_FORMAT)[0]?.move1).toBe(
+      "surf",
+    );
+    for (const format of ["", CHAMPIONS_FORMAT])
+      expect(parseTeamText(text, 9, format)[0]?.move1, format).toBe("");
+    expect(parseTeamText(text, 8)[0]?.move1).toBe("");
+  });
   expect(parseTeamText("Gengar\n- Rage", 8)[0]?.move1).toBe("rage");
 });
 
@@ -610,26 +647,28 @@ test("cleared real abilities stay cleared and remain unfinished in native and co
 });
 
 test("unheaded text uses the selected mode while explicit headers override it", async () => {
-  await learnsetsReady;
   const defaults = {
     generation: 9 as const,
     generationProfile: "6-9" as const,
     format: "OU: Over Used",
   };
-  const text = "Vivillon-Fancy\n- Weather Ball";
-  const inferred = parseTeamsText(text, defaults)[0];
-  expect(inferred).toMatchObject({
-    generation: 9,
-    generationProfile: "6-9",
-    format: "OU: Over Used",
+  const text = "Grafaiai\n- Surf";
+  await withUnionOnlyMove(() => {
+    const inferred = parseTeamsText(text, defaults)[0];
+    expect(inferred).toMatchObject({
+      generation: 9,
+      generationProfile: "6-9",
+      format: "OU: Over Used",
+    });
+    expect(inferred?.team[0]?.move1).toBe("surf");
+    const explicit = parseTeamsText(
+      `=== [gen9] Native ===\n\n${text}`,
+      defaults,
+    )[0];
+    expect(explicit?.generationProfile).toBeUndefined();
+    expect(explicit?.format).toBe("");
+    expect(explicit?.team[0]?.move1).toBe("");
   });
-  expect(inferred?.team[0]?.move1).toBe("weatherball");
-  const explicit = parseTeamsText(
-    `=== [gen9] Native ===\n\n${text}`,
-    defaults,
-  )[0];
-  expect(explicit?.generationProfile).toBeUndefined();
-  expect(explicit?.format).toBe("");
   expect(
     parseTeamsText("Clefable\n- Metronome", { generation: 1, format: "" })[0],
   ).toMatchObject({ generation: 1, format: "" });
