@@ -228,10 +228,90 @@ test("Japanese falls back to kana names and halfwidth letters", () => {
 test("formes that share a name get their species and English forme instead", () => {
   const { translations, report } = buildTranslations(showdown, tables, "fr");
   translations.pokemon.charizardmegaz = "Méga-Dracaufeu X";
+  translations.pokemon.raichu = "Dracaufeu";
   disambiguatePokemon(translations, showdown.pokedex, report);
   expect(translations.pokemon.charizardmegax).toBe("Dracaufeu-Mega-X");
   expect(translations.pokemon.charizardmegaz).toBe("Dracaufeu-Mega-Z");
   expect(report.partialFormes).toContain("Charizard-Mega-X");
+  expect(report.collisions).toEqual(["pokemon: Charizard, Raichu (Dracaufeu)"]);
+});
+
+test("things PokeAPI names alike take a fallback language's names, else keep their detail", () => {
+  const collisions: PokeApiTables = {
+    ...tables,
+    pokemon_species: rows("id,identifier", "896,glastrier", "897,spectrier"),
+    pokemon_species_names: rows(
+      "pokemon_species_id,local_language_id,name",
+      "896,11,ブリザポス",
+      "897,11,レイスポス",
+    ),
+    items: rows(
+      "id,identifier",
+      "259,stick",
+      "2223,unremarkable-teacup",
+      "2224,masterpiece-teacup",
+    ),
+    // PokeAPI's kanji row for the Masterpiece Teacup repeats the Unremarkable one's name
+    item_names: rows(
+      "item_id,local_language_id,name",
+      "259,11,ながねぎ",
+      "259,1,ながねぎ",
+      "2223,11,ボンサクのちゃわん",
+      "2223,1,ボンサクのちゃわん",
+      "2224,11,ボンサクのちゃわん",
+      "2224,1,ケッサクのちゃわん",
+    ),
+    moves: rows("id,identifier", "1,pound", "2,karate-chop"),
+    move_names: rows(
+      "move_id,local_language_id,name",
+      "1,11,はたく",
+      "2,11,はたく",
+    ),
+    abilities: rows(
+      "id,identifier",
+      "266,as-one-glastrier",
+      "267,as-one-spectrier",
+      "301,embody-aspect",
+    ),
+    ability_names: rows(
+      "ability_id,local_language_id,name",
+      "266,11,じんばいったい",
+      "266,1,じんばいったい",
+      "267,11,じんばいったい",
+      "301,11,おもかげやどし",
+    ),
+  };
+  const { translations, report } = buildTranslations(
+    {
+      ...showdown,
+      items: {
+        leek: { name: "Leek" },
+        stick: { name: "Stick" },
+        unremarkableteacup: { name: "Unremarkable Teacup" },
+        masterpieceteacup: { name: "Masterpiece Teacup" },
+      },
+      moves: { pound: { name: "Pound" }, karatechop: { name: "Karate Chop" } },
+      abilities: [
+        "As One (Glastrier)",
+        "As One (Spectrier)",
+        "Embody Aspect (Teal)",
+      ],
+    },
+    collisions,
+    "ja",
+  );
+  expect(translations.items).toEqual({
+    leek: "ながねぎ",
+    stick: "ながねぎ",
+    unremarkableteacup: "ボンサクのちゃわん",
+    masterpieceteacup: "ケッサクのちゃわん",
+  });
+  expect(translations.abilities).toEqual({
+    "As One (Glastrier)": "じんばいったい (ブリザポス)",
+    "As One (Spectrier)": "じんばいったい (レイスポス)",
+    "Embody Aspect (Teal)": "おもかげやどし (Teal)",
+  });
+  expect(report.collisions).toEqual(["moves: Pound, Karate Chop (はたく)"]);
 });
 
 test("renderTranslations writes one name per line", () => {

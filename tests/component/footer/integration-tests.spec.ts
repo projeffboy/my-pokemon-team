@@ -1,6 +1,19 @@
 import { test, expect } from "fixtures";
+import { closeDialog, expectToOpenInNewTab } from "helper";
 
 test.describe("Footer - Integration Tests", () => {
+  test("should open every link in the footer dialogs in a new tab", async ({
+    page,
+  }) => {
+    for (const name of ["Manual", "Credits", "Updates", "Privacy Policy"]) {
+      await page.getByRole("button", { name }).click();
+      const links = page.getByRole("dialog").locator("a[href]");
+      await expect(links.first()).toBeVisible();
+      for (const link of await links.all()) await expectToOpenInNewTab(link);
+      await closeDialog(page, "Go Back");
+    }
+  });
+
   test("should select system, light, and dark themes", async ({ page }) => {
     const systemButton = page.getByRole("button", { name: "Use system theme" });
     const lightButton = page.getByRole("button", { name: "Use light theme" });
