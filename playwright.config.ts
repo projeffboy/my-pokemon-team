@@ -50,6 +50,22 @@ export default defineConfig({
       },
     },
 
+    {
+      name: "Desktop Firefox",
+      use: {
+        ...devices["Desktop Firefox"],
+        viewport: createViewport(LARGE_VIEWPORT_WIDTH),
+      },
+    },
+
+    {
+      name: "Desktop Edge",
+      use: {
+        ...devices["Desktop Edge"],
+        viewport: createViewport(LARGE_VIEWPORT_WIDTH),
+      },
+    },
+
     /* Test against mobile viewports. */
     {
       name: "Android",

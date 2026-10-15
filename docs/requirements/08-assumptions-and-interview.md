@@ -31,7 +31,7 @@ These documents were first written from the repository alone. The Site Owner the
 ### Speed and browsers
 
 - **Speed first.** "Speed is extremely important. The site has to be fast. No question about it." He gave no figures. The random button exists so that one tap gives an analysed team.
-- **Browsers by usage.** "Which other browsers we should support should be determined by their market share / browser usage. However, this does not mean that we should support IE11 if it still has a lot of people using it, because we do not want to support very old legacy browsers."
+- **Browsers by usage.** "Which other browsers we should support should be determined by their market share / browser usage. However, this does not mean that we should support IE11 if it still has a lot of people using it, because we do not want to support very old legacy browsers." On 14 October 2026 he accepted 2% of worldwide usage as the bar, with Firefox and Edge tested on desktop and Samsung Internet, which shares Chrome's engine, covered by the Android tests (issue 121).
 
 ### The old website
 
@@ -67,6 +67,5 @@ Text marked **[A-n]** in the other documents rests on one of these.
 | A-3  | How late must Pokemon Showdown be with a new game's data before another source is used, and which source? 7 days is proposed.                            | BR-3, issue 123               |
 | A-4  | What thresholds show that the redesign has won? Fewer than 10% of sessions switching back, and fewer than five defect reports a month, are proposed.     | BR-5                          |
 | A-16 | What figures should the usability, performance, and uptime requirements use? The Site Owner rated speed as paramount and gave none, so 05 proposes them. | 05 Sections 3.2, 3.3, and 3.5 |
-| A-18 | What share of browser usage makes a browser worth supporting? 2% is proposed.                                                                            | REQ-INTF-13, issue 121        |
 | A-23 | How should "a large share" of non-competitive players be measured, such as by monthly users or search position?                                          | BR-9                          |
 | A-24 | Are children and teenagers a large part of the audience, as the Site Owner believes? Analytics could check.                                              | 01 Scope, 02                  |
