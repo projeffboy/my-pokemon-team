@@ -144,7 +144,7 @@ const ko: Messages = {
     advanced: "추가 세부 정보",
     advancedFor: (slot: number) => `슬롯 ${slot}의 추가 세부 정보`,
     details: "상세",
-    showMoveTypes: "기술 타입 표시",
+    showTypes: "타입 표시",
     about: (pokemon: string) => `${pokemon} 정보`,
     dragHint: "길게 눌러 끌어서 순서 변경",
     moveToSlot: (pokemon: string) => `${pokemon}을(를) 다른 슬롯으로 이동`,

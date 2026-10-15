@@ -129,7 +129,7 @@ const ptBR: Messages = {
     advanced: "Mais detalhes",
     advancedFor: (slot: number) => `Mais detalhes do slot ${slot}`,
     details: "Detalhes",
-    showMoveTypes: "Mostrar tipos dos golpes",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Sobre ${pokemon}`,
     dragHint: "Segure e arraste para reordenar",
     moveToSlot: (pokemon: string) => `Mover ${pokemon} para outro slot`,

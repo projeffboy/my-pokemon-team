@@ -128,7 +128,7 @@ const es: Messages = {
     advanced: "Más detalles",
     advancedFor: (slot: number) => `Más detalles del hueco ${slot}`,
     details: "Detalles",
-    showMoveTypes: "Mostrar tipos de movimientos",
+    showTypes: "Mostrar tipos",
     about: (pokemon: string) => `Acerca de ${pokemon}`,
     dragHint: "Mantén y arrastra para reordenar",
     moveToSlot: (pokemon: string) => `Mover a ${pokemon} a otro hueco`,

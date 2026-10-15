@@ -125,7 +125,7 @@ const en = {
     advancedFor: (slot: number) => `More details for slot ${slot}`,
     // The short label of the button that opens a slot's More details
     details: "Details",
-    showMoveTypes: "Show move types",
+    showTypes: "Show types",
     about: (pokemon: string) => `About ${pokemon}`,
     dragHint: "Hold and drag to reorder",
     moveToSlot: (pokemon: string) => `Move ${pokemon} to another slot`,

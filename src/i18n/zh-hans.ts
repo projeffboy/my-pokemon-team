@@ -127,7 +127,7 @@ const zhHans: Messages = {
     advanced: "更多详情",
     advancedFor: (slot: number) => `栏位 ${slot} 的更多详情`,
     details: "详情",
-    showMoveTypes: "显示招式属性",
+    showTypes: "显示属性",
     about: (pokemon: string) => `关于${pokemon}`,
     dragHint: "长按拖动即可调整顺序",
     moveToSlot: (pokemon: string) => `把${pokemon}移到其他栏位`,

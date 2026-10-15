@@ -132,7 +132,7 @@ const fr: Messages = {
     advanced: "Plus de détails",
     advancedFor: (slot: number) => `Plus de détails pour l'emplacement ${slot}`,
     details: "Détails",
-    showMoveTypes: "Afficher les types des capacités",
+    showTypes: "Afficher les types",
     about: (pokemon: string) => `À propos de ${pokemon}`,
     dragHint: "Maintenez et glissez pour réordonner",
     moveToSlot: (pokemon: string) =>
