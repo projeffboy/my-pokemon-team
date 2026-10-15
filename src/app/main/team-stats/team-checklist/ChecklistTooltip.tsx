@@ -52,6 +52,7 @@ const ChecklistTooltip = observer(function ChecklistTooltip({
           store.currentTeam.generation,
           store.dataFormat,
           store.currentTeam.battleFormat,
+          store.currentTeam.format,
         )
       }
       {item.dependsOnBattleFormat && (

@@ -8,6 +8,7 @@ import {
 } from "@/store/checklist";
 import { learnsetsReady } from "@/store/learnsets";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
+import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import type { BattleFormat, Generation, ReadonlyTeam } from "@/types";
 import en from "@/i18n/en";
 import { english, loadTranslation, type Translation } from "@/i18n/translation";
@@ -632,6 +633,29 @@ test("an unfilled role's suggestion leaves out what the team's format bans", asy
   );
   expect(hint("trapper", "Doubles OU")).toBe(
     "Give a pokemon a move that stops the foe from switching out, such as Mean Look or Block, or the ability Arena Trap or Magnet Pull.",
+  );
+});
+
+test("a Generations 6–9 team's suggestion leaves out what the format in the filters bans", async () => {
+  await learnsetsReady;
+  const hint = (key: ChecklistItemKey, tier?: string) =>
+    checklistHint(
+      role(key),
+      english,
+      9,
+      COMBINED_GENERATIONS_FORMAT,
+      undefined,
+      tier,
+    );
+  // Without a tier, nothing is banned
+  expect(hint("trapper")).toContain("Shadow Tag");
+  expect(hint("status")).toContain("Spore");
+  // OU bans Shadow Tag, Arena Trap, and Spore
+  expect(hint("trapper", "OU: Over Used")).toBe(
+    "Give a pokemon a move that stops the foe from switching out, such as Mean Look, Block, or Anchor Shot, or the ability Magnet Pull.",
+  );
+  expect(hint("status", "OU: Over Used")).toBe(
+    "Give a pokemon a move that always inflicts a status condition when it hits, such as Toxic, Will-O-Wisp, or Thunder Wave.",
   );
 });
 

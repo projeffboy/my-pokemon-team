@@ -22,6 +22,10 @@ import { filterPokemon } from "./filtering";
 import { isItemAvailable, isMoveAvailable } from "./learnsets";
 import { LATEST_GENERATION } from "@/shared/generations";
 import { generationRules } from "@/shared/generation-rules";
+import {
+  COMBINED_GENERATIONS_FORMAT,
+  COMBINED_GENERATIONS_PROFILE,
+} from "@/shared/generation-profile";
 
 // The labels live in src/i18n, under these keys
 export type ChecklistGroupKey = keyof Messages["checklist"]["groups"];
@@ -429,22 +433,25 @@ const standIn = ([first = "", second = ""]: string[], heldItem = false) => ({
   move4: "",
 });
 
-// What would fill a role: the examples that are in the game, that its format allows, and
+// What would fill a role: the examples that are in the game, that its tier allows, and
 // that fill it there, in the team's battle format, or in both when it has none. The
-// abilities are those that a pokemon allowed there can have.
+// abilities are those that a pokemon allowed there can have. As in validateTeam, the
+// format picks the games' data and the tier the bans and allowed pokemon; the tier is
+// the format, except in Generations 6–9.
 export function checklistHint(
   { key, fills, examples, heldItem, abilities = [] }: ChecklistItem,
   { locale, t, names }: Translation = english,
   generation = LATEST_GENERATION,
   format = "",
   battleFormat?: BattleFormat,
+  tier = format,
 ) {
   const battleFormats: BattleFormat[] =
     battleFormat ? [battleFormat] : ["singles", "doubles"];
   const list = (items: string[]) =>
     new Intl.ListFormat(locale, { type: "disjunction" }).format(items);
   const isAvailable = heldItem ? isItemAvailable : isMoveAvailable;
-  const bans = formatBans[showdownFormatId(generation, format)];
+  const bans = formatBans[showdownFormatId(generation, tier)];
   const banned = (heldItem ? bans?.items : bans?.moves) ?? [];
   const named = examples
     .map(example => [example].flat())
@@ -469,8 +476,18 @@ export function checklistHint(
         .filter(
           ability =>
             !bans?.abilities?.includes(ability) &&
-            filterPokemon({ generation, format, region: "", type: "", ability })
-              .length > 0,
+            filterPokemon({
+              generation,
+              format: tier,
+              // In Generations 6–9, abilities still come from those games' data
+              generationProfile:
+                format === COMBINED_GENERATIONS_FORMAT ?
+                  COMBINED_GENERATIONS_PROFILE
+                : undefined,
+              region: "",
+              type: "",
+              ability,
+            }).length > 0,
         )
         .map(names.ability)
     : [];
