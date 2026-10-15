@@ -12,7 +12,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `dex-urls.spec.ts` covers the Pokemon Info dialog's Smogon, Bulbapedia, Serebii, and Showdown dex URLs, including names with punctuation or accents, and that every pokemon's Showdown URL uses its Showdown ID. `npm run test:links` checks the links on the real sites.
 - `random.spec.ts` covers random pokemon and set choices.
 - `matrix.spec.ts` covers the Matrix Analysis cells and their reasons.
-- `validation.spec.ts` covers the team validation rules: legality, abilities, required items, repeated moves, EVs, levels, tera types, and clauses.
+- `validation.spec.ts` covers the team validation rules: legality, abilities, required items, repeated moves, EVs, levels, tera types, clauses, and the abilities, items, and moves a Smogon tier bans.
 - `pokedex.spec.ts` checks inherited cosmetic-form data and distinct battle formes.
 - `store-integration.spec.ts` checks that MobX recomputes results after team and filter edits.
 - `select-pokemon.spec.ts` checks that choosing a pokemon in a slot resets it, auto-selects its only item and ability, and leaves the other slots alone.
@@ -24,7 +24,7 @@ Run `npm run test:logic` to test pure rules, store integration, and parsing dire
 - `team-sync.spec.ts` covers concurrent tab edits, selected-team identity, failed saves and recovery, and keeping unsaved work available for backups.
 - `team-backup.spec.ts` covers complete JSON backups, strict atomic validation, drafts, unavailable values, additive restore, and duplicate handling.
 - `game-variant-data.spec.ts` covers game-specific moves and stats, historical move rules, and their use in existing coverage and sorting.
-- `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, learnset merging, viable moves, the type chart, rename reports, and the rendered file format.
+- `update-data.spec.ts` covers the data update's pure transforms in `scripts/update-data/transforms.ts`: field projections, cosmetic formes, champions legality, format bans, learnset merging, viable moves, the type chart, rename reports, and the rendered file format.
 - `update-translations.spec.ts` covers the translation update's pure transforms in `scripts/update-translations/transforms.ts`: CSV parsing, species and forme names, the mega and regional templates, Hidden Power, Z-Move and Z-Crystal suffixes, abilities with a detail, duplicate names, the report, and the rendered file format.
 - `translations.spec.ts` covers the language detection, the English fallback of translated names, name sorting by species in another language, translated matrix reasons and team problems, every language having English's message keys, every language naming a slot's inputs, Portuguese keeping the English names, and the store loading a language and saving the choice.
 

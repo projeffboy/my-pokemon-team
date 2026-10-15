@@ -486,6 +486,8 @@ const ja: Messages = {
       `${pokemon}には${items.join("または")}を持たせる必要があります。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}が${move}を2回覚えています。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon}の${thing}は${where}では禁止されています。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,

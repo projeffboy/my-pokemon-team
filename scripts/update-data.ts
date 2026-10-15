@@ -1,4 +1,5 @@
 import { generationTransferData } from "./update-data/generation-transfer.ts";
+import { formatBansData } from "./update-data/format-bans.ts";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -86,6 +87,7 @@ const DATA_FILES: Partial<Record<keyof DataTypes, string>> = {
   PastGenerations: "past-generations",
   HiddenPowerSpreads: "hidden-power-spreads",
   GameVariantData: "game-variants",
+  FormatBans: "format-bans",
 };
 
 async function writeData<N extends keyof DataTypes>(
@@ -554,6 +556,10 @@ async function updateData() {
     await updateHiddenPowerSpreads();
     return;
   }
+  if (process.argv.includes("--format-bans-only")) {
+    await writeData("FormatBans", formatBansData(showdownRoot), true);
+    return;
+  }
   const before = await loadReportedData();
 
   await Promise.all([
@@ -593,6 +599,7 @@ async function updateData() {
     path.join(dataRoot, "generation-transfer.json"),
     `${JSON.stringify(transferData, null, 2)}\n`,
   );
+  await writeData("FormatBans", formatBansData(showdownRoot), true);
 
   await updateViableMoves(
     JSON.parse(await read(path.join(dataRoot, "learnsets.json"))) as Learnsets,

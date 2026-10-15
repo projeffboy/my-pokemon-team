@@ -471,6 +471,8 @@ const zhHans: Messages = {
       `${pokemon}必须携带${items.join("或")}。`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon}有两个${move}。`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${where} 禁止使用${pokemon}的${thing}。`,
     tooMuchTraining: (
       pokemon: string,
       total: number,

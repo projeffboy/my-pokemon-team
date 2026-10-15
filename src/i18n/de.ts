@@ -500,6 +500,8 @@ const de: Messages = {
       `${pokemon} muss ${items.join(" oder ")} tragen.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} hat ${move} zweimal.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} hat ${thing}, was in ${where} verboten ist.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,

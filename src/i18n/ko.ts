@@ -495,6 +495,8 @@ const ko: Messages = {
       `${josa(pokemon, "은", "는")} ${josa(items.join(" 또는 "), "을", "를")} 지녀야 합니다.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${josa(pokemon, "은", "는")} ${josa(move, "을", "를")} 두 번 배우고 있습니다.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon}의 ${josa(thing, "은", "는")} ${where}에서 금지되어 있습니다.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,

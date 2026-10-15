@@ -482,6 +482,8 @@ const ptBR: Messages = {
       `${pokemon} precisa segurar ${items.join(" ou ")}.`,
     repeatedMove: (pokemon: string, move: string) =>
       `${pokemon} tem ${move} duas vezes.`,
+    banned: (pokemon: string, thing: string, where: string) =>
+      `${pokemon} tem ${thing}, o que é proibido em ${where}.`,
     tooMuchTraining: (
       pokemon: string,
       total: number,
