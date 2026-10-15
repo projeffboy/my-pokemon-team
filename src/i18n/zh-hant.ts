@@ -437,7 +437,7 @@ const zhHant: Messages = {
     removed: {
       item: "移除的道具",
       ability: "移除的特性",
-      moves: "移除的招式：",
+      move: "移除的招式",
       details: "移除的詳細資訊",
     },
     ivsUnused: (where: string) => `個體值不適用於${where}。`,
@@ -450,6 +450,9 @@ const zhHant: Messages = {
       item: (count: number) => `${count}件道具`,
       ability: (count: number) => `${count}個特性`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${total}中保留${carried}隻`,
+    removedSummary: (removed: string) => `移除${removed}`,
     modify: "更新現有隊伍",
     copy: "複製到新隊伍",
     createEmpty: "建立空隊伍",

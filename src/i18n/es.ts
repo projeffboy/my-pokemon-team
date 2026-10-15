@@ -440,7 +440,7 @@ const es: Messages = {
     removed: {
       item: "Objeto eliminado",
       ability: "Habilidad eliminada",
-      moves: "Movimientos eliminados:",
+      move: "Movimiento eliminado",
       details: "Detalles eliminados",
     },
     ivsUnused: (where: string) => `Los IVs no se aplican en ${where}.`,
@@ -456,6 +456,9 @@ const es: Messages = {
       ability: (count: number) =>
         `${count} ${count === 1 ? "habilidad" : "habilidades"}`,
     },
+    carryOverSummary: (carried: number, total: string) =>
+      `${carried} de ${total} se ${carried === 1 ? "conserva" : "conservan"}`,
+    removedSummary: (removed: string) => `Eliminación de ${removed}`,
     modify: "Actualizar equipo actual",
     copy: "Copiar a un nuevo equipo",
     createEmpty: "Crear equipo vacío",
