@@ -60,13 +60,18 @@ const flattenSurfaceOverlays = (page: Page) =>
     }
   });
 
-const expectNoViolations = async (page: Page, skippedRules: string[] = []) => {
+// `within` checks only that part of the page
+const expectNoViolations = async (
+  page: Page,
+  skippedRules: string[] = [],
+  within?: string,
+) => {
   await settle(page);
   await flattenSurfaceOverlays(page);
-  const { violations } = await new AxeBuilder({ page })
+  const axe = new AxeBuilder({ page })
     .withTags(WCAG_TAGS)
-    .disableRules(skippedRules)
-    .analyze();
+    .disableRules(skippedRules);
+  const { violations } = await (within ? axe.include(within) : axe).analyze();
   expect(
     violations.flatMap(({ id, nodes }) => {
       const targets = nodes
@@ -114,10 +119,13 @@ const footerButton = (page: Page, name: RegExp) =>
 // only when the scrolling element is the listbox itself, and here it sits inside it.
 const DROPDOWN_RULES = ["scrollable-region-focusable"];
 
+// The open list covers part of the slot beneath it, such as the About button, whose
+// target size the check with nothing open covers. So target sizes count only in the list.
 const checkDropdown = async (page: Page, input: Locator) => {
   await input.click();
   await expect(page.getByRole("listbox")).toBeVisible();
-  await expectNoViolations(page, DROPDOWN_RULES);
+  await expectNoViolations(page, [...DROPDOWN_RULES, "target-size"]);
+  await expectNoViolations(page, DROPDOWN_RULES, ".MuiAutocomplete-popper");
   await closeAll(page);
 };
 
