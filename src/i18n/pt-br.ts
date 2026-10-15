@@ -250,6 +250,8 @@ const ptBR: Messages = {
       cause: string | undefined,
     ) =>
       `${type} causa ${multiplier}x em ${pokemon} (${types})${cause ? ` com ${cause}` : ""}`,
+    conversion: (move: string, type: string) =>
+      `${move} o torna do tipo ${type}`,
     coverageReason: (
       pokemon: string,
       move: string,

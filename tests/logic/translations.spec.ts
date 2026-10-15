@@ -94,6 +94,14 @@ test("matrix reasons and team problems name things in the current language", () 
   expect(defenceMatrix(team, japanese).Ground?.[0]?.reason).toBe(
     "じめん does 0x to ドータクン (はがね/エスパー) with ふゆう",
   );
+  const porygonZ = createTeam({
+    name: "porygonz",
+    move1: "shadowball",
+    move2: "conversion",
+  });
+  expect(defenceMatrix(porygonZ, japanese).Ground?.[0]?.reason).toBe(
+    "じめん does 1x to ポリゴンZ (ノーマル)\nテクスチャー makes it ゴースト type",
+  );
   expect(validateTeam(team, 9, "", japanese)).toEqual([
     "Two pokemon are ドータクン (Species Clause).",
   ]);

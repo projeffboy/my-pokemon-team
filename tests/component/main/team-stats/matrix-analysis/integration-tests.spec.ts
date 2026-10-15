@@ -188,6 +188,25 @@ test.describe("Matrix Analysis - Integration Tests", () => {
     await openAnalysis(page, "Matrix Analysis");
     await expect(strongCell).toBeVisible();
   });
+
+  test("a Conversion user keeps its own types, with its first move's type on a second line", async ({
+    page,
+  }) => {
+    await selectPokemon(page, "Porygon-Z");
+    await selectMove(page, "Shadow Ball");
+    await selectMove(page, "Conversion", 2);
+    await openAnalysis(page, "Matrix Analysis");
+    const matrix = page.getByRole("region", { name: "Matrix Analysis" });
+    const reason =
+      "Fighting does 2x to Porygon-Z (Normal)\nConversion makes it Ghost type";
+    const cell = matrix.getByRole("cell", { name: reason, exact: true });
+    await expect(cell).toHaveText("×2");
+    await cell.hover();
+    const tooltip = page
+      .getByRole("tooltip")
+      .filter({ hasText: "Conversion makes it Ghost type" });
+    await expect.poll(() => tooltip.innerText()).toBe(reason);
+  });
 });
 
 test.fixme("Let's Go Absorb contributes its native coverage to the matrix", async ({

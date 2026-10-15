@@ -16,6 +16,7 @@ import {
   effectivePokemonTypes,
   isTypelessMove,
   IMMUNE_SCORE,
+  conversionType,
 } from "./shared/effectiveness";
 
 // How hard one attacking type hits one slot, with the reason for the Matrix Analysis tooltip
@@ -82,7 +83,8 @@ export function defenceMatrix(
   return Object.fromEntries(
     typesIn(generation).map(type => [
       type,
-      team.map(({ name, ability, item }) => {
+      team.map(member => {
+        const { name, ability, item } = member;
         if (!name) return null;
         const multiplier = against(type, name, ability, item);
         const cause =
@@ -92,15 +94,21 @@ export function defenceMatrix(
         const types = effectivePokemonTypes(name, ability, item, generation)
           .map(names.type)
           .join("/");
+        const reason = t.matrix.defenceReason(
+          names.type(type),
+          multiplier,
+          names.pokemon(name),
+          types,
+          cause,
+        );
+        // The cell keeps the types it switches in with, and notes Conversion's on a second line
+        const converted = conversionType(member, generation);
         return {
           multiplier,
-          reason: t.matrix.defenceReason(
-            names.type(type),
-            multiplier,
-            names.pokemon(name),
-            types,
-            cause,
-          ),
+          reason:
+            converted ?
+              `${reason}\n${t.matrix.conversion(names.move("conversion"), names.type(converted))}`
+            : reason,
         };
       }),
     ]),
