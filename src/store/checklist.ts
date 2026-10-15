@@ -266,6 +266,30 @@ export const checklist: ChecklistGroup[] = [
     key: "offensive",
     items: [
       { key: "boosting", check: boostsStats },
+      // Damaging moves with positive priority. Grassy Glide has it only in Grassy Terrain.
+      {
+        key: "priority",
+        check: hasAnyMove([
+          "accelerock",
+          "aquajet",
+          "bulletpunch",
+          "extremespeed",
+          "fakeout",
+          "feint",
+          "firstimpression",
+          "iceshard",
+          "jetpunch",
+          "machpunch",
+          "quickattack",
+          "shadowsneak",
+          "suckerpunch",
+          "thunderclap",
+          "upperhand",
+          "vacuumwave",
+          "watershuriken",
+          "zippyzap",
+        ]),
+      },
       {
         key: "voltTurn",
         check: hasAnyMove(["voltswitch", "uturn", "flipturn"]),

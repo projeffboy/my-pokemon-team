@@ -16,7 +16,6 @@ import { serializeTeam } from "@/store/team-text";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import { useIsMdDown } from "@/app/shared/WidthContext";
 import ToolbarButton from "./shared/ToolbarButton";
 import useFittingLabel from "@/app/shared/use-fitting-label";
 
@@ -39,7 +38,6 @@ const ManageTeamMenu = observer(function ManageTeamMenu({
   basis?: string;
 }) {
   const { t } = useTranslation();
-  const isMdDown = useIsMdDown();
   const manage = useFittingLabel([t.team.manageTeamMenu, t.team.manageTeam]);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
@@ -67,16 +65,6 @@ const ManageTeamMenu = observer(function ManageTeamMenu({
 
   // Switches stay in the menu when flipped, so the change shows
   const settings = [
-    // From md the toolbar has the Advanced switch itself
-    ...(isMdDown ?
-      [
-        {
-          label: t.team.advancedMode,
-          on: store.isMoreOpen,
-          flip: () => (store.isMoreOpen = !store.isMoreOpen),
-        },
-      ]
-    : []),
     {
       label: t.team.showMoveTypes,
       on: store.showMoveTypes,

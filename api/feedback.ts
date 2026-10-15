@@ -16,13 +16,22 @@ const RATE_WINDOW_MS = 10 * 60 * 1000;
 // Best effort: Vercel reuses an instance for many requests, but not all of them
 const recentSends = new Map<string, number[]>();
 
-function isRateLimited(ip: string) {
-  const now = Date.now();
+// Records a send at `time`, unless the IP has used up its sends. Refused
+// attempts are not recorded, so retrying does not push back the wait.
+function reserveSend(ip: string, time: number) {
   const sends = (recentSends.get(ip) ?? []).filter(
-    time => now - time < RATE_WINDOW_MS,
+    sent => time - sent < RATE_WINDOW_MS,
   );
-  recentSends.set(ip, [...sends, now]);
-  return sends.length >= RATE_LIMIT;
+  if (sends.length >= RATE_LIMIT) return false;
+  recentSends.set(ip, [...sends, time]);
+  return true;
+}
+
+// Gives back a send that the email provider failed to deliver
+function releaseSend(ip: string, time: number) {
+  const sends = recentSends.get(ip) ?? [];
+  const index = sends.lastIndexOf(time);
+  if (index !== -1) sends.splice(index, 1);
 }
 
 // Order matters: Edge and Opera also say Chrome, and Chrome also says Safari
@@ -123,7 +132,8 @@ export async function POST(request: Request) {
   }
 
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0] ?? "";
-  if (isRateLimited(ip)) {
+  const sendTime = Date.now();
+  if (!reserveSend(ip, sendTime)) {
     return new Response("Too many messages", { status: 429 });
   }
 
@@ -152,6 +162,7 @@ export async function POST(request: Request) {
     }),
   }).catch(() => undefined);
   if (!response?.ok) {
+    releaseSend(ip, sendTime);
     console.error(
       "Resend failed",
       response?.status,
