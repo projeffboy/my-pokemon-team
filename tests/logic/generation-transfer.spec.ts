@@ -13,13 +13,16 @@ import {
   hpDv,
   isShinyDv,
   LEGENDS_ARCEUS,
+  LEGENDS_ZA,
 } from "@/shared/generation-rules";
 import { evTotal, getIv } from "@/shared/set-details";
 import { universalTransferChanges } from "@/store/generation-transfer/universal-changes";
 import { parseTeamText, serializeTeam } from "@/store/team-text";
 import { STAT_KEYS } from "@/types";
+import { learnsetsReady } from "@/store/learnsets";
 
 const data = await loadGenerationTransferData();
+await learnsetsReady;
 const from = { generation: 9 as const, format: "" };
 
 test.describe("Gen 2 Hidden Power transfer", () => {
@@ -559,6 +562,36 @@ test("Gen 9 includes Z-A Mega formes and their required stones", () => {
   expect(planGenerationTransfer(original, from, 9, "", data).losses).toEqual(
     [],
   );
+});
+
+test("plain Gen 9 keeps the National Dex pokemon, abilities, and moves its editor offers", () => {
+  const original = createTeam(
+    {
+      name: "tyranitar",
+      ability: "Sand Stream",
+      move1: "pursuit",
+      move2: "return",
+    },
+    { name: "silvally", ability: "RKS System", move1: "multiattack" },
+  );
+  const plan = planGenerationTransfer(
+    original,
+    { generation: 7, format: "" },
+    9,
+    "",
+    data,
+  );
+  expect(plan.losses).toEqual([]);
+  expect(plan.team).toEqual(original);
+  expect(
+    planGenerationTransfer(
+      original,
+      { generation: 7, format: "" },
+      9,
+      LEGENDS_ZA,
+      data,
+    ).losses.map(loss => loss.value),
+  ).toEqual(expect.arrayContaining(["pursuit", "silvally"]));
 });
 
 test("unavailable species clears its whole slot without shifting later slots", () => {

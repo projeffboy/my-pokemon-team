@@ -24,6 +24,7 @@ import { REGIONS } from "@/shared/regions";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { planGenerationTransfer } from "@/store/generation-transfer";
+import { learnsetsReady } from "@/store/learnsets";
 import GenerationTransferDialog from "@/app/shared/GenerationTransferDialog";
 import { gameLogosFor } from "@/app/shared/game-logos";
 import type { Generation, GenerationTransferData } from "@/types";
@@ -62,7 +63,11 @@ const FiltersDialog = observer(function FiltersDialog() {
       return;
     }
     try {
-      const data = await loadGenerationTransferData();
+      // The plain latest generation checks the learnsets, which load after the app
+      const [data] = await Promise.all([
+        loadGenerationTransferData(),
+        learnsetsReady,
+      ]);
       if (
         store.currentTeamId !== teamId ||
         store.dialog !== dialog ||
