@@ -9,6 +9,17 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 15, 2026",
+    changes: [
+      "Primal Groudon and Primal Kyogre are now immune to Water and Fire, and Mega Rayquaza’s Delta Stream removes its Flying weaknesses.",
+      "Beat Up is now typeless in Gens 2–4, as in those games.",
+      "The coverage matrix now doubles resisted hits from Tinted Lens users.",
+      "Freeze-Dry and Flying Press no longer count a type twice in Team Type Coverage.",
+      "The team checklist now counts more boosting moves, such as Maushold’s Tidy Up.",
+      "The Region filter now lists formes under the region they were introduced in, such as Bloodmoon Ursaluna under Paldea.",
+    ],
+  },
+  {
     date: "Oct 14, 2026",
     changes: [
       "Hovering or tapping a checklist role now shows which pokemon fill it, e.g. Gigalith: Stealth Rock, or what would fill it.",
