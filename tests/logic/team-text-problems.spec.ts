@@ -282,6 +282,20 @@ test("happiness in a game without it is left out as unsupported", () => {
   ]);
 });
 
+test("details a game has no field for are left out as unsupported", () => {
+  const { team, problems } = read(
+    "Farigiraf\nTera Type: Fairy\nIVs: 0 Spe\nQuiet Nature",
+    9,
+    CHAMPIONS_FORMAT,
+  );
+  expect(team[0]).not.toHaveProperty("ivs");
+  expect(team[0]).not.toHaveProperty("teraType");
+  expect(problems.map(({ field, reason }) => [field, reason])).toEqual([
+    ["teraType", "unsupported"],
+    ["ivs", "unsupported"],
+  ]);
+});
+
 // A deterministic stand-in for Math.random
 const seeded = (seed: number) => () => {
   seed = (seed * 16807) % 2147483647;

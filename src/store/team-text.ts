@@ -285,6 +285,8 @@ export const LEGACY_LINK_PARSING_OPTIONS = {
   inferHiddenPowerIvs: false,
   preserveBlankAbilityDefault: true,
   allowHyperTraining: false,
+  // Links decode every detail they carry, so each keeps loading the same team
+  keepUnsupportedDetails: true,
 } as const;
 
 // Showdown's lines for details the site has no field for
@@ -303,6 +305,7 @@ export function parseTeamText(
     inferHiddenPowerIvs = true,
     preserveBlankAbilityDefault = false,
     allowHyperTraining = true,
+    keepUnsupportedDetails = false,
     onProblem = () => {},
   }: {
     inferFrustrationHappiness?: boolean;
@@ -310,10 +313,13 @@ export function parseTeamText(
     inferHiddenPowerIvs?: boolean;
     preserveBlankAbilityDefault?: boolean;
     allowHyperTraining?: boolean;
+    keepUnsupportedDetails?: boolean;
     onProblem?: (problem: TeamTextProblem) => void;
   } = {},
 ): Team {
   const rules = generationRules(generation, format);
+  // Pasted text drops details the game has no field for
+  const supports = (rule: boolean) => keepUnsupportedDetails || rule;
   const team = createEmptyTeam();
   const teamPokemonRawData = text
     .replace(/^\s*---\s*$/gm, "\n")
@@ -352,7 +358,7 @@ export function parseTeamText(
         getAutoSelectedAbility(pokemon, generation, format)
       : "";
     if (nickname) member.nickname = nickname;
-    if (gender) member.gender = gender;
+    if (gender && supports(rules.gender)) member.gender = gender;
 
     // If team raw data does not mention item, leave it blank
     if (itemText) {
@@ -398,6 +404,9 @@ export function parseTeamText(
             : undefined,
           );
         });
+      const unsupported = (field: Problem["field"], text: string) => {
+        if (text) report({ field, value: text, reason: "unsupported" });
+      };
 
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
@@ -446,7 +455,8 @@ export function parseTeamText(
           );
       } else if (startsWith("Shiny:")) {
         const shiny = value("Shiny:");
-        if (shiny.toLowerCase() === "yes") member.shiny = true;
+        if (!supports(rules.shiny)) unsupported("shiny", shiny);
+        else if (shiny.toLowerCase() === "yes") member.shiny = true;
         else if (shiny && shiny.toLowerCase() !== "no")
           report({ field: "shiny", value: shiny, reason: "unrecognized" });
       } else if (startsWith("Happiness:")) {
@@ -472,7 +482,8 @@ export function parseTeamText(
           });
       } else if (startsWith("Tera Type:")) {
         const teraType = value("Tera Type:");
-        if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
+        if (!supports(rules.tera)) unsupported("teraType", teraType);
+        else if (TERA_TYPES.includes(teraType)) member.teraType = teraType;
         else if (teraType)
           report({
             field: "teraType",
@@ -480,8 +491,12 @@ export function parseTeamText(
             reason: "unrecognized",
           });
       } else if (startsWith("EVs:")) {
-        const evs = statsIn("evs", "EVs:", 255, ev => ev === 0);
-        if (evs) member.evs = evs;
+        if (!supports(rules.investment !== "effortLevels"))
+          unsupported("evs", value("EVs:"));
+        else {
+          const evs = statsIn("evs", "EVs:", 255, ev => ev === 0);
+          if (evs) member.evs = evs;
+        }
       } else if (startsWith("Stat Experience:")) {
         member.statExperience = statsIn(
           "statExperience",
@@ -497,12 +512,16 @@ export function parseTeamText(
           n => n === 0,
         );
       } else if (startsWith("IVs:")) {
-        const ivs = statsIn("ivs", "IVs:", MAX_IV, iv => iv === MAX_IV);
-        if (ivs) member.ivs = ivs;
+        if (!supports(rules.ivs)) unsupported("ivs", value("IVs:"));
+        else {
+          const ivs = statsIn("ivs", "IVs:", MAX_IV, iv => iv === MAX_IV);
+          if (ivs) member.ivs = ivs;
+        }
       } else if (/ Nature$/i.test(line)) {
         const natureText = line.slice(0, -" Nature".length).trim();
         const nature = natureNameInverse(natureText);
-        if (nature) member.nature = nature;
+        if (!supports(rules.nature)) unsupported("nature", natureText);
+        else if (nature) member.nature = nature;
         else
           report({
             field: "nature",
