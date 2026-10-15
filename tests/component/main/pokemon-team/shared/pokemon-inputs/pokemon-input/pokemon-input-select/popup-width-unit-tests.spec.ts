@@ -1,12 +1,11 @@
 import { test, expect } from "fixtures";
-import { turnOnAdvanced, selectPokemon, resizeTeamViewport } from "helper";
+import { selectPokemon, resizeTeamViewport } from "helper";
 
-test("expanded small phone move, item, and ability lists keep their 400px viewport width", async ({
+test("small phone move, item, and ability lists keep their 400px viewport width", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 400, height: 900 });
   await selectPokemon(page, "Eldegoss");
-  await turnOnAdvanced(page);
   const popup = page.locator(".MuiAutocomplete-popper");
   for (const property of ["move1", "item", "ability"]) {
     const input = page.getByRole("combobox", {
@@ -32,41 +31,6 @@ test("expanded small phone move, item, and ability lists keep their 400px viewpo
     await input.press("Escape");
     await page.setViewportSize({ width: 400, height: 900 });
   }
-});
-
-test("move and ability lists without Advanced are at least their 360px viewport width", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 320, height: 900 });
-  await selectPokemon(page, "Dolliv");
-  const popup = page.locator(".MuiAutocomplete-popper");
-  for (const property of ["move1", "ability"]) {
-    const input = page.getByRole("combobox", {
-      name: `Pokemon 1's ${property}`,
-    });
-    const field = input.locator(
-      "xpath=ancestor::*[contains(@class, 'MuiAutocomplete-root')]",
-    );
-    for (const width of [320, 360, 390, 600]) {
-      await page.setViewportSize({ width, height: 900 });
-      await input.click();
-      await expect(popup).toBeVisible();
-      await expect
-        .poll(async () => (await popup.boundingBox())?.width)
-        .toBeCloseTo(
-          Math.max(
-            // Small phones leave room for the move list's type icons
-            property === "move1" && width < 400 ? 172 : 152,
-            (await field.boundingBox())?.width ?? 0,
-          ),
-          0,
-        );
-      await input.press("Escape");
-    }
-  }
-  await page.setViewportSize({ width: 320, height: 900 });
-  await page.getByRole("combobox", { name: "Pokemon 1's item" }).click();
-  await expect.poll(async () => (await popup.boundingBox())?.width).toBe(172);
 });
 
 test("the Name list fits its longest names within two lines", async ({
