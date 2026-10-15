@@ -36,6 +36,7 @@ const entries: Entry[] = [
       "Gen 3 and Gen 4 Doubles OU now list their Pokémon, such as Salamence and Metagross, instead of none.",
       "Importing a Showdown box with more than six Pokémon now splits it into teams of six instead of dropping the rest.",
       "Showdown backups whose team headers are indented now import as separate teams instead of one merged team.",
+      "Showdown teams from formats such as Ubers UU or Pure Hackmons no longer import as Uber or PU teams.",
     ],
   },
   {
