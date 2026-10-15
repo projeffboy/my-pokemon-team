@@ -1159,6 +1159,38 @@ EVs: 4 HP
   }
 });
 
+test("generation transfer: marks a conversion to Stat experience as approximate, but not one to SPs", async ({
+  page,
+}) => {
+  const team = "Feraligatr\nEVs: 252 Atk\n- Surf\n";
+  await page.goto(`/?team=${Buffer.from(team).toString("base64url")}&gen=3`, {
+    waitUntil: "domcontentloaded",
+  });
+  await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Feraligatr");
+  const dialog = page.getByRole("dialog");
+  const feraligatr = dialog.getByRole("group", {
+    name: "Feraligatr",
+    exact: true,
+  });
+  for (const [option, conversion, approximate] of [
+    ["2", /Atk: 252 EVs → \d+ Stat experience/, true],
+    ["champions", /Atk: 252 EVs → \d+ SPs/, false],
+  ] as const) {
+    await page.getByRole("combobox", { name: "Generation" }).click();
+    await page
+      .locator(`[role="option"][data-value="${option}"]`)
+      .press("Enter");
+    await expect(feraligatr).toContainText(conversion);
+    const note = feraligatr.getByText(
+      "Approximate conversion; stats may differ.",
+      { exact: true },
+    );
+    await expect(note).toHaveCount(approximate ? 1 : 0);
+    await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(dialog).toBeHidden();
+  }
+});
+
 for (const [from, generation] of [
   [7, 2],
   [7, 1],

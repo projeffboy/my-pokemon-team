@@ -3,6 +3,7 @@ import { toBase64Url } from "@/app/shared/base64url";
 import {
   clickMenuItem,
   getTeamTextFromUrl,
+  openAnalysis,
   selectAbility,
   selectPokemon,
 } from "helper";
@@ -18,7 +19,7 @@ const savedState = (page: Page) =>
   );
 
 test.describe("Share Link - Integration Tests", () => {
-  test("a denied localStorage getter leaves team editing and share links usable", async ({
+  test("a denied localStorage getter leaves team editing, analysis, and share links usable", async ({
     page,
   }) => {
     const errors: string[] = [];
@@ -34,6 +35,12 @@ test.describe("Share Link - Integration Tests", () => {
     await page.reload({ waitUntil: "domcontentloaded" });
     await selectPokemon(page, "Lurantis");
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lurantis");
+    await openAnalysis(page, "Team Defence");
+    await expect(
+      page
+        .getByRole("region", { name: "Team Defence" })
+        .getByLabel("Fire score: -1", { exact: true }),
+    ).toBeVisible();
     expect(getTeamTextFromUrl(page)).toContain("Lurantis");
     expect(errors).toEqual([]);
   });

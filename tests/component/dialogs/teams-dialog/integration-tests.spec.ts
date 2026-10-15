@@ -329,6 +329,25 @@ Ability: Drizzle
     await expect(page.getByLabel("Generation")).toContainText("Gen 9");
   });
 
+  test("a pasted team name written as markup shows as text and runs nothing", async ({
+    page,
+  }) => {
+    const name = `<img src=x onerror="window.injected=true">`;
+    await openTeams(page);
+    await page.getByRole("button", { name: "Import Team" }).click();
+    const dialog = page.getByRole("dialog", { name: "Import Team" });
+    await dialog
+      .getByRole("textbox")
+      .fill(`=== [gen9] ${name} ===\n\nPolitoed @ Damp Rock\n- Hydro Pump\n`);
+    await dialog.getByRole("button", { name: "Import" }).click();
+    const teams = page
+      .getByRole("dialog", { name: "Teams" })
+      .getByRole("list", { name: "Saved teams" });
+    await expect(teams.getByRole("listitem").last()).toContainText(name);
+    await expect(page.locator('img[src="x"]')).toHaveCount(0);
+    expect(await page.evaluate(() => "injected" in window)).toBe(false);
+  });
+
   test("the Manage Team menu opens the import page, which imports nothing from text without pokemon", async ({
     page,
   }) => {
