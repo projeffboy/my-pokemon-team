@@ -358,6 +358,17 @@ export function isMoveUsable(
     move !== "mefirst"
   )
     return false;
+  // The user's own primal weather makes its moves of the opposing type fail
+  const blockedType =
+    ability === "Primordial Sea" ? "Fire"
+    : ability === "Desolate Land" ? "Water"
+    : undefined;
+  if (
+    blockedType &&
+    moveDataIn(move, generation, format)?.category !== "Status" &&
+    moveType(move, pokemon, ability, generation, item, format) === blockedType
+  )
+    return false;
   const types = effectivePokemonTypes(pokemon, ability, item, generation);
   if (move === "burnup") return types.includes("Fire");
   if (move === "doubleshock") return types.includes("Electric");
@@ -449,6 +460,11 @@ export function moveAgainstType(
     )
   )
     return IMMUNE_SCORE;
+  // Delta Stream's winds also stop the user's own moves being super effective on Flying
+  const windsAllow = (score: number) =>
+    ability === "Delta Stream" && typeAgainst === "Flying" && score < 0 ?
+      0
+    : score;
   let score = defender?.[attackType];
   if (
     (ability === "Scrappy" || ability === "Mind's Eye") &&
@@ -466,7 +482,7 @@ export function moveAgainstType(
     return -1;
   if (move === "flyingpress") {
     if (score === 2) return IMMUNE_SCORE;
-    return (score ?? 0) + (defender?.Flying ?? 0);
+    return windsAllow((score ?? 0) + (defender?.Flying ?? 0));
   }
-  return score;
+  return score === undefined ? score : windsAllow(score);
 }
