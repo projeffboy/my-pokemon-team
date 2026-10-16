@@ -327,7 +327,7 @@ test("a level change re-matches Hidden Power once Hyper Training no longer appli
   expect(store.team[1].ivs).toEqual(store.team[0].ivs);
 
   // The dialog stores each keystroke, then passes the level it started from
-  store.selectPokemon(2, "ampharos");
+  store.selectPokemon(2, "electrode");
   store.selectMove(2, "move1", "hiddenpowerfire");
   setDetail(store.team[2], "level", 50);
   store.setLevel(2, 50, 100);
@@ -353,6 +353,30 @@ test("shiny and level edits keep Hidden Power IVs that already mismatched its ty
   );
   store.setLevel(0, 60);
   expect(store.team[0].ivs).toEqual({ atk: 0 });
+});
+
+// A link or a saved team can keep an ability that the game lacks
+test("team problems name an ability in a game without abilities", ({
+  store,
+}) => {
+  for (const [generation, format] of [
+    [2, ""],
+    [7, LETS_GO],
+  ] as const) {
+    Object.assign(store.currentTeam, { generation, format });
+    store.replaceTeam(
+      parseTeamText("Electrode\nAbility: Static", generation, format, {
+        keepUnsupportedDetails: true,
+      }),
+    );
+    expect(store.team[0].ability).toBe("Static");
+    expect(store.teamProblems?.map(({ message }) => message)).toContain(
+      "Electrode cannot have Static.",
+    );
+    expect(store.slotProblems(0)).toHaveLength(1);
+    store.team[0].ability = "";
+    expect(store.teamProblems).toEqual([]);
+  }
 });
 
 test("Gen 2 shininess keeps Hidden Power matching the DVs", ({ store }) => {

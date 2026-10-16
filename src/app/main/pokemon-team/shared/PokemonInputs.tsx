@@ -302,7 +302,8 @@ const PokemonInputs = observer(function PokemonInputs({
             leadingIcon={store.showTypes}
           />
         )}
-        {store.rules.abilities && (
+        {/* Shown for an ability that a link or saved team kept, so it can be cleared */}
+        {(store.rules.abilities || !!member?.ability) && (
           <PokemonInput
             placeholder={t.team.ability}
             teamIndex={teamIndex}

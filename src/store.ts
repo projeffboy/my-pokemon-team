@@ -951,8 +951,12 @@ export class Store {
         !this.generationDataLoaded)
     )
       return undefined;
+    // Unlike the analysis, keeps an ability that a link or saved team gave a game without them
     return validateTeam(
-      this.analysisTeam,
+      this.team.map(member => ({
+        ...member,
+        item: this.rules.items ? member.item : "",
+      })),
       this.currentTeam.generation,
       this.dataFormat,
       this.translation,

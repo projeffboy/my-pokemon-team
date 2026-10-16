@@ -55,4 +55,29 @@ test.describe("Team Problems and Pokemon Inputs - Integration Tests", () => {
     await expectTabMarkers(page, 0);
     await expect(await marker(page, 0, "Azumarill")).toHaveCount(0);
   });
+
+  test("an ability a link keeps in Gen 2 shows its field until it is cleared", async ({
+    page,
+  }) => {
+    await page.goto(
+      `/?gen=2&team=${toBase64Url("Magneton\nAbility: Sturdy\n- Thunderbolt")}`,
+      { waitUntil: "domcontentloaded" },
+    );
+    await expect(problems(page).getByRole("listitem")).toHaveText([
+      "Magneton cannot have Sturdy.",
+    ]);
+    await expect(await marker(page, 0, "Magneton")).toBeVisible();
+    const ability = page.getByLabel("Pokemon 1's ability", { exact: true });
+    await expect(ability).toHaveValue("Sturdy");
+    await ability.click();
+    await ability
+      .locator("..")
+      .getByRole("button", { name: "Clear", exact: true })
+      .click();
+    await expect(problems(page)).toHaveText(/^No problems found/);
+    await expect(ability).toHaveCount(0);
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue(
+      "Thunderbolt",
+    );
+  });
 });
