@@ -1,4 +1,5 @@
 import { useDeferredValue, useMemo, useState } from "react";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -140,7 +141,12 @@ const ImportTeamForm = observer(function ImportTeamForm({
           {importDialog.kept}
         </Typography>
       </DialogContent>
-      <DialogActions>
+      {/* Copy stays apart from the actions that close the dialog. Where a language's
+          labels leave no room for all three, those two wrap together under it. */}
+      <DialogActions
+        disableSpacing
+        sx={{ flexWrap: "wrap", justifyContent: "space-between", gap: 1 }}
+      >
         {!isImport && (
           <Button
             startIcon={<ContentCopyIcon />}
@@ -148,23 +154,23 @@ const ImportTeamForm = observer(function ImportTeamForm({
             onClick={() =>
               copyToClipboard(text, t.team.teamCopied, t.team.teamNotCopied)
             }
-            // Apart from the actions that close the dialog
-            sx={{ mr: "auto" }}
           >
             {importDialog.copy}
           </Button>
         )}
-        <Button onClick={onClose}>{t.cancel}</Button>
-        <Button
-          onClick={isImport ? handleImport : handleUpdate}
-          // Until the problems describe the current text, an update could skip them
-          disabled={
-            !store.learnsetsLoaded ||
-            (isImport ? !text.trim() : deferredText !== text)
-          }
-        >
-          {isImport ? importDialog.import : importDialog.update}
-        </Button>
+        <Box sx={{ display: "flex", gap: 1, ml: "auto" }}>
+          <Button onClick={onClose}>{t.cancel}</Button>
+          <Button
+            onClick={isImport ? handleImport : handleUpdate}
+            // Until the problems describe the current text, an update could skip them
+            disabled={
+              !store.learnsetsLoaded ||
+              (isImport ? !text.trim() : deferredText !== text)
+            }
+          >
+            {isImport ? importDialog.import : importDialog.update}
+          </Button>
+        </Box>
       </DialogActions>
     </>
   );

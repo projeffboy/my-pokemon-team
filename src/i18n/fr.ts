@@ -242,7 +242,7 @@ const fr: Messages = {
     teamDefence: "Défense de l'équipe",
     teamTypeCoverage: "Couverture de types de l'équipe",
     teamChecklist: "Checklist de l'équipe",
-    matrixAnalysis: "Analyse matricielle",
+    matrixAnalysis: "Analyse par matrice",
     defence: "Défense",
     coverage: "Couverture",
     checklist: "Checklist",

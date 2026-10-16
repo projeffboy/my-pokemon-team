@@ -3,6 +3,7 @@ import {
   clickMenuItem,
   openAdvanced,
   openAnalysis,
+  openAnswers,
   openFilters,
   openMoreMenu,
   openSort,
@@ -108,6 +109,8 @@ const checkDialog = async (
   await expect(dialog).toBeVisible();
   await expect(dialog).toHaveAccessibleName(/\S/);
   if (content) await expect(content(dialog)).toBeVisible();
+  // axe skips what is hidden, such as the manual's answers until they open
+  await openAnswers(dialog);
   await expectNoViolations(page);
   await closeAll(page);
 };

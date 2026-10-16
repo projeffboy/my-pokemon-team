@@ -45,8 +45,8 @@ function Question({
           {question}
         </Typography>
       </AccordionSummary>
+      {/* The accordion gives its region the id that aria-controls names */}
       <AccordionDetails
-        id={`${id}-answer`}
         sx={{ px: 0, pt: 0, "& > p:not(:last-child)": { mb: 2 } }}
       >
         {children}

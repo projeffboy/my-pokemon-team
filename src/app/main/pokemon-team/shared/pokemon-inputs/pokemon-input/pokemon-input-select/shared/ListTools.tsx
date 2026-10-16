@@ -25,6 +25,8 @@ const MoveSort = observer(function MoveSort() {
         return (
           <TableSortLabel
             key={key}
+            // A real button, which Tab from the input reaches as it does the Name dropdown's tools
+            component="button"
             active={active}
             direction={active && descending ? "desc" : "asc"}
             aria-pressed={active}
@@ -33,7 +35,13 @@ const MoveSort = observer(function MoveSort() {
               if (active) store.moveSort.descending = !descending;
               else store.moveSort = { by: key, descending: false };
             }}
-            sx={{ minHeight: 34, px: 1, borderRadius: 1 }}
+            sx={{
+              minHeight: 34,
+              px: 1,
+              font: "inherit",
+              borderRadius: 1,
+              "&.Mui-focusVisible": { bgcolor: "action.focus" },
+            }}
           >
             {label}
           </TableSortLabel>

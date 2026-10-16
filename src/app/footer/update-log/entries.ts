@@ -23,7 +23,7 @@ const entries: Entry[] = [
       "The team checklist has a Trapper role, e.g. Shadow Tag, and a singles or doubles setting.",
       "Team analysis, random sets and checklist hints respect format bans, e.g. Spore in OU.",
       "Primal weather and Delta Stream now apply to both sides, e.g. Primal Groudon is immune to Water.",
-      "Fixed more type scores, e.g. Freeze-Dry no longer counts Water twice.",
+      "Fixed more type scores, e.g. Ice Beam and Freeze-Dry no longer count Dragon twice.",
       "The checklist counts more moves correctly, e.g. Tidy Up as a boosting move.",
       "Format lists and sorting are more accurate, e.g. Doubles OU includes Clefairy.",
       "Moves and abilities match each game more closely, e.g. Bloodmoon Ursaluna no longer learns Play Rough.",

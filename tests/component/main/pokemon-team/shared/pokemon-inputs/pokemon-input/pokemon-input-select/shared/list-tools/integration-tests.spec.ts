@@ -62,3 +62,24 @@ test("the move dropdowns sort by name or type in place, apart from the pokemon, 
   await expect(header(/^Type/)).toHaveAccessibleName("Type, Descending");
   await expectOrder("Fire Punch", "Thunder Punch");
 });
+
+test("Tab from a move dropdown reaches its sort headers, and Shift+Tab returns", async ({
+  page,
+}, testInfo) => {
+  test.skip(!!testInfo.project.use.hasTouch, "Requires a keyboard");
+  await selectPokemon(page, "Toxapex");
+  const input = page.getByRole("combobox", { name: "Pokemon 1's move1" });
+  const header = (name: RegExp) =>
+    page.getByRole("group", { name: "Sort by" }).getByRole("button", { name });
+  await input.fill("Toxic");
+  await input.press("Tab");
+  await expect(header(/^Name/)).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(header(/^Name/)).toHaveAccessibleName("Name, Descending");
+  await page.keyboard.press("Tab");
+  await expect(header(/^Type/)).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await page.keyboard.press("Shift+Tab");
+  await expect(input).toBeFocused();
+  await expect(page.getByRole("listbox")).toBeVisible();
+});

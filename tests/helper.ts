@@ -102,6 +102,16 @@ export const openFilters = (page: Page) => openListDialog(page, "Filters");
 
 export const openSort = (page: Page) => openListDialog(page, "Sort");
 
+// Opens each collapsed answer in a dialog, such as the manual's questions, so that what
+// they hold is checked too. Call it once the dialog's content has loaded.
+export const openAnswers = async (dialog: Locator) => {
+  for (const question of await dialog.locator("button[aria-expanded]").all()) {
+    if ((await question.getAttribute("aria-expanded")) === "true") continue;
+    await question.click();
+    await expect(question).toHaveAttribute("aria-expanded", "true");
+  }
+};
+
 export const openAdvanced = (page: Page) =>
   openSlotDialog(page, /^More details for slot/, "More details");
 

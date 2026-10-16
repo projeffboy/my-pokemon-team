@@ -3,6 +3,9 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "@/app/shared/TranslationContext";
 
+// Marks the label's adornment, which keeps the text clear of the field's buttons itself
+export const HIDDEN_ABILITY_CLASS = "hidden-ability";
+
 export default function HiddenAbilityLabel({ ability }: { ability: string }) {
   const { t } = useTranslation();
   const ref = useRef<HTMLSpanElement>(null);
@@ -52,6 +55,7 @@ export default function HiddenAbilityLabel({ ability }: { ability: string }) {
   return (
     <InputAdornment
       position="end"
+      className={HIDDEN_ABILITY_CLASS}
       sx={{ display: fits ? "inline-flex" : "none", ml: 1, mr: 7 }}
     >
       <Typography
