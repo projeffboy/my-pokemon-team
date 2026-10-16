@@ -329,39 +329,6 @@ test("details a game has no field for are left out as unsupported", () => {
   expect(read("Pikachu (F)", 2).problems).toEqual([]);
 });
 
-test("an ability in a game without abilities is left out as unsupported, unless a link keeps it", () => {
-  for (const [generation, format] of [
-    [2, ""],
-    [7, LETS_GO],
-  ] as const) {
-    const pasted = read("Electrode\nAbility: Static", generation, format);
-    expect(pasted.team[0]?.ability).toBe("");
-    expect(pasted.problems).toEqual([
-      {
-        slot: 1,
-        pokemon: "electrode",
-        field: "ability",
-        value: "Static",
-        reason: "unsupported",
-      },
-    ]);
-    // The site's own text writes a blank ability as No Ability
-    expect(read("Electrode\nAbility: No Ability", generation, format)).toEqual({
-      team: read("Electrode", generation, format).team,
-      problems: [],
-    });
-    const linked = parseTeamText(
-      "Electrode\nAbility: Static",
-      generation,
-      format,
-      {
-        keepUnsupportedDetails: true,
-      },
-    );
-    expect(linked[0]?.ability).toBe("Static");
-  }
-});
-
 // A deterministic stand-in for Math.random
 const seeded = (seed: number) => () => {
   seed = (seed * 16807) % 2147483647;

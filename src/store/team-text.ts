@@ -423,10 +423,7 @@ export function parseTeamText(
       if (startsWith("Ability:") || startsWith("Trait:")) {
         const ability = line.slice(line.indexOf(":") + 1).trim();
 
-        // The site's own text writes a blank ability as No Ability
-        if (!supports(rules.abilities)) {
-          if (ability !== "No Ability") unsupported("ability", ability);
-        } else if (
+        if (
           ability === "No Ability" ||
           (!ability && !preserveBlankAbilityDefault)
         )
