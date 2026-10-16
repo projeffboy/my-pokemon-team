@@ -107,6 +107,15 @@ export const theme = createTheme({
         }),
       },
     },
+    MuiToggleButton: {
+      // MUI greys an unpressed button with action.active, which the dark scheme's dimmer
+      // text.primary would outshine, so the pressed one looked the unpressed
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: (theme.vars || theme).palette.text.secondary,
+        }),
+      },
+    },
     MuiTypography: {
       // Dialog titles are h2, so the h6-styled section headings are h3
       defaultProps: { variantMapping: { h6: "h3", subtitle2: "p" } },

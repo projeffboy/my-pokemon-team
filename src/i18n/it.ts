@@ -235,6 +235,7 @@ const it: Messages = {
   // The analysis panel
   stats: {
     teamStats: "Statistiche squadra",
+    stats: "Statistiche",
     teamAnalysis: "Analisi della squadra",
     teamDefence: "Difesa della squadra",
     teamTypeCoverage: "Copertura di tipo della squadra",
@@ -339,7 +340,6 @@ const it: Messages = {
       label: "Formato di lotta",
       singles: "Singolo",
       doubles: "Doppio",
-      notSet: "Non impostato",
       depends: "Dipende dal formato di lotta",
       reasons: {
         spinner:
@@ -652,6 +652,7 @@ const it: Messages = {
     kept: "Soprannomi, livelli, sessi, cromatico, felicità, teratipi, nature, EV e IV vengono mantenuti se il gioco selezionato li ha.",
     import: "Importa",
     update: "Aggiorna",
+    copy: "Copia",
     imported: "Squadra importata",
     importedMany: (count: number) => `${count} squadre importate`,
     noChanges: "Nessuna modifica.",
@@ -717,6 +718,7 @@ const it: Messages = {
   },
   credits: {
     madeBy: "Creato da {name}",
+    website: "Sito web",
     showdown:
       "Le persone di Pokemon Showdown sono molto generose a lasciarmi usare tutti i loro sprite, le icone e i dati sui Pokémon. Assolutamente indispensabili!",
     alsoThanks: "Grazie anche a",
@@ -739,25 +741,15 @@ const it: Messages = {
     advertise: "Fai pubblicità su questo sito.",
   },
   manual: {
-    teams: "Squadre",
     teamsQuestion: "Dove sono salvate le mie squadre?",
     teamsAnswer:
       "Le tue squadre sono salvate in questo browser, quindi le ritrovi quando torni, ma non su un altro dispositivo. Il pulsante Squadre le elenca, e il menu di ogni squadra la rinomina, ne imposta generazione e formato, la duplica, la condivide o la elimina. Esporta tutte scarica ogni squadra come testo di Showdown, che Importa squadra rilegge. La barra degli indirizzi contiene sempre la squadra corrente, quindi copiare l'indirizzo (o premere Condividi) la condivide.",
-    teamsAnswer2:
-      "L’elenco dei nomi ha i pulsanti Filtri e Ordina, e gli elenchi delle mosse hanno Ordina. Annulla e Ripeti scorrono le modifiche della squadra corrente; su telefoni e tablet si trovano sopra le schede dei Pokémon.",
-    generations: "Generazioni",
     generationsQuestion: "Cosa cambia la generazione?",
     generationsAnswer:
       "La generazione e il gioco scelti in alto determinano i Pokémon, le forme, le mosse, gli strumenti e i dettagli proposti. Le squadre delle generazioni passate usano abilità, statistiche base e tabella dei tipi della loro generazione. Cambiare gioco mostra le modifiche necessarie: puoi annullare, aggiornare la squadra o crearne una copia.",
-    advanced: "Altri dettagli",
-    advancedQuestion: "Soprannomi, livelli, nature, EV e IV",
-    advancedAnswer:
-      "Il pulsante Altri dettagli di ogni Pokémon ne imposta soprannome, livello, sesso, cromatico, teratipo, natura, EV e IV, come su Pokemon Showdown. Viaggiano con la squadra nei link di condivisione e nel testo di Copia testo e Modifica Pokepaste.",
-    matrix: "Analisi a matrice",
     matrixQuestion: "Da dove vengono i punteggi dei tipi?",
     matrixAnswer:
       "La matrice, nel pannello di analisi, mostra ogni tipo contro ogni Pokémon. Difesa è quanto forte ogni tipo d'attacco colpisce ogni Pokémon, contando abilità e strumento, e Copertura è quanto forte la migliore mossa offensiva di ogni Pokémon colpisce ogni tipo. Tocca una cella per il motivo.",
-    defence: "Difesa della squadra",
     defenceQuestion:
       "Come viene calcolata la difesa di tipo della tua squadra?",
     defenceAnswer:
@@ -775,14 +767,12 @@ const it: Messages = {
     note: "Nota:",
     defenceNote:
       "Abilità come Levitazione, Grassospesso, Filtro e Mangiaerba vengono considerate. Per esempio, se il tuo Bronzong ha Levitazione, ottieni +1.5 per Terra. E se ha Antifuoco, ottieni invece 0 per Fuoco.",
-    coverage: "Copertura di tipo della squadra",
     coverageQuestion:
       "Come viene calcolata la copertura di tipo della tua squadra?",
     coverageAnswer:
       "Prima di tutto, cos'è la copertura di tipo? Riguarda contro quanti tipi le tue mosse sono superefficaci. Se una delle tue mosse è superefficace contro un tipo, guadagni +1. Se quella mossa ha anche lo stesso tipo del Pokémon che la usa (STAB), guadagni un altro +1.",
     coverageNote:
       "Abilità come Pellecielo e Pellefolletto vengono considerate. Anche mosse come Liofilizzazione e Schiacciatuffo. Per esempio, Liofilizzazione ti dà +1 anche contro Acqua.",
-    formats: "Formati (o tier)",
     formatsQuestion: "Cosa sono Ubers, OU, VGC, ecc.?",
     formatsAnswer:
       "Ubers, OU e {vgc} sono formati (o tier) che vietano alcuni Pokémon e impongono certe regole. Battle Stadium Singles/Doubles e VGC sono gli unici approvati da The Pokémon Company, mentre gli altri sono gestiti da {smogon}. Puoi consultare {faq} o {guide}.",
@@ -792,7 +782,6 @@ const it: Messages = {
     guide: "questa guida che descrive brevemente ogni tier",
     champions:
       "Il formato Pokémon Champions (M-C) elenca solo i Pokémon utilizzabili in Pokémon Champions con la Regulation M-C, incluse le loro megaevoluzioni.",
-    terms: "Termini della checklist",
     termsQuestion:
       "Cosa vogliono dire termini come entry hazard, phazer e volt-turn?",
     termsAnswer:

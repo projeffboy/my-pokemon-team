@@ -218,6 +218,7 @@ const zhHans: Messages = {
   // 分析面板
   stats: {
     teamStats: "队伍统计",
+    stats: "统计",
     teamAnalysis: "队伍分析",
     teamDefence: "队伍防御",
     teamTypeCoverage: "队伍属性打击面",
@@ -319,7 +320,6 @@ const zhHans: Messages = {
       label: "对战形式",
       singles: "单打",
       doubles: "双打",
-      notSet: "未设置",
       depends: "取决于对战形式",
       reasons: {
         spinner:
@@ -617,6 +617,7 @@ const zhHans: Messages = {
     kept: "所选游戏有这些项时，昵称、等级、性别、异色、亲密度、太晶属性、性格、努力值和个体值都会保留。",
     import: "导入",
     update: "更新",
+    copy: "复制",
     imported: "已导入队伍",
     importedMany: (count: number) => `已导入 ${count} 支队伍`,
     noChanges: "没有改动。",
@@ -680,6 +681,7 @@ const zhHans: Messages = {
   },
   credits: {
     madeBy: "制作：{name}",
+    website: "个人网站",
     showdown:
       "感谢 Pokemon Showdown 的各位慷慨地允许我使用他们全部的宝可梦图像、图标和数据。绝对不可或缺！",
     alsoThanks: "同时感谢",
@@ -702,25 +704,15 @@ const zhHans: Messages = {
     advertise: "在本网站投放广告。",
   },
   manual: {
-    teams: "队伍",
     teamsQuestion: "我的队伍保存在哪里？",
     teamsAnswer:
       "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
-    teamsAnswer2:
-      "名称列表中有“筛选”和“排序”按钮，招式列表中有“排序”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
-    generations: "世代",
     generationsQuestion: "世代会改变什么？",
     generationsAnswer:
       "顶部选择的世代和游戏决定所提供的宝可梦、形态、招式、道具和个体详情。旧世代队伍使用该世代的特性、种族值和属性相克表。切换游戏会预览所需的队伍改动，你可以取消、更新队伍或创建副本。",
-    advanced: "更多详情",
-    advancedQuestion: "昵称、等级、性格、努力值和个体值",
-    advancedAnswer:
-      "每只宝可梦的“更多详情”按钮可以设置它的昵称、等级、性别、异色、太晶属性、性格、努力值和个体值，方式与 Pokemon Showdown 相同。这些设置会随队伍一起保存在分享链接、“复制文本”和“编辑 Pokepaste”的文本中。",
-    matrix: "矩阵分析",
     matrixQuestion: "属性得分从何而来？",
     matrixAnswer:
       "分析面板中的矩阵会显示每种属性对每只宝可梦的效果。“防御”是每种攻击属性对每只宝可梦的伤害倍率，并计入其特性和道具；“打击面”是每只宝可梦最强的攻击招式对每种属性的伤害倍率。点击格子可查看原因。",
-    defence: "队伍防御",
     defenceQuestion: "队伍的属性防御是如何计算的？",
     defenceAnswer:
       "队伍中的每只宝可梦都有弱点属性和抵抗属性。如果某种属性对你的一只宝可梦效果不好，你会得分；但如果效果绝佳，你会失分：",
@@ -737,13 +729,11 @@ const zhHans: Messages = {
     note: "注意：",
     defenceNote:
       "飘浮、厚脂肪、过滤和食草等特性会被计入。例如，如果你的青铜钟拥有飘浮，地面属性会为你带来 +1.5 分；如果它拥有耐热，火属性则计为 0 分。",
-    coverage: "队伍属性打击面",
     coverageQuestion: "队伍的属性打击面是如何计算的？",
     coverageAnswer:
       "首先，什么是属性打击面？它指的是你的招式能对多少种属性效果绝佳。如果你的某个招式对某种属性效果绝佳，你得 +1 分；如果该招式与使用它的宝可梦属性相同（STAB，本系加成），再得 +1 分。",
     coverageNote:
       "飞行皮肤和妖精皮肤等特性会被计入，冷冻干燥和飞身重压等招式也是。例如，冷冻干燥还会让你对水属性得 +1 分。",
-    formats: "格式（即分级）",
     formatsQuestion: "Ubers、OU、VGC 等是什么？",
     formatsAnswer:
       "Ubers、OU 和 {vgc} 都是对战格式（或分级），它们会禁止部分宝可梦并执行特定规则。Battle Stadium 单打／双打和 VGC 是唯一由 The Pokemon Company 官方认可的格式，其他格式则由 {smogon} 维护。你可以查看 {faq} 或 {guide}。",
@@ -753,7 +743,6 @@ const zhHans: Messages = {
     guide: "这篇简要介绍各分级的指南",
     champions:
       "Pokemon Champions（M-C）格式只列出在 Regulation M-C 下可以在 Pokemon Champions 中使用的宝可梦，包括它们的超级进化。",
-    terms: "队伍检查清单术语",
     termsQuestion: "撒钉、吹飞、急折伏特这些到底是什么意思？",
     termsAnswer:
       "Smogon 有一份{dictionary}，但内容有些过时。以下是它没有涵盖的一些术语：",

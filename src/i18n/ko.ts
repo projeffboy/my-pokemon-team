@@ -232,6 +232,7 @@ const ko: Messages = {
 
   stats: {
     teamStats: "팀 통계",
+    stats: "통계",
     teamAnalysis: "팀 분석",
     teamDefence: "팀 방어",
     teamTypeCoverage: "팀 타입 견제폭",
@@ -336,7 +337,6 @@ const ko: Messages = {
       label: "배틀 형식",
       singles: "싱글",
       doubles: "더블",
-      notSet: "미설정",
       depends: "배틀 형식에 따라 다름",
       reasons: {
         spinner:
@@ -642,6 +642,7 @@ const ko: Messages = {
     kept: "닉네임, 레벨, 성별, 색이 다름, 친밀도, 테라스탈 타입, 성격, 노력치, 개체값은 선택한 게임에 있는 경우 유지됩니다.",
     import: "가져오기",
     update: "업데이트",
+    copy: "복사",
     imported: "팀을 가져왔습니다",
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
     noChanges: "변경된 내용이 없습니다.",
@@ -708,6 +709,7 @@ const ko: Messages = {
   },
   credits: {
     madeBy: "제작: {name}",
+    website: "웹사이트",
     showdown:
       "Pokemon Showdown 여러분이 스프라이트, 아이콘, 포켓몬 데이터를 모두 사용하도록 너그럽게 허락해 주셨습니다. 정말 없어서는 안 될 존재입니다!",
     alsoThanks: "다음 분들께도 감사드립니다",
@@ -730,25 +732,15 @@ const ko: Messages = {
     advertise: "이 사이트에 광고하기.",
   },
   manual: {
-    teams: "팀",
     teamsQuestion: "내 팀은 어디에 저장되나요?",
     teamsAnswer:
       "팀은 이 브라우저에 저장되므로 다시 방문해도 그대로 있지만, 다른 기기에서는 볼 수 없습니다. 팀 목록 버튼이 팀을 나열하며, 각 팀의 메뉴에서 이름 변경, 세대와 포맷 설정, 복제, 공유, 삭제를 할 수 있습니다. 전체 내보내기는 모든 팀을 Showdown 텍스트로 내려받고, 팀 가져오기가 그 파일을 다시 읽어 들입니다. 주소창에는 항상 현재 팀이 들어 있으므로, 주소를 복사하거나 팀 공유 버튼을 누르면 팀을 공유할 수 있습니다.",
-    teamsAnswer2:
-      "이름 목록에는 필터와 정렬 버튼이, 기술 목록에는 정렬 버튼이 있습니다. 실행 취소와 다시 실행으로 현재 팀의 변경 내역을 오갈 수 있으며, 휴대폰과 태블릿에서는 포켓몬 슬롯 탭 위에 있습니다.",
-    generations: "세대",
     generationsQuestion: "세대를 바꾸면 무엇이 달라지나요?",
     generationsAnswer:
       "상단에서 선택한 세대와 게임에 따라 제공되는 포켓몬, 폼, 기술, 도구와 세부 정보가 달라집니다. 과거 세대의 팀에는 해당 세대의 특성, 종족값과 타입 상성표가 적용됩니다. 게임을 바꾸면 필요한 변경 사항이 표시되며, 취소하거나 팀을 수정하거나 복사본을 만들 수 있습니다.",
-    advanced: "추가 세부 정보",
-    advancedQuestion: "닉네임, 레벨, 성격, 노력치, 개체값",
-    advancedAnswer:
-      "각 포켓몬의 추가 세부 정보 버튼에서 Pokemon Showdown과 같은 방식으로 닉네임, 레벨, 성별, 색이 다름, 테라스탈 타입, 성격, 노력치, 개체값을 설정합니다. 이 정보는 공유 링크, 텍스트 복사, Pokepaste 편집 텍스트에 팀과 함께 담깁니다.",
-    matrix: "매트릭스 분석",
     matrixQuestion: "타입 점수는 어디서 나오나요?",
     matrixAnswer:
       "분석 패널의 매트릭스는 모든 타입을 모든 포켓몬과 대조해 보여 줍니다. 방어는 각 공격 타입이 특성과 지닌 물건까지 감안해 각 포켓몬에게 얼마나 효과적인지이고, 견제폭은 각 포켓몬의 가장 강력한 공격 기술이 각 타입에게 얼마나 효과적인지입니다. 칸을 누르면 이유가 표시됩니다.",
-    defence: "팀 방어",
     defenceQuestion: "팀의 타입 방어는 어떻게 계산되나요?",
     defenceAnswer:
       "팀의 모든 포켓몬에게는 약한 타입과 저항하는 타입이 있습니다. 어떤 타입이 내 포켓몬에게 효과가 별로라면 점수를 얻고, 효과가 굉장하다면 점수를 잃습니다:",
@@ -765,13 +757,11 @@ const ko: Messages = {
     note: "참고:",
     defenceNote:
       "부유, 두꺼운지방, 필터, 초식 같은 특성도 반영됩니다. 예를 들어 동탁군의 특성이 부유라면 땅 타입에 +1.5점을 얻고, 내열이라면 불꽃 타입에 0점이 됩니다.",
-    coverage: "팀 타입 견제폭",
     coverageQuestion: "팀의 타입 견제폭은 어떻게 계산되나요?",
     coverageAnswer:
       "먼저, 타입 견제폭이란 무엇일까요? 내 기술이 얼마나 많은 타입에 효과가 굉장한지를 뜻합니다. 기술 하나가 어떤 타입에 효과가 굉장하면 +1을 얻습니다. 그 기술의 타입이 사용하는 포켓몬의 타입과 같다면(자속 보정, STAB) +1을 더 얻습니다.",
     coverageNote:
       "스카이스킨, 페어리스킨 같은 특성도 반영됩니다. 프리즈드라이, 플라잉프레스 같은 기술도 마찬가지입니다. 예를 들어 프리즈드라이는 물 타입에도 +1을 줍니다.",
-    formats: "포맷 (티어)",
     formatsQuestion: "Ubers, OU, VGC 등은 무엇인가요?",
     formatsAnswer:
       "Ubers, OU, {vgc}는 일부 포켓몬을 금지하고 특정 규칙을 적용하는 포맷(티어)입니다. 배틀 스타디움 싱글/더블과 VGC만 The Pokemon Company가 공인한 것이고, 나머지는 {smogon}이 관리합니다. {faq} 또는 {guide}를 참고하세요.",
@@ -781,7 +771,6 @@ const ko: Messages = {
     guide: "각 티어를 간단히 설명한 이 가이드",
     champions:
       "Pokemon Champions (M-C) 포맷은 Regulation M-C에서 Pokemon Champions에 사용할 수 있는 포켓몬만 나열하며, 메가진화도 포함합니다.",
-    terms: "팀 체크리스트 용어",
     termsQuestion: "설치 기술, 강제 교체, 볼트턴 같은 말은 무슨 뜻인가요?",
     termsAnswer:
       "Smogon에 {dictionary}이 있지만 조금 오래되었습니다. 거기에 없는 용어 몇 가지를 정리했습니다:",

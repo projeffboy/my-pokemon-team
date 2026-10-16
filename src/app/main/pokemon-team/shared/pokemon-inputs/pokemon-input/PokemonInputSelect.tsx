@@ -13,7 +13,9 @@ import VirtualizedListbox, {
   VirtualizedListboxContext,
 } from "./pokemon-input-select/VirtualizedListbox";
 import PokemonIcon from "@/app/shared/PokemonIcon";
-import HiddenAbilityLabel from "./pokemon-input-select/HiddenAbilityLabel";
+import HiddenAbilityLabel, {
+  HIDDEN_ABILITY_CLASS,
+} from "./pokemon-input-select/HiddenAbilityLabel";
 import twoLineWidth, {
   scrollbarWidth,
 } from "./pokemon-input-select/two-line-width";
@@ -470,9 +472,17 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
             pointerEvents: "none",
             "& > *": { pointerEvents: "auto" },
           },
+          // The input's own padding keeps a long name clear of the buttons, ending it with
+          // an ellipsis, while a tap there still reaches the input: room for the open button,
+          // and for the clear button too once it shows, with the focus. The item icon and the
+          // Hidden label follow the text and keep their own room.
           [`& .${autocompleteClasses.input}`]: {
-            textOverflow: "clip",
+            textOverflow: "ellipsis",
           },
+          [`&.${autocompleteClasses.hasPopupIcon}.${autocompleteClasses.hasClearIcon} .${autocompleteClasses.inputRoot}:not(:has(.${ITEM_ICON_CLASS}, .${HIDDEN_ABILITY_CLASS})) .${autocompleteClasses.input}`]:
+            { pr: 3.5 },
+          [`&.${autocompleteClasses.hasPopupIcon}.${autocompleteClasses.hasClearIcon}.${autocompleteClasses.focused} .${autocompleteClasses.inputRoot}:not(:has(.${ITEM_ICON_CLASS}, .${HIDDEN_ABILITY_CLASS})) .${autocompleteClasses.input}`]:
+            { pr: 7 },
           // Sizes the input to its text so the item icon follows it, never clipping the name
           // (browsers without field-sizing keep the full-width input, icon at the far right)
           "@supports (field-sizing: content)": {

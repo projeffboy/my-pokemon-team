@@ -241,6 +241,7 @@ const de: Messages = {
   // The analysis panel
   stats: {
     teamStats: "Team-Statistiken",
+    stats: "Statistiken",
     teamAnalysis: "Teamanalyse",
     teamDefence: "Team-Defensive",
     teamTypeCoverage: "Team-Typenabdeckung",
@@ -345,7 +346,6 @@ const de: Messages = {
       label: "Kampfformat",
       singles: "Einzel",
       doubles: "Doppel",
-      notSet: "Keine Angabe",
       depends: "Hängt vom Kampfformat ab",
       reasons: {
         spinner:
@@ -664,6 +664,7 @@ const de: Messages = {
     kept: "Spitznamen, Level, Geschlechter, Schillernd, Freundschaft, Tera-Typen, Wesen, EV und DV bleiben erhalten, wenn das gewählte Spiel sie hat.",
     import: "Importieren",
     update: "Aktualisieren",
+    copy: "Kopieren",
     imported: "Team importiert",
     importedMany: (count: number) => `${count} Teams importiert`,
     noChanges: "Keine Änderungen vorgenommen.",
@@ -729,6 +730,7 @@ const de: Messages = {
   },
   credits: {
     madeBy: "Erstellt von {name}",
+    website: "Website",
     showdown:
       "Die Leute von Pokemon Showdown sind so großzügig, mich all ihre Sprites, Symbole und Pokémon-Daten verwenden zu lassen. Absolut unverzichtbar!",
     alsoThanks: "Außerdem danke an",
@@ -751,25 +753,15 @@ const de: Messages = {
     advertise: "Auf dieser Seite werben.",
   },
   manual: {
-    teams: "Teams",
     teamsQuestion: "Wo werden meine Teams gespeichert?",
     teamsAnswer:
       "Deine Teams werden in diesem Browser gespeichert. Sie sind also da, wenn du wiederkommst, aber nicht auf einem anderen Gerät. Die Schaltfläche „Teams“ listet sie auf, und über das Menü eines Teams kannst du es umbenennen, seine Generation und sein Format festlegen, es duplizieren, teilen oder löschen. „Alle exportieren“ lädt alle Teams als Showdown-Text herunter, den „Team importieren“ wieder einliest. Die Adressleiste enthält immer das aktuelle Team; du teilst es also, indem du die Adresse kopierst (oder auf „Teilen“ drückst).",
-    teamsAnswer2:
-      "Die Namensliste hat die Schaltflächen „Filter“ und „Sortieren“, die Attackenlisten haben „Sortieren“. „Rückgängig“ und „Wiederholen“ gehen die Änderungen am aktuellen Team durch; auf Smartphones und Tablets stehen sie über den Pokémon-Platzreitern.",
-    generations: "Generationen",
     generationsQuestion: "Was ändert die Generation?",
     generationsAnswer:
       "Die oben gewählte Generation und das Spiel bestimmen die angebotenen Pokémon, Formen, Attacken, Items und Set-Details. Historische Teams verwenden Fähigkeiten, Basiswerte und Typentabelle ihrer Generation. Beim Spielwechsel werden nötige Änderungen angezeigt; du kannst abbrechen, das Team anpassen oder eine Kopie erstellen.",
-    advanced: "Weitere Details",
-    advancedQuestion: "Spitznamen, Level, Wesen, EV und DV",
-    advancedAnswer:
-      "Über die Schaltfläche „Weitere Details“ jedes Pokémon legst du Spitzname, Level, Geschlecht, Schillernd, Tera-Typ, Wesen, EV und DV fest, genau wie bei Pokemon Showdown. Sie wandern mit dem Team in Share-Links sowie im Text von „Text kopieren“ und „Pokepaste bearbeiten“ mit.",
-    matrix: "Matrix-Analyse",
     matrixQuestion: "Woher kommen die Typenwertungen?",
     matrixAnswer:
       "Die Matrix im Analysebereich zeigt jeden Typ gegen jedes Pokémon. „Defensive“ zeigt, wie stark jeder Angriffstyp jedes Pokémon trifft, mit Fähigkeit und Item eingerechnet, und „Abdeckung“, wie stark die beste Schadensattacke jedes Pokémon jeden Typ trifft. Tippe auf eine Zelle für die Begründung.",
-    defence: "Team-Defensive",
     defenceQuestion: "Wie wird die Typen-Defensive deines Teams berechnet?",
     defenceAnswer:
       "Jedes Pokémon in deinem Team ist gegen bestimmte Typen schwach und gegen andere resistent. Ist ein Typ gegen eines deiner Pokémon nicht sehr effektiv, bekommst du Punkte. Ist er dagegen sehr effektiv, verlierst du Punkte:",
@@ -786,13 +778,11 @@ const de: Messages = {
     note: "Hinweis:",
     defenceNote:
       "Fähigkeiten wie Schwebe, Speckschicht, Filter und Vegetarier werden berücksichtigt. Hat dein Bronzong zum Beispiel Schwebe, bekommst du +1,5 für Boden. Und hat es Hitzeschutz, bekommst du stattdessen 0 für Feuer.",
-    coverage: "Team-Typenabdeckung",
     coverageQuestion: "Wie wird die Typenabdeckung deines Teams berechnet?",
     coverageAnswer:
       "Zuerst: Was ist Typenabdeckung? Es geht darum, gegen wie viele Typen deine Attacken sehr effektiv sind. Ist eine deiner Attacken gegen einen Typ sehr effektiv, bekommst du +1. Hat diese Attacke außerdem denselben Typ wie das Pokémon, das sie einsetzt (STAB), bekommst du noch einmal +1.",
     coverageNote:
       "Fähigkeiten wie Zenithaut und Feenschicht werden berücksichtigt, ebenso Attacken wie Gefriertrockner und Flying Press. Gefriertrockner gibt dir zum Beispiel auch +1 gegen Wasser.",
-    formats: "Formate (auch Tiers genannt)",
     formatsQuestion: "Was sind Ubers, OU, VGC usw.?",
     formatsAnswer:
       "Ubers, OU und {vgc} sind Formate (oder Tiers), die manche Pokémon verbieten und bestimmte Regeln vorschreiben. Battle Stadium Singles/Doubles und VGC sind die einzigen, die von The Pokémon Company unterstützt werden; die anderen werden von {smogon} gepflegt. Schau dir {faq} oder {guide} an.",
@@ -802,7 +792,6 @@ const de: Messages = {
     guide: "diesen Leitfaden mit einer kurzen Beschreibung jedes Tiers",
     champions:
       "Das Format „Pokémon Champions (M-C)“ listet nur die Pokémon auf, die du in Pokémon Champions unter Regulation M-C verwenden kannst, einschließlich ihrer Mega-Entwicklungen.",
-    terms: "Begriffe der Team-Checkliste",
     termsQuestion:
       "Was bedeuten Begriffe wie Entry Hazard, Phazer und Volt-Turn überhaupt?",
     termsAnswer:

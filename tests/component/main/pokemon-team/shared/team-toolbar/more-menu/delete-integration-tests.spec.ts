@@ -12,7 +12,7 @@ const openTeams = async (page: Page) => {
   await expect(page.getByRole("dialog", { name: "Teams" })).toBeVisible();
 };
 
-for (const action of ["Clear", "Teams Delete"]) {
+for (const action of ["More Delete", "Teams Delete"]) {
   test(`${action} closes when another tab removes its captured team, preserving the fallback`, async ({
     page,
     context,
@@ -53,9 +53,9 @@ for (const action of ["Clear", "Teams Delete"]) {
       "Cloyster",
     );
 
-    if (action === "Clear") {
+    if (action === "More Delete") {
       await openMoreMenu(page);
-      await clickMenuItem(page, "Clear");
+      await clickMenuItem(page, "Delete");
     } else {
       await openTeams(page);
       await page.getByRole("button", { name: "Options for Alpha" }).click();
@@ -64,7 +64,7 @@ for (const action of ["Clear", "Teams Delete"]) {
     const confirmation = page.getByRole("dialog", { name: "Delete Alpha?" });
     await expect(confirmation).toBeVisible();
     await openMoreMenu(otherTab);
-    await clickMenuItem(otherTab, "Clear");
+    await clickMenuItem(otherTab, "Delete");
     await otherTab
       .getByRole("dialog", { name: "Delete Alpha?" })
       .getByRole("button", { name: "Delete", exact: true })
@@ -81,7 +81,7 @@ for (const action of ["Clear", "Teams Delete"]) {
         .getByRole("button", { name: "Close", exact: true })
         .click();
     await openMoreMenu(page);
-    await clickMenuItem(page, "Clear");
+    await clickMenuItem(page, "Delete");
     const nextConfirmation = page.getByRole("dialog", { name: "Delete Beta?" });
     await expect(nextConfirmation).toBeVisible();
     await nextConfirmation
@@ -115,7 +115,7 @@ test("Clear still clears an unsaved empty team without removing the saved team",
   await page.goto("/?gen=9", { waitUntil: "domcontentloaded" });
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("");
   await openMoreMenu(page);
-  await clickMenuItem(page, "Clear");
+  await clickMenuItem(page, "Delete");
   const confirmation = page.getByRole("dialog", { name: "Delete Team 2?" });
   await expect(confirmation).toBeVisible();
   await confirmation

@@ -231,6 +231,8 @@ const en = {
   // The analysis panel
   stats: {
     teamStats: "Team Stats",
+    // The switch to the stats, short beside the title
+    stats: "Stats",
     teamAnalysis: "Team analysis",
     teamDefence: "Team Defence",
     teamTypeCoverage: "Team Type Coverage",
@@ -340,7 +342,6 @@ const en = {
       label: "Battle format",
       singles: "Singles",
       doubles: "Doubles",
-      notSet: "Not set",
       // The icon of a role that singles and doubles judge differently
       depends: "Depends on the battle format",
       // Why each such role does
@@ -652,6 +653,7 @@ const en = {
     kept: "Nicknames, levels, genders, shiny, happiness, tera types, natures, EVs, and IVs are kept when the selected game has them.",
     import: "Import",
     update: "Update",
+    copy: "Copy",
     imported: "Team imported",
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",
@@ -718,6 +720,7 @@ const en = {
   },
   credits: {
     madeBy: "Made by {name}",
+    website: "Website",
     showdown:
       "The folks at Pokemon Showdown are very generous to let me use all of their sprites, icons, and pokemon data. Absolutely indispensable!",
     alsoThanks: "Also thanks to",
@@ -740,25 +743,15 @@ const en = {
     advertise: "Advertise on this site.",
   },
   manual: {
-    teams: "Teams",
     teamsQuestion: "Where are my teams saved?",
     teamsAnswer:
       "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
-    teamsAnswer2:
-      "The Name dropdown has the Filters and Sort buttons, and the move dropdowns have Sort. Undo and Redo step through the current team’s changes; on phones and tablets they are above the Pokémon slot tabs.",
-    generations: "Generations",
     generationsQuestion: "What does the generation change?",
     generationsAnswer:
       "The generation and game chosen at the top determine the Pokémon, formes, moves, items and set details offered. Historical teams use that generation’s abilities, base stats and type chart. Changing games previews required team changes, with options to cancel, update the team or make a copy.",
-    advanced: "More details",
-    advancedQuestion: "Nicknames, levels, natures, EVs, and IVs",
-    advancedAnswer:
-      "Each pokemon's More details button sets its nickname, level, gender, shiny, tera type, nature, EVs, and IVs, in the same way as Pokemon Showdown. They travel with the team in share links and in the Copy text and Edit Pokepaste text.",
-    matrix: "Matrix Analysis",
     matrixQuestion: "Where do the type scores come from?",
     matrixAnswer:
       "The matrix, in the analysis panel, shows every type against every pokemon. Defence is how hard each attacking type hits each pokemon, with its ability and item counted, and Coverage is how hard each pokemon's best damaging move hits each type. Tap a cell for the reason.",
-    defence: "Team Defence",
     defenceQuestion: "How is your team's type defence calculated?",
     defenceAnswer:
       "Every pokemon in your team is weak to certain types and resistant to other types. If a type is not very effective against one of your pokemon, you gain points. But if it's super effective, you lose points:",
@@ -775,13 +768,11 @@ const en = {
     note: "Note:",
     defenceNote:
       "Abilities like Levitate, Thick Fat, Filter, and Sap Sipper are taken into account. For example, if your Bronzong has Levitate, you get +1.5 for Ground. And if it has Heatproof, you get 0 for Fire instead.",
-    coverage: "Team Type Coverage",
     coverageQuestion: "How is your team's type coverage calculated?",
     coverageAnswer:
       "First, what is type coverage? It's about how many types your moves are super effective against. If one of your moves is super effective against a type, you gain +1. If that move also has the same type as the pokemon using it (STAB), then you gain another +1.",
     coverageNote:
       "Abilities like Aerilate and Pixilate are taken into account. So are moves like Freeze Dry and Flying Press. For example, Freeze Dry also gives you +1 against Water.",
-    formats: "Formats (aka Tiers)",
     formatsQuestion: "What is Ubers, OU, VGC, etc.?",
     formatsAnswer:
       "Ubers, OU, and {vgc} are formats (or tiers) that ban some pokemon and enforce certain rules. Battle Stadium Singles/Doubles and VGC are the only ones endorsed by The Pokemon Company, while the other ones are maintained by {smogon}. You can check out {faq} or {guide}.",
@@ -791,7 +782,6 @@ const en = {
     guide: "this guide that gives a brief description about each tier",
     champions:
       "The Pokemon Champions (M-C) format only lists the pokemon you can use in Pokemon Champions under Regulation M-C, including their mega evolutions.",
-    terms: "Team Checklist Terms",
     termsQuestion:
       "What do things like entry hazard, phazer, and volt-turn even mean?",
     termsAnswer:

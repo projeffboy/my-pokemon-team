@@ -8,7 +8,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { alpha } from "@mui/material/styles";
+import type { Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { typesIn } from "@/shared/generation-data";
@@ -29,18 +29,25 @@ export type MatrixKind = "defence" | "coverage";
 // The cell background: red for the bad outcome and teal for the good one, deeper
 // the further from neutral, so an immunity is the deepest. A strong hit is bad on
 // the team's defence and good for its coverage.
-const cellColor = (
-  multiplier: number,
-  kind: MatrixKind,
-  palette: { error: string; success: string },
-) => {
-  if (multiplier === 1) return "transparent";
+// The palette's CSS variables follow the colour scheme, where theme.palette is always light.
+// The dark scheme's colours are light, so its cells stay faint enough for the light text
+// to keep 4.5:1, and an immunity is the full colour under dark text.
+const cellColors = (multiplier: number, kind: MatrixKind, theme: Theme) => {
+  if (multiplier === 1) return { bgcolor: "transparent" };
   const isGood = kind === "defence" ? multiplier < 1 : multiplier > 1;
-  const opacity =
-    multiplier === 0 ? 0.8
-    : multiplier >= 4 || multiplier <= 0.25 ? 0.55
-    : 0.3;
-  return alpha(isGood ? palette.success : palette.error, opacity);
+  const depth =
+    multiplier === 0 ? 2
+    : multiplier >= 4 || multiplier <= 0.25 ? 1
+    : 0;
+  const { palette } = theme.vars || theme;
+  const color = isGood ? palette.success.main : palette.error.main;
+  return {
+    bgcolor: theme.alpha(color, [0.3, 0.55, 0.8][depth] ?? 0.3),
+    ...theme.applyStyles("dark", {
+      bgcolor: depth === 2 ? color : theme.alpha(color, depth ? 0.4 : 0.25),
+      ...(depth === 2 && { color: (theme.vars || theme).palette.grey[900] }),
+    }),
+  };
 };
 
 // The tooltip sits a quarter of a 32px cell away from its cell, instead of MUI's 14px
@@ -127,13 +134,6 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
       outlineColor: "text.primary",
       outlineOffset: -2,
     },
-    bgcolor: (theme: {
-      palette: { error: { main: string }; success: { main: string } };
-    }) =>
-      cellColor(cell.multiplier, kind, {
-        error: theme.palette.error.main,
-        success: theme.palette.success.main,
-      }),
   });
 
   // Green for a good score and red for a bad one, as in the team stats. A type that
@@ -183,10 +183,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
                     width: 14,
                     height: 14,
                     borderRadius: 0.5,
-                    bgcolor: cellColor(multiplier, kind, {
-                      error: theme.palette.error.main,
-                      success: theme.palette.success.main,
-                    }),
+                    ...cellColors(multiplier, kind, theme),
                   })}
                 />
                 {label}
@@ -293,7 +290,10 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
                           <TableCell
                             tabIndex={0}
                             aria-label={cell.reason}
-                            sx={cellSx(cell)}
+                            sx={[
+                              cellSx(cell),
+                              theme => cellColors(cell.multiplier, kind, theme),
+                            ]}
                           >
                             {formatMultiplier(cell.multiplier)}
                           </TableCell>

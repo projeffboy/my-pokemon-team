@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { closeDialog, expectToOpenInNewTab } from "helper";
+import { closeDialog, expectToOpenInNewTab, openAnswers } from "helper";
 
 test.describe("Footer - Integration Tests", () => {
   test("should open every link in the footer dialogs in a new tab", async ({
@@ -7,6 +7,12 @@ test.describe("Footer - Integration Tests", () => {
   }) => {
     for (const name of ["Manual", "Credits", "Updates", "Privacy Policy"]) {
       await page.getByRole("button", { name }).click();
+      // The manual's links are in its answers, which open from their questions
+      const dialog = page.getByRole("dialog");
+      await expect(
+        dialog.locator(".MuiDialogContent-root > *").first(),
+      ).toBeVisible();
+      await openAnswers(dialog);
       const links = page.getByRole("dialog").locator("a[href]");
       await expect(links.first()).toBeVisible();
       for (const link of await links.all()) await expectToOpenInNewTab(link);

@@ -1,11 +1,13 @@
 import { useDeferredValue, useMemo, useState } from "react";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import { inputLabelClasses } from "@mui/material/InputLabel";
+import Typography from "@mui/material/Typography";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
@@ -15,6 +17,7 @@ import {
   serializeTeam,
   teamTextProblems,
 } from "@/store/team-text";
+import copyToClipboard from "@/app/shared/copy-to-clipboard";
 import fill from "@/app/shared/fill";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import { verbatim } from "@/app/shared/text-entry";
@@ -100,18 +103,18 @@ const ImportTeamForm = observer(function ImportTeamForm({
         </DialogContentText>
         <TextField
           autoFocus
-          variant="standard"
           placeholder={
             isImport ?
               importDialog.importPlaceholder
             : importDialog.editPlaceholder
           }
-          label={importDialog.label}
           multiline
-          // A long team scrolls within the field, keeping the problems below it in view
-          maxRows={isSmDown ? 6 : 10}
+          // Tall enough to read as a box when empty; a long team scrolls within the field,
+          // keeping the problems below it in view
+          minRows={isSmDown ? 4 : 8}
+          maxRows={isSmDown ? 6 : 12}
           fullWidth
-          sx={{ my: 2.5 }}
+          sx={{ mt: 2, mb: 1 }}
           value={text}
           onChange={event => {
             setText(event.target.value);
@@ -120,38 +123,54 @@ const ImportTeamForm = observer(function ImportTeamForm({
           error={isNothingFound}
           helperText={isNothingFound && importDialog.nothingFound}
           slotProps={{
-            htmlInput: verbatim("team-text"),
-            // Above the text rather than over it, so a long label wraps instead of being
-            // cut off at 320px
-            inputLabel: {
-              shrink: true,
-              sx: {
-                position: "static",
-                transform: "none",
-                maxWidth: "100%",
-                whiteSpace: "normal",
-                // The size the shrunk label had when it floated
-                fontSize: "0.75rem",
-              },
+            // The description above names the box, so the label is for screen readers
+            htmlInput: {
+              ...verbatim("team-text"),
+              "aria-label": importDialog.label,
             },
-            input: { sx: { [`.${inputLabelClasses.root} + &`]: { mt: 0 } } },
+            // Showdown's text lines up its moves and stats, as in its own import box
+            input: { sx: { fontFamily: "monospace", fontSize: 14 } },
           }}
         />
         <TeamTextProblems problems={problems} />
-        <DialogContentText>{importDialog.kept}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>{t.cancel}</Button>
-        <Button
-          onClick={isImport ? handleImport : handleUpdate}
-          // Until the problems describe the current text, an update could skip them
-          disabled={
-            !store.learnsetsLoaded ||
-            (isImport ? !text.trim() : deferredText !== text)
-          }
+        <Typography
+          variant="caption"
+          component="p"
+          sx={{ color: "text.secondary", mt: 1 }}
         >
-          {isImport ? importDialog.import : importDialog.update}
-        </Button>
+          {importDialog.kept}
+        </Typography>
+      </DialogContent>
+      {/* Copy stays apart from the actions that close the dialog. Where a language's
+          labels leave no room for all three, those two wrap together under it. */}
+      <DialogActions
+        disableSpacing
+        sx={{ flexWrap: "wrap", justifyContent: "space-between", gap: 1 }}
+      >
+        {!isImport && (
+          <Button
+            startIcon={<ContentCopyIcon />}
+            disabled={!text.trim()}
+            onClick={() =>
+              copyToClipboard(text, t.team.teamCopied, t.team.teamNotCopied)
+            }
+          >
+            {importDialog.copy}
+          </Button>
+        )}
+        <Box sx={{ display: "flex", gap: 1, ml: "auto" }}>
+          <Button onClick={onClose}>{t.cancel}</Button>
+          <Button
+            onClick={isImport ? handleImport : handleUpdate}
+            // Until the problems describe the current text, an update could skip them
+            disabled={
+              !store.learnsetsLoaded ||
+              (isImport ? !text.trim() : deferredText !== text)
+            }
+          >
+            {isImport ? importDialog.import : importDialog.update}
+          </Button>
+        </Box>
       </DialogActions>
     </>
   );

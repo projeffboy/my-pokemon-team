@@ -1,5 +1,10 @@
 import type { ReactElement } from "react";
+import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardHeader from "@mui/material/CardHeader";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -16,6 +21,9 @@ import People from "@mui/icons-material/People";
 import Code from "@mui/icons-material/Code";
 import Layers from "@mui/icons-material/Layers";
 import CloudIcon from "@mui/icons-material/Cloud";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LanguageIcon from "@mui/icons-material/Language";
+import indeedeeFace from "@/images/pokemon-shuffle-faces/indeedee-masters-face.png";
 import pokemonShowdownLogo from "@/images/pokemon-showdown-logo.png";
 import { useTranslation } from "@/app/shared/TranslationContext";
 import fill from "@/app/shared/fill";
@@ -82,11 +90,54 @@ export default function Credits() {
 
   return (
     <>
-      <Typography sx={{ mb: 2 }}>
-        {fill(t.credits.madeBy, {
-          name: <Link href="https://jefferytang.com">Jeffery Tang</Link>,
-        })}
-      </Typography>
+      {/* The author's card, apart from the thanks under it */}
+      {/* Transparent, as a paper card would be darker than the dialog in the dark scheme */}
+      <Card variant="outlined" sx={{ mb: 3, bgcolor: "transparent" }}>
+        <CardHeader
+          avatar={
+            <Avatar
+              src={indeedeeFace}
+              alt=""
+              sx={{ width: 56, height: 56, bgcolor: "action.hover" }}
+            />
+          }
+          title={fill(t.credits.madeBy, {
+            name: (
+              <Box component="span" sx={{ fontWeight: "medium" }}>
+                Jeffery Tang
+              </Box>
+            ),
+          })}
+          slotProps={{ title: { variant: "h6", component: "p" } }}
+          sx={{ pb: 0 }}
+        />
+        {/* Spaced by the gap, so a wrapped button lines up under the first */}
+        <CardActions
+          disableSpacing
+          sx={{ flexWrap: "wrap", gap: 1, px: 2, pb: 2 }}
+        >
+          <Button
+            size="small"
+            variant="outlined"
+            startIcon={<LanguageIcon />}
+            href="https://jefferytang.com"
+            target="_blank"
+            rel="noopener"
+          >
+            {t.credits.website}
+          </Button>
+          <Button
+            size="small"
+            variant="outlined"
+            startIcon={<GitHubIcon />}
+            href="https://github.com/projeffboy/my-pokemon-team"
+            target="_blank"
+            rel="noopener"
+          >
+            {t.footer.githubRepo}
+          </Button>
+        </CardActions>
+      </Card>
       <Link href="https://pokemonshowdown.com">
         <Box
           component="img"

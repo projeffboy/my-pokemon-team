@@ -228,6 +228,7 @@ const es: Messages = {
 
   stats: {
     teamStats: "Estadísticas del equipo",
+    stats: "Estadísticas",
     teamAnalysis: "Análisis del equipo",
     teamDefence: "Defensa del equipo",
     teamTypeCoverage: "Cobertura de tipos del equipo",
@@ -331,7 +332,6 @@ const es: Messages = {
       label: "Formato de combate",
       singles: "Individual",
       doubles: "Dobles",
-      notSet: "Sin definir",
       depends: "Depende del formato de combate",
       reasons: {
         spinner:
@@ -645,6 +645,7 @@ const es: Messages = {
     kept: "Se conservan los motes, niveles, géneros, variocolor, felicidad, teratipos, naturalezas, EV e IV si el juego seleccionado los tiene.",
     import: "Importar",
     update: "Actualizar",
+    copy: "Copiar",
     imported: "Equipo importado",
     importedMany: (count: number) => `${count} equipos importados`,
     noChanges: "No se ha hecho ningún cambio.",
@@ -709,6 +710,7 @@ const es: Messages = {
   },
   credits: {
     madeBy: "Hecho por {name}",
+    website: "Sitio web",
     showdown:
       "La gente de Pokemon Showdown es muy generosa al dejarme usar todos sus sprites, iconos y datos de Pokémon. ¡Absolutamente indispensable!",
     alsoThanks: "Gracias también a",
@@ -731,25 +733,15 @@ const es: Messages = {
     advertise: "Anúnciate en este sitio.",
   },
   manual: {
-    teams: "Equipos",
     teamsQuestion: "¿Dónde se guardan mis equipos?",
     teamsAnswer:
       "Tus equipos se guardan en este navegador, así que están aquí cuando vuelves, pero no en otro dispositivo. El botón Equipos los lista, y el menú de cada equipo lo renombra, elige su generación y formato, lo duplica, lo comparte o lo elimina. Exportar todo descarga todos los equipos como texto de Showdown, que Importar equipo vuelve a leer. La barra de direcciones siempre contiene el equipo actual, así que copiar la dirección (o pulsar Compartir) lo comparte.",
-    teamsAnswer2:
-      "La lista de nombres tiene los botones Filtros y Ordenar, y las listas de movimientos tienen Ordenar. Deshacer y Rehacer recorren los cambios del equipo actual; en móviles y tabletas están encima de las pestañas de los Pokémon.",
-    generations: "Generaciones",
     generationsQuestion: "¿Qué cambia la generación?",
     generationsAnswer:
       "La generación y el juego elegidos arriba determinan los Pokémon, formas, movimientos, objetos y detalles disponibles. Los equipos antiguos usan las habilidades, estadísticas base y tabla de tipos de su generación. Cambiar de juego muestra los cambios necesarios; puedes cancelar, actualizar el equipo o crear una copia.",
-    advanced: "Más detalles",
-    advancedQuestion: "Motes, niveles, naturalezas, EV e IV",
-    advancedAnswer:
-      "El botón Más detalles de cada Pokémon establece su mote, nivel, género, variocolor, teratipo, naturaleza, EV e IV, igual que en Pokemon Showdown. Viajan con el equipo en los enlaces para compartir y en el texto de Copiar texto y Editar Pokepaste.",
-    matrix: "Análisis de matriz",
     matrixQuestion: "¿De dónde salen las puntuaciones de tipo?",
     matrixAnswer:
       "La matriz, en el panel de análisis, muestra cada tipo contra cada Pokémon. Defensa es cuánto daño hace cada tipo atacante a cada Pokémon, contando su habilidad y su objeto, y Cobertura es cuánto daño hace el mejor movimiento ofensivo de cada Pokémon a cada tipo. Toca una celda para ver el motivo.",
-    defence: "Defensa del equipo",
     defenceQuestion: "¿Cómo se calcula la defensa de tipos de tu equipo?",
     defenceAnswer:
       "Cada Pokémon de tu equipo es débil a ciertos tipos y resistente a otros. Si un tipo no es muy eficaz contra uno de tus Pokémon, ganas puntos. Pero si es supereficaz, pierdes puntos:",
@@ -766,13 +758,11 @@ const es: Messages = {
     note: "Nota:",
     defenceNote:
       "Se tienen en cuenta habilidades como Levitación, Sebo, Filtro y Herbívoro. Por ejemplo, si tu Bronzong tiene Levitación, obtienes +1.5 por Tierra. Y si tiene Ignífugo, obtienes 0 por Fuego.",
-    coverage: "Cobertura de tipos del equipo",
     coverageQuestion: "¿Cómo se calcula la cobertura de tipos de tu equipo?",
     coverageAnswer:
       "Primero, ¿qué es la cobertura de tipos? Se trata de contra cuántos tipos son supereficaces tus movimientos. Si uno de tus movimientos es supereficaz contra un tipo, ganas +1. Si ese movimiento además es del mismo tipo que el Pokémon que lo usa (STAB), ganas otro +1.",
     coverageNote:
       "Se tienen en cuenta habilidades como Piel Celeste y Piel Feérica. También movimientos como Liofilización y Plancha Voladora. Por ejemplo, Liofilización también te da +1 contra Agua.",
-    formats: "Formatos (o tiers)",
     formatsQuestion: "¿Qué son Ubers, OU, VGC, etc.?",
     formatsAnswer:
       "Ubers, OU y {vgc} son formatos (o tiers) que prohíben algunos Pokémon y aplican ciertas reglas. Battle Stadium Singles/Doubles y VGC son los únicos respaldados por The Pokémon Company, mientras que los demás los mantiene {smogon}. Puedes consultar {faq} o {guide}.",
@@ -782,7 +772,6 @@ const es: Messages = {
     guide: "esta guía que describe brevemente cada tier",
     champions:
       "El formato Pokémon Champions (M-C) solo lista los Pokémon que puedes usar en Pokémon Champions bajo la Regulation M-C, incluidas sus megaevoluciones.",
-    terms: "Términos de la lista de comprobación",
     termsQuestion:
       "¿Qué significan cosas como trampa de entrada, phazer y volt-turn?",
     termsAnswer:

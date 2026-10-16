@@ -456,7 +456,7 @@ test("keyboard users can switch views without losing their search", async ({
   ).toBeFocused();
 });
 
-test("the Name dropdown has Filters and Sort, and the move dropdowns Sort alone", async ({
+test("the Name dropdown has Filters and Sort, and the move dropdowns sort by name or type", async ({
   page,
 }) => {
   await page.setViewportSize({ width: 320, height: 800 });
@@ -469,7 +469,10 @@ test("the Name dropdown has Filters and Sort, and the move dropdowns Sort alone"
   await name.press("Escape");
   await selectPokemon(page, "Grafaiai");
   await page.getByLabel("Pokemon 1's move1").click();
-  await expect(sort).toBeVisible();
+  const moveSort = page.getByRole("group", { name: "Sort by" });
+  await expect(moveSort.getByRole("button", { name: /^Name/ })).toBeVisible();
+  await expect(moveSort.getByRole("button", { name: "Type" })).toBeVisible();
+  await expect(sort).toHaveCount(0);
   await expect(filters).toHaveCount(0);
 });
 

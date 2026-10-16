@@ -13,8 +13,8 @@ export default function Main() {
       container
       size={12}
       spacing={{ xxs: 2, sm: 3 }}
-      // Side by side, the shorter column is centred against the taller one
-      sx={{ alignItems: "center" }}
+      // Side by side, the columns start level, so the toolbar and the panel's title line up
+      sx={{ alignItems: "flex-start" }}
     >
       <Grid
         ref={teamColumn}

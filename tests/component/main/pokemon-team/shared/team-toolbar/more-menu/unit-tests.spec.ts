@@ -33,7 +33,7 @@ test("the More menu keeps the accessibility settings apart from the team's actio
   const menu = page.getByRole("menu");
   await expect(
     menu.getByRole("group", { name: "Manage team" }).getByRole("menuitem"),
-  ).toHaveText(["Copy text", "Edit Pokepaste", "Clear", "Import team"]);
+  ).toHaveText(["Copy text", "Edit Pokepaste", "Delete", "Import team"]);
   const settings = menu
     .getByRole("group", { name: "Accessibility" })
     .getByRole("menuitemcheckbox");
