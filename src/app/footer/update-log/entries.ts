@@ -9,8 +9,21 @@ export type Entry = { date: string } & (
 
 const entries: Entry[] = [
   {
+    date: "Oct 16, 2026",
+    changes: [
+      "Unticking Shiny in Gen 2 now keeps the Pokémon’s other DVs, gender and Hidden Power.",
+      "The header no longer shows the previous game’s name after switching games on iPhone and iPad.",
+    ],
+  },
+  {
     date: "Oct 15, 2026",
     changes: [
+      "Primal weather and Delta Stream now affect the user’s own attacks too, e.g. Mega Rayquaza’s Ice Beam no longer counts as hitting Flying super effectively.",
+      "Doubles formats now include unevolved Pokémon, such as Clefairy in Gen 9 Doubles OU.",
+      "Moving a team to another game now keeps required items, such as Silvally’s Memories, when that game has them.",
+      "Showdown teams whose names contain a slash, such as “Kyogre / Groudon”, now keep their full name when imported.",
+      "Rotom-Frost no longer plays Rotom-Fan’s Gen 4 animation.",
+      "Slots can again be moved with the keyboard or a screen reader on phones and tablets.",
       "Team analysis now checks Generations 6–9 teams against the bans of the format chosen in the filters, e.g. Spore in OU.",
       "Team analysis now flags Pokémon that Legends: Z-A does not have, e.g. Koraidon.",
       "Random sets no longer pick what their format bans, e.g. Tera Blast in OU.",
