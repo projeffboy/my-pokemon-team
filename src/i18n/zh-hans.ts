@@ -320,7 +320,6 @@ const zhHans: Messages = {
       label: "对战形式",
       singles: "单打",
       doubles: "双打",
-      notSet: "未设置",
       depends: "取决于对战形式",
       reasons: {
         spinner:

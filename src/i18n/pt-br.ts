@@ -333,7 +333,6 @@ const ptBR: Messages = {
       label: "Formato de batalha",
       singles: "Individual",
       doubles: "Dupla",
-      notSet: "Não definido",
       depends: "Depende do formato de batalha",
       reasons: {
         spinner:

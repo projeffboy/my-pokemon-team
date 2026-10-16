@@ -342,7 +342,6 @@ const fr: Messages = {
       label: "Format de combat",
       singles: "Simple",
       doubles: "Double",
-      notSet: "Non défini",
       depends: "Dépend du format de combat",
       reasons: {
         spinner:

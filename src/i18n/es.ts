@@ -332,7 +332,6 @@ const es: Messages = {
       label: "Formato de combate",
       singles: "Individual",
       doubles: "Dobles",
-      notSet: "Sin definir",
       depends: "Depende del formato de combate",
       reasons: {
         spinner:

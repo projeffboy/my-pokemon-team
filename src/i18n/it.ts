@@ -340,7 +340,6 @@ const it: Messages = {
       label: "Formato di lotta",
       singles: "Singolo",
       doubles: "Doppio",
-      notSet: "Non impostato",
       depends: "Dipende dal formato di lotta",
       reasons: {
         spinner:

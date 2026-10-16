@@ -319,7 +319,6 @@ const zhHant: Messages = {
       label: "對戰形式",
       singles: "單打",
       doubles: "雙打",
-      notSet: "未設定",
       depends: "取決於對戰形式",
       reasons: {
         spinner:

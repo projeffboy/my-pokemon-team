@@ -342,7 +342,6 @@ const en = {
       label: "Battle format",
       singles: "Singles",
       doubles: "Doubles",
-      notSet: "Not set",
       // The icon of a role that singles and doubles judge differently
       depends: "Depends on the battle format",
       // Why each such role does

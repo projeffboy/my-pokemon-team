@@ -329,7 +329,6 @@ const ja: Messages = {
       label: "バトル形式",
       singles: "シングル",
       doubles: "ダブル",
-      notSet: "未設定",
       depends: "バトル形式によって変わります",
       reasons: {
         spinner:

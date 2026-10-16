@@ -20,8 +20,6 @@ import type { BattleFormat } from "@/types";
 import useToggleTooltip from "./shared/use-toggle-tooltip";
 import ChecklistTooltip from "./team-checklist/ChecklistTooltip";
 
-const NOT_SET = "notSet";
-
 const TeamChecklist = observer(function TeamChecklist() {
   const { t } = useTranslation();
   const isMdDown = useIsMdDown();
@@ -40,22 +38,6 @@ const TeamChecklist = observer(function TeamChecklist() {
 
   return (
     <>
-      <Box sx={{ display: "flex", justifyContent: "center", pt: 1 }}>
-        <ToggleButtonGroup
-          exclusive
-          size="small"
-          value={store.currentTeam.battleFormat ?? NOT_SET}
-          onChange={(_event, value: BattleFormat | typeof NOT_SET | null) => {
-            if (value === NOT_SET) delete store.currentTeam.battleFormat;
-            else if (value) store.currentTeam.battleFormat = value;
-          }}
-          aria-label={battleFormat.label}
-        >
-          <ToggleButton value="singles">{battleFormat.singles}</ToggleButton>
-          <ToggleButton value="doubles">{battleFormat.doubles}</ToggleButton>
-          <ToggleButton value={NOT_SET}>{battleFormat.notSet}</ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
       <Grid container>
         {store.checklist.map(({ key, items }) => (
           <Grid key={key} size={4} sx={{ px: { xxs: 0.5, md: 1 }, py: 1 }}>
@@ -86,12 +68,14 @@ const TeamChecklist = observer(function TeamChecklist() {
                       display: "flex",
                       alignItems: "stretch",
                       justifyContent: "flex-start",
+                      py: 0.25,
                       borderRadius: 1,
                       "&.Mui-focusVisible": { bgcolor: "action.focus" },
                     }}
                   >
                     {/* A checkmark, a cross, or a question mark when it depends on the battle format */}
-                    <div>
+                    {/* As a flex item the icon takes its own height, so every row is level */}
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
                       {item.dependsOnBattleFormat ?
                         <Help color="info" titleAccess={battleFormat.depends} />
                       : item.isChecked ?
@@ -99,14 +83,8 @@ const TeamChecklist = observer(function TeamChecklist() {
                           color="success"
                           titleAccess={t.stats.checked}
                         />
-                      : <Typography
-                          component="div"
-                          sx={{ lineHeight: "initial" }}
-                        >
-                          <Cancel titleAccess={t.stats.unchecked} />
-                        </Typography>
-                      }
-                    </div>
+                      : <Cancel titleAccess={t.stats.unchecked} />}
+                    </Box>
                     {/* E.g. Choice Item (Or "Choice" for smaller screens) */}
                     <Typography sx={{ px: 0.5 }} component="div">
                       {checklistLabel(t.checklist.items[item.key], {
@@ -146,6 +124,41 @@ const TeamChecklist = observer(function TeamChecklist() {
           {reasons[key]}
         </Typography>
       ))}
+      {/* Only where it changes a role, or once picked so that it can be changed */}
+      {(depending.length > 0 || store.currentTeam.battleFormat) && (
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: 1,
+            px: { xxs: 0.5, md: 1 },
+            pb: 1,
+          }}
+        >
+          <Typography
+            id={`${tooltipId}-battle-format`}
+            variant="body2"
+            sx={{ color: "text.secondary" }}
+          >
+            {battleFormat.label}
+          </Typography>
+          {/* Pressing the picked format again leaves it not set */}
+          <ToggleButtonGroup
+            exclusive
+            size="small"
+            value={store.currentTeam.battleFormat ?? null}
+            onChange={(_event, value: BattleFormat | null) => {
+              if (value) store.currentTeam.battleFormat = value;
+              else delete store.currentTeam.battleFormat;
+            }}
+            aria-labelledby={`${tooltipId}-battle-format`}
+          >
+            <ToggleButton value="singles">{battleFormat.singles}</ToggleButton>
+            <ToggleButton value="doubles">{battleFormat.doubles}</ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+      )}
     </>
   );
 });

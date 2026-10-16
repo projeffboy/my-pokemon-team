@@ -337,7 +337,6 @@ const ko: Messages = {
       label: "배틀 형식",
       singles: "싱글",
       doubles: "더블",
-      notSet: "미설정",
       depends: "배틀 형식에 따라 다름",
       reasons: {
         spinner:

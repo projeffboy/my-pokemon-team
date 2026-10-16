@@ -346,7 +346,6 @@ const de: Messages = {
       label: "Kampfformat",
       singles: "Einzel",
       doubles: "Doppel",
-      notSet: "Keine Angabe",
       depends: "Hängt vom Kampfformat ab",
       reasons: {
         spinner:
