@@ -13,6 +13,9 @@ const entries: Entry[] = [
     changes: [
       "Unticking Shiny in Gen 2 now keeps the Pokémon’s other DVs, gender and Hidden Power.",
       "The header no longer shows the previous game’s name after switching games on iPhone and iPad.",
+      "Choosing a Hidden Power type for a Pokémon that can be Hyper Trained now keeps its 31 IVs where it can.",
+      "Team analysis now flags an ability in a game without abilities, such as Gen 2, and shows its field so it can be cleared.",
+      "The team checklist now counts Triage’s draining moves as priority moves, e.g. Comfey’s Draining Kiss.",
     ],
   },
   {
