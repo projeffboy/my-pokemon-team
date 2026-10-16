@@ -701,25 +701,15 @@ const zhHant: Messages = {
     advertise: "在本網站刊登廣告。",
   },
   manual: {
-    teams: "隊伍",
     teamsQuestion: "我的隊伍儲存在哪裡？",
     teamsAnswer:
       "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「全部匯出」會把每支隊伍以 Showdown 文字下載，「匯入隊伍」則能把它們讀回來。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
-    teamsAnswer2:
-      "名稱列表中有「篩選」與「排序」按鈕，招式列表中有「排序」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於寶可夢欄位分頁的上方。",
-    generations: "世代",
     generationsQuestion: "世代會改變什麼？",
     generationsAnswer:
       "頂端選擇的世代和遊戲決定提供的寶可夢、形態、招式、道具與個體詳情。舊世代隊伍使用該世代的特性、種族值和屬性相剋表。切換遊戲會預覽必要的隊伍變更，你可以取消、更新隊伍或建立副本。",
-    advanced: "更多詳情",
-    advancedQuestion: "暱稱、等級、性格、努力值與個體值",
-    advancedAnswer:
-      "每隻寶可夢的「更多詳情」按鈕可以設定暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值，方式與 Pokemon Showdown 相同。這些設定會隨隊伍一起放進分享連結、「複製文字」和「編輯 Pokepaste」的文字中。",
-    matrix: "矩陣分析",
     matrixQuestion: "屬性分數從哪裡來？",
     matrixAnswer:
       "分析面板裡的矩陣會顯示每種屬性對每隻寶可夢的關係。「防禦」是每種攻擊屬性對每隻寶可夢的傷害倍率，並計入其特性與道具；「覆蓋」是每隻寶可夢最強攻擊招式對每種屬性的傷害倍率。點一下格子查看原因。",
-    defence: "隊伍防禦",
     defenceQuestion: "隊伍的屬性防禦是怎麼計算的？",
     defenceAnswer:
       "隊伍裡的每隻寶可夢都有弱點屬性和抵抗屬性。若某個屬性對你的某隻寶可夢效果不好，就會得分；但若效果絕佳，就會扣分：",
@@ -736,13 +726,11 @@ const zhHant: Messages = {
     note: "注意：",
     defenceNote:
       "飄浮、厚脂肪、過濾、食草等特性都會列入計算。例如，如果你的青銅鐘擁有飄浮，地面屬性會得到 +1.5；如果它擁有耐熱，火屬性則會得到 0。",
-    coverage: "隊伍屬性覆蓋",
     coverageQuestion: "隊伍的屬性覆蓋是怎麼計算的？",
     coverageAnswer:
       "首先，什麼是屬性覆蓋？它指的是你的招式對多少種屬性效果絕佳。如果你的某個招式對某個屬性效果絕佳，就會得到 +1；如果該招式的屬性又與使用它的寶可夢相同（STAB），就會再得到 +1。",
     coverageNote:
       "飛行皮膚、妖精皮膚等特性都會列入計算，冷凍乾燥、飛身重壓等招式也是。例如，冷凍乾燥也會讓你對水屬性得到 +1。",
-    formats: "格式（也就是分級）",
     formatsQuestion: "Ubers、OU、VGC 等是什麼？",
     formatsAnswer:
       "Ubers、OU 和 {vgc} 都是格式（或稱分級），會禁止某些寶可夢並套用特定規則。Battle Stadium 單打／雙打和 VGC 是唯一由 The Pokemon Company 認可的格式，其餘則由 {smogon} 維護。你可以參考 {faq} 或 {guide}。",
@@ -752,7 +740,6 @@ const zhHant: Messages = {
     guide: "這篇簡介各分級的指南",
     champions:
       "Pokemon Champions（M-C）格式只列出 Regulation M-C 規定下可在 Pokemon Champions 使用的寶可夢，包括牠們的超級進化。",
-    terms: "隊伍檢查清單用語",
     termsQuestion: "場地陷阱、強制換人、折返招式這些到底是什麼意思？",
     termsAnswer:
       "Smogon 有一份{dictionary}，但內容有點過時。以下是它沒有涵蓋的一些用語：",

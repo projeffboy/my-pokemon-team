@@ -732,25 +732,15 @@ const ptBR: Messages = {
     advertise: "Anuncie neste site.",
   },
   manual: {
-    teams: "Equipes",
     teamsQuestion: "Onde minhas equipes são salvas?",
     teamsAnswer:
       "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Exportar tudo baixa todas as equipes como texto do Showdown, que Importar equipe lê de volta. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
-    teamsAnswer2:
-      "A lista de nomes tem os botões Filtros e Ordenar, e as listas de golpes têm Ordenar. Desfazer e Refazer percorrem as alterações da equipe atual; em celulares e tablets, ficam acima das abas dos Pokémon.",
-    generations: "Gerações",
     generationsQuestion: "O que a geração muda?",
     generationsAnswer:
       "A geração e o jogo escolhidos no topo determinam os Pokémon, formas, golpes, itens e detalhes oferecidos. Equipes antigas usam as habilidades, estatísticas base e tabela de tipos da sua geração. Trocar de jogo mostra as mudanças necessárias; você pode cancelar, atualizar a equipe ou criar uma cópia.",
-    advanced: "Mais detalhes",
-    advancedQuestion: "Apelidos, níveis, naturezas, EVs e IVs",
-    advancedAnswer:
-      "O botão Mais detalhes de cada Pokémon define seu apelido, nível, gênero, shiny, Tipo Tera, natureza, EVs e IVs, da mesma forma que o Pokemon Showdown. Eles acompanham a equipe nos links de compartilhamento e no texto de Copiar texto e Editar Pokepaste.",
-    matrix: "Análise de matriz",
     matrixQuestion: "De onde vêm as pontuações de tipo?",
     matrixAnswer:
       "A matriz, no painel de análise, mostra cada tipo contra cada Pokémon. Defesa é quanto dano cada tipo atacante causa em cada Pokémon, contando sua habilidade e seu item, e Cobertura é quanto dano o melhor golpe ofensivo de cada Pokémon causa em cada tipo. Toque em uma célula para ver o motivo.",
-    defence: "Defesa da equipe",
     defenceQuestion: "Como a defesa de tipos da sua equipe é calculada?",
     defenceAnswer:
       "Cada Pokémon da sua equipe é fraco contra certos tipos e resistente a outros. Se um tipo não é muito eficaz contra um dos seus Pokémon, você ganha pontos. Mas, se for supereficaz, você perde pontos:",
@@ -767,13 +757,11 @@ const ptBR: Messages = {
     note: "Nota:",
     defenceNote:
       "Habilidades como Levitate, Thick Fat, Filter e Sap Sipper são levadas em conta. Por exemplo, se o seu Bronzong tem Levitate, você ganha +1.5 em Ground. E, se ele tem Heatproof, você ganha 0 em Fire.",
-    coverage: "Cobertura de tipos da equipe",
     coverageQuestion: "Como a cobertura de tipos da sua equipe é calculada?",
     coverageAnswer:
       "Primeiro, o que é cobertura de tipos? É contra quantos tipos os seus golpes são supereficazes. Se um dos seus golpes é supereficaz contra um tipo, você ganha +1. Se esse golpe também é do mesmo tipo do Pokémon que o usa (STAB), você ganha mais +1.",
     coverageNote:
       "Habilidades como Aerilate e Pixilate são levadas em conta. Golpes como Freeze-Dry e Flying Press também. Por exemplo, Freeze-Dry também dá +1 contra Water.",
-    formats: "Formatos (ou tiers)",
     formatsQuestion: "O que são Ubers, OU, VGC etc.?",
     formatsAnswer:
       "Ubers, OU e {vgc} são formatos (ou tiers) que banem alguns Pokémon e aplicam certas regras. Battle Stadium Singles/Doubles e VGC são os únicos endossados pela The Pokémon Company, enquanto os outros são mantidos pela {smogon}. Você pode conferir {faq} ou {guide}.",
@@ -783,7 +771,6 @@ const ptBR: Messages = {
     guide: "este guia que descreve brevemente cada tier",
     champions:
       "O formato Pokémon Champions (M-C) lista apenas os Pokémon que você pode usar em Pokémon Champions sob a Regulation M-C, incluindo suas megaevoluções.",
-    terms: "Termos do checklist da equipe",
     termsQuestion:
       "O que significam coisas como entry hazard, phazer e volt-turn?",
     termsAnswer:

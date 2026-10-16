@@ -7,6 +7,15 @@ test.describe("Footer - Integration Tests", () => {
   }) => {
     for (const name of ["Manual", "Credits", "Updates", "Privacy Policy"]) {
       await page.getByRole("button", { name }).click();
+      // The manual's links are in its answers, which open from their questions
+      const questions = page
+        .getByRole("dialog")
+        .locator("button[aria-expanded]");
+      if (name === "Manual") await expect(questions.first()).toBeVisible();
+      for (const question of await questions.all()) {
+        await question.click();
+        await expect(question).toHaveAttribute("aria-expanded", "true");
+      }
       const links = page.getByRole("dialog").locator("a[href]");
       await expect(links.first()).toBeVisible();
       for (const link of await links.all()) await expectToOpenInNewTab(link);
