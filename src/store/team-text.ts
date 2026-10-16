@@ -143,7 +143,12 @@ export const serializeTeam = (
 const BACKUP_MARKER = "# mypokemonteam backup: preserve team names";
 const GENERATION_PROFILE_MARKER = `# mypokemonteam generation profile: ${COMBINED_GENERATIONS_PROFILE}`;
 
-export const serializeTeams = (teams: readonly SavedTeam[]) => {
+export const serializeTeams = (
+  teams: readonly Pick<
+    SavedTeam,
+    "name" | "generation" | "format" | "generationProfile" | "team"
+  >[],
+) => {
   const preserveNames = teams.some(({ name }) => name.includes("/"));
   return teams
     .map(({ name, generation, format, generationProfile, team }) => {
@@ -746,5 +751,26 @@ export function parseTeamsText(
         ),
       }))
       .filter(({ team }) => !isTeamEmpty(team) || isEmptyBackup(index));
+  });
+}
+
+// The parsed teams that no saved team equals in name, game, and pokemon, so that
+// parsing the text of the saved teams adds none of them. A repeated team is added
+// only as many times as the saved ones fall short, and an unnamed team is always new.
+export function teamsToAdd(
+  parsed: readonly ParsedTeam[],
+  saved: readonly SavedTeam[],
+) {
+  const copies = new Map<string, number>();
+  for (const team of saved) {
+    const key = serializeTeams([team]);
+    copies.set(key, (copies.get(key) ?? 0) + 1);
+  }
+  return parsed.filter(team => {
+    if (!team.name) return true;
+    const key = serializeTeams([team]);
+    const count = copies.get(key) ?? 0;
+    if (count) copies.set(key, count - 1);
+    return !count;
   });
 }
