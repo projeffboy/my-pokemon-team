@@ -433,6 +433,39 @@ test.describe("Share Link - Unsupported gen and game", () => {
     await page.goBack();
     await expect(generationValue(page)).toHaveValue("7");
   });
+
+  // Links made Oct 10–13, 2026 named Let's Go by display name, which the site no longer reads
+  test("an unsupported game value that reopens a Let’s Go team names Let’s Go", async ({
+    page,
+  }) => {
+    await page.goto("/", { waitUntil: "domcontentloaded" });
+    await openMoreMenu(page);
+    await clickMenuItem(page, "Import team");
+    const importDialog = page.getByRole("dialog", { name: "Import Team" });
+    await importDialog
+      .getByRole("textbox")
+      .fill("=== [gen7letsgoou] Alolan Persian ===\n\nPersian-Alola\n- Bite");
+    await importDialog
+      .getByRole("button", { name: "Import", exact: true })
+      .click();
+    await expect(importDialog).toBeHidden();
+    await closeDialog(page, "Close");
+    await expect(generationValue(page)).toHaveValue("Let’s Go");
+    await expect(page).toHaveURL(/[?&]team=/);
+
+    const url = new URL(page.url());
+    url.searchParams.set("game", "Let’s Go");
+    await page.goto(url.href, { waitUntil: "domcontentloaded" });
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue(
+      "Persian-Alola",
+    );
+    await expect(generationValue(page)).toHaveValue("Let’s Go");
+    await expect(unsupportedMessage(page)).toHaveText(
+      en.team.linkGenerationUnsupported(
+        `Gen 7 · ${en.gameVariants["Let’s Go"]}`,
+      ),
+    );
+  });
 });
 
 test.describe("Teams across tabs and links", () => {
