@@ -87,7 +87,7 @@ test.describe("Team Stats - Unit Tests", () => {
         ];
         for (const name of regions)
           await expect(panel.getByRole("region", { name })).toBeVisible();
-        // The shorter column is centred against the taller one
+        // The two columns start level
         await expect
           .poll(() =>
             page.evaluate(() => {
@@ -95,11 +95,7 @@ test.describe("Team Stats - Unit Tests", () => {
                 document.querySelector("main > *"),
                 document.querySelector("main section"),
               ].map(column => column?.getBoundingClientRect());
-              return Math.abs(
-                (team?.top ?? 0) +
-                  (team?.height ?? 0) / 2 -
-                  ((analysis?.top ?? 0) + (analysis?.height ?? 0) / 2),
-              );
+              return Math.abs((team?.top ?? 0) - (analysis?.top ?? 0));
             }),
           )
           .toBeLessThanOrEqual(1);
