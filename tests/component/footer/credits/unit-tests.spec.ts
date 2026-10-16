@@ -8,9 +8,13 @@ test.describe("Credits - Unit Tests", () => {
     await expect(dialog).toBeVisible();
     await expect(dialog).toContainText("Credits");
     await expect(dialog).toContainText("Made by Jeffery Tang");
+    await expect(dialog.getByRole("link", { name: "Website" })).toHaveAttribute(
+      "href",
+      "https://jefferytang.com",
+    );
     await expect(
-      dialog.getByRole("link", { name: "Jeffery Tang" }),
-    ).toHaveAttribute("href", "https://jefferytang.com");
+      dialog.getByRole("link", { name: "GitHub Repo" }),
+    ).toHaveAttribute("href", "https://github.com/projeffboy/my-pokemon-team");
     await expect(
       dialog.getByRole("link", { name: "Pokemon Showdown" }),
     ).toHaveAttribute("href", "https://pokemonshowdown.com");

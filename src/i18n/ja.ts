@@ -703,6 +703,7 @@ const ja: Messages = {
   },
   credits: {
     madeBy: "制作：{name}",
+    website: "ウェブサイト",
     showdown:
       "Pokemon Showdownの皆さんは、スプライト、アイコン、ポケモンデータのすべてを快く使わせてくれています。本当に欠かせない存在です！",
     alsoThanks: "また、次の方々にも感謝します",

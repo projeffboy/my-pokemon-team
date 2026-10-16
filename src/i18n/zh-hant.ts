@@ -678,6 +678,7 @@ const zhHant: Messages = {
   },
   credits: {
     madeBy: "製作：{name}",
+    website: "個人網站",
     showdown:
       "感謝 Pokemon Showdown 的各位慷慨提供所有精靈圖、圖示與寶可夢資料。不可或缺！",
     alsoThanks: "同時感謝",

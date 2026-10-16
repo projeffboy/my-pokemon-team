@@ -718,6 +718,7 @@ const it: Messages = {
   },
   credits: {
     madeBy: "Creato da {name}",
+    website: "Sito web",
     showdown:
       "Le persone di Pokemon Showdown sono molto generose a lasciarmi usare tutti i loro sprite, le icone e i dati sui Pokémon. Assolutamente indispensabili!",
     alsoThanks: "Grazie anche a",

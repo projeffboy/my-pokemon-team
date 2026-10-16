@@ -709,6 +709,7 @@ const ko: Messages = {
   },
   credits: {
     madeBy: "제작: {name}",
+    website: "웹사이트",
     showdown:
       "Pokemon Showdown 여러분이 스프라이트, 아이콘, 포켓몬 데이터를 모두 사용하도록 너그럽게 허락해 주셨습니다. 정말 없어서는 안 될 존재입니다!",
     alsoThanks: "다음 분들께도 감사드립니다",

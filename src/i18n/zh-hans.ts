@@ -681,6 +681,7 @@ const zhHans: Messages = {
   },
   credits: {
     madeBy: "制作：{name}",
+    website: "个人网站",
     showdown:
       "感谢 Pokemon Showdown 的各位慷慨地允许我使用他们全部的宝可梦图像、图标和数据。绝对不可或缺！",
     alsoThanks: "同时感谢",

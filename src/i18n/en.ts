@@ -720,6 +720,7 @@ const en = {
   },
   credits: {
     madeBy: "Made by {name}",
+    website: "Website",
     showdown:
       "The folks at Pokemon Showdown are very generous to let me use all of their sprites, icons, and pokemon data. Absolutely indispensable!",
     alsoThanks: "Also thanks to",
