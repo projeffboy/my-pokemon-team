@@ -11,6 +11,7 @@ const entries: Entry[] = [
   {
     date: "Oct 16, 2026",
     changes: [
+      "Sort moves by name or type from the move dropdown itself.",
       "Shiny and Hidden Power no longer reset IVs or DVs needlessly, e.g. unticking Shiny in Gen 2.",
     ],
   },
