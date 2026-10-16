@@ -31,11 +31,8 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps webkit
       - name: Share link folder as is
-        run: npx playwright test --project=iPhone tests/component/team-link-sync --repeat-each=3 --retries=0 --reporter=list
+        run: npx playwright test --project=iPhone tests/component/team-link-sync --repeat-each=4 --retries=0 --reporter=list
         continue-on-error: true
       - name: Folder then the instrumented copy
-        run: npx playwright test --project=iPhone tests/component/team-link-sync tests/zz-za-diagnose.spec.ts --repeat-each=3 --retries=0 --reporter=list
-        continue-on-error: true
-      - name: Whole suite up to the share link tests
-        run: npx playwright test --project=iPhone tests/component --retries=0 --reporter=list -g "Share Link|Pokemon Sprite|Team Defence|diagnose"
+        run: npx playwright test --project=iPhone tests/component/team-link-sync tests/zz-za-diagnose.spec.ts --repeat-each=4 --retries=0 --reporter=list
         continue-on-error: true
