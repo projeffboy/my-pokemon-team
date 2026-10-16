@@ -192,13 +192,21 @@ test.describe("Team Stats - Unit Tests", () => {
             const title = analysis
               ?.querySelector("h2")
               ?.getBoundingClientRect();
+            // The labelled switch goes under the title where the column is narrow
+            const switches = analysis
+              ?.querySelector('[role="group"]')
+              ?.getBoundingClientRect();
             const card = analysis
               ?.querySelector(".MuiPaper-root")
               ?.getBoundingClientRect();
             const top = analysis?.getBoundingClientRect().top ?? NaN;
+            const header = Math.max(
+              title?.bottom ?? NaN,
+              switches?.bottom ?? NaN,
+            );
             return {
               above: (title?.top ?? NaN) - top < 12,
-              below: (card?.top ?? NaN) - (title?.bottom ?? NaN) < 20,
+              below: (card?.top ?? NaN) - header < 20,
             };
           }),
         )

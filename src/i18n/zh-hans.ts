@@ -218,6 +218,7 @@ const zhHans: Messages = {
   // 分析面板
   stats: {
     teamStats: "队伍统计",
+    stats: "统计",
     teamAnalysis: "队伍分析",
     teamDefence: "队伍防御",
     teamTypeCoverage: "队伍属性打击面",

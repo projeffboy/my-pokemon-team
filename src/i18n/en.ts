@@ -231,6 +231,8 @@ const en = {
   // The analysis panel
   stats: {
     teamStats: "Team Stats",
+    // The switch to the stats, short beside the title
+    stats: "Stats",
     teamAnalysis: "Team analysis",
     teamDefence: "Team Defence",
     teamTypeCoverage: "Team Type Coverage",

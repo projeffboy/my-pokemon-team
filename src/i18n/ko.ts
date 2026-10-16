@@ -232,6 +232,7 @@ const ko: Messages = {
 
   stats: {
     teamStats: "팀 통계",
+    stats: "통계",
     teamAnalysis: "팀 분석",
     teamDefence: "팀 방어",
     teamTypeCoverage: "팀 타입 견제폭",

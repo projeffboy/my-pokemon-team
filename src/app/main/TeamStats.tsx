@@ -5,7 +5,6 @@ import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import ShieldIcon from "@mui/icons-material/Shield";
 import GpsFixedIcon from "@mui/icons-material/GpsFixed";
@@ -65,14 +64,31 @@ export default function TeamStats({
     { view: "matrix", label: t.stats.matrix, Icon: GridOnIcon },
     { view: "checklist", label: t.stats.checklist, Icon: ChecklistIcon },
   ];
-  const switches: { view: View; label: string; Icon: typeof ShieldIcon }[] = [
-    { view: "defence", label: t.stats.teamStats, Icon: BarChartIcon },
-    { view: "matrix", label: t.stats.matrixAnalysis, Icon: GridOnIcon },
+  // Each switch shows a short name, and keeps the view's full title as its label
+  const switches: {
+    view: View;
+    label: string;
+    caption: string;
+    Icon: typeof ShieldIcon;
+  }[] = [
+    {
+      view: "defence",
+      label: t.stats.teamStats,
+      caption: t.stats.stats,
+      Icon: BarChartIcon,
+    },
+    {
+      view: "matrix",
+      label: t.stats.matrixAnalysis,
+      caption: t.stats.matrix,
+      Icon: GridOnIcon,
+    },
     ...(checklistTab.ownTab ?
       [
         {
           view: "checklist" as const,
           label: t.stats.teamChecklist,
+          caption: t.stats.checklist,
           Icon: ChecklistIcon,
         },
       ]
@@ -124,12 +140,16 @@ export default function TeamStats({
           }}
           aria-label={t.stats.teamAnalysis}
         >
-          {switches.map(({ view: switchView, label, Icon }) => (
-            <Tooltip key={switchView} title={label}>
-              <ToggleButton value={switchView} aria-label={label}>
-                <Icon fontSize="small" />
-              </ToggleButton>
-            </Tooltip>
+          {switches.map(({ view: switchView, label, caption, Icon }) => (
+            <ToggleButton
+              key={switchView}
+              value={switchView}
+              aria-label={label}
+              sx={{ gap: 0.5, px: 1, textTransform: "none" }}
+            >
+              <Icon fontSize="small" />
+              {caption}
+            </ToggleButton>
           ))}
         </ToggleButtonGroup>
       )}

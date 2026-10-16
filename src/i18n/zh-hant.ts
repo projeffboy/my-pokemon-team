@@ -217,6 +217,7 @@ const zhHant: Messages = {
   // The analysis panel
   stats: {
     teamStats: "隊伍數據",
+    stats: "數據",
     teamAnalysis: "隊伍分析",
     teamDefence: "隊伍防禦",
     teamTypeCoverage: "隊伍屬性覆蓋",

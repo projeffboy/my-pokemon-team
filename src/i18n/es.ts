@@ -228,6 +228,7 @@ const es: Messages = {
 
   stats: {
     teamStats: "Estadísticas del equipo",
+    stats: "Estadísticas",
     teamAnalysis: "Análisis del equipo",
     teamDefence: "Defensa del equipo",
     teamTypeCoverage: "Cobertura de tipos del equipo",

@@ -224,6 +224,7 @@ const ja: Messages = {
   // The analysis panel
   stats: {
     teamStats: "チーム分析",
+    stats: "分析",
     teamAnalysis: "チームの分析",
     teamDefence: "チームの耐性",
     teamTypeCoverage: "チームの攻撃範囲",

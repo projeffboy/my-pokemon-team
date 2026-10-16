@@ -229,6 +229,7 @@ const ptBR: Messages = {
 
   stats: {
     teamStats: "Estatísticas da equipe",
+    stats: "Estatísticas",
     teamAnalysis: "Análise da equipe",
     teamDefence: "Defesa da equipe",
     teamTypeCoverage: "Cobertura de tipos da equipe",

@@ -235,6 +235,7 @@ const it: Messages = {
   // The analysis panel
   stats: {
     teamStats: "Statistiche squadra",
+    stats: "Statistiche",
     teamAnalysis: "Analisi della squadra",
     teamDefence: "Difesa della squadra",
     teamTypeCoverage: "Copertura di tipo della squadra",
