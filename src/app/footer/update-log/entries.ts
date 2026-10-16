@@ -11,8 +11,8 @@ const entries: Entry[] = [
   {
     date: "Oct 16, 2026",
     changes: [
-      "One Import/Export button now replaces Copy text, Edit Pokepaste, Import Team, Copy All and Export All, and can also upload a team to PokePaste or read a pokepast.es link.",
-      "Team backups are gone, and backup files saved earlier can no longer be added back: Import/Export keeps all your teams as text you can copy or download instead.",
+      "One Import/Export button now replaces Copy text and four other buttons, and can upload a team to PokePaste or read a pokepast.es link.",
+      "Team backups are gone, and backup files saved earlier can no longer be added back; Import/Export copies all your teams as text instead.",
       "Sort moves by name or type from the move dropdown itself.",
       "Shiny and Hidden Power no longer reset IVs or DVs needlessly, e.g. unticking Shiny in Gen 2.",
     ],

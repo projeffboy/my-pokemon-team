@@ -40,8 +40,12 @@ import {
 } from "./import-export-form/pokepaste";
 import TeamTextProblems from "./import-export-form/TeamTextProblems";
 
-const hasLink = (text: string) =>
-  text.split("\n").some(line => pokepasteId(line));
+const MAX_LINKS = 20;
+
+const linkIds = (text: string) => [
+  ...new Set(text.split("\n").flatMap(line => pokepasteId(line) ?? [])),
+];
+const hasLink = (text: string) => linkIds(text).length > 0;
 
 // A dialog's body and actions for the Showdown text of the current team or of every
 // team: copy it, change it or paste other text or pokepast.es links, and update the
@@ -76,7 +80,6 @@ const ImportExportForm = observer(function ImportExportForm({
   const { generation } = store.currentTeam;
   const { dataFormat, learnsetsLoaded } = store;
   const deferredText = useDeferredValue(text);
-  const isLink = !!pokepasteId(text);
   const problems = useMemo(
     () =>
       isTeams || !learnsetsLoaded || hasLink(deferredText) ?
@@ -100,6 +103,16 @@ const ImportExportForm = observer(function ImportExportForm({
       return;
     }
     const added = teamsToAdd(teams, store.teams);
+    // Text added after the shown teams that no team came out of was not read
+    if (
+      !added.length &&
+      source.startsWith(initialText) &&
+      source.slice(initialText.length).trim() &&
+      teams.length <= parseTeamsText(initialText, store.currentTeam).length
+    ) {
+      fail("nothingFound");
+      return;
+    }
     for (const { name, ...settings } of added)
       store.addTeam({ ...settings, ...(name && { name }) });
     store.openSnackbar(
@@ -133,6 +146,7 @@ const ImportExportForm = observer(function ImportExportForm({
   // Each line that is only a pokepast.es link becomes its paste, or, among teams,
   // a team named and set to the game as the paste says
   const readLinks = async (source: string, signal: AbortSignal) => {
+    if (linkIds(source).length > MAX_LINKS) throw new Error("Too many links");
     const lines = source.split("\n");
     const pastes = new Map<string, ReturnType<typeof fetchPokepaste>>();
     for (const line of lines) {
@@ -267,7 +281,7 @@ const ImportExportForm = observer(function ImportExportForm({
           </Button>
         : <Button
             startIcon={<UploadIcon />}
-            disabled={isEmpty || isLink}
+            disabled={isEmpty || hasLink(text)}
             onClick={() =>
               uploadToPokepaste(pokepasteUpload(store.currentTeam, text))
             }

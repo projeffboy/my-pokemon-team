@@ -77,7 +77,7 @@ test.describe("Import/Export Form - Unit Tests", () => {
     await expect(upload).toBeDisabled();
   });
 
-  test("Upload to PokePaste is off for a box holding only a pokepast.es link", async ({
+  test("Upload to PokePaste is off for a box holding a pokepast.es link", async ({
     page,
   }) => {
     const dialog = getDialog(page);
@@ -97,6 +97,8 @@ test.describe("Import/Export Form - Unit Tests", () => {
     }
 
     await box.fill(`Vigoroth\n${LINK}`);
+    await expect(upload).toBeDisabled();
+    await box.fill("Vigoroth");
     await expect(upload).toBeEnabled();
   });
 

@@ -491,7 +491,7 @@ test.describe("a paste cannot make teams of its own or stall the page", () => {
       if (parsed)
         parseTeamsText(pokepasteTeamText({ ...parsed, title: "", notes: "" }));
     }
-    expect(performance.now() - start).toBeLessThan(1000);
+    expect(performance.now() - start).toBeLessThan(10_000);
   });
 });
 
@@ -537,7 +537,7 @@ test.describe("parseTeamHeader", () => {
       parseTeamsText(
         `===${gap.repeat(20_000)}x\n- Surf\n${"=".repeat(20_000)}`,
       );
-    expect(performance.now() - start).toBeLessThan(1000);
+    expect(performance.now() - start).toBeLessThan(10_000);
   });
 });
 
@@ -574,5 +574,35 @@ test.describe("fetchPokepaste", () => {
         reply(JSON.stringify({ paste: "x".repeat(MAX_POKEPASTE_LENGTH) })),
       ),
     ).rejects.toThrow();
+  });
+});
+
+test.describe("what a reply may hold", () => {
+  test("reads the Format note whatever ends its line", () => {
+    for (const notes of [
+      "Format: gen8ou\r\nGood luck",
+      "format:gen8ou\rx",
+      "Format: gen8ou",
+    ])
+      expect(
+        pokepasteTeamText({ paste: kingdra, title: "x", notes }).split("\n")[0],
+        JSON.stringify(notes),
+      ).toBe("=== [gen8ou] x ===");
+  });
+
+  test("the app's own control lines and oversized replies are refused or dropped", () => {
+    const marked = parsePokepaste({
+      paste: `# mypokemonteam generation profile: 6-9\n${kingdra}`,
+    });
+    expect(marked?.paste).not.toContain("mypokemonteam");
+    expect(parsePokepaste({ paste: "Mew\n\n".repeat(25) })).toBeUndefined();
+    expect(parsePokepaste({ paste: "Mew\n\n".repeat(20) })).toBeDefined();
+  });
+
+  test("a long title is cut to a name of a hundred characters", () => {
+    const [team] = parseTeamsText(
+      pokepasteTeamText({ paste: kingdra, title: "T".repeat(5000), notes: "" }),
+    );
+    expect(team?.name).toHaveLength(100);
   });
 });

@@ -8,6 +8,9 @@ export const POKEPASTE_URL = "https://pokepast.es";
 // A real paste is a few kilobytes of lines under a hundred characters
 export const MAX_POKEPASTE_LENGTH = 200_000;
 const MAX_LINE_LENGTH = 1000;
+// A Showdown box holds 24 pokemon
+const MAX_SETS = 24;
+const MAX_NAME_LENGTH = 100;
 
 const LINK = /^https?:\/\/(?:www\.)?pokepast\.es\/([a-z0-9]+)(?:[/?#]\S*)?$/i;
 
@@ -34,13 +37,16 @@ export function parsePokepaste(data: unknown): Pokepaste | undefined {
     const isBlank = !line.trim();
     if (
       parseTeamHeader(line) ||
+      line.trim().startsWith("# mypokemonteam") ||
       (isBlank && !kept.at(-1)?.trim() && kept.length)
     )
       continue;
     kept.push(line);
   }
+  const text = kept.join("\n");
+  if (text.split(/\n\s*\n/).length > MAX_SETS) return undefined;
   return {
-    paste: kept.join("\n"),
+    paste: text,
     title: typeof title === "string" ? title : "",
     notes: typeof notes === "string" ? notes : "",
   };
@@ -50,10 +56,14 @@ export function parsePokepaste(data: unknown): Pokepaste | undefined {
 // game ("Format: gen9ou" on the first line of the notes, as the site uploads) carry
 // over. Like Showdown's own default names, "Untitled" and "Untitled 2" are no name.
 export function pokepasteTeamText({ paste, title, notes }: Pokepaste) {
-  const format = /^Format:\s*(.+)$/i
-    .exec(notes.split("\n")[0] ?? "")?.[1]
-    ?.toLowerCase()
-    .replace(/[^a-z0-9]/g, "");
+  const note = (notes.split(/\r\n?|\n/, 1)[0] ?? "").trim();
+  const format =
+    note.slice(0, 7).toLowerCase() === "format:" ?
+      note
+        .slice(7)
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "")
+    : "";
   const name =
     /^untitled(?: \d+)?$/i.test(title.trim()) ? "" : (
       title
@@ -61,6 +71,8 @@ export function pokepasteTeamText({ paste, title, notes }: Pokepaste) {
         .replace(/\[/g, "(")
         .replace(/\]/g, ")")
         .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, MAX_NAME_LENGTH)
         .trim()
     );
   return `=== ${format ? `[${format}] ` : ""}${name} ===\n\n${paste}`;

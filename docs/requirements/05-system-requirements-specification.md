@@ -333,7 +333,7 @@ UC9 Back Up Teams and UC10 Restore Teams were deleted on 16 October 2026, with U
 - A bare `-` is an intentional empty move slot and is not reported. A pokemon with fewer than four moves can be updated.
 - Editing the text, or seeing a report, changes no team until the Player presses Update or Add teams. Cancel, Go Back, and Escape leave every team unchanged, and the box starts again from the saved teams the next time. Unrecognized names are not corrected automatically.
 - Updating with the team's own text changes nothing and says so.
-- Copy, Download, and Upload to PokePaste use the text in the box, edits included. Copy and Download need text in the box, and Upload to PokePaste needs text that is not only a pokepast.es link.
+- Copy, Download, and Upload to PokePaste use the text in the box, edits included. Copy and Download need text in the box, and Upload to PokePaste needs text with no pokepast.es link in it.
 - Adding the text of the saved teams as it stood when the page opened adds nothing, and says that the teams are already saved. After teams are added, the Teams dialog shows its list of saved teams again, and the last team added is the current team.
 - A link to a paste is read whether it uses https or http, has www or not, ends in `/json` or `/raw`, has a query string, or has spaces around it. A line that holds anything besides the link, or a link to another host, is team text, not a link.
 - A link among other lines of the box is replaced where it stands, and every link in the box is fetched. One link that cannot be fetched changes nothing, even when the others can.
