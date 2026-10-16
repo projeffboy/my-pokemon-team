@@ -31,6 +31,12 @@ export const loadScreenshotLibrary = () => {
   return screenshotLibrary;
 };
 
+// Whether a send is waiting for the library, which it first loads only when the dialog was
+// opened offline. Index.tsx then does not reload a tab opened before a deploy, which would
+// lose the message, and the feedback goes without the screenshot.
+let sendingLoad = false;
+export const isSendingFeedback = () => sendingLoad;
+
 const toDataUrl = (blob: Blob) =>
   new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -53,8 +59,12 @@ export async function capturePage(dialog: Element | null, maxLength: number) {
       }, TIMEOUT_MS);
     });
     const capture = (async () => {
+      sendingLoad = true;
+      // Cleared when the import settles, even after the timeout gave up on it
       const { createContext, destroyContext, domToJpeg } =
-        await loadScreenshotLibrary();
+        await loadScreenshotLibrary().finally(() => {
+          sendingLoad = false;
+        });
       if (controller.signal.aborted) return undefined;
       const context: Context<HTMLElement> = await createContext(document.body, {
         type: "image/jpeg",

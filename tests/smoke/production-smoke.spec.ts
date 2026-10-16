@@ -228,3 +228,46 @@ test("an offline lazy-load failure keeps the page and uses the dialog fallback",
   await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Pelipper");
   expect(errors).toEqual([]);
 });
+
+// A deploy replaces the screenshot library's chunk. A tab opened offline loads it only when
+// sending, and that failure must not reload the page and lose the message.
+test("a stale tab opened offline sends its feedback without reloading", async ({
+  page,
+  context,
+}) => {
+  const errors: Error[] = [];
+  page.on("pageerror", error => errors.push(error));
+  const requests: unknown[] = [];
+  await page.route("/api/feedback", route => {
+    requests.push(route.request().postDataJSON());
+    return route.fulfill({ status: 204 });
+  });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await page.route(/\/assets\/[^/]+\.js$/, async route => {
+    const response = await route.fetch();
+    const body = await response.text();
+    return /\bas domToJpeg\b/.test(body) ?
+        route.fulfill({ status: 404 })
+      : route.fulfill({ response, body });
+  });
+  await page.evaluate(() => Reflect.set(window, "beforeSending", true));
+
+  await context.setOffline(true);
+  await page.getByRole("button", { name: "Send feedback" }).click();
+  const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+  await dialog.getByLabel("Your feedback").fill("Written before a deploy");
+  await context.setOffline(false);
+  await dialog.getByRole("button", { name: "Send", exact: true }).click();
+  await expect(page.getByText("Thanks! Your feedback was sent.")).toBeVisible();
+  expect(await page.evaluate(() => Reflect.get(window, "beforeSending"))).toBe(
+    true,
+  );
+  expect(requests).toEqual([
+    {
+      message: "Written before a deploy",
+      link: expect.any(String),
+      screen: expect.any(String),
+    },
+  ]);
+  expect(errors).toEqual([]);
+});
