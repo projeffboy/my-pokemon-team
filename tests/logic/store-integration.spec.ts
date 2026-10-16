@@ -376,6 +376,16 @@ test("team problems name an ability in a game without abilities", ({
     expect(store.slotProblems(0)).toHaveLength(1);
     store.team[0].ability = "";
     expect(store.teamProblems).toEqual([]);
+
+    // The site itself never gives one
+    store.selectPokemon(1, "electrode");
+    expect(store.team[1].ability).toBe("");
+    expect(store.randomizeSlot(2)).toBeTruthy();
+    expect(store.team[2].ability).toBe("");
+    expect(store.randomizeTeam()).not.toBe(false);
+    expect(store.team.every(({ name, ability }) => name && !ability)).toBe(
+      true,
+    );
   }
 });
 
