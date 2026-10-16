@@ -272,18 +272,11 @@ test("priority moves are damaging moves that go first, not status moves like Pro
     expect(priority("indeedee", move)).toBe(false);
 });
 
-test("Triage gives draining moves priority from Gen 7", () => {
-  const priority = (ability: string, generation: Generation) =>
-    checked(
-      createTeam({ name: "comfey", ability, move1: "drainingkiss" }),
-      generation,
-    ).includes("Priority Move");
-  expect(priority("Triage", 9)).toBe(true);
-  expect(priority("Triage", 7)).toBe(true);
-  expect(priority("Flower Veil", 9)).toBe(false);
+// The owner chose to count only a move's own priority, so Triage does not fill it
+test("Triage's draining moves do not fill Priority Move", () => {
   expect(
     checked(
-      createTeam({ name: "comfey", ability: "Triage", move1: "dazzlinggleam" }),
+      createTeam({ name: "comfey", ability: "Triage", move1: "drainingkiss" }),
     ),
   ).not.toContain("Priority Move");
 });

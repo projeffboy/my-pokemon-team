@@ -260,31 +260,6 @@ const PRIORITY_MOVES = [
   "watershuriken",
   "zippyzap",
 ];
-// Damaging moves that heal the user, which Triage gives priority from Gen 7
-const TRIAGE_MOVES = [
-  "absorb",
-  "bitterblade",
-  "drainingkiss",
-  "drainpunch",
-  "dreameater",
-  "gigadrain",
-  "hornleech",
-  "leechlife",
-  "matchagotcha",
-  "megadrain",
-  "oblivionwing",
-  "paraboliccharge",
-];
-const hasPriority: Fills = (pokemon, generation, format) => [
-  ...anyMove(PRIORITY_MOVES)(pokemon, generation, format),
-  ...((
-    generation >= 7 &&
-    generationRules(generation, format).abilities &&
-    pokemon.ability === "Triage"
-  ) ?
-    anyMove(TRIAGE_MOVES)(pokemon, generation, format)
-  : []),
-];
 // Moves and abilities that stop a foe from switching out for as long as the trapper
 // stays in, unlike moves such as Whirlpool that trap for a few turns
 const TRAPPING_MOVES = [
@@ -374,7 +349,7 @@ export const checklist: ChecklistGroup[] = [
       },
       {
         key: "priority",
-        fills: hasPriority,
+        fills: anyMove(PRIORITY_MOVES),
         // Quick Attack is the only one in Gen 1
         examples: ["extremespeed", "suckerpunch", "aquajet", "quickattack"],
       },
