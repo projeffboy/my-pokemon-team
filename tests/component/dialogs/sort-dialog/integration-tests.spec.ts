@@ -26,8 +26,9 @@ test.describe("Sort Dialog - Integration Tests", () => {
     await closeDialog(page);
     await expectOrder("Fire Punch", "Thunder Punch");
 
-    // Its headers in the move dropdown show the same order
-    await input.fill("Punch");
+    // Its headers in the move dropdown show the same order. The field still holds the
+    // last search, so another one opens the list.
+    await input.fill("Thunder");
     await expect(
       page
         .getByRole("group", { name: "Sort by" })
