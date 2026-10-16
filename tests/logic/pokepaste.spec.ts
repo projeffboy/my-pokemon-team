@@ -1,11 +1,13 @@
 import { test, expect } from "@playwright/test";
+import { fetchPokepaste } from "@/app/dialogs/shared/import-export-form/pokepaste";
 import {
+  MAX_POKEPASTE_LENGTH,
   parsePokepaste,
   pokepasteId,
   pokepasteTeamText,
   pokepasteUpload,
 } from "@/store/pokepaste";
-import { parseTeamsText } from "@/store/team-text";
+import { parseTeamHeader, parseTeamsText } from "@/store/team-text";
 import { createSavedTeam } from "@/shared/team";
 import {
   showdownFormatId,
@@ -429,5 +431,148 @@ test.describe("pokepasteUpload", () => {
         format,
       });
     }
+  });
+});
+
+test.describe("a paste cannot make teams of its own or stall the page", () => {
+  test("parsePokepaste drops the lines that would be team headers", () => {
+    const paste = parsePokepaste({
+      paste: `=== [gen9] Evil ===\r\n${kingdra}\r\n  === x ===  \r\n=== not a header\r\n`,
+    });
+    expect(paste?.paste).not.toMatch(/Evil|=== x ===/);
+    expect(paste?.paste).toContain("Kingdra @ Choice Specs");
+    expect(paste?.paste).toContain("=== not a header");
+    const teams = parseTeamsText(
+      pokepasteTeamText({ ...paste!, title: "Rain", notes: "Format: gen9ou" }),
+    );
+    expect(teams.map(({ name }) => name)).toEqual(["Rain"]);
+  });
+
+  test("thousands of header lines add up to one team", () => {
+    const paste = parsePokepaste({
+      paste: `${kingdra}\n${"=== x ===\n".repeat(5000)}`,
+    });
+    expect(
+      parseTeamsText(
+        pokepasteTeamText({ ...paste!, title: "Rain", notes: "" }),
+      ),
+    ).toHaveLength(1);
+  });
+
+  test("runs of blank lines shrink to one, and the sets stay apart", () => {
+    const paste = parsePokepaste({
+      paste: `${kingdra}\n${" \n\t\n\n".repeat(30_000)}Pikachu\n- Surf`,
+    });
+    expect(paste?.paste.split("\n").length).toBeLessThan(20);
+    expect(
+      parseTeamsText(pokepasteTeamText({ ...paste!, title: "", notes: "" })),
+    ).toHaveLength(1);
+  });
+
+  test("a line no real paste has is refused", () => {
+    expect(parsePokepaste({ paste: `${kingdra}\n${"@".repeat(1001)}` })).toBe(
+      undefined,
+    );
+    expect(
+      parsePokepaste({ paste: `${kingdra}\n${"@".repeat(1000)}` }),
+    ).toBeDefined();
+  });
+
+  test("the worst of what a reply can hold parses in moments", () => {
+    const start = performance.now();
+    for (const paste of [
+      `Pikachu${" ".repeat(1000)}x`,
+      "@".repeat(1000),
+      `===${" ".repeat(990)}x`,
+      " \n".repeat(100_000),
+      "=== x ===\n".repeat(20_000),
+    ]) {
+      const parsed = parsePokepaste({ paste });
+      if (parsed)
+        parseTeamsText(pokepasteTeamText({ ...parsed, title: "", notes: "" }));
+    }
+    expect(performance.now() - start).toBeLessThan(1000);
+  });
+});
+
+test.describe("parseTeamHeader", () => {
+  test("reads the format and name of a header", () => {
+    const cases: [string, ReturnType<typeof parseTeamHeader>][] = [
+      [
+        "=== [gen9ou] Folder/Name ===",
+        { format: "gen9ou", name: "Folder/Name" },
+      ],
+      ["=== [gen9ou] ===", { format: "gen9ou", name: "" }],
+      ["===[gen9ou]Name===", { format: "gen9ou", name: "Name" }],
+      ["=== [] Name ===", { format: "", name: "Name" }],
+      ["=== Name ===", { name: "Name" }],
+      ["===  ===", { name: "" }],
+      ["======", { name: "" }],
+      ["  \t=== Name ===  \r", { name: "Name" }],
+      ["=== A === B ===", { name: "A === B" }],
+      ["=== [x ===", { name: "[x" }],
+      ["=== [a] [b] c ===", { format: "a", name: "[b] c" }],
+    ];
+    for (const [line, header] of cases)
+      expect(parseTeamHeader(line), line).toEqual(header);
+  });
+
+  test("leaves every other line alone", () => {
+    for (const line of [
+      "",
+      "=====",
+      "===",
+      "== Name ==",
+      "=== Name",
+      "Name ===",
+      "Pikachu @ Light Ball",
+      "- Thunderbolt",
+    ])
+      expect(parseTeamHeader(line), line).toBeUndefined();
+  });
+
+  test("takes no longer for a long run of spaces", () => {
+    const start = performance.now();
+    for (const gap of [" ", "\t", "] [", " ] "])
+      parseTeamsText(
+        `===${gap.repeat(20_000)}x\n- Surf\n${"=".repeat(20_000)}`,
+      );
+    expect(performance.now() - start).toBeLessThan(1000);
+  });
+});
+
+test.describe("fetchPokepaste", () => {
+  const reply =
+    (body: string, ok = true) =>
+    () =>
+      Promise.resolve({ ok, text: () => Promise.resolve(body) }) as never;
+  const fetched = async (fetch: () => Promise<Response>) => {
+    const original = globalThis.fetch;
+    globalThis.fetch = fetch;
+    try {
+      return await fetchPokepaste(
+        "0123456789abcdef",
+        new AbortController().signal,
+      );
+    } finally {
+      globalThis.fetch = original;
+    }
+  };
+
+  test("reads a paste", async () => {
+    await expect(
+      fetched(reply(JSON.stringify({ paste: "Kingdra", title: "Rain" }))),
+    ).resolves.toEqual({ paste: "Kingdra", title: "Rain", notes: "" });
+  });
+
+  test("refuses a missing paste, a reply that is not JSON or a paste, and one that is too long", async () => {
+    await expect(fetched(reply("{}", false))).rejects.toThrow();
+    await expect(fetched(reply("<html>Not found</html>"))).rejects.toThrow();
+    await expect(fetched(reply('{"title":"Rain"}'))).rejects.toThrow();
+    await expect(
+      fetched(
+        reply(JSON.stringify({ paste: "x".repeat(MAX_POKEPASTE_LENGTH) })),
+      ),
+    ).rejects.toThrow();
   });
 });

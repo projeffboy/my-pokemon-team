@@ -12,7 +12,7 @@ const entries: Entry[] = [
     date: "Oct 16, 2026",
     changes: [
       "One Import/Export button now replaces Copy text, Edit Pokepaste, Import Team, Copy All and Export All, and can also upload a team to PokePaste or read a pokepast.es link.",
-      "Team backups are gone: Import/Export keeps all your teams as text you can copy or download instead.",
+      "Team backups are gone, and backup files saved earlier can no longer be added back: Import/Export keeps all your teams as text you can copy or download instead.",
       "Unticking Shiny in Gen 2 now keeps the Pokémon’s other DVs, gender and Hidden Power.",
       "The header no longer shows the previous game’s name after switching games on iPhone and iPad.",
       "Choosing a Hidden Power type for a Pokémon that can be Hyper Trained now keeps its 31 IVs where it can.",

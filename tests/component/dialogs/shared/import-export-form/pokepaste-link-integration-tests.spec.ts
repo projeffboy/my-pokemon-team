@@ -199,6 +199,36 @@ test.describe("Import/Export Form: pokepast.es links - Integration Tests", () =>
       await expect(box).toHaveAttribute("aria-invalid", "false");
     });
 
+  test("a paste with no pokemon says so and keeps the team", async ({
+    page,
+    context,
+  }) => {
+    await mockPokepaste(context, () =>
+      json({ paste: "My notes about the team\r\nLead with the fast one\r\n" }),
+    );
+    await selectPokemon(page, "Hariyama");
+    await openImportExport(page);
+    const dialog = getDialog(page);
+
+    await update(page, `https://pokepast.es/${ID}`);
+
+    await expect(dialog.getByRole("status")).toContainText("No pokemon found");
+    await expect(dialog.getByRole("textbox")).toBeFocused();
+    await expect(updateButton(page)).toBeEnabled();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Hariyama");
+  });
+
+  test("the error is announced as a status", async ({ page, context }) => {
+    await mockPokepaste(context, () => ({ status: 404, body: "Not found" }));
+    await selectPokemon(page, "Wailord");
+    await openImportExport(page);
+
+    await update(page, `https://pokepast.es/${ID}`);
+
+    await expect(getDialog(page).getByRole("status")).toHaveText(LINK_FAILED);
+    await expect(getDialog(page).getByRole("textbox")).toBeFocused();
+  });
+
   test("one failing link among several changes nothing", async ({
     page,
     context,
@@ -235,6 +265,7 @@ test.describe("Import/Export Form: pokepast.es links - Integration Tests", () =>
       const dialog = getDialog(page);
       await expect(dialog.getByRole("progressbar")).toBeVisible();
       await expect(updateButton(page)).toBeDisabled();
+      await expect(dialog.getByRole("textbox")).toHaveAttribute("readonly", "");
 
       release();
 

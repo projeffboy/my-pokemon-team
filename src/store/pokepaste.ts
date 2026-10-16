@@ -1,8 +1,13 @@
 import { showdownFormatId } from "@/shared/formats";
 import type { SavedTeam } from "@/types";
+import { parseTeamHeader } from "./team-text";
 
 // pokepast.es: the links it is read from, what its JSON holds, and what is uploaded to it
 export const POKEPASTE_URL = "https://pokepast.es";
+
+// A real paste is a few kilobytes of lines under a hundred characters
+export const MAX_POKEPASTE_LENGTH = 200_000;
+const MAX_LINE_LENGTH = 1000;
 
 const LINK = /^https?:\/\/(?:www\.)?pokepast\.es\/([a-z0-9]+)(?:[/?#]\S*)?$/i;
 
@@ -20,8 +25,22 @@ export function parsePokepaste(data: unknown): Pokepaste | undefined {
   if (typeof data !== "object" || data === null) return undefined;
   const { paste, title, notes } = data as Record<string, unknown>;
   if (typeof paste !== "string") return undefined;
+  const lines = paste.replace(/\r\n?/g, "\n").split("\n");
+  if (lines.some(line => line.length > MAX_LINE_LENGTH)) return undefined;
+  // A reply can make the parser slow or the teams many: with headers, blank runs and
+  // long lines, which no real paste has, it could freeze the page for minutes
+  const kept: string[] = [];
+  for (const line of lines) {
+    const isBlank = !line.trim();
+    if (
+      parseTeamHeader(line) ||
+      (isBlank && !kept.at(-1)?.trim() && kept.length)
+    )
+      continue;
+    kept.push(line);
+  }
   return {
-    paste: paste.replace(/\r\n?/g, "\n"),
+    paste: kept.join("\n"),
     title: typeof title === "string" ? title : "",
     notes: typeof notes === "string" ? notes : "",
   };

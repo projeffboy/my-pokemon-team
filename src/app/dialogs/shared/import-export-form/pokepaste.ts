@@ -1,4 +1,5 @@
 import {
+  MAX_POKEPASTE_LENGTH,
   parsePokepaste,
   POKEPASTE_URL,
   type Pokepaste,
@@ -11,7 +12,9 @@ export async function fetchPokepaste(
 ): Promise<Pokepaste> {
   const response = await fetch(`${POKEPASTE_URL}/${id}/json`, { signal });
   if (!response.ok) throw new Error("No such paste");
-  const paste = parsePokepaste(await response.json());
+  const body = await response.text();
+  if (body.length > MAX_POKEPASTE_LENGTH) throw new Error("Too long");
+  const paste = parsePokepaste(JSON.parse(body));
   if (!paste) throw new Error("Not a paste");
   return paste;
 }

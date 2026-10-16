@@ -13,6 +13,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import UploadIcon from "@mui/icons-material/Upload";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
+import { isTeamEmpty } from "@/shared/team";
 import {
   pokepasteId,
   pokepasteTeamText,
@@ -70,6 +71,7 @@ const ImportExportForm = observer(function ImportExportForm({
   const [error, setError] = useState<"nothingFound" | "linkFailed">();
   const [isFetching, setIsFetching] = useState(false);
   const fetching = useRef<AbortController>(null);
+  const input = useRef<HTMLTextAreaElement>(null);
   useEffect(() => () => fetching.current?.abort(), []);
   const { generation } = store.currentTeam;
   const { dataFormat, learnsetsLoaded } = store;
@@ -83,13 +85,18 @@ const ImportExportForm = observer(function ImportExportForm({
     [isTeams, learnsetsLoaded, deferredText, generation, dataFormat],
   );
 
+  const fail = (problem: "nothingFound" | "linkFailed") => {
+    setError(problem);
+    input.current?.focus();
+  };
+
   const addTeams = (source: string) => {
     const teams = parseTeamsText(
       headerAppendedText(initialText, source),
       store.currentTeam,
     );
     if (!teams.length) {
-      setError("nothingFound");
+      fail("nothingFound");
       return;
     }
     const added = teamsToAdd(teams, store.teams);
@@ -105,12 +112,21 @@ const ImportExportForm = observer(function ImportExportForm({
     onDone();
   };
 
-  const updateTeam = (source: string) => {
-    if (source !== initialText)
-      store.replaceTeam(
-        parseTeamText(source, store.currentTeam.generation, store.dataFormat),
+  // A link whose paste holds no pokemon would empty the team without a word
+  const updateTeam = (source: string, fromLink: boolean) => {
+    if (source === initialText) store.openSnackbar(importDialog.noChanges);
+    else {
+      const team = parseTeamText(
+        source,
+        store.currentTeam.generation,
+        store.dataFormat,
       );
-    else store.openSnackbar(importDialog.noChanges);
+      if (fromLink && isTeamEmpty(team)) {
+        fail("nothingFound");
+        return;
+      }
+      store.replaceTeam(team);
+    }
     onDone();
   };
 
@@ -142,7 +158,8 @@ const ImportExportForm = observer(function ImportExportForm({
   const submit = async () => {
     setError(undefined);
     let source = text;
-    if (hasLink(text)) {
+    const fromLink = hasLink(text);
+    if (fromLink) {
       const controller = new AbortController();
       fetching.current = controller;
       setIsFetching(true);
@@ -151,7 +168,7 @@ const ImportExportForm = observer(function ImportExportForm({
       } catch {
         if (!controller.signal.aborted) {
           setIsFetching(false);
-          setError("linkFailed");
+          fail("linkFailed");
         }
         return;
       }
@@ -159,7 +176,7 @@ const ImportExportForm = observer(function ImportExportForm({
       setIsFetching(false);
     }
     if (isTeams) addTeams(source);
-    else updateTeam(source);
+    else updateTeam(source, fromLink);
   };
 
   const isEmpty = !text.trim();
@@ -236,8 +253,12 @@ const ImportExportForm = observer(function ImportExportForm({
           }}
           error={!!error}
           helperText={error && importDialog[error]}
+          inputRef={input}
           slotProps={{
-            htmlInput: verbatim("team-text"),
+            // Spoken when it appears, since the focus is elsewhere while a link loads
+            formHelperText: { role: "status" },
+            // Edits made while links load would be lost to the text they were read from
+            htmlInput: { ...verbatim("team-text"), readOnly: isFetching },
             // Above the text rather than over it, so a long label wraps instead of being
             // cut off at 320px
             inputLabel: {
