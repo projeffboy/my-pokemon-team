@@ -132,6 +132,46 @@ const findCutOff = () => {
 const expectNothingCutOff = (page: Page, view: string) =>
   expect.poll(() => page.evaluate(findCutOff), { message: view }).toEqual([]);
 
+// A dialog's buttons wrap onto rows rather than overlap, stay inside the bar, and hold their
+// labels, which a language's longer words would otherwise push over the next button
+const expectActionsApart = (page: Page, view: string) =>
+  expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const problems: string[] = [];
+          const bar = document.querySelector(".MuiDialogActions-root");
+          if (!bar) return ["The dialog has no actions"];
+          const barBox = bar.getBoundingClientRect();
+          const buttons = [...bar.querySelectorAll("button")];
+          const boxes = buttons.map(button => button.getBoundingClientRect());
+          boxes.forEach((box, i) => {
+            const name = buttons[i]?.textContent?.trim() ?? "";
+            if (box.left < barBox.left - 1 || box.right > barBox.right + 1)
+              problems.push(`"${name}" leaves the actions`);
+            const range = document.createRange();
+            range.selectNodeContents(buttons[i]!);
+            const text = range.getBoundingClientRect();
+            if (text.left < box.left - 1 || text.right > box.right + 1)
+              problems.push(`"${name}" is wider than its button`);
+            boxes.slice(i + 1).forEach((other, j) => {
+              const apart =
+                box.right <= other.left + 1 ||
+                other.right <= box.left + 1 ||
+                box.bottom <= other.top + 1 ||
+                other.bottom <= box.top + 1;
+              if (!apart)
+                problems.push(
+                  `"${name}" overlaps "${buttons[i + 1 + j]?.textContent?.trim()}"`,
+                );
+            });
+          });
+          return problems;
+        }),
+      { message: view },
+    )
+    .toEqual([]);
+
 // Answers a pokepast.es link as a paste that does not exist, with CORS open to any page
 const mockMissingPaste = (page: Page) =>
   page.route("https://pokepast.es/**", route =>
@@ -394,6 +434,7 @@ test.describe("Narrowest Width - Integration Tests", () => {
           .click();
         await blur(page);
         await expectNothingCutOff(page, "Import/Export");
+        await expectActionsApart(page, "Import/Export's actions");
         await page.keyboard.press("Escape");
         await expect(page.getByRole("dialog")).toBeHidden();
 
@@ -405,6 +446,7 @@ test.describe("Narrowest Width - Integration Tests", () => {
           .click();
         await blur(page);
         await expectNothingCutOff(page, "the teams' Import/Export");
+        await expectActionsApart(page, "the teams' Import/Export actions");
         await page.keyboard.press("Escape");
         await expect(page.getByRole("dialog")).toBeHidden();
 
