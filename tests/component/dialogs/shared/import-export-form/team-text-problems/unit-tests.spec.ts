@@ -1,13 +1,13 @@
 import { test, expect } from "fixtures";
-import { openEditPokepaste, selectPokemon } from "helper";
+import { openImportExport, selectPokemon } from "helper";
 import de from "@/i18n/de";
 
 test.describe("Team Text Problems - Unit Tests", () => {
   test("names each problem's pokemon, field, value, reason, and result", async ({
     page,
   }) => {
-    await openEditPokepaste(page);
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     await dialog.getByRole("textbox").fill(`Toucannon @ Leftover
 Level: 120
 - Beak Blast
@@ -43,8 +43,8 @@ Abilty: Intrepid Sword`);
       .and(page.locator('[data-value="1"]'))
       .click();
     await expect(page.locator(".MuiMenu-paper")).toBeHidden();
-    await openEditPokepaste(page);
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     await dialog.getByRole("textbox").fill("Jynx (F)\n- Lovely Kiss");
 
     await expect(dialog.getByRole("status").getByRole("listitem")).toHaveText(
@@ -59,8 +59,8 @@ Abilty: Intrepid Sword`);
     page,
   }) => {
     await selectPokemon(page, "Tinkaton");
-    await openEditPokepaste(page);
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     const textbox = dialog.getByRole("textbox");
     await expect(textbox).toHaveValue(/^Tinkaton/);
     await expect(dialog.getByRole("status")).toHaveCount(0);
@@ -81,8 +81,8 @@ Abilty: Intrepid Sword`);
   }) => {
     // An iPhone SE's browser viewport
     await page.setViewportSize({ width: 375, height: 548 });
-    await openEditPokepaste(page);
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     const textbox = dialog.getByRole("textbox");
     await textbox.fill(
       [
@@ -97,7 +97,7 @@ Abilty: Intrepid Sword`);
     await dialog.getByRole("button", { name: "Update", exact: true }).click();
     await expect(dialog).toBeHidden();
 
-    await openEditPokepaste(page);
+    await openImportExport(page);
     // Type "x" after "- " on Great Tusk's first move line
     await textbox.click({ position: { x: 2, y: 8 } });
     for (let line = 0; line < 5; line++) await textbox.press("ArrowDown");
@@ -121,11 +121,9 @@ Abilty: Intrepid Sword`);
     await expect(page.locator("html")).toHaveAttribute("lang", "de");
     await page.getByRole("button", { name: de.team.more, exact: true }).click();
     await page
-      .getByRole("menuitem", { name: de.team.editPokepaste, exact: true })
+      .getByRole("menuitem", { name: de.importDialog.title, exact: true })
       .click();
-    const dialog = page.getByRole("dialog", {
-      name: de.importDialog.editTitle,
-    });
+    const dialog = page.getByRole("dialog", { name: de.importDialog.title });
     await dialog
       .getByRole("textbox")
       .fill("Palafin\nEVs: 300 Atk\nIVs: 40 Spe");

@@ -115,10 +115,7 @@ const de: Messages = {
     manageTeam: "Team verwalten",
     accessibility: "Barrierefreiheit",
     duplicate: "Duplizieren",
-    copyText: "Text kopieren",
-    editPokepaste: "Pokepaste bearbeiten",
     delete: "Löschen",
-    importTeam: "Team importieren",
     share: "Teilen",
     teamEmpty: "Das Team ist leer. Füge ein Pokémon hinzu, um es zu teilen.",
     linkCopied: "Link zum Pokémon-Team kopiert",
@@ -126,11 +123,9 @@ const de: Messages = {
       "Der Link konnte nicht kopiert werden. Kopiere ihn aus der Adressleiste, während das Team geöffnet ist.",
     linkGenerationUnsupported: (profile: string) =>
       `Die Generation oder das Spiel dieses Links wird nicht unterstützt, daher wurde er in ${profile} geöffnet.`,
-    nothingToCopy:
-      "Das Team ist leer. Füge ein Pokémon hinzu, um es zu kopieren.",
     teamCopied: "Team kopiert.",
     teamNotCopied:
-      "Das Team konnte nicht kopiert werden. Kopiere seinen Text stattdessen unter „Pokepaste bearbeiten“.",
+      "Das Team konnte nicht kopiert werden. Markiere seinen Text unter „Import/Export“ und kopiere ihn.",
     cannotDuplicateEmptyTeam:
       "Das Team ist leer. Füge ein Pokémon hinzu, um es zu duplizieren.",
     teamDuplicated: "Team dupliziert",
@@ -506,7 +501,7 @@ const de: Messages = {
     bst: "Basiswertsumme",
   },
 
-  // The Teams, Team name, Import, and Delete dialogs
+  // The Teams, Team name, Import/Export, and Delete dialogs
   teams: {
     newTeam: "Neues Team",
     randomTeam: "Zufallsteam",
@@ -519,12 +514,9 @@ const de: Messages = {
     savedTeams: "Gespeicherte Teams",
     optionsFor: (team: string) => `Optionen für ${team}`,
     load: (team: string) => `${team} laden`,
-    importTeam: "Team importieren",
-    exportAll: "Alle exportieren",
-    copyAll: "Alle kopieren",
     savedInBrowser: "Teams werden in diesem Browser gespeichert.",
     saveFailed:
-      "Dein Browser konnte deine Teams nicht speichern. Erstelle eine Sicherung, um sie zu behalten.",
+      "Dein Browser konnte deine Teams nicht speichern. Kopiere sie unter „Import/Export“, um sie zu behalten.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "Offen",
     open: "Öffnen",
@@ -534,28 +526,8 @@ const de: Messages = {
     exported: "Alle Teams exportiert",
     copiedAll: "Alle Teams kopiert",
     notCopiedAll:
-      "Die Teams konnten nicht kopiert werden. Lade sie stattdessen mit „Alle exportieren“ herunter.",
+      "Die Teams konnten nicht kopiert werden. Nutze stattdessen „Herunterladen“.",
     exportFilename: "my-pokemon-teams.txt",
-  },
-  teamBackup: {
-    title: "Team-Sicherungen",
-    description:
-      "Speichere alle deine Teams mit ihren Namen, Spielen, Filtern und Pokémon-Details.",
-    save: "Sicherung speichern",
-    restoreDescription:
-      "Füge Teams aus einer Sicherungsdatei hinzu. Deine vorhandenen Teams bleiben erhalten.",
-    chooseFile: "Sicherungsdatei auswählen",
-    restore: "Teams hinzufügen",
-    ready: (count: number) => `Teams in dieser Sicherung: ${count}`,
-    error:
-      "Diese Datei konnte nicht gelesen werden. Wähle eine Team-Sicherung, die auf dieser Seite gespeichert wurde.",
-    tooLarge:
-      "Diese Sicherung enthält zu viele Teams zum Hinzufügen. Versuche es mit einer kleineren Sicherungsdatei.",
-    saveFailed:
-      "Die Sicherung konnte nicht gespeichert werden. Bitte versuche es erneut.",
-    saved: "Team-Sicherung gespeichert",
-    alreadySaved: "Diese Teams sind bereits in deiner Sammlung.",
-    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "Spiel oder Generation wechseln?",
@@ -651,22 +623,26 @@ const de: Messages = {
       `Nur ein Pokémon darf ${item} tragen (Item Clause).`,
   },
   importDialog: {
-    importTitle: "Team importieren",
-    editTitle: "Pokepaste bearbeiten",
-    importDescription:
-      "Füge ein Team oder ein ganzes Backup mit mehreren Teams im Format von {showdown} ein.",
-    editDescription:
-      "Das ist der Rohtext deines Teams. Ändere ihn hier oder füge ihn in {showdown} ein.",
+    title: "Import/Export",
+    description:
+      "Das ist der Text deines Teams. Kopiere ihn, um das Team zu teilen, oder ändere ihn hier und drücke auf „Aktualisieren“. Du kannst auch ein Team aus {showdown} oder einen pokepast.es-Link einfügen.",
+    teamsDescription:
+      "Das sind alle deine Teams. Kopiere oder lade sie herunter, um sie aufzubewahren oder auf ein anderes Gerät zu übertragen. Um Teams hinzuzufügen, füge ihren Text aus {showdown} oder pokepast.es-Links ein und drücke auf „Teams hinzufügen“. Teams, die du schon hast, werden übersprungen.",
     showdown: "Pokemon Showdown",
-    importPlaceholder: "Team hier einfügen",
-    editPlaceholder: "Dein Team ist leer",
+    placeholder: "Team oder pokepast.es-Link hier einfügen",
     label: "Rohtext des Pokemon-Showdown-Teams",
     kept: "Spitznamen, Level, Geschlechter, Schillernd, Freundschaft, Tera-Typen, Wesen, EV und DV bleiben erhalten, wenn das gewählte Spiel sie hat.",
-    import: "Importieren",
+    copy: "Kopieren",
+    download: "Herunterladen",
+    uploadToPokepaste: "Auf PokePaste hochladen",
     update: "Aktualisieren",
+    addTeams: "Teams hinzufügen",
     imported: "Team importiert",
     importedMany: (count: number) => `${count} Teams importiert`,
+    noNewTeams: "Diese Teams sind bereits gespeichert.",
     noChanges: "Keine Änderungen vorgenommen.",
+    linkFailed:
+      "Von diesem Link konnte kein Team abgerufen werden. Prüfe, ob du den vollständigen Link kopiert hast, oder füge stattdessen den Teamtext ein.",
     nothingFound:
       "In diesem Text wurde kein Pokémon gefunden. Schreibe die Pokémon-Namen auf Englisch, wie Pokemon Showdown sie schreibt, oder füge ein aus Pokemon Showdown exportiertes Team ein.",
     problems: (count: number) =>
@@ -754,7 +730,7 @@ const de: Messages = {
     teams: "Teams",
     teamsQuestion: "Wo werden meine Teams gespeichert?",
     teamsAnswer:
-      "Deine Teams werden in diesem Browser gespeichert. Sie sind also da, wenn du wiederkommst, aber nicht auf einem anderen Gerät. Die Schaltfläche „Teams“ listet sie auf, und über das Menü eines Teams kannst du es umbenennen, seine Generation und sein Format festlegen, es duplizieren, teilen oder löschen. „Alle exportieren“ lädt alle Teams als Showdown-Text herunter, den „Team importieren“ wieder einliest. Die Adressleiste enthält immer das aktuelle Team; du teilst es also, indem du die Adresse kopierst (oder auf „Teilen“ drückst).",
+      "Deine Teams werden in diesem Browser gespeichert. Sie sind also da, wenn du wiederkommst, aber nicht auf einem anderen Gerät. Die Schaltfläche „Teams“ listet sie auf, und über das Menü eines Teams kannst du es umbenennen, seine Generation und sein Format festlegen, es duplizieren, teilen oder löschen. „Import/Export“ kopiert alle Teams als Showdown-Text oder lädt sie herunter und fügt Teams aus Text oder pokepast.es-Links hinzu. Die Adressleiste enthält immer das aktuelle Team; du teilst es also, indem du die Adresse kopierst (oder auf „Teilen“ drückst).",
     teamsAnswer2:
       "Die Namensliste hat die Schaltflächen „Filter“ und „Sortieren“, die Attackenlisten haben „Sortieren“. „Rückgängig“ und „Wiederholen“ gehen die Änderungen am aktuellen Team durch; auf Smartphones und Tablets stehen sie über den Pokémon-Platzreitern.",
     generations: "Generationen",
@@ -764,7 +740,7 @@ const de: Messages = {
     advanced: "Weitere Details",
     advancedQuestion: "Spitznamen, Level, Wesen, EV und DV",
     advancedAnswer:
-      "Über die Schaltfläche „Weitere Details“ jedes Pokémon legst du Spitzname, Level, Geschlecht, Schillernd, Tera-Typ, Wesen, EV und DV fest, genau wie bei Pokemon Showdown. Sie wandern mit dem Team in Share-Links sowie im Text von „Text kopieren“ und „Pokepaste bearbeiten“ mit.",
+      "Über die Schaltfläche „Weitere Details“ jedes Pokémon legst du Spitzname, Level, Geschlecht, Schillernd, Tera-Typ, Wesen, EV und DV fest, genau wie bei Pokemon Showdown. Sie wandern mit dem Team in Share-Links sowie im Text von „Import/Export“ mit.",
     matrix: "Matrix-Analyse",
     matrixQuestion: "Woher kommen die Typenwertungen?",
     matrixAnswer:

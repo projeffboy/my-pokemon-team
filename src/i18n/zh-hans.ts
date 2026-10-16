@@ -106,19 +106,15 @@ const zhHans: Messages = {
     manageTeam: "管理队伍",
     accessibility: "无障碍",
     duplicate: "创建副本",
-    copyText: "复制文本",
-    editPokepaste: "编辑 Pokepaste",
     delete: "删除",
-    importTeam: "导入队伍",
     share: "分享",
     teamEmpty: "队伍为空。请先添加宝可梦再分享。",
     linkCopied: "已复制宝可梦队伍链接",
     linkNotCopied: "无法复制链接。请在打开该队伍时，从地址栏复制网址。",
     linkGenerationUnsupported: (profile: string) =>
       `不支持此链接的世代或游戏，已改用${profile}打开。`,
-    nothingToCopy: "队伍为空。请先添加宝可梦再复制。",
     teamCopied: "已复制队伍。",
-    teamNotCopied: "无法复制队伍。请改用“编辑 Pokepaste”复制队伍文本。",
+    teamNotCopied: "无法复制队伍。请改在“导入/导出”中选中队伍文本并复制。",
     cannotDuplicateEmptyTeam: "队伍为空。请先添加宝可梦再创建副本。",
     teamDuplicated: "已创建队伍副本",
     teamDeleted: "已删除队伍",
@@ -476,7 +472,7 @@ const zhHans: Messages = {
     bst: "种族值总和",
   },
 
-  // 队伍、名称与格式、导入、删除对话框
+  // 队伍、名称与格式、导入/导出、删除对话框
   teams: {
     newTeam: "新建队伍",
     randomTeam: "随机队伍",
@@ -484,11 +480,8 @@ const zhHans: Messages = {
     savedTeams: "已保存的队伍",
     optionsFor: (team: string) => `${team}的选项`,
     load: (team: string) => `加载${team}`,
-    importTeam: "导入队伍",
-    exportAll: "全部导出",
-    copyAll: "全部复制",
     savedInBrowser: "队伍保存在此浏览器中。",
-    saveFailed: "浏览器无法保存你的队伍。请保存备份以保留队伍。",
+    saveFailed: "浏览器无法保存你的队伍。请从“导入/导出”中复制队伍以保留。",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "使用中",
     open: "打开",
@@ -497,23 +490,8 @@ const zhHans: Messages = {
     randomTeamCreated: "已创建随机队伍",
     exported: "已导出所有队伍",
     copiedAll: "已复制所有队伍",
-    notCopiedAll: "无法复制队伍。请改用“全部导出”下载队伍。",
+    notCopiedAll: "无法复制队伍。请改用“下载”。",
     exportFilename: "my-pokemon-teams.txt",
-  },
-  teamBackup: {
-    title: "队伍备份",
-    description: "保存所有队伍，包括名称、游戏、筛选条件和宝可梦的详细信息。",
-    save: "保存备份",
-    restoreDescription: "从备份文件中添加队伍。你已有的队伍会保留。",
-    chooseFile: "选择备份文件",
-    restore: "添加队伍",
-    ready: (count: number) => `此备份中的队伍数：${count}`,
-    error: "无法读取此文件。请选择在本网站保存的队伍备份。",
-    tooLarge: "此备份中的队伍太多，无法添加。请尝试队伍较少的备份文件。",
-    saveFailed: "无法保存备份。请重试。",
-    saved: "已保存队伍备份",
-    alreadySaved: "这些队伍已在你的队伍列表中。",
-    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "切换游戏或世代？",
@@ -604,22 +582,26 @@ const zhHans: Messages = {
       `${item}只能由一只宝可梦携带（Item Clause）。`,
   },
   importDialog: {
-    importTitle: "导入队伍",
-    editTitle: "编辑 Pokepaste",
-    importDescription:
-      "以 {showdown} 的格式粘贴一支队伍，或包含多支队伍的完整备份。",
-    editDescription:
-      "这是你队伍的原始文本。可以在此修改，或粘贴到 {showdown} 中。",
+    title: "导入/导出",
+    description:
+      "这是你队伍的文本。可以复制后分享，或在此修改后点击“更新”。你也可以粘贴来自 {showdown} 的队伍或 pokepast.es 链接。",
+    teamsDescription:
+      "这里是你的所有队伍。可以复制或下载它们来保存，或转移到其他设备。要添加队伍，请粘贴来自 {showdown} 的队伍文本或 pokepast.es 链接，然后点击“添加队伍”。已有的队伍会被跳过。",
     showdown: "Pokemon Showdown",
-    importPlaceholder: "在此粘贴队伍",
-    editPlaceholder: "你的队伍为空",
+    placeholder: "在此粘贴队伍或 pokepast.es 链接",
     label: "Pokemon Showdown 队伍原始文本",
     kept: "所选游戏有这些项时，昵称、等级、性别、异色、亲密度、太晶属性、性格、努力值和个体值都会保留。",
-    import: "导入",
+    copy: "复制",
+    download: "下载",
+    uploadToPokepaste: "上传到 PokePaste",
     update: "更新",
+    addTeams: "添加队伍",
     imported: "已导入队伍",
     importedMany: (count: number) => `已导入 ${count} 支队伍`,
+    noNewTeams: "这些队伍已保存。",
     noChanges: "没有改动。",
+    linkFailed:
+      "无法从该链接获取队伍。请确认已复制完整的链接，或改为粘贴队伍文本。",
     nothingFound:
       "这段文字中找不到宝可梦。请按 Pokemon Showdown 的拼写用英文写宝可梦名称，或粘贴从 Pokemon Showdown 导出的队伍。",
     problems: (count: number) =>
@@ -705,7 +687,7 @@ const zhHans: Messages = {
     teams: "队伍",
     teamsQuestion: "我的队伍保存在哪里？",
     teamsAnswer:
-      "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“全部导出”会把所有队伍下载为 Showdown 文本，“导入队伍”可以再把它读回来。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
+      "你的队伍保存在此浏览器中，下次回来时仍然在这里，但不会同步到其他设备。“队伍”按钮会列出所有队伍，每支队伍的菜单可以重命名、设置世代和格式、创建副本、分享或删除它。“导入/导出”可以把所有队伍复制或下载为 Showdown 文本，也可以从文本或 pokepast.es 链接添加队伍。地址栏始终包含当前队伍，所以复制网址（或点击“分享队伍”）即可分享。",
     teamsAnswer2:
       "名称列表中有“筛选”和“排序”按钮，招式列表中有“排序”按钮。撤销和重做可以逐步回溯当前队伍的改动；在手机和平板上，它们位于宝可梦栏位标签的上方。",
     generations: "世代",
@@ -715,7 +697,7 @@ const zhHans: Messages = {
     advanced: "更多详情",
     advancedQuestion: "昵称、等级、性格、努力值和个体值",
     advancedAnswer:
-      "每只宝可梦的“更多详情”按钮可以设置它的昵称、等级、性别、异色、太晶属性、性格、努力值和个体值，方式与 Pokemon Showdown 相同。这些设置会随队伍一起保存在分享链接、“复制文本”和“编辑 Pokepaste”的文本中。",
+      "每只宝可梦的“更多详情”按钮可以设置它的昵称、等级、性别、异色、太晶属性、性格、努力值和个体值，方式与 Pokemon Showdown 相同。这些设置会随队伍一起保存在分享链接和“导入/导出”的文本中。",
     matrix: "矩阵分析",
     matrixQuestion: "属性得分从何而来？",
     matrixAnswer:

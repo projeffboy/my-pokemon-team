@@ -7,7 +7,7 @@ import {
   getTeamTextFromUrl,
   openAnalysis,
   openFilters,
-  openMoreMenu,
+  openTeamsImportExport,
   selectDialogOption,
   selectAbility,
   selectPokemon,
@@ -20,6 +20,16 @@ const generationValue = (page: Page) =>
 
 const unsupportedMessage = (page: Page) =>
   page.getByRole("alert").filter({ hasText: "isn’t supported" });
+
+// Adds the teams in the text from the Teams dialog's Import/Export page, then closes the dialog
+const addTeams = async (page: Page, text: string) => {
+  await openTeamsImportExport(page);
+  const dialog = page.getByRole("dialog", { name: "Import/Export" });
+  await dialog.getByRole("textbox").fill(text);
+  await dialog.getByRole("button", { name: "Add teams", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await closeDialog(page, "Close");
+};
 
 const savedState = (page: Page) =>
   page.evaluate(
@@ -439,17 +449,10 @@ test.describe("Share Link - Unsupported gen and game", () => {
     page,
   }) => {
     await page.goto("/", { waitUntil: "domcontentloaded" });
-    await openMoreMenu(page);
-    await clickMenuItem(page, "Import team");
-    const importDialog = page.getByRole("dialog", { name: "Import Team" });
-    await importDialog
-      .getByRole("textbox")
-      .fill("=== [gen7letsgoou] Alolan Persian ===\n\nPersian-Alola\n- Bite");
-    await importDialog
-      .getByRole("button", { name: "Import", exact: true })
-      .click();
-    await expect(importDialog).toBeHidden();
-    await closeDialog(page, "Close");
+    await addTeams(
+      page,
+      "=== [gen7letsgoou] Alolan Persian ===\n\nPersian-Alola\n- Bite",
+    );
     await expect(generationValue(page)).toHaveValue("Let’s Go");
     await expect(page).toHaveURL(/[?&]team=/);
 
@@ -690,17 +693,10 @@ test.describe("Reloading an empty saved team", () => {
   test("keeps a saved team in a Coming soon game, full or emptied, in its game", async ({
     page,
   }) => {
-    await openMoreMenu(page);
-    await clickMenuItem(page, "Import team");
-    const importDialog = page.getByRole("dialog", { name: "Import Team" });
-    await importDialog
-      .getByRole("textbox")
-      .fill("=== [gen7letsgoou] Alolan Diglett ===\n\nDugtrio-Alola\n- Dig");
-    await importDialog
-      .getByRole("button", { name: "Import", exact: true })
-      .click();
-    await expect(importDialog).toBeHidden();
-    await closeDialog(page, "Close");
+    await addTeams(
+      page,
+      "=== [gen7letsgoou] Alolan Diglett ===\n\nDugtrio-Alola\n- Dig",
+    );
     const name = page.getByLabel("Pokemon 1's name");
     await expect(name).toHaveValue("Dugtrio-Alola");
     await expect(generationValue(page)).toHaveValue("Let’s Go");

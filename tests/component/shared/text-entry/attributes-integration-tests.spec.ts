@@ -4,7 +4,7 @@ import {
   clickMenuItem,
   closeDialog,
   openAdvanced,
-  openEditPokepaste,
+  openImportExport,
   openFilters,
   selectPokemon,
 } from "helper";
@@ -56,9 +56,9 @@ test("the ability filter, team text, and team names keep their text as typed", a
       .getByRole("combobox", { name: "Ability" }),
   );
   await closeDialog(page);
-  await openEditPokepaste(page);
+  await openImportExport(page);
   await expectVerbatim(
-    page.getByRole("dialog", { name: "Edit Pokepaste" }).getByRole("textbox"),
+    page.getByRole("dialog", { name: "Import/Export" }).getByRole("textbox"),
   );
   await closeDialog(page, "Cancel");
   await page.getByRole("button", { name: "Teams", exact: true }).click();
@@ -69,8 +69,10 @@ test("the ability filter, team text, and team names keep their text as typed", a
   const nameEditor = page.getByRole("dialog", { name: "Edit team name" });
   await expectVerbatim(nameEditor.getByLabel("Team name"));
   await nameEditor.getByRole("button", { name: "Cancel" }).click();
-  await page.getByRole("button", { name: "Import Team", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Import/Export", exact: true })
+    .click();
   await expectVerbatim(
-    page.getByRole("dialog", { name: "Import Team" }).getByRole("textbox"),
+    page.getByRole("dialog", { name: "Import/Export" }).getByRole("textbox"),
   );
 });

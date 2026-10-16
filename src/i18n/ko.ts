@@ -123,10 +123,7 @@ const ko: Messages = {
     manageTeam: "팀 관리",
     accessibility: "접근성",
     duplicate: "복제",
-    copyText: "텍스트 복사",
-    editPokepaste: "Pokepaste 편집",
     delete: "삭제",
-    importTeam: "팀 가져오기",
     share: "공유",
     teamEmpty: "팀이 비어 있습니다. 공유하려면 포켓몬을 추가하세요.",
     linkCopied: "포켓몬 팀 링크를 복사했습니다",
@@ -134,10 +131,9 @@ const ko: Messages = {
       "링크를 복사하지 못했습니다. 팀을 연 상태에서 주소창의 주소를 복사하세요.",
     linkGenerationUnsupported: (profile: string) =>
       `이 링크의 세대 또는 게임은 지원되지 않아 ${profile}에서 열었습니다.`,
-    nothingToCopy: "팀이 비어 있습니다. 복사하려면 포켓몬을 추가하세요.",
     teamCopied: "팀을 복사했습니다.",
     teamNotCopied:
-      "팀을 복사하지 못했습니다. 대신 Pokepaste 편집에서 텍스트를 복사하세요.",
+      "팀을 복사하지 못했습니다. 가져오기/내보내기에서 텍스트를 선택해 복사하세요.",
     cannotDuplicateEmptyTeam:
       "팀이 비어 있습니다. 복제하려면 포켓몬을 추가하세요.",
     teamDuplicated: "팀을 복제했습니다",
@@ -502,12 +498,9 @@ const ko: Messages = {
     savedTeams: "저장된 팀",
     optionsFor: (team: string) => `${team} 옵션`,
     load: (team: string) => `${team} 불러오기`,
-    importTeam: "팀 가져오기",
-    exportAll: "전체 내보내기",
-    copyAll: "전체 복사",
     savedInBrowser: "팀은 이 브라우저에 저장됩니다.",
     saveFailed:
-      "브라우저에 팀을 저장하지 못했습니다. 팀을 보관하려면 백업을 저장하세요.",
+      "브라우저에 팀을 저장하지 못했습니다. 팀을 보관하려면 가져오기/내보내기에서 복사하세요.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "열림",
     open: "열기",
@@ -516,28 +509,8 @@ const ko: Messages = {
     randomTeamCreated: "랜덤 팀을 만들었습니다",
     exported: "모든 팀을 내보냈습니다",
     copiedAll: "모든 팀을 복사했습니다",
-    notCopiedAll:
-      "팀을 복사하지 못했습니다. 대신 전체 내보내기로 내려받으세요.",
+    notCopiedAll: "팀을 복사하지 못했습니다. 대신 내려받기를 사용하세요.",
     exportFilename: "my-pokemon-teams.txt",
-  },
-  teamBackup: {
-    title: "팀 백업",
-    description:
-      "이름, 게임, 필터, 포켓몬의 상세 정보를 포함한 모든 팀을 저장합니다.",
-    save: "백업 저장",
-    restoreDescription:
-      "백업 파일에서 팀을 추가합니다. 기존 팀은 그대로 유지됩니다.",
-    chooseFile: "백업 파일 선택",
-    restore: "팀 추가",
-    ready: (count: number) => `이 백업의 팀 수: ${count}`,
-    error:
-      "이 파일을 읽을 수 없습니다. 이 사이트에서 저장한 팀 백업을 선택하세요.",
-    tooLarge:
-      "이 백업은 팀이 너무 많아 추가할 수 없습니다. 팀이 더 적은 백업 파일을 선택하세요.",
-    saveFailed: "백업을 저장할 수 없습니다. 다시 시도하세요.",
-    saved: "팀 백업을 저장했습니다",
-    alreadySaved: "이미 컬렉션에 있는 팀입니다.",
-    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "게임 또는 세대를 변경할까요?",
@@ -629,22 +602,26 @@ const ko: Messages = {
       `${josa(item, "은", "는")} 한 마리만 지닐 수 있습니다 (Item Clause).`,
   },
   importDialog: {
-    importTitle: "팀 가져오기",
-    editTitle: "Pokepaste 편집",
-    importDescription:
-      "{showdown} 형식의 팀 하나, 또는 여러 팀이 든 백업 전체를 붙여넣으세요.",
-    editDescription:
-      "팀의 원본 텍스트입니다. 여기서 수정하거나 {showdown}에 붙여넣으세요.",
+    title: "가져오기/내보내기",
+    description:
+      "팀의 텍스트입니다. 복사해서 공유하거나, 여기서 수정한 뒤 업데이트를 누르세요. {showdown}의 팀이나 pokepast.es 링크를 붙여넣을 수도 있습니다.",
+    teamsDescription:
+      "모든 팀입니다. 복사하거나 내려받아 보관하거나 다른 기기로 옮기세요. 팀을 추가하려면 {showdown}의 텍스트나 pokepast.es 링크를 붙여넣고 팀 추가를 누르세요. 이미 있는 팀은 건너뜁니다.",
     showdown: "Pokemon Showdown",
-    importPlaceholder: "여기에 팀을 붙여넣으세요",
-    editPlaceholder: "팀이 비어 있습니다",
+    placeholder: "여기에 팀이나 pokepast.es 링크를 붙여넣으세요",
     label: "Pokemon Showdown 팀 원본 텍스트",
     kept: "닉네임, 레벨, 성별, 색이 다름, 친밀도, 테라스탈 타입, 성격, 노력치, 개체값은 선택한 게임에 있는 경우 유지됩니다.",
-    import: "가져오기",
+    copy: "복사",
+    download: "내려받기",
+    uploadToPokepaste: "PokePaste에 업로드",
     update: "업데이트",
+    addTeams: "팀 추가",
     imported: "팀을 가져왔습니다",
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
+    noNewTeams: "이미 저장된 팀입니다.",
     noChanges: "변경된 내용이 없습니다.",
+    linkFailed:
+      "해당 링크에서 팀을 가져오지 못했습니다. 링크 전체를 복사했는지 확인하거나, 팀 텍스트를 대신 붙여넣으세요.",
     nothingFound:
       "텍스트에서 포켓몬을 찾지 못했습니다. 포켓몬 이름을 Pokemon Showdown과 같은 영어 표기로 쓰거나 Pokemon Showdown에서 내보낸 팀을 붙여넣으세요.",
     problems: (count: number) =>
@@ -733,7 +710,7 @@ const ko: Messages = {
     teams: "팀",
     teamsQuestion: "내 팀은 어디에 저장되나요?",
     teamsAnswer:
-      "팀은 이 브라우저에 저장되므로 다시 방문해도 그대로 있지만, 다른 기기에서는 볼 수 없습니다. 팀 목록 버튼이 팀을 나열하며, 각 팀의 메뉴에서 이름 변경, 세대와 포맷 설정, 복제, 공유, 삭제를 할 수 있습니다. 전체 내보내기는 모든 팀을 Showdown 텍스트로 내려받고, 팀 가져오기가 그 파일을 다시 읽어 들입니다. 주소창에는 항상 현재 팀이 들어 있으므로, 주소를 복사하거나 팀 공유 버튼을 누르면 팀을 공유할 수 있습니다.",
+      "팀은 이 브라우저에 저장되므로 다시 방문해도 그대로 있지만, 다른 기기에서는 볼 수 없습니다. 팀 목록 버튼이 팀을 나열하며, 각 팀의 메뉴에서 이름 변경, 세대와 포맷 설정, 복제, 공유, 삭제를 할 수 있습니다. 가져오기/내보내기는 모든 팀을 Showdown 텍스트로 복사하거나 내려받고, 텍스트나 pokepast.es 링크에서 팀을 추가합니다. 주소창에는 항상 현재 팀이 들어 있으므로, 주소를 복사하거나 팀 공유 버튼을 누르면 팀을 공유할 수 있습니다.",
     teamsAnswer2:
       "이름 목록에는 필터와 정렬 버튼이, 기술 목록에는 정렬 버튼이 있습니다. 실행 취소와 다시 실행으로 현재 팀의 변경 내역을 오갈 수 있으며, 휴대폰과 태블릿에서는 포켓몬 슬롯 탭 위에 있습니다.",
     generations: "세대",
@@ -743,7 +720,7 @@ const ko: Messages = {
     advanced: "추가 세부 정보",
     advancedQuestion: "닉네임, 레벨, 성격, 노력치, 개체값",
     advancedAnswer:
-      "각 포켓몬의 추가 세부 정보 버튼에서 Pokemon Showdown과 같은 방식으로 닉네임, 레벨, 성별, 색이 다름, 테라스탈 타입, 성격, 노력치, 개체값을 설정합니다. 이 정보는 공유 링크, 텍스트 복사, Pokepaste 편집 텍스트에 팀과 함께 담깁니다.",
+      "각 포켓몬의 추가 세부 정보 버튼에서 Pokemon Showdown과 같은 방식으로 닉네임, 레벨, 성별, 색이 다름, 테라스탈 타입, 성격, 노력치, 개체값을 설정합니다. 이 정보는 공유 링크와 가져오기/내보내기 텍스트에 팀과 함께 담깁니다.",
     matrix: "매트릭스 분석",
     matrixQuestion: "타입 점수는 어디서 나오나요?",
     matrixAnswer:

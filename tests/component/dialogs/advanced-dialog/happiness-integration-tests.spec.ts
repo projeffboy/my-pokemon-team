@@ -3,7 +3,7 @@ import {
   openAdvanced,
   closeDialog,
   getTeamTextFromUrl,
-  openEditPokepaste,
+  openImportExport,
 } from "helper";
 import type { Page } from "@playwright/test";
 
@@ -89,7 +89,7 @@ test("happiness defaults when cleared or reset after a raw-text import", async (
   await openAdvanced(page);
   await expect(happiness).toHaveValue("255");
   await closeDialog(page);
-  await openEditPokepaste(page);
+  await openImportExport(page);
   await page
     .getByRole("textbox", { name: "Pokemon Showdown Team Raw Text" })
     .fill("Kangaskhan\nHappiness: 0\n- Frustration");
@@ -129,7 +129,7 @@ for (const { name, profile } of [
       .poll(() => getTeamTextFromUrl(page))
       .not.toContain("Happiness:");
     await closeDialog(page);
-    await openEditPokepaste(page);
+    await openImportExport(page);
     await page
       .getByRole("textbox", { name: "Pokemon Showdown Team Raw Text" })
       .fill("Psyduck\nHappiness: 100\n- Water Gun");

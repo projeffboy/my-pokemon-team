@@ -10,19 +10,17 @@ An all-purpose Pokemon teambuilder for generations 1-9, including Legends: Z-A a
 2. It's very accurate: it takes into account special abilities (Levitate, Thick Fat, Filter, Sap Sipper, Aerilate, Wonder Guard, etc.) and moves (Freeze Dry, Flying Press, Seismic Toss, Judgment, etc.)
 3. There's a team checklist, and a matrix of every type against every pokemon
 4. Search filters narrow down the Pokemon by generation, format, type, region, and ability, and the moves and items to the viable ones. The dropdown sorts by name, number, format, or base stats
-5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on). Team backups keep all of these details in a file you can restore on another device
+5. Several teams are saved in the browser, each with a name, generation, and format, and each pokemon has Showdown's set details (nickname, level, nature, EVs, IVs, and so on). Import/Export keeps all of these details as Showdown text you can copy or download and add on another device
 6. The sprites are animated, which is nice
 7. It speaks the nine languages of the Pokemon games, with the pokemon, move, item, and ability names from PokeAPI, and Brazilian Portuguese, with the English names until the games are in Portuguese
 
-## Backing Up Teams
+## Importing and Exporting Teams
 
-Open **Teams → Team backups → Save backup** to download a JSON file with every saved team and the current unsaved draft. It keeps team names, generations, games, formats, filters, empty teams, and Pokemon details, including older games' training values.
+The **Import/Export** button in the **More** menu shows the current team as Pokemon Showdown text. Copy it, or change it and press **Update**. The **Teams** dialog has the same button for every saved team at once: copy them, or download them as `my-pokemon-teams.txt`. Paste teams into it and press **Add teams** to add only the ones you do not have yet.
 
-To restore it, open **Teams → Team backups → Choose backup file**, select the file, and press **Add teams**. Restoring adds teams without replacing your existing teams or changing the team you are editing. Importing the same backup again does not create extra copies.
+A pokepast.es link on a line of its own is replaced by that paste when you press **Update** or **Add teams**. **Upload to PokePaste**, for the current team, opens pokepast.es in a new tab with the team's name, text, and game, as Pokemon Showdown does. Nothing is sent to pokepast.es unless you press that button or import one of its links.
 
-Backup files are read on your device and are not uploaded. Keep a copy somewhere safe: browser storage can be cleared or run out of space. If a browser save fails, the Teams dialog shows a message and the backup still includes your unsaved work.
-
-**Export All** and **Import Team** continue to use Pokemon Showdown text for sharing with other tools. Use **Team backups** to preserve the complete collection and its settings.
+Teams live only in your browser, which can clear its storage or run out of space, and they do not follow you to another device. Copy or download them from Import/Export to keep a copy somewhere safe.
 
 ## Tech Stack
 

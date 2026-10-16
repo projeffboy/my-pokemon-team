@@ -111,10 +111,7 @@ const ja: Messages = {
     manageTeam: "チームの管理",
     accessibility: "アクセシビリティ",
     duplicate: "複製",
-    copyText: "テキストをコピー",
-    editPokepaste: "Pokepasteを編集",
     delete: "削除",
-    importTeam: "チームをインポート",
     share: "共有",
     teamEmpty: "チームが空です。共有するにはポケモンを追加してください。",
     linkCopied: "ポケモンチームのリンクをコピーしました",
@@ -122,10 +119,9 @@ const ja: Messages = {
       "リンクをコピーできませんでした。チームを開いた状態で、アドレスバーからコピーしてください。",
     linkGenerationUnsupported: (profile: string) =>
       `このリンクの世代またはゲームには対応していないため、${profile}で開きました。`,
-    nothingToCopy: "チームが空です。コピーするにはポケモンを追加してください。",
     teamCopied: "チームをコピーしました。",
     teamNotCopied:
-      "チームをコピーできませんでした。代わりに「Pokepasteを編集」からテキストをコピーしてください。",
+      "チームをコピーできませんでした。代わりに「インポート/エクスポート」でテキストを選択してコピーしてください。",
     cannotDuplicateEmptyTeam:
       "チームが空です。複製するにはポケモンを追加してください。",
     teamDuplicated: "チームを複製しました",
@@ -489,7 +485,7 @@ const ja: Messages = {
     bst: "種族値合計",
   },
 
-  // The Teams, Team name, Import, and Delete dialogs
+  // The Teams, Team name, Import/Export, and Delete dialogs
   teams: {
     newTeam: "新しいチーム",
     randomTeam: "ランダムチーム",
@@ -497,12 +493,9 @@ const ja: Messages = {
     savedTeams: "保存済みのチーム",
     optionsFor: (team: string) => `${team}のオプション`,
     load: (team: string) => `${team}を開く`,
-    importTeam: "チームをインポート",
-    exportAll: "すべてエクスポート",
-    copyAll: "すべてコピー",
     savedInBrowser: "チームはこのブラウザに保存されます。",
     saveFailed:
-      "ブラウザにチームを保存できませんでした。バックアップを保存してチームを残しましょう。",
+      "ブラウザにチームを保存できませんでした。「インポート/エクスポート」からコピーしてチームを残しましょう。",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "表示中",
     open: "開く",
@@ -512,27 +505,8 @@ const ja: Messages = {
     exported: "すべてのチームをエクスポートしました",
     copiedAll: "すべてのチームをコピーしました",
     notCopiedAll:
-      "チームをコピーできませんでした。代わりに「すべてエクスポート」でダウンロードしてください。",
+      "チームをコピーできませんでした。代わりに「ダウンロード」を使ってください。",
     exportFilename: "my-pokemon-teams.txt",
-  },
-  teamBackup: {
-    title: "チームのバックアップ",
-    description:
-      "チームの名前、ゲーム、フィルター、ポケモンの詳細を含め、すべてのチームを保存します。",
-    save: "バックアップを保存",
-    restoreDescription:
-      "バックアップファイルからチームを追加します。今あるチームはそのまま残ります。",
-    chooseFile: "バックアップファイルを選ぶ",
-    restore: "チームを追加",
-    ready: (count: number) => `このバックアップのチーム数: ${count}`,
-    error:
-      "このファイルを読み込めませんでした。このサイトで保存したチームのバックアップを選んでください。",
-    tooLarge:
-      "このバックアップはチーム数が多すぎるため追加できません。チーム数の少ないバックアップファイルをお試しください。",
-    saveFailed: "バックアップを保存できませんでした。もう一度お試しください。",
-    saved: "チームのバックアップを保存しました",
-    alreadySaved: "これらのチームはすでにコレクションにあります。",
-    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "ゲームまたは世代を変更しますか？",
@@ -624,22 +598,26 @@ const ja: Messages = {
       `${item}を持てるのは1体までです（Item Clause）。`,
   },
   importDialog: {
-    importTitle: "チームをインポート",
-    editTitle: "Pokepasteを編集",
-    importDescription:
-      "{showdown}の形式で、チーム、または複数のチームを含むバックアップ全体を貼り付けてください。",
-    editDescription:
-      "これはチームの生テキストです。ここで編集するか、{showdown}に貼り付けてください。",
+    title: "インポート/エクスポート",
+    description:
+      "これはチームのテキストです。コピーして共有するか、ここで編集して「更新」を押してください。{showdown}のチームやpokepast.esのリンクを貼り付けることもできます。",
+    teamsDescription:
+      "これはすべてのチームです。コピーまたはダウンロードして保管したり、別の端末に移したりできます。チームを追加するには、{showdown}のテキストやpokepast.esのリンクを貼り付けて「チームを追加」を押してください。すでにあるチームは追加されません。",
     showdown: "Pokemon Showdown",
-    importPlaceholder: "ここにチームを貼り付け",
-    editPlaceholder: "チームは空です",
+    placeholder: "ここにチームまたはpokepast.esのリンクを貼り付け",
     label: "Pokemon Showdownチームの生テキスト",
     kept: "ニックネーム、レベル、性別、色違い、なつき度、テラスタイプ、性格、努力値、個体値は、選択したゲームにある場合に保持されます。",
-    import: "インポート",
+    copy: "コピー",
+    download: "ダウンロード",
+    uploadToPokepaste: "PokePasteにアップロード",
     update: "更新",
+    addTeams: "チームを追加",
     imported: "チームをインポートしました",
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
+    noNewTeams: "これらのチームはすでに保存されています。",
     noChanges: "変更はありません。",
+    linkFailed:
+      "そのリンクからチームを取得できませんでした。リンク全体をコピーしたか確認するか、代わりにチームのテキストを貼り付けてください。",
     nothingFound:
       "そのテキストにポケモンが見つかりませんでした。ポケモンの名前をPokemon Showdownと同じ英語の表記で書くか、Pokemon Showdownからエクスポートしたチームを貼り付けてください。",
     problems: (count: number) =>
@@ -727,7 +705,7 @@ const ja: Messages = {
     teams: "チーム",
     teamsQuestion: "チームはどこに保存されますか？",
     teamsAnswer:
-      "チームはこのブラウザに保存されるので、次に来たときもここにありますが、別の端末には引き継がれません。「チーム一覧」ボタンで一覧が表示され、各チームのメニューから名前の変更、世代とフォーマットの設定、複製、共有、削除ができます。「すべてエクスポート」はすべてのチームをShowdownのテキストとしてダウンロードし、「チームをインポート」でそれを読み戻せます。アドレスバーには常に現在のチームが入っているので、アドレスをコピーする（または「共有」を押す）とチームを共有できます。",
+      "チームはこのブラウザに保存されるので、次に来たときもここにありますが、別の端末には引き継がれません。「チーム一覧」ボタンで一覧が表示され、各チームのメニューから名前の変更、世代とフォーマットの設定、複製、共有、削除ができます。「インポート/エクスポート」では、すべてのチームをShowdownのテキストとしてコピーまたはダウンロードでき、テキストやpokepast.esのリンクからチームを追加できます。アドレスバーには常に現在のチームが入っているので、アドレスをコピーする（または「共有」を押す）とチームを共有できます。",
     teamsAnswer2:
       "名前のリストには「絞り込み」と「並べ替え」、わざのリストには「並べ替え」のボタンがあります。「元に戻す」と「やり直す」で現在のチームの変更を行き来できます。スマートフォンやタブレットでは、ポケモンの枠のタブの上にあります。",
     generations: "世代",
@@ -737,7 +715,7 @@ const ja: Messages = {
     advanced: "その他の詳細",
     advancedQuestion: "ニックネーム、レベル、性格、努力値、個体値",
     advancedAnswer:
-      "各ポケモンの「その他の詳細」ボタンで、Pokemon Showdownと同じように、ニックネーム、レベル、性別、色違い、テラスタイプ、性格、努力値、個体値を設定できます。これらは共有リンクや「テキストをコピー」「Pokepasteを編集」のテキストにチームと一緒に含まれます。",
+      "各ポケモンの「その他の詳細」ボタンで、Pokemon Showdownと同じように、ニックネーム、レベル、性別、色違い、テラスタイプ、性格、努力値、個体値を設定できます。これらは共有リンクや「インポート/エクスポート」のテキストにチームと一緒に含まれます。",
     matrix: "マトリックス分析",
     matrixQuestion: "タイプのスコアはどこから来ていますか？",
     matrixAnswer:

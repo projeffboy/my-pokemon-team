@@ -1,14 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { test, expect } from "fixtures";
-import { clickMenuItem, openMoreMenu, selectPokemon } from "helper";
+import { openTeamsImportExport, selectPokemon } from "helper";
 import type { Page } from "@playwright/test";
 
 async function importText(page: Page, text: string) {
-  await openMoreMenu(page);
-  await clickMenuItem(page, "Import team");
-  const dialog = page.getByRole("dialog", { name: "Import Team" });
+  await openTeamsImportExport(page);
+  const dialog = page.getByRole("dialog", { name: "Import/Export" });
   await dialog.getByRole("textbox").fill(text);
-  await dialog.getByRole("button", { name: "Import", exact: true }).click();
+  await dialog.getByRole("button", { name: "Add teams", exact: true }).click();
   await expect(dialog).toBeHidden();
   const teams = page.getByRole("dialog", { name: "Teams", exact: true });
   await teams.getByRole("button", { name: "Close", exact: true }).click();
@@ -37,21 +36,25 @@ for (const header of ["gen9", "gen9ou"]) {
   });
 }
 
-test("Export All and Import team retain a combined team even when Champions is selected", async ({
+test("Download and Add teams in Import/Export retain a combined team even when Champions is selected", async ({
   page,
 }) => {
+  test.slow();
   await page.goto("/");
   await selectPokemon(page, "Miltank");
-  await page.getByRole("button", { name: "Teams", exact: true }).click();
-  const teams = page.getByRole("dialog", { name: "Teams", exact: true });
+  await openTeamsImportExport(page);
   const downloading = page.waitForEvent("download");
-  await teams.getByRole("button", { name: "Export All", exact: true }).click();
+  await page
+    .getByRole("dialog", { name: "Import/Export" })
+    .getByRole("button", { name: "Download", exact: true })
+    .click();
   const file = await (await downloading).path();
   expect(file).not.toBeNull();
   if (!file) throw new Error("The text export was not downloaded");
   const text = await readFile(file, "utf8");
   expect(text).toContain("# mypokemonteam generation profile: 6-9");
-  await teams.getByRole("button", { name: "Close", exact: true }).click();
+  // As on another browser, which does not have the team yet
+  await page.evaluate(() => localStorage.clear());
   await page.goto("/?game=champions");
   await expect(
     page.getByRole("combobox", { name: "Generation" }),
@@ -84,6 +87,7 @@ test("plain imported text uses the combined selection and keeps its moves after 
   await expect(
     page.getByLabel("Pokemon 1's move1", { exact: true }),
   ).toHaveValue("Weather Ball");
+  await expect(page).toHaveURL(/team=/);
   await page.reload();
   await expect(
     page.getByLabel("Pokemon 1's move1", { exact: true }),

@@ -106,19 +106,15 @@ const zhHant: Messages = {
     manageTeam: "管理隊伍",
     accessibility: "無障礙",
     duplicate: "建立副本",
-    copyText: "複製文字",
-    editPokepaste: "編輯 Pokepaste",
     delete: "刪除",
-    importTeam: "匯入隊伍",
     share: "分享",
     teamEmpty: "隊伍是空的。請先加入寶可夢再分享。",
     linkCopied: "已複製寶可夢隊伍連結",
     linkNotCopied: "無法複製連結。請在開啟該隊伍時，從網址列複製網址。",
     linkGenerationUnsupported: (profile: string) =>
       `不支援此連結的世代或遊戲，已改用${profile}開啟。`,
-    nothingToCopy: "隊伍是空的。請先加入寶可夢再複製。",
     teamCopied: "已複製隊伍。",
-    teamNotCopied: "無法複製隊伍。請改用「編輯 Pokepaste」複製隊伍文字。",
+    teamNotCopied: "無法複製隊伍。請改在「匯入/匯出」中選取隊伍文字並複製。",
     cannotDuplicateEmptyTeam: "隊伍是空的。請先加入寶可夢再建立副本。",
     teamDuplicated: "已建立隊伍副本",
     teamDeleted: "已刪除隊伍",
@@ -476,7 +472,7 @@ const zhHant: Messages = {
     bst: "種族值總和",
   },
 
-  // The Teams, Team name, Import, and Delete dialogs
+  // The Teams, Team name, Import/Export, and Delete dialogs
   teams: {
     newTeam: "新隊伍",
     randomTeam: "隨機隊伍",
@@ -484,11 +480,8 @@ const zhHant: Messages = {
     savedTeams: "已儲存的隊伍",
     optionsFor: (team: string) => `${team} 的選項`,
     load: (team: string) => `載入 ${team}`,
-    importTeam: "匯入隊伍",
-    exportAll: "全部匯出",
-    copyAll: "全部複製",
     savedInBrowser: "隊伍儲存在這個瀏覽器中。",
-    saveFailed: "瀏覽器無法儲存你的隊伍。請儲存備份以保留隊伍。",
+    saveFailed: "瀏覽器無法儲存你的隊伍。請從「匯入/匯出」中複製隊伍以保留。",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "使用中",
     open: "開啟",
@@ -497,23 +490,8 @@ const zhHant: Messages = {
     randomTeamCreated: "已建立隨機隊伍",
     exported: "已匯出所有隊伍",
     copiedAll: "已複製所有隊伍",
-    notCopiedAll: "無法複製隊伍。請改用「全部匯出」下載隊伍。",
+    notCopiedAll: "無法複製隊伍。請改用「下載」。",
     exportFilename: "my-pokemon-teams.txt",
-  },
-  teamBackup: {
-    title: "隊伍備份",
-    description: "儲存所有隊伍，包括名稱、遊戲、篩選條件和寶可夢的詳細資訊。",
-    save: "儲存備份",
-    restoreDescription: "從備份檔案中新增隊伍。你已有的隊伍會保留。",
-    chooseFile: "選擇備份檔案",
-    restore: "新增隊伍",
-    ready: (count: number) => `此備份中的隊伍數：${count}`,
-    error: "無法讀取此檔案。請選擇在本網站儲存的隊伍備份。",
-    tooLarge: "此備份中的隊伍太多，無法新增。請嘗試隊伍較少的備份檔案。",
-    saveFailed: "無法儲存備份。請再試一次。",
-    saved: "已儲存隊伍備份",
-    alreadySaved: "這些隊伍已在你的隊伍列表中。",
-    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "切換遊戲或世代？",
@@ -602,21 +580,26 @@ const zhHant: Messages = {
     itemClause: (item: string) => `${item}只能由一隻寶可夢攜帶（道具條款）。`,
   },
   importDialog: {
-    importTitle: "匯入隊伍",
-    editTitle: "編輯 Pokepaste",
-    importDescription:
-      "以 {showdown} 的格式貼上一支隊伍，或含多支隊伍的完整備份。",
-    editDescription: "這是你隊伍的原始文字。可在此修改，或貼到 {showdown}。",
+    title: "匯入/匯出",
+    description:
+      "這是你隊伍的文字。可複製後分享，或在此修改後按「更新」。你也可以貼上來自 {showdown} 的隊伍或 pokepast.es 連結。",
+    teamsDescription:
+      "這裡是你的所有隊伍。可複製或下載它們來保存，或轉移到其他裝置。要新增隊伍，請貼上來自 {showdown} 的隊伍文字或 pokepast.es 連結，然後按「新增隊伍」。已有的隊伍會被略過。",
     showdown: "Pokemon Showdown",
-    importPlaceholder: "在此貼上隊伍",
-    editPlaceholder: "你的隊伍是空的",
+    placeholder: "在此貼上隊伍或 pokepast.es 連結",
     label: "Pokemon Showdown 隊伍原始文字",
     kept: "所選遊戲有這些項時，暱稱、等級、性別、異色、親密度、太晶屬性、性格、努力值與個體值都會保留。",
-    import: "匯入",
+    copy: "複製",
+    download: "下載",
+    uploadToPokepaste: "上傳到 PokePaste",
     update: "更新",
+    addTeams: "新增隊伍",
     imported: "已匯入隊伍",
     importedMany: (count: number) => `已匯入 ${count} 支隊伍`,
+    noNewTeams: "這些隊伍已儲存。",
     noChanges: "沒有任何變更。",
+    linkFailed:
+      "無法從該連結取得隊伍。請確認已複製完整的連結，或改為貼上隊伍文字。",
     nothingFound:
       "這段文字中找不到寶可夢。請按照 Pokemon Showdown 的拼法用英文寫寶可夢名稱，或貼上從 Pokemon Showdown 匯出的隊伍。",
     problems: (count: number) =>
@@ -702,7 +685,7 @@ const zhHant: Messages = {
     teams: "隊伍",
     teamsQuestion: "我的隊伍儲存在哪裡？",
     teamsAnswer:
-      "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「全部匯出」會把每支隊伍以 Showdown 文字下載，「匯入隊伍」則能把它們讀回來。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
+      "你的隊伍儲存在這個瀏覽器中，所以下次回來還在，但在其他裝置上看不到。「隊伍列表」按鈕會列出所有隊伍，每支隊伍的選單可以重新命名、設定世代與格式、建立副本、分享或刪除。「匯入/匯出」可以把每支隊伍複製或下載為 Showdown 文字，也能從文字或 pokepast.es 連結新增隊伍。網址列永遠包含目前的隊伍，所以複製網址（或按「分享隊伍」）就能分享。",
     teamsAnswer2:
       "名稱列表中有「篩選」與「排序」按鈕，招式列表中有「排序」按鈕。復原與重做可以逐步回溯目前隊伍的變更；在手機和平板上，它們位於寶可夢欄位分頁的上方。",
     generations: "世代",
@@ -712,7 +695,7 @@ const zhHant: Messages = {
     advanced: "更多詳情",
     advancedQuestion: "暱稱、等級、性格、努力值與個體值",
     advancedAnswer:
-      "每隻寶可夢的「更多詳情」按鈕可以設定暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值，方式與 Pokemon Showdown 相同。這些設定會隨隊伍一起放進分享連結、「複製文字」和「編輯 Pokepaste」的文字中。",
+      "每隻寶可夢的「更多詳情」按鈕可以設定暱稱、等級、性別、異色、太晶屬性、性格、努力值與個體值，方式與 Pokemon Showdown 相同。這些設定會隨隊伍一起放進分享連結和「匯入/匯出」的文字中。",
     matrix: "矩陣分析",
     matrixQuestion: "屬性分數從哪裡來？",
     matrixAnswer:
