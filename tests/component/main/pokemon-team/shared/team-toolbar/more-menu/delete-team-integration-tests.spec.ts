@@ -105,7 +105,7 @@ test.describe("Delete team - Integration Tests", () => {
 
       if (action === "toolbar Clear") {
         await openMoreMenu(page);
-        await clickMenuItem(page, "Clear");
+        await clickMenuItem(page, "Delete");
       } else await openRowDelete(page, target.name);
       await expect(
         page.getByRole("dialog", { name: "Delete Removal target?" }),
@@ -148,7 +148,7 @@ test.describe("Delete team - Integration Tests", () => {
       });
 
       await openMoreMenu(page);
-      await clickMenuItem(page, "Clear");
+      await clickMenuItem(page, "Delete");
       const freshDelete = page.getByRole("dialog", {
         name: "Delete Surviving team?",
         exact: true,

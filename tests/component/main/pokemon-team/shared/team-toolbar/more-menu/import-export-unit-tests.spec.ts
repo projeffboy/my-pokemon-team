@@ -2,13 +2,13 @@ import { test, expect } from "fixtures";
 import { clickMenuItem, openMoreMenu, selectPokemon } from "helper";
 
 test.describe("More menu: Import/Export - Unit Tests", () => {
-  test("lists Import/Export and Clear, without the actions they replaced", async ({
+  test("lists Import/Export and Delete, without the actions they replaced", async ({
     page,
   }) => {
     await openMoreMenu(page);
     const items = page.getByRole("menu").getByRole("menuitem");
 
-    await expect(items).toHaveText(["Import/Export", "Clear"]);
+    await expect(items).toHaveText(["Import/Export", "Delete"]);
     for (const removed of ["Copy text", "Edit Pokepaste", "Import Team"])
       await expect(items.filter({ hasText: removed })).toHaveCount(0);
   });

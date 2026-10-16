@@ -6,7 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import { inputLabelClasses } from "@mui/material/InputLabel";
+import Typography from "@mui/material/Typography";
 import type { SxProps, Theme } from "@mui/material/styles";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import DownloadIcon from "@mui/icons-material/Download";
@@ -196,56 +196,16 @@ const ImportExportForm = observer(function ImportExportForm({
             },
           )}
         </DialogContentText>
-        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<ContentCopyIcon />}
-            disabled={isEmpty}
-            onClick={() =>
-              isTeams ?
-                copyToClipboard(text, t.teams.copiedAll, t.teams.notCopiedAll)
-              : copyToClipboard(text, t.team.teamCopied, t.team.teamNotCopied)
-            }
-          >
-            {importDialog.copy}
-          </Button>
-          {isTeams ?
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<DownloadIcon />}
-              disabled={isEmpty}
-              onClick={() => {
-                downloadText(t.teams.exportFilename, text);
-                store.openSnackbar(t.teams.exported, false, "export");
-              }}
-            >
-              {importDialog.download}
-            </Button>
-          : <Button
-              variant="outlined"
-              size="small"
-              startIcon={<UploadIcon />}
-              disabled={isEmpty || isLink}
-              onClick={() =>
-                uploadToPokepaste(pokepasteUpload(store.currentTeam, text))
-              }
-            >
-              {importDialog.uploadToPokepaste}
-            </Button>
-          }
-        </Box>
         <TextField
           autoFocus
-          variant="standard"
           placeholder={importDialog.placeholder}
-          label={importDialog.label}
           multiline
-          // A long team scrolls within the field, keeping the problems below it in view
-          maxRows={isSmDown ? 6 : 10}
+          // Tall enough to read as a box when empty; a long team scrolls within the field,
+          // keeping the problems below it in view
+          minRows={isSmDown ? 4 : 8}
+          maxRows={isSmDown ? 6 : 12}
           fullWidth
-          sx={{ my: 2.5 }}
+          sx={{ mt: 2, mb: 1 }}
           value={text}
           onChange={event => {
             setText(event.target.value);
@@ -257,39 +217,77 @@ const ImportExportForm = observer(function ImportExportForm({
           slotProps={{
             // Spoken when it appears, since the focus is elsewhere while a link loads
             formHelperText: { role: "status" },
-            // Edits made while links load would be lost to the text they were read from
-            htmlInput: { ...verbatim("team-text"), readOnly: isFetching },
-            // Above the text rather than over it, so a long label wraps instead of being
-            // cut off at 320px
-            inputLabel: {
-              shrink: true,
-              sx: {
-                position: "static",
-                transform: "none",
-                maxWidth: "100%",
-                whiteSpace: "normal",
-                // The size the shrunk label had when it floated
-                fontSize: "0.75rem",
-              },
+            htmlInput: {
+              ...verbatim("team-text"),
+              // The description above names the box, so the label is for screen readers
+              "aria-label": importDialog.label,
+              // Edits made while links load would be lost to the text they were read from
+              readOnly: isFetching,
             },
-            input: { sx: { [`.${inputLabelClasses.root} + &`]: { mt: 0 } } },
+            // Showdown's text lines up its moves and stats, as in its own import box
+            input: { sx: { fontFamily: "monospace", fontSize: 14 } },
           }}
         />
         <TeamTextProblems problems={problems} />
-        <DialogContentText>{importDialog.kept}</DialogContentText>
+        <Typography
+          variant="caption"
+          component="p"
+          sx={{ color: "text.secondary", mt: 1 }}
+        >
+          {importDialog.kept}
+        </Typography>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>{t.cancel}</Button>
+      {/* The actions that leave the dialog stay apart from the ones on the text. Where a
+          language's labels leave no room for all of them, they wrap in groups. */}
+      <DialogActions
+        disableSpacing
+        sx={{ flexWrap: "wrap", justifyContent: "space-between", gap: 1 }}
+      >
         <Button
-          onClick={submit}
-          loading={isFetching}
-          // Until the problems describe the current text, an update could skip them
-          disabled={
-            !learnsetsLoaded || (isTeams ? isEmpty : deferredText !== text)
+          startIcon={<ContentCopyIcon />}
+          disabled={isEmpty}
+          onClick={() =>
+            isTeams ?
+              copyToClipboard(text, t.teams.copiedAll, t.teams.notCopiedAll)
+            : copyToClipboard(text, t.team.teamCopied, t.team.teamNotCopied)
           }
         >
-          {isTeams ? importDialog.addTeams : importDialog.update}
+          {importDialog.copy}
         </Button>
+        {isTeams ?
+          <Button
+            startIcon={<DownloadIcon />}
+            disabled={isEmpty}
+            onClick={() => {
+              downloadText(t.teams.exportFilename, text);
+              store.openSnackbar(t.teams.exported, false, "export");
+            }}
+          >
+            {importDialog.download}
+          </Button>
+        : <Button
+            startIcon={<UploadIcon />}
+            disabled={isEmpty || isLink}
+            onClick={() =>
+              uploadToPokepaste(pokepasteUpload(store.currentTeam, text))
+            }
+          >
+            {importDialog.uploadToPokepaste}
+          </Button>
+        }
+        <Box sx={{ display: "flex", gap: 1, ml: "auto" }}>
+          <Button onClick={onClose}>{t.cancel}</Button>
+          <Button
+            onClick={submit}
+            loading={isFetching}
+            // Until the problems describe the current text, an update could skip them
+            disabled={
+              !learnsetsLoaded || (isTeams ? isEmpty : deferredText !== text)
+            }
+          >
+            {isTeams ? importDialog.addTeams : importDialog.update}
+          </Button>
+        </Box>
       </DialogActions>
     </>
   );

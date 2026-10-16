@@ -98,11 +98,13 @@ Abilty: Intrepid Sword`);
     await expect(dialog).toBeHidden();
 
     await openImportExport(page);
-    // Type "x" after "- " on Great Tusk's first move line
-    await textbox.click({ position: { x: 2, y: 8 } });
-    for (let line = 0; line < 5; line++) await textbox.press("ArrowDown");
-    await textbox.press("ArrowRight");
-    await textbox.press("ArrowRight");
+    // Type "x" after "- " on Great Tusk's first move line. Long lines wrap on a phone, so
+    // the caret goes there directly rather than by arrow keys.
+    await textbox.click();
+    await textbox.evaluate((element: HTMLTextAreaElement) => {
+      const at = element.value.indexOf("- Headlong Rush") + 2;
+      element.setSelectionRange(at, at);
+    });
     await textbox.press("x");
 
     const report = dialog.getByRole("status");

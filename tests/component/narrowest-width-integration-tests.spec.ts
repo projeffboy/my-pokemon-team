@@ -5,6 +5,7 @@ import {
   closeDialog,
   openAdvanced,
   openAnalysis,
+  openAnswers,
   openFilters,
   openMoreMenu,
   openSort,
@@ -175,6 +176,7 @@ const expectFooterDialogsFit = async (page: Page, goBack: string) => {
     await expect(
       tabs.or(dialog.locator(".MuiDialogContent-root > *")).first(),
     ).toBeVisible();
+    await openAnswers(dialog);
     for (const tab of await tabs.all()) {
       await tab.click();
       await expectNothingCutOff(page, `${name}, ${await tab.textContent()}`);

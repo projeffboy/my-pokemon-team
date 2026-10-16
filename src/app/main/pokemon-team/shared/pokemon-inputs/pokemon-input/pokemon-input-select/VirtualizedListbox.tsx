@@ -241,7 +241,7 @@ const VirtualizedListbox = observer(
       const isNameInput = pokemonProperty === "name";
       const isGrid = isNameInput && store.nameView !== "list";
       const isBigGrid = isNameInput && store.nameView === "big-grid";
-      // Filters and Sort sit beside the view toggle; the move lists have Sort alone
+      // Filters and Sort sit beside the view toggle; the move lists sort by name or type
       const showMoveTools = pokemonProperty.startsWith("move");
       const columns = gridColumns(store.nameView);
       const gridRowSize = isBigGrid ? BIG_GRID_ROW_SIZE : GRID_ROW_SIZE;
@@ -366,15 +366,7 @@ const VirtualizedListbox = observer(
             </Box>
           )}
           {showMoveTools && (
-            <Box
-              ref={toggleRef}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                my: 0.5,
-                px: 0.5,
-              }}
-            >
+            <Box ref={toggleRef} sx={{ display: "flex", my: 0.5, px: 0.5 }}>
               <ListTools moves />
             </Box>
           )}

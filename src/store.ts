@@ -1176,19 +1176,13 @@ export class Store {
     name: DialogName;
     teamIndex: number;
     teamId: string;
-    // The Sort dialog's tab
-    sortTab: "pokemon" | "moves";
   } | null = null;
 
   openDialog(
     name: DialogName,
-    {
-      teamIndex = 0,
-      teamId = this.currentTeamId,
-      sortTab = "pokemon" as "pokemon" | "moves",
-    } = {},
+    { teamIndex = 0, teamId = this.currentTeamId } = {},
   ) {
-    this.dialog = { name, teamIndex, teamId, sortTab };
+    this.dialog = { name, teamIndex, teamId };
   }
 
   closeDialog() {

@@ -34,11 +34,11 @@ const SortDialog = observer(function SortDialog() {
   const { t } = useTranslation();
   const titleId = useId();
   const [tab, setTab] = useState<"pokemon" | "moves">("pokemon");
-  // Opens on the tab of the dropdown it was opened from
-  const openedTab = store.dialog?.name === "sort" && store.dialog.sortTab;
+  const isOpen = store.dialog?.name === "sort";
+  // The Name dropdown opens it, so it opens on the Pokemon tab
   useEffect(() => {
-    if (openedTab) setTab(openedTab);
-  }, [openedTab]);
+    if (isOpen) setTab("pokemon");
+  }, [isOpen]);
   const sort = tab === "moves" ? store.moveSort : store.sort;
   const label = (key: SortKey) =>
     isStat(key) ?
@@ -46,7 +46,6 @@ const SortDialog = observer(function SortDialog() {
         t.info.special
       : t.statFullNames[key]
     : t.sort[key];
-  const isOpen = store.dialog?.name === "sort";
   const close = () => store.closeDialog();
 
   return (

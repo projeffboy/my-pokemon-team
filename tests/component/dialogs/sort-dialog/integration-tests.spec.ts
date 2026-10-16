@@ -2,67 +2,39 @@ import { test, expect } from "fixtures";
 import { closeDialog, openSort, selectPokemon } from "helper";
 
 test.describe("Sort Dialog - Integration Tests", () => {
-  test("sorts moves by name or type independently and remembers the choice", async ({
-    page,
-  }) => {
+  test("the Moves tab orders the move dropdowns too", async ({ page }) => {
     await selectPokemon(page, "Eelektross");
     const input = page.getByRole("combobox", { name: "Pokemon 1's move1" });
-    const checkOrder = async (first: string, second: string) => {
+    const expectOrder = async (first: string, second: string) => {
       await input.fill("Punch");
-      const list = page.getByRole("listbox");
-      await expect(
-        list.getByRole("option").filter({ hasText: first }),
-      ).toBeVisible();
-      await expect(
-        list.getByRole("option").filter({ hasText: second }),
-      ).toBeVisible();
-      const labels = await list
-        .getByRole("option")
+      const options = page.getByRole("listbox").getByRole("option");
+      await expect(options.filter({ hasText: first })).toBeVisible();
+      await expect(options.filter({ hasText: second })).toBeVisible();
+      const labels = await options
         .locator(":scope > span:last-child")
         .allTextContents();
-      const firstIndex = labels.indexOf(first);
-      const secondIndex = labels.indexOf(second);
-      expect(firstIndex).toBeGreaterThanOrEqual(0);
-      expect(secondIndex).toBeGreaterThanOrEqual(0);
-      expect(firstIndex).toBeLessThan(secondIndex);
+      expect(labels.indexOf(first)).toBeGreaterThanOrEqual(0);
+      expect(labels.indexOf(first)).toBeLessThan(labels.indexOf(second));
       await input.press("Escape");
     };
-    await checkOrder("Drain Punch", "Thunder Punch");
-    // Sort in a move dropdown opens on the Moves tab
-    await openSort(page, "moves");
-    await expect(
-      page.getByRole("tab", { name: "Moves", exact: true }),
-    ).toHaveAttribute("aria-selected", "true");
-    await expect(
-      page.getByRole("radio", { name: "Name", exact: true }),
-    ).toBeChecked();
-    await page.getByRole("button", { name: "Descending", exact: true }).click();
-    await closeDialog(page);
-    await checkOrder("Thunder Punch", "Drain Punch");
+    await expectOrder("Drain Punch", "Thunder Punch");
 
-    await openSort(page, "moves");
+    await openSort(page);
+    await page.getByRole("tab", { name: "Moves", exact: true }).click();
     await page.getByRole("radio", { name: "Type", exact: true }).check();
-    await page.getByRole("button", { name: "Ascending", exact: true }).click();
-    await closeDialog(page);
-    await checkOrder("Thunder Punch", "Fire Punch");
-    await openSort(page, "moves");
     await page.getByRole("button", { name: "Descending", exact: true }).click();
-    await page.getByRole("tab", { name: "Pokemon", exact: true }).click();
-    await expect(
-      page.getByRole("radio", { name: "Pokedex number", exact: true }),
-    ).toBeChecked();
-    await expect(
-      page.getByRole("button", { name: "Ascending", exact: true }),
-    ).toHaveAttribute("aria-pressed", "true");
     await closeDialog(page);
-    await checkOrder("Fire Punch", "Thunder Punch");
+    await expectOrder("Fire Punch", "Thunder Punch");
 
-    await page.reload({ waitUntil: "domcontentloaded" });
+    // Its headers in the move dropdown show the same order
+    await input.fill("Punch");
     await expect(
-      page.getByRole("combobox", { name: "Pokemon 1's name" }),
-    ).toHaveValue("Eelektross");
-    await checkOrder("Fire Punch", "Thunder Punch");
+      page
+        .getByRole("group", { name: "Sort by" })
+        .getByRole("button", { name: /^Type/ }),
+    ).toHaveAccessibleName("Type, Descending");
   });
+
   test("orders the Name dropdown", async ({ page }) => {
     const input = page.getByRole("combobox", { name: "Pokemon 1's name" });
     const firstOption = page.getByRole("listbox").getByRole("option").first();

@@ -98,7 +98,7 @@ const dialogs: DialogCase[] = [
       await dialog.getByRole("textbox").fill(LONG_TEAM_TEXT);
       return dialog;
     },
-    actions: ["Cancel", "Update"],
+    actions: ["Copy", "Cancel", "Update"],
     close: "Cancel",
     field: dialog => dialog.getByRole("textbox"),
     aboveAd: true,

@@ -233,11 +233,12 @@ const fr: Messages = {
   // The analysis panel
   stats: {
     teamStats: "Stats de l'équipe",
+    stats: "Stats",
     teamAnalysis: "Analyse de l'équipe",
     teamDefence: "Défense de l'équipe",
     teamTypeCoverage: "Couverture de types de l'équipe",
     teamChecklist: "Checklist de l'équipe",
-    matrixAnalysis: "Analyse matricielle",
+    matrixAnalysis: "Analyse par matrice",
     defence: "Défense",
     coverage: "Couverture",
     checklist: "Checklist",
@@ -337,7 +338,6 @@ const fr: Messages = {
       label: "Format de combat",
       singles: "Simple",
       doubles: "Double",
-      notSet: "Non défini",
       depends: "Dépend du format de combat",
       reasons: {
         spinner:
@@ -707,6 +707,7 @@ const fr: Messages = {
   },
   credits: {
     madeBy: "Créé par {name}",
+    website: "Site web",
     showdown:
       "L'équipe de Pokemon Showdown a la générosité de me laisser utiliser tous ses sprites, icônes et données Pokémon. Absolument indispensable !",
     alsoThanks: "Merci aussi à",
@@ -729,25 +730,15 @@ const fr: Messages = {
     advertise: "Faire de la publicité sur ce site.",
   },
   manual: {
-    teams: "Équipes",
     teamsQuestion: "Où mes équipes sont-elles enregistrées ?",
     teamsAnswer:
       "Vos équipes sont enregistrées dans ce navigateur : elles sont donc là à votre retour, mais pas sur un autre appareil. Le bouton Équipes les liste, et le menu de chaque équipe permet de la renommer, de choisir sa génération et son format, de la dupliquer, de la partager ou de la supprimer. Importer/Exporter copie ou télécharge toutes les équipes en texte Showdown, et ajoute des équipes à partir de texte ou de liens pokepast.es. La barre d'adresse contient toujours l'équipe actuelle : copier l'adresse (ou appuyer sur Partager) la partage.",
-    teamsAnswer2:
-      "La liste des noms contient les boutons Filtres et Trier, et les listes de capacités contiennent Trier. Annuler et Rétablir parcourent les modifications de l’équipe actuelle ; sur téléphone et tablette, ils se trouvent au-dessus des onglets des Pokémon.",
-    generations: "Générations",
     generationsQuestion: "Que change la génération ?",
     generationsAnswer:
       "La génération et le jeu choisis en haut déterminent les Pokémon, formes, capacités, objets et détails proposés. Les équipes historiques utilisent les talents, statistiques de base et table des types de leur génération. Un changement de jeu affiche les modifications nécessaires ; vous pouvez annuler, mettre à jour l’équipe ou créer une copie.",
-    advanced: "Plus de détails",
-    advancedQuestion: "Surnoms, niveaux, natures, EV et IV",
-    advancedAnswer:
-      "Le bouton Plus de détails de chaque Pokémon définit son surnom, son niveau, son sexe, s'il est chromatique, son type Téracristal, sa nature, ses EV et ses IV, comme sur Pokemon Showdown. Ils accompagnent l'équipe dans les liens de partage et dans le texte d'Importer/Exporter.",
-    matrix: "Analyse matricielle",
     matrixQuestion: "D'où viennent les scores par type ?",
     matrixAnswer:
       "La matrice, dans le panneau d'analyse, montre chaque type contre chaque Pokémon. Défense indique l'efficacité de chaque type attaquant contre chaque Pokémon, talent et objet compris, et Couverture indique l'efficacité de la meilleure capacité offensive de chaque Pokémon contre chaque type. Touchez une case pour voir la raison.",
-    defence: "Défense de l'équipe",
     defenceQuestion:
       "Comment la défense de type de votre équipe est-elle calculée ?",
     defenceAnswer:
@@ -765,14 +756,12 @@ const fr: Messages = {
     note: "Remarque :",
     defenceNote:
       "Les talents comme Lévitation, Isograisse, Filtre et Herbivore sont pris en compte. Par exemple, si votre Archéodong a Lévitation, vous gagnez +1,5 pour le type Sol. Et s'il a Ignifugé, vous obtenez 0 pour le type Feu à la place.",
-    coverage: "Couverture de types de l'équipe",
     coverageQuestion:
       "Comment la couverture de types de votre équipe est-elle calculée ?",
     coverageAnswer:
       "D'abord, qu'est-ce que la couverture de types ? Il s'agit du nombre de types contre lesquels vos capacités sont super efficaces. Si l'une de vos capacités est super efficace contre un type, vous gagnez +1. Si cette capacité est en plus du même type que le Pokémon qui l'utilise (STAB), vous gagnez encore +1.",
     coverageNote:
       "Les talents comme Peau Céleste et Peau Féérique sont pris en compte. Les capacités comme Lyophilisation et Flying Press aussi. Par exemple, Lyophilisation vous donne aussi +1 contre le type Eau.",
-    formats: "Formats (ou tiers)",
     formatsQuestion: "Qu'est-ce que Ubers, OU, VGC, etc. ?",
     formatsAnswer:
       "Ubers, OU et {vgc} sont des formats (ou tiers) qui bannissent certains Pokémon et imposent certaines règles. Les Battle Stadium Singles/Doubles et le VGC sont les seuls approuvés par The Pokémon Company, tandis que les autres sont maintenus par {smogon}. Vous pouvez consulter {faq} ou {guide}.",
@@ -782,7 +771,6 @@ const fr: Messages = {
     guide: "ce guide qui décrit brièvement chaque tier",
     champions:
       "Le format Pokémon Champions (M-C) ne liste que les Pokémon utilisables dans Pokémon Champions sous la Regulation M-C, y compris leurs Méga-Évolutions.",
-    terms: "Termes de la checklist de l'équipe",
     termsQuestion:
       "Que veulent dire piège d'entrée, phazer, volt-turn et compagnie ?",
     termsAnswer:
