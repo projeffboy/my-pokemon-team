@@ -652,6 +652,7 @@ const it: Messages = {
     kept: "Soprannomi, livelli, sessi, cromatico, felicità, teratipi, nature, EV e IV vengono mantenuti se il gioco selezionato li ha.",
     import: "Importa",
     update: "Aggiorna",
+    copy: "Copia",
     imported: "Squadra importata",
     importedMany: (count: number) => `${count} squadre importate`,
     noChanges: "Nessuna modifica.",

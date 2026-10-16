@@ -653,6 +653,7 @@ const en = {
     kept: "Nicknames, levels, genders, shiny, happiness, tera types, natures, EVs, and IVs are kept when the selected game has them.",
     import: "Import",
     update: "Update",
+    copy: "Copy",
     imported: "Team imported",
     importedMany: (count: number) => `${count} teams imported`,
     noChanges: "No changes made.",

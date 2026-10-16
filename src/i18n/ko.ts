@@ -642,6 +642,7 @@ const ko: Messages = {
     kept: "닉네임, 레벨, 성별, 색이 다름, 친밀도, 테라스탈 타입, 성격, 노력치, 개체값은 선택한 게임에 있는 경우 유지됩니다.",
     import: "가져오기",
     update: "업데이트",
+    copy: "복사",
     imported: "팀을 가져왔습니다",
     importedMany: (count: number) => `팀 ${count}개를 가져왔습니다`,
     noChanges: "변경된 내용이 없습니다.",

@@ -617,6 +617,7 @@ const zhHans: Messages = {
     kept: "所选游戏有这些项时，昵称、等级、性别、异色、亲密度、太晶属性、性格、努力值和个体值都会保留。",
     import: "导入",
     update: "更新",
+    copy: "复制",
     imported: "已导入队伍",
     importedMany: (count: number) => `已导入 ${count} 支队伍`,
     noChanges: "没有改动。",

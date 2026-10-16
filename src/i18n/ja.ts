@@ -637,6 +637,7 @@ const ja: Messages = {
     kept: "ニックネーム、レベル、性別、色違い、なつき度、テラスタイプ、性格、努力値、個体値は、選択したゲームにある場合に保持されます。",
     import: "インポート",
     update: "更新",
+    copy: "コピー",
     imported: "チームをインポートしました",
     importedMany: (count: number) => `${count}個のチームをインポートしました`,
     noChanges: "変更はありません。",

@@ -614,6 +614,7 @@ const zhHant: Messages = {
     kept: "所選遊戲有這些項時，暱稱、等級、性別、異色、親密度、太晶屬性、性格、努力值與個體值都會保留。",
     import: "匯入",
     update: "更新",
+    copy: "複製",
     imported: "已匯入隊伍",
     importedMany: (count: number) => `已匯入 ${count} 支隊伍`,
     noChanges: "沒有任何變更。",

@@ -644,6 +644,7 @@ const ptBR: Messages = {
     kept: "Apelidos, níveis, gêneros, shiny, felicidade, Tipos Tera, naturezas, EVs e IVs são mantidos quando o jogo selecionado os tem.",
     import: "Importar",
     update: "Atualizar",
+    copy: "Copiar",
     imported: "Equipe importada",
     importedMany: (count: number) => `${count} equipes importadas`,
     noChanges: "Nenhuma alteração feita.",

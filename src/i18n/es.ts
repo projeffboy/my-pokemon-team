@@ -645,6 +645,7 @@ const es: Messages = {
     kept: "Se conservan los motes, niveles, géneros, variocolor, felicidad, teratipos, naturalezas, EV e IV si el juego seleccionado los tiene.",
     import: "Importar",
     update: "Actualizar",
+    copy: "Copiar",
     imported: "Equipo importado",
     importedMany: (count: number) => `${count} equipos importados`,
     noChanges: "No se ha hecho ningún cambio.",

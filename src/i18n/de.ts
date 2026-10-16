@@ -664,6 +664,7 @@ const de: Messages = {
     kept: "Spitznamen, Level, Geschlechter, Schillernd, Freundschaft, Tera-Typen, Wesen, EV und DV bleiben erhalten, wenn das gewählte Spiel sie hat.",
     import: "Importieren",
     update: "Aktualisieren",
+    copy: "Kopieren",
     imported: "Team importiert",
     importedMany: (count: number) => `${count} Teams importiert`,
     noChanges: "Keine Änderungen vorgenommen.",

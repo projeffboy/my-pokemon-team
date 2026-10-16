@@ -664,6 +664,7 @@ const fr: Messages = {
     kept: "Les surnoms, niveaux, sexes, chromatiques, bonheur, types Téracristal, natures, EV et IV sont conservés si le jeu sélectionné les possède.",
     import: "Importer",
     update: "Mettre à jour",
+    copy: "Copier",
     imported: "Équipe importée",
     importedMany: (count: number) => `${count} équipes importées`,
     noChanges: "Aucune modification.",
