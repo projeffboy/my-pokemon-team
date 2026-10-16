@@ -8,7 +8,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import { alpha } from "@mui/material/styles";
+import type { Theme } from "@mui/material/styles";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { typesIn } from "@/shared/generation-data";
@@ -29,18 +29,19 @@ export type MatrixKind = "defence" | "coverage";
 // The cell background: red for the bad outcome and teal for the good one, deeper
 // the further from neutral, so an immunity is the deepest. A strong hit is bad on
 // the team's defence and good for its coverage.
-const cellColor = (
-  multiplier: number,
-  kind: MatrixKind,
-  palette: { error: string; success: string },
-) => {
+// The palette's CSS variables follow the colour scheme, where theme.palette is always light.
+const cellColor = (multiplier: number, kind: MatrixKind, theme: Theme) => {
   if (multiplier === 1) return "transparent";
   const isGood = kind === "defence" ? multiplier < 1 : multiplier > 1;
   const opacity =
     multiplier === 0 ? 0.8
     : multiplier >= 4 || multiplier <= 0.25 ? 0.55
     : 0.3;
-  return alpha(isGood ? palette.success : palette.error, opacity);
+  const { palette } = theme.vars || theme;
+  return theme.alpha(
+    isGood ? palette.success.main : palette.error.main,
+    opacity,
+  );
 };
 
 // The tooltip sits a quarter of a 32px cell away from its cell, instead of MUI's 14px
@@ -127,13 +128,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
       outlineColor: "text.primary",
       outlineOffset: -2,
     },
-    bgcolor: (theme: {
-      palette: { error: { main: string }; success: { main: string } };
-    }) =>
-      cellColor(cell.multiplier, kind, {
-        error: theme.palette.error.main,
-        success: theme.palette.success.main,
-      }),
+    bgcolor: (theme: Theme) => cellColor(cell.multiplier, kind, theme),
   });
 
   // Green for a good score and red for a bad one, as in the team stats. A type that
@@ -183,10 +178,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
                     width: 14,
                     height: 14,
                     borderRadius: 0.5,
-                    bgcolor: cellColor(multiplier, kind, {
-                      error: theme.palette.error.main,
-                      success: theme.palette.success.main,
-                    }),
+                    bgcolor: cellColor(multiplier, kind, theme),
                   })}
                 />
                 {label}
