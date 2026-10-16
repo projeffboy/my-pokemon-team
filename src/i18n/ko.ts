@@ -330,6 +330,7 @@ const ko: Messages = {
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     together: (move: string, other: string) =>
       `${josa(other, "과", "와")} 함께 쓰는 ${move}`,
+    withItem: (move: string, item: string) => `${move} (${item})`,
     unavailable: "이 게임에는 해당하는 기술이나 아이템이 없습니다.",
     battleFormat: {
       label: "배틀 형식",

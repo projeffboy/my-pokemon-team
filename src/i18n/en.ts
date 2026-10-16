@@ -332,6 +332,8 @@ const en = {
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     // Two moves that fill a role together, such as Wish with Protect
     together: (move: string, other: string) => `${move} with ${other}`,
+    // A move that fills a role only with its held item, such as Fling with Flame Orb
+    withItem: (move: string, item: string) => `${move} (${item})`,
     unavailable: "Nothing in this game fills it.",
     // Whether the team is for singles or doubles, which some roles depend on
     battleFormat: {

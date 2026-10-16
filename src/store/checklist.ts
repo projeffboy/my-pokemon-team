@@ -61,6 +61,8 @@ export interface ChecklistGroup {
 export interface ChecklistFiller {
   pokemon: string;
   by: string[];
+  // The held item that Fling needs to fill it
+  flung?: string;
 }
 
 const moveset = (pokemon: Pokemon, generation: Generation, format: string) =>
@@ -258,6 +260,31 @@ const PRIORITY_MOVES = [
   "watershuriken",
   "zippyzap",
 ];
+// Damaging moves that heal the user, which Triage gives priority from Gen 7
+const TRIAGE_MOVES = [
+  "absorb",
+  "bitterblade",
+  "drainingkiss",
+  "drainpunch",
+  "dreameater",
+  "gigadrain",
+  "hornleech",
+  "leechlife",
+  "matchagotcha",
+  "megadrain",
+  "oblivionwing",
+  "paraboliccharge",
+];
+const hasPriority: Fills = (pokemon, generation, format) => [
+  ...anyMove(PRIORITY_MOVES)(pokemon, generation, format),
+  ...((
+    generation >= 7 &&
+    generationRules(generation, format).abilities &&
+    pokemon.ability === "Triage"
+  ) ?
+    anyMove(TRIAGE_MOVES)(pokemon, generation, format)
+  : []),
+];
 // Moves and abilities that stop a foe from switching out for as long as the trapper
 // stays in, unlike moves such as Whirlpool that trap for a few turns
 const TRAPPING_MOVES = [
@@ -347,7 +374,7 @@ export const checklist: ChecklistGroup[] = [
       },
       {
         key: "priority",
-        fills: anyMove(PRIORITY_MOVES),
+        fills: hasPriority,
         // Quick Attack is the only one in Gen 1
         examples: ["extremespeed", "suckerpunch", "aquajet", "quickattack"],
       },
@@ -391,7 +418,15 @@ export function evaluateChecklist(
         team.flatMap(pokemon => {
           const by =
             pokemon.name ? item.fills(pokemon, generation, format, battle) : [];
-          return by.length ? [{ pokemon: pokemon.name, by }] : [];
+          if (!by.length) return [];
+          return [
+            {
+              pokemon: pokemon.name,
+              by,
+              ...(item.key === "status" &&
+                by.includes("fling") && { flung: pokemon.item }),
+            },
+          ];
         });
       const fillers = fillersIn(battleFormat ?? "singles");
       const doubles = battleFormat ? fillers : fillersIn("doubles");
@@ -409,7 +444,7 @@ export function evaluateChecklist(
 // E.g. "Gigalith: Stealth Rock"
 export function describeFiller(
   { heldItem, abilities = [] }: ChecklistItem,
-  { pokemon, by }: ChecklistFiller,
+  { pokemon, by, flung }: ChecklistFiller,
   { locale, t, names }: Translation = english,
 ) {
   return t.checklist.filledBy(
@@ -418,6 +453,8 @@ export function describeFiller(
       by.map(id =>
         heldItem ? names.item(id)
         : abilities.includes(id) ? names.ability(id)
+        : id === "fling" && flung ?
+          t.checklist.withItem(names.move(id), names.item(flung))
         : names.move(id),
       ),
     ),

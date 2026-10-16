@@ -272,6 +272,22 @@ test("priority moves are damaging moves that go first, not status moves like Pro
     expect(priority("indeedee", move)).toBe(false);
 });
 
+test("Triage gives draining moves priority from Gen 7", () => {
+  const priority = (ability: string, generation: Generation) =>
+    checked(
+      createTeam({ name: "comfey", ability, move1: "drainingkiss" }),
+      generation,
+    ).includes("Priority Move");
+  expect(priority("Triage", 9)).toBe(true);
+  expect(priority("Triage", 7)).toBe(true);
+  expect(priority("Flower Veil", 9)).toBe(false);
+  expect(
+    checked(
+      createTeam({ name: "comfey", ability: "Triage", move1: "dazzlinggleam" }),
+    ),
+  ).not.toContain("Priority Move");
+});
+
 test("Curse counts only for non-Ghost users in the selected generation", () => {
   expect(checked(createTeam({ name: "gengar", move1: "curse" }))).toEqual([]);
   const rotom = createTeam({ name: "rotomheat", move1: "curse" });
@@ -521,6 +537,20 @@ test("a filled role names each pokemon and the moves or item that fill it", () =
   ]);
   // Scald burns only sometimes
   expect(fillers(team, "status")).toEqual([]);
+});
+
+test("Fling names the held item that inflicts the status", () => {
+  const team = createTeam({
+    name: "lopunny",
+    ability: "Limber",
+    item: "flameorb",
+    move1: "fling",
+  });
+  expect(fillers(team, "status")).toEqual(["Lopunny: Fling (Flame Orb)"]);
+  team[0].move2 = "toxic";
+  expect(fillers(team, "status")).toEqual([
+    "Lopunny: Fling (Flame Orb) and Toxic",
+  ]);
 });
 
 test("a role's fillers are named in the current language", async () => {

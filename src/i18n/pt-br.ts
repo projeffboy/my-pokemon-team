@@ -326,6 +326,7 @@ const ptBR: Messages = {
     },
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     together: (move: string, other: string) => `${move} com ${other}`,
+    withItem: (move: string, item: string) => `${move} (${item})`,
     unavailable: "Nada neste jogo cumpre esse papel.",
     battleFormat: {
       label: "Formato de batalha",
