@@ -202,7 +202,7 @@ for (const colorScheme of ["light", "dark"] as const) {
       });
       await checkDialog(page, async () => {
         await openMoreMenu(page);
-        await clickMenuItem(page, "Clear");
+        await clickMenuItem(page, "Delete");
       });
       await checkDialog(page, () => openAdvanced(page));
       await checkDialog(page, () =>

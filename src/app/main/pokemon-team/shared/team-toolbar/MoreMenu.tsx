@@ -68,7 +68,7 @@ const MoreMenu = observer(function MoreMenu({ basis }: { basis?: string }) {
       act: () => store.openDialog("editTeam"),
     },
     {
-      label: t.clear,
+      label: t.team.delete,
       Icon: DeleteIcon,
       act: () => setDeletingTeamId(store.currentTeamId),
     },
