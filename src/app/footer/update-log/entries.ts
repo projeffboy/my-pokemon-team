@@ -20,7 +20,7 @@ const entries: Entry[] = [
     changes: [
       "Primal weather and Delta Stream now affect the user’s own attacks too, e.g. Mega Rayquaza’s Ice Beam no longer counts as hitting Flying super effectively.",
       "Doubles formats now include unevolved Pokémon, such as Clefairy in Gen 9 Doubles OU.",
-      "Moving a team to another game now keeps required items, such as Silvally’s Memories, when that game has them.",
+      "Moving a team to another game now keeps a required item even when that game lacks it, such as Fairy Memory for Silvally-Fairy in Gen 9.",
       "Showdown teams whose names contain a slash, such as “Kyogre / Groudon”, now keep their full name when imported.",
       "Rotom-Frost no longer plays Rotom-Fan’s Gen 4 animation.",
       "Slots can again be moved with the keyboard or a screen reader on phones and tablets.",
