@@ -145,16 +145,13 @@ export default function TeamStats({
               key={switchView}
               value={switchView}
               aria-label={label}
-              // The caption under its icon, as on the phone tabs, so the switch is no
-              // wider than its captions' longest words in a tablet's narrow column
+              // Captions alone on portrait tablets, whose narrow column fits no more in
+              // every language, and the icon beside them from landscape tablets up
               sx={{
-                flexDirection: "column",
-                gap: 0.25,
+                gap: 0.5,
                 px: 1,
-                py: 0.5,
-                fontSize: 12,
-                lineHeight: 1.2,
                 textTransform: "none",
+                "& svg": { display: { xxs: "none", md: "block" } },
               }}
             >
               <Icon fontSize="small" />
