@@ -1,6 +1,11 @@
 import { readFile } from "node:fs/promises";
 import { test, expect } from "fixtures";
-import { clickMenuItem, openTeamsImportExport, selectPokemon } from "helper";
+import {
+  clickMenuItem,
+  openTeamsImportExport,
+  selectPokemon,
+  showSlot,
+} from "helper";
 import type { BrowserContext, Page } from "@playwright/test";
 import { createSavedTeam } from "@/shared/team";
 import type { Generation, TeamPokemon } from "@/types";
@@ -293,6 +298,7 @@ test.describe("Teams Dialog: Import/Export - Integration Tests", () => {
     ).toHaveText([/Alpha/, /Beta/, /Team 3/]);
     await load(page, "Beta").click();
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Wailord");
+    await showSlot(page, 1);
     await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("");
   });
 
