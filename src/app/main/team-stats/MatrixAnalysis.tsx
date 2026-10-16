@@ -16,7 +16,6 @@ import {
   coverageMatrix,
   defenceMatrix,
   formatMultiplier,
-  type MatrixCell,
 } from "@/store/matrix";
 import PokemonIcon from "@/app/shared/PokemonIcon";
 import { useTranslation } from "@/app/shared/TranslationContext";
@@ -121,7 +120,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
     { multiplier: 0, label: isDefence ? t.matrix.immune : t.matrix.noEffect },
   ];
 
-  const cellSx = (cell: MatrixCell) => ({
+  const cellSx = {
     textAlign: "center",
     px: 0.25,
     py: { xxs: 0.5, sm: 0.25 },
@@ -134,7 +133,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
       outlineColor: "text.primary",
       outlineOffset: -2,
     },
-  });
+  } as const;
 
   // Green for a good score and red for a bad one, as in the team stats. A type that
   // no move is super effective against is a gap in the coverage.
@@ -291,7 +290,7 @@ const MatrixAnalysis = observer(function MatrixAnalysis({
                             tabIndex={0}
                             aria-label={cell.reason}
                             sx={[
-                              cellSx(cell),
+                              cellSx,
                               theme => cellColors(cell.multiplier, kind, theme),
                             ]}
                           >
