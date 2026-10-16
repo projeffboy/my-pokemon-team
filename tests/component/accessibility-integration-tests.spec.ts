@@ -7,6 +7,7 @@ import {
   openFilters,
   openMoreMenu,
   openSort,
+  openTeamsImportExport,
 } from "helper";
 import type { Locator, Page } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
@@ -197,12 +198,9 @@ for (const colorScheme of ["light", "dark"] as const) {
       );
       await checkDialog(page, async () => {
         await openMoreMenu(page);
-        await clickMenuItem(page, "Edit Pokepaste");
+        await clickMenuItem(page, "Import/Export");
       });
-      await checkDialog(page, async () => {
-        await openMoreMenu(page);
-        await clickMenuItem(page, "Import team");
-      });
+      await checkDialog(page, () => openTeamsImportExport(page));
       await checkDialog(page, async () => {
         await openMoreMenu(page);
         await clickMenuItem(page, "Delete");

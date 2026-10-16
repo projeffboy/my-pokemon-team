@@ -109,10 +109,7 @@ const ptBR: Messages = {
     manageTeam: "Gerenciar equipe",
     accessibility: "Acessibilidade",
     duplicate: "Duplicar",
-    copyText: "Copiar texto",
-    editPokepaste: "Editar Pokepaste",
     delete: "Excluir",
-    importTeam: "Importar equipe",
     share: "Compartilhar",
     teamEmpty: "A equipe está vazia. Adicione um Pokémon para compartilhá-la.",
     linkCopied: "Link da equipe Pokémon copiado",
@@ -120,10 +117,9 @@ const ptBR: Messages = {
       "Não foi possível copiar o link. Copie-o da barra de endereços com a equipe aberta.",
     linkGenerationUnsupported: (profile: string) =>
       `A geração ou o jogo deste link não é compatível, então ele foi aberto em ${profile}.`,
-    nothingToCopy: "A equipe está vazia. Adicione um Pokémon para copiá-la.",
     teamCopied: "Equipe copiada.",
     teamNotCopied:
-      "Não foi possível copiar a equipe. Copie o texto dela em Editar Pokepaste.",
+      "Não foi possível copiar a equipe. Selecione o texto dela em Importar/Exportar e copie-o.",
     cannotDuplicateEmptyTeam:
       "A equipe está vazia. Adicione um Pokémon para duplicá-la.",
     teamDuplicated: "Equipe duplicada",
@@ -501,12 +497,9 @@ const ptBR: Messages = {
     savedTeams: "Equipes salvas",
     optionsFor: (team: string) => `Opções de ${team}`,
     load: (team: string) => `Carregar ${team}`,
-    importTeam: "Importar equipe",
-    exportAll: "Exportar tudo",
-    copyAll: "Copiar tudo",
     savedInBrowser: "As equipes são salvas neste navegador.",
     saveFailed:
-      "Seu navegador não conseguiu salvar suas equipes. Salve um backup para mantê-las.",
+      "Seu navegador não conseguiu salvar suas equipes. Copie-as em Importar/Exportar para mantê-las.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "Aberta",
     open: "Abrir",
@@ -515,28 +508,8 @@ const ptBR: Messages = {
     randomTeamCreated: "Equipe aleatória criada",
     exported: "Todas as equipes exportadas",
     copiedAll: "Todas as equipes copiadas",
-    notCopiedAll:
-      "Não foi possível copiar as equipes. Baixe-as com Exportar tudo.",
+    notCopiedAll: "Não foi possível copiar as equipes. Use Baixar.",
     exportFilename: "my-pokemon-teams.txt",
-  },
-  teamBackup: {
-    title: "Backup dos times",
-    description:
-      "Salve todos os seus times, incluindo nomes, jogos, filtros e detalhes dos Pokémon.",
-    save: "Salvar backup",
-    restoreDescription:
-      "Adicione times de um arquivo de backup. Os times que você já tem serão mantidos.",
-    chooseFile: "Escolher arquivo de backup",
-    restore: "Adicionar times",
-    ready: (count: number) => `Times neste backup: ${count}`,
-    error:
-      "Não foi possível ler este arquivo. Escolha um backup de times salvo neste site.",
-    tooLarge:
-      "Este backup contém times demais para adicionar. Tente um arquivo de backup menor.",
-    saveFailed: "Não foi possível salvar o backup. Tente novamente.",
-    saved: "Backup dos times salvo",
-    alreadySaved: "Esses times já estão na sua coleção.",
-    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "Mudar de jogo ou geração?",
@@ -631,23 +604,26 @@ const ptBR: Messages = {
       `Só um Pokémon pode segurar ${item} (Item Clause).`,
   },
   importDialog: {
-    importTitle: "Importar equipe",
-    editTitle: "Editar Pokepaste",
-    importDescription:
-      "Cole uma equipe, ou um backup inteiro com várias equipes, no formato do {showdown}.",
-    editDescription:
-      "Este é o texto bruto da sua equipe. Altere-o aqui ou cole-o no {showdown}.",
+    title: "Importar/Exportar",
+    description:
+      "Este é o texto da sua equipe. Copie-o para compartilhá-lo, ou altere-o aqui e pressione Atualizar. Você também pode colar uma equipe do {showdown} ou um link do pokepast.es.",
+    teamsDescription:
+      "Estas são todas as suas equipes. Copie-as ou baixe-as para guardá-las ou levá-las para outro dispositivo. Para adicionar equipes, cole o texto delas do {showdown} ou links do pokepast.es e pressione Adicionar equipes. As equipes que você já tem são ignoradas.",
     showdown: "Pokemon Showdown",
-    importPlaceholder: "Cole uma equipe aqui",
-    editPlaceholder: "Sua equipe está vazia",
+    placeholder: "Cole uma equipe ou um link do pokepast.es aqui",
     label: "Texto bruto da equipe do Pokemon Showdown",
     kept: "Apelidos, níveis, gêneros, shiny, felicidade, Tipos Tera, naturezas, EVs e IVs são mantidos quando o jogo selecionado os tem.",
-    import: "Importar",
-    update: "Atualizar",
     copy: "Copiar",
+    download: "Baixar",
+    uploadToPokepaste: "Enviar para o PokePaste",
+    update: "Atualizar",
+    addTeams: "Adicionar equipes",
     imported: "Equipe importada",
     importedMany: (count: number) => `${count} equipes importadas`,
+    noNewTeams: "Essas equipes já estão salvas.",
     noChanges: "Nenhuma alteração feita.",
+    linkFailed:
+      "Não foi possível obter uma equipe desse link. Verifique se você copiou o link completo ou cole o texto da equipe.",
     nothingFound:
       "Nenhum Pokémon encontrado nesse texto. Escreva os nomes dos Pokémon em inglês, como o Pokemon Showdown os escreve, ou cole uma equipe exportada do Pokemon Showdown.",
     problems: (count: number) =>
@@ -734,7 +710,7 @@ const ptBR: Messages = {
   manual: {
     teamsQuestion: "Onde minhas equipes são salvas?",
     teamsAnswer:
-      "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Exportar tudo baixa todas as equipes como texto do Showdown, que Importar equipe lê de volta. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
+      "Suas equipes são salvas neste navegador, então estarão aqui quando você voltar, mas não em outro dispositivo. O botão Equipes as lista, e o menu de cada equipe a renomeia, define sua geração e formato, a duplica, a compartilha ou a exclui. Importar/Exportar copia ou baixa todas as equipes como texto do Showdown e adiciona equipes a partir de texto ou de links do pokepast.es. A barra de endereços sempre contém a equipe atual, então copiar o endereço (ou pressionar Copiar link) a compartilha.",
     generationsQuestion: "O que a geração muda?",
     generationsAnswer:
       "A geração e o jogo escolhidos no topo determinam os Pokémon, formas, golpes, itens e detalhes oferecidos. Equipes antigas usam as habilidades, estatísticas base e tabela de tipos da sua geração. Trocar de jogo mostra as mudanças necessárias; você pode cancelar, atualizar a equipe ou criar uma cópia.",

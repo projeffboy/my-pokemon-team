@@ -73,12 +73,23 @@ export const clickMenuItem = async (page: Page, name: string) => {
   await expect(page.getByRole("menu")).toBeHidden();
 };
 
-// Opens the current team's text in the Edit Pokepaste dialog
-export const openEditPokepaste = async (page: Page) => {
+// Opens the current team's text in the Import/Export dialog
+export const openImportExport = async (page: Page) => {
   await openMoreMenu(page);
-  await clickMenuItem(page, "Edit Pokepaste");
+  await clickMenuItem(page, "Import/Export");
   await expect(
-    page.getByRole("dialog", { name: "Edit Pokepaste" }),
+    page.getByRole("dialog", { name: "Import/Export" }),
+  ).toBeVisible();
+};
+
+// Opens the Import/Export page of the Teams dialog, which holds every saved team's text
+export const openTeamsImportExport = async (page: Page) => {
+  await page.getByRole("button", { name: "Teams", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Import/Export", exact: true })
+    .click();
+  await expect(
+    page.getByRole("dialog", { name: "Import/Export" }),
   ).toBeVisible();
 };
 

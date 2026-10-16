@@ -106,10 +106,7 @@ const en = {
     manageTeam: "Manage team",
     accessibility: "Accessibility",
     duplicate: "Duplicate",
-    copyText: "Copy text",
-    editPokepaste: "Edit Pokepaste",
     delete: "Delete",
-    importTeam: "Import team",
     share: "Share",
     teamEmpty: "The team is empty. Add a pokemon to share it.",
     linkCopied: "Pokemon team link copied",
@@ -117,10 +114,9 @@ const en = {
       "Could not copy the link. Copy it from the address bar while the team is open.",
     linkGenerationUnsupported: (profile: string) =>
       `This link’s generation or game isn’t supported, so it opened in ${profile}.`,
-    nothingToCopy: "The team is empty. Add a pokemon to copy it.",
     teamCopied: "Team copied.",
     teamNotCopied:
-      "Could not copy the team. Copy its text from Edit Pokepaste instead.",
+      "Could not copy the team. Select its text in Import/Export and copy it.",
     cannotDuplicateEmptyTeam:
       "The team is empty. Add a pokemon to duplicate it.",
     teamDuplicated: "Team duplicated",
@@ -501,7 +497,7 @@ const en = {
     bst: "Base stat total",
   },
 
-  // The Teams, Team name, Import, and Delete dialogs
+  // The Teams, Team name, Import/Export, and Delete dialogs
   teams: {
     newTeam: "New Team",
     randomTeam: "Random team",
@@ -510,12 +506,9 @@ const en = {
     savedTeams: "Saved teams",
     optionsFor: (team: string) => `Options for ${team}`,
     load: (team: string) => `Load ${team}`,
-    importTeam: "Import Team",
-    exportAll: "Export All",
-    copyAll: "Copy All",
     savedInBrowser: "Teams are saved in this browser.",
     saveFailed:
-      "Your browser couldn’t save your teams. Save a backup to keep them.",
+      "Your browser couldn’t save your teams. Copy them from Import/Export to keep them.",
     // The chip on the team being edited, and the one on each team that a tap opens
     current: "Current",
     open: "Open",
@@ -524,28 +517,8 @@ const en = {
     randomTeamCreated: "Random team created",
     exported: "Exported all teams",
     copiedAll: "Copied all teams",
-    notCopiedAll:
-      "Could not copy the teams. Use Export All to download them instead.",
+    notCopiedAll: "Could not copy the teams. Use Download instead.",
     exportFilename: "my-pokemon-teams.txt",
-  },
-  teamBackup: {
-    title: "Team backups",
-    description:
-      "Save all your teams, including their names, games, filters, and Pokémon details.",
-    save: "Save backup",
-    restoreDescription:
-      "Add teams from a backup file. The teams you already have will stay.",
-    chooseFile: "Choose backup file",
-    restore: "Add teams",
-    ready: (count: number) => `Teams in this backup: ${count}`,
-    error:
-      "This file couldn't be read. Choose a team backup saved by this site.",
-    tooLarge:
-      "This backup has too many teams to add. Try a smaller backup file.",
-    saveFailed: "Could not save the backup. Please try again.",
-    saved: "Team backup saved",
-    alreadySaved: "These teams are already in your collection.",
-    filename: "my-pokemon-teams-backup.json",
   },
   generationTransfer: {
     title: "Switch game or generation?",
@@ -640,23 +613,26 @@ const en = {
       `Only one pokemon may hold ${item} (Item Clause).`,
   },
   importDialog: {
-    importTitle: "Import Team",
-    editTitle: "Edit Pokepaste",
-    importDescription:
-      "Paste a team, or a whole backup with several teams, in {showdown}'s format.",
-    editDescription:
-      "This is your team's raw text. Change it here, or paste it into {showdown}.",
+    title: "Import/Export",
+    description:
+      "This is your team's text. Copy it to share it, or change it here and press Update. You can also paste a team from {showdown} or a pokepast.es link.",
+    teamsDescription:
+      "These are all your teams. Copy or download them to keep them or move them to another device. To add teams, paste their text from {showdown} or pokepast.es links and press Add teams. Teams you already have are skipped.",
     showdown: "Pokemon Showdown",
-    importPlaceholder: "Paste a team here",
-    editPlaceholder: "Your team is empty",
+    placeholder: "Paste a team or a pokepast.es link here",
     label: "Pokemon Showdown Team Raw Text",
     kept: "Nicknames, levels, genders, shiny, happiness, tera types, natures, EVs, and IVs are kept when the selected game has them.",
-    import: "Import",
-    update: "Update",
     copy: "Copy",
+    download: "Download",
+    uploadToPokepaste: "Upload to PokePaste",
+    update: "Update",
+    addTeams: "Add teams",
     imported: "Team imported",
     importedMany: (count: number) => `${count} teams imported`,
+    noNewTeams: "These teams are already saved.",
     noChanges: "No changes made.",
+    linkFailed:
+      "Could not fetch a team from that link. Make sure you copied the full link, or paste the team text instead.",
     nothingFound:
       "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
     // The problems in edited text, each shown as "Ho-Oh, Move 4: “Iron Hed”"
@@ -745,7 +721,7 @@ const en = {
   manual: {
     teamsQuestion: "Where are my teams saved?",
     teamsAnswer:
-      "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Export All downloads every team as Showdown text, which Import Team reads back. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
+      "Your teams are saved in this browser, so they are here when you come back, but not on another device. The Teams button lists them, and each team's menu renames it, sets its generation and format, duplicates it, shares it, or deletes it. Import/Export copies or downloads every team as Showdown text, and adds teams from text or pokepast.es links. The address bar always holds the current team, so copying the address (or pressing Share) shares it.",
     generationsQuestion: "What does the generation change?",
     generationsAnswer:
       "The generation and game chosen at the top determine the Pokémon, formes, moves, items and set details offered. Historical teams use that generation’s abilities, base stats and type chart. Changing games previews required team changes, with options to cancel, update the team or make a copy.",

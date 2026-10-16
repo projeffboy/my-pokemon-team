@@ -33,15 +33,17 @@ test("the More menu keeps the accessibility settings apart from the team's actio
   const menu = page.getByRole("menu");
   await expect(
     menu.getByRole("group", { name: "Manage team" }).getByRole("menuitem"),
-  ).toHaveText(["Copy text", "Edit Pokepaste", "Delete", "Import team"]);
+  ).toHaveText(["Import/Export", "Delete"]);
   const settings = menu
     .getByRole("group", { name: "Accessibility" })
     .getByRole("menuitemcheckbox");
   await expect(settings).toHaveText(["Animate sprites", "Show types"]);
 
   // The arrow keys pass over the section titles, and Enter flips a switch
-  await expect(menu.getByRole("menuitem", { name: "Copy text" })).toBeFocused();
-  for (let i = 0; i < 4; i++) await page.keyboard.press("ArrowDown");
+  await expect(
+    menu.getByRole("menuitem", { name: "Import/Export" }),
+  ).toBeFocused();
+  for (let i = 0; i < 2; i++) await page.keyboard.press("ArrowDown");
   await expect(settings.first()).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(settings.first()).toHaveAttribute("aria-checked", "false");

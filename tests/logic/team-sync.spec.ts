@@ -1,10 +1,37 @@
 import { test, expect } from "@playwright/test";
 import { Store } from "@/store";
-import { initialStoredState, type StoredState } from "@/store/teams-storage";
+import {
+  STORAGE_KEY,
+  initialStoredState,
+  type StoredState,
+} from "@/store/teams-storage";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 
 const settle = () => new Promise(resolve => setTimeout(resolve, 500));
+
+// Node has no window, so this catches the store's storage listener and calls it as the browser does
+function openTab(storage: Storage) {
+  let onStorage:
+    ((event: { key: string; storageArea: Storage }) => void) | undefined;
+  Object.assign(globalThis, {
+    addEventListener: (type: string, listener: typeof onStorage) => {
+      if (type === "storage") onStorage = listener;
+    },
+  });
+  try {
+    const store = new Store(storage);
+    return {
+      store,
+      hearOtherTabs() {
+        if (!onStorage) throw new Error("The store ignores storage events");
+        onStorage({ key: STORAGE_KEY, storageArea: storage });
+      },
+    };
+  } finally {
+    Reflect.deleteProperty(globalThis, "addEventListener");
+  }
+}
 
 function storedTeam() {
   let state = JSON.stringify(initialStoredState());
@@ -16,10 +43,11 @@ function storedTeam() {
       state = value;
     },
   } as unknown as Storage;
-  const store = new Store(storage);
+  const { store, hearOtherTabs } = openTab(storage);
   store.selectTeam(store.teams[0]!.id);
   return {
     store,
+    hearOtherTabs,
     reload: () => new Store(storage),
     setCanSave(value: boolean) {
       canSave = value;
@@ -141,15 +169,19 @@ test("undoing all pending changes clears a save failure without another write", 
 });
 
 test("a peer saving this tab's pending changes clears failure even while this tab cannot write", async () => {
-  const { store, setCanSave, savedState, saveFromOtherTab } = storedTeam();
+  const { store, setCanSave, savedState, saveFromOtherTab, hearOtherTabs } =
+    storedTeam();
   setCanSave(false);
   store.selectPokemon(0, "pawmi");
   await settle();
   expect(store.saveFailed).toBe(true);
-  const backup = JSON.parse(store.exportTeamBackup());
+  hearOtherTabs();
   expect(store.saveFailed).toBe(true);
-  saveFromOtherTab({ ...savedState(), teams: backup.teams });
-  store.exportTeamBackup();
+  saveFromOtherTab({
+    ...savedState(),
+    teams: JSON.parse(JSON.stringify(store.teams)),
+  });
+  hearOtherTabs();
   expect(store.saveFailed).toBe(false);
   expect(store.team[0]!.name).toBe("pawmi");
   store.selectPokemon(0, "pawmo");
@@ -394,7 +426,7 @@ function twoTabs() {
         state = value;
       },
     } as unknown as Storage;
-    return { store: new Store(storage), writes: () => writes };
+    return { ...openTab(storage), writes: () => writes };
   };
   return {
     a: tab(),
@@ -410,7 +442,7 @@ test("a team duplicated in another tab keeps its place, and an idle tab does not
   await settle();
   const order = [ids[0], copy?.id, ids[1]];
   expect(savedState().teams.map(({ id }) => id)).toEqual(order);
-  a.store.exportTeamBackup();
+  a.hearOtherTabs();
   expect(a.store.teams.map(({ id }) => id)).toEqual(order);
   await settle();
   expect(a.writes()).toBe(0);
@@ -422,7 +454,7 @@ test("a tab on an unsaved team keeps another tab's team choice when it saves", a
   b.store.selectTeam(ids[1]!);
   await settle();
   expect(savedState().currentTeamId).toBe(ids[1]);
-  a.store.exportTeamBackup();
+  a.hearOtherTabs();
   a.store.nameView = "grid";
   await settle();
   expect(a.writes()).toBeGreaterThan(0);

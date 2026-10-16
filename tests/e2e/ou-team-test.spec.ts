@@ -1,11 +1,9 @@
 import { test, expect } from "fixtures";
 import {
-  clickMenuItem,
   closeDialog,
   getTeamTextFromUrl,
-  openEditPokepaste,
+  openImportExport,
   openFilters,
-  openMoreMenu,
   selectAbility,
   selectDialogOption,
   selectMove,
@@ -47,7 +45,7 @@ const doBasicCheck = async (page: Page) => {
   await openAnalysis(page, "Team Defence");
 };
 
-const updatePokepaste = async (page: Page, text: string) => {
+const updateTeamText = async (page: Page, text: string) => {
   await page.getByRole("textbox").fill(text);
   await page.getByRole("button", { name: "Update" }).click();
   await expect(page.getByRole("dialog")).toBeHidden();
@@ -75,9 +73,9 @@ test.describe("Importing an OU team", () => {
       page.getByRole("heading", { name: "My Pokemon Team" }),
     ).toBeVisible();
 
-    // 1. Import team
-    await openEditPokepaste(page);
-    await updatePokepaste(page, ouTeamText);
+    // 1. Import the team's text
+    await openImportExport(page);
+    await updateTeamText(page, ouTeamText);
 
     // 2. Basic check
     await doBasicCheck(page);
@@ -119,10 +117,13 @@ test.describe("Importing an OU team", () => {
     // 7. Basic check
     await doBasicCheck(page);
 
-    // 8. Copy the team's text and check
-    await openMoreMenu(page);
-    await clickMenuItem(page, "Copy text");
-    await expect(page.getByRole("alert")).toHaveText("Team copied.");
+    // 8. Copy the team's text from the Import/Export dialog and check
+    await openImportExport(page);
+    await page.getByRole("button", { name: "Copy", exact: true }).click();
+    // The open dialog hides the snackbar from assistive technology
+    await expect(page.getByRole("alert", { includeHidden: true })).toHaveText(
+      "Team copied.",
+    );
 
     if (browserName === "chromium") {
       const clipboardText = await page.evaluate(() =>
@@ -136,15 +137,13 @@ test.describe("Importing an OU team", () => {
       expect(clipboardText).toContain("Multiscale");
     }
 
-    // 9. Edit the team's text
-    await openEditPokepaste(page);
-
+    // 9. Edit the team's text in the same dialog
     let currentTeamText = await page.getByRole("textbox").inputValue();
 
     currentTeamText = currentTeamText.replace("Thunder Wave", "Toxic");
     currentTeamText = currentTeamText.replace("Psyshock", "Focus Blast");
 
-    await updatePokepaste(page, currentTeamText);
+    await updateTeamText(page, currentTeamText);
 
     // 10. Basic check
     await doBasicCheck(page);

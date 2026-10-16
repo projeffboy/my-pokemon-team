@@ -1,6 +1,6 @@
 import { test, expect } from "fixtures";
 import { toBase64Url } from "@/app/shared/base64url";
-import { getTeamTextFromUrl, openEditPokepaste, selectPokemon } from "helper";
+import { getTeamTextFromUrl, openImportExport, selectPokemon } from "helper";
 
 test.describe("Share Link - Integration Tests", () => {
   test("keeps the URL stable after a single UI edit", async ({ page }) => {
@@ -29,7 +29,7 @@ Ability: Sand Stream
   test("preserves the expected values during a full Showdown round trip", async ({
     page,
   }) => {
-    await openEditPokepaste(page);
+    await openImportExport(page);
 
     const teamText = `Gengar (Giga) @ Choice Specs
 Ability: Cursed Body
@@ -62,7 +62,7 @@ Ability: Cursed Body
       "This test only runs on mobile",
     );
 
-    await openEditPokepaste(page);
+    await openImportExport(page);
 
     const teamText = Array.from({ length: 8 }, (_, index) => {
       const pokemon = index % 2 === 0 ? "Pikachu" : "Bulbasaur";
@@ -111,7 +111,7 @@ Ability: ${index % 2 === 0 ? "Static" : "Overgrow"}
       "This test only runs on mobile",
     );
 
-    await openEditPokepaste(page);
+    await openImportExport(page);
 
     const teamText = `DefinitelyNotAPokemon
 Ability: Static

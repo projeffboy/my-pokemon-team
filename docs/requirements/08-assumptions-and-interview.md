@@ -1,6 +1,6 @@
 # 8. Owner's Decisions and Open Questions
 
-These documents were first written from the repository alone. The Site Owner then answered an interview in writing on 13 October 2026 and reviewed the documents on 13 and 14 October. This page keeps the decisions he made and his reasons, in his own words where he wrote them, and lists what is still open. Whether a decision has been built, and when it will be, is tracked in the GitHub issues.
+These documents were first written from the repository alone. The Site Owner then answered an interview in writing on 13 October 2026 and reviewed the documents on 13 and 14 October. On 16 October he decided to replace Team backups with Import/Export. This page keeps the decisions he made and his reasons, in his own words where he wrote them, and lists what is still open. Whether a decision has been built, and when it will be, is tracked in the GitHub issues.
 
 ## 8.1 Decisions and why
 
@@ -21,7 +21,12 @@ These documents were first written from the repository alone. The Site Owner the
 - **Show a team's problems.** The site should show the rules a team breaks, and tell players when a link or a saved team lost an entry to a data update.
 - **Lost entries are named once.** On 14 October 2026 he chose a notice that stays above the team until the player closes it. A saved team drops what it lost when it is opened, so the notice appears once and the site has nothing else to remember.
 - **Links with an unknown generation open in Generations 6–9.** On 14 October 2026 he chose that a share link whose generation or game the site does not recognise opens in Generations 6–9 for every visitor (or in the link's generation, when only its game is unknown), with a message saying so, rather than in the generation the visitor last used (REQ-LINK-11).
-- **Team backups stay.** The site keeps its Team backups action and its backup file. A change to fold them into Export All and Import Team (issue 148) was closed as not planned on 14 October 2026.
+- **Team backups stay.** The site keeps its Team backups action and its backup file. A change to fold them into Export All and Import Team (issue 148) was closed as not planned on 14 October 2026. He reversed this on 16 October 2026, in the next item.
+- **One Import/Export button replaces Team backups.** On 16 October 2026 he decided to remove Team backups and its backup file, and to replace Copy text, Edit Pokepaste, Import Team, Copy All, and Export All with one Import/Export button, modelled on Pokemon Showdown's Import/Export button and its Upload to PokePaste. It shows the text of the current team (from the More menu, and from each saved team's menu) or of every saved team (from the Teams dialog) in a box the Player can edit. It copies the text, downloads it for every team, uploads the current team to PokePaste, and reads a pokepast.es link in the box where it expects team text. This is the reverse of the 14 October decision above. What follows from it:
+  - A backup file is no longer written or read. A backup file saved before 16 October 2026 can no longer be added back. The text of the saved teams is what the Player keeps instead.
+  - Team text carries each team's name, game, and pokemon with their set details. It does not carry a team's filters or battle format, or the unsaved draft, so a team added from text starts with no filters and an unspecified battle format.
+  - Adding teams from text skips the teams that a saved team equals, as restoring a backup did, so adding the text of all saved teams again adds nothing.
+  - The site sends a team to pokepast.es only when the Player presses Upload to PokePaste, and asks pokepast.es for a paste only when the Player has put a link to it in the box (REQ-SEC-7).
 - **Feedback can be anonymous.** Players must be able to send feedback without an email address; the form already says an email is only needed for a reply. Sending from the site's own domain would look more professional, but it is not wanted, because players would see no difference.
 
 ### Data and fixes

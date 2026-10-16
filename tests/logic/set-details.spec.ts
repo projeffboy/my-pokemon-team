@@ -1,16 +1,18 @@
 import { test, expect } from "@playwright/test";
 import {
+  headerAppendedText,
   LEGACY_LINK_PARSING_OPTIONS,
   parseTeamsText,
   parseTeamText,
   serializeTeam,
   serializeTeams,
+  teamsToAdd,
 } from "@/store/team-text";
 import { createSavedTeam } from "@/shared/team";
 import { createTeam } from "./shared/team";
 import { LEGENDS_ARCEUS, LEGENDS_ZA, LETS_GO } from "@/shared/generation-rules";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
-import type { Generation } from "@/types";
+import type { Generation, SavedTeam } from "@/types";
 
 const fullSet = `Chompy (Garchomp) (F) @ Choice Scarf
 Ability: Rough Skin
@@ -479,6 +481,229 @@ Garchomp
     });
   });
 });
+test.describe("teams to add from text", () => {
+  const rain = () => parseTeamText("Kingdra @ Choice Specs\n- Surf", 8);
+  const saved = () => [
+    createSavedTeam({
+      name: "Rain",
+      generation: 8,
+      format: "OU: Over Used",
+      team: rain(),
+    }),
+    createSavedTeam({ name: "Chompy", team: parseTeamText(fullSet, 9) }),
+    createSavedTeam({ name: "Empty", generation: 2, format: "OU: Over Used" }),
+    createSavedTeam({
+      name: "Rain / OU",
+      generation: 7,
+      team: parseTeamText("Kingdra\n- Surf", 7),
+    }),
+    createSavedTeam({
+      name: "Combined",
+      generationProfile: "6-9",
+      team: parseTeamText("Tyranitar @ Leftovers\n- Pursuit", 9),
+    }),
+    createSavedTeam({ name: "Combined empty", generationProfile: "6-9" }),
+    createSavedTeam({
+      name: "Champions",
+      format: CHAMPIONS_FORMAT,
+      team: parseTeamText("Garchomp\n- Earthquake", 9, CHAMPIONS_FORMAT),
+    }),
+    createSavedTeam({
+      name: "Let’s Go",
+      generation: 7,
+      format: LETS_GO,
+      team: parseTeamText("Pikachu\n- Thunderbolt", 7, LETS_GO),
+    }),
+  ];
+  const textOf = (teams: readonly SavedTeam[]) =>
+    parseTeamsText(serializeTeams(teams));
+  const copyOf = (team: SavedTeam, changes: Partial<SavedTeam> = {}) => ({
+    ...createSavedTeam({ ...team, ...changes }),
+    id: `${team.id}-copy`,
+  });
+
+  test("adds none of the teams that the text of the saved teams holds", () => {
+    const teams = saved();
+    expect(textOf(teams)).toHaveLength(teams.length);
+    expect(teamsToAdd(textOf(teams), teams)).toEqual([]);
+    expect(teamsToAdd(textOf([...teams].reverse()), teams)).toEqual([]);
+    for (const team of teams) {
+      expect(teamsToAdd(textOf([team]), teams), team.name).toEqual([]);
+      expect(teamsToAdd(textOf([team]), [team]), team.name).toEqual([]);
+    }
+  });
+
+  test("compares only the name, game, and pokemon", () => {
+    const teams = saved();
+    const others = teams.map(team =>
+      copyOf(team, {
+        filters: { ...team.filters, region: "Kanto" },
+        battleFormat: "doubles",
+      }),
+    );
+    expect(teamsToAdd(textOf(teams), others)).toEqual([]);
+  });
+
+  test("adds a team whose pokemon changed, and only that one", () => {
+    const teams = saved();
+    const parsed = textOf(teams);
+    const edited = teams.map((team, i) =>
+      i === 1 ?
+        copyOf(team, {
+          team: team.team.map((member, slot) =>
+            slot ? member : { ...member, move1: "swordsdance" },
+          ),
+        })
+      : team,
+    );
+    expect(teamsToAdd(parsed, edited)).toEqual([parsed[1]]);
+  });
+
+  test("adds a team with another set detail, item, move, or pokemon", () => {
+    const [team] = saved();
+    const first = (changes: Partial<(typeof team.team)[number]>) =>
+      team.team.map((member, slot) =>
+        slot ? member : { ...member, ...changes },
+      );
+    for (const changes of [
+      { nickname: "Dragon" },
+      { item: "leftovers" },
+      { level: 50 },
+      { shiny: true },
+      { move2: "dracometeor" },
+      { name: "seadra" },
+    ]) {
+      const other = copyOf(team, { team: first(changes) });
+      expect(
+        teamsToAdd(textOf([other]), [team]),
+        JSON.stringify(changes),
+      ).toHaveLength(1);
+    }
+    const emptied = copyOf(team, { team: createTeam() });
+    expect(teamsToAdd(textOf([emptied]), [team])).toHaveLength(1);
+    expect(teamsToAdd(textOf([team]), [emptied])).toHaveLength(1);
+  });
+
+  test("adds the same pokemon under another name or game", () => {
+    const [team, chompy] = saved();
+    for (const [label, other] of [
+      ["name", copyOf(team, { name: "Rain 2" })],
+      ["name case", copyOf(team, { name: "rain" })],
+      ["generation", copyOf(team, { generation: 7 })],
+      ["tier", copyOf(team, { format: "UU: Under Used" })],
+      ["no tier", copyOf(team, { format: "" })],
+      ["Champions", copyOf(team, { generation: 9, format: CHAMPIONS_FORMAT })],
+      ["combined generations", copyOf(chompy, { generationProfile: "6-9" })],
+    ] as const) {
+      const parsed = textOf([other]);
+      expect(parsed, label).toHaveLength(1);
+      expect(
+        teamsToAdd(parsed, [label === "combined generations" ? chompy : team]),
+        label,
+      ).toEqual(parsed);
+    }
+  });
+
+  test("adds a team as many times as the saved copies fall short", () => {
+    const copies = (count: number) =>
+      Array.from({ length: count }, () =>
+        createSavedTeam({ name: "Rain", team: rain() }),
+      );
+    const parsed = textOf(copies(3));
+    expect(parsed).toHaveLength(3);
+    expect(teamsToAdd(parsed, copies(3))).toEqual([]);
+    expect(teamsToAdd(parsed, copies(4))).toEqual([]);
+    expect(teamsToAdd(parsed, copies(2))).toHaveLength(1);
+    expect(teamsToAdd(parsed, copies(1))).toHaveLength(2);
+    expect(teamsToAdd(parsed, [])).toEqual(parsed);
+    expect(teamsToAdd(textOf(copies(2)), copies(3))).toEqual([]);
+
+    const sun = createSavedTeam({
+      name: "Sun",
+      team: parseTeamText("Torkoal\n- Eruption"),
+    });
+    const mixed = textOf([...copies(2), sun, ...copies(1)]);
+    expect(teamsToAdd(mixed, [...copies(1), sun, ...copies(1)])).toEqual([
+      mixed[3],
+    ]);
+  });
+
+  test("tells teams of one name apart by their pokemon", () => {
+    const torkoal = createSavedTeam({
+      name: "Rain",
+      team: parseTeamText("Torkoal", 9),
+    });
+    const kingdra = createSavedTeam({
+      name: "Rain",
+      team: parseTeamText("Kingdra @ Life Orb\n- Surf", 9),
+    });
+    const parsed = textOf([torkoal, kingdra]);
+    expect(teamsToAdd(parsed, [torkoal])).toEqual([parsed[1]]);
+    expect(teamsToAdd(parsed, [kingdra])).toEqual([parsed[0]]);
+    expect(teamsToAdd(parsed, [kingdra, torkoal])).toEqual([]);
+  });
+
+  test("always adds a team that has no name", () => {
+    const teams = saved();
+    for (const text of [
+      "Kingdra @ Choice Specs\n- Surf",
+      "=== [gen8ou] ===\n\nKingdra @ Choice Specs\n- Surf",
+      "=== ===\n\nKingdra @ Choice Specs\n- Surf",
+    ]) {
+      const parsed = parseTeamsText(text);
+      expect(parsed, text).toHaveLength(1);
+      expect(parsed[0]?.name, text).toBe("");
+      expect(teamsToAdd(parsed, teams), text).toEqual(parsed);
+      expect(teamsToAdd(parsed, [...teams, ...teams]), text).toEqual(parsed);
+    }
+    const sameAsSaved = createSavedTeam({
+      name: "Team",
+      team: parseTeamText("Kingdra\nAbility: Swift Swim\n- Surf"),
+    });
+    const headerless = parseTeamsText("Kingdra\nAbility: Swift Swim\n- Surf");
+    expect(serializeTeams(headerless)).toBe(serializeTeams([sameAsSaved]));
+    expect(teamsToAdd(headerless, [sameAsSaved])).toEqual(headerless);
+    const twice = parseTeamsText(
+      "Kingdra\n- Surf\n\n=== ===\n\nKingdra\n- Surf",
+    );
+    expect(twice).toHaveLength(2);
+    expect(teamsToAdd(twice, teams)).toEqual(twice);
+    const mixed = parseTeamsText(
+      `Kingdra\n- Surf\n\n${serializeTeams(teams.slice(0, 2))}`,
+    );
+    expect(mixed.map(({ name }) => name)).toEqual(["", "Rain", "Chompy"]);
+    expect(teamsToAdd(mixed, teams)).toEqual([mixed[0]]);
+  });
+
+  test("has nothing left to add once the teams it returned are saved", () => {
+    const teams = saved();
+    const parsed = textOf([...teams, copyOf(teams[0])]);
+    const added = teamsToAdd(parsed, teams.slice(0, 2));
+    expect(added).toHaveLength(parsed.length - 2);
+    const all = [
+      ...teams.slice(0, 2),
+      ...added.map(team => createSavedTeam(team)),
+    ];
+    expect(teamsToAdd(parsed, all)).toEqual([]);
+  });
+
+  test("leaves the teams it is given as they were", () => {
+    const teams = saved();
+    const parsed = textOf([
+      ...teams,
+      copyOf(teams[0]),
+      copyOf(teams[1], { name: "New" }),
+    ]);
+    const before = JSON.stringify([parsed, teams]);
+    const added = teamsToAdd(parsed, teams);
+    expect(JSON.stringify([parsed, teams])).toBe(before);
+    expect(added).toHaveLength(2);
+    expect(added[0]).toBe(parsed[teams.length]);
+    expect(added[1]).toBe(parsed[teams.length + 1]);
+    expect(teamsToAdd([], teams)).toEqual([]);
+  });
+});
+
 test("app backup names preserve slashes without changing external folder imports", () => {
   for (const name of [
     "Rain / OU",
@@ -530,7 +755,7 @@ test("app backup names preserve slashes without changing external folder imports
   ]);
 });
 
-test("Export All restores a backup containing only named empty teams", () => {
+test("text of only named empty teams restores them", () => {
   const original = [
     createSavedTeam({
       name: "Next season",
@@ -588,4 +813,37 @@ test("empty backup names preserve slashes while populated external folders still
       ]),
     ).map(({ name }) => name),
   ).toEqual(["Rain / OU", "Folder/Draft", "Populated"]);
+});
+
+test.describe("headerAppendedText", () => {
+  const shown = serializeTeams([
+    createSavedTeam({
+      name: "Alpha",
+      team: parseTeamText("Pikachu\n- Thunderbolt", 9),
+    }),
+  ]);
+  const appended = "Garchomp\nAbility: Rough Skin\n- Earthquake\n";
+
+  test("makes a headerless team added after the shown teams a team of its own", () => {
+    const text = headerAppendedText(shown, shown + appended);
+    expect(parseTeamsText(text).map(({ name }) => name)).toEqual(["Alpha", ""]);
+    expect(parseTeamsText(shown + appended)).toHaveLength(1);
+  });
+
+  test("leaves text with its own header, unchanged text, and replaced text alone", () => {
+    const headed = `=== [gen8] Beta ===\n\n${appended}`;
+    expect(headerAppendedText(shown, shown + headed)).toBe(shown + headed);
+    expect(headerAppendedText(shown, shown)).toBe(shown);
+    expect(headerAppendedText(shown, `${shown}\n  \n`)).toBe(`${shown}\n  \n`);
+    expect(headerAppendedText(shown, appended)).toBe(appended);
+    expect(headerAppendedText(shown, appended + shown)).toBe(appended + shown);
+  });
+
+  test("keeps the current game for the appended team", () => {
+    const [, team] = parseTeamsText(
+      headerAppendedText(shown, shown + appended),
+      { generation: 8, format: "", generationProfile: undefined },
+    );
+    expect(team?.generation).toBe(8);
+  });
 });

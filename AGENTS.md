@@ -102,6 +102,10 @@ The text holds display names, which are matched exactly. When a data update rena
 
 The text also carries Showdown's set details (nickname, gender, level, shiny, tera type, EVs, nature, IVs), which `parseTeamText` reads and `serializeTeam` writes only when they differ from their defaults.
 
+## PokePaste
+
+Import/Export's Upload to PokePaste submits a hidden form to `pokepast.es/create` in a new tab, as Showdown does; the response is a redirect that a page cannot read, so the site never learns the paste's address. A pasted pokepast.es link is fetched from `<id>/json` (CORS is open) only when Update or Add teams is pressed. `src/store/pokepaste.ts` holds the pure parts. Tests must mock pokepast.es with `page.route`, since the sandbox and CI should not depend on it.
+
 ## Saved Teams
 
 The teams, the current team, and a few settings, including the chosen language, persist in localStorage under the `mypokemonteam` key (`src/store/teams-storage.ts`). Saved teams never expire, but the drag hint's setting is forgotten three months after the last visit (`src/store/settings-expiry.ts`), and the light or dark choice is a cookie that also lasts three months after it (`src/app/color-scheme-storage.ts`). Players keep teams there for months, so do not rename the key, and keep `loadStoredState` accepting every shape that has been saved so far: add fields with defaults rather than changing existing ones.

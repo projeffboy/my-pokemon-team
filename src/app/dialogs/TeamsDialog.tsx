@@ -27,13 +27,9 @@ import CasinoIcon from "@mui/icons-material/Casino";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import LinkIcon from "@mui/icons-material/Link";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import FileCopyIcon from "@mui/icons-material/FileCopy";
-import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DownloadIcon from "@mui/icons-material/Download";
-import UploadIcon from "@mui/icons-material/Upload";
-import SettingsBackupRestoreIcon from "@mui/icons-material/SettingsBackupRestore";
+import ImportExportIcon from "@mui/icons-material/ImportExport";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import type { SavedTeam } from "@/types";
@@ -41,7 +37,6 @@ import { variantGeneration } from "@/shared/game-variants";
 import { CHAMPIONS_FORMAT } from "@/shared/formats";
 import { GENERATION_GAMES } from "@/shared/generations";
 import { isTeamEmpty } from "@/shared/team";
-import { serializeTeam, serializeTeams } from "@/store/team-text";
 import { COMBINED_GENERATIONS_PROFILE } from "@/shared/generation-profile";
 import { teamUrl } from "@/app/shared/team-link";
 import copyToClipboard from "@/app/shared/copy-to-clipboard";
@@ -51,10 +46,8 @@ import DeleteTeamDialog from "@/app/shared/DeleteTeamDialog";
 import DialogHeader from "@/app/shared/DialogHeader";
 import { useIsSmDown } from "@/app/shared/WidthContext";
 import { useTranslation } from "@/app/shared/TranslationContext";
-import ImportTeamForm from "./shared/ImportTeamForm";
+import ImportExportForm from "./shared/ImportExportForm";
 import TeamSettingsDialog from "./shared/TeamSettingsDialog";
-import downloadText from "./teams-dialog/shared/download-text";
-import TeamBackupForm from "./teams-dialog/TeamBackupForm";
 import useDiceRoll from "@/app/shared/use-dice-roll";
 
 const halfWidth = { flex: "1 1 0", minWidth: 0 } as const;
@@ -70,8 +63,8 @@ const iconSlot = {
   "& > *": { flexShrink: 0 },
 } as const;
 
-// Every saved team: open one, or manage it through its menu. Import Team is a
-// second page of the dialog, which the Manage Team menu opens straight to.
+// Every saved team: open one, or manage it through its menu. Import/Export of all
+// the teams is a second page of the dialog.
 const TeamsDialog = observer(function TeamsDialog() {
   const { t } = useTranslation();
   const titleId = useId();
@@ -98,9 +91,8 @@ const TeamsDialog = observer(function TeamsDialog() {
   const afterMenuCloses = useRef<(() => void) | null>(null);
   const [deletingTeamId, setDeletingTeamId] = useState<string | null>(null);
   const dialogName = store.dialog?.name;
-  const isOpen = dialogName === "teams" || dialogName === "importTeam";
-  const [page, setPage] = useState<"teams" | "import" | "backup">("teams");
-  const isImporting = page === "import";
+  const isOpen = dialogName === "teams";
+  const [page, setPage] = useState<"teams" | "importExport">("teams");
   const isSubpage = page !== "teams";
   const listRef = useRef<HTMLUListElement>(null);
   const currentTeamRef = useRef<HTMLLIElement>(null);
@@ -117,11 +109,9 @@ const TeamsDialog = observer(function TeamsDialog() {
   useEffect(() => {
     if (isOpen && !isSubpage) scrollToCurrentTeam();
   }, [isOpen, isSubpage, currentTeamId, scrollToCurrentTeam]);
-  // The Manage Team menu opens straight to the import page
   useEffect(() => {
-    if (dialogName === "importTeam") setPage("import");
-    else if (!isOpen) setPage("teams");
-  }, [dialogName, isOpen]);
+    if (!isOpen) setPage("teams");
+  }, [isOpen]);
   const close = () => {
     store.closeDialog();
     setPage("teams");
@@ -155,18 +145,6 @@ const TeamsDialog = observer(function TeamsDialog() {
           ),
     },
     {
-      label: t.team.copyText,
-      Icon: ContentCopyIcon,
-      act: () =>
-        isTeamEmpty(team.team) ?
-          store.openSnackbar(t.team.nothingToCopy, false, "warning")
-        : copyToClipboard(
-            serializeTeam(team.team, team.generation, team.format),
-            t.team.teamCopied,
-            t.team.teamNotCopied,
-          ),
-    },
-    {
       label: t.team.duplicate,
       Icon: FileCopyIcon,
       act: () => {
@@ -179,12 +157,12 @@ const TeamsDialog = observer(function TeamsDialog() {
       },
     },
     {
-      label: t.team.editPokepaste,
-      Icon: EditNoteIcon,
+      label: t.importDialog.title,
+      Icon: ImportExportIcon,
       act: () => {
         afterMenuCloses.current = () => {
           store.selectTeam(team.id);
-          store.openDialog("editTeam");
+          store.openDialog("importExport");
         };
       },
     },
@@ -208,25 +186,18 @@ const TeamsDialog = observer(function TeamsDialog() {
       >
         <DialogHeader
           id={titleId}
-          title={
-            isImporting ? t.importDialog.importTitle
-            : page === "backup" ?
-              t.teamBackup.title
-            : t.team.teams
-          }
+          title={isSubpage ? t.importDialog.title : t.team.teams}
           onClose={isSubpage ? () => setPage("teams") : close}
           closeLabel={isSubpage ? t.goBack : t.close}
           back={isSubpage}
         />
-        {isImporting ?
-          <ImportTeamForm
-            isImport
+        {isSubpage ?
+          <ImportExportForm
+            scope="teams"
             onClose={() => setPage("teams")}
             // The same gap below the title bar as the team list has
             contentSx={{ pt: 2, px: { xxs: 2, sm: 3 } }}
           />
-        : page === "backup" ?
-          <TeamBackupForm onClose={() => setPage("teams")} />
         : <DialogContent
             sx={{
               display: "flex",
@@ -291,11 +262,11 @@ const TeamsDialog = observer(function TeamsDialog() {
             <Button
               variant="outlined"
               fullWidth
-              startIcon={<UploadIcon />}
-              onClick={() => setPage("import")}
+              startIcon={<ImportExportIcon />}
+              onClick={() => setPage("importExport")}
               sx={{ mb: 1, flexShrink: 0 }}
             >
-              {t.teams.importTeam}
+              {t.importDialog.title}
             </Button>
             <List
               ref={listRef}
@@ -427,48 +398,6 @@ const TeamsDialog = observer(function TeamsDialog() {
               })}
             </List>
             <Box sx={{ flexShrink: 0 }}>
-              {/* Every team as one Showdown text, which Import Team reads back */}
-              <Stack
-                direction="row"
-                spacing={1}
-                sx={{ mt: 1, "& > *": halfWidth }}
-              >
-                <Button
-                  variant="outlined"
-                  startIcon={<ContentCopyIcon />}
-                  onClick={() =>
-                    copyToClipboard(
-                      serializeTeams(store.teams),
-                      t.teams.copiedAll,
-                      t.teams.notCopiedAll,
-                    )
-                  }
-                >
-                  {t.teams.copyAll}
-                </Button>
-                <Button
-                  variant="outlined"
-                  startIcon={<DownloadIcon />}
-                  onClick={() => {
-                    downloadText(
-                      t.teams.exportFilename,
-                      serializeTeams(store.teams),
-                    );
-                    store.openSnackbar(t.teams.exported, false, "export");
-                  }}
-                >
-                  {t.teams.exportAll}
-                </Button>
-              </Stack>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<SettingsBackupRestoreIcon />}
-                onClick={() => setPage("backup")}
-                sx={{ mt: 1 }}
-              >
-                {t.teamBackup.title}
-              </Button>
               <Typography
                 variant="caption"
                 component="p"

@@ -2,9 +2,10 @@ import { test, expect } from "fixtures";
 import {
   expectImageToBeLoaded,
   openAdvanced,
-  openEditPokepaste,
+  openImportExport,
   openFilters,
   openSort,
+  openTeamsImportExport,
   selectPokemon,
 } from "helper";
 import type { Locator, Page } from "@playwright/test";
@@ -90,10 +91,10 @@ const dialogs: DialogCase[] = [
     field: dialog => dialog.getByRole("textbox", { name: "Your feedback" }),
   },
   {
-    name: "Edit Pokepaste",
+    name: "Import/Export",
     open: async page => {
-      await openEditPokepaste(page);
-      const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+      await openImportExport(page);
+      const dialog = page.getByRole("dialog", { name: "Import/Export" });
       await dialog.getByRole("textbox").fill(LONG_TEAM_TEXT);
       return dialog;
     },
@@ -103,15 +104,14 @@ const dialogs: DialogCase[] = [
     aboveAd: true,
   },
   {
-    name: "Import Team",
+    name: "Import/Export of all teams",
     open: async page => {
-      await page.getByRole("button", { name: "Teams", exact: true }).click();
-      await page.getByRole("button", { name: "Import Team" }).click();
-      const dialog = page.getByRole("dialog", { name: "Import Team" });
+      await openTeamsImportExport(page);
+      const dialog = page.getByRole("dialog", { name: "Import/Export" });
       await dialog.getByRole("textbox").fill(LONG_TEAM_TEXT);
       return dialog;
     },
-    actions: ["Cancel", "Import"],
+    actions: ["Cancel", "Add teams"],
     close: "Cancel",
     field: dialog => dialog.getByRole("textbox"),
   },

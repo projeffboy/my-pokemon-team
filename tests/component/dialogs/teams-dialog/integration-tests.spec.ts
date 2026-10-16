@@ -7,9 +7,11 @@ import {
   getTeamTextFromUrl,
   goToSite,
   openMoreMenu,
+  openTeamsImportExport,
   selectPokemon,
 } from "helper";
 import type { Page } from "@playwright/test";
+import { fromBase64Url } from "@/app/shared/base64url";
 import { parseTeamText } from "@/store/team-text";
 import { pokemonTypes } from "@/shared/pokedex";
 
@@ -49,9 +51,8 @@ test.describe("Teams Dialog - Integration Tests", () => {
   test("keeps creation and import controls visible while saved teams scroll", async ({
     page,
   }) => {
-    await openTeams(page);
-    await page.getByRole("button", { name: "Import Team" }).click();
-    const importer = page.getByRole("dialog", { name: "Import Team" });
+    await openTeamsImportExport(page);
+    const importer = page.getByRole("dialog", { name: "Import/Export" });
     await importer
       .getByRole("textbox")
       .fill(
@@ -60,15 +61,15 @@ test.describe("Teams Dialog - Integration Tests", () => {
           (_, i) => `=== [gen9] Saved ${i + 1} ===\n\nBarboach\n- Water Gun`,
         ).join("\n\n"),
       );
-    await importer.getByRole("button", { name: "Import", exact: true }).click();
+    await importer
+      .getByRole("button", { name: "Add teams", exact: true })
+      .click();
     const dialog = page.getByRole("dialog", { name: "Teams" });
     const teams = dialog.getByRole("list", { name: "Saved teams" });
     const controls = [
       dialog.getByRole("button", { name: "New Team", exact: true }),
       dialog.getByRole("button", { name: "Random team", exact: true }),
-      dialog.getByRole("button", { name: "Import Team", exact: true }),
-      dialog.getByRole("button", { name: "Copy All", exact: true }),
-      dialog.getByRole("button", { name: "Export All", exact: true }),
+      dialog.getByRole("button", { name: "Import/Export", exact: true }),
       dialog.getByText("Teams are saved in this browser.", { exact: true }),
     ];
     await expect(teams.getByRole("listitem")).toHaveCount(17);
@@ -127,7 +128,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
       .poll(() => teams.evaluate(list => list.scrollTop))
       .toBeGreaterThan(0);
     await dialog
-      .getByRole("button", { name: "Import Team", exact: true })
+      .getByRole("button", { name: "Import/Export", exact: true })
       .click();
     await expect(importer).toBeVisible();
   });
@@ -220,6 +221,8 @@ test.describe("Teams Dialog - Integration Tests", () => {
     await selectDialogOption(page, "Type", "Water");
     await closeDialog(page);
 
+    // A reload before the address holds the team opens a new one
+    await expect(page).toHaveURL(/team=/);
     await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lapras");
     await openFilters(page);
@@ -243,6 +246,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
     page,
     context,
   }) => {
+    test.slow();
     await selectPokemon(page, "Snorlax");
     const otherTab = await context.newPage();
     await goToSite(otherTab);
@@ -264,7 +268,7 @@ test.describe("Teams Dialog - Integration Tests", () => {
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Lapras");
   });
 
-  test("a random team fills the empty current team, and Export All downloads every team", async ({
+  test("a random team fills the empty current team, and Import/Export downloads every team", async ({
     page,
   }) => {
     await openTeams(page);
@@ -281,22 +285,22 @@ test.describe("Teams Dialog - Integration Tests", () => {
         .getByRole("list", { name: "Saved teams" })
         .getByRole("button", { name: /^Load Team/ }),
     ).toHaveCount(1);
+    await page
+      .getByRole("button", { name: "Import/Export", exact: true })
+      .click();
     const downloadPromise = page.waitForEvent("download");
-    await page.getByRole("button", { name: "Export All" }).click();
+    await page.getByRole("button", { name: "Download", exact: true }).click();
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toBe("my-pokemon-teams.txt");
     const text = await (await download.createReadStream()).toArray();
     expect(Buffer.concat(text).toString()).toContain("=== [gen9] Team 1 ===");
   });
 
-  test("Import Team is a page of the dialog that adds the pasted teams", async ({
+  test("Import/Export is a page of the dialog that adds the pasted teams", async ({
     page,
   }) => {
-    await openTeams(page);
-    await page.getByRole("button", { name: "Import Team" }).click();
-    const dialog = page.getByRole("dialog", { name: "Import Team" });
-    await expect(dialog).toBeVisible();
-    await expect(dialog.getByRole("button", { name: "Import" })).toBeDisabled();
+    await openTeamsImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
 
     await dialog.getByRole("textbox").fill(`=== [gen8uu] Sun ===
 
@@ -310,7 +314,7 @@ Pelipper @ Damp Rock
 Ability: Drizzle
 - Hurricane
 `);
-    await dialog.getByRole("button", { name: "Import" }).click();
+    await dialog.getByRole("button", { name: "Add teams" }).click();
     // The open dialog hides the snackbar from assistive technology, so find it by its attribute
     await expect(page.locator("[role=alert]")).toContainText(
       "2 teams imported",
@@ -337,13 +341,12 @@ Ability: Drizzle
     page,
   }) => {
     const name = `<img src=x onerror="window.injected=true">`;
-    await openTeams(page);
-    await page.getByRole("button", { name: "Import Team" }).click();
-    const dialog = page.getByRole("dialog", { name: "Import Team" });
+    await openTeamsImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     await dialog
       .getByRole("textbox")
       .fill(`=== [gen9] ${name} ===\n\nPolitoed @ Damp Rock\n- Hydro Pump\n`);
-    await dialog.getByRole("button", { name: "Import" }).click();
+    await dialog.getByRole("button", { name: "Add teams" }).click();
     const teams = page
       .getByRole("dialog", { name: "Teams" })
       .getByRole("list", { name: "Saved teams" });
@@ -352,16 +355,19 @@ Ability: Drizzle
     expect(await page.evaluate(() => "injected" in window)).toBe(false);
   });
 
-  test("the More menu opens the import page, which imports nothing from text without pokemon", async ({
+  test("Add teams says so, and adds nothing, for text without pokemon", async ({
     page,
   }) => {
-    await openMoreMenu(page);
-    await clickMenuItem(page, "Import team");
-    const dialog = page.getByRole("dialog", { name: "Import Team" });
+    await openTeamsImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     await dialog.getByRole("textbox").fill("Pikablu @ Light Ball");
-    await dialog.getByRole("button", { name: "Import" }).click();
+    await dialog.getByRole("button", { name: "Add teams" }).click();
     await expect(dialog).toContainText(
       "No pokemon found in that text. Write the pokemon names in English as Pokemon Showdown spells them, or paste a team exported from Pokemon Showdown.",
+    );
+    await expect(dialog.getByRole("textbox")).toHaveAttribute(
+      "aria-invalid",
+      "true",
     );
 
     // Going back shows the team list, still with the one team
@@ -374,25 +380,26 @@ Ability: Drizzle
   });
 });
 
-test("Import Team restores named empty backups and rejects invalid populated bodies", async ({
+test("Add teams restores named empty backups and rejects invalid populated bodies", async ({
   page,
 }) => {
-  await openTeams(page);
-  await page.getByRole("button", { name: "Import Team", exact: true }).click();
-  const importing = page.getByRole("dialog", {
-    name: "Import Team",
+  await openTeamsImportExport(page);
+  const importing = page.getByRole("dialog", { name: "Import/Export" });
+  const addTeams = importing.getByRole("button", {
+    name: "Add teams",
+    exact: true,
   });
   await importing
     .getByRole("textbox")
     .fill("=== [gen2ou] Next season ===\n\nPikablu");
-  await importing.getByRole("button", { name: "Import", exact: true }).click();
+  await addTeams.click();
   await expect(importing).toContainText("No pokemon found in that text.");
   await importing
     .getByRole("textbox")
     .fill(
       "=== [gen2ou] Next season ===\n\n=== [gen8doublesou] Testing ===\n\n",
     );
-  await importing.getByRole("button", { name: "Import", exact: true }).click();
+  await addTeams.click();
   const teams = page
     .getByRole("dialog", { name: "Teams" })
     .getByRole("list", { name: "Saved teams" });
@@ -442,11 +449,11 @@ test("zero-candidate random actions leave the saved team unchanged and explain w
   expect(await state()).toBe(before);
 });
 
-test("fallback Copy All selects its textarea inside the active modal and restores focus", async ({
+test("fallback Copy selects its textarea inside the active modal and restores focus", async ({
   page,
 }) => {
   await selectPokemon(page, "Gothorita");
-  await openTeams(page);
+  await openTeamsImportExport(page);
   await page.evaluate(() => {
     Object.defineProperty(navigator, "clipboard", {
       configurable: true,
@@ -464,7 +471,9 @@ test("fallback Copy All selects its textarea inside the active modal and restore
       return true;
     };
   });
-  const copy = page.getByRole("button", { name: "Copy All", exact: true });
+  const copy = page
+    .getByRole("dialog", { name: "Import/Export" })
+    .getByRole("button", { name: "Copy", exact: true });
   await copy.focus();
   await copy.press("Enter");
   await expect
@@ -472,6 +481,9 @@ test("fallback Copy All selects its textarea inside the active modal and restore
       page.evaluate(() => document.documentElement.dataset.copiedText),
     )
     .toContain("Gothorita");
+  await expect(
+    page.getByRole("alert", { includeHidden: true }).last(),
+  ).toHaveText("Copied all teams");
   await expect(copy).toBeFocused();
   await page.evaluate(() => {
     document.execCommand = () => false;
@@ -479,12 +491,10 @@ test("fallback Copy All selects its textarea inside the active modal and restore
   await copy.press("Enter");
   await expect(
     page.getByRole("alert", { includeHidden: true }).last(),
-  ).toContainText(
-    "Could not copy the teams. Use Export All to download them instead.",
-  );
+  ).toContainText("Could not copy the teams. Use Download instead.");
 });
 
-test("fallback copying from the Teams row menu stays inside its focus trap", async ({
+test("fallback copying a link from the Teams row menu stays inside its focus trap", async ({
   page,
 }) => {
   await selectPokemon(page, "Lombre");
@@ -508,21 +518,26 @@ test("fallback copying from the Teams row menu stays inside its focus trap", asy
   await page
     .getByRole("button", { name: "Options for Team 1", exact: true })
     .click();
-  await page.getByRole("menuitem", { name: "Copy text", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Share", exact: true }).click();
   await expect
     .poll(() =>
       page.evaluate(() => document.documentElement.dataset.copiedText),
     )
-    .toContain("Lombre");
+    .toContain("team=");
+  const link = await page.evaluate(
+    () => document.documentElement.dataset.copiedText ?? "",
+  );
+  const team = new URL(link).searchParams.get("team");
+  expect(fromBase64Url(team ?? "")).toContain("Lombre");
 });
 
-test("closing Edit Pokepaste opened from a team's menu returns focus to the Teams button", async ({
+test("closing Import/Export opened from a team's menu returns focus to the Teams button", async ({
   page,
 }) => {
   await selectPokemon(page, "Cetitan");
   const teamsButton = page.getByRole("button", { name: "Teams", exact: true });
   const editor = page.getByRole("dialog", {
-    name: "Edit Pokepaste",
+    name: "Import/Export",
     exact: true,
   });
   for (const close of [
@@ -534,7 +549,7 @@ test("closing Edit Pokepaste opened from a team's menu returns focus to the Team
       .getByRole("button", { name: "Options for Team 1", exact: true })
       .press("Enter");
     await page
-      .getByRole("menuitem", { name: "Edit Pokepaste", exact: true })
+      .getByRole("menuitem", { name: "Import/Export", exact: true })
       .press("Enter");
     await expect(editor).toBeVisible();
     await close();

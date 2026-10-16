@@ -1,5 +1,5 @@
 import TeamsDialog from "./dialogs/TeamsDialog";
-import EditTeamDialog from "./dialogs/EditTeamDialog";
+import ImportExportDialog from "./dialogs/ImportExportDialog";
 import AdvancedDialog from "./dialogs/AdvancedDialog";
 import PokemonInfoDialog from "./dialogs/PokemonInfoDialog";
 import FiltersDialog from "./dialogs/FiltersDialog";
@@ -10,7 +10,7 @@ export default function Dialogs() {
   return (
     <>
       <TeamsDialog />
-      <EditTeamDialog />
+      <ImportExportDialog />
       <AdvancedDialog />
       <PokemonInfoDialog />
       <FiltersDialog />

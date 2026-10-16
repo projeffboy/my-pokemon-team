@@ -171,8 +171,9 @@ test("every other language names a slot's inputs in its own words", async () => 
 test("every language's failed copies name the button that does the job instead", async () => {
   for (const locale of LOCALES) {
     const { t } = await loadTranslation(locale);
-    expect(t.team.teamNotCopied, locale).toContain(t.team.editPokepaste);
-    expect(t.teams.notCopiedAll, locale).toContain(t.teams.exportAll);
+    expect(t.team.teamNotCopied, locale).toContain(t.importDialog.title);
+    expect(t.teams.saveFailed, locale).toContain(t.importDialog.title);
+    expect(t.teams.notCopiedAll, locale).toContain(t.importDialog.download);
   }
 });
 

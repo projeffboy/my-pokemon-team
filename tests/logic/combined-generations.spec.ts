@@ -1,6 +1,5 @@
 import { test, expect } from "./fixtures";
 import { initialStoredState, sanitizeSavedTeam } from "@/store/teams-storage";
-import { parseTeamBackup, serializeTeamBackup } from "@/store/team-backup";
 import { COMBINED_GENERATIONS_FORMAT } from "@/shared/generation-profile";
 import {
   generationLearnset,
@@ -39,16 +38,9 @@ import { completeSet, isSetComplete, randomizeSlotLabel } from "@/store/random";
 import { validateTeam } from "@/store/validation";
 import pokedex from "@/data/pokedex";
 
-test("combined profiles survive saved-team loading and JSON backups", () => {
+test("combined profiles survive saved-team loading", () => {
   const state = initialStoredState();
   expect(sanitizeSavedTeam(state.teams[0])?.generationProfile).toBe("6-9");
-  const backup = parseTeamBackup(
-    serializeTeamBackup({
-      teams: state.teams,
-      currentTeamId: state.currentTeamId,
-    }),
-  );
-  expect(backup?.teams[0]?.generationProfile).toBe("6-9");
   expect(
     sanitizeSavedTeam({ ...state.teams[0], generation: 8 })?.generationProfile,
   ).toBeUndefined();

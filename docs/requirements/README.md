@@ -39,6 +39,8 @@ Planned features are PF, not P, so that they are not mistaken for the priorities
 
 Issues closed as not planned on 14 October 2026 name some draft numbers that no document defines: REQ-USE-13 and "Table 3.2-1" (issue 146), REQ-TEXT-12 (issue 149), REQ-COLL-14 and 15 (issue 150), and REQ-FEED-10 (issue 151). Those numbers are not used.
 
+Team backups were removed on 16 October 2026, and with them UC9, UC10, US9, US10, REQ-BKUP-1 to 8, REQ-INTF-11, REQ-INFO-3, and F5.3. Those numbers are not used again.
+
 ## Statuses
 
 Each requirement has an importance and a status. Importance (Essential, Conditional, Optional) says how much the site needs it. Priority belongs to issues, not requirements, and says what to do next.

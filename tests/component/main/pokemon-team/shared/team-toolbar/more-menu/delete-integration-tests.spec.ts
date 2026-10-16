@@ -4,6 +4,7 @@ import {
   clickMenuItem,
   getTeamTextFromUrl,
   openMoreMenu,
+  openTeamsImportExport,
   selectPokemon,
 } from "helper";
 
@@ -17,15 +18,17 @@ for (const action of ["More Delete", "Teams Delete"]) {
     page,
     context,
   }) => {
-    await openMoreMenu(page);
-    await clickMenuItem(page, "Import team");
-    const importer = page.getByRole("dialog", { name: "Import Team" });
+    test.setTimeout(60000);
+    await openTeamsImportExport(page);
+    const importer = page.getByRole("dialog", { name: "Import/Export" });
     await importer
       .getByRole("textbox")
       .fill(
         "=== [gen9] Alpha ===\n\nCloyster\n- Surf\n\n=== [gen9] Beta ===\n\nTorkoal\n- Flamethrower",
       );
-    await importer.getByRole("button", { name: "Import", exact: true }).click();
+    await importer
+      .getByRole("button", { name: "Add teams", exact: true })
+      .click();
     await page.getByRole("button", { name: "Load Alpha", exact: true }).click();
     await expect(page.getByRole("dialog")).toBeHidden();
     await expect

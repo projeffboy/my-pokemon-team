@@ -60,11 +60,6 @@ import {
   serializeTeam,
 } from "./store/team-text";
 import { nextDuplicateName } from "./store/team-names";
-import {
-  mergeTeamBackup,
-  parseTeamBackup,
-  serializeTeamBackup,
-} from "./store/team-backup";
 import { describeTeamChange } from "./store/team-change";
 import {
   removeMissingEntries,
@@ -106,13 +101,7 @@ import { english, loadTranslation, type Translation } from "./i18n/translation";
 configure({ enforceActions: "never" });
 
 export type DialogName =
-  | "teams"
-  | "importTeam"
-  | "editTeam"
-  | "advanced"
-  | "info"
-  | "filters"
-  | "sort";
+  "teams" | "importExport" | "advanced" | "info" | "filters" | "sort";
 
 const HISTORY_LIMIT = 50;
 
@@ -375,37 +364,6 @@ export class Store {
     this.teams.push(team);
     this.currentTeamId = team.id;
     return team;
-  }
-
-  exportTeamBackup() {
-    this.readOtherTabs();
-    return serializeTeamBackup({
-      teams: toJS(this.teams),
-      currentTeamId: this.currentTeamId,
-      ...(this.draftTeam && { draftTeam: toJS(this.draftTeam) }),
-    });
-  }
-
-  restoreTeamBackup(text: string) {
-    const backup = parseTeamBackup(text);
-    if (!backup) return undefined;
-    this.readOtherTabs();
-    const existing =
-      this.draftTeam ? [...this.teams, this.draftTeam] : this.teams;
-    const { added, skipped } = mergeTeamBackup(existing, backup);
-    try {
-      serializeTeamBackup({
-        teams: [...toJS(this.teams), ...added],
-        currentTeamId: this.currentTeamId,
-        ...(this.draftTeam && { draftTeam: toJS(this.draftTeam) }),
-      });
-    } catch (error) {
-      return error instanceof RangeError ?
-          { error: "tooLarge" as const }
-        : undefined;
-    }
-    this.teams.push(...added);
-    return { added: added.length, skipped };
   }
 
   // Switches to an empty team of the current generation and format, adding one if needed

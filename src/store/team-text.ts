@@ -143,7 +143,12 @@ export const serializeTeam = (
 const BACKUP_MARKER = "# mypokemonteam backup: preserve team names";
 const GENERATION_PROFILE_MARKER = `# mypokemonteam generation profile: ${COMBINED_GENERATIONS_PROFILE}`;
 
-export const serializeTeams = (teams: readonly SavedTeam[]) => {
+export const serializeTeams = (
+  teams: readonly Pick<
+    SavedTeam,
+    "name" | "generation" | "format" | "generationProfile" | "team"
+  >[],
+) => {
   const preserveNames = teams.some(({ name }) => name.includes("/"));
   return teams
     .map(({ name, generation, format, generationProfile, team }) => {
@@ -237,7 +242,7 @@ function parseStats(
   return Object.keys(stats).length ? stats : undefined;
 }
 
-const GENDER_SUFFIX = /\s*\((M|F|N)\)\s*$/;
+const GENDER_SUFFIX = /\((M|F|N)\)\s*$/;
 
 // The pokemon, nickname, and gender of a first line without its item, or undefined
 // when it names no pokemon. Accepts "Nickname (Species)", as Showdown writes it, and
@@ -663,7 +668,18 @@ export function teamTextProblems(
   return problems;
 }
 
-const TEAM_HEADER = /^===\s*(?:\[([^\]]*)\])?\s*(.*?)\s*===\s*$/;
+// A header like "=== [gen9ou] Folder/Name ===": its format ID, if it has brackets, and its
+// name. It is read without a regex because a long run of spaces made one backtrack for minutes.
+export function parseTeamHeader(line: string) {
+  const text = line.trim();
+  if (text.length < 6 || !text.startsWith("===") || !text.endsWith("==="))
+    return undefined;
+  const inner = text.slice(3, -3).trim();
+  const close = inner.startsWith("[") ? inner.indexOf("]") : -1;
+  return close < 0 ?
+      { name: inner }
+    : { format: inner.slice(1, close), name: inner.slice(close + 1).trim() };
+}
 
 export interface ParsedTeam {
   name: string;
@@ -686,15 +702,18 @@ export function parseTeamsText(
   const preserveNames = text
     .split("\n")
     .some(line => line.trim() === BACKUP_MARKER);
-  const chunks: { header?: RegExpExecArray; lines: string[] }[] = [];
+  const chunks: {
+    header?: ReturnType<typeof parseTeamHeader>;
+    lines: string[];
+  }[] = [];
   for (const line of text.split("\n")) {
-    const header = TEAM_HEADER.exec(line.trim());
+    const header = parseTeamHeader(line);
     if (header) chunks.push({ header, lines: [] });
     else if (chunks.length) chunks[chunks.length - 1]?.lines.push(line);
     else chunks.push({ lines: [line] });
   }
   const isEmptyBackup = (index: number) =>
-    !!chunks[index]?.header?.[2]?.trim() &&
+    !!chunks[index]?.header?.name &&
     chunks[index]?.lines.every(
       line =>
         !line.trim() ||
@@ -702,12 +721,12 @@ export function parseTeamsText(
         line.trim() === GENERATION_PROFILE_MARKER,
     );
   return chunks.flatMap(({ header, lines }, index) => {
-    const hasFormat = header?.[1] !== undefined;
+    const hasFormat = header?.format !== undefined;
     const hasCombinedMetadata =
       !!header && lines.some(line => line.trim() === GENERATION_PROFILE_MARKER);
     const settings =
       hasFormat || hasCombinedMetadata ?
-        parseShowdownFormatId(header?.[1] ?? "")
+        parseShowdownFormatId(header?.format ?? "")
       : { generation: defaults.generation, format: defaults.format };
     const generationProfile =
       (
@@ -719,7 +738,7 @@ export function parseTeamsText(
       ) ?
         COMBINED_GENERATIONS_PROFILE
       : undefined;
-    const rawName = header?.[2] ?? "";
+    const rawName = header?.name ?? "";
     // Showdown folder names hold no slashes, but its new client allows them in team names
     const name =
       preserveNames || isEmptyBackup(index) ? rawName : (
@@ -747,4 +766,34 @@ export function parseTeamsText(
       }))
       .filter(({ team }) => !isTeamEmpty(team) || isEmptyBackup(index));
   });
+}
+
+// The parsed teams that no saved team equals in name, game, and pokemon, so that
+// parsing the text of the saved teams adds none of them. A repeated team is added
+// only as many times as the saved ones fall short, and an unnamed team is always new.
+export function teamsToAdd(
+  parsed: readonly ParsedTeam[],
+  saved: readonly SavedTeam[],
+) {
+  const copies = new Map<string, number>();
+  for (const team of saved) {
+    const key = serializeTeams([team]);
+    copies.set(key, (copies.get(key) ?? 0) + 1);
+  }
+  return parsed.filter(team => {
+    if (!team.name) return true;
+    const key = serializeTeams([team]);
+    const count = copies.get(key) ?? 0;
+    if (count) copies.set(key, count - 1);
+    return !count;
+  });
+}
+
+// Text added after the teams the box showed, without a header of its own, would join
+// the last of them; this gives it one so that it is a team of its own
+export function headerAppendedText(shown: string, text: string) {
+  const appended = text.startsWith(shown) ? text.slice(shown.length) : "";
+  return appended.trim() && !/^\s*===/.test(appended) ?
+      `${shown}===  ===\n\n${appended}`
+    : text;
 }

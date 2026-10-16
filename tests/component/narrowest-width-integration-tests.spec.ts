@@ -132,6 +132,56 @@ const findCutOff = () => {
 const expectNothingCutOff = (page: Page, view: string) =>
   expect.poll(() => page.evaluate(findCutOff), { message: view }).toEqual([]);
 
+// A dialog's buttons wrap onto rows rather than overlap, stay inside the bar, and hold their
+// labels, which a language's longer words would otherwise push over the next button
+const expectActionsApart = (page: Page, view: string) =>
+  expect
+    .poll(
+      () =>
+        page.evaluate(() => {
+          const problems: string[] = [];
+          const bar = document.querySelector(".MuiDialogActions-root");
+          if (!bar) return ["The dialog has no actions"];
+          const barBox = bar.getBoundingClientRect();
+          const buttons = [...bar.querySelectorAll("button")];
+          const boxes = buttons.map(button => button.getBoundingClientRect());
+          boxes.forEach((box, i) => {
+            const name = buttons[i]?.textContent?.trim() ?? "";
+            if (box.left < barBox.left - 1 || box.right > barBox.right + 1)
+              problems.push(`"${name}" leaves the actions`);
+            const range = document.createRange();
+            range.selectNodeContents(buttons[i]!);
+            const text = range.getBoundingClientRect();
+            if (text.left < box.left - 1 || text.right > box.right + 1)
+              problems.push(`"${name}" is wider than its button`);
+            boxes.slice(i + 1).forEach((other, j) => {
+              const apart =
+                box.right <= other.left + 1 ||
+                other.right <= box.left + 1 ||
+                box.bottom <= other.top + 1 ||
+                other.bottom <= box.top + 1;
+              if (!apart)
+                problems.push(
+                  `"${name}" overlaps "${buttons[i + 1 + j]?.textContent?.trim()}"`,
+                );
+            });
+          });
+          return problems;
+        }),
+      { message: view },
+    )
+    .toEqual([]);
+
+// Answers a pokepast.es link as a paste that does not exist, with CORS open to any page
+const mockMissingPaste = (page: Page) =>
+  page.route("https://pokepast.es/**", route =>
+    route.fulfill({
+      status: 404,
+      headers: { "access-control-allow-origin": "*" },
+      body: "Not found",
+    }),
+  );
+
 const loadTeam = async (page: Page, t: Messages = en) => {
   await page.goto(`/?gen=9&team=${TEAM}`);
   await expect(
@@ -241,12 +291,33 @@ test.describe("Narrowest Width - Integration Tests", () => {
   });
 
   test("the team actions and the saved teams fit", async ({ page }) => {
+    test.slow();
     await loadTeam(page);
     await openMoreMenu(page);
     await expectNothingCutOff(page, "More");
-    await clickMenuItem(page, "Edit Pokepaste");
+    await clickMenuItem(page, "Import/Export");
+    const teamExport = page.getByRole("dialog", { name: "Import/Export" });
+    for (const name of ["Copy", "Upload to PokePaste", "Update"])
+      await expect(
+        teamExport.getByRole("button", { name, exact: true }),
+      ).toBeInViewport();
     await blur(page);
-    await expectNothingCutOff(page, "Edit Pokepaste");
+    await expectNothingCutOff(page, "Import/Export");
+    // The problems found in the text, and the message after a link that fails
+    await teamExport.getByRole("textbox").fill("Ho-Oh\n- Iron Hed");
+    await expect(
+      teamExport.getByText(en.importDialog.problems(1)),
+    ).toBeVisible();
+    await expectNothingCutOff(page, "Import/Export, with a problem");
+    await mockMissingPaste(page);
+    await teamExport
+      .getByRole("textbox")
+      .fill("https://pokepast.es/0123456789");
+    await teamExport.getByRole("button", { name: "Update" }).click();
+    await expect(
+      teamExport.getByText(en.importDialog.linkFailed),
+    ).toBeVisible();
+    await expectNothingCutOff(page, "Import/Export, after a link that fails");
     await closeDialog(page, "Cancel");
 
     await page.getByRole("button", { name: "Share pokemon team link" }).click();
@@ -256,15 +327,18 @@ test.describe("Narrowest Width - Integration Tests", () => {
     await page.getByRole("button", { name: "Teams", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await expectNothingCutOff(page, "Teams");
-    for (const [item, title] of [
-      ["Edit team name", "Edit team name"],
-      ["Delete", /^Delete /],
-    ] as const) {
+    const openOptions = async () => {
       await dialog
         .getByRole("button", { name: /^Options for / })
         .first()
         .click();
       await expectNothingCutOff(page, "a team's options");
+    };
+    for (const [item, title] of [
+      ["Edit team name", "Edit team name"],
+      ["Delete", /^Delete /],
+    ] as const) {
+      await openOptions();
       await clickMenuItem(page, item);
       // The Teams dialog is hidden from the accessibility tree while this one is open
       const itemDialog = page.getByRole("dialog", { name: title });
@@ -273,15 +347,30 @@ test.describe("Narrowest Width - Integration Tests", () => {
       await page.keyboard.press("Escape");
       await expect(itemDialog).toBeHidden();
     }
-    for (const subpage of ["Import Team", "Team backups"]) {
-      await dialog.getByRole("button", { name: subpage, exact: true }).click();
-      await blur(page);
-      await expectNothingCutOff(page, subpage);
-      await dialog.getByRole("button", { name: "Go Back" }).first().click();
+
+    await dialog
+      .getByRole("button", { name: "Import/Export", exact: true })
+      .click();
+    for (const name of ["Copy", "Download", "Add teams"])
       await expect(
-        dialog.getByRole("button", { name: subpage, exact: true }),
-      ).toBeVisible();
-    }
+        dialog.getByRole("button", { name, exact: true }),
+      ).toBeInViewport();
+    await blur(page);
+    await expectNothingCutOff(page, "the teams' Import/Export");
+    await dialog.getByRole("textbox").fill("Pikablu");
+    await dialog.getByRole("button", { name: "Add teams" }).click();
+    await expect(dialog.getByText(en.importDialog.nothingFound)).toBeVisible();
+    await expectNothingCutOff(page, "the teams' Import/Export, with a message");
+    await dialog.getByRole("button", { name: "Go Back" }).first().click();
+    await expect(
+      dialog.getByRole("button", { name: "Import/Export", exact: true }),
+    ).toBeVisible();
+
+    // A team's own Import/Export replaces the Teams dialog
+    await openOptions();
+    await clickMenuItem(page, "Import/Export");
+    await expect(teamExport).toBeVisible();
+    await expectNothingCutOff(page, "a team's Import/Export");
   });
 
   test("the header, the footer, and their dialogs fit", async ({ page }) => {
@@ -338,13 +427,26 @@ test.describe("Narrowest Width - Integration Tests", () => {
         await closeDialog(page, t.done);
 
         await page
+          .getByRole("button", { name: t.team.more, exact: true })
+          .click();
+        await page
+          .getByRole("menuitem", { name: t.importDialog.title, exact: true })
+          .click();
+        await blur(page);
+        await expectNothingCutOff(page, "Import/Export");
+        await expectActionsApart(page, "Import/Export's actions");
+        await page.keyboard.press("Escape");
+        await expect(page.getByRole("dialog")).toBeHidden();
+
+        await page
           .getByRole("button", { name: t.team.teams, exact: true })
           .click();
         await page
-          .getByRole("button", { name: t.teams.importTeam, exact: true })
+          .getByRole("button", { name: t.importDialog.title, exact: true })
           .click();
         await blur(page);
-        await expectNothingCutOff(page, "Import Team");
+        await expectNothingCutOff(page, "the teams' Import/Export");
+        await expectActionsApart(page, "the teams' Import/Export actions");
         await page.keyboard.press("Escape");
         await expect(page.getByRole("dialog")).toBeHidden();
 

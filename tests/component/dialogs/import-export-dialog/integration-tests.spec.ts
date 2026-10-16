@@ -2,8 +2,9 @@ import { test, expect } from "fixtures";
 import {
   clickMenuItem,
   getTeamTextFromUrl,
-  openEditPokepaste,
+  openImportExport,
   selectPokemon,
+  showSlot,
 } from "helper";
 import type { Page } from "@playwright/test";
 
@@ -12,9 +13,9 @@ interface VerifyPokemonPropertyOptions {
   teamIndex?: number;
 }
 
-test.describe("Edit Team Dialog - Integration Tests", () => {
+test.describe("Import/Export Dialog - Integration Tests", () => {
   test.beforeEach(async ({ page }) => {
-    await openEditPokepaste(page);
+    await openImportExport(page);
   });
 
   const importTeam = async (page: Page, text: string) => {
@@ -82,8 +83,8 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
       "Magcargo",
     );
 
-    await openEditPokepaste(page);
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     const text = dialog.getByRole("textbox");
     await expect(text).toHaveValue(/Magcargo/);
     await selectPokemon(otherTab, "Froslass");
@@ -116,8 +117,8 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
     await selectPokemon(otherTab, "Haxorus");
     await expect.poll(() => getTeamTextFromUrl(page)).toContain("Houndoom");
 
-    await openEditPokepaste(page);
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     await dialog.getByRole("textbox").fill("Alakazam");
     await otherTab.getByRole("button", { name: "Teams", exact: true }).click();
     await otherTab
@@ -133,7 +134,7 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
       await dialog.getByRole("button", { name: "Update", exact: true }).click();
     await expect(dialog).toBeHidden();
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Haxorus");
-    await openEditPokepaste(page);
+    await openImportExport(page);
     await expect(dialog.getByRole("textbox")).toHaveValue(/Haxorus/);
     await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
     await otherTab.close();
@@ -142,7 +143,7 @@ test.describe("Edit Team Dialog - Integration Tests", () => {
   test("updating despite a reported problem applies the rest without a confirmation", async ({
     page,
   }) => {
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     await dialog.getByRole("textbox").fill(`Ho-Oh @ Leftovers
 Ability: Regenerator
 - Sacred Fire
@@ -171,8 +172,8 @@ Ability: Regenerator
     page,
   }) => {
     await importTeam(page, "Mienshao");
-    await openEditPokepaste(page);
-    const dialog = page.getByRole("dialog", { name: "Edit Pokepaste" });
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
     await dialog.getByRole("textbox").fill("Cofagrigus\n- Shadow Bal");
     await expect(dialog.getByRole("status")).toBeVisible();
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Mienshao");
@@ -181,6 +182,44 @@ Ability: Regenerator
     await expect(dialog).toBeHidden();
     await verifyPokemonProperty(page, "Mienshao");
     expect(getTeamTextFromUrl(page)).not.toContain("Cofagrigus");
+  });
+
+  test("updating with the team's own text says nothing changed", async ({
+    page,
+  }) => {
+    await importTeam(page, "Pupitar @ Leftovers\n- Crunch");
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
+    await expect(dialog.getByRole("textbox")).toHaveValue(/^Pupitar/);
+    await dialog.getByRole("button", { name: "Update", exact: true }).click();
+
+    await expect(dialog).toBeHidden();
+    await expect(page.getByRole("alert")).toHaveText("No changes made.");
+    await verifyPokemonProperty(page, "Pupitar");
+    await verifyPokemonProperty(page, "Crunch", { property: "move1" });
+  });
+
+  test("updating replaces the pokemon the team had with those in the text", async ({
+    page,
+  }) => {
+    await importTeam(page, "Marill @ Sitrus Berry\n- Aqua Jet\n\nPhanpy");
+    await verifyPokemonProperty(page, "Marill");
+    await showSlot(page, 1);
+    await verifyPokemonProperty(page, "Phanpy", { teamIndex: 1 });
+
+    await openImportExport(page);
+    const dialog = page.getByRole("dialog", { name: "Import/Export" });
+    await dialog.getByRole("textbox").fill("Tyrogue @ Leftovers");
+    await dialog.getByRole("button", { name: "Update", exact: true }).click();
+
+    await expect(dialog).toBeHidden();
+    await showSlot(page, 0);
+    await verifyPokemonProperty(page, "Tyrogue");
+    await verifyPokemonProperty(page, "Leftovers", { property: "item" });
+    await expect(page.getByLabel("Pokemon 1's move1")).toHaveValue("");
+    await showSlot(page, 1);
+    await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("");
+    expect(getTeamTextFromUrl(page)).not.toMatch(/Marill|Phanpy/);
   });
 
   test("Paste in a pokemon's details", async ({ page }) => {

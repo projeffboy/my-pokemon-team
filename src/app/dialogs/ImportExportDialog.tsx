@@ -4,15 +4,17 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { useIsSmDown } from "@/app/shared/WidthContext";
 import { heightAboveAd } from "@/app/shared/visual-viewport";
-import ImportTeamForm from "./shared/ImportTeamForm";
+import ImportExportForm from "./shared/ImportExportForm";
 
-// Edits the current team as Showdown text
-const EditTeamDialog = observer(function EditTeamDialog() {
+// Copies, edits, and uploads the current team as Showdown text
+const ImportExportDialog = observer(function ImportExportDialog() {
   const { t } = useTranslation();
   const titleId = useId();
+  const isSmDown = useIsSmDown();
   const { dialog, currentTeamId } = store;
-  const requested = dialog?.name === "editTeam";
+  const requested = dialog?.name === "importExport";
   const isOpen = requested && dialog.teamId === currentTeamId;
   useLayoutEffect(() => {
     if (requested && !isOpen) store.closeDialog();
@@ -26,15 +28,16 @@ const EditTeamDialog = observer(function EditTeamDialog() {
       aria-labelledby={titleId}
       sx={{ height: heightAboveAd }}
       fullWidth
+      fullScreen={isSmDown}
     >
       {isOpen && (
         <>
-          <DialogTitle id={titleId}>{t.importDialog.editTitle}</DialogTitle>
-          <ImportTeamForm isImport={false} onClose={close} />
+          <DialogTitle id={titleId}>{t.importDialog.title}</DialogTitle>
+          <ImportExportForm scope="team" onClose={close} />
         </>
       )}
     </Dialog>
   );
 });
 
-export default EditTeamDialog;
+export default ImportExportDialog;
