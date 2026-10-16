@@ -562,7 +562,8 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
           listbox: { component: VirtualizedListbox },
         }}
         renderInput={params => {
-          // Icons hide while the typed text differs from the selected name
+          // Icons hide while the typed text differs from the selected name. A tap on
+          // one reaches the input row, which opens the list as the text does.
           const isSelectionShown =
             !!selectedOption &&
             params.slotProps.htmlInput.value === selectedOption.label;
@@ -578,6 +579,7 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                   display: "flex",
                   flexShrink: 0,
                   mr: leadingIcon ? 0.5 : 3.5,
+                  pointerEvents: "none",
                 }}
               >
                 <PokemonIcon pokemonProperty="item" value={value} />
@@ -606,7 +608,13 @@ const PokemonInputSelect = observer(function PokemonInputSelect({
                 component="img"
                 src={typeIcons[selectedMoveType]}
                 alt={names.type(selectedMoveType)}
-                sx={{ width: 20, height: 20, mr: 0.75, flexShrink: 0 }}
+                sx={{
+                  width: 20,
+                  height: 20,
+                  mr: 0.75,
+                  flexShrink: 0,
+                  pointerEvents: "none",
+                }}
               />
             : undefined;
           const hiddenAbility =
