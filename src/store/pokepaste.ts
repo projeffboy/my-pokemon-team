@@ -29,16 +29,18 @@ export function parsePokepaste(data: unknown): Pokepaste | undefined {
 
 // A paste as a team under a header like Showdown's backup, so that its title and
 // game ("Format: gen9ou" on the first line of the notes, as the site uploads) carry
-// over. Like Showdown, an "Untitled" paste has no name.
+// over. Like Showdown's own default names, "Untitled" and "Untitled 2" are no name.
 export function pokepasteTeamText({ paste, title, notes }: Pokepaste) {
   const format = /^Format:\s*(.+)$/i
     .exec(notes.split("\n")[0] ?? "")?.[1]
     ?.toLowerCase()
     .replace(/[^a-z0-9]/g, "");
   const name =
-    /^untitled/i.test(title.trim()) ? "" : (
+    /^untitled(?: \d+)?$/i.test(title.trim()) ? "" : (
       title
         .replace(/[|\\/]/g, " ")
+        .replace(/\[/g, "(")
+        .replace(/\]/g, ")")
         .replace(/\s+/g, " ")
         .trim()
     );

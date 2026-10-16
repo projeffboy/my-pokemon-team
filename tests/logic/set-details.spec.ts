@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
+  headerAppendedText,
   LEGACY_LINK_PARSING_OPTIONS,
   parseTeamsText,
   parseTeamText,
@@ -812,4 +813,37 @@ test("empty backup names preserve slashes while populated external folders still
       ]),
     ).map(({ name }) => name),
   ).toEqual(["Rain / OU", "Folder/Draft", "Populated"]);
+});
+
+test.describe("headerAppendedText", () => {
+  const shown = serializeTeams([
+    createSavedTeam({
+      name: "Alpha",
+      team: parseTeamText("Pikachu\n- Thunderbolt", 9),
+    }),
+  ]);
+  const appended = "Garchomp\nAbility: Rough Skin\n- Earthquake\n";
+
+  test("makes a headerless team added after the shown teams a team of its own", () => {
+    const text = headerAppendedText(shown, shown + appended);
+    expect(parseTeamsText(text).map(({ name }) => name)).toEqual(["Alpha", ""]);
+    expect(parseTeamsText(shown + appended)).toHaveLength(1);
+  });
+
+  test("leaves text with its own header, unchanged text, and replaced text alone", () => {
+    const headed = `=== [gen8] Beta ===\n\n${appended}`;
+    expect(headerAppendedText(shown, shown + headed)).toBe(shown + headed);
+    expect(headerAppendedText(shown, shown)).toBe(shown);
+    expect(headerAppendedText(shown, `${shown}\n  \n`)).toBe(`${shown}\n  \n`);
+    expect(headerAppendedText(shown, appended)).toBe(appended);
+    expect(headerAppendedText(shown, appended + shown)).toBe(appended + shown);
+  });
+
+  test("keeps the current game for the appended team", () => {
+    const [, team] = parseTeamsText(
+      headerAppendedText(shown, shown + appended),
+      { generation: 8, format: "", generationProfile: undefined },
+    );
+    expect(team?.generation).toBe(8);
+  });
 });

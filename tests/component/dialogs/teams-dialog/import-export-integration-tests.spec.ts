@@ -279,6 +279,23 @@ test.describe("Teams Dialog: Import/Export - Integration Tests", () => {
     await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Sudowoodo");
   });
 
+  test("Add teams adds text without a header put after the last team as a team of its own", async ({
+    page,
+  }) => {
+    await seedTeams(page, "Beta");
+    await openTeamsImportExport(page);
+    await append(page, SUDOWOODO);
+    await button(page, "Add teams").click();
+
+    await expect(snackbar(page)).toHaveText("Team imported");
+    await expect(
+      savedTeams(page).getByRole("button", { name: /^Load/ }),
+    ).toHaveText([/Alpha/, /Beta/, /Team 3/]);
+    await load(page, "Beta").click();
+    await expect(page.getByLabel("Pokemon 1's name")).toHaveValue("Wailord");
+    await expect(page.getByLabel("Pokemon 2's name")).toHaveValue("");
+  });
+
   test("Add teams adds several teams, the last of which opens", async ({
     page,
   }) => {

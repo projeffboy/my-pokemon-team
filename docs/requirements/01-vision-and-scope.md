@@ -90,9 +90,9 @@ The features of Ash, and those built since for Brock, with the IDs the later doc
 - **F5 Team Collection** [Ash]
   - F5.1 Saved Teams: any number of named teams in the browser, each with its generation, format, battle format, and filters.
   - F5.2 Synchronization Between Tabs
-  - F5.3 Team Backups: a backup file holding every saved team, saved and restored under Teams → Team backups.
-- **F6 Team Exchange**: a share link, Showdown team text, and Export All [Ash] for every saved team at once.
+- **F6 Team Exchange**: a share link, and Showdown team text through Import/Export [Brock], which shows the text of the current team or of every saved team, copies it, downloads it, and adds teams from it.
   - F6.1 Notice of Dropped Entries [Ash]: what an opened link or saved team lost to a data update, shown above the team until dismissed.
+  - F6.2 PokePaste [Brock]: Upload to PokePaste for the current team, and a pokepast.es link read in place of team text.
 - **F7 Reference**: three type charts, a manual, the update log, credits, a privacy policy, and Pokemon Info [Ash] with each pokemon's base stats, abilities, and weaknesses.
   - F7.1 Dex Links [Ash] to Smogon, Bulbapedia, Serebii, and the Showdown dex.
 - **F8 Presentation**
@@ -131,7 +131,7 @@ Each has a GitHub issue that names its ID. The issue holds the work, and its mil
 Not intended for now. None of these is ruled out for good; each would first need a business requirement of its own.
 
 - Battling, damage calculation, and speed tiers. Pokemon Showdown and its damage calculator do these.
-- Player accounts and server-side storage of teams. Teams stay in the browser; a backup file moves them between devices.
+- Player accounts and server-side storage of teams. Teams stay in the browser; Import/Export moves them between devices as text.
 - Editing or hosting game data. Pokemon Showdown is the source, and the site ships a projection of it.
 - Moderating or hosting shared teams. A share link holds the whole team; nothing is stored on a server.
 
@@ -141,14 +141,15 @@ Not intended for now. None of these is ruled out for good; each would first need
 - PokeAPI supplies the names in other languages. A name it lacks appears in English.
 - Resend delivers feedback email from its shared address, which can reach only the Site Owner's own address. That is all feedback needs: it goes only to the owner, who replies from their own mail to the player's reply address.
 - Playwire places the ads that pay for the site.
-- Saved teams depend on the browser keeping its site storage. Clearing it, or a full disk, loses the teams that were not saved to a backup file.
+- PokePaste (pokepast.es) keeps pasted team text at a link of its own. The site posts a team to it only when the Player presses Upload to PokePaste, and asks it for a paste only when the Player puts a link to that paste in Import/Export. The site works without it apart from those two actions, so it is read as another site and not as a backend of this one (BR-6).
+- Saved teams depend on the browser keeping its site storage. Clearing it, or a full disk, loses the teams that were not kept as text from Import/Export.
 
 ## 1.4 Business risks
 
 The Site Owner's one real worry is a takedown by the rights holders, RISK-8 ([08](08-assumptions-and-interview.md#purpose-and-money)). The others are listed with what reduces them.
 
 - **RISK-1.** A data update renames or removes a pokemon, move, or item, and old share links and saved teams lose it. The update script reports those names before release (REQ-DATA-6), and a notice tells the visitor what was lost (REQ-INFO-8).
-- **RISK-2.** The browser clears its site storage and the saved teams are lost. Team backups keep a copy (REQ-BKUP-1 to REQ-BKUP-8), and the site says when it could not save (REQ-COLL-9).
+- **RISK-2.** The browser clears its site storage and the saved teams are lost. Import/Export lets the Player keep a copy as text (REQ-TEXT-5, REQ-TEXT-7), and the site says when it could not save (REQ-COLL-9).
 - **RISK-3.** Pokemon Showdown stops serving sprites to other sites, or changes its data layout. The icon sheets are bundled, and the data update writes only the fields the site reads (REQ-DATA-5). Sprites still come from Showdown's servers, even when the site forwards them to a network that blocks Showdown (REQ-INTF-18).
 - **RISK-4.** A change to the page's structure removes the top ad banner, and revenue drops unnoticed. The banner's place is a requirement (REQ-INTF-5) that is checked on the production site.
 - **RISK-5.** The maintainer is away, or does not hear of it, when a new game or regulation comes out, and the 2-day target of BR-3 is missed. Data updates are scripted and report what changed (REQ-DATA-1, REQ-DATA-6), every change passes the automated checks before it deploys, and a scheduled workflow tells the maintainer within a day when Showdown changes data the site uses (REQ-DATA-12).

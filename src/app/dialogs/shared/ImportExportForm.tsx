@@ -19,6 +19,7 @@ import {
   pokepasteUpload,
 } from "@/store/pokepaste";
 import {
+  headerAppendedText,
   parseTeamsText,
   parseTeamText,
   serializeTeam,
@@ -83,7 +84,10 @@ const ImportExportForm = observer(function ImportExportForm({
   );
 
   const addTeams = (source: string) => {
-    const teams = parseTeamsText(source, store.currentTeam);
+    const teams = parseTeamsText(
+      headerAppendedText(initialText, source),
+      store.currentTeam,
+    );
     if (!teams.length) {
       setError("nothingFound");
       return;
@@ -178,6 +182,7 @@ const ImportExportForm = observer(function ImportExportForm({
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1, mt: 2 }}>
           <Button
             variant="outlined"
+            size="small"
             startIcon={<ContentCopyIcon />}
             disabled={isEmpty}
             onClick={() =>
@@ -191,6 +196,7 @@ const ImportExportForm = observer(function ImportExportForm({
           {isTeams ?
             <Button
               variant="outlined"
+              size="small"
               startIcon={<DownloadIcon />}
               disabled={isEmpty}
               onClick={() => {
@@ -202,6 +208,7 @@ const ImportExportForm = observer(function ImportExportForm({
             </Button>
           : <Button
               variant="outlined"
+              size="small"
               startIcon={<UploadIcon />}
               disabled={isEmpty || isLink}
               onClick={() =>

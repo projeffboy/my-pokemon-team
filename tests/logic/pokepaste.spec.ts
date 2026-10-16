@@ -168,6 +168,26 @@ test.describe("pokepasteTeamText", () => {
     }
   });
 
+  test("gives only Showdown's default names no name", () => {
+    const name = (title: string) =>
+      parseTeamsText(
+        pokepasteTeamText({ paste: kingdra, title, notes: "Format: gen9ou" }),
+      )[0]?.name;
+    expect(name("Untitled 3")).toBe("");
+    expect(name("Untitled Hyper Offense")).toBe("Untitled Hyper Offense");
+    expect(name("Untitled-ish")).toBe("Untitled-ish");
+  });
+
+  test("keeps a title in square brackets as a name instead of reading it as the game", () => {
+    for (const notes of ["", "Format: gen8ou"]) {
+      const [team] = parseTeamsText(
+        pokepasteTeamText({ paste: kingdra, title: "[Gen 1 OU] Rain", notes }),
+      );
+      expect(team?.name, notes).toBe("(Gen 1 OU) Rain");
+      expect(team?.generation, notes).toBe(notes ? 8 : 9);
+    }
+  });
+
   test("gives a header without brackets when there is no Format note", () => {
     const text = pokepasteTeamText({
       paste: kingdra,

@@ -4,6 +4,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { useTranslation } from "@/app/shared/TranslationContext";
+import { useIsSmDown } from "@/app/shared/WidthContext";
 import { heightAboveAd } from "@/app/shared/visual-viewport";
 import ImportExportForm from "./shared/ImportExportForm";
 
@@ -11,6 +12,7 @@ import ImportExportForm from "./shared/ImportExportForm";
 const ImportExportDialog = observer(function ImportExportDialog() {
   const { t } = useTranslation();
   const titleId = useId();
+  const isSmDown = useIsSmDown();
   const { dialog, currentTeamId } = store;
   const requested = dialog?.name === "importExport";
   const isOpen = requested && dialog.teamId === currentTeamId;
@@ -26,6 +28,7 @@ const ImportExportDialog = observer(function ImportExportDialog() {
       aria-labelledby={titleId}
       sx={{ height: heightAboveAd }}
       fullWidth
+      fullScreen={isSmDown}
     >
       {isOpen && (
         <>

@@ -774,3 +774,12 @@ export function teamsToAdd(
     return !count;
   });
 }
+
+// Text added after the teams the box showed, without a header of its own, would join
+// the last of them; this gives it one so that it is a team of its own
+export function headerAppendedText(shown: string, text: string) {
+  const appended = text.startsWith(shown) ? text.slice(shown.length) : "";
+  return appended.trim() && !/^\s*===/.test(appended) ?
+      `${shown}===  ===\n\n${appended}`
+    : text;
+}
