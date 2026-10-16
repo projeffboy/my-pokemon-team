@@ -441,3 +441,36 @@ test("uses the larger logos from larger phones up, with box fronts twice as tall
     await page.keyboard.press("Escape");
   }
 });
+
+test("the selected game's label stays current when an earlier font wait finishes last", async ({
+  page,
+}) => {
+  // Each check of the fonts gets its own wait, which the test finishes in any order
+  await page.addInitScript(() => {
+    const waits: (() => void)[] = [];
+    Object.defineProperty(document.fonts, "ready", {
+      get: () =>
+        new Promise(resolve => waits.push(() => resolve(document.fonts))),
+    });
+    Object.assign(window, {
+      finishFontWaits: async () => {
+        for (const finish of waits.splice(0).reverse()) finish();
+        await new Promise(resolve =>
+          requestAnimationFrame(() => requestAnimationFrame(resolve)),
+        );
+      },
+    });
+  });
+  await page.reload({ waitUntil: "domcontentloaded" });
+  const generation = page.getByRole("combobox", { name: "Generation" });
+  await expect(page.locator("header .MuiSelect-nativeInput")).toHaveValue("9");
+  await generation.click();
+  await page.locator('[role="option"][data-value="Legends: Z-A"]').click();
+  await expect(generation).toContainText("Z-A");
+  await page.evaluate(() =>
+    (
+      window as unknown as { finishFontWaits: () => Promise<void> }
+    ).finishFontWaits(),
+  );
+  await expect(generation).toContainText("Z-A");
+});

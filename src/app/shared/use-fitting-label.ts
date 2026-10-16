@@ -53,7 +53,10 @@ export default function useFittingLabel<
   useLayoutEffect(() => {
     const element = ref.current;
     if (!element) return;
+    // A font wait from before the labels changed can finish after this one
+    let current = true;
     const pick = () => {
+      if (!current) return;
       const style = getComputedStyle(element);
       const room =
         element.clientWidth -
@@ -83,7 +86,10 @@ export default function useFittingLabel<
     });
     const observer = new ResizeObserver(pick);
     observer.observe(element);
-    return () => observer.disconnect();
+    return () => {
+      current = false;
+      observer.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps -- labels is a new array each render
   }, [key]);
 
