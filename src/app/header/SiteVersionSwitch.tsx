@@ -80,8 +80,9 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
 
   return (
     <>
+      {/* Outlined like the buttons beside it, so the way back doesn't outrank the site */}
       <Button
-        variant="contained"
+        variant="outlined"
         startIcon={bothFaces ? face(landorusFace) : undefined}
         endIcon={face(bothFaces ? ogerponFace : landorusFace)}
         onClick={handleSwitch}
@@ -93,7 +94,8 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
           sx={{
             position: "absolute",
             insetInline: 0,
-            px: `${16 + faceSpace}px`,
+            // An outlined button's padding, inside its 1px border
+            px: `${15 + faceSpace}px`,
           }}
         />
         <Box sx={{ display: "grid", flex: "1 1 auto", minWidth: 0 }}>
