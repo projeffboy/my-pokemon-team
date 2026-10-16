@@ -14,6 +14,7 @@ import { toBase64Url } from "@/app/shared/base64url";
 import { loadGenerationTransferData } from "@/shared/generation-transfer-data";
 import { learnsetsReady } from "@/store/learnsets";
 import { planOldWebsiteTeam } from "@/store/old-website";
+import type { GenerationTransferData } from "@/types";
 import CarryOverWarning from "./site-version-switch/CarryOverWarning";
 
 import landorusFace from "@/images/pokemon-shuffle-faces/landorus-face-96.png";
@@ -45,7 +46,13 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
   ]);
   const bothFaces = !!fitting;
   const [open, setOpen] = useState(false);
-  const [plan, setPlan] = useState<ReturnType<typeof planOldWebsiteTeam>>();
+  // Planned from the team shown, which another tab can change while the dialog is open.
+  // The data is dropped once the dialog has closed, so the plan stops following the team.
+  const [data, setData] = useState<GenerationTransferData>();
+  const plan =
+    data && !store.isTeamEmpty ?
+      planOldWebsiteTeam(store.team, store.currentTeam, data)
+    : undefined;
   const cancelButton = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
@@ -60,11 +67,11 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
     if (store.isTeamEmpty) return goToSite();
     try {
       // The plan checks the moves against the old website's learnsets
-      const [data] = await Promise.all([
+      const [loaded] = await Promise.all([
         loadGenerationTransferData(),
         learnsetsReady,
       ]);
-      setPlan(planOldWebsiteTeam(store.team, store.currentTeam, data));
+      setData(loaded);
       setOpen(true);
     } catch {
       store.openSnackbar(t.generationTransfer.loadFailed, false, "error");
@@ -115,7 +122,10 @@ const SiteVersionSwitch = observer(function SiteVersionSwitch() {
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         slotProps={{
-          transition: { onEntered: () => cancelButton.current?.focus() },
+          transition: {
+            onEntered: () => cancelButton.current?.focus(),
+            onExited: () => setData(undefined),
+          },
         }}
       >
         <DialogTitle id={titleId}>{t.siteVersion.title}</DialogTitle>

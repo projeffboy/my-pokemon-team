@@ -26,6 +26,15 @@ addEventListener(
   },
   { capture: true, passive: true },
 );
+// Keys that on-screen keyboards lack mean a hardware keyboard, e.g. on a tablet. Phone
+// keyboards also send Enter and letters, so those keep the touch.
+addEventListener(
+  "keydown",
+  event => {
+    if (/^(Tab|Arrow|Escape|Home|End|Page)/.test(event.key)) isTouch = false;
+  },
+  { capture: true, passive: true },
+);
 
 export const isTouchInput = () => isTouch;
 

@@ -245,6 +245,22 @@ test("Hyper Training preserves compatible stat IVs without changing their derive
   expect(historicalLink.ivs).toEqual({ atk: 30, def: 30 });
 });
 
+test("Hyper Training keeps the 31s when only custom IVs need to change", () => {
+  for (const [generation, level] of [
+    [7, 100],
+    [9, 50],
+  ] as const) {
+    const member = createTeam({
+      name: "noivern",
+      level,
+      ivs: { hp: 1, atk: 1, def: 0 },
+    })[0]!;
+    matchHiddenPower(member, "hiddenpowerflying", generation);
+    expect(member.ivs, `Gen ${generation}`).toEqual({ hp: 1, atk: 1, def: 1 });
+    expect(canHaveHiddenPowerType(member, "flying", generation)).toBe(true);
+  }
+});
+
 test("Hidden Power text round trips preserve capped Gen7 IVs while earlier controls still match", () => {
   for (const [generation, level, expected] of [
     [6, 100, 30],

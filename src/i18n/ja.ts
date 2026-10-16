@@ -322,6 +322,7 @@ const ja: Messages = {
     },
     filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
     together: (move: string, other: string) => `${move}と${other}の組み合わせ`,
+    withItem: (move: string, item: string) => `${move}（${item}）`,
     unavailable: "このゲームには当てはまる技や道具がありません。",
     battleFormat: {
       label: "バトル形式",

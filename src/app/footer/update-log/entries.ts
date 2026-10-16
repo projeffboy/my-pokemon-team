@@ -13,6 +13,7 @@ const entries: Entry[] = [
     changes: [
       "Unticking Shiny in Gen 2 now keeps the Pokémon’s other DVs, gender and Hidden Power.",
       "The header no longer shows the previous game’s name after switching games on iPhone and iPad.",
+      "Choosing a Hidden Power type for a Pokémon that can be Hyper Trained now keeps its 31 IVs where it can.",
     ],
   },
   {

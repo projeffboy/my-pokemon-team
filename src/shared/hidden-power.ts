@@ -117,10 +117,12 @@ export function canHaveHiddenPowerType(
 // From Gen 6, where IVs no longer change its power, move as few custom IVs
 // (below 30) as the type allows, each by one. Of the 30s and 31s, set the
 // fewest to 30, preferring the spread's, so default IVs still give the spread.
+// A 31 that can be Hyper Trained stays, since it can have either parity.
 function fixedPowerPattern(
   ivs: Partial<BaseStats> | undefined,
   type: string,
   spread: Partial<BaseStats>,
+  hyperTrain: boolean,
 ) {
   let best = 0;
   let bestScore = Infinity;
@@ -135,7 +137,7 @@ function fixedPowerPattern(
       const iv = getIv(ivs, stat);
       const spreadOdd = getIv(spread, stat) % 2;
       if (iv < MAX_IV - 1) moved += Number(iv % 2 !== odd);
-      else if (!odd) {
+      else if (!odd && !(hyperTrain && iv === MAX_IV)) {
         thirties++;
         outsideSpread += spreadOdd;
       }
@@ -176,9 +178,11 @@ export function matchHiddenPower(
     setDetail(member, "ivs", ivs);
     syncDvs(member, generation);
   } else if (generation >= 6) {
-    const bits = fixedPowerPattern(member.ivs, type, spread.ivs);
+    const hyperTrain = allowHyperTraining && canHyperTrain(member, generation);
+    const bits = fixedPowerPattern(member.ivs, type, spread.ivs, hyperTrain);
     IV_ORDER.forEach((stat, i) => {
       const iv = getIv(member.ivs, stat);
+      if (hyperTrain && iv === MAX_IV) return;
       if (iv % 2 !== ((bits >> i) & 1)) setStat(member, "ivs", stat, iv ^ 1);
     });
   } else {

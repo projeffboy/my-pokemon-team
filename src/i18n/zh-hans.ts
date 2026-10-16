@@ -313,6 +313,7 @@ const zhHans: Messages = {
     },
     filledBy: (pokemon: string, moves: string) => `${pokemon}：${moves}`,
     together: (move: string, other: string) => `${move}配合${other}`,
+    withItem: (move: string, item: string) => `${move}（${item}）`,
     unavailable: "本作中没有符合条件的招式或道具。",
     battleFormat: {
       label: "对战形式",

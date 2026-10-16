@@ -339,6 +339,7 @@ const de: Messages = {
     },
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     together: (move: string, other: string) => `${move} mit ${other}`,
+    withItem: (move: string, item: string) => `${move} (${item})`,
     unavailable: "In diesem Spiel erfüllt nichts diese Rolle.",
     battleFormat: {
       label: "Kampfformat",

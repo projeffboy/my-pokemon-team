@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import store from "./store";
+import { isSendingFeedback } from "@/app/header/feedback-dialog/capture-page";
 // Roboto for Material UI, self-hosted so it ships with the bundle's long-lived cache
 import "@fontsource/roboto/latin-300.css";
 import "@fontsource/roboto/latin-400.css";
@@ -9,10 +10,10 @@ import "@fontsource/roboto/latin-500.css";
 
 // A deploy replaces the hashed chunk files, so a tab opened before it cannot load a lazy chunk;
 // reloading picks up the new build. The timer stops a reload loop when the chunk is truly unreachable,
-// and an offline tab keeps its page, where a reload would lose it.
+// and an offline tab keeps its page, where a reload would lose it, as does a tab sending feedback.
 window.addEventListener("vite:preloadError", event => {
   const key = "lastPreloadErrorReload";
-  if (!navigator.onLine) {
+  if (!navigator.onLine || isSendingFeedback()) {
     event.preventDefault();
     return;
   }

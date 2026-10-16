@@ -1,5 +1,5 @@
 import { test, expect } from "fixtures";
-import { getTeamTextFromUrl, selectPokemon } from "helper";
+import { getTeamTextFromUrl, selectMove, selectPokemon } from "helper";
 
 const destination = "https://old.mypokemonteam.com/";
 const oldSite = /^https:\/\/old\.mypokemonteam\.com\//;
@@ -163,6 +163,40 @@ test("names what the old website's own data lacks, apart from the generation", a
   const carried = getTeamTextFromUrl(page);
   expect(carried).toContain("- Spore");
   expect(carried).not.toMatch(/Sticky Web|Levitate/);
+});
+
+test("an edit from another tab while the dialog is open goes with the player", async ({
+  page,
+  context,
+}) => {
+  await page.goto("/?gen=9");
+  await selectPokemon(page, "Toucannon");
+  await expect(page).toHaveURL(/[?&]team=/);
+  await page.route(oldSite, route =>
+    route.fulfill({ contentType: "text/html", body: "<h1>Other site</h1>" }),
+  );
+  await page
+    .getByRole("banner")
+    .getByRole("button", { name: /^(Go to (the )?)?old (web)?site$/i })
+    .click();
+  const dialog = page.getByRole("dialog", {
+    name: "Switch to the old website?",
+  });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByRole("alert")).toHaveCount(0);
+
+  const other = await context.newPage();
+  await other.goto(page.url());
+  await selectPokemon(other, "Smeargle");
+  await selectMove(other, "Sticky Web");
+  await expect(dialog.getByRole("alert").getByRole("listitem")).toHaveText([
+    "Smeargle: Sticky Web",
+  ]);
+  await dialog
+    .getByRole("button", { name: "Go with my team", exact: true })
+    .click();
+  await expect(page.getByRole("heading", { name: "Other site" })).toBeVisible();
+  expect(getTeamTextFromUrl(page)).toMatch(/^Smeargle\n/);
 });
 
 test("Japanese keeps its full label and both faces where they fit", async ({

@@ -3,6 +3,7 @@ import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 import store from "@/store";
 import { CHAMPIONS_FORMAT, linkGameFormat } from "@/shared/formats";
+import { variantGeneration } from "@/shared/game-variants";
 import {
   encodeTeamForUrl,
   syncTeamSettingsToUrl,
@@ -134,6 +135,8 @@ const TeamLinkSync = observer(function TeamLinkSync() {
           t.team.linkGenerationUnsupported(
             generationProfile ? t.combinedGenerations.label
             : format === CHAMPIONS_FORMAT ? t.championsGeneration
+            : variantGeneration(format) ?
+              `${t.generation(generation)} · ${t.gameVariants[format as keyof typeof t.gameVariants]}`
             : t.generation(generation),
           ),
           false,

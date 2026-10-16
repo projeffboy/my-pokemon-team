@@ -106,7 +106,8 @@ export function planOldWebsiteTeam(
       .filter(([, held]) => held)
       .map(([detail]) => detail);
   // The old website keeps only the abilities in its pokedex and the moves in its own learnsets,
-  // which leave out Smeargle's sketched moves. It shows No Ability as a blank ability.
+  // which leave out Smeargle's sketched moves. It shows No Ability as a blank ability, except
+  // that a pokemon with only one ability gets that one.
   const rejected: TransferLoss[] = [];
   const carried = plan.team.map(
     ({ name, item, ability, move1, move2, move3, move4 }, index) => {
@@ -123,8 +124,10 @@ export function planOldWebsiteTeam(
           value,
           ...(replacement && { replacement }),
         });
-      if (
-        ability &&
+      if (!ability) {
+        const only = rules.abilities && getAutoSelectedAbility(name);
+        if (only) reject("ability", "No Ability", only);
+      } else if (
         ability !== "No Ability" &&
         !pokemonAbilities(name).includes(ability)
       ) {

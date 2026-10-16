@@ -36,6 +36,22 @@ test.describe("with touch", () => {
     await expect(page.locator("input:focus, textarea:focus")).toHaveCount(0);
   });
 
+  // A tablet or touchscreen laptop with a hardware keyboard
+  test("a key that on-screen keyboards lack keeps the focus after picking with Enter", async ({
+    page,
+  }) => {
+    const name = field(page, "name");
+    await name.tap();
+    await page.keyboard.press("Tab");
+    await expect(name).not.toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+    await expect(name).toBeFocused();
+    await page.keyboard.type("Dhelmis");
+    await page.keyboard.press("Enter");
+    await expect(name).toHaveValue("Dhelmise");
+    await expect(name).toBeFocused();
+  });
+
   test("closing Sort leaves the dropdown's field without focus", async ({
     page,
   }) => {

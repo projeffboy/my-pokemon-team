@@ -61,6 +61,8 @@ export interface ChecklistGroup {
 export interface ChecklistFiller {
   pokemon: string;
   by: string[];
+  // The held item that Fling needs to fill it
+  flung?: string;
 }
 
 const moveset = (pokemon: Pokemon, generation: Generation, format: string) =>
@@ -391,7 +393,15 @@ export function evaluateChecklist(
         team.flatMap(pokemon => {
           const by =
             pokemon.name ? item.fills(pokemon, generation, format, battle) : [];
-          return by.length ? [{ pokemon: pokemon.name, by }] : [];
+          if (!by.length) return [];
+          return [
+            {
+              pokemon: pokemon.name,
+              by,
+              ...(item.key === "status" &&
+                by.includes("fling") && { flung: pokemon.item }),
+            },
+          ];
         });
       const fillers = fillersIn(battleFormat ?? "singles");
       const doubles = battleFormat ? fillers : fillersIn("doubles");
@@ -409,7 +419,7 @@ export function evaluateChecklist(
 // E.g. "Gigalith: Stealth Rock"
 export function describeFiller(
   { heldItem, abilities = [] }: ChecklistItem,
-  { pokemon, by }: ChecklistFiller,
+  { pokemon, by, flung }: ChecklistFiller,
   { locale, t, names }: Translation = english,
 ) {
   return t.checklist.filledBy(
@@ -418,6 +428,8 @@ export function describeFiller(
       by.map(id =>
         heldItem ? names.item(id)
         : abilities.includes(id) ? names.ability(id)
+        : id === "fling" && flung ?
+          t.checklist.withItem(names.move(id), names.item(flung))
         : names.move(id),
       ),
     ),

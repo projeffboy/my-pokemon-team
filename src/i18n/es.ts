@@ -325,6 +325,7 @@ const es: Messages = {
     },
     filledBy: (pokemon: string, moves: string) => `${pokemon}: ${moves}`,
     together: (move: string, other: string) => `${move} con ${other}`,
+    withItem: (move: string, item: string) => `${move} (${item})`,
     unavailable: "Nada en este juego cumple este papel.",
     battleFormat: {
       label: "Formato de combate",
