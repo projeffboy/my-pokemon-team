@@ -132,7 +132,13 @@ test("moves outside the old website's learnsets, such as sketched ones, are name
         ["move", "wideguard"],
       ],
     ],
-    [[], [["move", "lightofruin"]]],
+    [
+      [],
+      [
+        ["ability", "No Ability"],
+        ["move", "lightofruin"],
+      ],
+    ],
   ]);
   expect(text).toBe(
     "Smeargle @ Focus Sash\nAbility: Own Tempo\n-\n- Spore\n-\n-\n\n" +
@@ -178,6 +184,34 @@ test("abilities missing from the old website's pokedex are named and left out", 
   expect(empoleon.text).toBe(
     "Empoleon @ Leftovers\nAbility: No Ability\n-\n-\n-\n-\n\n",
   );
+});
+
+// The old website gives a pokemon its only ability when the text says No Ability
+test("a cleared ability is named when the old website fills in the only one", () => {
+  const mew = createTeam({ name: "mew", move1: "psychic" });
+  expect(
+    planOldWebsiteTeam(mew, DEFAULT_TEAM_SETTINGS, data).losses[0]?.rejected,
+  ).toEqual([
+    {
+      index: 0,
+      pokemon: "mew",
+      field: "ability",
+      value: "No Ability",
+      replacement: "Synchronize",
+    },
+  ]);
+  // Gen 1–2 pokemon have no ability to clear
+  expect(
+    planOldWebsiteTeam(mew, { generation: 2, format: "" }, data).losses,
+  ).toEqual([]);
+  // A pokemon with several abilities stays without one
+  expect(
+    planOldWebsiteTeam(
+      createTeam({ name: "dragapult" }),
+      DEFAULT_TEAM_SETTINGS,
+      data,
+    ).losses,
+  ).toEqual([]);
 });
 
 test("gender is not named for a pokemon that has no choice of gender", () => {
